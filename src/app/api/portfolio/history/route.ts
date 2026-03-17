@@ -1,0 +1,126 @@
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
+import { getUserId } from "@/lib/auth";
+
+export const dynamic = "force-dynamic";
+
+export async function GET() {
+  const userId = await getUserId();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const trades = await prisma.trade.findMany({
+    where: {
+      userId,
+      market: { status: "RESOLVED" },
+    },
+    include: {
+      market: { include: { outcomes: true } },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  const marketMap = new Map<
+    string,
+    {
+      market: {
+        id: string;
+        title: string;
+        status: string;
+        resolveTime: Date | null;
+        resolvedOutcomeId: string | null;
+        createdAt: Date;
+        outcomes: { id: string; name: string }[];
+      };
+      totalBuyCost: number;
+      totalSellProceeds: number;
+    }
+  >();
+
+  for (const trade of trades) {
+    const existing = marketMap.get(trade.marketId);
+    const current = existing ?? {
+      market: {
+        id: trade.market.id,
+        title: trade.market.title,
+        status: trade.market.status,
+        resolveTime: trade.market.resolveTime,
+        resolvedOutcomeId: trade.market.resolvedOutcomeId ?? null,
+        createdAt: trade.market.createdAt,
+        outcomes: trade.market.outcomes.map((o) => ({ id: o.id, name: o.name })),
+      },
+      totalBuyCost: 0,
+      totalSellProceeds: 0,
+    };
+
+    if (trade.side === "BUY") {
+      current.totalBuyCost += Number(trade.cost) + Number(trade.fee);
+    } else {
+      current.totalSellProceeds += Number(trade.cost) - Number(trade.fee);
+    }
+
+    marketMap.set(trade.marketId, current);
+  }
+
+  const marketIds = Array.from(marketMap.keys());
+  const ledger = marketIds.length
+    ? await prisma.ledgerEntry.findMany({
+        where: {
+          userId,
+          referenceType: "MARKET",
+          referenceId: { in: marketIds },
+          reason: { in: ["WIN", "REFUND"] },
+        },
+      })
+    : [];
+
+  const payoutByMarket = new Map<string, { win: number; refund: number }>();
+  for (const entry of ledger) {
+    const current = payoutByMarket.get(entry.referenceId ?? "") ?? {
+      win: 0,
+      refund: 0,
+    };
+    if (entry.reason === "WIN") {
+      current.win += Number(entry.amountDelta);
+    } else if (entry.reason === "REFUND") {
+      current.refund += Number(entry.amountDelta);
+    }
+    payoutByMarket.set(entry.referenceId ?? "", current);
+  }
+
+  const items = Array.from(marketMap.values()).map((row) => {
+    const payouts = payoutByMarket.get(row.market.id) ?? { win: 0, refund: 0 };
+    const netInvested = row.totalBuyCost - row.totalSellProceeds;
+    const realizedPnL = payouts.win + payouts.refund - netInvested;
+    const resolvedOutcomeName =
+      row.market.outcomes.find((o) => o.id === row.market.resolvedOutcomeId)?.name ??
+      null;
+
+    return {
+      market: {
+        id: row.market.id,
+        title: row.market.title,
+        status: row.market.status,
+        resolveTime: row.market.resolveTime,
+        resolvedOutcomeId: row.market.resolvedOutcomeId,
+        createdAt: row.market.createdAt,
+      },
+      resolvedOutcomeName,
+      totalBuyCostTokens: row.totalBuyCost,
+      totalSellProceedsTokens: row.totalSellProceeds,
+      netInvestedTokens: netInvested,
+      winningsTokens: payouts.win,
+      refundsTokens: payouts.refund,
+      realizedPnLTokens: realizedPnL,
+    };
+  });
+
+  items.sort((a, b) => {
+    const aTime = a.market.resolveTime ? new Date(a.market.resolveTime).getTime() : 0;
+    const bTime = b.market.resolveTime ? new Date(b.market.resolveTime).getTime() : 0;
+    return bTime - aTime;
+  });
+
+  return NextResponse.json({ history: items.slice(0, 50) });
+}

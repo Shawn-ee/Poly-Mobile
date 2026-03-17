@@ -1,0 +1,657 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MarketStatus {
+  UPCOMING
+  LIVE
+  CLOSED
+  RESOLVED
+}
+
+enum MarketKind {
+  ORDERBOOK
+  POOL
+}
+
+enum MarketVisibility {
+  PUBLIC
+  PRIVATE
+}
+
+enum MarketMechanism {
+  ORDERBOOK
+  POOL
+}
+
+enum MarketType {
+  BINARY
+  MULTI_WINNER
+}
+
+enum TradeSide {
+  BUY
+  SELL
+}
+
+enum OrderStatus {
+  OPEN
+  PARTIAL
+  FILLED
+  CANCELED
+}
+
+enum LedgerReason {
+  FAUCET
+  DEPOSIT
+  WITHDRAW
+  BUY
+  SELL
+  WIN
+  FEE
+  REFUND
+  POOL_BET
+  LOCK
+  UNLOCK
+  FILL
+  WITHDRAWAL_REQUEST
+  WITHDRAWAL_COMPLETE
+  WITHDRAWAL_REJECT
+}
+
+enum LedgerOperation {
+  DEPOSIT
+  LOCK
+  UNLOCK
+  FILL
+  WITHDRAWAL_REQUEST
+  WITHDRAWAL_COMPLETE
+  WITHDRAWAL_REJECT
+  FAUCET
+  TRADE
+  POOL_BET
+  OTHER
+}
+
+enum AuthProvider {
+  google
+  wallet
+}
+
+enum WalletLinkMethod {
+  SIGNATURE
+  MANUAL
+}
+
+enum LedgerTransactionType {
+  DEPOSIT
+  WITHDRAW
+  BET
+  PAYOUT
+}
+
+enum LedgerTransactionStatus {
+  CREATED
+  SUBMITTED
+  CONFIRMED
+  FAILED
+}
+
+enum WithdrawalRequestStatus {
+  PENDING
+  COMPLETED
+  REJECTED
+  FAILED
+}
+
+enum ApiOrderRequestStatus {
+  PROCESSING
+  SUCCEEDED
+  FAILED
+}
+
+enum ApiCredentialStatus {
+  ACTIVE
+  REVOKED
+}
+
+enum CanonicalEventStream {
+  MARKET
+  ACCOUNT
+}
+
+enum MarketMemberRole {
+  OWNER
+  MEMBER
+}
+
+model User {
+  id             String        @id @default(uuid())
+  email          String?       @unique
+  username       String        @unique
+  displayName    String?
+  image          String?
+  hasCustomAvatar Boolean      @default(false)
+  isAdmin        Boolean       @default(false)
+  lastFaucetAt   DateTime?
+  lastTradeAt    DateTime?
+  createdAt      DateTime      @default(now())
+  positions      Position[]
+  trades         Trade[]
+  orders         Order[]
+  ledgerEntries  LedgerEntry[]
+  poolOwnedMarkets Market[]    @relation("PoolMarketOwner")
+  poolBets       PoolBet[]
+  accounts       Account[]
+  wallets        Wallet[]
+  walletNonces   WalletNonce[]
+  ledgerTransactions LedgerTransaction[]
+  depositIntents DepositIntent[]
+  chainDepositEvents ChainDepositEvent[]
+  balance        UserBalance?
+  withdrawalRequests WithdrawalRequest[]
+  processedWithdrawalRequests WithdrawalRequest[] @relation("WithdrawalProcessedByAdmin")
+  marketMemberships MarketMember[]
+  apiOrderRequests ApiOrderRequest[]
+  apiCredentials ApiCredential[]
+  apiCredentialUsageLogs ApiCredentialUsageLog[]
+}
+
+model Market {
+  id                String        @id @default(uuid())
+  slug              String?       @unique
+  title             String
+  description       String
+  categoryLegacy    String?
+  categoryId        String?
+  category          Category?     @relation(fields: [categoryId], references: [id])
+  type              MarketType    @default(BINARY)
+  kind              MarketKind    @default(ORDERBOOK)
+  status            MarketStatus  @default(UPCOMING)
+  ownerId           String?
+  owner             User?         @relation("PoolMarketOwner", fields: [ownerId], references: [id])
+  betCloseTime      DateTime?
+  maxParticipants   Int           @default(100)
+  hidePicksUntilClose Boolean     @default(false)
+  visibility        MarketVisibility @default(PUBLIC)
+  mechanism         MarketMechanism  @default(ORDERBOOK)
+  collateralUSDC    Decimal          @default(0) @db.Decimal(36, 6)
+  isCanceled        Boolean       @default(false)
+  isListed          Boolean       @default(true)
+  resolveTime       DateTime?
+  createdBy         String?
+  resolvedOutcomeId String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  outcomes          Outcome[]
+  outcomeSnapshots  MarketOutcomeSnapshot[]
+  positions         Position[]
+  trades            Trade[]
+  fills             Fill[]
+  orders            Order[]
+  tags              MarketTag[]
+  poolBets          PoolBet[]
+  poolStakePresets  PoolStakePreset[]
+  members           MarketMember[]
+}
+
+model Category {
+  id        String     @id @default(uuid())
+  name      String
+  slug      String     @unique
+  parentId  String?
+  parent    Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children  Category[] @relation("CategoryTree")
+  order     Int        @default(0)
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  markets   Market[]
+}
+
+model Tag {
+  id        String      @id @default(uuid())
+  name      String
+  slug      String      @unique
+  group     String?
+  order     Int         @default(0)
+  isActive  Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  markets   MarketTag[]
+}
+
+model MarketTag {
+  marketId String
+  tagId    String
+  market   Market @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  tag      Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([marketId, tagId])
+  @@index([tagId])
+}
+
+model Outcome {
+  id        String   @id @default(uuid())
+  marketId  String
+  name      String
+  slug      String?  @unique
+  isActive  Boolean  @default(true)
+  displayOrder Int   @default(0)
+  createdAt DateTime @default(now())
+  market    Market   @relation(fields: [marketId], references: [id])
+  outcomeSnapshots  MarketOutcomeSnapshot[]
+  positions Position[]
+  trades    Trade[]
+  fills     Fill[]
+  orders    Order[]
+  poolBets  PoolBet[]
+}
+
+model Position {
+  id        String   @id @default(uuid())
+  userId    String
+  marketId  String
+  outcomeId String
+  shares    Decimal  @default(0) @db.Decimal(36, 6)
+  avgCost   Decimal  @default(0) @db.Decimal(36, 6)
+  reservedShares Decimal @default(0) @db.Decimal(36, 6)
+  realizedPnl Decimal @default(0) @db.Decimal(36, 6)
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  market    Market   @relation(fields: [marketId], references: [id])
+  outcome   Outcome  @relation(fields: [outcomeId], references: [id])
+
+  @@unique([userId, marketId, outcomeId])
+}
+
+model Trade {
+  id        String    @id @default(uuid())
+  userId    String
+  marketId  String
+  outcomeId String
+  side      TradeSide
+  shares    Decimal   @db.Decimal(36, 6)
+  cost      Decimal   @db.Decimal(36, 6)
+  fee       Decimal   @default(0) @db.Decimal(36, 6)
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id])
+  market    Market    @relation(fields: [marketId], references: [id])
+  outcome   Outcome   @relation(fields: [outcomeId], references: [id])
+}
+
+model Order {
+  id        String      @id @default(uuid())
+  marketId  String
+  userId    String
+  outcomeId String
+  createdApiCredentialId String?
+  canceledByApiCredentialId String?
+  side      TradeSide
+  price     Decimal     @db.Decimal(20, 8)
+  amount    Decimal     @db.Decimal(36, 6)
+  remaining Decimal     @db.Decimal(36, 6)
+  reservedNotional Decimal @default(0) @db.Decimal(36, 6)
+  status    OrderStatus @default(OPEN)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  market    Market      @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  outcome   Outcome     @relation(fields: [outcomeId], references: [id], onDelete: Cascade)
+  apiOrderRequest ApiOrderRequest?
+  createdApiCredential ApiCredential? @relation("ApiCredentialCreatedOrders", fields: [createdApiCredentialId], references: [id], onDelete: SetNull)
+  canceledByApiCredential ApiCredential? @relation("ApiCredentialCanceledOrders", fields: [canceledByApiCredentialId], references: [id], onDelete: SetNull)
+
+  @@index([marketId, outcomeId, side, price, createdAt])
+  @@index([status, marketId, outcomeId, side, price])
+  @@index([userId, marketId, status])
+  @@index([createdApiCredentialId, createdAt])
+  @@index([canceledByApiCredentialId, updatedAt])
+}
+
+model ApiOrderRequest {
+  id                 String                @id @default(uuid())
+  userId             String
+  apiCredentialId    String?
+  idempotencyKey     String
+  clientOrderId      String?
+  requestFingerprint String
+  requestBody        Json
+  submittedNotional  Decimal?              @db.Decimal(36, 6)
+  status             ApiOrderRequestStatus @default(PROCESSING)
+  orderId            String?               @unique
+  responseStatus     Int?
+  responseBody       Json?
+  errorCode          String?
+  errorMessage       String?
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+  user               User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  apiCredential      ApiCredential?        @relation(fields: [apiCredentialId], references: [id], onDelete: SetNull)
+  order              Order?                @relation(fields: [orderId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, idempotencyKey])
+  @@unique([userId, clientOrderId])
+  @@index([userId, createdAt])
+  @@index([apiCredentialId, createdAt])
+}
+
+model ApiCredential {
+  id          String              @id @default(uuid())
+  userId      String
+  name        String
+  keyId       String              @unique
+  secretHash  String
+  secretSalt  String
+  status      ApiCredentialStatus @default(ACTIVE)
+  scopes      String[]
+  isDisabled  Boolean             @default(false)
+  readOnly    Boolean             @default(false)
+  maxOrderSize Decimal?           @db.Decimal(36, 6)
+  maxOrderNotional Decimal?       @db.Decimal(36, 6)
+  maxOpenOrders Int?
+  maxDailySubmittedNotional Decimal? @db.Decimal(36, 6)
+  allowedMarketIds String[]       @default([])
+  lastUsedAt  DateTime?
+  revokedAt   DateTime?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  apiOrderRequests ApiOrderRequest[]
+  usageLogs   ApiCredentialUsageLog[]
+  createdOrders Order[]           @relation("ApiCredentialCreatedOrders")
+  canceledOrders Order[]          @relation("ApiCredentialCanceledOrders")
+  rateLimitBuckets ApiCredentialRateLimitBucket[]
+
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+}
+
+model ApiCredentialRateLimitBucket {
+  id              String        @id @default(uuid())
+  apiCredentialId String
+  routeId         String
+  windowStart     DateTime
+  requestCount    Int           @default(0)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  apiCredential   ApiCredential @relation(fields: [apiCredentialId], references: [id], onDelete: Cascade)
+
+  @@unique([apiCredentialId, routeId, windowStart])
+  @@index([windowStart])
+}
+
+model ApiCredentialUsageLog {
+  id              String        @id @default(uuid())
+  apiCredentialId String
+  userId          String
+  method          String
+  routeId         String
+  path            String
+  responseStatus  Int
+  resultCode      String
+  orderId         String?
+  createdAt       DateTime      @default(now())
+  apiCredential   ApiCredential @relation(fields: [apiCredentialId], references: [id], onDelete: Cascade)
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([apiCredentialId, createdAt])
+  @@index([userId, createdAt])
+  @@index([routeId, createdAt])
+}
+
+model CanonicalEvent {
+  id        BigInt               @id @default(autoincrement())
+  stream    CanonicalEventStream
+  topicKey  String
+  eventType String
+  marketId  String?
+  outcomeId String?
+  userId    String?
+  payload   Json
+  createdAt DateTime             @default(now())
+
+  @@index([stream, topicKey, id])
+  @@index([marketId, id])
+  @@index([userId, id])
+  @@index([createdAt])
+}
+
+model Fill {
+  id           String   @id @default(uuid())
+  takerOrderId String
+  makerOrderId String
+  takerUserId  String
+  makerUserId  String
+  marketId     String
+  outcomeId    String
+  side         TradeSide
+  price        Decimal  @db.Decimal(20, 8)
+  size         Decimal  @db.Decimal(36, 6)
+  notionalUSDC Decimal  @db.Decimal(36, 6)
+  feeUSDC      Decimal  @db.Decimal(36, 6)
+  createdAt    DateTime @default(now())
+  market       Market   @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  outcome      Outcome  @relation(fields: [outcomeId], references: [id], onDelete: Cascade)
+
+  @@index([marketId, outcomeId, createdAt])
+  @@index([takerOrderId])
+  @@index([makerOrderId])
+  @@index([takerUserId, createdAt])
+  @@index([makerUserId, createdAt])
+}
+
+model MarketOutcomeSnapshot {
+  id               String   @id @default(uuid())
+  marketId         String
+  outcomeId        String
+  ts               DateTime @default(now())
+  price            Decimal @db.Decimal(36, 6)
+  sharesOutstanding Decimal? @db.Decimal(36, 6)
+  volumeDelta      Decimal? @db.Decimal(36, 6)
+
+  market  Market  @relation(fields: [marketId], references: [id])
+  outcome Outcome @relation(fields: [outcomeId], references: [id])
+
+  @@index([marketId, ts])
+  @@index([marketId, outcomeId, ts])
+}
+
+model LedgerEntry {
+  id            String       @id @default(uuid())
+  userId        String
+  currency      String       @default("GAME_TOKEN")
+  amountDelta   Decimal      @db.Decimal(36, 6)
+  reason        LedgerReason
+  operation     LedgerOperation @default(OTHER)
+  deltaAvailableUSDC Decimal? @db.Decimal(36, 6)
+  deltaLockedUSDC Decimal?    @db.Decimal(36, 6)
+  idempotencyKey String?
+  chainId       Int?
+  txHash        String?
+  logIndex      Int?
+  tokenAddress  String?
+  referenceType String?
+  referenceId   String?
+  createdAt     DateTime     @default(now())
+  user          User         @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
+  @@index([operation, createdAt])
+  @@unique([idempotencyKey])
+}
+
+model UserBalance {
+  userId         String   @id
+  availableUSDC  Decimal  @default(0) @db.Decimal(36, 6)
+  lockedUSDC     Decimal  @default(0) @db.Decimal(36, 6)
+  version        Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                String       @id @default(uuid())
+  userId            String
+  provider          AuthProvider
+  providerAccountId String
+  createdAt         DateTime     @default(now())
+  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model WalletNonce {
+  address   String   @id
+  nonce     String
+  mode      String   @default("login")
+  userId    String?
+  expiresAt DateTime
+  updatedAt DateTime @updatedAt
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+}
+
+model Wallet {
+  id        String   @id @default(uuid())
+  userId    String
+  address   String   @unique
+  chainId   Int      @default(1)
+  linkMethod WalletLinkMethod @default(SIGNATURE)
+  isVerified Boolean  @default(true)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model LedgerTransaction {
+  id            String                  @id @default(uuid())
+  userId        String
+  type          LedgerTransactionType
+  amount        Decimal                 @db.Decimal(36, 6)
+  status        LedgerTransactionStatus @default(CREATED)
+  referenceType String?
+  referenceId   String?
+  txHash        String?
+  chainId       Int?
+  logIndex      Int?
+  tokenAddress  String?
+  amountRaw     String?
+  metadata      Json?
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+  user          User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([status])
+  @@unique([type, chainId, txHash, logIndex])
+}
+
+model DepositIntent {
+  id            String                  @id @default(uuid())
+  userId        String
+  walletAddress String
+  chainId       Int
+  amount        Decimal                 @db.Decimal(36, 6)
+  status        LedgerTransactionStatus @default(CREATED)
+  txHash        String?
+  createdAt     DateTime                @default(now())
+  confirmedAt   DateTime?
+  user          User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([txHash])
+}
+
+model ChainDepositEvent {
+  id            String   @id @default(cuid())
+  chainId       Int
+  txHash        String
+  logIndex      Int
+  blockNumber   Int
+  tokenAddress  String
+  fromAddress   String
+  toAddress     String
+  amountRaw     String
+  amountDecimal String?
+  userId        String?
+  createdAt     DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@unique([chainId, txHash, logIndex])
+  @@index([userId, createdAt])
+}
+
+model WithdrawalRequest {
+  id            String                  @id
+  userId        String
+  processedByAdminId String?
+  amountUSDC    Decimal                 @db.Decimal(36, 6)
+  destinationAddress String?
+  status        WithdrawalRequestStatus @default(PENDING)
+  adminNotes    String?
+  requestedAt   DateTime                @default(now())
+  completedAt   DateTime?
+  rejectedAt    DateTime?
+  completedTxHash String?
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+  user          User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  processedByAdmin User?                @relation("WithdrawalProcessedByAdmin", fields: [processedByAdminId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([status, requestedAt])
+  @@unique([completedTxHash])
+}
+
+model PoolBet {
+  id        String   @id @default(uuid())
+  userId    String
+  marketId  String
+  outcomeId String
+  amount    Decimal @db.Decimal(36, 6)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  market    Market   @relation(fields: [marketId], references: [id])
+  outcome   Outcome  @relation(fields: [outcomeId], references: [id])
+
+  @@unique([userId, marketId])
+  @@index([marketId, createdAt])
+}
+
+model PoolStakePreset {
+  id       String   @id @default(uuid())
+  marketId String
+  amount   Decimal @db.Decimal(36, 6)
+  isActive Boolean  @default(true)
+  market   Market   @relation(fields: [marketId], references: [id])
+
+  @@unique([marketId, amount])
+  @@index([marketId])
+}
+
+model MarketMember {
+  id        String           @id @default(uuid())
+  marketId  String
+  userId    String
+  role      MarketMemberRole @default(MEMBER)
+  createdAt DateTime         @default(now())
+  market    Market           @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([marketId, userId])
+  @@index([userId, createdAt])
+}

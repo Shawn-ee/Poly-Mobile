@@ -1,0 +1,94 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
+import { getUserId } from "@/lib/auth";
+import { getOutcomeMidPrices } from "@/lib/orderbookPricing";
+
+export const dynamic = "force-dynamic";
+
+// LEGACY: retained for current UI compatibility. External agents should use GET /api/account/positions
+// and GET /api/account/balance for canonical machine-facing account data.
+export async function GET(_request: NextRequest) {
+  const userId = await getUserId();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const positions = await prisma.position.findMany({
+    where: { userId, shares: { not: 0 } },
+    include: {
+      outcome: true,
+      market: true,
+    },
+  });
+
+  const realizedAgg = await prisma.position.aggregate({
+    where: { userId },
+    _sum: { realizedPnl: true },
+  });
+  const custody = await prisma.userBalance.findUnique({ where: { userId } });
+
+  const marketOutcomeMap = new Map<string, string[]>();
+  for (const p of positions) {
+    const existing = marketOutcomeMap.get(p.marketId) ?? [];
+    if (!existing.includes(p.outcomeId)) existing.push(p.outcomeId);
+    marketOutcomeMap.set(p.marketId, existing);
+  }
+
+  const marketOutcomeMids = new Map<string, Map<string, number>>();
+  for (const [marketId, outcomeIds] of marketOutcomeMap.entries()) {
+    const mids = await getOutcomeMidPrices(marketId, outcomeIds);
+    marketOutcomeMids.set(marketId, mids);
+  }
+
+  const items = positions.map((position) => {
+    const shares = Number(position.shares);
+    const avgCost = Number(position.avgCost);
+    const mids = marketOutcomeMids.get(position.marketId);
+    const currentPrice =
+      position.market.mechanism === "POOL" ? 0.5 : mids?.get(position.outcomeId) ?? 0.5;
+
+    const valueTokens = shares * currentPrice;
+    const costBasisTokens = shares * avgCost;
+    const pnlTokens = valueTokens - costBasisTokens;
+
+    return {
+      market: {
+        id: position.market.id,
+        title: position.market.title,
+        status: position.market.status,
+        resolveTime: position.market.resolveTime,
+        createdAt: position.market.createdAt,
+      },
+      outcome: position.outcome.name,
+      shares,
+      avgCost,
+      currentPrice,
+      valueTokens,
+      costBasisTokens,
+      totalCostBasisTokens: costBasisTokens,
+      pnlTokens,
+    };
+  });
+
+  items.sort((a, b) => b.valueTokens - a.valueTokens);
+
+  const totalValue = items.reduce((sum, item) => sum + item.valueTokens, 0);
+  const totalCostBasis = items.reduce((sum, item) => sum + item.costBasisTokens, 0);
+  const totalPnl = totalValue - totalCostBasis;
+  const walletAvailableUSDC = Number(custody?.availableUSDC ?? 0);
+  const walletLockedUSDC = Number(custody?.lockedUSDC ?? 0);
+  const walletTotalUSDC = walletAvailableUSDC + walletLockedUSDC;
+  const totalRealizedPnl = Number(realizedAgg._sum.realizedPnl ?? 0);
+
+  return NextResponse.json({
+    walletAvailableUSDC,
+    walletLockedUSDC,
+    walletTotalUSDC,
+    walletBalance: walletTotalUSDC,
+    totalValue,
+    totalCostBasis,
+    totalRealizedPnl,
+    totalPnl,
+    positions: items,
+  });
+}

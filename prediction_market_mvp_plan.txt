@@ -1,0 +1,446 @@
+PREDICTION MARKET MVP – FULL EXECUTION PLAN (GAME TOKEN FIRST)
+PROJECT OVERVIEW
+
+Build a Polymarket-style prediction market using GAME TOKENS (fake money).
+The system must support continuous trading, early cash-out, and admin-based
+market resolution. Architecture must be upgradeable to real-money trading later
+without rewriting core logic.
+
+Target:
+
+Launch from the US
+
+Users primarily Chinese-speaking
+
+Game-token MVP only (no real money)
+
+============================================================
+PRODUCT GOALS
+
+Primary Goals
+
+Users can trade prediction markets using GAME_TOKEN
+
+Users can cash out before market resolution
+
+Prices update continuously via AMM
+
+Wallet balances are derived from an immutable ledger
+
+Admin can create, pause, and resolve markets
+
+Leaderboard shows user performance
+
+Non-Goals (Phase 2 only)
+
+Real money deposits
+
+Withdrawals
+
+KYC / AML
+
+Blockchain settlement
+
+Order-book trading
+
+TIMELINE
+
+Minimum Launchable Version (Private Beta): 3–4 weeks
+Public MVP (Recommended): 5–6 weeks
+
+Week 1 – Foundation
+
+Project setup
+
+Authentication
+
+Database schema
+
+Ledger and wallet system
+
+Week 2 – Trading Core
+
+AMM pricing logic
+
+Buy shares
+
+Sell shares (early cash-out)
+
+Position tracking
+
+Week 3 – Admin & Settlement
+
+Admin panel
+
+Market creation
+
+Market pause
+
+Market resolution & settlement
+
+Week 4 – UX & Abuse Controls
+
+Frontend polish
+
+Wallet UI
+
+Market pages
+
+Faucet limits
+
+Trade cooldowns
+
+Week 5–6 (Optional but recommended)
+
+Analytics
+
+Monitoring
+
+Referral system
+
+Performance optimization
+
+============================================================
+SYSTEM ARCHITECTURE
+
+Frontend
+
+Next.js 14
+
+TypeScript
+
+TailwindCSS
+
+shadcn/ui
+
+Backend
+
+Node.js
+
+Next.js API routes (MVP) or NestJS/Fastify
+
+Database
+
+PostgreSQL (AWS RDS)
+
+Cache
+
+Redis (rate limiting, cooldowns)
+
+Deployment
+
+Frontend: Vercel
+
+Backend: AWS ECS Fargate or EC2
+
+Database: AWS RDS
+
+Logs: CloudWatch
+DATABASE SCHEMA
+
+users
+
+id (uuid)
+
+email
+
+username
+
+created_at
+
+markets
+
+id (uuid)
+
+title
+
+description
+
+category
+
+status (ACTIVE, PAUSED, RESOLVED)
+
+resolve_time
+
+created_by
+
+resolved_outcome_id
+
+created_at
+
+outcomes
+
+id (uuid)
+
+market_id
+
+name (YES or NO)
+
+created_at
+
+amm_state
+
+market_id
+
+b (liquidity parameter)
+
+q_yes
+
+q_no
+
+updated_at
+
+positions
+
+id
+
+user_id
+
+market_id
+
+outcome_id
+
+shares
+
+avg_cost
+
+updated_at
+
+trades
+
+id
+
+user_id
+
+market_id
+
+outcome_id
+
+side (BUY or SELL)
+
+shares
+
+cost
+
+fee
+
+created_at
+
+ledger_entries
+
+id
+
+user_id
+
+currency (GAME_TOKEN)
+
+amount_delta
+
+reason (FAUCET, BUY, SELL, WIN, FEE, REFUND)
+
+reference_type
+
+reference_id
+
+created_at
+
+wallets (optional cache)
+
+user_id
+
+currency
+
+cached_balance
+
+updated_at
+
+============================================================
+LEDGER RULES (CRITICAL)
+
+Ledger is append-only. Never update or delete entries.
+
+Wallet balance is SUM(ledger_entries.amount_delta).
+
+No trade may create a negative balance.
+
+Every trade produces ledger entries.
+
+Fees are separate ledger entries.
+
+Settlement is deterministic and idempotent.
+
+============================================================
+TRADING MODEL (AMM)
+
+Pricing model
+
+LMSR-style AMM
+
+Binary outcomes only
+
+Price formulas
+p_yes = exp(q_yes / b) / (exp(q_yes / b) + exp(q_no / b))
+p_no = 1 - p_yes
+
+BUY FLOW (ATOMIC TRANSACTION)
+
+Confirm market is ACTIVE
+
+Compute share cost via AMM
+
+Check wallet balance
+
+Insert trade record
+
+Ledger entry: -cost (BUY)
+
+Update AMM state
+
+Update user position
+
+Commit transaction
+
+SELL FLOW (EARLY CASH-OUT)
+
+Confirm user has enough shares
+
+Compute proceeds via AMM
+
+Insert trade record
+
+Ledger entry: +proceeds (SELL)
+
+Update AMM state
+
+Reduce position shares
+
+Commit transaction
+
+FEES
+
+Optional for MVP.
+If enabled:
+
+Fee deducted via separate ledger entry
+
+Platform wallet receives fee
+
+============================================================
+MARKET RESOLUTION & SETTLEMENT
+
+Admin resolves market:
+
+Set market status to RESOLVED
+
+Set winning outcome
+
+For each winning position:
+payout = shares * 1.0
+ledger entry: +payout (WIN)
+
+Losing positions receive nothing
+
+Trading disabled permanently
+
+============================================================
+API ENDPOINTS
+
+Authentication
+
+POST /api/auth/*
+
+Wallet
+
+GET /api/wallet/balance
+
+POST /api/wallet/faucet
+
+Markets
+
+GET /api/markets
+
+GET /api/markets/:id
+
+GET /api/markets/:id/positions
+
+GET /api/markets/:id/trades
+
+Trading
+
+POST /api/trade/buy
+
+POST /api/trade/sell
+
+Admin
+
+POST /api/admin/markets/create
+
+POST /api/admin/markets/pause
+
+POST /api/admin/markets/resolve
+
+============================================================
+ABUSE CONTROLS (MVP MINIMUM)
+
+Faucet cooldown (daily or hourly)
+
+Wallet balance cap
+
+Trade cooldown (seconds)
+
+Max trade size
+
+Rate limiting per IP and user
+
+CAPTCHA for signup and faucet
+
+============================================================
+FUTURE REAL-MONEY EXTENSION
+
+When enabling real money:
+
+Add currency = USDC or USD
+
+Add DEPOSIT and WITHDRAW ledger entries
+
+Add KYC and compliance gates
+
+No change to AMM, positions, or trading logic
+
+============================================================
+ENGINEERING TASK LIST
+
+Bootstrap Next.js app with auth and UI framework
+
+Implement Postgres schema and migrations
+
+Build immutable ledger and wallet logic
+
+Implement AMM math and unit tests
+
+Build buy/sell trading APIs
+
+Build frontend market and wallet pages
+
+Build admin panel and settlement engine
+
+Add abuse controls and rate limiting
+
+Add logging and basic metrics
+
+==============================================
+
+DEFINITION OF DONE
+
+Users can trade with GAME_TOKEN
+
+Early cash-out works correctly
+
+Wallet balances match ledger sums
+
+Admin can resolve markets
+
+Winners are paid automatically
+
+System is stable and abuse-resistant
+
