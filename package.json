@@ -37,6 +37,7 @@
     "reconcile:withdrawals": "tsx scripts/reconcile_withdrawals.ts",
     "smoke:phase9": "tsx scripts/smoke_phase9.ts",
     "bots:generate-sim-credentials": "tsx scripts/create_sim_bot_credentials.ts",
+    "bots:reset-state": "tsx scripts/reset_bot_state.ts",
     "bot:e2e:seed": "tsx tests/bot-e2e/seed.ts",
     "bot:e2e:run": "npm run bot:e2e:seed && node tests/bot-e2e/run.mjs",
     "test:phase3": "vitest run src/server/services/__tests__/ledger.phase3.test.ts",

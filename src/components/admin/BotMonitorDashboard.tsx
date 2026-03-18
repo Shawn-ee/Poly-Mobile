@@ -36,6 +36,7 @@ type BotRow = {
   errorsToday: number;
   rateLimitHitsToday: number;
   idempotencyConflictsToday: number;
+  pausedReason: string | null;
   lastUsedAt: string | null;
   lastEventTime: string | null;
   balance: {
@@ -55,6 +56,7 @@ type BotRow = {
     maxDailySubmittedNotional: string | null;
     allowedMarketIds: string[];
   };
+  submittedNotionalUsed: string;
   healthScore: number;
   healthLabel: string;
 };
@@ -400,6 +402,9 @@ export default function BotMonitorDashboard() {
                         <div className="mt-1 text-xs text-neutral-500">
                           {bot.isDisabled ? "Disabled" : bot.readOnly ? "Read-only" : bot.status}
                         </div>
+                        {bot.pausedReason ? (
+                          <div className="mt-1 text-xs text-amber-700">Paused: {bot.pausedReason}</div>
+                        ) : null}
                       </td>
                       <td className="px-2 py-3">
                         <div className="flex max-w-[220px] flex-wrap gap-1">
@@ -411,7 +416,12 @@ export default function BotMonitorDashboard() {
                         </div>
                       </td>
                       <td className="px-2 py-3">{bot.openOrders}</td>
-                      <td className="px-2 py-3">{bot.ordersSubmittedToday}</td>
+                      <td className="px-2 py-3 text-xs">
+                        <div>{bot.ordersSubmittedToday}</div>
+                        <div className="text-neutral-500">
+                          {shortDecimal(bot.submittedNotionalUsed)} / {shortDecimal(bot.limits.maxDailySubmittedNotional)}
+                        </div>
+                      </td>
                       <td className="px-2 py-3">{bot.fillsToday}</td>
                       <td className="px-2 py-3">
                         <div>{bot.errorsToday}</div>
@@ -527,7 +537,8 @@ export default function BotMonitorDashboard() {
                     <div>Health {detail.bot.healthScore}</div>
                     <div>Open orders {detail.openOrdersSummary.count}</div>
                     <div>Reserved notional {shortDecimal(detail.openOrdersSummary.reservedNotional)}</div>
-                    <div>Error codes {detail.errorCounts.reduce((sum, item) => sum + item.count, 0)}</div>
+                    <div>API errors {detail.errorCounts.reduce((sum, item) => sum + item.count, 0)}</div>
+                    <div>Paused reason {detail.bot.pausedReason ?? "--"}</div>
                   </div>
                 </section>
 
@@ -540,6 +551,7 @@ export default function BotMonitorDashboard() {
                     <div>Max order notional: {detail.bot.limits.maxOrderNotional ?? "--"}</div>
                     <div>Max open orders: {detail.bot.limits.maxOpenOrders ?? "--"}</div>
                     <div>Max daily notional: {detail.bot.limits.maxDailySubmittedNotional ?? "--"}</div>
+                    <div>Submitted notional used: {shortDecimal(detail.bot.submittedNotionalUsed)}</div>
                   </div>
                   <div className="mt-3 flex flex-wrap gap-1">
                     {detail.bot.scopes.map((scope) => (

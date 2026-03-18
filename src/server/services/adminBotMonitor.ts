@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
+import { getBotRunStartDate } from "@/server/services/botRunState";
 
 const OPEN_ORDER_STATUSES = ["OPEN", "PARTIAL"] as const;
 const DEFAULT_FEED_LIMIT = 40;
@@ -80,6 +81,7 @@ export type BotMonitorRow = {
   errorsToday: number;
   rateLimitHitsToday: number;
   idempotencyConflictsToday: number;
+  pausedReason: string | null;
   lastUsedAt: string | null;
   lastEventTime: string | null;
   balance: {
@@ -99,6 +101,7 @@ export type BotMonitorRow = {
     maxDailySubmittedNotional: string | null;
     allowedMarketIds: string[];
   };
+  submittedNotionalUsed: string;
   healthScore: number;
   healthLabel: string;
 };
@@ -235,6 +238,12 @@ type FillOverviewRow = {
   totalNotionalFilledToday: string;
 };
 
+type LatestUsageRow = {
+  apiCredentialId: string;
+  resultCode: string;
+  createdAt: Date;
+};
+
 type FeedFillRow = {
   id: string;
   createdAt: Date;
@@ -253,7 +262,7 @@ type FeedFillRow = {
   notionalUSDC: string;
 };
 
-const getAttributedFillMetrics = async (todayStart: Date) =>
+const getAttributedFillMetrics = async (activityStart: Date) =>
   prisma.$queryRaw<FillMetricRow[]>(Prisma.sql`
     SELECT
       legs."apiCredentialId" AS "apiCredentialId",
@@ -263,25 +272,25 @@ const getAttributedFillMetrics = async (todayStart: Date) =>
       SELECT taker."createdApiCredentialId" AS "apiCredentialId", fill."notionalUSDC"
       FROM "Fill" AS fill
       JOIN "Order" AS taker ON taker.id = fill."takerOrderId"
-      WHERE fill."createdAt" >= ${todayStart}
+      WHERE fill."createdAt" >= ${activityStart}
         AND taker."createdApiCredentialId" IS NOT NULL
       UNION ALL
       SELECT maker."createdApiCredentialId" AS "apiCredentialId", fill."notionalUSDC"
       FROM "Fill" AS fill
       JOIN "Order" AS maker ON maker.id = fill."makerOrderId"
-      WHERE fill."createdAt" >= ${todayStart}
+      WHERE fill."createdAt" >= ${activityStart}
         AND maker."createdApiCredentialId" IS NOT NULL
     ) AS legs
     GROUP BY legs."apiCredentialId"
   `);
 
-const getFillOverview = async (todayStart: Date) =>
+const getFillOverview = async (activityStart: Date) =>
   prisma.$queryRaw<FillOverviewRow[]>(Prisma.sql`
     SELECT
       COUNT(*)::int AS "totalFillsToday",
       COALESCE(SUM(fill."notionalUSDC"), 0)::text AS "totalNotionalFilledToday"
     FROM "Fill" AS fill
-    WHERE fill."createdAt" >= ${todayStart}
+    WHERE fill."createdAt" >= ${activityStart}
       AND (
         EXISTS (
           SELECT 1
@@ -298,7 +307,7 @@ const getFillOverview = async (todayStart: Date) =>
       )
   `);
 
-const getRecentAttributedFills = async (limit: number) =>
+const getRecentAttributedFills = async (limit: number, activityStart?: Date) =>
   prisma.$queryRaw<FeedFillRow[]>(Prisma.sql`
     SELECT *
     FROM (
@@ -348,11 +357,12 @@ const getRecentAttributedFills = async (limit: number) =>
       JOIN "Market" AS market ON market.id = fill."marketId"
       JOIN "Outcome" AS outcome ON outcome.id = fill."outcomeId"
     ) AS attributed
+    ${activityStart ? Prisma.sql`WHERE attributed."createdAt" >= ${activityStart}` : Prisma.empty}
     ORDER BY attributed."createdAt" DESC
     LIMIT ${limit}
   `);
 
-const getDetailAttributedFills = async (apiCredentialId: string, limit: number) =>
+const getDetailAttributedFills = async (apiCredentialId: string, limit: number, activityStart?: Date) =>
   prisma.$queryRaw<
     Array<{
       id: string;
@@ -412,6 +422,7 @@ const getDetailAttributedFills = async (apiCredentialId: string, limit: number) 
       JOIN "Outcome" AS outcome ON outcome.id = fill."outcomeId"
       WHERE maker."createdApiCredentialId" = ${apiCredentialId}
     ) AS attributed
+    ${activityStart ? Prisma.sql`WHERE attributed."createdAt" >= ${activityStart}` : Prisma.empty}
     ORDER BY attributed."createdAt" DESC
     LIMIT ${limit}
   `);
@@ -491,9 +502,13 @@ const buildRiskSummary = (rows: Array<{ resultCode: string; _count: { _all: numb
     }))
     .sort((left, right) => right.count - left.count);
 
+const PAUSE_REASON_CODES = new Set(["DAILY_NOTIONAL_LIMIT_EXCEEDED"]);
+
 export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> => {
   const now = new Date();
   const todayStart = startOfUtcDay(now);
+  const runStart = getBotRunStartDate();
+  const activityStart = runStart && runStart.getTime() > todayStart.getTime() ? runStart : todayStart;
   const activeCutoff = new Date(now.getTime() - ACTIVE_BOT_WINDOW_MS);
 
   const [
@@ -512,6 +527,7 @@ export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> 
     recentRequests,
     recentOrderRows,
     recentFills,
+    latestUsageRows,
   ] = await Promise.all([
     prisma.apiCredential.findMany({
       orderBy: [{ createdAt: "desc" }],
@@ -544,7 +560,7 @@ export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> 
       where: {
         apiCredentialId: { not: null },
         status: "SUCCEEDED",
-        createdAt: { gte: todayStart },
+        createdAt: { gte: activityStart },
       },
       _count: { _all: true },
       _sum: { submittedNotional: true },
@@ -552,7 +568,7 @@ export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> 
     prisma.apiCredentialUsageLog.groupBy({
       by: ["apiCredentialId"],
       where: {
-        createdAt: { gte: todayStart },
+        createdAt: { gte: activityStart },
         responseStatus: { gte: 400 },
       },
       _count: { _all: true },
@@ -560,7 +576,7 @@ export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> 
     prisma.apiCredentialUsageLog.groupBy({
       by: ["apiCredentialId"],
       where: {
-        createdAt: { gte: todayStart },
+        createdAt: { gte: activityStart },
         resultCode: "RATE_LIMIT_EXCEEDED",
       },
       _count: { _all: true },
@@ -568,7 +584,7 @@ export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> 
     prisma.apiCredentialUsageLog.groupBy({
       by: ["apiCredentialId"],
       where: {
-        createdAt: { gte: todayStart },
+        createdAt: { gte: activityStart },
         resultCode: "IDEMPOTENCY_KEY_CONFLICT",
       },
       _count: { _all: true },
@@ -576,18 +592,19 @@ export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> 
     prisma.apiCredentialUsageLog.groupBy({
       by: ["resultCode"],
       where: {
-        createdAt: { gte: todayStart },
+        createdAt: { gte: activityStart },
         responseStatus: { gte: 400 },
       },
       _count: { _all: true },
     }),
-    getAttributedFillMetrics(todayStart),
-    getFillOverview(todayStart),
+    getAttributedFillMetrics(activityStart),
+    getFillOverview(activityStart),
     prisma.canonicalEvent.groupBy({
       by: ["userId"],
       where: {
         stream: "ACCOUNT",
         userId: { not: null },
+        createdAt: { gte: activityStart },
       },
       _max: { createdAt: true },
     }),
@@ -606,6 +623,7 @@ export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> 
     }),
     prisma.apiCredentialUsageLog.findMany({
       where: {
+        createdAt: { gte: activityStart },
         OR: [
           { responseStatus: { gte: 400 } },
           { routeId: "orders:delete", resultCode: "OK" },
@@ -639,6 +657,7 @@ export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> 
       where: {
         apiCredentialId: { not: null },
         status: "SUCCEEDED",
+        createdAt: { gte: activityStart },
       },
       orderBy: [{ createdAt: "desc" }],
       take: DEFAULT_FEED_LIMIT,
@@ -672,6 +691,7 @@ export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> 
       where: {
         apiCredentialId: { not: null },
         status: "SUCCEEDED",
+        createdAt: { gte: activityStart },
         order: { isNot: null },
       },
       orderBy: [{ createdAt: "desc" }],
@@ -687,7 +707,19 @@ export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> 
         },
       },
     }),
-    getRecentAttributedFills(80),
+    getRecentAttributedFills(80, activityStart),
+    prisma.apiCredentialUsageLog.findMany({
+      where: {
+        createdAt: { gte: activityStart },
+      },
+      orderBy: [{ createdAt: "desc" }],
+      take: 500,
+      select: {
+        apiCredentialId: true,
+        resultCode: true,
+        createdAt: true,
+      },
+    }),
   ]);
 
   const openOrderMap = new Map(openOrders.map((row) => [row.createdApiCredentialId ?? "", row._count._all]));
@@ -714,6 +746,12 @@ export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> 
       },
     ])
   );
+  const latestUsageMap = new Map<string, LatestUsageRow>();
+  for (const row of latestUsageRows) {
+    if (!latestUsageMap.has(row.apiCredentialId)) {
+      latestUsageMap.set(row.apiCredentialId, row);
+    }
+  }
   const lastEventMap = new Map(
     lastEventByUser.map((row) => [row.userId ?? "", toIsoString(row._max.createdAt)])
   );
@@ -766,6 +804,9 @@ export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> 
       errorsToday: errorMap.get(credential.id) ?? 0,
       rateLimitHitsToday: rateLimitMap.get(credential.id) ?? 0,
       idempotencyConflictsToday: idempotencyMap.get(credential.id) ?? 0,
+      pausedReason: PAUSE_REASON_CODES.has(latestUsageMap.get(credential.id)?.resultCode ?? "")
+        ? latestUsageMap.get(credential.id)?.resultCode ?? null
+        : null,
       lastUsedAt: toIsoString(credential.lastUsedAt),
       lastEventTime: lastEventMap.get(credential.userId) ?? null,
       balance:
@@ -788,6 +829,7 @@ export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> 
         maxDailySubmittedNotional: credential.maxDailySubmittedNotional?.toString() ?? null,
         allowedMarketIds: credential.allowedMarketIds,
       },
+      submittedNotionalUsed: submitted?.notional ?? "0",
       healthScore: score,
       healthLabel: healthLabel(score, credential.isDisabled || credential.status === "REVOKED"),
     };
@@ -824,6 +866,8 @@ export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> 
       eventType:
         item.routeId === "orders:delete" && item.resultCode === "OK"
           ? "order.canceled"
+          : item.resultCode === "DAILY_NOTIONAL_LIMIT_EXCEEDED"
+            ? "policy.daily-notional-exhausted"
           : item.resultCode === "RATE_LIMIT_EXCEEDED"
             ? "rate-limit.rejected"
             : item.resultCode === "IDEMPOTENCY_KEY_CONFLICT"
@@ -860,6 +904,7 @@ export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> 
     where: {
       stream: "ACCOUNT",
       userId: { in: credentials.map((item) => item.userId) },
+      createdAt: { gte: activityStart },
     },
     orderBy: [{ id: "desc" }],
     take: 20,
@@ -934,6 +979,7 @@ export const getAdminBotMonitorSnapshot = async (): Promise<BotMonitorSnapshot> 
 
 export const getAdminBotMonitorDetail = async (apiCredentialId: string): Promise<BotMonitorDetail | null> => {
   const snapshot = await getAdminBotMonitorSnapshot();
+  const activityStart = getBotRunStartDate();
   const bot = snapshot.bots.find((item) => item.id === apiCredentialId);
   if (!bot) return null;
 
@@ -960,12 +1006,18 @@ export const getAdminBotMonitorDetail = async (apiCredentialId: string): Promise
     positions,
   ] = await Promise.all([
     prisma.apiCredentialUsageLog.findMany({
-      where: { apiCredentialId },
+      where: {
+        apiCredentialId,
+        ...(activityStart ? { createdAt: { gte: activityStart } } : {}),
+      },
       orderBy: [{ createdAt: "desc" }],
       take: DEFAULT_DETAIL_LIMIT,
     }),
     prisma.order.findMany({
-      where: { createdApiCredentialId: apiCredentialId },
+      where: {
+        createdApiCredentialId: apiCredentialId,
+        ...(activityStart ? { createdAt: { gte: activityStart } } : {}),
+      },
       orderBy: [{ createdAt: "desc" }],
       take: DEFAULT_DETAIL_LIMIT,
       include: {
@@ -973,9 +1025,12 @@ export const getAdminBotMonitorDetail = async (apiCredentialId: string): Promise
         outcome: { select: { name: true } },
       },
     }),
-    getDetailAttributedFills(apiCredentialId, DEFAULT_DETAIL_LIMIT),
+    getDetailAttributedFills(apiCredentialId, DEFAULT_DETAIL_LIMIT, activityStart ?? undefined),
     prisma.ledgerEntry.findMany({
-      where: { userId: credential.userId },
+      where: {
+        userId: credential.userId,
+        ...(activityStart ? { createdAt: { gte: activityStart } } : {}),
+      },
       orderBy: [{ createdAt: "desc" }],
       take: DEFAULT_DETAIL_LIMIT,
     }),
@@ -983,6 +1038,7 @@ export const getAdminBotMonitorDetail = async (apiCredentialId: string): Promise
       where: {
         stream: "ACCOUNT",
         userId: credential.userId,
+        ...(activityStart ? { createdAt: { gte: activityStart } } : {}),
       },
       orderBy: [{ id: "desc" }],
       take: DEFAULT_DETAIL_LIMIT,
@@ -991,6 +1047,7 @@ export const getAdminBotMonitorDetail = async (apiCredentialId: string): Promise
       by: ["resultCode"],
       where: {
         apiCredentialId,
+        ...(activityStart ? { createdAt: { gte: activityStart } } : {}),
         responseStatus: { gte: 400 },
       },
       _count: { _all: true },
