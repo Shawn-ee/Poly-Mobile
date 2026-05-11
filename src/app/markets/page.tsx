@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import MarketCard from "@/components/MarketCard";
+import EventCard from "@/components/EventCard";
 
 type Market = {
   id: string;
@@ -10,15 +11,29 @@ type Market = {
   status: string;
   visibility: "PUBLIC" | "PRIVATE";
   mechanism: "ORDERBOOK" | "POOL";
-  prices: { YES: number; NO: number };
+  prices: { YES: number; NO: number } | null;
   outcomes: { id: string; name: string }[];
   resolveTime: string | null;
+};
+
+type EventSummary = {
+  id: string;
+  slug: string | null;
+  title: string;
+  description: string | null;
+  category: string | null;
+  source: string | null;
+  marketCount: number;
+  activeMarketCount?: number | null;
+  image: string | null;
+  icon: string | null;
 };
 
 function MarketsPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [markets, setMarkets] = useState<Market[]>([]);
+  const [events, setEvents] = useState<EventSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [topTags, setTopTags] = useState<
     { id: string; name: string; slug: string }[]
@@ -106,6 +121,14 @@ function MarketsPageInner() {
       }
     };
     loadTags();
+
+    const loadEvents = async () => {
+      const res = await fetch("/api/events");
+      if (!res.ok) return;
+      const data = await res.json();
+      setEvents((data.events ?? []).filter((event: EventSummary) => Boolean(event.slug)).slice(0, 3));
+    };
+    loadEvents();
   }, []);
 
   const sportsChipOrder = useMemo(() => {
@@ -228,6 +251,42 @@ function MarketsPageInner() {
         </div>
       ) : null}
 
+      {events.length ? (
+        <section className="mb-8">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold">Active Events</h2>
+              <p className="text-sm text-neutral-600">Explore grouped markets before drilling into individual contracts.</p>
+            </div>
+            <button
+              onClick={() => router.push("/events")}
+              className="text-sm text-neutral-600 hover:text-neutral-900"
+              type="button"
+            >
+              All events
+            </button>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {events.map((event) =>
+              event.slug ? (
+                <EventCard
+                  key={event.id}
+                  slug={event.slug}
+                  title={event.title}
+                  description={event.description}
+                  category={event.category}
+                  source={event.source}
+                  marketCount={event.marketCount}
+                  activeMarketCount={event.activeMarketCount ?? null}
+                  image={event.image}
+                  icon={event.icon}
+                />
+              ) : null,
+            )}
+          </div>
+        </section>
+      ) : null}
+
       {loading ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {Array.from({ length: 8 }).map((_, index) => (
@@ -244,17 +303,33 @@ function MarketsPageInner() {
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {markets.map((market) => (
-            <MarketCard
-              key={market.id}
-              id={market.id}
-              title={market.title}
-              status={market.status}
-              resolveTime={market.resolveTime}
-              outcomes={market.outcomes}
-              prices={market.prices}
-              visibility={market.visibility}
-              mechanism={market.mechanism}
-            />
+            market.prices ? (
+              <MarketCard
+                key={market.id}
+                id={market.id}
+                title={market.title}
+                status={market.status}
+                resolveTime={market.resolveTime}
+                outcomes={market.outcomes}
+                prices={market.prices}
+                visibility={market.visibility}
+                mechanism={market.mechanism}
+              />
+            ) : (
+              <a
+                key={market.id}
+                href={`/markets/${market.id}`}
+                className="group flex h-full flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-neutral-300 hover:shadow-md"
+              >
+                <div>
+                  <h3 className="line-clamp-2 text-base font-semibold text-neutral-900">{market.title}</h3>
+                  <div className="mt-2 text-xs text-neutral-500">{market.status}</div>
+                </div>
+                <div className="mt-6 text-xs text-neutral-500">
+                  Outcomes: {market.outcomes.map((outcome) => outcome.name).join(" / ")}
+                </div>
+              </a>
+            )
           ))}
         </div>
       )}

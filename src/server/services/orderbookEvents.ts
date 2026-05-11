@@ -2,6 +2,8 @@ import { EventEmitter } from "events";
 import { CanonicalEventStream, OrderStatus } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { serializeForApi } from "@/lib/canonicalApi";
+import { buildPublicOrderbookSnapshot } from "@/server/services/orderbookSnapshot";
+import { getPublicTradeTape } from "@/server/services/publicTradeTape";
 
 const bus = new EventEmitter();
 bus.setMaxListeners(0);
@@ -45,12 +47,16 @@ export type MarketStreamPayload = {
   };
   recentTrades: Array<{
     id: string;
+    executionId: string;
+    marketId: string;
+    outcomeId: string;
+    outcomeName: string;
+    outcome: string;
     side: "BUY" | "SELL";
+    price: string;
+    quantity: string;
     shares: string;
     cost: string;
-    user: string;
-    outcomeId: string;
-    outcome: string;
     createdAt: string;
   }>;
 };
@@ -175,59 +181,44 @@ const createEvent = async <TPayload>(params: {
 
 const buildMarketPayload = async (params: { marketId: string; outcomeId?: string | null }) => {
   const outcomeId = params.outcomeId ?? null;
-  const whereBase = {
-    marketId: params.marketId,
-    status: { in: OPEN_STATUSES },
-    ...(outcomeId ? { outcomeId } : {}),
-  };
-
-  const [bids, asks, trades] = await Promise.all([
-    prisma.order.groupBy({
-      by: ["outcomeId", "price"],
-      where: { ...whereBase, side: "BUY" },
-      _sum: { remaining: true },
-      orderBy: [{ price: "desc" }],
-      take: MAX_LEVELS,
+  const [book, trades] = await Promise.all([
+    buildPublicOrderbookSnapshot({
+      marketId: params.marketId,
+      outcomeId,
+      maxLevels: MAX_LEVELS,
     }),
-    prisma.order.groupBy({
-      by: ["outcomeId", "price"],
-      where: { ...whereBase, side: "SELL" },
-      _sum: { remaining: true },
-      orderBy: [{ price: "asc" }],
-      take: MAX_LEVELS,
-    }),
-    prisma.trade.findMany({
-      where: { marketId: params.marketId, ...(outcomeId ? { outcomeId } : {}) },
-      orderBy: [{ createdAt: "desc" }],
-      take: MAX_TRADES,
-      include: {
-        user: { select: { username: true } },
-        outcome: { select: { id: true, name: true } },
-      },
+    getPublicTradeTape({
+      marketId: params.marketId,
+      outcomeId,
+      limit: MAX_TRADES,
     }),
   ]);
 
   return {
     topLevels: {
-      bids: bids.map((row) => ({
+      bids: book.bids.map((row) => ({
         outcomeId: row.outcomeId,
         price: row.price.toString(),
-        size: (row._sum.remaining ?? 0).toString(),
+        size: row.size.toString(),
       })),
-      asks: asks.map((row) => ({
+      asks: book.asks.map((row) => ({
         outcomeId: row.outcomeId,
         price: row.price.toString(),
-        size: (row._sum.remaining ?? 0).toString(),
+        size: row.size.toString(),
       })),
     },
     recentTrades: trades.map((item) => ({
       id: item.id,
+      executionId: item.executionId,
+      marketId: item.marketId,
+      outcomeId: item.outcomeId,
+      outcomeName: item.outcomeName,
+      outcome: item.outcome,
       side: item.side,
+      price: item.price.toString(),
+      quantity: item.quantity.toString(),
       shares: item.shares.toString(),
       cost: item.cost.toString(),
-      user: item.user.username,
-      outcomeId: item.outcomeId,
-      outcome: item.outcome.name,
       createdAt: item.createdAt.toISOString(),
     })),
   } satisfies MarketStreamPayload;

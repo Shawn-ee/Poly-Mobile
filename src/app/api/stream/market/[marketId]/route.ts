@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
-import { getUserId } from "@/lib/auth";
+import { getExistingUserId } from "@/lib/auth";
 import { assertMarketVisibleToUser } from "@/lib/marketAccess";
 import { toGuardResponse } from "@/lib/marketGuards";
 import { createCanonicalSseStream } from "@/lib/sse";
@@ -16,7 +16,7 @@ type Ctx = { params: Promise<{ marketId: string }> };
 export async function GET(request: NextRequest, context: Ctx) {
   const { marketId } = await context.params;
   const outcomeId = request.nextUrl.searchParams.get("outcomeId");
-  const userId = await getUserId();
+  const userId = await getExistingUserId().catch(() => null);
   const market = await prisma.market.findUnique({
     where: { id: marketId },
     select: { id: true, visibility: true, ownerId: true, mechanism: true },

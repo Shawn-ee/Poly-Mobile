@@ -11,6 +11,10 @@ type MarketViewMarket = {
   ownerId: string | null;
   title: string;
   description: string;
+  event?: {
+    slug: string | null;
+    title: string;
+  } | null;
 };
 
 export default function MarketView({ market }: { market: MarketViewMarket }) {

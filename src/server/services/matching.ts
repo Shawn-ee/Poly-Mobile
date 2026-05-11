@@ -11,7 +11,7 @@ const PRICE_MIN = new Prisma.Decimal("0");
 const PRICE_MAX = new Prisma.Decimal("1");
 const PLATFORM_USERNAME = "__platform_fees__";
 const ONE = new Prisma.Decimal(1);
-const PRICE_EPSILON = new Prisma.Decimal("0.00000001");
+const BINARY_INVARIANT_TOLERANCE = new Prisma.Decimal("0.000001");
 
 type Tx = Prisma.TransactionClient;
 
@@ -145,7 +145,7 @@ const enforceBinaryPriceSumInvariant = async (tx: Tx, marketId: string) => {
 
   if (bestBid1?.price && bestBid2?.price) {
     const sumBids = toDec(bestBid1.price).add(bestBid2.price);
-    if (sumBids.gt(ONE.add(PRICE_EPSILON))) {
+    if (sumBids.gt(ONE.add(BINARY_INVARIANT_TOLERANCE))) {
       throw new MarketGuardError(
         "Binary invariant violation: best_bid_yes + best_bid_no must be <= 1",
         409
@@ -155,9 +155,129 @@ const enforceBinaryPriceSumInvariant = async (tx: Tx, marketId: string) => {
 
   if (bestAsk1?.price && bestAsk2?.price) {
     const sumAsks = toDec(bestAsk1.price).add(bestAsk2.price);
-    if (sumAsks.lt(ONE.sub(PRICE_EPSILON))) {
+    if (sumAsks.lt(ONE.sub(BINARY_INVARIANT_TOLERANCE))) {
       throw new MarketGuardError(
         "Binary invariant violation: best_ask_yes + best_ask_no must be >= 1",
+        409
+      );
+    }
+  }
+};
+
+const maxDecimal = (a: Prisma.Decimal | null, b: Prisma.Decimal | null) => {
+  if (!a) return b;
+  if (!b) return a;
+  return a.gte(b) ? a : b;
+};
+
+const minDecimal = (a: Prisma.Decimal | null, b: Prisma.Decimal | null) => {
+  if (!a) return b;
+  if (!b) return a;
+  return a.lte(b) ? a : b;
+};
+
+const ensureRestingBinaryInvariant = async (
+  tx: Tx,
+  params: {
+    marketId: string;
+    orderId: string;
+    outcomeId: string;
+    side: "BUY" | "SELL";
+    price: Prisma.Decimal;
+    remaining: Prisma.Decimal;
+  }
+) => {
+  if (params.remaining.lte(0)) {
+    return;
+  }
+
+  const outcomes = await tx.outcome.findMany({
+    where: { marketId: params.marketId, isActive: true },
+    orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
+    select: { id: true },
+  });
+  if (outcomes.length !== 2) {
+    return;
+  }
+
+  const sibling = outcomes.find((outcome) => outcome.id !== params.outcomeId);
+  if (!sibling) {
+    return;
+  }
+
+  const [sameBestBid, sameBestAsk, siblingBestBid, siblingBestAsk] = await Promise.all([
+    tx.order.findFirst({
+      where: {
+        marketId: params.marketId,
+        outcomeId: params.outcomeId,
+        id: { not: params.orderId },
+        side: "BUY",
+        status: { in: ["OPEN", "PARTIAL"] },
+        remaining: { gt: ZERO },
+      },
+      orderBy: [{ price: "desc" }, { createdAt: "asc" }],
+      select: { price: true },
+    }),
+    tx.order.findFirst({
+      where: {
+        marketId: params.marketId,
+        outcomeId: params.outcomeId,
+        id: { not: params.orderId },
+        side: "SELL",
+        status: { in: ["OPEN", "PARTIAL"] },
+        remaining: { gt: ZERO },
+      },
+      orderBy: [{ price: "asc" }, { createdAt: "asc" }],
+      select: { price: true },
+    }),
+    tx.order.findFirst({
+      where: {
+        marketId: params.marketId,
+        outcomeId: sibling.id,
+        side: "BUY",
+        status: { in: ["OPEN", "PARTIAL"] },
+        remaining: { gt: ZERO },
+      },
+      orderBy: [{ price: "desc" }, { createdAt: "asc" }],
+      select: { price: true },
+    }),
+    tx.order.findFirst({
+      where: {
+        marketId: params.marketId,
+        outcomeId: sibling.id,
+        side: "SELL",
+        status: { in: ["OPEN", "PARTIAL"] },
+        remaining: { gt: ZERO },
+      },
+      orderBy: [{ price: "asc" }, { createdAt: "asc" }],
+      select: { price: true },
+    }),
+  ]);
+
+  const resultingBestBid =
+    params.side === "BUY"
+      ? maxDecimal(sameBestBid?.price ?? null, params.price)
+      : sameBestBid?.price ?? null;
+  const resultingBestAsk =
+    params.side === "SELL"
+      ? minDecimal(sameBestAsk?.price ?? null, params.price)
+      : sameBestAsk?.price ?? null;
+
+  if (resultingBestBid && siblingBestBid?.price) {
+    const sumBids = toDec(resultingBestBid).add(siblingBestBid.price);
+    if (sumBids.gt(ONE.add(BINARY_INVARIANT_TOLERANCE))) {
+      throw new MarketGuardError(
+        "Binary invariant violation: resting order would make best_bid_yes + best_bid_no exceed 1",
+        409
+      );
+    }
+  }
+
+  if (resultingBestAsk && siblingBestAsk?.price) {
+    const sumAsks = toDec(resultingBestAsk).add(siblingBestAsk.price);
+    if (sumAsks.lt(ONE.sub(BINARY_INVARIANT_TOLERANCE))) {
+      throw new MarketGuardError(
+        "Binary invariant violation: resting order would make best_ask_yes + best_ask_no fall below 1",
         409
       );
     }
@@ -251,6 +371,50 @@ const lockMakersForMatch = async (
   `;
 };
 
+const ensureNoSelfCrossingRestingOrder = async (
+  tx: Tx,
+  params: {
+    marketId: string;
+    outcomeId: string;
+    side: "BUY" | "SELL";
+    userId: string;
+    price: Prisma.Decimal;
+  }
+) => {
+  const crossingOwnOrders =
+    params.side === "BUY"
+      ? await tx.$queryRaw<LockedOrderRow[]>`
+          SELECT "id", "userId", "marketId", "outcomeId", "side", "price", "amount", "remaining", "reservedNotional", "status", "createdAt"
+          FROM "Order"
+          WHERE "marketId" = ${params.marketId}
+            AND "outcomeId" = ${params.outcomeId}
+            AND "userId" = ${params.userId}
+            AND "side" = 'SELL'::"TradeSide"
+            AND "status" IN ('OPEN'::"OrderStatus", 'PARTIAL'::"OrderStatus")
+            AND "remaining" > 0
+            AND "price" <= ${params.price}
+          ORDER BY "price" ASC, "createdAt" ASC
+          FOR UPDATE
+        `
+      : await tx.$queryRaw<LockedOrderRow[]>`
+          SELECT "id", "userId", "marketId", "outcomeId", "side", "price", "amount", "remaining", "reservedNotional", "status", "createdAt"
+          FROM "Order"
+          WHERE "marketId" = ${params.marketId}
+            AND "outcomeId" = ${params.outcomeId}
+            AND "userId" = ${params.userId}
+            AND "side" = 'BUY'::"TradeSide"
+            AND "status" IN ('OPEN'::"OrderStatus", 'PARTIAL'::"OrderStatus")
+            AND "remaining" > 0
+            AND "price" >= ${params.price}
+          ORDER BY "price" DESC, "createdAt" ASC
+          FOR UPDATE
+        `;
+
+  if (crossingOwnOrders.length > 0) {
+    throw new MarketGuardError("Self-crossing order would cross existing own order", 409);
+  }
+};
+
 const createLedgerEntry = async (
   tx: Tx,
   data: {
@@ -332,8 +496,10 @@ export const placeOrderAndMatch = async (params: {
   outcomeId: string;
   apiCredentialId?: string | null;
   side: "BUY" | "SELL";
+  type?: "LIMIT" | "MARKET";
   price: string | number | Prisma.Decimal;
   size: string | number | Prisma.Decimal;
+  maxSpend?: string | number | Prisma.Decimal | null;
 }) => {
   const market = await prisma.market.findUnique({
     where: { id: params.marketId },
@@ -347,8 +513,10 @@ export const placeOrderAndMatch = async (params: {
     throw new MarketGuardError("Invalid outcome", 400);
   }
 
+  const orderType = params.type ?? "LIMIT";
   const price = clampPrice(toDec(params.price));
   const size = normalizeSize(toDec(params.size));
+  const maxSpend = params.maxSpend == null ? null : toUsdcDown(toDec(params.maxSpend));
   if (size.lte(0)) {
     throw new MarketGuardError("Size must be greater than zero", 400);
   }
@@ -356,8 +524,19 @@ export const placeOrderAndMatch = async (params: {
   return prisma.$transaction(async (tx) => {
     await assertPublicOrderbookCollateralInvariant(tx, params.marketId);
     const platformUserId = await ensurePlatformUserId(tx);
+    await ensureNoSelfCrossingRestingOrder(tx, {
+      marketId: params.marketId,
+      outcomeId: params.outcomeId,
+      side: params.side,
+      userId: params.userId,
+      price,
+    });
     const incomingReservedInitial =
-      params.side === "BUY" ? toUsdcUp(notionalFor(size, price)) : ZERO;
+      params.side === "BUY"
+        ? orderType === "MARKET"
+          ? maxSpend ?? toUsdcUp(notionalFor(size, price))
+          : toUsdcUp(notionalFor(size, price))
+        : ZERO;
 
     if (params.side === "BUY") {
       const takerBalance = await ensureBalanceRowLocked(tx, params.userId);
@@ -448,6 +627,12 @@ export const placeOrderAndMatch = async (params: {
 
       const tradePrice = toDec(maker.price);
       const notionalUSDC = toUsdcDown(notionalFor(fillSize, tradePrice));
+      if (orderType === "MARKET" && params.side === "BUY" && maxSpend) {
+        const spentSoFar = incomingReservedInitial.sub(incomingReserved);
+        if (spentSoFar.add(notionalUSDC).gt(maxSpend)) {
+          break;
+        }
+      }
       const feeUSDC = toUsdcDown(notionalUSDC.mul(FEE_BPS).div(ONE_HUNDRED));
       const sellerCreditUSDC = notionalUSDC.sub(feeUSDC);
 
@@ -699,13 +884,69 @@ export const placeOrderAndMatch = async (params: {
       });
     }
 
-    const incomingStatus: OrderStatus =
+    let incomingStatus: OrderStatus =
       incomingRemaining.eq(size) ? "OPEN" : incomingRemaining.eq(0) ? "FILLED" : "PARTIAL";
-    if (params.side === "BUY") {
+
+    if (orderType === "MARKET") {
+      if (params.side === "BUY" && incomingReserved.gt(0)) {
+        const balance = await ensureBalanceRowLocked(tx, params.userId);
+        if (toDec(balance.lockedUSDC).lt(incomingReserved)) {
+          throw new MarketGuardError("Insufficient locked USDC for market cleanup", 409);
+        }
+        await tx.userBalance.update({
+          where: { userId: params.userId },
+          data: {
+            availableUSDC: { increment: incomingReserved },
+            lockedUSDC: { decrement: incomingReserved },
+          },
+        });
+        await createLedgerEntry(tx, {
+          userId: params.userId,
+          reason: "UNLOCK",
+          operation: "UNLOCK",
+          idempotencyKey: `unlock:${incoming.id}:market`,
+          referenceType: "Order",
+          referenceId: incoming.id,
+          deltaAvailableUSDC: incomingReserved,
+          deltaLockedUSDC: incomingReserved.neg(),
+          amountDelta: ZERO,
+        });
+      }
+
+      if (params.side === "SELL" && incomingRemaining.gt(0)) {
+        const position = await lockPositionRow(tx, params.userId, params.marketId, params.outcomeId);
+        if (!position) {
+          throw new MarketGuardError("Position not found during market cleanup", 409);
+        }
+        const reserved = toDec(position.reservedShares ?? ZERO);
+        if (reserved.lt(incomingRemaining)) {
+          throw new MarketGuardError("Insufficient reserved shares for market cleanup", 409);
+        }
+        await tx.position.update({
+          where: { id: position.id },
+          data: { reservedShares: reserved.sub(incomingRemaining) },
+        });
+      }
+
+      incomingRemaining = ZERO;
+      incomingReserved = ZERO;
+      incomingStatus = fills.length > 0 ? "FILLED" : "CANCELED";
+    } else if (params.side === "BUY") {
       const expectedReserved = toUsdcUp(notionalFor(incomingRemaining, price));
       if (!incomingReserved.eq(expectedReserved)) {
         throw new MarketGuardError("BUY reservation invariant failed", 500);
       }
+    }
+
+    if (orderType === "LIMIT") {
+      await ensureRestingBinaryInvariant(tx, {
+        marketId: params.marketId,
+        orderId: incoming.id,
+        outcomeId: params.outcomeId,
+        side: params.side,
+        price,
+        remaining: incomingRemaining,
+      });
     }
 
     const updatedIncoming = await tx.order.update({

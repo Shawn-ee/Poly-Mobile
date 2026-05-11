@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getUserId } from "@/lib/auth";
+import { CanonicalApiError } from "@/lib/canonicalApi";
+import { requireCanonicalActor } from "@/lib/canonicalAuth";
 import { toGuardResponse } from "@/lib/marketGuards";
 import { serializeDecimals } from "@/lib/serialize";
 import { emitMarketUpdate, emitUserUpdate } from "@/server/services/orderbookEvents";
@@ -9,8 +10,14 @@ import { enforceSensitiveRateLimit } from "@/server/services/orderRateLimiter";
 type Ctx = { params: Promise<{ marketId: string }> };
 
 export async function POST(request: NextRequest, context: Ctx) {
-  const userId = await getUserId();
-  if (!userId) {
+  let userId: string;
+  try {
+    const actor = await requireCanonicalActor(request, ["orders:write"]);
+    userId = actor.userId;
+  } catch (error) {
+    if (error instanceof CanonicalApiError) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
+    }
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

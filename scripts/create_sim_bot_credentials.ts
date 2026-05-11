@@ -1,7 +1,10 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { API_KEY_SCOPES, createApiCredential, updateApiCredential } from "@/lib/canonicalAuth";
+import { applyDeposit } from "@/server/services/ledger";
+import { mintCompleteSetForPublicOrderbook } from "@/server/services/orderbookCollateral";
 
 const BOT_COUNT = 20;
 const DEFAULT_BASE_URL = "http://localhost:3000";
@@ -36,8 +39,8 @@ const DEFAULT_DAILY_NOTIONAL_COOLDOWN_MS = 86_400_000;
 const DEFAULT_PAUSED_POLL_INTERVAL_MS = 45_000;
 const DEFAULT_PAUSE_LOG_INTERVAL_MS = 60_000;
 const DEFAULT_SEED_SHARES_PER_OUTCOME = "2.000000";
-const DEFAULT_SEED_AVG_COST = "0.50";
 const PLACEHOLDER_MARKET_ID = "replace-with-live-market-id";
+const DEFAULT_CHAIN_ID = 8453;
 
 type GeneratedBot = {
   name: string;
@@ -101,6 +104,7 @@ async function main() {
   const configMarketIds = chosenMarket ? [chosenMarket.id] : [PLACEHOLDER_MARKET_ID];
   const allowedMarketIds = chosenMarket ? [chosenMarket.id] : [];
   const seedOutcomeIds = chosenMarket?.outcomes.map((outcome) => outcome.id) ?? [];
+  const seedQuantity = new Prisma.Decimal(DEFAULT_SEED_SHARES_PER_OUTCOME);
 
   const bots: GeneratedBot[] = [];
   const createdSummary: Array<{ name: string; userId: string; keyId: string; strategy: GeneratedBot["strategy"] }> = [];
@@ -122,42 +126,39 @@ async function main() {
       },
     });
 
-    await prisma.userBalance.upsert({
-      where: { userId: user.id },
-      update: {
-        availableUSDC: DEFAULT_AVAILABLE_USDC,
-      },
-      create: {
-        userId: user.id,
-        availableUSDC: DEFAULT_AVAILABLE_USDC,
-        lockedUSDC: "0",
-      },
+    await applyDeposit({
+      eventKey: `sim-bot-deposit:${user.id}`,
+      userId: user.id,
+      amount: DEFAULT_AVAILABLE_USDC,
+      chainId: DEFAULT_CHAIN_ID,
+      txHash: `0xsimbot${String(index).padStart(4, "0")}`,
+      logIndex: index,
+      token: "USDC",
+      referenceType: "SIM_BOT_FUNDING",
+      referenceId: user.id,
     });
 
-    for (const outcomeId of seedOutcomeIds) {
-      await prisma.position.upsert({
+    if (chosenMarket && seedOutcomeIds.length > 0) {
+      const existingSeededPositions = await prisma.position.findMany({
         where: {
-          userId_marketId_outcomeId: {
-            userId: user.id,
-            marketId: chosenMarket!.id,
-            outcomeId,
-          },
-        },
-        update: {
-          shares: DEFAULT_SEED_SHARES_PER_OUTCOME,
-          reservedShares: "0",
-          avgCost: DEFAULT_SEED_AVG_COST,
-        },
-        create: {
           userId: user.id,
-          marketId: chosenMarket!.id,
-          outcomeId,
-          shares: DEFAULT_SEED_SHARES_PER_OUTCOME,
-          reservedShares: "0",
-          avgCost: DEFAULT_SEED_AVG_COST,
-          realizedPnl: "0",
+          marketId: chosenMarket.id,
+          outcomeId: { in: seedOutcomeIds },
         },
+        select: { outcomeId: true, shares: true },
       });
+
+      const alreadySeeded =
+        existingSeededPositions.length === seedOutcomeIds.length &&
+        existingSeededPositions.every((position) => new Prisma.Decimal(position.shares).gte(seedQuantity));
+
+      if (!alreadySeeded) {
+        await mintCompleteSetForPublicOrderbook({
+          marketId: chosenMarket.id,
+          userId: user.id,
+          quantity: DEFAULT_SEED_SHARES_PER_OUTCOME,
+        });
+      }
     }
 
     const created = await createApiCredential({

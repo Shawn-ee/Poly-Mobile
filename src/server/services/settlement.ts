@@ -30,6 +30,22 @@ type LockedBalanceRow = {
   lockedUSDC: Prisma.Decimal;
 };
 
+type LockedOrderRow = {
+  id: string;
+  userId: string;
+  marketId: string;
+  outcomeId: string;
+  side: "BUY" | "SELL";
+  remaining: Prisma.Decimal;
+  reservedNotional: Prisma.Decimal;
+  status: "OPEN" | "PARTIAL";
+};
+
+type LockedPositionRow = {
+  id: string;
+  reservedShares: Prisma.Decimal;
+};
+
 const toMoney = (value: Prisma.Decimal) =>
   value.toDecimalPlaces(MONEY_SCALE, Prisma.Decimal.ROUND_DOWN);
 
@@ -65,6 +81,34 @@ const lockBalanceRow = async (tx: Tx, userId: string): Promise<LockedBalanceRow>
   return row;
 };
 
+const lockOpenOrderRows = async (tx: Tx, marketId: string): Promise<LockedOrderRow[]> =>
+  tx.$queryRaw<LockedOrderRow[]>`
+    SELECT "id", "userId", "marketId", "outcomeId", "side", "remaining", "reservedNotional", "status"
+    FROM "Order"
+    WHERE "marketId" = ${marketId}
+      AND "status" IN ('OPEN'::"OrderStatus", 'PARTIAL'::"OrderStatus")
+      AND "remaining" > 0
+    ORDER BY "userId" ASC, "createdAt" ASC
+    FOR UPDATE
+  `;
+
+const lockPositionRow = async (
+  tx: Tx,
+  userId: string,
+  marketId: string,
+  outcomeId: string
+): Promise<LockedPositionRow | null> => {
+  const rows = await tx.$queryRaw<LockedPositionRow[]>`
+    SELECT "id", "reservedShares"
+    FROM "Position"
+    WHERE "userId" = ${userId}
+      AND "marketId" = ${marketId}
+      AND "outcomeId" = ${outcomeId}
+    FOR UPDATE
+  `;
+  return rows[0] ?? null;
+};
+
 const ensureUserBalance = async (tx: Tx, userId: string) => {
   await tx.userBalance.upsert({
     where: { userId },
@@ -80,6 +124,72 @@ const creditAvailableBalance = async (tx: Tx, userId: string, amount: Prisma.Dec
     where: { userId },
     data: { availableUSDC: { increment: amount } },
   });
+};
+
+export const cancelOpenOrderbookOrdersTx = async (tx: Tx, marketId: string) => {
+  const orders = await lockOpenOrderRows(tx, marketId);
+
+  for (const order of orders) {
+    if (order.side === "BUY") {
+      const unlockAmount = toMoney(toDec(order.reservedNotional));
+      if (unlockAmount.gt(0)) {
+        const balance = await lockBalanceRow(tx, order.userId);
+        if (toDec(balance.lockedUSDC).lt(unlockAmount)) {
+          throw new MarketGuardError("Insufficient locked USDC for market close cleanup.", 409);
+        }
+        await tx.userBalance.update({
+          where: { userId: order.userId },
+          data: {
+            availableUSDC: { increment: unlockAmount },
+            lockedUSDC: { decrement: unlockAmount },
+          },
+        });
+        await tx.ledgerEntry.create({
+          data: {
+            userId: order.userId,
+            amountDelta: ZERO,
+            reason: "UNLOCK",
+            operation: "UNLOCK",
+            referenceType: "Order",
+            referenceId: order.id,
+            idempotencyKey: `orderbook-close:${marketId}:unlock:${order.id}`,
+            deltaAvailableUSDC: unlockAmount,
+            deltaLockedUSDC: unlockAmount.neg(),
+          },
+        });
+      }
+      continue;
+    }
+
+    const position = await lockPositionRow(tx, order.userId, order.marketId, order.outcomeId);
+    if (!position) {
+      throw new MarketGuardError("Position missing during orderbook close cleanup.", 409);
+    }
+    const reservedShares = toDec(position.reservedShares);
+    if (reservedShares.lt(order.remaining)) {
+      throw new MarketGuardError("Insufficient reserved shares for market close cleanup.", 409);
+    }
+    await tx.position.update({
+      where: { id: position.id },
+      data: {
+        reservedShares: reservedShares.sub(order.remaining),
+      },
+    });
+  }
+
+  if (orders.length > 0) {
+    await tx.order.updateMany({
+      where: {
+        id: { in: orders.map((order) => order.id) },
+      },
+      data: {
+        status: "CANCELED",
+        reservedNotional: ZERO,
+      },
+    });
+  }
+
+  return { canceledOrderCount: orders.length };
 };
 
 const distributeProRata = (
@@ -144,6 +254,7 @@ export const resolveOrderbookMarket = async (params: {
       throw new MarketGuardError("Market has already been resolved.", 409);
     }
 
+    await cancelOpenOrderbookOrdersTx(tx, params.marketId);
     await assertPublicOrderbookCollateralInvariant(tx, params.marketId);
 
     const winningOutcome = await tx.outcome.findFirst({

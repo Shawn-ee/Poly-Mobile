@@ -7,6 +7,7 @@ import {
   toGuardResponse,
 } from "@/lib/marketGuards";
 import { enforceSensitiveRateLimit } from "@/server/services/orderRateLimiter";
+import { cancelOpenOrderbookOrdersTx } from "@/server/services/settlement";
 
 export async function POST(request: Request) {
   try {
@@ -54,10 +55,19 @@ export async function POST(request: Request) {
     return NextResponse.json(response.body, { status: response.status });
   }
 
-  const market = await prisma.market.update({
-    where: { id: marketId },
-    data: { status: status as never },
-  });
+  const market =
+    status === "CLOSED"
+      ? await prisma.$transaction(async (tx) => {
+          await cancelOpenOrderbookOrdersTx(tx, marketId);
+          return tx.market.update({
+            where: { id: marketId },
+            data: { status: status as never },
+          });
+        })
+      : await prisma.market.update({
+          where: { id: marketId },
+          data: { status: status as never },
+        });
 
   return NextResponse.json({ status: market.status });
 }

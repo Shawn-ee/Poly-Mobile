@@ -1,7 +1,7 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { MarketStatus, Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { getOutcomeMidPrices } from "@/lib/orderbookPricing";
+import { marketReadInclude, serializeMarketReadModel } from "@/server/services/marketReadModel";
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
@@ -57,64 +57,10 @@ export async function GET(request: NextRequest) {
   const markets = await prisma.market.findMany({
     where,
     orderBy,
-    include: {
-      outcomes: {
-        where: { isActive: true },
-        orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
-      },
-      category: true,
-      tags: { include: { tag: true } },
-    },
+    include: marketReadInclude,
   });
 
-  const payload = await Promise.all(
-    markets.map(async (market) => {
-      const pricesByOutcome: Record<string, number> =
-        market.mechanism === "POOL"
-          ? Object.fromEntries(market.outcomes.map((o) => [o.id, 0.5]))
-          : Object.fromEntries(
-              market.outcomes.map((o) => [o.id, 0.5])
-            );
-
-      if (market.mechanism === "ORDERBOOK") {
-        const mids = await getOutcomeMidPrices(
-          market.id,
-          market.outcomes.map((o) => o.id)
-        );
-        for (const outcome of market.outcomes) {
-          pricesByOutcome[outcome.id] = mids.get(outcome.id) ?? 0.5;
-        }
-      }
-
-      return {
-        id: market.id,
-        title: market.title,
-        description: market.description,
-        status: market.status,
-        resolveTime: market.resolveTime,
-        createdAt: market.createdAt,
-        outcomes: market.outcomes,
-        type: market.type,
-        kind: market.kind,
-        visibility: market.visibility,
-        mechanism: market.mechanism,
-        category: market.category
-          ? { id: market.category.id, name: market.category.name, slug: market.category.slug }
-          : null,
-        tags: market.tags.map((marketTag) => ({
-          id: marketTag.tag.id,
-          name: marketTag.tag.name,
-          slug: marketTag.tag.slug,
-          group: marketTag.tag.group,
-        })),
-        prices: {
-          YES: pricesByOutcome.YES ?? 0.5,
-          NO: pricesByOutcome.NO ?? 0.5,
-        },
-        pricesByOutcome,
-      };
-    })
-  );
+  const payload = await Promise.all(markets.map((market) => serializeMarketReadModel(market)));
 
   return NextResponse.json({ markets: payload });
 }

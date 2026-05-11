@@ -11,8 +11,8 @@ type Action =
   | "admin_market_mutation";
 
 const LIMITS: Record<Action, { limit: number; windowMs: number }> = {
-  place: { limit: 5, windowMs: 1_000 },
-  cancel: { limit: 10, windowMs: 1_000 },
+  place: { limit: 1, windowMs: 1_000 },
+  cancel: { limit: 1, windowMs: 1_000 },
   mint: { limit: 20, windowMs: 60_000 },
   withdraw_request: { limit: 6, windowMs: 60 * 60 * 1_000 },
   admin_withdraw_complete: { limit: 60, windowMs: 60_000 },

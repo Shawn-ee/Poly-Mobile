@@ -28,6 +28,7 @@ type NormalizedOrderRequest = {
   type: CanonicalOrderType;
   price: string | null;
   size: string;
+  maxSpend: string | null;
 };
 
 type StoredOrderResponse = {
@@ -137,6 +138,17 @@ const parsePriceString = (value: unknown) => {
 const buildFingerprint = (body: Record<string, unknown>) =>
   createHash("sha256").update(JSON.stringify(body)).digest("hex");
 
+const parseOptionalPositiveDecimalString = (
+  value: unknown,
+  fieldName: string,
+  maxScale: number
+) => {
+  if (value === null || value === undefined || value === "") {
+    return null;
+  }
+  return parsePositiveDecimalString(value, fieldName, maxScale);
+};
+
 const normalizeOrderRequest = (params: {
   userId: string;
   body: unknown;
@@ -177,6 +189,13 @@ const normalizeOrderRequest = (params: {
 
   const size = parsePositiveDecimalString(body.size, "size", 6);
   const price = type === "LIMIT" ? parsePriceString(body.price) : null;
+  const maxSpend = type === "MARKET" && side === "BUY"
+    ? parseOptionalPositiveDecimalString(body.maxSpend, "maxSpend", 6)
+    : null;
+
+  if (type === "MARKET" && body.price !== null && body.price !== undefined) {
+    throw new CanonicalApiError("INVALID_REQUEST", "price is not allowed for MARKET orders.", 400);
+  }
 
   return {
     userId: params.userId,
@@ -195,6 +214,7 @@ const normalizeOrderRequest = (params: {
       type,
       price,
       size,
+      maxSpend,
       clientOrderId,
     },
     fingerprint: buildFingerprint({
@@ -204,8 +224,10 @@ const normalizeOrderRequest = (params: {
       type,
       price,
       size,
+      maxSpend,
       clientOrderId,
     }),
+    maxSpend,
   };
 };
 
@@ -356,14 +378,6 @@ export const submitCanonicalOrder = async (params: {
 }) => {
   const normalized = normalizeOrderRequest(params);
 
-  if (normalized.type === "MARKET") {
-    throw new CanonicalApiError(
-      "MARKET_ORDER_NOT_SUPPORTED",
-      "MARKET orders are not supported by the current matching engine.",
-      400
-    );
-  }
-
   const existingRequestId = await findExistingRequestId(normalized);
   if (existingRequestId) {
     return resolveExistingRequest(normalized);
@@ -379,7 +393,7 @@ export const submitCanonicalOrder = async (params: {
       requestBody: normalized.requestBody as Prisma.InputJsonObject,
       marketId: normalized.marketId,
       size: normalized.size,
-      price: normalized.price!,
+      price: normalized.price ?? normalized.maxSpend ?? "0",
     });
   } catch (error) {
     if (isPrismaUniqueConstraintError(error)) {
@@ -405,8 +419,10 @@ export const submitCanonicalOrder = async (params: {
       outcomeId: normalized.outcomeId,
       apiCredentialId: params.apiCredentialId,
       side: normalized.side,
-      price: normalized.price!,
+      price: normalized.price ?? normalized.maxSpend ?? "1",
       size: normalized.size,
+      type: normalized.type,
+      maxSpend: normalized.maxSpend,
     });
 
     const responseBody: StoredOrderResponse = {

@@ -296,6 +296,72 @@ describe("Phase 7 Kalshi-style public model", () => {
     expect(num(sellerPos.reservedShares)).toBe(0);
   });
 
+  test("rejects self-crossing opposite-side order that would rest against own liquidity", async () => {
+    const selfTrader = await createUser("self_cross_user");
+    const counterparty = await createUser("self_cross_counterparty");
+    const market = await createPublicOrderbookMarket();
+    const outcomeId = market.outcomes[1].id;
+
+    await fundUser(selfTrader.id, "20");
+    await fundUser(counterparty.id, "20");
+    await mintCompleteSetForPublicOrderbook({
+      marketId: market.id,
+      userId: selfTrader.id,
+      quantity: "2",
+    });
+    await mintCompleteSetForPublicOrderbook({
+      marketId: market.id,
+      userId: counterparty.id,
+      quantity: "2",
+    });
+
+    await placeOrderAndMatch({
+      marketId: market.id,
+      userId: selfTrader.id,
+      outcomeId,
+      side: "BUY",
+      price: "0.49",
+      size: "0.529174",
+    });
+
+    await placeOrderAndMatch({
+      marketId: market.id,
+      userId: counterparty.id,
+      outcomeId,
+      side: "SELL",
+      price: "0.49",
+      size: "0.5",
+    });
+
+    const selfBid = await prisma.order.findFirstOrThrow({
+      where: {
+        marketId: market.id,
+        userId: selfTrader.id,
+        outcomeId,
+        side: "BUY",
+      },
+      orderBy: { createdAt: "asc" },
+    });
+    expect(selfBid.status).toBe("PARTIAL");
+    expect(num(selfBid.remaining)).toBeCloseTo(0.029174, 6);
+
+    await expect(
+      placeOrderAndMatch({
+        marketId: market.id,
+        userId: selfTrader.id,
+        outcomeId,
+        side: "SELL",
+        price: "0.48",
+        size: "0.598901",
+      })
+    ).rejects.toThrow("Self-crossing order would cross existing own order");
+
+    const bestBid = await getBest(market.id, outcomeId, "BUY");
+    const bestAsk = await getBest(market.id, outcomeId, "SELL");
+    expect(bestBid).toBe(0.49);
+    expect(bestAsk).toBeNull();
+  });
+
   test("collateralized contract creation and conservation snapshot", async () => {
     const user = await createUser("mint_user");
     const market = await createPublicOrderbookMarket();
@@ -418,6 +484,135 @@ describe("Phase 7 Kalshi-style public model", () => {
         actorUserId: admin.id,
       })
     ).rejects.toThrow("Market has already been resolved");
+  });
+
+  test("resolve cancels open BUY orders and releases locked USDC", async () => {
+    const admin = await createUser("resolve_buy_admin", true);
+    const buyer = await createUser("resolve_buy_user");
+    const market = await createPublicOrderbookMarket();
+    const yesId = market.outcomes[0].id;
+
+    await fundUser(buyer.id, "10");
+    const placed = await placeOrderAndMatch({
+      marketId: market.id,
+      userId: buyer.id,
+      outcomeId: yesId,
+      side: "BUY",
+      price: "0.70",
+      size: "2",
+    });
+    expect(placed.order.status).toBe("OPEN");
+
+    const before = await prisma.userBalance.findUniqueOrThrow({ where: { userId: buyer.id } });
+    expect(num(before.availableUSDC)).toBe(8.6);
+    expect(num(before.lockedUSDC)).toBe(1.4);
+
+    await resolveOrderbookMarket({
+      marketId: market.id,
+      winningOutcomeId: yesId,
+      actorUserId: admin.id,
+    });
+
+    const after = await prisma.userBalance.findUniqueOrThrow({ where: { userId: buyer.id } });
+    const orders = await prisma.order.findMany({ where: { marketId: market.id } });
+    expect(num(after.availableUSDC)).toBe(10);
+    expect(num(after.lockedUSDC)).toBe(0);
+    expect(orders.every((order) => order.status !== "OPEN" && order.status !== "PARTIAL")).toBe(true);
+    expect(orders[0]?.status).toBe("CANCELED");
+  });
+
+  test("resolve cancels open SELL orders and releases reserved shares", async () => {
+    const admin = await createUser("resolve_sell_admin", true);
+    const seller = await createUser("resolve_sell_user");
+    const market = await createPublicOrderbookMarket();
+    const yesId = market.outcomes[0].id;
+
+    await fundUser(seller.id, "10");
+    await mintCompleteSetForPublicOrderbook({ marketId: market.id, userId: seller.id, quantity: "3" });
+    const placed = await placeOrderAndMatch({
+      marketId: market.id,
+      userId: seller.id,
+      outcomeId: yesId,
+      side: "SELL",
+      price: "0.60",
+      size: "2",
+    });
+    expect(placed.order.status).toBe("OPEN");
+
+    const before = await prisma.position.findUniqueOrThrow({
+      where: { userId_marketId_outcomeId: { userId: seller.id, marketId: market.id, outcomeId: yesId } },
+    });
+    expect(num(before.shares)).toBe(3);
+    expect(num(before.reservedShares)).toBe(2);
+
+    await resolveOrderbookMarket({
+      marketId: market.id,
+      winningOutcomeId: yesId,
+      actorUserId: admin.id,
+    });
+
+    const after = await prisma.position.findUniqueOrThrow({
+      where: { userId_marketId_outcomeId: { userId: seller.id, marketId: market.id, outcomeId: yesId } },
+    });
+    const orders = await prisma.order.findMany({ where: { marketId: market.id } });
+    expect(num(after.shares)).toBe(0);
+    expect(num(after.reservedShares)).toBe(0);
+    expect(orders[0]?.status).toBe("CANCELED");
+    expect(orders.filter((order) => order.status === "OPEN" || order.status === "PARTIAL")).toHaveLength(0);
+  });
+
+  test("resolve cancels PARTIAL orders and releases only remaining locks", async () => {
+    const admin = await createUser("resolve_partial_admin", true);
+    const seller = await createUser("resolve_partial_seller");
+    const buyer = await createUser("resolve_partial_buyer");
+    const market = await createPublicOrderbookMarket();
+    const yesId = market.outcomes[0].id;
+    const noId = market.outcomes[1].id;
+
+    await fundUser(seller.id, "10");
+    await fundUser(buyer.id, "10");
+    await mintCompleteSetForPublicOrderbook({ marketId: market.id, userId: seller.id, quantity: "2" });
+
+    await placeOrderAndMatch({
+      marketId: market.id,
+      userId: seller.id,
+      outcomeId: yesId,
+      side: "SELL",
+      price: "0.50",
+      size: "2",
+    });
+    const buy = await placeOrderAndMatch({
+      marketId: market.id,
+      userId: buyer.id,
+      outcomeId: yesId,
+      side: "BUY",
+      price: "0.60",
+      size: "5",
+    });
+    expect(buy.order.status).toBe("PARTIAL");
+    expect(buy.order.remaining).toBe("3");
+
+    const before = await prisma.userBalance.findUniqueOrThrow({ where: { userId: buyer.id } });
+    expect(num(before.availableUSDC)).toBe(7.2);
+    expect(num(before.lockedUSDC)).toBe(1.8);
+
+    await resolveOrderbookMarket({
+      marketId: market.id,
+      winningOutcomeId: noId,
+      actorUserId: admin.id,
+    });
+
+    const after = await prisma.userBalance.findUniqueOrThrow({ where: { userId: buyer.id } });
+    const order = await prisma.order.findUniqueOrThrow({ where: { id: buy.order.id } });
+    expect(num(after.availableUSDC)).toBe(9);
+    expect(num(after.lockedUSDC)).toBe(0);
+    expect(order.status).toBe("CANCELED");
+    expect(order.reservedNotional.toString()).toBe("0");
+    expect(
+      await prisma.order.count({
+        where: { marketId: market.id, status: { in: ["OPEN", "PARTIAL"] } },
+      })
+    ).toBe(0);
   });
 
   test("private pool behavior remains: proportional resolve and cancel refunds", async () => {
@@ -548,6 +743,91 @@ describe("Phase 7 Kalshi-style public model", () => {
         size: "1",
       })
     ).rejects.toThrow("best_ask_yes + best_ask_no");
+  });
+
+  test("marketable order that fully fills still passes even if its limit would be invalid when resting", async () => {
+    const sellerYes = await createUser("marketable_yes_seller");
+    const sellerNo = await createUser("marketable_no_seller");
+    const buyer = await createUser("marketable_yes_buyer");
+    const market = await createPublicOrderbookMarket();
+    const yesId = market.outcomes[0].id;
+    const noId = market.outcomes[1].id;
+    await fundUser(sellerYes.id, "10");
+    await fundUser(sellerNo.id, "10");
+    await fundUser(buyer.id, "10");
+    await mintCompleteSetForPublicOrderbook({ marketId: market.id, userId: sellerYes.id, quantity: "2" });
+    await mintCompleteSetForPublicOrderbook({ marketId: market.id, userId: sellerNo.id, quantity: "2" });
+
+    await placeOrderAndMatch({
+      marketId: market.id,
+      userId: sellerNo.id,
+      outcomeId: noId,
+      side: "SELL",
+      price: "0.50",
+      size: "1",
+    });
+    await placeOrderAndMatch({
+      marketId: market.id,
+      userId: buyer.id,
+      outcomeId: yesId,
+      side: "BUY",
+      price: "0.40",
+      size: "1",
+    });
+
+    const result = await placeOrderAndMatch({
+      marketId: market.id,
+      userId: sellerYes.id,
+      outcomeId: yesId,
+      side: "SELL",
+      price: "0.40",
+      size: "1",
+    });
+
+    expect(result.order.status).toBe("FILLED");
+    expect(result.fills).toHaveLength(1);
+  });
+
+  test("partial fill that would leave invalid resting remainder is rejected", async () => {
+    const sellerYes = await createUser("invalid_remainder_yes_seller");
+    const sellerNo = await createUser("invalid_remainder_no_seller");
+    const buyer = await createUser("invalid_remainder_buyer");
+    const market = await createPublicOrderbookMarket();
+    const yesId = market.outcomes[0].id;
+    const noId = market.outcomes[1].id;
+    await fundUser(sellerYes.id, "10");
+    await fundUser(sellerNo.id, "10");
+    await fundUser(buyer.id, "10");
+    await mintCompleteSetForPublicOrderbook({ marketId: market.id, userId: sellerYes.id, quantity: "3" });
+    await mintCompleteSetForPublicOrderbook({ marketId: market.id, userId: sellerNo.id, quantity: "2" });
+
+    await placeOrderAndMatch({
+      marketId: market.id,
+      userId: sellerNo.id,
+      outcomeId: noId,
+      side: "SELL",
+      price: "0.50",
+      size: "1",
+    });
+    await placeOrderAndMatch({
+      marketId: market.id,
+      userId: buyer.id,
+      outcomeId: yesId,
+      side: "BUY",
+      price: "0.40",
+      size: "1",
+    });
+
+    await expect(
+      placeOrderAndMatch({
+        marketId: market.id,
+        userId: sellerYes.id,
+        outcomeId: yesId,
+        side: "SELL",
+        price: "0.40",
+        size: "2",
+      })
+    ).rejects.toThrow("resting order would make best_ask_yes + best_ask_no fall below 1");
   });
 
   test("valid binary-book orders still execute normally", async () => {

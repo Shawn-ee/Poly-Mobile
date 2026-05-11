@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "soak:prod-server": "npm run build && next start -p 3000",
+    "soak:run": "tsx scripts/soak_orderbook_bots.ts",
     "lint": "eslint",
     "test:jest": "jest --runInBand --detectOpenHandles",
     "prisma": "prisma",

@@ -160,6 +160,30 @@ model User {
   apiOrderRequests ApiOrderRequest[]
   apiCredentials ApiCredential[]
   apiCredentialUsageLogs ApiCredentialUsageLog[]
+  createdEvents   Event[]       @relation("EventCreatedBy")
+}
+
+model Event {
+  id              String    @id @default(uuid())
+  slug            String?   @unique
+  title           String
+  description     String?
+  category        String?
+  status          String?
+  source          String?
+  externalEventId String?
+  externalSlug    String?
+  image           String?
+  icon            String?
+  metadata        Json?
+  createdBy       String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  creator         User?     @relation("EventCreatedBy", fields: [createdBy], references: [id], onDelete: SetNull)
+  markets         Market[]
+
+  @@index([source, externalEventId])
+  @@index([externalSlug])
 }
 
 model Market {
@@ -173,8 +197,10 @@ model Market {
   type              MarketType    @default(BINARY)
   kind              MarketKind    @default(ORDERBOOK)
   status            MarketStatus  @default(UPCOMING)
+  eventId           String?
   ownerId           String?
   owner             User?         @relation("PoolMarketOwner", fields: [ownerId], references: [id])
+  event             Event?        @relation(fields: [eventId], references: [id], onDelete: SetNull)
   betCloseTime      DateTime?
   maxParticipants   Int           @default(100)
   hidePicksUntilClose Boolean     @default(false)
@@ -186,6 +212,11 @@ model Market {
   resolveTime       DateTime?
   createdBy         String?
   resolvedOutcomeId String?
+  externalMarketId  String?
+  conditionId       String?
+  referenceSource   String?
+  externalSlug      String?
+  referenceMetadata Json?
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
   outcomes          Outcome[]
@@ -198,6 +229,11 @@ model Market {
   poolBets          PoolBet[]
   poolStakePresets  PoolStakePreset[]
   members           MarketMember[]
+
+  @@index([eventId])
+  @@index([referenceSource, externalMarketId])
+  @@index([conditionId])
+  @@index([externalSlug])
 }
 
 model Category {
@@ -243,6 +279,10 @@ model Outcome {
   slug      String?  @unique
   isActive  Boolean  @default(true)
   displayOrder Int   @default(0)
+  isTradable Boolean @default(true)
+  referenceTokenId String?
+  referenceOutcomeLabel String?
+  referenceMetadata Json?
   createdAt DateTime @default(now())
   market    Market   @relation(fields: [marketId], references: [id])
   outcomeSnapshots  MarketOutcomeSnapshot[]
@@ -251,6 +291,8 @@ model Outcome {
   fills     Fill[]
   orders    Order[]
   poolBets  PoolBet[]
+
+  @@index([referenceTokenId])
 }
 
 model Position {

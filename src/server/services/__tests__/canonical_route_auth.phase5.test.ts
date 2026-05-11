@@ -1,30 +1,29 @@
 import { scryptSync } from "crypto";
 import { NextRequest } from "next/server";
-import { beforeEach, describe, expect, test, vi } from "vitest";
 
 const prismaMock = {
   apiCredential: {
-    findUnique: vi.fn(),
-    update: vi.fn(),
+    findUnique: jest.fn(),
+    update: jest.fn(),
   },
   apiCredentialUsageLog: {
-    create: vi.fn(),
+    create: jest.fn(),
   },
 };
 
-const getExistingUserId = vi.fn();
-const listCanonicalOrders = vi.fn();
-const getCanonicalAccountBalance = vi.fn();
+const getExistingUserId = jest.fn();
+const listCanonicalOrders = jest.fn();
+const getCanonicalAccountBalance = jest.fn();
 
-vi.mock("@/lib/db", () => ({
+jest.mock("@/lib/db", () => ({
   prisma: prismaMock,
 }));
 
-vi.mock("@/lib/auth", () => ({
+jest.mock("@/lib/auth", () => ({
   getExistingUserId,
 }));
 
-vi.mock("@/server/services/canonicalApi", () => ({
+jest.mock("@/server/services/canonicalApi", () => ({
   listCanonicalOrders,
   getCanonicalAccountBalance,
 }));
@@ -56,7 +55,7 @@ const makeCredential = (scopes: string[]) => {
 
 describe("Phase 5 canonical route auth and scope enforcement", () => {
   beforeEach(async () => {
-    vi.resetModules();
+    jest.resetModules();
     prismaMock.apiCredential.findUnique.mockReset();
     prismaMock.apiCredential.update.mockReset();
     prismaMock.apiCredentialUsageLog.create.mockReset();
@@ -65,8 +64,10 @@ describe("Phase 5 canonical route auth and scope enforcement", () => {
     getCanonicalAccountBalance.mockReset();
     process.env.CANONICAL_RATE_LIMIT_BACKEND = "memory";
 
-    const { __clearMemoryCanonicalRateLimitStateForTest, __setCanonicalRateLimitProviderForTest } =
-      await import("@/server/services/canonicalRateLimit");
+    const {
+      __clearMemoryCanonicalRateLimitStateForTest,
+      __setCanonicalRateLimitProviderForTest,
+    } = await import("@/server/services/canonicalRateLimit");
     __clearMemoryCanonicalRateLimitStateForTest();
     __setCanonicalRateLimitProviderForTest(null);
   });

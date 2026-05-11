@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { getUserId } from "@/lib/auth";
 import { assertMarketVisibleToUser } from "@/lib/marketAccess";
 import { assertMarketMechanism, toGuardResponse } from "@/lib/marketGuards";
+import { getPublicTradeTape } from "@/server/services/publicTradeTape";
 
 type Ctx = { params: Promise<{ marketId: string }> };
 
@@ -22,25 +23,24 @@ export async function GET(_request: NextRequest, context: Ctx) {
     assertMarketMechanism(market.mechanism, "ORDERBOOK");
     await assertMarketVisibleToUser({ market, userId });
 
-    const items = await prisma.trade.findMany({
-      where: { marketId },
-      orderBy: { createdAt: "desc" },
-      take: 100,
-      include: {
-        user: { select: { username: true } },
-        outcome: { select: { id: true, name: true } },
-      },
+    const items = await getPublicTradeTape({
+      marketId,
+      limit: 100,
     });
 
     return NextResponse.json({
       trades: items.map((item) => ({
         id: item.id,
+        executionId: item.executionId,
+        marketId: item.marketId,
         side: item.side,
-        shares: Number(item.shares),
-        cost: Number(item.cost),
-        user: item.user.username,
+        price: item.price,
+        quantity: item.quantity,
+        shares: item.shares,
+        cost: item.cost,
         outcomeId: item.outcomeId,
-        outcome: item.outcome.name,
+        outcomeName: item.outcomeName,
+        outcome: item.outcome,
         createdAt: item.createdAt,
       })),
     });

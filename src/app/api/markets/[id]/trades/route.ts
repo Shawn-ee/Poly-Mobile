@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { getUserId } from "@/lib/auth";
 import { assertMarketVisibleToUser } from "@/lib/marketAccess";
 import { toGuardResponse } from "@/lib/marketGuards";
+import { getPublicTradeTape } from "@/server/services/publicTradeTape";
 
 export async function GET(
   _request: NextRequest,
@@ -23,22 +24,25 @@ export async function GET(
     const response = toGuardResponse(error);
     return NextResponse.json(response.body, { status: response.status });
   }
-  const trades = await prisma.trade.findMany({
-    where: { marketId: id },
-    orderBy: { createdAt: "desc" },
-    take: 20,
-    include: { outcome: true, user: true },
+  const trades = await getPublicTradeTape({
+    marketId: id,
+    limit: 20,
   });
 
   return NextResponse.json({
     trades: trades.map((trade) => ({
       id: trade.id,
+      executionId: trade.executionId,
+      marketId: trade.marketId,
+      outcomeId: trade.outcomeId,
+      outcomeName: trade.outcomeName,
+      outcome: trade.outcome,
       side: trade.side,
-      shares: Number(trade.shares),
-      cost: Number(trade.cost),
+      price: trade.price,
+      quantity: trade.quantity,
+      shares: trade.shares,
+      cost: trade.cost,
       createdAt: trade.createdAt,
-      outcome: trade.outcome.name,
-      user: trade.user.username,
     })),
   });
 }

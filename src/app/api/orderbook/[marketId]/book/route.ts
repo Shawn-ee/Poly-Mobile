@@ -1,9 +1,9 @@
-import { OrderStatus } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getUserId } from "@/lib/auth";
 import { assertMarketVisibleToUser } from "@/lib/marketAccess";
 import { assertMarketMechanism, toGuardResponse } from "@/lib/marketGuards";
+import { buildPublicOrderbookSnapshot } from "@/server/services/orderbookSnapshot";
 
 type Ctx = { params: Promise<{ marketId: string }> };
 
@@ -24,40 +24,12 @@ export async function GET(request: NextRequest, context: Ctx) {
     assertMarketMechanism(market.mechanism, "ORDERBOOK");
     await assertMarketVisibleToUser({ market, userId });
 
-    const openStatuses: OrderStatus[] = ["OPEN", "PARTIAL"];
-    const where = {
+    const snapshot = await buildPublicOrderbookSnapshot({
       marketId,
-      status: { in: openStatuses },
-      ...(outcomeId ? { outcomeId } : {}),
-    };
-
-    const [bids, asks] = await Promise.all([
-      prisma.order.groupBy({
-        by: ["outcomeId", "price"],
-        where: { ...where, side: "BUY" },
-        _sum: { remaining: true },
-        orderBy: [{ price: "desc" }],
-      }),
-      prisma.order.groupBy({
-        by: ["outcomeId", "price"],
-        where: { ...where, side: "SELL" },
-        _sum: { remaining: true },
-        orderBy: [{ price: "asc" }],
-      }),
-    ]);
-
-    return NextResponse.json({
-      bids: bids.map((row) => ({
-        outcomeId: row.outcomeId,
-        price: Number(row.price),
-        size: Number(row._sum?.remaining ?? 0),
-      })),
-      asks: asks.map((row) => ({
-        outcomeId: row.outcomeId,
-        price: Number(row.price),
-        size: Number(row._sum?.remaining ?? 0),
-      })),
+      outcomeId,
     });
+
+    return NextResponse.json(snapshot);
   } catch (error) {
     const response = toGuardResponse(error);
     return NextResponse.json(response.body, { status: response.status });

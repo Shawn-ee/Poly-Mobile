@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import MarketCard from "@/components/MarketCard";
+import EventCard from "@/components/EventCard";
 
 type Market = {
   id: string;
@@ -11,15 +12,29 @@ type Market = {
   status: string;
   visibility: "PUBLIC" | "PRIVATE";
   mechanism: "ORDERBOOK" | "POOL";
-  prices: { YES: number; NO: number };
+  prices: { YES: number; NO: number } | null;
   category: { id: string; name: string; slug: string } | null;
   tags: { id: string; name: string; slug: string; group: string | null }[];
   outcomes: { id: string; name: string }[];
   resolveTime: string | null;
 };
 
+type EventSummary = {
+  id: string;
+  slug: string | null;
+  title: string;
+  description: string | null;
+  category: string | null;
+  source: string | null;
+  marketCount: number;
+  activeMarketCount?: number | null;
+  image: string | null;
+  icon: string | null;
+};
+
 export default function Home() {
   const [markets, setMarkets] = useState<Market[]>([]);
+  const [events, setEvents] = useState<EventSummary[]>([]);
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [topTags, setTopTags] = useState<
@@ -72,6 +87,14 @@ export default function Home() {
       }
     };
     loadTags();
+
+    const loadEvents = async () => {
+      const res = await fetch("/api/events");
+      if (!res.ok) return;
+      const data = await res.json();
+      setEvents((data.events ?? []).filter((event: EventSummary) => Boolean(event.slug)).slice(0, 4));
+    };
+    loadEvents();
   }, []);
 
   useEffect(() => {
@@ -114,6 +137,38 @@ export default function Home() {
           ) : null}
         </div>
       </div>
+
+      {events.length ? (
+        <section className="mb-10">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-semibold">Featured Events</h2>
+              <p className="text-sm text-neutral-600">Grouped markets with shared event context.</p>
+            </div>
+            <Link href="/events" className="text-sm text-neutral-600 hover:text-neutral-900">
+              View all events
+            </Link>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {events.map((event) =>
+              event.slug ? (
+                <EventCard
+                  key={event.id}
+                  slug={event.slug}
+                  title={event.title}
+                  description={event.description}
+                  category={event.category}
+                  source={event.source}
+                  marketCount={event.marketCount}
+                  activeMarketCount={event.activeMarketCount ?? null}
+                  image={event.image}
+                  icon={event.icon}
+                />
+              ) : null,
+            )}
+          </div>
+        </section>
+      ) : null}
 
       <div className="mb-8 flex flex-wrap gap-2">
         <button
@@ -181,17 +236,33 @@ export default function Home() {
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {markets.map((market) => (
-            <MarketCard
-              key={market.id}
-              id={market.id}
-              title={market.title}
-              status={market.status}
-              resolveTime={market.resolveTime}
-              outcomes={market.outcomes}
-              prices={market.prices}
-              visibility={market.visibility}
-              mechanism={market.mechanism}
-            />
+            market.prices ? (
+              <MarketCard
+                key={market.id}
+                id={market.id}
+                title={market.title}
+                status={market.status}
+                resolveTime={market.resolveTime}
+                outcomes={market.outcomes}
+                prices={market.prices}
+                visibility={market.visibility}
+                mechanism={market.mechanism}
+              />
+            ) : (
+              <Link
+                key={market.id}
+                href={`/markets/${market.id}`}
+                className="group flex h-full flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-neutral-300 hover:shadow-md"
+              >
+                <div>
+                  <h3 className="line-clamp-2 text-base font-semibold text-neutral-900">{market.title}</h3>
+                  <div className="mt-2 text-xs text-neutral-500">{market.status}</div>
+                </div>
+                <div className="mt-6 text-xs text-neutral-500">
+                  Outcomes: {market.outcomes.map((outcome) => outcome.name).join(" / ")}
+                </div>
+              </Link>
+            )
           ))}
         </div>
       )}

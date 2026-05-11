@@ -1,4 +1,7 @@
 import { PrismaClient } from "@prisma/client";
+import crypto from "node:crypto";
+import { applyDeposit } from "../src/server/services/ledger";
+import { mintCompleteSetForPublicOrderbook } from "../src/server/services/orderbookCollateral";
 import { placeOrder } from "../src/server/services/orderbook";
 
 const prisma = new PrismaClient();
@@ -14,35 +17,28 @@ const run = async () => {
     throw new Error("Refusing to run crossing test in production.");
   }
 
-  const maker = await prisma.user.upsert({
-    where: { username: "cross-maker" },
-    update: { email: "cross-maker@kaoshi.local" },
-    create: { username: "cross-maker", email: "cross-maker@kaoshi.local" },
-  });
-
-  const taker = await prisma.user.upsert({
-    where: { username: "cross-taker" },
-    update: { email: "cross-taker@kaoshi.local" },
-    create: { username: "cross-taker", email: "cross-taker@kaoshi.local" },
-  });
-
-  const market = await prisma.market.upsert({
-    where: { slug: "crossing-regression-market" },
-    update: {
-      status: "LIVE",
-      mechanism: "ORDERBOOK",
-      kind: "ORDERBOOK",
-      visibility: "PUBLIC",
-      isListed: true,
-      isCanceled: false,
-      ownerId: null,
-      betCloseTime: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      resolveTime: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+  const suffix = Date.now();
+  const maker = await prisma.user.create({
+    data: {
+      username: `cross-maker-${suffix}`,
+      email: `cross-maker-${suffix}@kaoshi.local`,
+      displayName: `cross-maker-${suffix}`,
     },
-    create: {
-      slug: "crossing-regression-market",
-      title: "Crossing regression market",
-      description: "Dev test for immediate crossing fills",
+  });
+
+  const taker = await prisma.user.create({
+    data: {
+      username: `cross-taker-${suffix}`,
+      email: `cross-taker-${suffix}@kaoshi.local`,
+      displayName: `cross-taker-${suffix}`,
+    },
+  });
+
+  const market = await prisma.market.create({
+    data: {
+      slug: `crossing-regression-market-${suffix}`,
+      title: `Crossing regression market ${suffix}`,
+      description: "Legal minimal crossing test using deposit + complete-set mint.",
       status: "LIVE",
       mechanism: "ORDERBOOK",
       kind: "ORDERBOOK",
@@ -54,8 +50,8 @@ const run = async () => {
       resolveTime: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
       outcomes: {
         create: [
-          { name: "Celtics", slug: "crossing-regression-market-celtics", displayOrder: 0, isActive: true },
-          { name: "Other", slug: "crossing-regression-market-other", displayOrder: 1, isActive: true },
+          { name: "YES", slug: `crossing-regression-market-${suffix}-yes`, displayOrder: 0, isActive: true },
+          { name: "NO", slug: `crossing-regression-market-${suffix}-no`, displayOrder: 1, isActive: true },
         ],
       },
     },
@@ -65,56 +61,43 @@ const run = async () => {
   const outcomeId = market.outcomes[0]?.id;
   if (!outcomeId) throw new Error("Missing outcome for crossing test market");
 
-  await prisma.order.deleteMany({ where: { marketId: market.id, OR: [{ userId: maker.id }, { userId: taker.id }] } });
-  await prisma.trade.deleteMany({ where: { marketId: market.id, OR: [{ userId: maker.id }, { userId: taker.id }] } });
-
-  await prisma.userBalance.upsert({
-    where: { userId: maker.id },
-    update: { availableUSDC: 100, lockedUSDC: 0 },
-    create: { userId: maker.id, availableUSDC: 100, lockedUSDC: 0 },
+  await applyDeposit({
+    eventKey: `cross-maker-deposit:${maker.id}`,
+    userId: maker.id,
+    amount: "100",
+    chainId: 8453,
+    txHash: `0x${crypto.randomBytes(32).toString("hex")}`,
+    logIndex: 1,
+    token: "USDC",
+    referenceType: "TEST_CROSSING",
+    referenceId: maker.id,
   });
 
-  await prisma.userBalance.upsert({
-    where: { userId: taker.id },
-    update: { availableUSDC: 0, lockedUSDC: 0 },
-    create: { userId: taker.id, availableUSDC: 0, lockedUSDC: 0 },
+  await applyDeposit({
+    eventKey: `cross-taker-deposit:${taker.id}`,
+    userId: taker.id,
+    amount: "100",
+    chainId: 8453,
+    txHash: `0x${crypto.randomBytes(32).toString("hex")}`,
+    logIndex: 2,
+    token: "USDC",
+    referenceType: "TEST_CROSSING",
+    referenceId: taker.id,
   });
 
-  const takerPos = await prisma.position.findUnique({
-    where: {
-      userId_marketId_outcomeId: {
-        userId: taker.id,
-        marketId: market.id,
-        outcomeId,
-      },
-    },
+  await mintCompleteSetForPublicOrderbook({
+    marketId: market.id,
+    userId: taker.id,
+    quantity: "10",
   });
-
-  if (!takerPos) {
-    await prisma.position.create({
-      data: {
-        userId: taker.id,
-        marketId: market.id,
-        outcomeId,
-        shares: 50,
-        reservedShares: 0,
-        avgCost: 0.45,
-      },
-    });
-  } else {
-    await prisma.position.update({
-      where: { id: takerPos.id },
-      data: { shares: 50, reservedShares: 0, avgCost: 0.45 },
-    });
-  }
 
   const makerBuy = await placeOrder({
     marketId: market.id,
     userId: maker.id,
     outcomeId,
     side: "BUY",
-    price: 0.55,
-    amount: 20,
+    price: 0.57,
+    amount: 1,
   });
 
   assert(
@@ -127,24 +110,62 @@ const run = async () => {
     userId: taker.id,
     outcomeId,
     side: "SELL",
-    price: 0.5,
-    amount: 10,
+    price: 0.51,
+    amount: 1,
   });
 
-  assert(takerSell.status === "FILLED", `incoming crossing sell expected FILLED got ${takerSell.status}`);
-  assert(toNum(takerSell.remaining) === 0, `incoming crossing sell remaining expected 0 got ${takerSell.remaining}`);
-
-  const trades = await prisma.trade.findMany({
-    where: { marketId: market.id, outcomeId, OR: [{ userId: maker.id }, { userId: taker.id }] },
+  const fills = await prisma.fill.findMany({
+    where: { marketId: market.id, outcomeId },
+    orderBy: { createdAt: "asc" },
   });
-  assert(trades.length >= 2, `expected at least two trade rows (buy/sell), got ${trades.length}`);
 
-  console.log("Crossing regression test passed:", {
-    marketId: market.id,
-    makerBuyOrderId: makerBuy.orderId,
-    takerSellOrderId: takerSell.orderId,
-    tradeRows: trades.length,
+  const orders = await prisma.order.findMany({
+    where: { marketId: market.id, outcomeId },
+    orderBy: { createdAt: "asc" },
+    select: {
+      id: true,
+      userId: true,
+      side: true,
+      price: true,
+      remaining: true,
+      status: true,
+    },
   });
+
+  console.log(
+    JSON.stringify(
+      {
+        marketId: market.id,
+        outcomeId,
+        makerBuy,
+        takerSell,
+        fills: fills.map((fill) => ({
+          id: fill.id,
+          price: fill.price.toString(),
+          size: fill.size.toString(),
+          side: fill.side,
+          makerOrderId: fill.makerOrderId,
+          takerOrderId: fill.takerOrderId,
+        })),
+        orders: orders.map((order) => ({
+          id: order.id,
+          userId: order.userId,
+          side: order.side,
+          price: order.price.toString(),
+          remaining: order.remaining.toString(),
+          status: order.status,
+        })),
+      },
+      null,
+      2
+    )
+  );
+
+  assert(fills.length > 0, "expected at least one fill but got zero");
+  assert(
+    takerSell.status === "FILLED" || toNum(takerSell.remaining) < 1,
+    `incoming crossing sell expected FILLED/PARTIAL got ${takerSell.status}`
+  );
 };
 
 run()

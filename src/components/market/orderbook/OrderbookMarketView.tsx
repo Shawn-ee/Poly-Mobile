@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import MarketHeader from "@/components/market/shared/MarketHeader";
+import OrderTicket from "@/components/market/orderbook/OrderTicket";
 
 type Market = {
   id: string;
@@ -10,6 +11,10 @@ type Market = {
   status: string;
   outcomes: { id: string; name: string }[];
   pricesByOutcome?: Record<string, number>;
+  event?: {
+    slug: string | null;
+    title: string;
+  } | null;
 };
 
 type BookRow = {
@@ -32,12 +37,16 @@ type UserOrder = {
 
 type Trade = {
   id: string;
+  executionId?: string;
+  marketId?: string;
+  outcomeId: string;
+  outcomeName?: string;
+  outcome: string;
   side: "BUY" | "SELL";
+  price: number;
+  quantity: number;
   shares: number;
   cost: number;
-  user: string;
-  outcomeId: string;
-  outcome: string;
   createdAt: string;
 };
 
@@ -68,9 +77,6 @@ export default function OrderbookMarketView({
   const [market, setMarket] = useState<Market | null>(null);
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
   const [outcomeId, setOutcomeId] = useState<string>("");
-  const [side, setSide] = useState<"BUY" | "SELL">("BUY");
-  const [price, setPrice] = useState("0.50");
-  const [amount, setAmount] = useState("10");
   const [bids, setBids] = useState<BookRow[]>([]);
   const [asks, setAsks] = useState<BookRow[]>([]);
   const [orders, setOrders] = useState<UserOrder[]>([]);
@@ -109,10 +115,34 @@ export default function OrderbookMarketView({
   };
 
   const loadOrders = async () => {
-    const res = await fetch(`/api/orderbook/${marketId}/orders`);
+    const res = await fetch(
+      `/api/orders?marketId=${encodeURIComponent(marketId)}&status=OPEN,PARTIAL&limit=100`
+    );
     if (!res.ok) return;
     const data = await res.json();
-    setOrders(data.orders ?? []);
+    setOrders(
+      (data.items ?? []).map((item: {
+        id: string;
+        outcomeId: string;
+        outcomeName: string;
+        side: "BUY" | "SELL";
+        price: string | number;
+        size: string | number;
+        remaining: string | number;
+        status: string;
+        createdAt: string;
+      }) => ({
+        id: item.id,
+        outcomeId: item.outcomeId,
+        outcomeName: item.outcomeName,
+        side: item.side,
+        price: Number(item.price),
+        amount: Number(item.size),
+        remaining: Number(item.remaining),
+        status: item.status,
+        createdAt: item.createdAt,
+      }))
+    );
   };
 
   const loadTrades = async () => {
@@ -158,63 +188,147 @@ export default function OrderbookMarketView({
     const marketStream = new EventSource(
       `/api/stream/market/${marketId}?outcomeId=${encodeURIComponent(outcomeId)}`
     );
-    marketStream.onmessage = (event) => {
+    const handleMarketEvent = (event: MessageEvent<string>) => {
       const payload = JSON.parse(event.data ?? "{}");
-      if (payload?.type !== "market_update") return;
-      setBids(payload?.topLevels?.bids ?? []);
-      setAsks(payload?.topLevels?.asks ?? []);
-      setTrades(payload?.recentTrades ?? []);
+      const nextPayload = payload?.payload;
+      if (!nextPayload) return;
+      setBids(
+        (nextPayload?.topLevels?.bids ?? []).map((row: { outcomeId: string; price: string | number; size: string | number }) => ({
+          outcomeId: row.outcomeId,
+          price: Number(row.price),
+          size: Number(row.size),
+        }))
+      );
+      setAsks(
+        (nextPayload?.topLevels?.asks ?? []).map((row: { outcomeId: string; price: string | number; size: string | number }) => ({
+          outcomeId: row.outcomeId,
+          price: Number(row.price),
+          size: Number(row.size),
+        }))
+      );
+      setTrades(
+        (nextPayload?.recentTrades ?? []).map(
+          (trade: {
+            id: string;
+            executionId?: string;
+            marketId?: string;
+            outcomeId: string;
+            outcomeName?: string;
+            outcome?: string;
+            side: "BUY" | "SELL";
+            price: string | number;
+            quantity: string | number;
+            shares?: string | number;
+            cost?: string | number;
+            createdAt: string;
+          }) => ({
+            id: trade.id,
+            executionId: trade.executionId,
+            marketId: trade.marketId,
+            outcomeId: trade.outcomeId,
+            outcomeName: trade.outcomeName,
+            outcome: trade.outcome ?? trade.outcomeName ?? "",
+            side: trade.side,
+            price: Number(trade.price),
+            quantity: Number(trade.quantity),
+            shares: Number(trade.shares ?? trade.quantity),
+            cost: Number(trade.cost ?? trade.quantity),
+            createdAt: trade.createdAt,
+          })
+        )
+      );
     };
+    marketStream.addEventListener("quote.snapshot", handleMarketEvent);
+    marketStream.addEventListener("quote.updated", handleMarketEvent);
 
     const userStream = new EventSource(
       `/api/stream/me/orders?marketId=${encodeURIComponent(marketId)}`
     );
-    userStream.onmessage = (event) => {
+    const handleUserEvent = (event: MessageEvent<string>) => {
       const payload = JSON.parse(event.data ?? "{}");
-      if (payload?.type !== "user_update") return;
-      setOrders(payload?.orders ?? []);
+      const nextPayload = payload?.payload;
+      if (!nextPayload) return;
+      setOrders(
+        (nextPayload?.orders ?? []).map(
+          (item: {
+            id: string;
+            outcomeId: string;
+            outcomeName: string;
+            side: "BUY" | "SELL";
+            price: string | number;
+            amount: string | number;
+            remaining: string | number;
+            status: string;
+            createdAt: string;
+          }) => ({
+            id: item.id,
+            outcomeId: item.outcomeId,
+            outcomeName: item.outcomeName,
+            side: item.side,
+            price: Number(item.price),
+            amount: Number(item.amount),
+            remaining: Number(item.remaining),
+            status: item.status,
+            createdAt: item.createdAt,
+          })
+        )
+      );
     };
+    userStream.addEventListener("account.snapshot", handleUserEvent);
+    userStream.addEventListener("account.updated", handleUserEvent);
 
     return () => {
+      marketStream.removeEventListener("quote.snapshot", handleMarketEvent);
+      marketStream.removeEventListener("quote.updated", handleMarketEvent);
+      userStream.removeEventListener("account.snapshot", handleUserEvent);
+      userStream.removeEventListener("account.updated", handleUserEvent);
       marketStream.close();
       userStream.close();
     };
   }, [marketId, outcomeId]);
 
-  const placeOrder = async () => {
+  const submitOrder = async (payload: {
+    side: "BUY" | "SELL";
+    type: "LIMIT" | "MARKET";
+    outcomeId: string;
+    size: string;
+    price?: string;
+    maxSpend?: string;
+  }) => {
     setMessage("");
-    const res = await fetch(`/api/orderbook/${marketId}/orders/place`, {
+    const res = await fetch(`/api/orders`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        outcomeId,
-        side,
-        price: Number(price),
-        amount: Number(amount),
-      }),
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": crypto.randomUUID(),
+      },
+      body: JSON.stringify({ marketId, ...payload }),
     });
     const data = await res.json().catch(() => null);
     if (!res.ok) {
-      setMessage(data?.error ?? "Failed to place order");
-      return;
+      throw new Error(data?.error?.message ?? data?.error ?? "Failed to place order");
     }
-    setMessage(
-      `Order placed: ${side} ${data.amount?.toFixed?.(2) ?? amount} @ ${
-        data.price?.toFixed?.(2) ?? price
-      } (${data.status})`
-    );
+    const order = data?.order;
+    const successMessage =
+      payload.type === "LIMIT"
+        ? `Order placed: ${payload.side} ${Number(order?.size ?? payload.size).toFixed(2)} @ ${Number(
+            order?.price ?? payload.price ?? 0,
+          ).toFixed(2)} (${order?.status ?? "OPEN"})`
+        : `Order placed: ${payload.side} ${Number(order?.size ?? payload.size).toFixed(2)} ${
+            selectedOutcome?.name ?? ""
+          } (${order?.status ?? "OPEN"})`;
+    setMessage(successMessage);
     await loadAll();
+    return successMessage;
   };
 
   const cancelOrder = async (orderId: string) => {
-    const res = await fetch(`/api/orderbook/${marketId}/orders/cancel`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ orderId }),
+    const res = await fetch(`/api/orders/${encodeURIComponent(orderId)}`, {
+      method: "DELETE",
     });
     const data = await res.json().catch(() => null);
     if (!res.ok) {
-      setMessage(data?.error ?? "Failed to cancel order");
+      setMessage(data?.error?.message ?? data?.error ?? "Failed to cancel order");
       return;
     }
     setMessage("Order canceled.");
@@ -238,8 +352,8 @@ export default function OrderbookMarketView({
   const bestBid = bids.length ? bids[0].price : null;
   const bestAsk = asks.length ? asks[0].price : null;
   const lastTradePrice =
-    selectedOutcomeTrades.length && selectedOutcomeTrades[0].shares > 0
-      ? selectedOutcomeTrades[0].cost / selectedOutcomeTrades[0].shares
+    selectedOutcomeTrades.length
+      ? selectedOutcomeTrades[0].price
       : null;
   const markPrice =
     bestBid !== null && bestAsk !== null
@@ -263,6 +377,14 @@ export default function OrderbookMarketView({
         description={market.description}
         status={market.status}
         walletBalance={walletBalance}
+        event={
+          market.event?.slug
+            ? {
+                slug: market.event.slug,
+                title: market.event.title,
+              }
+            : null
+        }
       />
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
@@ -326,8 +448,8 @@ export default function OrderbookMarketView({
               {tradesToShow.map((trade) => (
                 <div key={trade.id} className="flex justify-between border-b border-neutral-100 pb-2">
                   <span>
-                    {trade.user} {trade.side.toLowerCase()} {trade.shares.toFixed(2)} {trade.outcome} @
-                    {(trade.cost / trade.shares).toFixed(2)}
+                    {trade.side.toLowerCase()} {trade.quantity.toFixed(2)} {trade.outcome} @
+                    {trade.price.toFixed(2)}
                   </span>
                   <span>{new Date(trade.createdAt).toLocaleString()}</span>
                 </div>
@@ -339,49 +461,30 @@ export default function OrderbookMarketView({
         </div>
 
         <div className="space-y-6">
-          <div className="rounded-lg border border-neutral-200 bg-white p-4">
-            <h2 className="text-lg font-semibold">Place Limit Order</h2>
-            <div className="mt-3 space-y-3">
-              <div className="text-sm text-neutral-600">Outcome: {selectedOutcome?.name ?? "-"}</div>
-              <div className="flex gap-2">
-                {["BUY", "SELL"].map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setSide(tab as "BUY" | "SELL")}
-                    className={`rounded-full border px-3 py-1 text-xs ${
-                      side === tab
-                        ? "border-black bg-black text-white"
-                        : "border-neutral-300 text-neutral-700"
-                    }`}
-                    type="button"
-                  >
-                    {tab}
-                  </button>
-                ))}
-              </div>
-              <input
-                value={price}
-                onChange={(event) => setPrice(event.target.value)}
-                placeholder="Price"
-                className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
-              />
-              <input
-                value={amount}
-                onChange={(event) => setAmount(event.target.value)}
-                placeholder="Shares"
-                className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
-              />
-              <button
-                onClick={placeOrder}
-                disabled={market.status !== "LIVE" && market.status !== "ACTIVE"}
-                className="w-full rounded-md bg-black px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
-                type="button"
-              >
-                Place order
-              </button>
-              {message ? <div className="text-sm text-neutral-600">{message}</div> : null}
+          <OrderTicket
+            market={market}
+            selectedOutcomeId={outcomeId}
+            onSelectedOutcomeIdChange={setOutcomeId}
+            walletBalance={walletBalance}
+            position={
+              position
+                ? {
+                    shares: position.shares,
+                    reservedShares: position.reservedShares,
+                  }
+                : null
+            }
+            bestBid={bestBid}
+            bestAsk={bestAsk}
+            onSubmitOrder={submitOrder}
+            marketOrdersSupported
+          />
+
+          {message ? (
+            <div className="rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm text-neutral-600">
+              {message}
             </div>
-          </div>
+          ) : null}
 
           <div className="rounded-lg border border-neutral-200 bg-white p-4">
             <h2 className="text-lg font-semibold">My Position</h2>
