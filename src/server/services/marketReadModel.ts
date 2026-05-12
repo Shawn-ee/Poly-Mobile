@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { getOutcomeQuotes } from "@/lib/orderbookPricing";
+import { parseReferenceReview } from "@/server/services/polymarketReferenceImport";
 
 export const marketReadInclude = Prisma.validator<Prisma.MarketInclude>()({
   outcomes: {
@@ -36,6 +37,7 @@ const buildLegacyBinaryPrices = (
 };
 
 export const serializeMarketReadModel = async (market: MarketWithRelations) => {
+  const referenceReview = parseReferenceReview(market.referenceMetadata);
   const outcomeQuotes =
     market.mechanism === "ORDERBOOK"
       ? await getOutcomeQuotes(
@@ -98,6 +100,10 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
     conditionId: market.conditionId,
     referenceSource: market.referenceSource,
     externalSlug: market.externalSlug,
+    importStatus: referenceReview.importStatus ?? null,
+    referenceOnly: referenceReview.referenceOnly ?? null,
+    tradable: referenceReview.tradable ?? null,
+    mmEnabled: referenceReview.mmEnabled ?? null,
     type: market.type,
     kind: market.kind,
     visibility: market.visibility,
