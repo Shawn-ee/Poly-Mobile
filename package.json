@@ -32,6 +32,7 @@
     "test:orderbook-crossing-buy": "tsx scripts/test_orderbook_crossing_buy.ts",
     "test:phase5:matching": "tsx scripts/test_phase5_matching.ts",
     "simulate:phase85": "tsx scripts/simulate_exchange_phase85.ts",
+    "inspect:polymarket-sports-candidates": "tsx scripts/scan_polymarket_sports.ts",
     "reconcile:balances": "tsx scripts/reconcile_balances.ts",
     "debug:balance-user": "tsx scripts/debug_user_balance_reconciliation.ts",
     "debug:markets": "tsx scripts/debug_markets.ts",
