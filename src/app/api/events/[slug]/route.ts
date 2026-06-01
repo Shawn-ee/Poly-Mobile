@@ -43,6 +43,14 @@ export async function GET(_request: Request, context: Ctx) {
       marketCount: event._count.markets,
       activeMarketCount,
       closedMarketCount,
+      hasGroupedMarkets:
+        Boolean(
+          event.metadata &&
+            typeof event.metadata === "object" &&
+            !Array.isArray(event.metadata) &&
+            "referenceGroup" in (event.metadata as Record<string, unknown>),
+        ),
+      metadata: event.metadata,
       createdAt: event.createdAt,
       updatedAt: event.updatedAt,
     },

@@ -19,6 +19,10 @@ export default async function MarketPage({
       ownerId: true,
       title: true,
       description: true,
+      referenceSource: true,
+      externalSlug: true,
+      externalMarketId: true,
+      conditionId: true,
       event: {
         select: {
           slug: true,

@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { getOutcomeQuotes } from "@/lib/orderbookPricing";
 import { parseReferenceReview } from "@/server/services/polymarketReferenceImport";
+import { getReferenceSummaryForMarket } from "@/server/services/referenceQuoteSnapshots";
 
 export const marketReadInclude = Prisma.validator<Prisma.MarketInclude>()({
   outcomes: {
@@ -55,6 +56,7 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
     market.outcomes.map((outcome) => [outcome.id, outcomeQuotes.get(outcome.id)?.mid ?? 0.5]),
   );
   const legacyPrices = buildLegacyBinaryPrices(market.outcomes, pricesByOutcome);
+  const referenceSummary = await getReferenceSummaryForMarket(market.id);
 
   return {
     id: market.id,
@@ -104,6 +106,7 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
     referenceOnly: referenceReview.referenceOnly ?? null,
     tradable: referenceReview.tradable ?? null,
     mmEnabled: referenceReview.mmEnabled ?? null,
+    referenceSummary,
     type: market.type,
     kind: market.kind,
     visibility: market.visibility,

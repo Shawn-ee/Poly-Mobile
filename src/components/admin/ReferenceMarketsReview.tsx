@@ -48,6 +48,63 @@ type ReferenceMarket = {
   volume24hr: unknown;
   liquidity: unknown;
   acceptingOrders: unknown;
+  snapshotSummary?: {
+    source: string;
+    referenceBid: number | null;
+    referenceAsk: number | null;
+    plannedBotBid: number | null;
+    plannedBotAsk: number | null;
+    qualityStatus: string | null;
+    isFresh: boolean;
+    mmEligible: boolean;
+    dryRun: boolean;
+    quotePlanEnabled: boolean;
+    hasSnapshot: boolean;
+  } | null;
+  botInitialization?: {
+    status: string;
+    lastCheckedAt: string | null;
+    reason: string | null;
+    approvedBy: string | null;
+    approvedAt: string | null;
+    riskProfile: string | null;
+    capital?: {
+      budgetCents: number | null;
+      mintBudgetCents: number | null;
+      mintedCompleteSets: number | null;
+      cashReserveCents: number | null;
+      autoReplenish: boolean;
+      initializedAt: string | null;
+      initializedBy: string | null;
+      botUserId: string | null;
+      botUsername: string | null;
+      botApiCredentialId: string | null;
+      botApiKeyId: string | null;
+      maxSingleOrderNotionalCents: number | null;
+      maxOpenOrderNotionalCents: number | null;
+      maxDailyLossCents: number | null;
+    } | null;
+    runtime?: {
+      liveOrdersEnabled: boolean;
+      emergencyStop: boolean;
+      cancelRequestedAt: string | null;
+      lastSeededAt: string | null;
+      lastLiveRunAt: string | null;
+      lastRuntimeSyncAt: string | null;
+    } | null;
+    readiness?: {
+      ready: boolean;
+      dryRun: boolean;
+      liveRequested: boolean;
+      reasons: string[];
+      referenceBid: number | null;
+      referenceAsk: number | null;
+      plannedBotBid: number | null;
+      plannedBotAsk: number | null;
+      riskProfile: string | null;
+      checkedAt: string | null;
+    } | null;
+  } | null;
   referenceMetadata: unknown;
   outcomes: ReferenceOutcome[];
 };
@@ -59,6 +116,16 @@ type DraftState = {
   mmEnabled: boolean;
   isListed: boolean;
 };
+
+type AdminAction =
+  | "refresh_snapshot"
+  | "run_readiness_check"
+  | "mark_dry_run_running"
+  | "pause_bot"
+  | "reset_bot_initialization"
+  | "mark_live_ready"
+  | "emergency_stop"
+  | "cancel_bot_quotes";
 
 type ImportPreview = {
   slug: string;
@@ -274,6 +341,14 @@ export default function ReferenceMarketsReview() {
       },
       confirmation,
     );
+  };
+
+  const runAdminAction = async (
+    item: ReferenceMarket,
+    action: AdminAction,
+    confirmMessage?: string,
+  ) => {
+    await submitReview(item, { action }, confirmMessage);
   };
 
   const submitImport = async (mode: "preview" | "import") => {
@@ -513,6 +588,9 @@ export default function ReferenceMarketsReview() {
           >
             Refresh
           </button>
+          <span className="text-xs text-neutral-500">
+            Snapshot refresh: <code>npm run reference:snapshot-refresh -- --once</code>
+          </span>
         </div>
         {message ? <p className="mt-3 text-sm text-green-700">{message}</p> : null}
         {error ? <p className="mt-3 text-sm text-red-600">{error}</p> : null}
@@ -529,6 +607,7 @@ export default function ReferenceMarketsReview() {
                 <th className="px-3 py-3">Flags</th>
                 <th className="px-3 py-3">Slug / Condition</th>
                 <th className="px-3 py-3">Quotes</th>
+                <th className="px-3 py-3">Bot Init</th>
                 <th className="px-3 py-3">Liquidity</th>
                 <th className="px-3 py-3">Outcomes</th>
                 <th className="px-3 py-3">Review</th>
@@ -537,13 +616,13 @@ export default function ReferenceMarketsReview() {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={9} className="px-3 py-6 text-sm text-neutral-600">
+                  <td colSpan={10} className="px-3 py-6 text-sm text-neutral-600">
                     Loading imported reference markets...
                   </td>
                 </tr>
               ) : filteredItems.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="px-3 py-6 text-sm text-neutral-600">
+                  <td colSpan={10} className="px-3 py-6 text-sm text-neutral-600">
                     No imported reference markets found.
                   </td>
                 </tr>
@@ -601,15 +680,27 @@ export default function ReferenceMarketsReview() {
                           </div>
                         </td>
                         <td className="px-3 py-3 text-xs">
-                          <div>bid {formatValue(item.bestBid)}</div>
-                          <div>ask {formatValue(item.bestAsk)}</div>
-                          <div>spread {formatValue(item.spread)}</div>
-                          <div>last {formatValue(item.lastTradePrice)}</div>
+                          <div>bid {formatValue(item.snapshotSummary?.referenceBid ?? item.bestBid)}</div>
+                          <div>ask {formatValue(item.snapshotSummary?.referenceAsk ?? item.bestAsk)}</div>
+                          <div>plan {formatValue(item.snapshotSummary?.plannedBotBid)} / {formatValue(item.snapshotSummary?.plannedBotAsk)}</div>
+                          <div>{item.snapshotSummary?.hasSnapshot ? (item.snapshotSummary.isFresh ? "fresh" : "stale") : "no snapshot"}</div>
+                          <div>eligible {item.snapshotSummary?.mmEligible ? "yes" : "no"}</div>
+                        </td>
+                        <td className="px-3 py-3 text-xs">
+                          <div>status {item.botInitialization?.status ?? "not_started"}</div>
+                          <div>checked {formatDate(item.botInitialization?.lastCheckedAt ?? null)}</div>
+                          <div>reason {item.botInitialization?.reason ?? "--"}</div>
+                          <div>
+                            blocked {item.botInitialization?.readiness?.reasons?.length
+                              ? item.botInitialization.readiness.reasons.join(", ")
+                              : "--"}
+                          </div>
                         </td>
                         <td className="px-3 py-3 text-xs">
                           <div>24h {formatValue(item.volume24hr)}</div>
                           <div>liq {formatValue(item.liquidity)}</div>
                           <div>orders {formatValue(item.acceptingOrders)}</div>
+                          <div>quality {formatValue(item.snapshotSummary?.qualityStatus ?? "--")}</div>
                         </td>
                         <td className="px-3 py-3 text-xs">
                           <div>{item.outcomes.length}</div>
@@ -626,7 +717,7 @@ export default function ReferenceMarketsReview() {
                       </tr>
                       {expanded ? (
                         <tr className="border-t border-neutral-100 bg-neutral-50">
-                          <td colSpan={9} className="px-3 py-4">
+                          <td colSpan={10} className="px-3 py-4">
                             <div className="grid gap-6 xl:grid-cols-[1.2fr_1fr]">
                               <div className="space-y-4">
                                 <section className="rounded-lg border border-neutral-200 bg-white p-4">
@@ -821,6 +912,116 @@ export default function ReferenceMarketsReview() {
                                       className="rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700"
                                     >
                                       Save Review
+                                    </button>
+                                  </div>
+                                </section>
+
+                                <section className="rounded-lg border border-neutral-200 bg-white p-4">
+                                  <h3 className="text-sm font-semibold">Bot Initialization</h3>
+                                  <div className="mt-3 space-y-2 text-xs text-neutral-700">
+                                    <div>status: {item.botInitialization?.status ?? "not_started"}</div>
+                                    <div>lastCheckedAt: {formatDate(item.botInitialization?.lastCheckedAt ?? null)}</div>
+                                    <div>reference bid / ask: {formatValue(item.snapshotSummary?.referenceBid)} / {formatValue(item.snapshotSummary?.referenceAsk)}</div>
+                                    <div>planned bid / ask: {formatValue(item.snapshotSummary?.plannedBotBid)} / {formatValue(item.snapshotSummary?.plannedBotAsk)}</div>
+                                    <div>mmEligible: {String(item.snapshotSummary?.mmEligible ?? false)}</div>
+                                    <div>riskProfile: {item.botInitialization?.riskProfile ?? "--"}</div>
+                                    <div>seedBudget: {item.botInitialization?.capital?.budgetCents != null ? `$${(item.botInitialization.capital.budgetCents / 100).toFixed(2)}` : "--"}</div>
+                                    <div>minted: {item.botInitialization?.capital?.mintBudgetCents != null ? `$${(item.botInitialization.capital.mintBudgetCents / 100).toFixed(2)}` : "--"}</div>
+                                    <div>cashReserve: {item.botInitialization?.capital?.cashReserveCents != null ? `$${(item.botInitialization.capital.cashReserveCents / 100).toFixed(2)}` : "--"}</div>
+                                    <div>liveOrdersEnabled: {String(item.botInitialization?.runtime?.liveOrdersEnabled ?? false)}</div>
+                                    <div>emergencyStop: {String(item.botInitialization?.runtime?.emergencyStop ?? false)}</div>
+                                    <div>reason: {item.botInitialization?.reason ?? "--"}</div>
+                                    <div>ready: {String(item.botInitialization?.readiness?.ready ?? false)}</div>
+                                    <div>
+                                      plan: {formatValue(item.botInitialization?.readiness?.plannedBotBid)} /{" "}
+                                      {formatValue(item.botInitialization?.readiness?.plannedBotAsk)}
+                                    </div>
+                                    {item.botInitialization?.readiness?.reasons?.length ? (
+                                      <div>blockedBy: {item.botInitialization.readiness.reasons.join(", ")}</div>
+                                    ) : null}
+                                  </div>
+                                  <div className="mt-4 flex flex-wrap gap-2">
+                                    <button
+                                      type="button"
+                                      disabled={submittingId === item.id}
+                                      onClick={() => void runAdminAction(item, "refresh_snapshot")}
+                                      className="rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700"
+                                    >
+                                      Refresh Snapshot
+                                    </button>
+                                    <button
+                                      type="button"
+                                      disabled={submittingId === item.id}
+                                      onClick={() => void runAdminAction(item, "run_readiness_check")}
+                                      className="rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700"
+                                    >
+                                      Run Readiness Check
+                                    </button>
+                                    <button
+                                      type="button"
+                                      disabled={submittingId === item.id || item.botInitialization?.status !== "dry_run_ready"}
+                                      onClick={() => void runAdminAction(item, "mark_dry_run_running")}
+                                      className="rounded-md border border-sky-300 px-3 py-2 text-sm text-sky-700"
+                                    >
+                                      Mark Dry Run Running
+                                    </button>
+                                    <button
+                                      type="button"
+                                      disabled={submittingId === item.id}
+                                      onClick={() =>
+                                        void runAdminAction(item, "pause_bot", "Pause this bot lifecycle state?")
+                                      }
+                                      className="rounded-md border border-amber-300 px-3 py-2 text-sm text-amber-700"
+                                    >
+                                      Pause Bot
+                                    </button>
+                                    <button
+                                      type="button"
+                                      disabled={submittingId === item.id}
+                                      onClick={() =>
+                                        void runAdminAction(item, "reset_bot_initialization", "Reset bot initialization state to not_started?")
+                                      }
+                                      className="rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700"
+                                    >
+                                      Reset Bot Initialization
+                                    </button>
+                                    <button
+                                      type="button"
+                                      disabled={submittingId === item.id}
+                                      onClick={() =>
+                                        void runAdminAction(
+                                          item,
+                                          "mark_live_ready",
+                                          "Mark this market live_ready? This does not place orders, but it will enforce the stricter live readiness checks.",
+                                        )
+                                      }
+                                      className="rounded-md border border-green-300 px-3 py-2 text-sm text-green-700"
+                                    >
+                                      Mark Live Ready
+                                    </button>
+                                    <button
+                                      type="button"
+                                      disabled={submittingId === item.id}
+                                      onClick={() =>
+                                        void runAdminAction(item, "cancel_bot_quotes", "Request bot quote cancellation for this market?")
+                                      }
+                                      className="rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700"
+                                    >
+                                      Cancel Bot Quotes
+                                    </button>
+                                    <button
+                                      type="button"
+                                      disabled={submittingId === item.id}
+                                      onClick={() =>
+                                        void runAdminAction(
+                                          item,
+                                          "emergency_stop",
+                                          "Emergency stop this market bot and request quote cancellation?",
+                                        )
+                                      }
+                                      className="rounded-md border border-red-300 px-3 py-2 text-sm text-red-700"
+                                    >
+                                      Emergency Stop
                                     </button>
                                   </div>
                                 </section>

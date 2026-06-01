@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { assertAdmin, toGuardResponse } from "@/lib/marketGuards";
 import { parseReferenceReview } from "@/server/services/polymarketReferenceImport";
+import { parseBotInitializationMetadata } from "@/server/services/referenceBotInitialization";
+import { getReferenceSummaryForMarket } from "@/server/services/referenceQuoteSnapshots";
 
 export async function GET(request: NextRequest) {
   try {
@@ -38,8 +40,8 @@ export async function GET(request: NextRequest) {
     },
   });
 
-  const items = markets
-    .map((market) => {
+  const items = await Promise.all(
+    markets.map(async (market) => {
       const review = parseReferenceReview(market.referenceMetadata);
       const metadata =
         market.referenceMetadata &&
@@ -47,6 +49,7 @@ export async function GET(request: NextRequest) {
         !Array.isArray(market.referenceMetadata)
           ? (market.referenceMetadata as Record<string, unknown>)
           : {};
+      const botInitialization = parseBotInitializationMetadata(metadata);
       return {
         id: market.id,
         title: market.title,
@@ -83,6 +86,8 @@ export async function GET(request: NextRequest) {
         volume24hr: metadata.volume24hr ?? null,
         liquidity: metadata.liquidity ?? null,
         acceptingOrders: metadata.acceptingOrders ?? null,
+        snapshotSummary: await getReferenceSummaryForMarket(market.id),
+        botInitialization,
         referenceMetadata: market.referenceMetadata,
         outcomes: market.outcomes.map((outcome) => ({
           id: outcome.id,
@@ -94,8 +99,10 @@ export async function GET(request: NextRequest) {
           referenceMetadata: outcome.referenceMetadata,
         })),
       };
-    })
-    .filter((market) => !importStatus || market.importStatus === importStatus);
+    }),
+  );
 
-  return NextResponse.json({ items });
+  const filteredItems = items.filter((market) => !importStatus || market.importStatus === importStatus);
+
+  return NextResponse.json({ items: filteredItems });
 }

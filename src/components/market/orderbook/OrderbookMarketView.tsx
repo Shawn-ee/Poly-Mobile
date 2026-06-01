@@ -3,6 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import MarketHeader from "@/components/market/shared/MarketHeader";
 import OrderTicket from "@/components/market/orderbook/OrderTicket";
+import type {
+  SubmitOrderDebug,
+  SubmitOrderPayload,
+} from "@/components/market/orderbook/orderTicketLogic";
 
 type Market = {
   id: string;
@@ -11,10 +15,117 @@ type Market = {
   status: string;
   outcomes: { id: string; name: string }[];
   pricesByOutcome?: Record<string, number>;
+  referenceOnly?: boolean | null;
+  tradable?: boolean | null;
+  importStatus?: string | null;
+  mmEnabled?: boolean | null;
   event?: {
     slug: string | null;
     title: string;
   } | null;
+};
+
+type ReferenceQuotePlanOutcome = {
+  localMarketId: string;
+  localOutcomeId: string;
+  outcomeName: string;
+  referenceSource: string;
+  polymarketSlug: string | null;
+  polymarketMarketId: string | null;
+  conditionId: string | null;
+  polymarketTokenId: string | null;
+  gammaOutcomePrice: number | null;
+  gammaBestBid: number | null;
+  gammaBestAsk: number | null;
+  gammaSpread: number | null;
+  lastTradePrice: number | null;
+  volume: number | null;
+  volume24hr: number | null;
+  liquidity: number | null;
+  acceptingOrders: boolean;
+  fetchedAt: string | null;
+  ageMs: number | null;
+  isFresh: boolean;
+  hasSnapshot: boolean;
+  qualityStatus: string | null;
+  mmEligible: boolean;
+  mmEnabled: boolean;
+  reason: string | null;
+  tickSize: string;
+  quoteOffsetTicks: number;
+  plannedBotBid: number | null;
+  plannedBotAsk: number | null;
+  referenceBid: number | null;
+  referenceAsk: number | null;
+  activeBotBid?: number | null;
+  activeBotAsk?: number | null;
+  activeBidOrderId?: string | null;
+  activeAskOrderId?: string | null;
+  dryRun: boolean;
+  liveOrdersEnabled: boolean;
+  quotePlanEnabled: boolean;
+  quotePreviewAvailable: boolean;
+  formula: string;
+};
+
+type ReferencePlanResponse = {
+  marketId: string;
+  source: string | null;
+  externalSlug: string | null;
+  conditionId: string | null;
+  hasSnapshot: boolean;
+  reason: string | null;
+  dryRun: boolean;
+  liveOrdersEnabled: boolean;
+  botInitialization?: {
+    status: string;
+    lastCheckedAt: string | null;
+    reason: string | null;
+    approvedBy: string | null;
+    approvedAt: string | null;
+    riskProfile: string | null;
+    capital?: {
+      budgetCents: number | null;
+      mintBudgetCents: number | null;
+      mintedCompleteSets: number | null;
+      cashReserveCents: number | null;
+      autoReplenish: boolean;
+      initializedAt: string | null;
+      initializedBy: string | null;
+      botUserId: string | null;
+      botUsername: string | null;
+      botApiCredentialId: string | null;
+      botApiKeyId: string | null;
+      maxSingleOrderNotionalCents: number | null;
+      maxOpenOrderNotionalCents: number | null;
+      maxDailyLossCents: number | null;
+      openOrderNotionalCents?: number | null;
+      dailyLossCents?: number | null;
+      availableCashUSDC?: number | null;
+      lockedCashUSDC?: number | null;
+    } | null;
+    runtime?: {
+      liveOrdersEnabled: boolean;
+      emergencyStop: boolean;
+      cancelRequestedAt: string | null;
+      lastSeededAt: string | null;
+      lastLiveRunAt: string | null;
+      lastRuntimeSyncAt: string | null;
+    } | null;
+    readiness?: {
+      ready: boolean;
+      dryRun: boolean;
+      liveRequested: boolean;
+      reasons: string[];
+      referenceBid: number | null;
+      referenceAsk: number | null;
+      plannedBotBid: number | null;
+      plannedBotAsk: number | null;
+      riskProfile: string | null;
+      checkedAt: string | null;
+    } | null;
+  } | null;
+  outcomes: ReferenceQuotePlanOutcome[];
 };
 
 type BookRow = {
@@ -82,6 +193,8 @@ export default function OrderbookMarketView({
   const [orders, setOrders] = useState<UserOrder[]>([]);
   const [trades, setTrades] = useState<Trade[]>([]);
   const [position, setPosition] = useState<Position | null>(null);
+  const [referencePlan, setReferencePlan] = useState<ReferenceQuotePlanOutcome[]>([]);
+  const [botInitialization, setBotInitialization] = useState<ReferencePlanResponse["botInitialization"]>(null);
   const [message, setMessage] = useState("");
 
   const loadWallet = async () => {
@@ -173,8 +286,27 @@ export default function OrderbookMarketView({
     }
   };
 
+  const loadReferencePlan = async () => {
+    const res = await fetch(`/api/markets/${marketId}/reference`);
+    if (!res.ok) {
+      setReferencePlan([]);
+      return;
+    }
+    const data = (await res.json()) as ReferencePlanResponse;
+    setReferencePlan(Array.isArray(data.outcomes) ? data.outcomes : []);
+    setBotInitialization(data.botInitialization ?? null);
+  };
+
   useEffect(() => {
     loadAll();
+  }, [marketId]);
+
+  useEffect(() => {
+    void loadReferencePlan();
+    const timer = setInterval(() => {
+      void loadReferencePlan();
+    }, 5_000);
+    return () => clearInterval(timer);
   }, [marketId]);
 
   useEffect(() => {
@@ -287,15 +419,12 @@ export default function OrderbookMarketView({
     };
   }, [marketId, outcomeId]);
 
-  const submitOrder = async (payload: {
-    side: "BUY" | "SELL";
-    type: "LIMIT" | "MARKET";
-    outcomeId: string;
-    size: string;
-    price?: string;
-    maxSpend?: string;
-  }) => {
+  const submitOrder = async (request: { payload: SubmitOrderPayload; debug: SubmitOrderDebug }) => {
+    const { payload, debug } = request;
     setMessage("");
+    if (process.env.NODE_ENV !== "production") {
+      console.debug("order_submit_debug", debug);
+    }
     const res = await fetch(`/api/orders`, {
       method: "POST",
       headers: {
@@ -314,9 +443,9 @@ export default function OrderbookMarketView({
         ? `Order placed: ${payload.side} ${Number(order?.size ?? payload.size).toFixed(2)} @ ${Number(
             order?.price ?? payload.price ?? 0,
           ).toFixed(2)} (${order?.status ?? "OPEN"})`
-        : `Order placed: ${payload.side} ${Number(order?.size ?? payload.size).toFixed(2)} ${
+        : `Order submitted: ${payload.side} ${Number(order?.size ?? payload.size).toFixed(2)} ${
             selectedOutcome?.name ?? ""
-          } (${order?.status ?? "OPEN"})`;
+          } IOC (${order?.status ?? "OPEN"})`;
     setMessage(successMessage);
     await loadAll();
     return successMessage;
@@ -365,10 +494,18 @@ export default function OrderbookMarketView({
   const marketValue = markPrice !== null ? netShares * markPrice : null;
   const unrealizedPnl = markPrice !== null ? (markPrice - avgCost) * netShares : null;
   const formatToken = (value: number | null) => (value === null || !Number.isFinite(value) ? "--" : value.toFixed(2));
+  const selectedReferencePlan = useMemo(
+    () => referencePlan.find((plan) => plan.localOutcomeId === outcomeId) ?? referencePlan[0] ?? null,
+    [referencePlan, outcomeId]
+  );
 
   if (!market) {
     return <main className="mx-auto max-w-6xl px-4 py-8">Loading market...</main>;
   }
+
+  const referenceOnly = market.referenceOnly === true;
+  const tradable = market.tradable !== false;
+  const showTradingControls = !referenceOnly && tradable;
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-8">
@@ -377,6 +514,15 @@ export default function OrderbookMarketView({
         description={market.description}
         status={market.status}
         walletBalance={walletBalance}
+        metaChips={[
+          ...(referenceOnly ? ["Reference only"] : []),
+          ...(market.importStatus === "approved" ? ["Approved reference"] : []),
+        ]}
+        notice={
+          referenceOnly && !tradable
+            ? "This market is visible for discovery only. Trading remains disabled until an admin explicitly enables tradability."
+            : null
+        }
         event={
           market.event?.slug
             ? {
@@ -461,24 +607,235 @@ export default function OrderbookMarketView({
         </div>
 
         <div className="space-y-6">
-          <OrderTicket
-            market={market}
-            selectedOutcomeId={outcomeId}
-            onSelectedOutcomeIdChange={setOutcomeId}
-            walletBalance={walletBalance}
-            position={
-              position
-                ? {
-                    shares: position.shares,
-                    reservedShares: position.reservedShares,
-                  }
-                : null
-            }
-            bestBid={bestBid}
-            bestAsk={bestAsk}
-            onSubmitOrder={submitOrder}
-            marketOrdersSupported
-          />
+          {referenceOnly ? (
+            <div className="rounded-lg border border-neutral-200 bg-white p-4">
+              <h2 className="text-lg font-semibold">Reference Market Data</h2>
+              {selectedReferencePlan ? (
+                <div className="mt-3 space-y-2 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span>Source</span>
+                    <span className="capitalize">{selectedReferencePlan.referenceSource}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Reference bid / ask</span>
+                    <span>{formatToken(selectedReferencePlan.referenceBid)} / {formatToken(selectedReferencePlan.referenceAsk)}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Spread</span>
+                    <span>{formatToken(selectedReferencePlan.gammaSpread)}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Last trade</span>
+                    <span>{formatToken(selectedReferencePlan.lastTradePrice)}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Updated</span>
+                    <span>{formatReferenceAge(selectedReferencePlan.ageMs, selectedReferencePlan.hasSnapshot)}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Quality</span>
+                    <span>{formatReferenceQuality(selectedReferencePlan.qualityStatus, selectedReferencePlan.hasSnapshot)}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>MM eligible</span>
+                    <span>{selectedReferencePlan.mmEligible ? "Yes" : "No"}</span>
+                  </div>
+                  {!selectedReferencePlan.hasSnapshot ? (
+                    <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
+                      No live reference snapshot yet. Run the reference snapshot updater.
+                    </div>
+                  ) : null}
+                  {selectedReferencePlan.hasSnapshot && !selectedReferencePlan.isFresh ? (
+                    <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
+                      Reference data stale
+                    </div>
+                  ) : null}
+                  {selectedReferencePlan.reason === "reference_spread_too_wide" ? (
+                    <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
+                      Reference spread too wide
+                    </div>
+                  ) : null}
+                </div>
+              ) : (
+                <div className="mt-3 text-sm text-neutral-500">No reference snapshot yet.</div>
+              )}
+            </div>
+          ) : null}
+
+          {referenceOnly ? (
+            <div className="rounded-lg border border-neutral-200 bg-white p-4">
+              <h2 className="text-lg font-semibold">Bot Initialization Status</h2>
+              <div className="mt-3 space-y-2 text-sm">
+                <div className="flex items-center justify-between">
+                  <span>Status</span>
+                  <span>{formatBotInitializationStatus(botInitialization?.status ?? null)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Checked</span>
+                  <span>{formatReferenceTimestamp(botInitialization?.lastCheckedAt ?? null)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Risk profile</span>
+                  <span>{botInitialization?.riskProfile ?? "--"}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Seeded</span>
+                  <span>{botInitialization?.capital?.initializedAt ? "Yes" : "No"}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Capital budget</span>
+                  <span>
+                    {botInitialization?.capital?.budgetCents != null
+                      ? `$${(botInitialization.capital.budgetCents / 100).toFixed(2)}`
+                      : "--"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Minted</span>
+                  <span>
+                    {botInitialization?.capital?.mintBudgetCents != null
+                      ? `$${(botInitialization.capital.mintBudgetCents / 100).toFixed(2)}`
+                      : "--"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Cash reserve</span>
+                  <span>
+                    {botInitialization?.capital?.cashReserveCents != null
+                      ? `$${(botInitialization.capital.cashReserveCents / 100).toFixed(2)}`
+                      : "--"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Open order notional</span>
+                  <span>
+                    {botInitialization?.capital?.openOrderNotionalCents != null
+                      ? `$${(botInitialization.capital.openOrderNotionalCents / 100).toFixed(2)}`
+                      : "--"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Daily loss</span>
+                  <span>
+                    {botInitialization?.capital?.dailyLossCents != null
+                      ? `$${(botInitialization.capital.dailyLossCents / 100).toFixed(2)}`
+                      : "--"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Dry run ready</span>
+                  <span>{botInitialization?.readiness?.ready ? "Yes" : "No"}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Live orders enabled</span>
+                  <span>{botInitialization?.runtime?.liveOrdersEnabled ? "Yes" : "No"}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Emergency stop</span>
+                  <span>{botInitialization?.runtime?.emergencyStop ? "Yes" : "No"}</span>
+                </div>
+                {botInitialization?.reason ? (
+                  <div
+                    className={`rounded-md px-3 py-2 ${
+                      botInitialization?.status === "paused" || botInitialization?.status === "blocked"
+                        ? "border border-amber-200 bg-amber-50 text-amber-900"
+                        : "border border-neutral-200 bg-neutral-50 text-neutral-700"
+                    }`}
+                  >
+                    {botInitialization.reason}
+                  </div>
+                ) : null}
+                {botInitialization?.readiness?.reasons?.length ? (
+                  <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
+                    {botInitialization.readiness.reasons.join(", ")}
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
+
+          {referenceOnly ? (
+            <div className="rounded-lg border border-neutral-200 bg-white p-4">
+              <h2 className="text-lg font-semibold">System Liquidity Plan</h2>
+              {selectedReferencePlan ? (
+                <div className="mt-3 space-y-2 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span>Offset</span>
+                    <span>{selectedReferencePlan.quoteOffsetTicks} ticks</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Planned bid</span>
+                    <span className={selectedReferencePlan.quotePreviewAvailable ? "" : "text-neutral-400"}>
+                      {formatToken(selectedReferencePlan.plannedBotBid)}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Planned ask</span>
+                    <span className={selectedReferencePlan.quotePreviewAvailable ? "" : "text-neutral-400"}>
+                      {formatToken(selectedReferencePlan.plannedBotAsk)}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Active bot bid</span>
+                    <span>{formatToken(selectedReferencePlan.activeBotBid ?? null)}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Active bot ask</span>
+                    <span>{formatToken(selectedReferencePlan.activeBotAsk ?? null)}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>MM enabled</span>
+                    <span>{selectedReferencePlan.mmEnabled ? "Yes" : "No"}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Mode</span>
+                    <span>{selectedReferencePlan.dryRun ? "Dry run" : "Live"}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Live orders</span>
+                    <span>{selectedReferencePlan.liveOrdersEnabled ? "Enabled" : "Disabled"}</span>
+                  </div>
+                  <div className="rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-sky-900">
+                    {selectedReferencePlan.liveOrdersEnabled
+                      ? "System liquidity active. This is not a user simulation bot."
+                      : "Bot quote plan only. No live orders."}
+                  </div>
+                  {!selectedReferencePlan.mmEnabled ? (
+                    <div className="rounded-md border border-neutral-200 bg-neutral-50 px-3 py-2 text-neutral-700">
+                      Quote preview only. MM disabled.
+                    </div>
+                  ) : null}
+                </div>
+              ) : (
+                <div className="mt-3 text-sm text-neutral-500">Quote plan unavailable until reference data arrives.</div>
+              )}
+            </div>
+          ) : null}
+
+          {showTradingControls ? (
+            <OrderTicket
+              market={market}
+              selectedOutcomeId={outcomeId}
+              onSelectedOutcomeIdChange={setOutcomeId}
+              walletBalance={walletBalance}
+              position={
+                position
+                  ? {
+                      shares: position.shares,
+                      reservedShares: position.reservedShares,
+                    }
+                  : null
+              }
+              bestBid={bestBid}
+              bestAsk={bestAsk}
+              onSubmitOrder={submitOrder}
+              marketOrdersSupported
+            />
+          ) : (
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+              Trading controls are disabled for this approved reference market.
+            </div>
+          )}
 
           {message ? (
             <div className="rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm text-neutral-600">
@@ -534,32 +891,65 @@ export default function OrderbookMarketView({
             )}
           </div>
 
-          <div className="rounded-lg border border-neutral-200 bg-white p-4">
-            <h2 className="text-lg font-semibold">My Open Orders</h2>
-            <div className="mt-3 space-y-2 text-sm">
-              {orders.map((order) => (
-                <div key={order.id} className="rounded border border-neutral-200 p-2">
-                  <div className="flex items-center justify-between">
-                    <span>
-                      {order.side} {order.outcomeName} {order.remaining.toFixed(2)}/{order.amount.toFixed(2)} @
-                      {order.price.toFixed(2)}
-                    </span>
-                    <button
-                      onClick={() => cancelOrder(order.id)}
-                      className="rounded border border-neutral-300 px-2 py-1 text-xs"
-                      type="button"
-                    >
-                      Cancel
-                    </button>
+          {showTradingControls ? (
+            <div className="rounded-lg border border-neutral-200 bg-white p-4">
+              <h2 className="text-lg font-semibold">My Open Orders</h2>
+              <div className="mt-3 space-y-2 text-sm">
+                {orders.map((order) => (
+                  <div key={order.id} className="rounded border border-neutral-200 p-2">
+                    <div className="flex items-center justify-between">
+                      <span>
+                        {order.side} {order.outcomeName} {order.remaining.toFixed(2)}/{order.amount.toFixed(2)} @
+                        {order.price.toFixed(2)}
+                      </span>
+                      <button
+                        onClick={() => cancelOrder(order.id)}
+                        className="rounded border border-neutral-300 px-2 py-1 text-xs"
+                        type="button"
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
-              {!orders.length ? <div className="text-neutral-500">No open orders.</div> : null}
+                ))}
+                {!orders.length ? <div className="text-neutral-500">No open orders.</div> : null}
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </div>
     </main>
   );
+}
+
+function formatReferenceAge(ageMs: number | null, hasSnapshot: boolean) {
+  if (!hasSnapshot || ageMs == null) {
+    return "Never";
+  }
+  if (ageMs < 1000) {
+    return "<1s ago";
+  }
+  return `${Math.round(ageMs / 1000)}s ago`;
+}
+
+function formatReferenceQuality(qualityStatus: string | null, hasSnapshot: boolean) {
+  if (!hasSnapshot) {
+    return "No snapshot";
+  }
+  return qualityStatus ?? "--";
+}
+
+function formatReferenceTimestamp(value: string | null) {
+  if (!value) {
+    return "Never";
+  }
+  return new Date(value).toLocaleString();
+}
+
+function formatBotInitializationStatus(status: string | null) {
+  if (!status) {
+    return "Not started";
+  }
+  return status.replaceAll("_", " ");
 }
 

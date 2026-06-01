@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import AuthModal from "@/components/AuthModal";
-import DepositModal from "@/components/DepositModal";
 import { CURRENCY_SYMBOL } from "@/lib/currency";
+import TransferCryptoModal from "@/components/TransferCryptoModal";
 
 type User = {
   id: string;
@@ -271,14 +271,10 @@ export default function TopNav() {
         }}
       />
 
-      <DepositModal
+      <TransferCryptoModal
         open={depositOpen}
-        walletAddress={user?.walletAddress ?? null}
         onClose={() => setDepositOpen(false)}
-        onComplete={async () => {
-          await loadUser();
-          setToast("Deposit updated.");
-        }}
+        platformBalance={uBalance}
       />
 
     </header>

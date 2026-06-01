@@ -17,6 +17,8 @@ type EventSummary = {
   icon: string | null;
   marketCount: number;
   activeMarketCount?: number | null;
+  groupedSummary?: { title: string; slug: string } | null;
+  topOutcomes?: string[] | null;
 };
 
 export default function EventsPage() {
@@ -70,6 +72,8 @@ export default function EventsPage() {
                 activeMarketCount={event.activeMarketCount ?? null}
                 image={event.image}
                 icon={event.icon}
+                groupedLabel={event.groupedSummary?.title ?? null}
+                topOutcomes={event.topOutcomes ?? null}
               />
             ) : null,
           )}

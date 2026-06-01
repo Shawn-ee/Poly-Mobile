@@ -96,6 +96,8 @@ const createLedgerEntry = async (
     userId: string;
     reason: LedgerReason;
     operation: LedgerOperation;
+    asset?: "USDC";
+    status?: "APPLIED" | "FAILED";
     idempotencyKey?: string;
     referenceType?: string;
     referenceId?: string;
@@ -106,11 +108,15 @@ const createLedgerEntry = async (
     deltaAvailableUSDC?: Prisma.Decimal;
     deltaLockedUSDC?: Prisma.Decimal;
     amountDelta?: Prisma.Decimal;
+    balanceBefore?: Prisma.Decimal;
+    balanceAfter?: Prisma.Decimal;
   }
 ) => {
   return tx.ledgerEntry.create({
     data: {
       userId: data.userId,
+      asset: data.asset ?? "USDC",
+      status: data.status ?? "APPLIED",
       reason: data.reason,
       operation: data.operation,
       idempotencyKey: data.idempotencyKey,
@@ -123,6 +129,8 @@ const createLedgerEntry = async (
       deltaAvailableUSDC: data.deltaAvailableUSDC,
       deltaLockedUSDC: data.deltaLockedUSDC,
       amountDelta: data.amountDelta ?? new Prisma.Decimal(0),
+      balanceBefore: data.balanceBefore,
+      balanceAfter: data.balanceAfter,
     },
   });
 };
@@ -150,41 +158,17 @@ export async function applyDeposit(params: {
 
   try {
     return await prisma.$transaction(async (tx) => {
-      await ensureBalanceRowLocked(tx, params.userId);
-
-      const existing = await tx.ledgerEntry.findUnique({
-        where: { idempotencyKey: params.eventKey },
-      });
-      if (existing) {
-        const balance = await tx.userBalance.findUniqueOrThrow({ where: { userId: params.userId } });
-        return { applied: false, balance };
-      }
-
-      await createLedgerEntry(tx, {
+      return applyDepositTx(tx, {
         userId: params.userId,
-        reason: "DEPOSIT",
-        operation: "DEPOSIT",
-        idempotencyKey: params.eventKey,
-        referenceType: params.referenceType,
-        referenceId: params.referenceId,
+        amount,
+        eventKey: params.eventKey,
         chainId: params.chainId,
         txHash: params.txHash,
         logIndex: params.logIndex,
-        tokenAddress: params.token,
-        deltaAvailableUSDC: amount,
-        deltaLockedUSDC: new Prisma.Decimal(0),
-        amountDelta: amount,
+        token: params.token,
+        referenceType: params.referenceType,
+        referenceId: params.referenceId,
       });
-      await runLedgerTestHook("applyDeposit.afterLedgerBeforeBalance");
-
-      const balance = await tx.userBalance.update({
-        where: { userId: params.userId },
-        data: {
-          ...incrementVersion,
-          availableUSDC: { increment: amount },
-        },
-      });
-      return { applied: true, balance };
     });
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
@@ -193,6 +177,61 @@ export async function applyDeposit(params: {
     }
     throw error;
   }
+}
+
+export async function applyDepositTx(
+  tx: TxClient,
+  params: {
+    userId: string;
+    amount: Prisma.Decimal;
+    eventKey: string;
+    chainId: number;
+    txHash: string;
+    logIndex: number;
+    token: string;
+    referenceType?: string;
+    referenceId?: string;
+  }
+): Promise<{ applied: boolean; balance: UserBalance }> {
+  const balanceBefore = await ensureBalanceRowLocked(tx, params.userId);
+
+  const existing = await tx.ledgerEntry.findUnique({
+    where: { idempotencyKey: params.eventKey },
+  });
+  if (existing) {
+    const balance = await tx.userBalance.findUniqueOrThrow({ where: { userId: params.userId } });
+    return { applied: false, balance };
+  }
+
+  const balanceAfter = new Prisma.Decimal(balanceBefore.availableUSDC).add(params.amount);
+
+  await createLedgerEntry(tx, {
+    userId: params.userId,
+    reason: "DEPOSIT",
+    operation: "DEPOSIT",
+    idempotencyKey: params.eventKey,
+    referenceType: params.referenceType,
+    referenceId: params.referenceId,
+    chainId: params.chainId,
+    txHash: params.txHash,
+    logIndex: params.logIndex,
+    tokenAddress: params.token,
+    deltaAvailableUSDC: params.amount,
+    deltaLockedUSDC: new Prisma.Decimal(0),
+    amountDelta: params.amount,
+    balanceBefore: new Prisma.Decimal(balanceBefore.availableUSDC),
+    balanceAfter,
+  });
+  await runLedgerTestHook("applyDeposit.afterLedgerBeforeBalance");
+
+  const balance = await tx.userBalance.update({
+    where: { userId: params.userId },
+    data: {
+      ...incrementVersion,
+      availableUSDC: { increment: params.amount },
+    },
+  });
+  return { applied: true, balance };
 }
 
 export async function lockFundsForOrder(params: {

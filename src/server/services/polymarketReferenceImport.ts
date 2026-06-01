@@ -184,6 +184,7 @@ export async function upsertPolymarketReferenceMarket(
     for (const [index, outcomeInput] of input.market.outcomes.entries()) {
       const existingOutcome = findExistingOutcome(existingOutcomes, outcomeInput, usedOutcomeIds, marketType, index);
       const localName = normalizeLocalOutcomeName(outcomeInput.name, marketType);
+      const outcomeSlug = buildImportedOutcomeSlug(market.slug, localName, outcomeInput.referenceTokenId, index);
       if (existingOutcome) {
         const updated = await tx.outcome.update({
           where: { id: existingOutcome.id },
@@ -194,7 +195,7 @@ export async function upsertPolymarketReferenceMarket(
             referenceTokenId: outcomeInput.referenceTokenId ?? null,
             referenceOutcomeLabel: outcomeInput.referenceOutcomeLabel ?? outcomeInput.name,
             referenceMetadata: outcomeInput.referenceMetadata ?? Prisma.JsonNull,
-            slug: existingOutcome.slug ?? slugify(localName),
+            slug: existingOutcome.slug ?? outcomeSlug,
           },
         });
         usedOutcomeIds.add(updated.id);
@@ -204,7 +205,7 @@ export async function upsertPolymarketReferenceMarket(
           data: {
             marketId: market.id,
             name: localName,
-            slug: slugify(localName),
+            slug: outcomeSlug,
             displayOrder: outcomeInput.displayOrder ?? index,
             isTradable: outcomeInput.isTradable ?? false,
             referenceTokenId: outcomeInput.referenceTokenId ?? null,
@@ -453,4 +454,19 @@ function slugify(value: string) {
     .replace(/[^a-z0-9\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
+}
+
+function buildImportedOutcomeSlug(
+  marketSlug: string | null,
+  outcomeName: string,
+  referenceTokenId: string | null | undefined,
+  index: number,
+) {
+  const marketBase = marketSlug && marketSlug.trim().length > 0 ? marketSlug.trim().toLowerCase() : `market-${index + 1}`;
+  const outcomeBase = slugify(outcomeName);
+  const tokenSuffix =
+    referenceTokenId && referenceTokenId.trim().length >= 6
+      ? referenceTokenId.trim().slice(-6).toLowerCase()
+      : `${index + 1}`;
+  return `${marketBase}-${outcomeBase}-${tokenSuffix}`;
 }

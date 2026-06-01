@@ -79,19 +79,24 @@ type GeneratedBot = {
 };
 
 async function main() {
-  const markets = await prisma.market.findMany({
+  const preferredMarkets = await prisma.market.findMany({
     where: {
       status: "LIVE",
       visibility: "PUBLIC",
       mechanism: "ORDERBOOK",
       isCanceled: false,
       isListed: true,
+      referenceSource: null,
+      outcomes: {
+        some: { isTradable: true },
+      },
     },
     orderBy: [{ createdAt: "desc" }],
     select: {
       id: true,
       title: true,
       outcomes: {
+        where: { isTradable: true },
         select: { id: true, name: true },
         orderBy: { createdAt: "asc" },
       },
@@ -99,6 +104,34 @@ async function main() {
     take: 5,
   });
 
+  const fallbackMarkets =
+    preferredMarkets.length > 0
+      ? preferredMarkets
+      : await prisma.market.findMany({
+          where: {
+            status: "LIVE",
+            visibility: "PUBLIC",
+            mechanism: "ORDERBOOK",
+            isCanceled: false,
+            isListed: true,
+            outcomes: {
+              some: { isTradable: true },
+            },
+          },
+          orderBy: [{ createdAt: "desc" }],
+          select: {
+            id: true,
+            title: true,
+            outcomes: {
+              where: { isTradable: true },
+              select: { id: true, name: true },
+              orderBy: { createdAt: "asc" },
+            },
+          },
+          take: 5,
+        });
+
+  const markets = fallbackMarkets;
   const chosenMarket = markets[0] ?? null;
   const detectedMarketIds = markets.map((market) => market.id);
   const configMarketIds = chosenMarket ? [chosenMarket.id] : [PLACEHOLDER_MARKET_ID];

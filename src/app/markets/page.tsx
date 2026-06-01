@@ -12,8 +12,22 @@ type Market = {
   visibility: "PUBLIC" | "PRIVATE";
   mechanism: "ORDERBOOK" | "POOL";
   prices: { YES: number; NO: number } | null;
+  referenceOnly?: boolean | null;
+  tradable?: boolean | null;
   outcomes: { id: string; name: string }[];
   resolveTime: string | null;
+  referenceSummary?: {
+    source: string;
+    referenceBid: number | null;
+    referenceAsk: number | null;
+    plannedBotBid: number | null;
+    plannedBotAsk: number | null;
+    qualityStatus: string | null;
+    isFresh: boolean;
+    mmEligible: boolean;
+    dryRun: boolean;
+    quotePlanEnabled: boolean;
+  } | null;
 };
 
 type EventSummary = {
@@ -27,6 +41,8 @@ type EventSummary = {
   activeMarketCount?: number | null;
   image: string | null;
   icon: string | null;
+  groupedSummary?: { title: string; slug: string } | null;
+  topOutcomes?: string[] | null;
 };
 
 function MarketsPageInner() {
@@ -280,6 +296,8 @@ function MarketsPageInner() {
                   activeMarketCount={event.activeMarketCount ?? null}
                   image={event.image}
                   icon={event.icon}
+                  groupedLabel={event.groupedSummary?.title ?? null}
+                  topOutcomes={event.topOutcomes ?? null}
                 />
               ) : null,
             )}
@@ -314,6 +332,9 @@ function MarketsPageInner() {
                 prices={market.prices}
                 visibility={market.visibility}
                 mechanism={market.mechanism}
+                referenceOnly={market.referenceOnly}
+                tradable={market.tradable}
+                referenceSummary={market.referenceSummary}
               />
             ) : (
               <a
@@ -323,7 +344,9 @@ function MarketsPageInner() {
               >
                 <div>
                   <h3 className="line-clamp-2 text-base font-semibold text-neutral-900">{market.title}</h3>
-                  <div className="mt-2 text-xs text-neutral-500">{market.status}</div>
+                  <div className="mt-2 text-xs text-neutral-500">
+                    {market.referenceOnly && market.tradable === false ? "Coming soon" : market.status}
+                  </div>
                 </div>
                 <div className="mt-6 text-xs text-neutral-500">
                   Outcomes: {market.outcomes.map((outcome) => outcome.name).join(" / ")}

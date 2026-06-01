@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BrowserProvider } from "ethers";
-import DepositModal from "@/components/DepositModal";
+import TransferCryptoModal from "@/components/TransferCryptoModal";
 
 type Transaction = {
   id: string;
@@ -54,7 +54,32 @@ export default function WalletPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [transactionsLoading, setTransactionsLoading] = useState(false);
   const [depositOpen, setDepositOpen] = useState(false);
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const depositAddressInfo: {
+    network: string;
+    token: string;
+    address: string;
+    minimumDeposit: string;
+    confirmationsRequired: number;
+    warnings: string[];
+  } = {
+    network: "Polygon",
+    token: "USDC",
+    address: "",
+    minimumDeposit: "2.00",
+    confirmationsRequired: 0,
+    warnings: [],
+  };
+  const depositHistory: Array<{
+    id: string;
+    amount: string;
+    status: string;
+    confirmations: number;
+    detectedAt: string;
+    txHash: string;
+    warnings?: string[];
+  }> = [];
+  const depositLoading = false;
+  const depositError = "";
   const [wallets, setWallets] = useState<LinkedWallet[]>([]);
   const [walletsLoading, setWalletsLoading] = useState(false);
   const [usdcBalances, setUsdcBalances] = useState<Record<string, string>>({});
@@ -156,8 +181,7 @@ export default function WalletPage() {
     setLockedBalance(balanceData.lockedUSDC ?? 0);
     setTotalBalance(balanceData.totalUSDC ?? balanceData.balance ?? 0);
     if (meRes.ok) {
-      const meData = await meRes.json();
-      setWalletAddress(meData?.user?.walletAddress ?? null);
+      await meRes.json().catch(() => null);
     }
   };
 
@@ -256,6 +280,13 @@ export default function WalletPage() {
     return () => {
       window.ethereum?.removeListener?.("chainChanged", onChainChanged);
     };
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      void loadBalance();
+    }, 15000);
+    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -536,17 +567,115 @@ export default function WalletPage() {
       <section className="mt-6 rounded-lg border border-neutral-200 bg-white p-4">
         <h2 className="text-lg font-semibold">Deposit</h2>
         <p className="mt-1 text-sm text-neutral-600">
-          Generate a deposit intent and confirm incoming USDC from your linked wallet.
+          Open the transfer modal to view your Polygon USDC deposit address and recent deposit activity.
         </p>
-        <div className="mt-4">
-          <button
-            onClick={() => setDepositOpen(true)}
-            className="rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700 hover:border-neutral-400"
-            type="button"
-          >
-            Open deposit flow
-          </button>
+        <div className="mt-4 rounded-2xl border border-neutral-200 bg-neutral-50 p-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="text-sm font-medium text-neutral-900">Transfer Crypto</div>
+              <div className="mt-1 text-sm text-neutral-600">
+                Polygon and USDC are the only supported options in this flow right now.
+              </div>
+            </div>
+            <button
+              onClick={() => setDepositOpen(true)}
+              className="rounded-2xl bg-neutral-900 px-4 py-3 text-sm font-medium text-white hover:bg-neutral-800"
+              type="button"
+            >
+              Open transfer modal
+            </button>
+          </div>
         </div>
+        {false ? (
+        <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4">
+          {depositAddressInfo ? (
+            <>
+              <div className="grid gap-4 md:grid-cols-[1fr_200px]">
+                <div className="space-y-3">
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div>
+                      <div className="text-xs font-medium uppercase tracking-wide text-neutral-500">Network</div>
+                      <div className="mt-1 text-sm text-neutral-800">{depositAddressInfo.network}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs font-medium uppercase tracking-wide text-neutral-500">Token</div>
+                      <div className="mt-1 text-sm text-neutral-800">{depositAddressInfo.token}</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-xs font-medium uppercase tracking-wide text-neutral-500">Deposit address</div>
+                    <div className="mt-1 break-all rounded-md border border-neutral-200 bg-white px-3 py-2 font-mono text-sm text-neutral-800">
+                      {depositAddressInfo.address}
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      <button
+                        onClick={() => navigator.clipboard.writeText(depositAddressInfo.address)}
+                        className="rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700"
+                        type="button"
+                      >
+                        Copy address
+                      </button>
+                    </div>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div>
+                      <div className="text-xs font-medium uppercase tracking-wide text-neutral-500">Minimum deposit</div>
+                      <div className="mt-1 text-sm text-neutral-800">${depositAddressInfo.minimumDeposit}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs font-medium uppercase tracking-wide text-neutral-500">Confirmations</div>
+                      <div className="mt-1 text-sm text-neutral-800">{depositAddressInfo.confirmationsRequired}</div>
+                    </div>
+                  </div>
+                  <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+                    {depositAddressInfo.warnings.map((warning) => (
+                      <div key={warning}>{warning}</div>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex items-start justify-center">
+                  <img
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(
+                      depositAddressInfo.address,
+                    )}`}
+                    alt="Deposit address QR code"
+                    className="h-[180px] w-[180px] rounded-md border border-neutral-200 bg-white p-2"
+                  />
+                </div>
+              </div>
+              <div className="mt-4 rounded-md border border-neutral-200 bg-white p-3">
+                <div className="text-sm font-medium text-neutral-800">Deposit history</div>
+                {depositLoading ? (
+                  <div className="mt-2 text-sm text-neutral-600">Refreshing deposits...</div>
+                ) : depositHistory.length === 0 ? (
+                  <div className="mt-2 text-sm text-neutral-600">Waiting for deposit.</div>
+                ) : (
+                  <div className="mt-3 space-y-2 text-sm">
+                    {depositHistory.slice(0, 10).map((deposit) => (
+                      <div key={deposit.id} className="rounded-md border border-neutral-100 px-3 py-2">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <span>{Number(deposit.amount).toFixed(2)} USDC</span>
+                          <span className="text-neutral-600">{deposit.status}</span>
+                        </div>
+                        <div className="mt-1 text-xs text-neutral-500">
+                          {deposit.confirmations} confirmations · {new Date(deposit.detectedAt).toLocaleString()}
+                        </div>
+                        <div className="mt-1 font-mono text-xs text-neutral-500">
+                          {deposit.txHash}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="text-sm text-neutral-600">
+              {depositError || "Loading Polygon USDC deposit address..."}
+            </div>
+          )}
+        </div>
+        ) : null}
       </section>
 
       <section className="mt-6 rounded-lg border border-neutral-200 bg-white p-4">
@@ -754,7 +883,7 @@ export default function WalletPage() {
           <div>
             <h2 className="text-lg font-semibold">My Wallets</h2>
             <p className="mt-1 text-sm text-neutral-600">
-              Wallets linked to your account for Base USDC deposit verification.
+              Wallets linked to your account for login and withdrawals.
             </p>
           </div>
           <button
@@ -785,7 +914,7 @@ export default function WalletPage() {
           <div className="mt-4 text-sm text-neutral-600">Loading wallets...</div>
         ) : wallets.length === 0 ? (
           <div className="mt-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-            No linked wallets. Link a wallet before verifying deposits.
+            No linked wallets yet.
           </div>
         ) : (
           <div className="mt-4 overflow-x-auto">
@@ -794,7 +923,7 @@ export default function WalletPage() {
                 <tr className="border-b border-neutral-200 text-neutral-600">
                   <th className="px-2 py-2 font-medium">Address</th>
                   <th className="px-2 py-2 font-medium">Chain</th>
-                  <th className="px-2 py-2 font-medium">USDC (Base)</th>
+                  <th className="px-2 py-2 font-medium">USDC balance</th>
                   <th className="px-2 py-2 font-medium">Linked At</th>
                   <th className="px-2 py-2 font-medium">Status</th>
                 </tr>
@@ -827,7 +956,7 @@ export default function WalletPage() {
         <div className="mt-4 rounded-md border border-neutral-200 bg-neutral-50 p-3">
           <h3 className="text-sm font-semibold">Manually link a wallet (fallback)</h3>
           <p className="mt-1 text-xs text-neutral-600">
-            Use this if MetaMask signature flow fails. Chain is Base only.
+            Use this if the signature flow fails.
           </p>
           <div className="mt-3 flex flex-col gap-2 sm:flex-row">
             <input
@@ -837,7 +966,7 @@ export default function WalletPage() {
               className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
             />
             <div className="rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-700">
-              Base (8453)
+              App network
             </div>
             <button
               onClick={handleManualLinkWallet}
@@ -861,16 +990,10 @@ export default function WalletPage() {
           </div>
         ) : null}
       </section>
-
-      <DepositModal
+      <TransferCryptoModal
         open={depositOpen}
-        walletAddress={walletAddress}
         onClose={() => setDepositOpen(false)}
-        onComplete={async () => {
-          await loadBalance();
-          await loadTransactions();
-          setMessage("Deposit updated.");
-        }}
+        platformBalance={Number(totalBalance ?? 0)}
       />
     </main>
   );

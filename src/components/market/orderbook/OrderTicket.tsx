@@ -1,6 +1,15 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import {
+  buildOrderTicketSubmission,
+  estimateBuyMarketShares,
+  estimateSellMarketReceive,
+  getMarketExecutablePrice,
+  type BuyLimitInputMode,
+  type SubmitOrderDebug,
+  type SubmitOrderPayload,
+} from "@/components/market/orderbook/orderTicketLogic";
 
 type TicketMarket = {
   id: string;
@@ -14,28 +23,6 @@ type TicketPosition = {
   shares: number;
   reservedShares: number;
 } | null;
-
-type SubmitOrderPayload =
-  | {
-      side: "BUY" | "SELL";
-      type: "LIMIT";
-      outcomeId: string;
-      price: string;
-      size: string;
-    }
-  | {
-      side: "BUY";
-      type: "MARKET";
-      outcomeId: string;
-      size: string;
-      maxSpend: string;
-    }
-  | {
-      side: "SELL";
-      type: "MARKET";
-      outcomeId: string;
-      size: string;
-    };
 
 const QUICK_BUY_AMOUNTS = [1, 5, 10, 100];
 const FALLBACK_PRICE = 0.5;
@@ -71,12 +58,12 @@ export default function OrderTicket({
   position: TicketPosition;
   bestBid: number | null;
   bestAsk: number | null;
-  onSubmitOrder: (payload: SubmitOrderPayload) => Promise<string>;
+  onSubmitOrder: (request: { payload: SubmitOrderPayload; debug: SubmitOrderDebug }) => Promise<string>;
   marketOrdersSupported: boolean;
 }) {
   const [side, setSide] = useState<"BUY" | "SELL">("BUY");
   const [orderType, setOrderType] = useState<"MARKET" | "LIMIT">("MARKET");
-  const [buyLimitInputMode, setBuyLimitInputMode] = useState<"amount" | "shares">("amount");
+  const [buyLimitInputMode, setBuyLimitInputMode] = useState<BuyLimitInputMode>("amount");
   const [amountUsd, setAmountUsd] = useState("10");
   const [shares, setShares] = useState("10");
   const [limitPrice, setLimitPrice] = useState("0.50");
@@ -97,8 +84,9 @@ export default function OrderTicket({
     return FALLBACK_PRICE;
   }, [market.pricesByOutcome, selectedOutcome]);
 
-  const estimatedBuyMarketPrice = bestAsk ?? selectedDisplayPrice;
-  const estimatedSellMarketPrice = bestBid ?? selectedDisplayPrice;
+  const marketExecutable = getMarketExecutablePrice({ side, bestBid, bestAsk });
+  const estimatedBuyMarketPrice = bestAsk;
+  const estimatedSellMarketPrice = bestBid;
   const availableShares = clampPositive((position?.shares ?? 0) - (position?.reservedShares ?? 0));
   const marketOpenForTrading = market.status === "LIVE" || market.status === "ACTIVE";
 
@@ -128,12 +116,14 @@ export default function OrderTicket({
       : parsedShares;
   const buyLimitEstimatedCost =
     buyLimitInputMode === "amount" ? parsedAmountUsd : parsedShares * parsedLimitPrice;
-  const buyMarketEstimatedShares =
-    estimatedBuyMarketPrice > 0 ? parsedAmountUsd / estimatedBuyMarketPrice : 0;
-  const buyMarketToWin = buyMarketEstimatedShares * (1 - estimatedBuyMarketPrice);
+  const buyMarketEstimatedShares = estimateBuyMarketShares(parsedAmountUsd, bestAsk);
+  const buyMarketToWin =
+    estimatedBuyMarketPrice != null ? buyMarketEstimatedShares * (1 - estimatedBuyMarketPrice) : 0;
   const buyLimitToWin = buyLimitEstimatedShares * (1 - parsedLimitPrice);
-  const sellMarketReceive = parsedShares * estimatedSellMarketPrice;
+  const sellMarketReceive = estimateSellMarketReceive(parsedShares, bestBid);
   const sellLimitReceive = parsedShares * parsedLimitPrice;
+  const marketOrderUnavailableReason =
+    orderType === "MARKET" ? marketExecutable.unavailableReason : null;
 
   const selectedOutcomeName = selectedOutcome?.name ?? "Outcome";
   const submitLabel =
@@ -150,6 +140,7 @@ export default function OrderTicket({
     !marketOpenForTrading ||
     !selectedOutcome ||
     (orderType === "MARKET" && !marketOrdersSupported) ||
+    (orderType === "MARKET" && !!marketOrderUnavailableReason) ||
     (side === "BUY" && orderType === "MARKET" && parsedAmountUsd <= 0) ||
     (side === "BUY" && orderType === "LIMIT" && (parsedLimitPrice <= 0 || buyLimitEstimatedShares <= 0)) ||
     (side === "SELL" && orderType === "MARKET" && (parsedShares <= 0 || parsedShares > availableShares)) ||
@@ -171,43 +162,21 @@ export default function OrderTicket({
     setFeedback(null);
 
     try {
-      let message = "";
-      if (side === "BUY" && orderType === "MARKET") {
-        message = await onSubmitOrder({
-          side: "BUY",
-          type: "MARKET",
-          outcomeId: selectedOutcome.id,
-          size: buyMarketEstimatedShares.toFixed(6),
-          maxSpend: parsedAmountUsd.toFixed(6),
-        });
-      } else if (side === "BUY" && orderType === "LIMIT") {
-        const sizeToSend =
-          buyLimitInputMode === "amount"
-            ? buyLimitEstimatedShares
-            : parsedShares;
-        message = await onSubmitOrder({
-          side: "BUY",
-          type: "LIMIT",
-          outcomeId: selectedOutcome.id,
-          price: parsedLimitPrice.toFixed(8),
-          size: sizeToSend.toFixed(6),
-        });
-      } else if (side === "SELL" && orderType === "MARKET") {
-        message = await onSubmitOrder({
-          side: "SELL",
-          type: "MARKET",
-          outcomeId: selectedOutcome.id,
-          size: parsedShares.toFixed(6),
-        });
-      } else {
-        message = await onSubmitOrder({
-          side: "SELL",
-          type: "LIMIT",
-          outcomeId: selectedOutcome.id,
-          price: parsedLimitPrice.toFixed(8),
-          size: parsedShares.toFixed(6),
-        });
+      const submission = buildOrderTicketSubmission({
+        side,
+        orderType,
+        outcomeId: selectedOutcome.id,
+        bestBid,
+        bestAsk,
+        parsedAmountUsd,
+        parsedShares,
+        parsedLimitPrice,
+        buyLimitInputMode,
+      });
+      if (!submission.payload) {
+        throw new Error(submission.error ?? "Unable to submit order.");
       }
+      const message = await onSubmitOrder(submission);
       setFeedback({ tone: "success", text: message });
     } catch (error) {
       setFeedback({
@@ -305,7 +274,7 @@ export default function OrderTicket({
         </div>
         {orderType === "MARKET" ? (
           <div className="mt-2 text-[11px] text-neutral-500">
-            Estimates use the current best {side === "BUY" ? "ask" : "bid"} and can move before execution.
+            Market orders submit as IOC and cancel any unfilled remainder after matching the current best {side === "BUY" ? "ask" : "bid"} liquidity.
           </div>
         ) : null}
       </div>
@@ -542,6 +511,9 @@ export default function OrderTicket({
         <p className="mt-3 text-sm text-amber-700">
           Market order mode is not available with the current backend configuration.
         </p>
+      ) : null}
+      {marketOrderUnavailableReason ? (
+        <p className="mt-3 text-sm text-amber-700">{marketOrderUnavailableReason}</p>
       ) : null}
       {!marketOpenForTrading ? (
         <p className="mt-3 text-sm text-neutral-500">

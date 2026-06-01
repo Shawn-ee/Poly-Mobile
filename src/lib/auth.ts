@@ -60,6 +60,25 @@ export const getExistingUserId = async () => {
   return null;
 };
 
+export const resolveAuthenticatedUser = async () => {
+  const userId = await getUserId();
+  if (!userId) {
+    return { user: null, reason: "missing_session" as const };
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { id: true, email: true, username: true },
+  });
+
+  if (!user) {
+    await clearUserIdCookie();
+    return { user: null, reason: "missing_user_record" as const };
+  }
+
+  return { user, reason: null };
+};
+
 export const setUserIdCookie = async (userId: string) => {
   const cookieStore = await cookies();
   const token = encodeSession({

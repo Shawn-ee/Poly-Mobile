@@ -1,4 +1,9 @@
+import { getAddress } from "ethers";
+
 type RuntimeEnv = "development" | "staging" | "production" | "test";
+
+const POLYGON_NATIVE_USDC_ADDRESS = "0x3c499c542ceF5E3811e1192ce70d8cc03d5c3359";
+const POLYGON_BRIDGED_USDC_E_ADDRESS = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174";
 
 const numberEnv = (env: NodeJS.ProcessEnv, key: string, fallback: number) => {
   const raw = env[key];
@@ -38,11 +43,70 @@ export const config = {
   usdcBaseAddress: env.USDC_BASE_ADDRESS ?? "",
   projectDepositAddress: env.PROJECT_DEPOSIT_ADDRESS ?? "",
   depositMinConfirmations: numberEnv(env, "DEPOSIT_MIN_CONFIRMATIONS", 1),
+  polygonRpcUrl: env.POLYGON_RPC_URL ?? "",
+  polygonUsdcAddress: env.POLYGON_USDC_ADDRESS ?? "",
+  polygonDepositConfirmations: numberEnv(env, "DEPOSIT_CONFIRMATIONS", 20),
+  polygonDepositMinUsd: numberEnv(env, "DEPOSIT_MIN_USD", 2),
+  depositWalletEncryptionKey: env.DEPOSIT_WALLET_ENCRYPTION_KEY ?? "",
+  treasuryWalletAddress: env.TREASURY_WALLET_ADDRESS ?? "",
+  treasuryPrivateKey: env.TREASURY_PRIVATE_KEY ?? "",
+  depositMonitorPollIntervalMs: numberEnv(env, "DEPOSIT_MONITOR_POLL_INTERVAL_MS", 15000),
   withdrawalMinUSDC: numberEnv(env, "WITHDRAWAL_MIN_USDC", 5),
   withdrawalUserDailyLimitUSDC: numberEnv(env, "WITHDRAWAL_USER_DAILY_LIMIT_USDC", 5000),
   withdrawalGlobalDailyLimitUSDC: numberEnv(env, "WITHDRAWAL_GLOBAL_DAILY_LIMIT_USDC", 50000),
   withdrawalMaxPendingPerUser: numberEnv(env, "WITHDRAWAL_MAX_PENDING_PER_USER", 5),
 } as const;
+
+export function getPolygonUsdcTokenLabel(address = config.polygonUsdcAddress) {
+  try {
+    const normalized = getAddress(address).toLowerCase();
+    if (normalized === getAddress(POLYGON_BRIDGED_USDC_E_ADDRESS).toLowerCase()) {
+      return "USDC.e";
+    }
+  } catch {
+    return "USDC";
+  }
+  return "USDC";
+}
+
+export function getDepositConfigIssues(sourceEnv: NodeJS.ProcessEnv = process.env) {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  const polygonRpcUrl = sourceEnv.POLYGON_RPC_URL?.trim() ?? "";
+  const polygonUsdcAddress = sourceEnv.POLYGON_USDC_ADDRESS?.trim() ?? "";
+  const encryptionKey = sourceEnv.DEPOSIT_WALLET_ENCRYPTION_KEY?.trim() ?? "";
+
+  if (!polygonRpcUrl) {
+    warnings.push("POLYGON_RPC_URL is not set; Polygon deposit monitor is disabled");
+  } else {
+    try {
+      const parsed = new URL(polygonRpcUrl);
+      if (!["http:", "https:"].includes(parsed.protocol)) {
+        errors.push("POLYGON_RPC_URL must use http or https");
+      }
+    } catch {
+      errors.push("POLYGON_RPC_URL must be a valid URL");
+    }
+  }
+
+  if (!polygonUsdcAddress) {
+    warnings.push("POLYGON_USDC_ADDRESS is not set; Polygon deposit monitor is disabled");
+  } else {
+    try {
+      getAddress(polygonUsdcAddress);
+    } catch {
+      errors.push("POLYGON_USDC_ADDRESS must be a valid EVM address");
+    }
+  }
+
+  if (!encryptionKey) {
+    warnings.push("DEPOSIT_WALLET_ENCRYPTION_KEY is not set; deposit wallet generation is disabled");
+  } else if (!/^[0-9a-fA-F]{64}$/.test(encryptionKey)) {
+    errors.push("DEPOSIT_WALLET_ENCRYPTION_KEY must be 64 hex characters (32 bytes)");
+  }
+
+  return { errors, warnings };
+}
 
 export const validateConfig = (sourceEnv: NodeJS.ProcessEnv = process.env) => {
   const envName = resolveAppEnv(sourceEnv);
@@ -63,8 +127,30 @@ export const validateConfig = (sourceEnv: NodeJS.ProcessEnv = process.env) => {
   if (strict) {
     requireKey("NEXTAUTH_URL");
     requireKey("ADMIN_EMAILS");
+    requireKey("POLYGON_RPC_URL");
+    requireKey("POLYGON_USDC_ADDRESS");
+    requireKey("DEPOSIT_WALLET_ENCRYPTION_KEY");
   } else if (!sourceEnv.ADMIN_EMAILS) {
     warnings.push("ADMIN_EMAILS is not set; admin bootstrap may be limited");
+  }
+
+  const depositConfig = getDepositConfigIssues(sourceEnv);
+  warnings.push(...depositConfig.warnings);
+  errors.push(...depositConfig.errors);
+  if (numberEnv(sourceEnv, "DEPOSIT_CONFIRMATIONS", config.polygonDepositConfirmations) < 1) {
+    errors.push("DEPOSIT_CONFIRMATIONS must be >= 1");
+  }
+  if (numberEnv(sourceEnv, "DEPOSIT_MIN_USD", config.polygonDepositMinUsd) <= 0) {
+    errors.push("DEPOSIT_MIN_USD must be > 0");
+  }
+  if (
+    numberEnv(
+      sourceEnv,
+      "DEPOSIT_MONITOR_POLL_INTERVAL_MS",
+      config.depositMonitorPollIntervalMs,
+    ) < 1000
+  ) {
+    errors.push("DEPOSIT_MONITOR_POLL_INTERVAL_MS must be >= 1000");
   }
 
   if (numberEnv(sourceEnv, "WITHDRAWAL_MIN_USDC", config.withdrawalMinUSDC) <= 0) {

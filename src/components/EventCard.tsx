@@ -12,6 +12,8 @@ type EventCardProps = {
   activeMarketCount?: number | null;
   image?: string | null;
   icon?: string | null;
+  topOutcomes?: string[] | null;
+  groupedLabel?: string | null;
 };
 
 export default function EventCard({
@@ -24,6 +26,8 @@ export default function EventCard({
   activeMarketCount,
   image,
   icon,
+  topOutcomes,
+  groupedLabel,
 }: EventCardProps) {
   return (
     <Link
@@ -56,7 +60,15 @@ export default function EventCard({
               {source ? (
                 <span className="rounded-full border border-neutral-200 px-2 py-0.5">{source}</span>
               ) : null}
+              {groupedLabel ? (
+                <span className="rounded-full border border-neutral-200 px-2 py-0.5">{groupedLabel}</span>
+              ) : null}
             </div>
+            {topOutcomes?.length ? (
+              <div className="mt-3 text-xs text-neutral-500">
+                Top outcomes: {topOutcomes.join(", ")}
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

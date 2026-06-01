@@ -60,7 +60,21 @@ export async function GET(request: NextRequest) {
     include: marketReadInclude,
   });
 
-  const payload = await Promise.all(markets.map((market) => serializeMarketReadModel(market)));
+  const payload = await Promise.all(
+    markets
+      .filter((market) => {
+        const metadata =
+          market.referenceMetadata && typeof market.referenceMetadata === "object" && !Array.isArray(market.referenceMetadata)
+            ? (market.referenceMetadata as Record<string, unknown>)
+            : {};
+        const group =
+          metadata.group && typeof metadata.group === "object" && !Array.isArray(metadata.group)
+            ? (metadata.group as Record<string, unknown>)
+            : null;
+        return !group?.slug;
+      })
+      .map((market) => serializeMarketReadModel(market)),
+  );
 
   return NextResponse.json({ markets: payload });
 }

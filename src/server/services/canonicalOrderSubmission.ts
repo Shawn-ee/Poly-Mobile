@@ -149,6 +149,32 @@ const parseOptionalPositiveDecimalString = (
   return parsePositiveDecimalString(value, fieldName, maxScale);
 };
 
+const getPolicyPrice = (order: Pick<NormalizedOrderRequest, "type" | "side" | "price" | "size" | "maxSpend">) => {
+  if (order.type === "LIMIT") {
+    return order.price ?? "0";
+  }
+
+  if (order.side === "BUY" && order.maxSpend) {
+    const size = new Prisma.Decimal(order.size);
+    const maxSpend = new Prisma.Decimal(order.maxSpend);
+    if (size.gt(0)) {
+      const impliedPrice = maxSpend.div(size);
+      const cappedPrice = impliedPrice.gt(1) ? new Prisma.Decimal(1) : impliedPrice;
+      return cappedPrice.toDecimalPlaces(8, Prisma.Decimal.ROUND_DOWN).toString();
+    }
+  }
+
+  return "1";
+};
+
+const getMatchingPrice = (order: Pick<NormalizedOrderRequest, "type" | "side" | "price">) => {
+  if (order.type === "LIMIT") {
+    return order.price ?? "0";
+  }
+
+  return order.side === "BUY" ? "1" : "0";
+};
+
 const normalizeOrderRequest = (params: {
   userId: string;
   body: unknown;
@@ -384,6 +410,7 @@ export const submitCanonicalOrder = async (params: {
   }
 
   try {
+    const policyPrice = getPolicyPrice(normalized);
     await createApiOrderRequestWithPolicyCheck({
       userId: normalized.userId,
       apiCredentialId: params.apiCredentialId,
@@ -393,7 +420,7 @@ export const submitCanonicalOrder = async (params: {
       requestBody: normalized.requestBody as Prisma.InputJsonObject,
       marketId: normalized.marketId,
       size: normalized.size,
-      price: normalized.price ?? normalized.maxSpend ?? "0",
+      price: policyPrice,
     });
   } catch (error) {
     if (isPrismaUniqueConstraintError(error)) {
@@ -413,13 +440,14 @@ export const submitCanonicalOrder = async (params: {
   });
 
   try {
+    const matchingPrice = getMatchingPrice(normalized);
     const result = await placeOrderAndMatch({
       marketId: normalized.marketId,
       userId: normalized.userId,
       outcomeId: normalized.outcomeId,
       apiCredentialId: params.apiCredentialId,
       side: normalized.side,
-      price: normalized.price ?? normalized.maxSpend ?? "1",
+      price: matchingPrice,
       size: normalized.size,
       type: normalized.type,
       maxSpend: normalized.maxSpend,
