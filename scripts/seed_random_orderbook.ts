@@ -3,7 +3,7 @@ import { Prisma, PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const BOT_COUNT = 20;
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://127.0.0.1:3001";
 const TARGET_ORDERS_PER_SIDE = 30;
 
 const slugify = (value: string) =>

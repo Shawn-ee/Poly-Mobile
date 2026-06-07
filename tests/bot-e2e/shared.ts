@@ -7,7 +7,7 @@ export const BOT_E2E_USER_PREFIX = "bot_e2e";
 export const BOT_E2E_BASE_URL =
   process.env.BOT_E2E_BASE_URL ??
   process.env.NEXTAUTH_URL ??
-  "http://127.0.0.1:3000";
+  "http://127.0.0.1:3001";
 
 export type BotKeyFixture = {
   credentialId: string;

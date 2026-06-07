@@ -498,11 +498,16 @@ export default function OrderTicket({
         </div>
       </div>
 
+      {/* Beta notice */}
+      <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-center text-[11px] text-amber-700">
+        ⚠️ Internal Beta — Test credits only
+      </div>
+
       <button
         type="button"
         onClick={handleSubmit}
         disabled={formDisabled}
-        className="mt-4 w-full rounded-xl bg-blue-600 px-4 py-3 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-neutral-300"
+        className="mt-3 w-full rounded-xl bg-blue-600 px-4 py-3 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-neutral-300"
       >
         {submitLabel}
       </button>

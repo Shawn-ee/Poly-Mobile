@@ -121,6 +121,12 @@ export default function TopNav() {
 
   return (
     <header className="border-b border-neutral-200 bg-white">
+      {/* Internal Beta Banner */}
+      <div className="bg-amber-50 border-b border-amber-200">
+        <div className="mx-auto max-w-6xl px-4 py-2 text-center text-xs font-medium text-amber-800">
+          ⚠️ Internal Beta — Test credits only. Deposits and withdrawals are disabled.
+        </div>
+      </div>
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <div className="flex items-center gap-5">
           <Link href="/" className="text-lg font-semibold">
@@ -158,8 +164,9 @@ export default function TopNav() {
                 </div>
               </div>
               <button
-                onClick={() => setDepositOpen(true)}
-                className="rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700 hover:border-neutral-400"
+                disabled
+                title="Coming soon — internal beta uses test credits only."
+                className="rounded-md border border-neutral-200 px-3 py-2 text-sm text-neutral-400 cursor-not-allowed"
                 type="button"
               >
                 Deposit
@@ -223,8 +230,9 @@ export default function TopNav() {
                     </Link>
                     <div className="my-1 border-t border-neutral-200" />
                     <button
-                      onClick={handleWithdraw}
-                      className="block w-full px-4 py-2 text-left text-sm text-neutral-700 hover:bg-neutral-50"
+                      disabled
+                      title="Coming soon — internal beta uses test credits only."
+                      className="block w-full px-4 py-2 text-left text-sm text-neutral-400 cursor-not-allowed"
                       type="button"
                     >
                       Withdraw

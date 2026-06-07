@@ -16,6 +16,8 @@ type GroupMetadata = {
 
 export type GroupedEventRow = {
   marketId: string;
+  yesOutcomeId: string | null;
+  noOutcomeId: string | null;
   outcomeLabel: string;
   icon: string | null;
   question: string;
@@ -86,39 +88,47 @@ export async function getGroupedEventMarkets(eventSlug: string): Promise<Grouped
     return null;
   }
 
-  const group = parseGroupMetadata(event.metadata);
-  if (!group) {
-    return null;
-  }
+  let group = parseGroupMetadata(event.metadata);
+  let groupedMarkets: typeof event.markets;
 
-  const groupedMarkets = event.markets.filter((market) => {
-    const metadata =
-      market.referenceMetadata && typeof market.referenceMetadata === "object" && !Array.isArray(market.referenceMetadata)
-        ? (market.referenceMetadata as Record<string, unknown>)
-        : {};
-    const marketGroup =
-      metadata.group && typeof metadata.group === "object" && !Array.isArray(metadata.group)
-        ? (metadata.group as Record<string, unknown>)
-        : {};
-    return marketGroup.slug === group.slug;
-  });
+  if (group) {
+    // Primary path: use explicit referenceGroup metadata
+    groupedMarkets = event.markets.filter((market) => {
+      const metadata = normalizeRecord(market.referenceMetadata);
+      const marketGroup = normalizeRecord(metadata.group);
+      return marketGroup.slug === group!.slug;
+    });
+  } else {
+    // Fallback: infer grouping from winner-style market title patterns
+    const inferred = inferWinnerGroup(event.markets);
+    if (!inferred) {
+      return null;
+    }
+    group = inferred.group;
+    groupedMarkets = inferred.markets;
+  }
 
   const rows = await Promise.all(
     groupedMarkets.map(async (market) => {
       const plans = await getLatestReferenceQuotePlansForMarket(market.id);
       const yesPlan = plans.find((plan) => plan.outcomeName.trim().toUpperCase() === "YES") ?? plans[0] ?? null;
       const review = parseReferenceReview(market.referenceMetadata);
-      const metadata =
-        market.referenceMetadata && typeof market.referenceMetadata === "object" && !Array.isArray(market.referenceMetadata)
-          ? (market.referenceMetadata as Record<string, unknown>)
-          : {};
-      const marketGroup =
-        metadata.group && typeof metadata.group === "object" && !Array.isArray(metadata.group)
-          ? (metadata.group as Record<string, unknown>)
-          : {};
-      const label = typeof marketGroup.outcomeLabel === "string" ? marketGroup.outcomeLabel : market.title;
+      const metadata = normalizeRecord(market.referenceMetadata);
+      const marketGroup = normalizeRecord(metadata.group);
+      const label =
+        typeof marketGroup.outcomeLabel === "string"
+          ? marketGroup.outcomeLabel
+          : extractWinnerOutcomeLabel(market.title);
+      const yesOutcome = market.outcomes.find(
+        (outcome) => outcome.name.trim().toUpperCase() === "YES",
+      );
+      const noOutcome = market.outcomes.find(
+        (outcome) => outcome.name.trim().toUpperCase() === "NO",
+      );
       return {
         marketId: market.id,
+        yesOutcomeId: yesOutcome?.id ?? null,
+        noOutcomeId: noOutcome?.id ?? null,
         outcomeLabel: label,
         icon: extractMarketIcon(metadata, event),
         question: market.title,
@@ -189,6 +199,61 @@ export async function getGroupedEventMarkets(eventSlug: string): Promise<Grouped
   };
 }
 
+function normalizeRecord(value: unknown): Record<string, unknown> {
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : {};
+}
+
+const WINNER_TITLE_RE = /^Will\s+(?:the\s+)?(.+?)\s+win\s+(?:the\s+)?(.+?)\?$/i;
+
+function inferWinnerGroup<T extends { id: string; title: string; referenceMetadata: unknown }>(
+  markets: T[],
+): { group: GroupMetadata; markets: T[] } | null {
+  if (markets.length < 2) return null;
+
+  const parsed = markets.map((market) => {
+    const match = market.title.match(WINNER_TITLE_RE);
+    return match
+      ? { market, outcomeLabel: match[1].trim(), eventContext: match[2].trim().toLowerCase() }
+      : null;
+  });
+
+  const valid = parsed.filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+
+  // Need at least 2 winner-style markets with the same event context
+  if (valid.length < 2) return null;
+
+  // Group by event context (e.g., "2026 fifa world cup", "2026 nba finals")
+  const contextCounts = new Map<string, typeof valid>();
+  for (const entry of valid) {
+    const existing = contextCounts.get(entry.eventContext) ?? [];
+    existing.push(entry);
+    contextCounts.set(entry.eventContext, existing);
+  }
+
+  // Use the largest context group
+  const largestGroup = [...contextCounts.entries()].sort((a, b) => b[1].length - a[1].length)[0];
+  if (!largestGroup || largestGroup[1].length < 2) return null;
+
+  const grouped = largestGroup[1];
+
+  return {
+    group: {
+      title: "Winner",
+      slug: "winner",
+      groupType: "MUTUALLY_EXCLUSIVE",
+      resolutionMode: "ONE_WINNER",
+      source: "polymarket",
+      externalSlug: null,
+      expectedSumYesAround: 1,
+      negativeRiskLike: true,
+      note: "Inferred from winner-style market title patterns.",
+    },
+    markets: grouped.map((entry) => entry.market),
+  };
+}
+
 function parseGroupMetadata(value: unknown): GroupMetadata | null {
   const object =
     value && typeof value === "object" && !Array.isArray(value)
@@ -211,6 +276,11 @@ function parseGroupMetadata(value: unknown): GroupMetadata | null {
     negativeRiskLike: referenceGroup.negativeRiskLike === true,
     note: typeof referenceGroup.note === "string" ? referenceGroup.note : null,
   };
+}
+
+function extractWinnerOutcomeLabel(title: string): string {
+  const match = title.match(WINNER_TITLE_RE);
+  return match?.[1]?.trim() || title.trim();
 }
 
 function extractBotStatus(value: Record<string, unknown>) {

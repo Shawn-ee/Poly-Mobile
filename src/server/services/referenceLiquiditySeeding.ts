@@ -85,17 +85,20 @@ export async function seedReferenceLiquidityBotForMarket(
   if (!params.dryRun && market.status !== "LIVE") {
     throw new Error("Market must be LIVE before seeding.");
   }
-  if (!params.dryRun && process.env.NODE_ENV === "production") {
-    throw new Error("Live seeding is blocked in production.");
+  if (!params.dryRun) {
+    assertLiveInternalSeedingAllowed();
   }
   if (!params.dryRun && !params.confirmSeed) {
     throw new Error("confirmSeed=true is required for live seeding.");
   }
 
-  const capitalCents = Math.round(params.capitalDollars * 100);
-  const mintBudgetCents = Math.round(params.mintDollars * 100);
+  const capitalCents = Math.min(
+    Math.round(params.capitalDollars * 100),
+    maxSystemLiquidityPerMarketCents(),
+  );
+  const mintBudgetCents = Math.min(Math.round(params.mintDollars * 100), capitalCents);
   const cashReserveCents = Math.max(0, capitalCents - mintBudgetCents);
-  const mintedCompleteSets = Math.round(params.mintDollars);
+  const mintedCompleteSets = Math.round(mintBudgetCents / 100);
   const current = parseBotInitializationMetadata(market.referenceMetadata);
   const alreadySeeded = !!current?.capital?.initializedAt;
 
@@ -152,7 +155,7 @@ export async function seedReferenceLiquidityBotForMarket(
   await applyDeposit({
     eventKey: `reference-liquidity-seed:${market.id}`,
     userId: botUser.id,
-    amount: params.capitalDollars.toFixed(6),
+    amount: (capitalCents / 100).toFixed(6),
     chainId: DEFAULT_CHAIN_ID,
     txHash: `0xrefseed${market.id.replace(/-/g, "").slice(0, 24)}`,
     logIndex: 1,
@@ -262,4 +265,30 @@ export async function seedReferenceLiquidityBotForMarket(
     botApiKeyId: createdCredential.apiKey.keyId,
     botApiToken: createdCredential.token,
   };
+}
+
+function assertLiveInternalSeedingAllowed() {
+  if (process.env.POLY_BOTS_ENABLED !== "true") {
+    throw new Error("POLY_BOTS_ENABLED=true is required for live internal seeding.");
+  }
+  if (process.env.POLY_BOTS_LIVE_TRADING !== "true") {
+    throw new Error("POLY_BOTS_LIVE_TRADING=true is required for live internal seeding.");
+  }
+  if (process.env.POLY_BOTS_GLOBAL_KILL_SWITCH !== "false") {
+    throw new Error("POLY_BOTS_GLOBAL_KILL_SWITCH=false is required for live internal seeding.");
+  }
+  if (process.env.LIVE_SYSTEM_LIQUIDITY_ENABLED !== "true") {
+    throw new Error("LIVE_SYSTEM_LIQUIDITY_ENABLED=true is required for live internal seeding.");
+  }
+  if (process.env.SYSTEM_LIQUIDITY_DRY_RUN !== "false") {
+    throw new Error("SYSTEM_LIQUIDITY_DRY_RUN=false is required for live internal seeding.");
+  }
+}
+
+function maxSystemLiquidityPerMarketCents() {
+  const raw = process.env.MAX_SYSTEM_LIQUIDITY_PER_MARKET;
+  if (!raw?.trim()) return 100_000;
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed) || parsed <= 0) return 100_000;
+  return Math.round(parsed * 100);
 }

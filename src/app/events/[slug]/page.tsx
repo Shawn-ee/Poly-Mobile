@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import MarketCard from "@/components/MarketCard";
+import GroupedTradeTicket, { type SelectedTrade } from "@/components/GroupedTradeTicket";
 
 type EventSummary = {
   id: string;
@@ -67,6 +68,8 @@ type GroupedEventResponse = {
   };
   rows: Array<{
     marketId: string;
+    yesOutcomeId: string | null;
+    noOutcomeId: string | null;
     outcomeLabel: string;
     icon: string | null;
     question: string;
@@ -106,6 +109,7 @@ export default function EventPage() {
   const [markets, setMarkets] = useState<EventMarket[]>([]);
   const [grouped, setGrouped] = useState<GroupedEventResponse | null>(null);
   const [selectedRowId, setSelectedRowId] = useState<string>("");
+  const [selectedTrade, setSelectedTrade] = useState<SelectedTrade | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -136,6 +140,7 @@ export default function EventPage() {
         }
         setGrouped(groupedData as GroupedEventResponse);
         setSelectedRowId((groupedData.rows?.[0]?.marketId as string | undefined) ?? "");
+        setSelectedTrade(null);
         setMarkets([]);
       } else {
         const marketsRes = await fetch(`/api/events/${encodeURIComponent(slug)}/markets`);
@@ -154,10 +159,18 @@ export default function EventPage() {
     load();
   }, [slug]);
 
-  const selectedRow = useMemo(
-    () => grouped?.rows.find((row) => row.marketId === selectedRowId) ?? grouped?.rows[0] ?? null,
-    [grouped, selectedRowId],
-  );
+  // Auto-refresh grouped data every 10s while viewing a grouped event
+  useEffect(() => {
+    if (!slug || !grouped) return;
+    const timer = setInterval(async () => {
+      const groupedRes = await fetch(`/api/events/${encodeURIComponent(slug)}/grouped-markets`);
+      const groupedData = await groupedRes.json().catch(() => null);
+      if (groupedRes.ok && groupedData) {
+        setGrouped(groupedData as GroupedEventResponse);
+      }
+    }, 10_000);
+    return () => clearInterval(timer);
+  }, [slug, grouped !== null]);
 
   const [binaryMarkets, nonBinaryMarkets] = useMemo(() => {
     const binary: EventMarket[] = [];
@@ -193,7 +206,16 @@ export default function EventPage() {
           grouped={grouped}
           selectedRowId={selectedRowId}
           onSelectRow={setSelectedRowId}
-          selectedRow={selectedRow}
+          selectedTrade={selectedTrade}
+          onSelectTrade={setSelectedTrade}
+          onCloseTrade={() => setSelectedTrade(null)}
+          onRefreshGrouped={async () => {
+            const groupedRes = await fetch(`/api/events/${encodeURIComponent(slug)}/grouped-markets`);
+            const groupedData = await groupedRes.json().catch(() => null);
+            if (groupedRes.ok && groupedData) {
+              setGrouped(groupedData as GroupedEventResponse);
+            }
+          }}
         />
       </main>
     );
@@ -271,12 +293,18 @@ function GroupedEventView({
   grouped,
   selectedRowId,
   onSelectRow,
-  selectedRow,
+  selectedTrade,
+  onSelectTrade,
+  onCloseTrade,
+  onRefreshGrouped,
 }: {
   grouped: GroupedEventResponse;
   selectedRowId: string;
   onSelectRow: (marketId: string) => void;
-  selectedRow: GroupedEventResponse["rows"][number] | null;
+  selectedTrade: SelectedTrade | null;
+  onSelectTrade: (trade: SelectedTrade) => void;
+  onCloseTrade: () => void;
+  onRefreshGrouped: () => Promise<void>;
 }) {
   return (
     <>
@@ -323,16 +351,16 @@ function GroupedEventView({
                   <th className="px-3 py-2">Outcome</th>
                   <th className="px-3 py-2">Prob</th>
                   <th className="px-3 py-2">Bid / Ask</th>
-                  <th className="px-3 py-2">Volume</th>
-                  <th className="px-3 py-2">Bot Plan</th>
-                  <th className="px-3 py-2">Status</th>
+                  <th className="px-3 py-2 text-right">Trade</th>
                 </tr>
               </thead>
               <tbody>
                 {grouped.rows.map((row) => (
                   <tr
                     key={row.marketId}
-                    className={`cursor-pointer border-t border-neutral-100 ${selectedRowId === row.marketId ? "bg-neutral-50" : ""}`}
+                    className={`border-t border-neutral-100 transition ${
+                      selectedRowId === row.marketId ? "bg-neutral-50" : ""
+                    }`}
                     onClick={() => onSelectRow(row.marketId)}
                   >
                     <td className="px-3 py-3">
@@ -347,18 +375,77 @@ function GroupedEventView({
                         )}
                         <div>
                           <div className="font-medium text-neutral-900">{row.outcomeLabel}</div>
-                          <div className="text-xs text-neutral-500">{row.referenceOnly ? "Reference only" : row.tradable ? "Tradable" : "Coming soon"}</div>
+                          <div className="text-xs text-neutral-500">
+                            {row.referenceOnly && !row.tradable ? "Reference only" : "Tradable"}
+                          </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-3 py-3 font-medium">{formatPct(row.probability)}</td>
-                    <td className="px-3 py-3">{formatMaybe(row.bestBid)} / {formatMaybe(row.bestAsk)}</td>
-                    <td className="px-3 py-3">{formatCompact(row.volume24hr)}</td>
-                    <td className="px-3 py-3">{formatMaybe(row.plannedBotBid)} / {formatMaybe(row.plannedBotAsk)}</td>
+                    <td className="px-3 py-3 text-xs">
+                      <div>{formatMaybe(row.bestBid)} / {formatMaybe(row.bestAsk)}</div>
+                      <div className="text-neutral-400">{formatCompact(row.volume24hr)} vol</div>
+                    </td>
                     <td className="px-3 py-3">
-                      <div className="text-xs">
-                        <div>{row.isFresh ? "Fresh" : "Stale"}</div>
-                        <div>{row.mmEligible ? "MM ok" : row.botInitializationStatus ?? row.qualityStatus ?? "--"}</div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            onSelectRow(row.marketId);
+                            onSelectTrade({
+                              marketId: row.marketId,
+                              yesOutcomeId: row.yesOutcomeId,
+                              noOutcomeId: row.noOutcomeId,
+                              outcomeLabel: row.outcomeLabel,
+                              tradeOutcome: "YES",
+                              buyYesPrice: row.buyYesPrice,
+                              buyNoPrice: row.buyNoPrice,
+                              bestBid: row.bestBid,
+                              bestAsk: row.bestAsk,
+                              plannedBotBid: row.plannedBotBid,
+                              plannedBotAsk: row.plannedBotAsk,
+                              probability: row.probability,
+                            });
+                          }}
+                          disabled={!row.tradable}
+                          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
+                            row.tradable
+                              ? "bg-emerald-100 text-emerald-800 hover:bg-emerald-200"
+                              : "cursor-not-allowed bg-neutral-100 text-neutral-400"
+                          }`}
+                        >
+                          Yes {formatPriceShort(row.buyYesPrice ?? row.bestAsk ?? row.plannedBotAsk ?? row.probability)}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            onSelectRow(row.marketId);
+                            onSelectTrade({
+                              marketId: row.marketId,
+                              yesOutcomeId: row.yesOutcomeId,
+                              noOutcomeId: row.noOutcomeId,
+                              outcomeLabel: row.outcomeLabel,
+                              tradeOutcome: "NO",
+                              buyYesPrice: row.buyYesPrice,
+                              buyNoPrice: row.buyNoPrice,
+                              bestBid: row.bestBid,
+                              bestAsk: row.bestAsk,
+                              plannedBotBid: row.plannedBotBid,
+                              plannedBotAsk: row.plannedBotAsk,
+                              probability: row.probability,
+                            });
+                          }}
+                          disabled={!row.tradable}
+                          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
+                            row.tradable
+                              ? "bg-rose-100 text-rose-800 hover:bg-rose-200"
+                              : "cursor-not-allowed bg-neutral-100 text-neutral-400"
+                          }`}
+                        >
+                          No {formatPriceShort(row.buyNoPrice ?? (row.bestBid != null ? 1 - row.bestBid : (row.buyYesPrice != null ? 1 - row.buyYesPrice : (row.probability != null ? 1 - row.probability : null))))}
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -368,42 +455,19 @@ function GroupedEventView({
           </div>
         </div>
 
-        <div className="sticky top-6 h-fit rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm">
-          {selectedRow ? (
-            <>
-              <div className="text-xs uppercase tracking-wide text-neutral-500">{grouped.marketGroup.title}</div>
-              <h2 className="mt-1 text-2xl font-semibold text-neutral-900">{selectedRow.outcomeLabel}</h2>
-              <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                <div className="rounded-xl bg-neutral-50 p-3">
-                  <div className="text-xs text-neutral-500">Buy Yes</div>
-                  <div className="mt-1 text-lg font-semibold">{formatMaybe(selectedRow.buyYesPrice)}</div>
-                </div>
-                <div className="rounded-xl bg-neutral-50 p-3">
-                  <div className="text-xs text-neutral-500">Buy No</div>
-                  <div className="mt-1 text-lg font-semibold">{formatMaybe(selectedRow.buyNoPrice)}</div>
-                </div>
-              </div>
-              <div className="mt-4 space-y-2 text-sm text-neutral-700">
-                <div className="flex items-center justify-between"><span>Reference</span><span>{formatMaybe(selectedRow.bestBid)} / {formatMaybe(selectedRow.bestAsk)}</span></div>
-                <div className="flex items-center justify-between"><span>Bot plan</span><span>{formatMaybe(selectedRow.plannedBotBid)} / {formatMaybe(selectedRow.plannedBotAsk)}</span></div>
-                <div className="flex items-center justify-between"><span>Freshness</span><span>{selectedRow.isFresh ? "Fresh" : "Stale"}</span></div>
-                <div className="flex items-center justify-between"><span>Liquidity</span><span>{formatCompact(selectedRow.liquidity)}</span></div>
-                <div className="flex items-center justify-between"><span>Mode</span><span>{selectedRow.referenceOnly ? "Reference only" : selectedRow.tradable ? "Trading enabled" : "Coming soon"}</span></div>
-              </div>
-              <div className="mt-5 rounded-xl border border-sky-200 bg-sky-50 p-3 text-xs text-sky-900">
-                {selectedRow.tradable
-                  ? "Open the market to place orders using the existing local orderbook flow."
-                  : "Trading not enabled for this outcome yet."}
-              </div>
-              <Link
-                href={`/markets/${selectedRow.marketId}`}
-                className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-black px-4 py-3 text-sm font-medium text-white"
-              >
-                {selectedRow.tradable ? "Open Trading Panel" : "Open Market Detail"}
-              </Link>
-            </>
+        <div className="sticky top-6 h-fit">
+          {selectedTrade ? (
+            <GroupedTradeTicket
+              trade={selectedTrade}
+              onClose={onCloseTrade}
+              onOrderPlaced={onRefreshGrouped}
+            />
           ) : (
-            <div className="text-sm text-neutral-500">Select an outcome.</div>
+            <div className="rounded-2xl border border-dashed border-neutral-300 bg-white p-6 text-center text-sm text-neutral-500">
+              Click <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-800">Yes</span> or{" "}
+              <span className="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-semibold text-rose-800">No</span>{" "}
+              on an outcome to trade.
+            </div>
           )}
         </div>
       </div>
@@ -417,6 +481,10 @@ function formatPct(value: number | null) {
 
 function formatMaybe(value: number | null) {
   return typeof value === "number" && Number.isFinite(value) ? value.toFixed(3).replace(/0+$/, "").replace(/\.$/, "") : "--";
+}
+
+function formatPriceShort(value: number | null) {
+  return typeof value === "number" && Number.isFinite(value) ? `${(value * 100).toFixed(0)}¢` : "--";
 }
 
 function formatCompact(value: number | null) {

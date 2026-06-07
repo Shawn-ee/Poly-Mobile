@@ -272,7 +272,7 @@ Single market create/update:
 
 ```powershell
 cd C:\Users\hecto\Desktop\projects\PolyProj\poly-bot
-$env:POLY_BOT_BASE_URL='http://127.0.0.1:3000'
+$env:POLY_BOT_BASE_URL='http://127.0.0.1:3001'
 $env:POLY_SIM_SESSION_COOKIE='next-auth.session-token=...'
 cmd /c npm.cmd run import:polymarket-market -- --slug ukraine-signs-peace-deal-with-russia-before-2027 --dry-run false --create-local-markets true
 ```
@@ -393,7 +393,7 @@ cmd /c npm.cmd run import:polymarket-market -- --slug ukraine-signs-peace-deal-w
 
 ```powershell
 cd C:\Users\hecto\Desktop\projects\PolyProj\poly-bot
-$env:POLY_BOT_BASE_URL='http://127.0.0.1:3000'
+$env:POLY_BOT_BASE_URL='http://127.0.0.1:3001'
 $env:POLY_SIM_SESSION_COOKIE='next-auth.session-token=...'
 cmd /c npm.cmd run import:polymarket-market -- --slug ukraine-signs-peace-deal-with-russia-before-2027 --dry-run false --create-local-markets true
 ```

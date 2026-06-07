@@ -13,11 +13,16 @@ const RETURN_TO_COOKIE = "poly_oauth_return_to";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
+  const configuredBaseUrl = process.env.NEXTAUTH_URL?.trim();
+  const baseUrl =
+    process.env.NODE_ENV === "production"
+      ? configuredBaseUrl || url.origin
+      : url.origin;
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
 
   if (!code || !state) {
-    return NextResponse.redirect(`${url.origin}/login?error=google_oauth_failed`);
+    return NextResponse.redirect(`${baseUrl}/login?error=google_oauth_failed`);
   }
 
   const cookieStore = await cookies();
@@ -47,20 +52,15 @@ export async function GET(request: Request) {
   });
 
   if (!expectedState || expectedState !== state) {
-    return NextResponse.redirect(`${url.origin}/login?error=invalid_state`);
+    return NextResponse.redirect(`${baseUrl}/login?error=invalid_state`);
   }
 
   const clientId = process.env.GOOGLE_CLIENT_ID;
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
   if (!clientId || !clientSecret) {
-    return NextResponse.redirect(`${url.origin}/login?error=google_not_configured`);
+    return NextResponse.redirect(`${baseUrl}/login?error=google_not_configured`);
   }
 
-  const configuredBaseUrl = process.env.NEXTAUTH_URL?.trim();
-  const baseUrl =
-    process.env.NODE_ENV === "production"
-      ? configuredBaseUrl || url.origin
-      : url.origin;
   const redirectUri = `${baseUrl}/api/auth/google/callback`;
 
   const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
@@ -76,14 +76,14 @@ export async function GET(request: Request) {
   });
 
   if (!tokenRes.ok) {
-    return NextResponse.redirect(`${url.origin}/login?error=google_token_exchange`);
+    return NextResponse.redirect(`${baseUrl}/login?error=google_token_exchange`);
   }
 
   const tokenData = (await tokenRes.json()) as {
     access_token?: string;
   };
   if (!tokenData.access_token) {
-    return NextResponse.redirect(`${url.origin}/login?error=google_no_access_token`);
+    return NextResponse.redirect(`${baseUrl}/login?error=google_no_access_token`);
   }
 
   const profileRes = await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
@@ -92,7 +92,7 @@ export async function GET(request: Request) {
     },
   });
   if (!profileRes.ok) {
-    return NextResponse.redirect(`${url.origin}/login?error=google_profile_fetch`);
+    return NextResponse.redirect(`${baseUrl}/login?error=google_profile_fetch`);
   }
 
   const profile = (await profileRes.json()) as {
@@ -102,12 +102,12 @@ export async function GET(request: Request) {
     picture?: string;
   };
   if (!profile.sub) {
-    return NextResponse.redirect(`${url.origin}/login?error=google_missing_sub`);
+    return NextResponse.redirect(`${baseUrl}/login?error=google_missing_sub`);
   }
 
   const currentUserId = await getExistingUserId();
   if (mode === "link" && !currentUserId) {
-    return NextResponse.redirect(`${url.origin}/login?error=link_requires_login`);
+    return NextResponse.redirect(`${baseUrl}/login?error=link_requires_login`);
   }
 
   let userId: string;
@@ -123,7 +123,7 @@ export async function GET(request: Request) {
     const message =
       error instanceof Error ? error.message : "google_link_failed";
     const code = encodeURIComponent(message.replace(/\s+/g, "_").toLowerCase());
-    return NextResponse.redirect(`${url.origin}/login?error=${code}`);
+    return NextResponse.redirect(`${baseUrl}/login?error=${code}`);
   }
 
   const provisionedUser = await prisma.user.findUnique({
@@ -131,11 +131,11 @@ export async function GET(request: Request) {
     select: { id: true },
   });
   if (!provisionedUser) {
-    return NextResponse.redirect(`${url.origin}/login?error=user_provisioning_failed`);
+    return NextResponse.redirect(`${baseUrl}/login?error=user_provisioning_failed`);
   }
 
   await setUserIdCookie(userId);
-  const fallback = mode === "link" ? `${url.origin}/?linked=google` : `${url.origin}/`;
-  const redirectTo = returnTo?.startsWith("/") ? `${url.origin}${returnTo}` : fallback;
+  const fallback = mode === "link" ? `${baseUrl}/?linked=google` : `${baseUrl}/`;
+  const redirectTo = returnTo?.startsWith("/") ? `${baseUrl}${returnTo}` : fallback;
   return NextResponse.redirect(redirectTo);
 }

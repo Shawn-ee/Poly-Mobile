@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://localhost:3000",
+  "baseUrl": "http://127.0.0.1:3001",
   "marketId": "1a0aba6f-6435-42d3-a727-87425011b404",
   "marketSlug": "bot-e2e-canonical-market-1773558179648",
   "yesOutcomeId": "2b7c81d6-6846-4551-a04b-3b9a0c0984d5",

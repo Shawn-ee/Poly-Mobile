@@ -7,7 +7,7 @@ import { applyDeposit } from "@/server/services/ledger";
 import { mintCompleteSetForPublicOrderbook } from "@/server/services/orderbookCollateral";
 
 const BOT_COUNT = 20;
-const DEFAULT_BASE_URL = "http://localhost:3000";
+const DEFAULT_BASE_URL = "http://127.0.0.1:3001";
 const DEFAULT_AVAILABLE_USDC = "150.000000";
 const DEFAULT_MAX_ORDER_SIZE = "1.000000";
 const DEFAULT_MAX_TAKER_SIZE = "0.350000";

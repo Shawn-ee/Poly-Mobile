@@ -14,7 +14,7 @@ import type { BotConfig } from "../../poly-bot/src/config/loadConfig.js";
 // - these helpers are intentionally not part of the production bot strategy runtime
 // TODO(bot-architecture): extract soak-only helpers into dedicated modules after soak behavior is frozen.
 
-const BASE_URL = process.env.SOAK_BASE_URL ?? "http://127.0.0.1:3000";
+const BASE_URL = process.env.SOAK_BASE_URL ?? "http://127.0.0.1:3001";
 const RUN_ID = new Date().toISOString().replace(/[:.]/g, "-");
 const LOGS_DIR = path.resolve(process.cwd(), "test-logs");
 const LOG_PATH = path.join(LOGS_DIR, `soak-${RUN_ID}.jsonl`);

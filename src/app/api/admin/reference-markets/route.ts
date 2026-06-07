@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { assertAdmin, toGuardResponse } from "@/lib/marketGuards";
+import { toGuardResponse } from "@/lib/marketGuards";
+import { assertReferenceBotAdmin } from "@/lib/internalAdminAuth";
 import { parseReferenceReview } from "@/server/services/polymarketReferenceImport";
 import { parseBotInitializationMetadata } from "@/server/services/referenceBotInitialization";
 import { getReferenceSummaryForMarket } from "@/server/services/referenceQuoteSnapshots";
 
 export async function GET(request: NextRequest) {
   try {
-    await assertAdmin();
+    await assertReferenceBotAdmin();
   } catch (error) {
     const response = toGuardResponse(error);
     return NextResponse.json(response.body, { status: response.status });

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { assertAdmin, toGuardResponse } from "@/lib/marketGuards";
+import { toGuardResponse } from "@/lib/marketGuards";
+import { assertReferenceBotAdmin } from "@/lib/internalAdminAuth";
 import { seedReferenceLiquidityBotForMarket } from "@/server/services/referenceLiquiditySeeding";
 
 type Params = { params: Promise<{ id: string }> };
@@ -7,7 +8,7 @@ type Params = { params: Promise<{ id: string }> };
 export async function POST(request: NextRequest, context: Params) {
   let adminUserId = "";
   try {
-    const admin = await assertAdmin();
+    const admin = await assertReferenceBotAdmin();
     adminUserId = admin.id;
   } catch (error) {
     const response = toGuardResponse(error);

@@ -8,7 +8,7 @@ Set these values in `Poly/.env.local` for local development. Do not commit real 
 DATABASE_URL="postgresql://..."
 GOOGLE_CLIENT_ID="..."
 GOOGLE_CLIENT_SECRET="..."
-NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_URL="http://127.0.0.1:3001"
 NEXTAUTH_SECRET="replace-with-long-random-secret"
 ADMIN_EMAILS="admin@example.com"
 MOCK_DEPOSIT_AUTO_CONFIRM="true"
@@ -48,7 +48,7 @@ Notes:
 Google OAuth redirect URI:
 
 ```text
-http://localhost:3000/api/auth/google/callback
+http://127.0.0.1:3001/api/auth/google/callback
 ```
 
 ## Getting Started
@@ -209,7 +209,7 @@ Behavioral scenarios covered:
 8. partial confirmation / confirming status
 9. already credited deposit
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://127.0.0.1:3001](http://127.0.0.1:3001) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

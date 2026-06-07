@@ -9,7 +9,7 @@ import { placeOrderAndMatch } from "@/server/services/matching";
 import { BotRunner } from "../../poly-bot/src/runner/botRunner.js";
 import type { BotConfig } from "../../poly-bot/src/config/loadConfig.js";
 
-const BASE_URL = process.env.BOT_E2E_BASE_URL ?? "http://127.0.0.1:3000";
+const BASE_URL = process.env.BOT_E2E_BASE_URL ?? "http://127.0.0.1:3001";
 const LOGS_DIR = path.resolve(process.cwd(), "test-logs", "bot-mint-integration");
 
 type MintRouteProof = {

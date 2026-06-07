@@ -535,6 +535,10 @@ export default function WalletPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
+      {/* Internal Beta Banner */}
+      <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-center text-sm font-medium text-amber-800">
+        ⚠️ Internal Beta — Test credits only. Deposits and withdrawals are disabled.
+      </div>
       <h1 className="text-2xl font-semibold">Wallet</h1>
       <div className="mt-4 rounded-lg border border-neutral-200 bg-white p-4">
         <div className="text-sm text-neutral-600">Balance</div>
@@ -567,22 +571,23 @@ export default function WalletPage() {
       <section className="mt-6 rounded-lg border border-neutral-200 bg-white p-4">
         <h2 className="text-lg font-semibold">Deposit</h2>
         <p className="mt-1 text-sm text-neutral-600">
-          Open the transfer modal to view your Polygon USDC deposit address and recent deposit activity.
+          During internal beta, deposits are disabled. Use the faucet to get test credits.
         </p>
-        <div className="mt-4 rounded-2xl border border-neutral-200 bg-neutral-50 p-5">
+        <div className="mt-4 rounded-2xl border border-dashed border-neutral-300 bg-neutral-50 p-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="text-sm font-medium text-neutral-900">Transfer Crypto</div>
+              <div className="text-sm font-medium text-neutral-900">Real-money deposits disabled</div>
               <div className="mt-1 text-sm text-neutral-600">
-                Polygon and USDC are the only supported options in this flow right now.
+                Internal beta uses test credits only. Real-money deposit functionality is coming soon.
               </div>
             </div>
             <button
-              onClick={() => setDepositOpen(true)}
-              className="rounded-2xl bg-neutral-900 px-4 py-3 text-sm font-medium text-white hover:bg-neutral-800"
+              disabled
+              title="Coming soon — internal beta uses test credits only."
+              className="rounded-2xl bg-neutral-300 px-4 py-3 text-sm font-medium text-neutral-500 cursor-not-allowed"
               type="button"
             >
-              Open transfer modal
+              Coming soon
             </button>
           </div>
         </div>
@@ -680,104 +685,11 @@ export default function WalletPage() {
 
       <section className="mt-6 rounded-lg border border-neutral-200 bg-white p-4">
         <h2 className="text-lg font-semibold">Withdraw</h2>
-        <p className="mt-1 text-sm text-neutral-600">
-          Choose a destination and submit a withdrawal request.
-        </p>
-
-        <div className="mt-4 grid gap-4">
-          <div>
-            <label className="mb-1 block text-xs font-medium text-neutral-600">Amount (USDC)</label>
-            <input
-              value={withdrawAmount}
-              onChange={(event) => setWithdrawAmount(event.target.value)}
-              className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
-              placeholder="25"
-            />
-          </div>
-
-          <div>
-            <div className="mb-2 text-xs font-medium text-neutral-600">Destination</div>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-              <label className="inline-flex items-center gap-2 text-sm text-neutral-700">
-                <input
-                  type="radio"
-                  name="withdraw-destination"
-                  value="linked"
-                  checked={withdrawDestinationMode === "linked"}
-                  disabled={wallets.filter((wallet) => wallet.isActive).length === 0}
-                  onChange={() => {
-                    setWithdrawDestinationTouched(true);
-                    setWithdrawDestinationMode("linked");
-                  }}
-                />
-                Use linked wallet
-              </label>
-              <label className="inline-flex items-center gap-2 text-sm text-neutral-700">
-                <input
-                  type="radio"
-                  name="withdraw-destination"
-                  value="custom"
-                  checked={withdrawDestinationMode === "custom"}
-                  onChange={() => {
-                    setWithdrawDestinationTouched(true);
-                    setWithdrawDestinationMode("custom");
-                  }}
-                />
-                Use custom address
-              </label>
-            </div>
-          </div>
-
-          {withdrawDestinationMode === "linked" ? (
-            <div>
-              {wallets.filter((wallet) => wallet.isActive).length === 0 ? (
-                <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
-                  No active linked wallets found. Link a wallet below or use custom address.
-                </div>
-              ) : (
-                <>
-                  <label className="mb-1 block text-xs font-medium text-neutral-600">
-                    Select linked wallet
-                  </label>
-                  <select
-                    value={selectedLinkedWithdrawAddress}
-                    onChange={(event) => setSelectedLinkedWithdrawAddress(event.target.value)}
-                    className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
-                  >
-                    {wallets
-                      .filter((wallet) => wallet.isActive)
-                      .map((wallet) => (
-                        <option key={wallet.id} value={wallet.address}>
-                          {wallet.checksumAddress} (chain {wallet.chainId})
-                        </option>
-                      ))}
-                  </select>
-                </>
-              )}
-            </div>
-          ) : (
-            <div>
-              <label className="mb-1 block text-xs font-medium text-neutral-600">
-                Custom destination address
-              </label>
-              <input
-                value={withdrawAddress}
-                onChange={(event) => setWithdrawAddress(event.target.value)}
-                className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
-                placeholder="0x..."
-              />
-            </div>
-          )}
-
-          <div>
-            <button
-              onClick={handleWithdraw}
-              className="rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700 hover:border-neutral-400"
-              type="button"
-            >
-              Submit withdrawal request
-            </button>
-          </div>
+        <div className="mt-4 rounded-md border border-dashed border-neutral-300 bg-neutral-50 p-6 text-center">
+          <p className="text-sm font-medium text-neutral-600">Withdrawals coming soon</p>
+          <p className="mt-1 text-xs text-neutral-500">
+            Internal beta uses test credits only. Real-money withdrawals are not yet available.
+          </p>
         </div>
       </section>
 

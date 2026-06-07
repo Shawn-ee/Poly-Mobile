@@ -201,7 +201,7 @@ const run = async () => {
   }
 
   const seedMarkets = getSeedMarkets();
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://127.0.0.1:3001";
   const createdMarketIds: string[] = [];
 
   for (let index = 0; index < seedMarkets.length; index += 1) {

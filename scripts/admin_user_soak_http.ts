@@ -6,7 +6,7 @@ import { API_KEY_SCOPES, createApiCredential, updateApiCredential } from '@/lib/
 import { applyDeposit } from '@/server/services/ledger';
 
 const prisma = new PrismaClient();
-const BASE_URL = process.env.SOAK_BASE_URL ?? 'http://localhost:3000';
+const BASE_URL = process.env.SOAK_BASE_URL ?? 'http://127.0.0.1:3001';
 const LOG_DIR = path.join(process.cwd(), 'test-logs');
 const RUN_ID = new Date().toISOString().replace(/[:.]/g, '-');
 const LOG_PATH = path.join(LOG_DIR, `admin-user-http-soak-${RUN_ID}.log`);

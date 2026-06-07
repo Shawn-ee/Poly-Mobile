@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { assertAdmin, toGuardResponse } from "@/lib/marketGuards";
+import { toGuardResponse } from "@/lib/marketGuards";
+import { assertReferenceBotAdmin } from "@/lib/internalAdminAuth";
 import { refreshPolymarketReferenceSnapshots } from "@/server/services/polymarketReferenceSnapshots";
 
 export async function POST(
@@ -7,7 +8,7 @@ export async function POST(
   context: { params: Promise<unknown> },
 ) {
   try {
-    await assertAdmin();
+    await assertReferenceBotAdmin();
   } catch (error) {
     const response = toGuardResponse(error);
     return NextResponse.json(response.body, { status: response.status });
