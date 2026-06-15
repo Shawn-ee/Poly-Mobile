@@ -10,8 +10,10 @@ datasource db {
 enum MarketStatus {
   UPCOMING
   LIVE
+  PAUSED
   CLOSED
   RESOLVED
+  CANCELED
 }
 
 enum MarketKind {
@@ -213,11 +215,18 @@ model Event {
   title           String
   description     String?
   category        String?
+  sportKey        String?
+  leagueKey       String?
+  eventType       String?
+  homeTeamName    String?
+  awayTeamName    String?
+  startTime       DateTime?
   status          String?
   source          String?
   externalEventId String?
   externalSlug    String?
   image           String?
+  imageUrl        String?
   icon            String?
   metadata        Json?
   createdBy       String?
@@ -226,6 +235,8 @@ model Event {
   creator         User?     @relation("EventCreatedBy", fields: [createdBy], references: [id], onDelete: SetNull)
   markets         Market[]
 
+  @@index([category, status])
+  @@index([sportKey, leagueKey, status])
   @@index([source, externalEventId])
   @@index([externalSlug])
 }
@@ -239,6 +250,7 @@ model Market {
   categoryId        String?
   category          Category?     @relation(fields: [categoryId], references: [id])
   type              MarketType    @default(BINARY)
+  marketType        String        @default("generic")
   kind              MarketKind    @default(ORDERBOOK)
   status            MarketStatus  @default(UPCOMING)
   eventId           String?
@@ -261,6 +273,9 @@ model Market {
   referenceSource   String?
   externalSlug      String?
   referenceMetadata Json?
+  rules             Json?
+  closeTime         DateTime?
+  resolutionTime    DateTime?
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
   outcomes          Outcome[]
@@ -276,6 +291,7 @@ model Market {
   members           MarketMember[]
 
   @@index([eventId])
+  @@index([marketType, status])
   @@index([referenceSource, externalMarketId])
   @@index([conditionId])
   @@index([externalSlug])
@@ -321,10 +337,14 @@ model Outcome {
   id        String   @id @default(uuid())
   marketId  String
   name      String
+  label     String?
+  code      String?
   slug      String?  @unique
   isActive  Boolean  @default(true)
   displayOrder Int   @default(0)
   isTradable Boolean @default(true)
+  status    String   @default("active")
+  metadata  Json?
   referenceTokenId String?
   referenceOutcomeLabel String?
   referenceMetadata Json?
@@ -338,6 +358,7 @@ model Outcome {
   poolBets  PoolBet[]
   referenceQuoteSnapshots ReferenceQuoteSnapshot[]
 
+  @@unique([marketId, code])
   @@index([referenceTokenId])
 }
 

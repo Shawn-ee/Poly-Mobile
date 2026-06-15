@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
+import { serializeEventSummary } from "@/server/services/eventReadModel";
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const search = url.searchParams.get("search")?.trim() ?? "";
+  const category = url.searchParams.get("category")?.trim() ?? "";
+  const sportKey = url.searchParams.get("sportKey")?.trim() ?? "";
+  const leagueKey = url.searchParams.get("leagueKey")?.trim() ?? "";
   const source = url.searchParams.get("source")?.trim() ?? "";
   const status = url.searchParams.get("status")?.trim() ?? "";
 
@@ -16,7 +20,10 @@ export async function GET(request: NextRequest) {
             { description: { contains: search, mode: Prisma.QueryMode.insensitive } },
           ],
         }
-      : {}),
+        : {}),
+    ...(category ? { category } : {}),
+    ...(sportKey ? { sportKey } : {}),
+    ...(leagueKey ? { leagueKey } : {}),
     ...(source ? { source } : {}),
     ...(status ? { status } : {}),
   };
@@ -35,6 +42,7 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({
     events: events
       .map((event) => {
+        const base = serializeEventSummary(event);
         const metadata =
           event.metadata && typeof event.metadata === "object" && !Array.isArray(event.metadata)
             ? (event.metadata as Record<string, unknown>)
@@ -59,20 +67,10 @@ export async function GET(request: NextRequest) {
           .filter((value): value is string => Boolean(value))
           .slice(0, 4);
         return {
-          id: event.id,
-          slug: event.slug,
-          title: event.title,
-          description: event.description,
-          category: event.category,
-          status: event.status,
-          source: event.source,
-          externalEventId: event.externalEventId,
-          externalSlug: event.externalSlug,
-          image: event.image,
-          icon: event.icon,
+          ...base,
           marketCount: event.markets.length,
           activeMarketCount,
-          hasGroupedMarkets: Boolean(referenceGroup),
+          hasGroupedMarkets: Boolean(referenceGroup) || base.hasGroupedMarkets,
           groupedSummary:
             referenceGroup && typeof referenceGroup.slug === "string"
               ? {
@@ -81,8 +79,6 @@ export async function GET(request: NextRequest) {
                 }
               : null,
           topOutcomes,
-          createdAt: event.createdAt,
-          updatedAt: event.updatedAt,
         };
       })
       .filter((event) => event.marketCount > 0),
