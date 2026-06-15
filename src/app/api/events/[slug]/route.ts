@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { marketReadInclude, serializeMarketReadModel } from "@/server/services/marketReadModel";
+import { serializeEventSummary } from "@/server/services/eventReadModel";
 
 type Ctx = { params: Promise<{ slug: string }> };
 
@@ -12,9 +14,7 @@ export async function GET(_request: Request, context: Ctx) {
       _count: {
         select: { markets: true },
       },
-      markets: {
-        select: { status: true },
-      },
+      markets: { include: marketReadInclude, orderBy: [{ createdAt: "asc" }] },
     },
   });
 
@@ -26,20 +26,11 @@ export async function GET(_request: Request, context: Ctx) {
   const closedMarketCount = event.markets.filter(
     (market) => market.status === "CLOSED" || market.status === "RESOLVED",
   ).length;
+  const markets = await Promise.all(event.markets.map((market) => serializeMarketReadModel(market)));
 
   return NextResponse.json({
     event: {
-      id: event.id,
-      slug: event.slug,
-      title: event.title,
-      description: event.description,
-      category: event.category,
-      status: event.status,
-      source: event.source,
-      externalEventId: event.externalEventId,
-      externalSlug: event.externalSlug,
-      image: event.image,
-      icon: event.icon,
+      ...serializeEventSummary(event),
       marketCount: event._count.markets,
       activeMarketCount,
       closedMarketCount,
@@ -51,8 +42,7 @@ export async function GET(_request: Request, context: Ctx) {
             "referenceGroup" in (event.metadata as Record<string, unknown>),
         ),
       metadata: event.metadata,
-      createdAt: event.createdAt,
-      updatedAt: event.updatedAt,
     },
+    markets,
   });
 }
