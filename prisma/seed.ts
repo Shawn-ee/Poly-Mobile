@@ -189,6 +189,8 @@ const run = async () => {
     { name: "Crypto", slug: "crypto", group: "top-nav", order: 2 },
     { name: "Finance", slug: "finance", group: "top-nav", order: 3 },
     { name: "NBA", slug: "nba", group: "sports", order: 1 },
+    { name: "Soccer", slug: "soccer", group: "sports", order: 2 },
+    { name: "World Cup", slug: "world-cup", group: "sports", order: 3 },
     { name: "Bitcoin", slug: "bitcoin", group: "topic", order: 1 },
     { name: "Ethereum", slug: "ethereum", group: "topic", order: 2 },
     { name: "Fed", slug: "fed", group: "topic", order: 3 },
@@ -267,6 +269,229 @@ const run = async () => {
     console.log(
       `Created market: ${market.title} id=${market.id} url=${baseUrl}/markets/${market.id}`
     );
+  }
+
+  const sportsEvents = [
+    { title: "France vs Argentina", slug: "france-vs-argentina", home: "France", away: "Argentina", offsetDays: 45, extra: true },
+    { title: "Mexico vs South Korea", slug: "mexico-vs-south-korea", home: "Mexico", away: "South Korea", offsetDays: 46 },
+    { title: "Brazil vs Morocco", slug: "brazil-vs-morocco", home: "Brazil", away: "Morocco", offsetDays: 47 },
+    { title: "Spain vs Uruguay", slug: "spain-vs-uruguay", home: "Spain", away: "Uruguay", offsetDays: 48 },
+    { title: "England vs Croatia", slug: "england-vs-croatia", home: "England", away: "Croatia", offsetDays: 49 },
+  ];
+
+  const syncSportsMarket = async (params: {
+    eventId: string;
+    eventSlug: string;
+    title: string;
+    description: string;
+    marketType: string;
+    outcomes: Array<{ name: string; code: string; metadata?: Record<string, unknown> }>;
+    startTime: Date;
+    rules: Record<string, unknown>;
+  }) => {
+    const slug = `${params.eventSlug}-${slugify(params.title)}`;
+    const market = await prisma.market.upsert({
+      where: { slug },
+      update: {
+        title: params.title,
+        description: params.description,
+        eventId: params.eventId,
+        categoryId: categories.sports.id,
+        categoryLegacy: "sports",
+        marketType: params.marketType,
+        rules: params.rules,
+        mechanism: "ORDERBOOK",
+        kind: "ORDERBOOK",
+        visibility: "PUBLIC",
+        status: "LIVE",
+        type: params.outcomes.length > 2 ? "MULTI_WINNER" : "BINARY",
+        betCloseTime: params.startTime,
+        closeTime: params.startTime,
+        resolveTime: new Date(params.startTime.getTime() + 3 * 60 * 60 * 1000),
+        isListed: true,
+        isCanceled: false,
+        createdBy: admin.id,
+      },
+      create: {
+        slug,
+        title: params.title,
+        description: params.description,
+        eventId: params.eventId,
+        categoryId: categories.sports.id,
+        categoryLegacy: "sports",
+        marketType: params.marketType,
+        rules: params.rules,
+        mechanism: "ORDERBOOK",
+        kind: "ORDERBOOK",
+        visibility: "PUBLIC",
+        status: "LIVE",
+        type: params.outcomes.length > 2 ? "MULTI_WINNER" : "BINARY",
+        betCloseTime: params.startTime,
+        closeTime: params.startTime,
+        resolveTime: new Date(params.startTime.getTime() + 3 * 60 * 60 * 1000),
+        isListed: true,
+        isCanceled: false,
+        createdBy: admin.id,
+      },
+      select: { id: true, slug: true },
+    });
+
+    for (let index = 0; index < params.outcomes.length; index += 1) {
+      const outcome = params.outcomes[index];
+      await prisma.outcome.upsert({
+        where: { marketId_code: { marketId: market.id, code: outcome.code } },
+        update: {
+          name: outcome.name,
+          label: outcome.name,
+          displayOrder: index,
+          isActive: true,
+          isTradable: true,
+          status: "active",
+          metadata: outcome.metadata ?? {},
+        },
+        create: {
+          marketId: market.id,
+          name: outcome.name,
+          label: outcome.name,
+          code: outcome.code,
+          slug: `${market.slug}-${slugify(outcome.code)}`,
+          displayOrder: index,
+          isActive: true,
+          isTradable: true,
+          status: "active",
+          metadata: outcome.metadata ?? {},
+        },
+      });
+    }
+
+    for (const tagSlug of ["sports", "soccer", "world-cup"]) {
+      const tagId = tags.get(tagSlug);
+      if (!tagId) continue;
+      await prisma.marketTag.upsert({
+        where: { marketId_tagId: { marketId: market.id, tagId } },
+        update: {},
+        create: { marketId: market.id, tagId },
+      });
+    }
+
+    return market.id;
+  };
+
+  for (const eventDef of sportsEvents) {
+    const startTime = new Date(Date.now() + eventDef.offsetDays * 24 * 60 * 60 * 1000);
+    const event = await prisma.event.upsert({
+      where: { slug: eventDef.slug },
+      update: {
+        title: eventDef.title,
+        description: `Demo soccer event for ${eventDef.title}.`,
+        category: "sports",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        eventType: "match",
+        homeTeamName: eventDef.home,
+        awayTeamName: eventDef.away,
+        startTime,
+        status: "scheduled",
+        metadata: { demo: true },
+      },
+      create: {
+        slug: eventDef.slug,
+        title: eventDef.title,
+        description: `Demo soccer event for ${eventDef.title}.`,
+        category: "sports",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        eventType: "match",
+        homeTeamName: eventDef.home,
+        awayTeamName: eventDef.away,
+        startTime,
+        status: "scheduled",
+        metadata: { demo: true },
+        createdBy: admin.id,
+      },
+      select: { id: true, slug: true },
+    });
+
+    const marketSpecs = [
+      {
+        title: "Match Winner",
+        description: `Who will win ${eventDef.title}?`,
+        marketType: "match_winner_1x2",
+        rules: { template: "MATCH_WINNER_1X2", settlement: "manual" },
+        outcomes: [
+          { name: eventDef.home, code: "HOME", metadata: { side: "home" } },
+          { name: "Draw", code: "DRAW", metadata: { side: "draw" } },
+          { name: eventDef.away, code: "AWAY", metadata: { side: "away" } },
+        ],
+      },
+      {
+        title: "Total Goals 2.5",
+        description: `Will ${eventDef.title} finish over or under 2.5 total goals?`,
+        marketType: "total_goals",
+        rules: { template: "TOTAL_GOALS_2_5", settlement: "manual", line: 2.5 },
+        outcomes: [
+          { name: "Over 2.5", code: "OVER_2_5", metadata: { side: "over", line: 2.5 } },
+          { name: "Under 2.5", code: "UNDER_2_5", metadata: { side: "under", line: 2.5 } },
+        ],
+      },
+      {
+        title: "Both Teams To Score",
+        description: `Will both teams score in ${eventDef.title}?`,
+        marketType: "both_teams_to_score",
+        rules: { template: "BOTH_TEAMS_TO_SCORE", settlement: "manual" },
+        outcomes: [
+          { name: "Yes", code: "YES", metadata: { value: true } },
+          { name: "No", code: "NO", metadata: { value: false } },
+        ],
+      },
+    ];
+
+    if (eventDef.extra) {
+      marketSpecs.push(
+        {
+          title: "Correct Score Basic",
+          description: `What will be the correct score in ${eventDef.title}?`,
+          marketType: "correct_score",
+          rules: { template: "CORRECT_SCORE_BASIC", settlement: "manual", scoreSet: "basic" },
+          outcomes: ["0-0", "1-0", "0-1", "1-1", "2-1", "1-2", "Other"].map((score) => ({
+            name: score,
+            code: score === "Other" ? "OTHER" : score,
+            metadata: { score },
+          })),
+        },
+        {
+          title: `Will ${eventDef.home} qualify?`,
+          description: `Will ${eventDef.home} qualify from ${eventDef.title}?`,
+          marketType: "team_to_qualify",
+          rules: { template: "TEAM_TO_QUALIFY", settlement: "manual", team: "home" },
+          outcomes: [
+            { name: "Yes", code: "YES", metadata: { team: "home", value: true } },
+            { name: "No", code: "NO", metadata: { team: "home", value: false } },
+          ],
+        },
+        {
+          title: `Will ${eventDef.away} qualify?`,
+          description: `Will ${eventDef.away} qualify from ${eventDef.title}?`,
+          marketType: "team_to_qualify",
+          rules: { template: "TEAM_TO_QUALIFY", settlement: "manual", team: "away" },
+          outcomes: [
+            { name: "Yes", code: "YES", metadata: { team: "away", value: true } },
+            { name: "No", code: "NO", metadata: { team: "away", value: false } },
+          ],
+        },
+      );
+    }
+
+    for (const spec of marketSpecs) {
+      createdMarketIds.push(
+        await syncSportsMarket({
+          ...spec,
+          eventId: event.id,
+          eventSlug: event.slug ?? eventDef.slug,
+          startTime,
+        }),
+      );
+    }
   }
 
   const summary = {
