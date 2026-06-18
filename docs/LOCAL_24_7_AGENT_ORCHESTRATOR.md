@@ -1,6 +1,8 @@
 # Local 24/7 Agent Orchestrator
 
-The local agent orchestrator is a Linux-friendly runner that coordinates Codex development work through GitHub issues, local branches, validation, pull requests, and run reports.
+The local agent orchestrator coordinates Codex development work through GitHub issues, local branches, validation, pull requests, and run reports.
+
+The current development checkout lives on the local Windows machine. Run dry-run testing and normal agent-development validation from the Windows repo checkout unless a task explicitly says otherwise. The Linux server is treated as the production server target, not the default local development environment.
 
 It lives under `agent-orchestrator/`.
 
@@ -59,13 +61,13 @@ Dry-run mode may inspect local git state, inspect GitHub issues through `gh`, ge
 
 Dry-run mode must not create branches, commit, push, open PRs, modify issues, modify labels, run Codex, or modify files outside its report output.
 
-Run one dry-run cycle:
+Run one dry-run cycle from the Windows repo checkout:
 
 ```sh
 npm run agent:orchestrator:once
 ```
 
-Run the loop manually:
+Run the loop manually from the Windows repo checkout:
 
 ```sh
 npm run agent:orchestrator:loop
@@ -88,6 +90,12 @@ DRY_RUN=false
 In real mode, the orchestrator may create `agent/<issue-number>-<slug>` branches, mark issues in progress, run Codex with the generated prompt, run validation, commit safe changes, push branches, open pull requests into `dev`, and comment on the issue with the PR link and validation summary.
 
 Even in real mode it never auto-merges, never deploys, never touches `main`, and never hides validation failures.
+
+## LeadAgent Mode
+
+The orchestrator can operate as a LeadAgent coordinator for specialized subagents documented in `docs/SUBAGENT_OPERATING_MODEL.md`, `docs/SUBAGENT_ROLES.md`, and `docs/SUBAGENT_TASK_ROUTING.md`.
+
+LeadAgent mode does not bypass safety controls. Subagent execution must still respect `DRY_RUN`, `ALLOW_HIGH_RISK`, branch rules, CI, PR review, and human review. Auto-merge remains forbidden, and subagents must not deploy or touch `main`.
 
 ## Validation
 
@@ -113,15 +121,15 @@ With `ALLOW_HIGH_RISK=false`, matching issues are skipped and a report is writte
 
 If GitHub or Codex output suggests quota, rate, usage, token, or retry-later limits, the orchestrator writes a quota-wait report and stops the current cycle cleanly. It does not mark the task failed and does not open a failed PR. The task can be retried in a future loop.
 
-## Systemd User Service
+## Production Linux Systemd Service
 
-The service template is:
+The service template is for the Linux production server only:
 
 ```text
 agent-orchestrator/systemd/poly-agent-orchestrator.service
 ```
 
-Install it on the Linux VM after reviewing `WorkingDirectory`:
+Do not install or start this service during local Windows dry-run testing. Install it on the Linux production server only after reviewing `WorkingDirectory`, local paths, local config, and operational approval:
 
 ```sh
 mkdir -p ~/.config/systemd/user
@@ -148,7 +156,7 @@ Disable it:
 systemctl --user disable poly-agent-orchestrator.service
 ```
 
-Do not enable or start the service from a PR. Installation is a human operation.
+Do not enable or start the service from a PR. Installation is a human production-server operation.
 
 ## Safety Controls
 
