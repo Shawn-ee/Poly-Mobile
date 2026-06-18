@@ -30,7 +30,9 @@ test("local admin can open sports market trading UI", async ({ page }, testInfo)
   const submitButton = page.getByRole("button", { name: /place buy order|buy yes|buy /i }).last();
   if (await submitButton.isEnabled().catch(() => false)) {
     await submitButton.click();
-    await expect(page.getByText(/order placed|order submitted|failed to submit order|authentication required/i)).toBeVisible();
+    await expect(
+      page.getByText(/order placed|order submitted|failed to submit order|authentication required/i).first(),
+    ).toBeVisible();
   } else {
     test.info().annotations.push({
       type: "order-not-submitted",
