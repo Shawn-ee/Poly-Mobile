@@ -1,6 +1,6 @@
 # Current State
 
-Last audited: 2026-06-16
+Last audited: 2026-06-17
 
 ## What Works
 
@@ -14,13 +14,13 @@ Last audited: 2026-06-16
 - `seed:nba` creates sports `Event` rows and links NBA markets to them.
 - Local Playwright admin login works when `ALLOW_DEV_LOGIN=true`.
 - Authenticated admin page smoke passes in headed Chrome.
+- Authenticated sports order smoke passes after the #18 locator fix.
 - Public market detail UI exposes order-ticket content after hydration.
 - Admin pages and APIs are gated when unauthenticated.
 - UI displays internal beta/test-credit warnings.
 
 ## What Is Partially Verified
 
-- Authenticated sports order flow places an order, but the Playwright assertion is too broad and fails on duplicate success messages.
 - Wallet and portfolio pages load but authenticated balances/history were not fully verified in Chrome.
 - Admin dashboard loads authenticated, but full event/market management flows still need coverage.
 - Ledger Phase 3 tests pass against an isolated migrated database.
@@ -28,7 +28,7 @@ Last audited: 2026-06-16
 
 ## What Is Broken Or Missing
 
-- `npm run e2e:sports:auth` currently fails because the assertion matches two visible order success messages, even though the order is placed.
+- `npm run test:ci` is referenced by validation plans but is not defined in `package.json`.
 - Broad `npm run test:jest` is still not declared CI-safe.
 - Full orderbook/ledger/settlement e2e coverage remains incomplete.
 - Full admin event/market management verification remains incomplete.
@@ -41,7 +41,7 @@ POLY is closer after the `dev` integration pass, but it is not pre-money launch 
 
 Blocking areas:
 
-- authenticated sports e2e assertion fix
+- define or replace the missing `test:ci` script
 - orderbook/ledger/settlement QA
 - authenticated browser/admin management QA
 - bot sports discovery QA

@@ -2,17 +2,18 @@
 
 Branch: `audit/dev-post-integration-verification`
 
-Verified dev commit: `cda413bdae6664034d39d8ebfbbe24529b0ebd6a`
+Verified dev commit: `219f44800948c82315b88ddeda1e4c359460aad9`
 
-Date: 2026-06-16
+Date: 2026-06-17
 
 ## Goal
 
-Verify `dev` after integrating PRs #13, #11, #12, #14, #16, and #15.
+Verify `dev` after integrating PRs #13, #11, #12, #14, #16, #15, and the sports auth e2e locator fix in #18.
 
 ## Environment
 
 - Local app: `http://127.0.0.1:3017`
+- Refresh app: `http://127.0.0.1:3001`
 - Database: disposable PostgreSQL 16 container on port `55440`
 - Safe env values only:
   - `DATABASE_URL=postgresql://user:pass@localhost:55440/poly_post_integration`
@@ -47,12 +48,12 @@ Seeded data counts:
 | Prisma generate | PASS | Existing Prisma config deprecation warning |
 | Prisma validate | PASS | Existing Prisma config deprecation warning |
 | TypeScript | PASS | `npx tsc --noEmit --pretty false --incremental false` |
-| `test:ci` | SKIPPED | No `test:ci` script exists |
+| `npm run test:ci` | BLOCKED | No `test:ci` script exists in `package.json` |
 | CI focused Jest smoke | PASS | 14 suites, 41 tests passed |
-| `npm run e2e:auth:setup` | PASS | Local dev admin auth state generated then removed |
+| `npm run e2e:auth:setup` | PASS | Passed on refresh against `APP_BASE_URL=http://127.0.0.1:3001` |
 | `npm run e2e:admin` | PASS | Headed Chrome admin page smoke passed |
-| `npm run e2e:sports:auth` | FAIL | Order placed, but assertion matches two visible success messages |
-| changed-file secret scan | PASS | No high-confidence secrets |
+| `npm run e2e:sports:auth` | PASS | #18 fixed the strict locator assertion; 2 Playwright tests passed |
+| changed-file secret scan | PASS | Only benign documentation text matched the scan pattern |
 
 ## Chrome/UI Verification
 
@@ -77,7 +78,7 @@ The first custom Chrome run used `networkidle` and timed out on market detail be
 
 ## Screenshots And Artifacts
 
-Playwright generated failure artifacts for the known `npm run e2e:sports:auth` assertion issue:
+An earlier Playwright run generated failure artifacts for the now-fixed `npm run e2e:sports:auth` assertion issue:
 
 - `test-results/sports-authenticated-order-70585-en-sports-market-trading-UI-authenticated/test-failed-1.png`
 - `test-results/sports-authenticated-order-70585-en-sports-market-trading-UI-authenticated/video.webm`
@@ -87,10 +88,11 @@ These artifacts are ignored and were not committed.
 
 ## Blocking Issues
 
-- `npm run e2e:sports:auth` needs a focused test fix. The product behavior observed was successful order placement, but the locator assertion is too broad and fails strict mode because two success messages match.
+- `npm run test:ci` is referenced by the validation plan but is not defined in `package.json`.
 
 ## Non-Blocking Issues
 
+- Initial `npm ci` refresh hit Windows `EPERM` while a local Next dev server held a native `lightningcss` binary; stopping the repo-local dev server and rerunning passed.
 - `TopNav` focused ESLint reports an existing `<img>` warning.
 - npm audit warnings remain.
 - Prisma config deprecation warning remains.
@@ -106,4 +108,4 @@ These artifacts are ignored and were not committed.
 
 ## Recommended Next Task
 
-Create a focused branch to fix the authenticated sports e2e locator assertion, then rerun `npm run e2e:sports:auth`.
+Begin the UI-only redesign cycle on a new branch, keeping backend matching, ledger, orderbook, wallet, deposit, withdrawal, custody, and payment logic unchanged.

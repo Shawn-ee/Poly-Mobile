@@ -4,7 +4,7 @@ Branch: `audit/dev-post-integration-verification`
 
 Target branch verified: `dev`
 
-Integration date: 2026-06-16
+Integration date: 2026-06-17
 
 ## Merge Results
 
@@ -16,6 +16,7 @@ Integration date: 2026-06-16
 | #14 | `agent/playwright-dev-admin-login` | Merged to `dev` | `eced392` | Passed auth guard, lint, TypeScript, and admin Chrome smoke |
 | #16 | `agent/sports-event-seed-api-alignment` | Merged to `dev` | `6046e1f` | Passed seed/API alignment validation |
 | #15 | `agent/sports-ui-event-pages-clean` | Merged to `dev` | `cda413b` | Passed sports UI route smoke and static checks |
+| #18 | `agent/sports-auth-e2e-locator-fix` | Merged to `dev` | `219f448` | Passed authenticated sports e2e validation |
 
 No PRs from the requested queue remain open.
 
@@ -91,9 +92,21 @@ Note: an initial TypeScript run was started in parallel with `prisma generate` a
 - PASS: route smoke for `/`, `/markets`, `/sports`, `/sports/soccer`, `/sports/soccer/world-cup`, and `/events/france-vs-argentina`
 - PASS: changed-file secret scan
 
+### PR #18
+
+- PASS: scoped patch review confirmed only the sports authenticated Playwright locator and an agent report changed.
+- PASS: `git diff --check`
+- PASS: `npm ci`
+- PASS: Prisma generate/validate
+- PASS: `npx tsc --noEmit --pretty false --incremental false`
+- BLOCKED: `npm run test:ci` is not defined in `package.json`
+- PASS: `npm run e2e:auth:setup`
+- PASS: `npm run e2e:sports:auth`
+- PASS: changed-file secret scan with only benign documentation text matched.
+
 ## Warnings
 
 - npm continues to report existing audit/deprecation warnings.
 - Prisma continues to warn that `package.json#prisma` is deprecated for Prisma 7.
 - Next dev server warns about multiple lockfiles and inferred workspace root.
-- `npm run e2e:sports:auth` fails because the assertion matches two visible order success messages after the order is placed.
+- `npm run test:ci` is not currently available as a package script.
