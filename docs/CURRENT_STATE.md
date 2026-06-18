@@ -16,6 +16,7 @@ Last audited: 2026-06-17
 - Authenticated admin page smoke passes in headed Chrome.
 - Authenticated sports order smoke passes after the #18 locator fix.
 - A clean light trading UI shell foundation now exists on the UI redesign branch, covering global tokens, top navigation, shared page/card/button/badge/state primitives, market cards, sports cards, and public market/event listing surfaces.
+- Market detail and trade ticket polish is underway on the next UI branch, extending the light trading primitives into order tickets, grouped trade tickets, orderbook panels, positions, and open orders.
 - Public market detail UI exposes order-ticket content after hydration.
 - Admin pages and APIs are gated when unauthenticated.
 - UI displays internal beta/test-credit warnings.
@@ -34,6 +35,7 @@ Last audited: 2026-06-17
 - Full orderbook/ledger/settlement e2e coverage remains incomplete.
 - Full admin event/market management verification remains incomplete.
 - Full visual redesign is incomplete beyond the initial shell and public listing/detail surfaces.
+- Some authenticated account/admin surfaces still retain older styling while the UI redesign proceeds in focused branches.
 - Bot sports market discovery verification remains incomplete.
 - A committed screenshot artifact exists under `screenshotsforchat/`.
 

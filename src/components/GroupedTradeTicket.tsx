@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Badge from "@/components/ui/Badge";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
 
 export type SelectedTrade = {
   marketId: string;
@@ -151,30 +154,24 @@ export default function GroupedTradeTicket({
   };
 
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm">
+    <Card className="p-5">
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
         <div>
-          <div className="text-xs uppercase tracking-wide text-neutral-500">
+          <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">
             Trade
           </div>
-          <h3 className="mt-1 text-lg font-semibold text-neutral-900">
+          <h3 className="mt-1 text-lg font-semibold text-[var(--poly-text)]">
             {trade.outcomeLabel}
           </h3>
-          <span
-            className={`mt-1 inline-block rounded-full px-3 py-0.5 text-xs font-medium ${
-              trade.tradeOutcome === "YES"
-                ? "bg-emerald-100 text-emerald-800"
-                : "bg-rose-100 text-rose-800"
-            }`}
-          >
-            Buy {trade.tradeOutcome}
-          </span>
+          <div className="mt-2">
+            <Badge tone={trade.tradeOutcome === "YES" ? "positive" : "negative"}>Buy {trade.tradeOutcome}</Badge>
+          </div>
         </div>
         <button
           type="button"
           onClick={onClose}
-          className="rounded-full p-1.5 text-neutral-400 transition hover:bg-neutral-100 hover:text-neutral-600"
+          className="rounded-full p-1.5 text-[var(--poly-muted)] transition hover:bg-[var(--poly-surface-muted)] hover:text-[var(--poly-text)]"
           aria-label="Close trade panel"
         >
           <svg
@@ -194,21 +191,21 @@ export default function GroupedTradeTicket({
       </div>
 
       {/* Price display */}
-      <div className="mt-4 rounded-xl bg-neutral-50 p-3 text-sm">
+      <div className="mt-4 rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3 text-sm">
         <div className="flex items-center justify-between">
-          <span className="text-neutral-600">Price per share</span>
-          <span className="font-semibold text-neutral-900">
+          <span className="text-[var(--poly-muted)]">Price per share</span>
+          <span className="font-semibold text-[var(--poly-text)]">
             {formatPrice(defaultPrice)}
           </span>
         </div>
         {trade.tradeOutcome === "YES" && trade.bestAsk != null && (
-          <div className="mt-1 flex items-center justify-between text-xs text-neutral-500">
+          <div className="mt-1 flex items-center justify-between text-xs text-[var(--poly-muted)]">
             <span>Best ask</span>
             <span>{formatPrice(trade.bestAsk)}</span>
           </div>
         )}
         {trade.tradeOutcome === "NO" && trade.bestBid != null && (
-          <div className="mt-1 flex items-center justify-between text-xs text-neutral-500">
+          <div className="mt-1 flex items-center justify-between text-xs text-[var(--poly-muted)]">
             <span>Best bid (YES)</span>
             <span>
               {formatPrice(trade.bestBid)} → NO {formatPrice(1 - trade.bestBid)}
@@ -219,11 +216,11 @@ export default function GroupedTradeTicket({
 
       {/* Amount input */}
       <div className="mt-4">
-        <label className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+        <label className="text-xs font-semibold uppercase text-[var(--poly-muted)]">
           Amount
         </label>
-        <div className="mt-1 flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 focus-within:border-blue-400 focus-within:ring-1 focus-within:ring-blue-400">
-          <span className="text-sm text-neutral-500">$</span>
+        <div className="mt-1 flex items-center gap-2 rounded-lg border border-[var(--poly-border)] px-3 py-2 focus-within:border-[var(--poly-primary)] focus-within:ring-2 focus-within:ring-[var(--poly-ring)]">
+          <span className="text-sm text-[var(--poly-muted)]">$</span>
           <input
             value={amountUsd}
             onChange={(event) => setAmountUsd(event.target.value)}
@@ -238,7 +235,7 @@ export default function GroupedTradeTicket({
               key={quick}
               type="button"
               onClick={() => handleQuickAmount(quick)}
-              className="rounded-full border border-neutral-300 px-3 py-1 text-xs text-neutral-700 transition hover:bg-neutral-100"
+              className="rounded-full border border-[var(--poly-border)] bg-white px-3 py-1 text-xs text-[var(--poly-muted)] transition hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             >
               +${quick}
             </button>
@@ -247,22 +244,22 @@ export default function GroupedTradeTicket({
       </div>
 
       {/* Estimates */}
-      <div className="mt-4 space-y-2 rounded-xl border border-neutral-100 bg-neutral-50 p-3 text-sm">
+      <div className="mt-4 space-y-2 rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3 text-sm">
         <div className="flex items-center justify-between">
-          <span className="text-neutral-600">Est. shares</span>
-          <span className="font-medium text-neutral-900">
+          <span className="text-[var(--poly-muted)]">Est. shares</span>
+          <span className="font-semibold text-[var(--poly-text)]">
             {estimatedShares.toFixed(2)}
           </span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-neutral-600">Max payout</span>
-          <span className="font-medium text-neutral-900">
+          <span className="text-[var(--poly-muted)]">Max payout</span>
+          <span className="font-semibold text-[var(--poly-text)]">
             {formatUsd(maxPayout)}
           </span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-neutral-600">Max profit</span>
-          <span className="font-medium text-emerald-700">
+          <span className="text-[var(--poly-muted)]">Max profit</span>
+          <span className="font-semibold text-emerald-700">
             {formatUsd(estimatedProfit)}
           </span>
         </div>
@@ -270,12 +267,12 @@ export default function GroupedTradeTicket({
 
       {/* Beta notice */}
       <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-center text-[11px] text-amber-700">
-        ⚠️ Internal Beta — Test credits only
+        Internal Beta: test credits only
       </div>
 
       {/* Auth / Submit */}
       {!userId ? (
-        <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-3 text-center text-sm text-amber-800">
+        <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-center text-sm text-amber-800">
           <a
             href="/login"
             className="font-medium underline underline-offset-2"
@@ -285,20 +282,18 @@ export default function GroupedTradeTicket({
           to place orders.
         </div>
       ) : (
-        <button
+        <Button
           type="button"
           onClick={handleSubmit}
           disabled={formDisabled}
-          className={`mt-4 w-full rounded-xl px-4 py-3 text-sm font-medium transition ${
-            trade.tradeOutcome === "YES"
-              ? "bg-emerald-600 text-white hover:bg-emerald-700"
-              : "bg-rose-600 text-white hover:bg-rose-700"
-          } disabled:cursor-not-allowed disabled:bg-neutral-300`}
+          className="mt-4 w-full"
+          variant={trade.tradeOutcome === "YES" ? "secondary" : "negative"}
+          size="lg"
         >
           {submitting
             ? "Placing order..."
             : `Buy ${trade.tradeOutcome} · ${formatPrice(defaultPrice)}`}
-        </button>
+        </Button>
       )}
 
       {!outcomeId && (
@@ -308,14 +303,10 @@ export default function GroupedTradeTicket({
         </p>
       )}
       {feedback && (
-        <p
-          className={`mt-3 text-sm ${
-            feedback.tone === "error" ? "text-rose-700" : "text-emerald-700"
-          }`}
-        >
-          {feedback.text}
-        </p>
+        <div className="mt-3">
+          <Badge tone={feedback.tone === "error" ? "negative" : "positive"}>{feedback.text}</Badge>
+        </div>
       )}
-    </div>
+    </Card>
   );
 }
