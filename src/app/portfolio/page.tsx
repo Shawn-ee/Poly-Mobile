@@ -3,6 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Badge from "@/components/ui/Badge";
+import Card from "@/components/ui/Card";
+import PageContainer from "@/components/ui/PageContainer";
+import { EmptyState } from "@/components/ui/States";
 
 type PortfolioItem = {
   market: {
@@ -156,54 +160,57 @@ export default function PortfolioPage() {
 
   if (loading) {
     return (
-      <main className="mx-auto max-w-6xl px-4 py-8">Loading portfolio...</main>
+      <PageContainer size="default">
+        <Card className="p-6 text-sm text-[var(--poly-muted)]">Loading portfolio...</Card>
+      </PageContainer>
     );
   }
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8">
-      <div className="mb-6 flex items-center justify-between">
+    <PageContainer size="wide">
+      <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">Portfolio</h1>
-          <p className="text-sm text-neutral-600">
+          <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Account</div>
+          <h1 className="mt-1 text-3xl font-semibold text-[var(--poly-text)]">Portfolio</h1>
+          <p className="mt-1 text-sm text-[var(--poly-muted)]">
             Track your positions across all markets.
           </p>
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-7">
-        <div className="rounded-lg border border-neutral-200 bg-white p-4">
-          <div className="text-xs text-neutral-500">Available</div>
-          <div className="mt-2 text-xl font-semibold">
+        <Card className="p-4">
+          <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Available</div>
+          <div className="mt-2 text-xl font-semibold text-[var(--poly-text)]">
             {walletAvailable === null ? "--" : walletAvailable.toFixed(2)} U
           </div>
-        </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4">
-          <div className="text-xs text-neutral-500">Locked</div>
-          <div className="mt-2 text-xl font-semibold">
+        </Card>
+        <Card className="p-4">
+          <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Locked</div>
+          <div className="mt-2 text-xl font-semibold text-[var(--poly-text)]">
             {walletLocked === null ? "--" : walletLocked.toFixed(2)} U
           </div>
-        </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4">
-          <div className="text-xs text-neutral-500">Total</div>
-          <div className="mt-2 text-xl font-semibold">
+        </Card>
+        <Card className="p-4">
+          <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Total</div>
+          <div className="mt-2 text-xl font-semibold text-[var(--poly-text)]">
             {walletTotal === null ? "--" : walletTotal.toFixed(2)} U
           </div>
-        </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4">
-          <div className="text-xs text-neutral-500">Total position value</div>
-          <div className="mt-2 text-xl font-semibold">
+        </Card>
+        <Card className="p-4">
+          <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Position value</div>
+          <div className="mt-2 text-xl font-semibold text-[var(--poly-text)]">
             {totalValue.toFixed(2)} U
           </div>
-        </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4">
-          <div className="text-xs text-neutral-500">Total cost basis</div>
-          <div className="mt-2 text-xl font-semibold">
+        </Card>
+        <Card className="p-4">
+          <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Cost basis</div>
+          <div className="mt-2 text-xl font-semibold text-[var(--poly-text)]">
             {totalCostBasis.toFixed(2)} U
           </div>
-        </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4">
-          <div className="text-xs text-neutral-500">Realized PnL</div>
+        </Card>
+        <Card className="p-4">
+          <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Realized PnL</div>
           <div
             className={`mt-2 text-xl font-semibold ${
               totalRealizedPnl >= 0 ? "text-emerald-600" : "text-red-600"
@@ -211,13 +218,13 @@ export default function PortfolioPage() {
           >
             {totalRealizedPnl.toFixed(2)} U
           </div>
-        </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4">
-          <div className="text-xs text-neutral-500">Unrealized PnL</div>
+        </Card>
+        <Card className="p-4">
+          <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Unrealized PnL</div>
           <div className={`mt-2 text-xl font-semibold ${totalPnl >= 0 ? "text-emerald-600" : "text-red-600"}`}>
             {totalPnl.toFixed(2)} U
           </div>
-        </div>
+        </Card>
       </div>
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -226,8 +233,8 @@ export default function PortfolioPage() {
             onClick={() => setFilterStatus("all")}
             className={`rounded-full border px-3 py-1 ${
               filterStatus === "all"
-                ? "border-black bg-black text-white"
-                : "border-neutral-300 text-neutral-700"
+                ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             }`}
             type="button"
           >
@@ -237,8 +244,8 @@ export default function PortfolioPage() {
             onClick={() => setFilterStatus("active")}
             className={`rounded-full border px-3 py-1 ${
               filterStatus === "active"
-                ? "border-black bg-black text-white"
-                : "border-neutral-300 text-neutral-700"
+                ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             }`}
             type="button"
           >
@@ -248,8 +255,8 @@ export default function PortfolioPage() {
             onClick={() => setFilterStatus("resolved")}
             className={`rounded-full border px-3 py-1 ${
               filterStatus === "resolved"
-                ? "border-black bg-black text-white"
-                : "border-neutral-300 text-neutral-700"
+                ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             }`}
             type="button"
           >
@@ -260,23 +267,17 @@ export default function PortfolioPage() {
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Search markets"
-          className="w-full max-w-xs rounded-md border border-neutral-300 px-3 py-2 text-sm"
+          className="w-full max-w-xs rounded-lg border border-[var(--poly-border)] bg-white px-3 py-2 text-sm text-[var(--poly-text)] focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
         />
       </div>
 
       {filterStatus === "all" ? (
         allItems.length === 0 ? (
-          <div className="mt-8 rounded-lg border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">
-            No portfolio activity yet.{" "}
-            <Link href="/" className="text-neutral-900 underline">
-              Browse markets
-            </Link>
-            .
-          </div>
+          <EmptyState title="No portfolio activity yet" description="Browse markets to start building positions." />
         ) : (
-          <div className="mt-6 overflow-x-auto rounded-lg border border-neutral-200 bg-white">
+          <Card className="mt-6 overflow-x-auto">
             <table className="min-w-full text-left text-sm">
-              <thead className="border-b border-neutral-200 text-xs uppercase text-neutral-500">
+              <thead className="border-b border-[var(--poly-border)] bg-[var(--poly-surface-muted)] text-xs uppercase text-[var(--poly-muted)]">
                 <tr>
                   <th className="px-4 py-3">Market</th>
                   <th className="px-4 py-3">Type</th>
@@ -295,19 +296,17 @@ export default function PortfolioPage() {
                   if (item.type === "OPEN_POSITION") {
                     const row = item.data as PortfolioItem;
                     return (
-                      <tr key={`open-${row.market.id}-${row.outcome}`} className="border-b border-neutral-100">
+                      <tr key={`open-${row.market.id}-${row.outcome}`} className="border-b border-[var(--poly-border)]">
                         <td className="px-4 py-3">
                           <Link
                             href={`/markets/${row.market.id}`}
-                            className="text-neutral-900 underline"
+                            className="font-medium text-[var(--poly-text)] underline"
                           >
                             {row.market.title}
                           </Link>
                         </td>
                         <td className="px-4 py-3">
-                          <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-600">
-                            Open
-                          </span>
+                          <Badge tone="teal">Open</Badge>
                         </td>
                         <td className="px-4 py-3">{row.outcome}</td>
                         <td className="px-4 py-3 text-right">
@@ -337,19 +336,17 @@ export default function PortfolioPage() {
 
                   const row = item.data as HistoryItem;
                   return (
-                    <tr key={`resolved-${row.market.id}`} className="border-b border-neutral-100">
-                      <td className="px-4 py-3">
-                        <Link
-                          href={`/markets/${row.market.id}`}
-                          className="text-neutral-900 underline"
-                        >
-                          {row.market.title}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-600">
-                          Resolved
-                        </span>
+                      <tr key={`resolved-${row.market.id}`} className="border-b border-[var(--poly-border)]">
+                        <td className="px-4 py-3">
+                          <Link
+                            href={`/markets/${row.market.id}`}
+                            className="font-medium text-[var(--poly-text)] underline"
+                          >
+                            {row.market.title}
+                          </Link>
+                        </td>
+                        <td className="px-4 py-3">
+                        <Badge>Resolved</Badge>
                       </td>
                       <td className="px-4 py-3">
                         {row.resolvedOutcomeName ?? "--"}
@@ -376,25 +373,19 @@ export default function PortfolioPage() {
                 })}
               </tbody>
             </table>
-          </div>
+          </Card>
         )
       ) : filterStatus === "resolved" ? (
         historyLoading ? (
-          <div className="mt-8 rounded-lg border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
+          <Card className="mt-8 p-6 text-sm text-[var(--poly-muted)]">
             Loading resolved history...
-          </div>
+          </Card>
         ) : filteredHistory.length === 0 ? (
-          <div className="mt-8 rounded-lg border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">
-            No resolved history yet.{" "}
-            <Link href="/" className="text-neutral-900 underline">
-              Browse markets
-            </Link>
-            .
-          </div>
+          <EmptyState title="No resolved history yet" description="Resolved markets will appear here." />
         ) : (
-          <div className="mt-6 overflow-x-auto rounded-lg border border-neutral-200 bg-white">
+          <Card className="mt-6 overflow-x-auto">
             <table className="min-w-full text-left text-sm">
-              <thead className="border-b border-neutral-200 text-xs uppercase text-neutral-500">
+              <thead className="border-b border-[var(--poly-border)] bg-[var(--poly-surface-muted)] text-xs uppercase text-[var(--poly-muted)]">
                 <tr>
                   <th className="px-4 py-3">Market</th>
                   <th className="px-4 py-3">Resolved</th>
@@ -406,11 +397,11 @@ export default function PortfolioPage() {
               </thead>
               <tbody>
                 {filteredHistory.map((item) => (
-                  <tr key={item.market.id} className="border-b border-neutral-100">
+                  <tr key={item.market.id} className="border-b border-[var(--poly-border)]">
                     <td className="px-4 py-3">
                       <Link
                         href={`/markets/${item.market.id}`}
-                        className="text-neutral-900 underline"
+                        className="font-medium text-[var(--poly-text)] underline"
                       >
                         {item.market.title}
                       </Link>
@@ -440,20 +431,14 @@ export default function PortfolioPage() {
                 ))}
               </tbody>
             </table>
-          </div>
+          </Card>
         )
       ) : filtered.length === 0 ? (
-        <div className="mt-8 rounded-lg border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">
-          No positions yet.{" "}
-          <Link href="/" className="text-neutral-900 underline">
-            Browse markets
-          </Link>
-          .
-        </div>
+        <EmptyState title="No positions yet" description="Active positions will appear after orders fill." />
       ) : (
-        <div className="mt-6 overflow-x-auto rounded-lg border border-neutral-200 bg-white">
+        <Card className="mt-6 overflow-x-auto">
           <table className="min-w-full text-left text-sm">
-            <thead className="border-b border-neutral-200 text-xs uppercase text-neutral-500">
+            <thead className="border-b border-[var(--poly-border)] bg-[var(--poly-surface-muted)] text-xs uppercase text-[var(--poly-muted)]">
               <tr>
                 <th className="px-4 py-3">Market</th>
                 <th className="px-4 py-3">Outcome</th>
@@ -468,11 +453,11 @@ export default function PortfolioPage() {
             </thead>
             <tbody>
               {filtered.map((item) => (
-                <tr key={`${item.market.id}-${item.outcome}`} className="border-b border-neutral-100">
+                <tr key={`${item.market.id}-${item.outcome}`} className="border-b border-[var(--poly-border)]">
                   <td className="px-4 py-3">
                     <Link
                       href={`/markets/${item.market.id}`}
-                      className="text-neutral-900 underline"
+                      className="font-medium text-[var(--poly-text)] underline"
                     >
                       {item.market.title}
                     </Link>
@@ -480,13 +465,13 @@ export default function PortfolioPage() {
                   <td className="px-4 py-3">{item.outcome}</td>
                   <td className="px-4 py-3 text-right">
                     {item.valueTokens.toFixed(2)} U{" "}
-                    <span className="text-neutral-500">
+                    <span className="text-[var(--poly-muted)]">
                       ({item.shares.toFixed(2)} shares)
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right">
                     {item.totalCostBasisTokens.toFixed(2)} U
-                    <div className="text-xs text-neutral-500">
+                    <div className="text-xs text-[var(--poly-muted)]">
                       ({item.shares.toFixed(2)} shares)
                     </div>
                   </td>
@@ -509,9 +494,9 @@ export default function PortfolioPage() {
               ))}
             </tbody>
           </table>
-        </div>
+        </Card>
       )}
-    </main>
+    </PageContainer>
   );
 }
 

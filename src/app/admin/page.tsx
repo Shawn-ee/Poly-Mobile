@@ -3,6 +3,10 @@
 import Link from "next/link";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Badge from "@/components/ui/Badge";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import PageContainer from "@/components/ui/PageContainer";
 
 type Market = {
   id: string;
@@ -25,6 +29,12 @@ type Tag = {
   name: string;
   slug: string;
   group: string | null;
+};
+
+type AdminMarketOutcome = {
+  id: string;
+  name: string;
+  isActive?: boolean;
 };
 
 function AdminPageInner() {
@@ -272,7 +282,7 @@ function AdminPageInner() {
         return;
       }
       setResolveOutcomes(
-        (data.market?.outcomes ?? []).map((outcome: any) => ({
+        ((data.market?.outcomes ?? []) as AdminMarketOutcome[]).map((outcome) => ({
           id: outcome.id,
           name: outcome.name,
           isActive: outcome.isActive !== false,
@@ -381,41 +391,44 @@ function AdminPageInner() {
 
   if (!user) {
     return (
-      <main className="mx-auto max-w-4xl px-4 py-8">
-        <p className="text-sm text-neutral-600">Log in to access admin tools.</p>
-      </main>
+      <PageContainer size="default">
+        <Card className="p-6 text-sm text-[var(--poly-muted)]">Log in to access admin tools.</Card>
+      </PageContainer>
     );
   }
 
   if (!user.isAdmin) {
     return (
-      <main className="mx-auto max-w-4xl px-4 py-8">
-        <p className="text-sm text-neutral-600">You are not an admin.</p>
-      </main>
+      <PageContainer size="default">
+        <Card className="p-6 text-sm text-[var(--poly-muted)]">You are not an admin.</Card>
+      </PageContainer>
     );
   }
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-8">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold">Admin</h1>
+    <PageContainer size="default">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Operations</div>
+          <h1 className="mt-1 text-3xl font-semibold text-[var(--poly-text)]">Admin</h1>
+        </div>
         <Link
           href="/admin/reference-markets"
-          className="rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700"
+          className="rounded-lg border border-[var(--poly-border)] bg-white px-3 py-2 text-sm font-semibold text-[var(--poly-text)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
         >
           Reference Markets Review
         </Link>
         <Link
           href="/admin/deposits"
-          className="rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700"
+          className="rounded-lg border border-[var(--poly-border)] bg-white px-3 py-2 text-sm font-semibold text-[var(--poly-text)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
         >
           Deposits
         </Link>
       </div>
-      <div className="mt-4 rounded-lg border border-neutral-200 bg-white p-4">
+      <Card className="mt-4 p-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Create market</h2>
-          <button
+          <h2 className="text-lg font-semibold text-[var(--poly-text)]">Create market</h2>
+          <Button
             onClick={() => {
               const next = !formCollapsed;
               setFormCollapsed(next);
@@ -424,11 +437,12 @@ function AdminPageInner() {
                 String(next)
               );
             }}
-            className="rounded-md border border-neutral-300 px-3 py-1 text-xs text-neutral-700"
+            variant="outline"
+            size="sm"
             type="button"
           >
             {formCollapsed ? "Expand" : "Hide"}
-          </button>
+          </Button>
         </div>
         {!formCollapsed ? (
           <div className="mt-3 space-y-3">
@@ -436,13 +450,13 @@ function AdminPageInner() {
             value={title}
             onChange={(event) => setTitle(event.target.value)}
             placeholder="Title"
-            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-[var(--poly-border)] px-3 py-2 text-sm focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
           />
             <textarea
               value={description}
               onChange={(event) => setDescription(event.target.value)}
               placeholder="Description"
-              className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[var(--poly-border)] px-3 py-2 text-sm focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
             />
             <div>
               <label className="text-sm font-medium">Market type</label>
@@ -451,7 +465,7 @@ function AdminPageInner() {
                 onChange={(event) =>
                   setMarketType(event.target.value as "BINARY" | "MULTI_WINNER")
                 }
-                className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-lg border border-[var(--poly-border)] px-3 py-2 text-sm focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
               >
                 <option value="BINARY">Binary (YES/NO)</option>
                 <option value="MULTI_WINNER">Multi-winner (one-of-N)</option>
@@ -464,7 +478,7 @@ function AdminPageInner() {
                   value={outcomeLines}
                   onChange={(event) => setOutcomeLines(event.target.value)}
                   placeholder="Player A&#10;Player B&#10;Player C"
-                  className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+                  className="mt-1 w-full rounded-lg border border-[var(--poly-border)] px-3 py-2 text-sm focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
                   rows={4}
                 />
               </div>
@@ -478,7 +492,7 @@ function AdminPageInner() {
                   setTopCategoryId(event.target.value);
                   setChildCategoryId("");
                 }}
-                className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-lg border border-[var(--poly-border)] px-3 py-2 text-sm focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
               >
                 <option value="">Select category</option>
                 {categories.map((category) => (
@@ -493,7 +507,7 @@ function AdminPageInner() {
               <select
                 value={childCategoryId}
                 onChange={(event) => setChildCategoryId(event.target.value)}
-                className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-lg border border-[var(--poly-border)] px-3 py-2 text-sm focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
                 disabled={!topCategoryId}
               >
                 <option value="">None</option>
@@ -514,7 +528,7 @@ function AdminPageInner() {
                 <button
                   key={tag}
                   onClick={() => setTags(tags.filter((item) => item !== tag))}
-                  className="rounded-full border border-neutral-300 px-3 py-1 text-xs text-neutral-700"
+                  className="rounded-full border border-[var(--poly-border)] px-3 py-1 text-xs text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
                   type="button"
                 >
                   {tag} ×
@@ -526,7 +540,7 @@ function AdminPageInner() {
                 value={tagInput}
                 onChange={(event) => setTagInput(event.target.value)}
                 placeholder="Add tag"
-                className="flex-1 rounded-md border border-neutral-300 px-3 py-2 text-sm"
+                className="flex-1 rounded-lg border border-[var(--poly-border)] px-3 py-2 text-sm focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
               />
               <button
                 onClick={() => {
@@ -537,7 +551,7 @@ function AdminPageInner() {
                   }
                   setTagInput("");
                 }}
-                className="rounded-md border border-neutral-300 px-3 py-2 text-sm"
+                className="rounded-lg border border-[var(--poly-border)] px-3 py-2 text-sm font-semibold text-[var(--poly-text)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
                 type="button"
               >
                 Add
@@ -552,7 +566,7 @@ function AdminPageInner() {
                       setTags([...tags, tag.name]);
                     }
                   }}
-                  className="rounded-md border border-neutral-300 px-2 py-1 text-xs text-neutral-700"
+                  className="rounded-lg border border-[var(--poly-border)] px-2 py-1 text-xs text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
                   type="button"
                 >
                   {tag.name}
@@ -564,29 +578,28 @@ function AdminPageInner() {
             value={resolveTime}
             onChange={(event) => setResolveTime(event.target.value)}
             placeholder="Resolve time (optional, ISO)"
-            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-[var(--poly-border)] px-3 py-2 text-sm focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
           />
-          <button
+          <Button
             onClick={createMarket}
-            className="rounded-md bg-black px-4 py-2 text-sm font-medium text-white hover:bg-neutral-900"
             type="button"
           >
             Create
-          </button>
+          </Button>
           {message ? (
-            <div className="text-sm text-neutral-600">{message}</div>
+            <div className="text-sm text-[var(--poly-muted)]">{message}</div>
           ) : null}
           </div>
         ) : null}
-      </div>
+      </Card>
 
-      <div className="mt-6 rounded-lg border border-neutral-200 bg-white p-4">
+      <Card className="mt-6 p-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search markets"
-            className="w-full max-w-xs rounded-md border border-neutral-300 px-3 py-2 text-sm"
+            className="w-full max-w-xs rounded-lg border border-[var(--poly-border)] px-3 py-2 text-sm focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
           />
           <div className="flex flex-wrap gap-2 text-xs">
             {statusOptions.map((status) => (
@@ -595,8 +608,8 @@ function AdminPageInner() {
                 onClick={() => setStatusFilter(status)}
                 className={`rounded-full border px-3 py-1 ${
                   statusFilter === status
-                    ? "border-black bg-black text-white"
-                    : "border-neutral-300 text-neutral-700"
+                    ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                    : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
                 }`}
                 type="button"
               >
@@ -605,56 +618,60 @@ function AdminPageInner() {
             ))}
           </div>
         </div>
-      </div>
+      </Card>
 
       <div className="mt-4 space-y-4">
         {markets.map((market) => (
-          <div
+          <Card
             key={market.id}
-            className="rounded-lg border border-neutral-200 bg-white p-4"
+            className="p-4"
           >
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-lg font-medium">{market.title}</div>
-                <div className="text-sm text-neutral-600">
+                <div className="text-lg font-semibold text-[var(--poly-text)]">{market.title}</div>
+                <div className="text-sm text-[var(--poly-muted)]">
                   {market.description}
                 </div>
                 {market.resolvedOutcomeId ? (
-                  <div className="mt-1 text-xs text-neutral-500">
+                  <div className="mt-1 text-xs text-[var(--poly-muted)]">
                     Resolved outcome:{" "}
                     {market.outcomes.find((o) => o.id === market.resolvedOutcomeId)?.name ??
                       "—"}
                   </div>
                 ) : null}
               </div>
-              <span className="rounded-full bg-neutral-100 px-2 py-1 text-xs uppercase text-neutral-600">
+              <Badge tone={market.status === "LIVE" || market.status === "ACTIVE" ? "positive" : market.status === "RESOLVED" ? "primary" : "neutral"}>
                 {market.status}
-              </span>
+              </Badge>
             </div>
             <div className="mt-3 flex gap-3 text-sm">
               <button
                 onClick={() => togglePause(market)}
-                className="rounded-md border border-neutral-300 px-3 py-1"
+                className={`rounded-lg border px-3 py-1 font-semibold ${
+                  market.status === "LIVE" || market.status === "ACTIVE"
+                    ? "border-red-100 bg-red-50 text-red-700 hover:border-red-200"
+                    : "border-[var(--poly-border)] bg-white text-[var(--poly-text)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
+                }`}
                 type="button"
               >
                 {market.status === "LIVE" || market.status === "ACTIVE" ? "Close" : "Go live"}
               </button>
               <button
                 onClick={() => openEdit(market.id)}
-                className="rounded-md border border-neutral-300 px-3 py-1"
+                className="rounded-lg border border-[var(--poly-border)] px-3 py-1 font-semibold text-[var(--poly-text)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
                 type="button"
               >
                 Edit
               </button>
               <button
                 onClick={() => openResolve(market.id)}
-                className="rounded-md border border-neutral-300 px-3 py-1"
+                className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-1 font-semibold text-amber-700 hover:border-amber-300"
                 type="button"
               >
                 Resolve
               </button>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
 
@@ -962,7 +979,7 @@ function AdminPageInner() {
           </div>
         </div>
       ) : null}
-    </main>
+    </PageContainer>
   );
 }
 
@@ -970,9 +987,9 @@ export default function AdminPage() {
   return (
     <Suspense
       fallback={
-        <main className="mx-auto max-w-4xl px-4 py-8">
-          <p className="text-sm text-neutral-600">Loading admin tools...</p>
-        </main>
+        <PageContainer size="default">
+          <Card className="p-6 text-sm text-[var(--poly-muted)]">Loading admin tools...</Card>
+        </PageContainer>
       }
     >
       <AdminPageInner />
