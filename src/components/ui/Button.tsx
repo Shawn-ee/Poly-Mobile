@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "./cn";
 
-type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "disabled";
+type ButtonVariant = "primary" | "secondary" | "negative" | "outline" | "ghost" | "disabled";
 type ButtonSize = "sm" | "md" | "lg";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -13,6 +13,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 const variants: Record<ButtonVariant, string> = {
   primary: "border-transparent bg-[var(--poly-primary)] text-white shadow-sm hover:bg-[var(--poly-primary-hover)]",
   secondary: "border-transparent bg-[var(--poly-teal)] text-white shadow-sm hover:bg-[var(--poly-teal-hover)]",
+  negative: "border-transparent bg-[var(--poly-negative)] text-white shadow-sm hover:bg-red-600",
   outline: "border-[var(--poly-border)] bg-white text-[var(--poly-text)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]",
   ghost: "border-transparent bg-transparent text-[var(--poly-muted)] hover:bg-[var(--poly-surface-muted)] hover:text-[var(--poly-text)]",
   disabled: "cursor-not-allowed border-[var(--poly-border)] bg-[var(--poly-surface-muted)] text-[var(--poly-muted)]",
