@@ -57,21 +57,7 @@ jobs:
         run: npx tsc --noEmit --pretty false --incremental false
 
       - name: Run Jest smoke tests
-        run: >-
-          npx jest --runInBand --detectOpenHandles
-          src/__tests__/admin.market.invariants.route.test.ts
-          src/__tests__/admin.withdrawals.complete.route.test.ts
-          src/__tests__/config.validation.test.ts
-          src/__tests__/health.route.test.ts
-          src/__tests__/order_ticket_logic.test.ts
-          src/__tests__/orderbook.events.bus.test.ts
-          src/__tests__/orderbook.place-cancel.events.test.ts
-          src/__tests__/sensitive.rate-limit.test.ts
-          src/__tests__/sports.event-market-model.test.ts
-          src/__tests__/sse.market.route.test.ts
-          src/__tests__/sse.recovery.test.ts
-          src/__tests__/sse.user.route.test.ts
-          src/__tests__/wallet.balance.route.test.ts
+        run: npm run test:ci
 
       # Playwright is intentionally not part of this first CI phase.
       # Broader DB-backed Jest, Vitest, and browser tests should be added
