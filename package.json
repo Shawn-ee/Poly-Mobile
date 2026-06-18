@@ -66,6 +66,9 @@
     "bot:e2e:seed": "tsx tests/bot-e2e/seed.ts",
     "bot:e2e:run": "npm run bot:e2e:seed && node tests/bot-e2e/run.mjs",
     "test:phase3": "vitest run src/server/services/__tests__/ledger.phase3.test.ts",
+    "agent:orchestrator:once": "bash agent-orchestrator/bin/orchestrator-once.sh",
+    "agent:orchestrator:loop": "bash agent-orchestrator/bin/orchestrator-loop.sh",
+    "agent:orchestrator:status": "bash agent-orchestrator/bin/orchestrator-status.sh",
     "test:phase3:watch": "vitest src/server/services/__tests__/ledger.phase3.test.ts"
   },
   "prisma": {
