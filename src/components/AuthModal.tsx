@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { BrowserProvider } from "ethers";
+import Button from "@/components/ui/Button";
 
 type AuthModalProps = {
   open: boolean;
@@ -60,7 +61,7 @@ export default function AuthModal({
       const nonceData = await nonceRes.json();
       if (!nonceRes.ok) throw new Error(nonceData.error ?? "Failed to get nonce.");
 
-      const provider = new BrowserProvider(window.ethereum as any);
+      const provider = new BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const signature = await signer.signMessage(nonceData.message);
 
@@ -90,45 +91,53 @@ export default function AuthModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-md rounded-xl bg-white p-5 shadow-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 px-4">
+      <div className="w-full max-w-md rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-md)]">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">
-            {mode === "link" ? "Link account" : "Sign in"}
-          </h2>
-          <button
+          <div>
+            <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">
+              {mode === "link" ? "Account" : "Welcome"}
+            </div>
+            <h2 className="mt-1 text-xl font-semibold text-[var(--poly-text)]">
+              {mode === "link" ? "Link account" : "Sign in"}
+            </h2>
+          </div>
+          <Button
             onClick={onClose}
-            className="text-sm text-neutral-500"
+            variant="ghost"
+            size="sm"
             type="button"
           >
             Close
-          </button>
+          </Button>
         </div>
-        <p className="mt-2 text-sm text-neutral-600">
+        <p className="mt-3 text-sm text-[var(--poly-muted)]">
           {mode === "link"
             ? "Link Google or wallet to your current account."
             : "Continue with Google or connect your wallet."}
         </p>
         <div className="mt-4 space-y-3">
-          <button
+          <Button
             onClick={handleGoogle}
             disabled={loading !== null}
-            className="w-full rounded-md border border-neutral-300 px-4 py-2 text-sm font-medium text-neutral-800 disabled:opacity-60"
+            variant="outline"
+            className="w-full"
             type="button"
           >
             {loading === "google" ? "Redirecting..." : "Continue with Google"}
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleWallet}
             disabled={loading !== null}
-            className="w-full rounded-md bg-black px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+            variant="primary"
+            className="w-full"
             type="button"
           >
             {loading === "wallet" ? "Connecting..." : "Continue with MetaMask"}
-          </button>
+          </Button>
         </div>
         {error ? (
-          <div className="mt-3 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+          <div className="mt-3 rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-sm text-red-700">
             {error}
           </div>
         ) : null}

@@ -1,7 +1,12 @@
 "use client";
 
+/* eslint-disable react-hooks/set-state-in-effect */
+
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useMemo, useState } from "react";
+import Badge from "@/components/ui/Badge";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
 
 type DepositAddressInfo = {
   network: string;
@@ -136,112 +141,107 @@ export default function TransferCryptoModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 px-4 py-6">
-      <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white shadow-2xl">
-        <div className="border-b border-neutral-200 px-6 py-5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/45 px-4 py-6">
+      <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg border border-[var(--poly-border)] bg-white shadow-[var(--poly-shadow-md)]">
+        <div className="border-b border-[var(--poly-border)] px-6 py-5">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h2 className="text-2xl font-semibold text-neutral-950">Transfer Crypto</h2>
-              <p className="mt-1 text-sm text-neutral-600">
+              <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Wallet</div>
+              <h2 className="mt-1 text-2xl font-semibold text-[var(--poly-text)]">Transfer Crypto</h2>
+              <p className="mt-1 text-sm text-[var(--poly-muted)]">
                 Platform Balance: {formatUsd(platformBalance)}
               </p>
             </div>
-            <button
+            <Button
               onClick={onClose}
-              className="rounded-full border border-neutral-200 px-3 py-1.5 text-sm text-neutral-600 hover:border-neutral-300 hover:text-neutral-900"
+              variant="ghost"
+              size="sm"
               type="button"
             >
               Close
-            </button>
+            </Button>
           </div>
         </div>
 
         <div className="space-y-6 px-6 py-6">
           <div className="grid gap-3 sm:grid-cols-3">
-            <div className="rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3">
-              <div className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">Token</div>
-              <div className="mt-2 text-sm font-medium text-neutral-900">
+            <Card className="bg-[var(--poly-surface-muted)] px-4 py-3">
+              <div className="text-[11px] font-semibold uppercase text-[var(--poly-muted)]">Token</div>
+              <div className="mt-2 text-sm font-semibold text-[var(--poly-text)]">
                 {addressInfo?.token ?? "USDC"}
               </div>
-            </div>
-            <div className="rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3">
-              <div className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">Chain</div>
-              <div className="mt-2 text-sm font-medium text-neutral-900">
+            </Card>
+            <Card className="bg-[var(--poly-surface-muted)] px-4 py-3">
+              <div className="text-[11px] font-semibold uppercase text-[var(--poly-muted)]">Chain</div>
+              <div className="mt-2 text-sm font-semibold text-[var(--poly-text)]">
                 {addressInfo?.network ?? "Polygon"}
               </div>
-            </div>
-            <div className="rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3">
-              <div className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">Minimum</div>
-              <div className="mt-2 text-sm font-medium text-neutral-900">
+            </Card>
+            <Card className="bg-[var(--poly-surface-muted)] px-4 py-3">
+              <div className="text-[11px] font-semibold uppercase text-[var(--poly-muted)]">Minimum</div>
+              <div className="mt-2 text-sm font-semibold text-[var(--poly-text)]">
                 {addressInfo ? `$${addressInfo.minimumDeposit}` : "$2.00"}
               </div>
-            </div>
+            </Card>
           </div>
 
           {loading && !addressInfo ? (
-            <div className="rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-10 text-center text-sm text-neutral-600">
+            <Card className="bg-[var(--poly-surface-muted)] px-4 py-10 text-center text-sm text-[var(--poly-muted)]">
               Loading deposit details...
-            </div>
+            </Card>
           ) : error ? (
-            <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            <div className="rounded-lg border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700">
               {error}
             </div>
           ) : addressInfo ? (
             <>
-              <div className="rounded-3xl border border-neutral-200 bg-neutral-50 px-6 py-8">
+              <Card className="bg-[var(--poly-surface-muted)] px-6 py-8">
                 <div className="flex justify-center">
-                  <div className="rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm">
+                  <div className="rounded-lg border border-[var(--poly-border)] bg-white p-4 shadow-sm">
                     <QRCodeSVG value={addressInfo.address} size={220} bgColor="#ffffff" fgColor="#111111" />
                   </div>
                 </div>
-              </div>
+              </Card>
 
-              <div className="rounded-2xl border border-neutral-200 p-4">
+              <Card className="p-4">
                 <div className="flex items-center gap-2">
-                  <div className="text-sm font-medium text-neutral-900">Your deposit address</div>
-                  <span
-                    className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-neutral-300 text-[11px] text-neutral-500"
-                    title="Only send USDC on Polygon to this address."
-                  >
-                    i
-                  </span>
+                  <div className="text-sm font-semibold text-[var(--poly-text)]">Your deposit address</div>
+                  <Badge tone="warning">Polygon USDC only</Badge>
                 </div>
                 <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <div className="flex-1 break-all rounded-2xl bg-neutral-100 px-4 py-3 font-mono text-sm text-neutral-900">
+                  <div className="flex-1 break-all rounded-lg bg-[var(--poly-surface-muted)] px-4 py-3 font-mono text-sm text-[var(--poly-text)]">
                     {addressInfo.address}
                   </div>
-                  <button
+                  <Button
                     onClick={handleCopy}
-                    className="rounded-2xl bg-neutral-900 px-4 py-3 text-sm font-medium text-white hover:bg-neutral-800"
+                    variant="primary"
                     type="button"
                   >
                     Copy address
-                  </button>
+                  </Button>
                 </div>
                 {copyStatus ? (
-                  <div className="mt-2 text-sm text-neutral-600">{copyStatus}</div>
+                  <div className="mt-2 text-sm text-[var(--poly-muted)]">{copyStatus}</div>
                 ) : null}
-              </div>
+              </Card>
 
-              <div className="rounded-2xl border border-neutral-200 p-4">
-                <div className="text-sm font-medium text-neutral-900">Deposit history</div>
+              <Card className="p-4">
+                <div className="text-sm font-semibold text-[var(--poly-text)]">Deposit history</div>
                 <div className="mt-3 space-y-3">
                   {history.length === 0 ? (
-                    <div className="rounded-2xl bg-neutral-50 px-4 py-3 text-sm text-neutral-600">
+                    <div className="rounded-lg bg-[var(--poly-surface-muted)] px-4 py-3 text-sm text-[var(--poly-muted)]">
                       No deposits detected yet.
                     </div>
                   ) : (
                     history.slice(0, 8).map((deposit) => (
-                      <div key={deposit.id} className="rounded-2xl bg-neutral-50 px-4 py-3">
+                      <div key={deposit.id} className="rounded-lg bg-[var(--poly-surface-muted)] px-4 py-3">
                         <div className="flex flex-wrap items-center justify-between gap-2">
-                          <div className="text-sm font-medium text-neutral-900">
+                          <div className="text-sm font-semibold text-[var(--poly-text)]">
                             {formatUsd(Number(deposit.amount))}
                           </div>
-                          <div className="text-xs font-medium uppercase tracking-wide text-neutral-500">
-                            {deposit.status}
-                          </div>
+                          <Badge>{deposit.status}</Badge>
                         </div>
-                        <div className="mt-2 grid gap-1 text-xs text-neutral-600 sm:grid-cols-2">
+                        <div className="mt-2 grid gap-1 text-xs text-[var(--poly-muted)] sm:grid-cols-2">
                           <div>Confirmations: {deposit.confirmations}</div>
                           <div>Detected: {formatTimestamp(deposit.detectedAt)}</div>
                           <div>Credited: {formatTimestamp(deposit.creditedAt)}</div>
@@ -250,9 +250,9 @@ export default function TransferCryptoModal({
                     ))
                   )}
                 </div>
-              </div>
+              </Card>
 
-              <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4 text-sm text-amber-950">
+              <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-4 text-sm text-amber-950">
                 <div className="space-y-1">
                   {footerWarnings.map((warning) => (
                     <div key={warning}>{warning}</div>
