@@ -24,11 +24,14 @@ The full platform review has been converted into:
 
 - `docs/reviews/EXECUTION_BACKLOG.md`
 - `docs/reviews/NEXT_10_SUBAGENT_TASKS.md`
+- `docs/reviews/MVP_INFORMATION_ARCHITECTURE.md`
 
-The table above is retained for history. Some foundation tasks are now stale because they were addressed by merged workflow PRs:
+The table above is retained for history. Some foundation tasks are now stale or completed because they were addressed by merged PRs:
 
 - `Align CI with dev branch`: stale/completed by the agentic workflow foundation.
 - `Add GitHub PR/issue templates`: stale/completed by the agentic workflow foundation.
+- `Update testing docs for dev/main CI`: completed by TST-001.
+- `MVP information architecture proposal`: completed by UX-001.
 - `Sports UI redesign`: superseded by more specific review-derived IA, smoke, and sports-discovery tasks below.
 
 ### Automation-Safe Or Low-Risk Candidates
@@ -51,3 +54,12 @@ The table above is retained for history. Some foundation tasks are now stale bec
 | Canonical deposit architecture decision | High | `agent/<issue>-canonical-deposit-decision` | Decide canonical funding architecture and legacy deposit handling. | docs | `git diff --check` | Yes |
 | Admin auth route inventory | High | `agent/<issue>-admin-auth-route-inventory` | Map all admin routes to required unauthorized, forbidden, and admin-positive coverage. | docs, optional test plan | `git diff --check` | Yes |
 | Funding exposure gates plan | Critical | `agent/<issue>-funding-exposure-gates-plan` | Plan explicit wallet/deposit/withdrawal UI and API gates; implementation requires later human approval. | docs | `git diff --check` | Yes |
+
+### Completed Review-Derived Tasks
+
+| Task | PR | Result |
+|---|---|---|
+| TST-001 - Update testing docs for dev/main CI | PR #29 | Merged to `dev`; `docs/TESTING.md` now documents dev/main CI and agent validation. |
+| UX-001 - MVP information architecture proposal | PR #30 | Merged to `dev`; `docs/reviews/MVP_INFORMATION_ARCHITECTURE.md` now defines the sports-first MVP IA. |
+
+Do not delete completed rows from this board. Keep them as execution history and prefer adding new review-derived work through `docs/reviews/EXECUTION_BACKLOG.md` or `docs/reviews/NEXT_10_SUBAGENT_TASKS.md`.
