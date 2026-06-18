@@ -54,6 +54,9 @@ test-logs/
 .env.local
 .env.*
 !.env.example
+*.env.local
+agent-orchestrator/config.env
+agent-orchestrator/runs/
 
 # local databases
 prisma/dev.db
