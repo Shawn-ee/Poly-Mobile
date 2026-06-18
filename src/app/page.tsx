@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import MarketCard from "@/components/MarketCard";
 import EventCard from "@/components/EventCard";
+import PageContainer from "@/components/ui/PageContainer";
+import { EmptyState } from "@/components/ui/States";
 
 type Market = {
   id: string;
@@ -48,17 +50,15 @@ type EventSummary = {
   topOutcomes?: string[] | null;
 };
 
+type TagSummary = { id: string; name: string; slug: string };
+
 export default function Home() {
   const [markets, setMarkets] = useState<Market[]>([]);
   const [events, setEvents] = useState<EventSummary[]>([]);
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [topTags, setTopTags] = useState<
-    { id: string; name: string; slug: string }[]
-  >([]);
-  const [sportsTags, setSportsTags] = useState<
-    { id: string; name: string; slug: string }[]
-  >([]);
+  const [topTags, setTopTags] = useState<TagSummary[]>([]);
+  const [sportsTags, setSportsTags] = useState<TagSummary[]>([]);
   const [activeTopTag, setActiveTopTag] = useState<string>("sports");
   const [activeSportsTag, setActiveSportsTag] = useState<string>("nba");
 
@@ -93,8 +93,8 @@ export default function Home() {
       if (topRes.ok) {
         const data = await topRes.json();
         const base = data.tags ?? [];
-        const sportsFirst = base.find((tag: any) => tag.slug === "sports");
-        const rest = base.filter((tag: any) => tag.slug !== "sports");
+        const sportsFirst = base.find((tag: TagSummary) => tag.slug === "sports");
+        const rest = base.filter((tag: TagSummary) => tag.slug !== "sports");
         setTopTags(sportsFirst ? [sportsFirst, ...rest] : rest);
       }
       if (sportsRes.ok) {
@@ -130,15 +130,16 @@ export default function Home() {
   }, [activeTopTag, activeSportsTag]);
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-10">
-      <div className="mb-8 flex items-center justify-between">
+    <PageContainer>
+      <div className="mb-8 flex flex-col gap-4 rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-sm)] sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-semibold">Live Markets</h1>
-          <p className="text-sm text-neutral-600">
-            Trade with U and cash out before resolution.
+          <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Prediction markets</div>
+          <h1 className="mt-2 text-3xl font-semibold text-[var(--poly-text)]">Live Markets</h1>
+          <p className="mt-1 text-sm text-[var(--poly-muted)]">
+            Scan live markets, compare prices, and trade with test U credits.
           </p>
         </div>
-        <div className="flex items-center gap-3 text-sm text-neutral-600">
+        <div className="flex items-center gap-3 text-sm text-[var(--poly-muted)]">
           <div>
             Wallet:{" "}
             {walletBalance === null ? "--" : walletBalance.toFixed(2)} U
@@ -146,7 +147,7 @@ export default function Home() {
           {isAdmin ? (
             <Link
               href="/admin"
-              className="rounded-md border border-neutral-300 px-3 py-1 text-sm text-neutral-700 hover:border-neutral-400"
+              className="inline-flex min-h-8 items-center justify-center rounded-lg border border-[var(--poly-border)] bg-white px-3 py-1.5 text-xs font-semibold text-[var(--poly-text)] transition hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             >
               Admin tools
             </Link>
@@ -158,10 +159,10 @@ export default function Home() {
         <section className="mb-10">
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-semibold">Featured Events</h2>
-              <p className="text-sm text-neutral-600">Grouped markets with shared event context.</p>
+              <h2 className="text-xl font-semibold text-[var(--poly-text)]">Featured Events</h2>
+              <p className="text-sm text-[var(--poly-muted)]">Grouped markets with shared event context.</p>
             </div>
-            <Link href="/events" className="text-sm text-neutral-600 hover:text-neutral-900">
+            <Link href="/events" className="text-sm font-semibold text-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]">
               View all events
             </Link>
           </div>
@@ -196,8 +197,8 @@ export default function Home() {
           }}
           className={`rounded-full border px-3 py-1 text-sm ${
             activeTopTag === "all"
-              ? "border-black bg-black text-white"
-              : "border-neutral-300 text-neutral-700"
+              ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+              : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
           }`}
           type="button"
         >
@@ -214,8 +215,8 @@ export default function Home() {
             }}
             className={`rounded-full border px-3 py-1 text-sm ${
               activeTopTag === tag.slug
-                ? "border-black bg-black text-white"
-                : "border-neutral-300 text-neutral-700"
+                ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             }`}
             type="button"
           >
@@ -236,8 +237,8 @@ export default function Home() {
               }
               className={`rounded-full border px-3 py-1 text-xs ${
                 activeSportsTag === tag.slug
-                  ? "border-black bg-black text-white"
-                  : "border-neutral-300 text-neutral-700"
+                  ? "border-[var(--poly-teal)] bg-[var(--poly-teal)] text-white"
+                  : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-teal)] hover:text-[var(--poly-teal)]"
               }`}
               type="button"
             >
@@ -248,9 +249,7 @@ export default function Home() {
       ) : null}
 
       {markets.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">
-          No markets yet. Create one in the admin panel.
-        </div>
+        <EmptyState title="No markets yet" description="Create one in the admin panel." />
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {markets.map((market) => (
@@ -273,15 +272,15 @@ export default function Home() {
               <Link
                 key={market.id}
                 href={`/markets/${market.id}`}
-                className="group flex h-full flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-neutral-300 hover:shadow-md"
+                className="group flex h-full flex-col justify-between rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-sm)] transition hover:border-[var(--poly-border-strong)] hover:shadow-[var(--poly-shadow-md)]"
               >
                 <div>
-                  <h3 className="line-clamp-2 text-base font-semibold text-neutral-900">{market.title}</h3>
-                  <div className="mt-2 text-xs text-neutral-500">
+                  <h3 className="line-clamp-2 text-base font-semibold text-[var(--poly-text)]">{market.title}</h3>
+                  <div className="mt-2 text-xs text-[var(--poly-muted)]">
                     {market.referenceOnly && market.tradable === false ? "Coming soon" : market.status}
                   </div>
                 </div>
-                <div className="mt-6 text-xs text-neutral-500">
+                <div className="mt-6 text-xs text-[var(--poly-muted)]">
                   Outcomes: {market.outcomes.map((outcome) => outcome.name).join(" / ")}
                 </div>
               </Link>
@@ -289,7 +288,7 @@ export default function Home() {
           ))}
         </div>
       )}
-    </main>
+    </PageContainer>
   );
 }
 

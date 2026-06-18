@@ -6,6 +6,11 @@ import { useParams } from "next/navigation";
 import MarketCard from "@/components/MarketCard";
 import GroupedTradeTicket, { type SelectedTrade } from "@/components/GroupedTradeTicket";
 import { formatDateTime, formatLeague, formatSport, formatStatus } from "@/components/sports/SportsEventCard";
+import Badge from "@/components/ui/Badge";
+import Card from "@/components/ui/Card";
+import OutcomeButton from "@/components/ui/OutcomeButton";
+import PageContainer from "@/components/ui/PageContainer";
+import { EmptyState, ErrorState } from "@/components/ui/States";
 
 type EventSummary = {
   id: string;
@@ -205,22 +210,20 @@ export default function EventPage() {
   }, [markets]);
 
   if (loading) {
-    return <main className="mx-auto max-w-7xl px-6 py-10 text-sm text-neutral-600">Loading event...</main>;
+    return <PageContainer><div className="text-sm text-[var(--poly-muted)]">Loading event...</div></PageContainer>;
   }
 
   if (error || !event) {
     return (
-      <main className="mx-auto max-w-7xl px-6 py-10">
-        <div className="rounded-lg border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">
-          {error ?? "Event not found."}
-        </div>
-      </main>
+      <PageContainer>
+        <ErrorState>{error ?? "Event not found."}</ErrorState>
+      </PageContainer>
     );
   }
 
   if (grouped) {
     return (
-      <main className="mx-auto max-w-7xl px-6 py-10">
+      <PageContainer>
         <GroupedEventView
           grouped={grouped}
           selectedRowId={selectedRowId}
@@ -236,7 +239,7 @@ export default function EventPage() {
             }
           }}
         />
-      </main>
+      </PageContainer>
     );
   }
 
@@ -252,31 +255,31 @@ export default function EventPage() {
   }
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-10">
-      <div className="mb-8 rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
-        <div className="mb-4 text-sm text-neutral-500">
-          <Link href="/events" className="hover:text-neutral-700 hover:underline">
+    <PageContainer size="default">
+      <Card className="mb-8 p-6">
+        <div className="mb-4 text-sm text-[var(--poly-muted)]">
+          <Link href="/events" className="hover:text-[var(--poly-primary)] hover:underline">
             All events
           </Link>
         </div>
         <div className="flex items-start gap-4">
           {event.image || event.icon ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={event.image ?? event.icon ?? ""} alt={event.title} className="h-16 w-16 rounded-xl object-cover" />
+            <img src={event.image ?? event.icon ?? ""} alt={event.title} className="h-16 w-16 rounded-lg object-cover" />
           ) : (
-            <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-neutral-100 text-xs font-semibold text-neutral-500">EVT</div>
+            <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-cyan-50 text-xs font-bold text-cyan-700">EVT</div>
           )}
           <div className="min-w-0 flex-1">
-            <h1 className="text-3xl font-semibold text-neutral-900">{event.title}</h1>
-            {event.description ? <p className="mt-2 text-sm text-neutral-600">{event.description}</p> : null}
-            <div className="mt-3 flex flex-wrap gap-2 text-xs text-neutral-600">
-              {event.category ? <span className="rounded-full border border-neutral-200 px-2 py-1">{event.category}</span> : null}
-              {event.source ? <span className="rounded-full border border-neutral-200 px-2 py-1">{event.source}</span> : null}
-              {event.status ? <span className="rounded-full border border-neutral-200 px-2 py-1">{event.status}</span> : null}
+            <h1 className="text-3xl font-semibold text-[var(--poly-text)]">{event.title}</h1>
+            {event.description ? <p className="mt-2 text-sm text-[var(--poly-muted)]">{event.description}</p> : null}
+            <div className="mt-3 flex flex-wrap gap-2">
+              {event.category ? <Badge>{event.category}</Badge> : null}
+              {event.source ? <Badge tone="teal">{event.source}</Badge> : null}
+              {event.status ? <Badge tone="primary">{event.status}</Badge> : null}
             </div>
           </div>
         </div>
-      </div>
+      </Card>
 
       {binaryMarkets.length ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -303,19 +306,19 @@ export default function EventPage() {
         <div className="mt-8 space-y-4">
           <h2 className="text-lg font-semibold">Other Event Markets</h2>
           {nonBinaryMarkets.map((market) => (
-            <Link key={market.id} href={`/markets/${market.id}`} className="block rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition hover:border-neutral-300 hover:shadow-md">
+            <Link key={market.id} href={`/markets/${market.id}`} className="block rounded-lg border border-[var(--poly-border)] bg-white p-4 shadow-[var(--poly-shadow-sm)] transition hover:border-[var(--poly-border-strong)] hover:shadow-[var(--poly-shadow-md)]">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h3 className="text-base font-semibold text-neutral-900">{market.title}</h3>
-                  <p className="mt-1 text-sm text-neutral-600">{market.description}</p>
+                  <h3 className="text-base font-semibold text-[var(--poly-text)]">{market.title}</h3>
+                  <p className="mt-1 text-sm text-[var(--poly-muted)]">{market.description}</p>
                 </div>
-                <div className="text-xs text-neutral-500">{market.referenceOnly && market.tradable === false ? "Coming soon" : market.status}</div>
+                <div className="text-xs text-[var(--poly-muted)]">{market.referenceOnly && market.tradable === false ? "Coming soon" : market.status}</div>
               </div>
             </Link>
           ))}
         </div>
       ) : null}
-    </main>
+    </PageContainer>
   );
 }
 
@@ -338,31 +341,31 @@ function GroupedEventView({
 }) {
   return (
     <>
-      <div className="mb-8 rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
-        <div className="mb-4 text-sm text-neutral-500">
-          <Link href="/events" className="hover:text-neutral-700 hover:underline">
+      <Card className="mb-8 p-6">
+        <div className="mb-4 text-sm text-[var(--poly-muted)]">
+          <Link href="/events" className="hover:text-[var(--poly-primary)] hover:underline">
             All events
           </Link>
         </div>
         <div className="flex items-start gap-4">
           {grouped.event.image || grouped.event.icon ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={grouped.event.image ?? grouped.event.icon ?? ""} alt={grouped.event.title} className="h-16 w-16 rounded-xl object-cover" />
+            <img src={grouped.event.image ?? grouped.event.icon ?? ""} alt={grouped.event.title} className="h-16 w-16 rounded-lg object-cover" />
           ) : (
-            <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-neutral-100 text-xs font-semibold text-neutral-500">WC</div>
+            <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-cyan-50 text-xs font-bold text-cyan-700">WC</div>
           )}
           <div className="min-w-0 flex-1">
-            <h1 className="text-3xl font-semibold text-neutral-900">{grouped.event.title}</h1>
-            {grouped.event.description ? <p className="mt-2 text-sm text-neutral-600">{grouped.event.description}</p> : null}
-            <div className="mt-3 flex flex-wrap gap-2 text-xs text-neutral-600">
-              <span className="rounded-full border border-neutral-200 px-2 py-1">{grouped.marketGroup.groupType}</span>
-              <span className="rounded-full border border-neutral-200 px-2 py-1">{grouped.marketGroup.resolutionMode}</span>
-              <span className="rounded-full border border-neutral-200 px-2 py-1">{grouped.marketGroup.source}</span>
-              <span className="rounded-full border border-neutral-200 px-2 py-1">
+            <h1 className="text-3xl font-semibold text-[var(--poly-text)]">{grouped.event.title}</h1>
+            {grouped.event.description ? <p className="mt-2 text-sm text-[var(--poly-muted)]">{grouped.event.description}</p> : null}
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Badge>{grouped.marketGroup.groupType}</Badge>
+              <Badge tone="primary">{grouped.marketGroup.resolutionMode}</Badge>
+              <Badge tone="teal">{grouped.marketGroup.source}</Badge>
+              <Badge tone="positive">
                 Sum YES {(grouped.sumYes * 100).toFixed(1)}%
-              </span>
+              </Badge>
             </div>
-            <div className="mt-3 flex flex-wrap gap-4 text-sm text-neutral-500">
+            <div className="mt-3 flex flex-wrap gap-4 text-sm text-[var(--poly-muted)]">
               <span>{grouped.rows.length} outcomes</span>
               <span>{grouped.freshnessSummary.freshCount} fresh</span>
               <span>Status: {grouped.groupStatus}</span>
@@ -370,13 +373,13 @@ function GroupedEventView({
             </div>
           </div>
         </div>
-      </div>
+      </Card>
 
       <div className="grid gap-6 lg:grid-cols-[2.2fr_1fr]">
-        <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm">
+        <Card className="p-4">
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
-              <thead className="text-left text-xs uppercase tracking-wide text-neutral-500">
+              <thead className="text-left text-xs uppercase text-[var(--poly-muted)]">
                 <tr>
                   <th className="px-3 py-2">Outcome</th>
                   <th className="px-3 py-2">Prob</th>
@@ -388,8 +391,8 @@ function GroupedEventView({
                 {grouped.rows.map((row) => (
                   <tr
                     key={row.marketId}
-                    className={`border-t border-neutral-100 transition ${
-                      selectedRowId === row.marketId ? "bg-neutral-50" : ""
+                    className={`border-t border-[var(--poly-border)] transition ${
+                      selectedRowId === row.marketId ? "bg-[var(--poly-surface-muted)]" : ""
                     }`}
                     onClick={() => onSelectRow(row.marketId)}
                   >
@@ -404,8 +407,8 @@ function GroupedEventView({
                           </div>
                         )}
                         <div>
-                          <div className="font-medium text-neutral-900">{row.outcomeLabel}</div>
-                          <div className="text-xs text-neutral-500">
+                          <div className="font-medium text-[var(--poly-text)]">{row.outcomeLabel}</div>
+                          <div className="text-xs text-[var(--poly-muted)]">
                             {row.referenceOnly && !row.tradable ? "Reference only" : "Tradable"}
                           </div>
                         </div>
@@ -414,11 +417,11 @@ function GroupedEventView({
                     <td className="px-3 py-3 font-medium">{formatPct(row.probability)}</td>
                     <td className="px-3 py-3 text-xs">
                       <div>{formatMaybe(row.bestBid)} / {formatMaybe(row.bestAsk)}</div>
-                      <div className="text-neutral-400">{formatCompact(row.volume24hr)} vol</div>
+                      <div className="text-[var(--poly-muted)]">{formatCompact(row.volume24hr)} vol</div>
                     </td>
                     <td className="px-3 py-3">
                       <div className="flex items-center gap-2">
-                        <button
+                        <OutcomeButton
                           type="button"
                           onClick={(event) => {
                             event.stopPropagation();
@@ -439,15 +442,12 @@ function GroupedEventView({
                             });
                           }}
                           disabled={!row.tradable}
-                          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
-                            row.tradable
-                              ? "bg-emerald-100 text-emerald-800 hover:bg-emerald-200"
-                              : "cursor-not-allowed bg-neutral-100 text-neutral-400"
-                          }`}
-                        >
-                          Yes {formatPriceShort(row.buyYesPrice ?? row.bestAsk ?? row.plannedBotAsk ?? row.probability)}
-                        </button>
-                        <button
+                          tone={row.tradable ? "yes" : "neutral"}
+                          label="Yes"
+                          price={formatPriceShort(row.buyYesPrice ?? row.bestAsk ?? row.plannedBotAsk ?? row.probability)}
+                          className="min-h-9 px-3 py-1.5 text-xs"
+                        />
+                        <OutcomeButton
                           type="button"
                           onClick={(event) => {
                             event.stopPropagation();
@@ -468,14 +468,11 @@ function GroupedEventView({
                             });
                           }}
                           disabled={!row.tradable}
-                          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
-                            row.tradable
-                              ? "bg-rose-100 text-rose-800 hover:bg-rose-200"
-                              : "cursor-not-allowed bg-neutral-100 text-neutral-400"
-                          }`}
-                        >
-                          No {formatPriceShort(row.buyNoPrice ?? (row.bestBid != null ? 1 - row.bestBid : (row.buyYesPrice != null ? 1 - row.buyYesPrice : (row.probability != null ? 1 - row.probability : null))))}
-                        </button>
+                          tone={row.tradable ? "no" : "neutral"}
+                          label="No"
+                          price={formatPriceShort(row.buyNoPrice ?? (row.bestBid != null ? 1 - row.bestBid : (row.buyYesPrice != null ? 1 - row.buyYesPrice : (row.probability != null ? 1 - row.probability : null))))}
+                          className="min-h-9 px-3 py-1.5 text-xs"
+                        />
                       </div>
                     </td>
                   </tr>
@@ -483,7 +480,7 @@ function GroupedEventView({
               </tbody>
             </table>
           </div>
-        </div>
+        </Card>
 
         <div className="sticky top-6 h-fit">
           {selectedTrade ? (
@@ -493,11 +490,7 @@ function GroupedEventView({
               onOrderPlaced={onRefreshGrouped}
             />
           ) : (
-            <div className="rounded-2xl border border-dashed border-neutral-300 bg-white p-6 text-center text-sm text-neutral-500">
-              Click <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-800">Yes</span> or{" "}
-              <span className="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-semibold text-rose-800">No</span>{" "}
-              on an outcome to trade.
-            </div>
+            <EmptyState title="Select an outcome" description="Choose Yes or No on an outcome to open the trade ticket." />
           )}
         </div>
       </div>
@@ -531,38 +524,38 @@ function SportsEventView({
   }, [markets]);
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-10">
-      <div className="mb-6 text-sm text-neutral-500">
-        <Link href="/sports" className="hover:text-neutral-700 hover:underline">
+    <PageContainer>
+      <div className="mb-6 text-sm text-[var(--poly-muted)]">
+        <Link href="/sports" className="hover:text-[var(--poly-primary)] hover:underline">
           Sports
         </Link>
         <span className="mx-2">/</span>
-        <Link href="/sports/soccer" className="hover:text-neutral-700 hover:underline">
+        <Link href="/sports/soccer" className="hover:text-[var(--poly-primary)] hover:underline">
           Soccer
         </Link>
       </div>
 
-      <section className="mb-8 border-b border-neutral-200 pb-8">
+      <section className="mb-8 rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-sm)]">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
-            <div className="text-xs font-semibold uppercase text-neutral-500">
+            <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">
               {formatSport(event.sportKey) || "Sports"}
               {event.leagueKey ? ` / ${formatLeague(event.leagueKey)}` : ""}
             </div>
-            <h1 className="mt-3 text-4xl font-semibold tracking-normal text-neutral-950">
+            <h1 className="mt-3 text-4xl font-semibold tracking-normal text-[var(--poly-text)]">
               {event.title}
             </h1>
             {event.description ? (
-              <p className="mt-3 text-base text-neutral-600">{event.description}</p>
+              <p className="mt-3 text-base text-[var(--poly-muted)]">{event.description}</p>
             ) : null}
           </div>
-          <div className="grid gap-2 text-sm text-neutral-700 sm:grid-cols-2 lg:min-w-80">
-            <div className="rounded-lg border border-neutral-200 bg-white p-3">
-              <div className="text-xs uppercase text-neutral-500">Status</div>
+          <div className="grid gap-2 text-sm text-[var(--poly-text)] sm:grid-cols-2 lg:min-w-80">
+            <div className="rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3">
+              <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Status</div>
               <div className="mt-1 font-medium capitalize">{formatStatus(event.status)}</div>
             </div>
-            <div className="rounded-lg border border-neutral-200 bg-white p-3">
-              <div className="text-xs uppercase text-neutral-500">Start</div>
+            <div className="rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3">
+              <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Start</div>
               <div className="mt-1 font-medium">{formatDateTime(event.startTime)}</div>
             </div>
           </div>
@@ -580,12 +573,12 @@ function SportsEventView({
       <section>
         <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-neutral-950">Event Markets</h2>
-            <p className="mt-1 text-sm text-neutral-600">
+            <h2 className="text-xl font-semibold text-[var(--poly-text)]">Event Markets</h2>
+            <p className="mt-1 text-sm text-[var(--poly-muted)]">
               Multiple orderbook markets grouped under one sports event.
             </p>
           </div>
-          <Link href="/markets" className="text-sm text-neutral-600 hover:text-neutral-950">
+          <Link href="/markets" className="text-sm font-semibold text-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]">
             General markets
           </Link>
         </div>
@@ -604,8 +597,8 @@ function SportsEventView({
               onClick={() => onMarketGroupChange(tab.key)}
               className={`rounded-full border px-3 py-1 text-sm ${
                 marketGroup === tab.key
-                  ? "border-black bg-black text-white"
-                  : "border-neutral-300 bg-white text-neutral-700"
+                  ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                  : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
               }`}
             >
               {tab.label} {tab.count}
@@ -614,9 +607,7 @@ function SportsEventView({
         </div>
 
         {filteredMarkets.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">
-            No markets in this group.
-          </div>
+          <EmptyState title="No markets in this group" description="Choose another event market filter." />
         ) : (
           <div className="space-y-4">
             {filteredMarkets.map((market) => (
@@ -625,7 +616,7 @@ function SportsEventView({
           </div>
         )}
       </section>
-    </main>
+    </PageContainer>
   );
 }
 
@@ -639,30 +630,26 @@ function TeamPanel({
   alignRight?: boolean;
 }) {
   return (
-    <div className={`rounded-lg border border-neutral-200 bg-white p-4 ${alignRight ? "sm:text-right" : ""}`}>
-      <div className="text-xs font-medium uppercase text-neutral-500">{label}</div>
-      <div className="mt-1 text-2xl font-semibold text-neutral-950">{name}</div>
+    <div className={`rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-4 ${alignRight ? "sm:text-right" : ""}`}>
+      <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">{label}</div>
+      <div className="mt-1 text-2xl font-semibold text-[var(--poly-text)]">{name}</div>
     </div>
   );
 }
 
 function SportsMarketPanel({ market }: { market: EventMarket }) {
   return (
-    <div className="rounded-lg border border-neutral-200 bg-white p-5 shadow-sm">
+    <Card className="p-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-neutral-950">{market.title}</h3>
+          <h3 className="text-lg font-semibold text-[var(--poly-text)]">{market.title}</h3>
           {market.description ? (
-            <p className="mt-1 text-sm text-neutral-600">{market.description}</p>
+            <p className="mt-1 text-sm text-[var(--poly-muted)]">{market.description}</p>
           ) : null}
         </div>
-        <div className="flex flex-wrap gap-2 text-xs text-neutral-600">
-          <span className="rounded-full border border-neutral-200 px-2 py-1">
-            {formatMarketType(market.marketType)}
-          </span>
-          <span className="rounded-full border border-neutral-200 px-2 py-1">
-            {formatStatus(market.status)}
-          </span>
+        <div className="flex flex-wrap gap-2">
+          <Badge>{formatMarketType(market.marketType)}</Badge>
+          <Badge tone="primary">{formatStatus(market.status)}</Badge>
         </div>
       </div>
 
@@ -673,20 +660,20 @@ function SportsMarketPanel({ market }: { market: EventMarket }) {
             <Link
               key={outcome.id}
               href={`/markets/${market.id}?outcomeId=${outcome.id}`}
-              className="rounded-lg border border-neutral-200 bg-neutral-50 p-4 transition hover:border-neutral-300 hover:bg-white"
+              className="rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-4 transition hover:border-[var(--poly-primary)] hover:bg-white"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <div className="truncate text-sm font-semibold text-neutral-950">
+                  <div className="truncate text-sm font-semibold text-[var(--poly-text)]">
                     {outcome.label ?? outcome.name}
                   </div>
                   {outcome.code ? (
-                    <div className="mt-1 text-xs uppercase text-neutral-500">{outcome.code}</div>
+                    <div className="mt-1 text-xs uppercase text-[var(--poly-muted)]">{outcome.code}</div>
                   ) : null}
                 </div>
                 <div className="text-right">
-                  <div className="text-sm font-semibold text-neutral-950">{formatProbability(price)}</div>
-                  <div className="mt-1 text-xs text-neutral-500">
+                  <div className="text-sm font-semibold text-[var(--poly-text)]">{formatProbability(price)}</div>
+                  <div className="mt-1 text-xs text-[var(--poly-muted)]">
                     {formatBidAsk(outcome.bestBid, outcome.bestAsk)}
                   </div>
                 </div>
@@ -695,7 +682,7 @@ function SportsMarketPanel({ market }: { market: EventMarket }) {
           );
         })}
       </div>
-    </div>
+    </Card>
   );
 }
 

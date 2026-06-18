@@ -14,8 +14,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased bg-neutral-50 text-neutral-900">
-        <div className="min-h-screen">
+      <body className="bg-[var(--poly-bg)] text-[var(--poly-text)] antialiased">
+        <div className="min-h-screen bg-[var(--poly-bg)]">
           <TopNav />
           {children}
         </div>

@@ -15,6 +15,7 @@ Last audited: 2026-06-17
 - Local Playwright admin login works when `ALLOW_DEV_LOGIN=true`.
 - Authenticated admin page smoke passes in headed Chrome.
 - Authenticated sports order smoke passes after the #18 locator fix.
+- A clean light trading UI shell foundation now exists on the UI redesign branch, covering global tokens, top navigation, shared page/card/button/badge/state primitives, market cards, sports cards, and public market/event listing surfaces.
 - Public market detail UI exposes order-ticket content after hydration.
 - Admin pages and APIs are gated when unauthenticated.
 - UI displays internal beta/test-credit warnings.
@@ -32,6 +33,7 @@ Last audited: 2026-06-17
 - Broad `npm run test:jest` is still not declared CI-safe.
 - Full orderbook/ledger/settlement e2e coverage remains incomplete.
 - Full admin event/market management verification remains incomplete.
+- Full visual redesign is incomplete beyond the initial shell and public listing/detail surfaces.
 - Bot sports market discovery verification remains incomplete.
 - A committed screenshot artifact exists under `screenshotsforchat/`.
 
@@ -44,6 +46,7 @@ Blocking areas:
 - define or replace the missing `test:ci` script
 - orderbook/ledger/settlement QA
 - authenticated browser/admin management QA
+- continue UI redesign into event detail trade tickets, market detail/orderbook panels, wallet/portfolio, and admin surfaces
 - bot sports discovery QA
 - production security guard confirmation
 

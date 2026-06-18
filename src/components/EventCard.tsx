@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Badge from "@/components/ui/Badge";
 
 type EventCardProps = {
   slug: string;
@@ -32,40 +33,28 @@ export default function EventCard({
   return (
     <Link
       href={`/events/${slug}`}
-      className="group flex h-full flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-neutral-300 hover:shadow-md"
+      className="group flex h-full flex-col justify-between rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-sm)] transition hover:border-[var(--poly-border-strong)] hover:shadow-[var(--poly-shadow-md)]"
     >
       <div>
         <div className="flex items-start gap-4">
           {image || icon ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={image ?? icon ?? ""}
-              alt={title}
-              className="h-11 w-11 rounded-full object-cover"
-            />
+            <img src={image ?? icon ?? ""} alt={title} className="h-11 w-11 rounded-lg object-cover" />
           ) : (
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-neutral-100 text-xs font-semibold text-neutral-500">
+            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-cyan-50 text-xs font-bold text-cyan-700">
               EVT
             </div>
           )}
           <div className="min-w-0">
-            <h3 className="line-clamp-2 text-base font-semibold text-neutral-900">{title}</h3>
-            {description ? (
-              <p className="mt-2 line-clamp-3 text-sm text-neutral-600">{description}</p>
-            ) : null}
-            <div className="mt-3 flex flex-wrap gap-1 text-[10px] uppercase text-neutral-600">
-              {category ? (
-                <span className="rounded-full border border-neutral-200 px-2 py-0.5">{category}</span>
-              ) : null}
-              {source ? (
-                <span className="rounded-full border border-neutral-200 px-2 py-0.5">{source}</span>
-              ) : null}
-              {groupedLabel ? (
-                <span className="rounded-full border border-neutral-200 px-2 py-0.5">{groupedLabel}</span>
-              ) : null}
+            <h3 className="line-clamp-2 text-base font-semibold text-[var(--poly-text)]">{title}</h3>
+            {description ? <p className="mt-2 line-clamp-3 text-sm text-[var(--poly-muted)]">{description}</p> : null}
+            <div className="mt-3 flex flex-wrap gap-1">
+              {category ? <Badge>{category}</Badge> : null}
+              {source ? <Badge tone="teal">{source}</Badge> : null}
+              {groupedLabel ? <Badge tone="primary">{groupedLabel}</Badge> : null}
             </div>
             {topOutcomes?.length ? (
-              <div className="mt-3 text-xs text-neutral-500">
+              <div className="mt-3 text-xs text-[var(--poly-muted)]">
                 Top outcomes: {topOutcomes.join(", ")}
               </div>
             ) : null}
@@ -73,7 +62,7 @@ export default function EventCard({
         </div>
       </div>
 
-      <div className="mt-6 flex items-center gap-4 text-xs text-neutral-500">
+      <div className="mt-6 flex items-center gap-4 text-xs font-medium text-[var(--poly-muted)]">
         <span>{marketCount} markets</span>
         {typeof activeMarketCount === "number" ? <span>{activeMarketCount} active</span> : null}
       </div>
