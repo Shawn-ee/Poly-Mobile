@@ -1,44 +1,50 @@
 # Current State
 
-Last audited: 2026-06-16
+Last audited: 2026-06-17
 
 ## What Works
 
-- CI Phase 1 exists and passes on `main`.
+- `dev` is synced with the current `main` CI and agent workflow baseline.
+- CI Phase 1 exists and passes locally with the focused Jest smoke suite.
 - Prisma schema validates.
 - All current migrations apply to an empty PostgreSQL 16 database.
-- Public market list and market detail APIs work with seeded NBA markets.
-- Public market detail UI loads after hydration.
-- Order ticket amount input works in Chrome for an unauthenticated empty-book market.
+- Public home, markets, sports, soccer, World Cup, event detail, and market detail pages load in Chrome.
+- Seeded soccer World Cup events display on the sports UI.
+- `seed:dev` creates soccer event markets and general prediction markets.
+- `seed:nba` creates sports `Event` rows and links NBA markets to them.
+- Local Playwright admin login works when `ALLOW_DEV_LOGIN=true`.
+- Authenticated admin page smoke passes in headed Chrome.
+- Authenticated sports order smoke passes after the #18 locator fix.
+- Public market detail UI exposes order-ticket content after hydration.
 - Admin pages and APIs are gated when unauthenticated.
 - UI displays internal beta/test-credit warnings.
 
 ## What Is Partially Verified
 
-- Wallet and portfolio pages load but authenticated balances/history were not verified in Chrome.
-- Admin pages load/gate correctly, but authenticated admin flows were not completed.
-- Ledger Phase 3 tests mostly pass against an isolated migrated database, except for one test-runner mismatch.
+- Wallet and portfolio pages load but authenticated balances/history were not fully verified in Chrome.
+- Admin dashboard loads authenticated, but full event/market management flows still need coverage.
+- Ledger Phase 3 tests pass against an isolated migrated database.
 - Deposit and withdrawal routes were reviewed at architecture/interface level only.
 
 ## What Is Broken Or Missing
 
-- `/sports`, `/sports/soccer`, and `/sports/soccer/world-cup` return 404.
-- Sports/event APIs return empty arrays after `seed:nba`; the seed creates sports-tagged markets but not `Event` records.
-- Broad `npm run test:jest` fails and is not CI-safe.
-- `npm run test:phase3` fails because a Vitest run calls the Jest global `jest`.
-- Authenticated local dev/admin login flow is not present on `main`.
+- `npm run test:ci` is referenced by validation plans but is not defined in `package.json`.
+- Broad `npm run test:jest` is still not declared CI-safe.
+- Full orderbook/ledger/settlement e2e coverage remains incomplete.
+- Full admin event/market management verification remains incomplete.
+- Bot sports market discovery verification remains incomplete.
 - A committed screenshot artifact exists under `screenshotsforchat/`.
 
 ## Launch Readiness
 
-POLY is not pre-money launch ready.
+POLY is closer after the `dev` integration pass, but it is not pre-money launch ready.
 
 Blocking areas:
 
-- sports/event UI completion
-- full DB-backed test isolation
+- define or replace the missing `test:ci` script
 - orderbook/ledger/settlement QA
-- authenticated browser/admin QA
+- authenticated browser/admin management QA
+- bot sports discovery QA
 - production security guard confirmation
 
 Deposit and withdrawal must remain disabled/restricted until a dedicated approval and security review.
