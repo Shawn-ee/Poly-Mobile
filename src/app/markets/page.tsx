@@ -4,6 +4,8 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import MarketCard from "@/components/MarketCard";
 import EventCard from "@/components/EventCard";
+import PageContainer from "@/components/ui/PageContainer";
+import { EmptyState, LoadingState } from "@/components/ui/States";
 
 type Market = {
   id: string;
@@ -45,20 +47,17 @@ type EventSummary = {
   topOutcomes?: string[] | null;
 };
 
+type TagSummary = { id: string; name: string; slug: string };
+
 function MarketsPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [markets, setMarkets] = useState<Market[]>([]);
   const [events, setEvents] = useState<EventSummary[]>([]);
   const [loading, setLoading] = useState(true);
-  const [topTags, setTopTags] = useState<
-    { id: string; name: string; slug: string }[]
-  >([]);
-  const [sportsTags, setSportsTags] = useState<
-    { id: string; name: string; slug: string }[]
-  >([]);
+  const [topTags, setTopTags] = useState<TagSummary[]>([]);
+  const [sportsTags, setSportsTags] = useState<TagSummary[]>([]);
   const [showAllLeagues, setShowAllLeagues] = useState(false);
-  const [view, setView] = useState<string>("live");
 
   const activeCategory = searchParams.get("category") ?? "";
   const activeLeague = searchParams.get("league") ?? "";
@@ -124,12 +123,12 @@ function MarketsPageInner() {
           "world",
           "elections",
         ];
-        const bySlug = new Map(base.map((tag: any) => [tag.slug, tag]));
+        const bySlug = new Map(base.map((tag: TagSummary) => [tag.slug, tag]));
         const list = [
           { id: "all", name: "All", slug: "all" },
           ...ordered.map((slug) => bySlug.get(slug)).filter(Boolean),
         ];
-        setTopTags(list as { id: string; name: string; slug: string }[]);
+        setTopTags(list as TagSummary[]);
       }
       if (sportsRes.ok) {
         const data = await sportsRes.json();
@@ -177,11 +176,12 @@ function MarketsPageInner() {
   };
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-semibold">Live Markets</h1>
-        <p className="text-sm text-neutral-600">
-          Browse markets and trade with U.
+    <PageContainer>
+      <div className="mb-8 rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-sm)]">
+        <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Market board</div>
+        <h1 className="mt-2 text-3xl font-semibold text-[var(--poly-text)]">Live Markets</h1>
+        <p className="mt-1 text-sm text-[var(--poly-muted)]">
+          Browse categories, follow events, and compare binary market prices.
         </p>
       </div>
 
@@ -197,12 +197,11 @@ function MarketsPageInner() {
               const params = new URLSearchParams(searchParams.toString());
               params.set("view", tab.key);
               router.replace(`/markets?${params.toString()}`);
-              setView(tab.key);
             }}
             className={`rounded-full border px-3 py-1 text-xs ${
               activeView === tab.key
-                ? "border-black bg-black text-white"
-                : "border-neutral-300 text-neutral-700"
+                ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             }`}
             type="button"
           >
@@ -229,8 +228,8 @@ function MarketsPageInner() {
             className={`rounded-full border px-3 py-1 text-xs ${
               (tag.slug === "all" && (!activeCategory || activeCategory === "all")) ||
               (tag.slug !== "all" && activeCategory === tag.slug)
-                ? "border-black bg-black text-white"
-                : "border-neutral-300 text-neutral-700"
+                ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             }`}
             type="button"
           >
@@ -240,7 +239,7 @@ function MarketsPageInner() {
         {activeCategory === "sports" ? (
           <button
             onClick={() => setShowAllLeagues((prev) => !prev)}
-            className="rounded-full border border-neutral-300 px-3 py-1 text-xs text-neutral-700"
+            className="rounded-full border border-[var(--poly-border)] bg-white px-3 py-1 text-xs text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             type="button"
           >
             {showAllLeagues ? "Less" : "Leagues"}
@@ -256,8 +255,8 @@ function MarketsPageInner() {
               onClick={() => setFilters("sports", tag.slug)}
               className={`rounded-full border px-3 py-1 text-xs ${
                 activeLeague === tag.slug
-                  ? "border-black bg-black text-white"
-                  : "border-neutral-300 text-neutral-700"
+                  ? "border-[var(--poly-teal)] bg-[var(--poly-teal)] text-white"
+                  : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-teal)] hover:text-[var(--poly-teal)]"
               }`}
               type="button"
             >
@@ -271,12 +270,12 @@ function MarketsPageInner() {
         <section className="mb-8">
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-semibold">Active Events</h2>
-              <p className="text-sm text-neutral-600">Explore grouped markets before drilling into individual contracts.</p>
+              <h2 className="text-lg font-semibold text-[var(--poly-text)]">Active Events</h2>
+              <p className="text-sm text-[var(--poly-muted)]">Explore grouped markets before drilling into individual contracts.</p>
             </div>
             <button
               onClick={() => router.push("/events")}
-              className="text-sm text-neutral-600 hover:text-neutral-900"
+              className="text-sm font-semibold text-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]"
               type="button"
             >
               All events
@@ -306,18 +305,9 @@ function MarketsPageInner() {
       ) : null}
 
       {loading ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <div
-              key={`skeleton-${index}`}
-              className="h-40 animate-pulse rounded-xl border border-neutral-200 bg-neutral-100"
-            />
-          ))}
-        </div>
+        <LoadingState label="Loading markets" count={8} />
       ) : markets.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">
-          No markets yet.
-        </div>
+        <EmptyState title="No markets yet" description="Try another category or view." />
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {markets.map((market) => (
@@ -340,15 +330,15 @@ function MarketsPageInner() {
               <a
                 key={market.id}
                 href={`/markets/${market.id}`}
-                className="group flex h-full flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-neutral-300 hover:shadow-md"
+                className="group flex h-full flex-col justify-between rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-sm)] transition hover:border-[var(--poly-border-strong)] hover:shadow-[var(--poly-shadow-md)]"
               >
                 <div>
-                  <h3 className="line-clamp-2 text-base font-semibold text-neutral-900">{market.title}</h3>
-                  <div className="mt-2 text-xs text-neutral-500">
+                  <h3 className="line-clamp-2 text-base font-semibold text-[var(--poly-text)]">{market.title}</h3>
+                  <div className="mt-2 text-xs text-[var(--poly-muted)]">
                     {market.referenceOnly && market.tradable === false ? "Coming soon" : market.status}
                   </div>
                 </div>
-                <div className="mt-6 text-xs text-neutral-500">
+                <div className="mt-6 text-xs text-[var(--poly-muted)]">
                   Outcomes: {market.outcomes.map((outcome) => outcome.name).join(" / ")}
                 </div>
               </a>
@@ -356,7 +346,7 @@ function MarketsPageInner() {
           ))}
         </div>
       )}
-    </main>
+    </PageContainer>
   );
 }
 
@@ -364,9 +354,9 @@ export default function MarketsPage() {
   return (
     <Suspense
       fallback={
-        <main className="mx-auto max-w-7xl px-6 py-10">
-          <div className="text-sm text-neutral-600">Loading markets...</div>
-        </main>
+        <PageContainer>
+          <div className="text-sm text-[var(--poly-muted)]">Loading markets...</div>
+        </PageContainer>
       }
     >
       <MarketsPageInner />

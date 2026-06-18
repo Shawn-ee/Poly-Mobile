@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import AuthModal from "@/components/AuthModal";
 import { CURRENCY_SYMBOL } from "@/lib/currency";
 import TransferCryptoModal from "@/components/TransferCryptoModal";
+import Badge from "@/components/ui/Badge";
+import Button from "@/components/ui/Button";
 
 type User = {
   id: string;
@@ -110,133 +112,90 @@ export default function TopNav() {
   };
 
   const uBalance = Number(user?.uBalance ?? user?.tokenBalance ?? 0);
-  const pendingBalance = Number(
-    user?.pendingBalance ?? user?.pendingDeposits ?? 0
-  );
+  const pendingBalance = Number(user?.pendingBalance ?? user?.pendingDeposits ?? 0);
   const initials = (user?.displayName || user?.username || "U").slice(0, 1).toUpperCase();
 
   return (
-    <header className="border-b border-neutral-200 bg-white">
-      {/* Internal Beta Banner */}
-      <div className="bg-amber-50 border-b border-amber-200">
-        <div className="mx-auto max-w-6xl px-4 py-2 text-center text-xs font-medium text-amber-800">
-          ⚠️ Internal Beta — Test credits only. Deposits and withdrawals are disabled.
+    <header className="sticky top-0 z-40 border-b border-[var(--poly-border)] bg-white/95 backdrop-blur">
+      <div className="border-b border-amber-100 bg-amber-50">
+        <div className="mx-auto max-w-7xl px-4 py-2 text-center text-xs font-semibold text-amber-800 sm:px-6">
+          Internal Beta: test credits only. Deposits and withdrawals are disabled.
         </div>
       </div>
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <div className="flex items-center gap-5">
-          <Link href="/" className="text-lg font-semibold">
-            Poly Market
+
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+        <div className="flex min-w-0 items-center gap-5">
+          <Link href="/" className="flex items-center gap-2 text-lg font-bold text-[var(--poly-text)]">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--poly-primary)] text-sm text-white">
+              P
+            </span>
+            <span className="hidden sm:inline">Poly Market</span>
           </Link>
-          <nav className="flex items-center gap-4 text-sm text-neutral-700">
-            <Link href="/markets">Markets</Link>
-            <Link href="/sports">Sports</Link>
-            <Link href="/create">Create your own market</Link>
+          <nav className="hidden items-center gap-1 text-sm font-medium text-[var(--poly-muted)] md:flex">
+            <NavLink href="/markets">Markets</NavLink>
+            <NavLink href="/sports">Sports</NavLink>
+            <NavLink href="/create">Create</NavLink>
             {user?.isAdmin ? (
               <>
-                <Link href="/admin">Admin</Link>
-                <Link href="/admin/bots">Bot Monitor</Link>
+                <NavLink href="/admin">Admin</NavLink>
+                <NavLink href="/admin/bots">Bots</NavLink>
               </>
             ) : null}
           </nav>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           {user ? (
             <>
-              <div className="rounded-md border border-neutral-200 px-3 py-1.5 text-right">
-                <div className="text-[11px] uppercase tracking-wide text-neutral-500">
-                  Portfolio
-                </div>
-                <div className="text-xs font-medium text-neutral-800">
-                  {uBalance.toFixed(2)} {CURRENCY_SYMBOL}
-                </div>
-              </div>
-              <div className="rounded-md border border-neutral-200 px-3 py-1.5 text-right">
-                <div className="text-[11px] uppercase tracking-wide text-neutral-500">
-                  Pending
-                </div>
-                <div className="text-xs font-medium text-neutral-800">
-                  {pendingBalance.toFixed(2)} {CURRENCY_SYMBOL}
-                </div>
-              </div>
-              <button
-                disabled
-                title="Coming soon — internal beta uses test credits only."
-                className="rounded-md border border-neutral-200 px-3 py-2 text-sm text-neutral-400 cursor-not-allowed"
-                type="button"
-              >
+              <BalancePill label="Portfolio" value={`${uBalance.toFixed(2)} ${CURRENCY_SYMBOL}`} className="hidden sm:block" />
+              <BalancePill label="Pending" value={`${pendingBalance.toFixed(2)} ${CURRENCY_SYMBOL}`} className="hidden lg:block" />
+              <Button disabled title="Coming soon. Internal beta uses test credits only." variant="outline" size="sm" type="button">
                 Deposit
-              </button>
+              </Button>
               <button
-                className="hidden h-9 w-9 items-center justify-center rounded-md border border-neutral-300 text-sm text-neutral-700 lg:flex"
+                className="hidden h-9 w-9 items-center justify-center rounded-lg border border-[var(--poly-border)] bg-white text-sm text-[var(--poly-muted)] shadow-[var(--poly-shadow-sm)] transition hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)] lg:flex"
                 type="button"
                 aria-label="Notifications"
+                title="Notifications"
               >
-                Bell
+                <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[var(--poly-teal)]" />
               </button>
-              <div
-                ref={menuRef}
-                className="relative"
-                onMouseEnter={openMenuByHover}
-                onMouseLeave={closeMenuByHover}
-              >
+              <div ref={menuRef} className="relative" onMouseEnter={openMenuByHover} onMouseLeave={closeMenuByHover}>
                 <button
                   onClick={toggleMenuByClick}
-                  className="flex items-center gap-2 rounded-full border border-neutral-300 px-2 py-1"
+                  className="flex items-center gap-2 rounded-full border border-[var(--poly-border)] bg-white px-2 py-1 shadow-[var(--poly-shadow-sm)] transition hover:border-[var(--poly-primary)]"
                   type="button"
                 >
                   {user.image ? (
-                    <img
-                      src={user.image}
-                      alt="avatar"
-                      className="h-7 w-7 rounded-full object-cover"
-                    />
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={user.image} alt="avatar" className="h-7 w-7 rounded-full object-cover" />
                   ) : (
-                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-neutral-200 text-xs font-semibold">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-50 text-xs font-semibold text-[var(--poly-primary)]">
                       {initials}
                     </span>
                   )}
-                  <span className="text-sm text-neutral-800">
+                  <span className="hidden max-w-28 truncate text-sm font-semibold text-[var(--poly-text)] sm:inline">
                     {user.displayName || user.username}
                   </span>
                 </button>
 
                 {menuOpen ? (
-                  <div className="absolute right-0 z-50 mt-2 w-56 rounded-lg border border-neutral-200 bg-white py-1 shadow-lg">
-                    <Link
-                      href="/wallet"
-                      onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
-                    >
-                      Wallet
-                    </Link>
-                    <Link
-                      href="/portfolio"
-                      onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
-                    >
-                      Portfolio
-                    </Link>
-                    <Link
-                      href="/my-pools"
-                      onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
-                    >
-                      My private markets
-                    </Link>
-                    <div className="my-1 border-t border-neutral-200" />
+                  <div className="absolute right-0 z-50 mt-2 w-56 rounded-lg border border-[var(--poly-border)] bg-white py-1 shadow-[var(--poly-shadow-md)]">
+                    <MenuLink href="/wallet" onClick={() => setMenuOpen(false)}>Wallet</MenuLink>
+                    <MenuLink href="/portfolio" onClick={() => setMenuOpen(false)}>Portfolio</MenuLink>
+                    <MenuLink href="/my-pools" onClick={() => setMenuOpen(false)}>My private markets</MenuLink>
+                    <div className="my-1 border-t border-[var(--poly-border)]" />
                     <button
                       disabled
-                      title="Coming soon — internal beta uses test credits only."
-                      className="block w-full px-4 py-2 text-left text-sm text-neutral-400 cursor-not-allowed"
+                      title="Coming soon. Internal beta uses test credits only."
+                      className="block w-full cursor-not-allowed px-4 py-2 text-left text-sm text-[var(--poly-muted)] opacity-60"
                       type="button"
                     >
                       Withdraw
                     </button>
                     <button
                       onClick={handleLogout}
-                      className="block w-full px-4 py-2 text-left text-sm text-neutral-700 hover:bg-neutral-50"
+                      className="block w-full px-4 py-2 text-left text-sm text-[var(--poly-muted)] hover:bg-[var(--poly-surface-muted)] hover:text-[var(--poly-text)]"
                       type="button"
                     >
                       Logout
@@ -246,22 +205,16 @@ export default function TopNav() {
               </div>
             </>
           ) : (
-            <button
-              onClick={() => setAuthOpen(true)}
-              className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-neutral-400"
-              type="button"
-            >
+            <Button onClick={() => setAuthOpen(true)} variant="primary" size="sm" type="button">
               Log in
-            </button>
+            </Button>
           )}
         </div>
       </div>
 
       {toast ? (
-        <div className="mx-auto max-w-6xl px-4 pb-2">
-          <div className="rounded-md border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm text-neutral-700">
-            {toast}
-          </div>
+        <div className="mx-auto max-w-7xl px-4 pb-2 sm:px-6">
+          <Badge tone="teal">{toast}</Badge>
         </div>
       ) : null}
 
@@ -276,12 +229,36 @@ export default function TopNav() {
         }}
       />
 
-      <TransferCryptoModal
-        open={depositOpen}
-        onClose={() => setDepositOpen(false)}
-        platformBalance={uBalance}
-      />
-
+      <TransferCryptoModal open={depositOpen} onClose={() => setDepositOpen(false)} platformBalance={uBalance} />
     </header>
+  );
+}
+
+function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <Link className="rounded-lg px-3 py-2 transition hover:bg-[var(--poly-surface-muted)] hover:text-[var(--poly-text)]" href={href}>
+      {children}
+    </Link>
+  );
+}
+
+function MenuLink({ href, onClick, children }: { href: string; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className="block px-4 py-2 text-sm text-[var(--poly-muted)] hover:bg-[var(--poly-surface-muted)] hover:text-[var(--poly-text)]"
+    >
+      {children}
+    </Link>
+  );
+}
+
+function BalancePill({ label, value, className }: { label: string; value: string; className?: string }) {
+  return (
+    <div className={`rounded-lg border border-[var(--poly-border)] bg-white px-3 py-1.5 text-right shadow-[var(--poly-shadow-sm)] ${className ?? ""}`}>
+      <div className="text-[11px] font-semibold uppercase text-[var(--poly-muted)]">{label}</div>
+      <div className="text-xs font-semibold text-[var(--poly-text)]">{value}</div>
+    </div>
   );
 }

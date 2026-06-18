@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import SportsEventCard, { type SportsEventSummary, formatLeague } from "@/components/sports/SportsEventCard";
+import PageContainer from "@/components/ui/PageContainer";
+import { EmptyState, ErrorState, LoadingState } from "@/components/ui/States";
 
 type SportsEventsPageProps = {
   title: string;
@@ -76,38 +78,38 @@ export default function SportsEventsPage({
   }, [events]);
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-10">
-      <section className="mb-8 border-b border-neutral-200 pb-8">
+    <PageContainer>
+      <section className="mb-8 rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-sm)]">
         <div className="max-w-3xl">
-          <div className="text-xs font-semibold uppercase text-neutral-500">{eyebrow}</div>
-          <h1 className="mt-3 text-4xl font-semibold tracking-normal text-neutral-950">{title}</h1>
-          <p className="mt-3 text-base text-neutral-600">{description}</p>
+          <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">{eyebrow}</div>
+          <h1 className="mt-3 text-4xl font-semibold tracking-normal text-[var(--poly-text)]">{title}</h1>
+          <p className="mt-3 text-base text-[var(--poly-muted)]">{description}</p>
         </div>
 
         {showHeroLinks ? (
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             <Link
               href="/sports/soccer"
-              className="rounded-lg border border-neutral-200 bg-white p-5 shadow-sm transition hover:border-neutral-300"
+              className="rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-5 transition hover:border-[var(--poly-primary)] hover:bg-white"
             >
-              <div className="text-sm font-semibold text-neutral-900">Soccer</div>
-              <div className="mt-1 text-sm text-neutral-600">Match and tournament event markets.</div>
+              <div className="text-sm font-semibold text-[var(--poly-text)]">Soccer</div>
+              <div className="mt-1 text-sm text-[var(--poly-muted)]">Match and tournament event markets.</div>
             </Link>
             <Link
               href="/sports/soccer/world-cup"
-              className="rounded-lg border border-neutral-200 bg-white p-5 shadow-sm transition hover:border-neutral-300"
+              className="rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-5 transition hover:border-[var(--poly-primary)] hover:bg-white"
             >
-              <div className="text-sm font-semibold text-neutral-900">World Cup</div>
-              <div className="mt-1 text-sm text-neutral-600">Demo event markets grouped by fixture.</div>
+              <div className="text-sm font-semibold text-[var(--poly-text)]">World Cup</div>
+              <div className="mt-1 text-sm text-[var(--poly-muted)]">Demo event markets grouped by fixture.</div>
             </Link>
           </div>
         ) : null}
       </section>
 
       {leagueCounts.length > 1 ? (
-        <div className="mb-6 flex flex-wrap gap-2 text-xs text-neutral-600">
+        <div className="mb-6 flex flex-wrap gap-2 text-xs text-[var(--poly-muted)]">
           {leagueCounts.map(([league, count]) => (
-            <span key={league} className="rounded-full border border-neutral-200 px-3 py-1">
+            <span key={league} className="rounded-full border border-[var(--poly-border)] bg-white px-3 py-1">
               {formatLeague(league)}: {count}
             </span>
           ))}
@@ -123,8 +125,8 @@ export default function SportsEventsPage({
               onClick={() => setActiveTab(tab.key)}
               className={`rounded-full border px-3 py-1 text-sm ${
                 activeTab === tab.key
-                  ? "border-black bg-black text-white"
-                  : "border-neutral-300 bg-white text-neutral-700"
+                  ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                  : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
               }`}
             >
               {tab.label}
@@ -136,31 +138,20 @@ export default function SportsEventsPage({
       <section>
         <div className="mb-4 flex items-end justify-between gap-4">
           <div>
-            <h2 className="text-xl font-semibold text-neutral-950">Events</h2>
-            <p className="mt-1 text-sm text-neutral-600">Open an event to see its markets and outcomes.</p>
+            <h2 className="text-xl font-semibold text-[var(--poly-text)]">Events</h2>
+            <p className="mt-1 text-sm text-[var(--poly-muted)]">Open an event to see its markets and outcomes.</p>
           </div>
-          <Link href="/markets" className="text-sm text-neutral-600 hover:text-neutral-950">
+          <Link href="/markets" className="text-sm font-semibold text-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]">
             General markets
           </Link>
         </div>
 
         {loading ? (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <div
-                key={`sports-event-skeleton-${index}`}
-                className="h-48 animate-pulse rounded-lg border border-neutral-200 bg-neutral-100"
-              />
-            ))}
-          </div>
+          <LoadingState label="Loading sports events" count={6} />
         ) : error ? (
-          <div className="rounded-lg border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">
-            {error}
-          </div>
+          <ErrorState>{error}</ErrorState>
         ) : filteredEvents.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">
-            No sports events found.
-          </div>
+          <EmptyState title="No sports events found" description="Try another status filter." />
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filteredEvents.map((event) => (
@@ -169,6 +160,6 @@ export default function SportsEventsPage({
           </div>
         )}
       </section>
-    </main>
+    </PageContainer>
   );
 }
