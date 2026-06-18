@@ -24,6 +24,16 @@ This document is the official workflow for agent-assisted development in POLY.
 
 `DeploymentAgent` prepares deployment plans and runbooks. It does not deploy without explicit human approval.
 
+## Subagent Coordination
+
+LeadAgent and subagent workflows are defined in:
+
+- `docs/SUBAGENT_OPERATING_MODEL.md`
+- `docs/SUBAGENT_ROLES.md`
+- `docs/SUBAGENT_TASK_ROUTING.md`
+
+These documents describe how a LeadAgent assigns scoped work to specialized subagents. Subagents still follow this operating system: one issue per branch, one PR into `dev`, required validation, no auto-merge, and human review for medium-risk and high-risk areas.
+
 ## Lifecycle
 
 1. Inspect the GitHub issue and confirm scope, risk level, and branch name.
