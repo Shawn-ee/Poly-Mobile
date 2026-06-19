@@ -4,7 +4,7 @@ Last updated: 2026-06-18
 
 Current phase: Phase C - Public API test lane readiness
 
-Current `dev` commit at last update: `9a323d2`
+Current `dev` commit at last update: `79595bf`
 
 ## Completed Tasks
 
@@ -24,6 +24,11 @@ Recent autonomous tasks completed before this state file:
 - DOC-028: Market detail target-contract checklist, merged as PR #111.
 - DOC-029: PR #25 split/merge decision, merged as PR #112.
 - DOC-030: Beta readiness evidence update, merged as PR #113.
+- DOC-031: Autonomous checkpoint 1, merged as PR #114.
+- TST-024: Public event error response checks, merged as PR #115.
+- TST-025: Public market error/empty checks, merged as PR #116.
+- DOC-032: Public API contract stabilization criteria, merged as PR #117.
+- TST-026: Public taxonomy/sports empty checks, merged as PR #118.
 
 ## Open PRs
 
@@ -48,12 +53,12 @@ Recent autonomous tasks completed before this state file:
 
 ## Next Task Queue
 
-1. TST-024: Mocked public market detail current-gap test, open only if safe; do not auto-merge if medium risk.
-2. TST-025: Public route 404/error response-shape checks, low-risk mocked tests where safe.
-3. DOC-032: Public API contract stabilization acceptance criteria, docs-only.
-4. DOC-033: Optional `test:public-api` implementation PR scope, docs-only.
-5. FE-001: Private pool listing display-only replacement PR for PR #25, open only if small and safe; do not auto-merge if action semantics are touched.
-6. DOC-034: Admin/funding UI human review packet for PR #25 replacement work, docs-only.
+1. DOC-034: Optional `test:public-api` implementation PR scope, docs-only.
+2. DOC-035: Admin/funding UI human review packet for PR #25 replacement work, docs-only.
+3. TST-027: Mocked public market detail current-gap test, open only if safe; do not auto-merge if medium risk.
+4. FE-001: Private pool listing display-only replacement PR for PR #25, open only if small and safe; do not auto-merge if action semantics are touched.
+5. DOC-036: Public API test coverage map update for PRs #115, #116, and #118, docs-only.
+6. DOC-037: Beta readiness evidence update for new public error/empty-state tests, docs-only.
 
 ## Last Validation Result
 
@@ -71,7 +76,7 @@ Known recurring non-failure output:
 
 ## Current Phase
 
-Phase A state hygiene is complete enough for continued autonomous work. Phase B public API safety/testing is partially complete. Phase C test-lane readiness is documented but package/workflow implementation remains human-reviewed.
+Phase A state hygiene is complete enough for continued autonomous work. Phase B public API safety/testing has expanded with mocked public error/empty-state tests. Phase C test-lane readiness is documented but package/workflow implementation remains human-reviewed.
 
 ## Next Recommended Actions
 
