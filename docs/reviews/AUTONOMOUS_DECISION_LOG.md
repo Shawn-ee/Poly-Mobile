@@ -36,6 +36,12 @@ Autonomous LeadAgent must not auto-merge backend implementation, UI product-code
 | #121 | Auto-merged | Docs-only PR #25 admin/funding UI review packet; PR #25 itself remains blocked. |
 | #122 | Auto-merged | Docs-only public API coverage map and route status update. |
 | #123 | Auto-merged | Docs-only beta and launch evidence update for public tests. |
+| #124 | Auto-merged | Docs-only autonomous checkpoint update. |
+| #125 | Auto-merged | Docs-only public API safe-test queue refresh. |
+| #126 | Auto-merged | Docs-only market detail current-gap test review packet; future test remains non-auto-merge by default. |
+| #127 | Auto-merged | Docs-only private pool list UI replacement scope. |
+| #128 | Auto-merged | Docs-only public route page smoke evidence plan. |
+| #129 | Auto-merged | Docs-only admin/funding UI screenshot evidence requirements. |
 
 ## Open PR Decisions
 
@@ -58,6 +64,11 @@ Autonomous LeadAgent must not auto-merge backend implementation, UI product-code
 - Public API test lane implementation scope was selected to make any future `package.json` test-lane PR reviewable and non-auto-mergeable.
 - PR #25 admin/funding review packet was selected because the draft PR remains broad, stale, and UI/product-code-touching.
 - Public API coverage-map and beta evidence updates were selected to prevent stale route/test status from driving duplicate work.
+- Public API safe-test queue refresh was selected to remove completed low-risk test tasks from the next queue.
+- Market detail current-gap review packet was selected to keep any future market-detail test non-auto-merge by default.
+- Private pool list UI replacement scope was selected before any PR #25 replacement UI code.
+- Public route page smoke evidence plan was selected before browser/test implementation.
+- Admin/funding UI screenshot requirements were selected to keep high-risk UI evidence human-reviewed.
 
 ## Skipped Or Downgraded Tasks
 
@@ -65,6 +76,8 @@ Autonomous LeadAgent must not auto-merge backend implementation, UI product-code
 - Public API lane implementation is limited to docs-only scope until a human-reviewed package-script PR is opened.
 - Market detail cleanup is limited to docs/checklists until a target contract and human-reviewed implementation path exist.
 - Market detail tests remain non-auto-merge by default if they document current contract gaps.
+- UI replacement work remains scoped through docs first; PR #25 itself is still not auto-mergeable.
+- Admin/funding UI evidence can be prepared autonomously, but implementation and screenshots using sensitive data remain human-reviewed.
 - Reference/liquidity public/admin split remains docs-only because implementation is high-risk by topic.
 - PR #25 direct merge remains blocked; replacement PRs should be smaller and reviewed independently.
 

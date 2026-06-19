@@ -4,7 +4,7 @@ Last updated: 2026-06-18
 
 Current phase: Phase G - Beta readiness evidence and controlled UI readiness
 
-Current `dev` commit at last update: `5c30fd2`
+Current `dev` commit at last update: `3bd8193`
 
 ## Completed Tasks
 
@@ -34,6 +34,12 @@ Recent autonomous tasks completed before this state file:
 - DOC-035: PR #25 admin/funding UI review packet, merged as PR #121.
 - DOC-036: Public API coverage map/status update, merged as PR #122.
 - DOC-037: Beta readiness evidence update for public tests, merged as PR #123.
+- DOC-038: Autonomous checkpoint for PRs #120-#123, merged as PR #124.
+- DOC-039: Public API safe-test queue refresh, merged as PR #125.
+- DOC-040: Market detail current-gap test review packet, merged as PR #126.
+- DOC-041: Private pool list UI replacement scope, merged as PR #127.
+- DOC-042: Public route page smoke evidence plan, merged as PR #128.
+- DOC-043: Admin/funding UI screenshot evidence requirements, merged as PR #129.
 
 ## Open PRs
 
@@ -58,13 +64,11 @@ Recent autonomous tasks completed before this state file:
 
 ## Next Task Queue
 
-1. DOC-039: Public API remaining safe-test queue refresh, docs-only.
-2. DOC-040: Market detail current-gap test review packet, docs-only.
-3. TST-027: Mocked public market detail current-gap test, open only if safe; do not auto-merge if medium risk.
-4. DOC-041: Private pool listing UI replacement scope, docs-only.
-5. FE-001: Private pool listing display-only replacement PR for PR #25, open only if small and safe; do not auto-merge if action semantics are touched.
-6. DOC-042: Public route page smoke evidence plan, docs-only.
-7. DOC-043: Admin/funding UI screenshot evidence requirements, docs-only.
+1. DOC-045: UI replacement readiness rollup after PR #25 review docs, docs-only.
+2. DOC-046: Public beta evidence gap rollup after new smoke/evidence plans, docs-only.
+3. DOC-047: Public route smoke evidence template, docs-only.
+4. TST-027: Market detail current-gap test PR may be opened for review only; do not auto-merge by default.
+5. FE-001: Private pool list display-only PR may be opened only if scope stays small; do not auto-merge if action semantics are touched.
 
 ## Last Validation Result
 
@@ -82,7 +86,7 @@ Known recurring non-failure output:
 
 ## Current Phase
 
-Phase A state hygiene is complete enough for continued autonomous work. Phase B public API safety/testing has expanded with mocked public error/empty-state tests. Phase C test-lane readiness is documented, but package/workflow implementation remains human-reviewed. Phase D UI readiness has a non-auto-merge PR #25 review path. Phase G beta evidence is current through PR #123.
+Phase A state hygiene is complete enough for continued autonomous work. Phase B public API safety/testing has expanded with mocked public error/empty-state tests and market-detail current-gap gates. Phase C test-lane readiness is documented, but package/workflow implementation remains human-reviewed. Phase D UI readiness has a non-auto-merge PR #25 review path and a private pool list replacement scope. Phase G beta evidence is current through PR #129.
 
 ## Next Recommended Actions
 
@@ -91,4 +95,5 @@ Phase A state hygiene is complete enough for continued autonomous work. Phase B 
 - Continue low-risk mocked public/read-only tests only where no runtime behavior changes are needed.
 - Open market-detail tests only when they are explicitly current-gap tests and leave them human-reviewed if medium risk.
 - Prefer docs-only scope packets before display-only replacement UI PRs.
+- Keep admin/funding UI screenshot evidence human-reviewed and do not use production data in screenshots.
 - Record any funding, trading, auth, bot, or deployment implementation need in `docs/reviews/HUMAN_DECISION_REQUIRED.md`.
