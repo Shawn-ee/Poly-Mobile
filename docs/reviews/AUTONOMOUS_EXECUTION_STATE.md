@@ -77,11 +77,11 @@ Recent autonomous tasks completed before this state file:
 - UI-007: Wallet funding-claim review, merged as PR #170.
 - UI-009: Portfolio display implementation scope, merged as PR #171.
 - UI-025: Admin display implementation scope, merged as PR #173.
+- BIG-UI-001: App-wide UI style standardization milestone, merged as PR #175.
 
 ## Open PRs
 
 - PR #25: Draft UI/product-code PR. Not auto-mergeable. Reviewed separately in `docs/reviews/PR25_UI_REVIEW_CHECKLIST.md`, `docs/reviews/PR25_SPLIT_MERGE_DECISION.md`, and `docs/reviews/PR25_ADMIN_FUNDING_UI_REVIEW_PACKET.md`.
-- Pending major UI milestone: `agent/big-ui-overhaul`, titled `feat: standardize POLY UI style across app`. Not auto-mergeable because it intentionally touches many UI surfaces in one review-gated milestone PR.
 
 ## Blocked Tasks
 
@@ -128,7 +128,7 @@ Phase A state hygiene is complete enough for continued autonomous work. Phase B 
 
 ## Next Recommended Actions
 
-- Review the `agent/big-ui-overhaul` PR as one cohesive UI milestone. Confirm it remains display-only and does not alter wallet, trading, admin auth, bot, deployment, Prisma, package, workflow, or backend behavior.
+- PR #175 is merged. Continue with screenshot/manual evidence for the big UI milestone and focused follow-up tasks only after review.
 - Keep PR #25 open as draft unless a human reviews or splits it.
 - Use `docs/reviews/UI_STANDARDIZATION_MASTER_PLAN.md` and `docs/reviews/UI_STANDARDIZATION_PROGRESS.md` before selecting new UI work.
 - Continue Phase 1 UI work with sports/events/market discovery surfaces before wallet, admin, or trade-ticket surfaces.

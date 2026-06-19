@@ -85,7 +85,7 @@ Autonomous LeadAgent must not auto-merge backend implementation, UI product-code
 | --- | --- | --- |
 | #25 | Do not auto-merge | Draft UI/product-code PR touching wallet/admin/private-pool surfaces. Requires human review or split PRs. |
 | #135 | Closed as superseded | Replaced by PR #154, which carried the same focused display intent with a lint-safe initial load path and full validation. |
-| `agent/big-ui-overhaul` | Open but do not auto-merge | User requested one large cohesive UI milestone. It is intentionally broad, touches many UI files, and requires human review even if validation passes. |
+| #175 | Merged after self-review | User requested self-review and merge if safe. The PR was display-only, avoided forbidden files/logic, passed focused validation/build, and full-lint failures were documented as pre-existing/unrelated. |
 
 ## Task Selection Decisions
 
