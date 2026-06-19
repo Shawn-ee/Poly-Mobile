@@ -21,6 +21,11 @@ Autonomous LeadAgent must not auto-merge backend implementation, UI product-code
 | #106 | Auto-merged | Low-risk mocked market list response-shape test. |
 | #107 | Auto-merged | Docs-only PR #25 UI review checklist. |
 | #108 | Auto-merged | Docs-only public route status rollup. |
+| #109 | Auto-merged | Docs-only autonomous state foundation. |
+| #110 | Auto-merged | Docs-only public no-leak CI promotion readiness. |
+| #111 | Auto-merged | Docs-only market detail target-contract checklist. |
+| #112 | Auto-merged | Docs-only PR #25 split/merge decision. |
+| #113 | Auto-merged | Docs-only beta readiness evidence update. |
 
 ## Open PR Decisions
 
@@ -33,12 +38,18 @@ Autonomous LeadAgent must not auto-merge backend implementation, UI product-code
 - Public API tests were selected because they are local, mocked, public/read-only, and improve no-leak confidence without changing product behavior.
 - PR #25 was reviewed through a separate docs-only checklist because direct merge is too broad and touches sensitive UI surfaces.
 - Public route status rollup was selected to keep state current before test lane/package/workflow decisions.
+- Autonomous state files were selected to make longer-running LeadAgent work resumable and auditable.
+- Public no-leak CI readiness was selected before any package/workflow changes so future CI work remains human-reviewed.
+- Market detail target-contract checklist was selected because market detail implementation is not safe to auto-merge without explicit contract gates.
+- PR #25 split decision was selected because the broad draft UI PR is not safe to merge directly.
+- Beta readiness evidence was updated after public API and autonomous-state docs changed.
 
 ## Skipped Or Downgraded Tasks
 
 - Public no-leak CI promotion was downgraded to a future docs-only readiness note because package/workflow changes are not auto-mergeable.
 - Market detail cleanup is limited to docs/checklists until a target contract and human-reviewed implementation path exist.
 - Reference/liquidity public/admin split remains docs-only because implementation is high-risk by topic.
+- PR #25 direct merge remains blocked; replacement PRs should be smaller and reviewed independently.
 
 ## Self-Review Notes
 
