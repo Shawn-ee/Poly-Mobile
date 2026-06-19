@@ -1,7 +1,7 @@
 # Funding Beta Continuation Prompt
 
 Timestamp: 2026-06-19
-Current branch: `agent/beta-auto-deposit-credit-hardening`
+Current branch: `agent/beta-withdrawal-request-hold`
 Completed phases:
 
 - Phase 1: controlled internal funding beta architecture, merged through PR #215.
@@ -10,30 +10,32 @@ Completed phases:
 - Phase 3: focused test coverage for existing self-managed Polygon USDC deposit wallet generation merged through PR #218.
 - Phase 3B: deposit wallet security evidence merged through PR #219.
 - Phase 4: deposit address API/UI evidence opened as PR #220 and left open for human review because it exposes a guarded funding UI entry point.
-- Phase 5: deposit monitor and auto-credit hardening evidence added in the current PR.
+- Phase 5: deposit monitor and auto-credit hardening evidence merged through PR #221.
+- Phase 6: withdrawal request hold hardening evidence added in the current PR.
 
 ## Current Status
 
-The current branch adds deposit monitor and auto-credit safety evidence without changing runtime behavior.
+The current branch adds withdrawal request hold safety evidence without changing runtime behavior.
 
 Covered behavior:
 
-- monitor guard blocks chain access when auto-credit is disabled or killed.
-- unsupported chain/token transfers are ignored before deposit upsert.
-- unconfirmed deposits are marked confirming and do not ledger-credit.
-- confirmed deposits call ledger credit with txHash/logIndex idempotency.
-- already credited deposits do not ledger-credit again.
+- anonymous withdrawal requests are blocked before funding checks.
+- non-allowlisted withdrawal requests are blocked before rate limit and hold creation.
+- kill switch blocks withdrawal request creation.
+- withdrawal request success response does not include broadcast fields.
+- withdrawal history is allowlist-gated and does not return treasury private key or broadcast fields.
+- existing service tests cover hold, reject release, complete finalization, and ledger entries.
 
 ## Next Step
 
-Next step is **review of the Phase 5 deposit auto-credit evidence PR**.
+Next step is **review of the Phase 6 withdrawal request hold evidence PR**.
 
 Do not continue to deposit auto-credit, withdrawal automation, or production funding rollout in the same run.
 
 After human review, choose one:
 
 1. **Review PR #220** because it remains open for human review.
-2. **Phase 6 withdrawal request hold hardening**.
+2. **Phase 7 admin manual withdrawal review evidence**.
 3. **Phase 2D schema-based funding profile** if env-backed allowlist is not durable enough.
 
 ## Validation To Re-Run
@@ -45,7 +47,7 @@ npx prisma generate --schema=prisma/schema.prisma
 npx prisma validate --schema=prisma/schema.prisma
 npx tsc --noEmit --pretty false --incremental false
 npm run test:ci
-npx jest --runInBand src/__tests__/funding-beta.deposit-monitor.test.ts
+npx jest --runInBand src/__tests__/funding-beta.routes.test.ts src/server/services/__tests__/withdrawals.phase8.test.ts
 ```
 
 ## Warnings
