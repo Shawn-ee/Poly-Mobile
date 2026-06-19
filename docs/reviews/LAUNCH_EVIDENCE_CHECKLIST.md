@@ -37,6 +37,9 @@ Before any public-beta approval, the evidence packet should include:
 | CI result | Passing required CI for the exact commit. | TestingAgent | Yes |
 | Local validation | `git diff --check`, Prisma generate/validate, TypeScript, and `npm run test:ci` results. | TestingAgent | Yes |
 | Public API no-leak coverage | Current no-leak test list and targeted results. | TestingAgent, SecurityAgent | Yes |
+| Public API contract decisions | Market detail, chart, public events/sports/markets, and reference-liquidity boundary decisions. | PlannerAgent, SecurityAgent | Yes |
+| Public API cleanup gap analysis | `docs/reviews/PUBLIC_ROUTE_CLEANUP_GAP_ANALYSIS.md` reviewed and unresolved gaps accepted or deferred. | BackendAgent, SecurityAgent | Yes |
+| Public API test lane decision | `docs/reviews/PUBLIC_API_TEST_LANE_DECISION.md` and any later CI promotion evidence. | TestingAgent, DeploymentAgent | Yes |
 | Public route smoke | Public route/page smoke result with screenshots or logs. | TestingAgent | Yes |
 | Product scope | Final internal-beta vs public-beta scope statement. | PlannerAgent | Yes |
 | Known limitations | User-visible limitations and delayed features. | PlannerAgent | Yes |
@@ -73,6 +76,8 @@ Evidence may state that a secret handling check passed, but it must not print th
 Safe evidence sources include:
 
 - Markdown review documents in `docs/reviews/`.
+- Public API targeted test files and PR validation summaries.
+- Public API contract and boundary decision records.
 - GitHub PR bodies and validation summaries.
 - GitHub Actions check results.
 - Local command output summaries that do not print secrets.
@@ -100,12 +105,13 @@ Autonomous agents may prepare evidence, but they must not approve these decision
 2. Review required CI and local validation.
 3. Review product scope and known limitations.
 4. Review public API and UI no-leak evidence.
-5. Review admin auth evidence.
-6. Review wallet, ledger, deposit, withdrawal, matching, and settlement evidence.
-7. Review bot/live trading controls.
-8. Review deployment and rollback plan.
-9. Review incident response owners.
-10. Record explicit approve, reject, or defer decision.
+5. Review public API contract decisions and unresolved cleanup gaps.
+6. Review admin auth evidence.
+7. Review wallet, ledger, deposit, withdrawal, matching, and settlement evidence.
+8. Review bot/live trading controls.
+9. Review deployment and rollback plan.
+10. Review incident response owners.
+11. Record explicit approve, reject, or defer decision.
 
 ## Non-Goals
 
