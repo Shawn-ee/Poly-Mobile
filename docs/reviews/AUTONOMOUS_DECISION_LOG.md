@@ -1,0 +1,47 @@
+# Autonomous Decision Log
+
+Last updated: 2026-06-18
+
+## Decision Policy
+
+Autonomous LeadAgent may merge docs-only PRs and low-risk mocked public/read-only test PRs when validation passes and internal ReviewerAgent/SecurityAgent review passes.
+
+Autonomous LeadAgent must not auto-merge backend implementation, UI product-code, package/workflow/script, Prisma/migration, wallet, ledger, trading, admin-auth, bot-runtime, deployment, or secret changes.
+
+## Recent Auto-Merge Decisions
+
+| PR | Decision | Reason |
+| --- | --- | --- |
+| #100 | Auto-merged | Docs-only public API test queue. |
+| #101 | Auto-merged | Low-risk mocked taxonomy response-shape test. |
+| #102 | Auto-merged | Low-risk mocked event response-shape test. |
+| #103 | Auto-merged | Low-risk mocked sports response-shape test. |
+| #104 | Auto-merged | Low-risk mocked event-market response-shape test. |
+| #105 | Auto-merged | Low-risk mocked market chart empty-state test. |
+| #106 | Auto-merged | Low-risk mocked market list response-shape test. |
+| #107 | Auto-merged | Docs-only PR #25 UI review checklist. |
+| #108 | Auto-merged | Docs-only public route status rollup. |
+
+## Open PR Decisions
+
+| PR | Decision | Reason |
+| --- | --- | --- |
+| #25 | Do not auto-merge | Draft UI/product-code PR touching wallet/admin/private-pool surfaces. Requires human review or split PRs. |
+
+## Task Selection Decisions
+
+- Public API tests were selected because they are local, mocked, public/read-only, and improve no-leak confidence without changing product behavior.
+- PR #25 was reviewed through a separate docs-only checklist because direct merge is too broad and touches sensitive UI surfaces.
+- Public route status rollup was selected to keep state current before test lane/package/workflow decisions.
+
+## Skipped Or Downgraded Tasks
+
+- Public no-leak CI promotion was downgraded to a future docs-only readiness note because package/workflow changes are not auto-mergeable.
+- Market detail cleanup is limited to docs/checklists until a target contract and human-reviewed implementation path exist.
+- Reference/liquidity public/admin split remains docs-only because implementation is high-risk by topic.
+
+## Self-Review Notes
+
+- ReviewerAgent passes docs-only changes when they are clear, bounded, and consistent with the agent operating docs.
+- SecurityAgent passes public mocked tests when they do not use real DB, secrets, credentials, production data, chain RPC, external services, auth credentials, or money movement.
+- Specialist reviewers are required for wallet/ledger/trading, bot, deployment, or UI implementation topics.
