@@ -191,6 +191,7 @@ Needed evidence:
 2. UI-010: Cross-page empty/loading/error terminology map. Completed in `docs/reviews/UI_STATE_TERMINOLOGY_MAP.md`.
 3. UI-011: Homepage wallet/admin surface decision. Completed in `docs/reviews/HOMEPAGE_WALLET_ADMIN_SURFACE_DECISION.md`.
 4. UI-020: Login, homepage, sports, events, and markets mobile smoke evidence.
+   - UI-020A: Mobile viewport route-smoke checklist completed in `docs/reviews/PUBLIC_ROUTE_SMOKE_MOBILE_VIEWPORT_CHECKLIST.md`; no server, browser, screenshots, fixtures, or runtime code.
 5. UI-021: Event detail loading/error/empty copy PR only if it avoids grouped trade behavior.
 6. UI-022: Market detail screenshot/smoke checklist before any code. Completed in `docs/reviews/MARKET_DETAIL_SCREENSHOT_SMOKE_CHECKLIST.md`.
 7. UI-023: Wallet display scope packet if a human confirms funding-copy boundaries.
@@ -312,15 +313,17 @@ Skipped high-risk implementation:
 - Order ticket, orderbook, open orders, trades, fills, positions, balances, pool actions, reference data, and bot behavior.
 - Wallet, deposit, withdrawal, ledger, matching, settlement, admin auth, deployment, package scripts, workflows, Prisma, and migrations.
 
-## Checkpoint After PR #191
+## Checkpoint After PR #191 And UI-020A Prep
 
 Tasks completed in this checkpoint:
 
 - UI-012A: Anonymous public route smoke checklist.
+- UI-020A: Mobile viewport route smoke checklist.
 
 Files added or updated:
 
 - `docs/reviews/PUBLIC_ROUTE_SMOKE_ANONYMOUS_CHECKLIST.md`
+- `docs/reviews/PUBLIC_ROUTE_SMOKE_MOBILE_VIEWPORT_CHECKLIST.md`
 
 Validation:
 

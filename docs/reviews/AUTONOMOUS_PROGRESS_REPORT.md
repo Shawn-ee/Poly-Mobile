@@ -156,7 +156,7 @@ Safe autonomous work remains available in these lanes:
 1. Human/specialist review of PR #25 before merge, split, or close.
 2. Close or update stale docs-only PR #177, which targets an older post-merge state checkpoint already superseded on `dev`.
 3. Close or update stale draft docs-only PR #192, which is superseded by merged PR #193 and reflected in the merged PR #194 queue refresh and PR #199 checkpoint.
-4. Optional local-only anonymous route smoke run when a safe local app instance is available, using `docs/reviews/PUBLIC_ROUTE_SMOKE_ANONYMOUS_CHECKLIST.md`.
+4. Optional local-only anonymous route smoke run when a safe local app instance is available, using `docs/reviews/PUBLIC_ROUTE_SMOKE_ANONYMOUS_CHECKLIST.md` and `docs/reviews/PUBLIC_ROUTE_SMOKE_MOBILE_VIEWPORT_CHECKLIST.md`.
 5. Optional small display-only public-page UI PR, opened for review unless strict UI auto-merge conditions are satisfied.
 6. Optional low-risk mocked public/read-only test only if it is clearly outside trading/funding/admin/bot scope and not already covered.
 7. Human-reviewed package/workflow decision for any future public API or route-smoke test lane promotion.
