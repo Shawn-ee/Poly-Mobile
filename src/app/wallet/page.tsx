@@ -542,10 +542,10 @@ export default function WalletPage() {
       <PageHeader
         eyebrow="Account wallet"
         title="Wallet"
-        description="View test-credit balances, linked wallets, and beta funding status without enabling production money movement."
+        description="View balances, linked wallets, and controlled internal funding status."
       >
         <BetaNotice>
-          Internal beta uses test credits only. Real deposits and withdrawals remain disabled until a human-approved funding launch.
+          Internal funding beta is allowlisted only. Funding access requires the beta flag, allowlist, and kill switch to permit the request.
         </BetaNotice>
       </PageHeader>
       <Card className="p-5">
@@ -572,23 +572,23 @@ export default function WalletPage() {
 
       <Card className="mt-6 p-5">
         <SectionHeader
-          title="Deposit"
-          description="During internal beta, deposits are disabled. Use the faucet to get test credits."
+          title="Internal beta deposit address"
+          description="Allowlisted users can view a Polygon USDC deposit address. Anonymous and non-allowlisted users remain blocked by the API."
         />
-        <div className="mt-4 rounded-lg border border-dashed border-[var(--poly-border-strong)] bg-[var(--poly-surface-muted)] p-5">
+        <div className="mt-4 rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="text-sm font-semibold text-[var(--poly-text)]">Real-money deposits disabled</div>
+              <div className="text-sm font-semibold text-[var(--poly-text)]">Controlled internal funding beta</div>
               <div className="mt-1 text-sm text-[var(--poly-muted)]">
-                Internal beta uses test credits only. Real-money deposit functionality is coming soon.
+                Only send the supported token on the supported chain after the guarded modal shows your assigned address.
+                Unsupported assets or networks may be lost or delayed.
               </div>
             </div>
             <Button
-              disabled
-              title="Coming soon. Internal beta uses test credits only."
+              onClick={() => setDepositOpen(true)}
               type="button"
             >
-              Coming soon
+              View deposit details
             </Button>
           </div>
         </div>
