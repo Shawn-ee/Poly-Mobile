@@ -71,6 +71,37 @@ const expectNoForbiddenKeys = (body: unknown) => {
   }
 };
 
+const expectOnlyKeys = (value: Record<string, unknown>, allowedKeys: string[]) => {
+  expect(Object.keys(value).sort()).toEqual([...allowedKeys].sort());
+};
+
+const expectedEventSummaryKeys = [
+  "activeMarketCount",
+  "awayTeamName",
+  "category",
+  "createdAt",
+  "description",
+  "eventType",
+  "externalEventId",
+  "externalSlug",
+  "hasGroupedMarkets",
+  "homeTeamName",
+  "icon",
+  "id",
+  "image",
+  "imageUrl",
+  "leagueKey",
+  "marketCount",
+  "metadata",
+  "slug",
+  "source",
+  "sportKey",
+  "startTime",
+  "status",
+  "title",
+  "updatedAt",
+];
+
 const baseEvent = {
   id: "event-1",
   slug: "france-vs-argentina",
@@ -176,7 +207,13 @@ describe("public event API no-leak checks", () => {
     );
 
     const body = await response.json();
+    expectOnlyKeys(body, ["events"]);
     expect(body.events).toHaveLength(1);
+    expectOnlyKeys(body.events[0], [
+      ...expectedEventSummaryKeys,
+      "groupedSummary",
+      "topOutcomes",
+    ]);
     expect(body.events[0]).toMatchObject({
       slug: "france-vs-argentina",
       category: "sports",
@@ -201,6 +238,8 @@ describe("public event API no-leak checks", () => {
     expect(response.status).toBe(200);
 
     const body = await response.json();
+    expectOnlyKeys(body, ["event", "markets"]);
+    expectOnlyKeys(body.event, [...expectedEventSummaryKeys, "closedMarketCount"]);
     expect(body.event).toMatchObject({
       slug: "france-vs-argentina",
       sportKey: "soccer",
