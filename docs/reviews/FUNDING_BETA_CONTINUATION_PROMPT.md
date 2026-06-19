@@ -1,106 +1,53 @@
 # Funding Beta Continuation Prompt
 
 Timestamp: 2026-06-19
-Current branch: `agent/beta-funding-schema-ledger-readiness`
+Current branch: `agent/beta-funding-allowlist-killswitch`
 Completed phases:
 
 - Phase 1: controlled internal funding beta architecture, merged through PR #215.
-- Phase 2: funding schema and ledger readiness review.
-
-Next phase: Phase 2B / 2C controlled funding allowlist and kill-switch controls.
+- Phase 2: funding schema and ledger readiness review, merged through PR #216.
+- Phase 2B / 2C: env-backed internal funding allowlist and kill-switch guards implemented in the current PR.
 
 ## Current Status
 
-Phase 2 was completed as a docs-only review. The readiness classification is:
+The current branch implements the required safety gate before any Phase 3 deposit wallet generation or auto-credit rollout:
 
-**Not ready for Phase 3**
+- `INTERNAL_FUNDING_BETA_ENABLED`
+- `INTERNAL_FUNDING_ALLOWLIST_EMAILS`
+- `FUNDING_KILL_SWITCH`
+- `ALLOW_AUTO_DEPOSIT_CREDIT`
 
-Reason:
+Guarded paths:
 
-- Existing deposit wallet generation is authenticated but not allowlist-gated.
-- Existing withdrawal request paths are authenticated but not allowlist-gated.
-- No canonical internal funding allowlist model or field was found.
-- No consistent global funding kill switch was found across deposit address generation, auto-credit, and withdrawal request creation.
-- Audit log coverage is incomplete.
-- A narrow schema PR may eventually be required, but Phase 2B / 2C should first add the smallest safe env-based temporary guard if schema support is not already available.
+- deposit address lookup/create
+- deposit history API
+- withdrawal request creation
+- withdrawal history API
+- deposit monitor scan / auto-credit entrypoints
 
-## Current Dev State
+## Next Step
 
-Before continuing, run:
+Next step is **human review** of the Phase 2B / 2C implementation PR.
+
+Do not continue to Phase 3 in the same run.
+
+After human review, choose one:
+
+1. **Phase 2D schema-based funding profile** if env-backed allowlist is not durable enough.
+2. **Phase 2E more access-control tests** if reviewers want more funding API/UI boundary coverage first.
+3. **Phase 3 controlled deposit wallet generation** only if reviewers approve the env-backed gates and validation results.
+
+## Validation To Re-Run
 
 ```powershell
-$env:PATH = 'C:\Program Files\GitHub CLI;' + $env:PATH
-git fetch origin
-git checkout dev
-git pull origin dev
-git status --short --branch
+git diff --check
+git diff --cached --check
+npx prisma generate --schema=prisma/schema.prisma
+npx prisma validate --schema=prisma/schema.prisma
+npx tsc --noEmit --pretty false --incremental false
+npm run test:ci
+npx jest --runInBand src/__tests__/funding-beta.guard.test.ts src/__tests__/funding-beta.routes.test.ts src/__tests__/funding-beta.deposit-monitor.test.ts
 ```
-
-## Open PR Context
-
-Phase 1 architecture branch:
-
-`agent/beta-funding-architecture-plan`
-
-Phase 1 PR:
-
-`https://github.com/Shawn-ee/POLY/pull/215`
-
-Phase 2 branch:
-
-`agent/beta-funding-schema-ledger-readiness`
-
-Phase 2 PR:
-
-`https://github.com/Shawn-ee/POLY/pull/216`
-
-## Validation Results
-
-Phase 2 validation required for docs-only scope:
-
-- `git diff --check`
-- `git diff --cached --check`
-
-Do not claim validation passed in a future session unless rerun locally.
-
-## Blockers
-
-1. Phase 3 deposit wallet generation must not proceed until controlled funding gates exist.
-2. Deposit address generation needs an internal funding allowlist guard.
-3. Withdrawal request creation needs an internal funding allowlist guard.
-4. Deposit monitor auto-credit needs a funding kill-switch guard.
-5. Public funding is not approved.
-6. Automatic withdrawal broadcast is not approved.
-7. Live bots are not approved.
-8. Production deployment is not approved.
-
-## Exact Safe Next Instruction
-
-Continue with Phase 2B / 2C:
-
-Create a focused branch:
-
-`agent/beta-funding-allowlist-killswitch`
-
-Goal:
-
-- Add server-only controlled funding guard helpers.
-- Add env-backed internal funding beta flags if no schema-backed allowlist exists.
-- Use these env names unless the repo already has a canonical equivalent:
-  - `INTERNAL_FUNDING_BETA_ENABLED`
-  - `FUNDING_KILL_SWITCH`
-  - `INTERNAL_FUNDING_ALLOWLIST_EMAILS`
-- Gate deposit address generation.
-- Gate withdrawal request creation.
-- Gate deposit monitor auto-credit or document why monitor gating must be split into another PR.
-- Add targeted tests proving:
-  - anonymous users are blocked
-  - authenticated non-allowlisted users are blocked
-  - allowlisted users are allowed only when funding beta is enabled and kill switch is off
-  - kill switch blocks funding paths
-  - deposit address responses do not expose raw or encrypted private-key fields
-
-If schema/migrations are needed, keep the PR narrow and leave it open for human review. Do not auto-merge migrations or high-risk funding behavior.
 
 ## Warnings
 
@@ -115,4 +62,4 @@ If schema/migrations are needed, keep the PR narrow and leave it open for human 
 - Do not enable automatic withdrawal broadcast.
 - Do not enable live bots.
 - Do not create checkpoint churn.
-- Do not auto-merge high-risk funding PRs.
+- Do not auto-merge high-risk funding behavior without human review.

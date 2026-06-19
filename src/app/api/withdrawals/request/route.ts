@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getUserId } from "@/lib/auth";
+import {
+  assertFundingNotKilled,
+  requireInternalFundingUserById,
+  toFundingAccessResponse,
+} from "@/lib/fundingBeta";
 import { toGuardResponse } from "@/lib/marketGuards";
 import { LedgerServiceError } from "@/server/services/ledger";
 import { enforceSensitiveRateLimit } from "@/server/services/orderRateLimiter";
@@ -20,6 +25,8 @@ export async function POST(request: NextRequest) {
       : undefined;
 
   try {
+    await requireInternalFundingUserById(userId);
+    assertFundingNotKilled();
     enforceSensitiveRateLimit(userId, "withdraw_request");
     const result = await requestWithdrawal({
       userId,
@@ -44,6 +51,10 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
+    const fundingResponse = toFundingAccessResponse(error);
+    if (fundingResponse) {
+      return NextResponse.json(fundingResponse.body, { status: fundingResponse.status });
+    }
     if (error instanceof LedgerServiceError) {
       return NextResponse.json({ error: error.message }, { status: error.status });
     }

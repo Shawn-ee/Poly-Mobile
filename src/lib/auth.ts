@@ -68,7 +68,7 @@ export const resolveAuthenticatedUser = async () => {
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: { id: true, email: true, username: true },
+    select: { id: true, email: true, username: true, isAdmin: true },
   });
 
   if (!user) {
