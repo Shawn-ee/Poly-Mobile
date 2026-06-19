@@ -22,18 +22,39 @@ Current targeted no-leak tests:
 - `src/__tests__/public.event-markets.no-leak.test.ts`
 - `src/__tests__/public.market-chart.no-leak.test.ts`
 
+Current expanded coverage includes no-leak, response-shape, and selected empty/error paths for taxonomy, event, sports, event-market, market-list, and market-chart route groups. These tests remain targeted evidence until a human-reviewed package-script or CI-lane PR is accepted.
+
+## Completed Or Superseded Test Tasks
+
+| Previous task | Current status | Evidence |
+|---|---|---|
+| Add allowlist response-shape tests for taxonomy reads. | Completed | `src/__tests__/public.taxonomy.no-leak.test.ts` |
+| Add allowlist response-shape tests for sports event reads. | Completed | `src/__tests__/public.sports.no-leak.test.ts` |
+| Add allowlist response-shape tests for event market reads. | Completed | `src/__tests__/public.event-markets.no-leak.test.ts` |
+| Add empty-state chart route tests. | Completed | `src/__tests__/public.market-chart.no-leak.test.ts` |
+| Add market list response-shape tests. | Completed | `src/__tests__/public.market-list.no-leak.test.ts` |
+| Add event and event-market error/not-found tests. | Completed | `src/__tests__/public.events.no-leak.test.ts` and `src/__tests__/public.event-markets.no-leak.test.ts` |
+
 ## Recommended Next Test Tasks
 
 | Priority | Task | Risk | Auto-merge candidate | Notes |
 |---:|---|---:|---|---|
-| 1 | Add allowlist response-shape tests for taxonomy reads. | Low | Yes | Mocked/local only. |
-| 2 | Add allowlist response-shape tests for sports event reads. | Low | Yes | Based on existing sports no-leak fixtures. |
-| 3 | Add allowlist response-shape tests for event market reads. | Low/Medium | Yes if mocked and read-only | Avoid grouped service internals. |
-| 4 | Add empty-state chart route tests. | Low | Yes | Extend mocked chart test only. |
-| 5 | Add market detail current-gap test. | Medium | No by default | Should document current extra-field gap before cleanup. |
-| 6 | Add market detail target-contract tests. | Medium | No by default | Pair with reviewed implementation cleanup. |
-| 7 | Add public liquidity summary tests. | High by topic | No | Wait for implementation and specialist review. |
-| 8 | Add quote/orderbook/trade-tape allowlist tests. | Medium/High | No by default | Trading-adjacent; use scope doc first. |
+| 1 | Add market detail current-gap test. | Medium | No by default | Should document current extra-field gap before cleanup. Must use mocks and avoid route behavior changes. |
+| 2 | Add market detail target-contract tests. | Medium | No by default | Pair with reviewed implementation cleanup or keep as skipped expectations if explicitly approved. |
+| 3 | Add public route page smoke evidence plan. | Low | Yes if docs-only | Plan screenshots/smoke checks before UI implementation. |
+| 4 | Add optional `test:public-api` package script PR. | Low/Medium | No | Human-reviewed because it changes `package.json`; use `docs/reviews/PUBLIC_API_TEST_LANE_IMPLEMENTATION_SCOPE.md`. |
+| 5 | Add public liquidity summary tests. | High by topic | No | Wait for implementation and specialist review. |
+| 6 | Add quote/orderbook/trade-tape allowlist tests. | Medium/High | No by default | Trading-adjacent; use scope doc first. |
+
+## Safe Autonomous Test Boundary
+
+The remaining low-risk public API test work is narrower than before. New test-only PRs should be selected only when they:
+
+- Exercise existing public/read-only route handlers.
+- Use mocks and local fixtures only.
+- Do not require real DB, secrets, external services, production data, credentials, chain RPC, payment/custody, or wallet keys.
+- Do not change route implementation, package scripts, workflows, Prisma, migrations, deployment, admin auth, wallet, ledger, trading, bot, or production behavior.
+- Avoid market detail, quote, orderbook, trade-tape, reference, and liquidity routes unless the PR body explicitly states why the test is safe and whether it is non-auto-mergeable.
 
 ## Auto-Merge Eligible Test Pattern
 
@@ -52,6 +73,7 @@ A future test-only PR can be auto-merged only when:
 Do not auto-merge tests involving:
 
 - market detail behavior cleanup
+- market detail current-gap or target-contract assertions unless a later policy explicitly allows it
 - public/admin reference route split
 - quote/orderbook/trade-tape semantics
 - admin auth
