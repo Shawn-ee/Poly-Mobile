@@ -36,11 +36,11 @@ Before any public-beta approval, the evidence packet should include:
 | Commit identity | Git SHA and branch under review. | LeadAgent | Yes |
 | CI result | Passing required CI for the exact commit. | TestingAgent | Yes |
 | Local validation | `git diff --check`, Prisma generate/validate, TypeScript, and `npm run test:ci` results. | TestingAgent | Yes |
-| Public API no-leak coverage | Current no-leak test list and targeted results. | TestingAgent, SecurityAgent | Yes |
+| Public API no-leak coverage | Current no-leak test list, targeted results, and `docs/reviews/PUBLIC_API_NO_LEAK_COVERAGE_MAP.md`. | TestingAgent, SecurityAgent | Yes |
 | Public API contract decisions | Market detail, chart, public events/sports/markets, and reference-liquidity boundary decisions. | PlannerAgent, SecurityAgent | Yes |
 | Public API cleanup gap analysis | `docs/reviews/PUBLIC_ROUTE_CLEANUP_GAP_ANALYSIS.md` reviewed and unresolved gaps accepted or deferred. | BackendAgent, SecurityAgent | Yes |
 | Public API test lane decision | `docs/reviews/PUBLIC_API_TEST_LANE_DECISION.md` and any later CI promotion evidence. | TestingAgent, DeploymentAgent | Yes |
-| Public API CI promotion readiness | `docs/reviews/PUBLIC_NO_LEAK_CI_PROMOTION_READINESS.md` before package/workflow changes. | TestingAgent, SecurityAgent, DeploymentAgent | Yes |
+| Public API CI promotion readiness | `docs/reviews/PUBLIC_NO_LEAK_CI_PROMOTION_READINESS.md` and `docs/reviews/PUBLIC_API_TEST_LANE_IMPLEMENTATION_SCOPE.md` before package/workflow changes. | TestingAgent, SecurityAgent, DeploymentAgent | Yes |
 | Public route smoke | Public route/page smoke result with screenshots or logs. | TestingAgent | Yes |
 | Product scope | Final internal-beta vs public-beta scope statement. | PlannerAgent | Yes |
 | Known limitations | User-visible limitations and delayed features. | PlannerAgent | Yes |
@@ -57,7 +57,7 @@ Before any public-beta approval, the evidence packet should include:
 | Deployment checklist | Human-approved deployment and rollback steps. | DeploymentAgent | Yes |
 | Incident runbooks | Admin, trading, funding, bot, and deployment incident handling. | SecurityAgent, DeploymentAgent | Yes |
 | Autonomous execution state | `docs/reviews/AUTONOMOUS_EXECUTION_STATE.md`, `docs/reviews/AUTONOMOUS_DECISION_LOG.md`, and `docs/reviews/HUMAN_DECISION_REQUIRED.md`. | LeadAgent | Yes |
-| UI draft PR review path | `docs/reviews/PR25_UI_REVIEW_CHECKLIST.md` and `docs/reviews/PR25_SPLIT_MERGE_DECISION.md`, or successor PR review evidence. | FrontendAgent, SecurityAgent | Yes |
+| UI draft PR review path | `docs/reviews/PR25_UI_REVIEW_CHECKLIST.md`, `docs/reviews/PR25_SPLIT_MERGE_DECISION.md`, `docs/reviews/PR25_ADMIN_FUNDING_UI_REVIEW_PACKET.md`, or successor PR review evidence. | FrontendAgent, SecurityAgent | Yes |
 
 ## Evidence That Must Not Be Included
 
@@ -108,9 +108,9 @@ Autonomous agents may prepare evidence, but they must not approve these decision
 2. Review required CI and local validation.
 3. Review product scope and known limitations.
 4. Review public API and UI no-leak evidence.
-5. Review public API contract decisions and unresolved cleanup gaps.
+5. Review public API contract decisions, unresolved cleanup gaps, and public API test-lane implementation scope.
 6. Review autonomous decision log and human-decision-required list.
-7. Review UI draft/split status and display-only evidence.
+7. Review UI draft/split status, PR #25 review packet, and display-only evidence.
 8. Review admin auth evidence.
 9. Review wallet, ledger, deposit, withdrawal, matching, and settlement evidence.
 10. Review bot/live trading controls.
