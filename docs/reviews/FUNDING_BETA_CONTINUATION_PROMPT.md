@@ -1,41 +1,37 @@
 # Funding Beta Continuation Prompt
 
 Timestamp: 2026-06-19
-Current branch: `agent/beta-funding-allowlist-killswitch`
+Current branch: `agent/beta-internal-deposit-wallet-generation-tests`
 Completed phases:
 
 - Phase 1: controlled internal funding beta architecture, merged through PR #215.
 - Phase 2: funding schema and ledger readiness review, merged through PR #216.
-- Phase 2B / 2C: env-backed internal funding allowlist and kill-switch guards implemented in the current PR.
+- Phase 2B / 2C: env-backed internal funding allowlist and kill-switch guards merged through PR #217.
+- Phase 3: focused test coverage added for existing self-managed Polygon USDC deposit wallet generation.
 
 ## Current Status
 
-The current branch implements the required safety gate before any Phase 3 deposit wallet generation or auto-credit rollout:
+The current branch verifies the existing self-managed deposit wallet generation path without changing runtime funding behavior.
 
-- `INTERNAL_FUNDING_BETA_ENABLED`
-- `INTERNAL_FUNDING_ALLOWLIST_EMAILS`
-- `FUNDING_KILL_SWITCH`
-- `ALLOW_AUTO_DEPOSIT_CREDIT`
+Covered behavior:
 
-Guarded paths:
-
-- deposit address lookup/create
-- deposit history API
-- withdrawal request creation
-- withdrawal history API
-- deposit monitor scan / auto-credit entrypoints
+- existing active Polygon USDC deposit wallet is reused.
+- a new mocked wallet is only created when no active wallet exists.
+- raw private key is passed to encryption before database storage.
+- Prisma create payload stores `encryptedPrivateKey` and not the raw private key.
+- unsafe deposit wallet encryption config blocks wallet generation before key creation.
 
 ## Next Step
 
-Next step is **human review** of the Phase 2B / 2C implementation PR.
+Next step is **human review** of the Phase 3 deposit wallet generation test PR.
 
-Do not continue to Phase 3 in the same run.
+Do not continue to deposit auto-credit, withdrawal automation, or production funding rollout in the same run.
 
 After human review, choose one:
 
-1. **Phase 2D schema-based funding profile** if env-backed allowlist is not durable enough.
-2. **Phase 2E more access-control tests** if reviewers want more funding API/UI boundary coverage first.
-3. **Phase 3 controlled deposit wallet generation** only if reviewers approve the env-backed gates and validation results.
+1. **Phase 3B deposit wallet generation review** if reviewers want more security evidence around encryption and API response behavior.
+2. **Phase 4 deposit address API/UI evidence** for allowlisted users only.
+3. **Phase 2D schema-based funding profile** if env-backed allowlist is not durable enough.
 
 ## Validation To Re-Run
 
@@ -46,7 +42,7 @@ npx prisma generate --schema=prisma/schema.prisma
 npx prisma validate --schema=prisma/schema.prisma
 npx tsc --noEmit --pretty false --incremental false
 npm run test:ci
-npx jest --runInBand src/__tests__/funding-beta.guard.test.ts src/__tests__/funding-beta.routes.test.ts src/__tests__/funding-beta.deposit-monitor.test.ts
+npx jest --runInBand src/__tests__/funding-beta.deposit-wallet-generation.test.ts
 ```
 
 ## Warnings
