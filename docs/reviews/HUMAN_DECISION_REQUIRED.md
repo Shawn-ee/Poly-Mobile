@@ -49,6 +49,8 @@ This document tracks decisions the autonomous LeadAgent must not make alone.
 ## Current Human-Review Items
 
 - PR #25: broad UI/product-code draft touching wallet, admin deposit/withdrawal, private pool, and pool detail surfaces. Requires human review or splitting before merge.
-- Public no-leak CI promotion: requires package/workflow decision before implementation. Readiness criteria are documented in `docs/reviews/PUBLIC_NO_LEAK_CI_PROMOTION_READINESS.md`.
+- Public no-leak CI promotion: requires package/workflow decision before implementation. Readiness criteria are documented in `docs/reviews/PUBLIC_NO_LEAK_CI_PROMOTION_READINESS.md` and `docs/reviews/PUBLIC_API_TEST_LANE_IMPLEMENTATION_SCOPE.md`.
+- Optional `test:public-api` package script: requires human review because it changes `package.json` and may later affect required validation lanes.
 - Market detail cleanup: requires target contract approval before route implementation.
+- Market detail current-gap tests: may be opened for review if mocked/local, but should not be auto-merged by default while the public contract is being stabilized.
 - Reference/liquidity public/admin split: requires implementation approval before route changes.
