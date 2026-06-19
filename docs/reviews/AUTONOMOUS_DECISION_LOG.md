@@ -31,6 +31,11 @@ Autonomous LeadAgent must not auto-merge backend implementation, UI product-code
 | #116 | Auto-merged | Low-risk mocked public market error/empty tests. |
 | #117 | Auto-merged | Docs-only public API stabilization criteria. |
 | #118 | Auto-merged | Low-risk mocked taxonomy/sports empty-state tests. |
+| #119 | Auto-merged | Docs-only autonomous public API checkpoint. |
+| #120 | Auto-merged | Docs-only public API test lane implementation scope; package-script implementation remains human-reviewed. |
+| #121 | Auto-merged | Docs-only PR #25 admin/funding UI review packet; PR #25 itself remains blocked. |
+| #122 | Auto-merged | Docs-only public API coverage map and route status update. |
+| #123 | Auto-merged | Docs-only beta and launch evidence update for public tests. |
 
 ## Open PR Decisions
 
@@ -50,11 +55,16 @@ Autonomous LeadAgent must not auto-merge backend implementation, UI product-code
 - Beta readiness evidence was updated after public API and autonomous-state docs changed.
 - Public event/market/taxonomy/sports error and empty-state tests were selected because they stayed mocked, local, public/read-only, and did not alter route behavior.
 - Public API stabilization criteria were selected to define a clear stopping gate for public contract work before UI or package/workflow changes.
+- Public API test lane implementation scope was selected to make any future `package.json` test-lane PR reviewable and non-auto-mergeable.
+- PR #25 admin/funding review packet was selected because the draft PR remains broad, stale, and UI/product-code-touching.
+- Public API coverage-map and beta evidence updates were selected to prevent stale route/test status from driving duplicate work.
 
 ## Skipped Or Downgraded Tasks
 
 - Public no-leak CI promotion was downgraded to a future docs-only readiness note because package/workflow changes are not auto-mergeable.
+- Public API lane implementation is limited to docs-only scope until a human-reviewed package-script PR is opened.
 - Market detail cleanup is limited to docs/checklists until a target contract and human-reviewed implementation path exist.
+- Market detail tests remain non-auto-merge by default if they document current contract gaps.
 - Reference/liquidity public/admin split remains docs-only because implementation is high-risk by topic.
 - PR #25 direct merge remains blocked; replacement PRs should be smaller and reviewed independently.
 
