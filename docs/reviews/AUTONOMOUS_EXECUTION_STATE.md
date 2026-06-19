@@ -1,10 +1,10 @@
 # Autonomous Execution State
 
-Last updated: 2026-06-18
+Last updated: 2026-06-19
 
 Current phase: Phase UI - Controlled UI standardization
 
-Current `dev` commit at last update: `afb031e`
+Current `dev` commit at last update: `8db1fd7`
 
 ## Completed Tasks
 
@@ -78,6 +78,7 @@ Recent autonomous tasks completed before this state file:
 - UI-009: Portfolio display implementation scope, merged as PR #171.
 - UI-025: Admin display implementation scope, merged as PR #173.
 - BIG-UI-001: App-wide UI style standardization milestone, merged as PR #175.
+- DOC-066: Big UI milestone post-merge state refresh, merged as PR #176.
 
 ## Open PRs
 
@@ -124,15 +125,14 @@ Known recurring non-failure output:
 
 ## Current Phase
 
-Phase A state hygiene is complete enough for continued autonomous work. Phase B public API safety/testing has expanded with mocked public error/empty-state tests, market-list grouped reference filtering, and market-detail current-gap gates. Phase C test-lane readiness is documented, but package/workflow implementation remains human-reviewed. Phase UI now has a master standardization plan, progress tracker, style foundation docs, a merged private pool list replacement (#154), homepage display simplification (#158), sports discovery copy polish (#160), events list display polish (#163), beta login display polish (#164), markets discovery display polish (#166), event-detail display shell plan (#168), market-detail display shell plan (#169), wallet funding-claim review (#170), portfolio display implementation scope (#171), and admin display implementation scope (#173). Phase F high-risk admin/bot testing scopes are being kept docs-only. Phase G beta evidence now includes a route-smoke not-run placeholder and a public beta launch blocker summary.
+Phase A state hygiene is complete enough for continued autonomous work. Phase B public API safety/testing has expanded with mocked public error/empty-state tests, market-list grouped reference filtering, and market-detail current-gap gates. Phase C test-lane readiness is documented, but package/workflow implementation remains human-reviewed. Phase UI now has a master standardization plan, progress tracker, style foundation docs, a merged private pool list replacement (#154), first-pass public-page display polish (#158, #160, #163, #164, #166), review-gated scope docs for event detail, market detail, wallet, portfolio, and admin (#168-#173), and a merged app-wide display standardization milestone (#175) with post-merge state refresh (#176). Phase F high-risk admin/bot testing scopes are being kept docs-only. Phase G beta evidence now includes a route-smoke not-run placeholder and a public beta launch blocker summary.
 
 ## Next Recommended Actions
 
-- PR #175 is merged. Continue with screenshot/manual evidence for the big UI milestone and focused follow-up tasks only after review.
+- PR #175 and post-merge state PR #176 are merged. Continue with docs-only state refreshes, screenshot/manual evidence preparation, or focused follow-up tasks only when the scope is clearly safe.
 - Keep PR #25 open as draft unless a human reviews or splits it.
 - Use `docs/reviews/UI_STANDARDIZATION_MASTER_PLAN.md` and `docs/reviews/UI_STANDARDIZATION_PROGRESS.md` before selecting new UI work.
-- Continue Phase 1 UI work with sports/events/market discovery surfaces before wallet, admin, or trade-ticket surfaces.
-- Public homepage, sports, events, markets, login, and private-pool list now have first-pass display improvements; prefer smoke evidence or docs-only plans before more public-page code.
+- Public homepage, sports, events, markets, login, private-pool list, and the big shared display shell now have merged display improvements; prefer smoke evidence or docs-only plans before more public-page code.
 - Event detail, market detail, wallet, and portfolio now have explicit planning/scope boundaries before future UI code.
 - Admin routes now have an explicit implementation scope and remain human-reviewed by default.
 - Continue docs-only route/test readiness work and avoid repeating already-covered public API test groups.

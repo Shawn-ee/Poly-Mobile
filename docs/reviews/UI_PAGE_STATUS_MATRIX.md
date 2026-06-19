@@ -26,15 +26,15 @@ This matrix tracks the UI standardization state of every major route. It does no
 
 | Route | Current status | Primary issue | Safe next action | Auto-merge default |
 |---|---|---|---|---|
-| `/` | Big milestone updated | Wallet/admin concepts still exist on page. | Review `agent/big-ui-overhaul`; decide whether account/admin links move out later. | No for big PR |
-| `/sports` | Big milestone updated | Needs smoke/screenshot evidence. | Public route smoke evidence after PR review. | No for big PR |
-| `/sports/soccer` | Big milestone updated | Needs smoke/screenshot evidence. | Public route smoke evidence after PR review. | No for big PR |
-| `/sports/soccer/world-cup` | Big milestone updated | Needs smoke/screenshot evidence. | Public route smoke evidence after PR review. | No for big PR |
-| `/events` | Big milestone updated | Needs smoke/screenshot evidence. | Public route smoke evidence after PR review. | No for big PR |
+| `/` | Big milestone merged | Wallet/admin concepts still exist on page. | Decide whether account/admin links move out later; docs first. | Docs-only yes; code review-gated |
+| `/sports` | Big milestone merged | Needs smoke/screenshot evidence. | Public route smoke evidence preparation. | Docs-only yes |
+| `/sports/soccer` | Big milestone merged | Needs smoke/screenshot evidence. | Public route smoke evidence preparation. | Docs-only yes |
+| `/sports/soccer/world-cup` | Big milestone merged | Needs smoke/screenshot evidence. | Public route smoke evidence preparation. | Docs-only yes |
+| `/events` | Big milestone merged | Needs smoke/screenshot evidence. | Public route smoke evidence preparation. | Docs-only yes |
 | `/events/[slug]` | Big milestone touched read-only shell | Event detail includes grouped/trade behavior. | Human review; do not change grouped trade behavior without explicit approval. | No |
-| `/markets` | Big milestone updated | Needs smoke/screenshot evidence. | Public route smoke evidence after PR review. | No for big PR |
+| `/markets` | Big milestone merged | Needs smoke/screenshot evidence. | Public route smoke evidence preparation. | Docs-only yes |
 | `/markets/[id]` | Big milestone touched shared header only | Market detail can touch trade/order, pool, position, bot, and wallet-adjacent behavior. | Human review before any deeper display work. | No |
-| `/login` | Big milestone updated | Needs smoke/screenshot evidence. | Public route smoke evidence after PR review. | No for big PR |
+| `/login` | Big milestone merged | Needs smoke/screenshot evidence. | Public route smoke evidence preparation. | Docs-only yes |
 | `/portfolio` | Big milestone touched display only | Account state and positions are calculation-adjacent. | Human review account terminology; calculations must remain untouched. | No |
 | `/wallet` | Big milestone touched display only | Funding copy can imply production readiness. | Human review funding copy; no funding behavior changes. | No |
 | `/create` | Big milestone touched display only | Private pools are delayed/post-MVP. | Product decision whether this route stays visible for MVP. | No |
@@ -64,6 +64,8 @@ This matrix tracks the UI standardization state of every major route. It does no
 | #163 | `/events` | Events list display/state polish. |
 | #164 | `/login` | Beta-safe login display polish. |
 | #166 | `/markets` | Markets discovery display polish and beta-safe empty/fallback states. |
+| #175 | App-wide display shell | Shared display primitives and page-level standardization milestone. |
+| #176 | UI state docs | Post-merge status refresh after PR #175. |
 
 ## Next Queue
 

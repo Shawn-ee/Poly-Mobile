@@ -1,6 +1,6 @@
 # Autonomous Decision Log
 
-Last updated: 2026-06-18
+Last updated: 2026-06-19
 
 ## Decision Policy
 
@@ -86,6 +86,7 @@ Autonomous LeadAgent must not auto-merge backend implementation, UI product-code
 | #25 | Do not auto-merge | Draft UI/product-code PR touching wallet/admin/private-pool surfaces. Requires human review or split PRs. |
 | #135 | Closed as superseded | Replaced by PR #154, which carried the same focused display intent with a lint-safe initial load path and full validation. |
 | #175 | Merged after self-review | User requested self-review and merge if safe. The PR was display-only, avoided forbidden files/logic, passed focused validation/build, and full-lint failures were documented as pre-existing/unrelated. |
+| #176 | Auto-merged | Docs-only post-merge state refresh after PR #175; no runtime behavior changed. |
 
 ## Task Selection Decisions
 
@@ -141,6 +142,7 @@ Autonomous LeadAgent must not auto-merge backend implementation, UI product-code
 - UI-009 was selected as docs-only because `/portfolio` displays balances, locked funds, PnL, positions, and account history.
 - UI-025 was selected as docs-only because admin surfaces include auth, finance operations, market resolution, bot/reference controls, system readiness, and agent monitoring.
 - `agent/big-ui-overhaul` was selected because the user explicitly requested a single large cohesive UI overhaul instead of many tiny PRs. The plan was self-reviewed as display-only and review-gated, with no auto-merge.
+- `agent/ui-overhaul-post-merge-state` was selected to record PR #175's merge outcome and keep autonomous state docs resumable before any further UI or smoke-evidence work.
 
 ## Skipped Or Downgraded Tasks
 

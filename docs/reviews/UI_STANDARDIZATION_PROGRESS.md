@@ -16,7 +16,7 @@ It does not change UI code, product logic, wallet/deposit/withdrawal behavior, l
 
 ## Current Dev Checkpoint
 
-Current known `dev` checkpoint after the admin display scope pass: `afb031e`.
+Current known `dev` checkpoint after the big UI post-merge state refresh: `8db1fd7`.
 
 ## Big UI Overhaul Milestone
 
@@ -27,6 +27,11 @@ Target PR: `dev`
 Status: Merged as PR #175.
 
 Merge status: Merged after autonomous self-review because the diff remained display-only, avoided forbidden files/logic, passed focused validation/build, and documented pre-existing unrelated full-lint issues.
+
+Post-merge state:
+
+- PR #176 merged a docs-only state refresh after PR #175.
+- Remaining autonomous UI work should prefer smoke evidence preparation, docs-only checklists, or very small display-only follow-ups that avoid forbidden areas.
 
 Scope confirmed:
 
@@ -130,6 +135,8 @@ Validation summary for PR #175:
 | #170 | Docs-only | `docs/reviews/WALLET_FUNDING_CLAIM_REVIEW.md`, UI trackers | Merged as wallet funding-claim boundary review. |
 | #171 | Docs-only | `docs/reviews/PORTFOLIO_DISPLAY_IMPLEMENTATION_SCOPE.md`, UI trackers | Merged as portfolio display implementation scope. |
 | #173 | Docs-only | `docs/reviews/ADMIN_DISPLAY_IMPLEMENTATION_SCOPE.md`, UI trackers | Merged as admin display implementation scope. |
+| #175 | Display-only UI | Shared UI primitives and app-wide display shell files | Merged after self-review and validation. |
+| #176 | Docs-only | Autonomous and UI state docs | Merged as post-merge state refresh. |
 
 ## PRs Left Open
 
