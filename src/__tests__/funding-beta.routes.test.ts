@@ -8,6 +8,7 @@ const requireInternalFundingUser = jest.fn();
 const requireInternalFundingUserById = jest.fn();
 const assertFundingNotKilled = jest.fn();
 const enforceSensitiveRateLimit = jest.fn();
+const getDepositConfigIssues = jest.fn();
 
 jest.mock("@/lib/auth", () => ({
   resolveAuthenticatedUser: () => resolveAuthenticatedUser(),
@@ -19,7 +20,7 @@ jest.mock("@/lib/config", () => ({
     polygonDepositMinUsd: 2,
     polygonDepositConfirmations: 20,
   },
-  getDepositConfigIssues: () => ({ errors: [], warnings: [] }),
+  getDepositConfigIssues: (...args: unknown[]) => getDepositConfigIssues(...args),
   getPolygonUsdcTokenLabel: () => "USDC",
 }));
 
@@ -59,8 +60,30 @@ jest.mock("@/server/services/withdrawals", () => ({
 }));
 
 describe("funding beta routes", () => {
+  let consoleWarnSpy: jest.SpyInstance;
+  let consoleInfoSpy: jest.SpyInstance;
+  let consoleErrorSpy: jest.SpyInstance;
+
   beforeEach(() => {
-    jest.clearAllMocks();
+    resolveAuthenticatedUser.mockReset();
+    getUserId.mockReset();
+    ensurePolygonUsdcDepositAddress.mockReset();
+    requestWithdrawal.mockReset();
+    requireInternalFundingUser.mockReset();
+    requireInternalFundingUserById.mockReset();
+    assertFundingNotKilled.mockReset();
+    enforceSensitiveRateLimit.mockReset();
+    getDepositConfigIssues.mockReset();
+    getDepositConfigIssues.mockReturnValue({ errors: [], warnings: [] });
+    consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+    consoleInfoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
+    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => undefined);
+  });
+
+  afterEach(() => {
+    consoleWarnSpy.mockRestore();
+    consoleInfoSpy.mockRestore();
+    consoleErrorSpy.mockRestore();
   });
 
   test("deposit address route blocks anonymous users", async () => {
@@ -104,6 +127,8 @@ describe("funding beta routes", () => {
       address: "0x1111111111111111111111111111111111111111",
       encryptedPrivateKey: "encrypted-secret",
       privateKey: "raw-secret",
+      seed: "seed-secret",
+      mnemonic: "mnemonic-secret",
     });
 
     const res = await GET();
@@ -113,7 +138,58 @@ describe("funding beta routes", () => {
     expect(body.address).toBe("0x1111111111111111111111111111111111111111");
     expect(body.privateKey).toBeUndefined();
     expect(body.encryptedPrivateKey).toBeUndefined();
+    expect(body.seed).toBeUndefined();
+    expect(body.mnemonic).toBeUndefined();
     expect(JSON.stringify(body)).not.toContain("secret");
+  });
+
+  test("deposit address route kill switch blocks wallet generation", async () => {
+    const { FundingAccessError } = await import("@/lib/fundingBeta");
+    const { GET } = await import("@/app/api/deposits/address/route");
+    resolveAuthenticatedUser.mockResolvedValue({
+      user: { id: "u1", email: "internal@example.com", username: "internal", isAdmin: false },
+      reason: null,
+    });
+    requireInternalFundingUser.mockReturnValue({ id: "u1" });
+    assertFundingNotKilled.mockImplementation(() => {
+      throw new FundingAccessError("Funding is temporarily disabled.", 503, "FUNDING_KILL_SWITCH_ACTIVE");
+    });
+
+    const res = await GET();
+    const body = await res.json();
+
+    expect(res.status).toBe(503);
+    expect(body.code).toBe("FUNDING_KILL_SWITCH_ACTIVE");
+    expect(ensurePolygonUsdcDepositAddress).not.toHaveBeenCalled();
+  });
+
+  test("deposit address route blocks unsafe config before wallet generation without leaking env names in production", async () => {
+    const { GET } = await import("@/app/api/deposits/address/route");
+    const originalNodeEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = "production";
+    resolveAuthenticatedUser.mockResolvedValue({
+      user: { id: "u1", email: "internal@example.com", username: "internal", isAdmin: false },
+      reason: null,
+    });
+    requireInternalFundingUser.mockReturnValue({ id: "u1" });
+    getDepositConfigIssues.mockReturnValue({
+      errors: ["POLYGON_RPC_URL must be a valid URL"],
+      warnings: ["DEPOSIT_WALLET_ENCRYPTION_KEY is not set; deposit wallet generation is disabled"],
+    });
+
+    try {
+      const res = await GET();
+      const body = await res.json();
+
+      expect(res.status).toBe(503);
+      expect(body.code).toBe("DEPOSIT_CONFIG_MISSING");
+      expect(JSON.stringify(body)).not.toContain("POLYGON_RPC_URL");
+      expect(JSON.stringify(body)).not.toContain("DEPOSIT_WALLET_ENCRYPTION_KEY");
+      expect(JSON.stringify(body)).not.toContain("secret");
+      expect(ensurePolygonUsdcDepositAddress).not.toHaveBeenCalled();
+    } finally {
+      process.env.NODE_ENV = originalNodeEnv;
+    }
   });
 
   test("withdrawal request route kill switch blocks request creation", async () => {
