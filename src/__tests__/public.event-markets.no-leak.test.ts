@@ -76,6 +76,39 @@ const expectNoForbiddenKeys = (body: unknown) => {
   }
 };
 
+const expectOnlyKeys = (value: Record<string, unknown>, allowedKeys: string[]) => {
+  expect(Object.keys(value).sort()).toEqual([...allowedKeys].sort());
+};
+
+const expectedMarketKeys = [
+  "category",
+  "conditionId",
+  "createdAt",
+  "description",
+  "event",
+  "externalMarketId",
+  "externalSlug",
+  "id",
+  "importStatus",
+  "kind",
+  "marketType",
+  "mechanism",
+  "mmEnabled",
+  "outcomes",
+  "prices",
+  "pricesByOutcome",
+  "referenceOnly",
+  "referenceSource",
+  "referenceSummary",
+  "resolveTime",
+  "status",
+  "tags",
+  "title",
+  "tradable",
+  "type",
+  "visibility",
+];
+
 const market = {
   id: "market-1",
   title: "Will France beat Argentina?",
@@ -176,7 +209,25 @@ describe("public event market API no-leak checks", () => {
     );
 
     const body = await response.json();
+    expectOnlyKeys(body, ["markets"]);
     expect(body.markets).toHaveLength(1);
+    expectOnlyKeys(body.markets[0], expectedMarketKeys);
+    expectOnlyKeys(body.markets[0].outcomes[0], [
+      "bestAsk",
+      "bestBid",
+      "code",
+      "displayOrder",
+      "id",
+      "isTradable",
+      "label",
+      "metadata",
+      "name",
+      "price",
+      "referenceOutcomeLabel",
+      "referenceTokenId",
+      "spread",
+      "status",
+    ]);
     expect(body.markets[0]).toMatchObject({
       id: "market-1",
       title: "Will France beat Argentina?",
@@ -219,6 +270,10 @@ describe("public event market API no-leak checks", () => {
     expect(getGroupedEventMarkets).toHaveBeenCalledWith("france-vs-argentina");
 
     const body = await response.json();
+    expectOnlyKeys(body, ["event", "groups"]);
+    expectOnlyKeys(body.event, ["id", "slug", "title"]);
+    expectOnlyKeys(body.groups[0], ["markets", "slug", "title"]);
+    expectOnlyKeys(body.groups[0].markets[0], ["id", "outcomes", "title"]);
     expect(body.event).toMatchObject({
       slug: "france-vs-argentina",
       title: "France vs Argentina",
