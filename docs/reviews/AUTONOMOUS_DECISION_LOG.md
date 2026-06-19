@@ -42,12 +42,18 @@ Autonomous LeadAgent must not auto-merge backend implementation, UI product-code
 | #127 | Auto-merged | Docs-only private pool list UI replacement scope. |
 | #128 | Auto-merged | Docs-only public route page smoke evidence plan. |
 | #129 | Auto-merged | Docs-only admin/funding UI screenshot evidence requirements. |
+| #130 | Auto-merged | Docs-only autonomous UI evidence checkpoint. |
+| #131 | Auto-merged | Docs-only UI replacement readiness rollup. |
+| #132 | Auto-merged | Docs-only public beta evidence gap rollup. |
+| #133 | Auto-merged | Docs-only public route smoke evidence template. |
 
 ## Open PR Decisions
 
 | PR | Decision | Reason |
 | --- | --- | --- |
 | #25 | Do not auto-merge | Draft UI/product-code PR touching wallet/admin/private-pool surfaces. Requires human review or split PRs. |
+| #134 | Do not auto-merge | Test-only market-detail current-gap PR is medium-risk by public API contract topic and documents extra-field exposure. |
+| #135 | Do not auto-merge | UI product-code PR touches private pool action page and focused lint reports an existing hook-rule issue. |
 
 ## Task Selection Decisions
 
@@ -69,6 +75,10 @@ Autonomous LeadAgent must not auto-merge backend implementation, UI product-code
 - Private pool list UI replacement scope was selected before any PR #25 replacement UI code.
 - Public route page smoke evidence plan was selected before browser/test implementation.
 - Admin/funding UI screenshot requirements were selected to keep high-risk UI evidence human-reviewed.
+- UI replacement readiness rollup and public beta evidence gap rollup were selected before opening implementation review PRs.
+- Public route smoke evidence template was selected so future smoke runs can be recorded without exposing secrets or production data.
+- Market detail current-gap test was opened but left unmerged because it is useful evidence and not a low-risk auto-merge lane.
+- Private pool list display polish was opened but left unmerged because it changes UI product code on an action-bearing page.
 
 ## Skipped Or Downgraded Tasks
 
@@ -78,6 +88,7 @@ Autonomous LeadAgent must not auto-merge backend implementation, UI product-code
 - Market detail tests remain non-auto-merge by default if they document current contract gaps.
 - UI replacement work remains scoped through docs first; PR #25 itself is still not auto-mergeable.
 - Admin/funding UI evidence can be prepared autonomously, but implementation and screenshots using sensitive data remain human-reviewed.
+- PR #134 and PR #135 were left open instead of auto-merged under the autonomous policy.
 - Reference/liquidity public/admin split remains docs-only because implementation is high-risk by topic.
 - PR #25 direct merge remains blocked; replacement PRs should be smaller and reviewed independently.
 
