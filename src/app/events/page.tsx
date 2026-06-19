@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import EventCard from "@/components/EventCard";
 import PageContainer from "@/components/ui/PageContainer";
+import { BetaNotice, PageHeader } from "@/components/ui/PageHeader";
 import { EmptyState, LoadingState } from "@/components/ui/States";
 
 type EventSummary = {
@@ -39,15 +40,15 @@ export default function EventsPage() {
 
   return (
     <PageContainer>
-      <div className="mb-8 rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-sm)]">
-        <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">
-          Event discovery
-        </div>
-        <h1 className="mt-2 text-3xl font-semibold text-[var(--poly-text)]">Events</h1>
-        <p className="mt-2 max-w-2xl text-sm text-[var(--poly-muted)]">
-          Start with an event, then compare the related Yes/No markets attached to it.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Event discovery"
+        title="Events"
+        description="Start with an event, then compare the related Yes/No markets attached to it."
+      >
+        <BetaNotice tone="info">
+          Event pages are the simplest way to understand related markets before opening a single contract.
+        </BetaNotice>
+      </PageHeader>
 
       {loading ? (
         <LoadingState label="Loading events" count={6} />

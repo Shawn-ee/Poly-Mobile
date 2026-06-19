@@ -132,8 +132,10 @@ export default function TopNav() {
             <span className="hidden sm:inline">Poly Market</span>
           </Link>
           <nav className="hidden items-center gap-1 text-sm font-medium text-[var(--poly-muted)] md:flex">
-            <NavLink href="/markets">Markets</NavLink>
             <NavLink href="/sports">Sports</NavLink>
+            <NavLink href="/events">Events</NavLink>
+            <NavLink href="/markets">Markets</NavLink>
+            {user ? <NavLink href="/portfolio">Portfolio</NavLink> : null}
             <NavLink href="/create">Create</NavLink>
             {user?.isAdmin ? (
               <>
@@ -181,8 +183,8 @@ export default function TopNav() {
 
                 {menuOpen ? (
                   <div className="absolute right-0 z-50 mt-2 w-56 rounded-lg border border-[var(--poly-border)] bg-white py-1 shadow-[var(--poly-shadow-md)]">
+                <MenuLink href="/portfolio" onClick={() => setMenuOpen(false)}>Portfolio</MenuLink>
                     <MenuLink href="/wallet" onClick={() => setMenuOpen(false)}>Wallet</MenuLink>
-                    <MenuLink href="/portfolio" onClick={() => setMenuOpen(false)}>Portfolio</MenuLink>
                     <MenuLink href="/my-pools" onClick={() => setMenuOpen(false)}>My private markets</MenuLink>
                     <div className="my-1 border-t border-[var(--poly-border)]" />
                     <button

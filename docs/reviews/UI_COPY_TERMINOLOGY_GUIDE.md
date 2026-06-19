@@ -96,12 +96,14 @@ Public discovery:
 - Secondary: `View markets` or `All markets`
 - Event card: `Open event`
 - Market card: `Open market`
+- Public navigation order: `Sports`, `Events`, `Markets`
 
 Account:
 
 - `View portfolio`
 - `Review wallet`
 - `Sign in`
+- `Request faucet` for beta test credits only
 
 Avoid public CTAs such as:
 
@@ -111,6 +113,28 @@ Avoid public CTAs such as:
 - `Withdraw now`
 
 unless a human-approved route/task explicitly allows them.
+
+## Big UI Overhaul Copy Decisions
+
+The `agent/big-ui-overhaul` milestone standardizes copy around these terms:
+
+- `Sports-first beta`
+- `Internal beta`
+- `Test credits only`
+- `Real deposits and withdrawals remain disabled`
+- `Event markets`
+- `Yes/No markets`
+- `Linked wallets`
+- `Private pools`
+- `Internal operations only`
+
+The milestone intentionally avoids copy that could imply:
+
+- production funding is live
+- withdrawals are enabled
+- prices are guarantees
+- admin actions are routine public user actions
+- private pools are the primary public MVP experience
 
 ## Admin And Internal Copy
 

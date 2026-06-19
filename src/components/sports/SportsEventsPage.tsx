@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import SportsEventCard, { type SportsEventSummary, formatLeague } from "@/components/sports/SportsEventCard";
 import PageContainer from "@/components/ui/PageContainer";
+import { BetaNotice, PageHeader, SectionHeader } from "@/components/ui/PageHeader";
 import { EmptyState, ErrorState, LoadingState } from "@/components/ui/States";
 
 type SportsEventsPageProps = {
@@ -79,13 +80,10 @@ export default function SportsEventsPage({
 
   return (
     <PageContainer>
-      <section className="mb-8 rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-sm)]">
-        <div className="max-w-3xl">
-          <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">{eyebrow}</div>
-          <h1 className="mt-3 text-4xl font-semibold tracking-normal text-[var(--poly-text)]">{title}</h1>
-          <p className="mt-3 text-base text-[var(--poly-muted)]">{description}</p>
-        </div>
-
+      <PageHeader eyebrow={eyebrow} title={title} description={description}>
+        <BetaNotice tone="info">
+          Sports pages group events first, then markets. Open an event to compare related Yes/No questions.
+        </BetaNotice>
         {showHeroLinks ? (
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             <Link
@@ -104,7 +102,7 @@ export default function SportsEventsPage({
             </Link>
           </div>
         ) : null}
-      </section>
+      </PageHeader>
 
       {leagueCounts.length > 1 ? (
         <div className="mb-6 flex flex-wrap gap-2 text-xs text-[var(--poly-muted)]">
@@ -136,17 +134,13 @@ export default function SportsEventsPage({
       ) : null}
 
       <section>
-        <div className="mb-4 flex items-end justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-semibold text-[var(--poly-text)]">Events</h2>
-            <p className="mt-1 text-sm text-[var(--poly-muted)]">
-              Open an event to compare related Yes/No markets.
-            </p>
-          </div>
-          <Link href="/markets" className="text-sm font-semibold text-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]">
+        <SectionHeader
+          title="Events"
+          description="Open an event to compare related Yes/No markets."
+          action={<Link href="/markets" className="text-sm font-semibold text-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]">
             All markets
-          </Link>
-        </div>
+          </Link>}
+        />
 
         {loading ? (
           <LoadingState label="Loading sports events" count={6} />

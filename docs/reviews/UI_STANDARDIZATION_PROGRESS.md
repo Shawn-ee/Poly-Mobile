@@ -18,6 +18,31 @@ It does not change UI code, product logic, wallet/deposit/withdrawal behavior, l
 
 Current known `dev` checkpoint after the admin display scope pass: `afb031e`.
 
+## Big UI Overhaul Milestone
+
+Branch: `agent/big-ui-overhaul`
+
+Target PR: `dev`
+
+Status: In progress as one major review-gated UI milestone. This milestone intentionally groups broad display, copy, layout, and style consistency work into one PR because the requested goal is a cohesive app-wide UI standardization pass rather than many small PRs.
+
+Auto-merge status: Not eligible for auto-merge. The PR touches many UI files and should remain open for human review after validation.
+
+Scope confirmed:
+
+- Shared UI presentation primitives for page headers, beta notices, section headers, and stat cards.
+- Public discovery framing for homepage, sports, events, and markets.
+- Reusable market/event card presentation consistency.
+- Event detail and market detail read-only shell clarity only.
+- Portfolio and wallet display framing only.
+- Private pool list/create display framing only.
+- Admin landing display framing only.
+- Documentation tracker refresh.
+
+Forbidden areas not changed:
+
+- Wallet funding, deposit, withdrawal, ledger, matching, settlement, order placement, order cancellation, fills, trades, positions, admin auth, bot runtime, production deployment, Prisma schema, migrations, secrets, payment/custody behavior, package scripts, and workflows.
+
 ## Pages Reviewed
 
 | Page | Reviewed evidence | Current status | Next action |
@@ -44,6 +69,23 @@ Current known `dev` checkpoint after the admin display scope pass: `afb031e`.
 | `/admin/agents` | Page review, admin display implementation scope | Internal/review-gated | Copy clarity only if safe and read-only. |
 | `/admin/system` | Page review, admin display implementation scope | Human-reviewed | Read-only status grouping only after explicit scope. |
 | `/admin/markets/[marketId]/invariants` | Financial safety docs | Human-reviewed | Keep review-gated. |
+
+## Big Milestone Page Status Updates
+
+| Page/surface | Big milestone treatment | Remaining review need |
+|---|---|---|
+| `/` | Standardized around shared page header, beta notice, event section header, and cleaner market-board framing. | Human review for whether wallet/admin links should stay on homepage. |
+| `/markets` | Standardized market-board header and beta discovery notice. | Smoke/screenshot evidence. |
+| `/events` | Standardized event-discovery header and beta context. | Smoke/screenshot evidence. |
+| `/sports/*` | Standardized sports page header, beta context, and section headers. | Smoke/screenshot evidence. |
+| `/events/[slug]` | Added shared event shell framing and corrected display-only price suffix. | Human review because grouped trade controls are nearby. |
+| `/markets/[id]` | Standardized shared market header only. | Human review before any orderbook/pool display work. |
+| `/login` | Standardized sign-in shell and beta account context. | Smoke/screenshot evidence. |
+| `/portfolio` | Standardized account header and stat cards without changing calculations. | Human review for account-value terminology. |
+| `/wallet` | Standardized wallet shell, balance cards, funding-disabled copy, and linked-wallet framing without changing wallet behavior. | Human review before any funding action visibility changes. |
+| `/my-pools` | Standardized private-pool list shell/cards/empty states without changing actions. | Human review before pool behavior changes. |
+| `/create` | Standardized private-pool creation framing without changing validation or submission. | Product decision on whether this route stays visible for MVP. |
+| `/admin` | Added internal-operations framing and warning copy without changing admin behavior. | Human review for all admin mutation surfaces. |
 
 ## Pages Changed
 

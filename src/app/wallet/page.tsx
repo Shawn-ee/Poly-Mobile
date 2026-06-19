@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react";
 import { BrowserProvider } from "ethers";
 import TransferCryptoModal from "@/components/TransferCryptoModal";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import PageContainer from "@/components/ui/PageContainer";
+import { BetaNotice, PageHeader, SectionHeader, StatCard } from "@/components/ui/PageHeader";
 
 type Transaction = {
   id: string;
@@ -534,61 +538,58 @@ export default function WalletPage() {
   };
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-8">
-      {/* Internal Beta Banner */}
-      <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-center text-sm font-medium text-amber-800">
-        ⚠️ Internal Beta — Test credits only. Deposits and withdrawals are disabled.
-      </div>
-      <h1 className="text-2xl font-semibold">Wallet</h1>
-      <div className="mt-4 rounded-lg border border-neutral-200 bg-white p-4">
-        <div className="text-sm text-neutral-600">Balance</div>
-        <div className="mt-2 grid gap-2 sm:grid-cols-3">
-          <div>
-            <div className="text-xs text-neutral-500">Available</div>
-            <div className="text-xl font-semibold">{formatMoney2(availableBalance)} U</div>
-          </div>
-          <div>
-            <div className="text-xs text-neutral-500">Locked</div>
-            <div className="text-xl font-semibold">{formatMoney2(lockedBalance)} U</div>
-          </div>
-          <div>
-            <div className="text-xs text-neutral-500">Total</div>
-            <div className="text-xl font-semibold">{formatMoney2(totalBalance)} U</div>
-          </div>
+    <PageContainer size="default">
+      <PageHeader
+        eyebrow="Account wallet"
+        title="Wallet"
+        description="View test-credit balances, linked wallets, and beta funding status without enabling production money movement."
+      >
+        <BetaNotice>
+          Internal beta uses test credits only. Real deposits and withdrawals remain disabled until a human-approved funding launch.
+        </BetaNotice>
+      </PageHeader>
+      <Card className="p-5">
+        <SectionHeader
+          title="Balance"
+          description="These values are display-only labels for balances already returned by the app."
+        />
+        <div className="grid gap-3 sm:grid-cols-3">
+          <StatCard label="Available" value={`${formatMoney2(availableBalance)} U`} helper="Spendable test credits" />
+          <StatCard label="Locked" value={`${formatMoney2(lockedBalance)} U`} helper="Reserved test credits" tone="warning" />
+          <StatCard label="Total" value={`${formatMoney2(totalBalance)} U`} helper="Available plus locked" />
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
-          <button
+          <Button
             onClick={handleFaucet}
-            className="rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-700 hover:border-neutral-400"
+            variant="outline"
             type="button"
           >
             Request faucet
-          </button>
+          </Button>
         </div>
-        {message ? <div className="mt-3 text-sm text-neutral-600">{message}</div> : null}
-      </div>
+        {message ? <div className="mt-3 text-sm text-[var(--poly-muted)]">{message}</div> : null}
+      </Card>
 
-      <section className="mt-6 rounded-lg border border-neutral-200 bg-white p-4">
-        <h2 className="text-lg font-semibold">Deposit</h2>
-        <p className="mt-1 text-sm text-neutral-600">
-          During internal beta, deposits are disabled. Use the faucet to get test credits.
-        </p>
-        <div className="mt-4 rounded-2xl border border-dashed border-neutral-300 bg-neutral-50 p-5">
+      <Card className="mt-6 p-5">
+        <SectionHeader
+          title="Deposit"
+          description="During internal beta, deposits are disabled. Use the faucet to get test credits."
+        />
+        <div className="mt-4 rounded-lg border border-dashed border-[var(--poly-border-strong)] bg-[var(--poly-surface-muted)] p-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="text-sm font-medium text-neutral-900">Real-money deposits disabled</div>
-              <div className="mt-1 text-sm text-neutral-600">
+              <div className="text-sm font-semibold text-[var(--poly-text)]">Real-money deposits disabled</div>
+              <div className="mt-1 text-sm text-[var(--poly-muted)]">
                 Internal beta uses test credits only. Real-money deposit functionality is coming soon.
               </div>
             </div>
-            <button
+            <Button
               disabled
-              title="Coming soon — internal beta uses test credits only."
-              className="rounded-2xl bg-neutral-300 px-4 py-3 text-sm font-medium text-neutral-500 cursor-not-allowed"
+              title="Coming soon. Internal beta uses test credits only."
               type="button"
             >
               Coming soon
-            </button>
+            </Button>
           </div>
         </div>
         {false ? (
@@ -681,21 +682,20 @@ export default function WalletPage() {
           )}
         </div>
         ) : null}
-      </section>
+      </Card>
 
-      <section className="mt-6 rounded-lg border border-neutral-200 bg-white p-4">
-        <h2 className="text-lg font-semibold">Withdraw</h2>
-        <div className="mt-4 rounded-md border border-dashed border-neutral-300 bg-neutral-50 p-6 text-center">
-          <p className="text-sm font-medium text-neutral-600">Withdrawals coming soon</p>
-          <p className="mt-1 text-xs text-neutral-500">
+      <Card className="mt-6 p-5">
+        <SectionHeader title="Withdraw" description="Withdrawal requests are not available for public beta use." />
+        <div className="mt-4 rounded-lg border border-dashed border-[var(--poly-border-strong)] bg-[var(--poly-surface-muted)] p-6 text-center">
+          <p className="text-sm font-semibold text-[var(--poly-text)]">Withdrawals coming soon</p>
+          <p className="mt-1 text-xs text-[var(--poly-muted)]">
             Internal beta uses test credits only. Real-money withdrawals are not yet available.
           </p>
         </div>
-      </section>
+      </Card>
 
-      <section id="history" className="mt-6 rounded-lg border border-neutral-200 bg-white p-4">
-        <h2 className="text-lg font-semibold">Transaction history</h2>
-        <p className="mt-1 text-sm text-neutral-600">Deposits and withdrawals</p>
+      <Card id="history" className="mt-6 p-5">
+        <SectionHeader title="Transaction history" description="Deposits and withdrawals appear here when available." />
 
         {transactionsLoading ? (
           <div className="mt-4 text-sm text-neutral-600">Loading...</div>
@@ -748,10 +748,10 @@ export default function WalletPage() {
             </table>
           </div>
         )}
-      </section>
+      </Card>
 
-      <section className="mt-6 rounded-lg border border-neutral-200 bg-white p-4">
-        <h2 className="text-lg font-semibold">Withdrawal requests</h2>
+      <Card className="mt-6 p-5">
+        <SectionHeader title="Withdrawal requests" description="Request status appears here when withdrawal operations are available." />
         {withdrawalsLoading ? (
           <div className="mt-3 text-sm text-neutral-600">Loading...</div>
         ) : withdrawals.length === 0 ? (
@@ -788,13 +788,13 @@ export default function WalletPage() {
             </table>
           </div>
         )}
-      </section>
+      </Card>
 
-      <section className="mt-6 rounded-lg border border-neutral-200 bg-white p-4">
+      <Card className="mt-6 p-5">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <h2 className="text-lg font-semibold">My Wallets</h2>
-            <p className="mt-1 text-sm text-neutral-600">
+            <h2 className="text-lg font-semibold text-[var(--poly-text)]">Linked wallets</h2>
+            <p className="mt-1 text-sm text-[var(--poly-muted)]">
               Wallets linked to your account for login and withdrawals.
             </p>
           </div>
@@ -901,13 +901,12 @@ export default function WalletPage() {
             {walletNotice}
           </div>
         ) : null}
-      </section>
+      </Card>
       <TransferCryptoModal
         open={depositOpen}
         onClose={() => setDepositOpen(false)}
         platformBalance={Number(totalBalance ?? 0)}
       />
-    </main>
+    </PageContainer>
   );
 }
-

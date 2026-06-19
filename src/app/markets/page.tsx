@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import MarketCard from "@/components/MarketCard";
 import EventCard from "@/components/EventCard";
 import PageContainer from "@/components/ui/PageContainer";
+import { BetaNotice, PageHeader, SectionHeader } from "@/components/ui/PageHeader";
 import { EmptyState, LoadingState } from "@/components/ui/States";
 
 type Market = {
@@ -177,16 +178,15 @@ function MarketsPageInner() {
 
   return (
     <PageContainer>
-      <div className="mb-6 rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-sm)]">
-        <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Market board</div>
-        <h1 className="mt-2 text-3xl font-semibold text-[var(--poly-text)]">Find a market</h1>
-        <p className="mt-2 max-w-2xl text-sm text-[var(--poly-muted)]">
-          Start with live sports markets, compare Yes/No prices, and open an event when you want more context.
-        </p>
-        <div className="mt-4 rounded-md border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] px-3 py-2 text-xs text-[var(--poly-muted)]">
-          POLY is in beta. Market prices are shown for discovery; funding and trading safeguards stay separate.
-        </div>
-      </div>
+      <PageHeader
+        eyebrow="Market board"
+        title="Find a market"
+        description="Start with live sports markets, compare Yes/No prices, and open an event when you want more context."
+      >
+        <BetaNotice tone="info">
+          Prices are shown for discovery. Funding, trading safeguards, settlement, and production operations remain separate review-gated systems.
+        </BetaNotice>
+      </PageHeader>
 
       <section className="mb-8 rounded-lg border border-[var(--poly-border)] bg-white p-4 shadow-[var(--poly-shadow-sm)]">
         <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -282,21 +282,17 @@ function MarketsPageInner() {
 
       {events.length ? (
         <section className="mb-8">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-[var(--poly-text)]">Active events</h2>
-              <p className="text-sm text-[var(--poly-muted)]">
-                Use events to compare related markets before drilling into one contract.
-              </p>
-            </div>
-            <button
+          <SectionHeader
+            title="Active events"
+            description="Use events to compare related markets before drilling into one contract."
+            action={<button
               onClick={() => router.push("/events")}
               className="text-sm font-semibold text-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]"
               type="button"
             >
               All events
-            </button>
-          </div>
+            </button>}
+          />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {events.map((event) =>
               event.slug ? (

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Badge from "@/components/ui/Badge";
+import Card from "@/components/ui/Card";
 import OutcomeButton from "@/components/ui/OutcomeButton";
 
 type Outcome = {
@@ -66,24 +67,25 @@ export default function MarketCard({
   return (
     <Link
       href={`/markets/${id}`}
-      className="group flex h-full flex-col justify-between rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-sm)] transition hover:border-[var(--poly-border-strong)] hover:shadow-[var(--poly-shadow-md)]"
+      className="group block h-full"
     >
+      <Card interactive className="flex h-full flex-col justify-between p-5">
       <div>
         <div className="flex items-start gap-4">
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-xs font-bold text-[var(--poly-primary)]">
-            PM
+            YES
           </div>
           <div className="min-w-0">
             <h3 className="line-clamp-2 text-base font-semibold text-[var(--poly-text)]">{title}</h3>
             <div className="mt-2 flex flex-wrap gap-1">
-              {visibility ? <Badge>{visibility}</Badge> : null}
-              {mechanism ? <Badge tone="primary">{mechanism}</Badge> : null}
+              {visibility ? <Badge>{visibility === "PUBLIC" ? "Public" : "Private"}</Badge> : null}
+              {mechanism ? <Badge tone="primary">{mechanism === "ORDERBOOK" ? "Orderbook" : "Pool"}</Badge> : null}
               {nonTradableReference ? <Badge tone="warning">Reference Only</Badge> : null}
               {referenceSummary?.source ? <Badge tone="teal">{referenceSummary.source}</Badge> : null}
             </div>
             <div className="mt-2 text-xs text-[var(--poly-muted)]">
-              {nonTradableReference ? "Coming soon" : status}
-              {resolveTime ? ` | ${new Date(resolveTime).toLocaleDateString()}` : ""}
+              {nonTradableReference ? "Coming soon" : formatStatus(status)}
+              {resolveTime ? ` - ${new Date(resolveTime).toLocaleDateString()}` : ""}
             </div>
           </div>
         </div>
@@ -124,12 +126,17 @@ export default function MarketCard({
       </div>
 
       <div className="mt-6 text-xs font-medium text-[var(--poly-muted)]">
-        {outcomes.length > 2 ? "Multi-outcome market" : "Binary market"}
+        {outcomes.length > 2 ? "Multi-outcome market" : "Binary Yes/No market"}
       </div>
+      </Card>
     </Link>
   );
 }
 
 function formatMaybe(value: number | null | undefined) {
   return typeof value === "number" && Number.isFinite(value) ? value.toFixed(2) : "--";
+}
+
+function formatStatus(value: string) {
+  return value.toLowerCase().replaceAll("_", " ");
 }

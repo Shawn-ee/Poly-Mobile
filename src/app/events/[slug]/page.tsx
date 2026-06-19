@@ -10,6 +10,7 @@ import Badge from "@/components/ui/Badge";
 import Card from "@/components/ui/Card";
 import OutcomeButton from "@/components/ui/OutcomeButton";
 import PageContainer from "@/components/ui/PageContainer";
+import { BetaNotice, PageHeader, SectionHeader } from "@/components/ui/PageHeader";
 import { EmptyState, ErrorState } from "@/components/ui/States";
 
 type EventSummary = {
@@ -256,7 +257,11 @@ export default function EventPage() {
 
   return (
     <PageContainer size="default">
-      <Card className="mb-8 p-6">
+      <PageHeader
+        eyebrow="Event"
+        title={event.title}
+        description={event.description ?? "Compare the related markets attached to this event."}
+      >
         <div className="mb-4 text-sm text-[var(--poly-muted)]">
           <Link href="/events" className="hover:text-[var(--poly-primary)] hover:underline">
             All events
@@ -270,7 +275,7 @@ export default function EventPage() {
             <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-cyan-50 text-xs font-bold text-cyan-700">EVT</div>
           )}
           <div className="min-w-0 flex-1">
-            <h1 className="text-3xl font-semibold text-[var(--poly-text)]">{event.title}</h1>
+            <h2 className="text-xl font-semibold text-[var(--poly-text)]">Event summary</h2>
             {event.description ? <p className="mt-2 text-sm text-[var(--poly-muted)]">{event.description}</p> : null}
             <div className="mt-3 flex flex-wrap gap-2">
               {event.category ? <Badge>{event.category}</Badge> : null}
@@ -279,9 +284,14 @@ export default function EventPage() {
             </div>
           </div>
         </div>
-      </Card>
+        <BetaNotice tone="info" className="mt-5">
+          Event markets are grouped for discovery. Trading controls remain inside each market or the review-gated trade area.
+        </BetaNotice>
+      </PageHeader>
 
       {binaryMarkets.length ? (
+        <section>
+          <SectionHeader title="Yes/No markets" description="Open a market to inspect details before trading." />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {binaryMarkets.map((market) => (
             <MarketCard
@@ -300,11 +310,12 @@ export default function EventPage() {
             />
           ))}
         </div>
+        </section>
       ) : null}
 
       {nonBinaryMarkets.length ? (
         <div className="mt-8 space-y-4">
-          <h2 className="text-lg font-semibold">Other Event Markets</h2>
+          <SectionHeader title="Other event markets" description="Additional markets connected to this event." />
           {nonBinaryMarkets.map((market) => (
             <Link key={market.id} href={`/markets/${market.id}`} className="block rounded-lg border border-[var(--poly-border)] bg-white p-4 shadow-[var(--poly-shadow-sm)] transition hover:border-[var(--poly-border-strong)] hover:shadow-[var(--poly-shadow-md)]">
               <div className="flex items-start justify-between gap-4">
@@ -341,7 +352,11 @@ function GroupedEventView({
 }) {
   return (
     <>
-      <Card className="mb-8 p-6">
+      <PageHeader
+        eyebrow="Grouped event"
+        title={grouped.event.title}
+        description={grouped.event.description ?? "Compare grouped outcomes before selecting a Yes or No side."}
+      >
         <div className="mb-4 text-sm text-[var(--poly-muted)]">
           <Link href="/events" className="hover:text-[var(--poly-primary)] hover:underline">
             All events
@@ -355,7 +370,7 @@ function GroupedEventView({
             <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-cyan-50 text-xs font-bold text-cyan-700">WC</div>
           )}
           <div className="min-w-0 flex-1">
-            <h1 className="text-3xl font-semibold text-[var(--poly-text)]">{grouped.event.title}</h1>
+            <h2 className="text-xl font-semibold text-[var(--poly-text)]">Grouped market summary</h2>
             {grouped.event.description ? <p className="mt-2 text-sm text-[var(--poly-muted)]">{grouped.event.description}</p> : null}
             <div className="mt-3 flex flex-wrap gap-2">
               <Badge>{grouped.marketGroup.groupType}</Badge>
@@ -373,7 +388,10 @@ function GroupedEventView({
             </div>
           </div>
         </div>
-      </Card>
+        <BetaNotice tone="info" className="mt-5">
+          Grouped prices refresh for discovery. The trade ticket remains separate so order review stays explicit.
+        </BetaNotice>
+      </PageHeader>
 
       <div className="grid gap-6 lg:grid-cols-[2.2fr_1fr]">
         <Card className="p-4">
@@ -571,17 +589,13 @@ function SportsEventView({
       </section>
 
       <section>
-        <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h2 className="text-xl font-semibold text-[var(--poly-text)]">Event Markets</h2>
-            <p className="mt-1 text-sm text-[var(--poly-muted)]">
-              Multiple orderbook markets grouped under one sports event.
-            </p>
-          </div>
-          <Link href="/markets" className="text-sm font-semibold text-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]">
+        <SectionHeader
+          title="Event markets"
+          description="Multiple orderbook markets grouped under one sports event."
+          action={<Link href="/markets" className="text-sm font-semibold text-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]">
             General markets
-          </Link>
-        </div>
+          </Link>}
+        />
 
         <div className="mb-6 flex flex-wrap gap-2">
           {[
@@ -728,7 +742,7 @@ function formatMaybe(value: number | null) {
 }
 
 function formatPriceShort(value: number | null) {
-  return typeof value === "number" && Number.isFinite(value) ? `${(value * 100).toFixed(0)}¢` : "--";
+  return typeof value === "number" && Number.isFinite(value) ? `${(value * 100).toFixed(0)}c` : "--";
 }
 
 function formatCompact(value: number | null) {

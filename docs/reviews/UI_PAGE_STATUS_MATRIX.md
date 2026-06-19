@@ -26,26 +26,26 @@ This matrix tracks the UI standardization state of every major route. It does no
 
 | Route | Current status | Primary issue | Safe next action | Auto-merge default |
 |---|---|---|---|---|
-| `/` | Done for first pass | Wallet/admin concepts still exist on page. | Docs-only decision before removing concepts. | Maybe |
-| `/sports` | Done for first pass | Needs smoke/screenshot evidence. | Public route smoke evidence. | Docs-only yes |
-| `/sports/soccer` | Done for first pass | Needs smoke/screenshot evidence. | Public route smoke evidence. | Docs-only yes |
-| `/sports/soccer/world-cup` | Done for first pass | Needs smoke/screenshot evidence. | Public route smoke evidence. | Docs-only yes |
-| `/events` | Done for first pass | Needs smoke/screenshot evidence. | Public route smoke evidence. | Docs-only yes |
-| `/events/[slug]` | Planned/review-gated | Event detail includes grouped/trade behavior. | Only small loading/error/empty or metadata display PRs after UI-018. | No by default |
-| `/markets` | Done for first pass | Needs smoke/screenshot evidence. | Public route smoke evidence. | Docs-only yes |
-| `/markets/[id]` | Planned/review-gated | Market detail can touch trade/order, pool, position, bot, and wallet-adjacent behavior. | Screenshot/smoke checklist or small read-only shell PR only after UI-019. | No by default |
-| `/login` | Done for first pass | Needs smoke/screenshot evidence. | Public route smoke evidence. | Docs-only yes |
-| `/portfolio` | Planned/review-gated | Account state and positions are calculation-adjacent. | Only small display PRs after UI-009; calculations must remain untouched. | No by default |
-| `/wallet` | Human-review only | Funding copy can imply production readiness. | Human-reviewed display scope only after funding-claim review. | No |
-| `/create` | Needs copy cleanup | Private pools are delayed/post-MVP. | Hide/delay docs or display-only framing. | No by default |
-| `/my-pools` | Done for first pass | Optional private-pool surface. | Further work only if small/display-only. | Maybe if strict |
+| `/` | Big milestone updated | Wallet/admin concepts still exist on page. | Review `agent/big-ui-overhaul`; decide whether account/admin links move out later. | No for big PR |
+| `/sports` | Big milestone updated | Needs smoke/screenshot evidence. | Public route smoke evidence after PR review. | No for big PR |
+| `/sports/soccer` | Big milestone updated | Needs smoke/screenshot evidence. | Public route smoke evidence after PR review. | No for big PR |
+| `/sports/soccer/world-cup` | Big milestone updated | Needs smoke/screenshot evidence. | Public route smoke evidence after PR review. | No for big PR |
+| `/events` | Big milestone updated | Needs smoke/screenshot evidence. | Public route smoke evidence after PR review. | No for big PR |
+| `/events/[slug]` | Big milestone touched read-only shell | Event detail includes grouped/trade behavior. | Human review; do not change grouped trade behavior without explicit approval. | No |
+| `/markets` | Big milestone updated | Needs smoke/screenshot evidence. | Public route smoke evidence after PR review. | No for big PR |
+| `/markets/[id]` | Big milestone touched shared header only | Market detail can touch trade/order, pool, position, bot, and wallet-adjacent behavior. | Human review before any deeper display work. | No |
+| `/login` | Big milestone updated | Needs smoke/screenshot evidence. | Public route smoke evidence after PR review. | No for big PR |
+| `/portfolio` | Big milestone touched display only | Account state and positions are calculation-adjacent. | Human review account terminology; calculations must remain untouched. | No |
+| `/wallet` | Big milestone touched display only | Funding copy can imply production readiness. | Human review funding copy; no funding behavior changes. | No |
+| `/create` | Big milestone touched display only | Private pools are delayed/post-MVP. | Product decision whether this route stays visible for MVP. | No |
+| `/my-pools` | Big milestone touched display only | Optional private-pool surface. | Human review before pool behavior changes. | No |
 | `/pool/[id]` | Done/hidden | Compatibility route only. | No UI work unless surfaced. | Maybe docs-only |
 
 ## Admin And Internal Routes
 
 | Route | Current status | Primary issue | Safe next action | Auto-merge default |
 |---|---|---|---|---|
-| `/admin` | Planned/review-gated | Dense market operations console with mutation paths. | Read-only display scope only after UI-025. | No by default |
+| `/admin` | Big milestone touched display framing only | Dense market operations console with mutation paths. | Human review before any admin mutation/permission changes. | No |
 | `/admin/deposits` | Human-review only | Funding/reconciliation high risk. | Docs/screenshot requirements only. | No |
 | `/admin/withdrawals` | Human-review only | Withdrawal operations critical risk. | Docs/screenshot requirements only. | No |
 | `/admin/reference-markets` | Human-review only | Reference and bot/liquidity concerns overlap. | Split curation vs bot controls plan. | No |

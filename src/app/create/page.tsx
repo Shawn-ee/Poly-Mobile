@@ -2,6 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import PageContainer from "@/components/ui/PageContainer";
+import { BetaNotice, PageHeader, SectionHeader } from "@/components/ui/PageHeader";
 
 const DEFAULT_PRESETS = [10, 20, 50, 100];
 const LEAGUES = ["NFL", "NBA", "Soccer", "NHL"];
@@ -40,6 +44,15 @@ const toLocalInput = (date: Date) => {
   )}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 };
 
+const defaultPoolTimes = () => {
+  const close = new Date(Date.now() + 2 * 60 * 60 * 1000);
+  const resolve = new Date(close.getTime() + 3 * 60 * 60 * 1000);
+  return {
+    close: toLocalInput(close),
+    resolve: toLocalInput(resolve),
+  };
+};
+
 export default function CreatePoolMarketPage() {
   const router = useRouter();
   const [userId, setUserId] = useState<string | null>(null);
@@ -49,8 +62,8 @@ export default function CreatePoolMarketPage() {
   const [sideA, setSideA] = useState("");
   const [sideB, setSideB] = useState("");
   const [selectedPresets, setSelectedPresets] = useState<number[]>(DEFAULT_PRESETS);
-  const [betCloseTime, setBetCloseTime] = useState("");
-  const [resolveTime, setResolveTime] = useState("");
+  const [betCloseTime, setBetCloseTime] = useState(() => defaultPoolTimes().close);
+  const [resolveTime, setResolveTime] = useState(() => defaultPoolTimes().resolve);
   const [maxParticipants, setMaxParticipants] = useState("100");
   const [hidePicksUntilClose, setHidePicksUntilClose] = useState(false);
   const [error, setError] = useState("");
@@ -63,11 +76,6 @@ export default function CreatePoolMarketPage() {
       setUserId(data.user?.id ?? null);
     };
     loadUser();
-
-    const close = new Date(Date.now() + 2 * 60 * 60 * 1000);
-    const resolve = new Date(close.getTime() + 3 * 60 * 60 * 1000);
-    setBetCloseTime(toLocalInput(close));
-    setResolveTime(toLocalInput(resolve));
   }, []);
 
   const invitePreview = useMemo(() => {
@@ -135,29 +143,35 @@ export default function CreatePoolMarketPage() {
   };
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-semibold">Create your own market</h1>
-      <p className="mt-1 text-sm text-neutral-600">
-        Private Pool Bet (no trading). Winners split the full pot proportionally.
-      </p>
+    <PageContainer size="default">
+      <PageHeader
+        eyebrow="Private pool"
+        title="Create your own market"
+        description="Create a private pool market for invited participants. This is separate from the public sports orderbook experience."
+      >
+        <BetaNotice tone="info">
+          Private pool creation is a beta tool. This page does not change public market, wallet, settlement, or orderbook behavior.
+        </BetaNotice>
+      </PageHeader>
 
-      <div className="mt-6 rounded-lg border border-neutral-200 bg-white p-4">
-        <div className="text-sm font-medium">Suggested templates</div>
+      <Card className="mt-6 p-5">
+        <SectionHeader title="Suggested templates" description="Start with a sports template, then edit the details below." />
         <div className="mt-3 flex flex-wrap gap-2">
           {templates.map((template) => (
             <button
               key={template.id}
               onClick={() => applyTemplate(template)}
-              className="rounded-full border border-neutral-300 px-3 py-1 text-xs text-neutral-700"
+              className="rounded-full border border-[var(--poly-border)] px-3 py-1 text-xs font-semibold text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
               type="button"
             >
               {template.label}
             </button>
           ))}
         </div>
-      </div>
+      </Card>
 
-      <div className="mt-6 space-y-4 rounded-lg border border-neutral-200 bg-white p-4">
+      <Card className="mt-6 space-y-4 p-5">
+        <SectionHeader title="Market setup" description="Keep the question clear and easy for invited participants to understand." />
         <input
           value={title}
           onChange={(event) => setTitle(event.target.value)}
@@ -196,7 +210,7 @@ export default function CreatePoolMarketPage() {
           />
         </div>
         <div>
-          <div className="text-sm font-medium">Allowed stake presets</div>
+          <div className="text-sm font-semibold text-[var(--poly-text)]">Allowed stake presets</div>
           <div className="mt-2 flex flex-wrap gap-2">
             {DEFAULT_PRESETS.map((amount) => (
               <button
@@ -204,8 +218,8 @@ export default function CreatePoolMarketPage() {
                 onClick={() => togglePreset(amount)}
                 className={`rounded-full border px-3 py-1 text-xs ${
                   selectedPresets.includes(amount)
-                    ? "border-black bg-black text-white"
-                    : "border-neutral-300 text-neutral-700"
+                    ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                    : "border-[var(--poly-border)] text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
                 }`}
                 type="button"
               >
@@ -261,16 +275,16 @@ export default function CreatePoolMarketPage() {
             Log in to create a private pool market.
           </div>
         ) : null}
-        <button
+        <Button
           onClick={createMarket}
           disabled={!userId || submitting}
-          className="w-full rounded-md bg-black px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+          className="w-full"
           type="button"
         >
           {submitting ? "Creating..." : "Create private market"}
-        </button>
-      </div>
-    </main>
+        </Button>
+      </Card>
+    </PageContainer>
   );
 }
 

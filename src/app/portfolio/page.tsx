@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Badge from "@/components/ui/Badge";
 import Card from "@/components/ui/Card";
 import PageContainer from "@/components/ui/PageContainer";
+import { BetaNotice, PageHeader, StatCard } from "@/components/ui/PageHeader";
 import { EmptyState } from "@/components/ui/States";
 
 type PortfolioItem = {
@@ -168,63 +169,24 @@ export default function PortfolioPage() {
 
   return (
     <PageContainer size="wide">
-      <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Account</div>
-          <h1 className="mt-1 text-3xl font-semibold text-[var(--poly-text)]">Portfolio</h1>
-          <p className="mt-1 text-sm text-[var(--poly-muted)]">
-            Track your positions across all markets.
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow="Account"
+        title="Portfolio"
+        description="Track balances, open positions, and resolved market history from one account view."
+      >
+        <BetaNotice tone="info">
+          Portfolio values use the data already returned by the app. This page does not change balance, position, ledger, or settlement calculations.
+        </BetaNotice>
+      </PageHeader>
 
       <div className="grid gap-4 md:grid-cols-7">
-        <Card className="p-4">
-          <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Available</div>
-          <div className="mt-2 text-xl font-semibold text-[var(--poly-text)]">
-            {walletAvailable === null ? "--" : walletAvailable.toFixed(2)} U
-          </div>
-        </Card>
-        <Card className="p-4">
-          <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Locked</div>
-          <div className="mt-2 text-xl font-semibold text-[var(--poly-text)]">
-            {walletLocked === null ? "--" : walletLocked.toFixed(2)} U
-          </div>
-        </Card>
-        <Card className="p-4">
-          <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Total</div>
-          <div className="mt-2 text-xl font-semibold text-[var(--poly-text)]">
-            {walletTotal === null ? "--" : walletTotal.toFixed(2)} U
-          </div>
-        </Card>
-        <Card className="p-4">
-          <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Position value</div>
-          <div className="mt-2 text-xl font-semibold text-[var(--poly-text)]">
-            {totalValue.toFixed(2)} U
-          </div>
-        </Card>
-        <Card className="p-4">
-          <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Cost basis</div>
-          <div className="mt-2 text-xl font-semibold text-[var(--poly-text)]">
-            {totalCostBasis.toFixed(2)} U
-          </div>
-        </Card>
-        <Card className="p-4">
-          <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Realized PnL</div>
-          <div
-            className={`mt-2 text-xl font-semibold ${
-              totalRealizedPnl >= 0 ? "text-emerald-600" : "text-red-600"
-            }`}
-          >
-            {totalRealizedPnl.toFixed(2)} U
-          </div>
-        </Card>
-        <Card className="p-4">
-          <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Unrealized PnL</div>
-          <div className={`mt-2 text-xl font-semibold ${totalPnl >= 0 ? "text-emerald-600" : "text-red-600"}`}>
-            {totalPnl.toFixed(2)} U
-          </div>
-        </Card>
+        <StatCard label="Available" value={`${walletAvailable === null ? "--" : walletAvailable.toFixed(2)} U`} helper="Test-credit balance" />
+        <StatCard label="Locked" value={`${walletLocked === null ? "--" : walletLocked.toFixed(2)} U`} helper="Reserved by open activity" tone="warning" />
+        <StatCard label="Total" value={`${walletTotal === null ? "--" : walletTotal.toFixed(2)} U`} helper="Available plus locked" />
+        <StatCard label="Position value" value={`${totalValue.toFixed(2)} U`} helper="Open positions" />
+        <StatCard label="Cost basis" value={`${totalCostBasis.toFixed(2)} U`} helper="Position cost" />
+        <StatCard label="Realized PnL" value={`${totalRealizedPnl.toFixed(2)} U`} helper="Closed markets" tone={totalRealizedPnl >= 0 ? "positive" : "negative"} />
+        <StatCard label="Unrealized PnL" value={`${totalPnl.toFixed(2)} U`} helper="Open market estimate" tone={totalPnl >= 0 ? "positive" : "negative"} />
       </div>
 
       <div className="mt-6 flex flex-wrap items-center gap-3">

@@ -2,6 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Badge from "@/components/ui/Badge";
+import Card from "@/components/ui/Card";
+import PageContainer from "@/components/ui/PageContainer";
+import { BetaNotice, PageHeader, SectionHeader } from "@/components/ui/PageHeader";
+import { EmptyState, ErrorState } from "@/components/ui/States";
 
 type PoolMarketItem = {
   id: string;
@@ -96,75 +101,64 @@ export default function MyPoolsPage() {
 
   if (loading) {
     return (
-      <main className="mx-auto max-w-5xl px-4 py-8">
-        <div className="rounded-lg border border-neutral-200 bg-white p-5 text-sm text-neutral-600">
-          Loading private markets...
-        </div>
-      </main>
+      <PageContainer size="default">
+        <Card className="p-5 text-sm text-[var(--poly-muted)]">Loading private markets...</Card>
+      </PageContainer>
     );
   }
 
   if (error) {
     return (
-      <main className="mx-auto max-w-5xl px-4 py-8">
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          {error}
-        </div>
-      </main>
+      <PageContainer size="default">
+        <ErrorState>{error}</ErrorState>
+      </PageContainer>
     );
   }
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-8">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">My private markets</h1>
-          <p className="mt-1 max-w-2xl text-sm text-neutral-600">
-            Track pools you created or joined. Private pool actions remain separate from
-            public sports markets.
-          </p>
-        </div>
-        <Link
+    <PageContainer size="default">
+      <PageHeader
+        eyebrow="Private pools"
+        title="My private markets"
+        description="Track pools you created or joined. Private pool actions remain separate from public sports markets."
+        actions={<Link
           href="/create"
-          className="inline-flex w-fit items-center rounded-md border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-800"
+          className="inline-flex min-h-10 w-fit items-center rounded-lg border border-[var(--poly-border)] bg-white px-4 py-2 text-sm font-semibold text-[var(--poly-text)] transition hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
         >
           Create new
-        </Link>
-      </div>
+        </Link>}
+      >
+        <BetaNotice tone="info">
+          Private pools are separate from the main sports orderbook experience and should stay review-gated before public launch.
+        </BetaNotice>
+      </PageHeader>
       {message ? (
-        <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm text-neutral-700">
+        <div className="mt-4 rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] px-3 py-2 text-sm text-[var(--poly-muted)]">
           {message}
         </div>
       ) : null}
 
       <section className="mt-6">
-        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h2 className="text-lg font-semibold">Owned by you</h2>
-            <p className="text-xs text-neutral-500">Pools where you can manage owner actions.</p>
-          </div>
-        </div>
+        <SectionHeader title="Owned by you" description="Pools where you can manage owner actions." />
         {owned.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-neutral-300 bg-white p-5 text-sm text-neutral-600">
-            No owned private markets yet. Create a pool only when you are ready to manage
-            participants and resolution timing.
-          </div>
+          <EmptyState
+            title="No owned private markets yet"
+            description="Create a pool only when you are ready to manage participants and resolution timing."
+          />
         ) : (
           <div className="space-y-3">
             {owned.map((market) => (
-              <div
+              <Card
                 key={market.id}
-                className="rounded-lg border border-neutral-200 bg-white p-4"
+                className="p-4"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <div className="text-base font-semibold">{market.title}</div>
-                      <span className="rounded-full border border-neutral-200 px-2 py-0.5 text-xs text-neutral-600">
-                        {market.status}
-                      </span>
+                      <div className="text-base font-semibold text-[var(--poly-text)]">{market.title}</div>
+                      <Badge>{market.status}</Badge>
                     </div>
-                    <div className="mt-2 grid gap-1 text-xs text-neutral-600 sm:grid-cols-2">
+                    <div className="mt-2 grid gap-1 text-xs text-[var(--poly-muted)] sm:grid-cols-2">
                       <div>Pot {market.totalPot.toFixed(2)} U</div>
                       <div>{market.participants} participants</div>
                       <div>Bet close: {formatDateTime(market.betCloseTime)}</div>
@@ -174,7 +168,7 @@ export default function MyPoolsPage() {
                   <div className="flex flex-wrap gap-2 text-xs">
                     <Link
                       href={`/markets/${market.id}`}
-                      className="rounded-md border border-neutral-300 px-3 py-1 text-neutral-700"
+                      className="rounded-lg border border-[var(--poly-border)] px-3 py-1 text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
                     >
                       Open
                     </Link>
@@ -182,13 +176,13 @@ export default function MyPoolsPage() {
                       <>
                         <Link
                           href={`/markets/${market.id}`}
-                          className="rounded-md border border-neutral-300 px-3 py-1 text-neutral-700"
+                          className="rounded-lg border border-[var(--poly-border)] px-3 py-1 text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
                         >
                           {resolveLabel(market)}
                         </Link>
                         <button
                           onClick={() => cancelMarket(market.id)}
-                          className="rounded-md border border-neutral-300 px-3 py-1 text-neutral-700"
+                          className="rounded-lg border border-[var(--poly-border)] px-3 py-1 text-[var(--poly-muted)] hover:border-red-300 hover:text-red-700"
                           type="button"
                         >
                           Cancel
@@ -197,37 +191,30 @@ export default function MyPoolsPage() {
                     ) : null}
                   </div>
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
         )}
       </section>
 
       <section className="mt-8">
-        <div className="mb-3">
-          <h2 className="text-lg font-semibold">You joined</h2>
-          <p className="text-xs text-neutral-500">Pools where you already have a recorded bet.</p>
-        </div>
+        <SectionHeader title="You joined" description="Pools where you already have a recorded bet." />
         {joined.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-neutral-300 bg-white p-5 text-sm text-neutral-600">
-            You have not joined any private markets yet.
-          </div>
+          <EmptyState title="No joined private markets yet" description="Markets you join will appear here." />
         ) : (
           <div className="space-y-3">
             {joined.map((market) => (
-              <div
+              <Card
                 key={`${market.id}-${market.myBet.outcomeId}`}
-                className="rounded-lg border border-neutral-200 bg-white p-4"
+                className="p-4"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <div className="text-base font-semibold">{market.title}</div>
-                      <span className="rounded-full border border-neutral-200 px-2 py-0.5 text-xs text-neutral-600">
-                        {market.status}
-                      </span>
+                      <div className="text-base font-semibold text-[var(--poly-text)]">{market.title}</div>
+                      <Badge>{market.status}</Badge>
                     </div>
-                    <div className="mt-2 grid gap-1 text-xs text-neutral-600 sm:grid-cols-2">
+                    <div className="mt-2 grid gap-1 text-xs text-[var(--poly-muted)] sm:grid-cols-2">
                       <div>
                         My bet: {market.myBet.outcomeName} for {market.myBet.amount.toFixed(2)} U
                       </div>
@@ -237,17 +224,17 @@ export default function MyPoolsPage() {
                   </div>
                   <Link
                     href={`/markets/${market.id}`}
-                    className="rounded-md border border-neutral-300 px-3 py-1 text-xs text-neutral-700"
+                    className="rounded-lg border border-[var(--poly-border)] px-3 py-1 text-xs text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
                   >
                     Open
                   </Link>
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
         )}
       </section>
-    </main>
+    </PageContainer>
   );
 }
 
