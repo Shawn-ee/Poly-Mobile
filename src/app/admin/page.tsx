@@ -7,6 +7,7 @@ import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import PageContainer from "@/components/ui/PageContainer";
+import { BetaNotice, PageHeader } from "@/components/ui/PageHeader";
 
 type Market = {
   id: string;
@@ -407,12 +408,12 @@ function AdminPageInner() {
 
   return (
     <PageContainer size="default">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Operations</div>
-          <h1 className="mt-1 text-3xl font-semibold text-[var(--poly-text)]">Admin</h1>
-        </div>
-        <Link
+      <PageHeader
+        eyebrow="Operations"
+        title="Admin"
+        description="Internal market operations console. High-impact actions stay visibly separated from public user flows."
+        actions={<>
+          <Link
           href="/admin/reference-markets"
           className="rounded-lg border border-[var(--poly-border)] bg-white px-3 py-2 text-sm font-semibold text-[var(--poly-text)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
         >
@@ -424,7 +425,12 @@ function AdminPageInner() {
         >
           Deposits
         </Link>
-      </div>
+        </>}
+      >
+        <BetaNotice title="Internal operations only" tone="warning">
+          Market creation, pause, edit, and resolution actions are operational controls and require deliberate human review before production launch.
+        </BetaNotice>
+      </PageHeader>
       <Card className="mt-4 p-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold text-[var(--poly-text)]">Create market</h2>

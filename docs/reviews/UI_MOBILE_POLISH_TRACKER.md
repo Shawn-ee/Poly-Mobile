@@ -25,19 +25,19 @@ This tracker records mobile UI risks and safe next tasks. It does not implement 
 
 | Route | Mobile status | Risk | Safe next action |
 |---|---|---:|---|
-| `/` | Improved first pass | Low | Add smoke/screenshot evidence. |
-| `/sports` | Improved copy only | Low | Add smoke/screenshot evidence. |
-| `/sports/soccer` | Improved copy only | Low | Add smoke/screenshot evidence. |
-| `/sports/soccer/world-cup` | Improved copy only | Low | Add smoke/screenshot evidence. |
-| `/events` | Improved first pass | Low | Add smoke/screenshot evidence. |
-| `/events/[slug]` | Unknown | Medium | Plan first; grouped trade surface is sensitive. |
-| `/markets` | Improved first pass | Low | Add smoke/screenshot evidence, especially filter wrapping. |
-| `/markets/[id]` | Unknown | Medium/High | Plan first; trade/order surface is sensitive. |
-| `/login` | Improved first pass | Low | Add smoke/screenshot evidence. |
-| `/portfolio` | Table risk | Medium | Mobile card plan before code. |
-| `/wallet` | Dense/beta-sensitive | High | Funding-claim review before mobile polish. |
-| `/my-pools` | Improved first pass | Medium | Further display-only polish only if scoped. |
-| `/create` | Dense form | Medium | Delay or docs-only plan. |
+| `/` | Big milestone improved | Low | Add smoke/screenshot evidence. |
+| `/sports` | Big milestone improved | Low | Add smoke/screenshot evidence. |
+| `/sports/soccer` | Big milestone improved | Low | Add smoke/screenshot evidence. |
+| `/sports/soccer/world-cup` | Big milestone improved | Low | Add smoke/screenshot evidence. |
+| `/events` | Big milestone improved | Low | Add smoke/screenshot evidence. |
+| `/events/[slug]` | Big milestone read-only shell polish | Medium | Human review and screenshot evidence; grouped trade surface is sensitive. |
+| `/markets` | Big milestone improved | Low | Add smoke/screenshot evidence, especially filter wrapping. |
+| `/markets/[id]` | Big milestone shared header polish | Medium/High | Human review; trade/order surface is sensitive. |
+| `/login` | Big milestone improved | Low | Add smoke/screenshot evidence. |
+| `/portfolio` | Big milestone display framing; table risk remains | Medium | Mobile card plan before table replacement. |
+| `/wallet` | Big milestone beta-safe framing; dense history tables remain | High | Human review before deeper funding/mobile changes. |
+| `/my-pools` | Big milestone improved | Medium | Further display-only polish only if scoped. |
+| `/create` | Big milestone beta/private-pool framing | Medium | Product decision whether route remains public-facing. |
 | `/admin/*` | Desktop-first | High | Admin IA plan before mobile work. |
 
 ## Evidence Needed

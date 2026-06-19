@@ -5,6 +5,7 @@ import Link from "next/link";
 import MarketCard from "@/components/MarketCard";
 import EventCard from "@/components/EventCard";
 import PageContainer from "@/components/ui/PageContainer";
+import { BetaNotice, PageHeader, SectionHeader } from "@/components/ui/PageHeader";
 import { EmptyState } from "@/components/ui/States";
 
 type Market = {
@@ -131,18 +132,11 @@ export default function Home() {
 
   return (
     <PageContainer>
-      <div className="mb-8 flex flex-col gap-5 rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-sm)] sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Internal beta</div>
-          <h1 className="mt-2 text-3xl font-semibold text-[var(--poly-text)]">
-            Sports prediction markets
-          </h1>
-          <p className="mt-2 max-w-2xl text-sm text-[var(--poly-muted)]">
-            Browse events, compare Yes/No prices, and track markets with test credits while
-            POLY is still in beta.
-          </p>
-        </div>
-        <div className="flex flex-col gap-3 text-sm text-[var(--poly-muted)] sm:items-end">
+      <PageHeader
+        eyebrow="Sports-first beta"
+        title="Simple prediction markets for sports fans"
+        description="Browse events, compare Yes/No prices, and track markets with test credits while POLY is still in beta."
+        actions={
           <div className="flex flex-wrap gap-2">
             <Link
               href="/sports"
@@ -157,6 +151,12 @@ export default function Home() {
               View markets
             </Link>
           </div>
+        }
+      >
+        <div className="grid gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
+          <BetaNotice>
+            Test credits only. Real deposits, withdrawals, settlement operations, and production money movement are not enabled for public use.
+          </BetaNotice>
           <div className="text-xs">
             Wallet:{" "}
             {walletBalance === null ? "--" : walletBalance.toFixed(2)} U
@@ -170,21 +170,19 @@ export default function Home() {
             </Link>
           ) : null}
         </div>
-      </div>
+      </PageHeader>
 
       {events.length ? (
         <section className="mb-10">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <h2 className="text-xl font-semibold text-[var(--poly-text)]">Featured events</h2>
-              <p className="text-sm text-[var(--poly-muted)]">
-                Start with the event, then choose the market question that matches your view.
-              </p>
-            </div>
-            <Link href="/events" className="text-sm font-semibold text-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]">
+          <SectionHeader
+            title="Featured events"
+            description="Start with the event, then choose the market question that matches your view."
+            action={
+              <Link href="/events" className="text-sm font-semibold text-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]">
               View all events
             </Link>
-          </div>
+            }
+          />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {events.map((event) =>
               event.slug ? (
@@ -208,7 +206,12 @@ export default function Home() {
         </section>
       ) : null}
 
-      <div className="mb-8 flex flex-wrap gap-2">
+      <section className="mb-8 rounded-lg border border-[var(--poly-border)] bg-white p-4 shadow-[var(--poly-shadow-sm)]">
+        <SectionHeader
+          title="Market board"
+          description="Use lightweight filters to narrow the discovery feed. Sports stay first, but all categories remain available."
+        />
+        <div className="flex flex-wrap gap-2">
         <button
           onClick={() => {
             setActiveTopTag("all");
@@ -242,10 +245,12 @@ export default function Home() {
             {tag.name}
           </button>
         ))}
-      </div>
+        </div>
 
       {activeTopTag === "sports" && sportsTags.length > 0 ? (
-        <div className="mb-8 flex flex-wrap gap-2">
+        <div className="mt-3 border-t border-[var(--poly-border)] pt-3">
+          <div className="mb-2 text-xs font-semibold uppercase text-[var(--poly-muted)]">Sports filters</div>
+          <div className="flex flex-wrap gap-2">
           {sportsTags.map((tag) => (
             <button
               key={tag.id}
@@ -264,8 +269,10 @@ export default function Home() {
               {tag.name}
             </button>
           ))}
+          </div>
         </div>
       ) : null}
+      </section>
 
       {markets.length === 0 ? (
         <EmptyState

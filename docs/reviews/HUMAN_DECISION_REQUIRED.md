@@ -48,6 +48,7 @@ This document tracks decisions the autonomous LeadAgent must not make alone.
 
 ## Current Human-Review Items
 
+- `agent/big-ui-overhaul`: major UI milestone PR. Review is required because it touches many UI surfaces, including wallet/portfolio/private-pool/admin-adjacent display areas, even though it is intended to be display-only.
 - PR #25: broad UI/product-code draft touching wallet, admin deposit/withdrawal, private pool, and pool detail surfaces. Requires human review or splitting before merge.
 - Public no-leak CI promotion: requires package/workflow decision before implementation. Readiness criteria are documented in `docs/reviews/PUBLIC_NO_LEAK_CI_PROMOTION_READINESS.md` and `docs/reviews/PUBLIC_API_TEST_LANE_IMPLEMENTATION_SCOPE.md`.
 - Optional `test:public-api` package script: requires human review because it changes `package.json` and may later affect required validation lanes.

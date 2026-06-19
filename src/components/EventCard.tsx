@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Badge from "@/components/ui/Badge";
+import Card from "@/components/ui/Card";
 
 type EventCardProps = {
   slug: string;
@@ -33,8 +34,9 @@ export default function EventCard({
   return (
     <Link
       href={`/events/${slug}`}
-      className="group flex h-full flex-col justify-between rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-sm)] transition hover:border-[var(--poly-border-strong)] hover:shadow-[var(--poly-shadow-md)]"
+      className="group block h-full"
     >
+      <Card interactive className="flex h-full flex-col justify-between p-5">
       <div>
         <div className="flex items-start gap-4">
           {image || icon ? (
@@ -65,7 +67,9 @@ export default function EventCard({
       <div className="mt-6 flex items-center gap-4 text-xs font-medium text-[var(--poly-muted)]">
         <span>{marketCount} markets</span>
         {typeof activeMarketCount === "number" ? <span>{activeMarketCount} active</span> : null}
+        <span className="ml-auto text-[var(--poly-primary)] transition group-hover:text-[var(--poly-primary-hover)]">Open event</span>
       </div>
+      </Card>
     </Link>
   );
 }

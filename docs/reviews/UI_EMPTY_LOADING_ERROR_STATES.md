@@ -116,6 +116,21 @@ Future screenshots should avoid:
 - Private keys or custody identifiers.
 - Admin secrets.
 
+## Big UI Overhaul State Updates
+
+The `agent/big-ui-overhaul` milestone applies shared empty/loading/error vocabulary through existing state primitives and page framing:
+
+- Public discovery pages use `EmptyState`, `LoadingState`, and beta-safe explanatory copy where already supported.
+- Homepage, events, markets, sports, login, portfolio, wallet, private-pool, and admin shells use consistent page framing.
+- Wallet and withdrawal unavailable states are displayed as beta-disabled information without enabling money movement.
+- Event detail and market detail changes remain limited to read-only framing; trade/order states remain untouched.
+
+Remaining evidence needed:
+
+- Browser or screenshot verification for major public routes.
+- Mobile review for table-heavy portfolio and wallet history sections.
+- Human review before adding or changing states around funding, withdrawals, order placement, settlement, admin actions, bot controls, or deployment.
+
 ## Validation
 
 This guide is docs-only. Validation:

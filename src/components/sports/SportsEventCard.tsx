@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Badge from "@/components/ui/Badge";
+import Card from "@/components/ui/Card";
 
 export type SportsEventSummary = {
   id: string;
@@ -30,8 +31,9 @@ export default function SportsEventCard({ event }: { event: SportsEventSummary }
   return (
     <Link
       href={href}
-      className="group flex h-full min-h-48 flex-col justify-between rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-sm)] transition hover:border-[var(--poly-border-strong)] hover:shadow-[var(--poly-shadow-md)]"
+      className="group block h-full"
     >
+      <Card interactive className="flex h-full min-h-48 flex-col justify-between p-5">
       <div>
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
@@ -72,6 +74,7 @@ export default function SportsEventCard({ event }: { event: SportsEventSummary }
         <span>{event.marketCount} markets</span>
         <span className="text-[var(--poly-primary)] transition group-hover:text-[var(--poly-primary-hover)]">Open event</span>
       </div>
+      </Card>
     </Link>
   );
 }
