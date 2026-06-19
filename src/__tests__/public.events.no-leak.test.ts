@@ -256,4 +256,19 @@ describe("public event API no-leak checks", () => {
     });
     expectNoForbiddenKeys(body);
   });
+
+  test("GET /api/events/[slug] returns a public 404 error shape when missing", async () => {
+    mockPrisma.event.findUnique.mockResolvedValue(null);
+
+    const response = await getEventDetail(new Request("http://localhost/api/events/missing-event"), {
+      params: Promise.resolve({ slug: "missing-event" }),
+    });
+
+    expect(response.status).toBe(404);
+
+    const body = await response.json();
+    expectOnlyKeys(body, ["error"]);
+    expect(body).toEqual({ error: "Event not found." });
+    expectNoForbiddenKeys(body);
+  });
 });

@@ -243,6 +243,22 @@ describe("public event market API no-leak checks", () => {
     expectNoForbiddenKeys(body);
   });
 
+  test("GET /api/events/[slug]/markets returns a public 404 error shape when event is missing", async () => {
+    mockPrisma.event.findUnique.mockResolvedValue(null);
+
+    const response = await listEventMarkets(new Request("http://localhost/api/events/missing-event/markets"), {
+      params: Promise.resolve({ slug: "missing-event" }),
+    });
+
+    expect(response.status).toBe(404);
+    expect(mockPrisma.market.findMany).not.toHaveBeenCalled();
+
+    const body = await response.json();
+    expectOnlyKeys(body, ["error"]);
+    expect(body).toEqual({ error: "Event not found." });
+    expectNoForbiddenKeys(body);
+  });
+
   test("GET /api/events/[slug]/grouped-markets returns grouped public markets without sensitive keys", async () => {
     jest.mocked(getGroupedEventMarkets).mockResolvedValue({
       event: {
@@ -282,6 +298,22 @@ describe("public event market API no-leak checks", () => {
       slug: "match-winner",
       title: "Match winner",
     });
+    expectNoForbiddenKeys(body);
+  });
+
+  test("GET /api/events/[slug]/grouped-markets returns a public 404 error shape when missing", async () => {
+    jest.mocked(getGroupedEventMarkets).mockResolvedValue(null);
+
+    const response = await getGroupedMarkets(new Request("http://localhost/api/events/missing-event/grouped-markets"), {
+      params: Promise.resolve({ slug: "missing-event" }),
+    });
+
+    expect(response.status).toBe(404);
+    expect(getGroupedEventMarkets).toHaveBeenCalledWith("missing-event");
+
+    const body = await response.json();
+    expectOnlyKeys(body, ["error"]);
+    expect(body).toEqual({ error: "Grouped event not found." });
     expectNoForbiddenKeys(body);
   });
 });
