@@ -26,6 +26,11 @@ Autonomous LeadAgent must not auto-merge backend implementation, UI product-code
 | #111 | Auto-merged | Docs-only market detail target-contract checklist. |
 | #112 | Auto-merged | Docs-only PR #25 split/merge decision. |
 | #113 | Auto-merged | Docs-only beta readiness evidence update. |
+| #114 | Auto-merged | Docs-only autonomous checkpoint update. |
+| #115 | Auto-merged | Low-risk mocked public event error response tests. |
+| #116 | Auto-merged | Low-risk mocked public market error/empty tests. |
+| #117 | Auto-merged | Docs-only public API stabilization criteria. |
+| #118 | Auto-merged | Low-risk mocked taxonomy/sports empty-state tests. |
 
 ## Open PR Decisions
 
@@ -43,6 +48,8 @@ Autonomous LeadAgent must not auto-merge backend implementation, UI product-code
 - Market detail target-contract checklist was selected because market detail implementation is not safe to auto-merge without explicit contract gates.
 - PR #25 split decision was selected because the broad draft UI PR is not safe to merge directly.
 - Beta readiness evidence was updated after public API and autonomous-state docs changed.
+- Public event/market/taxonomy/sports error and empty-state tests were selected because they stayed mocked, local, public/read-only, and did not alter route behavior.
+- Public API stabilization criteria were selected to define a clear stopping gate for public contract work before UI or package/workflow changes.
 
 ## Skipped Or Downgraded Tasks
 
