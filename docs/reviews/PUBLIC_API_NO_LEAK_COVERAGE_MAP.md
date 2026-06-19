@@ -15,10 +15,12 @@ This document does not add tests, change CI, change route behavior, change API c
 
 | Route group | Current evidence | Coverage status | Notes |
 |---|---|---|---|
-| Taxonomy reads | `src/__tests__/public.taxonomy.no-leak.test.ts` | Partial | Covers `/api/categories` and `/api/tags`. |
-| Event reads | `src/__tests__/public.events.no-leak.test.ts` | Partial | Covers `/api/events` and `/api/events/[slug]` with mocked Prisma. |
-| Sports reads | `src/__tests__/public.sports.no-leak.test.ts` | Partial | Covers `/api/sports`, `/api/sports/soccer/events`, and `/api/sports/soccer/world-cup/events`. |
-| Market list reads | `src/__tests__/public.market-list.no-leak.test.ts` | Partial | Covers `/api/markets` list route only. |
+| Taxonomy reads | `src/__tests__/public.taxonomy.no-leak.test.ts` | Expanded mocked coverage | Covers `/api/categories` and `/api/tags` no-leak, response-shape, and empty-state paths. |
+| Event reads | `src/__tests__/public.events.no-leak.test.ts` | Expanded mocked coverage | Covers `/api/events` and `/api/events/[slug]` with mocked Prisma, including not-found/error response paths. |
+| Sports reads | `src/__tests__/public.sports.no-leak.test.ts` | Expanded mocked coverage | Covers `/api/sports`, `/api/sports/soccer/events`, and `/api/sports/soccer/world-cup/events`, including empty-state paths. |
+| Market list reads | `src/__tests__/public.market-list.no-leak.test.ts` | Expanded mocked coverage | Covers `/api/markets` filter/query response shape, no-leak assertions, and empty-list behavior. |
+| Event market reads | `src/__tests__/public.event-markets.no-leak.test.ts` | Expanded mocked coverage | Covers `/api/events/[slug]/markets` and `/api/events/[slug]/grouped-markets`, including not-found/error response paths. |
+| Market chart reads | `src/__tests__/public.market-chart.no-leak.test.ts` | Expanded mocked coverage | Covers `/api/markets/[id]/chart` success, empty-series, hidden-market guard, and missing-market paths. |
 
 ## Current No-Leak Pattern
 
@@ -37,8 +39,8 @@ These tests are targeted and are not yet automatically included in `npm run test
 | Route group | Candidate routes | Risk | Recommended next action | Auto-merge default |
 |---|---|---:|---|---|
 | Market detail reads | `/api/markets/[id]` | Medium | Review auth/visibility guard and owner fields before testing. | No, unless explicitly scoped low-risk |
-| Event market reads | `/api/events/[slug]/markets`, `/api/events/[slug]/grouped-markets` | Low/Medium | Add mocked no-leak tests after route inspection. | Maybe |
-| Market chart reads | `/api/markets/[id]/chart` | Low/Medium | Add mocked empty/non-empty chart tests if local-only. | Maybe |
+| Event market reads | `/api/events/[slug]/markets`, `/api/events/[slug]/grouped-markets` | Low/Medium | Keep coverage current as contracts stabilize; add edge cases only if mocked/local. | Maybe |
+| Market chart reads | `/api/markets/[id]/chart` | Low/Medium | Keep empty/error coverage current; add target-contract cases only after contract changes are reviewed. | Maybe |
 | Market quote reads | `/api/markets/[id]/quote` | Medium | Follow `docs/reviews/QUOTE_ORDERBOOK_NO_LEAK_TEST_SCOPE.md`. | No by default |
 | Market trade tape reads | `/api/markets/[id]/trades` | Medium | Follow quote/orderbook scope. | No by default |
 | Orderbook book reads | `/api/orderbook/[marketId]/book` | Medium | Follow quote/orderbook scope. | No by default |
@@ -61,11 +63,11 @@ These route groups require specialist review and often human review even when te
 
 ## Recommended Next Safe Tests
 
-1. Add mocked no-leak tests for `/api/events/[slug]/markets` if the route is a simple public read.
-2. Add mocked no-leak tests for `/api/events/[slug]/grouped-markets` if no trading mutation helpers are imported.
-3. Add mocked chart-read tests for `/api/markets/[id]/chart` if the route can be tested without real DB or external services.
-4. Leave `/api/markets/[id]` for a separate review because current route uses auth/visibility guards and returns owner/listing fields.
-5. Leave quote, orderbook, and trade-tape tests behind `docs/reviews/QUOTE_ORDERBOOK_NO_LEAK_TEST_SCOPE.md`.
+1. Add a market detail current-gap test only if it remains mocked/local and is opened for review rather than auto-merged by default.
+2. Add target-contract tests for market detail only after the route contract is approved.
+3. Keep event market, market list, chart, taxonomy, sports, and event tests aligned with any future public response-shape decisions.
+4. Leave quote, orderbook, and trade-tape tests behind `docs/reviews/QUOTE_ORDERBOOK_NO_LEAK_TEST_SCOPE.md`.
+5. Leave reference/liquidity routes blocked behind public/admin split approval and specialist review.
 
 ## Promotion Question
 
