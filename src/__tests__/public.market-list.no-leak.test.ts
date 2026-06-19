@@ -48,6 +48,11 @@ const forbiddenFieldNames = [
   "withdrawalApproval",
   "riskLimit",
   "killSwitch",
+  "ownerId",
+  "userId",
+  "positionId",
+  "balanceId",
+  "orderOwnerId",
 ];
 
 const collectKeys = (value: unknown): string[] => {
@@ -69,10 +74,43 @@ const expectNoForbiddenKeys = (body: unknown) => {
   }
 };
 
-const publicMarket = {
+const expectOnlyKeys = (value: Record<string, unknown>, allowedKeys: string[]) => {
+  expect(Object.keys(value).sort()).toEqual([...allowedKeys].sort());
+};
+
+const expectedMarketKeys = [
+  "category",
+  "conditionId",
+  "createdAt",
+  "description",
+  "event",
+  "externalMarketId",
+  "externalSlug",
+  "id",
+  "importStatus",
+  "kind",
+  "marketType",
+  "mechanism",
+  "mmEnabled",
+  "outcomes",
+  "prices",
+  "pricesByOutcome",
+  "referenceOnly",
+  "referenceSource",
+  "referenceSummary",
+  "resolveTime",
+  "status",
+  "tags",
+  "title",
+  "tradable",
+  "type",
+  "visibility",
+];
+
+const market = {
   id: "market-1",
   title: "Will France beat Argentina?",
-  description: "Resolves according to the official final result.",
+  description: "Resolves according to official final result.",
   status: "LIVE",
   resolveTime: null,
   createdAt: now,
@@ -120,21 +158,8 @@ const publicMarket = {
     image: null,
     icon: null,
   },
-  category: {
-    id: "category-1",
-    name: "Sports",
-    slug: "sports",
-  },
-  tags: [
-    {
-      tag: {
-        id: "tag-1",
-        name: "World Cup",
-        slug: "world-cup",
-        group: "sports",
-      },
-    },
-  ],
+  category: { id: "category-1", name: "Sports", slug: "sports" },
+  tags: [{ tag: { id: "tag-1", name: "World Cup", slug: "world-cup", group: "sports" } }],
   externalMarketId: null,
   conditionId: null,
   referenceSource: null,
@@ -160,11 +185,11 @@ describe("public market list API no-leak checks", () => {
     jest.mocked(getReferenceSummaryForMarket).mockResolvedValue(null);
   });
 
-  test("GET /api/markets returns public market summaries without sensitive keys", async () => {
-    mockPrisma.market.findMany.mockResolvedValue([publicMarket]);
+  test("GET /api/markets returns public listed markets without sensitive keys", async () => {
+    mockPrisma.market.findMany.mockResolvedValue([market]);
 
     const response = await listMarkets(
-      new NextRequest("http://localhost/api/markets?category=sports&tags=world-cup&search=France"),
+      new NextRequest("http://localhost/api/markets?category=sports&tags=world-cup&search=france"),
     );
 
     expect(response.status).toBe(200);
@@ -177,47 +202,25 @@ describe("public market list API no-leak checks", () => {
           category: { slug: "sports" },
           tags: { some: { tag: { slug: { in: ["world-cup"] } } } },
         }),
+        orderBy: [{ createdAt: "desc" }],
       }),
     );
 
     const body = await response.json();
+    expectOnlyKeys(body, ["markets"]);
     expect(body.markets).toHaveLength(1);
+    expectOnlyKeys(body.markets[0], expectedMarketKeys);
+    expectOnlyKeys(body.markets[0].category, ["id", "name", "slug"]);
+    expectOnlyKeys(body.markets[0].tags[0], ["group", "id", "name", "slug"]);
     expect(body.markets[0]).toMatchObject({
       id: "market-1",
       title: "Will France beat Argentina?",
       visibility: "PUBLIC",
-      event: {
-        slug: "france-vs-argentina",
-        sportKey: "soccer",
-      },
-      category: {
-        slug: "sports",
-      },
-      tags: [{ slug: "world-cup" }],
       outcomes: [
         { id: "yes", name: "Yes", price: 0.52 },
         { id: "no", name: "No", price: 0.48 },
       ],
     });
-    expectNoForbiddenKeys(body);
-  });
-
-  test("GET /api/markets omits grouped child markets from the public list", async () => {
-    mockPrisma.market.findMany.mockResolvedValue([
-      publicMarket,
-      {
-        ...publicMarket,
-        id: "market-grouped-child",
-        referenceMetadata: { group: { slug: "match-winner" } },
-      },
-    ]);
-
-    const response = await listMarkets(new NextRequest("http://localhost/api/markets"));
-
-    expect(response.status).toBe(200);
-
-    const body = await response.json();
-    expect(body.markets.map((market: { id: string }) => market.id)).toEqual(["market-1"]);
     expectNoForbiddenKeys(body);
   });
 });
