@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { resolveAuthenticatedUser } from "@/lib/auth";
 import { config, getDepositConfigIssues, getPolygonUsdcTokenLabel } from "@/lib/config";
+import {
+  assertFundingNotKilled,
+  requireInternalFundingUser,
+  toFundingAccessResponse,
+} from "@/lib/fundingBeta";
 import { ensurePolygonUsdcDepositAddress } from "@/lib/wallets/userDepositAddresses";
 
 const FRIENDLY_DEPOSIT_SETUP_ERROR =
@@ -16,6 +21,9 @@ export async function GET() {
   }
 
   try {
+    requireInternalFundingUser(auth.user);
+    assertFundingNotKilled();
+
     const depositConfig = getDepositConfigIssues(process.env);
     if (depositConfig.errors.length > 0 || depositConfig.warnings.length > 0) {
       console.error("[deposits] address_route_config_invalid", {
@@ -52,6 +60,11 @@ export async function GET() {
       ],
     });
   } catch (error) {
+    const fundingResponse = toFundingAccessResponse(error);
+    if (fundingResponse) {
+      return NextResponse.json(fundingResponse.body, { status: fundingResponse.status });
+    }
+
     console.error("[deposits] address_route_failed", {
       error: error instanceof Error ? error.message : String(error),
     });

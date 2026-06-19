@@ -12,6 +12,12 @@ const numberEnv = (env: NodeJS.ProcessEnv, key: string, fallback: number) => {
   return Number.isFinite(value) ? value : fallback;
 };
 
+const booleanEnv = (env: NodeJS.ProcessEnv, key: string, fallback = false) => {
+  const raw = env[key];
+  if (raw == null || raw.trim() === "") return fallback;
+  return raw.trim().toLowerCase() === "true";
+};
+
 const resolveAppEnv = (env: NodeJS.ProcessEnv): RuntimeEnv => {
   const raw = (env.APP_ENV ?? env.NODE_ENV ?? "development").toLowerCase();
   if (raw === "production") return "production";
@@ -51,6 +57,13 @@ export const config = {
   treasuryWalletAddress: env.TREASURY_WALLET_ADDRESS ?? "",
   treasuryPrivateKey: env.TREASURY_PRIVATE_KEY ?? "",
   depositMonitorPollIntervalMs: numberEnv(env, "DEPOSIT_MONITOR_POLL_INTERVAL_MS", 15000),
+  internalFundingBetaEnabled: booleanEnv(env, "INTERNAL_FUNDING_BETA_ENABLED", false),
+  fundingKillSwitch: booleanEnv(env, "FUNDING_KILL_SWITCH", false),
+  internalFundingAllowlistEmails: (env.INTERNAL_FUNDING_ALLOWLIST_EMAILS ?? "")
+    .split(",")
+    .map((value) => value.trim().toLowerCase())
+    .filter(Boolean),
+  allowAutoDepositCredit: booleanEnv(env, "ALLOW_AUTO_DEPOSIT_CREDIT", false),
   withdrawalMinUSDC: numberEnv(env, "WITHDRAWAL_MIN_USDC", 5),
   withdrawalUserDailyLimitUSDC: numberEnv(env, "WITHDRAWAL_USER_DAILY_LIMIT_USDC", 5000),
   withdrawalGlobalDailyLimitUSDC: numberEnv(env, "WITHDRAWAL_GLOBAL_DAILY_LIMIT_USDC", 50000),

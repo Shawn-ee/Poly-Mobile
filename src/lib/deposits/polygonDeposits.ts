@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import { getAddress } from "ethers";
 import { config } from "@/lib/config";
 import { prisma } from "@/lib/db";
+import { assertAutoDepositCreditAllowed } from "@/lib/fundingBeta";
 import {
   USDC_DECIMALS,
   formatUsdcFromRaw,
@@ -76,6 +77,8 @@ export async function creditPolygonDepositIfEligible(params: {
   depositId: string;
   confirmations: number;
 }) {
+  assertAutoDepositCreditAllowed();
+
   return prisma.$transaction(async (tx) => {
     const deposit = await tx.deposit.findUnique({
       where: { id: params.depositId },
@@ -270,6 +273,8 @@ export async function scanPolygonUsdcDeposits(params?: {
   fromBlock?: number | null;
   eventSlug?: string | null;
 }) {
+  assertAutoDepositCreditAllowed();
+
   const provider = getPolygonRpcProvider();
   const latestBlock = await provider.getBlockNumber();
   const usdcAddress = getNormalizedPolygonUsdcAddress();
