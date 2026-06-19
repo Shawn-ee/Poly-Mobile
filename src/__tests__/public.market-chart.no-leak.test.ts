@@ -77,6 +77,10 @@ const expectNoForbiddenKeys = (body: unknown) => {
   }
 };
 
+const expectOnlyKeys = (value: Record<string, unknown>, allowedKeys: string[]) => {
+  expect(Object.keys(value).sort()).toEqual([...allowedKeys].sort());
+};
+
 describe("public market chart API no-leak checks", () => {
   beforeEach(() => {
     getUserId.mockReset();
@@ -125,6 +129,7 @@ describe("public market chart API no-leak checks", () => {
     );
 
     const body = await response.json();
+    expectOnlyKeys(body, ["marketId", "outcomes", "series"]);
     expect(body).toMatchObject({
       marketId: "market-1",
       outcomes: [
@@ -135,6 +140,36 @@ describe("public market chart API no-leak checks", () => {
         yes: [{ ts: now.toISOString(), price: 0.57 }],
         no: [{ ts: now.toISOString(), price: 0.43 }],
       },
+    });
+    expectNoForbiddenKeys(body);
+  });
+
+  test("GET /api/markets/[id]/chart returns an empty public series when no snapshots exist", async () => {
+    mockPrisma.marketOutcomeSnapshot.findMany.mockResolvedValue([]);
+
+    const response = await getMarketChart(new NextRequest("http://localhost/api/markets/market-1/chart?range=1M"), {
+      params: Promise.resolve({ id: "market-1" }),
+    });
+
+    expect(response.status).toBe(200);
+    expect(mockPrisma.marketOutcomeSnapshot.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          marketId: "market-1",
+          ts: expect.objectContaining({ gte: expect.any(Date) }),
+        }),
+      }),
+    );
+
+    const body = await response.json();
+    expectOnlyKeys(body, ["marketId", "outcomes", "series"]);
+    expect(body).toEqual({
+      marketId: "market-1",
+      outcomes: [
+        { id: "yes", name: "Yes" },
+        { id: "no", name: "No" },
+      ],
+      series: {},
     });
     expectNoForbiddenKeys(body);
   });
