@@ -55,6 +55,37 @@ const expectNoForbiddenKeys = (body: unknown) => {
   }
 };
 
+const expectOnlyKeys = (value: Record<string, unknown>, allowedKeys: string[]) => {
+  expect(Object.keys(value).sort()).toEqual([...allowedKeys].sort());
+};
+
+const expectedEventSummaryKeys = [
+  "activeMarketCount",
+  "awayTeamName",
+  "category",
+  "createdAt",
+  "description",
+  "eventType",
+  "externalEventId",
+  "externalSlug",
+  "hasGroupedMarkets",
+  "homeTeamName",
+  "icon",
+  "id",
+  "image",
+  "imageUrl",
+  "leagueKey",
+  "marketCount",
+  "metadata",
+  "slug",
+  "source",
+  "sportKey",
+  "startTime",
+  "status",
+  "title",
+  "updatedAt",
+];
+
 const soccerEvent = {
   id: "event-1",
   slug: "france-vs-argentina",
@@ -105,6 +136,8 @@ describe("public sports API no-leak checks", () => {
     );
 
     const body = await response.json();
+    expectOnlyKeys(body, ["sports"]);
+    expectOnlyKeys(body.sports[0], ["eventCount", "sportKey"]);
     expect(body.sports).toEqual([{ sportKey: "soccer", eventCount: 3 }]);
     expectNoForbiddenKeys(body);
   });
@@ -121,6 +154,8 @@ describe("public sports API no-leak checks", () => {
     );
 
     const body = await response.json();
+    expectOnlyKeys(body, ["events"]);
+    expectOnlyKeys(body.events[0], expectedEventSummaryKeys);
     expect(body.events[0]).toMatchObject({
       slug: "france-vs-argentina",
       category: "sports",
@@ -144,6 +179,8 @@ describe("public sports API no-leak checks", () => {
     );
 
     const body = await response.json();
+    expectOnlyKeys(body, ["events"]);
+    expectOnlyKeys(body.events[0], expectedEventSummaryKeys);
     expect(body.events[0]).toMatchObject({
       slug: "france-vs-argentina",
       sportKey: "soccer",
