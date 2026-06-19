@@ -174,6 +174,23 @@ describe("public market chart API no-leak checks", () => {
     expectNoForbiddenKeys(body);
   });
 
+  test("GET /api/markets/[id]/chart returns a public 404 error shape when missing", async () => {
+    mockPrisma.market.findUnique.mockResolvedValue(null);
+
+    const response = await getMarketChart(new NextRequest("http://localhost/api/markets/missing-market/chart"), {
+      params: Promise.resolve({ id: "missing-market" }),
+    });
+
+    expect(response.status).toBe(404);
+    expect(assertMarketVisibleToUser).not.toHaveBeenCalled();
+    expect(mockPrisma.marketOutcomeSnapshot.findMany).not.toHaveBeenCalled();
+
+    const body = await response.json();
+    expectOnlyKeys(body, ["error"]);
+    expect(body).toEqual({ error: "Market not found." });
+    expectNoForbiddenKeys(body);
+  });
+
   test("GET /api/markets/[id]/chart uses the visibility guard for hidden markets", async () => {
     assertMarketVisibleToUser.mockRejectedValue(new Error("hidden"));
 
