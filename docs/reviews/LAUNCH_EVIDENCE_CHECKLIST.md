@@ -40,6 +40,7 @@ Before any public-beta approval, the evidence packet should include:
 | Public API contract decisions | Market detail, chart, public events/sports/markets, and reference-liquidity boundary decisions. | PlannerAgent, SecurityAgent | Yes |
 | Public API cleanup gap analysis | `docs/reviews/PUBLIC_ROUTE_CLEANUP_GAP_ANALYSIS.md` reviewed and unresolved gaps accepted or deferred. | BackendAgent, SecurityAgent | Yes |
 | Public API test lane decision | `docs/reviews/PUBLIC_API_TEST_LANE_DECISION.md` and any later CI promotion evidence. | TestingAgent, DeploymentAgent | Yes |
+| Public API CI promotion readiness | `docs/reviews/PUBLIC_NO_LEAK_CI_PROMOTION_READINESS.md` before package/workflow changes. | TestingAgent, SecurityAgent, DeploymentAgent | Yes |
 | Public route smoke | Public route/page smoke result with screenshots or logs. | TestingAgent | Yes |
 | Product scope | Final internal-beta vs public-beta scope statement. | PlannerAgent | Yes |
 | Known limitations | User-visible limitations and delayed features. | PlannerAgent | Yes |
@@ -55,6 +56,8 @@ Before any public-beta approval, the evidence packet should include:
 | Bot caps and kill switch | Evidence for caps, allowlists, and kill switch. | BotAgent | Yes before live bots |
 | Deployment checklist | Human-approved deployment and rollback steps. | DeploymentAgent | Yes |
 | Incident runbooks | Admin, trading, funding, bot, and deployment incident handling. | SecurityAgent, DeploymentAgent | Yes |
+| Autonomous execution state | `docs/reviews/AUTONOMOUS_EXECUTION_STATE.md`, `docs/reviews/AUTONOMOUS_DECISION_LOG.md`, and `docs/reviews/HUMAN_DECISION_REQUIRED.md`. | LeadAgent | Yes |
+| UI draft PR review path | `docs/reviews/PR25_UI_REVIEW_CHECKLIST.md` and `docs/reviews/PR25_SPLIT_MERGE_DECISION.md`, or successor PR review evidence. | FrontendAgent, SecurityAgent | Yes |
 
 ## Evidence That Must Not Be Included
 
@@ -106,12 +109,14 @@ Autonomous agents may prepare evidence, but they must not approve these decision
 3. Review product scope and known limitations.
 4. Review public API and UI no-leak evidence.
 5. Review public API contract decisions and unresolved cleanup gaps.
-6. Review admin auth evidence.
-7. Review wallet, ledger, deposit, withdrawal, matching, and settlement evidence.
-8. Review bot/live trading controls.
-9. Review deployment and rollback plan.
-10. Review incident response owners.
-11. Record explicit approve, reject, or defer decision.
+6. Review autonomous decision log and human-decision-required list.
+7. Review UI draft/split status and display-only evidence.
+8. Review admin auth evidence.
+9. Review wallet, ledger, deposit, withdrawal, matching, and settlement evidence.
+10. Review bot/live trading controls.
+11. Review deployment and rollback plan.
+12. Review incident response owners.
+13. Record explicit approve, reject, or defer decision.
 
 ## Non-Goals
 
