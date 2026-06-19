@@ -1,55 +1,118 @@
 # Funding Beta Continuation Prompt
 
-Current timestamp: 2026-06-19
+Timestamp: 2026-06-19
+Current branch: `agent/beta-funding-schema-ledger-readiness`
+Completed phases:
 
-Current branch: `agent/beta-funding-architecture-plan`
+- Phase 1: controlled internal funding beta architecture, merged through PR #215.
+- Phase 2: funding schema and ledger readiness review.
 
-Current dev commit at branch creation: `3408def`
+Next phase: Phase 2B / 2C controlled funding allowlist and kill-switch controls.
 
-Completed phase: Phase 0 repo inspection and Phase 1 architecture/docs planning.
+## Current Status
 
-Next phase: Phase 2 schema and ledger readiness review.
+Phase 2 was completed as a docs-only review. The readiness classification is:
 
-Open PRs:
+**Not ready for Phase 3**
 
-- Phase 1 architecture PR should be opened from `agent/beta-funding-architecture-plan` into `dev`.
-- Existing older PR #25 remains broad/draft/human-only and must not be auto-merged.
-- Other stale checkpoint PRs may exist; do not create checkpoint churn.
+Reason:
 
-Validation results for Phase 1:
+- Existing deposit wallet generation is authenticated but not allowlist-gated.
+- Existing withdrawal request paths are authenticated but not allowlist-gated.
+- No canonical internal funding allowlist model or field was found.
+- No consistent global funding kill switch was found across deposit address generation, auto-credit, and withdrawal request creation.
+- Audit log coverage is incomplete.
+- A narrow schema PR may eventually be required, but Phase 2B / 2C should first add the smallest safe env-based temporary guard if schema support is not already available.
 
-- Run `git diff --check`.
-- Run `git diff --cached --check` before commit.
-- This phase is docs-only.
+## Current Dev State
 
-Blockers:
+Before continuing, run:
 
-- `gh` authentication failed in this Codex session with `HTTP 401` / invalid token. If PR opening fails, push the branch and ask the owner to reauthenticate GitHub CLI with `gh auth login -h github.com`.
-- Controlled funding allowlist is not currently canonical.
-- Funding kill switch is not currently canonical.
-- Deposit address generation and withdrawal request routes currently lack controlled funding allowlist checks.
-- Deposit monitor auto-credit lacks explicit funding kill-switch / auto-credit-enabled guard.
-- Schema may need `UserFundingProfile`, audit log, direct ledger references, provider/encryption version fields, or expanded withdrawal statuses.
-
-Exact safe next instruction for Codex:
-
-```text
-You are Codex in C:\Users\hecto\Desktop\projects\PolyProj\poly.
-Continue Controlled Internal Funding Beta from Phase 2 only.
-Do not create checkpoint churn.
-Do not implement the whole system.
-Inspect prisma/schema.prisma, ledger services, deposit services, withdrawal services, auth/admin guards, and tests.
-Create docs/reviews/FUNDING_BETA_SCHEMA_REVIEW.md.
-If schema changes are required, create one narrow schema-only PR and leave it open for human review.
-Do not auto-merge Prisma migrations or funding behavior.
-Do not touch main, deploy, print secrets, enable public funding, enable automatic withdrawal broadcast, or enable live bots.
+```powershell
+$env:PATH = 'C:\Program Files\GitHub CLI;' + $env:PATH
+git fetch origin
+git checkout dev
+git pull origin dev
+git status --short --branch
 ```
 
-Warnings:
+## Open PR Context
 
+Phase 1 architecture branch:
+
+`agent/beta-funding-architecture-plan`
+
+Phase 1 PR:
+
+`https://github.com/Shawn-ee/POLY/pull/215`
+
+Phase 2 branch:
+
+`agent/beta-funding-schema-ledger-readiness`
+
+Phase 2 PR:
+
+`https://github.com/Shawn-ee/POLY/pull/216`
+
+## Validation Results
+
+Phase 2 validation required for docs-only scope:
+
+- `git diff --check`
+- `git diff --cached --check`
+
+Do not claim validation passed in a future session unless rerun locally.
+
+## Blockers
+
+1. Phase 3 deposit wallet generation must not proceed until controlled funding gates exist.
+2. Deposit address generation needs an internal funding allowlist guard.
+3. Withdrawal request creation needs an internal funding allowlist guard.
+4. Deposit monitor auto-credit needs a funding kill-switch guard.
+5. Public funding is not approved.
+6. Automatic withdrawal broadcast is not approved.
+7. Live bots are not approved.
+8. Production deployment is not approved.
+
+## Exact Safe Next Instruction
+
+Continue with Phase 2B / 2C:
+
+Create a focused branch:
+
+`agent/beta-funding-allowlist-killswitch`
+
+Goal:
+
+- Add server-only controlled funding guard helpers.
+- Add env-backed internal funding beta flags if no schema-backed allowlist exists.
+- Use these env names unless the repo already has a canonical equivalent:
+  - `INTERNAL_FUNDING_BETA_ENABLED`
+  - `FUNDING_KILL_SWITCH`
+  - `INTERNAL_FUNDING_ALLOWLIST_EMAILS`
+- Gate deposit address generation.
+- Gate withdrawal request creation.
+- Gate deposit monitor auto-credit or document why monitor gating must be split into another PR.
+- Add targeted tests proving:
+  - anonymous users are blocked
+  - authenticated non-allowlisted users are blocked
+  - allowlisted users are allowed only when funding beta is enabled and kill switch is off
+  - kill switch blocks funding paths
+  - deposit address responses do not expose raw or encrypted private-key fields
+
+If schema/migrations are needed, keep the PR narrow and leave it open for human review. Do not auto-merge migrations or high-risk funding behavior.
+
+## Warnings
+
+- Do not touch main.
+- Do not deploy production.
+- Do not print secrets.
+- Do not commit `.env` files.
+- Do not commit private keys.
+- Do not expose raw or encrypted private keys in API responses.
+- Do not enable public deposits.
+- Do not enable public withdrawals.
+- Do not enable automatic withdrawal broadcast.
+- Do not enable live bots.
+- Do not create checkpoint churn.
 - Do not auto-merge high-risk funding PRs.
-- Do not modify wallet private-key behavior without tests and human review.
-- Do not implement automatic withdrawal broadcast.
-- Do not expose raw or encrypted private keys to frontend or API responses.
-- Do not use production data or secrets.
-- Stop after one coherent Phase 2 PR or blocker report.
