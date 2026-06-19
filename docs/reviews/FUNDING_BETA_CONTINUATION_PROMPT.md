@@ -9,47 +9,56 @@ Completed phases:
 - Phase 2B / 2C: env-backed internal funding allowlist and kill-switch guards merged through PR #217.
 - Phase 3: focused test coverage for existing self-managed Polygon USDC deposit wallet generation merged through PR #218.
 - Phase 3B: deposit wallet security evidence merged through PR #219.
-- Phase 4: deposit address API/UI evidence added in the current PR.
+- Phase 4: deposit address API/UI evidence added in the current PR, resolving PR #220.
+- Phase 5: deposit monitor and auto-credit hardening evidence merged through PR #221.
+- Phase 6: withdrawal request hold hardening evidence merged through PR #222.
+- Phase 7: admin manual withdrawal review evidence merged through PR #223.
+- Phase 8: bot/funding runtime safety evidence merged through PR #224.
+- Phase 9: internal funding beta evidence and go/no-go docs merged through PR #225.
+- Phase 10: internal beta route smoke evidence merged through PR #226.
+- Phase 11: server deployment readiness docs merged through PR #227.
 
 ## Current Status
 
-The current branch adds controlled internal beta deposit address API/UI evidence.
+The current branch adds controlled internal beta deposit address API/UI evidence and resolves the previously open PR #220 blocker.
 
 Covered behavior:
 
-- existing active Polygon USDC deposit wallet is reused.
-- a new mocked wallet is only created when no active wallet exists.
-- raw private key is passed to encryption before database storage.
-- Prisma create payload stores `encryptedPrivateKey` and not the raw private key.
-- unsafe deposit wallet encryption config blocks wallet generation before key creation.
-- deposit address API omits raw private keys, encrypted private keys, seed, mnemonic, and secret markers.
-- deposit address API kill switch blocks wallet generation.
-- unsafe deposit config blocks wallet generation; production responses do not echo env names or values.
-- deposit history blocks non-allowlisted users and omits private wallet material.
 - wallet page exposes the existing guarded deposit modal with controlled internal beta copy.
+- deposit modal remains backed by guarded APIs.
+- anonymous and non-allowlisted users remain blocked by API guards.
+- deposit history blocks non-allowlisted users and omits private wallet material.
+- deposit address and deposit history responses omit raw private keys, encrypted private keys, seed, mnemonic, and secret markers.
+- no private-key generation, encryption, ledger, auto-credit, withdrawal, schema, migration, bot, or deployment behavior is changed by this branch.
 
 ## Next Step
 
-Next step is **review of the Phase 4 deposit address API/UI evidence PR**.
+Next step is **Phase 12: final controlled internal beta readiness report**.
 
-Do not continue to deposit auto-credit, withdrawal automation, or production funding rollout in the same run.
+Do not deploy production, start bot services, enable public funding, remove the allowlist, or enable automatic withdrawal broadcast.
 
-After human review, choose one:
+Open items before final deployment readiness:
 
-1. **Phase 5 deposit monitor and auto-credit hardening**.
-2. **Phase 2D schema-based funding profile** if env-backed allowlist is not durable enough.
-3. **Phase 6 withdrawal request hold hardening** only after deposit auto-credit evidence is reviewed.
+1. Phase 12 final readiness report is still needed.
+2. Controlled real-chain deposit and withdrawal drills are still manual/not run.
+3. Full browser smoke timed out and should be rerun before final readiness.
+4. Owner server deployment and private env validation have not been performed.
+5. Env-backed allowlist may need schema-backed funding profile before a larger cohort.
 
 ## Validation To Re-Run
 
 ```powershell
 git diff --check
 git diff --cached --check
+```
+
+For code/test changes in later phases, also run:
+
+```powershell
 npx prisma generate --schema=prisma/schema.prisma
 npx prisma validate --schema=prisma/schema.prisma
 npx tsc --noEmit --pretty false --incremental false
 npm run test:ci
-npx jest --runInBand src/__tests__/funding-beta.routes.test.ts src/__tests__/funding-beta.deposit-wallet-generation.test.ts
 ```
 
 ## Warnings

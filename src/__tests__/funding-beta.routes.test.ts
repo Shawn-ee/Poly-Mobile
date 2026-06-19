@@ -10,6 +10,7 @@ const assertFundingNotKilled = jest.fn();
 const enforceSensitiveRateLimit = jest.fn();
 const getDepositConfigIssues = jest.fn();
 const listUserPolygonDeposits = jest.fn();
+const listUserWithdrawals = jest.fn();
 
 jest.mock("@/lib/auth", () => ({
   resolveAuthenticatedUser: () => resolveAuthenticatedUser(),
@@ -62,6 +63,7 @@ jest.mock("@/server/services/orderRateLimiter", () => ({
 
 jest.mock("@/server/services/withdrawals", () => ({
   requestWithdrawal: (...args: unknown[]) => requestWithdrawal(...args),
+  listUserWithdrawals: (...args: unknown[]) => listUserWithdrawals(...args),
 }));
 
 describe("funding beta routes", () => {
@@ -80,6 +82,7 @@ describe("funding beta routes", () => {
     enforceSensitiveRateLimit.mockReset();
     getDepositConfigIssues.mockReset();
     listUserPolygonDeposits.mockReset();
+    listUserWithdrawals.mockReset();
     getDepositConfigIssues.mockReturnValue({ errors: [], warnings: [] });
     consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation(() => undefined);
     consoleInfoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
@@ -284,6 +287,44 @@ describe("funding beta routes", () => {
     expect(requestWithdrawal).not.toHaveBeenCalled();
   });
 
+  test("withdrawal request route blocks anonymous users before funding checks", async () => {
+    const { POST } = await import("@/app/api/withdrawals/request/route");
+    getUserId.mockResolvedValue(null);
+    const req = new NextRequest("http://localhost/api/withdrawals/request", {
+      method: "POST",
+      body: JSON.stringify({ amount: "10", address: "0x1111111111111111111111111111111111111111" }),
+    });
+
+    const res = await POST(req);
+    const body = await res.json();
+
+    expect(res.status).toBe(401);
+    expect(body.error).toBe("Unauthorized");
+    expect(requireInternalFundingUserById).not.toHaveBeenCalled();
+    expect(requestWithdrawal).not.toHaveBeenCalled();
+  });
+
+  test("withdrawal request route blocks non-allowlisted users before hold creation", async () => {
+    const { FundingAccessError } = await import("@/lib/fundingBeta");
+    const { POST } = await import("@/app/api/withdrawals/request/route");
+    getUserId.mockResolvedValue("u-public");
+    requireInternalFundingUserById.mockImplementation(() => {
+      throw new FundingAccessError("Funding is limited to allowlisted internal beta users.", 403, "FUNDING_NOT_ALLOWLISTED");
+    });
+    const req = new NextRequest("http://localhost/api/withdrawals/request", {
+      method: "POST",
+      body: JSON.stringify({ amount: "10", address: "0x1111111111111111111111111111111111111111" }),
+    });
+
+    const res = await POST(req);
+    const body = await res.json();
+
+    expect(res.status).toBe(403);
+    expect(body.code).toBe("FUNDING_NOT_ALLOWLISTED");
+    expect(enforceSensitiveRateLimit).not.toHaveBeenCalled();
+    expect(requestWithdrawal).not.toHaveBeenCalled();
+  });
+
   test("withdrawal request route creates a hold request without broadcast response fields", async () => {
     const { POST } = await import("@/app/api/withdrawals/request/route");
     getUserId.mockResolvedValue("u1");
@@ -320,5 +361,59 @@ describe("funding beta routes", () => {
       destinationAddress: "0x1111111111111111111111111111111111111111",
       withdrawalRequestId: undefined,
     });
+  });
+
+  test("withdrawal history route blocks non-allowlisted users before listing requests", async () => {
+    const { FundingAccessError } = await import("@/lib/fundingBeta");
+    const { GET } = await import("@/app/api/withdrawals/route");
+    getUserId.mockResolvedValue("u-public");
+    requireInternalFundingUserById.mockImplementation(() => {
+      throw new FundingAccessError("Funding is limited to allowlisted internal beta users.", 403, "FUNDING_NOT_ALLOWLISTED");
+    });
+    const req = new NextRequest("http://localhost/api/withdrawals");
+
+    const res = await GET(req);
+    const body = await res.json();
+
+    expect(res.status).toBe(403);
+    expect(body.code).toBe("FUNDING_NOT_ALLOWLISTED");
+    expect(listUserWithdrawals).not.toHaveBeenCalled();
+  });
+
+  test("withdrawal history route returns request state without broadcast fields", async () => {
+    const { GET } = await import("@/app/api/withdrawals/route");
+    getUserId.mockResolvedValue("u1");
+    requireInternalFundingUserById.mockResolvedValue({ id: "u1" });
+    listUserWithdrawals.mockResolvedValue([
+      {
+        id: "w1",
+        amountUSDC: { toFixed: () => "10.000000" },
+        destinationAddress: "0x1111111111111111111111111111111111111111",
+        status: "PENDING",
+        requestedAt: new Date("2026-06-19T00:00:00.000Z"),
+        completedAt: null,
+        rejectedAt: null,
+        completedTxHash: null,
+        adminNotes: null,
+        treasuryPrivateKey: "secret",
+        broadcastTxHash: "secret",
+      },
+    ]);
+    const req = new NextRequest("http://localhost/api/withdrawals");
+
+    const res = await GET(req);
+    const body = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(body.items).toHaveLength(1);
+    expect(body.items[0]).toMatchObject({
+      id: "w1",
+      amountUSDC: "10.000000",
+      status: "PENDING",
+      txHash: null,
+    });
+    expect(body.items[0].treasuryPrivateKey).toBeUndefined();
+    expect(body.items[0].broadcastTxHash).toBeUndefined();
+    expect(JSON.stringify(body)).not.toContain("secret");
   });
 });
