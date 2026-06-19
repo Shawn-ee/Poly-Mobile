@@ -2,8 +2,12 @@
 
 Timestamp: 2026-06-19
 Current branch: `agent/beta-funding-schema-ledger-readiness`
-Completed phase: Phase 2 funding schema and ledger readiness review
-Next phase: Phase 2B / 2C controlled funding allowlist and kill-switch controls
+Completed phases:
+
+- Phase 1: controlled internal funding beta architecture, merged through PR #215.
+- Phase 2: funding schema and ledger readiness review.
+
+Next phase: Phase 2B / 2C controlled funding allowlist and kill-switch controls.
 
 ## Current Status
 
@@ -18,46 +22,37 @@ Reason:
 - No canonical internal funding allowlist model or field was found.
 - No consistent global funding kill switch was found across deposit address generation, auto-credit, and withdrawal request creation.
 - Audit log coverage is incomplete.
-- A Prisma migration is likely required before real controlled internal funding beta behavior should proceed.
+- A narrow schema PR may eventually be required, but Phase 2B / 2C should first add the smallest safe env-based temporary guard if schema support is not already available.
 
-## Current Dev Commit
-
-At the start of Phase 2, `origin/dev` was:
-
-`3408def docs(beta): add recovery smoke evidence and go-no-go`
+## Current Dev State
 
 Before continuing, run:
 
 ```powershell
+$env:PATH = 'C:\Program Files\GitHub CLI;' + $env:PATH
 git fetch origin
 git checkout dev
 git pull origin dev
 git status --short --branch
 ```
 
-## Open PRs
+## Open PR Context
 
-GitHub CLI authentication failed during this session with:
-
-`HTTP 401: Requires authentication`
-
-Because of that, PR creation could not be verified from Codex.
-
-Phase 1 branch pushed earlier:
+Phase 1 architecture branch:
 
 `agent/beta-funding-architecture-plan`
 
-Manual PR URL:
+Phase 1 PR:
 
-`https://github.com/Shawn-ee/POLY/pull/new/agent/beta-funding-architecture-plan`
+`https://github.com/Shawn-ee/POLY/pull/215`
 
 Phase 2 branch:
 
 `agent/beta-funding-schema-ledger-readiness`
 
-Manual PR URL:
+Phase 2 PR:
 
-`https://github.com/Shawn-ee/POLY/pull/new/agent/beta-funding-schema-ledger-readiness`
+`https://github.com/Shawn-ee/POLY/pull/216`
 
 ## Validation Results
 
@@ -65,50 +60,43 @@ Phase 2 validation required for docs-only scope:
 
 - `git diff --check`
 - `git diff --cached --check`
-- new-doc secret-pattern scan
 
 Do not claim validation passed in a future session unless rerun locally.
 
 ## Blockers
 
-1. GitHub CLI authentication may need refresh before opening PRs:
-
-```powershell
-gh auth login -h github.com
-```
-
-If `gh` is not on PATH, use:
-
-```powershell
-& "C:\Program Files\GitHub CLI\gh.exe" auth status
-```
-
-2. Phase 3 deposit wallet generation must not proceed until controlled funding gates exist.
-3. A narrow schema PR is likely required for a funding allowlist.
-4. No automatic withdrawal broadcast is approved.
+1. Phase 3 deposit wallet generation must not proceed until controlled funding gates exist.
+2. Deposit address generation needs an internal funding allowlist guard.
+3. Withdrawal request creation needs an internal funding allowlist guard.
+4. Deposit monitor auto-credit needs a funding kill-switch guard.
 5. Public funding is not approved.
-6. Live bots are not approved.
-7. Production deployment is not approved.
+6. Automatic withdrawal broadcast is not approved.
+7. Live bots are not approved.
+8. Production deployment is not approved.
 
 ## Exact Safe Next Instruction
 
 Continue with Phase 2B / 2C:
 
-Create a narrow human-reviewed branch:
+Create a focused branch:
 
-`agent/beta-funding-allowlist-kill-switch`
+`agent/beta-funding-allowlist-killswitch`
 
 Goal:
 
-- Add or propose durable controlled internal funding allowlist support.
-- Add server-only funding guard helpers.
-- Add funding kill-switch config.
+- Add server-only controlled funding guard helpers.
+- Add env-backed internal funding beta flags if no schema-backed allowlist exists.
+- Use these env names unless the repo already has a canonical equivalent:
+  - `INTERNAL_FUNDING_BETA_ENABLED`
+  - `FUNDING_KILL_SWITCH`
+  - `INTERNAL_FUNDING_ALLOWLIST_EMAILS`
 - Gate deposit address generation.
 - Gate withdrawal request creation.
-- Gate deposit monitor auto-credit or split monitor gating into the next PR.
-- Add tests proving:
+- Gate deposit monitor auto-credit or document why monitor gating must be split into another PR.
+- Add targeted tests proving:
   - anonymous users are blocked
   - authenticated non-allowlisted users are blocked
+  - allowlisted users are allowed only when funding beta is enabled and kill switch is off
   - kill switch blocks funding paths
   - deposit address responses do not expose raw or encrypted private-key fields
 
