@@ -123,6 +123,18 @@ describe("public taxonomy API no-leak checks", () => {
     expectNoForbiddenKeys(body);
   });
 
+  test("GET /api/categories returns an empty public category list without sensitive keys", async () => {
+    mockPrisma.category.findMany.mockResolvedValue([]);
+
+    const response = await getCategories();
+    expect(response.status).toBe(200);
+
+    const body = await response.json();
+    expectOnlyKeys(body, ["categories"]);
+    expect(body).toEqual({ categories: [] });
+    expectNoForbiddenKeys(body);
+  });
+
   test("GET /api/tags returns public tag fields without sensitive keys", async () => {
     mockPrisma.tag.findMany.mockResolvedValue([
       {
@@ -153,5 +165,17 @@ describe("public taxonomy API no-leak checks", () => {
         where: { isActive: true, group: "sports" },
       }),
     );
+  });
+
+  test("GET /api/tags returns an empty public tag list without sensitive keys", async () => {
+    mockPrisma.tag.findMany.mockResolvedValue([]);
+
+    const response = await getTags(new Request("http://localhost/api/tags?group=sports"));
+    expect(response.status).toBe(200);
+
+    const body = await response.json();
+    expectOnlyKeys(body, ["tags"]);
+    expect(body).toEqual({ tags: [] });
+    expectNoForbiddenKeys(body);
   });
 });

@@ -142,6 +142,18 @@ describe("public sports API no-leak checks", () => {
     expectNoForbiddenKeys(body);
   });
 
+  test("GET /api/sports returns an empty public sport list without sensitive keys", async () => {
+    mockPrisma.event.groupBy.mockResolvedValue([]);
+
+    const response = await listSports();
+    expect(response.status).toBe(200);
+
+    const body = await response.json();
+    expectOnlyKeys(body, ["sports"]);
+    expect(body).toEqual({ sports: [] });
+    expectNoForbiddenKeys(body);
+  });
+
   test("GET /api/sports/soccer/events returns public event summaries without sensitive keys", async () => {
     mockPrisma.event.findMany.mockResolvedValue([soccerEvent]);
 
@@ -167,6 +179,18 @@ describe("public sports API no-leak checks", () => {
     expectNoForbiddenKeys(body);
   });
 
+  test("GET /api/sports/soccer/events returns an empty public event list without sensitive keys", async () => {
+    mockPrisma.event.findMany.mockResolvedValue([]);
+
+    const response = await listSoccerEvents();
+    expect(response.status).toBe(200);
+
+    const body = await response.json();
+    expectOnlyKeys(body, ["events"]);
+    expect(body).toEqual({ events: [] });
+    expectNoForbiddenKeys(body);
+  });
+
   test("GET /api/sports/soccer/world-cup/events returns public event summaries without sensitive keys", async () => {
     mockPrisma.event.findMany.mockResolvedValue([soccerEvent]);
 
@@ -186,6 +210,18 @@ describe("public sports API no-leak checks", () => {
       sportKey: "soccer",
       leagueKey: "world_cup",
     });
+    expectNoForbiddenKeys(body);
+  });
+
+  test("GET /api/sports/soccer/world-cup/events returns an empty public event list without sensitive keys", async () => {
+    mockPrisma.event.findMany.mockResolvedValue([]);
+
+    const response = await listWorldCupEvents();
+    expect(response.status).toBe(200);
+
+    const body = await response.json();
+    expectOnlyKeys(body, ["events"]);
+    expect(body).toEqual({ events: [] });
     expectNoForbiddenKeys(body);
   });
 });
