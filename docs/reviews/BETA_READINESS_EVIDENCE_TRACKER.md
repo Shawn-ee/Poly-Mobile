@@ -44,7 +44,11 @@ It does not approve launch, deploy production, enable funding, change code, alte
 | Public taxonomy routes avoid sensitive fields. | `src/__tests__/public.taxonomy.no-leak.test.ts` targeted result and future CI inclusion decision. | Partial | TestingAgent, SecurityAgent | Yes, for low-risk test-only PRs |
 | Public event routes avoid sensitive fields. | `src/__tests__/public.events.no-leak.test.ts` targeted result and future CI inclusion decision. | Partial | TestingAgent, SecurityAgent | Yes, for low-risk test-only PRs |
 | Public sports routes avoid sensitive fields. | `src/__tests__/public.sports.no-leak.test.ts` targeted result and future CI inclusion decision. | Partial | TestingAgent, SecurityAgent | Yes, for low-risk test-only PRs |
-| Public market list/detail routes avoid sensitive fields. | Mocked or fixture-backed tests for `/api/markets` and `/api/markets/[id]`. | Missing | TestingAgent, SecurityAgent | Maybe, only if low-risk and mocked |
+| Public event market routes avoid sensitive fields. | `src/__tests__/public.event-markets.no-leak.test.ts` targeted result and future CI inclusion decision. | Partial | TestingAgent, SecurityAgent | Yes, for low-risk test-only PRs |
+| Public market list routes avoid sensitive fields. | `src/__tests__/public.market-list.no-leak.test.ts` targeted result and future CI inclusion decision. | Partial | TestingAgent, SecurityAgent | Yes, for low-risk test-only PRs |
+| Public market chart routes avoid sensitive fields. | `src/__tests__/public.market-chart.no-leak.test.ts` targeted result and future CI inclusion decision. | Partial | TestingAgent, SecurityAgent | Yes, for low-risk test-only PRs |
+| Public market detail contract is defined. | `docs/reviews/MARKET_DETAIL_PUBLIC_CONTRACT_DECISION.md` and `docs/reviews/MARKET_DETAIL_CLEANUP_IMPLEMENTATION_PLAN.md`. | Draft | BackendAgent, SecurityAgent | No |
+| Public route cleanup gaps are mapped. | `docs/reviews/PUBLIC_ROUTE_CLEANUP_GAP_ANALYSIS.md`. | Draft | PlannerAgent, SecurityAgent | No |
 | Public quote/orderbook/trade-tape routes avoid sensitive fields. | Mocked read-only no-leak tests with no money movement. | Missing | TestingAgent, SecurityAgent | Maybe, only if low-risk and mocked |
 
 ## Admin And Security Evidence
@@ -55,7 +59,7 @@ It does not approve launch, deploy production, enable funding, change code, alte
 | Admin auth tests are scoped. | `docs/reviews/ADMIN_AUTH_TEST_MATRIX.md`. | Draft | SecurityAgent, TestingAgent | No |
 | Admin auth behavior is tested. | Focused 401/403/admin-positive tests. | Missing | SecurityAgent, TestingAgent | No |
 | Secret artifact risks are documented. | `docs/SECRET_ARTIFACT_AUDIT.md` and any follow-up audit notes. | Draft | SecurityAgent | No |
-| Public responses avoid secrets. | No-leak tests for taxonomy, event, sports, market, quote, orderbook, and trade-tape routes. | Partial | SecurityAgent, TestingAgent | No |
+| Public responses avoid secrets. | No-leak tests for taxonomy, event, sports, market list, event markets, and chart routes; quote/orderbook/trade-tape still pending. | Partial | SecurityAgent, TestingAgent | No |
 
 ## Wallet, Ledger, Deposit, And Withdrawal Evidence
 
@@ -74,6 +78,7 @@ It does not approve launch, deploy production, enable funding, change code, alte
 | Bot dry-run/live separation is clear. | `docs/reviews/BOT_DRY_RUN_SAFETY_TEST_PLAN.md` and future tests. | Draft | BotAgent, SecurityAgent | No |
 | Bot credentials are handled safely. | `docs/reviews/BOT_CREDENTIAL_HANDLING_REVIEW.md` and human-reviewed remediation evidence. | Draft | BotAgent, SecurityAgent | No |
 | Bot operations have a runbook. | `docs/reviews/BOT_OPERATIONS_RUNBOOK_OUTLINE.md` and future completed runbook. | Draft | BotAgent, DeploymentAgent | No |
+| Reference liquidity public/admin split is planned. | `docs/reviews/REFERENCE_LIQUIDITY_PUBLIC_ADMIN_SPLIT_DECISION.md` and `docs/reviews/REFERENCE_LIQUIDITY_SPLIT_IMPLEMENTATION_PLAN.md`. | Draft | SecurityAgent, BotAgent, LedgerWalletReviewerAgent | No |
 | Live bot launch controls are tested. | Kill switch, caps, allowlists, and dry-run tests. | Missing | BotAgent, TestingAgent | No |
 
 ## Deployment And Operations Evidence
@@ -87,12 +92,13 @@ It does not approve launch, deploy production, enable funding, change code, alte
 
 ## Recommended Evidence Collection Sequence
 
-1. Add remaining low-risk public read no-leak tests using mocks.
-2. Decide whether targeted public no-leak tests should be promoted into `npm run test:ci`.
+1. Keep current public no-leak tests as targeted evidence until the public API test lane decision changes.
+2. Add remaining low-risk public read no-leak tests only when mocks and route boundaries are clear.
 3. Add public route/page smoke evidence for sports-first browsing.
-4. Complete admin auth implementation scope before adding admin auth tests.
-5. Complete bot dry-run implementation scope before adding bot behavior tests.
-6. Keep wallet, ledger, deposit, withdrawal, matching, settlement, custody, and production deployment evidence human-reviewed.
+4. Complete market detail cleanup and reference-liquidity split plans before implementation.
+5. Complete admin auth implementation scope before adding admin auth tests.
+6. Complete bot dry-run implementation scope before adding bot behavior tests.
+7. Keep wallet, ledger, deposit, withdrawal, matching, settlement, custody, and production deployment evidence human-reviewed.
 
 ## Non-Goals
 
