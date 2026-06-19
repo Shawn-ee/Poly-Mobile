@@ -223,4 +223,27 @@ describe("public market list API no-leak checks", () => {
     });
     expectNoForbiddenKeys(body);
   });
+
+  test("GET /api/markets returns an empty public market list without sensitive keys", async () => {
+    mockPrisma.market.findMany.mockResolvedValue([]);
+
+    const response = await listMarkets(new NextRequest("http://localhost/api/markets?view=resolved"));
+
+    expect(response.status).toBe(200);
+    expect(mockPrisma.market.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          visibility: "PUBLIC",
+          isListed: true,
+          status: "RESOLVED",
+        }),
+        orderBy: [{ resolveTime: "desc" }, { createdAt: "desc" }],
+      }),
+    );
+
+    const body = await response.json();
+    expectOnlyKeys(body, ["markets"]);
+    expect(body).toEqual({ markets: [] });
+    expectNoForbiddenKeys(body);
+  });
 });
