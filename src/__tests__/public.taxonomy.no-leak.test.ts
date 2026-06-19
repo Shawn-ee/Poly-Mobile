@@ -51,6 +51,10 @@ const expectNoForbiddenKeys = (body: unknown) => {
   }
 };
 
+const expectOnlyKeys = (value: Record<string, unknown>, allowedKeys: string[]) => {
+  expect(Object.keys(value).sort()).toEqual([...allowedKeys].sort());
+};
+
 describe("public taxonomy API no-leak checks", () => {
   beforeEach(() => {
     mockPrisma.category.findMany.mockReset();
@@ -83,10 +87,38 @@ describe("public taxonomy API no-leak checks", () => {
     expect(response.status).toBe(200);
 
     const body = await response.json();
+    expectOnlyKeys(body, ["categories"]);
     expect(body.categories).toHaveLength(1);
+    expectOnlyKeys(body.categories[0], [
+      "children",
+      "id",
+      "isActive",
+      "name",
+      "order",
+      "parentId",
+      "slug",
+    ]);
+    expectOnlyKeys(body.categories[0].children[0], [
+      "id",
+      "isActive",
+      "name",
+      "order",
+      "parentId",
+      "slug",
+    ]);
     expect(body.categories[0]).toMatchObject({
       name: "Sports",
       slug: "sports",
+    });
+    expect(mockPrisma.category.findMany).toHaveBeenCalledWith({
+      where: { parentId: null, isActive: true },
+      orderBy: [{ order: "asc" }, { name: "asc" }],
+      include: {
+        children: {
+          where: { isActive: true },
+          orderBy: [{ order: "asc" }, { name: "asc" }],
+        },
+      },
     });
     expectNoForbiddenKeys(body);
   });
@@ -107,7 +139,9 @@ describe("public taxonomy API no-leak checks", () => {
     expect(response.status).toBe(200);
 
     const body = await response.json();
+    expectOnlyKeys(body, ["tags"]);
     expect(body.tags).toHaveLength(1);
+    expectOnlyKeys(body.tags[0], ["group", "id", "isActive", "name", "order", "slug"]);
     expect(body.tags[0]).toMatchObject({
       name: "World Cup",
       slug: "world-cup",
