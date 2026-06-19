@@ -1,7 +1,7 @@
 # Funding Beta Continuation Prompt
 
 Timestamp: 2026-06-19
-Current branch: `agent/beta-bot-funding-runtime-safety`
+Current branch: `agent/beta-deposit-address-api-ui`
 Completed phases:
 
 - Phase 1: controlled internal funding beta architecture, merged through PR #215.
@@ -9,27 +9,27 @@ Completed phases:
 - Phase 2B / 2C: env-backed internal funding allowlist and kill-switch guards merged through PR #217.
 - Phase 3: focused test coverage for existing self-managed Polygon USDC deposit wallet generation merged through PR #218.
 - Phase 3B: deposit wallet security evidence merged through PR #219.
-- Phase 4: deposit address API/UI evidence opened as PR #220 and left open for human review because it exposes a guarded funding UI entry point.
+- Phase 4: deposit address API/UI evidence added in the current PR, resolving PR #220.
 - Phase 5: deposit monitor and auto-credit hardening evidence merged through PR #221.
 - Phase 6: withdrawal request hold hardening evidence merged through PR #222.
 - Phase 7: admin manual withdrawal review evidence merged through PR #223.
 - Phase 8: bot/funding runtime safety evidence merged through PR #224.
 - Phase 9: internal funding beta evidence and go/no-go docs merged through PR #225.
-- Phase 10: internal beta route smoke evidence added in the current PR.
-- Phase 11: server deployment readiness docs added in the current PR.
+- Phase 10: internal beta route smoke evidence merged through PR #226.
+- Phase 11: server deployment readiness docs merged through PR #227.
 
 ## Current Status
 
-The current branch adds controlled internal beta server deployment readiness docs without changing runtime behavior.
+The current branch adds controlled internal beta deposit address API/UI evidence and resolves the previously open PR #220 blocker.
 
 Covered behavior:
 
-- server deployment checklist.
-- required env names and safe initial states.
-- service runbook.
-- rollback plan.
-- post-deploy smoke checklist.
-- no production deployment was performed.
+- wallet page exposes the existing guarded deposit modal with controlled internal beta copy.
+- deposit modal remains backed by guarded APIs.
+- anonymous and non-allowlisted users remain blocked by API guards.
+- deposit history blocks non-allowlisted users and omits private wallet material.
+- deposit address and deposit history responses omit raw private keys, encrypted private keys, seed, mnemonic, and secret markers.
+- no private-key generation, encryption, ledger, auto-credit, withdrawal, schema, migration, bot, or deployment behavior is changed by this branch.
 
 ## Next Step
 
@@ -39,11 +39,11 @@ Do not deploy production, start bot services, enable public funding, remove the 
 
 Open items before final deployment readiness:
 
-1. PR #220 remains open for human/specialist review because it exposes the guarded funding UI entry point.
-2. Phase 12 final readiness report is still needed.
-3. Controlled real-chain deposit and withdrawal drills are still manual/not run.
-4. Full browser smoke timed out and should be rerun before final readiness.
-5. Owner server deployment and private env validation have not been performed.
+1. Phase 12 final readiness report is still needed.
+2. Controlled real-chain deposit and withdrawal drills are still manual/not run.
+3. Full browser smoke timed out and should be rerun before final readiness.
+4. Owner server deployment and private env validation have not been performed.
+5. Env-backed allowlist may need schema-backed funding profile before a larger cohort.
 
 ## Validation To Re-Run
 
