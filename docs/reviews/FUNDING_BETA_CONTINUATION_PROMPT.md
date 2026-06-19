@@ -1,7 +1,7 @@
 # Funding Beta Continuation Prompt
 
 Timestamp: 2026-06-19
-Current branch: `agent/beta-withdrawal-request-hold`
+Current branch: `agent/beta-admin-manual-withdrawals`
 Completed phases:
 
 - Phase 1: controlled internal funding beta architecture, merged through PR #215.
@@ -11,31 +11,32 @@ Completed phases:
 - Phase 3B: deposit wallet security evidence merged through PR #219.
 - Phase 4: deposit address API/UI evidence opened as PR #220 and left open for human review because it exposes a guarded funding UI entry point.
 - Phase 5: deposit monitor and auto-credit hardening evidence merged through PR #221.
-- Phase 6: withdrawal request hold hardening evidence added in the current PR.
+- Phase 6: withdrawal request hold hardening evidence merged through PR #222.
+- Phase 7: admin manual withdrawal review evidence added in the current PR.
 
 ## Current Status
 
-The current branch adds withdrawal request hold safety evidence without changing runtime behavior.
+The current branch adds admin manual withdrawal review evidence without changing runtime behavior.
 
 Covered behavior:
 
-- anonymous withdrawal requests are blocked before funding checks.
-- non-allowlisted withdrawal requests are blocked before rate limit and hold creation.
-- kill switch blocks withdrawal request creation.
-- withdrawal request success response does not include broadcast fields.
-- withdrawal history is allowlist-gated and does not return treasury private key or broadcast fields.
-- existing service tests cover hold, reject release, complete finalization, and ledger entries.
+- normal users cannot list admin withdrawal review queue.
+- admin can list pending/recent withdrawals without signing material.
+- admin can reject withdrawal requests through manual review route.
+- admin can complete withdrawal requests with manually provided payout tx hash.
+- admin responses do not include treasury private keys or broadcast fields.
+- no automatic signing or withdrawal broadcast is introduced.
 
 ## Next Step
 
-Next step is **review of the Phase 6 withdrawal request hold evidence PR**.
+Next step is **review of the Phase 7 admin manual withdrawal review evidence PR**.
 
 Do not continue to deposit auto-credit, withdrawal automation, or production funding rollout in the same run.
 
 After human review, choose one:
 
 1. **Review PR #220** because it remains open for human review.
-2. **Phase 7 admin manual withdrawal review evidence**.
+2. **Phase 8 bot/funding runtime safety evidence**.
 3. **Phase 2D schema-based funding profile** if env-backed allowlist is not durable enough.
 
 ## Validation To Re-Run
@@ -47,7 +48,7 @@ npx prisma generate --schema=prisma/schema.prisma
 npx prisma validate --schema=prisma/schema.prisma
 npx tsc --noEmit --pretty false --incremental false
 npm run test:ci
-npx jest --runInBand src/__tests__/funding-beta.routes.test.ts src/server/services/__tests__/withdrawals.phase8.test.ts
+npx jest --runInBand src/__tests__/admin.withdrawals.review.route.test.ts src/__tests__/admin.withdrawals.complete.route.test.ts
 ```
 
 ## Warnings
