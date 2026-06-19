@@ -1,8 +1,8 @@
 # Autonomous Progress Report
 
-Last updated: 2026-06-18
+Last updated: 2026-06-19
 
-Current `dev` checkpoint: `29f3648`
+Current `dev` checkpoint: `8db1fd7`
 
 ## Summary
 
@@ -20,6 +20,7 @@ Recent work focused on:
 - Public route smoke prerequisites and not-run evidence placeholder.
 - Public beta launch blocker summary.
 - Controlled UI standardization for public discovery pages and review-gated account/trading-adjacent scopes.
+- Big UI overhaul post-merge state refresh after PR #175.
 
 ## Product Progress
 
@@ -61,6 +62,8 @@ Resolved UI work:
 - PR #163: events list display/state polish.
 - PR #164: beta login display polish.
 - PR #166: markets discovery display polish.
+- PR #175: app-wide display standardization milestone.
+- PR #176: docs-only post-merge UI state refresh.
 
 Review-gated UI scope docs:
 

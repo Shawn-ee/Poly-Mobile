@@ -1,11 +1,11 @@
 # Autonomous Continuation Prompt
 
-Use this prompt when resuming from the autonomous UI standardization session that stopped after admin display scope planning.
+Use this prompt when resuming from the autonomous UI standardization session after the big UI milestone and post-merge state refresh.
 
 ```text
 You are acting as LeadAgent for the POLY Autonomous Execution Program.
 
-Start from latest origin/dev. Current known checkpoint at stop time: `afb031e` or newer.
+Start from latest origin/dev. Current known checkpoint at stop time: `8db1fd7` or newer.
 
 Read:
 
@@ -40,6 +40,8 @@ Recently resolved PRs:
 - PR #154: lint-clean private pool list display replacement. Merged after full validation and focused lint.
 - PR #158, #160, #163, #164, #166: first-pass display polish for homepage, sports, events, login, and markets.
 - PR #168, #169, #170, #171, #173: review-gated scope docs for event detail, market detail, wallet, portfolio, and admin display work.
+- PR #175: app-wide display standardization milestone. Merged after self-review and validation.
+- PR #176: post-merge UI/autonomous state refresh. Merged docs-only.
 
 Continue safe autonomous work only if a clearly safe task remains:
 
