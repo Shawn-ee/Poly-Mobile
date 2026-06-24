@@ -22,12 +22,21 @@ Phase B completed and merged:
   - `docs/reviews/LIVE_SPORTS_MARKET_MODEL_DESIGN.md`
   - `docs/reviews/LIVE_SPORTS_MARKET_SCHEMA_PROPOSAL.md`
 
+Phase C completed locally and opened for review:
+
+- Branch: `agent/live-sports-market-schema`
+- PR: #234, `https://github.com/Shawn-ee/POLY/pull/234`
+- Title: `product(markets): add schema support for grouped live sports markets`
+- Output: `docs/reviews/LIVE_SPORTS_MARKET_SCHEMA_IMPLEMENTATION.md`
+- Migration: `prisma/migrations/20260624112446_live_sports_market_schema/migration.sql`
+- Review rule: leave open because this includes Prisma schema and migration work.
+
 ## Current Dev Commit
 
-Current `dev` after Phase B:
+Current `dev` before Phase C branch:
 
 ```text
-fb98782 Merge pull request #232 from Shawn-ee/agent/live-sports-market-model-design
+e9664fd Merge pull request #233 from Shawn-ee/agent/live-market-beta-continuation-after-phase-b
 ```
 
 ## Open PRs Observed
@@ -66,7 +75,19 @@ Phase B validation:
 - secret-pattern scan on changed docs: only safety wording, no values.
 - GitHub CI Validate: passed.
 
-No runtime code, schema, migration, funding, trading, settlement, admin auth, workflow, or bot behavior changed in Phases A or B.
+Phase C validation:
+
+- `npx prisma validate --schema=prisma/schema.prisma`: passed.
+- `npx prisma generate --schema=prisma/schema.prisma`: passed.
+- `docker compose up -d db`: passed; `poly_postgres` became healthy.
+- `npx prisma migrate dev --name live_sports_market_schema --schema=prisma/schema.prisma`: applied the migration locally, then exited nonzero because `migrate dev` is interactive in this non-interactive shell.
+- `npx prisma migrate status --schema=prisma/schema.prisma`: passed; database schema is up to date.
+- `npx prisma migrate deploy --schema=prisma/schema.prisma`: passed; no pending migrations.
+- `npx jest --runInBand src/__tests__/live-sports-market-schema.test.ts`: passed.
+- `npx tsc --noEmit --pretty false --incremental false`: passed.
+- `npm run test:ci`: passed.
+
+No funding, wallet, withdrawal, ledger, trading, settlement, admin auth, workflow, deployment, or bot behavior changed in Phase C.
 
 ## Current Capability Classification
 
@@ -82,8 +103,8 @@ No runtime code, schema, migration, funding, trading, settlement, admin auth, wo
 
 Critical blockers:
 
-- no first-class grouped market/prop schema yet.
-- no migrated structured fields for line, period, unit, group, participant, resolution evidence, or outcome result.
+- grouped market/prop schema exists in the Phase C PR but is not merged until review.
+- structured fields for line, period, unit, group, participant, resolution evidence, and outcome result exist in the Phase C PR but are not deployed until review/merge/migration.
 - no display-only event detail UI using the proposed stable grouped market contract.
 - no explicit user-facing internal trading beta gate.
 - no end-to-end deployed evidence from event -> order -> position -> resolution -> settlement.
@@ -103,49 +124,24 @@ Safety blockers:
 
 ## Next Phase
 
-Next recommended phase: Phase C, schema support for event props and grouped markets.
+Next recommended phase after Phase C is reviewed, merged, and migrated: Phase D, event detail page with market groups.
 
-Important: Phase C includes a Prisma migration and must be left open for review. Do not auto-merge if the PR contains schema or migration changes.
+Important: Do not begin Phase D from `dev` until the Phase C schema PR is reviewed and merged.
 
-Phase C should be narrow and additive only:
+Phase D should be display-only:
 
-- no column drops.
-- no destructive migration.
-- no trading behavior changes.
-- no ledger behavior changes.
-- no settlement behavior changes.
-- no funding behavior changes.
-- no withdrawal behavior changes.
+- event header with teams, score/status/time if available.
+- grouped market sections for Main, Spread, Total, Player Props, Team Props, Period Props, Specials, and Live.
+- market cards with title, line, outcomes, prices/probabilities if already available, volume/liquidity if already available, and status badges.
+- loading, error, empty, suspended, closed, and resolved states.
+- mobile layout.
+- no real order placement.
+- no settlement behavior.
+- no funding behavior.
+- no live provider integration.
 - no live bot changes.
-- no workflow changes.
 
-Use `docs/reviews/LIVE_SPORTS_MARKET_SCHEMA_PROPOSAL.md` as the implementation guide.
-
-Recommended Phase C fields:
-
-- `Event.liveStatus`
-- `Event.period`
-- `Event.clock`
-- `Event.homeScore`
-- `Event.awayScore`
-- `Event.venue`
-- `Event.sourceUpdatedAt`
-- `Market.marketGroupKey`
-- `Market.marketGroupTitle`
-- `Market.displayOrder`
-- `Market.line`
-- `Market.unit`
-- `Market.period`
-- `Market.participantName`
-- `Market.participantType`
-- `Market.propCategory`
-- `Market.rulesText`
-- `Market.resolutionEvidenceText`
-- `Market.resolutionEvidenceUrl`
-- `Market.settlementStatus`
-- `Market.sourceUpdatedAt`
-- `Outcome.side`
-- `Outcome.resolvedResult`
+Use `docs/reviews/LIVE_SPORTS_MARKET_SCHEMA_IMPLEMENTATION.md` and the merged Phase C schema as the contract for Phase D.
 
 ## Exact Next Prompt
 
@@ -158,19 +154,19 @@ C:\Users\hecto\Desktop\projects\PolyProj\poly
 Before GitHub CLI:
 $env:PATH = 'C:\Program Files\GitHub CLI;' + $env:PATH
 
-Continue the live sports prediction-market roadmap with Phase C only.
+Continue the live sports prediction-market roadmap with Phase D only, but only after the Phase C PR has been reviewed, merged, and pulled into `dev`.
 
 Branch:
-agent/live-sports-market-schema
+agent/live-event-market-groups-ui
 
 PR title:
-product(markets): add schema support for grouped event markets
+product(events): add grouped live market event detail UI
 
 Use:
 docs/reviews/LIVE_SPORTS_MARKET_MODEL_DESIGN.md
-docs/reviews/LIVE_SPORTS_MARKET_SCHEMA_PROPOSAL.md
+docs/reviews/LIVE_SPORTS_MARKET_SCHEMA_IMPLEMENTATION.md
 
-Implement a narrow additive Prisma migration for grouped event markets and sports prop display fields.
+Build a display-only event detail page showing grouped markets and props under one sports event.
 
 Rules:
 - do not touch main.
@@ -183,16 +179,15 @@ Rules:
 - do not enable live bots.
 - do not modify GitHub workflows.
 - do not print secrets.
-- leave PR open for review because it contains a migration.
+- do not start from a branch that does not include the merged Phase C schema.
 
 Validation:
 - git diff --check
 - git diff --cached --check
-- npx prisma generate --schema=prisma/schema.prisma
-- npx prisma validate --schema=prisma/schema.prisma
 - npx tsc --noEmit --pretty false --incremental false
 - npm run test:ci
-- targeted model/read-model tests if added
+- targeted event detail/grouped market UI tests
+- npm run build if Next.js route/UI changes require it
 
-Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase C status.
+Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase D status.
 ```
