@@ -57,12 +57,27 @@ Phase E started:
 - Output: `docs/reviews/LIVE_MARKET_TRADE_TICKET_V1_EVIDENCE.md`
 - Review rule: leave open because this touches the market detail order submission boundary.
 
+Phase E completed and merged:
+
+- PR: #236, `https://github.com/Shawn-ee/POLY/pull/236`
+- Merge commit: `18bb64f Merge pull request #236 from Shawn-ee/agent/live-market-trade-ticket-v1`
+
+Phase F started:
+
+- Branch: `agent/internal-beta-order-placement`
+- PR: #237, `https://github.com/Shawn-ee/POLY/pull/237`
+- Title: `trading(beta): add guarded internal beta order placement`
+- Output: `docs/reviews/INTERNAL_BETA_ORDER_PLACEMENT_EVIDENCE.md`
+- Chosen model: Option B, existing matched order path with internal beta gates.
+- Review rule: specialist review required because this touches real order/trading/ledger behavior.
+- Specialist review fix: legacy orderbook placement routes are now guarded and then disabled with `LEGACY_ORDER_PLACEMENT_DISABLED`; canonical `POST /api/orders` is the only internal beta order placement path.
+
 ## Current Dev Commit
 
-Current `dev` before Phase E branch:
+Current `dev` before Phase F branch:
 
 ```text
-e7fcfdd Merge pull request #235 from Shawn-ee/agent/live-event-market-groups-ui
+18bb64f Merge pull request #236 from Shawn-ee/agent/live-market-trade-ticket-v1
 ```
 
 ## Open PRs Observed
@@ -126,6 +141,22 @@ Phase D local validation:
 - `npm run build`: passed.
 - `git diff --cached --check`: passed.
 
+Phase F local validation:
+
+- `git diff --check`: passed.
+- `npx prisma generate --schema=prisma/schema.prisma`: passed.
+- `npx prisma validate --schema=prisma/schema.prisma`: passed.
+- `npx jest --runInBand src/__tests__/internal-trading-beta.test.ts src/__tests__/orders.internal-trading-gate.route.test.ts src/__tests__/orderbook.place-cancel.events.test.ts src/__tests__/market-trade-ticket-v1.test.ts`: passed.
+- `npx tsc --noEmit --pretty false --incremental false`: passed after rerun once `next build` finished regenerating `.next/types`.
+- `npm run test:ci`: passed.
+- `npm run build`: passed.
+- `git diff --cached --check`: passed.
+- Specialist review rerun after disabling legacy orderbook placement routes:
+  - targeted Jest: passed.
+  - `npx tsc --noEmit --pretty false --incremental false`: passed.
+  - `npm run test:ci`: passed.
+  - `npm run build`: passed.
+
 ## Current Capability Classification
 
 - Stage 0 controlled internal beta setup: ready with warnings.
@@ -144,6 +175,8 @@ Critical blockers:
 - structured fields for line, period, unit, group, participant, resolution evidence, and outcome result exist in the Phase C PR but are not deployed until review/merge/migration.
 - Phase D adds display-only event detail UI using the grouped market contract, pending PR review/merge.
 - Phase E adds disabled/default market detail trade ticket gating, pending PR review/merge.
+- Phase F adds internal trading beta gates in front of existing real order placement, pending merge.
+- legacy orderbook placement routes are disabled so internal beta order placement uses only the canonical idempotent `POST /api/orders` path.
 - no explicit user-facing internal trading beta gate.
 - no end-to-end deployed evidence from event -> order -> position -> resolution -> settlement.
 - no provider-approved live sports data feed.
@@ -162,24 +195,23 @@ Safety blockers:
 
 ## Next Phase
 
-Next recommended phase after Phase E is reviewed and merged: Phase F, internal beta order placement.
+Next recommended phase after Phase F is merged: Phase G, portfolio positions and open orders.
 
-Important: Phase F is high risk. Do not auto-merge it.
+Important: Phase F remains high risk until PR #237 is merged from the reviewed branch. Do not start Phase G from a branch that lacks the reviewed Phase F gate.
 
-Phase F must include:
+Phase G should include:
 
-- authenticated user requirement.
-- internal beta allowlist requirement.
-- explicit trading beta flag.
-- trading kill switch.
-- available balance check.
-- ledger order hold.
-- idempotency key handling.
-- no public trading.
-- no anonymous trading.
-- tests for blocked anonymous/non-allowlisted users, insufficient funds, idempotency, and hold creation.
+- available and locked balance display.
+- open orders display.
+- positions display.
+- market status display.
+- safe empty states.
+- no private/internal field leakage.
+- no settlement behavior.
+- no market resolution behavior.
+- no new order placement behavior.
 
-Use `docs/reviews/LIVE_MARKET_TRADE_TICKET_V1_EVIDENCE.md` and the reviewed Phase E ticket gate as context for Phase F.
+Use `docs/reviews/INTERNAL_BETA_ORDER_PLACEMENT_EVIDENCE.md` and the reviewed Phase F gate as context for Phase G.
 
 ## Exact Next Prompt
 
@@ -192,21 +224,22 @@ C:\Users\hecto\Desktop\projects\PolyProj\poly
 Before GitHub CLI:
 $env:PATH = 'C:\Program Files\GitHub CLI;' + $env:PATH
 
-Continue the live sports prediction-market roadmap with Phase F only, but only after the Phase E PR has been reviewed, merged, and pulled into `dev`.
+Continue the live sports prediction-market roadmap with Phase G only, but only after the Phase F PR has been reviewed, merged, and pulled into `dev`.
 
 Branch:
-agent/internal-beta-order-placement
+agent/internal-beta-portfolio-positions
 
 PR title:
-trading(beta): add guarded internal beta order placement
+portfolio(beta): add internal positions and open orders evidence
 
 Use:
 docs/reviews/LIVE_SPORTS_MARKET_MODEL_DESIGN.md
 docs/reviews/LIVE_SPORTS_MARKET_SCHEMA_IMPLEMENTATION.md
 docs/reviews/LIVE_EVENT_MARKET_GROUPS_UI_EVIDENCE.md
 docs/reviews/LIVE_MARKET_TRADE_TICKET_V1_EVIDENCE.md
+docs/reviews/INTERNAL_BETA_ORDER_PLACEMENT_EVIDENCE.md
 
-Build guarded internal beta order placement only if explicitly approved for this high-risk phase.
+Build portfolio/open order display for internal beta evidence.
 
 Rules:
 - do not touch main.
@@ -222,15 +255,17 @@ Rules:
 - do not enable public trading.
 - do not enable anonymous trading.
 - do not bypass allowlists.
-- do not start from a branch that does not include the reviewed Phase E ticket gate.
+- do not add settlement.
+- do not add market resolution.
+- do not start from a branch that does not include the reviewed Phase F trading gate.
 
 Validation:
 - git diff --check
 - git diff --cached --check
 - npx tsc --noEmit --pretty false --incremental false
 - npm run test:ci
-- targeted trading/order/ledger gate tests
+- targeted portfolio/open-order display tests
 - npm run build if Next.js route/UI changes require it
 
-Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase F status.
+Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase G status.
 ```
