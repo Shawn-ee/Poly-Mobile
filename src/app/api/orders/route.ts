@@ -4,6 +4,7 @@ import {
   CanonicalApiError,
 } from "@/lib/canonicalApi";
 import { runCanonicalRoute } from "@/lib/canonicalRoute";
+import { requireInternalTradingUserById } from "@/lib/internalTradingBeta";
 import { listCanonicalOrders } from "@/server/services/canonicalApi";
 import { submitCanonicalOrder } from "@/server/services/canonicalOrderSubmission";
 import { emitMarketUpdate, emitUserUpdate } from "@/server/services/orderbookEvents";
@@ -15,6 +16,7 @@ export async function POST(request: NextRequest) {
     routeId: "orders:create",
     fallbackMessage: "Failed to place order.",
     handler: async (actor) => {
+      await requireInternalTradingUserById(actor.userId);
       const body = await request.json().catch(() => null);
       const result = await submitCanonicalOrder({
         userId: actor.userId,

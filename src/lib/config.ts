@@ -64,6 +64,12 @@ export const config = {
     .map((value) => value.trim().toLowerCase())
     .filter(Boolean),
   allowAutoDepositCredit: booleanEnv(env, "ALLOW_AUTO_DEPOSIT_CREDIT", false),
+  internalTradingBetaEnabled: booleanEnv(env, "INTERNAL_TRADING_BETA_ENABLED", false),
+  tradingKillSwitch: booleanEnv(env, "TRADING_KILL_SWITCH", true),
+  internalTradingAllowlistEmails: (env.INTERNAL_TRADING_ALLOWLIST_EMAILS ?? "")
+    .split(",")
+    .map((value) => value.trim().toLowerCase())
+    .filter(Boolean),
   withdrawalMinUSDC: numberEnv(env, "WITHDRAWAL_MIN_USDC", 5),
   withdrawalUserDailyLimitUSDC: numberEnv(env, "WITHDRAWAL_USER_DAILY_LIMIT_USDC", 5000),
   withdrawalGlobalDailyLimitUSDC: numberEnv(env, "WITHDRAWAL_GLOBAL_DAILY_LIMIT_USDC", 50000),
