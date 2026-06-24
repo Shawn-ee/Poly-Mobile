@@ -112,12 +112,24 @@ Phase I started:
 - Chosen option: Option B, admin settlement preview only.
 - Runtime boundary: preview-only; no ledger, balance, order, position, market resolution, funding, withdrawal, wallet, or bot mutation behavior added.
 
+Phase I completed and merged:
+
+- PR: #240, `https://github.com/Shawn-ee/POLY/pull/240`
+- Merge commit: `be8a08e Merge pull request #240 from Shawn-ee/agent/admin-market-resolution-settlement`
+- Chosen option: Option B, admin settlement preview only.
+
+Phase J started:
+
+- Branch: `agent/live-sports-provider-readiness`
+- Output: `docs/reviews/LIVE_SPORTS_PROVIDER_READINESS.md`
+- Runtime boundary: docs-only provider readiness plan; no external API integration, scraping, runtime behavior, package change, bot behavior, funding behavior, settlement behavior, or deployment behavior added.
+
 ## Current Dev Commit
 
-Current `dev` before Phase I branch:
+Current `dev` before Phase J branch:
 
 ```text
-655edfd Merge pull request #239 from Shawn-ee/agent/admin-event-market-management
+be8a08e Merge pull request #240 from Shawn-ee/agent/admin-market-resolution-settlement
 ```
 
 ## Open PRs Observed
@@ -239,6 +251,14 @@ Phase I local validation:
 - `npm run test:ci`: passed.
 - `npm run build`: passed.
 
+Phase I GitHub validation:
+
+- GitHub CI Validate on PR #240: passed.
+
+Phase J local validation:
+
+- Pending docs-only checks.
+
 ## Current Capability Classification
 
 - Stage 0 controlled internal beta setup: ready with warnings.
@@ -260,7 +280,8 @@ Critical blockers:
 - legacy orderbook placement routes are disabled so internal beta order placement uses only the canonical idempotent `POST /api/orders` path.
 - portfolio open-order display evidence is merged.
 - admin event market management is merged.
-- Phase I adds admin settlement preview, pending full validation and PR.
+- admin settlement preview is merged.
+- Phase J live sports provider readiness is pending docs-only validation and PR.
 - no end-to-end deployed evidence from event -> order -> position -> resolution -> settlement.
 - no provider-approved live sports data feed.
 - no void/push/refund settlement path for sports props.
@@ -277,20 +298,19 @@ Safety blockers:
 
 ## Next Phase
 
-Next recommended phase after Phase I is merged: Phase J, live sports provider/reference data readiness.
+Next recommended phase after Phase J is merged: Phase K, live sports UX polish.
 
-Important: Phase I is preview-only. Existing full settlement remains high risk and should not be expanded without focused review.
+Important: Phase J is docs-only and does not approve any external provider, scraping, live bot, or automatic settlement behavior.
 
-Phase I includes:
+Phase J includes:
 
-- admin-only settlement preview endpoint.
-- payout and collateral conservation preview.
-- open-order cleanup preview.
-- no ledger writes.
-- no balance updates.
-- no position/order/market mutation.
+- current sports/reference data capability classification.
+- provider requirements and recommended env names.
+- stale data policy.
+- staged provider rollout plan.
+- what must remain disabled.
 
-Use `docs/reviews/MARKET_RESOLUTION_SETTLEMENT_EVIDENCE.md` as context for Phase J after Phase I merges.
+Use `docs/reviews/LIVE_SPORTS_PROVIDER_READINESS.md` as context for Phase K after Phase J merges.
 
 ## Exact Next Prompt
 
@@ -303,13 +323,13 @@ C:\Users\hecto\Desktop\projects\PolyProj\poly
 Before GitHub CLI:
 $env:PATH = 'C:\Program Files\GitHub CLI;' + $env:PATH
 
-Continue the live sports prediction-market roadmap with Phase J only, but only after the Phase I PR has been reviewed, merged, and pulled into `dev`.
+Continue the live sports prediction-market roadmap with Phase K only, but only after the Phase J PR has been reviewed, merged, and pulled into `dev`.
 
 Branch:
-agent/live-sports-provider-readiness
+agent/live-sports-ux-polish
 
 PR title:
-docs(product): add live sports provider readiness plan
+ui(product): polish live sports event trading experience
 
 Use:
 docs/reviews/LIVE_SPORTS_MARKET_MODEL_DESIGN.md
@@ -320,8 +340,9 @@ docs/reviews/INTERNAL_BETA_ORDER_PLACEMENT_EVIDENCE.md
 docs/reviews/PORTFOLIO_OPEN_ORDERS_POSITIONS_EVIDENCE.md
 docs/reviews/ADMIN_EVENT_MARKET_MANAGEMENT_EVIDENCE.md
 docs/reviews/MARKET_RESOLUTION_SETTLEMENT_EVIDENCE.md
+docs/reviews/LIVE_SPORTS_PROVIDER_READINESS.md
 
-Document live sports provider/reference data readiness. Do not integrate real external APIs or scrape websites.
+Polish the live sports event trading experience as display-only UI work.
 
 Rules:
 - do not touch main.
@@ -338,15 +359,17 @@ Rules:
 - do not enable anonymous trading.
 - do not bypass allowlists.
 - do not add public market resolution.
-- do not start from a branch that does not include merged Phase I settlement preview evidence.
+- do not add external provider integration.
+- do not scrape.
+- do not start from a branch that does not include merged Phase J provider readiness docs.
 
 Validation:
 - git diff --check
 - git diff --cached --check
 - npx tsc --noEmit --pretty false --incremental false
 - npm run test:ci
-- targeted provider/readiness doc checks
+- targeted UI tests
 - npm run build if Next.js route/UI changes require it
 
-Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase J status.
+Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase K status.
 ```
