@@ -72,12 +72,25 @@ Phase F started:
 - Review rule: specialist review required because this touches real order/trading/ledger behavior.
 - Specialist review fix: legacy orderbook placement routes are now guarded and then disabled with `LEGACY_ORDER_PLACEMENT_DISABLED`; canonical `POST /api/orders` is the only internal beta order placement path.
 
+Phase F completed and merged:
+
+- PR: #237, `https://github.com/Shawn-ee/POLY/pull/237`
+- Merge commit: `836961b Merge pull request #237 from Shawn-ee/agent/internal-beta-order-placement`
+- Runtime boundary: real order placement remains disabled by default and requires server-side internal trading beta enablement, kill switch off, allowlisted/admin user, and the Phase E client submit flag.
+- Still not implemented: settlement, market resolution, public trading, anonymous trading, live bot matching.
+
+Phase G started:
+
+- Branch: `agent/internal-beta-portfolio-positions`
+- Output: `docs/reviews/PORTFOLIO_OPEN_ORDERS_POSITIONS_EVIDENCE.md`
+- Runtime boundary: display/read-only portfolio evidence only; no ledger, order, funding, withdrawal, settlement, resolution, or bot mutation behavior added.
+
 ## Current Dev Commit
 
-Current `dev` before Phase F branch:
+Current `dev` before Phase G branch:
 
 ```text
-18bb64f Merge pull request #236 from Shawn-ee/agent/live-market-trade-ticket-v1
+836961b Merge pull request #237 from Shawn-ee/agent/internal-beta-order-placement
 ```
 
 ## Open PRs Observed
@@ -157,6 +170,20 @@ Phase F local validation:
   - `npm run test:ci`: passed.
   - `npm run build`: passed.
 
+Phase F GitHub validation:
+
+- GitHub CI Validate on PR #237 after specialist review fix: passed.
+
+Phase G local validation:
+
+- `git diff --check`: passed.
+- `npx prisma validate --schema=prisma/schema.prisma`: passed.
+- `npx prisma generate --schema=prisma/schema.prisma`: passed.
+- `npx jest --runInBand src/__tests__/portfolio.open-orders.route.test.ts`: passed.
+- `npx tsc --noEmit --pretty false --incremental false`: passed.
+- `npm run test:ci`: passed.
+- `npm run build`: passed.
+
 ## Current Capability Classification
 
 - Stage 0 controlled internal beta setup: ready with warnings.
@@ -177,6 +204,7 @@ Critical blockers:
 - Phase E adds disabled/default market detail trade ticket gating, pending PR review/merge.
 - Phase F adds internal trading beta gates in front of existing real order placement, pending merge.
 - legacy orderbook placement routes are disabled so internal beta order placement uses only the canonical idempotent `POST /api/orders` path.
+- Phase G adds portfolio open-order display evidence, pending validation and PR.
 - no explicit user-facing internal trading beta gate.
 - no end-to-end deployed evidence from event -> order -> position -> resolution -> settlement.
 - no provider-approved live sports data feed.
@@ -195,9 +223,9 @@ Safety blockers:
 
 ## Next Phase
 
-Next recommended phase after Phase F is merged: Phase G, portfolio positions and open orders.
+Next recommended phase after Phase G is merged: Phase H, admin event market management.
 
-Important: Phase F remains high risk until PR #237 is merged from the reviewed branch. Do not start Phase G from a branch that lacks the reviewed Phase F gate.
+Important: Phase G is display/read-only. Do not start settlement or market resolution implementation from this branch.
 
 Phase G should include:
 
@@ -224,13 +252,13 @@ C:\Users\hecto\Desktop\projects\PolyProj\poly
 Before GitHub CLI:
 $env:PATH = 'C:\Program Files\GitHub CLI;' + $env:PATH
 
-Continue the live sports prediction-market roadmap with Phase G only, but only after the Phase F PR has been reviewed, merged, and pulled into `dev`.
+Continue the live sports prediction-market roadmap with Phase H only, but only after the Phase G PR has been reviewed, merged, and pulled into `dev`.
 
 Branch:
-agent/internal-beta-portfolio-positions
+agent/admin-event-market-management
 
 PR title:
-portfolio(beta): add internal positions and open orders evidence
+admin(markets): add event market management workflow
 
 Use:
 docs/reviews/LIVE_SPORTS_MARKET_MODEL_DESIGN.md
@@ -238,13 +266,14 @@ docs/reviews/LIVE_SPORTS_MARKET_SCHEMA_IMPLEMENTATION.md
 docs/reviews/LIVE_EVENT_MARKET_GROUPS_UI_EVIDENCE.md
 docs/reviews/LIVE_MARKET_TRADE_TICKET_V1_EVIDENCE.md
 docs/reviews/INTERNAL_BETA_ORDER_PLACEMENT_EVIDENCE.md
+docs/reviews/PORTFOLIO_OPEN_ORDERS_POSITIONS_EVIDENCE.md
 
-Build portfolio/open order display for internal beta evidence.
+Build admin-only event market management for internal beta operations.
 
 Rules:
 - do not touch main.
 - do not deploy.
-- do not change trading behavior.
+- do not change public trading behavior.
 - do not change ledger behavior.
 - do not change settlement behavior.
 - do not change funding behavior.
@@ -257,15 +286,15 @@ Rules:
 - do not bypass allowlists.
 - do not add settlement.
 - do not add market resolution.
-- do not start from a branch that does not include the reviewed Phase F trading gate.
+- do not start from a branch that does not include merged Phase G portfolio evidence.
 
 Validation:
 - git diff --check
 - git diff --cached --check
 - npx tsc --noEmit --pretty false --incremental false
 - npm run test:ci
-- targeted portfolio/open-order display tests
+- targeted admin/event-market tests
 - npm run build if Next.js route/UI changes require it
 
-Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase G status.
+Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase H status.
 ```

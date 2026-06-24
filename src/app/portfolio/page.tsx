@@ -45,6 +45,27 @@ type HistoryItem = {
   realizedPnLTokens: number;
 };
 
+type OpenOrderItem = {
+  id: string;
+  market: {
+    id: string;
+    title: string;
+    status: string;
+  };
+  outcome: {
+    id: string;
+    name: string;
+  };
+  side: "BUY" | "SELL";
+  status: string;
+  price: number;
+  size: number;
+  remaining: number;
+  reservedNotional: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export default function PortfolioPage() {
   const router = useRouter();
   const [walletAvailable, setWalletAvailable] = useState<number | null>(null);
@@ -55,6 +76,7 @@ export default function PortfolioPage() {
   const [totalRealizedPnl, setTotalRealizedPnl] = useState<number>(0);
   const [totalPnl, setTotalPnl] = useState<number>(0);
   const [positions, setPositions] = useState<PortfolioItem[]>([]);
+  const [openOrders, setOpenOrders] = useState<OpenOrderItem[]>([]);
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [filterStatus, setFilterStatus] = useState<"all" | "active" | "resolved">("all");
   const [search, setSearch] = useState("");
@@ -79,6 +101,7 @@ export default function PortfolioPage() {
       setTotalRealizedPnl(data.totalRealizedPnl ?? 0);
       setTotalPnl(data.totalPnl ?? 0);
       setPositions(data.positions ?? []);
+      setOpenOrders(data.openOrders ?? []);
       setLoading(false);
     };
     load();
@@ -172,10 +195,10 @@ export default function PortfolioPage() {
       <PageHeader
         eyebrow="Account"
         title="Portfolio"
-        description="Track balances, open positions, and resolved market history from one account view."
+        description="Track balances, reserved funds, open orders, positions, and resolved market history from one account view."
       >
         <BetaNotice tone="info">
-          Portfolio values use the data already returned by the app. This page does not change balance, position, ledger, or settlement calculations.
+          Internal beta portfolio values are read-only. Open orders can reserve funds, while settlement and market resolution remain separate admin workflows.
         </BetaNotice>
       </PageHeader>
 
@@ -188,6 +211,64 @@ export default function PortfolioPage() {
         <StatCard label="Realized PnL" value={`${totalRealizedPnl.toFixed(2)} U`} helper="Closed markets" tone={totalRealizedPnl >= 0 ? "positive" : "negative"} />
         <StatCard label="Unrealized PnL" value={`${totalPnl.toFixed(2)} U`} helper="Open market estimate" tone={totalPnl >= 0 ? "positive" : "negative"} />
       </div>
+
+      <section className="mt-8">
+        <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-semibold text-[var(--poly-text)]">Open orders</h2>
+            <p className="text-sm text-[var(--poly-muted)]">
+              Pending internal beta orders and the funds currently reserved for them.
+            </p>
+          </div>
+          <Badge tone="warning">No settlement here</Badge>
+        </div>
+
+        {openOrders.length === 0 ? (
+          <EmptyState title="No open orders" description="Submitted internal beta orders will appear here until filled or canceled." />
+        ) : (
+          <Card className="overflow-x-auto">
+            <table className="min-w-full text-left text-sm">
+              <thead className="border-b border-[var(--poly-border)] bg-[var(--poly-surface-muted)] text-xs uppercase text-[var(--poly-muted)]">
+                <tr>
+                  <th className="px-4 py-3">Market</th>
+                  <th className="px-4 py-3">Outcome</th>
+                  <th className="px-4 py-3">Side</th>
+                  <th className="px-4 py-3 text-right">Limit</th>
+                  <th className="px-4 py-3 text-right">Size</th>
+                  <th className="px-4 py-3 text-right">Remaining</th>
+                  <th className="px-4 py-3 text-right">Reserved</th>
+                  <th className="px-4 py-3">Order</th>
+                  <th className="px-4 py-3">Market</th>
+                </tr>
+              </thead>
+              <tbody>
+                {openOrders.map((order) => (
+                  <tr key={order.id} className="border-b border-[var(--poly-border)]">
+                    <td className="px-4 py-3">
+                      <Link
+                        href={`/markets/${order.market.id}`}
+                        className="font-medium text-[var(--poly-text)] underline"
+                      >
+                        {order.market.title}
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3">{order.outcome.name}</td>
+                    <td className="px-4 py-3">
+                      <Badge tone={order.side === "BUY" ? "teal" : "warning"}>{order.side}</Badge>
+                    </td>
+                    <td className="px-4 py-3 text-right">{order.price.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-right">{order.size.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-right">{order.remaining.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-right">{order.reservedNotional.toFixed(2)} U</td>
+                    <td className="px-4 py-3">{order.status}</td>
+                    <td className="px-4 py-3">{order.market.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Card>
+        )}
+      </section>
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <div className="flex gap-2 text-sm">

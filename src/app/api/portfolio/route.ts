@@ -26,6 +26,22 @@ export async function GET(_request: NextRequest) {
     _sum: { realizedPnl: true },
   });
   const custody = await prisma.userBalance.findUnique({ where: { userId } });
+  const openOrders = await prisma.order.findMany({
+    where: {
+      userId,
+      status: { in: ["OPEN", "PARTIAL"] },
+    },
+    orderBy: [{ updatedAt: "desc" }, { id: "desc" }],
+    take: 25,
+    include: {
+      outcome: {
+        select: { id: true, name: true },
+      },
+      market: {
+        select: { id: true, title: true, status: true },
+      },
+    },
+  });
 
   const marketOutcomeMap = new Map<string, string[]>();
   for (const p of positions) {
@@ -90,5 +106,25 @@ export async function GET(_request: NextRequest) {
     totalRealizedPnl,
     totalPnl,
     positions: items,
+    openOrders: openOrders.map((order) => ({
+      id: order.id,
+      market: {
+        id: order.market.id,
+        title: order.market.title,
+        status: order.market.status,
+      },
+      outcome: {
+        id: order.outcome.id,
+        name: order.outcome.name,
+      },
+      side: order.side,
+      status: order.status,
+      price: Number(order.price),
+      size: Number(order.amount),
+      remaining: Number(order.remaining),
+      reservedNotional: Number(order.reservedNotional),
+      createdAt: order.createdAt,
+      updatedAt: order.updatedAt,
+    })),
   });
 }
