@@ -99,12 +99,25 @@ Phase H started:
 - Runtime boundary: admin-only market/event management mutation support; no settlement, market resolution payout, order placement, ledger math, funding, withdrawal, wallet, or bot behavior added.
 - Review rule: leave open because this changes admin mutation behavior.
 
+Phase H completed and merged:
+
+- PR: #239, `https://github.com/Shawn-ee/POLY/pull/239`
+- Merge commit: `655edfd Merge pull request #239 from Shawn-ee/agent/admin-event-market-management`
+- Specialist review result: admin-only, narrow, validated, no funding/private-key/ledger/order/settlement mutation expansion, no public mutation access.
+
+Phase I started:
+
+- Branch: `agent/admin-market-resolution-settlement`
+- Output: `docs/reviews/MARKET_RESOLUTION_SETTLEMENT_EVIDENCE.md`
+- Chosen option: Option B, admin settlement preview only.
+- Runtime boundary: preview-only; no ledger, balance, order, position, market resolution, funding, withdrawal, wallet, or bot mutation behavior added.
+
 ## Current Dev Commit
 
-Current `dev` before Phase H branch:
+Current `dev` before Phase I branch:
 
 ```text
-f33bb9f Merge pull request #238 from Shawn-ee/agent/internal-beta-portfolio-positions
+655edfd Merge pull request #239 from Shawn-ee/agent/admin-event-market-management
 ```
 
 ## Open PRs Observed
@@ -216,6 +229,16 @@ Phase H GitHub validation:
 
 - GitHub CI Validate on PR #239: passed.
 
+Phase I local validation:
+
+- `git diff --check`: passed.
+- `npx prisma validate --schema=prisma/schema.prisma`: passed.
+- `npx prisma generate --schema=prisma/schema.prisma`: passed.
+- `npx jest --runInBand src/__tests__/admin.market-settlement-preview.test.ts`: passed.
+- `npx tsc --noEmit --pretty false --incremental false`: passed.
+- `npm run test:ci`: passed.
+- `npm run build`: passed.
+
 ## Current Capability Classification
 
 - Stage 0 controlled internal beta setup: ready with warnings.
@@ -236,7 +259,8 @@ Critical blockers:
 - internal trading beta gates in front of existing real order placement are merged.
 - legacy orderbook placement routes are disabled so internal beta order placement uses only the canonical idempotent `POST /api/orders` path.
 - portfolio open-order display evidence is merged.
-- Phase H adds admin event market management, pending validation and PR review.
+- admin event market management is merged.
+- Phase I adds admin settlement preview, pending full validation and PR.
 - no end-to-end deployed evidence from event -> order -> position -> resolution -> settlement.
 - no provider-approved live sports data feed.
 - no void/push/refund settlement path for sports props.
@@ -253,21 +277,20 @@ Safety blockers:
 
 ## Next Phase
 
-Next recommended phase after Phase H is reviewed and merged: Phase I, market resolution and settlement.
+Next recommended phase after Phase I is merged: Phase J, live sports provider/reference data readiness.
 
-Important: Phase H changes admin mutation behavior and should remain open for review. Do not start Phase I until Phase H is reviewed and merged.
+Important: Phase I is preview-only. Existing full settlement remains high risk and should not be expanded without focused review.
 
-Phase H includes:
+Phase I includes:
 
-- admin-only market creation under events.
-- grouped market and prop metadata.
-- structured outcome metadata.
-- pause/close through existing admin status routes.
-- no settlement behavior.
-- no market resolution payout behavior.
-- no order placement behavior.
+- admin-only settlement preview endpoint.
+- payout and collateral conservation preview.
+- open-order cleanup preview.
+- no ledger writes.
+- no balance updates.
+- no position/order/market mutation.
 
-Use `docs/reviews/ADMIN_EVENT_MARKET_MANAGEMENT_EVIDENCE.md` as context for Phase I only after Phase H merges.
+Use `docs/reviews/MARKET_RESOLUTION_SETTLEMENT_EVIDENCE.md` as context for Phase J after Phase I merges.
 
 ## Exact Next Prompt
 
@@ -280,13 +303,13 @@ C:\Users\hecto\Desktop\projects\PolyProj\poly
 Before GitHub CLI:
 $env:PATH = 'C:\Program Files\GitHub CLI;' + $env:PATH
 
-Continue the live sports prediction-market roadmap with Phase I only, but only after the Phase H PR has been reviewed, merged, and pulled into `dev`.
+Continue the live sports prediction-market roadmap with Phase J only, but only after the Phase I PR has been reviewed, merged, and pulled into `dev`.
 
 Branch:
-agent/admin-market-resolution-settlement
+agent/live-sports-provider-readiness
 
 PR title:
-settlement(beta): add guarded market resolution workflow
+docs(product): add live sports provider readiness plan
 
 Use:
 docs/reviews/LIVE_SPORTS_MARKET_MODEL_DESIGN.md
@@ -296,15 +319,16 @@ docs/reviews/LIVE_MARKET_TRADE_TICKET_V1_EVIDENCE.md
 docs/reviews/INTERNAL_BETA_ORDER_PLACEMENT_EVIDENCE.md
 docs/reviews/PORTFOLIO_OPEN_ORDERS_POSITIONS_EVIDENCE.md
 docs/reviews/ADMIN_EVENT_MARKET_MANAGEMENT_EVIDENCE.md
+docs/reviews/MARKET_RESOLUTION_SETTLEMENT_EVIDENCE.md
 
-Inspect resolution and settlement readiness. Prefer the safest model: metadata-only or settlement preview if full ledger-safe settlement is not ready.
+Document live sports provider/reference data readiness. Do not integrate real external APIs or scrape websites.
 
 Rules:
 - do not touch main.
 - do not deploy.
 - do not change public trading behavior.
 - do not change ledger behavior.
-- do not add ledger settlement unless explicitly reviewed and safe.
+- do not add ledger settlement.
 - do not change funding behavior.
 - do not change withdrawal behavior.
 - do not enable live bots.
@@ -314,15 +338,15 @@ Rules:
 - do not enable anonymous trading.
 - do not bypass allowlists.
 - do not add public market resolution.
-- do not start from a branch that does not include reviewed Phase H admin management.
+- do not start from a branch that does not include merged Phase I settlement preview evidence.
 
 Validation:
 - git diff --check
 - git diff --cached --check
 - npx tsc --noEmit --pretty false --incremental false
 - npm run test:ci
-- targeted resolution/settlement tests
+- targeted provider/readiness doc checks
 - npm run build if Next.js route/UI changes require it
 
-Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase I status.
+Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase J status.
 ```
