@@ -135,12 +135,25 @@ Phase K started:
 - Output: `docs/reviews/LIVE_SPORTS_UX_POLISH_EVIDENCE.md`
 - Runtime boundary: display-only sports event UI polish; no order, ledger, funding, withdrawal, settlement, market resolution, provider, bot, package, or deployment behavior added.
 
+Phase K completed and merged:
+
+- PR: #242, `https://github.com/Shawn-ee/POLY/pull/242`
+- Merge commit: `2ce6126 Merge pull request #242 from Shawn-ee/agent/live-sports-ux-polish`
+
+Phase L started:
+
+- Branch: `agent/internal-live-market-e2e-evidence`
+- Outputs:
+  - `docs/reviews/INTERNAL_LIVE_MARKET_E2E_EVIDENCE.md`
+  - `docs/reviews/INTERNAL_LIVE_MARKET_GO_NO_GO.md`
+- Runtime boundary: docs-only evidence and go/no-go classification; no order, ledger, funding, withdrawal, settlement, market resolution, provider, bot, package, or deployment behavior added.
+
 ## Current Dev Commit
 
-Current `dev` before Phase K branch:
+Current `dev` before Phase L branch:
 
 ```text
-e13b25d Merge pull request #241 from Shawn-ee/agent/live-sports-provider-readiness
+2ce6126 Merge pull request #242 from Shawn-ee/agent/live-sports-ux-polish
 ```
 
 ## Open PRs Observed
@@ -287,12 +300,22 @@ Phase K local validation:
 - `npm run build`: passed.
 - `git diff --cached --check`: passed.
 
+Phase K GitHub validation:
+
+- GitHub CI Validate on PR #242: passed.
+
+Phase L local validation:
+
+- `git diff --check`: passed.
+- secret-pattern scan on changed docs: only safety wording, no values.
+- `git diff --cached --check`: passed.
+
 ## Current Capability Classification
 
 - Stage 0 controlled internal beta setup: ready with warnings.
 - Sports/event/market browsing: real runtime behavior, ready for internal smoke.
-- Rich live sports event market product: not ready.
-- Internal live market beta: not ready.
+- Rich live sports event market product: partially implemented for manual/admin-created events.
+- Internal live market beta: limited internal market beta only; not ready for full internal live market beta.
 - Public beta: not ready.
 - Live bots: not approved.
 - Public/anonymous funding: not approved.
@@ -310,7 +333,8 @@ Critical blockers:
 - admin event market management is merged.
 - admin settlement preview is merged.
 - live sports provider readiness is merged.
-- Phase K live sports UX polish is pending validation and PR.
+- live sports UX polish is merged.
+- Phase L internal live market evidence is pending docs-only validation and PR.
 - no end-to-end deployed evidence from event -> order -> position -> resolution -> settlement.
 - no provider-approved live sports data feed.
 - no void/push/refund settlement path for sports props.
@@ -327,19 +351,18 @@ Safety blockers:
 
 ## Next Phase
 
-Next recommended phase after Phase K is merged: Phase L, end-to-end internal live market evidence.
+Next recommended phase after Phase L is merged: Phase M, server deployment update for live market beta.
 
-Important: Phase K is display-only UI polish and must not add order, ledger, funding, withdrawal, settlement, provider, or bot behavior.
+Important: Phase L is docs-only evidence and does not approve full internal live market beta, public beta, automatic settlement, public trading, public funding, provider sync, or live bots.
 
-Phase K includes:
+Phase L includes:
 
-- sports event market search.
-- market status summary.
-- clearer group tab counts.
-- sticky outcome preview for event-page selections.
-- display-only warnings and market-detail handoff.
+- current event -> market -> ticket -> order -> portfolio -> admin -> preview capability classification.
+- what was actually validated vs what remains unrun.
+- controlled internal drill requirements.
+- go/no-go decision.
 
-Use `docs/reviews/LIVE_SPORTS_UX_POLISH_EVIDENCE.md` as context for Phase L after Phase K merges.
+Use `docs/reviews/INTERNAL_LIVE_MARKET_E2E_EVIDENCE.md` and `docs/reviews/INTERNAL_LIVE_MARKET_GO_NO_GO.md` as context for Phase M after Phase L merges.
 
 ## Exact Next Prompt
 
@@ -352,13 +375,13 @@ C:\Users\hecto\Desktop\projects\PolyProj\poly
 Before GitHub CLI:
 $env:PATH = 'C:\Program Files\GitHub CLI;' + $env:PATH
 
-Continue the live sports prediction-market roadmap with Phase L only, but only after the Phase K PR has been reviewed, merged, and pulled into `dev`.
+Continue the live sports prediction-market roadmap with Phase M only, but only after the Phase L PR has been reviewed, merged, and pulled into `dev`.
 
 Branch:
-agent/internal-live-market-e2e-evidence
+agent/live-market-server-deployment-update
 
 PR title:
-docs(beta): add internal live market e2e evidence
+docs(beta): update server deployment for live market beta
 
 Use:
 docs/reviews/LIVE_SPORTS_MARKET_MODEL_DESIGN.md
@@ -371,8 +394,10 @@ docs/reviews/ADMIN_EVENT_MARKET_MANAGEMENT_EVIDENCE.md
 docs/reviews/MARKET_RESOLUTION_SETTLEMENT_EVIDENCE.md
 docs/reviews/LIVE_SPORTS_PROVIDER_READINESS.md
 docs/reviews/LIVE_SPORTS_UX_POLISH_EVIDENCE.md
+docs/reviews/INTERNAL_LIVE_MARKET_E2E_EVIDENCE.md
+docs/reviews/INTERNAL_LIVE_MARKET_GO_NO_GO.md
 
-Create evidence for the current internal live market path from event discovery through grouped markets, market detail ticket, guarded order placement, portfolio display, admin market management, and settlement-preview readiness.
+Update server deployment docs with live-market beta migration, trading flags, allowlist, kill switch, emergency disable, rollback, and post-deploy controlled drill instructions.
 
 Rules:
 - do not touch main.
@@ -391,7 +416,7 @@ Rules:
 - do not add public market resolution.
 - do not add external provider integration.
 - do not scrape.
-- do not start from a branch that does not include merged Phase K sports UX polish.
+- do not start from a branch that does not include merged Phase L evidence docs.
 
 Validation:
 - git diff --check
@@ -399,6 +424,7 @@ Validation:
 - npx tsc --noEmit --pretty false --incremental false
 - npm run test:ci
 - targeted evidence/doc checks
+- no production deployment
 
-Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase L status.
+Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase M status.
 ```
