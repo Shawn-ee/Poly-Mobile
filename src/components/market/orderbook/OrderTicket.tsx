@@ -53,6 +53,7 @@ export default function OrderTicket({
   bestAsk,
   onSubmitOrder,
   marketOrdersSupported,
+  submissionEnabled = false,
 }: {
   market: TicketMarket;
   selectedOutcomeId: string;
@@ -63,6 +64,7 @@ export default function OrderTicket({
   bestAsk: number | null;
   onSubmitOrder: (request: { payload: SubmitOrderPayload; debug: SubmitOrderDebug }) => Promise<string>;
   marketOrdersSupported: boolean;
+  submissionEnabled?: boolean;
 }) {
   const [side, setSide] = useState<"BUY" | "SELL">("BUY");
   const [orderType, setOrderType] = useState<"MARKET" | "LIMIT">("MARKET");
@@ -139,6 +141,7 @@ export default function OrderTicket({
 
   const formDisabled =
     submitting ||
+    !submissionEnabled ||
     !marketOpenForTrading ||
     !selectedOutcome ||
     (orderType === "MARKET" && !marketOrdersSupported) ||
@@ -159,6 +162,7 @@ export default function OrderTicket({
   };
 
   const handleSubmit = async () => {
+    if (!submissionEnabled) return;
     if (!selectedOutcome) return;
     setSubmitting(true);
     setFeedback(null);
@@ -196,7 +200,7 @@ export default function OrderTicket({
         <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Trade</div>
         <h2 className="mt-1 text-xl font-semibold text-[var(--poly-text)]">{market.title}</h2>
         <p className="mt-1 text-sm text-[var(--poly-muted)]">
-          Choose an outcome, enter an amount, review estimates, then place the order.
+          Choose an outcome, enter an amount, and review cost and payout estimates.
         </p>
       </div>
 
@@ -510,7 +514,9 @@ export default function OrderTicket({
 
       {/* Beta notice */}
       <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-center text-[11px] text-amber-700">
-        Internal Beta: test credits only
+        {submissionEnabled
+          ? "Internal Beta: test credits only"
+          : "Preview only: order submission is disabled until internal beta trading is explicitly enabled"}
       </div>
 
       <Button
@@ -521,8 +527,14 @@ export default function OrderTicket({
         variant={side === "BUY" ? "secondary" : "negative"}
         size="lg"
       >
-        {submitLabel}
+        {submissionEnabled ? submitLabel : "Trading disabled"}
       </Button>
+
+      {!submissionEnabled ? (
+        <p className="mt-3 text-sm text-amber-700">
+          This ticket is display-only in Phase E. It does not create orders, mutate balances, or write ledger entries.
+        </p>
+      ) : null}
 
       {!marketOrdersSupported && orderType === "MARKET" ? (
         <p className="mt-3 text-sm text-amber-700">

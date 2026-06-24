@@ -510,6 +510,7 @@ export default function OrderbookMarketView({
   const referenceOnly = market.referenceOnly === true;
   const tradable = market.tradable !== false;
   const showTradingControls = !referenceOnly && tradable;
+  const internalTradingEnabled = process.env.NEXT_PUBLIC_INTERNAL_TRADING_BETA_ENABLED === "true";
 
   return (
     <PageContainer size="default">
@@ -834,6 +835,7 @@ export default function OrderbookMarketView({
               bestAsk={bestAsk}
               onSubmitOrder={submitOrder}
               marketOrdersSupported
+              submissionEnabled={internalTradingEnabled}
             />
           ) : (
             <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">

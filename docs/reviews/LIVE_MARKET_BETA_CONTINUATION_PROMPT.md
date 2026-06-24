@@ -44,12 +44,25 @@ Phase D completed locally and ready for PR:
 - Output: `docs/reviews/LIVE_EVENT_MARKET_GROUPS_UI_EVIDENCE.md`
 - Runtime boundary: display-only/read-only event page; no order, ledger, funding, settlement, resolution, provider, or bot behavior added.
 
+Phase D completed and merged:
+
+- PR: #235, `https://github.com/Shawn-ee/POLY/pull/235`
+- Merge commit: `e7fcfdd Merge pull request #235 from Shawn-ee/agent/live-event-market-groups-ui`
+
+Phase E started:
+
+- Branch: `agent/live-market-trade-ticket-v1`
+- PR: #236, `https://github.com/Shawn-ee/POLY/pull/236`
+- Title: `product(trading): add market trade ticket v1`
+- Output: `docs/reviews/LIVE_MARKET_TRADE_TICKET_V1_EVIDENCE.md`
+- Review rule: leave open because this touches the market detail order submission boundary.
+
 ## Current Dev Commit
 
-Current `dev` before Phase D branch:
+Current `dev` before Phase E branch:
 
 ```text
-442ab37 Merge pull request #234 from Shawn-ee/agent/live-sports-market-schema
+e7fcfdd Merge pull request #235 from Shawn-ee/agent/live-event-market-groups-ui
 ```
 
 ## Open PRs Observed
@@ -130,6 +143,7 @@ Critical blockers:
 - grouped market/prop schema exists in the Phase C PR but is not merged until review.
 - structured fields for line, period, unit, group, participant, resolution evidence, and outcome result exist in the Phase C PR but are not deployed until review/merge/migration.
 - Phase D adds display-only event detail UI using the grouped market contract, pending PR review/merge.
+- Phase E adds disabled/default market detail trade ticket gating, pending PR review/merge.
 - no explicit user-facing internal trading beta gate.
 - no end-to-end deployed evidence from event -> order -> position -> resolution -> settlement.
 - no provider-approved live sports data feed.
@@ -148,28 +162,24 @@ Safety blockers:
 
 ## Next Phase
 
-Next recommended phase after Phase D is reviewed and merged: Phase E, market detail page and trade ticket v1.
+Next recommended phase after Phase E is reviewed and merged: Phase F, internal beta order placement.
 
-Important: Phase E must remain display-first and disabled-state until a later reviewed trading gate explicitly enables internal beta order placement.
+Important: Phase F is high risk. Do not auto-merge it.
 
-Phase E should be display-only/disabled-state first:
+Phase F must include:
 
-- market detail outcome selection.
-- quantity input.
-- estimated cost.
-- max payout.
-- potential profit.
-- internal beta warning.
-- submit disabled unless a later reviewed trading mode explicitly enables it.
-- no order creation.
-- no balance mutation.
-- no ledger mutation.
-- no settlement behavior.
-- no funding behavior.
-- no live provider integration.
-- no live bot changes.
+- authenticated user requirement.
+- internal beta allowlist requirement.
+- explicit trading beta flag.
+- trading kill switch.
+- available balance check.
+- ledger order hold.
+- idempotency key handling.
+- no public trading.
+- no anonymous trading.
+- tests for blocked anonymous/non-allowlisted users, insufficient funds, idempotency, and hold creation.
 
-Use `docs/reviews/LIVE_EVENT_MARKET_GROUPS_UI_EVIDENCE.md` and the merged Phase D UI as the context for Phase E.
+Use `docs/reviews/LIVE_MARKET_TRADE_TICKET_V1_EVIDENCE.md` and the reviewed Phase E ticket gate as context for Phase F.
 
 ## Exact Next Prompt
 
@@ -182,20 +192,21 @@ C:\Users\hecto\Desktop\projects\PolyProj\poly
 Before GitHub CLI:
 $env:PATH = 'C:\Program Files\GitHub CLI;' + $env:PATH
 
-Continue the live sports prediction-market roadmap with Phase E only, but only after the Phase D PR has been reviewed, merged, and pulled into `dev`.
+Continue the live sports prediction-market roadmap with Phase F only, but only after the Phase E PR has been reviewed, merged, and pulled into `dev`.
 
 Branch:
-agent/live-market-trade-ticket-v1
+agent/internal-beta-order-placement
 
 PR title:
-product(trading): add market trade ticket v1
+trading(beta): add guarded internal beta order placement
 
 Use:
 docs/reviews/LIVE_SPORTS_MARKET_MODEL_DESIGN.md
 docs/reviews/LIVE_SPORTS_MARKET_SCHEMA_IMPLEMENTATION.md
 docs/reviews/LIVE_EVENT_MARKET_GROUPS_UI_EVIDENCE.md
+docs/reviews/LIVE_MARKET_TRADE_TICKET_V1_EVIDENCE.md
 
-Build a display-first market detail trade ticket v1 with disabled submit unless a reviewed trading mode is explicitly enabled.
+Build guarded internal beta order placement only if explicitly approved for this high-risk phase.
 
 Rules:
 - do not touch main.
@@ -208,18 +219,18 @@ Rules:
 - do not enable live bots.
 - do not modify GitHub workflows.
 - do not print secrets.
-- do not create real orders.
-- do not mutate balances.
-- do not create ledger entries.
-- do not start from a branch that does not include the merged Phase D UI.
+- do not enable public trading.
+- do not enable anonymous trading.
+- do not bypass allowlists.
+- do not start from a branch that does not include the reviewed Phase E ticket gate.
 
 Validation:
 - git diff --check
 - git diff --cached --check
 - npx tsc --noEmit --pretty false --incremental false
 - npm run test:ci
-- targeted market detail/trade ticket tests
+- targeted trading/order/ledger gate tests
 - npm run build if Next.js route/UI changes require it
 
-Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase E status.
+Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase F status.
 ```
