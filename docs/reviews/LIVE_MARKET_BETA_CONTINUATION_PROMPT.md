@@ -124,12 +124,23 @@ Phase J started:
 - Output: `docs/reviews/LIVE_SPORTS_PROVIDER_READINESS.md`
 - Runtime boundary: docs-only provider readiness plan; no external API integration, scraping, runtime behavior, package change, bot behavior, funding behavior, settlement behavior, or deployment behavior added.
 
+Phase J completed and merged:
+
+- PR: #241, `https://github.com/Shawn-ee/POLY/pull/241`
+- Merge commit: `e13b25d Merge pull request #241 from Shawn-ee/agent/live-sports-provider-readiness`
+
+Phase K started:
+
+- Branch: `agent/live-sports-ux-polish`
+- Output: `docs/reviews/LIVE_SPORTS_UX_POLISH_EVIDENCE.md`
+- Runtime boundary: display-only sports event UI polish; no order, ledger, funding, withdrawal, settlement, market resolution, provider, bot, package, or deployment behavior added.
+
 ## Current Dev Commit
 
-Current `dev` before Phase J branch:
+Current `dev` before Phase K branch:
 
 ```text
-be8a08e Merge pull request #240 from Shawn-ee/agent/admin-market-resolution-settlement
+e13b25d Merge pull request #241 from Shawn-ee/agent/live-sports-provider-readiness
 ```
 
 ## Open PRs Observed
@@ -257,7 +268,24 @@ Phase I GitHub validation:
 
 Phase J local validation:
 
-- Pending docs-only checks.
+- `git diff --check`: passed.
+- `git diff --cached --check`: passed.
+- secret-pattern scan on changed docs: only env-var names and safety wording, no values.
+
+Phase J GitHub validation:
+
+- GitHub CI Validate on PR #241: passed.
+
+Phase K local validation:
+
+- `git diff --check`: passed.
+- `npx prisma validate --schema=prisma/schema.prisma`: passed.
+- `npx prisma generate --schema=prisma/schema.prisma`: passed.
+- `npx jest --runInBand src/__tests__/live-sports-ux-polish.test.ts src/__tests__/live-sports-market-groups-ui.test.ts`: passed.
+- `npx tsc --noEmit --pretty false --incremental false`: passed.
+- `npm run test:ci`: passed.
+- `npm run build`: passed.
+- `git diff --cached --check`: passed.
 
 ## Current Capability Classification
 
@@ -281,7 +309,8 @@ Critical blockers:
 - portfolio open-order display evidence is merged.
 - admin event market management is merged.
 - admin settlement preview is merged.
-- Phase J live sports provider readiness is pending docs-only validation and PR.
+- live sports provider readiness is merged.
+- Phase K live sports UX polish is pending validation and PR.
 - no end-to-end deployed evidence from event -> order -> position -> resolution -> settlement.
 - no provider-approved live sports data feed.
 - no void/push/refund settlement path for sports props.
@@ -298,19 +327,19 @@ Safety blockers:
 
 ## Next Phase
 
-Next recommended phase after Phase J is merged: Phase K, live sports UX polish.
+Next recommended phase after Phase K is merged: Phase L, end-to-end internal live market evidence.
 
-Important: Phase J is docs-only and does not approve any external provider, scraping, live bot, or automatic settlement behavior.
+Important: Phase K is display-only UI polish and must not add order, ledger, funding, withdrawal, settlement, provider, or bot behavior.
 
-Phase J includes:
+Phase K includes:
 
-- current sports/reference data capability classification.
-- provider requirements and recommended env names.
-- stale data policy.
-- staged provider rollout plan.
-- what must remain disabled.
+- sports event market search.
+- market status summary.
+- clearer group tab counts.
+- sticky outcome preview for event-page selections.
+- display-only warnings and market-detail handoff.
 
-Use `docs/reviews/LIVE_SPORTS_PROVIDER_READINESS.md` as context for Phase K after Phase J merges.
+Use `docs/reviews/LIVE_SPORTS_UX_POLISH_EVIDENCE.md` as context for Phase L after Phase K merges.
 
 ## Exact Next Prompt
 
@@ -323,13 +352,13 @@ C:\Users\hecto\Desktop\projects\PolyProj\poly
 Before GitHub CLI:
 $env:PATH = 'C:\Program Files\GitHub CLI;' + $env:PATH
 
-Continue the live sports prediction-market roadmap with Phase K only, but only after the Phase J PR has been reviewed, merged, and pulled into `dev`.
+Continue the live sports prediction-market roadmap with Phase L only, but only after the Phase K PR has been reviewed, merged, and pulled into `dev`.
 
 Branch:
-agent/live-sports-ux-polish
+agent/internal-live-market-e2e-evidence
 
 PR title:
-ui(product): polish live sports event trading experience
+docs(beta): add internal live market e2e evidence
 
 Use:
 docs/reviews/LIVE_SPORTS_MARKET_MODEL_DESIGN.md
@@ -341,8 +370,9 @@ docs/reviews/PORTFOLIO_OPEN_ORDERS_POSITIONS_EVIDENCE.md
 docs/reviews/ADMIN_EVENT_MARKET_MANAGEMENT_EVIDENCE.md
 docs/reviews/MARKET_RESOLUTION_SETTLEMENT_EVIDENCE.md
 docs/reviews/LIVE_SPORTS_PROVIDER_READINESS.md
+docs/reviews/LIVE_SPORTS_UX_POLISH_EVIDENCE.md
 
-Polish the live sports event trading experience as display-only UI work.
+Create evidence for the current internal live market path from event discovery through grouped markets, market detail ticket, guarded order placement, portfolio display, admin market management, and settlement-preview readiness.
 
 Rules:
 - do not touch main.
@@ -361,15 +391,14 @@ Rules:
 - do not add public market resolution.
 - do not add external provider integration.
 - do not scrape.
-- do not start from a branch that does not include merged Phase J provider readiness docs.
+- do not start from a branch that does not include merged Phase K sports UX polish.
 
 Validation:
 - git diff --check
 - git diff --cached --check
 - npx tsc --noEmit --pretty false --incremental false
 - npm run test:ci
-- targeted UI tests
-- npm run build if Next.js route/UI changes require it
+- targeted evidence/doc checks
 
-Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase K status.
+Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase L status.
 ```
