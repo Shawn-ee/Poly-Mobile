@@ -18,7 +18,7 @@ export async function GET(_request: Request, context: Ctx) {
 
   const markets = await prisma.market.findMany({
     where: { eventId: event.id, visibility: "PUBLIC", isListed: true },
-    orderBy: [{ marketType: "asc" }, { createdAt: "asc" }],
+    orderBy: [{ marketGroupKey: "asc" }, { displayOrder: "asc" }, { marketType: "asc" }, { createdAt: "asc" }],
     include: marketReadInclude,
   });
 

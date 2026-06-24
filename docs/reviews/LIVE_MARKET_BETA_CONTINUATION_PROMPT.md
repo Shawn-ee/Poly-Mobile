@@ -31,12 +31,25 @@ Phase C completed locally and opened for review:
 - Migration: `prisma/migrations/20260624112446_live_sports_market_schema/migration.sql`
 - Review rule: leave open because this includes Prisma schema and migration work.
 
+Phase C completed and merged:
+
+- PR: #234, `https://github.com/Shawn-ee/POLY/pull/234`
+- Merge commit: `442ab37 Merge pull request #234 from Shawn-ee/agent/live-sports-market-schema`
+
+Phase D completed locally and ready for PR:
+
+- Branch: `agent/live-event-market-groups-ui`
+- PR: #235, `https://github.com/Shawn-ee/POLY/pull/235`
+- Title: `product(events): add grouped live market event detail UI`
+- Output: `docs/reviews/LIVE_EVENT_MARKET_GROUPS_UI_EVIDENCE.md`
+- Runtime boundary: display-only/read-only event page; no order, ledger, funding, settlement, resolution, provider, or bot behavior added.
+
 ## Current Dev Commit
 
-Current `dev` before Phase C branch:
+Current `dev` before Phase D branch:
 
 ```text
-e9664fd Merge pull request #233 from Shawn-ee/agent/live-market-beta-continuation-after-phase-b
+442ab37 Merge pull request #234 from Shawn-ee/agent/live-sports-market-schema
 ```
 
 ## Open PRs Observed
@@ -89,6 +102,17 @@ Phase C validation:
 
 No funding, wallet, withdrawal, ledger, trading, settlement, admin auth, workflow, deployment, or bot behavior changed in Phase C.
 
+Phase D local validation:
+
+- `git diff --check`: passed.
+- `npx prisma generate --schema=prisma/schema.prisma`: passed.
+- `npx prisma validate --schema=prisma/schema.prisma`: passed.
+- `npx jest --runInBand src/__tests__/live-sports-market-groups-ui.test.ts src/__tests__/sports.event-market-model.test.ts`: passed.
+- `npx tsc --noEmit --pretty false --incremental false`: passed.
+- `npm run test:ci`: passed.
+- `npm run build`: passed.
+- `git diff --cached --check`: passed.
+
 ## Current Capability Classification
 
 - Stage 0 controlled internal beta setup: ready with warnings.
@@ -105,7 +129,7 @@ Critical blockers:
 
 - grouped market/prop schema exists in the Phase C PR but is not merged until review.
 - structured fields for line, period, unit, group, participant, resolution evidence, and outcome result exist in the Phase C PR but are not deployed until review/merge/migration.
-- no display-only event detail UI using the proposed stable grouped market contract.
+- Phase D adds display-only event detail UI using the grouped market contract, pending PR review/merge.
 - no explicit user-facing internal trading beta gate.
 - no end-to-end deployed evidence from event -> order -> position -> resolution -> settlement.
 - no provider-approved live sports data feed.
@@ -124,24 +148,28 @@ Safety blockers:
 
 ## Next Phase
 
-Next recommended phase after Phase C is reviewed, merged, and migrated: Phase D, event detail page with market groups.
+Next recommended phase after Phase D is reviewed and merged: Phase E, market detail page and trade ticket v1.
 
-Important: Do not begin Phase D from `dev` until the Phase C schema PR is reviewed and merged.
+Important: Phase E must remain display-first and disabled-state until a later reviewed trading gate explicitly enables internal beta order placement.
 
-Phase D should be display-only:
+Phase E should be display-only/disabled-state first:
 
-- event header with teams, score/status/time if available.
-- grouped market sections for Main, Spread, Total, Player Props, Team Props, Period Props, Specials, and Live.
-- market cards with title, line, outcomes, prices/probabilities if already available, volume/liquidity if already available, and status badges.
-- loading, error, empty, suspended, closed, and resolved states.
-- mobile layout.
-- no real order placement.
+- market detail outcome selection.
+- quantity input.
+- estimated cost.
+- max payout.
+- potential profit.
+- internal beta warning.
+- submit disabled unless a later reviewed trading mode explicitly enables it.
+- no order creation.
+- no balance mutation.
+- no ledger mutation.
 - no settlement behavior.
 - no funding behavior.
 - no live provider integration.
 - no live bot changes.
 
-Use `docs/reviews/LIVE_SPORTS_MARKET_SCHEMA_IMPLEMENTATION.md` and the merged Phase C schema as the contract for Phase D.
+Use `docs/reviews/LIVE_EVENT_MARKET_GROUPS_UI_EVIDENCE.md` and the merged Phase D UI as the context for Phase E.
 
 ## Exact Next Prompt
 
@@ -154,19 +182,20 @@ C:\Users\hecto\Desktop\projects\PolyProj\poly
 Before GitHub CLI:
 $env:PATH = 'C:\Program Files\GitHub CLI;' + $env:PATH
 
-Continue the live sports prediction-market roadmap with Phase D only, but only after the Phase C PR has been reviewed, merged, and pulled into `dev`.
+Continue the live sports prediction-market roadmap with Phase E only, but only after the Phase D PR has been reviewed, merged, and pulled into `dev`.
 
 Branch:
-agent/live-event-market-groups-ui
+agent/live-market-trade-ticket-v1
 
 PR title:
-product(events): add grouped live market event detail UI
+product(trading): add market trade ticket v1
 
 Use:
 docs/reviews/LIVE_SPORTS_MARKET_MODEL_DESIGN.md
 docs/reviews/LIVE_SPORTS_MARKET_SCHEMA_IMPLEMENTATION.md
+docs/reviews/LIVE_EVENT_MARKET_GROUPS_UI_EVIDENCE.md
 
-Build a display-only event detail page showing grouped markets and props under one sports event.
+Build a display-first market detail trade ticket v1 with disabled submit unless a reviewed trading mode is explicitly enabled.
 
 Rules:
 - do not touch main.
@@ -179,15 +208,18 @@ Rules:
 - do not enable live bots.
 - do not modify GitHub workflows.
 - do not print secrets.
-- do not start from a branch that does not include the merged Phase C schema.
+- do not create real orders.
+- do not mutate balances.
+- do not create ledger entries.
+- do not start from a branch that does not include the merged Phase D UI.
 
 Validation:
 - git diff --check
 - git diff --cached --check
 - npx tsc --noEmit --pretty false --incremental false
 - npm run test:ci
-- targeted event detail/grouped market UI tests
+- targeted market detail/trade ticket tests
 - npm run build if Next.js route/UI changes require it
 
-Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase D status.
+Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase E status.
 ```

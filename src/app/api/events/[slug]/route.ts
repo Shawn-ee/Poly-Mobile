@@ -14,7 +14,10 @@ export async function GET(_request: Request, context: Ctx) {
       _count: {
         select: { markets: true },
       },
-      markets: { include: marketReadInclude, orderBy: [{ createdAt: "asc" }] },
+      markets: {
+        include: marketReadInclude,
+        orderBy: [{ marketGroupKey: "asc" }, { displayOrder: "asc" }, { createdAt: "asc" }],
+      },
     },
   });
 
