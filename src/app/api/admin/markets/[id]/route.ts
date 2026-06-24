@@ -1,7 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/admin";
 import { assertMarketRoutingInvariant } from "@/lib/marketRouting";
+
+const stringField = (value: unknown) =>
+  typeof value === "string" && value.trim() ? value.trim() : null;
+
+const numberField = (value: unknown) => {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value === "string" && value.trim()) {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) return parsed;
+  }
+  return null;
+};
+
+const decimalField = (value: unknown) => {
+  const parsed = numberField(value);
+  return parsed === null ? null : new Prisma.Decimal(parsed);
+};
+
+const intField = (value: unknown) => {
+  const parsed = numberField(value);
+  return parsed === null ? null : Math.trunc(parsed);
+};
+
+const hasOwn = (value: Record<string, unknown>, key: string) =>
+  Object.prototype.hasOwnProperty.call(value, key);
 
 export async function GET(
   _request: NextRequest,
@@ -46,9 +72,28 @@ export async function GET(
       description: market.description,
       resolveTime: market.resolveTime,
       categoryId: market.categoryId,
+      eventId: market.eventId,
+      marketGroupKey: market.marketGroupKey,
+      marketGroupTitle: market.marketGroupTitle,
+      marketType: market.marketType,
+      displayOrder: market.displayOrder,
+      line: market.line?.toString() ?? null,
+      unit: market.unit,
+      period: market.period,
+      participantType: market.participantType,
+      participantName: market.participantName,
+      participantId: market.participantId,
+      propCategory: market.propCategory,
+      rulesText: market.rulesText,
+      status: market.status,
       outcomes: market.outcomes.map((outcome) => ({
         id: outcome.id,
         name: outcome.name,
+        label: outcome.label,
+        code: outcome.code,
+        side: outcome.side,
+        status: outcome.status,
+        resolvedResult: outcome.resolvedResult,
         slug: outcome.slug,
         isActive: outcome.isActive,
         displayOrder: outcome.displayOrder,
@@ -70,28 +115,55 @@ export async function PATCH(
   }
   const { id } = await context.params;
   const body = await request.json().catch(() => null);
+  const bodyRecord =
+    body && typeof body === "object" && !Array.isArray(body)
+      ? (body as Record<string, unknown>)
+      : {};
 
-  const title = typeof body?.title === "string" ? body.title.trim() : null;
+  const title = typeof bodyRecord.title === "string" ? bodyRecord.title.trim() : null;
   const description =
-    typeof body?.description === "string" ? body.description.trim() : null;
+    typeof bodyRecord.description === "string" ? bodyRecord.description.trim() : null;
   const resolveTimeRaw =
-    typeof body?.resolveTime === "string" ? body.resolveTime : null;
+    typeof bodyRecord.resolveTime === "string" ? bodyRecord.resolveTime : null;
   const resolveTime = resolveTimeRaw ? new Date(resolveTimeRaw) : null;
   const categoryId =
-    typeof body?.categoryId === "string" ? body.categoryId.trim() : null;
+    typeof bodyRecord.categoryId === "string" ? bodyRecord.categoryId.trim() : null;
+  const eventId = stringField(bodyRecord.eventId);
+  const marketGroupKey = stringField(bodyRecord.marketGroupKey);
+  const marketGroupTitle = stringField(bodyRecord.marketGroupTitle);
+  const marketType = stringField(bodyRecord.marketType);
+  const displayOrder = intField(bodyRecord.displayOrder);
+  const line = decimalField(bodyRecord.line);
+  const unit = stringField(bodyRecord.unit);
+  const period = stringField(bodyRecord.period);
+  const participantType = stringField(bodyRecord.participantType);
+  const participantName = stringField(bodyRecord.participantName);
+  const participantId = stringField(bodyRecord.participantId);
+  const propCategory = stringField(bodyRecord.propCategory);
+  const rulesText = stringField(bodyRecord.rulesText);
   const visibilityInput =
-    body?.visibility === "PUBLIC" || body?.visibility === "PRIVATE"
-      ? body.visibility
+    bodyRecord.visibility === "PUBLIC" || bodyRecord.visibility === "PRIVATE"
+      ? bodyRecord.visibility
       : null;
   const mechanismInput =
-    body?.mechanism === "ORDERBOOK" ||
-    body?.mechanism === "POOL"
-      ? body.mechanism
+    bodyRecord.mechanism === "ORDERBOOK" ||
+    bodyRecord.mechanism === "POOL"
+      ? bodyRecord.mechanism
       : null;
 
   const market = await prisma.market.findUnique({ where: { id } });
   if (!market) {
     return NextResponse.json({ error: "Market not found." }, { status: 404 });
+  }
+
+  if (eventId) {
+    const eventRecord = await prisma.event.findUnique({
+      where: { id: eventId },
+      select: { id: true },
+    });
+    if (!eventRecord) {
+      return NextResponse.json({ error: "Invalid event." }, { status: 400 });
+    }
   }
 
   const nextVisibility = visibilityInput ?? market.visibility;
@@ -126,11 +198,25 @@ export async function PATCH(
     data: {
       ...(title ? { title } : {}),
       ...(description ? { description } : {}),
-      ...(categoryId ? { categoryId } : { categoryId: null }),
+      ...(hasOwn(bodyRecord, "categoryId") ? { categoryId } : {}),
+      ...(hasOwn(bodyRecord, "eventId") ? { eventId } : {}),
+      ...(hasOwn(bodyRecord, "marketGroupKey") ? { marketGroupKey } : {}),
+      ...(hasOwn(bodyRecord, "marketGroupTitle") ? { marketGroupTitle } : {}),
+      ...(marketType ? { marketType } : {}),
+      ...(displayOrder !== null ? { displayOrder } : {}),
+      ...(hasOwn(bodyRecord, "line") ? { line } : {}),
+      ...(hasOwn(bodyRecord, "unit") ? { unit } : {}),
+      ...(hasOwn(bodyRecord, "period") ? { period } : {}),
+      ...(hasOwn(bodyRecord, "participantType") ? { participantType } : {}),
+      ...(hasOwn(bodyRecord, "participantName") ? { participantName } : {}),
+      ...(hasOwn(bodyRecord, "participantId") ? { participantId } : {}),
+      ...(hasOwn(bodyRecord, "propCategory") ? { propCategory } : {}),
+      ...(hasOwn(bodyRecord, "rulesText") ? { rulesText } : {}),
       ...(visibilityInput ? { visibility: visibilityInput } : {}),
       ...(mechanismInput ? { mechanism: mechanismInput } : {}),
-      resolveTime:
-        resolveTime && !Number.isNaN(resolveTime.getTime()) ? resolveTime : null,
+      ...(hasOwn(bodyRecord, "resolveTime")
+        ? { resolveTime: resolveTime && !Number.isNaN(resolveTime.getTime()) ? resolveTime : null }
+        : {}),
     },
   });
 
