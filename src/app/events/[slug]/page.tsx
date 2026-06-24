@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import MarketCard from "@/components/MarketCard";
-import GroupedTradeTicket, { type SelectedTrade } from "@/components/GroupedTradeTicket";
 import { formatDateTime, formatLeague, formatSport, formatStatus } from "@/components/sports/SportsEventCard";
 import Badge from "@/components/ui/Badge";
 import Card from "@/components/ui/Card";
@@ -12,6 +11,26 @@ import OutcomeButton from "@/components/ui/OutcomeButton";
 import PageContainer from "@/components/ui/PageContainer";
 import { BetaNotice, PageHeader, SectionHeader } from "@/components/ui/PageHeader";
 import { EmptyState, ErrorState, LoadingState } from "@/components/ui/States";
+import {
+  formatSportsMarketLine,
+  getLiveSportsMarketGroupKey,
+  groupLiveSportsMarkets,
+} from "@/lib/liveSportsMarketGroups";
+
+type SelectedTrade = {
+  marketId: string;
+  yesOutcomeId: string | null;
+  noOutcomeId: string | null;
+  outcomeLabel: string;
+  tradeOutcome: "YES" | "NO";
+  buyYesPrice: number | null;
+  buyNoPrice: number | null;
+  bestBid: number | null;
+  bestAsk: number | null;
+  plannedBotBid: number | null;
+  plannedBotAsk: number | null;
+  probability: number | null;
+};
 
 type EventSummary = {
   id: string;
@@ -26,11 +45,18 @@ type EventSummary = {
   awayTeamName: string | null;
   startTime: string | null;
   status: string | null;
+  liveStatus: string | null;
+  period: string | null;
+  clock: string | null;
+  homeScore: number | null;
+  awayScore: number | null;
   source: string | null;
   externalEventId: string | null;
   externalSlug: string | null;
+  venue: string | null;
   image: string | null;
   icon: string | null;
+  sourceUpdatedAt: string | null;
   marketCount: number;
   activeMarketCount: number;
   closedMarketCount: number;
@@ -45,6 +71,18 @@ type EventMarket = {
   title: string;
   description: string;
   status: string;
+  marketGroupKey?: string | null;
+  marketGroupTitle?: string | null;
+  displayOrder?: number | null;
+  line?: string | null;
+  unit?: string | null;
+  period?: string | null;
+  participantType?: string | null;
+  participantName?: string | null;
+  participantId?: string | null;
+  propCategory?: string | null;
+  rulesText?: string | null;
+  sourceUpdatedAt?: string | null;
   marketType?: string | null;
   visibility: "PUBLIC" | "PRIVATE";
   mechanism: "ORDERBOOK" | "POOL";
@@ -57,6 +95,10 @@ type EventMarket = {
     name: string;
     label?: string | null;
     code?: string | null;
+    side?: string | null;
+    status?: string | null;
+    displayOrder?: number | null;
+    resolvedResult?: string | null;
     price?: number | null;
     bestBid?: number | null;
     bestAsk?: number | null;
@@ -253,13 +295,6 @@ export default function EventPage() {
           selectedTrade={selectedTrade}
           onSelectTrade={setSelectedTrade}
           onCloseTrade={() => setSelectedTrade(null)}
-          onRefreshGrouped={async () => {
-            const groupedRes = await fetch(`/api/events/${encodeURIComponent(slug)}/grouped-markets`);
-            const groupedData = await groupedRes.json().catch(() => null);
-            if (groupedRes.ok && groupedData) {
-              setGrouped(groupedData as GroupedEventResponse);
-            }
-          }}
         />
       </PageContainer>
     );
@@ -368,7 +403,6 @@ function GroupedEventView({
   selectedTrade,
   onSelectTrade,
   onCloseTrade,
-  onRefreshGrouped,
 }: {
   grouped: GroupedEventResponse;
   selectedRowId: string;
@@ -376,7 +410,6 @@ function GroupedEventView({
   selectedTrade: SelectedTrade | null;
   onSelectTrade: (trade: SelectedTrade) => void;
   onCloseTrade: () => void;
-  onRefreshGrouped: () => Promise<void>;
 }) {
   return (
     <>
@@ -530,10 +563,9 @@ function GroupedEventView({
 
         <div className="sticky top-6 h-fit">
           {selectedTrade ? (
-            <GroupedTradeTicket
+            <GroupedOutcomePreview
               trade={selectedTrade}
               onClose={onCloseTrade}
-              onOrderPlaced={onRefreshGrouped}
             />
           ) : (
             <EmptyState title="Select an outcome" description="Choose Yes or No on an outcome to open the trade ticket." />
@@ -541,6 +573,80 @@ function GroupedEventView({
         </div>
       </div>
     </>
+  );
+}
+
+function GroupedOutcomePreview({ trade, onClose }: { trade: SelectedTrade; onClose: () => void }) {
+  const price =
+    trade.tradeOutcome === "YES"
+      ? trade.bestAsk ?? trade.plannedBotAsk ?? trade.buyYesPrice ?? trade.probability
+      : trade.buyNoPrice ??
+        (trade.bestBid != null
+          ? 1 - trade.bestBid
+          : trade.buyYesPrice != null
+            ? 1 - trade.buyYesPrice
+            : trade.probability != null
+              ? 1 - trade.probability
+              : null);
+  const exampleStake = 10;
+  const shares = price && price > 0 ? exampleStake / price : null;
+  const maxPayout = shares;
+  const maxProfit = maxPayout == null ? null : Math.max(maxPayout - exampleStake, 0);
+
+  return (
+    <Card className="p-5">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Outcome preview</div>
+          <h3 className="mt-1 text-lg font-semibold text-[var(--poly-text)]">{trade.outcomeLabel}</h3>
+          <div className="mt-2">
+            <Badge tone={trade.tradeOutcome === "YES" ? "positive" : "negative"}>Selected {trade.tradeOutcome}</Badge>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="rounded-full p-1.5 text-[var(--poly-muted)] transition hover:bg-[var(--poly-surface-muted)] hover:text-[var(--poly-text)]"
+          aria-label="Close outcome preview"
+        >
+          x
+        </button>
+      </div>
+
+      <div className="mt-4 space-y-2 rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3 text-sm">
+        <div className="flex items-center justify-between">
+          <span className="text-[var(--poly-muted)]">Display price</span>
+          <span className="font-semibold text-[var(--poly-text)]">{formatPriceShort(price)}</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-[var(--poly-muted)]">Example stake</span>
+          <span className="font-semibold text-[var(--poly-text)]">$10.00</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-[var(--poly-muted)]">Est. shares</span>
+          <span className="font-semibold text-[var(--poly-text)]">{shares == null ? "--" : shares.toFixed(2)}</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-[var(--poly-muted)]">Max payout</span>
+          <span className="font-semibold text-[var(--poly-text)]">{maxPayout == null ? "--" : `$${maxPayout.toFixed(2)}`}</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-[var(--poly-muted)]">Max profit</span>
+          <span className="font-semibold text-emerald-700">{maxProfit == null ? "--" : `$${maxProfit.toFixed(2)}`}</span>
+        </div>
+      </div>
+
+      <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+        Order submission is not enabled from this event page in Phase D.
+      </div>
+      <button
+        type="button"
+        disabled
+        className="mt-4 w-full cursor-not-allowed rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] px-4 py-3 text-sm font-semibold text-[var(--poly-muted)]"
+      >
+        Trading disabled
+      </button>
+    </Card>
   );
 }
 
@@ -555,19 +661,12 @@ function SportsEventView({
   marketGroup: string;
   onMarketGroupChange: (group: string) => void;
 }) {
-  const filteredMarkets = useMemo(() => {
-    if (marketGroup === "all") return markets;
-    return markets.filter((market) => getSportsMarketGroup(market.marketType) === marketGroup);
-  }, [marketGroup, markets]);
-
-  const groupCounts = useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const market of markets) {
-      const group = getSportsMarketGroup(market.marketType);
-      counts.set(group, (counts.get(group) ?? 0) + 1);
-    }
-    return counts;
-  }, [markets]);
+  const [selectedOutcomeId, setSelectedOutcomeId] = useState<string | null>(null);
+  const groupedMarkets = useMemo(() => groupLiveSportsMarkets(markets), [markets]);
+  const visibleGroups = groupedMarkets.filter((group) => group.markets.length > 0);
+  const activeGroups =
+    marketGroup === "all" ? visibleGroups : visibleGroups.filter((group) => group.key === marketGroup);
+  const scoreAvailable = event.homeScore != null || event.awayScore != null;
 
   return (
     <PageContainer>
@@ -594,6 +693,12 @@ function SportsEventView({
             {event.description ? (
               <p className="mt-3 text-base text-[var(--poly-muted)]">{event.description}</p>
             ) : null}
+            <div className="mt-4 flex flex-wrap gap-2">
+              {event.liveStatus ? <Badge tone="primary">{formatStatus(event.liveStatus)}</Badge> : null}
+              {event.period ? <Badge>{event.period.replaceAll("_", " ")}</Badge> : null}
+              {event.clock ? <Badge tone="teal">{event.clock}</Badge> : null}
+              {event.venue ? <Badge>{event.venue}</Badge> : null}
+            </div>
           </div>
           <div className="grid gap-2 text-sm text-[var(--poly-text)] sm:grid-cols-2 lg:min-w-80">
             <div className="rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3">
@@ -608,11 +713,11 @@ function SportsEventView({
         </div>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
-          <TeamPanel label="Home" name={event.homeTeamName ?? "Home team"} />
-          <div className="hidden text-center text-xs font-semibold uppercase text-neutral-400 sm:block">
-            vs
+          <TeamPanel label="Home" name={event.homeTeamName ?? "Home team"} score={event.homeScore} />
+          <div className="text-center text-xs font-semibold uppercase text-neutral-400">
+            {scoreAvailable ? "score" : "vs"}
           </div>
-          <TeamPanel label="Away" name={event.awayTeamName ?? "Away team"} alignRight />
+          <TeamPanel label="Away" name={event.awayTeamName ?? "Away team"} score={event.awayScore} alignRight />
         </div>
       </section>
 
@@ -626,13 +731,11 @@ function SportsEventView({
         />
 
         <div className="mb-6 flex flex-wrap gap-2">
-          {[
-            { key: "all", label: "All", count: markets.length },
-            { key: "match", label: "Match", count: groupCounts.get("match") ?? 0 },
-            { key: "goals", label: "Goals", count: groupCounts.get("goals") ?? 0 },
-            { key: "qualify", label: "Qualify", count: groupCounts.get("qualify") ?? 0 },
-            { key: "score", label: "Score", count: groupCounts.get("score") ?? 0 },
-          ].map((tab) => (
+          {[{ key: "all", label: "All", count: markets.length }, ...groupedMarkets.map((group) => ({
+            key: group.key,
+            label: group.label,
+            count: group.markets.length,
+          }))].map((tab) => (
             <button
               key={tab.key}
               type="button"
@@ -648,12 +751,29 @@ function SportsEventView({
           ))}
         </div>
 
-        {filteredMarkets.length === 0 ? (
+        {markets.length === 0 ? (
+          <EmptyState title="Markets for this event are not ready yet" description="Check back when event markets are available." />
+        ) : activeGroups.length === 0 ? (
           <EmptyState title="No markets in this group" description="Choose another event market filter." />
         ) : (
-          <div className="space-y-4">
-            {filteredMarkets.map((market) => (
-              <SportsMarketPanel key={market.id} market={market} />
+          <div className="space-y-8">
+            {activeGroups.map((group) => (
+              <section key={group.key} className="space-y-4">
+                <SectionHeader
+                  title={group.label}
+                  description={`${group.markets.length} ${group.markets.length === 1 ? "market" : "markets"} available in this section.`}
+                />
+                <div className="space-y-4">
+                  {group.markets.map((market) => (
+                    <SportsMarketPanel
+                      key={market.id}
+                      market={market}
+                      selectedOutcomeId={selectedOutcomeId}
+                      onSelectOutcome={setSelectedOutcomeId}
+                    />
+                  ))}
+                </div>
+              </section>
             ))}
           </div>
         )}
@@ -665,21 +785,44 @@ function SportsEventView({
 function TeamPanel({
   label,
   name,
+  score,
   alignRight,
 }: {
   label: string;
   name: string;
+  score?: number | null;
   alignRight?: boolean;
 }) {
   return (
     <div className={`rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-4 ${alignRight ? "sm:text-right" : ""}`}>
       <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">{label}</div>
-      <div className="mt-1 text-2xl font-semibold text-[var(--poly-text)]">{name}</div>
+      <div className="mt-1 flex items-end justify-between gap-3">
+        <div className="min-w-0 text-2xl font-semibold text-[var(--poly-text)]">{name}</div>
+        {score != null ? <div className="text-3xl font-semibold text-[var(--poly-primary)]">{score}</div> : null}
+      </div>
     </div>
   );
 }
 
-function SportsMarketPanel({ market }: { market: EventMarket }) {
+function SportsMarketPanel({
+  market,
+  selectedOutcomeId,
+  onSelectOutcome,
+}: {
+  market: EventMarket;
+  selectedOutcomeId: string | null;
+  onSelectOutcome: (outcomeId: string) => void;
+}) {
+  const marketLine = formatSportsMarketLine({
+    line: market.line,
+    unit: market.unit,
+    period: market.period,
+    participantName: market.participantName,
+    propCategory: market.propCategory,
+  });
+  const groupLabel = getLiveSportsMarketGroupKey(market).replaceAll("_", " ");
+  const isInactive = ["PAUSED", "CLOSED", "RESOLVED", "CANCELED"].includes(market.status);
+
   return (
     <Card className="p-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -688,29 +831,45 @@ function SportsMarketPanel({ market }: { market: EventMarket }) {
           {market.description ? (
             <p className="mt-1 text-sm text-[var(--poly-muted)]">{market.description}</p>
           ) : null}
+          {marketLine ? <p className="mt-2 text-sm font-medium text-[var(--poly-text)]">{marketLine}</p> : null}
+          {market.rulesText ? <p className="mt-2 text-xs text-[var(--poly-muted)]">{market.rulesText}</p> : null}
         </div>
         <div className="flex flex-wrap gap-2">
+          <Badge>{market.marketGroupTitle ?? groupLabel}</Badge>
           <Badge>{formatMarketType(market.marketType)}</Badge>
-          <Badge tone="primary">{formatStatus(market.status)}</Badge>
+          <Badge tone={isInactive ? "warning" : "primary"}>{formatStatus(market.status)}</Badge>
         </div>
       </div>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {market.outcomes.map((outcome) => {
           const price = outcome.price ?? market.pricesByOutcome?.[outcome.id] ?? null;
+          const selected = selectedOutcomeId === outcome.id;
+          const outcomeUnavailable = isInactive || outcome.status === "inactive";
           return (
-            <Link
+            <button
               key={outcome.id}
-              href={`/markets/${market.id}?outcomeId=${outcome.id}`}
-              className="rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-4 transition hover:border-[var(--poly-primary)] hover:bg-white"
+              type="button"
+              onClick={() => onSelectOutcome(outcome.id)}
+              disabled={outcomeUnavailable}
+              className={`rounded-lg border p-4 text-left transition ${
+                selected
+                  ? "border-[var(--poly-primary)] bg-white shadow-[var(--poly-shadow-sm)]"
+                  : "border-[var(--poly-border)] bg-[var(--poly-surface-muted)] hover:border-[var(--poly-primary)] hover:bg-white"
+              } ${outcomeUnavailable ? "cursor-not-allowed opacity-60" : ""}`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <div className="truncate text-sm font-semibold text-[var(--poly-text)]">
                     {outcome.label ?? outcome.name}
                   </div>
-                  {outcome.code ? (
-                    <div className="mt-1 text-xs uppercase text-[var(--poly-muted)]">{outcome.code}</div>
+                  {outcome.side ?? outcome.code ? (
+                    <div className="mt-1 text-xs uppercase text-[var(--poly-muted)]">
+                      {[outcome.side, outcome.code].filter(Boolean).join(" / ")}
+                    </div>
+                  ) : null}
+                  {outcome.resolvedResult ? (
+                    <div className="mt-1 text-xs uppercase text-[var(--poly-muted)]">{outcome.resolvedResult}</div>
                   ) : null}
                 </div>
                 <div className="text-right">
@@ -720,30 +879,21 @@ function SportsMarketPanel({ market }: { market: EventMarket }) {
                   </div>
                 </div>
               </div>
-            </Link>
+              <div className="mt-3 text-xs font-semibold text-[var(--poly-muted)]">
+                {outcomeUnavailable ? "Not available" : selected ? "Selected for preview" : "Preview only"}
+              </div>
+            </button>
           );
         })}
       </div>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--poly-border)] pt-4 text-xs text-[var(--poly-muted)]">
+        <span>Event-page trading is disabled in this display-only phase.</span>
+        <Link href={`/markets/${market.id}`} className="font-semibold text-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]">
+          Open market detail
+        </Link>
+      </div>
     </Card>
   );
-}
-
-function getSportsMarketGroup(marketType: string | null | undefined) {
-  switch (marketType) {
-    case "match_winner_1x2":
-    case "both_teams_to_score":
-    case "yes_no":
-    case "generic":
-      return "match";
-    case "total_goals":
-      return "goals";
-    case "team_to_qualify":
-      return "qualify";
-    case "correct_score":
-      return "score";
-    default:
-      return "match";
-  }
 }
 
 function formatMarketType(value: string | null | undefined) {
