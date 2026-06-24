@@ -160,12 +160,27 @@ Phase M started:
 - Also updated: `docs/deployment.md`
 - Runtime boundary: docs-only server deployment guidance; no deployment, runtime behavior, env value, order, ledger, funding, withdrawal, settlement, market resolution, provider, bot, package, or workflow change.
 
+Phase M completed and merged:
+
+- PR: #244, `https://github.com/Shawn-ee/POLY/pull/244`
+- Merge commit: `2a240c9 Merge pull request #244 from Shawn-ee/agent/live-market-server-deployment-update`
+
+Phase N started:
+
+- Branch: `agent/live-market-beta-final-readiness`
+- Outputs:
+  - `docs/reviews/LIVE_MARKET_BETA_FINAL_READINESS_REPORT.md`
+  - `docs/reviews/LIVE_MARKET_BETA_BLOCKERS.md`
+  - `docs/reviews/LIVE_MARKET_BETA_GO_NO_GO.md`
+  - `docs/reviews/LIVE_MARKET_BETA_OPERATOR_RUNBOOK.md`
+- Runtime boundary: docs-only final readiness decision; no deployment, runtime behavior, env value, order, ledger, funding, withdrawal, settlement, market resolution, provider, bot, package, or workflow change.
+
 ## Current Dev Commit
 
-Current `dev` before Phase M branch:
+Current `dev` before Phase N branch:
 
 ```text
-c4c4f4b Merge pull request #243 from Shawn-ee/agent/internal-live-market-e2e-evidence
+2a240c9 Merge pull request #244 from Shawn-ee/agent/live-market-server-deployment-update
 ```
 
 ## Open PRs Observed
@@ -332,6 +347,16 @@ Phase M local validation:
 - secret-pattern scan on changed docs: only env-var names and safety wording, no values.
 - `git diff --cached --check`: passed.
 
+Phase M GitHub validation:
+
+- GitHub CI Validate on PR #244: passed.
+
+Phase N local validation:
+
+- `git diff --check`: passed.
+- secret-pattern scan on changed docs: only safety wording, no values.
+- `git diff --cached --check`: passed.
+
 ## Current Capability Classification
 
 - Stage 0 controlled internal beta setup: ready with warnings.
@@ -357,7 +382,8 @@ Critical blockers:
 - live sports provider readiness is merged.
 - live sports UX polish is merged.
 - internal live market evidence is merged.
-- Phase M server deployment update is pending docs-only validation and PR.
+- server deployment update is merged.
+- Phase N final readiness report is pending docs-only validation and PR.
 - no end-to-end deployed evidence from event -> order -> position -> resolution -> settlement.
 - no provider-approved live sports data feed.
 - no void/push/refund settlement path for sports props.
@@ -374,20 +400,18 @@ Safety blockers:
 
 ## Next Phase
 
-Next recommended phase after Phase M is merged: Phase N, final live market beta readiness report.
+Next recommended step after Phase N is merged: owner-controlled deployment with safe defaults and a limited internal drill, or a new reviewed implementation phase for void/push/refund settlement/provider integration.
 
-Important: Phase M is docs-only deployment guidance and does not deploy, change env values, approve public beta, approve automatic settlement, enable public trading/funding, enable provider sync, or enable live bots.
+Important: Phase N is docs-only final readiness reporting and does not deploy, change env values, approve public beta, approve automatic settlement, enable public trading/funding, enable provider sync, or enable live bots.
 
-Phase M includes:
+Phase N includes:
 
-- server migration deploy command.
-- safe trading/funding/bot first-boot flags.
-- controlled internal trading drill mode.
-- emergency disable.
-- rollback.
-- post-deploy smoke.
+- final readiness report.
+- blocker list.
+- go/no-go decision.
+- operator runbook.
 
-Use `docs/reviews/LIVE_MARKET_BETA_SERVER_DEPLOYMENT_UPDATE.md` as context for Phase N after Phase M merges.
+Use all live market beta evidence docs before any future implementation or deployment phase.
 
 ## Exact Next Prompt
 
@@ -400,13 +424,13 @@ C:\Users\hecto\Desktop\projects\PolyProj\poly
 Before GitHub CLI:
 $env:PATH = 'C:\Program Files\GitHub CLI;' + $env:PATH
 
-Continue the live sports prediction-market roadmap with Phase N only, but only after the Phase M PR has been reviewed, merged, and pulled into `dev`.
+Continue only if the owner requests a new phase after the Phase N final readiness PR is reviewed, merged, and pulled into `dev`.
 
 Branch:
-agent/live-market-beta-final-readiness
+TBD
 
 PR title:
-docs(beta): add live market beta final readiness report
+TBD
 
 Use:
 docs/reviews/LIVE_SPORTS_MARKET_MODEL_DESIGN.md
@@ -423,7 +447,7 @@ docs/reviews/INTERNAL_LIVE_MARKET_E2E_EVIDENCE.md
 docs/reviews/INTERNAL_LIVE_MARKET_GO_NO_GO.md
 docs/reviews/LIVE_MARKET_BETA_SERVER_DEPLOYMENT_UPDATE.md
 
-Create final live market beta readiness report, blockers, go/no-go, and operator runbook.
+Recommended next owner action: deploy current `dev` with safe defaults, apply migrations, run smoke, then run the limited allowlisted internal drill from the operator runbook.
 
 Rules:
 - do not touch main.
@@ -442,7 +466,7 @@ Rules:
 - do not add public market resolution.
 - do not add external provider integration.
 - do not scrape.
-- do not start from a branch that does not include merged Phase M server deployment update docs.
+- do not start new runtime work without an explicit owner-approved scope.
 
 Validation:
 - git diff --check
@@ -452,5 +476,5 @@ Validation:
 - targeted evidence/doc checks
 - no production deployment
 
-Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with Phase N status.
+Before stopping, update docs/reviews/LIVE_MARKET_BETA_CONTINUATION_PROMPT.md with any newly requested phase status.
 ```
