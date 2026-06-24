@@ -365,6 +365,125 @@ export const resolveOrderbookMarket = async (params: {
   });
 };
 
+export const previewOrderbookSettlement = async (params: {
+  marketId: string;
+  winningOutcomeId: string;
+}) => {
+  const market = await prisma.market.findUnique({
+    where: { id: params.marketId },
+    select: {
+      id: true,
+      mechanism: true,
+      visibility: true,
+      status: true,
+      isCanceled: true,
+      resolvedOutcomeId: true,
+      collateralUSDC: true,
+    },
+  });
+  if (!market) {
+    throw new MarketGuardError("Market not found.", 404);
+  }
+  if (market.mechanism !== "ORDERBOOK") {
+    throw new MarketGuardError("Only ORDERBOOK markets can be previewed here.", 400);
+  }
+  if (market.visibility !== "PUBLIC") {
+    throw new MarketGuardError("Only PUBLIC markets are supported for this endpoint.", 403);
+  }
+  if (market.isCanceled) {
+    throw new MarketGuardError("Canceled markets cannot be previewed for settlement.", 400);
+  }
+  if (market.status === "RESOLVED" || market.resolvedOutcomeId) {
+    throw new MarketGuardError("Market has already been resolved.", 409);
+  }
+
+  const winningOutcome = await prisma.outcome.findFirst({
+    where: { id: params.winningOutcomeId, marketId: params.marketId, isActive: true },
+    select: { id: true, name: true },
+  });
+  if (!winningOutcome) {
+    throw new MarketGuardError("Invalid winning outcome for market.", 400);
+  }
+
+  const [positions, openOrders] = await Promise.all([
+    prisma.position.findMany({
+      where: { marketId: params.marketId, shares: { gt: ZERO } },
+      select: { id: true, userId: true, outcomeId: true, shares: true },
+      orderBy: [{ userId: "asc" }, { id: "asc" }],
+    }),
+    prisma.order.findMany({
+      where: {
+        marketId: params.marketId,
+        status: { in: ["OPEN", "PARTIAL"] },
+        remaining: { gt: ZERO },
+      },
+      select: {
+        id: true,
+        userId: true,
+        side: true,
+        remaining: true,
+        reservedNotional: true,
+      },
+      orderBy: [{ userId: "asc" }, { createdAt: "asc" }],
+    }),
+  ]);
+
+  const winnerPositions = positions.filter(
+    (position) => position.outcomeId === params.winningOutcomeId
+  );
+  const totalShares = sumDecimals(positions.map((position) => position.shares));
+  const winningShares = sumDecimals(winnerPositions.map((position) => position.shares));
+  const collateralUSDC = toMoney(toDec(market.collateralUSDC));
+  const totalPayout = toMoney(winningShares.mul(ONE_DOLLAR));
+  const openBuyLockedUSDC = toMoney(
+    sumDecimals(
+      openOrders
+        .filter((order) => order.side === "BUY")
+        .map((order) => toDec(order.reservedNotional))
+    )
+  );
+  const openSellRemainingShares = sumDecimals(
+    openOrders
+      .filter((order) => order.side === "SELL")
+      .map((order) => toDec(order.remaining))
+  );
+
+  const blockers: string[] = [];
+  if (!totalPayout.eq(collateralUSDC)) {
+    blockers.push("PAYOUT_COLLATERAL_MISMATCH");
+  }
+  if (winningShares.gt(collateralUSDC)) {
+    blockers.push("WINNING_SHARES_EXCEED_COLLATERAL");
+  }
+
+  return {
+    marketId: params.marketId,
+    marketStatus: market.status,
+    winningOutcomeId: winningOutcome.id,
+    winningOutcomeName: winningOutcome.name,
+    collateralUSDC: collateralUSDC.toString(),
+    totalShares: totalShares.toString(),
+    totalWinningShares: winningShares.toString(),
+    totalPayout: totalPayout.toString(),
+    payoutConservationPass: blockers.length === 0,
+    blockers,
+    openOrderCleanup: {
+      openOrderCount: openOrders.length,
+      buyOrderLockedUSDCToRelease: openBuyLockedUSDC.toString(),
+      sellOrderSharesToRelease: openSellRemainingShares.toString(),
+    },
+    payouts: winnerPositions.map((position) => ({
+      positionId: position.id,
+      userId: position.userId,
+      outcomeId: position.outcomeId,
+      shares: position.shares.toString(),
+      amountPreview: toMoney(position.shares.mul(ONE_DOLLAR)).toString(),
+    })),
+    loserPositionCount: positions.length - winnerPositions.length,
+    mutation: "none" as const,
+  };
+};
+
 export const resolvePrivatePool = async (params: {
   poolId: string;
   winningOutcomeId: string;
