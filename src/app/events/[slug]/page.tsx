@@ -176,6 +176,7 @@ export default function EventPage() {
   const [selectedRowId, setSelectedRowId] = useState<string>("");
   const [selectedTrade, setSelectedTrade] = useState<SelectedTrade | null>(null);
   const [marketGroup, setMarketGroup] = useState("all");
+  const [marketSearch, setMarketSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const hasGroupedEvent = grouped !== null;
@@ -307,6 +308,8 @@ export default function EventPage() {
         markets={markets}
         marketGroup={marketGroup}
         onMarketGroupChange={setMarketGroup}
+        marketSearch={marketSearch}
+        onMarketSearchChange={setMarketSearch}
       />
     );
   }
@@ -655,18 +658,46 @@ function SportsEventView({
   markets,
   marketGroup,
   onMarketGroupChange,
+  marketSearch,
+  onMarketSearchChange,
 }: {
   event: EventSummary;
   markets: EventMarket[];
   marketGroup: string;
   onMarketGroupChange: (group: string) => void;
+  marketSearch: string;
+  onMarketSearchChange: (search: string) => void;
 }) {
   const [selectedOutcomeId, setSelectedOutcomeId] = useState<string | null>(null);
   const groupedMarkets = useMemo(() => groupLiveSportsMarkets(markets), [markets]);
   const visibleGroups = groupedMarkets.filter((group) => group.markets.length > 0);
+  const searchQuery = marketSearch.trim().toLowerCase();
+  const filteredGroups = useMemo(
+    () =>
+      visibleGroups
+        .map((group) => ({
+          ...group,
+          markets: searchQuery
+            ? group.markets.filter((market) => sportsMarketMatchesSearch(market, searchQuery))
+            : group.markets,
+        }))
+        .filter((group) => group.markets.length > 0),
+    [visibleGroups, searchQuery],
+  );
   const activeGroups =
-    marketGroup === "all" ? visibleGroups : visibleGroups.filter((group) => group.key === marketGroup);
+    marketGroup === "all" ? filteredGroups : filteredGroups.filter((group) => group.key === marketGroup);
   const scoreAvailable = event.homeScore != null || event.awayScore != null;
+  const statusCounts = useMemo(() => summarizeMarketStatuses(markets), [markets]);
+  const selectedOutcomePreview = useMemo(() => {
+    for (const market of markets) {
+      const outcome = market.outcomes.find((item) => item.id === selectedOutcomeId);
+      if (outcome) {
+        const price = outcome.price ?? market.pricesByOutcome?.[outcome.id] ?? null;
+        return { market, outcome, price };
+      }
+    }
+    return null;
+  }, [markets, selectedOutcomeId]);
 
   return (
     <PageContainer>
@@ -719,6 +750,13 @@ function SportsEventView({
           </div>
           <TeamPanel label="Away" name={event.awayTeamName ?? "Away team"} score={event.awayScore} alignRight />
         </div>
+
+        <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <EventMarketStat label="Open / live" value={statusCounts.tradable} helper="Markets visible for internal review" />
+          <EventMarketStat label="Suspended" value={statusCounts.suspended} helper="Not available for orders" tone="warning" />
+          <EventMarketStat label="Closed" value={statusCounts.closed} helper="Awaiting or past resolution" />
+          <EventMarketStat label="Resolved" value={statusCounts.resolved} helper="Final state display only" />
+        </div>
       </section>
 
       <section>
@@ -730,51 +768,75 @@ function SportsEventView({
           </Link>}
         />
 
-        <div className="mb-6 flex flex-wrap gap-2">
-          {[{ key: "all", label: "All", count: markets.length }, ...groupedMarkets.map((group) => ({
-            key: group.key,
-            label: group.label,
-            count: group.markets.length,
-          }))].map((tab) => (
-            <button
-              key={tab.key}
-              type="button"
-              onClick={() => onMarketGroupChange(tab.key)}
-              className={`rounded-full border px-3 py-1 text-sm ${
-                marketGroup === tab.key
-                  ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
-                  : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
-              }`}
-            >
-              {tab.label} {tab.count}
-            </button>
-          ))}
+        <div className="mb-6 space-y-3">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-wrap gap-2">
+              {[{ key: "all", label: "All", count: markets.length }, ...groupedMarkets.map((group) => ({
+                key: group.key,
+                label: group.label,
+                count: group.markets.length,
+              }))].map((tab) => (
+                <button
+                  key={tab.key}
+                  type="button"
+                  onClick={() => onMarketGroupChange(tab.key)}
+                  className={`rounded-full border px-3 py-1 text-sm ${
+                    marketGroup === tab.key
+                      ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                      : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
+                  } ${tab.count === 0 ? "opacity-60" : ""}`}
+                >
+                  {tab.label} <span className="tabular-nums">{tab.count}</span>
+                </button>
+              ))}
+            </div>
+            <label className="w-full lg:w-80">
+              <span className="sr-only">Search markets</span>
+              <input
+                type="search"
+                value={marketSearch}
+                onChange={(event) => onMarketSearchChange(event.target.value)}
+                placeholder="Search markets, teams, players"
+                className="w-full rounded-lg border border-[var(--poly-border)] bg-white px-3 py-2 text-sm text-[var(--poly-text)] outline-none transition placeholder:text-[var(--poly-muted)] focus:border-[var(--poly-primary)]"
+              />
+            </label>
+          </div>
+          {searchQuery ? (
+            <div className="text-sm text-[var(--poly-muted)]">
+              Showing {activeGroups.reduce((sum, group) => sum + group.markets.length, 0)} filtered markets for &quot;{marketSearch.trim()}&quot;.
+            </div>
+          ) : null}
         </div>
 
         {markets.length === 0 ? (
           <EmptyState title="Markets for this event are not ready yet" description="Check back when event markets are available." />
         ) : activeGroups.length === 0 ? (
-          <EmptyState title="No markets in this group" description="Choose another event market filter." />
+          <EmptyState title="No markets match this view" description="Try another group or clear the market search." />
         ) : (
-          <div className="space-y-8">
-            {activeGroups.map((group) => (
-              <section key={group.key} className="space-y-4">
-                <SectionHeader
-                  title={group.label}
-                  description={`${group.markets.length} ${group.markets.length === 1 ? "market" : "markets"} available in this section.`}
-                />
-                <div className="space-y-4">
-                  {group.markets.map((market) => (
-                    <SportsMarketPanel
-                      key={market.id}
-                      market={market}
-                      selectedOutcomeId={selectedOutcomeId}
-                      onSelectOutcome={setSelectedOutcomeId}
-                    />
-                  ))}
-                </div>
-              </section>
-            ))}
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
+            <div className="space-y-8">
+              {activeGroups.map((group) => (
+                <section key={group.key} className="space-y-4">
+                  <SectionHeader
+                    title={group.label}
+                    description={`${group.markets.length} ${group.markets.length === 1 ? "market" : "markets"} available in this section.`}
+                  />
+                  <div className="space-y-4">
+                    {group.markets.map((market) => (
+                      <SportsMarketPanel
+                        key={market.id}
+                        market={market}
+                        selectedOutcomeId={selectedOutcomeId}
+                        onSelectOutcome={setSelectedOutcomeId}
+                      />
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+            <div className="lg:sticky lg:top-6 lg:h-fit">
+              <SportsOutcomePreview selected={selectedOutcomePreview} />
+            </div>
           </div>
         )}
       </section>
@@ -801,6 +863,89 @@ function TeamPanel({
         {score != null ? <div className="text-3xl font-semibold text-[var(--poly-primary)]">{score}</div> : null}
       </div>
     </div>
+  );
+}
+
+function EventMarketStat({
+  label,
+  value,
+  helper,
+  tone = "neutral",
+}: {
+  label: string;
+  value: number;
+  helper: string;
+  tone?: "neutral" | "warning";
+}) {
+  return (
+    <div className="rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3">
+      <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">{label}</div>
+      <div className={`mt-1 text-2xl font-semibold ${tone === "warning" ? "text-amber-700" : "text-[var(--poly-text)]"}`}>
+        {value}
+      </div>
+      <div className="mt-1 text-xs text-[var(--poly-muted)]">{helper}</div>
+    </div>
+  );
+}
+
+function SportsOutcomePreview({
+  selected,
+}: {
+  selected: { market: EventMarket; outcome: EventMarket["outcomes"][number]; price: number | null } | null;
+}) {
+  if (!selected) {
+    return (
+      <Card className="border-dashed p-5">
+        <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Outcome preview</div>
+        <h3 className="mt-2 text-lg font-semibold text-[var(--poly-text)]">Select an outcome</h3>
+        <p className="mt-2 text-sm leading-6 text-[var(--poly-muted)]">
+          Pick a price tile to review the market, outcome side, and status before opening the market detail ticket.
+        </p>
+        <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+          Event-page controls remain preview-only and do not submit orders.
+        </div>
+      </Card>
+    );
+  }
+
+  const inactive = ["PAUSED", "CLOSED", "RESOLVED", "CANCELED"].includes(selected.market.status);
+  const side = [selected.outcome.side, selected.outcome.code].filter(Boolean).join(" / ");
+
+  return (
+    <Card className="p-5">
+      <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Outcome preview</div>
+      <h3 className="mt-2 text-lg font-semibold text-[var(--poly-text)]">
+        {selected.outcome.label ?? selected.outcome.name}
+      </h3>
+      <p className="mt-2 text-sm leading-6 text-[var(--poly-muted)]">{selected.market.title}</p>
+      <div className="mt-4 space-y-2 text-sm">
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-[var(--poly-muted)]">Display price</span>
+          <span className="font-semibold text-[var(--poly-text)]">{formatProbability(selected.price)}</span>
+        </div>
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-[var(--poly-muted)]">Bid / ask</span>
+          <span className="font-semibold text-[var(--poly-text)]">{formatBidAsk(selected.outcome.bestBid, selected.outcome.bestAsk)}</span>
+        </div>
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-[var(--poly-muted)]">Side</span>
+          <span className="font-semibold uppercase text-[var(--poly-text)]">{side || "--"}</span>
+        </div>
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-[var(--poly-muted)]">Market status</span>
+          <Badge tone={inactive ? "warning" : "primary"}>{formatStatus(selected.market.status)}</Badge>
+        </div>
+      </div>
+      <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+        Preview only. Open the market detail page for the guarded internal beta ticket.
+      </div>
+      <Link
+        href={`/markets/${selected.market.id}`}
+        className="mt-4 block rounded-lg border border-[var(--poly-border)] bg-white px-4 py-3 text-center text-sm font-semibold text-[var(--poly-primary)] transition hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]"
+      >
+        Open market detail
+      </Link>
+    </Card>
   );
 }
 
@@ -909,6 +1054,40 @@ function formatBidAsk(bid: number | null | undefined, ask: number | null | undef
   const left = typeof bid === "number" && Number.isFinite(bid) ? bid.toFixed(2) : "--";
   const right = typeof ask === "number" && Number.isFinite(ask) ? ask.toFixed(2) : "--";
   return `${left} / ${right}`;
+}
+
+function summarizeMarketStatuses(markets: EventMarket[]) {
+  return markets.reduce(
+    (counts, market) => {
+      const status = market.status.toUpperCase();
+      if (status === "ACTIVE" || status === "LIVE" || status === "OPEN") counts.tradable += 1;
+      if (status === "PAUSED" || status === "SUSPENDED") counts.suspended += 1;
+      if (status === "CLOSED") counts.closed += 1;
+      if (status === "RESOLVED") counts.resolved += 1;
+      return counts;
+    },
+    { tradable: 0, suspended: 0, closed: 0, resolved: 0 },
+  );
+}
+
+function sportsMarketMatchesSearch(market: EventMarket, searchQuery: string) {
+  const haystack = [
+    market.title,
+    market.description,
+    market.marketGroupTitle,
+    market.marketType,
+    market.line,
+    market.unit,
+    market.period,
+    market.participantName,
+    market.propCategory,
+    ...market.outcomes.flatMap((outcome) => [outcome.name, outcome.label, outcome.code, outcome.side]),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  return haystack.includes(searchQuery);
 }
 
 function formatPct(value: number | null) {
