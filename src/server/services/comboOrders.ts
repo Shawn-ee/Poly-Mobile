@@ -2,6 +2,7 @@ import { createHash } from "crypto";
 import { Prisma } from "@prisma/client";
 import { CanonicalApiError, serializeForApi } from "@/lib/canonicalApi";
 import { prisma } from "@/lib/db";
+import { getOutcomeQuotes } from "@/lib/orderbookPricing";
 
 const ZERO = new Prisma.Decimal(0);
 const ONE = new Prisma.Decimal(1);
@@ -9,7 +10,6 @@ const ONE = new Prisma.Decimal(1);
 type ComboLegInput = {
   marketId: string;
   outcomeId: string;
-  price: string;
   line?: string | null;
   label?: string | null;
 };
@@ -23,10 +23,13 @@ type NormalizedComboRequest = {
   legs: Array<{
     marketId: string;
     outcomeId: string;
-    price: Prisma.Decimal;
     line: string | null;
     label: string;
   }>;
+};
+
+type ServerPricedComboLeg = NormalizedComboRequest["legs"][number] & {
+  price: Prisma.Decimal;
 };
 
 const parsePositiveDecimal = (value: unknown, fieldName: string, maxScale: number) => {
@@ -50,16 +53,16 @@ const parsePositiveDecimal = (value: unknown, fieldName: string, maxScale: numbe
   return decimal;
 };
 
-const parsePrice = (value: unknown) => {
-  const price = parsePositiveDecimal(value, "leg.price", 8);
-  if (price.gt(ONE)) {
-    throw new CanonicalApiError("INVALID_REQUEST", "leg.price must be between 0 and 1.", 400);
+const buildFingerprint = (body: Prisma.InputJsonObject) =>
+  createHash("sha256").update(JSON.stringify(body)).digest("hex");
+
+const parseServerPrice = (value: number, outcomeId: string) => {
+  const price = new Prisma.Decimal(value).toDecimalPlaces(8, Prisma.Decimal.ROUND_HALF_UP);
+  if (!price.isFinite() || price.lte(ZERO) || price.gt(ONE)) {
+    throw new CanonicalApiError("COMBO_PRICE_UNAVAILABLE", `Server price is unavailable for outcome ${outcomeId}.`, 409);
   }
   return price;
 };
-
-const buildFingerprint = (body: Prisma.InputJsonObject) =>
-  createHash("sha256").update(JSON.stringify(body)).digest("hex");
 
 const findExistingComboOrder = async (params: {
   userId: string;
@@ -135,7 +138,6 @@ const normalizeComboRequest = (params: {
     return {
       marketId,
       outcomeId,
-      price: parsePrice(leg.price),
       line: typeof leg.line === "string" && leg.line.trim() ? leg.line.trim() : null,
       label: typeof leg.label === "string" && leg.label.trim() ? leg.label.trim() : `Leg ${index + 1}`,
     };
@@ -148,7 +150,6 @@ const normalizeComboRequest = (params: {
     legs: legs.map((leg) => ({
       marketId: leg.marketId,
       outcomeId: leg.outcomeId,
-      price: leg.price.toString(),
       line: leg.line,
       label: leg.label,
     })),
@@ -161,6 +162,102 @@ const normalizeComboRequest = (params: {
     requestBody,
     requestFingerprint: buildFingerprint(requestBody),
     legs,
+  };
+};
+
+const calculateServerPricedLegs = async (legs: NormalizedComboRequest["legs"]) => {
+  const byMarket = new Map<string, string[]>();
+  for (const leg of legs) {
+    byMarket.set(leg.marketId, [...(byMarket.get(leg.marketId) ?? []), leg.outcomeId]);
+  }
+
+  const quoteEntries = await Promise.all(
+    Array.from(byMarket.entries()).map(async ([marketId, outcomeIds]) => ({
+      marketId,
+      quotes: await getOutcomeQuotes(marketId, outcomeIds),
+    })),
+  );
+  const quotesByMarket = new Map(quoteEntries.map((entry) => [entry.marketId, entry.quotes]));
+
+  return legs.map((leg) => {
+    const quote = quotesByMarket.get(leg.marketId)?.get(leg.outcomeId);
+    if (!quote) {
+      throw new CanonicalApiError("COMBO_PRICE_UNAVAILABLE", `Server price is unavailable for outcome ${leg.outcomeId}.`, 409);
+    }
+    return {
+      ...leg,
+      price: parseServerPrice(quote.mid, leg.outcomeId),
+    };
+  });
+};
+
+const validateAndPriceComboLegs = async (legs: NormalizedComboRequest["legs"]) => {
+  const marketIds = legs.map((leg) => leg.marketId);
+  const outcomeIds = legs.map((leg) => leg.outcomeId);
+  const markets = await prisma.market.findMany({
+    where: { id: { in: marketIds }, visibility: "PUBLIC", mechanism: "ORDERBOOK", isListed: true },
+    select: { id: true, status: true },
+  });
+  const marketById = new Map(markets.map((market) => [market.id, market]));
+  if (marketById.size !== marketIds.length) {
+    throw new CanonicalApiError("INVALID_REQUEST", "One or more combo markets are invalid.", 400);
+  }
+  for (const market of markets) {
+    if (!["LIVE", "UPCOMING"].includes(market.status)) {
+      throw new CanonicalApiError("MARKET_NOT_TRADABLE", "Combo legs must use open or live markets.", 400);
+    }
+  }
+
+  const outcomes = await prisma.outcome.findMany({
+    where: { id: { in: outcomeIds }, isActive: true, isTradable: true },
+    select: { id: true, marketId: true },
+  });
+  const outcomeById = new Map(outcomes.map((outcome) => [outcome.id, outcome]));
+  for (const leg of legs) {
+    const outcome = outcomeById.get(leg.outcomeId);
+    if (!outcome || outcome.marketId !== leg.marketId) {
+      throw new CanonicalApiError("INVALID_REQUEST", "Combo outcome does not belong to its market.", 400);
+    }
+  }
+
+  return calculateServerPricedLegs(legs);
+};
+
+const calculateComboMath = (stakeUSDC: Prisma.Decimal, pricedLegs: ServerPricedComboLeg[]) => {
+  const comboPrice = pricedLegs
+    .reduce((product, leg) => product.mul(leg.price), ONE)
+    .toDecimalPlaces(8, Prisma.Decimal.ROUND_HALF_UP);
+  if (comboPrice.lte(ZERO)) {
+    throw new CanonicalApiError("INVALID_REQUEST", "Combo price is invalid.", 400);
+  }
+  const potentialPayout = stakeUSDC.div(comboPrice).toDecimalPlaces(6, Prisma.Decimal.ROUND_DOWN);
+  return { comboPrice, potentialPayout };
+};
+
+export const quoteComboOrder = async (params: { body: unknown }) => {
+  const normalized = normalizeComboRequest({
+    body: params.body,
+    idempotencyKeyHeader: "quote",
+  });
+  const pricedLegs = await validateAndPriceComboLegs(normalized.legs);
+  const { comboPrice, potentialPayout } = calculateComboMath(normalized.stakeUSDC, pricedLegs);
+  return {
+    quote: serializeForApi({
+      stakeUSDC: normalized.stakeUSDC,
+      comboPrice,
+      potentialPayout,
+      potentialProfit: potentialPayout.sub(normalized.stakeUSDC).gt(ZERO)
+        ? potentialPayout.sub(normalized.stakeUSDC)
+        : ZERO,
+      legs: pricedLegs.map((leg, index) => ({
+        marketId: leg.marketId,
+        outcomeId: leg.outcomeId,
+        price: leg.price,
+        line: leg.line,
+        label: leg.label,
+        displayOrder: index,
+      })),
+    }),
   };
 };
 
@@ -242,41 +339,8 @@ export const submitComboOrder = async (params: {
     });
   }
 
-  const marketIds = normalized.legs.map((leg) => leg.marketId);
-  const outcomeIds = normalized.legs.map((leg) => leg.outcomeId);
-  const markets = await prisma.market.findMany({
-    where: { id: { in: marketIds }, visibility: "PUBLIC", mechanism: "ORDERBOOK", isListed: true },
-    select: { id: true, status: true },
-  });
-  const marketById = new Map(markets.map((market) => [market.id, market]));
-  if (marketById.size !== marketIds.length) {
-    throw new CanonicalApiError("INVALID_REQUEST", "One or more combo markets are invalid.", 400);
-  }
-  for (const market of markets) {
-    if (!["LIVE", "UPCOMING"].includes(market.status)) {
-      throw new CanonicalApiError("MARKET_NOT_TRADABLE", "Combo legs must use open or live markets.", 400);
-    }
-  }
-
-  const outcomes = await prisma.outcome.findMany({
-    where: { id: { in: outcomeIds }, isActive: true, isTradable: true },
-    select: { id: true, marketId: true },
-  });
-  const outcomeById = new Map(outcomes.map((outcome) => [outcome.id, outcome]));
-  for (const leg of normalized.legs) {
-    const outcome = outcomeById.get(leg.outcomeId);
-    if (!outcome || outcome.marketId !== leg.marketId) {
-      throw new CanonicalApiError("INVALID_REQUEST", "Combo outcome does not belong to its market.", 400);
-    }
-  }
-
-  const comboPrice = normalized.legs
-    .reduce((product, leg) => product.mul(leg.price), ONE)
-    .toDecimalPlaces(8, Prisma.Decimal.ROUND_HALF_UP);
-  if (comboPrice.lte(ZERO)) {
-    throw new CanonicalApiError("INVALID_REQUEST", "Combo price is invalid.", 400);
-  }
-  const potentialPayout = normalized.stakeUSDC.div(comboPrice).toDecimalPlaces(6, Prisma.Decimal.ROUND_DOWN);
+  const pricedLegs = await validateAndPriceComboLegs(normalized.legs);
+  const { comboPrice, potentialPayout } = calculateComboMath(normalized.stakeUSDC, pricedLegs);
 
   let combo: { id: string };
   try {
@@ -307,7 +371,7 @@ export const submitComboOrder = async (params: {
           clientOrderId: normalized.clientOrderId,
           requestFingerprint: normalized.requestFingerprint,
           legs: {
-            create: normalized.legs.map((leg, index) => ({
+            create: pricedLegs.map((leg, index) => ({
               marketId: leg.marketId,
               outcomeId: leg.outcomeId,
               price: leg.price,

@@ -8,6 +8,12 @@ POLY now has a real guarded backend path for World Cup-style combo orders across
 
 The implementation is intentionally internal-beta only. Public trading remains disabled by default and server-side trading gates still control whether a combo can be submitted.
 
+Follow-up update:
+
+- `POST /api/combo-orders/quote` calculates combo price and payout on the backend.
+- `POST /api/combo-orders` now ignores client-supplied leg prices and persists server-calculated leg prices.
+- The event combo slip refreshes from the server quote when internal trading UI is enabled, while retaining local estimates as the disabled/public fallback.
+
 ## Implemented Model
 
 New Prisma models:
@@ -50,6 +56,21 @@ The route requires:
 - sufficient available USDC
 
 The event page can call `/api/combo-orders` only when the client internal trading UI flag is explicitly enabled. The server guard remains authoritative, so the client flag cannot bypass auth, allowlist, or kill-switch behavior.
+
+Quote route:
+
+- `POST /api/combo-orders/quote`
+- read-only canonical route
+- calculates leg prices from POLY orderbook quotes
+- calculates `comboPrice = legPrice1 * legPrice2 * ...`
+- calculates `potentialPayout = stakeUSDC / comboPrice`
+- does not create orders, ledger entries, balance changes, or settlement records
+
+Submission route:
+
+- calculates the same prices server-side before persisting
+- ignores client-supplied `leg.price`
+- stores the server-calculated leg prices on `ComboOrderLeg`
 
 ## Ledger Behavior
 
@@ -114,9 +135,12 @@ Coverage includes:
 
 - server-side trading gate blocks combo submission before service call
 - server-side gate allows service call only after approval
+- read-only quote route calculates without opening the trading write gate
 - combo order creation stores legs and creates a ledger lock
+- combo order creation stores server-calculated leg prices
 - insufficient balance blocks before combo/ledger creation
 - duplicate market legs are rejected
+- client-supplied leg prices are ignored
 - idempotent retry returns the existing combo
 - idempotency conflict is rejected
 - combo cancel creates an unlock ledger entry
