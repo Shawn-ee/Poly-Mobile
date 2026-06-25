@@ -278,6 +278,92 @@ export async function lockFundsForOrder(params: {
   });
 }
 
+export async function lockFundsForComboOrder(params: {
+  comboOrderId: string;
+  userId: string;
+  amount: Prisma.Decimal.Value;
+}): Promise<{ applied: boolean; balance: UserBalance }> {
+  const amount = toUsdcDecimal(params.amount, "amount");
+  const idempotencyKey = `combo-lock:${params.comboOrderId}`;
+
+  return prisma.$transaction(async (tx) => {
+    const balance = await ensureBalanceRowLocked(tx, params.userId);
+    const existing = await tx.ledgerEntry.findUnique({ where: { idempotencyKey } });
+    if (existing) {
+      const current = await tx.userBalance.findUniqueOrThrow({ where: { userId: params.userId } });
+      return { applied: false, balance: current };
+    }
+    if (balance.availableUSDC.lt(amount)) {
+      throw new LedgerServiceError("Insufficient available USDC.", 409);
+    }
+
+    await createLedgerEntry(tx, {
+      userId: params.userId,
+      reason: "LOCK",
+      operation: "LOCK",
+      idempotencyKey,
+      referenceType: "ComboOrder",
+      referenceId: params.comboOrderId,
+      deltaAvailableUSDC: amount.neg(),
+      deltaLockedUSDC: amount,
+      amountDelta: new Prisma.Decimal(0),
+    });
+
+    const updated = await tx.userBalance.update({
+      where: { userId: params.userId },
+      data: {
+        ...incrementVersion,
+        availableUSDC: { decrement: amount },
+        lockedUSDC: { increment: amount },
+      },
+    });
+    return { applied: true, balance: updated };
+  });
+}
+
+export async function unlockFundsForComboCancel(params: {
+  comboOrderId: string;
+  userId: string;
+  amount: Prisma.Decimal.Value;
+}): Promise<{ applied: boolean; balance: UserBalance }> {
+  const amount = toUsdcDecimal(params.amount, "amount");
+  const idempotencyKey = `combo-unlock:${params.comboOrderId}`;
+
+  return prisma.$transaction(async (tx) => {
+    const balance = await ensureBalanceRowLocked(tx, params.userId);
+    const existing = await tx.ledgerEntry.findUnique({ where: { idempotencyKey } });
+    if (existing) {
+      const current = await tx.userBalance.findUniqueOrThrow({ where: { userId: params.userId } });
+      return { applied: false, balance: current };
+    }
+    if (balance.lockedUSDC.lt(amount)) {
+      throw new LedgerServiceError("Insufficient locked USDC.", 409);
+    }
+
+    await createLedgerEntry(tx, {
+      userId: params.userId,
+      reason: "UNLOCK",
+      operation: "UNLOCK",
+      idempotencyKey,
+      referenceType: "ComboOrder",
+      referenceId: params.comboOrderId,
+      deltaAvailableUSDC: amount,
+      deltaLockedUSDC: amount.neg(),
+      amountDelta: new Prisma.Decimal(0),
+    });
+
+    const updated = await tx.userBalance.update({
+      where: { userId: params.userId },
+      data: {
+        ...incrementVersion,
+        availableUSDC: { increment: amount },
+        lockedUSDC: { decrement: amount },
+      },
+    });
+    return { applied: true, balance: updated };
+  });
+}
+
 export async function unlockFundsForCancel(params: {
   orderId: string;
   userId: string;

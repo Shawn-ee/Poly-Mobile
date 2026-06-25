@@ -136,7 +136,8 @@ describe("world cup market structure", () => {
     const pageSource = fs.readFileSync(path.join(process.cwd(), "src", "app", "events", "[slug]", "page.tsx"), "utf8");
     expect(pageSource).toContain('process.env.NEXT_PUBLIC_INTERNAL_TRADING_BETA_ENABLED === "true"');
     expect(pageSource).toContain("Event-page ticket is preview-only");
-    expect(pageSource).toContain("Combo is preview-only");
+    expect(pageSource).toContain('fetch("/api/combo-orders"');
+    expect(pageSource).toContain("Server gates still enforce auth, allowlist, and kill switch");
     expect(pageSource).not.toContain("fetch(`/api/orders`");
     expect(pageSource).not.toContain("fetch(`/api/combos`");
   });

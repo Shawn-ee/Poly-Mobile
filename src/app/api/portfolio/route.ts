@@ -42,6 +42,23 @@ export async function GET(_request: NextRequest) {
       },
     },
   });
+  const comboOrders = await prisma.comboOrder.findMany({
+    where: {
+      userId,
+      status: "OPEN",
+    },
+    orderBy: [{ updatedAt: "desc" }, { id: "desc" }],
+    take: 25,
+    include: {
+      legs: {
+        orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
+        include: {
+          market: { select: { id: true, title: true, status: true } },
+          outcome: { select: { id: true, name: true, label: true, side: true, code: true } },
+        },
+      },
+    },
+  });
 
   const marketOutcomeMap = new Map<string, string[]>();
   for (const p of positions) {
@@ -125,6 +142,33 @@ export async function GET(_request: NextRequest) {
       reservedNotional: Number(order.reservedNotional),
       createdAt: order.createdAt,
       updatedAt: order.updatedAt,
+    })),
+    comboOrders: comboOrders.map((combo) => ({
+      id: combo.id,
+      status: combo.status,
+      stakeUSDC: Number(combo.stakeUSDC),
+      comboPrice: Number(combo.comboPrice),
+      potentialPayout: Number(combo.potentialPayout),
+      createdAt: combo.createdAt,
+      updatedAt: combo.updatedAt,
+      legs: combo.legs.map((leg) => ({
+        id: leg.id,
+        market: {
+          id: leg.market.id,
+          title: leg.market.title,
+          status: leg.market.status,
+        },
+        outcome: {
+          id: leg.outcome.id,
+          name: leg.outcome.label ?? leg.outcome.name,
+          side: leg.outcome.side,
+          code: leg.outcome.code,
+        },
+        price: Number(leg.price),
+        line: leg.line,
+        label: leg.label,
+        displayOrder: leg.displayOrder,
+      })),
     })),
   });
 }
