@@ -2,6 +2,12 @@
 
 Date: 2026-06-25
 
+Superseded by:
+
+- `docs/reviews/WORLD_CUP_REAL_COMBO_ORDER_EVIDENCE.md`
+
+This document records the earlier preview-only combo phase. The later real combo order phase adds a guarded backend route, schema, ledger lock, cancel unlock, and portfolio display.
+
 ## Summary
 
 POLY now supports a World Cup combo ticket preview on the event detail page.

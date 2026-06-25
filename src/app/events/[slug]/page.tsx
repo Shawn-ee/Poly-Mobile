@@ -1105,12 +1105,50 @@ function WorldCupComboTicket({
   onClear: () => void;
   tradingUiEnabled: boolean;
 }) {
+  const [submitting, setSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<string | null>(null);
   const parsedAmount = Number.parseFloat(amount);
   const estimate = estimateWorldCupComboTicket({
     amount: Number.isFinite(parsedAmount) ? parsedAmount : 0,
     legs,
   });
   const canPreview = estimate.valid && estimate.cost > 0;
+  const canSubmit = canPreview && tradingUiEnabled && !submitting;
+
+  const submitCombo = async () => {
+    if (!canSubmit) return;
+    setSubmitting(true);
+    setSubmitMessage(null);
+    try {
+      const response = await fetch("/api/combo-orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Idempotency-Key": `combo:${Date.now()}:${crypto.randomUUID()}`,
+        },
+        body: JSON.stringify({
+          stakeUSDC: amount,
+          legs: legs.map((leg) => ({
+            marketId: leg.marketId,
+            outcomeId: leg.outcomeId,
+            price: leg.price,
+            line: leg.line,
+            label: leg.label,
+          })),
+        }),
+      });
+      const body = await response.json().catch(() => null);
+      if (!response.ok) {
+        setSubmitMessage(body?.error?.message ?? "Combo order was rejected.");
+        return;
+      }
+      setSubmitMessage(`Combo order placed: ${body?.comboOrder?.id ?? "pending"}`);
+    } catch {
+      setSubmitMessage("Combo order failed to submit.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <Card className="mt-4 p-5">
@@ -1190,14 +1228,20 @@ function WorldCupComboTicket({
 
       <button
         type="button"
-        disabled
-        className="mt-4 w-full cursor-not-allowed rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] px-4 py-3 text-sm font-semibold text-[var(--poly-muted)]"
+        disabled={!canSubmit}
+        onClick={submitCombo}
+        className={`mt-4 w-full rounded-lg border px-4 py-3 text-sm font-semibold transition ${
+          canSubmit
+            ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white hover:bg-[var(--poly-primary-hover)]"
+            : "cursor-not-allowed border-[var(--poly-border)] bg-[var(--poly-surface-muted)] text-[var(--poly-muted)]"
+        }`}
       >
-        {canPreview && tradingUiEnabled ? "Combo submission not available yet" : "Build a 2+ leg combo"}
+        {submitting ? "Submitting combo" : canPreview && tradingUiEnabled ? "Place combo" : "Build a 2+ leg combo"}
       </button>
       <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
-        Combo is preview-only. Real combo placement needs a dedicated combo order, ledger hold, and settlement model.
+        Combo placement is internal beta only. Server gates still enforce auth, allowlist, and kill switch.
       </div>
+      {submitMessage ? <div className="mt-3 text-sm text-[var(--poly-muted)]">{submitMessage}</div> : null}
     </Card>
   );
 }

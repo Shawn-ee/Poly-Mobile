@@ -48,6 +48,13 @@ enum OrderStatus {
   CANCELED
 }
 
+enum ComboOrderStatus {
+  OPEN
+  CANCELED
+  SETTLED
+  VOIDED
+}
+
 enum LedgerReason {
   FAUCET
   DEPOSIT
@@ -188,6 +195,7 @@ model User {
   positions                   Position[]
   trades                      Trade[]
   orders                      Order[]
+  comboOrders                 ComboOrder[]
   ledgerEntries               LedgerEntry[]
   poolOwnedMarkets            Market[]                @relation("PoolMarketOwner")
   poolBets                    PoolBet[]
@@ -310,6 +318,7 @@ model Market {
   trades                  Trade[]
   fills                   Fill[]
   orders                  Order[]
+  comboOrderLegs          ComboOrderLeg[]
   tags                    MarketTag[]
   poolBets                PoolBet[]
   poolStakePresets        PoolStakePreset[]
@@ -385,6 +394,7 @@ model Outcome {
   trades                  Trade[]
   fills                   Fill[]
   orders                  Order[]
+  comboOrderLegs          ComboOrderLeg[]
   poolBets                PoolBet[]
   referenceQuoteSnapshots ReferenceQuoteSnapshot[]
 
@@ -488,6 +498,45 @@ model Order {
   @@index([userId, marketId, status])
   @@index([createdApiCredentialId, createdAt])
   @@index([canceledByApiCredentialId, updatedAt])
+}
+
+model ComboOrder {
+  id              String           @id @default(uuid())
+  userId          String
+  stakeUSDC       Decimal          @db.Decimal(36, 6)
+  comboPrice      Decimal          @db.Decimal(20, 8)
+  potentialPayout Decimal          @db.Decimal(36, 6)
+  status          ComboOrderStatus @default(OPEN)
+  idempotencyKey  String
+  clientOrderId   String?
+  requestFingerprint String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  legs            ComboOrderLeg[]
+
+  @@unique([userId, idempotencyKey])
+  @@unique([userId, clientOrderId])
+  @@index([userId, status, createdAt])
+}
+
+model ComboOrderLeg {
+  id           String     @id @default(uuid())
+  comboOrderId String
+  marketId     String
+  outcomeId    String
+  price        Decimal    @db.Decimal(20, 8)
+  line         String?
+  label        String
+  displayOrder Int        @default(0)
+  createdAt    DateTime   @default(now())
+  comboOrder   ComboOrder @relation(fields: [comboOrderId], references: [id], onDelete: Cascade)
+  market       Market     @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  outcome      Outcome    @relation(fields: [outcomeId], references: [id], onDelete: Cascade)
+
+  @@unique([comboOrderId, marketId])
+  @@index([comboOrderId, displayOrder])
+  @@index([marketId, outcomeId])
 }
 
 model ApiOrderRequest {

@@ -367,6 +367,28 @@ Phase N local validation:
 - Live bots: not approved.
 - Public/anonymous funding: not approved.
 
+## Current In-Progress Phase
+
+World Cup real combo order backend:
+
+- Branch: `agent/world-cup-real-combo-orders`
+- Output: `docs/reviews/WORLD_CUP_REAL_COMBO_ORDER_EVIDENCE.md`
+- Migration: `prisma/migrations/20260625203500_world_cup_combo_orders/migration.sql`
+- Runtime boundary: guarded internal-beta combo order placement only.
+- Review rule: leave PR open because this includes Prisma schema, order persistence, ledger hold, cancel unlock, and portfolio read-model behavior.
+- Still not implemented: combo settlement, market resolution, void/push/refund handling, public trading, anonymous trading, live bot placement.
+
+Validation completed locally so far:
+
+- targeted combo/portfolio/World Cup Jest tests: passed.
+- `npx tsc --noEmit --pretty false --incremental false`: passed.
+- `npx prisma generate --schema=prisma/schema.prisma`: passed.
+- `npx prisma validate --schema=prisma/schema.prisma`: passed.
+- `npx prisma migrate deploy --schema=prisma/schema.prisma`: applied the local Docker Postgres migration.
+- `npx prisma migrate status --schema=prisma/schema.prisma`: passed after deploy.
+- `npm run test:ci`: passed.
+- `npm run build`: passed.
+
 ## Blockers Before Live Market Beta
 
 Critical blockers:

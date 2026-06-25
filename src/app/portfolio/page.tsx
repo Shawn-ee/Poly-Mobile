@@ -66,6 +66,25 @@ type OpenOrderItem = {
   updatedAt: string;
 };
 
+type ComboOrderItem = {
+  id: string;
+  status: string;
+  stakeUSDC: number;
+  comboPrice: number;
+  potentialPayout: number;
+  createdAt: string;
+  updatedAt: string;
+  legs: Array<{
+    id: string;
+    market: { id: string; title: string; status: string };
+    outcome: { id: string; name: string; side: string | null; code: string | null };
+    price: number;
+    line: string | null;
+    label: string;
+    displayOrder: number;
+  }>;
+};
+
 export default function PortfolioPage() {
   const router = useRouter();
   const [walletAvailable, setWalletAvailable] = useState<number | null>(null);
@@ -77,6 +96,7 @@ export default function PortfolioPage() {
   const [totalPnl, setTotalPnl] = useState<number>(0);
   const [positions, setPositions] = useState<PortfolioItem[]>([]);
   const [openOrders, setOpenOrders] = useState<OpenOrderItem[]>([]);
+  const [comboOrders, setComboOrders] = useState<ComboOrderItem[]>([]);
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [filterStatus, setFilterStatus] = useState<"all" | "active" | "resolved">("all");
   const [search, setSearch] = useState("");
@@ -102,6 +122,7 @@ export default function PortfolioPage() {
       setTotalPnl(data.totalPnl ?? 0);
       setPositions(data.positions ?? []);
       setOpenOrders(data.openOrders ?? []);
+      setComboOrders(data.comboOrders ?? []);
       setLoading(false);
     };
     load();
@@ -262,6 +283,62 @@ export default function PortfolioPage() {
                     <td className="px-4 py-3 text-right">{order.reservedNotional.toFixed(2)} U</td>
                     <td className="px-4 py-3">{order.status}</td>
                     <td className="px-4 py-3">{order.market.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Card>
+        )}
+      </section>
+
+      <section className="mt-8">
+        <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-semibold text-[var(--poly-text)]">Open combos</h2>
+            <p className="text-sm text-[var(--poly-muted)]">
+              Combo orders reserve the stake until canceled or settled by a future settlement workflow.
+            </p>
+          </div>
+          <Badge tone="warning">Settlement pending</Badge>
+        </div>
+
+        {comboOrders.length === 0 ? (
+          <EmptyState title="No open combos" description="World Cup combo orders will appear here after submission." />
+        ) : (
+          <Card className="overflow-x-auto">
+            <table className="min-w-full text-left text-sm">
+              <thead className="border-b border-[var(--poly-border)] bg-[var(--poly-surface-muted)] text-xs uppercase text-[var(--poly-muted)]">
+                <tr>
+                  <th className="px-4 py-3">Combo</th>
+                  <th className="px-4 py-3">Legs</th>
+                  <th className="px-4 py-3 text-right">Price</th>
+                  <th className="px-4 py-3 text-right">Stake</th>
+                  <th className="px-4 py-3 text-right">Payout</th>
+                  <th className="px-4 py-3">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {comboOrders.map((combo) => (
+                  <tr key={combo.id} className="border-b border-[var(--poly-border)]">
+                    <td className="px-4 py-3 font-medium text-[var(--poly-text)]">{combo.id.slice(0, 8)}</td>
+                    <td className="px-4 py-3">
+                      <div className="space-y-1">
+                        {combo.legs.map((leg) => (
+                          <div key={leg.id} className="text-xs text-[var(--poly-muted)]">
+                            <Link href={`/markets/${leg.market.id}`} className="font-semibold text-[var(--poly-text)] hover:underline">
+                              {leg.label}
+                            </Link>
+                            <span> / {leg.line ?? "default"} / {leg.price.toFixed(2)}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-right">{(combo.comboPrice * 100).toFixed(1)}%</td>
+                    <td className="px-4 py-3 text-right">{combo.stakeUSDC.toFixed(2)} U</td>
+                    <td className="px-4 py-3 text-right">{combo.potentialPayout.toFixed(2)} U</td>
+                    <td className="px-4 py-3">
+                      <Badge tone="primary">{combo.status}</Badge>
+                    </td>
                   </tr>
                 ))}
               </tbody>
