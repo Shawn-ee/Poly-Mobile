@@ -183,13 +183,29 @@ function buildMarketSpecs(fixture: Fixture): MarketSpec[] {
       outcomes: yesNo({ bothTeamsScore: true }, { bothTeamsScore: false }),
     },
     {
+      key: "first-team-to-score",
+      title: "First team to score",
+      description: `Which team will score first in ${fixture.title}?`,
+      marketType: "first_team_to_score",
+      groupKey: "goals",
+      groupTitle: "Goals",
+      displayOrder: 31,
+      propCategory: "goals",
+      rules: { template: "FIRST_TEAM_TO_SCORE", settlement: "manual" },
+      outcomes: [
+        { name: fixture.home, code: "HOME", side: "home", metadata: { team: fixture.home, firstGoal: "home" } },
+        { name: "No goal", code: "NO_GOAL", side: "none", metadata: { firstGoal: "none" } },
+        { name: fixture.away, code: "AWAY", side: "away", metadata: { team: fixture.away, firstGoal: "away" } },
+      ],
+    },
+    {
       key: "home-clean-sheet",
       title: `${fixture.home} clean sheet`,
       description: `Will ${fixture.home} prevent ${fixture.away} from scoring?`,
       marketType: "clean_sheet",
       groupKey: "goals",
       groupTitle: "Goals",
-      displayOrder: 31,
+      displayOrder: 32,
       participantName: fixture.home,
       participantType: "team",
       propCategory: "goals",
@@ -203,7 +219,7 @@ function buildMarketSpecs(fixture: Fixture): MarketSpec[] {
       marketType: "clean_sheet",
       groupKey: "goals",
       groupTitle: "Goals",
-      displayOrder: 32,
+      displayOrder: 33,
       participantName: fixture.away,
       participantType: "team",
       propCategory: "goals",
@@ -212,7 +228,7 @@ function buildMarketSpecs(fixture: Fixture): MarketSpec[] {
     },
   ];
 
-  for (const [index, line] of [0.5, 1.5, 2.5, 3.5].entries()) {
+  for (const [index, line] of [0.5, 1.5, 2.5, 3.5, 4.5, 5.5].entries()) {
     specs.push({
       key: `total-goals-${line}`,
       title: `Total goals ${line}`,
@@ -236,7 +252,7 @@ function buildMarketSpecs(fixture: Fixture): MarketSpec[] {
     { label: fixture.home, side: "home" },
     { label: fixture.away, side: "away" },
   ]) {
-    for (const [index, line] of [0.5, 1.5, 2.5].entries()) {
+    for (const [index, line] of [0.5, 1.5, 2.5, 3.5, 4.5, 5.5].entries()) {
       specs.push({
         key: `${team.side}-team-total-${line}`,
         title: `${team.label} goals ${line}`,
@@ -260,10 +276,11 @@ function buildMarketSpecs(fixture: Fixture): MarketSpec[] {
   }
 
   for (const team of [
-    { label: fixture.home, side: "home" },
-    { label: fixture.away, side: "away" },
+    { label: fixture.home, side: "home", direction: 1 },
+    { label: fixture.away, side: "away", direction: -1 },
   ]) {
-    for (const [index, line] of [-2.5, -1.5, 1.5, 2.5].entries()) {
+    for (const [index, baseLine] of [0.5, 1.5, 2.5, 3.5, 4.5, 5.5].entries()) {
+      const line = baseLine * team.direction;
       const lineText = line > 0 ? `+${line}` : String(line);
       specs.push({
         key: `${team.side}-spread-${lineText.replace("+", "plus").replace("-", "minus").replace(".", "_")}`,
