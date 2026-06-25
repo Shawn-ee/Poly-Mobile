@@ -12,10 +12,14 @@ import PageContainer from "@/components/ui/PageContainer";
 import { BetaNotice, PageHeader, SectionHeader } from "@/components/ui/PageHeader";
 import { EmptyState, ErrorState, LoadingState } from "@/components/ui/States";
 import {
-  formatSportsMarketLine,
-  getLiveSportsMarketGroupKey,
-  groupLiveSportsMarkets,
-} from "@/lib/liveSportsMarketGroups";
+  buildWorldCupMarketSections,
+  estimateWorldCupTicket,
+  findWorldCupOutcomeSelection,
+  formatWorldCupMarketRowTitle,
+  getSelectedWorldCupLine,
+  type WorldCupMarketLine,
+  type WorldCupMarketBundle,
+} from "@/lib/worldCupMarketStructure";
 
 type SelectedTrade = {
   marketId: string;
@@ -165,6 +169,15 @@ type GroupedEventResponse = {
     averageAgeMs: number | null;
   };
   groupStatus: "healthy" | "incomplete" | "stale" | "overpriced" | "underpriced";
+};
+
+type SelectedWorldCupOutcome = {
+  market: EventMarket;
+  outcome: EventMarket["outcomes"][number];
+  price: number | null;
+  line: string | null;
+  bundleTitle: string;
+  outcomeLabel: string;
 };
 
 export default function EventPage() {
@@ -669,35 +682,47 @@ function SportsEventView({
   onMarketSearchChange: (search: string) => void;
 }) {
   const [selectedOutcomeId, setSelectedOutcomeId] = useState<string | null>(null);
-  const groupedMarkets = useMemo(() => groupLiveSportsMarkets(markets), [markets]);
-  const visibleGroups = groupedMarkets.filter((group) => group.markets.length > 0);
+  const [selectedLineByBundle, setSelectedLineByBundle] = useState<Record<string, string>>({});
+  const [ticketAmount, setTicketAmount] = useState("10");
+  const [ticketSide, setTicketSide] = useState<"buy" | "sell">("buy");
+  const marketSections = useMemo(() => buildWorldCupMarketSections(markets), [markets]);
+  const visibleGroups = marketSections.filter((group) => group.marketCount > 0);
   const searchQuery = marketSearch.trim().toLowerCase();
   const filteredGroups = useMemo(
     () =>
       visibleGroups
         .map((group) => ({
           ...group,
-          markets: searchQuery
-            ? group.markets.filter((market) => sportsMarketMatchesSearch(market, searchQuery))
-            : group.markets,
+          bundles: searchQuery
+            ? group.bundles
+                .map((bundle) => ({
+                  ...bundle,
+                  markets: bundle.markets.filter((market) => sportsMarketMatchesSearch(market, searchQuery)),
+                  lines: bundle.lines.filter((line) => sportsMarketMatchesSearch(line.market, searchQuery)),
+                }))
+                .filter((bundle) => bundle.markets.length > 0)
+            : group.bundles,
         }))
-        .filter((group) => group.markets.length > 0),
+        .filter((group) => group.bundles.length > 0),
     [visibleGroups, searchQuery],
   );
   const activeGroups =
     marketGroup === "all" ? filteredGroups : filteredGroups.filter((group) => group.key === marketGroup);
   const scoreAvailable = event.homeScore != null || event.awayScore != null;
   const statusCounts = useMemo(() => summarizeMarketStatuses(markets), [markets]);
-  const selectedOutcomePreview = useMemo(() => {
-    for (const market of markets) {
-      const outcome = market.outcomes.find((item) => item.id === selectedOutcomeId);
-      if (outcome) {
-        const price = outcome.price ?? market.pricesByOutcome?.[outcome.id] ?? null;
-        return { market, outcome, price };
-      }
-    }
-    return null;
-  }, [markets, selectedOutcomeId]);
+  const selectedOutcomePreview: SelectedWorldCupOutcome | null = useMemo(() => {
+    const selected = findWorldCupOutcomeSelection(marketSections, selectedOutcomeId);
+    if (!selected) return null;
+    return {
+      market: selected.selection.market,
+      outcome: selected.selection.outcome as EventMarket["outcomes"][number],
+      price: selected.selection.price,
+      line: selected.line.line,
+      bundleTitle: selected.bundle.title,
+      outcomeLabel: selected.selection.label,
+    };
+  }, [marketSections, selectedOutcomeId]);
+  const tradingUiEnabled = process.env.NEXT_PUBLIC_INTERNAL_TRADING_BETA_ENABLED === "true";
 
   return (
     <PageContainer>
@@ -771,10 +796,10 @@ function SportsEventView({
         <div className="mb-6 space-y-3">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-wrap gap-2">
-              {[{ key: "all", label: "All", count: markets.length }, ...groupedMarkets.map((group) => ({
+              {[{ key: "all", label: "All", count: markets.length }, ...marketSections.map((group) => ({
                 key: group.key,
                 label: group.label,
-                count: group.markets.length,
+                count: group.marketCount,
               }))].map((tab) => (
                 <button
                   key={tab.key}
@@ -803,7 +828,7 @@ function SportsEventView({
           </div>
           {searchQuery ? (
             <div className="text-sm text-[var(--poly-muted)]">
-              Showing {activeGroups.reduce((sum, group) => sum + group.markets.length, 0)} filtered markets for &quot;{marketSearch.trim()}&quot;.
+              Showing {activeGroups.reduce((sum, group) => sum + group.bundles.reduce((count, bundle) => count + bundle.markets.length, 0), 0)} filtered markets for &quot;{marketSearch.trim()}&quot;.
             </div>
           ) : null}
         </div>
@@ -819,13 +844,20 @@ function SportsEventView({
                 <section key={group.key} className="space-y-4">
                   <SectionHeader
                     title={group.label}
-                    description={`${group.markets.length} ${group.markets.length === 1 ? "market" : "markets"} available in this section.`}
+                    description={formatWorldCupSectionDescription(group.bundles)}
                   />
-                  <div className="space-y-4">
-                    {group.markets.map((market) => (
-                      <SportsMarketPanel
-                        key={market.id}
-                        market={market}
+                  <div className="space-y-3">
+                    {group.bundles.map((bundle) => (
+                      <WorldCupMarketBundlePanel
+                        key={bundle.key}
+                        bundle={bundle}
+                        selectedLineKey={selectedLineByBundle[bundle.key]}
+                        onSelectLine={(lineKey) => {
+                          setSelectedLineByBundle((current) => ({ ...current, [bundle.key]: lineKey }));
+                          const nextLine = bundle.lines.find((line) => line.key === lineKey);
+                          const nextOutcome = nextLine?.selections.find((selection) => selection.outcome.status !== "inactive");
+                          if (nextOutcome) setSelectedOutcomeId(nextOutcome.outcome.id);
+                        }}
                         selectedOutcomeId={selectedOutcomeId}
                         onSelectOutcome={setSelectedOutcomeId}
                       />
@@ -835,7 +867,15 @@ function SportsEventView({
               ))}
             </div>
             <div className="lg:sticky lg:top-6 lg:h-fit">
-              <SportsOutcomePreview selected={selectedOutcomePreview} />
+              <WorldCupTradeTicket
+                event={event}
+                selected={selectedOutcomePreview}
+                amount={ticketAmount}
+                onAmountChange={setTicketAmount}
+                side={ticketSide}
+                onSideChange={setTicketSide}
+                tradingUiEnabled={tradingUiEnabled}
+              />
             </div>
           </div>
         )}
@@ -888,39 +928,82 @@ function EventMarketStat({
   );
 }
 
-function SportsOutcomePreview({
+function WorldCupTradeTicket({
+  event,
   selected,
+  amount,
+  onAmountChange,
+  side,
+  onSideChange,
+  tradingUiEnabled,
 }: {
-  selected: { market: EventMarket; outcome: EventMarket["outcomes"][number]; price: number | null } | null;
+  event: EventSummary;
+  selected: SelectedWorldCupOutcome | null;
+  amount: string;
+  onAmountChange: (amount: string) => void;
+  side: "buy" | "sell";
+  onSideChange: (side: "buy" | "sell") => void;
+  tradingUiEnabled: boolean;
 }) {
+  const parsedAmount = Number.parseFloat(amount);
+  const estimate = estimateWorldCupTicket({
+    amount: Number.isFinite(parsedAmount) ? parsedAmount : 0,
+    price: selected?.price ?? null,
+  });
+
   if (!selected) {
     return (
       <Card className="border-dashed p-5">
-        <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Outcome preview</div>
+        <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Trade ticket</div>
         <h3 className="mt-2 text-lg font-semibold text-[var(--poly-text)]">Select an outcome</h3>
         <p className="mt-2 text-sm leading-6 text-[var(--poly-muted)]">
-          Pick a price tile to review the market, outcome side, and status before opening the market detail ticket.
+          Pick a market line and outcome to review price, cost, and payout estimates.
         </p>
         <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
-          Event-page controls remain preview-only and do not submit orders.
+          Event-page trading remains gated. Use market detail for the guarded internal beta ticket.
         </div>
       </Card>
     );
   }
 
-  const inactive = ["PAUSED", "CLOSED", "RESOLVED", "CANCELED"].includes(selected.market.status);
-  const side = [selected.outcome.side, selected.outcome.code].filter(Boolean).join(" / ");
+  const inactive = ["PAUSED", "SUSPENDED", "CLOSED", "RESOLVED", "CANCELED"].includes(selected.market.status);
+  const outcomeSide = [selected.outcome.side, selected.outcome.code].filter(Boolean).join(" / ");
+  const submitDisabled = !tradingUiEnabled || inactive || !selected.price || estimate.cost <= 0;
 
   return (
     <Card className="p-5">
-      <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Outcome preview</div>
-      <h3 className="mt-2 text-lg font-semibold text-[var(--poly-text)]">
-        {selected.outcome.label ?? selected.outcome.name}
-      </h3>
-      <p className="mt-2 text-sm leading-6 text-[var(--poly-muted)]">{selected.market.title}</p>
+      <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Trade ticket</div>
+      <h3 className="mt-2 text-lg font-semibold text-[var(--poly-text)]">{event.title}</h3>
+      <p className="mt-2 text-sm leading-6 text-[var(--poly-muted)]">{selected.bundleTitle}</p>
+
+      <div className="mt-4 grid grid-cols-2 gap-2">
+        {(["buy", "sell"] as const).map((mode) => (
+          <button
+            key={mode}
+            type="button"
+            onClick={() => onSideChange(mode)}
+            className={`rounded-lg border px-3 py-2 text-sm font-semibold capitalize transition ${
+              side === mode
+                ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)]"
+            }`}
+          >
+            {mode}
+          </button>
+        ))}
+      </div>
+
       <div className="mt-4 space-y-2 text-sm">
         <div className="flex items-center justify-between gap-4">
-          <span className="text-[var(--poly-muted)]">Display price</span>
+          <span className="text-[var(--poly-muted)]">Outcome</span>
+          <span className="font-semibold text-[var(--poly-text)]">{selected.outcomeLabel}</span>
+        </div>
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-[var(--poly-muted)]">Line</span>
+          <span className="font-semibold text-[var(--poly-text)]">{selected.line ?? "Default"}</span>
+        </div>
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-[var(--poly-muted)]">Price</span>
           <span className="font-semibold text-[var(--poly-text)]">{formatProbability(selected.price)}</span>
         </div>
         <div className="flex items-center justify-between gap-4">
@@ -928,117 +1011,209 @@ function SportsOutcomePreview({
           <span className="font-semibold text-[var(--poly-text)]">{formatBidAsk(selected.outcome.bestBid, selected.outcome.bestAsk)}</span>
         </div>
         <div className="flex items-center justify-between gap-4">
-          <span className="text-[var(--poly-muted)]">Side</span>
-          <span className="font-semibold uppercase text-[var(--poly-text)]">{side || "--"}</span>
+          <span className="text-[var(--poly-muted)]">Code</span>
+          <span className="font-semibold uppercase text-[var(--poly-text)]">{outcomeSide || "--"}</span>
         </div>
         <div className="flex items-center justify-between gap-4">
           <span className="text-[var(--poly-muted)]">Market status</span>
           <Badge tone={inactive ? "warning" : "primary"}>{formatStatus(selected.market.status)}</Badge>
         </div>
       </div>
-      <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
-        Preview only. Open the market detail page for the guarded internal beta ticket.
+
+      <label className="mt-4 block">
+        <span className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Amount</span>
+        <input
+          type="number"
+          min="0"
+          step="1"
+          value={amount}
+          onChange={(inputEvent) => onAmountChange(inputEvent.target.value)}
+          className="mt-1 w-full rounded-lg border border-[var(--poly-border)] bg-white px-3 py-2 text-sm text-[var(--poly-text)] outline-none transition focus:border-[var(--poly-primary)]"
+        />
+      </label>
+
+      <div className="mt-4 space-y-2 rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3 text-sm">
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-[var(--poly-muted)]">Estimated cost</span>
+          <span className="font-semibold text-[var(--poly-text)]">{formatUsd(estimate.cost)}</span>
+        </div>
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-[var(--poly-muted)]">Estimated shares</span>
+          <span className="font-semibold text-[var(--poly-text)]">{estimate.shares.toFixed(2)}</span>
+        </div>
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-[var(--poly-muted)]">Potential payout</span>
+          <span className="font-semibold text-[var(--poly-text)]">{formatUsd(estimate.potentialPayout)}</span>
+        </div>
       </div>
+
       <Link
         href={`/markets/${selected.market.id}`}
         className="mt-4 block rounded-lg border border-[var(--poly-border)] bg-white px-4 py-3 text-center text-sm font-semibold text-[var(--poly-primary)] transition hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]"
       >
         Open market detail
       </Link>
+      <button
+        type="button"
+        disabled={submitDisabled}
+        className="mt-3 w-full cursor-not-allowed rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] px-4 py-3 text-sm font-semibold text-[var(--poly-muted)]"
+      >
+        {tradingUiEnabled ? "Submit from market detail" : "Trading disabled"}
+      </button>
+      <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+        Event-page ticket is preview-only. Server-side internal trading gates remain required for real orders.
+      </div>
     </Card>
   );
 }
 
-function SportsMarketPanel({
-  market,
+function WorldCupMarketBundlePanel({
+  bundle,
+  selectedLineKey,
+  onSelectLine,
   selectedOutcomeId,
   onSelectOutcome,
 }: {
-  market: EventMarket;
+  bundle: WorldCupMarketBundle<EventMarket>;
+  selectedLineKey?: string;
+  onSelectLine: (lineKey: string) => void;
   selectedOutcomeId: string | null;
   onSelectOutcome: (outcomeId: string) => void;
 }) {
-  const marketLine = formatSportsMarketLine({
-    line: market.line,
-    unit: market.unit,
-    period: market.period,
-    participantName: market.participantName,
-    propCategory: market.propCategory,
-  });
-  const groupLabel = getLiveSportsMarketGroupKey(market).replaceAll("_", " ");
-  const isInactive = ["PAUSED", "CLOSED", "RESOLVED", "CANCELED"].includes(market.status);
+  const statusSummary = summarizeMarketStatuses(bundle.markets);
+  const unavailableCount = statusSummary.suspended + statusSummary.closed + statusSummary.resolved;
+  const selectedLine = getSelectedWorldCupLine(bundle, selectedLineKey);
+  const visibleLines = bundle.lineSelectable && selectedLine ? [selectedLine] : bundle.lines;
 
   return (
-    <Card className="p-5">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+    <Card className="overflow-hidden">
+      <div className="flex flex-col gap-3 border-b border-[var(--poly-border)] bg-white p-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-[var(--poly-text)]">{market.title}</h3>
-          {market.description ? (
-            <p className="mt-1 text-sm text-[var(--poly-muted)]">{market.description}</p>
-          ) : null}
-          {marketLine ? <p className="mt-2 text-sm font-medium text-[var(--poly-text)]">{marketLine}</p> : null}
-          {market.rulesText ? <p className="mt-2 text-xs text-[var(--poly-muted)]">{market.rulesText}</p> : null}
+          <h3 className="text-base font-semibold text-[var(--poly-text)]">{bundle.title}</h3>
+          <p className="mt-1 text-sm text-[var(--poly-muted)]">{bundle.description}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Badge>{market.marketGroupTitle ?? groupLabel}</Badge>
-          <Badge>{formatMarketType(market.marketType)}</Badge>
-          <Badge tone={isInactive ? "warning" : "primary"}>{formatStatus(market.status)}</Badge>
+          <Badge tone="primary">
+            {bundle.markets.length} {bundle.markets.length === 1 ? "market" : "markets"}
+          </Badge>
+          {unavailableCount > 0 ? (
+            <Badge tone="warning">{unavailableCount} unavailable</Badge>
+          ) : (
+            <Badge tone="positive">Open</Badge>
+          )}
         </div>
       </div>
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {market.outcomes.map((outcome) => {
-          const price = outcome.price ?? market.pricesByOutcome?.[outcome.id] ?? null;
-          const selected = selectedOutcomeId === outcome.id;
-          const outcomeUnavailable = isInactive || outcome.status === "inactive";
+      {bundle.lineSelectable ? (
+        <div className="flex gap-2 overflow-x-auto border-b border-[var(--poly-border)] px-4 py-3">
+          {bundle.lines.map((line) => (
+            <button
+              key={line.key}
+              type="button"
+              onClick={() => onSelectLine(line.key)}
+              className={`min-w-14 rounded-lg border px-3 py-2 text-sm font-semibold tabular-nums transition ${
+                (selectedLine?.key ?? bundle.defaultLineKey) === line.key
+                  ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                  : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)]"
+              }`}
+            >
+              {line.label}
+            </button>
+          ))}
+        </div>
+      ) : null}
+
+      <div className="divide-y divide-[var(--poly-border)]">
+        {visibleLines.map((line) => (
+          <SportsMarketRow
+            key={line.key}
+            line={line}
+            selectedOutcomeId={selectedOutcomeId}
+            onSelectOutcome={onSelectOutcome}
+          />
+        ))}
+      </div>
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-[var(--poly-surface-muted)] px-4 py-3 text-xs text-[var(--poly-muted)]">
+        <span>Event-page trading is disabled in this display-only phase.</span>
+        <span>Select a tile to preview, then open a market detail ticket if needed.</span>
+      </div>
+    </Card>
+  );
+}
+
+function SportsMarketRow({
+  line,
+  selectedOutcomeId,
+  onSelectOutcome,
+}: {
+  line: WorldCupMarketLine<EventMarket>;
+  selectedOutcomeId: string | null;
+  onSelectOutcome: (outcomeId: string) => void;
+}) {
+  const market = line.market;
+  const isInactive = ["PAUSED", "SUSPENDED", "CLOSED", "RESOLVED", "CANCELED"].includes(market.status);
+  const marketContext = [market.participantName, market.propCategory?.replaceAll("_", " "), market.period?.replaceAll("_", " ")]
+    .filter(Boolean)
+    .join(" / ");
+
+  return (
+    <div className="grid gap-3 px-4 py-3 md:grid-cols-[minmax(11rem,1fr)_minmax(18rem,1.6fr)_auto] md:items-center">
+      <div className="min-w-0">
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="truncate text-sm font-semibold text-[var(--poly-text)]">{formatWorldCupMarketRowTitle(market)}</div>
+          <Badge tone={isInactive ? "warning" : "neutral"}>{formatStatus(market.status)}</Badge>
+        </div>
+        <div className="mt-1 text-xs text-[var(--poly-muted)]">
+          {marketContext || formatMarketType(market.marketType)}
+        </div>
+      </div>
+
+      <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+        {line.selections.map((selection) => {
+          const selected = selectedOutcomeId === selection.outcome.id;
+          const outcomeUnavailable = isInactive || selection.outcome.status === "inactive";
           return (
             <button
-              key={outcome.id}
+              key={selection.key}
               type="button"
-              onClick={() => onSelectOutcome(outcome.id)}
+              onClick={() => onSelectOutcome(selection.outcome.id)}
               disabled={outcomeUnavailable}
-              className={`rounded-lg border p-4 text-left transition ${
+              className={`min-h-14 rounded-lg border px-3 py-2 text-left transition ${
                 selected
                   ? "border-[var(--poly-primary)] bg-white shadow-[var(--poly-shadow-sm)]"
                   : "border-[var(--poly-border)] bg-[var(--poly-surface-muted)] hover:border-[var(--poly-primary)] hover:bg-white"
               } ${outcomeUnavailable ? "cursor-not-allowed opacity-60" : ""}`}
             >
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <div className="truncate text-sm font-semibold text-[var(--poly-text)]">
-                    {outcome.label ?? outcome.name}
-                  </div>
-                  {outcome.side ?? outcome.code ? (
-                    <div className="mt-1 text-xs uppercase text-[var(--poly-muted)]">
-                      {[outcome.side, outcome.code].filter(Boolean).join(" / ")}
-                    </div>
-                  ) : null}
-                  {outcome.resolvedResult ? (
-                    <div className="mt-1 text-xs uppercase text-[var(--poly-muted)]">{outcome.resolvedResult}</div>
-                  ) : null}
-                </div>
-                <div className="text-right">
-                  <div className="text-sm font-semibold text-[var(--poly-text)]">{formatProbability(price)}</div>
-                  <div className="mt-1 text-xs text-[var(--poly-muted)]">
-                    {formatBidAsk(outcome.bestBid, outcome.bestAsk)}
-                  </div>
-                </div>
+              <div className="flex items-center justify-between gap-3">
+                <span className="min-w-0 truncate text-sm font-semibold text-[var(--poly-text)]">
+                  {selection.label}
+                </span>
+                <span className="shrink-0 text-sm font-semibold tabular-nums text-[var(--poly-text)]">
+                  {formatProbability(selection.price)}
+                </span>
               </div>
-              <div className="mt-3 text-xs font-semibold text-[var(--poly-muted)]">
-                {outcomeUnavailable ? "Not available" : selected ? "Selected for preview" : "Preview only"}
+              <div className="mt-1 flex items-center justify-between gap-3 text-xs text-[var(--poly-muted)]">
+                <span className="truncate uppercase">{[selection.outcome.side, selection.outcome.code].filter(Boolean).join(" / ") || "choice"}</span>
+                <span className="shrink-0 tabular-nums">{formatBidAsk(selection.outcome.bestBid, selection.outcome.bestAsk)}</span>
               </div>
             </button>
           );
         })}
       </div>
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--poly-border)] pt-4 text-xs text-[var(--poly-muted)]">
-        <span>Event-page trading is disabled in this display-only phase.</span>
-        <Link href={`/markets/${market.id}`} className="font-semibold text-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]">
-          Open market detail
-        </Link>
-      </div>
-    </Card>
+
+      <Link
+        href={`/markets/${market.id}`}
+        className="justify-self-start rounded-lg border border-[var(--poly-border)] bg-white px-3 py-2 text-xs font-semibold text-[var(--poly-primary)] transition hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)] md:justify-self-end"
+      >
+        Detail
+      </Link>
+    </div>
   );
+}
+
+function formatWorldCupSectionDescription(bundles: WorldCupMarketBundle<EventMarket>[]) {
+  const marketCount = bundles.reduce((sum, bundle) => sum + bundle.markets.length, 0);
+  return `${marketCount} ${marketCount === 1 ? "market" : "markets"} organized into ${bundles.length} compact ${bundles.length === 1 ? "card" : "cards"}.`;
 }
 
 function formatMarketType(value: string | null | undefined) {
@@ -1048,6 +1223,10 @@ function formatMarketType(value: string | null | undefined) {
 
 function formatProbability(value: number | null) {
   return typeof value === "number" && Number.isFinite(value) ? `${(value * 100).toFixed(0)}%` : "--";
+}
+
+function formatUsd(value: number) {
+  return Number.isFinite(value) ? `$${value.toFixed(2)}` : "$0.00";
 }
 
 function formatBidAsk(bid: number | null | undefined, ask: number | null | undefined) {

@@ -10,6 +10,10 @@ describe("live sports market grouping UI helpers", () => {
     expect(getLiveSportsMarketGroupKey({ title: "Total Points", marketType: "total" })).toBe("total");
     expect(getLiveSportsMarketGroupKey({ title: "LeBron Points", marketType: "player_prop" })).toBe("player_prop");
     expect(getLiveSportsMarketGroupKey({ title: "In-play Next Score", marketGroupKey: "live", marketType: "special" })).toBe("live");
+    expect(getLiveSportsMarketGroupKey({ title: "Total goals 2.5", marketGroupKey: "totals" })).toBe("total");
+    expect(getLiveSportsMarketGroupKey({ title: "Team goals 1.5", marketGroupKey: "team-totals" })).toBe("team_prop");
+    expect(getLiveSportsMarketGroupKey({ title: "Both teams to score", marketGroupKey: "goals" })).toBe("game_prop");
+    expect(getLiveSportsMarketGroupKey({ title: "USA +1.5", marketGroupKey: "spreads" })).toBe("spread");
   });
 
   test("groups and orders markets for event detail sections", () => {
@@ -24,8 +28,9 @@ describe("live sports market grouping UI helpers", () => {
       "Main",
       "Spread",
       "Total",
-      "Player Props",
+      "Game Props",
       "Team Props",
+      "Player Props",
       "Period Props",
       "Specials",
       "Live",
