@@ -3,11 +3,13 @@ import { CanonicalApiError } from "@/lib/canonicalApi";
 
 const submitComboOrder = jest.fn();
 const listComboOrders = jest.fn();
+const quoteComboOrder = jest.fn();
 const requireInternalTradingUserById = jest.fn();
 
 jest.mock("@/server/services/comboOrders", () => ({
   submitComboOrder: (...args: unknown[]) => submitComboOrder(...args),
   listComboOrders: (...args: unknown[]) => listComboOrders(...args),
+  quoteComboOrder: (...args: unknown[]) => quoteComboOrder(...args),
 }));
 
 jest.mock("@/lib/internalTradingBeta", () => ({
@@ -43,12 +45,14 @@ jest.mock("@/lib/canonicalRoute", () => ({
 }));
 
 import { GET, POST } from "@/app/api/combo-orders/route";
+import { POST as POST_QUOTE } from "@/app/api/combo-orders/quote/route";
 
 describe("combo order routes", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     submitComboOrder.mockResolvedValue({ comboOrder: { id: "combo-1", status: "OPEN" } });
     listComboOrders.mockResolvedValue({ items: [] });
+    quoteComboOrder.mockResolvedValue({ quote: { comboPrice: "0.2", potentialPayout: "50" } });
   });
 
   test("POST blocks before combo creation when internal trading gate rejects", async () => {
@@ -102,5 +106,27 @@ describe("combo order routes", () => {
     expect(response.status).toBe(200);
     expect(listComboOrders).toHaveBeenCalledWith({ userId: "user-1", limit: 5 });
     expect(requireInternalTradingUserById).not.toHaveBeenCalled();
+  });
+
+  test("POST quote calculates combo without opening the trading write gate", async () => {
+    const response = await POST_QUOTE(
+      new NextRequest("http://localhost/api/combo-orders/quote", {
+        method: "POST",
+        body: JSON.stringify({
+          stakeUSDC: "10",
+          legs: [
+            { marketId: "m1", outcomeId: "o1" },
+            { marketId: "m2", outcomeId: "o2" },
+          ],
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(quoteComboOrder).toHaveBeenCalledWith({
+      body: expect.objectContaining({ stakeUSDC: "10" }),
+    });
+    expect(requireInternalTradingUserById).not.toHaveBeenCalled();
+    expect(submitComboOrder).not.toHaveBeenCalled();
   });
 });

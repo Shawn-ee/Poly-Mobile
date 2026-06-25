@@ -27,6 +27,9 @@ const mockPrisma = {
   outcome: {
     findMany: jest.fn(),
   },
+  order: {
+    groupBy: jest.fn(),
+  },
   $transaction: jest.fn(),
 };
 
@@ -34,7 +37,7 @@ jest.mock("@/lib/db", () => ({
   prisma: mockPrisma,
 }));
 
-const { cancelComboOrder, submitComboOrder } = require("@/server/services/comboOrders") as typeof import("@/server/services/comboOrders");
+const { cancelComboOrder, quoteComboOrder, submitComboOrder } = require("@/server/services/comboOrders") as typeof import("@/server/services/comboOrders");
 
 const decimal = (value: string | number) => new Prisma.Decimal(value);
 
@@ -96,8 +99,8 @@ const normalizedBodyFingerprint = fingerprintFor({
   stakeUSDC: "10",
   clientOrderId: null,
   legs: [
-    { marketId: "m1", outcomeId: "o1", price: "0.5", line: null, label: "ECU" },
-    { marketId: "m2", outcomeId: "o2", price: "0.4", line: "2.5", label: "Over 2.5" },
+    { marketId: "m1", outcomeId: "o1", line: null, label: "ECU" },
+    { marketId: "m2", outcomeId: "o2", line: "2.5", label: "Over 2.5" },
   ],
 });
 
@@ -113,6 +116,11 @@ describe("combo order service", () => {
       { id: "o1", marketId: "m1" },
       { id: "o2", marketId: "m2" },
     ]);
+    mockPrisma.order.groupBy
+      .mockResolvedValueOnce([{ outcomeId: "o1", _max: { price: decimal("0.48") } }])
+      .mockResolvedValueOnce([{ outcomeId: "o1", _min: { price: decimal("0.52") } }])
+      .mockResolvedValueOnce([{ outcomeId: "o2", _max: { price: decimal("0.39") } }])
+      .mockResolvedValueOnce([{ outcomeId: "o2", _min: { price: decimal("0.41") } }]);
     mockTx.userBalance.upsert.mockResolvedValue({ availableUSDC: decimal("100"), lockedUSDC: decimal("0") });
     mockTx.$queryRaw.mockResolvedValue([{ availableUSDC: decimal("100"), lockedUSDC: decimal("0") }]);
     mockTx.comboOrder.create.mockResolvedValue({ id: "combo-1" });
@@ -121,7 +129,7 @@ describe("combo order service", () => {
     mockTx.comboOrder.update.mockResolvedValue({});
   });
 
-  test("creates a guarded combo order and ledger lock", async () => {
+  test("creates a guarded combo order with server-calculated prices and ledger lock", async () => {
     mockPrisma.comboOrder.findFirst
       .mockResolvedValueOnce(null)
       .mockResolvedValueOnce(comboRow());
@@ -141,13 +149,16 @@ describe("combo order service", () => {
           potentialPayout: expect.any(Prisma.Decimal),
           legs: {
             create: expect.arrayContaining([
-              expect.objectContaining({ marketId: "m1", outcomeId: "o1", displayOrder: 0 }),
-              expect.objectContaining({ marketId: "m2", outcomeId: "o2", displayOrder: 1 }),
+              expect.objectContaining({ marketId: "m1", outcomeId: "o1", price: decimal("0.5"), displayOrder: 0 }),
+              expect.objectContaining({ marketId: "m2", outcomeId: "o2", price: decimal("0.4"), displayOrder: 1 }),
             ]),
           },
         }),
       }),
     );
+    const createData = mockTx.comboOrder.create.mock.calls[0][0].data;
+    expect(createData.comboPrice.toString()).toBe("0.2");
+    expect(createData.potentialPayout.toString()).toBe("50");
     expect(mockTx.ledgerEntry.create).toHaveBeenCalledWith(
       expect.objectContaining({
         data: expect.objectContaining({
@@ -196,6 +207,50 @@ describe("combo order service", () => {
       idempotencyKeyHeader: "idem-1",
     })).rejects.toMatchObject({ code: "INSUFFICIENT_BALANCE" });
 
+    expect(mockTx.comboOrder.create).not.toHaveBeenCalled();
+    expect(mockTx.ledgerEntry.create).not.toHaveBeenCalled();
+  });
+
+  test("does not trust client supplied combo leg prices", async () => {
+    mockPrisma.comboOrder.findFirst
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce(comboRow());
+
+    await submitComboOrder({
+      userId: "user-1",
+      idempotencyKeyHeader: "idem-1",
+      body: {
+        stakeUSDC: "10",
+        legs: [
+          { marketId: "m1", outcomeId: "o1", price: "0.01", label: "ECU" },
+          { marketId: "m2", outcomeId: "o2", price: "0.01", line: "2.5", label: "Over 2.5" },
+        ],
+      },
+    });
+
+    const createData = mockTx.comboOrder.create.mock.calls[0][0].data;
+    expect(createData.comboPrice.toString()).toBe("0.2");
+    expect(createData.legs.create.map((leg: { price: Prisma.Decimal }) => leg.price.toString())).toEqual(["0.5", "0.4"]);
+  });
+
+  test("quotes combo price and payout from server orderbook prices without mutation", async () => {
+    const result = await quoteComboOrder({
+      body: {
+        stakeUSDC: "10",
+        legs: [
+          { marketId: "m1", outcomeId: "o1", price: "0.01", label: "ECU" },
+          { marketId: "m2", outcomeId: "o2", price: "0.01", line: "2.5", label: "Over 2.5" },
+        ],
+      },
+    });
+
+    expect(result.quote).toEqual(
+      expect.objectContaining({
+        comboPrice: "0.2",
+        potentialPayout: "50",
+        potentialProfit: "40",
+      }),
+    );
     expect(mockTx.comboOrder.create).not.toHaveBeenCalled();
     expect(mockTx.ledgerEntry.create).not.toHaveBeenCalled();
   });

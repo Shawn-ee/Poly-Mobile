@@ -1107,13 +1107,81 @@ function WorldCupComboTicket({
 }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
+  const [serverQuote, setServerQuote] = useState<{
+    comboPrice: number;
+    potentialPayout: number;
+    potentialProfit: number;
+    legs: Array<{ outcomeId: string; price: string | number }>;
+  } | null>(null);
+  const [quoteLoading, setQuoteLoading] = useState(false);
   const parsedAmount = Number.parseFloat(amount);
   const estimate = estimateWorldCupComboTicket({
     amount: Number.isFinite(parsedAmount) ? parsedAmount : 0,
     legs,
   });
+  const displayEstimate = serverQuote
+    ? {
+        comboPrice: serverQuote.comboPrice,
+        cost: estimate.cost,
+        potentialPayout: serverQuote.potentialPayout,
+        potentialProfit: serverQuote.potentialProfit,
+      }
+    : estimate;
   const canPreview = estimate.valid && estimate.cost > 0;
   const canSubmit = canPreview && tradingUiEnabled && !submitting;
+
+  useEffect(() => {
+    const amountValue = Number.parseFloat(amount);
+    if (!tradingUiEnabled || legs.length < 2 || !Number.isFinite(amountValue) || amountValue <= 0) {
+      setServerQuote(null);
+      setQuoteLoading(false);
+      return;
+    }
+
+    let canceled = false;
+    setQuoteLoading(true);
+    const timeout = window.setTimeout(async () => {
+      try {
+        const response = await fetch("/api/combo-orders/quote", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            stakeUSDC: amount,
+            legs: legs.map((leg) => ({
+              marketId: leg.marketId,
+              outcomeId: leg.outcomeId,
+              line: leg.line,
+              label: leg.label,
+            })),
+          }),
+        });
+        const body = await response.json().catch(() => null);
+        if (!canceled && response.ok && body?.quote) {
+          setServerQuote({
+            comboPrice: Number(body.quote.comboPrice),
+            potentialPayout: Number(body.quote.potentialPayout),
+            potentialProfit: Number(body.quote.potentialProfit),
+            legs: body.quote.legs ?? [],
+          });
+        } else if (!canceled) {
+          setServerQuote(null);
+        }
+      } catch {
+        if (!canceled) setServerQuote(null);
+      } finally {
+        if (!canceled) setQuoteLoading(false);
+      }
+    }, 250);
+
+    return () => {
+      canceled = true;
+      window.clearTimeout(timeout);
+    };
+  }, [amount, legs, tradingUiEnabled]);
+
+  const serverLegPriceByOutcome = new Map(
+    serverQuote?.legs.map((leg) => [leg.outcomeId, Number(leg.price)]) ?? [],
+  );
 
   const submitCombo = async () => {
     if (!canSubmit) return;
@@ -1131,7 +1199,6 @@ function WorldCupComboTicket({
           legs: legs.map((leg) => ({
             marketId: leg.marketId,
             outcomeId: leg.outcomeId,
-            price: leg.price,
             line: leg.line,
             label: leg.label,
           })),
@@ -1180,7 +1247,7 @@ function WorldCupComboTicket({
                   </div>
                 </div>
                 <div className="text-right text-sm font-semibold tabular-nums text-[var(--poly-text)]">
-                  {formatProbability(leg.price)}
+                  {formatProbability(serverLegPriceByOutcome.get(leg.outcomeId) ?? leg.price)}
                 </div>
               </div>
               <button
@@ -1210,19 +1277,24 @@ function WorldCupComboTicket({
       <div className="mt-4 space-y-2 rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3 text-sm">
         <div className="flex items-center justify-between gap-4">
           <span className="text-[var(--poly-muted)]">Combined price</span>
-          <span className="font-semibold text-[var(--poly-text)]">{formatProbability(estimate.comboPrice)}</span>
+          <span className="font-semibold text-[var(--poly-text)]">
+            {quoteLoading ? "Updating..." : formatProbability(displayEstimate.comboPrice)}
+          </span>
         </div>
         <div className="flex items-center justify-between gap-4">
           <span className="text-[var(--poly-muted)]">Estimated cost</span>
-          <span className="font-semibold text-[var(--poly-text)]">{formatUsd(estimate.cost)}</span>
+          <span className="font-semibold text-[var(--poly-text)]">{formatUsd(displayEstimate.cost)}</span>
         </div>
         <div className="flex items-center justify-between gap-4">
           <span className="text-[var(--poly-muted)]">Potential payout</span>
-          <span className="font-semibold text-[var(--poly-text)]">{formatUsd(estimate.potentialPayout)}</span>
+          <span className="font-semibold text-[var(--poly-text)]">{formatUsd(displayEstimate.potentialPayout)}</span>
         </div>
         <div className="flex items-center justify-between gap-4">
           <span className="text-[var(--poly-muted)]">Potential profit</span>
-          <span className="font-semibold text-[var(--poly-text)]">{formatUsd(estimate.potentialProfit)}</span>
+          <span className="font-semibold text-[var(--poly-text)]">{formatUsd(displayEstimate.potentialProfit)}</span>
+        </div>
+        <div className="text-xs text-[var(--poly-muted)]">
+          {serverQuote ? "Calculated by server quote." : "Local estimate shown until server quote is available."}
         </div>
       </div>
 

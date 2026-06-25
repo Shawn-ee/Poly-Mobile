@@ -372,11 +372,13 @@ Phase N local validation:
 World Cup real combo order backend:
 
 - Branch: `agent/world-cup-real-combo-orders`
+- Follow-up branch: `agent/combo-server-price-calculation`
 - Output: `docs/reviews/WORLD_CUP_REAL_COMBO_ORDER_EVIDENCE.md`
 - Migration: `prisma/migrations/20260625203500_world_cup_combo_orders/migration.sql`
 - Runtime boundary: guarded internal-beta combo order placement only.
-- Review rule: leave PR open because this includes Prisma schema, order persistence, ledger hold, cancel unlock, and portfolio read-model behavior.
+- Review rule: merge only after CI/specialist review because this includes combo order pricing behavior and order persistence boundaries.
 - Still not implemented: combo settlement, market resolution, void/push/refund handling, public trading, anonymous trading, live bot placement.
+- Server calculation update: backend quote/submission now calculates leg prices from POLY orderbook quotes and ignores client-supplied combo prices.
 
 Validation completed locally so far:
 
