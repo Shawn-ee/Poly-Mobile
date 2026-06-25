@@ -13,10 +13,13 @@ import { BetaNotice, PageHeader, SectionHeader } from "@/components/ui/PageHeade
 import { EmptyState, ErrorState, LoadingState } from "@/components/ui/States";
 import {
   buildWorldCupMarketSections,
+  canAddWorldCupComboLeg,
+  estimateWorldCupComboTicket,
   estimateWorldCupTicket,
   findWorldCupOutcomeSelection,
   formatWorldCupMarketRowTitle,
   getSelectedWorldCupLine,
+  type WorldCupComboLeg,
   type WorldCupMarketLine,
   type WorldCupMarketBundle,
 } from "@/lib/worldCupMarketStructure";
@@ -684,6 +687,8 @@ function SportsEventView({
   const [selectedOutcomeId, setSelectedOutcomeId] = useState<string | null>(null);
   const [selectedLineByBundle, setSelectedLineByBundle] = useState<Record<string, string>>({});
   const [ticketAmount, setTicketAmount] = useState("10");
+  const [comboAmount, setComboAmount] = useState("10");
+  const [comboLegs, setComboLegs] = useState<WorldCupComboLeg[]>([]);
   const [ticketSide, setTicketSide] = useState<"buy" | "sell">("buy");
   const marketSections = useMemo(() => buildWorldCupMarketSections(markets), [markets]);
   const visibleGroups = marketSections.filter((group) => group.marketCount > 0);
@@ -860,6 +865,16 @@ function SportsEventView({
                         }}
                         selectedOutcomeId={selectedOutcomeId}
                         onSelectOutcome={setSelectedOutcomeId}
+                        comboLegs={comboLegs}
+                        onToggleComboLeg={(leg) => {
+                          setComboLegs((current) => {
+                            if (current.some((item) => item.outcomeId === leg.outcomeId)) {
+                              return current.filter((item) => item.outcomeId !== leg.outcomeId);
+                            }
+                            if (!canAddWorldCupComboLeg(current, leg)) return current;
+                            return [...current, leg];
+                          });
+                        }}
                       />
                     ))}
                   </div>
@@ -874,6 +889,14 @@ function SportsEventView({
                 onAmountChange={setTicketAmount}
                 side={ticketSide}
                 onSideChange={setTicketSide}
+                tradingUiEnabled={tradingUiEnabled}
+              />
+              <WorldCupComboTicket
+                legs={comboLegs}
+                amount={comboAmount}
+                onAmountChange={setComboAmount}
+                onRemoveLeg={(outcomeId) => setComboLegs((current) => current.filter((leg) => leg.outcomeId !== outcomeId))}
+                onClear={() => setComboLegs([])}
                 tradingUiEnabled={tradingUiEnabled}
               />
             </div>
@@ -1067,18 +1090,134 @@ function WorldCupTradeTicket({
   );
 }
 
+function WorldCupComboTicket({
+  legs,
+  amount,
+  onAmountChange,
+  onRemoveLeg,
+  onClear,
+  tradingUiEnabled,
+}: {
+  legs: WorldCupComboLeg[];
+  amount: string;
+  onAmountChange: (amount: string) => void;
+  onRemoveLeg: (outcomeId: string) => void;
+  onClear: () => void;
+  tradingUiEnabled: boolean;
+}) {
+  const parsedAmount = Number.parseFloat(amount);
+  const estimate = estimateWorldCupComboTicket({
+    amount: Number.isFinite(parsedAmount) ? parsedAmount : 0,
+    legs,
+  });
+  const canPreview = estimate.valid && estimate.cost > 0;
+
+  return (
+    <Card className="mt-4 p-5">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Combo slip</div>
+          <h3 className="mt-2 text-lg font-semibold text-[var(--poly-text)]">{legs.length} {legs.length === 1 ? "leg" : "legs"}</h3>
+        </div>
+        {legs.length ? (
+          <button type="button" onClick={onClear} className="text-xs font-semibold text-[var(--poly-muted)] hover:text-[var(--poly-primary)]">
+            Clear
+          </button>
+        ) : null}
+      </div>
+
+      {legs.length === 0 ? (
+        <p className="mt-3 text-sm leading-6 text-[var(--poly-muted)]">
+          Add outcomes from different markets to preview a combo payout.
+        </p>
+      ) : (
+        <div className="mt-4 space-y-2">
+          {legs.map((leg) => (
+            <div key={leg.outcomeId} className="rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="truncate text-sm font-semibold text-[var(--poly-text)]">{leg.label}</div>
+                  <div className="mt-1 text-xs text-[var(--poly-muted)]">
+                    {[leg.marketTitle, leg.line].filter(Boolean).join(" / ")}
+                  </div>
+                </div>
+                <div className="text-right text-sm font-semibold tabular-nums text-[var(--poly-text)]">
+                  {formatProbability(leg.price)}
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => onRemoveLeg(leg.outcomeId)}
+                className="mt-2 text-xs font-semibold text-[var(--poly-muted)] hover:text-[var(--poly-primary)]"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <label className="mt-4 block">
+        <span className="text-xs font-semibold uppercase text-[var(--poly-muted)]">Combo amount</span>
+        <input
+          type="number"
+          min="0"
+          step="1"
+          value={amount}
+          onChange={(event) => onAmountChange(event.target.value)}
+          className="mt-1 w-full rounded-lg border border-[var(--poly-border)] bg-white px-3 py-2 text-sm text-[var(--poly-text)] outline-none transition focus:border-[var(--poly-primary)]"
+        />
+      </label>
+
+      <div className="mt-4 space-y-2 rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3 text-sm">
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-[var(--poly-muted)]">Combined price</span>
+          <span className="font-semibold text-[var(--poly-text)]">{formatProbability(estimate.comboPrice)}</span>
+        </div>
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-[var(--poly-muted)]">Estimated cost</span>
+          <span className="font-semibold text-[var(--poly-text)]">{formatUsd(estimate.cost)}</span>
+        </div>
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-[var(--poly-muted)]">Potential payout</span>
+          <span className="font-semibold text-[var(--poly-text)]">{formatUsd(estimate.potentialPayout)}</span>
+        </div>
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-[var(--poly-muted)]">Potential profit</span>
+          <span className="font-semibold text-[var(--poly-text)]">{formatUsd(estimate.potentialProfit)}</span>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        disabled
+        className="mt-4 w-full cursor-not-allowed rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] px-4 py-3 text-sm font-semibold text-[var(--poly-muted)]"
+      >
+        {canPreview && tradingUiEnabled ? "Combo submission not available yet" : "Build a 2+ leg combo"}
+      </button>
+      <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+        Combo is preview-only. Real combo placement needs a dedicated combo order, ledger hold, and settlement model.
+      </div>
+    </Card>
+  );
+}
+
 function WorldCupMarketBundlePanel({
   bundle,
   selectedLineKey,
   onSelectLine,
   selectedOutcomeId,
   onSelectOutcome,
+  comboLegs,
+  onToggleComboLeg,
 }: {
   bundle: WorldCupMarketBundle<EventMarket>;
   selectedLineKey?: string;
   onSelectLine: (lineKey: string) => void;
   selectedOutcomeId: string | null;
   onSelectOutcome: (outcomeId: string) => void;
+  comboLegs: WorldCupComboLeg[];
+  onToggleComboLeg: (leg: WorldCupComboLeg) => void;
 }) {
   const statusSummary = summarizeMarketStatuses(bundle.markets);
   const unavailableCount = statusSummary.suspended + statusSummary.closed + statusSummary.resolved;
@@ -1128,8 +1267,10 @@ function WorldCupMarketBundlePanel({
           <SportsMarketRow
             key={line.key}
             line={line}
+            comboLegs={comboLegs}
             selectedOutcomeId={selectedOutcomeId}
             onSelectOutcome={onSelectOutcome}
+            onToggleComboLeg={onToggleComboLeg}
           />
         ))}
       </div>
@@ -1143,12 +1284,16 @@ function WorldCupMarketBundlePanel({
 
 function SportsMarketRow({
   line,
+  comboLegs,
   selectedOutcomeId,
   onSelectOutcome,
+  onToggleComboLeg,
 }: {
   line: WorldCupMarketLine<EventMarket>;
+  comboLegs: WorldCupComboLeg[];
   selectedOutcomeId: string | null;
   onSelectOutcome: (outcomeId: string) => void;
+  onToggleComboLeg: (leg: WorldCupComboLeg) => void;
 }) {
   const market = line.market;
   const isInactive = ["PAUSED", "SUSPENDED", "CLOSED", "RESOLVED", "CANCELED"].includes(market.status);
@@ -1171,32 +1316,61 @@ function SportsMarketRow({
       <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
         {line.selections.map((selection) => {
           const selected = selectedOutcomeId === selection.outcome.id;
+          const comboSelected = comboLegs.some((leg) => leg.outcomeId === selection.outcome.id);
+          const comboBlocked = !comboSelected && comboLegs.some((leg) => leg.marketId === selection.market.id);
           const outcomeUnavailable = isInactive || selection.outcome.status === "inactive";
           return (
-            <button
+            <div
               key={selection.key}
-              type="button"
-              onClick={() => onSelectOutcome(selection.outcome.id)}
-              disabled={outcomeUnavailable}
-              className={`min-h-14 rounded-lg border px-3 py-2 text-left transition ${
-                selected
+              className={`rounded-lg border transition ${
+                selected || comboSelected
                   ? "border-[var(--poly-primary)] bg-white shadow-[var(--poly-shadow-sm)]"
                   : "border-[var(--poly-border)] bg-[var(--poly-surface-muted)] hover:border-[var(--poly-primary)] hover:bg-white"
-              } ${outcomeUnavailable ? "cursor-not-allowed opacity-60" : ""}`}
+              } ${outcomeUnavailable ? "opacity-60" : ""}`}
             >
-              <div className="flex items-center justify-between gap-3">
-                <span className="min-w-0 truncate text-sm font-semibold text-[var(--poly-text)]">
-                  {selection.label}
-                </span>
-                <span className="shrink-0 text-sm font-semibold tabular-nums text-[var(--poly-text)]">
-                  {formatProbability(selection.price)}
-                </span>
-              </div>
-              <div className="mt-1 flex items-center justify-between gap-3 text-xs text-[var(--poly-muted)]">
-                <span className="truncate uppercase">{[selection.outcome.side, selection.outcome.code].filter(Boolean).join(" / ") || "choice"}</span>
-                <span className="shrink-0 tabular-nums">{formatBidAsk(selection.outcome.bestBid, selection.outcome.bestAsk)}</span>
-              </div>
-            </button>
+              <button
+                type="button"
+                onClick={() => onSelectOutcome(selection.outcome.id)}
+                disabled={outcomeUnavailable}
+                className="w-full px-3 py-2 text-left"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className="min-w-0 truncate text-sm font-semibold text-[var(--poly-text)]">
+                    {selection.label}
+                  </span>
+                  <span className="shrink-0 text-sm font-semibold tabular-nums text-[var(--poly-text)]">
+                    {formatProbability(selection.price)}
+                  </span>
+                </div>
+                <div className="mt-1 flex items-center justify-between gap-3 text-xs text-[var(--poly-muted)]">
+                  <span className="truncate uppercase">{[selection.outcome.side, selection.outcome.code].filter(Boolean).join(" / ") || "choice"}</span>
+                  <span className="shrink-0 tabular-nums">{formatBidAsk(selection.outcome.bestBid, selection.outcome.bestAsk)}</span>
+                </div>
+              </button>
+              <button
+                type="button"
+                disabled={outcomeUnavailable || comboBlocked}
+                onClick={() =>
+                  onToggleComboLeg({
+                    marketId: selection.market.id,
+                    outcomeId: selection.outcome.id,
+                    label: selection.label,
+                    marketTitle: formatWorldCupMarketRowTitle(selection.market),
+                    line: line.line,
+                    price: selection.price,
+                  })
+                }
+                className={`w-full border-t border-[var(--poly-border)] px-3 py-2 text-xs font-semibold transition ${
+                  comboSelected
+                    ? "text-[var(--poly-primary)]"
+                    : comboBlocked || outcomeUnavailable
+                      ? "cursor-not-allowed text-[var(--poly-muted)] opacity-60"
+                      : "text-[var(--poly-muted)] hover:text-[var(--poly-primary)]"
+                }`}
+              >
+                {comboSelected ? "Remove from combo" : comboBlocked ? "One leg per market" : "Add to combo"}
+              </button>
+            </div>
           );
         })}
       </div>

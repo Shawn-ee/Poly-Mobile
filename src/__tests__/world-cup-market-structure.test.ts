@@ -3,6 +3,8 @@ import path from "path";
 
 import {
   buildWorldCupMarketSections,
+  canAddWorldCupComboLeg,
+  estimateWorldCupComboTicket,
   estimateWorldCupTicket,
   findWorldCupOutcomeSelection,
   getSelectedWorldCupLine,
@@ -97,10 +99,45 @@ describe("world cup market structure", () => {
     });
   });
 
+  test("combo estimate multiplies leg prices and enforces different markets", () => {
+    const legs = [
+      { marketId: "moneyline", outcomeId: "ecu", label: "ECU", marketTitle: "Winner", line: null, price: 0.4 },
+      { marketId: "total-2-5", outcomeId: "over", label: "Over", marketTitle: "Total", line: "2.5", price: 0.5 },
+    ];
+
+    expect(canAddWorldCupComboLeg(legs, {
+      marketId: "total-2-5",
+      outcomeId: "under",
+      label: "Under",
+      marketTitle: "Total",
+      line: "2.5",
+      price: 0.5,
+    })).toBe(false);
+    expect(canAddWorldCupComboLeg(legs, {
+      marketId: "btts",
+      outcomeId: "yes",
+      label: "Yes",
+      marketTitle: "Both teams to score",
+      line: null,
+      price: 0.6,
+    })).toBe(true);
+
+    expect(estimateWorldCupComboTicket({ amount: 10, legs })).toEqual({
+      legCount: 2,
+      valid: true,
+      comboPrice: 0.2,
+      cost: 10,
+      potentialPayout: 50,
+      potentialProfit: 40,
+    });
+  });
+
   test("event page keeps order submission display gated", () => {
     const pageSource = fs.readFileSync(path.join(process.cwd(), "src", "app", "events", "[slug]", "page.tsx"), "utf8");
     expect(pageSource).toContain('process.env.NEXT_PUBLIC_INTERNAL_TRADING_BETA_ENABLED === "true"');
     expect(pageSource).toContain("Event-page ticket is preview-only");
+    expect(pageSource).toContain("Combo is preview-only");
     expect(pageSource).not.toContain("fetch(`/api/orders`");
+    expect(pageSource).not.toContain("fetch(`/api/combos`");
   });
 });
