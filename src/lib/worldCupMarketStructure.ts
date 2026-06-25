@@ -261,6 +261,40 @@ export function estimateWorldCupTicket(params: { amount: number; price: number |
   };
 }
 
+export type WorldCupComboLeg = {
+  marketId: string;
+  outcomeId: string;
+  label: string;
+  marketTitle: string;
+  line: string | null;
+  price: number | null;
+};
+
+export function canAddWorldCupComboLeg(legs: WorldCupComboLeg[], nextLeg: WorldCupComboLeg) {
+  if (!nextLeg.marketId || !nextLeg.outcomeId) return false;
+  if (legs.some((leg) => leg.outcomeId === nextLeg.outcomeId)) return false;
+  return !legs.some((leg) => leg.marketId === nextLeg.marketId);
+}
+
+export function estimateWorldCupComboTicket(params: { amount: number; legs: WorldCupComboLeg[] }) {
+  const amount = Number.isFinite(params.amount) && params.amount > 0 ? params.amount : 0;
+  const validPrices = params.legs
+    .map((leg) => leg.price)
+    .filter((price): price is number => typeof price === "number" && Number.isFinite(price) && price > 0);
+  const comboPrice = validPrices.length === params.legs.length && validPrices.length >= 2
+    ? validPrices.reduce((product, price) => product * price, 1)
+    : null;
+  const potentialPayout = comboPrice ? amount / comboPrice : 0;
+  return {
+    legCount: params.legs.length,
+    valid: Boolean(comboPrice),
+    comboPrice,
+    cost: amount,
+    potentialPayout,
+    potentialProfit: Math.max(0, potentialPayout - amount),
+  };
+}
+
 export function formatWorldCupOutcomeLabel(outcome: WorldCupOutcomeLike) {
   const side = normalizeToken(outcome.side);
   if (side === "yes") return "Yes";
