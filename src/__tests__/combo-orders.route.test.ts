@@ -129,4 +129,76 @@ describe("combo order routes", () => {
     expect(requireInternalTradingUserById).not.toHaveBeenCalled();
     expect(submitComboOrder).not.toHaveBeenCalled();
   });
+
+  test("World Cup internal test trade smoke quotes, blocks when gated, and submits only when allowed", async () => {
+    const worldCupBody = {
+      stakeUSDC: "10",
+      legs: [
+        { marketId: "ecuador-germany-winner", outcomeId: "ecuador", label: "ECU" },
+        { marketId: "ecuador-germany-total-2-5", outcomeId: "over-2-5", line: "2.5", label: "Over 2.5" },
+      ],
+    };
+
+    const quoteResponse = await POST_QUOTE(
+      new NextRequest("http://localhost/api/combo-orders/quote", {
+        method: "POST",
+        body: JSON.stringify(worldCupBody),
+      }),
+    );
+
+    expect(quoteResponse.status).toBe(200);
+    expect(quoteComboOrder).toHaveBeenCalledWith({ body: worldCupBody });
+    expect(requireInternalTradingUserById).not.toHaveBeenCalled();
+    expect(submitComboOrder).not.toHaveBeenCalled();
+
+    requireInternalTradingUserById.mockRejectedValueOnce(
+      new CanonicalApiError("TRADING_BETA_DISABLED", "Internal trading beta is not enabled.", 403),
+    );
+
+    const gatedResponse = await POST(
+      new NextRequest("http://localhost/api/combo-orders", {
+        method: "POST",
+        headers: { "Idempotency-Key": "world-cup-combo-smoke-1" },
+        body: JSON.stringify(worldCupBody),
+      }),
+    );
+
+    expect(gatedResponse.status).toBe(403);
+    expect(submitComboOrder).not.toHaveBeenCalled();
+
+    requireInternalTradingUserById.mockResolvedValueOnce({ id: "user-1", email: "allowed@test.local" });
+    submitComboOrder.mockResolvedValueOnce({
+      comboOrder: {
+        id: "world-cup-combo-1",
+        status: "OPEN",
+        stakeUSDC: "10",
+        comboPrice: "0.2",
+        potentialPayout: "50",
+      },
+    });
+
+    const allowedResponse = await POST(
+      new NextRequest("http://localhost/api/combo-orders", {
+        method: "POST",
+        headers: { "Idempotency-Key": "world-cup-combo-smoke-1" },
+        body: JSON.stringify(worldCupBody),
+      }),
+    );
+    const allowedBody = await allowedResponse.json();
+
+    expect(allowedResponse.status).toBe(200);
+    expect(submitComboOrder).toHaveBeenCalledWith(
+      expect.objectContaining({
+        userId: "user-1",
+        idempotencyKeyHeader: "world-cup-combo-smoke-1",
+        body: worldCupBody,
+      }),
+    );
+    expect(allowedBody.comboOrder).toEqual(
+      expect.objectContaining({
+        id: "world-cup-combo-1",
+        status: "OPEN",
+      }),
+    );
+  });
 });
