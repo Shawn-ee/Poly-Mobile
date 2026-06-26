@@ -1,16 +1,22 @@
 import { expect, test } from "@playwright/test";
 
 test("World Cup event renders grouped markets and gated ticket estimates", async ({ page }, testInfo) => {
-  const worldCupResponse = await page.goto("/sports/soccer/world-cup", { waitUntil: "networkidle" });
+  const worldCupResponse = await page.goto("/sports/soccer/world-cup", { waitUntil: "domcontentloaded" });
   test.skip(worldCupResponse?.status() === 404, "World Cup sports route is not available.");
 
   await expect(page.getByRole("heading", { name: /world cup/i })).toBeVisible();
+  await page
+    .waitForResponse((response) => response.url().includes("/api/sports/soccer/world-cup/events") && response.status() === 200, {
+      timeout: 30_000,
+    })
+    .catch(() => null);
+  await page.getByText(/France vs Argentina|Mexico vs South Korea|Brazil vs Morocco/i).first().waitFor({ timeout: 30_000 });
 
   const eventLink = page.locator("a[href^='/events/']").first();
   test.skip((await eventLink.count()) === 0, "No seeded World Cup events available for browser smoke.");
   await expect(eventLink).toBeVisible();
   await eventLink.click();
-  await page.waitForLoadState("networkidle");
+  await page.waitForLoadState("domcontentloaded");
 
   await expect(page.getByRole("heading", { name: /event markets/i })).toBeVisible();
   await expect(page.getByText(/trade ticket/i).first()).toBeVisible();

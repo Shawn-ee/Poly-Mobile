@@ -13,7 +13,7 @@ Target:
 Current Lead Agent score:
 
 ```text
-85/100
+87/100
 ```
 
 ## Score Breakdown
@@ -31,14 +31,14 @@ Current Lead Agent score:
 | Bot inventory cleanup | 5/10 | `WORLD_CUP_V2_BOT_INVENTORY_CLEANUP_EVIDENCE.md` | Inventory evidence exists; `live-internal.env` is tracked in bot repo and should be cleaned in a separate bot hygiene PR. |
 | Combo validation and risk model | 6/10 | combo order/settlement tests passed | Basic validation exists; sportsbook-grade correlation/exposure/max-payout risk model not implemented. |
 | Early cash-out estimate | 2/10 | no fresh implementation evidence found | Needs model/design or blocker report. |
-| Settlement readiness | 8/10 | combo settlement tests passed | Admin combo settlement exists; full deployed drill still needed. |
-| Harness/tooling availability | 6/10 | `tests/e2e/world-cup-ui-ticket-smoke.spec.ts` | Active-goal Playwright browser smoke now exists; broader harness suite still incomplete. |
+| Settlement readiness | 9/10 | `20260626T145500Z-world-cup-internal-drill-readiness/REPORT.md` | Admin route tests, no-mutation settlement preview, DB-backed combo settlement, void refund, duplicate prevention, and post-settlement ledger/balance assertions pass. |
+| Harness/tooling availability | 7/10 | `20260626T145500Z-world-cup-internal-drill-readiness/REPORT.md` | Direct browser smoke and targeted drill test block pass; checked-in Playwright runner still needs follow-up because it hung in this shell. |
 | Safety posture | 8/10 | no live bots/funding/trading enabled by this cycle | Blocked areas remain blocked. |
 
 ## Current Classification
 
 ```text
-Controlled internal beta candidate: reached 85/100 with warnings.
+Controlled internal beta candidate: reached 87/100 with warnings.
 Public beta: not ready.
 Live production bots: not approved.
 Real public funding/withdrawals: blocked.
@@ -50,13 +50,13 @@ Real public funding/withdrawals: blocked.
 2. Authenticated full reference-liquidity dry-run with a local admin session cookie.
 3. Combo risk engine v1 plan and implementation task.
 4. Early cash-out estimate model.
-5. Full internal drill across reference sync, market making dry-run, guarded order submit, portfolio, admin settlement, and post-settlement evidence.
+5. Checked-in Playwright runner follow-up: direct browser smoke passed, but `npx playwright test tests/e2e/world-cup-ui-ticket-smoke.spec.ts --project=smoke --reporter=list` hung in this shell.
 
 ## Validation Agent Decision
 
 Status: `pass_with_warnings`
 
-Reason: targeted app and bot evidence reached the 85/100 controlled internal beta candidate target. Warnings remain for bot hygiene, authenticated reference-liquidity dry-run, combo risk depth, early cash-out modeling, and full end-to-end internal drill evidence.
+Reason: targeted app and bot evidence reached the controlled internal beta candidate target, and full internal drill readiness now has runnable evidence. Warnings remain for bot hygiene, authenticated reference-liquidity dry-run, combo risk depth, early cash-out modeling, and the checked-in Playwright runner hang.
 
 ## Reviewer Agent Decision
 
