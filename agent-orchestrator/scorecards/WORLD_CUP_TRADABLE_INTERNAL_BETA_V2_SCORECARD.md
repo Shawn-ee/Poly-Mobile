@@ -13,7 +13,7 @@ Target:
 Current Lead Agent score:
 
 ```text
-83/100
+85/100
 ```
 
 ## Score Breakdown
@@ -23,8 +23,8 @@ Current Lead Agent score:
 | World Cup event/match grouping | 10/10 | `WORLD_CUP_V2_UI_ORDER_TICKET_SMOKE_EVIDENCE.md` | Browser smoke verifies World Cup route, event detail, grouped markets, ticket, combo slip, and gated submission. |
 | Related contracts under one match | 8/10 | World Cup structure tests passed | Match, spread, totals, team totals, BTTS, first-team score supported. Player props intentionally not complete. |
 | Unified order ticket | 9/10 | `WORLD_CUP_V2_UI_ORDER_TICKET_SMOKE_EVIDENCE.md` | Playwright verifies outcome selection, estimated cost/payout visibility, amount recalculation, and disabled submit state. |
-| Internal/test trading flow | 7/10 | Guarded order/combo routes exist and tests passed | Off by default; needs fresh internal test trade smoke. |
-| Position tracking, mark value, P/L | 6/10 | Portfolio route exists; combo history visible | Needs explicit mark/P&L evidence for World Cup positions and combos. |
+| Internal/test trading flow | 9/10 | `WORLD_CUP_V2_INTERNAL_TEST_TRADE_SMOKE_EVIDENCE.md` | Route smoke proves quote, disabled gate, allowed internal submit boundary, ledger lock service behavior, and portfolio visibility. |
+| Position tracking, mark value, P/L | 7/10 | `WORLD_CUP_V2_INTERNAL_TEST_TRADE_SMOKE_EVIDENCE.md` | Portfolio combo visibility is tested; full mark/P&L for live positions still needs a richer model. |
 | Reference sync dry-run | 9/10 | `WORLD_CUP_V2_REFERENCE_SYNC_DRY_RUN_EVIDENCE.md` | Bot reference tests and app reference/no-leak boundary tests pass; authenticated full dry-run still needs local admin session. |
 | Two-tick-worse pricing | 9/10 | `WORLD_CUP_V2_TWO_TICK_PRICING_EVIDENCE.md` | Active app-side tests verify two-tick bid/ask, clamps, dry-run default, and missing-book behavior. |
 | Safe market-making bots | 9/10 | `WORLD_CUP_V2_MARKET_MAKING_GUARDRAILS_EVIDENCE.md`, Poly-bots PR #2 | World Cup guardrail tests verify default/live/dry-run gates, exposure caps, order caps, non-crossing desired quotes, and order-size caps. |
@@ -38,7 +38,7 @@ Current Lead Agent score:
 ## Current Classification
 
 ```text
-Controlled internal beta progress: meaningful but not yet 85/100.
+Controlled internal beta candidate: reached 85/100 with warnings.
 Public beta: not ready.
 Live production bots: not approved.
 Real public funding/withdrawals: blocked.
@@ -48,10 +48,10 @@ Real public funding/withdrawals: blocked.
 
 1. Bot repo hygiene PR for tracked `live-internal.env` and generated config cleanup policy.
 2. Authenticated full reference-liquidity dry-run with a local admin session cookie.
-3. Internal test trade smoke with gates and no public trading.
-4. Combo risk engine v1 plan and implementation task.
-5. Early cash-out estimate model.
-6. Bot repo hygiene PR for tracked `live-internal.env`.
+3. Combo risk engine v1 plan and implementation task.
+4. Early cash-out estimate model.
+5. Bot repo hygiene PR for tracked `live-internal.env`.
+6. Full authenticated reference-liquidity dry-run with a local admin session cookie.
 
 ## Validation Agent Decision
 
