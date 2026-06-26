@@ -45,7 +45,7 @@ export async function GET(_request: NextRequest) {
   const comboOrders = await prisma.comboOrder.findMany({
     where: {
       userId,
-      status: "OPEN",
+      status: { in: ["OPEN", "SETTLED", "VOIDED"] },
     },
     orderBy: [{ updatedAt: "desc" }, { id: "desc" }],
     take: 25,

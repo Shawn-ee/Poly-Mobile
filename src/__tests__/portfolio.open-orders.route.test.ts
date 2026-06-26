@@ -106,7 +106,7 @@ describe("GET /api/portfolio open order display data", () => {
     expect(JSON.stringify(body.openOrders)).not.toContain("createdApiCredential");
   });
 
-  test("returns sanitized current-user open combo orders", async () => {
+  test("returns sanitized current-user combo orders including settled history", async () => {
     getUserId.mockResolvedValue("user-1");
     prismaMock.comboOrder.findMany.mockResolvedValue([
       {
@@ -142,7 +142,7 @@ describe("GET /api/portfolio open order display data", () => {
       expect.objectContaining({
         where: {
           userId: "user-1",
-          status: "OPEN",
+          status: { in: ["OPEN", "SETTLED", "VOIDED"] },
         },
       }),
     );
