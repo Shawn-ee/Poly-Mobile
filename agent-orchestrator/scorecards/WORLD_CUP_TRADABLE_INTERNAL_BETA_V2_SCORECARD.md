@@ -13,7 +13,7 @@ Target:
 Current Lead Agent score:
 
 ```text
-75/100
+77/100
 ```
 
 ## Score Breakdown
@@ -25,7 +25,7 @@ Current Lead Agent score:
 | Unified order ticket | 7/10 | World Cup tests and event page source checks passed | Ticket context and backend quote exist; needs browser/API smoke with seeded data. |
 | Internal/test trading flow | 7/10 | Guarded order/combo routes exist and tests passed | Off by default; needs fresh internal test trade smoke. |
 | Position tracking, mark value, P/L | 6/10 | Portfolio route exists; combo history visible | Needs explicit mark/P&L evidence for World Cup positions and combos. |
-| Reference sync dry-run | 8/10 | poly-bot reference import/liquidity tests passed | App-side harness directory absent on clean `dev`; need integrated evidence. |
+| Reference sync dry-run | 9/10 | `WORLD_CUP_V2_REFERENCE_SYNC_DRY_RUN_EVIDENCE.md` | Bot reference tests and app reference/no-leak boundary tests pass; authenticated full dry-run still needs local admin session. |
 | Two-tick-worse pricing | 7/10 | poly-bot reference liquidity/arbitrage tests passed | Tests verify planned bot bid/ask around reference bid/ask; needs dedicated app-level scorecard evidence. |
 | Safe market-making bots | 7/10 | bot safety and production risk-control tests passed | Defaults safe: bots disabled, live trading disabled, global kill switch true. Local ignored credential-shaped files need cleanup policy. |
 | Bot inventory cleanup | 5/10 | `WORLD_CUP_V2_BOT_INVENTORY_CLEANUP_EVIDENCE.md` | Inventory evidence exists; `live-internal.env` is tracked in bot repo and should be cleaned in a separate bot hygiene PR. |
@@ -47,7 +47,7 @@ Real public funding/withdrawals: blocked.
 ## Critical Gaps To Reach 85
 
 1. Bot repo hygiene PR for tracked `live-internal.env` and generated config cleanup policy.
-2. Integrated reference sync dry-run evidence from app and bot boundary.
+2. Authenticated full reference-liquidity dry-run with a local admin session cookie.
 3. Dedicated two-tick-worse pricing tests/evidence in the active app workflow.
 4. Market-making bot guardrail evidence tied to World Cup reference mappings.
 5. Browser/API smoke for World Cup grouped UI and order ticket recalculation.
