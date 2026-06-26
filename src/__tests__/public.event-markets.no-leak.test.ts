@@ -91,6 +91,7 @@ const expectedMarketKeys = [
   "id",
   "importStatus",
   "kind",
+  "line",
   "marketType",
   "mechanism",
   "mmEnabled",
