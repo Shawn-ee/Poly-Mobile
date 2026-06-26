@@ -13,7 +13,7 @@ Target:
 Current Lead Agent score:
 
 ```text
-79/100
+81/100
 ```
 
 ## Score Breakdown
@@ -27,7 +27,7 @@ Current Lead Agent score:
 | Position tracking, mark value, P/L | 6/10 | Portfolio route exists; combo history visible | Needs explicit mark/P&L evidence for World Cup positions and combos. |
 | Reference sync dry-run | 9/10 | `WORLD_CUP_V2_REFERENCE_SYNC_DRY_RUN_EVIDENCE.md` | Bot reference tests and app reference/no-leak boundary tests pass; authenticated full dry-run still needs local admin session. |
 | Two-tick-worse pricing | 9/10 | `WORLD_CUP_V2_TWO_TICK_PRICING_EVIDENCE.md` | Active app-side tests verify two-tick bid/ask, clamps, dry-run default, and missing-book behavior. |
-| Safe market-making bots | 7/10 | bot safety and production risk-control tests passed | Defaults safe: bots disabled, live trading disabled, global kill switch true. Local ignored credential-shaped files need cleanup policy. |
+| Safe market-making bots | 9/10 | `WORLD_CUP_V2_MARKET_MAKING_GUARDRAILS_EVIDENCE.md`, Poly-bots PR #2 | World Cup guardrail tests verify default/live/dry-run gates, exposure caps, order caps, non-crossing desired quotes, and order-size caps. |
 | Bot inventory cleanup | 5/10 | `WORLD_CUP_V2_BOT_INVENTORY_CLEANUP_EVIDENCE.md` | Inventory evidence exists; `live-internal.env` is tracked in bot repo and should be cleaned in a separate bot hygiene PR. |
 | Combo validation and risk model | 6/10 | combo order/settlement tests passed | Basic validation exists; sportsbook-grade correlation/exposure/max-payout risk model not implemented. |
 | Early cash-out estimate | 2/10 | no fresh implementation evidence found | Needs model/design or blocker report. |
@@ -48,12 +48,11 @@ Real public funding/withdrawals: blocked.
 
 1. Bot repo hygiene PR for tracked `live-internal.env` and generated config cleanup policy.
 2. Authenticated full reference-liquidity dry-run with a local admin session cookie.
-3. World Cup-specific market-making guardrail evidence tied to dry-run inventory caps.
-4. Market-making bot guardrail evidence tied to World Cup reference mappings.
-5. Browser/API smoke for World Cup grouped UI and order ticket recalculation.
-6. Internal test trade smoke with gates and no public trading.
-7. Combo risk engine v1 plan and implementation task.
-8. Early cash-out estimate model.
+3. Browser/API smoke for World Cup grouped UI and order ticket recalculation.
+4. Internal test trade smoke with gates and no public trading.
+5. Combo risk engine v1 plan and implementation task.
+6. Early cash-out estimate model.
+7. Bot repo hygiene PR for tracked `live-internal.env`.
 
 ## Validation Agent Decision
 
