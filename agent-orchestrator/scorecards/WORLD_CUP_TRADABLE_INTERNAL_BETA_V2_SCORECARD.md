@@ -13,7 +13,7 @@ Target:
 Current Lead Agent score:
 
 ```text
-74/100
+75/100
 ```
 
 ## Score Breakdown
@@ -28,7 +28,7 @@ Current Lead Agent score:
 | Reference sync dry-run | 8/10 | poly-bot reference import/liquidity tests passed | App-side harness directory absent on clean `dev`; need integrated evidence. |
 | Two-tick-worse pricing | 7/10 | poly-bot reference liquidity/arbitrage tests passed | Tests verify planned bot bid/ask around reference bid/ask; needs dedicated app-level scorecard evidence. |
 | Safe market-making bots | 7/10 | bot safety and production risk-control tests passed | Defaults safe: bots disabled, live trading disabled, global kill switch true. Local ignored credential-shaped files need cleanup policy. |
-| Bot inventory cleanup | 4/10 | inventory inspected without printing secret values | Cleanup plan required for local ignored config files and stale/generated bot configs. |
+| Bot inventory cleanup | 5/10 | `WORLD_CUP_V2_BOT_INVENTORY_CLEANUP_EVIDENCE.md` | Inventory evidence exists; `live-internal.env` is tracked in bot repo and should be cleaned in a separate bot hygiene PR. |
 | Combo validation and risk model | 6/10 | combo order/settlement tests passed | Basic validation exists; sportsbook-grade correlation/exposure/max-payout risk model not implemented. |
 | Early cash-out estimate | 2/10 | no fresh implementation evidence found | Needs model/design or blocker report. |
 | Settlement readiness | 8/10 | combo settlement tests passed | Admin combo settlement exists; full deployed drill still needed. |
@@ -46,7 +46,7 @@ Real public funding/withdrawals: blocked.
 
 ## Critical Gaps To Reach 85
 
-1. Bot inventory cleanup policy and evidence.
+1. Bot repo hygiene PR for tracked `live-internal.env` and generated config cleanup policy.
 2. Integrated reference sync dry-run evidence from app and bot boundary.
 3. Dedicated two-tick-worse pricing tests/evidence in the active app workflow.
 4. Market-making bot guardrail evidence tied to World Cup reference mappings.
