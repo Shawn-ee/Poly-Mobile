@@ -372,6 +372,8 @@ Phase N local validation:
 Combo settlement and sports resolution:
 
 - Branch: `agent/combo-settlement-resolution`
+- PR: #250, merged.
+- Merge commit: `a9bb6a5 Merge pull request #250 from Shawn-ee/agent/combo-settlement-resolution`
 - Output: `docs/reviews/COMBO_SETTLEMENT_RESOLUTION_EVIDENCE.md`
 - Runtime behavior: admin-only combo settlement preview and settlement, plus guarded sports result metadata for combo/demo markets.
 - Settlement model:
@@ -398,6 +400,18 @@ Combo settlement and sports resolution:
   - `npx tsc --noEmit --pretty false --incremental false`
   - `npm run test:ci`
   - `npm run build`
+
+Orchestrator quality gates:
+
+- Branch: `agent/orchestrator-quality-gates`
+- Output: `docs/reviews/ORCHESTRATOR_QUALITY_GATES_EVIDENCE.md`
+- Scope: GitHub-issue orchestrator quality gates on clean `dev`.
+- Runtime boundary: no product runtime behavior, trading, ledger, settlement, funding, withdrawal, wallet, bot, or deployment behavior changed.
+- Implemented gates:
+  - recursive `FIX-FIX` style task skip.
+  - maximum failed orchestrator runs per issue.
+  - issue quality checks for body depth, validation/success criteria, implementation scope, and safety/rollback boundary.
+- Note: the newer file-queue harness scripts from the separate dirty checkout are not present on clean `dev`; equivalent gates should be applied there after that branch is landed or parked.
 
 World Cup real combo order backend:
 
