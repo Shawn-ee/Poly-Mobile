@@ -62,6 +62,9 @@ function loadConfig() {
     dryRun: String(merged.DRY_RUN ?? "true").toLowerCase() !== "false",
     allowHighRisk: String(merged.ALLOW_HIGH_RISK ?? "false").toLowerCase() === "true",
     maxTasksPerCycle: positiveInt(merged.MAX_TASKS_PER_CYCLE, 1),
+    maxFailedRunsPerIssue: positiveInt(merged.MAX_FAILED_RUNS_PER_ISSUE, 2),
+    maxRecursiveFixDepth: positiveInt(merged.MAX_RECURSIVE_FIX_DEPTH, 1),
+    requireTaskQuality: String(merged.REQUIRE_TASK_QUALITY ?? "true").toLowerCase() !== "false",
     loopIntervalSeconds: positiveInt(merged.LOOP_INTERVAL_SECONDS, 1800),
     codexCommand: merged.CODEX_COMMAND || "codex",
     taskLabels: splitCsv(merged.TASK_LABELS || "codex-ready,agent-task"),
@@ -122,6 +125,63 @@ function highRiskMatches(issue) {
   const text = `${issue.title || ""}\n${issue.body || ""}`;
   const lower = text.toLowerCase();
   return HIGH_RISK_KEYWORDS.filter((keyword) => lower.includes(keyword.toLowerCase()));
+}
+
+function recursiveFixDepth(issue) {
+  const text = `${issue.title || ""}\n${issue.body || ""}`.toLowerCase();
+  const title = String(issue.title || "").trim().toLowerCase();
+  if (title.startsWith("fix-fix") || title.startsWith("fix: fix") || text.includes("fix-fix-")) {
+    return 2;
+  }
+  if (title.startsWith("fix") || text.includes("recursive fix")) {
+    return 1;
+  }
+  return 0;
+}
+
+function assessIssueQuality(issue, config) {
+  if (!config.requireTaskQuality) return [];
+  const problems = [];
+  const title = String(issue.title || "").trim();
+  const body = String(issue.body || "").trim();
+  const text = `${title}\n${body}`.toLowerCase();
+
+  if (recursiveFixDepth(issue) > config.maxRecursiveFixDepth) {
+    problems.push("recursive fix depth exceeded");
+  }
+  if (body.length < 160) {
+    problems.push("issue body is too thin for autonomous execution");
+  }
+  if (!/(success criteria|acceptance criteria|validation|tests?|harness)/i.test(text)) {
+    problems.push("missing validation or success criteria");
+  }
+  if (!/(scope|allowed files|files changed|implementation|tasks?)/i.test(text)) {
+    problems.push("missing implementation scope");
+  }
+  if (!/(rollback|revert|safety|forbidden|out of scope|do not)/i.test(text)) {
+    problems.push("missing safety or rollback boundary");
+  }
+
+  return problems;
+}
+
+function failedRunCountForIssue(config, issueNumber) {
+  if (!existsSync(config.runsDir)) return 0;
+  let count = 0;
+  for (const name of readdirSync(config.runsDir)) {
+    if (!name.includes(`issue-${issueNumber}`)) continue;
+    const summaryPath = path.join(config.runsDir, name, "summary.md");
+    if (!existsSync(summaryPath)) continue;
+    const summary = readFileSync(summaryPath, "utf8").toLowerCase();
+    if (
+      summary.includes("# execution failed") ||
+      summary.includes("# validation failed") ||
+      summary.includes("no commit, push, or pr was created")
+    ) {
+      count += 1;
+    }
+  }
+  return count;
 }
 
 function slugify(value) {
@@ -452,6 +512,9 @@ function cycle() {
     dryRun: config.dryRun,
     allowHighRisk: config.allowHighRisk,
     maxTasksPerCycle: config.maxTasksPerCycle,
+    maxFailedRunsPerIssue: config.maxFailedRunsPerIssue,
+    maxRecursiveFixDepth: config.maxRecursiveFixDepth,
+    requireTaskQuality: config.requireTaskQuality,
     loopIntervalSeconds: config.loopIntervalSeconds,
     codexCommand: config.codexCommand,
     taskLabels: config.taskLabels,
@@ -480,6 +543,16 @@ function cycle() {
     }
     if (hasIgnoredLabel(issue, config.ignoreLabels)) {
       skipped.push({ issue, reason: "ignored label present", matches });
+      continue;
+    }
+    const qualityProblems = assessIssueQuality(issue, config);
+    if (qualityProblems.length > 0) {
+      skipped.push({ issue, reason: `quality gate: ${qualityProblems.join("; ")}`, matches });
+      continue;
+    }
+    const failedRuns = failedRunCountForIssue(config, issue.number);
+    if (failedRuns >= config.maxFailedRunsPerIssue) {
+      skipped.push({ issue, reason: `failed run cap reached: ${failedRuns}/${config.maxFailedRunsPerIssue}`, matches });
       continue;
     }
     if (matches.length > 0 && !config.allowHighRisk) {
@@ -551,6 +624,9 @@ function status() {
   console.log(`dryRun: ${config.dryRun}`);
   console.log(`allowHighRisk: ${config.allowHighRisk}`);
   console.log(`maxTasksPerCycle: ${config.maxTasksPerCycle}`);
+  console.log(`maxFailedRunsPerIssue: ${config.maxFailedRunsPerIssue}`);
+  console.log(`maxRecursiveFixDepth: ${config.maxRecursiveFixDepth}`);
+  console.log(`requireTaskQuality: ${config.requireTaskQuality}`);
   console.log(`loopIntervalSeconds: ${config.loopIntervalSeconds}`);
   console.log(`runsDir: ${path.relative(REPO_ROOT, config.runsDir)}`);
   console.log(`currentBranch: ${branch}`);
