@@ -294,16 +294,16 @@ export default function PortfolioPage() {
       <section className="mt-8">
         <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 className="text-lg font-semibold text-[var(--poly-text)]">Open combos</h2>
+            <h2 className="text-lg font-semibold text-[var(--poly-text)]">Combo orders</h2>
             <p className="text-sm text-[var(--poly-muted)]">
-              Combo orders reserve the stake until canceled or settled by a future settlement workflow.
+              Open combos reserve the stake. Settled and voided combos remain visible after admin settlement.
             </p>
           </div>
-          <Badge tone="warning">Settlement pending</Badge>
+          <Badge tone="warning">Internal beta</Badge>
         </div>
 
         {comboOrders.length === 0 ? (
-          <EmptyState title="No open combos" description="World Cup combo orders will appear here after submission." />
+          <EmptyState title="No combos" description="World Cup combo orders will appear here after submission." />
         ) : (
           <Card className="overflow-x-auto">
             <table className="min-w-full text-left text-sm">

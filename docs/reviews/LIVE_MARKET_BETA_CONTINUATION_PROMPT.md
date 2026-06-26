@@ -369,6 +369,36 @@ Phase N local validation:
 
 ## Current In-Progress Phase
 
+Combo settlement and sports resolution:
+
+- Branch: `agent/combo-settlement-resolution`
+- Output: `docs/reviews/COMBO_SETTLEMENT_RESOLUTION_EVIDENCE.md`
+- Runtime behavior: admin-only combo settlement preview and settlement, plus guarded sports result metadata for combo/demo markets.
+- Settlement model:
+  - all legs win: status `SETTLED`, locked stake released, full `potentialPayout` credited.
+  - any leg loses: status `SETTLED`, locked stake consumed, no payout credited.
+  - any leg voids or pushes: status `VOIDED`, locked stake refunded.
+  - pending legs block settlement.
+- Safety boundary:
+  - admin-only routes.
+  - no public resolution.
+  - no automatic resolution.
+  - no bot settlement.
+  - no funding, withdrawal, wallet, private-key, provider, or live-bot behavior changed.
+  - metadata-only sports result route refuses markets with ordinary orderbook orders or positions.
+- Local targeted validation:
+  - `npx prisma generate --schema=prisma/schema.prisma`: passed.
+  - `npx prisma validate --schema=prisma/schema.prisma`: passed with local Docker database URL.
+  - `npx prisma migrate deploy --schema=prisma/schema.prisma`: passed against local Docker Postgres `poly_test`.
+  - `npx jest --runInBand src/server/services/__tests__/comboSettlement.test.ts`: passed.
+  - `npx jest --runInBand src/__tests__/admin.combo-settlement.routes.test.ts`: passed.
+- Full validation still required before merge:
+  - `git diff --check`
+  - `git diff --cached --check`
+  - `npx tsc --noEmit --pretty false --incremental false`
+  - `npm run test:ci`
+  - `npm run build`
+
 World Cup real combo order backend:
 
 - Branch: `agent/world-cup-real-combo-orders`
