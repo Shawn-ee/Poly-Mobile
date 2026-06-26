@@ -12,6 +12,7 @@ export type OutcomeQuote = {
   bestAsk: number | null;
   mid: number;
   spread: number | null;
+  hasQuote: boolean;
 };
 
 export const getOutcomeMidPrices = async (marketId: string, outcomeIds: string[]) => {
@@ -61,6 +62,7 @@ export const getOutcomeQuotes = async (marketId: string, outcomeIds: string[]) =
       bestAsk,
       mid: midFromBest(bestBid, bestAsk),
       spread: bestBid !== null && bestAsk !== null ? bestAsk - bestBid : null,
+      hasQuote: bestBid !== null || bestAsk !== null,
     });
   }
 

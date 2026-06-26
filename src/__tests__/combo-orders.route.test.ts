@@ -130,6 +130,34 @@ describe("combo order routes", () => {
     expect(submitComboOrder).not.toHaveBeenCalled();
   });
 
+  test("POST quote returns combo risk reason code from service", async () => {
+    quoteComboOrder.mockRejectedValueOnce(
+      new CanonicalApiError("COMBO_SAME_EVENT_UNSUPPORTED", "Same-event multi-leg combos are unsupported in v1.", 409),
+    );
+
+    const response = await POST_QUOTE(
+      new NextRequest("http://localhost/api/combo-orders/quote", {
+        method: "POST",
+        body: JSON.stringify({
+          stakeUSDC: "10",
+          legs: [
+            { marketId: "m1", outcomeId: "o1" },
+            { marketId: "m2", outcomeId: "o2" },
+          ],
+        }),
+      }),
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(409);
+    expect(body.error).toEqual({
+      code: "COMBO_SAME_EVENT_UNSUPPORTED",
+      message: "Same-event multi-leg combos are unsupported in v1.",
+    });
+    expect(requireInternalTradingUserById).not.toHaveBeenCalled();
+    expect(submitComboOrder).not.toHaveBeenCalled();
+  });
+
   test("World Cup internal test trade smoke quotes, blocks when gated, and submits only when allowed", async () => {
     const worldCupBody = {
       stakeUSDC: "10",

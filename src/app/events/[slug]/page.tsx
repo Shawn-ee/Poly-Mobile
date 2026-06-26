@@ -1113,6 +1113,7 @@ function WorldCupComboTicket({
     potentialProfit: number;
     legs: Array<{ outcomeId: string; price: string | number }>;
   } | null>(null);
+  const [quoteMessage, setQuoteMessage] = useState<string | null>(null);
   const [quoteLoading, setQuoteLoading] = useState(false);
   const parsedAmount = Number.parseFloat(amount);
   const estimate = estimateWorldCupComboTicket({
@@ -1134,6 +1135,7 @@ function WorldCupComboTicket({
     const amountValue = Number.parseFloat(amount);
     if (!tradingUiEnabled || legs.length < 2 || !Number.isFinite(amountValue) || amountValue <= 0) {
       setServerQuote(null);
+      setQuoteMessage(null);
       setQuoteLoading(false);
       return;
     }
@@ -1163,11 +1165,17 @@ function WorldCupComboTicket({
             potentialProfit: Number(body.quote.potentialProfit),
             legs: body.quote.legs ?? [],
           });
+          setQuoteMessage(null);
         } else if (!canceled) {
           setServerQuote(null);
+          const code = body?.error?.code ? `${body.error.code}: ` : "";
+          setQuoteMessage(`${code}${body?.error?.message ?? "Combo quote unavailable."}`);
         }
       } catch {
-        if (!canceled) setServerQuote(null);
+        if (!canceled) {
+          setServerQuote(null);
+          setQuoteMessage("Combo quote unavailable.");
+        }
       } finally {
         if (!canceled) setQuoteLoading(false);
       }
@@ -1296,6 +1304,11 @@ function WorldCupComboTicket({
         <div className="text-xs text-[var(--poly-muted)]">
           {serverQuote ? "Calculated by server quote." : "Local estimate shown until server quote is available."}
         </div>
+        {quoteMessage ? (
+          <div className="rounded border border-amber-200 bg-amber-50 px-2 py-1 text-xs text-amber-900">
+            {quoteMessage}
+          </div>
+        ) : null}
       </div>
 
       <button

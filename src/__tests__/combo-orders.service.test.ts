@@ -109,12 +109,42 @@ describe("combo order service", () => {
     jest.clearAllMocks();
     mockPrisma.$transaction.mockImplementation((callback: (tx: typeof mockTx) => Promise<unknown>) => callback(mockTx));
     mockPrisma.market.findMany.mockResolvedValue([
-      { id: "m1", status: "LIVE" },
-      { id: "m2", status: "UPCOMING" },
+      {
+        id: "m1",
+        status: "LIVE",
+        visibility: "PUBLIC",
+        mechanism: "ORDERBOOK",
+        isListed: true,
+        eventId: "event-1",
+        marketType: "moneyline",
+        marketGroupKey: "main",
+        line: null,
+        period: "full_game",
+        participantName: null,
+        externalMarketId: null,
+        conditionId: null,
+        sourceUpdatedAt: null,
+      },
+      {
+        id: "m2",
+        status: "UPCOMING",
+        visibility: "PUBLIC",
+        mechanism: "ORDERBOOK",
+        isListed: true,
+        eventId: "event-2",
+        marketType: "total",
+        marketGroupKey: "total",
+        line: decimal("2.5"),
+        period: "full_game",
+        participantName: null,
+        externalMarketId: null,
+        conditionId: null,
+        sourceUpdatedAt: null,
+      },
     ]);
     mockPrisma.outcome.findMany.mockResolvedValue([
-      { id: "o1", marketId: "m1" },
-      { id: "o2", marketId: "m2" },
+      { id: "o1", marketId: "m1", isActive: true, isTradable: true, side: "team_a", code: "ECU", status: "active" },
+      { id: "o2", marketId: "m2", isActive: true, isTradable: true, side: "over", code: "OVER", status: "active" },
     ]);
     mockPrisma.order.groupBy
       .mockResolvedValueOnce([{ outcomeId: "o1", _max: { price: decimal("0.48") } }])
@@ -181,7 +211,7 @@ describe("combo order service", () => {
     expect(result.comboOrder).toEqual(expect.objectContaining({ id: "combo-1", status: "OPEN" }));
   });
 
-  test("rejects duplicate markets before creating a hold", async () => {
+  test("rejects duplicate markets with a clear risk reason before creating a hold", async () => {
     await expect(submitComboOrder({
       userId: "user-1",
       idempotencyKeyHeader: "idem-1",
@@ -192,9 +222,71 @@ describe("combo order service", () => {
           { marketId: "m1", outcomeId: "o2", price: "0.4" },
         ],
       },
-    })).rejects.toMatchObject({ code: "INVALID_REQUEST" });
+    })).rejects.toMatchObject({ code: "COMBO_DUPLICATE_MARKET" });
 
     expect(mockTx.ledgerEntry.create).not.toHaveBeenCalled();
+  });
+
+  test("rejects same-event combo risk with clear reason code", async () => {
+    mockPrisma.market.findMany.mockResolvedValueOnce([
+      {
+        id: "m1",
+        status: "LIVE",
+        visibility: "PUBLIC",
+        mechanism: "ORDERBOOK",
+        isListed: true,
+        eventId: "event-1",
+        marketType: "moneyline",
+        marketGroupKey: "main",
+        line: null,
+        period: "full_game",
+        participantName: null,
+        externalMarketId: null,
+        conditionId: null,
+        sourceUpdatedAt: null,
+      },
+      {
+        id: "m2",
+        status: "LIVE",
+        visibility: "PUBLIC",
+        mechanism: "ORDERBOOK",
+        isListed: true,
+        eventId: "event-1",
+        marketType: "total",
+        marketGroupKey: "total",
+        line: decimal("2.5"),
+        period: "full_game",
+        participantName: null,
+        externalMarketId: null,
+        conditionId: null,
+        sourceUpdatedAt: null,
+      },
+    ]);
+
+    await expect(quoteComboOrder({ body })).rejects.toMatchObject({ code: "COMBO_SAME_EVENT_UNSUPPORTED" });
+    expect(mockTx.comboOrder.create).not.toHaveBeenCalled();
+    expect(mockTx.ledgerEntry.create).not.toHaveBeenCalled();
+  });
+
+  test("rejects missing server quote and payout limit before creating a combo", async () => {
+    mockPrisma.order.groupBy.mockReset();
+    mockPrisma.order.groupBy
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([{ outcomeId: "o2", _max: { price: decimal("0.39") } }])
+      .mockResolvedValueOnce([{ outcomeId: "o2", _min: { price: decimal("0.41") } }]);
+
+    await expect(quoteComboOrder({ body })).rejects.toMatchObject({ code: "COMBO_QUOTE_MISSING" });
+
+    mockPrisma.order.groupBy.mockReset();
+    mockPrisma.order.groupBy
+      .mockResolvedValueOnce([{ outcomeId: "o1", _max: { price: decimal("0.01") } }])
+      .mockResolvedValueOnce([{ outcomeId: "o1", _min: { price: decimal("0.01") } }])
+      .mockResolvedValueOnce([{ outcomeId: "o2", _max: { price: decimal("0.01") } }])
+      .mockResolvedValueOnce([{ outcomeId: "o2", _min: { price: decimal("0.01") } }]);
+
+    await expect(quoteComboOrder({ body })).rejects.toMatchObject({ code: "COMBO_PAYOUT_EXCEEDS_LIMIT" });
+    expect(mockTx.comboOrder.create).not.toHaveBeenCalled();
   });
 
   test("rejects insufficient available balance without creating combo or ledger entries", async () => {
@@ -249,6 +341,10 @@ describe("combo order service", () => {
         comboPrice: "0.2",
         potentialPayout: "50",
         potentialProfit: "40",
+        risk: expect.objectContaining({
+          status: "allowed",
+          reasonCodes: [],
+        }),
       }),
     );
     expect(mockTx.comboOrder.create).not.toHaveBeenCalled();
