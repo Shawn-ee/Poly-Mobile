@@ -13,16 +13,16 @@ Target:
 Current Lead Agent score:
 
 ```text
-81/100
+83/100
 ```
 
 ## Score Breakdown
 
 | Area | Score | Evidence | Notes |
 | --- | ---: | --- | --- |
-| World Cup event/match grouping | 9/10 | `WORLD_CUP_EVENT_MARKET_STRUCTURE_EVIDENCE.md`, targeted Jest passed | Event detail supports match-first grouped markets and line selectors. Needs fresh browser smoke. |
+| World Cup event/match grouping | 10/10 | `WORLD_CUP_V2_UI_ORDER_TICKET_SMOKE_EVIDENCE.md` | Browser smoke verifies World Cup route, event detail, grouped markets, ticket, combo slip, and gated submission. |
 | Related contracts under one match | 8/10 | World Cup structure tests passed | Match, spread, totals, team totals, BTTS, first-team score supported. Player props intentionally not complete. |
-| Unified order ticket | 7/10 | World Cup tests and event page source checks passed | Ticket context and backend quote exist; needs browser/API smoke with seeded data. |
+| Unified order ticket | 9/10 | `WORLD_CUP_V2_UI_ORDER_TICKET_SMOKE_EVIDENCE.md` | Playwright verifies outcome selection, estimated cost/payout visibility, amount recalculation, and disabled submit state. |
 | Internal/test trading flow | 7/10 | Guarded order/combo routes exist and tests passed | Off by default; needs fresh internal test trade smoke. |
 | Position tracking, mark value, P/L | 6/10 | Portfolio route exists; combo history visible | Needs explicit mark/P&L evidence for World Cup positions and combos. |
 | Reference sync dry-run | 9/10 | `WORLD_CUP_V2_REFERENCE_SYNC_DRY_RUN_EVIDENCE.md` | Bot reference tests and app reference/no-leak boundary tests pass; authenticated full dry-run still needs local admin session. |
@@ -32,7 +32,7 @@ Current Lead Agent score:
 | Combo validation and risk model | 6/10 | combo order/settlement tests passed | Basic validation exists; sportsbook-grade correlation/exposure/max-payout risk model not implemented. |
 | Early cash-out estimate | 2/10 | no fresh implementation evidence found | Needs model/design or blocker report. |
 | Settlement readiness | 8/10 | combo settlement tests passed | Admin combo settlement exists; full deployed drill still needed. |
-| Harness/tooling availability | 5/10 | prompt conventions exist; clean `dev` lacks harness scripts | Need restore/add harness scripts or agent-selected equivalents. |
+| Harness/tooling availability | 6/10 | `tests/e2e/world-cup-ui-ticket-smoke.spec.ts` | Active-goal Playwright browser smoke now exists; broader harness suite still incomplete. |
 | Safety posture | 8/10 | no live bots/funding/trading enabled by this cycle | Blocked areas remain blocked. |
 
 ## Current Classification
@@ -48,11 +48,10 @@ Real public funding/withdrawals: blocked.
 
 1. Bot repo hygiene PR for tracked `live-internal.env` and generated config cleanup policy.
 2. Authenticated full reference-liquidity dry-run with a local admin session cookie.
-3. Browser/API smoke for World Cup grouped UI and order ticket recalculation.
-4. Internal test trade smoke with gates and no public trading.
-5. Combo risk engine v1 plan and implementation task.
-6. Early cash-out estimate model.
-7. Bot repo hygiene PR for tracked `live-internal.env`.
+3. Internal test trade smoke with gates and no public trading.
+4. Combo risk engine v1 plan and implementation task.
+5. Early cash-out estimate model.
+6. Bot repo hygiene PR for tracked `live-internal.env`.
 
 ## Validation Agent Decision
 
