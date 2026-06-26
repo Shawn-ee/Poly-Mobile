@@ -71,3 +71,7 @@ Human review required: {{HUMAN_REVIEW_REQUIRED}}
 ## Required Output
 
 Open one PR into `{{TARGET_BRANCH}}` and include a report using `agent-orchestrator/templates/subagent-report-template.md`.
+
+## Architecture Boundary
+
+The Codex Lead Agent owns planning, validation interpretation, review routing, memory updates, and next-step decisions. Scripts and harnesses are helper tools only. Do not create recursive `FIX-*` or `FIX-FIX-*` tasks. If validation fails, report the concrete root cause and hand back to the Lead Agent.
