@@ -13,7 +13,7 @@ Target:
 Current Lead Agent score:
 
 ```text
-87/100
+90/100
 ```
 
 ## Score Breakdown
@@ -29,8 +29,8 @@ Current Lead Agent score:
 | Two-tick-worse pricing | 9/10 | `WORLD_CUP_V2_TWO_TICK_PRICING_EVIDENCE.md` | Active app-side tests verify two-tick bid/ask, clamps, dry-run default, and missing-book behavior. |
 | Safe market-making bots | 9/10 | `WORLD_CUP_V2_MARKET_MAKING_GUARDRAILS_EVIDENCE.md`, Poly-bots PR #2 | World Cup guardrail tests verify default/live/dry-run gates, exposure caps, order caps, non-crossing desired quotes, and order-size caps. |
 | Bot inventory cleanup | 5/10 | `WORLD_CUP_V2_BOT_INVENTORY_CLEANUP_EVIDENCE.md` | Inventory evidence exists; `live-internal.env` is tracked in bot repo and should be cleaned in a separate bot hygiene PR. |
-| Combo validation and risk model | 6/10 | combo order/settlement tests passed | Basic validation exists; sportsbook-grade correlation/exposure/max-payout risk model not implemented. |
-| Early cash-out estimate | 2/10 | no fresh implementation evidence found | Needs model/design or blocker report. |
+| Combo validation and risk model | 9/10 | `20260626T153500Z-world-cup-combo-risk-cashout-v1/REPORT.md` | V1 blocks same-event unsupported combos, duplicate markets/outcomes, mutually exclusive moneyline, YES/NO, total/spread conflicts, line ladders, equivalent markets, missing/stale quotes, and max leg/stake/payout violations. |
+| Early cash-out estimate | 6/10 | `20260626T153500Z-world-cup-combo-risk-cashout-v1/REPORT.md` | Single-leg read-only estimate v1 calculates exit value and P/L from current bid. Closed/stale/missing quote/combo states are blocked; execution is not implemented. |
 | Settlement readiness | 9/10 | `20260626T145500Z-world-cup-internal-drill-readiness/REPORT.md` | Admin route tests, no-mutation settlement preview, DB-backed combo settlement, void refund, duplicate prevention, and post-settlement ledger/balance assertions pass. |
 | Harness/tooling availability | 7/10 | `20260626T145500Z-world-cup-internal-drill-readiness/REPORT.md` | Direct browser smoke and targeted drill test block pass; checked-in Playwright runner still needs follow-up because it hung in this shell. |
 | Safety posture | 8/10 | no live bots/funding/trading enabled by this cycle | Blocked areas remain blocked. |
@@ -38,7 +38,7 @@ Current Lead Agent score:
 ## Current Classification
 
 ```text
-Controlled internal beta candidate: reached 87/100 with warnings.
+Controlled internal beta candidate: reached 90/100 with warnings.
 Public beta: not ready.
 Live production bots: not approved.
 Real public funding/withdrawals: blocked.
@@ -48,15 +48,15 @@ Real public funding/withdrawals: blocked.
 
 1. Bot repo hygiene PR for tracked `live-internal.env` and generated config cleanup policy.
 2. Authenticated full reference-liquidity dry-run with a local admin session cookie.
-3. Combo risk engine v1 plan and implementation task.
-4. Early cash-out estimate model.
-5. Checked-in Playwright runner follow-up: direct browser smoke passed, but `npx playwright test tests/e2e/world-cup-ui-ticket-smoke.spec.ts --project=smoke --reporter=list` hung in this shell.
+3. Checked-in Playwright runner follow-up: direct browser smoke passed, but `npx playwright test tests/e2e/world-cup-ui-ticket-smoke.spec.ts --project=smoke --reporter=list` hung in this shell.
+4. Same-event combo correlation model if owner wants same-game parlays later.
+5. Cash-out execution design; current cash-out v1 is estimate-only.
 
 ## Validation Agent Decision
 
 Status: `pass_with_warnings`
 
-Reason: targeted app and bot evidence reached the controlled internal beta candidate target, and full internal drill readiness now has runnable evidence. Warnings remain for bot hygiene, authenticated reference-liquidity dry-run, combo risk depth, early cash-out modeling, and the checked-in Playwright runner hang.
+Reason: targeted app and bot evidence reached the controlled internal beta candidate target, full internal drill readiness has runnable evidence, and combo risk plus single-leg cash-out estimate v1 are implemented with tests. Warnings remain for bot hygiene, authenticated reference-liquidity dry-run, same-event combo correlation, cash-out execution, and the checked-in Playwright runner hang.
 
 ## Reviewer Agent Decision
 
