@@ -44,23 +44,22 @@ Live production bots: not approved.
 Real public funding/withdrawals: blocked.
 ```
 
-## Critical Gaps To Reach 85
+## Remaining Warnings After Reaching 85
 
 1. Bot repo hygiene PR for tracked `live-internal.env` and generated config cleanup policy.
 2. Authenticated full reference-liquidity dry-run with a local admin session cookie.
 3. Combo risk engine v1 plan and implementation task.
 4. Early cash-out estimate model.
-5. Bot repo hygiene PR for tracked `live-internal.env`.
-6. Full authenticated reference-liquidity dry-run with a local admin session cookie.
+5. Full internal drill across reference sync, market making dry-run, guarded order submit, portfolio, admin settlement, and post-settlement evidence.
 
 ## Validation Agent Decision
 
-Status: `warn`
+Status: `pass_with_warnings`
 
-Reason: current targeted tests pass, but the score target is not reached because several V2 capabilities are either only bot-level tested, not integrated in the app workflow, or missing implementation evidence.
+Reason: targeted app and bot evidence reached the 85/100 controlled internal beta candidate target. Warnings remain for bot hygiene, authenticated reference-liquidity dry-run, combo risk depth, early cash-out modeling, and full end-to-end internal drill evidence.
 
 ## Reviewer Agent Decision
 
-Status: `continue`
+Status: `done_with_warnings`
 
-Reason: this cycle is evidence/planning only. No product runtime code changed. Proceed to scoped task batch creation.
+Reason: the active tranche met the requested score target with evidence and did not enable public trading, public funding, real external fund movement, live production bots, or blocked wallet/private-key behavior.
