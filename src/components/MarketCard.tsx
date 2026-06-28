@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Badge from "@/components/ui/Badge";
+import Card from "@/components/ui/Card";
+import OutcomeButton from "@/components/ui/OutcomeButton";
 
 type Outcome = {
   id: string;
@@ -64,67 +67,46 @@ export default function MarketCard({
   return (
     <Link
       href={`/markets/${id}`}
-      className="group flex h-full flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-neutral-300 hover:shadow-md"
+      className="group block h-full"
     >
+      <Card interactive className="flex h-full flex-col justify-between p-5">
       <div>
         <div className="flex items-start gap-4">
-          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-neutral-100 text-xs font-semibold text-neutral-500">
-            PM
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-xs font-bold text-[var(--poly-primary)]">
+            YES
           </div>
-          <div>
-            <h3 className="line-clamp-2 text-base font-semibold text-neutral-900">{title}</h3>
-            <div className="mt-2 flex flex-wrap gap-1 text-[10px] uppercase text-neutral-600">
-              {visibility ? (
-                <span className="rounded-full border border-neutral-200 px-2 py-0.5">{visibility}</span>
-              ) : null}
-              {mechanism ? (
-                <span className="rounded-full border border-neutral-200 px-2 py-0.5">{mechanism}</span>
-              ) : null}
-              {nonTradableReference ? (
-                <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-amber-700">
-                  Reference Only
-                </span>
-              ) : null}
-              {referenceSummary?.source ? (
-                <span className="rounded-full border border-sky-200 bg-sky-50 px-2 py-0.5 text-sky-700">
-                  {referenceSummary.source}
-                </span>
-              ) : null}
+          <div className="min-w-0">
+            <h3 className="line-clamp-2 text-base font-semibold text-[var(--poly-text)]">{title}</h3>
+            <div className="mt-2 flex flex-wrap gap-1">
+              {visibility ? <Badge>{visibility === "PUBLIC" ? "Public" : "Private"}</Badge> : null}
+              {mechanism ? <Badge tone="primary">{mechanism === "ORDERBOOK" ? "Orderbook" : "Pool"}</Badge> : null}
+              {nonTradableReference ? <Badge tone="warning">Reference Only</Badge> : null}
+              {referenceSummary?.source ? <Badge tone="teal">{referenceSummary.source}</Badge> : null}
             </div>
-            <div className="mt-2 text-xs text-neutral-500">
-              {nonTradableReference ? "Coming soon" : status}
-              {resolveTime ? ` • ${new Date(resolveTime).toLocaleDateString()}` : ""}
+            <div className="mt-2 text-xs text-[var(--poly-muted)]">
+              {nonTradableReference ? "Coming soon" : formatStatus(status)}
+              {resolveTime ? ` - ${new Date(resolveTime).toLocaleDateString()}` : ""}
             </div>
           </div>
         </div>
 
         <div className="mt-6 flex items-center gap-3">
-          <button
+          <OutcomeButton
             onClick={(event) => handleOutcomeClick(event, "YES")}
-            className={`flex-1 rounded-full px-4 py-3 text-sm font-semibold ${
-              nonTradableReference
-                ? "border border-neutral-200 bg-neutral-50 text-neutral-700 hover:bg-neutral-100"
-                : "border border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
-            }`}
-            type="button"
-          >
-            {nonTradableReference ? "View market" : `YES ${prices.YES.toFixed(2)}`}
-          </button>
-          <button
+            tone={nonTradableReference ? "neutral" : "yes"}
+            label={nonTradableReference ? "View market" : "YES"}
+            price={nonTradableReference ? undefined : prices.YES.toFixed(2)}
+          />
+          <OutcomeButton
             onClick={(event) => handleOutcomeClick(event, "NO")}
-            className={`flex-1 rounded-full px-4 py-3 text-sm font-semibold ${
-              nonTradableReference
-                ? "border border-neutral-200 bg-neutral-50 text-neutral-500 hover:bg-neutral-100"
-                : "border border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100"
-            }`}
-            type="button"
-          >
-            {nonTradableReference ? "Reference price" : `NO ${prices.NO.toFixed(2)}`}
-          </button>
+            tone={nonTradableReference ? "neutral" : "no"}
+            label={nonTradableReference ? "Reference" : "NO"}
+            price={nonTradableReference ? undefined : prices.NO.toFixed(2)}
+          />
         </div>
 
         {nonTradableReference && referenceSummary ? (
-          <div className="mt-4 rounded-2xl border border-neutral-200 bg-neutral-50 p-3 text-xs text-neutral-700">
+          <div className="mt-4 rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3 text-xs text-[var(--poly-muted)]">
             <div className="flex items-center justify-between gap-3">
               <span>
                 Ref {formatMaybe(referenceSummary.referenceBid)} / {formatMaybe(referenceSummary.referenceAsk)}
@@ -143,13 +125,18 @@ export default function MarketCard({
         ) : null}
       </div>
 
-      <div className="mt-6 text-xs text-neutral-500">
-        {outcomes.length > 2 ? "Multi-outcome market" : "Binary market"}
+      <div className="mt-6 text-xs font-medium text-[var(--poly-muted)]">
+        {outcomes.length > 2 ? "Multi-outcome market" : "Binary Yes/No market"}
       </div>
+      </Card>
     </Link>
   );
 }
 
 function formatMaybe(value: number | null | undefined) {
   return typeof value === "number" && Number.isFinite(value) ? value.toFixed(2) : "--";
+}
+
+function formatStatus(value: string) {
+  return value.toLowerCase().replaceAll("_", " ");
 }

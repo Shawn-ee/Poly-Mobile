@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import MarketCard from "@/components/MarketCard";
 import EventCard from "@/components/EventCard";
+import PageContainer from "@/components/ui/PageContainer";
+import { BetaNotice, PageHeader, SectionHeader } from "@/components/ui/PageHeader";
+import { EmptyState } from "@/components/ui/States";
 
 type Market = {
   id: string;
@@ -48,17 +51,15 @@ type EventSummary = {
   topOutcomes?: string[] | null;
 };
 
+type TagSummary = { id: string; name: string; slug: string };
+
 export default function Home() {
   const [markets, setMarkets] = useState<Market[]>([]);
   const [events, setEvents] = useState<EventSummary[]>([]);
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [topTags, setTopTags] = useState<
-    { id: string; name: string; slug: string }[]
-  >([]);
-  const [sportsTags, setSportsTags] = useState<
-    { id: string; name: string; slug: string }[]
-  >([]);
+  const [topTags, setTopTags] = useState<TagSummary[]>([]);
+  const [sportsTags, setSportsTags] = useState<TagSummary[]>([]);
   const [activeTopTag, setActiveTopTag] = useState<string>("sports");
   const [activeSportsTag, setActiveSportsTag] = useState<string>("nba");
 
@@ -93,8 +94,8 @@ export default function Home() {
       if (topRes.ok) {
         const data = await topRes.json();
         const base = data.tags ?? [];
-        const sportsFirst = base.find((tag: any) => tag.slug === "sports");
-        const rest = base.filter((tag: any) => tag.slug !== "sports");
+        const sportsFirst = base.find((tag: TagSummary) => tag.slug === "sports");
+        const rest = base.filter((tag: TagSummary) => tag.slug !== "sports");
         setTopTags(sportsFirst ? [sportsFirst, ...rest] : rest);
       }
       if (sportsRes.ok) {
@@ -130,41 +131,58 @@ export default function Home() {
   }, [activeTopTag, activeSportsTag]);
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-10">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-semibold">Live Markets</h1>
-          <p className="text-sm text-neutral-600">
-            Trade with U and cash out before resolution.
-          </p>
-        </div>
-        <div className="flex items-center gap-3 text-sm text-neutral-600">
-          <div>
+    <PageContainer>
+      <PageHeader
+        eyebrow="Sports-first beta"
+        title="Simple prediction markets for sports fans"
+        description="Browse events, compare Yes/No prices, and track markets with test credits while POLY is still in beta."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href="/sports"
+              className="inline-flex min-h-9 items-center justify-center rounded-lg bg-[var(--poly-primary)] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[var(--poly-primary-hover)]"
+            >
+              Browse sports
+            </Link>
+            <Link
+              href="/markets"
+              className="inline-flex min-h-9 items-center justify-center rounded-lg border border-[var(--poly-border)] bg-white px-4 py-2 text-sm font-semibold text-[var(--poly-text)] transition hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
+            >
+              View markets
+            </Link>
+          </div>
+        }
+      >
+        <div className="grid gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
+          <BetaNotice>
+            Test credits only. Real deposits, withdrawals, settlement operations, and production money movement are not enabled for public use.
+          </BetaNotice>
+          <div className="text-xs">
             Wallet:{" "}
             {walletBalance === null ? "--" : walletBalance.toFixed(2)} U
           </div>
           {isAdmin ? (
             <Link
               href="/admin"
-              className="rounded-md border border-neutral-300 px-3 py-1 text-sm text-neutral-700 hover:border-neutral-400"
+              className="inline-flex min-h-8 items-center justify-center rounded-lg border border-[var(--poly-border)] bg-white px-3 py-1.5 text-xs font-semibold text-[var(--poly-text)] transition hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             >
               Admin tools
             </Link>
           ) : null}
         </div>
-      </div>
+      </PageHeader>
 
       {events.length ? (
         <section className="mb-10">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <h2 className="text-xl font-semibold">Featured Events</h2>
-              <p className="text-sm text-neutral-600">Grouped markets with shared event context.</p>
-            </div>
-            <Link href="/events" className="text-sm text-neutral-600 hover:text-neutral-900">
+          <SectionHeader
+            title="Featured events"
+            description="Start with the event, then choose the market question that matches your view."
+            action={
+              <Link href="/events" className="text-sm font-semibold text-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]">
               View all events
             </Link>
-          </div>
+            }
+          />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {events.map((event) =>
               event.slug ? (
@@ -188,7 +206,12 @@ export default function Home() {
         </section>
       ) : null}
 
-      <div className="mb-8 flex flex-wrap gap-2">
+      <section className="mb-8 rounded-lg border border-[var(--poly-border)] bg-white p-4 shadow-[var(--poly-shadow-sm)]">
+        <SectionHeader
+          title="Market board"
+          description="Use lightweight filters to narrow the discovery feed. Sports stay first, but all categories remain available."
+        />
+        <div className="flex flex-wrap gap-2">
         <button
           onClick={() => {
             setActiveTopTag("all");
@@ -196,8 +219,8 @@ export default function Home() {
           }}
           className={`rounded-full border px-3 py-1 text-sm ${
             activeTopTag === "all"
-              ? "border-black bg-black text-white"
-              : "border-neutral-300 text-neutral-700"
+              ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+              : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
           }`}
           type="button"
         >
@@ -214,18 +237,20 @@ export default function Home() {
             }}
             className={`rounded-full border px-3 py-1 text-sm ${
               activeTopTag === tag.slug
-                ? "border-black bg-black text-white"
-                : "border-neutral-300 text-neutral-700"
+                ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             }`}
             type="button"
           >
             {tag.name}
           </button>
         ))}
-      </div>
+        </div>
 
       {activeTopTag === "sports" && sportsTags.length > 0 ? (
-        <div className="mb-8 flex flex-wrap gap-2">
+        <div className="mt-3 border-t border-[var(--poly-border)] pt-3">
+          <div className="mb-2 text-xs font-semibold uppercase text-[var(--poly-muted)]">Sports filters</div>
+          <div className="flex flex-wrap gap-2">
           {sportsTags.map((tag) => (
             <button
               key={tag.id}
@@ -236,21 +261,24 @@ export default function Home() {
               }
               className={`rounded-full border px-3 py-1 text-xs ${
                 activeSportsTag === tag.slug
-                  ? "border-black bg-black text-white"
-                  : "border-neutral-300 text-neutral-700"
+                  ? "border-[var(--poly-teal)] bg-[var(--poly-teal)] text-white"
+                  : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-teal)] hover:text-[var(--poly-teal)]"
               }`}
               type="button"
             >
               {tag.name}
             </button>
           ))}
+          </div>
         </div>
       ) : null}
+      </section>
 
       {markets.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">
-          No markets yet. Create one in the admin panel.
-        </div>
+        <EmptyState
+          title="No markets are ready yet"
+          description="Check sports and events again soon while beta markets are being prepared."
+        />
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {markets.map((market) => (
@@ -273,15 +301,15 @@ export default function Home() {
               <Link
                 key={market.id}
                 href={`/markets/${market.id}`}
-                className="group flex h-full flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-neutral-300 hover:shadow-md"
+                className="group flex h-full flex-col justify-between rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-sm)] transition hover:border-[var(--poly-border-strong)] hover:shadow-[var(--poly-shadow-md)]"
               >
                 <div>
-                  <h3 className="line-clamp-2 text-base font-semibold text-neutral-900">{market.title}</h3>
-                  <div className="mt-2 text-xs text-neutral-500">
+                  <h3 className="line-clamp-2 text-base font-semibold text-[var(--poly-text)]">{market.title}</h3>
+                  <div className="mt-2 text-xs text-[var(--poly-muted)]">
                     {market.referenceOnly && market.tradable === false ? "Coming soon" : market.status}
                   </div>
                 </div>
-                <div className="mt-6 text-xs text-neutral-500">
+                <div className="mt-6 text-xs text-[var(--poly-muted)]">
                   Outcomes: {market.outcomes.map((outcome) => outcome.name).join(" / ")}
                 </div>
               </Link>
@@ -289,7 +317,7 @@ export default function Home() {
           ))}
         </div>
       )}
-    </main>
+    </PageContainer>
   );
 }
 

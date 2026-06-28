@@ -4,6 +4,9 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import MarketCard from "@/components/MarketCard";
 import EventCard from "@/components/EventCard";
+import PageContainer from "@/components/ui/PageContainer";
+import { BetaNotice, PageHeader, SectionHeader } from "@/components/ui/PageHeader";
+import { EmptyState, LoadingState } from "@/components/ui/States";
 
 type Market = {
   id: string;
@@ -45,20 +48,17 @@ type EventSummary = {
   topOutcomes?: string[] | null;
 };
 
+type TagSummary = { id: string; name: string; slug: string };
+
 function MarketsPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [markets, setMarkets] = useState<Market[]>([]);
   const [events, setEvents] = useState<EventSummary[]>([]);
   const [loading, setLoading] = useState(true);
-  const [topTags, setTopTags] = useState<
-    { id: string; name: string; slug: string }[]
-  >([]);
-  const [sportsTags, setSportsTags] = useState<
-    { id: string; name: string; slug: string }[]
-  >([]);
+  const [topTags, setTopTags] = useState<TagSummary[]>([]);
+  const [sportsTags, setSportsTags] = useState<TagSummary[]>([]);
   const [showAllLeagues, setShowAllLeagues] = useState(false);
-  const [view, setView] = useState<string>("live");
 
   const activeCategory = searchParams.get("category") ?? "";
   const activeLeague = searchParams.get("league") ?? "";
@@ -124,12 +124,12 @@ function MarketsPageInner() {
           "world",
           "elections",
         ];
-        const bySlug = new Map(base.map((tag: any) => [tag.slug, tag]));
+        const bySlug = new Map(base.map((tag: TagSummary) => [tag.slug, tag]));
         const list = [
           { id: "all", name: "All", slug: "all" },
           ...ordered.map((slug) => bySlug.get(slug)).filter(Boolean),
         ];
-        setTopTags(list as { id: string; name: string; slug: string }[]);
+        setTopTags(list as TagSummary[]);
       }
       if (sportsRes.ok) {
         const data = await sportsRes.json();
@@ -177,111 +177,122 @@ function MarketsPageInner() {
   };
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-semibold">Live Markets</h1>
-        <p className="text-sm text-neutral-600">
-          Browse markets and trade with U.
-        </p>
-      </div>
+    <PageContainer>
+      <PageHeader
+        eyebrow="Market board"
+        title="Find a market"
+        description="Start with live sports markets, compare Yes/No prices, and open an event when you want more context."
+      >
+        <BetaNotice tone="info">
+          Prices are shown for discovery. Funding, trading safeguards, settlement, and production operations remain separate review-gated systems.
+        </BetaNotice>
+      </PageHeader>
 
-      <div className="mb-3 flex flex-wrap items-center gap-2">
-        {[
-          { key: "live", label: "Live" },
-          { key: "resolved", label: "Resolved" },
-          { key: "all", label: "All" },
-        ].map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => {
-              const params = new URLSearchParams(searchParams.toString());
-              params.set("view", tab.key);
-              router.replace(`/markets?${params.toString()}`);
-              setView(tab.key);
-            }}
-            className={`rounded-full border px-3 py-1 text-xs ${
-              activeView === tab.key
-                ? "border-black bg-black text-white"
-                : "border-neutral-300 text-neutral-700"
-            }`}
-            type="button"
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+      <section className="mb-8 rounded-lg border border-[var(--poly-border)] bg-white p-4 shadow-[var(--poly-shadow-sm)]">
+        <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 className="text-sm font-semibold text-[var(--poly-text)]">Browse markets</h2>
+            <p className="text-xs text-[var(--poly-muted)]">Filter by status, category, and league.</p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {[
+              { key: "live", label: "Live" },
+              { key: "resolved", label: "Resolved" },
+              { key: "all", label: "All" },
+            ].map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => {
+                  const params = new URLSearchParams(searchParams.toString());
+                  params.set("view", tab.key);
+                  router.replace(`/markets?${params.toString()}`);
+                }}
+                className={`rounded-full border px-3 py-1 text-xs ${
+                  activeView === tab.key
+                    ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                    : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
+                }`}
+                type="button"
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
-      <div className="mb-2 flex flex-wrap items-center gap-1">
-        {topTags.map((tag) => (
-          <button
-            key={tag.id}
-            onClick={() => {
-              if (tag.slug === "all") {
-                setFilters("all", "");
-                return;
-              }
-              if (tag.slug === "sports") {
-                setFilters("sports", activeLeague || "nba");
-                return;
-              }
-              setFilters(tag.slug, "");
-            }}
-            className={`rounded-full border px-3 py-1 text-xs ${
-              (tag.slug === "all" && (!activeCategory || activeCategory === "all")) ||
-              (tag.slug !== "all" && activeCategory === tag.slug)
-                ? "border-black bg-black text-white"
-                : "border-neutral-300 text-neutral-700"
-            }`}
-            type="button"
-          >
-            {tag.name}
-          </button>
-        ))}
-        {activeCategory === "sports" ? (
-          <button
-            onClick={() => setShowAllLeagues((prev) => !prev)}
-            className="rounded-full border border-neutral-300 px-3 py-1 text-xs text-neutral-700"
-            type="button"
-          >
-            {showAllLeagues ? "Less" : "Leagues"}
-          </button>
-        ) : null}
-      </div>
-
-      {activeCategory === "sports" ? (
-        <div className="mb-2 flex flex-wrap gap-1">
-          {visibleSportsChips.map((tag) => (
+        <div className="flex flex-wrap items-center gap-1">
+          {topTags.map((tag) => (
             <button
               key={tag.id}
-              onClick={() => setFilters("sports", tag.slug)}
+              onClick={() => {
+                if (tag.slug === "all") {
+                  setFilters("all", "");
+                  return;
+                }
+                if (tag.slug === "sports") {
+                  setFilters("sports", activeLeague || "nba");
+                  return;
+                }
+                setFilters(tag.slug, "");
+              }}
               className={`rounded-full border px-3 py-1 text-xs ${
-                activeLeague === tag.slug
-                  ? "border-black bg-black text-white"
-                  : "border-neutral-300 text-neutral-700"
+                (tag.slug === "all" && (!activeCategory || activeCategory === "all")) ||
+                (tag.slug !== "all" && activeCategory === tag.slug)
+                  ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                  : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
               }`}
               type="button"
             >
               {tag.name}
             </button>
           ))}
+          {activeCategory === "sports" ? (
+            <button
+              onClick={() => setShowAllLeagues((prev) => !prev)}
+              className="rounded-full border border-[var(--poly-border)] bg-white px-3 py-1 text-xs text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
+              type="button"
+            >
+              {showAllLeagues ? "Less" : "Leagues"}
+            </button>
+          ) : null}
         </div>
-      ) : null}
+
+        {activeCategory === "sports" ? (
+          <div className="mt-3 border-t border-[var(--poly-border)] pt-3">
+            <div className="mb-2 text-xs font-semibold uppercase text-[var(--poly-muted)]">Leagues</div>
+            <div className="flex flex-wrap gap-1">
+              {visibleSportsChips.map((tag) => (
+                <button
+                  key={tag.id}
+                  onClick={() => setFilters("sports", tag.slug)}
+                  className={`rounded-full border px-3 py-1 text-xs ${
+                    activeLeague === tag.slug
+                      ? "border-[var(--poly-teal)] bg-[var(--poly-teal)] text-white"
+                      : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-teal)] hover:text-[var(--poly-teal)]"
+                  }`}
+                  type="button"
+                >
+                  {tag.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
+      </section>
 
       {events.length ? (
         <section className="mb-8">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold">Active Events</h2>
-              <p className="text-sm text-neutral-600">Explore grouped markets before drilling into individual contracts.</p>
-            </div>
-            <button
+          <SectionHeader
+            title="Active events"
+            description="Use events to compare related markets before drilling into one contract."
+            action={<button
               onClick={() => router.push("/events")}
-              className="text-sm text-neutral-600 hover:text-neutral-900"
+              className="text-sm font-semibold text-[var(--poly-primary)] hover:text-[var(--poly-primary-hover)]"
               type="button"
             >
               All events
-            </button>
-          </div>
+            </button>}
+          />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {events.map((event) =>
               event.slug ? (
@@ -306,18 +317,12 @@ function MarketsPageInner() {
       ) : null}
 
       {loading ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <div
-              key={`skeleton-${index}`}
-              className="h-40 animate-pulse rounded-xl border border-neutral-200 bg-neutral-100"
-            />
-          ))}
-        </div>
+        <LoadingState label="Loading markets" count={8} />
       ) : markets.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">
-          No markets yet.
-        </div>
+        <EmptyState
+          title="No markets match this view"
+          description="Try Live sports, another league, or All markets while beta markets are being prepared."
+        />
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {markets.map((market) => (
@@ -340,15 +345,18 @@ function MarketsPageInner() {
               <a
                 key={market.id}
                 href={`/markets/${market.id}`}
-                className="group flex h-full flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-neutral-300 hover:shadow-md"
+                className="group flex h-full flex-col justify-between rounded-lg border border-[var(--poly-border)] bg-white p-5 shadow-[var(--poly-shadow-sm)] transition hover:border-[var(--poly-border-strong)] hover:shadow-[var(--poly-shadow-md)]"
               >
                 <div>
-                  <h3 className="line-clamp-2 text-base font-semibold text-neutral-900">{market.title}</h3>
-                  <div className="mt-2 text-xs text-neutral-500">
+                  <div className="mb-3 inline-flex rounded-full bg-[var(--poly-surface-muted)] px-2 py-1 text-xs font-semibold text-[var(--poly-muted)]">
                     {market.referenceOnly && market.tradable === false ? "Coming soon" : market.status}
                   </div>
+                  <h3 className="line-clamp-2 text-base font-semibold text-[var(--poly-text)]">{market.title}</h3>
+                  <p className="mt-2 text-sm text-[var(--poly-muted)]">
+                    Price display is not ready for this market yet.
+                  </p>
                 </div>
-                <div className="mt-6 text-xs text-neutral-500">
+                <div className="mt-6 text-xs text-[var(--poly-muted)]">
                   Outcomes: {market.outcomes.map((outcome) => outcome.name).join(" / ")}
                 </div>
               </a>
@@ -356,7 +364,7 @@ function MarketsPageInner() {
           ))}
         </div>
       )}
-    </main>
+    </PageContainer>
   );
 }
 
@@ -364,9 +372,9 @@ export default function MarketsPage() {
   return (
     <Suspense
       fallback={
-        <main className="mx-auto max-w-7xl px-6 py-10">
-          <div className="text-sm text-neutral-600">Loading markets...</div>
-        </main>
+        <PageContainer>
+          <div className="text-sm text-[var(--poly-muted)]">Loading markets...</div>
+        </PageContainer>
       }
     >
       <MarketsPageInner />

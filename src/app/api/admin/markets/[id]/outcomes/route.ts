@@ -59,7 +59,16 @@ export async function PATCH(request: NextRequest, { params }: Ctx) {
       .map((o) => o.id)
   );
 
-  type IncomingOutcome = { id?: unknown; name?: unknown; isActive?: unknown; displayOrder?: unknown };
+  type IncomingOutcome = {
+    id?: unknown;
+    name?: unknown;
+    label?: unknown;
+    code?: unknown;
+    side?: unknown;
+    status?: unknown;
+    isActive?: unknown;
+    displayOrder?: unknown;
+  };
 
   const incomingIds = new Set(
     (list as IncomingOutcome[])
@@ -80,6 +89,10 @@ export async function PATCH(request: NextRequest, { params }: Ctx) {
     for (const item of list) {
       const idValue = typeof item.id === "string" ? item.id : null;
       const nameValue = typeof item.name === "string" ? item.name.trim() : "";
+      const labelValue = typeof item.label === "string" && item.label.trim() ? item.label.trim() : null;
+      const codeValue = typeof item.code === "string" && item.code.trim() ? item.code.trim() : null;
+      const sideValue = typeof item.side === "string" && item.side.trim() ? item.side.trim() : null;
+      const statusValue = typeof item.status === "string" && item.status.trim() ? item.status.trim() : "active";
       const isActive = item.isActive !== false;
       const displayOrder = Number.isFinite(item.displayOrder)
         ? Number(item.displayOrder)
@@ -90,10 +103,20 @@ export async function PATCH(request: NextRequest, { params }: Ctx) {
         if (locked.has(idValue) && nameValue && nameValue !== existing.name) {
           throw new Error(`Outcome ${existing.name} is locked and cannot be renamed.`);
         }
+        if (locked.has(idValue) && Object.prototype.hasOwnProperty.call(item, "code") && codeValue !== existing.code) {
+          throw new Error(`Outcome ${existing.name} is locked and cannot change code.`);
+        }
+        if (locked.has(idValue) && Object.prototype.hasOwnProperty.call(item, "side") && sideValue !== existing.side) {
+          throw new Error(`Outcome ${existing.name} is locked and cannot change side.`);
+        }
         await tx.outcome.update({
           where: { id: idValue },
           data: {
             name: nameValue || existing.name,
+            label: labelValue,
+            ...(Object.prototype.hasOwnProperty.call(item, "code") ? { code: codeValue } : {}),
+            ...(Object.prototype.hasOwnProperty.call(item, "side") ? { side: sideValue } : {}),
+            status: statusValue,
             isActive,
             displayOrder,
           },
@@ -107,6 +130,10 @@ export async function PATCH(request: NextRequest, { params }: Ctx) {
           marketId: id,
           name: nameValue,
           slug: slugify(nameValue),
+          label: labelValue,
+          code: codeValue,
+          side: sideValue,
+          status: statusValue,
           isActive,
           displayOrder,
         },

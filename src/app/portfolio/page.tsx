@@ -3,6 +3,11 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Badge from "@/components/ui/Badge";
+import Card from "@/components/ui/Card";
+import PageContainer from "@/components/ui/PageContainer";
+import { BetaNotice, PageHeader, StatCard } from "@/components/ui/PageHeader";
+import { EmptyState } from "@/components/ui/States";
 
 type PortfolioItem = {
   market: {
@@ -40,6 +45,46 @@ type HistoryItem = {
   realizedPnLTokens: number;
 };
 
+type OpenOrderItem = {
+  id: string;
+  market: {
+    id: string;
+    title: string;
+    status: string;
+  };
+  outcome: {
+    id: string;
+    name: string;
+  };
+  side: "BUY" | "SELL";
+  status: string;
+  price: number;
+  size: number;
+  remaining: number;
+  reservedNotional: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type ComboOrderItem = {
+  id: string;
+  status: string;
+  stakeUSDC: number;
+  comboPrice: number;
+  potentialPayout: number;
+  createdAt: string;
+  updatedAt: string;
+  legs: Array<{
+    id: string;
+    market: { id: string; title: string; status: string };
+    outcome: { id: string; name: string; side: string | null; code: string | null };
+    price: number;
+    line: string | null;
+    label: string;
+    displayOrder: number;
+  }>;
+};
+
 export default function PortfolioPage() {
   const router = useRouter();
   const [walletAvailable, setWalletAvailable] = useState<number | null>(null);
@@ -50,6 +95,8 @@ export default function PortfolioPage() {
   const [totalRealizedPnl, setTotalRealizedPnl] = useState<number>(0);
   const [totalPnl, setTotalPnl] = useState<number>(0);
   const [positions, setPositions] = useState<PortfolioItem[]>([]);
+  const [openOrders, setOpenOrders] = useState<OpenOrderItem[]>([]);
+  const [comboOrders, setComboOrders] = useState<ComboOrderItem[]>([]);
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [filterStatus, setFilterStatus] = useState<"all" | "active" | "resolved">("all");
   const [search, setSearch] = useState("");
@@ -74,6 +121,8 @@ export default function PortfolioPage() {
       setTotalRealizedPnl(data.totalRealizedPnl ?? 0);
       setTotalPnl(data.totalPnl ?? 0);
       setPositions(data.positions ?? []);
+      setOpenOrders(data.openOrders ?? []);
+      setComboOrders(data.comboOrders ?? []);
       setLoading(false);
     };
     load();
@@ -156,69 +205,147 @@ export default function PortfolioPage() {
 
   if (loading) {
     return (
-      <main className="mx-auto max-w-6xl px-4 py-8">Loading portfolio...</main>
+      <PageContainer size="default">
+        <Card className="p-6 text-sm text-[var(--poly-muted)]">Loading portfolio...</Card>
+      </PageContainer>
     );
   }
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8">
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Portfolio</h1>
-          <p className="text-sm text-neutral-600">
-            Track your positions across all markets.
-          </p>
-        </div>
-      </div>
+    <PageContainer size="wide">
+      <PageHeader
+        eyebrow="Account"
+        title="Portfolio"
+        description="Track balances, reserved funds, open orders, positions, and resolved market history from one account view."
+      >
+        <BetaNotice tone="info">
+          Internal beta portfolio values are read-only. Open orders can reserve funds, while settlement and market resolution remain separate admin workflows.
+        </BetaNotice>
+      </PageHeader>
 
       <div className="grid gap-4 md:grid-cols-7">
-        <div className="rounded-lg border border-neutral-200 bg-white p-4">
-          <div className="text-xs text-neutral-500">Available</div>
-          <div className="mt-2 text-xl font-semibold">
-            {walletAvailable === null ? "--" : walletAvailable.toFixed(2)} U
-          </div>
-        </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4">
-          <div className="text-xs text-neutral-500">Locked</div>
-          <div className="mt-2 text-xl font-semibold">
-            {walletLocked === null ? "--" : walletLocked.toFixed(2)} U
-          </div>
-        </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4">
-          <div className="text-xs text-neutral-500">Total</div>
-          <div className="mt-2 text-xl font-semibold">
-            {walletTotal === null ? "--" : walletTotal.toFixed(2)} U
-          </div>
-        </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4">
-          <div className="text-xs text-neutral-500">Total position value</div>
-          <div className="mt-2 text-xl font-semibold">
-            {totalValue.toFixed(2)} U
-          </div>
-        </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4">
-          <div className="text-xs text-neutral-500">Total cost basis</div>
-          <div className="mt-2 text-xl font-semibold">
-            {totalCostBasis.toFixed(2)} U
-          </div>
-        </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4">
-          <div className="text-xs text-neutral-500">Realized PnL</div>
-          <div
-            className={`mt-2 text-xl font-semibold ${
-              totalRealizedPnl >= 0 ? "text-emerald-600" : "text-red-600"
-            }`}
-          >
-            {totalRealizedPnl.toFixed(2)} U
-          </div>
-        </div>
-        <div className="rounded-lg border border-neutral-200 bg-white p-4">
-          <div className="text-xs text-neutral-500">Unrealized PnL</div>
-          <div className={`mt-2 text-xl font-semibold ${totalPnl >= 0 ? "text-emerald-600" : "text-red-600"}`}>
-            {totalPnl.toFixed(2)} U
-          </div>
-        </div>
+        <StatCard label="Available" value={`${walletAvailable === null ? "--" : walletAvailable.toFixed(2)} U`} helper="Test-credit balance" />
+        <StatCard label="Locked" value={`${walletLocked === null ? "--" : walletLocked.toFixed(2)} U`} helper="Reserved by open activity" tone="warning" />
+        <StatCard label="Total" value={`${walletTotal === null ? "--" : walletTotal.toFixed(2)} U`} helper="Available plus locked" />
+        <StatCard label="Position value" value={`${totalValue.toFixed(2)} U`} helper="Open positions" />
+        <StatCard label="Cost basis" value={`${totalCostBasis.toFixed(2)} U`} helper="Position cost" />
+        <StatCard label="Realized PnL" value={`${totalRealizedPnl.toFixed(2)} U`} helper="Closed markets" tone={totalRealizedPnl >= 0 ? "positive" : "negative"} />
+        <StatCard label="Unrealized PnL" value={`${totalPnl.toFixed(2)} U`} helper="Open market estimate" tone={totalPnl >= 0 ? "positive" : "negative"} />
       </div>
+
+      <section className="mt-8">
+        <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-semibold text-[var(--poly-text)]">Open orders</h2>
+            <p className="text-sm text-[var(--poly-muted)]">
+              Pending internal beta orders and the funds currently reserved for them.
+            </p>
+          </div>
+          <Badge tone="warning">No settlement here</Badge>
+        </div>
+
+        {openOrders.length === 0 ? (
+          <EmptyState title="No open orders" description="Submitted internal beta orders will appear here until filled or canceled." />
+        ) : (
+          <Card className="overflow-x-auto">
+            <table className="min-w-full text-left text-sm">
+              <thead className="border-b border-[var(--poly-border)] bg-[var(--poly-surface-muted)] text-xs uppercase text-[var(--poly-muted)]">
+                <tr>
+                  <th className="px-4 py-3">Market</th>
+                  <th className="px-4 py-3">Outcome</th>
+                  <th className="px-4 py-3">Side</th>
+                  <th className="px-4 py-3 text-right">Limit</th>
+                  <th className="px-4 py-3 text-right">Size</th>
+                  <th className="px-4 py-3 text-right">Remaining</th>
+                  <th className="px-4 py-3 text-right">Reserved</th>
+                  <th className="px-4 py-3">Order</th>
+                  <th className="px-4 py-3">Market</th>
+                </tr>
+              </thead>
+              <tbody>
+                {openOrders.map((order) => (
+                  <tr key={order.id} className="border-b border-[var(--poly-border)]">
+                    <td className="px-4 py-3">
+                      <Link
+                        href={`/markets/${order.market.id}`}
+                        className="font-medium text-[var(--poly-text)] underline"
+                      >
+                        {order.market.title}
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3">{order.outcome.name}</td>
+                    <td className="px-4 py-3">
+                      <Badge tone={order.side === "BUY" ? "teal" : "warning"}>{order.side}</Badge>
+                    </td>
+                    <td className="px-4 py-3 text-right">{order.price.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-right">{order.size.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-right">{order.remaining.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-right">{order.reservedNotional.toFixed(2)} U</td>
+                    <td className="px-4 py-3">{order.status}</td>
+                    <td className="px-4 py-3">{order.market.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Card>
+        )}
+      </section>
+
+      <section className="mt-8">
+        <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-semibold text-[var(--poly-text)]">Combo orders</h2>
+            <p className="text-sm text-[var(--poly-muted)]">
+              Open combos reserve the stake. Settled and voided combos remain visible after admin settlement.
+            </p>
+          </div>
+          <Badge tone="warning">Internal beta</Badge>
+        </div>
+
+        {comboOrders.length === 0 ? (
+          <EmptyState title="No combos" description="World Cup combo orders will appear here after submission." />
+        ) : (
+          <Card className="overflow-x-auto">
+            <table className="min-w-full text-left text-sm">
+              <thead className="border-b border-[var(--poly-border)] bg-[var(--poly-surface-muted)] text-xs uppercase text-[var(--poly-muted)]">
+                <tr>
+                  <th className="px-4 py-3">Combo</th>
+                  <th className="px-4 py-3">Legs</th>
+                  <th className="px-4 py-3 text-right">Price</th>
+                  <th className="px-4 py-3 text-right">Stake</th>
+                  <th className="px-4 py-3 text-right">Payout</th>
+                  <th className="px-4 py-3">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {comboOrders.map((combo) => (
+                  <tr key={combo.id} className="border-b border-[var(--poly-border)]">
+                    <td className="px-4 py-3 font-medium text-[var(--poly-text)]">{combo.id.slice(0, 8)}</td>
+                    <td className="px-4 py-3">
+                      <div className="space-y-1">
+                        {combo.legs.map((leg) => (
+                          <div key={leg.id} className="text-xs text-[var(--poly-muted)]">
+                            <Link href={`/markets/${leg.market.id}`} className="font-semibold text-[var(--poly-text)] hover:underline">
+                              {leg.label}
+                            </Link>
+                            <span> / {leg.line ?? "default"} / {leg.price.toFixed(2)}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-right">{(combo.comboPrice * 100).toFixed(1)}%</td>
+                    <td className="px-4 py-3 text-right">{combo.stakeUSDC.toFixed(2)} U</td>
+                    <td className="px-4 py-3 text-right">{combo.potentialPayout.toFixed(2)} U</td>
+                    <td className="px-4 py-3">
+                      <Badge tone="primary">{combo.status}</Badge>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Card>
+        )}
+      </section>
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <div className="flex gap-2 text-sm">
@@ -226,8 +353,8 @@ export default function PortfolioPage() {
             onClick={() => setFilterStatus("all")}
             className={`rounded-full border px-3 py-1 ${
               filterStatus === "all"
-                ? "border-black bg-black text-white"
-                : "border-neutral-300 text-neutral-700"
+                ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             }`}
             type="button"
           >
@@ -237,8 +364,8 @@ export default function PortfolioPage() {
             onClick={() => setFilterStatus("active")}
             className={`rounded-full border px-3 py-1 ${
               filterStatus === "active"
-                ? "border-black bg-black text-white"
-                : "border-neutral-300 text-neutral-700"
+                ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             }`}
             type="button"
           >
@@ -248,8 +375,8 @@ export default function PortfolioPage() {
             onClick={() => setFilterStatus("resolved")}
             className={`rounded-full border px-3 py-1 ${
               filterStatus === "resolved"
-                ? "border-black bg-black text-white"
-                : "border-neutral-300 text-neutral-700"
+                ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             }`}
             type="button"
           >
@@ -260,23 +387,17 @@ export default function PortfolioPage() {
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Search markets"
-          className="w-full max-w-xs rounded-md border border-neutral-300 px-3 py-2 text-sm"
+          className="w-full max-w-xs rounded-lg border border-[var(--poly-border)] bg-white px-3 py-2 text-sm text-[var(--poly-text)] focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
         />
       </div>
 
       {filterStatus === "all" ? (
         allItems.length === 0 ? (
-          <div className="mt-8 rounded-lg border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">
-            No portfolio activity yet.{" "}
-            <Link href="/" className="text-neutral-900 underline">
-              Browse markets
-            </Link>
-            .
-          </div>
+          <EmptyState title="No portfolio activity yet" description="Browse markets to start building positions." />
         ) : (
-          <div className="mt-6 overflow-x-auto rounded-lg border border-neutral-200 bg-white">
+          <Card className="mt-6 overflow-x-auto">
             <table className="min-w-full text-left text-sm">
-              <thead className="border-b border-neutral-200 text-xs uppercase text-neutral-500">
+              <thead className="border-b border-[var(--poly-border)] bg-[var(--poly-surface-muted)] text-xs uppercase text-[var(--poly-muted)]">
                 <tr>
                   <th className="px-4 py-3">Market</th>
                   <th className="px-4 py-3">Type</th>
@@ -295,19 +416,17 @@ export default function PortfolioPage() {
                   if (item.type === "OPEN_POSITION") {
                     const row = item.data as PortfolioItem;
                     return (
-                      <tr key={`open-${row.market.id}-${row.outcome}`} className="border-b border-neutral-100">
+                      <tr key={`open-${row.market.id}-${row.outcome}`} className="border-b border-[var(--poly-border)]">
                         <td className="px-4 py-3">
                           <Link
                             href={`/markets/${row.market.id}`}
-                            className="text-neutral-900 underline"
+                            className="font-medium text-[var(--poly-text)] underline"
                           >
                             {row.market.title}
                           </Link>
                         </td>
                         <td className="px-4 py-3">
-                          <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-600">
-                            Open
-                          </span>
+                          <Badge tone="teal">Open</Badge>
                         </td>
                         <td className="px-4 py-3">{row.outcome}</td>
                         <td className="px-4 py-3 text-right">
@@ -337,19 +456,17 @@ export default function PortfolioPage() {
 
                   const row = item.data as HistoryItem;
                   return (
-                    <tr key={`resolved-${row.market.id}`} className="border-b border-neutral-100">
-                      <td className="px-4 py-3">
-                        <Link
-                          href={`/markets/${row.market.id}`}
-                          className="text-neutral-900 underline"
-                        >
-                          {row.market.title}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-600">
-                          Resolved
-                        </span>
+                      <tr key={`resolved-${row.market.id}`} className="border-b border-[var(--poly-border)]">
+                        <td className="px-4 py-3">
+                          <Link
+                            href={`/markets/${row.market.id}`}
+                            className="font-medium text-[var(--poly-text)] underline"
+                          >
+                            {row.market.title}
+                          </Link>
+                        </td>
+                        <td className="px-4 py-3">
+                        <Badge>Resolved</Badge>
                       </td>
                       <td className="px-4 py-3">
                         {row.resolvedOutcomeName ?? "--"}
@@ -376,25 +493,19 @@ export default function PortfolioPage() {
                 })}
               </tbody>
             </table>
-          </div>
+          </Card>
         )
       ) : filterStatus === "resolved" ? (
         historyLoading ? (
-          <div className="mt-8 rounded-lg border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
+          <Card className="mt-8 p-6 text-sm text-[var(--poly-muted)]">
             Loading resolved history...
-          </div>
+          </Card>
         ) : filteredHistory.length === 0 ? (
-          <div className="mt-8 rounded-lg border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">
-            No resolved history yet.{" "}
-            <Link href="/" className="text-neutral-900 underline">
-              Browse markets
-            </Link>
-            .
-          </div>
+          <EmptyState title="No resolved history yet" description="Resolved markets will appear here." />
         ) : (
-          <div className="mt-6 overflow-x-auto rounded-lg border border-neutral-200 bg-white">
+          <Card className="mt-6 overflow-x-auto">
             <table className="min-w-full text-left text-sm">
-              <thead className="border-b border-neutral-200 text-xs uppercase text-neutral-500">
+              <thead className="border-b border-[var(--poly-border)] bg-[var(--poly-surface-muted)] text-xs uppercase text-[var(--poly-muted)]">
                 <tr>
                   <th className="px-4 py-3">Market</th>
                   <th className="px-4 py-3">Resolved</th>
@@ -406,11 +517,11 @@ export default function PortfolioPage() {
               </thead>
               <tbody>
                 {filteredHistory.map((item) => (
-                  <tr key={item.market.id} className="border-b border-neutral-100">
+                  <tr key={item.market.id} className="border-b border-[var(--poly-border)]">
                     <td className="px-4 py-3">
                       <Link
                         href={`/markets/${item.market.id}`}
-                        className="text-neutral-900 underline"
+                        className="font-medium text-[var(--poly-text)] underline"
                       >
                         {item.market.title}
                       </Link>
@@ -440,20 +551,14 @@ export default function PortfolioPage() {
                 ))}
               </tbody>
             </table>
-          </div>
+          </Card>
         )
       ) : filtered.length === 0 ? (
-        <div className="mt-8 rounded-lg border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">
-          No positions yet.{" "}
-          <Link href="/" className="text-neutral-900 underline">
-            Browse markets
-          </Link>
-          .
-        </div>
+        <EmptyState title="No positions yet" description="Active positions will appear after orders fill." />
       ) : (
-        <div className="mt-6 overflow-x-auto rounded-lg border border-neutral-200 bg-white">
+        <Card className="mt-6 overflow-x-auto">
           <table className="min-w-full text-left text-sm">
-            <thead className="border-b border-neutral-200 text-xs uppercase text-neutral-500">
+            <thead className="border-b border-[var(--poly-border)] bg-[var(--poly-surface-muted)] text-xs uppercase text-[var(--poly-muted)]">
               <tr>
                 <th className="px-4 py-3">Market</th>
                 <th className="px-4 py-3">Outcome</th>
@@ -468,11 +573,11 @@ export default function PortfolioPage() {
             </thead>
             <tbody>
               {filtered.map((item) => (
-                <tr key={`${item.market.id}-${item.outcome}`} className="border-b border-neutral-100">
+                <tr key={`${item.market.id}-${item.outcome}`} className="border-b border-[var(--poly-border)]">
                   <td className="px-4 py-3">
                     <Link
                       href={`/markets/${item.market.id}`}
-                      className="text-neutral-900 underline"
+                      className="font-medium text-[var(--poly-text)] underline"
                     >
                       {item.market.title}
                     </Link>
@@ -480,13 +585,13 @@ export default function PortfolioPage() {
                   <td className="px-4 py-3">{item.outcome}</td>
                   <td className="px-4 py-3 text-right">
                     {item.valueTokens.toFixed(2)} U{" "}
-                    <span className="text-neutral-500">
+                    <span className="text-[var(--poly-muted)]">
                       ({item.shares.toFixed(2)} shares)
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right">
                     {item.totalCostBasisTokens.toFixed(2)} U
-                    <div className="text-xs text-neutral-500">
+                    <div className="text-xs text-[var(--poly-muted)]">
                       ({item.shares.toFixed(2)} shares)
                     </div>
                   </td>
@@ -509,9 +614,9 @@ export default function PortfolioPage() {
               ))}
             </tbody>
           </table>
-        </div>
+        </Card>
       )}
-    </main>
+    </PageContainer>
   );
 }
 

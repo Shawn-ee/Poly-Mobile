@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { resolveAuthenticatedUser } from "@/lib/auth";
 import { listUserPolygonDeposits } from "@/lib/deposits/polygonDeposits";
+import { requireInternalFundingUser, toFundingAccessResponse } from "@/lib/fundingBeta";
 
 export async function GET() {
   const auth = await resolveAuthenticatedUser();
@@ -9,6 +10,16 @@ export async function GET() {
       reason: auth.reason,
     });
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    requireInternalFundingUser(auth.user);
+  } catch (error) {
+    const fundingResponse = toFundingAccessResponse(error);
+    if (fundingResponse) {
+      return NextResponse.json(fundingResponse.body, { status: fundingResponse.status });
+    }
+    throw error;
   }
 
   const deposits = await listUserPolygonDeposits(auth.user.id);

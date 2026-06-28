@@ -1,8 +1,12 @@
 "use client";
 
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import { useEffect, useMemo, useState } from "react";
 import MarketHeader from "@/components/market/shared/MarketHeader";
 import OrderTicket from "@/components/market/orderbook/OrderTicket";
+import Card from "@/components/ui/Card";
+import PageContainer from "@/components/ui/PageContainer";
 import type {
   SubmitOrderDebug,
   SubmitOrderPayload,
@@ -500,15 +504,16 @@ export default function OrderbookMarketView({
   );
 
   if (!market) {
-    return <main className="mx-auto max-w-6xl px-4 py-8">Loading market...</main>;
+    return <PageContainer size="default"><div className="text-sm text-[var(--poly-muted)]">Loading market...</div></PageContainer>;
   }
 
   const referenceOnly = market.referenceOnly === true;
   const tradable = market.tradable !== false;
   const showTradingControls = !referenceOnly && tradable;
+  const internalTradingEnabled = process.env.NEXT_PUBLIC_INTERNAL_TRADING_BETA_ENABLED === "true";
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8">
+    <PageContainer size="default">
       <MarketHeader
         title={market.title}
         description={market.description}
@@ -535,8 +540,8 @@ export default function OrderbookMarketView({
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
         <div className="space-y-6">
-          <div className="rounded-lg border border-neutral-200 bg-white p-4">
-            <h2 className="text-lg font-semibold">Orderbook Depth</h2>
+          <Card className="p-4">
+            <h2 className="text-lg font-semibold text-[var(--poly-text)]">Orderbook Depth</h2>
             <div className="mt-3 flex flex-wrap gap-2">
               {market.outcomes.map((outcome) => (
                 <button
@@ -544,8 +549,8 @@ export default function OrderbookMarketView({
                   onClick={() => setOutcomeId(outcome.id)}
                   className={`rounded-full border px-3 py-1 text-xs ${
                     outcome.id === outcomeId
-                      ? "border-black bg-black text-white"
-                      : "border-neutral-300 text-neutral-700"
+                      ? "border-[var(--poly-primary)] bg-[var(--poly-primary)] text-white"
+                      : "border-[var(--poly-border)] bg-white text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
                   }`}
                   type="button"
                 >
@@ -555,44 +560,44 @@ export default function OrderbookMarketView({
             </div>
             <div className="mt-4 grid gap-4 md:grid-cols-2">
               <div>
-                <div className="mb-2 text-sm font-medium text-emerald-700">Bids</div>
+                <div className="mb-2 text-sm font-semibold text-emerald-700">Bids</div>
                 <div className="space-y-1 text-sm">
                   {bidsToShow.map((row, idx) => (
-                    <div key={`${row.outcomeId}-${row.price}-${idx}`} className="flex justify-between">
+                    <div key={`${row.outcomeId}-${row.price}-${idx}`} className="flex justify-between rounded-md bg-emerald-50 px-2 py-1 text-emerald-900">
                       <span>{row.price.toFixed(2)}</span>
                       <span>{row.size.toFixed(2)}</span>
                     </div>
                   ))}
-                  {!bidsToShow.length ? <div className="text-neutral-500">No bids</div> : null}
+                  {!bidsToShow.length ? <div className="text-[var(--poly-muted)]">No bids</div> : null}
                   {bidsTrimmed ? (
-                    <div className="text-xs text-neutral-500">Showing top 20 levels</div>
+                    <div className="text-xs text-[var(--poly-muted)]">Showing top 20 levels</div>
                   ) : null}
                 </div>
               </div>
               <div>
-                <div className="mb-2 text-sm font-medium text-rose-700">Asks</div>
+                <div className="mb-2 text-sm font-semibold text-red-700">Asks</div>
                 <div className="space-y-1 text-sm">
                   {asksToShow.map((row, idx) => (
-                    <div key={`${row.outcomeId}-${row.price}-${idx}`} className="flex justify-between">
+                    <div key={`${row.outcomeId}-${row.price}-${idx}`} className="flex justify-between rounded-md bg-red-50 px-2 py-1 text-red-900">
                       <span>{row.price.toFixed(2)}</span>
                       <span>{row.size.toFixed(2)}</span>
                     </div>
                   ))}
-                  {!asksToShow.length ? <div className="text-neutral-500">No asks</div> : null}
+                  {!asksToShow.length ? <div className="text-[var(--poly-muted)]">No asks</div> : null}
                   {asksTrimmed ? (
-                    <div className="text-xs text-neutral-500">Showing top 20 levels</div>
+                    <div className="text-xs text-[var(--poly-muted)]">Showing top 20 levels</div>
                   ) : null}
                 </div>
               </div>
             </div>
-          </div>
+          </Card>
 
-          <div className="rounded-lg border border-neutral-200 bg-white p-4">
-            <h2 className="text-lg font-semibold">Recent Trades</h2>
-            <div className="mt-1 text-xs text-neutral-500">Recent trades (max 100)</div>
+          <Card className="p-4">
+            <h2 className="text-lg font-semibold text-[var(--poly-text)]">Recent Trades</h2>
+            <div className="mt-1 text-xs text-[var(--poly-muted)]">Recent trades (max 100)</div>
             <div className="mt-3 max-h-[22rem] overflow-y-auto space-y-2 pr-1 text-sm">
               {tradesToShow.map((trade) => (
-                <div key={trade.id} className="flex justify-between border-b border-neutral-100 pb-2">
+                <div key={trade.id} className="flex justify-between border-b border-[var(--poly-border)] pb-2">
                   <span>
                     {trade.side.toLowerCase()} {trade.quantity.toFixed(2)} {trade.outcome} @
                     {trade.price.toFixed(2)}
@@ -600,15 +605,15 @@ export default function OrderbookMarketView({
                   <span>{new Date(trade.createdAt).toLocaleString()}</span>
                 </div>
               ))}
-              {!tradesToShow.length ? <div className="text-neutral-500">No trades yet.</div> : null}
-              {tradesTrimmed ? <div className="text-xs text-neutral-500">Showing latest 100 trades</div> : null}
+              {!tradesToShow.length ? <div className="text-[var(--poly-muted)]">No trades yet.</div> : null}
+              {tradesTrimmed ? <div className="text-xs text-[var(--poly-muted)]">Showing latest 100 trades</div> : null}
             </div>
-          </div>
+          </Card>
         </div>
 
         <div className="space-y-6">
           {referenceOnly ? (
-            <div className="rounded-lg border border-neutral-200 bg-white p-4">
+            <Card className="p-4">
               <h2 className="text-lg font-semibold">Reference Market Data</h2>
               {selectedReferencePlan ? (
                 <div className="mt-3 space-y-2 text-sm">
@@ -657,13 +662,13 @@ export default function OrderbookMarketView({
                   ) : null}
                 </div>
               ) : (
-                <div className="mt-3 text-sm text-neutral-500">No reference snapshot yet.</div>
+                <div className="mt-3 text-sm text-[var(--poly-muted)]">No reference snapshot yet.</div>
               )}
-            </div>
+            </Card>
           ) : null}
 
           {referenceOnly ? (
-            <div className="rounded-lg border border-neutral-200 bg-white p-4">
+            <Card className="p-4">
               <h2 className="text-lg font-semibold">Bot Initialization Status</h2>
               <div className="mt-3 space-y-2 text-sm">
                 <div className="flex items-center justify-between">
@@ -751,11 +756,11 @@ export default function OrderbookMarketView({
                   </div>
                 ) : null}
               </div>
-            </div>
+            </Card>
           ) : null}
 
           {referenceOnly ? (
-            <div className="rounded-lg border border-neutral-200 bg-white p-4">
+            <Card className="p-4">
               <h2 className="text-lg font-semibold">System Liquidity Plan</h2>
               {selectedReferencePlan ? (
                 <div className="mt-3 space-y-2 text-sm">
@@ -807,9 +812,9 @@ export default function OrderbookMarketView({
                   ) : null}
                 </div>
               ) : (
-                <div className="mt-3 text-sm text-neutral-500">Quote plan unavailable until reference data arrives.</div>
+                <div className="mt-3 text-sm text-[var(--poly-muted)]">Quote plan unavailable until reference data arrives.</div>
               )}
-            </div>
+            </Card>
           ) : null}
 
           {showTradingControls ? (
@@ -830,6 +835,7 @@ export default function OrderbookMarketView({
               bestAsk={bestAsk}
               onSubmitOrder={submitOrder}
               marketOrdersSupported
+              submissionEnabled={internalTradingEnabled}
             />
           ) : (
             <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
@@ -838,15 +844,15 @@ export default function OrderbookMarketView({
           )}
 
           {message ? (
-            <div className="rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm text-neutral-600">
+            <div className="rounded-lg border border-[var(--poly-border)] bg-white px-4 py-3 text-sm text-[var(--poly-muted)]">
               {message}
             </div>
           ) : null}
 
-          <div className="rounded-lg border border-neutral-200 bg-white p-4">
-            <h2 className="text-lg font-semibold">My Position</h2>
+          <Card className="p-4">
+            <h2 className="text-lg font-semibold text-[var(--poly-text)]">My Position</h2>
             {netShares === 0 && reservedShares === 0 ? (
-              <div className="mt-3 text-sm text-neutral-500">No position yet.</div>
+              <div className="mt-3 text-sm text-[var(--poly-muted)]">No position yet.</div>
             ) : (
               <div className="mt-3 space-y-2 text-sm">
                 <div className="flex items-center justify-between">
@@ -889,14 +895,14 @@ export default function OrderbookMarketView({
                 </div>
               </div>
             )}
-          </div>
+          </Card>
 
           {showTradingControls ? (
-            <div className="rounded-lg border border-neutral-200 bg-white p-4">
-              <h2 className="text-lg font-semibold">My Open Orders</h2>
+            <Card className="p-4">
+              <h2 className="text-lg font-semibold text-[var(--poly-text)]">My Open Orders</h2>
               <div className="mt-3 space-y-2 text-sm">
                 {orders.map((order) => (
-                  <div key={order.id} className="rounded border border-neutral-200 p-2">
+                  <div key={order.id} className="rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-2">
                     <div className="flex items-center justify-between">
                       <span>
                         {order.side} {order.outcomeName} {order.remaining.toFixed(2)}/{order.amount.toFixed(2)} @
@@ -904,7 +910,7 @@ export default function OrderbookMarketView({
                       </span>
                       <button
                         onClick={() => cancelOrder(order.id)}
-                        className="rounded border border-neutral-300 px-2 py-1 text-xs"
+                        className="rounded-lg border border-[var(--poly-border)] bg-white px-2 py-1 text-xs text-[var(--poly-text)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
                         type="button"
                       >
                         Cancel
@@ -912,13 +918,13 @@ export default function OrderbookMarketView({
                     </div>
                   </div>
                 ))}
-                {!orders.length ? <div className="text-neutral-500">No open orders.</div> : null}
+                {!orders.length ? <div className="text-[var(--poly-muted)]">No open orders.</div> : null}
               </div>
-            </div>
+            </Card>
           ) : null}
         </div>
       </div>
-    </main>
+    </PageContainer>
   );
 }
 

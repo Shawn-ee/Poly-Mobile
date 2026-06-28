@@ -10,6 +10,9 @@ import {
   type SubmitOrderDebug,
   type SubmitOrderPayload,
 } from "@/components/market/orderbook/orderTicketLogic";
+import Badge from "@/components/ui/Badge";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
 
 type TicketMarket = {
   id: string;
@@ -50,6 +53,7 @@ export default function OrderTicket({
   bestAsk,
   onSubmitOrder,
   marketOrdersSupported,
+  submissionEnabled = false,
 }: {
   market: TicketMarket;
   selectedOutcomeId: string;
@@ -60,6 +64,7 @@ export default function OrderTicket({
   bestAsk: number | null;
   onSubmitOrder: (request: { payload: SubmitOrderPayload; debug: SubmitOrderDebug }) => Promise<string>;
   marketOrdersSupported: boolean;
+  submissionEnabled?: boolean;
 }) {
   const [side, setSide] = useState<"BUY" | "SELL">("BUY");
   const [orderType, setOrderType] = useState<"MARKET" | "LIMIT">("MARKET");
@@ -86,7 +91,6 @@ export default function OrderTicket({
 
   const marketExecutable = getMarketExecutablePrice({ side, bestBid, bestAsk });
   const estimatedBuyMarketPrice = bestAsk;
-  const estimatedSellMarketPrice = bestBid;
   const availableShares = clampPositive((position?.shares ?? 0) - (position?.reservedShares ?? 0));
   const marketOpenForTrading = market.status === "LIVE" || market.status === "ACTIVE";
 
@@ -137,6 +141,7 @@ export default function OrderTicket({
 
   const formDisabled =
     submitting ||
+    !submissionEnabled ||
     !marketOpenForTrading ||
     !selectedOutcome ||
     (orderType === "MARKET" && !marketOrdersSupported) ||
@@ -157,6 +162,7 @@ export default function OrderTicket({
   };
 
   const handleSubmit = async () => {
+    if (!submissionEnabled) return;
     if (!selectedOutcome) return;
     setSubmitting(true);
     setFeedback(null);
@@ -189,19 +195,27 @@ export default function OrderTicket({
   };
 
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm">
-      <div className="flex rounded-xl bg-neutral-100 p-1">
+    <Card className="p-5">
+      <div>
+        <div className="text-xs font-semibold uppercase text-[var(--poly-teal)]">Trade</div>
+        <h2 className="mt-1 text-xl font-semibold text-[var(--poly-text)]">{market.title}</h2>
+        <p className="mt-1 text-sm text-[var(--poly-muted)]">
+          Choose an outcome, enter an amount, and review cost and payout estimates.
+        </p>
+      </div>
+
+      <div className="mt-5 flex rounded-lg bg-[var(--poly-surface-muted)] p-1">
         {(["BUY", "SELL"] as const).map((tab) => (
           <button
             key={tab}
             type="button"
             onClick={() => setSide(tab)}
-            className={`flex-1 rounded-lg px-4 py-2 text-sm font-medium transition ${
+            className={`flex-1 rounded-md px-4 py-2 text-sm font-semibold transition ${
               side === tab
                 ? tab === "BUY"
-                  ? "bg-emerald-600 text-white"
-                  : "bg-rose-600 text-white"
-                : "text-neutral-600"
+                  ? "bg-[var(--poly-positive)] text-white"
+                  : "bg-[var(--poly-negative)] text-white"
+                : "text-[var(--poly-muted)]"
             }`}
           >
             {tab === "BUY" ? "Buy" : "Sell"}
@@ -210,13 +224,13 @@ export default function OrderTicket({
       </div>
 
       <div className="mt-4">
-        <label className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+        <label className="text-xs font-semibold uppercase text-[var(--poly-muted)]">
           Order Type
         </label>
         <select
           value={orderType}
           onChange={(event) => setOrderType(event.target.value as "MARKET" | "LIMIT")}
-          className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm"
+          className="mt-1 w-full rounded-lg border border-[var(--poly-border)] bg-white px-3 py-2 text-sm text-[var(--poly-text)] focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
         >
           <option value="MARKET" disabled={!marketOrdersSupported}>
             Market{marketOrdersSupported ? "" : " (Unavailable)"}
@@ -226,7 +240,7 @@ export default function OrderTicket({
       </div>
 
       <div className="mt-4">
-        <div className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+        <div className="text-xs font-semibold uppercase text-[var(--poly-muted)]">
           Outcome
         </div>
         <div className="mt-2 grid gap-2 sm:grid-cols-2">
@@ -238,22 +252,22 @@ export default function OrderTicket({
               upperName === "YES"
                 ? active
                   ? "border-emerald-500 bg-emerald-50 text-emerald-800"
-                  : "border-neutral-300 text-neutral-700"
+                  : "border-[var(--poly-border)] bg-white text-[var(--poly-text)]"
                 : upperName === "NO"
                   ? active
                     ? "border-rose-500 bg-rose-50 text-rose-800"
-                    : "border-neutral-300 text-neutral-700"
+                    : "border-[var(--poly-border)] bg-white text-[var(--poly-text)]"
                   : active
                     ? "border-blue-500 bg-blue-50 text-blue-800"
-                    : "border-neutral-300 text-neutral-700";
+                    : "border-[var(--poly-border)] bg-white text-[var(--poly-text)]";
             return (
               <button
                 key={outcome.id}
                 type="button"
                 onClick={() => onSelectedOutcomeIdChange(outcome.id)}
-                className={`rounded-xl border px-4 py-3 text-left transition ${accent}`}
+                className={`rounded-lg border px-4 py-3 text-left transition hover:border-[var(--poly-primary)] ${accent}`}
               >
-                <div className="text-xs font-medium uppercase tracking-wide opacity-70">
+                <div className="text-xs font-semibold uppercase opacity-70">
                   {outcome.name}
                 </div>
                 <div className="mt-1 text-lg font-semibold">{formatPrice(displayPrice)}</div>
@@ -263,7 +277,7 @@ export default function OrderTicket({
         </div>
       </div>
 
-      <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-3 text-xs text-neutral-600">
+      <div className="mt-4 rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3 text-xs text-[var(--poly-muted)]">
         <div className="flex items-center justify-between">
           <span>Best bid</span>
           <span>{formatPrice(bestBid)}</span>
@@ -282,14 +296,14 @@ export default function OrderTicket({
       {side === "BUY" && orderType === "MARKET" ? (
         <div className="mt-4 space-y-3">
           <div>
-            <label className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+            <label className="text-xs font-semibold uppercase text-[var(--poly-muted)]">
               Amount in Dollars
             </label>
             <input
               value={amountUsd}
               onChange={(event) => setAmountUsd(event.target.value)}
               inputMode="decimal"
-              className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-3 text-sm"
+              className="mt-1 w-full rounded-lg border border-[var(--poly-border)] px-3 py-3 text-sm focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
               placeholder="10.00"
             />
           </div>
@@ -299,13 +313,13 @@ export default function OrderTicket({
                 key={quick}
                 type="button"
                 onClick={() => handleQuickBuy(quick)}
-                className="rounded-full border border-neutral-300 px-3 py-1 text-xs text-neutral-700"
+                className="rounded-full border border-[var(--poly-border)] bg-white px-3 py-1 text-xs text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
               >
                 +${quick}
               </button>
             ))}
           </div>
-          <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-3 text-sm">
+          <div className="rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3 text-sm">
             <div className="flex items-center justify-between">
               <span>Estimated shares</span>
               <span>{buyMarketEstimatedShares.toFixed(2)}</span>
@@ -321,25 +335,25 @@ export default function OrderTicket({
       {side === "BUY" && orderType === "LIMIT" ? (
         <div className="mt-4 space-y-3">
           <div>
-            <label className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+            <label className="text-xs font-semibold uppercase text-[var(--poly-muted)]">
               Limit Price
             </label>
             <input
               value={limitPrice}
               onChange={(event) => setLimitPrice(event.target.value)}
               inputMode="decimal"
-              className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-3 text-sm"
+              className="mt-1 w-full rounded-lg border border-[var(--poly-border)] px-3 py-3 text-sm focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
               placeholder="0.50"
             />
           </div>
-          <div className="flex rounded-xl bg-neutral-100 p-1">
+          <div className="flex rounded-lg bg-[var(--poly-surface-muted)] p-1">
             {(["amount", "shares"] as const).map((mode) => (
               <button
                 key={mode}
                 type="button"
                 onClick={() => setBuyLimitInputMode(mode)}
                 className={`flex-1 rounded-lg px-3 py-2 text-sm ${
-                  buyLimitInputMode === mode ? "bg-white font-medium text-neutral-900 shadow-sm" : "text-neutral-600"
+                  buyLimitInputMode === mode ? "bg-white font-semibold text-[var(--poly-text)] shadow-sm" : "text-[var(--poly-muted)]"
                 }`}
               >
                 {mode === "amount" ? "Amount" : "Shares"}
@@ -348,32 +362,32 @@ export default function OrderTicket({
           </div>
           {buyLimitInputMode === "amount" ? (
             <div>
-              <label className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+              <label className="text-xs font-semibold uppercase text-[var(--poly-muted)]">
                 Amount
               </label>
               <input
                 value={amountUsd}
                 onChange={(event) => setAmountUsd(event.target.value)}
                 inputMode="decimal"
-                className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-3 text-sm"
+                className="mt-1 w-full rounded-lg border border-[var(--poly-border)] px-3 py-3 text-sm focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
                 placeholder="10.00"
               />
             </div>
           ) : (
             <div>
-              <label className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+              <label className="text-xs font-semibold uppercase text-[var(--poly-muted)]">
                 Shares
               </label>
               <input
                 value={shares}
                 onChange={(event) => setShares(event.target.value)}
                 inputMode="decimal"
-                className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-3 text-sm"
+                className="mt-1 w-full rounded-lg border border-[var(--poly-border)] px-3 py-3 text-sm focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
                 placeholder="10"
               />
             </div>
           )}
-          <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-3 text-sm">
+          <div className="rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3 text-sm">
             <div className="flex items-center justify-between">
               <span>Estimated shares</span>
               <span>{buyLimitEstimatedShares.toFixed(2)}</span>
@@ -382,7 +396,7 @@ export default function OrderTicket({
               <span>To win</span>
               <span>{formatMoney(buyLimitToWin)}</span>
             </div>
-            <div className="mt-2 flex items-center justify-between text-neutral-500">
+            <div className="mt-2 flex items-center justify-between text-[var(--poly-muted)]">
               <span>Estimated cost</span>
               <span>{formatMoney(buyLimitEstimatedCost)}</span>
             </div>
@@ -393,14 +407,14 @@ export default function OrderTicket({
       {side === "SELL" && orderType === "MARKET" ? (
         <div className="mt-4 space-y-3">
           <div>
-            <label className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+            <label className="text-xs font-semibold uppercase text-[var(--poly-muted)]">
               Shares
             </label>
             <input
               value={shares}
               onChange={(event) => setShares(event.target.value)}
               inputMode="decimal"
-              className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-3 text-sm"
+              className="mt-1 w-full rounded-lg border border-[var(--poly-border)] px-3 py-3 text-sm focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
               placeholder="10"
             />
           </div>
@@ -408,26 +422,26 @@ export default function OrderTicket({
             <button
               type="button"
               onClick={() => handleSellPercent(0.25)}
-              className="rounded-full border border-neutral-300 px-3 py-1 text-xs text-neutral-700"
+              className="rounded-full border border-[var(--poly-border)] bg-white px-3 py-1 text-xs text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             >
               25%
             </button>
             <button
               type="button"
               onClick={() => handleSellPercent(0.5)}
-              className="rounded-full border border-neutral-300 px-3 py-1 text-xs text-neutral-700"
+              className="rounded-full border border-[var(--poly-border)] bg-white px-3 py-1 text-xs text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             >
               50%
             </button>
             <button
               type="button"
               onClick={() => setShares(availableShares.toFixed(2))}
-              className="rounded-full border border-neutral-300 px-3 py-1 text-xs text-neutral-700"
+              className="rounded-full border border-[var(--poly-border)] bg-white px-3 py-1 text-xs text-[var(--poly-muted)] hover:border-[var(--poly-primary)] hover:text-[var(--poly-primary)]"
             >
               Max
             </button>
           </div>
-          <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-3 text-sm">
+          <div className="rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3 text-sm">
             <div className="flex items-center justify-between">
               <span>Available shares</span>
               <span>{availableShares.toFixed(2)}</span>
@@ -443,42 +457,42 @@ export default function OrderTicket({
       {side === "SELL" && orderType === "LIMIT" ? (
         <div className="mt-4 space-y-3">
           <div>
-            <label className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+            <label className="text-xs font-semibold uppercase text-[var(--poly-muted)]">
               Limit Price
             </label>
             <input
               value={limitPrice}
               onChange={(event) => setLimitPrice(event.target.value)}
               inputMode="decimal"
-              className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-3 text-sm"
+              className="mt-1 w-full rounded-lg border border-[var(--poly-border)] px-3 py-3 text-sm focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
               placeholder="0.50"
             />
           </div>
           <div>
-            <label className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+            <label className="text-xs font-semibold uppercase text-[var(--poly-muted)]">
               Shares
             </label>
             <input
               value={shares}
               onChange={(event) => setShares(event.target.value)}
               inputMode="decimal"
-              className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-3 text-sm"
+              className="mt-1 w-full rounded-lg border border-[var(--poly-border)] px-3 py-3 text-sm focus:border-[var(--poly-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--poly-ring)]"
               placeholder="10"
             />
           </div>
           <div>
-            <label className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+            <label className="text-xs font-semibold uppercase text-[var(--poly-muted)]">
               Expiry
             </label>
             <select
               value="never"
               disabled
-              className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-3 text-sm text-neutral-500"
+              className="mt-1 w-full rounded-lg border border-[var(--poly-border)] px-3 py-3 text-sm text-[var(--poly-muted)]"
             >
               <option value="never">Never</option>
             </select>
           </div>
-          <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-3 text-sm">
+          <div className="rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3 text-sm">
             <div className="flex items-center justify-between">
               <span>Available shares</span>
               <span>{availableShares.toFixed(2)}</span>
@@ -491,7 +505,7 @@ export default function OrderTicket({
         </div>
       ) : null}
 
-      <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-3 text-sm">
+      <div className="mt-4 rounded-lg border border-[var(--poly-border)] bg-[var(--poly-surface-muted)] p-3 text-sm">
         <div className="flex items-center justify-between">
           <span>Available balance</span>
           <span>{formatMoney(walletBalance)}</span>
@@ -500,17 +514,27 @@ export default function OrderTicket({
 
       {/* Beta notice */}
       <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-center text-[11px] text-amber-700">
-        ⚠️ Internal Beta — Test credits only
+        {submissionEnabled
+          ? "Internal Beta: test credits only"
+          : "Preview only: order submission is disabled until internal beta trading is explicitly enabled"}
       </div>
 
-      <button
+      <Button
         type="button"
         onClick={handleSubmit}
         disabled={formDisabled}
-        className="mt-3 w-full rounded-xl bg-blue-600 px-4 py-3 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-neutral-300"
+        className="mt-3 w-full"
+        variant={side === "BUY" ? "secondary" : "negative"}
+        size="lg"
       >
-        {submitLabel}
-      </button>
+        {submissionEnabled ? submitLabel : "Trading disabled"}
+      </Button>
+
+      {!submissionEnabled ? (
+        <p className="mt-3 text-sm text-amber-700">
+          This ticket is display-only in Phase E. It does not create orders, mutate balances, or write ledger entries.
+        </p>
+      ) : null}
 
       {!marketOrdersSupported && orderType === "MARKET" ? (
         <p className="mt-3 text-sm text-amber-700">
@@ -526,10 +550,10 @@ export default function OrderTicket({
         </p>
       ) : null}
       {feedback ? (
-        <p className={`mt-3 text-sm ${feedback.tone === "error" ? "text-rose-700" : "text-emerald-700"}`}>
-          {feedback.text}
-        </p>
+        <div className="mt-3">
+          <Badge tone={feedback.tone === "error" ? "negative" : "positive"}>{feedback.text}</Badge>
+        </div>
       ) : null}
-    </div>
+    </Card>
   );
 }

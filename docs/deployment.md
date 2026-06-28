@@ -46,3 +46,18 @@ Optional:
    - `npm run simulate:phase85 -- --seed=staging-smoke --users=6 --actions=40 --checkEvery=5 --quiet`
 6. Verify one market can be minted/traded/resolved through existing admin flow
 
+## Live Market Beta Update
+
+For the live sports market beta roadmap, use:
+
+- `docs/reviews/LIVE_MARKET_BETA_SERVER_DEPLOYMENT_UPDATE.md`
+- `docs/reviews/INTERNAL_LIVE_MARKET_E2E_EVIDENCE.md`
+- `docs/reviews/INTERNAL_LIVE_MARKET_GO_NO_GO.md`
+
+First deployment must keep internal trading disabled:
+
+- `INTERNAL_TRADING_BETA_ENABLED=false`
+- `TRADING_KILL_SWITCH=true`
+- `NEXT_PUBLIC_INTERNAL_TRADING_BETA_ENABLED=false`
+
+Only enable internal trading for a short owner-approved allowlisted drill, then disable it again. Public trading, public funding, anonymous trading, automatic settlement, live provider sync, and live bots remain disabled.

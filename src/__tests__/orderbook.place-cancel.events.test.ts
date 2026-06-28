@@ -8,6 +8,7 @@ const cancelOrderAndUnlock = jest.fn();
 const emitMarketUpdate = jest.fn();
 const emitUserUpdate = jest.fn();
 const enforceOrderRateLimit = jest.fn();
+const requireInternalTradingUserById = jest.fn();
 
 const prisma = (globalThis as unknown as {
   __PRISMA_MOCK__: {
@@ -34,14 +35,18 @@ jest.mock("@/server/services/orderbookEvents", () => ({
 jest.mock("@/server/services/orderRateLimiter", () => ({
   enforceOrderRateLimit: (...args: unknown[]) => enforceOrderRateLimit(...args),
 }));
+jest.mock("@/lib/internalTradingBeta", () => ({
+  requireInternalTradingUserById: (...args: unknown[]) => requireInternalTradingUserById(...args),
+}));
 
 describe("order routes event emission after commit", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     getUserId.mockResolvedValue("u1");
+    requireInternalTradingUserById.mockResolvedValue({ id: "u1", email: "allowed@test.local" });
   });
 
-  test("4.1 place emits only after successful commit", async () => {
+  test("legacy place route is disabled after trading gate and does not emit", async () => {
     prisma.market.findUnique.mockResolvedValue({
       id: "m1",
       mechanism: "ORDERBOOK",
@@ -66,13 +71,13 @@ describe("order routes event emission after commit", () => {
       }),
     });
     const res = await placePost(req);
-    expect(res.status).toBe(200);
-    expect(placeOrderAndMatch).toHaveBeenCalled();
-    expect(emitMarketUpdate).toHaveBeenCalled();
-    expect(emitUserUpdate).toHaveBeenCalled();
+    expect(res.status).toBe(410);
+    expect(placeOrderAndMatch).not.toHaveBeenCalled();
+    expect(emitMarketUpdate).not.toHaveBeenCalled();
+    expect(emitUserUpdate).not.toHaveBeenCalled();
   });
 
-  test("5.2 place does not emit when transaction fails", async () => {
+  test("legacy place route does not reach matching failure path", async () => {
     prisma.market.findUnique.mockResolvedValue({
       id: "m1",
       mechanism: "ORDERBOOK",
@@ -93,12 +98,13 @@ describe("order routes event emission after commit", () => {
       }),
     });
     const res = await placePost(req);
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(410);
+    expect(placeOrderAndMatch).not.toHaveBeenCalled();
     expect(emitMarketUpdate).not.toHaveBeenCalled();
     expect(emitUserUpdate).not.toHaveBeenCalled();
   });
 
-  test("4.2 payload source includes market depth/recent fill fields via market event builder", async () => {
+  test("legacy place route returns canonical replacement guidance", async () => {
     prisma.market.findUnique.mockResolvedValue({
       id: "m1",
       mechanism: "ORDERBOOK",
@@ -128,8 +134,12 @@ describe("order routes event emission after commit", () => {
         size: "10",
       }),
     });
-    await placePost(req);
-    expect(emitMarketUpdate).toHaveBeenCalledWith({ marketId: "m1", outcomeId: "out1" });
+    const res = await placePost(req);
+    expect(res.status).toBe(410);
+    const body = await res.json();
+    expect(body.error).toMatchObject({
+      code: "LEGACY_ORDER_PLACEMENT_DISABLED",
+    });
   });
 
   test("cancel emits only after successful commit", async () => {

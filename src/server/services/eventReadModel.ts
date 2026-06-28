@@ -19,13 +19,20 @@ export const serializeEventSummary = (
     | "awayTeamName"
     | "startTime"
     | "status"
+    | "liveStatus"
+    | "period"
+    | "clock"
+    | "homeScore"
+    | "awayScore"
     | "source"
     | "externalEventId"
     | "externalSlug"
+    | "venue"
     | "image"
     | "imageUrl"
     | "icon"
     | "metadata"
+    | "sourceUpdatedAt"
     | "createdAt"
     | "updatedAt"
   > & {
@@ -59,12 +66,19 @@ export const serializeEventSummary = (
     awayTeamName: event.awayTeamName,
     startTime: event.startTime,
     status: event.status,
+    liveStatus: event.liveStatus,
+    period: event.period,
+    clock: event.clock,
+    homeScore: event.homeScore,
+    awayScore: event.awayScore,
     source: event.source,
     externalEventId: event.externalEventId,
     externalSlug: event.externalSlug,
+    venue: event.venue,
     image: event.image,
     imageUrl: event.imageUrl,
     icon: event.icon,
+    sourceUpdatedAt: event.sourceUpdatedAt,
     marketCount,
     activeMarketCount,
     hasGroupedMarkets: Boolean(metadata.referenceGroup),
