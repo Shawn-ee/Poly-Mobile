@@ -790,3 +790,17 @@ Findings:
 - `npm run typecheck` and final `npm run smoke:deep` passed.
 Decision: Approve Cycle 056 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 057
+
+Date: 2026-07-01
+Branch: mobile/cycle-057
+Reviewer: Lead/Reviewer pass
+Scope: Featured futures ticket smoke path.
+Findings:
+- P1: Deep smoke now taps visible `featured-future-france` after returning from Event Detail, removing a fixed Home list swipe.
+- P1: The harness still verifies ticket Max, mock order placement, Portfolio close, Live refresh, and Search after the futures ticket path.
+- P2: Event-row direct trade coverage should become a focused smoke if that specific path needs ongoing regression proof.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 057 for local commit/merge after scoped diff review.
+Merge approved: Yes
