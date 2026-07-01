@@ -4957,6 +4957,49 @@ Open blockers: None for autonomous mock-mode product/harness progress. Live auth
 Risks: Saved markets, Account session, language, and Portfolio persistence are local-only; Portfolio counts, Home/Search/Futures market stats, Popular ranking, ticket quote math, and close-position behavior remain local estimates until backend auth, profile, quote, popularity, order-book, and position APIs can feed them.
 Next three likely cycles: Continue user-facing account/profile polish, add persisted ticket sizing/defaults, and retry backend readiness if Docker/local Postgres become available.
 
+### Cycle 101
+
+Date: 2026-07-01
+Branch: mobile/cycle-101
+Goal: Persist ticket amount and buy/sell side locally, then verify the ticket restores those defaults after restart.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Trade ticket now restores the last saved amount and side preference.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/TradeTicket.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:ticket-defaults-persistence` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-101-holiwyn-ticket-defaults-smoke.png`
+- `docs/mobile/screenshots/cycle-101-holiwyn-ticket-defaults-seeded.png`
+- `docs/mobile/screenshots/cycle-101-holiwyn-ticket-defaults-restored.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-101-holiwyn-ticket-defaults-home-start.xml`
+- `docs/mobile/harness/cycle-101-holiwyn-ticket-defaults-seeded.xml`
+- `docs/mobile/harness/cycle-101-holiwyn-ticket-defaults-restored.xml`
+Bugs found:
+- None in product code. Harness recovered from a brittle two-parameter deep link by using one focused harness flag that both seeds defaults and opens the reference ticket.
+Technical debt added:
+- Ticket defaults are local-only until backend profile/preference sync exists.
+Technical debt resolved:
+- Ticket amount and side are no longer reset to 100/buy every time the app restarts.
+Result: Passed Cycle 101 QA. Mobile typecheck, focused ticket-defaults persistence smoke, visual screenshot review, and mobile API tests pass.
+Commit: `e600251` (`Persist Holiwyn ticket defaults`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `6396d27`.
+Next cycle: Cycle 102 should continue user-facing account/profile polish or add another verified local preference without enabling real money movement.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Ticket Defaults Persistence Harness
+- Local Storage Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
