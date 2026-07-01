@@ -56,6 +56,12 @@ To verify Samsung live-market order placement, run:
 npm run smoke:samsung:live-order
 ```
 
+To verify Samsung live-market position close behavior, run:
+
+```powershell
+npm run smoke:samsung:live-order-close
+```
+
 ## Device Strategy
 
 - Samsung S23: use for Polymarket reference and, later, explicit Holiwyn real-device QA.

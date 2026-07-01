@@ -6797,6 +6797,53 @@ Harnesses run:
 Harness failures:
 - Initial Samsung live-order proof failed on reset-state/navigation and then on a stale harness label expectation; both were fixed before final pass.
 
+### Cycle 144
+
+Date: 2026-07-01
+Branch: mobile/cycle-144
+Goal: Add a Samsung-first live-position close proof for the France vs. Argentina World Cup live flow.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; harness/device proof cycle.
+Backend/API changed: No backend route change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke-samsung.ps1`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `npm run smoke:samsung:live-order-close` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-144-samsung-live-close-smoke.png`
+- `docs/mobile/screenshots/cycle-144-samsung-live-close-ready.png`
+- `docs/mobile/screenshots/cycle-144-samsung-live-close-ticket.png`
+- `docs/mobile/screenshots/cycle-144-samsung-live-close-portfolio.png`
+- `docs/mobile/screenshots/cycle-144-samsung-live-close-action.png`
+- `docs/mobile/screenshots/cycle-144-samsung-live-close-closed.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-144-samsung-live-close-home.xml`
+- `docs/mobile/harness/cycle-144-samsung-live-close-ready.xml`
+- `docs/mobile/harness/cycle-144-samsung-live-close-ticket.xml`
+- `docs/mobile/harness/cycle-144-samsung-live-close-portfolio.xml`
+- `docs/mobile/harness/cycle-144-samsung-live-close-action.xml`
+- `docs/mobile/harness/cycle-144-samsung-live-close-closed.xml`
+Bugs found:
+- The live close button was below the first S23 hierarchy. Fixed by scrolling before tapping `close-position-`.
+- The closed-state assertion expected top-of-page balance/counter text while the phone was scrolled. Fixed by checking visible closed-history evidence.
+Technical debt added:
+- Live close proof remains mock-mode/Expo Go; server-backed live close execution remains pending.
+Technical debt resolved:
+- Samsung real-device QA now covers the full live mock trading loop: live ticket, buy, Portfolio confirmation, close action, and closed activity.
+Result: Passed Cycle 144 QA. Samsung live-order-close smoke, mobile typecheck, and mobile API/history tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 145 should write the heartbeat after 143-145 and continue toward server-mode device order execution or another high-value Samsung proof.
+Harnesses run:
+- Samsung Live Order Close Smoke Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History Unit Harness
+- Review Harness
+Harness failures:
+- Initial Samsung live-close runs exposed scroll and final-assertion gaps; both were fixed before final pass.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

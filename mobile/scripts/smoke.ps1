@@ -494,11 +494,16 @@ try {
           Assert-HierarchyContains -Path $livePortfolioBadgeActivityHierarchy -Expected @("portfolio-activity-live-badge", "portfolio-activity-live-clock", "LIVE WORLD CUP", "Live - 63'", "Recent activity", "Bought", "France vs. Argentina")
         }
         if ($LiveOrderClose) {
-          Invoke-TapHierarchyNode -Path $liveOrderPortfolioHierarchy -Identifier "close-position-" -StartsWith
+          & $adb -s $Device shell input swipe 540 1750 540 850 450 | Out-Null
+          Start-Sleep -Seconds 1
+          Save-Screenshot -Name "cycle-current-holiwyn-live-order-close-ready.png"
+          $liveOrderCloseReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-order-close-ready.xml"
+          Assert-HierarchyContains -Path $liveOrderCloseReadyHierarchy -Expected @("Close position", "close-position-")
+          Invoke-TapHierarchyNode -Path $liveOrderCloseReadyHierarchy -Identifier "close-position-" -StartsWith
           Start-Sleep -Seconds 1
           Save-Screenshot -Name "cycle-current-holiwyn-live-order-close-closed.png"
           $liveOrderClosedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-order-close-closed.xml"
-          Assert-HierarchyContains -Path $liveOrderClosedHierarchy -Expected @("Portfolio", "Fake balance", "10,007.32 USDT", "Open positions", "Recent activity", "Closed trades", "0", "2", "1", "France vs. Argentina", "Closed", "107.32 USDT")
+          Assert-HierarchyContains -Path $liveOrderClosedHierarchy -Expected @("Portfolio", "No positions yet", "Recent activity", "Closed", "Bought", "LIVE WORLD CUP", "Live - 63'", "France vs. Argentina - France", "107.32 USDT", "Entry 41% - Current value 107.32 USDT - Est. P/L +7.32 USDT")
         }
       }
       return
