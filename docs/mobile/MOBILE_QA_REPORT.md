@@ -2958,3 +2958,25 @@ Bugs:
 - None in the final run.
 Visual QA:
 - Samsung proof shows the ticket, fake balance, place-order CTA, Portfolio confirmation, execution details, and bought activity row for the France World Cup winner flow.
+
+### Cycle 141
+
+Date: 2026-07-01
+Device: Samsung S23 through Expo Go (`adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`)
+Build/run command:
+- `npm run smoke:samsung:future-list-sell`
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The Samsung wrapper now proves the sell-ticket path from the World Cup winner futures list through the active sell-side ticket.
+Screenshots:
+- `docs/mobile/screenshots/cycle-141-samsung-sell-ticket-smoke.png`
+- `docs/mobile/screenshots/cycle-141-samsung-sell-ticket-active.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-141-samsung-sell-ticket-home.xml`
+- `docs/mobile/harness/cycle-141-samsung-sell-ticket-list.xml`
+- `docs/mobile/harness/cycle-141-samsung-sell-ticket-ticket.xml`
+- `docs/mobile/harness/cycle-141-samsung-sell-ticket-active.xml`
+Bugs:
+- None in the final run.
+Visual QA:
+- Samsung proof shows the France World Cup winner ticket switched to Sell, with estimated proceeds, estimated shares, average price, and `Place sell order`.
