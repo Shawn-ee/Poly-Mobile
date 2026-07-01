@@ -3950,8 +3950,8 @@ Technical debt added:
 Technical debt resolved:
 - Search Saved no longer reuses generic no-results copy for the zero-saved state.
 Result: Passed Cycle 079 QA. Mobile typecheck, focused Search Saved empty smoke, visual screenshot review, and mobile API tests pass.
-Commit: `PENDING`
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `8cceba0` (`Add Holiwyn search saved empty state`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `8313772`.
 Next cycle: Cycle 080 should continue search/discovery polish or retry backend readiness if Docker daemon becomes available.
 Harnesses run:
 - Emulator Runtime Harness
