@@ -112,6 +112,8 @@ try {
 
   $expoLog = Join-Path $MobileRoot "mobile-smoke-expo.log"
   $expoErrorLog = Join-Path $MobileRoot "mobile-smoke-expo-error.log"
+  $previousSmokeInputFlag = $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT
+  $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT = "1"
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList @("expo", "start", "--host", "localhost", "--port", "$Port") -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
   Start-Sleep -Seconds 8
 
@@ -147,11 +149,26 @@ try {
     Save-Screenshot -Name "cycle-current-holiwyn-search.png"
     $searchHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search.xml"
     Assert-HierarchyContains -Path $searchHierarchy -Expected @("Search World Cup markets", "Top results", "All", "Upcoming")
+
+    & $adb -s $Device shell input tap 500 335 | Out-Null
+    Start-Sleep -Seconds 1
+    & $adb -s $Device shell input text zzzz | Out-Null
+    Start-Sleep -Seconds 1
+    & $adb -s $Device shell input keyevent 111 | Out-Null
+    Start-Sleep -Seconds 1
+    Save-Screenshot -Name "cycle-current-holiwyn-search-query.png"
+    $searchQueryHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search-query.xml"
+    Assert-HierarchyContains -Path $searchQueryHierarchy -Expected @("zzzz", "Results", "0 results", "No markets match your search.", "Clear")
   }
 }
 finally {
   if ($expo -and -not $expo.HasExited) {
     Stop-Process -Id $expo.Id -Force
+  }
+  if ($null -eq $previousSmokeInputFlag) {
+    Remove-Item Env:\EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT -ErrorAction SilentlyContinue
+  } else {
+    $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT = $previousSmokeInputFlag
   }
   Pop-Location
 }

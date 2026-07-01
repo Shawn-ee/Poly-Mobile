@@ -314,3 +314,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 022 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 023
+
+Date: 2026-07-01
+Branch: mobile/cycle-023
+Reviewer: Lead/Reviewer pass after Recovery Harness
+Scope: Typed-query Search smoke coverage.
+Findings:
+- P1: Search zero-result query behavior is now verified on emulator with screenshot and hierarchy evidence.
+- P2: The smoke-only soft-input flag is acceptable because it is gated to the Expo smoke process and preserves normal app keyboard behavior.
+- P2: A future selector/E2E runner should replace coordinate focus and ADB text entry.
+- `npm run typecheck` and final `npm run smoke:deep` passed.
+Decision: Approve Cycle 023 for local commit/merge after scoped diff review.
+Merge approved: Yes

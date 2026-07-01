@@ -35,6 +35,7 @@ export function SearchScreen({
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
 }) {
   const [filter, setFilter] = useState<SearchFilter>("all");
+  const disableSoftInputForSmoke = process.env.EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT === "1";
   const hasQuery = query.trim().length > 0;
   const visibleEvents =
     filter === "live"
@@ -61,6 +62,7 @@ export function SearchScreen({
           placeholder={t.marketSearch}
           placeholderTextColor="#64748b"
           style={styles.searchInput}
+          showSoftInputOnFocus={!disableSoftInputForSmoke}
         />
       </View>
       <View style={styles.searchHeader}>
