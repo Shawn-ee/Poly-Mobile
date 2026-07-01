@@ -167,3 +167,16 @@ Findings:
 - `npm run typecheck`, `npm run smoke`, and event-detail tap QA passed.
 Decision: Approve Cycle 011 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 012
+
+Date: 2026-07-01
+Branch: mobile/cycle-012
+Reviewer: Lead/Reviewer pass
+Scope: Event Detail grouped market presentation.
+Findings:
+- P1: Group headers are visible on emulator and preserve outcome button access.
+- P2: Backend data quality still produces generic event titles for some fixtures; track as future normalization work.
+- `npm run typecheck`, `npm run smoke`, and grouped Event Detail tap QA passed.
+Decision: Approve Cycle 012 for local commit/merge after scoped diff review.
+Merge approved: Yes

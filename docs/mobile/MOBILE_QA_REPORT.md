@@ -110,6 +110,20 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-004-holiwyn-order-service-portfolio.png`
 Bugs: None found.
 
+### Cycle 012
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke`
+- Manual emulator tap-through to grouped event detail.
+Result: Passed. Event Detail now renders grouped market headers and market cards with outcome buttons.
+Screenshots:
+- `docs/mobile/screenshots/cycle-012-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-012-holiwyn-grouped-event-detail.png`
+Bugs: None found.
+
 ### Cycle 011
 
 Date: 2026-07-01

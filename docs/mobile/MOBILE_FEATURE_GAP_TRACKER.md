@@ -41,3 +41,4 @@ Status:
 | GAP-019 | Harness | Reset app state before smoke | P1 | No | Verified | Cycle 009 force-stops Expo Go before smoke launch so screenshots start from Home state. |
 | GAP-020 | Architecture | Market list components | P1 | Yes | Verified | Cycle 010 extracted Games/Futures list rendering into `mobile/src/components/MarketLists.tsx`. |
 | GAP-021 | Architecture | Event Detail component | P1 | Yes | Verified | Cycle 011 extracted Event Detail into `mobile/src/components/EventDetail.tsx`. |
+| GAP-022 | Event detail | Grouped market sections | P1 | No | Verified | Cycle 012 added Live/Game lines/Props/Futures grouping on Event Detail. |
