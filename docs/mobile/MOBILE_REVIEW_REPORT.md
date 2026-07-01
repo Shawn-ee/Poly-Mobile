@@ -2059,3 +2059,18 @@ Findings:
 - Samsung sell smoke, mobile typecheck, and mobile API/history tests passed.
 Decision: Approve Cycle 141 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 142
+
+Date: 2026-07-01
+Branch: mobile/cycle-142
+Reviewer: Lead/Reviewer pass
+Scope: Samsung close-position smoke wrapper.
+Findings:
+- P1: `smoke-samsung.ps1` now supports `-PortfolioClosedCount`, giving the physical phone a repeatable close-position proof.
+- P1: The close-position smoke now launches with `forceResetState=1`, preventing stale Samsung Portfolio state from corrupting the proof.
+- P1: Samsung evidence verifies clean Portfolio counters, position opening, close action, closed activity, and final closed-trade count.
+- P2: This remains mock-mode close behavior; server-backed sell/close execution is still pending.
+- Samsung close-position smoke, mobile typecheck, and mobile API/history tests passed.
+Decision: Approve Cycle 142 for local commit/merge after scoped diff review.
+Merge approved: Yes

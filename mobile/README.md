@@ -44,6 +44,12 @@ To verify the Samsung sell-ticket path, run:
 npm run smoke:samsung:future-list-sell
 ```
 
+To verify Samsung position close behavior, run:
+
+```powershell
+npm run smoke:samsung:portfolio-close-position
+```
+
 ## Device Strategy
 
 - Samsung S23: use for Polymarket reference and, later, explicit Holiwyn real-device QA.

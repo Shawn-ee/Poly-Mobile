@@ -6713,6 +6713,58 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 142
+
+Date: 2026-07-01
+Branch: mobile/cycle-142
+Goal: Add a Samsung-first close-position proof for the World Cup winner flow.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; harness/device proof cycle.
+Backend/API changed: No backend route change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke-samsung.ps1`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `npm run smoke:samsung:portfolio-close-position` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-142-samsung-close-position-smoke.png`
+- `docs/mobile/screenshots/cycle-142-samsung-close-position-closed.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-142-samsung-close-position-empty.xml`
+- `docs/mobile/harness/cycle-142-samsung-close-position-open.xml`
+- `docs/mobile/harness/cycle-142-samsung-close-position-ready.xml`
+- `docs/mobile/harness/cycle-142-samsung-close-position-activity.xml`
+- `docs/mobile/harness/cycle-142-samsung-close-position-closed.xml`
+Bugs found:
+- First Samsung run inherited stale Portfolio state. Fixed by launching `PortfolioClosedCount` with `forceResetState=1`.
+Technical debt added:
+- Close-position proof remains mock-mode/Expo Go; server-backed close/sell execution remains pending.
+Technical debt resolved:
+- Samsung real-device QA now covers buy order placement, sell-ticket readiness, and position close behavior.
+Result: Passed Cycle 142 QA. Samsung close-position smoke, mobile typecheck, and mobile API/history tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 143 should continue server-mode order execution proof preparation or broaden Samsung proof to live-market trading paths.
+Harnesses run:
+- Samsung Portfolio Close Position Smoke Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History Unit Harness
+- Review Harness
+Harness failures:
+- Initial Samsung close-position run failed on stale state, then passed after reset hardening.
+
+### Heartbeat After Cycle 142
+
+Completed cycles: 140, 141, 142.
+Verified progress: Samsung real-device QA now covers the core mock trading loop: buy ticket/order placement, sell-ticket readiness, and open-position close behavior. The close-position smoke was hardened to start from an explicit reset.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, local persistence, market group counts, outcome/ticket odds, potential profit, open-order economics, latest-order execution details, timestamped order history, backend-compatible resolved-history mapping, and Samsung-proven core trading flows.
+Current backend state: Mobile API/profile-preference/activity/history tests pass. Local backend health remains unavailable during Samsung smokes, so live backend verification remains adapter/unit-tested plus mock visual proof.
+Device strategy: Samsung S23 remains the primary Holiwyn visual QA target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: Server-mode order/close execution is still unproven on device; backend history lacks fill-level metadata; Expo Go proof depends on LAN reachability.
+Next three likely cycles: prepare server-mode Samsung order proof, add Samsung live-market order/close proof, and retry local backend readiness if services become available.
+
 ### Heartbeat After Cycle 139
 
 Completed cycles: 137, 138, 139.

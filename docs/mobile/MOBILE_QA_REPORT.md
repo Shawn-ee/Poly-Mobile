@@ -2980,3 +2980,26 @@ Bugs:
 - None in the final run.
 Visual QA:
 - Samsung proof shows the France World Cup winner ticket switched to Sell, with estimated proceeds, estimated shares, average price, and `Place sell order`.
+
+### Cycle 142
+
+Date: 2026-07-01
+Device: Samsung S23 through Expo Go (`adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`)
+Build/run command:
+- `npm run smoke:samsung:portfolio-close-position`
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The Samsung wrapper now proves placing and closing a World Cup winner position, including Portfolio counters and closed-history state.
+Screenshots:
+- `docs/mobile/screenshots/cycle-142-samsung-close-position-smoke.png`
+- `docs/mobile/screenshots/cycle-142-samsung-close-position-closed.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-142-samsung-close-position-empty.xml`
+- `docs/mobile/harness/cycle-142-samsung-close-position-open.xml`
+- `docs/mobile/harness/cycle-142-samsung-close-position-ready.xml`
+- `docs/mobile/harness/cycle-142-samsung-close-position-activity.xml`
+- `docs/mobile/harness/cycle-142-samsung-close-position-closed.xml`
+Bugs:
+- Initial Samsung run inherited stale Portfolio state; fixed by launching the close-position smoke with `forceResetState=1`.
+Visual QA:
+- Samsung proof shows a clean Portfolio, an opened World Cup winner position, the close-position action, and final counters with no open positions, two activities, and one closed trade.
