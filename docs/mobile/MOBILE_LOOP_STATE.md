@@ -2044,8 +2044,8 @@ Technical debt added:
 Technical debt resolved:
 - Users now get an immediate visible confirmation after the mock order transitions into Portfolio.
 Result: Passed Cycle 043 QA. Deep smoke verifies `Order placed` after mock order and preserves close-position, activity, Live, and Search flows.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Add Holiwyn order confirmation`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 044 should add a clearer order-status/error path or improve selector-driven harness actions.
 Harnesses run:
 - QA Smoke Harness
