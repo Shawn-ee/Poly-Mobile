@@ -778,7 +778,7 @@ Technical debt resolved:
 - Live smoke accepts either empty live state or visible live-market state.
 Result: Passed Cycle 019 QA after Recovery Harness. Search tab is cleaner and deep smoke is more resilient under backend mock fallback.
 Commit: cycle branch HEAD (`Improve Holiwyn mobile search results`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 020 should add typed-query search QA or richer market filters.
 Harnesses run:
 - QA Smoke Harness
