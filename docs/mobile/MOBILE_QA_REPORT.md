@@ -1251,3 +1251,19 @@ Screenshots:
 - None.
 Bugs: None found.
 Server-mode note: Current environment has no reachable backend at `http://127.0.0.1:3000` and no `EXPO_PUBLIC_API_KEY`, so live authenticated proof is still pending.
+
+### Cycle 063
+
+Date: 2026-07-01
+Device: Server-mode preflight harness
+Build/run command:
+- `npm run preflight:server-mode`
+- `npm run typecheck` in `mobile/`
+- `npm run test:mobile-api`
+- `npm run preflight:server-mode:strict` wrapped as an expected-failure gate check.
+Result: Passed. Non-strict preflight honors launch defaults and passes; strict preflight correctly refuses to pass without a configured backend/API key.
+Screenshots:
+- None.
+Bugs:
+- Two initial nested PowerShell wrappers around the expected strict failure had quoting issues; final direct shell check passed.
+Server-mode note: Strict live server-mode smoke now has a deterministic gate, but the environment still needs a reachable backend and `EXPO_PUBLIC_API_KEY` before live authenticated proof can pass.
