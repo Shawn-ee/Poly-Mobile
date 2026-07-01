@@ -4340,6 +4340,48 @@ Open blockers: None for autonomous product/harness progress. Live authenticated 
 Risks: Account and Saved state are local/session-only; Home/Search market stats, Futures stats, Popular ranking, and ticket quote math remain local estimates until backend auth, quote, popularity, and order-book APIs can feed them.
 Next three likely cycles: Continue market/trading parity, improve futures/search affordances, and retry backend readiness when local services become reachable.
 
+### Cycle 088
+
+Date: 2026-07-01
+Branch: mobile/cycle-088
+Goal: Add focused emulator proof that Futures list outcomes open the buy ticket.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No product UI change; Futures list trade path now has focused smoke coverage.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:future-list-trade` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-088-holiwyn-future-list-trade-smoke.png`
+- `docs/mobile/screenshots/cycle-088-holiwyn-future-list-ticket.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-088-holiwyn-future-list-trade-home.xml`
+- `docs/mobile/harness/cycle-088-holiwyn-future-list-trade-list.xml`
+- `docs/mobile/harness/cycle-088-holiwyn-future-list-ticket.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Futures list order placement itself is not yet covered by a dedicated smoke; this cycle verifies ticket opening.
+Technical debt resolved:
+- Futures list outcome-to-ticket path now has focused emulator evidence, not only featured future coverage.
+Result: Passed Cycle 088 QA. Mobile typecheck, focused Futures list trade smoke, visual screenshot review, and mobile API tests pass.
+Commit: Pending branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 089 should continue Futures trading proof, likely mock order placement from Futures list ticket.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Futures Harness
+- Trading Simulation Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

@@ -1775,3 +1775,24 @@ Bugs:
 - None found.
 Visual QA:
 - World Cup winner futures card shows Volume/Liquidity without crowding the first outcome row or bottom navigation.
+
+### Cycle 088
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:future-list-trade`
+- `npm run test:mobile-api`
+Result: Passed. Futures list outcomes now have focused emulator proof that they open the buy ticket.
+Screenshots:
+- `docs/mobile/screenshots/cycle-088-holiwyn-future-list-trade-smoke.png`
+- `docs/mobile/screenshots/cycle-088-holiwyn-future-list-ticket.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-088-holiwyn-future-list-trade-home.xml`
+- `docs/mobile/harness/cycle-088-holiwyn-future-list-trade-list.xml`
+- `docs/mobile/harness/cycle-088-holiwyn-future-list-ticket.xml`
+Bugs:
+- None found.
+Visual QA:
+- France / World Cup winner ticket shows Buy, fake balance, estimated shares, average price, payout, and Place buy order.
