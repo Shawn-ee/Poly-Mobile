@@ -535,7 +535,7 @@ Technical debt resolved:
 - Smoke harness now covers the ticket and Portfolio path automatically, not only Home.
 Result: Passed Cycle 013 QA. One command opens the app, captures Home, opens a ticket, places a mock order, and captures Portfolio.
 Commit: cycle branch HEAD (`Add Holiwyn mobile deep smoke flow`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 014 should normalize backend event/team display or improve smoke assertions beyond screenshots.
 Harnesses run:
 - Trading Simulation Harness
