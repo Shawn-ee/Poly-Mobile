@@ -101,8 +101,8 @@ export function SearchScreen({
           <Text style={styles.resultMeta}>{resultLabel}</Text>
         </View>
         {hasQuery && (
-          <Pressable accessibilityLabel="clear-search" testID="clear-search" style={styles.clearSearchButton} onPress={() => setQuery("")}>
-            <Text style={styles.clearSearchText}>{t.clearSearch}</Text>
+          <Pressable accessibilityLabel={t.clearSearch} testID="clear-search" style={styles.clearSearchButton} onPress={() => setQuery("")}>
+            <Ionicons name="close-circle" color="#dbeafe" size={18} />
           </Pressable>
         )}
       </View>
@@ -154,8 +154,7 @@ const styles = StyleSheet.create({
   searchHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 12 },
   searchHeading: { color: "#f8fafc", fontSize: 20, fontWeight: "900" },
   resultMeta: { color: "#8ea0b8", fontSize: 13, fontWeight: "800", marginTop: 3 },
-  clearSearchButton: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, backgroundColor: "#1f2937" },
-  clearSearchText: { color: "#dbeafe", fontWeight: "900" },
+  clearSearchButton: { width: 34, height: 34, alignItems: "center", justifyContent: "center", borderRadius: 8, backgroundColor: "#1f2937" },
   searchFilters: { flexDirection: "row", gap: 8, marginBottom: 12 },
   searchFilterChip: { paddingHorizontal: 14, paddingVertical: 9, borderRadius: 999, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   searchFilterChipActive: { backgroundColor: "#1d6dff", borderColor: "#1d6dff" },

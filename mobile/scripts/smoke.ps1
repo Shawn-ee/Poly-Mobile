@@ -9,6 +9,7 @@ param(
   [switch]$OpenOrderCancel,
   [switch]$EventDetailTrade,
   [switch]$SearchQuery,
+  [switch]$SearchClearQuery,
   [switch]$ServerUnavailable,
   [switch]$ServerOrderFailure,
   [switch]$SellTicket,
@@ -165,11 +166,11 @@ try {
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
   }
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
@@ -177,7 +178,7 @@ try {
     "exp://10.0.2.2:$Port/--/?forceOpenOrder=1"
   } elseif ($OpenOrderCancel) {
     "exp://10.0.2.2:$Port/--/?forceOpenOrder=1"
-  } elseif ($SearchQuery) {
+  } elseif ($SearchQuery -or $SearchClearQuery) {
     "exp://10.0.2.2:$Port/--/?forceSearchQuery=zzzz"
   } elseif ($HomeSearchQuery -or $HomeClearSearch) {
     "exp://10.0.2.2:$Port/--/?forceHomeQuery=clean"
@@ -193,7 +194,7 @@ try {
     @("Holiwyn", "Portfolio", "Server sync unavailable", "Showing local fake-token portfolio.")
   } elseif ($OpenOrderCancel) {
     @("Holiwyn", "Portfolio", "Open orders", "Cancel")
-  } elseif ($SearchQuery) {
+  } elseif ($SearchQuery -or $SearchClearQuery) {
     @("Holiwyn", "Search World Cup markets", "zzzz", "0 results")
   } elseif ($HomeSearchQuery -or $HomeClearSearch) {
     @("Holiwyn", "Search World Cup markets", "clean", "Games")
@@ -231,6 +232,18 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-search-query.png"
       $searchQueryHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search-query.xml"
       Assert-HierarchyContains -Path $searchQueryHierarchy -Expected @("zzzz", "Results", "0 results", "No markets match your search.", "Clear")
+      return
+    }
+
+    if ($SearchClearQuery) {
+      Save-Screenshot -Name "cycle-current-holiwyn-search-clear-query-before.png"
+      $searchClearReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search-clear-query-ready.xml"
+      Assert-HierarchyContains -Path $searchClearReadyHierarchy -Expected @("zzzz", "Results", "0 results", "No markets match your search.", "Clear")
+      Invoke-TapHierarchyNode -Path $searchClearReadyHierarchy -Identifier "clear-search"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-search-clear-query-after.png"
+      $searchClearQueryHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search-clear-query-after.xml"
+      Assert-HierarchyContains -Path $searchClearQueryHierarchy -Expected @("Top results", "3 results", "Mexico vs. Ecuador", "Popular", "Live first")
       return
     }
 

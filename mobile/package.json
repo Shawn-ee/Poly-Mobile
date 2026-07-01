@@ -30,6 +30,7 @@
     "smoke:event-detail-save": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -EventDetailSave -Port 8098",
     "smoke:search-sort": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SearchSort -Port 8099",
     "smoke:search-query": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SearchQuery -Port 8086",
+    "smoke:search-clear-query": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SearchClearQuery -Port 8103",
     "smoke:server-unavailable": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerUnavailable -Port 8087",
     "smoke:server-order-failure": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerOrderFailure -Port 8088"
   },

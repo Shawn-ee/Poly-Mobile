@@ -1711,3 +1711,25 @@ Bugs:
 - None found.
 Visual QA:
 - Clearing the `clean` query restores the placeholder and full Home list with Mexico vs. Ecuador visible.
+
+### Cycle 085
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:search-clear-query`
+- `npm run test:mobile-api`
+Result: Passed after recovery rerun. Search clear now uses the same accessible close-icon pattern as Home and restores Top results.
+Screenshots:
+- `docs/mobile/screenshots/cycle-085-holiwyn-search-clear-query-smoke.png`
+- `docs/mobile/screenshots/cycle-085-holiwyn-search-clear-query-before.png`
+- `docs/mobile/screenshots/cycle-085-holiwyn-search-clear-query-after.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-085-holiwyn-search-clear-query-home.xml`
+- `docs/mobile/harness/cycle-085-holiwyn-search-clear-query-ready.xml`
+- `docs/mobile/harness/cycle-085-holiwyn-search-clear-query-after.xml`
+Bugs:
+- None found in app code. First smoke attempt hit Expo Go's generic error screen while Metro rebuilt cache; rerun passed without code changes.
+Visual QA:
+- After clearing `zzzz`, Search returns to Top results with Mexico vs. Ecuador and sort controls visible.

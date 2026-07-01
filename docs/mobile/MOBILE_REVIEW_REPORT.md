@@ -1201,3 +1201,18 @@ Findings:
 - Mobile typecheck, focused Home clear-search smoke, and mobile API request tests passed.
 Decision: Approve Cycle 084 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 085
+
+Date: 2026-07-01
+Branch: mobile/cycle-085
+Reviewer: Lead/Reviewer pass
+Scope: Search clear icon action.
+Findings:
+- P1: Search now uses the same accessible close-icon Clear action pattern as Home.
+- P1: Clearing a zero-result query restores Top results, the full result count, and existing sort controls.
+- P1: Focused Search clear-query smoke launches with `zzzz`, taps Clear, and verifies Mexico vs. Ecuador returns.
+- P2: First smoke attempt failed on an Expo Go generic error screen while Metro rebuilt cache; Recovery Harness rerun passed without code changes.
+- Mobile typecheck, focused Search clear-query smoke, and mobile API request tests passed.
+Decision: Approve Cycle 085 for local commit/merge after scoped diff review.
+Merge approved: Yes
