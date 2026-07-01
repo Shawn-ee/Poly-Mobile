@@ -847,3 +847,18 @@ Findings:
 - `npm run typecheck`, final `npm run check:server-auth`, and `npm run smoke:deep` passed.
 Decision: Approve Cycle 060 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 061
+
+Date: 2026-07-01
+Branch: mobile/cycle-061
+Reviewer: Lead/Reviewer pass
+Scope: Mobile API client request-level tests.
+Findings:
+- P0: Mobile `PolyApi` now has automated tests proving configured Bearer auth is sent.
+- P0: Limit order requests are tested for canonical `/api/orders`, `Idempotency-Key`, JSON body, and client order id.
+- P1: Cancel requests are tested for encoded `/api/orders/:id` DELETE behavior and auth header.
+- P2: This is mocked-fetch request proof, not live backend order execution.
+- Final `npm run test:mobile-api` and mobile `npm run typecheck` passed.
+Decision: Approve Cycle 061 for local commit/merge after scoped diff review.
+Merge approved: Yes

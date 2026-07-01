@@ -3101,6 +3101,52 @@ Harnesses run:
 Harness failures:
 - One recoverable config-harness escaping failure before final pass.
 
+### Heartbeat After Cycle 060
+
+Completed cycles: 058, 059, 060 since the last heartbeat.
+Verified progress: Event Detail match-market ticket opening has a focused selector smoke, Search zero-result has a no-keyboard focused smoke, and mobile server-mode auth now passes `EXPO_PUBLIC_API_KEY` into `PolyApi` with a config harness proving the wiring.
+Current app state: Holiwyn mobile has verified Home, Event Detail grouped markets/props/group jumps/outcome ticket opening, featured futures trading, ticket balance/max/preset sizing, successful mock order, forced order failure, Portfolio summary/detail/close/activity/order confirmation/open-order cancel, Live refresh, Search browse, typed Search zero-result, and no-keyboard Search zero-result flows on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history/order/cancel client seams are wired, including Bearer API key configuration; live authenticated backend order placement still needs seeded server proof.
+Open blockers: None for autonomous progress.
+Risks: Server-mode proof is still preflight/config-level rather than live order-level; main deep smoke still uses device keyboard for broad Search interaction.
+Next three likely cycles: Add mobile API request-level tests, add server-mode readiness/preflight checks, and continue replacing brittle device input where it remains.
+
+### Cycle 061
+
+Date: 2026-07-01
+Branch: mobile/cycle-061
+Goal: Add request-level tests for the mobile API client server-mode order and cancel seams.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: None.
+Backend/API changed: No runtime endpoint change; added tests proving mobile `PolyApi` emits canonical authenticated requests.
+Database/schema changed: None.
+Files changed: `mobile/src/__tests__/api.test.ts`, `vitest.mobile.config.mts`, `package.json`, `docs/mobile/`.
+Tests run:
+- `npm run test:mobile-api` from repo root.
+- `npm run typecheck` in `mobile/`.
+Screenshots captured:
+- None; this cycle is a request-level unit harness.
+Harness evidence captured:
+- Vitest output: `mobile/src/__tests__/api.test.ts` passed 3 tests.
+Bugs found:
+- Initial Vitest run did not find the mobile test because the default config only includes backend service tests.
+- Initial mobile typecheck rejected direct mock-call tuple casts; fixed by casting through `unknown`.
+Technical debt added:
+- This is still not a live backend order/cancel smoke; it proves request shape and auth before live fixture work.
+Technical debt resolved:
+- Mobile API client now has automated proof for Bearer auth, canonical limit-order idempotency/body, and encoded cancel endpoint behavior.
+Result: Passed Cycle 061 QA. Mobile API unit harness and mobile typecheck both pass.
+Commit: cycle branch HEAD (`pending`)
+Merged: Pending local merge.
+Next cycle: Cycle 062 should add a server-mode readiness/preflight script that checks required env and backend health before any authenticated server smoke.
+Harnesses run:
+- Server Auth Request Harness
+- Typecheck Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- Two recoverable setup/type issues before final pass.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
