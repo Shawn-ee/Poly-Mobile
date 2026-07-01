@@ -3280,6 +3280,49 @@ Harnesses run:
 Harness failures:
 - Real credential creation failed because local Postgres was unavailable; dry-run recovery path passed.
 
+### Cycle 065
+
+Date: 2026-07-01
+Branch: mobile/cycle-065
+Goal: Add a backend readiness harness for mobile server-mode live proof prerequisites.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: None.
+Backend/API changed: Added a backend readiness PowerShell harness and package scripts for read-only checks and optional compose DB start.
+Database/schema changed: None.
+Files changed: `scripts/mobile_backend_readiness.ps1`, `package.json`, `docs/mobile/`.
+Tests run:
+- `npm run mobile:backend-readiness` from repo root.
+- `npm run test:mobile-api` from repo root.
+- `npm run preflight:server-mode` in `mobile/`.
+- `npm run typecheck` in `mobile/`.
+Screenshots captured:
+- None; this cycle is a backend readiness harness.
+Harness evidence captured:
+- Docker CLI is available.
+- Docker daemon is not reachable; Docker Desktop engine appears stopped.
+- `DATABASE_URL` is loaded from `.env`, points to `localhost:5432/polymarket`, and password is masked in output.
+- Database TCP port is not reachable.
+- Mobile API tests, mobile preflight, and mobile typecheck passed.
+Bugs found:
+- Initial readiness output described daemon failure too broadly; wording was fixed before final pass.
+Technical debt added:
+- The real DB start/credential/strict preflight chain still requires Docker Desktop engine availability.
+Technical debt resolved:
+- The loop now has an explicit readiness diagnosis and recovery command before live backend credential and strict mobile proof attempts.
+Result: Passed Cycle 065 QA with documented environment recovery. Backend readiness, mobile API tests, mobile preflight, and mobile typecheck pass.
+Commit: cycle branch HEAD (`pending`)
+Merged: Pending local merge.
+Next cycle: Cycle 066 should either start the local DB when Docker daemon is available or continue with a mock/server harness that does not require DB state.
+Harnesses run:
+- Backend/API Harness
+- Recovery Harness
+- Server Mode Preflight Harness
+- Server Auth Request Harness
+- Typecheck Harness
+- Review Harness
+Harness failures:
+- Docker daemon and DB TCP port unavailable; readiness harness correctly diagnosed the environment.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
