@@ -5283,6 +5283,54 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 109
+
+Date: 2026-07-01
+Branch: mobile/cycle-109
+Goal: Surface open World Cup position count in Account Preferences and verify seeded position state on emulator.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Account Preferences now includes an Open positions count row.
+Backend/API changed: No backend code change; the row uses the local/current portfolio positions collection already wired to mock/server portfolio flows.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/AccountScreen.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:account-position-summary` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-109-holiwyn-account-position-summary-smoke.png`
+- `docs/mobile/screenshots/cycle-109-holiwyn-account-position-summary.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-109-holiwyn-account-position-summary-home-start.xml`
+- `docs/mobile/harness/cycle-109-holiwyn-account-position-summary.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Account shows open positions as a summary only; detailed position actions remain in Portfolio.
+Technical debt resolved:
+- Account profile now reflects trading activity via open position count.
+Result: Passed Cycle 109 QA. Mobile typecheck, focused emulator account-position-summary smoke, and mobile API/profile-preference tests pass.
+Commit: `c36bc68` (`Show Account open position count`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `4efe81c`.
+Next cycle: Cycle 110 should continue product polish or retry backend readiness if Docker/local Postgres become available.
+Harnesses run:
+- Mobile Typecheck Harness
+- Account Position Summary Smoke Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 109
+
+Completed cycles: 107, 108, 109 since the last heartbeat.
+Verified progress: Account now has visible profile preference sync recovery for server-mode/API-key builds, saved World Cup market count, and open position count. Each was verified with a focused Android emulator smoke plus mobile typecheck and API/profile-preference tests.
+Current app state: Holiwyn mobile has verified Home discovery filters/saved markets/saved empty/search clear/card stats/futures stats, Search browse/query/clear/saved filtering/sort/saved empty/card stats/saved persistence, Event Detail grouped markets/props/group jumps/save/trading stats/depth/outcome ticket opening, featured futures trading, Futures list ticket/buy/sell/order/close coverage, ticket balance/max/preset sizing/share and price estimates, side-aware buy/sell tickets with persisted defaults, successful mock order, forced order failure, server order failure, Portfolio summary/detail/counts/compact count grid/close/activity/order confirmation/open-order cancel/local persistence, server-unavailable Portfolio fallback, Live refresh, localization with persisted language, Account/Login mock profile persistence plus language/ticket/saved/open-position summaries, and visible server profile-preference sync recovery on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history/order/cancel client seams are wired; Bearer API-key config and canonical request shape are tested; local credential generation and backend readiness harnesses exist; profile preferences have typed mobile get/save plus guarded runtime sync and a visible Account failure state; latest readiness evidence still shows Docker CLI and compose/DATABASE_URL ready, but Docker daemon and local Postgres TCP unavailable.
+Open blockers: None for autonomous mock-mode product/harness progress. Live authenticated backend proof remains gated by Docker Desktop/local Postgres availability.
+Risks: Saved markets, Account session, language, ticket defaults, and mock Portfolio persistence are local-first; profile sync is guarded and visible on failure but still lacks live-backend proof; Portfolio counts, Home/Search/Futures market stats, Popular ranking, ticket quote math, and close-position behavior remain local estimates until backend auth, profile, quote, popularity, order-book, and position APIs can feed them.
+Next three likely cycles: Continue Account/profile polish, add another World Cup trading/detail refinement, and retry backend readiness if Docker/local Postgres become available.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
