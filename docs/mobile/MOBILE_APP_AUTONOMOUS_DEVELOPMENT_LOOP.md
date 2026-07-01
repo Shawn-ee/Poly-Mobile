@@ -81,12 +81,14 @@ Purpose:
 - Observe World Cup/sports flows.
 - Capture reference screenshots.
 - Compare UX behavior.
+- Later-stage real-device QA target for Holiwyn once emulator automation is stable.
 
 Rules:
 
 - Use only for observation and harmless navigation.
 - Avoid private account, wallet, deposit, withdraw, and final trade confirmation actions.
 - If a screen exposes sensitive data, navigate away or record only a text summary without screenshots.
+- Do not use Samsung S23 as the default Holiwyn automation device during normal cycles; reserve it for reference and explicit real-device QA.
 
 ### Android Emulator
 
@@ -101,6 +103,8 @@ Rules:
 
 - All Holiwyn development verification runs on the emulator unless a real-device test is specifically needed.
 - Keep emulator and Samsung roles separate: Samsung is reference, emulator is product under development.
+- Prefer repeatable emulator screenshots and harness output for cycle acceptance.
+- When Holiwyn becomes stable enough, add a proper Android development build/APK harness so QA is no longer dependent on Expo Go for app-feel validation.
 
 ## 5. Tech Stack
 

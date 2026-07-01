@@ -5970,6 +5970,66 @@ Harnesses run:
 Harness failures:
 - None after reset path was expanded.
 
+### Cycle 124
+
+Date: 2026-07-01
+Branch: mobile/cycle-124
+Goal: Remove Metro `--clear` from proven live fast-reset smokes while preserving deep live Portfolio proof.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No user-facing production flow change; harness assertions now use durable visible evidence for the latest-order live badge.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:live-portfolio-badge-deep` in `mobile/` (includes mobile typecheck).
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-124-holiwyn-no-clear-live-portfolio-smoke.png`
+- `docs/mobile/screenshots/cycle-124-holiwyn-no-clear-live-portfolio-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-124-holiwyn-no-clear-live-portfolio-ticket.png`
+- `docs/mobile/screenshots/cycle-124-holiwyn-no-clear-live-portfolio-portfolio.png`
+- `docs/mobile/screenshots/cycle-124-holiwyn-no-clear-live-portfolio-latest-order.png`
+- `docs/mobile/screenshots/cycle-124-holiwyn-no-clear-live-portfolio-activity.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-124-holiwyn-no-clear-live-portfolio-expo-menu.xml`
+- `docs/mobile/harness/cycle-124-holiwyn-no-clear-live-portfolio-home.xml`
+- `docs/mobile/harness/cycle-124-holiwyn-no-clear-live-portfolio-ticket-ready.xml`
+- `docs/mobile/harness/cycle-124-holiwyn-no-clear-live-portfolio-ticket.xml`
+- `docs/mobile/harness/cycle-124-holiwyn-no-clear-live-portfolio-portfolio.xml`
+- `docs/mobile/harness/cycle-124-holiwyn-no-clear-live-portfolio-latest-order.xml`
+- `docs/mobile/harness/cycle-124-holiwyn-no-clear-live-portfolio-activity.xml`
+Bugs found:
+- First no-clear attempt exposed a fragile latest-order live badge assertion because Android exported visible badge text but not the container label.
+- Retry relaunch could dump stale Expo/home hierarchy too quickly after the deep link.
+Technical debt added:
+- None; the device strategy now explicitly records Samsung as reference/later real-device QA and emulator as repeatable automation.
+Technical debt resolved:
+- Proven live reset smokes no longer force Metro `--clear`; retry deep links now settle before hierarchy capture.
+Result: Passed Cycle 124 QA. Focused live-portfolio-badge-deep smoke and mobile API/profile-preference tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 125 should continue product-facing World Cup/Polymarket parity or add a future dev/APK harness milestone when the app is stable enough.
+Harnesses run:
+- Mobile Typecheck Harness
+- Live Portfolio Badge Deep Smoke Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- Two initial no-clear attempts exposed stale hierarchy and fragile container-label assumptions; harness retry delay and visible-evidence assertions were hardened, then rerun passed.
+
+### Heartbeat After Cycle 124
+
+Completed cycles: 122, 123, 124.
+Verified progress: Live smoke reset now happens inside Holiwyn rather than wiping Expo Go package data, the heavy live order-to-Portfolio proof starts from clean state, and proven live reset smokes avoid Metro `--clear` while still verifying ticket, mock order, open position, latest-order, and activity evidence.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, live badge/clock propagation, local persistence, and focused emulator harnesses.
+Current backend state: Mobile API/profile-preference unit tests pass. Local backend health was unavailable during Cycle 124 emulator QA, so the mobile harness used mock fallback for UI/trading proof.
+Device strategy: Samsung S23 remains Polymarket reference and later Holiwyn real-device QA; Android emulator remains the repeatable Holiwyn automation target; a proper Android development build/APK harness is a future stabilization milestone after app flows mature.
+Open blockers: None for autonomous progress.
+Risks: Expo Go and emulator UI hierarchy remain slow/flaky; backend live integration is still weaker than mock trading proof; broad Polymarket World Cup parity still requires many more product cycles.
+Next three likely cycles: add a product-facing World Cup market detail polish, extend fast no-clear harness strategy to another stable smoke family, and retry backend readiness/server-mode proof when local services are available.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

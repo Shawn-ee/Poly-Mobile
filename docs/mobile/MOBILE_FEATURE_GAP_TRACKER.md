@@ -154,3 +154,4 @@ Status:
 | GAP-132 | Portfolio | Live clock persists after order | P1 | Yes | Verified | Cycle 121 carries the live clock into Portfolio position, latest-order, and activity rows after a live France order. |
 | GAP-133 | Harness | Fast live smoke reset | P1 | No | Verified | Cycle 122 adds an app-level reset deep link for live smokes, avoiding slow Expo Go package clears while preserving clean fake-balance proof. |
 | GAP-134 | Harness | Fast live Portfolio reset proof | P1 | No | Verified | Cycle 123 extends the fast reset path to live order/Portfolio deep proof by clearing stale ticket/query/detail state before warm live smokes. |
+| GAP-135 | Harness | No-clear live Portfolio smoke | P1 | No | Verified | Cycle 124 removes Metro `--clear` from proven live reset smokes, adds retry settle time, and verifies deep live order/Portfolio proof still passes. |
