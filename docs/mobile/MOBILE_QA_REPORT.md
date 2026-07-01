@@ -2114,3 +2114,23 @@ Bugs:
 - None found in product code. Harness first tried to assert a below-fold row, then the layout was improved so preferences appear before login methods and the focused smoke verifies visible preference proof.
 Visual QA:
 - Account shows Preferences in the first viewport, including `Ticket default: Sell 500 USDT`.
+
+### Cycle 103
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:account-language-summary`
+- `npm run test:mobile-api`
+Result: Passed. Account now shows the current language value in Preferences.
+Screenshots:
+- `docs/mobile/screenshots/cycle-103-holiwyn-account-language-summary-smoke.png`
+- `docs/mobile/screenshots/cycle-103-holiwyn-account-language-summary.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-103-holiwyn-account-language-summary-home-start.xml`
+- `docs/mobile/harness/cycle-103-holiwyn-account-language-summary.xml`
+Bugs:
+- None found.
+Visual QA:
+- Account Preferences shows `Language: English` and `Ticket default: Sell 500 USDT` in the first viewport.

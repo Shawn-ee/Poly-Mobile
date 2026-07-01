@@ -1471,3 +1471,18 @@ Findings:
 - Mobile typecheck, focused account-preferences smoke, and mobile API request tests passed.
 Decision: Approve Cycle 102 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 103
+
+Date: 2026-07-01
+Branch: mobile/cycle-103
+Reviewer: Lead/Reviewer pass
+Scope: Account language summary.
+Findings:
+- P1: Account now receives and renders the active language value in Preferences.
+- P1: The language row changed from generic instruction copy to a concrete `Language: English` summary.
+- P1: Focused smoke verifies the language summary and saved ticket default summary together in Account.
+- P2: Account preference summaries remain local-only until backend profile/preference sync exists.
+- Mobile typecheck, focused account-language-summary smoke, and mobile API request tests passed.
+Decision: Approve Cycle 103 for local commit/merge after scoped diff review.
+Merge approved: Yes

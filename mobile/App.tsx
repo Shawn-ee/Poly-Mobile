@@ -539,6 +539,7 @@ export default function App() {
                 t={t}
                 balance={balance}
                 forceSignedIn={forceAccountSignedIn}
+                languagePreferenceValue={locale === "en" ? "English" : "\u4e2d\u6587"}
                 ticketDefaultAmount={ticketDefaults.amount}
                 ticketDefaultSide={ticketDefaults.side}
               />
