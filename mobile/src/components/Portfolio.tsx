@@ -14,6 +14,14 @@ export type Position = {
   probability: number;
 };
 
+export type PortfolioActivity = {
+  id: string;
+  action: "opened" | "closed";
+  title: string;
+  outcome: string;
+  amount: number;
+};
+
 type PortfolioCopy = {
   balance: string;
   noPositions: string;
@@ -25,6 +33,9 @@ type PortfolioCopy = {
   currentValue: string;
   estimatedPnl: string;
   closePosition: string;
+  recentActivity: string;
+  openedPosition: string;
+  closedPosition: string;
 };
 
 const currentProbability = (position: Position) => {
@@ -54,12 +65,14 @@ export function Portfolio({
   t,
   balance,
   positions,
+  activities,
   closePosition,
 }: {
   locale: Locale;
   t: PortfolioCopy;
   balance: number;
   positions: Position[];
+  activities: PortfolioActivity[];
   closePosition: (position: Position) => void;
 }) {
   return (
@@ -129,6 +142,27 @@ export function Portfolio({
           ))}
         </>
       )}
+      {activities.length > 0 && (
+        <View style={styles.activityBlock}>
+          <Text style={styles.activityTitle}>{t.recentActivity}</Text>
+          {activities.slice(0, 5).map((activity) => (
+            <View key={activity.id} style={styles.activityItem}>
+              <View style={styles.activityIcon}>
+                <Ionicons name={activity.action === "opened" ? "arrow-up" : "checkmark"} size={16} color="#dbeafe" />
+              </View>
+              <View style={styles.activityMain}>
+                <Text style={styles.activityAction}>
+                  {activity.action === "opened" ? t.openedPosition : t.closedPosition}
+                </Text>
+                <Text style={styles.activityMeta}>
+                  {activity.title} - {activity.outcome}
+                </Text>
+              </View>
+              <Text style={styles.activityAmount}>{money(activity.amount)}</Text>
+            </View>
+          ))}
+        </View>
+      )}
     </ScrollView>
   );
 }
@@ -158,4 +192,12 @@ const styles = StyleSheet.create({
   pnlNegative: { color: "#ef4444" },
   closeButton: { marginTop: 12, minHeight: 44, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
   closeButtonText: { color: "#dbeafe", fontSize: 14, fontWeight: "900" },
+  activityBlock: { marginTop: 16, padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  activityTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginBottom: 10 },
+  activityItem: { flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 10, borderTopWidth: 1, borderTopColor: "#1f2937" },
+  activityIcon: { width: 28, height: 28, borderRadius: 8, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937" },
+  activityMain: { flex: 1 },
+  activityAction: { color: "#f8fafc", fontWeight: "900" },
+  activityMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
+  activityAmount: { color: "#dbeafe", fontWeight: "900" },
 });

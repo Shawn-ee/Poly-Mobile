@@ -9,7 +9,7 @@ import { EventDetail } from "./src/components/EventDetail";
 import { Header } from "./src/components/Header";
 import { HomeScreen } from "./src/components/HomeScreen";
 import { LiveScreen } from "./src/components/LiveScreen";
-import { Portfolio, portfolioPositionValue, Position } from "./src/components/Portfolio";
+import { Portfolio, PortfolioActivity, portfolioPositionValue, Position } from "./src/components/Portfolio";
 import { SearchScreen } from "./src/components/SearchScreen";
 import { Ticket, TradeTicket } from "./src/components/TradeTicket";
 import { WorldCupTab } from "./src/components/WorldCupSegmented";
@@ -37,6 +37,7 @@ export default function App() {
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [balance, setBalance] = useState(10000);
   const [positions, setPositions] = useState<Position[]>([]);
+  const [activities, setActivities] = useState<PortfolioActivity[]>([]);
   const [events, setEvents] = useState<Event[]>(worldCupEvents);
   const [isRefreshingLive, setIsRefreshingLive] = useState(false);
   const [liveRefreshTick, setLiveRefreshTick] = useState(0);
@@ -126,13 +127,34 @@ export default function App() {
       },
       ...current,
     ]);
+    setActivities((current) => [
+      {
+        id: `${result.id}-opened`,
+        action: "opened",
+        title: result.title,
+        outcome: result.outcome,
+        amount: result.amount,
+      },
+      ...current,
+    ]);
     setTicket(null);
     setMainTab("portfolio");
   };
 
   const closePosition = (position: Position) => {
-    setBalance((current) => current + portfolioPositionValue(position));
+    const value = portfolioPositionValue(position);
+    setBalance((current) => current + value);
     setPositions((current) => current.filter((item) => item.id !== position.id));
+    setActivities((current) => [
+      {
+        id: `${position.id}-closed`,
+        action: "closed",
+        title: position.title,
+        outcome: position.outcome,
+        amount: value,
+      },
+      ...current,
+    ]);
   };
 
   return (
@@ -182,7 +204,14 @@ export default function App() {
               />
             )}
             {mainTab === "portfolio" && (
-              <Portfolio locale={locale} t={t} balance={balance} positions={positions} closePosition={closePosition} />
+              <Portfolio
+                locale={locale}
+                t={t}
+                balance={balance}
+                positions={positions}
+                activities={activities}
+                closePosition={closePosition}
+              />
             )}
             {mainTab === "search" && (
               <SearchScreen
