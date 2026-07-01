@@ -185,7 +185,7 @@ Technical debt resolved:
 - Partial TD-004 progress: backend event/detail adapter now exists; order adapter remains open.
 Result: Passed Cycle 003 QA. App can run with backend-compatible event data when available and mock data when backend data is unavailable, and the emulator smoke flow is now repeatable.
 Commit: cycle branch HEAD (`Add Holiwyn mobile backend adapter and smoke harness`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 004 should split the large `App.tsx` into focused mobile components or wire a safe order service boundary, choosing the smaller verified slice first.
 Harnesses run:
 - Backend/API Harness
