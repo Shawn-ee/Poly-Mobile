@@ -1406,3 +1406,25 @@ Bugs:
 - Initial smoke expected `Total goals over 2.5` in the first viewport; the new depth row pushed that prop title below the fold. The assertion was corrected to check visible first-viewport content.
 Visual QA:
 - Depth row fits cleanly in the first market card; outcome buttons remain visible.
+
+### Cycle 071
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:sell-ticket`
+- `npm run test:mobile-api`
+Result: Passed. Trade Ticket now switches to side-specific copy for Buy/Sell, and the sell side shows estimated proceeds plus a `Place sell order` CTA.
+Screenshots:
+- `docs/mobile/screenshots/cycle-071-holiwyn-sell-ticket-smoke.png`
+- `docs/mobile/screenshots/cycle-071-holiwyn-buy-ticket.png`
+- `docs/mobile/screenshots/cycle-071-holiwyn-sell-ticket.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-071-holiwyn-sell-ticket-home.xml`
+- `docs/mobile/harness/cycle-071-holiwyn-buy-ticket.xml`
+- `docs/mobile/harness/cycle-071-holiwyn-sell-ticket.xml`
+Bugs:
+- None found.
+Visual QA:
+- Sell ticket copy fits on emulator and the primary CTA remains visible.

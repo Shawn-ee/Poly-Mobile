@@ -15,6 +15,7 @@
     "smoke:order-failure": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -OrderFailure -Port 8083",
     "smoke:open-order-cancel": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -OpenOrderCancel -Port 8084",
     "smoke:event-detail-trade": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -EventDetailTrade -Port 8085",
+    "smoke:sell-ticket": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SellTicket -Port 8089",
     "smoke:search-query": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SearchQuery -Port 8086",
     "smoke:server-unavailable": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerUnavailable -Port 8087",
     "smoke:server-order-failure": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerOrderFailure -Port 8088"

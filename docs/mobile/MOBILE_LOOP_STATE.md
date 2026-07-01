@@ -3554,6 +3554,49 @@ Harnesses run:
 Harness failures:
 - One recoverable smoke assertion mismatch before final pass.
 
+### Cycle 071
+
+Date: 2026-07-01
+Branch: mobile/cycle-071
+Goal: Make Trade Ticket copy side-specific for Buy vs Sell flows.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Trade Ticket now uses side-specific CTA copy and estimated proceeds copy for Sell mode.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/TradeTicket.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:sell-ticket` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-071-holiwyn-sell-ticket-smoke.png`
+- `docs/mobile/screenshots/cycle-071-holiwyn-buy-ticket.png`
+- `docs/mobile/screenshots/cycle-071-holiwyn-sell-ticket.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-071-holiwyn-sell-ticket-home.xml`
+- `docs/mobile/harness/cycle-071-holiwyn-buy-ticket.xml`
+- `docs/mobile/harness/cycle-071-holiwyn-sell-ticket.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Sell mode still uses estimate-only local math until backend positions/order-book execution are live.
+Technical debt resolved:
+- Ticket copy no longer uses the same generic mock-order CTA for Buy and Sell flows.
+Result: Passed Cycle 071 QA. Mobile typecheck, focused sell-ticket smoke, visual screenshot review, and mobile API tests pass.
+Commit: cycle branch HEAD (`pending`)
+Merged: Pending local merge.
+Next cycle: Cycle 072 should add another trading-product detail or retry backend readiness if Docker daemon becomes available.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Trading Simulation Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

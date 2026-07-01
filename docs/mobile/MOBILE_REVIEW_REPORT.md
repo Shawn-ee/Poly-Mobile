@@ -992,3 +992,18 @@ Findings:
 - Mobile typecheck, focused Event Detail smoke, and mobile API request tests passed.
 Decision: Approve Cycle 070 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 071
+
+Date: 2026-07-01
+Branch: mobile/cycle-071
+Reviewer: Lead/Reviewer pass
+Scope: Side-specific Trade Ticket copy.
+Findings:
+- P1: Trade Ticket primary CTA now switches between `Place buy order` and `Place sell order`.
+- P1: Sell mode changes the first estimate row from estimated cost to estimated proceeds.
+- P1: Buy/Sell segmented controls now have stable selectors for focused smoke coverage.
+- P2: Sell mode remains estimate-only until backend positions and order-book execution are live.
+- Mobile typecheck, focused sell-ticket smoke, and mobile API request tests passed.
+Decision: Approve Cycle 071 for local commit/merge after scoped diff review.
+Merge approved: Yes

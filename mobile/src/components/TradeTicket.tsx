@@ -18,10 +18,13 @@ type TradeTicketCopy = {
   max: string;
   balance: string;
   estimatedCost: string;
+  estimatedProceeds: string;
   estimatedShares: string;
   averagePrice: string;
   estimatedPayout: string;
   placeMockOrder: string;
+  placeBuyOrder: string;
+  placeSellOrder: string;
   orderFailed: string;
 };
 
@@ -49,6 +52,8 @@ export function TradeTicket({
   const averagePrice = ticket.outcome.probability / 100;
   const estimatedShares = averagePrice > 0 ? numericAmount / averagePrice : 0;
   const estimatedPayout = ticket.outcome.probability > 0 ? numericAmount * (100 / ticket.outcome.probability) : 0;
+  const primaryLabel = side === "buy" ? t.placeBuyOrder : t.placeSellOrder;
+  const costLabel = side === "buy" ? t.estimatedCost : t.estimatedProceeds;
   const amountPresets = [100, 500, 1000];
 
   return (
@@ -66,7 +71,13 @@ export function TradeTicket({
           </View>
           <View style={styles.ticketSideRow}>
             {(["buy", "sell"] as const).map((option) => (
-              <Pressable key={option} style={[styles.sideButton, side === option && styles.sideButtonActive]} onPress={() => setSide(option)}>
+              <Pressable
+                accessibilityLabel={`ticket-side-${option}`}
+                key={option}
+                style={[styles.sideButton, side === option && styles.sideButtonActive]}
+                onPress={() => setSide(option)}
+                testID={`ticket-side-${option}`}
+              >
                 <Text style={[styles.sideText, side === option && styles.sideTextActive]}>{option === "buy" ? t.buy : t.sell}</Text>
               </Pressable>
             ))}
@@ -96,7 +107,7 @@ export function TradeTicket({
             <Text style={styles.estimateValue}>{money(balance)}</Text>
           </View>
           <View style={styles.estimateLine}>
-            <Text style={styles.estimateLabel}>{t.estimatedCost}</Text>
+            <Text style={styles.estimateLabel}>{costLabel}</Text>
             <Text style={styles.estimateValue}>{money(Math.min(numericAmount, balance))}</Text>
           </View>
           <View style={styles.estimateLine}>
@@ -118,7 +129,7 @@ export function TradeTicket({
             </View>
           )}
           <Pressable accessibilityLabel="place-mock-order" testID="place-mock-order" style={styles.primaryButton} onPress={() => placeOrder(numericAmount, side)}>
-            <Text style={styles.primaryText}>{t.placeMockOrder}</Text>
+            <Text style={styles.primaryText}>{primaryLabel}</Text>
           </Pressable>
         </View>
       </View>
