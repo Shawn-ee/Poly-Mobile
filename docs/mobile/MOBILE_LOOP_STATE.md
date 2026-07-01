@@ -2848,6 +2848,74 @@ Harnesses run:
 Harness failures:
 - One recoverable harness failure when the back control remained offscreen after the new Props jump.
 
+### Cycle 057
+
+Date: 2026-07-01
+Branch: mobile/cycle-057
+Goal: Remove the post-back Home list swipe from deep smoke by opening a visible featured futures ticket.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No app UI change; harness now uses the existing featured future card as the trade entry after Event Detail return.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-057-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-057-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-057-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-057-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-057-holiwyn-event-detail-back.xml`
+- `docs/mobile/harness/cycle-057-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-057-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-057-holiwyn-ticket-max.xml`
+- `docs/mobile/harness/cycle-057-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-057-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-057-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-057-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-057-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-057-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- The main deep smoke now trades a futures market after Event Detail verification; separate event-row trade coverage remains available through prior cycle evidence but may need a dedicated focused smoke later.
+Technical debt resolved:
+- Deep smoke no longer uses a fixed Home list swipe after returning from Event Detail.
+Result: Passed Cycle 057 QA. Deep smoke verifies Event Detail/Props, returns Home, opens a featured futures ticket by selector, maxes/closes the position, and verifies Live/Search flows.
+Commit: cycle branch HEAD (`pending`)
+Merged: Pending local merge.
+Next cycle: Cycle 058 should add focused event-row trade smoke or continue reducing remaining keyboard/input device actions.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 057
+
+Completed cycles: 055, 056, 057 since the last heartbeat.
+Verified progress: Event Detail back navigation is selector-driven, Event Detail market groups can be jumped by UI chips, the Props path no longer needs a blind swipe, and the main deep smoke now opens a featured futures ticket without a post-back Home list swipe.
+Current app state: Holiwyn mobile has verified Home, Event Detail grouped markets/props/group jumps, featured futures trading, ticket balance/max/preset sizing, successful mock order, forced order failure, Portfolio summary/detail/close/activity/order confirmation/open-order cancel, Live refresh, Search browse, and typed Search zero-result flows on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history and order-cancel API seams remain wired; authenticated backend trade/cancel proof still needs seeded server fixture work.
+Open blockers: None for autonomous progress.
+Risks: Main deep smoke now covers futures trading after Event Detail; event-row direct trade should get its own focused smoke if it remains a priority. Search typing still uses device keyboard commands.
+Next three likely cycles: Add focused event-row trade smoke, reduce Search keyboard device actions, and begin server-mode fixture planning for authenticated order/cancel proof.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

@@ -87,3 +87,4 @@ Status:
 | GAP-065 | Harness | Open-order cancel smoke | P1 | No | Verified | Cycle 054 adds a harness-only open-order fixture and emulator smoke that taps Cancel and verifies canceled activity feedback. |
 | GAP-066 | Harness | Selector-driven Event Detail back | P1 | No | Verified | Cycle 055 adds a stable Event Detail back id and replaces the Android Back keyevent with a selector tap in deep smoke. |
 | GAP-067 | Event detail | Market group jump controls | P1 | No | Verified | Cycle 056 adds Event Detail group chips and uses the Props selector in deep smoke instead of a fixed prop-section swipe. |
+| GAP-068 | Harness | Featured futures trade smoke | P1 | No | Verified | Cycle 057 opens the ticket from the visible featured future selector and removes the post-back Home list swipe from deep smoke. |

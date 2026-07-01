@@ -1123,3 +1123,26 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-056-holiwyn-search-query.png`
 Bugs:
 - Initial run showed the selector jump could leave the back control offscreen; fixed by making Event Detail back persistent above the scroll area.
+
+### Cycle 057
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Deep smoke opens the ticket from the visible featured France future and no longer uses a Home list swipe after Event Detail return.
+Screenshots:
+- `docs/mobile/screenshots/cycle-057-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-057-holiwyn-search-query.png`
+Bugs: None found.
+Harness note: The close-position balance expectation changed to `10,882.35 USDT` because the smoke now max-trades the 34% France futures outcome.
