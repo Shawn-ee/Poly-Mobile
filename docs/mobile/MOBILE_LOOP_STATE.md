@@ -3680,8 +3680,8 @@ Technical debt added:
 Technical debt resolved:
 - Account login controls now produce visible app behavior instead of being static placeholders.
 Result: Passed Cycle 073 QA. Mobile typecheck, focused Account Login smoke, visual screenshot review, and mobile API tests pass.
-Commit: `PENDING`
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `a64d4ca` (`Add Holiwyn account mock sign-in`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `40c3dee`.
 Next cycle: Cycle 074 should continue market discovery/trading parity or add account profile polish without implementing deposit/withdraw.
 Harnesses run:
 - Emulator Runtime Harness
