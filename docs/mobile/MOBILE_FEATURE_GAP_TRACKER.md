@@ -119,3 +119,4 @@ Status:
 | GAP-097 | Harness | Expo launch recovery hardening | P1 | No | Verified | Cycle 086 increases launch wait attempts and restarts Expo Go when the temporary generic error screen appears, then verifies Search clear-query smoke. |
 | GAP-098 | Discovery | Futures card market stats | P1 | Yes | Verified | Cycle 087 adds Volume/Liquidity context to Home Futures cards and verifies it in focused emulator smoke. |
 | GAP-099 | Trading | Futures list ticket opening | P1 | Yes | Verified | Cycle 088 adds focused smoke coverage proving a Futures list outcome opens the buy ticket with balance and estimates. |
+| GAP-100 | Trading | Futures list mock order | P1 | Yes | Verified | Cycle 089 adds focused smoke coverage proving a Futures list ticket can place a mock order and create a Portfolio position. |

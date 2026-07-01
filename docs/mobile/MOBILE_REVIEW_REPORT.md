@@ -1261,3 +1261,18 @@ Findings:
 - Mobile typecheck, focused Futures list trade smoke, and mobile API request tests passed.
 Decision: Approve Cycle 088 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 089
+
+Date: 2026-07-01
+Branch: mobile/cycle-089
+Reviewer: Lead/Reviewer pass
+Scope: Futures list mock order smoke.
+Findings:
+- P1: Added focused emulator coverage for placing a mock order from a Futures list ticket.
+- P1: The smoke switches to Futures, opens France / World Cup winner, places the buy order, and verifies Portfolio position state.
+- P1: Balance, position title/outcome, invested value, entry, current value, P/L, close action, and order confirmation are all asserted.
+- P2: This remains mock-token trading; server-backed Futures order placement still needs authenticated backend proof.
+- Mobile typecheck, focused Futures list order smoke, and mobile API request tests passed.
+Decision: Approve Cycle 089 for local commit/merge after scoped diff review.
+Merge approved: Yes
