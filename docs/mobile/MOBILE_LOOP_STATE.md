@@ -6786,8 +6786,8 @@ Technical debt added:
 Technical debt resolved:
 - Samsung real-device QA now covers live-market ticket opening and mock order placement through Portfolio confirmation.
 Result: Passed Cycle 143 QA. Samsung live-order smoke, mobile typecheck, and mobile API/history tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `ecbff11` (`Add Samsung live order smoke`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `918821a`.
 Next cycle: Cycle 144 should add Samsung live-position close proof or continue toward server-mode device order execution.
 Harnesses run:
 - Samsung Live Order Smoke Harness
