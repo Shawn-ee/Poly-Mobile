@@ -7,6 +7,7 @@
     "start": "expo start",
     "android": "expo start --android",
     "typecheck": "tsc --noEmit",
+    "check:server-auth": "powershell -ExecutionPolicy Bypass -File ./scripts/check-server-auth-config.ps1",
     "smoke": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1",
     "smoke:deep": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep",
     "smoke:order-failure": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -OrderFailure -Port 8083",

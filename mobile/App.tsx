@@ -35,6 +35,7 @@ import { loadPortfolioHistoryActivities } from "./src/services/portfolioHistoryS
 import { loadPortfolioSnapshot } from "./src/services/portfolioSnapshotService";
 
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
+const DEFAULT_API_KEY = process.env.EXPO_PUBLIC_API_KEY || "";
 const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? "server" : "mock";
 const SMOKE_OPEN_ORDER: OpenOrder = {
   id: "smoke-open-order",
@@ -67,7 +68,7 @@ export default function App() {
   const [liveRefreshTick, setLiveRefreshTick] = useState(0);
   const [futures] = useState<Market[]>(worldCupFutures);
   const t = appCopy[locale];
-  const api = useMemo(() => new PolyApi(DEFAULT_API_BASE), []);
+  const api = useMemo(() => new PolyApi(DEFAULT_API_BASE, DEFAULT_API_KEY), []);
   const mounted = useRef(true);
 
   useEffect(() => {

@@ -832,3 +832,18 @@ Findings:
 - `npm run typecheck`, `npm run smoke:search-query`, and `npm run smoke:deep` passed.
 Decision: Approve Cycle 059 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 060
+
+Date: 2026-07-01
+Branch: mobile/cycle-060
+Reviewer: Lead/Reviewer pass
+Scope: Mobile server-mode API key wiring.
+Findings:
+- P0: `App.tsx` now reads `EXPO_PUBLIC_API_KEY` and passes it into `PolyApi`, allowing authenticated Bearer requests in server mode.
+- P1: `.env.example` now defaults to the Android emulator host backend and declares `EXPO_PUBLIC_ORDER_MODE`.
+- P1: `check:server-auth` verifies the auth wiring and env defaults, while `smoke:deep` verifies mock mode remains stable.
+- P2: This is not a live authenticated backend order proof; it removes the config blocker that would have prevented that proof.
+- `npm run typecheck`, final `npm run check:server-auth`, and `npm run smoke:deep` passed.
+Decision: Approve Cycle 060 for local commit/merge after scoped diff review.
+Merge approved: Yes

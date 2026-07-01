@@ -90,3 +90,4 @@ Status:
 | GAP-068 | Harness | Featured futures trade smoke | P1 | No | Verified | Cycle 057 opens the ticket from the visible featured future selector and removes the post-back Home list swipe from deep smoke. |
 | GAP-069 | Harness | Focused Event Detail trade smoke | P1 | No | Verified | Cycle 058 adds Event Detail outcome selectors and a focused smoke that opens a Mexico match-winner ticket directly from Event Detail. |
 | GAP-070 | Harness | Focused Search query smoke | P1 | No | Verified | Cycle 059 adds a launch-query Search smoke that verifies zero-result Search without device keyboard entry. |
+| GAP-071 | Backend adapter | Mobile API key server-mode auth | P0 | No | Verified | Cycle 060 passes `EXPO_PUBLIC_API_KEY` into `PolyApi`, updates emulator env defaults, and adds a server-auth config harness. |

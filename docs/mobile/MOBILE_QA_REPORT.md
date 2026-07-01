@@ -1197,3 +1197,28 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-059-holiwyn-search-query-focused.png`
 Bugs: None found.
 Harness note: Focused Search uses `forceSearchQuery=zzzz` through the Expo launch URL.
+
+### Cycle 060
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run check:server-auth`
+- `npm run smoke:deep`
+Result: Passed. Mobile server-mode auth config is wired and normal mock emulator smoke remains stable.
+Screenshots:
+- `docs/mobile/screenshots/cycle-060-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-060-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-060-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-060-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-060-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-060-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-060-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-060-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-060-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-060-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-060-holiwyn-search-query.png`
+Bugs:
+- Initial `check:server-auth` run failed because of a PowerShell escaping error in the new harness; final rerun passed.
+Server-mode note: This verifies configuration wiring, not live authenticated order placement.
