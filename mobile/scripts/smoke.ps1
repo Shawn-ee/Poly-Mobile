@@ -48,7 +48,8 @@ param(
   [switch]$EventDetailSave,
   [switch]$SearchSort,
   [switch]$LiveSummary,
-  [switch]$LiveTicket
+  [switch]$LiveTicket,
+  [switch]$LiveOrder
 )
 
 $ErrorActionPreference = "Stop"
@@ -134,6 +135,22 @@ function Invoke-TapHierarchyNode {
   & $adb -s $Device shell input tap $x $y | Out-Null
 }
 
+function Invoke-ExpoMenuCloseButton {
+  param(
+    [string]$Path
+  )
+  [xml]$hierarchy = Get-Content -Raw -Path $Path
+  $node = $hierarchy.SelectSingleNode("//*[starts-with(@text,'SDK version:')]")
+  if (-not $node -or $node.bounds -notmatch "^\[(\d+),(\d+)\]\[(\d+),(\d+)\]$") {
+    return $false
+  }
+  $x = 1012
+  $y = [math]::Max(80, [int]$Matches[2] - 43)
+  & $adb -s $Device shell input tap $x $y | Out-Null
+  Start-Sleep -Seconds 2
+  return $true
+}
+
 function Wait-HierarchyContains {
   param(
     [string]$Name,
@@ -165,6 +182,82 @@ function Wait-HierarchyContains {
   }
 }
 
+function Dismiss-ExpoDeveloperMenuIfPresent {
+  param(
+    [string]$Name = "cycle-current-holiwyn-expo-menu.xml",
+    [string]$Path = ""
+  )
+  $dismissed = $false
+  $path = $Path
+  for ($attempt = 1; $attempt -le 3; $attempt++) {
+    if (-not $path) {
+      $path = Save-UiHierarchy -Name $Name
+    }
+    $hierarchy = Get-Content -Raw -Path $path
+    if ($hierarchy -match "This is the developer menu" -and $hierarchy -match "Continue") {
+      Invoke-TapHierarchyNode -Path $path -Identifier "Continue"
+      Start-Sleep -Seconds 2
+      $dismissed = $true
+      $path = Save-UiHierarchy -Name $Name
+      continue
+    }
+    if ($hierarchy -match "SDK version:" -and $hierarchy -match "Runtime version:" -and ($hierarchy -match "Reload" -or $hierarchy -match "Connected to expo-cli")) {
+      Invoke-ExpoMenuCloseButton -Path $path | Out-Null
+      $dismissed = $true
+      $path = Save-UiHierarchy -Name $Name
+      continue
+    }
+    return $dismissed
+  }
+  return $dismissed
+}
+
+function Wait-AdbDevice {
+  param(
+    [int]$Attempts = 12,
+    [int]$DelaySeconds = 3
+  )
+  for ($attempt = 1; $attempt -le $Attempts; $attempt++) {
+    $previousErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+      $state = (& $adb -s $Device get-state 2>&1 | Out-String)
+    } finally {
+      $ErrorActionPreference = $previousErrorActionPreference
+    }
+    if ($state -match "device") {
+      return
+    }
+    Start-Sleep -Seconds $DelaySeconds
+  }
+  throw "ADB device did not become ready: $Device"
+}
+
+function Wait-ExpoReady {
+  param(
+    [int]$Port,
+    [int]$Attempts = 45,
+    [int]$DelaySeconds = 2
+  )
+  for ($attempt = 1; $attempt -le $Attempts; $attempt++) {
+    try {
+      $response = Invoke-WebRequest -Uri "http://127.0.0.1:$Port/status" -UseBasicParsing -TimeoutSec 2
+      $content = if ($response.Content -is [byte[]]) {
+        [System.Text.Encoding]::UTF8.GetString($response.Content)
+      } else {
+        [string]$response.Content
+      }
+      if ($content -match "packager-status:running") {
+        return
+      }
+    } catch {
+      # Metro is still warming up.
+    }
+    Start-Sleep -Seconds $DelaySeconds
+  }
+  throw "Expo Metro did not become ready on port $Port"
+}
+
 Push-Location $MobileRoot
 try {
   npm run typecheck
@@ -181,6 +274,7 @@ try {
     throw "ADB not found at $adb"
   }
 
+  Wait-AdbDevice
   & $adb -s $Device reverse "tcp:$Port" "tcp:$Port" | Out-Null
   & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
 
@@ -196,12 +290,13 @@ try {
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
     $env:EXPO_PUBLIC_API_KEY = "pk_test_mobile_harness"
   }
-  $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailMarketOutcomeCount -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket) {
+  $expoArgs = @("expo", "start", "--port", "$Port", "--offline")
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailMarketOutcomeCount -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailMarketOutcomeCount -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket) { 18 } else { 8 })
+  Wait-ExpoReady -Port $Port
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailMarketOutcomeCount -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
@@ -211,7 +306,7 @@ try {
     "exp://10.0.2.2:$Port/--/?forceOpenOrder=1"
   } elseif ($EventDetailSummary -or $EventDetailMarketOutcomeCount) {
     "exp://10.0.2.2:$Port/--/?forceMexicoEcuadorDetail=1"
-  } elseif ($LiveSummary -or $LiveTicket) {
+  } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder) {
     "exp://10.0.2.2:$Port/--/?forceLive=1"
   } elseif ($SearchQuery -or $SearchClearQuery) {
     "exp://10.0.2.2:$Port/--/?forceSearchQuery=zzzz"
@@ -242,12 +337,13 @@ try {
   } else {
     "exp://10.0.2.2:$Port"
   }
-  if ($AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty) {
+  if ($AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty -or $LiveOrder) {
     & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
     Start-Sleep -Seconds 2
   }
   & $adb -s $Device shell am start -a android.intent.action.VIEW -d $launchUrl | Out-Null
   Start-Sleep -Seconds 10
+  Dismiss-ExpoDeveloperMenuIfPresent | Out-Null
 
   $launchExpected = if ($ServerUnavailable) {
     @("Holiwyn", "Portfolio", "Server sync unavailable", "Showing local fake-token portfolio.")
@@ -255,7 +351,7 @@ try {
     @("Holiwyn", "Portfolio", "Open orders", "Cancel")
   } elseif ($EventDetailSummary -or $EventDetailMarketOutcomeCount) {
     @("Mexico vs. Ecuador", "4 markets", "8 outcomes")
-  } elseif ($LiveSummary -or $LiveTicket) {
+  } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder) {
     @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina")
   } elseif ($SearchQuery -or $SearchClearQuery) {
     @("Holiwyn", "Search World Cup markets", "zzzz", "0 results")
@@ -316,15 +412,46 @@ try {
       return
     }
 
-    if ($LiveTicket) {
+    if ($LiveTicket -or $LiveOrder) {
       Save-Screenshot -Name "cycle-current-holiwyn-live-ticket-ready.png"
       $liveTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-ticket-ready.xml"
       Assert-HierarchyContains -Path $liveTicketReadyHierarchy -Expected @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina")
-      Invoke-TapHierarchyNode -Path $liveTicketReadyHierarchy -Identifier "event-outcome-france-argentina-final-france-argentina-live-france"
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-current-holiwyn-live-ticket.png"
-      $liveTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-ticket.xml"
-      Assert-HierarchyContains -Path $liveTicketHierarchy -Expected @("France", "France vs. Argentina", "Live World Cup", "Fake balance", "10,000 USDT", "Estimated cost", "Est. shares", "Avg price", "Place buy order")
+      if ((Dismiss-ExpoDeveloperMenuIfPresent -Path $liveTicketReadyHierarchy)) {
+        Save-Screenshot -Name "cycle-current-holiwyn-live-ticket-ready.png"
+        $liveTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-ticket-ready.xml"
+        Assert-HierarchyContains -Path $liveTicketReadyHierarchy -Expected @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina")
+      }
+      $liveTicketHierarchy = ""
+      $liveTicketExpected = @("France", "France vs. Argentina", "Live World Cup", "Fake balance", "10,000 USDT", "Estimated cost", "Est. shares", "Avg price", "Place buy order")
+      for ($liveTicketAttempt = 1; $liveTicketAttempt -le 3; $liveTicketAttempt++) {
+        Invoke-TapHierarchyNode -Path $liveTicketReadyHierarchy -Identifier "event-outcome-france-argentina-final-france-argentina-live-france"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "cycle-current-holiwyn-live-ticket.png"
+        $liveTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-ticket.xml"
+        try {
+          Assert-HierarchyContains -Path $liveTicketHierarchy -Expected $liveTicketExpected
+          break
+        } catch {
+          if ((Dismiss-ExpoDeveloperMenuIfPresent -Path $liveTicketHierarchy)) {
+            & $adb -s $Device shell am start -a android.intent.action.VIEW -d $launchUrl | Out-Null
+            Start-Sleep -Seconds 3
+            $liveTicketReadyHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-live-ticket-ready.xml" -Expected @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina") -RestartUrl $launchUrl -Attempts 4 -DelaySeconds 2
+            Assert-HierarchyContains -Path $liveTicketReadyHierarchy -Expected @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina")
+            continue
+          }
+          if ($liveTicketAttempt -eq 3) {
+            throw
+          }
+          Start-Sleep -Seconds 1
+        }
+      }
+      if ($LiveOrder) {
+        Invoke-TapHierarchyNode -Path $liveTicketHierarchy -Identifier "place-mock-order"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "cycle-current-holiwyn-live-order-portfolio.png"
+        $liveOrderPortfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-order-portfolio.xml"
+        Assert-HierarchyContains -Path $liveOrderPortfolioHierarchy -Expected @("Portfolio", "Fake balance", "9,900 USDT", "Open positions", "Recent activity", "1", "France vs. Argentina", "MOCK - Buy - France - 41%", "Invested", "Entry", "Current value", "Est. P/L", "Close position")
+      }
       return
     }
 

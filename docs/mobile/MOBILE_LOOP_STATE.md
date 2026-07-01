@@ -5583,6 +5583,50 @@ Open blockers: None for autonomous mock-mode product/harness progress. Live auth
 Risks: Saved markets, Account session, language, ticket defaults, and mock Portfolio persistence are local-first; profile sync is guarded and visible on failure but still lacks live-backend proof; Portfolio counts, Home/Search/Futures market stats, Popular ranking, ticket quote math, live labels, market breadth counts, and close-position behavior remain local estimates until backend auth, profile, quote, popularity, order-book, and position APIs can feed them.
 Next three likely cycles: Add live order placement proof, continue live/detail trading polish, and retry backend readiness if Docker/local Postgres become available.
 
+### Cycle 116
+
+Date: 2026-07-01
+Branch: mobile/cycle-116
+Goal: Verify live World Cup ticket order placement works through Expo Go and lands in Portfolio.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No user-facing UI change; this cycle hardens the Expo Go harness and adds focused live-order proof.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run smoke:live-order` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-116-holiwyn-live-order-smoke.png`
+- `docs/mobile/screenshots/cycle-116-holiwyn-live-order-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-116-holiwyn-live-order-ticket.png`
+- `docs/mobile/screenshots/cycle-116-holiwyn-live-order-portfolio.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-116-holiwyn-expo-menu-recovered.xml`
+- `docs/mobile/harness/cycle-116-holiwyn-live-order-home.xml`
+- `docs/mobile/harness/cycle-116-holiwyn-live-order-ticket-ready.xml`
+- `docs/mobile/harness/cycle-116-holiwyn-live-order-ticket.xml`
+- `docs/mobile/harness/cycle-116-holiwyn-live-order-portfolio.xml`
+Bugs found:
+- Expo Go developer-menu overlays can appear during clean-state runs and after live-outcome taps. The harness now dismisses first-run and regular Expo menus, relaunches the Live deep link when necessary, and retries the ticket tap.
+- The initial durable-state assertion expected transient order confirmation copy. The final proof checks Portfolio balance, counts, and the visible live position row.
+Technical debt added:
+- Expo Go is proven viable for current development, but production native capabilities still require Expo dev build/native packaging later.
+Technical debt resolved:
+- Live order placement now has direct Android emulator proof instead of relying on non-live order harnesses.
+Result: Passed Cycle 116 QA. Mobile typecheck, focused emulator live-order smoke, and mobile API/profile-preference tests pass.
+Commit: `TBD` (`Verify Live order placement`)
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 117 should continue live trading polish, likely close-position proof from a live order or another live/detail trading affordance.
+Harnesses run:
+- Mobile Typecheck Harness
+- Live Order Smoke Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- Initial live-order attempts exposed Expo Go developer-menu interruption and an over-specific transient Portfolio assertion; both were hardened and rerun successfully.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

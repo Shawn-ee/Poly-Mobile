@@ -1665,3 +1665,18 @@ Findings:
 - Mobile typecheck, focused live-ticket smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 115 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 116
+
+Date: 2026-07-01
+Branch: mobile/cycle-116
+Reviewer: Lead/Reviewer pass
+Scope: Expo Go live order placement proof.
+Findings:
+- P1: Focused smoke now opens Live directly, opens the France live ticket, places a fake-token buy order, and verifies the resulting Portfolio position.
+- P1: The proof covers durable trading state: fake balance drops to `9,900 USDT`, open positions and recent activity both show `1`, and the France vs. Argentina position is visible.
+- P1: The harness now handles Expo Go developer-menu interruptions during clean-state runs by closing Expo UI, relaunching the deep link if needed, and retrying the ticket tap.
+- P2: Expo Go remains a development shell; production payment, signing, notifications, and native SDK work should later move to an Expo dev build or native build.
+- Mobile typecheck, focused live-order smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 116 for local commit/merge after scoped diff review.
+Merge approved: Yes
