@@ -26,6 +26,7 @@ type TradeTicketCopy = {
   placeBuyOrder: string;
   placeSellOrder: string;
   orderFailed: string;
+  liveNow: string;
 };
 
 export function TradeTicket({
@@ -76,6 +77,7 @@ export function TradeTicket({
   const primaryLabel = side === "buy" ? t.placeBuyOrder : t.placeSellOrder;
   const costLabel = side === "buy" ? t.estimatedCost : t.estimatedProceeds;
   const amountPresets = [100, 500, 1000];
+  const isLiveTicket = ticket.event?.status === "live";
 
   return (
     <Modal visible transparent animationType="slide">
@@ -85,6 +87,12 @@ export function TradeTicket({
             <View>
               <Text style={styles.ticketTitle}>{label(locale, ticket.outcome)}</Text>
               <Text style={styles.ticketSub}>{label(locale, ticket.event ?? ticket.market)}</Text>
+              {isLiveTicket && (
+                <View accessibilityLabel="ticket-live-badge" testID="ticket-live-badge" style={styles.liveBadge}>
+                  <Ionicons name="radio-outline" color="#fecaca" size={14} />
+                  <Text style={styles.liveBadgeText}>{t.liveNow}</Text>
+                </View>
+              )}
             </View>
             <Pressable onPress={close} style={styles.closeButton}>
               <Ionicons name="close" color="#f8fafc" size={22} />
@@ -164,6 +172,8 @@ const styles = StyleSheet.create({
   ticketTop: { flexDirection: "row", justifyContent: "space-between", gap: 12 },
   ticketTitle: { color: "#f8fafc", fontSize: 24, fontWeight: "900" },
   ticketSub: { color: "#94a3b8", fontWeight: "800", marginTop: 4 },
+  liveBadge: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, marginTop: 8, paddingHorizontal: 9, paddingVertical: 5, borderRadius: 999, backgroundColor: "#451a1a", borderWidth: 1, borderColor: "#7f1d1d" },
+  liveBadgeText: { color: "#fecaca", fontSize: 11, fontWeight: "900", textTransform: "uppercase" },
   closeButton: { width: 42, height: 42, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937" },
   ticketSideRow: { flexDirection: "row", gap: 10, marginTop: 18 },
   sideButton: { flex: 1, alignItems: "center", paddingVertical: 12, borderRadius: 12, backgroundColor: "#1f2937" },

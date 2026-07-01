@@ -1650,3 +1650,18 @@ Findings:
 - Mobile typecheck, focused live-ticket smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 114 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 115
+
+Date: 2026-07-01
+Branch: mobile/cycle-115
+Reviewer: Lead/Reviewer pass
+Scope: Live ticket in-play badge.
+Findings:
+- P1: TradeTicket now detects live-origin events and renders a visible `Live World Cup` badge in the ticket header.
+- P1: Focused live-ticket smoke verifies the badge together with event context, fake balance, estimates, and buy-order CTA.
+- P1: This is a product-facing live trading affordance, not only harness coverage.
+- P2: Badge text is tied to the existing Live World Cup copy; later backend live-state metadata can refine the label.
+- Mobile typecheck, focused live-ticket smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 115 for local commit/merge after scoped diff review.
+Merge approved: Yes
