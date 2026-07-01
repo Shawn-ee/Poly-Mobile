@@ -6224,8 +6224,8 @@ Technical debt added:
 Technical debt resolved:
 - Device/build QA policy is now explicit instead of only implied by prior cycle notes.
 Result: Passed Cycle 129 QA. Device roles and the future dev build/APK harness are documented for future autonomous cycles.
-Commit: Pending.
-Merged: Pending.
+Commit: `6daaca3` (`Codify mobile device QA strategy`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `0e7fd1c`.
 Next cycle: Cycle 130 should continue trade-ticket/open-order parity or begin preparing the dev-build/APK harness only if core-flow stability and loop speed justify it.
 Harnesses run:
 - Documentation Review Harness
