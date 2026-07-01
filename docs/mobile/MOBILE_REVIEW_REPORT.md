@@ -154,3 +154,16 @@ Findings:
 - `npm run typecheck`, `npm run smoke`, and Futures tap QA passed.
 Decision: Approve Cycle 010 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 011
+
+Date: 2026-07-01
+Branch: mobile/cycle-011
+Reviewer: Lead/Reviewer pass
+Scope: Event Detail component extraction.
+Findings:
+- P1: Event detail path was verified on emulator after extraction.
+- P2: Backend-fed event detail currently shows generic fixture naming for some imported events; that belongs to future data-quality/grouping work, not the extraction itself.
+- `npm run typecheck`, `npm run smoke`, and event-detail tap QA passed.
+Decision: Approve Cycle 011 for local commit/merge after scoped diff review.
+Merge approved: Yes

@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { PolyApi } from "./src/api";
 import { normalizeEventDetail } from "./src/adapters/worldCupAdapter";
 import { BottomTabs } from "./src/components/BottomTabs";
+import { EventDetail } from "./src/components/EventDetail";
 import { FutureList, MarketList } from "./src/components/MarketLists";
 import { Portfolio, Position } from "./src/components/Portfolio";
 import { Ticket, TradeTicket } from "./src/components/TradeTicket";
@@ -405,47 +406,6 @@ function Segmented({
         <Text style={[styles.segmentText, value === "futures" && styles.segmentTextActive]}>{right}</Text>
       </Pressable>
     </View>
-  );
-}
-
-function EventDetail({
-  event,
-  locale,
-  t,
-  openTicket,
-  goBack,
-}: {
-  event: Event;
-  locale: Locale;
-  t: typeof copy.en;
-  openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
-  goBack: () => void;
-}) {
-  return (
-    <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
-      <Pressable style={styles.backButton} onPress={goBack}>
-        <Ionicons name="chevron-back" size={18} color="#f8fafc" />
-        <Text style={styles.backText}>{t.worldCup}</Text>
-      </Pressable>
-      <View style={styles.detailHero}>
-        <Text style={styles.detailMeta}>{event.startsAt} · {label(locale, { label: event.tag, zhLabel: event.zhTag })}</Text>
-        <Text style={styles.detailTitle}>{label(locale, event)}</Text>
-      </View>
-      <Text style={styles.sectionTitle}>{t.markets}</Text>
-      {event.markets.map((market) => (
-        <View key={market.id} style={styles.marketBlock}>
-          <Text style={styles.marketTitle}>{label(locale, market)}</Text>
-          {market.outcomes.map((outcome) => (
-            <View key={outcome.id} style={styles.detailOutcome}>
-              <Text style={styles.teamName}>{label(locale, outcome)}</Text>
-              <Pressable style={[styles.probButton, { backgroundColor: outcome.color }]} onPress={() => openTicket(market, outcome, event)}>
-                <Text style={styles.probButtonText}>{outcome.probability}%</Text>
-              </Pressable>
-            </View>
-          ))}
-        </View>
-      ))}
-    </ScrollView>
   );
 }
 
