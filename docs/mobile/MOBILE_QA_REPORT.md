@@ -1733,3 +1733,25 @@ Bugs:
 - None found in app code. First smoke attempt hit Expo Go's generic error screen while Metro rebuilt cache; rerun passed without code changes.
 Visual QA:
 - After clearing `zzzz`, Search returns to Top results with Mexico vs. Ecuador and sort controls visible.
+
+### Cycle 086
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:search-clear-query`
+- `npm run test:mobile-api`
+Result: Passed. Smoke launch readiness now tolerates cold Metro/Expo generic error screens with additional attempts and URL restart recovery.
+Screenshots:
+- `docs/mobile/screenshots/cycle-086-holiwyn-smoke-launch-hardening.png`
+- `docs/mobile/screenshots/cycle-086-holiwyn-search-clear-query-before.png`
+- `docs/mobile/screenshots/cycle-086-holiwyn-search-clear-query-after.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-086-holiwyn-smoke-launch-hardening-home.xml`
+- `docs/mobile/harness/cycle-086-holiwyn-search-clear-query-ready.xml`
+- `docs/mobile/harness/cycle-086-holiwyn-search-clear-query-after.xml`
+Bugs:
+- None found.
+Visual QA:
+- Search clear-query flow still returns to Top results after harness hardening.

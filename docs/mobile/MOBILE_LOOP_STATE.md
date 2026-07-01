@@ -4245,6 +4245,49 @@ Harnesses run:
 Harness failures:
 - Recovered: first emulator smoke attempt showed Expo Go generic error while Metro rebuilt cache; rerun passed.
 
+### Cycle 086
+
+Date: 2026-07-01
+Branch: mobile/cycle-086
+Goal: Harden emulator smoke launch readiness after the recovered Expo/Metro cold-start miss.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No product UI change; harness behavior changed.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:search-clear-query` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-086-holiwyn-smoke-launch-hardening.png`
+- `docs/mobile/screenshots/cycle-086-holiwyn-search-clear-query-before.png`
+- `docs/mobile/screenshots/cycle-086-holiwyn-search-clear-query-after.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-086-holiwyn-smoke-launch-hardening-home.xml`
+- `docs/mobile/harness/cycle-086-holiwyn-search-clear-query-ready.xml`
+- `docs/mobile/harness/cycle-086-holiwyn-search-clear-query-after.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Expo Go launch remains a development dependency until a custom dev-client path exists.
+Technical debt resolved:
+- Cold Metro rebuilds and temporary Expo generic error screens now get more automated recovery before failing a smoke.
+Result: Passed Cycle 086 QA. Mobile typecheck, focused Search clear-query smoke, visual screenshot review, and mobile API tests pass.
+Commit: Pending branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 087 should continue product parity and will trigger the next heartbeat after cycles 085, 086, and 087.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Search Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Recovery Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

@@ -116,3 +116,4 @@ Status:
 | GAP-094 | Discovery | Market/outcome query matching | P1 | Yes | Verified | Cycle 083 extends Home/Search discovery matching to market and outcome labels and verifies a clean-sheet query on Home. |
 | GAP-095 | Discovery | Home search clear action | P1 | Yes | Verified | Cycle 084 adds a Home search Clear action and verifies it restores the full market list in focused emulator smoke. |
 | GAP-096 | Search | Search clear icon action | P1 | Yes | Verified | Cycle 085 aligns Search with Home's close-icon Clear action and verifies clearing a zero-result query restores Top results. |
+| GAP-097 | Harness | Expo launch recovery hardening | P1 | No | Verified | Cycle 086 increases launch wait attempts and restarts Expo Go when the temporary generic error screen appears, then verifies Search clear-query smoke. |
