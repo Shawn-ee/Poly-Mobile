@@ -934,3 +934,26 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-048-holiwyn-search.png`
 - `docs/mobile/screenshots/cycle-048-holiwyn-search-query.png`
 Bugs: None found.
+
+### Cycle 049
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Portfolio now has server-mode sync/unavailable status wiring, and the normal mock Portfolio smoke remains unchanged.
+Screenshots:
+- `docs/mobile/screenshots/cycle-049-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-search-query.png`
+Bugs: None found.
+Server-mode note: Not server-smoked because backend health is unavailable and server trade submission would call the backend directly.

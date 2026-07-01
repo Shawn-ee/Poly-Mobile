@@ -79,3 +79,4 @@ Status:
 | GAP-057 | Trading ticket | Amount preset controls | P1 | No | Verified | Cycle 046 adds 100/500/1,000 USDT preset controls to Trade Ticket and verifies them in deep smoke. |
 | GAP-058 | Harness | Selector-driven ticket taps | P1 | No | Verified | Cycle 047 replaces fragile Max/order coordinates with Android hierarchy taps by stable control id. |
 | GAP-059 | Harness | Selector-driven navigation and close taps | P1 | No | Verified | Cycle 048 extends hierarchy taps to close-position, Live/Search tabs, Live refresh, and Search input. |
+| GAP-060 | Portfolio | Server sync status state | P1 | No | Verified | Cycle 049 adds server-mode syncing/synced/unavailable Portfolio status copy while keeping mock smoke hidden. |

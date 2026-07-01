@@ -678,3 +678,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 048 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 049
+
+Date: 2026-07-01
+Branch: mobile/cycle-049
+Reviewer: Lead/Reviewer pass
+Scope: Server-mode Portfolio sync status states.
+Findings:
+- P1: App now tracks server Portfolio load state and passes a hidden/syncing/synced/error status into Portfolio.
+- P1: Portfolio renders a visible server-sync card only outside mock mode, with localized fallback copy when server sync is unavailable.
+- P2: The server-mode visual state is typechecked but not emulator-smoked because backend health is unavailable and server trade mode would call real backend endpoints.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 049 for local commit/merge after scoped diff review.
+Merge approved: Yes
