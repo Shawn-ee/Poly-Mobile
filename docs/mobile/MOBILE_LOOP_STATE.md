@@ -513,6 +513,37 @@ Open blockers: None for autonomous progress.
 Risks: Backend-imported World Cup events can still have generic fixture titles; server order mode remains guarded and unverified; smoke harness still captures only one default path automatically.
 Next three likely cycles: Normalize backend event/team display, add scripted smoke taps for ticket/Portfolio, and expand World Cup props/live grouping polish.
 
+### Cycle 013
+
+Date: 2026-07-01
+Branch: mobile/cycle-013
+Goal: Add a deeper scripted mobile smoke harness for Home, Trade Ticket, and Portfolio.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: None.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-013-holiwyn-deep-home.png`
+- `docs/mobile/screenshots/cycle-013-holiwyn-deep-ticket.png`
+- `docs/mobile/screenshots/cycle-013-holiwyn-deep-portfolio.png`
+Bugs found: None.
+Technical debt added: None.
+Technical debt resolved:
+- Smoke harness now covers the ticket and Portfolio path automatically, not only Home.
+Result: Passed Cycle 013 QA. One command opens the app, captures Home, opens a ticket, places a mock order, and captures Portfolio.
+Commit: cycle branch HEAD (`Add Holiwyn mobile deep smoke flow`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 014 should normalize backend event/team display or improve smoke assertions beyond screenshots.
+Harnesses run:
+- Trading Simulation Harness
+- QA Smoke Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+Harness failures: None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
