@@ -4,7 +4,7 @@ Purpose: Record emulator and device testing for Holiwyn.
 
 ## Current Status
 
-Cycle 002 completed the first usable mock World Cup product slice. Holiwyn launches on the Android emulator through Expo Go, shows dark-first World Cup markets, opens event detail and ticket screens, places a fake-token order, updates Portfolio, and switches between English and Simplified Chinese.
+Cycle 003 completed backend-compatible mobile data adapter work and added a repeatable emulator smoke harness. Holiwyn still launches through Expo Go, keeps mock fallback, and can hydrate World Cup event cards from backend event/detail responses when available.
 
 ## Required Smoke Tests
 
@@ -77,3 +77,21 @@ Bugs:
 - Direct `exec-out screencap` capture produced an unreadable PNG in PowerShell. Recovered by saving on the emulator and pulling the PNG.
 Notes:
 - Fake order changed balance from 10,000 USDT to 9,900 USDT and added a France World Cup winner position.
+
+### Cycle 003
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke`
+Result: Passed adapter/harness smoke. The harness typechecked the app, confirmed backend health, launched Expo on the emulator, and captured a screenshot through the device-file pull method.
+Screenshots:
+- `docs/mobile/screenshots/cycle-003-holiwyn-smoke.png`
+Bugs:
+- PowerShell smoke harness needed separate stdout/stderr logs.
+- PowerShell smoke harness needed `npx.cmd`.
+- Smoke screenshot default path needed to point inside `Poly/docs/mobile/screenshots`.
+Notes:
+- Backend API adapter now targets `/api/events?category=sports&sportKey=soccer&leagueKey=world_cup` and `/api/events/:slug`.
+- Mock order placement remains local by design until authenticated order mode is proven.

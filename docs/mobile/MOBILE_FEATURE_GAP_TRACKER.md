@@ -31,3 +31,5 @@ Status:
 | GAP-009 | Search | Market search | P1 | No | Implemented | Search input and filtering exist; deeper search UX still needed. |
 | GAP-010 | Live | Live market list | P1 | No | Implemented | Live tab filters mock live events; live odds updates are not implemented. |
 | GAP-011 | Bootstrap | Repo-local mobile app | P0 | Yes | Verified | `Poly/mobile` exists and launches on emulator. |
+| GAP-012 | Backend adapter | World Cup event/detail normalization | P0 | No | Verified | Cycle 003 added a typed mobile adapter for backend event/detail responses with mock fallback. |
+| GAP-013 | Harness | Repeatable emulator smoke | P0 | No | Verified | Cycle 003 added `npm run smoke` for typecheck, backend health probe, emulator launch, and screenshot capture. |

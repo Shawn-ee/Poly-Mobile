@@ -93,7 +93,7 @@ Technical debt added:
 - TD-003: current app fetches live backend events but has no seeded/mock World Cup markets in the repo-local app yet.
 Technical debt resolved: None.
 Result: Phase 0 passed. Samsung reference access works, emulator works, backend health works, repo-local Holiwyn app launches on emulator, screenshots captured.
-Commit: cycle branch HEAD (`Build Holiwyn World Cup mock trading shell`)
+Commit: cycle branch HEAD (`Add Holiwyn mobile loop bootstrap`)
 Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 002 should build the Holiwyn app shell and mock World Cup data model in `mobile/`, dark-first, with English/Simplified Chinese support started.
 Harnesses run:
@@ -143,8 +143,8 @@ Technical debt resolved:
 - TD-002: Replaced bootstrap UI with a dark-first Holiwyn World Cup shell.
 - TD-003: Added seeded mock World Cup games, futures, props, and outcomes.
 Result: Passed Cycle 002 QA. Holiwyn now has a usable mock World Cup trading experience on the Android emulator.
-Commit:
-Merged:
+Commit: cycle branch HEAD (`Build Holiwyn World Cup mock trading shell`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 003 should connect the mock-first UI structure to backend-compatible data adapters and start a repeatable app harness script for smoke evidence.
 Harnesses run:
 - Product Explorer/Audit Harness
@@ -158,14 +158,53 @@ Harnesses run:
 Harness failures:
 - Screenshot capture stream failed once; recovered with device-file pull.
 
+### Cycle 003
+
+Date: 2026-07-01
+Branch: mobile/cycle-003
+Goal: Add a backend-compatible World Cup data adapter and a repeatable mobile smoke harness while preserving mock fallback and fake-token order behavior.
+Reference app screens observed: No new Samsung reference screens; used Cycle 001 reference map and Cycle 003 Reviewer Agent guidance.
+Holiwyn screens changed: Home data source can now hydrate from backend event detail responses; visible UI remains the Cycle 002 shell.
+Backend/API changed: None. Mobile API query changed to request sports/soccer/world_cup events without LIVE-only filtering.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/api.ts`, `mobile/src/adapters/worldCupAdapter.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke` in `mobile/`.
+- Backend health probe inside smoke harness returned `ok`.
+- Emulator launch and screenshot capture via smoke harness.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-003-holiwyn-smoke.png`
+Bugs found:
+- Smoke harness initially failed because PowerShell cannot redirect stdout and stderr to the same file; fixed with separate log files.
+- Smoke harness initially failed on bare `npx`; fixed by launching `npx.cmd` on Windows.
+- Smoke screenshot path initially pointed one directory above the repo; fixed default output path.
+Technical debt added:
+- TD-007: Real authenticated order placement is still not wired into the mobile ticket.
+Technical debt resolved:
+- Partial TD-004 progress: backend event/detail adapter now exists; order adapter remains open.
+Result: Passed Cycle 003 QA. App can run with backend-compatible event data when available and mock data when backend data is unavailable, and the emulator smoke flow is now repeatable.
+Commit: cycle branch HEAD (`Add Holiwyn mobile backend adapter and smoke harness`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 004 should split the large `App.tsx` into focused mobile components or wire a safe order service boundary, choosing the smaller verified slice first.
+Harnesses run:
+- Backend/API Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- QA Smoke Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- Three harness implementation issues found and fixed before approval.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
 
-Completed cycles:
-Verified progress:
-Current app state:
-Current backend state:
-Open blockers:
-Risks:
-Next three likely cycles:
+Completed cycles: 001, 002, 003.
+Verified progress: Repo-local Holiwyn Expo app launches on emulator, dark World Cup shell exists, Games/Futures/Event Detail/Ticket/Portfolio/Search/Live/localization flows work with fake tokens, backend-compatible event adapter is added, and `npm run smoke` can rerun emulator proof.
+Current app state: Android-first prototype with mock futures, backend-capable World Cup event hydration, mock order placement, fake 10,000 USDT balance, and English/Simplified Chinese toggle.
+Current backend state: Existing backend health is `ok`; event/detail APIs are available and mobile adapter targets `/api/events` plus `/api/events/:slug`. No backend schema changes were made in the first three cycles.
+Open blockers: None for autonomous progress.
+Risks: Real order placement requires auth/trading guards; large `mobile/App.tsx` will slow future iteration if not split soon; Chinese source text should be normalized if encoding problems appear in editor tooling.
+Next three likely cycles: component extraction, order-service boundary with mock/server modes, and richer World Cup market groups/live-state polish.
