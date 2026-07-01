@@ -863,7 +863,7 @@ Technical debt resolved:
 - Unused Search-only styles were removed from `mobile/App.tsx`.
 Result: Passed Cycle 021 QA. Search remains covered by deep smoke after extraction.
 Commit: cycle branch HEAD (`Extract Holiwyn mobile search screen`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 022 should add typed-query Search QA or improve live market refresh/state behavior.
 Harnesses run:
 - QA Smoke Harness
