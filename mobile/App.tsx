@@ -259,6 +259,10 @@ export default function App() {
         setLatestOrder(null);
         setOpenOrders([]);
         setActivities([]);
+        setTicket(null);
+        setTicketOrderError(null);
+        setSelectedEvent(null);
+        setQuery("");
         setTicketDefaults({ amount: "100", side: "buy" });
         setSavedEventIds(new Set());
         setForceAccountSignedIn(false);
