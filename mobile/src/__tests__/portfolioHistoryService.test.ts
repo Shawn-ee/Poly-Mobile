@@ -30,6 +30,7 @@ describe("portfolio history activity mapping", () => {
         title: "World Cup final winner",
         outcome: "France",
         amount: 172.5,
+        entryAmount: 100,
         timestamp: "Jul 19, 5:30 PM",
       }),
     ]);
@@ -58,6 +59,7 @@ describe("portfolio history activity mapping", () => {
         id: "history-world-cup-group",
         outcome: "Resolved",
         amount: 64,
+        entryAmount: 64,
         timestamp: "Jun 12, 1:05 PM",
       }),
     ]);

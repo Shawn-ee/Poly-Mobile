@@ -2014,3 +2014,18 @@ Findings:
 - Mobile typecheck, mobile API/history tests, and Samsung closed-history smoke passed.
 Decision: Approve Cycle 138 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 139
+
+Date: 2026-07-01
+Branch: mobile/cycle-139
+Reviewer: Lead/Reviewer pass
+Scope: Backend resolved-history economics mapping.
+Findings:
+- P1: `portfolioHistoryToActivity` now maps backend `netInvestedTokens` into `PortfolioActivity.entryAmount`, letting server-backed closed rows compute P/L using the same mobile Portfolio rendering path as mock closed trades.
+- P1: Closed activity rows can now render entry/current value/P/L details when `entryAmount` exists even if backend history has no probability field.
+- P1: Focused unit tests now verify the entry amount mapping for payout and no-payout resolved history cases.
+- P2: Backend history still does not expose shares, execution price, or side-level fill detail; this cycle improves resolved-row economics without inventing missing data.
+- Samsung smoke wrapper, mobile typecheck, and mobile API/history tests passed.
+Decision: Approve Cycle 139 for local commit/merge after scoped diff review.
+Merge approved: Yes

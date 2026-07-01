@@ -23,6 +23,7 @@ export const portfolioHistoryToActivity = (history: Awaited<ReturnType<PolyApi["
       title: item.market.title,
       outcome: item.resolvedOutcomeName ?? "Resolved",
       amount: payout > 0 ? payout : item.netInvestedTokens,
+      entryAmount: item.netInvestedTokens,
       timestamp: formatHistoryTimestamp(item.market.resolveTime ?? item.market.createdAt),
     };
   });

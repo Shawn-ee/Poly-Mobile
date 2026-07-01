@@ -371,15 +371,16 @@ export function Portfolio({
                 <Text style={styles.activityMeta}>
                   {activity.title} - {activity.outcome}
                 </Text>
-                {typeof activity.probability === "number" && activity.action !== "canceled" && (
+                {(typeof activity.probability === "number" || (activity.action === "closed" && typeof activity.entryAmount === "number")) &&
+                  activity.action !== "canceled" && (
                   <Text accessibilityLabel={`activity-execution-${activity.id}`} style={styles.activityExecution}>
                     {activity.action === "closed"
-                      ? `${t.entry} ${activity.probability}% - ${t.currentValue} ${money(activity.amount)} - ${t.estimatedPnl} ${
+                      ? `${t.entry} ${typeof activity.probability === "number" ? `${activity.probability}%` : money(activity.entryAmount ?? activity.amount)} - ${t.currentValue} ${money(activity.amount)} - ${t.estimatedPnl} ${
                           activityPnl(activity) >= 0 ? "+" : ""
                         }${money(activityPnl(activity))}`
-                      : `${t.filledShares} ${activityShares(activity).toFixed(2)} - ${t.executionPrice} ${activity.probability}% - ${
+                      : `${t.filledShares} ${activityShares(activity).toFixed(2)} - ${t.executionPrice} ${activity.probability ?? 0}% - ${
                           t.impliedOdds
-                        } ${decimalOdds(activity.probability / 100)}`}
+                        } ${decimalOdds((activity.probability ?? 0) / 100)}`}
                   </Text>
                 )}
               </View>

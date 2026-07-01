@@ -2914,3 +2914,23 @@ Bugs:
 - Initial adapter test expected UTC display values; corrected expectations to the app's explicit `America/Chicago` display timezone.
 Visual QA:
 - Samsung proof still shows the closed Portfolio history row with timestamp context and no regression in fake balance, closed activity, entry/current value, or P/L rows.
+
+### Cycle 139
+
+Date: 2026-07-01
+Device: Samsung S23 through Expo Go (`adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`)
+Build/run command:
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+- `npm run smoke:samsung:closed-history`
+Result: Passed. Backend portfolio history now maps net invested value into `entryAmount`, letting server-backed closed history show entry/current value/P/L details even without probability data.
+Screenshots:
+- `docs/mobile/screenshots/cycle-139-samsung-backend-history-economics-smoke.png`
+- `docs/mobile/screenshots/cycle-139-samsung-backend-history-economics-closed-history.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-139-samsung-backend-history-economics-home.xml`
+- `docs/mobile/harness/cycle-139-samsung-backend-history-economics-closed-history.xml`
+Bugs:
+- Typecheck initially caught a probability narrowing issue in the shared activity execution row; fixed by making the non-closed branch use a fallback probability value.
+Visual QA:
+- Samsung proof keeps the closed Portfolio history row visible with timestamp, entry/current value/P/L details, fake balance, and closed activity labels intact.
