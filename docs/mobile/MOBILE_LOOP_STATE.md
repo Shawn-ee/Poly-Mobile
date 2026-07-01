@@ -3723,8 +3723,8 @@ Technical debt added:
 Technical debt resolved:
 - Home discovery now supports quick status filtering instead of a flat mixed list only.
 Result: Passed Cycle 074 QA. Mobile typecheck, focused Home filter smoke, visual screenshot review, and mobile API tests pass.
-Commit: `PENDING`
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `fe715af` (`Add Holiwyn home market filters`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `aa4cfe9`.
 Next cycle: Cycle 075 should continue discovery parity, likely watchlist/saved markets or richer market cards.
 Harnesses run:
 - Emulator Runtime Harness
