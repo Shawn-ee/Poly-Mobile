@@ -1441,3 +1441,18 @@ Findings:
 - P2: No backend schema or credential mutation was attempted because the readiness gate did not pass.
 Decision: Approve Cycle 100 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 101
+
+Date: 2026-07-01
+Branch: mobile/cycle-101
+Reviewer: Lead/Reviewer pass
+Scope: Ticket default persistence.
+Findings:
+- P1: Ticket amount and buy/sell side now hydrate from and persist to AsyncStorage through app-level preference state.
+- P1: TradeTicket starts from saved defaults and updates the saved preference when amount, preset, max, or side changes.
+- P1: Focused smoke seeds a 500 USDT sell preference, restarts Expo Go, reopens the France ticket, and verifies the sell ticket restores with amount 500.
+- P2: Defaults are local-only until backend profile/preference sync exists.
+- Mobile typecheck, focused ticket-defaults persistence smoke, and mobile API request tests passed.
+Decision: Approve Cycle 101 for local commit/merge after scoped diff review.
+Merge approved: Yes

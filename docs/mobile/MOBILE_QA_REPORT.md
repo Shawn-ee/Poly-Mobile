@@ -2072,3 +2072,25 @@ Bugs:
 - None found in product code. Backend environment still needs Docker Desktop/local Postgres before server-mode emulator smoke can become live-backend proof.
 Visual QA:
 - Not applicable; this was an environment/backend readiness retry cycle.
+
+### Cycle 101
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:ticket-defaults-persistence`
+- `npm run test:mobile-api`
+Result: Passed. Ticket amount and buy/sell side now persist locally and restore after app restart.
+Screenshots:
+- `docs/mobile/screenshots/cycle-101-holiwyn-ticket-defaults-smoke.png`
+- `docs/mobile/screenshots/cycle-101-holiwyn-ticket-defaults-seeded.png`
+- `docs/mobile/screenshots/cycle-101-holiwyn-ticket-defaults-restored.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-101-holiwyn-ticket-defaults-home-start.xml`
+- `docs/mobile/harness/cycle-101-holiwyn-ticket-defaults-seeded.xml`
+- `docs/mobile/harness/cycle-101-holiwyn-ticket-defaults-restored.xml`
+Bugs:
+- None found in product code. Harness recovered from a brittle two-parameter deep link by using one focused harness flag that both seeds defaults and opens the reference ticket.
+Visual QA:
+- Restored ticket shows France / World Cup winner, Sell selected, amount `500`, Estimated proceeds, and `Place sell order`.

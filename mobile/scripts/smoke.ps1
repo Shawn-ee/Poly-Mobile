@@ -17,6 +17,7 @@ param(
   [switch]$AccountLogin,
   [switch]$AccountPersistence,
   [switch]$LanguagePersistence,
+  [switch]$TicketDefaultsPersistence,
   [switch]$HomeFilter,
   [switch]$HomeSaved,
   [switch]$SavedPersistence,
@@ -184,11 +185,11 @@ try {
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
   }
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $LanguagePersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $LanguagePersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
@@ -206,6 +207,8 @@ try {
     "exp://10.0.2.2:$Port/--/?forceChinese=1"
   } elseif ($PortfolioPersistence) {
     "exp://10.0.2.2:$Port/--/?forceWorldCupWinnerFranceTicket=1"
+  } elseif ($TicketDefaultsPersistence) {
+    "exp://10.0.2.2:$Port/--/?forceTicketDefaults=1"
   } elseif ($Account -or $AccountLogin) {
     "exp://10.0.2.2:$Port/--/?forceAccount=1"
   } elseif ($SavedPersistence) {
@@ -215,7 +218,7 @@ try {
   } else {
     "exp://10.0.2.2:$Port"
   }
-  if ($AccountPersistence -or $LanguagePersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty) {
+  if ($AccountPersistence -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty) {
     & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
     Start-Sleep -Seconds 2
   }
@@ -236,6 +239,8 @@ try {
     @("Holiwyn", "EN")
   } elseif ($PortfolioPersistence) {
     @("World Cup winner", "France", "Place buy order")
+  } elseif ($TicketDefaultsPersistence) {
+    @("World Cup winner", "France", "500", "Place sell order")
   } elseif ($Account -or $AccountLogin) {
     @("Holiwyn", "Account", "Signed out", "Demo balance")
   } else {
@@ -615,6 +620,22 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-portfolio-persistence-restored.png"
       $portfolioPersistenceRestoredHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-persistence-restored.xml"
       Assert-HierarchyContains -Path $portfolioPersistenceRestoredHierarchy -Expected @("Portfolio", "Open positions", "Recent activity", "1", "World Cup winner", "France", "Order placed")
+      return
+    }
+
+    if ($TicketDefaultsPersistence) {
+      Save-Screenshot -Name "cycle-current-holiwyn-ticket-defaults-seeded.png"
+      $ticketDefaultsSeededHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket-defaults-seeded.xml"
+      Assert-HierarchyContains -Path $ticketDefaultsSeededHierarchy -Expected @("World Cup winner", "France", "500", "Place sell order")
+      Start-Sleep -Seconds 2
+      & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
+      Start-Sleep -Seconds 2
+      $ticketDefaultsRestartUrl = "exp://10.0.2.2:$Port/--/?forceWorldCupWinnerFranceTicket=1"
+      & $adb -s $Device shell am start -a android.intent.action.VIEW -d $ticketDefaultsRestartUrl | Out-Null
+      Start-Sleep -Seconds 10
+      Save-Screenshot -Name "cycle-current-holiwyn-ticket-defaults-restored.png"
+      $ticketDefaultsRestoredHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket-defaults-restored.xml"
+      Assert-HierarchyContains -Path $ticketDefaultsRestoredHierarchy -Expected @("World Cup winner", "France", "500", "Place sell order")
       return
     }
 
