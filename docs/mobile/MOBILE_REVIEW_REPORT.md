@@ -1037,3 +1037,18 @@ Findings:
 - Mobile typecheck, focused Account Login smoke, and mobile API request tests passed.
 Decision: Approve Cycle 073 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 074
+
+Date: 2026-07-01
+Branch: mobile/cycle-074
+Reviewer: Lead/Reviewer pass
+Scope: Home market filters.
+Findings:
+- P1: Home discovery now includes All, Live, and Today market filters above the Games/Futures segmented control.
+- P1: Filters operate only on the Games list so Futures browsing remains unchanged.
+- P1: Focused Home filter smoke taps Live and Today chips and verifies the expected World Cup markets.
+- P2: Filter state is local to Home and resets on app restart, which is acceptable for the current discovery layer.
+- Mobile typecheck, focused Home filter smoke, and mobile API request tests passed.
+Decision: Approve Cycle 074 for local commit/merge after scoped diff review.
+Merge approved: Yes

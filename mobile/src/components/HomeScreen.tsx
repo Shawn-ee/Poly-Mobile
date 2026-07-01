@@ -1,10 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
-import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { useMemo, useState } from "react";
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { FeaturedFuture } from "./FeaturedFuture";
 import { FutureList, MarketList } from "./MarketLists";
 import { SportNav } from "./SportNav";
 import { WorldCupSegmented, WorldCupTab } from "./WorldCupSegmented";
+
+type HomeFilter = "all" | "live" | "today";
 
 type HomeScreenCopy = {
   games: string;
@@ -12,6 +15,9 @@ type HomeScreenCopy = {
   trending: string;
   marketSearch: string;
   noResults: string;
+  searchAll: string;
+  searchLive: string;
+  today: string;
 };
 
 export function HomeScreen({
@@ -37,6 +43,22 @@ export function HomeScreen({
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
   futures: Market[];
 }) {
+  const [homeFilter, setHomeFilter] = useState<HomeFilter>("all");
+  const homeFilters: Array<[HomeFilter, string]> = [
+    ["all", t.searchAll],
+    ["live", t.searchLive],
+    ["today", t.today],
+  ];
+  const visibleEvents = useMemo(
+    () =>
+      homeFilter === "live"
+        ? events.filter((event) => event.status === "live")
+        : homeFilter === "today"
+          ? events.filter((event) => event.status === "today")
+          : events,
+    [events, homeFilter],
+  );
+
   return (
     <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
       <SportNav locale={locale} />
@@ -52,9 +74,22 @@ export function HomeScreen({
           value={query}
         />
       </View>
+      <View style={styles.filterRow}>
+        {homeFilters.map(([value, text]) => (
+          <Pressable
+            key={value}
+            accessibilityLabel={`home-filter-${value}`}
+            testID={`home-filter-${value}`}
+            style={[styles.filterChip, homeFilter === value && styles.filterChipActive]}
+            onPress={() => setHomeFilter(value)}
+          >
+            <Text style={[styles.filterText, homeFilter === value && styles.filterTextActive]}>{text}</Text>
+          </Pressable>
+        ))}
+      </View>
       <WorldCupSegmented left={t.games} right={t.futures} value={worldCupTab} setValue={setWorldCupTab} />
       {worldCupTab === "games" ? (
-        <MarketList locale={locale} events={events} empty={t.noResults} openEvent={openEvent} openTicket={openTicket} />
+        <MarketList locale={locale} events={visibleEvents} empty={t.noResults} openEvent={openEvent} openTicket={openTicket} />
       ) : (
         <FutureList locale={locale} futures={futures} openTicket={openTicket} />
       )}
@@ -68,4 +103,9 @@ const styles = StyleSheet.create({
   sectionTitle: { color: "#f8fafc", fontSize: 24, fontWeight: "900", marginTop: 24, marginBottom: 12 },
   searchBox: { flexDirection: "row", alignItems: "center", gap: 10, height: 52, paddingHorizontal: 14, borderRadius: 12, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginBottom: 14 },
   searchInput: { flex: 1, color: "#f8fafc", fontSize: 16, fontWeight: "700" },
+  filterRow: { flexDirection: "row", gap: 8, marginBottom: 12 },
+  filterChip: { paddingHorizontal: 14, paddingVertical: 9, borderRadius: 999, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  filterChipActive: { backgroundColor: "#1d6dff", borderColor: "#1d6dff" },
+  filterText: { color: "#8ea0b8", fontWeight: "900" },
+  filterTextActive: { color: "#ffffff" },
 });
