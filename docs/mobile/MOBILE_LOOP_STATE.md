@@ -6593,6 +6593,55 @@ Harnesses run:
 Harness failures:
 - Initial timestamp unit expectations failed, then passed after timezone expectation correction.
 
+### Cycle 139
+
+Date: 2026-07-01
+Branch: mobile/cycle-139
+Goal: Map backend resolved-history economics into mobile closed activity rows.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: Portfolio closed activity rows can now show entry/current value/P/L when backend history provides entry amount but not probability.
+Backend/API changed: No backend route change; mobile adapter now consumes existing `netInvestedTokens`.
+Database/schema changed: None.
+Files changed: `mobile/src/services/portfolioHistoryService.ts`, `mobile/src/components/Portfolio.tsx`, `mobile/src/__tests__/portfolioHistoryService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm run smoke:samsung:closed-history` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-139-samsung-backend-history-economics-smoke.png`
+- `docs/mobile/screenshots/cycle-139-samsung-backend-history-economics-closed-history.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-139-samsung-backend-history-economics-home.xml`
+- `docs/mobile/harness/cycle-139-samsung-backend-history-economics-closed-history.xml`
+Bugs found:
+- Typecheck caught a probability narrowing issue in the shared activity execution row; fixed before final verification.
+Technical debt added:
+- Backend history still lacks shares/execution price/fill-side detail for full order-history parity.
+Technical debt resolved:
+- Backend portfolio history rows no longer lose entry/current/P/L economics when mapped into mobile Portfolio activity.
+Result: Passed Cycle 139 QA. Mobile typecheck, mobile API/history tests, and Samsung timestamp smoke pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 140 should continue backend-backed history/trading parity or add a Samsung proof for a high-value order placement flow.
+Harnesses run:
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History Unit Harness
+- Samsung Smoke Wrapper Harness
+- Review Harness
+Harness failures:
+- Initial typecheck failed, then passed after probability narrowing fix.
+
+### Heartbeat After Cycle 139
+
+Completed cycles: 137, 138, 139.
+Verified progress: Portfolio Recent activity rows now show timestamp context, forced smoke state resists stale storage hydration, backend resolved history maps `resolveTime`/`createdAt` into mobile timestamps, and backend `netInvestedTokens` maps into entry amount for closed-row P/L display.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, local persistence, market group counts, outcome/ticket odds, potential profit, open-order economics, latest-order execution details, timestamped order history, and richer backend-compatible resolved-history mapping.
+Current backend state: Mobile API/profile-preference/activity/history tests pass. Local backend health remains unavailable during Samsung smokes, so live backend verification is still represented by adapter/unit tests plus mock visual proof.
+Device strategy: Samsung S23 remains the primary Holiwyn visual QA target through Expo Go, with the emulator as fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: Backend history still lacks full fill-level metadata; Expo Go proof depends on LAN reachability; production timezone/user settings are not yet modeled.
+Next three likely cycles: continue backend-backed order/history parity, add Samsung wrappers for order-placement proofs, and retry live server-mode proof if backend health becomes available.
+
 ### Heartbeat After Cycle 136
 
 Completed cycles: 134, 135, 136.
