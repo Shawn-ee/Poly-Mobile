@@ -4187,8 +4187,8 @@ Technical debt added:
 Technical debt resolved:
 - Home users can now clear an active query without manually deleting text.
 Result: Passed Cycle 084 QA. Mobile typecheck, focused Home clear-search smoke, visual screenshot review, and mobile API tests pass.
-Commit: Pending branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `fa9a9ec` (`Add Holiwyn home search clear action`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `1bc9495`.
 Next cycle: Cycle 085 should continue market discovery/trading parity or retry backend readiness if local services become reachable.
 Harnesses run:
 - Emulator Runtime Harness
