@@ -2244,3 +2244,23 @@ Bugs:
 - None found.
 Visual QA:
 - Account Preferences shows `Open positions: 1` after the harness seeds a mock World Cup winner position.
+
+### Cycle 110
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:account-portfolio-value`
+- `npm run test:mobile-api`
+Result: Passed. Account Preferences now shows estimated portfolio value from fake balance plus current open-position value.
+Screenshots:
+- `docs/mobile/screenshots/cycle-110-holiwyn-account-portfolio-value-smoke.png`
+- `docs/mobile/screenshots/cycle-110-holiwyn-account-portfolio-value.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-110-holiwyn-account-portfolio-value-home-start.xml`
+- `docs/mobile/harness/cycle-110-holiwyn-account-portfolio-value.xml`
+Bugs:
+- Initial visual evidence did not show the new value row. The row was moved above Open positions and the focused smoke was rerun successfully.
+Visual QA:
+- Account Preferences shows `Portfolio value: 10,281.25 USDT` in the first viewport after the harness seeds a mock World Cup winner position.

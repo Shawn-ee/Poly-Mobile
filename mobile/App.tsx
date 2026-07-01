@@ -102,6 +102,10 @@ export default function App() {
   const mounted = useRef(true);
   const profilePreferencesReady = useRef(false);
   const shouldSyncProfilePreferences = ORDER_MODE === "server" && DEFAULT_API_KEY.length > 0;
+  const accountPortfolioValue = useMemo(
+    () => balance + positions.reduce((total, position) => total + portfolioPositionValue(position), 0),
+    [balance, positions],
+  );
 
   useEffect(() => {
     return () => {
@@ -626,6 +630,7 @@ export default function App() {
                 profileSyncStatus={profilePreferencesSyncStatus}
                 savedMarketCount={savedEventIds.size}
                 openPositionCount={positions.length}
+                portfolioValue={accountPortfolioValue}
               />
             )}
           </>
