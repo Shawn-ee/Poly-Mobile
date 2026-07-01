@@ -2789,6 +2789,65 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 056
+
+Date: 2026-07-01
+Branch: mobile/cycle-056
+Goal: Replace prop-section smoke scrolling with selector-driven Event Detail market group navigation.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Event Detail now has compact market group jump chips and a persistent back row above the market scroll area.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/src/components/EventDetail.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-056-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-056-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-056-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-056-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-056-holiwyn-event-detail-back.xml`
+- `docs/mobile/harness/cycle-056-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-056-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-056-holiwyn-ticket-max.xml`
+- `docs/mobile/harness/cycle-056-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-056-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-056-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-056-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-056-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-056-holiwyn-search-query.xml`
+Bugs found:
+- Initial run showed the back button could still be offscreen after jumping to Props. Fixed by making Event Detail back persistent above the scroll area.
+Technical debt added:
+- Group jump offsets are measured locally in Event Detail; this is fine for the current single-screen layout but may need adjustment if nested headers are introduced.
+Technical debt resolved:
+- Deep smoke no longer uses a blind fixed swipe to reveal Event Detail Props.
+Result: Passed Cycle 056 QA after recovery. Deep smoke verifies Props via `event-detail-group-prop`, persistent back via `event-detail-back`, and the normal trade, close, Live, and Search flows.
+Commit: cycle branch HEAD (`pending`)
+Merged: Pending local merge.
+Next cycle: Cycle 057 should continue reducing remaining home-list scroll/input device actions or add deeper server fixture coverage.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- One recoverable harness failure when the back control remained offscreen after the new Props jump.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

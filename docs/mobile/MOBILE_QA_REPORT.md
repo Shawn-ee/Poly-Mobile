@@ -1100,3 +1100,26 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-055-holiwyn-search-query.png`
 Bugs: None found.
 Harness note: `docs/mobile/harness/cycle-055-holiwyn-event-detail-back.xml` captures the selector-visible back control before it is tapped.
+
+### Cycle 056
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed after recovery. Event Detail Props are reached through the `event-detail-group-prop` selector, and the persistent `event-detail-back` control returns to Home.
+Screenshots:
+- `docs/mobile/screenshots/cycle-056-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-056-holiwyn-search-query.png`
+Bugs:
+- Initial run showed the selector jump could leave the back control offscreen; fixed by making Event Detail back persistent above the scroll area.
