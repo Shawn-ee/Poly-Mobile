@@ -2106,3 +2106,18 @@ Findings:
 - Samsung live-order-close smoke, mobile typecheck, and mobile API/history tests passed.
 Decision: Approve Cycle 144 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 145
+
+Date: 2026-07-01
+Branch: mobile/cycle-145
+Reviewer: Lead/Reviewer pass
+Scope: Samsung deep live Portfolio metadata smoke wrapper.
+Findings:
+- P1: `smoke-samsung.ps1` now supports `-LivePortfolioBadgeDeep`, and `npm run smoke:samsung:live-portfolio-badge-deep` targets the S23 with a repeatable live metadata proof.
+- P1: The harness now checks latest-order live clock before scrolling and position/activity live metadata after scrolling, matching physical phone layout.
+- P1: Captured Samsung evidence verifies live ticket opening, order placement, latest-order live clock, open-position live badge/clock, and Recent activity live badge/clock.
+- P2: This remains mock-mode metadata proof; server-backed live metadata still depends on later backend order/history integration.
+- Samsung deep live metadata smoke, mobile typecheck, and mobile API/history tests passed.
+Decision: Approve Cycle 145 for local commit/merge after scoped diff review.
+Merge approved: Yes

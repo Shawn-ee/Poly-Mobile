@@ -62,6 +62,12 @@ To verify Samsung live-market position close behavior, run:
 npm run smoke:samsung:live-order-close
 ```
 
+To verify Samsung deep live Portfolio badge and clock propagation, run:
+
+```powershell
+npm run smoke:samsung:live-portfolio-badge-deep
+```
+
 ## Device Strategy
 
 - Samsung S23: use for Polymarket reference and, later, explicit Holiwyn real-device QA.

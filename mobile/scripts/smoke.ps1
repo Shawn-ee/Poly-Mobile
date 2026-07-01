@@ -477,14 +477,14 @@ try {
           Assert-HierarchyContains -Path $liveOrderPortfolioHierarchy -Expected @("LIVE WORLD CUP", "portfolio-position-live-badge")
         }
         if ($LivePortfolioBadgeDeep) {
-          Assert-HierarchyContains -Path $liveOrderPortfolioHierarchy -Expected @("portfolio-position-live-clock", "Live - 63'")
+          Assert-HierarchyContains -Path $liveOrderPortfolioHierarchy -Expected @("latest-order-live-clock", "portfolio-position-live-clock", "Live - 63'")
         }
         if ($LivePortfolioBadgeDeep) {
           & $adb -s $Device shell input swipe 540 1500 540 650 450 | Out-Null
           Start-Sleep -Seconds 1
           Save-Screenshot -Name "cycle-current-holiwyn-live-portfolio-badge-deep.png"
           $livePortfolioBadgeDeepHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-portfolio-badge-deep.xml"
-          Assert-HierarchyContains -Path $livePortfolioBadgeDeepHierarchy -Expected @("latest-order-live-clock", "LIVE WORLD CUP", "Live - 63'", "Mock order placed", "France vs. Argentina")
+          Assert-HierarchyContains -Path $livePortfolioBadgeDeepHierarchy -Expected @("portfolio-position-live-clock", "portfolio-activity-live-clock", "LIVE WORLD CUP", "Live - 63'", "France vs. Argentina")
           & $adb -s $Device shell input swipe 540 1500 540 650 450 | Out-Null
           Start-Sleep -Milliseconds 500
           & $adb -s $Device shell input swipe 540 1500 540 650 450 | Out-Null

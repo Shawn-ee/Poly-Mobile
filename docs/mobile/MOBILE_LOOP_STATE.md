@@ -6844,6 +6844,63 @@ Harnesses run:
 Harness failures:
 - Initial Samsung live-close runs exposed scroll and final-assertion gaps; both were fixed before final pass.
 
+### Cycle 145
+
+Date: 2026-07-01
+Branch: mobile/cycle-145
+Goal: Add a Samsung-first deep live Portfolio metadata proof for latest-order, open-position, and activity live badge/clock propagation.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; harness/device proof cycle.
+Backend/API changed: No backend route change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke-samsung.ps1`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `npm run smoke:samsung:live-portfolio-badge-deep` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-145-samsung-live-metadata-smoke.png`
+- `docs/mobile/screenshots/cycle-145-samsung-live-metadata-ready.png`
+- `docs/mobile/screenshots/cycle-145-samsung-live-metadata-ticket.png`
+- `docs/mobile/screenshots/cycle-145-samsung-live-metadata-portfolio.png`
+- `docs/mobile/screenshots/cycle-145-samsung-live-metadata-position.png`
+- `docs/mobile/screenshots/cycle-145-samsung-live-metadata-activity.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-145-samsung-live-metadata-home.xml`
+- `docs/mobile/harness/cycle-145-samsung-live-metadata-ready.xml`
+- `docs/mobile/harness/cycle-145-samsung-live-metadata-ticket.xml`
+- `docs/mobile/harness/cycle-145-samsung-live-metadata-portfolio.xml`
+- `docs/mobile/harness/cycle-145-samsung-live-metadata-position.xml`
+- `docs/mobile/harness/cycle-145-samsung-live-metadata-activity.xml`
+Bugs found:
+- The first Samsung metadata run checked latest-order clock after scrolling past it. Fixed by asserting latest-order metadata before scrolling and position/activity metadata after scrolling.
+Technical debt added:
+- Deep live metadata proof remains mock-mode/Expo Go; server-backed live metadata remains pending.
+Technical debt resolved:
+- Samsung real-device QA now covers live badge/clock propagation across latest-order, open-position, and activity rows.
+Result: Passed Cycle 145 QA. Samsung deep live metadata smoke, mobile typecheck, and mobile API/history tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 146 should continue toward server-mode device order execution or backend-backed live history parity.
+Harnesses run:
+- Samsung Deep Live Portfolio Metadata Smoke Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History Unit Harness
+- Review Harness
+Harness failures:
+- Initial Samsung metadata proof failed on a scroll-position assertion mismatch; fixed before final pass.
+
+### Heartbeat After Cycle 145
+
+Completed cycles: 143, 144, 145.
+Verified progress: Samsung real-device QA now covers the full live fake-token path: live ticket opening, mock buy, Portfolio confirmation, live close-position flow, and live badge/clock propagation across latest order, open position, and Recent activity.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, local persistence, market group counts, outcome/ticket odds, potential profit, open-order economics, latest-order execution details, timestamped order history, backend-compatible resolved-history mapping, Samsung-proven core trading flows, and Samsung-proven live trading/metadata flows.
+Current backend state: Mobile API/profile-preference/activity/history tests pass. Local backend health remains unavailable during Samsung smokes, so live backend verification remains adapter/unit-tested plus mock visual proof.
+Device strategy: Samsung S23 is the primary Holiwyn visual QA target through Expo Go. The emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane for more production-like testing.
+Open blockers: None for autonomous progress.
+Risks: Server-mode order/close execution is still unproven on device; backend history still lacks full fill-level metadata; Expo Go proof depends on LAN reachability and installed runtime.
+Next three likely cycles: prepare a reachable server-mode Samsung order proof, add backend-backed live history metadata mapping if API data allows it, and continue reducing Expo Go dependence with the APK/dev-client lane.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.
