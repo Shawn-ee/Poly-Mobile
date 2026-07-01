@@ -1530,3 +1530,18 @@ Findings:
 - P2: No schema, credential, or runtime backend mutation was attempted because the readiness gate did not pass.
 Decision: Approve Cycle 106 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 107
+
+Date: 2026-07-01
+Branch: mobile/cycle-107
+Reviewer: Lead/Reviewer pass
+Scope: Visible Account profile sync state.
+Findings:
+- P1: Account now receives profile preference sync status and renders server-mode sync/unavailable state only when profile sync is enabled.
+- P1: Profile preference load/save failures now set an Account-visible error state instead of staying silent.
+- P1: Focused smoke launches server mode with a harness API key and unreachable backend, then verifies `Profile sync unavailable` plus local preference fallback copy on emulator.
+- P2: This remains a status/recovery surface only; live profile proof still depends on backend readiness.
+- Mobile typecheck, focused account-profile-sync-error smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 107 for local commit/merge after scoped diff review.
+Merge approved: Yes

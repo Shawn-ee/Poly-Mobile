@@ -66,6 +66,7 @@ type TicketDefaults = {
   amount: string;
   side: "buy" | "sell";
 };
+type ProfilePreferencesSyncStatus = "hidden" | "syncing" | "synced" | "error";
 
 export default function App() {
   const [locale, setLocale] = useState<Locale>("en");
@@ -86,6 +87,9 @@ export default function App() {
   const [ticketDefaults, setTicketDefaults] = useState<TicketDefaults>({ amount: "100", side: "buy" });
   const [ticketDefaultsHydrated, setTicketDefaultsHydrated] = useState(false);
   const [portfolioSyncStatus, setPortfolioSyncStatus] = useState<PortfolioSyncStatus>(ORDER_MODE === "server" ? "syncing" : "hidden");
+  const [profilePreferencesSyncStatus, setProfilePreferencesSyncStatus] = useState<ProfilePreferencesSyncStatus>(
+    ORDER_MODE === "server" && DEFAULT_API_KEY.length > 0 ? "syncing" : "hidden"
+  );
   const [events, setEvents] = useState<Event[]>(worldCupEvents);
   const [savedEventIds, setSavedEventIds] = useState<Set<string>>(() => new Set());
   const [savedEventIdsHydrated, setSavedEventIdsHydrated] = useState(false);
@@ -187,16 +191,27 @@ export default function App() {
   }, [ticketDefaults, ticketDefaultsHydrated]);
 
   useEffect(() => {
-    if (!shouldSyncProfilePreferences || !localeHydrated || !savedEventIdsHydrated || !ticketDefaultsHydrated) return;
+    if (!shouldSyncProfilePreferences) {
+      setProfilePreferencesSyncStatus("hidden");
+      return;
+    }
+    if (!localeHydrated || !savedEventIdsHydrated || !ticketDefaultsHydrated) {
+      setProfilePreferencesSyncStatus("syncing");
+      return;
+    }
     let cancelled = false;
+    setProfilePreferencesSyncStatus("syncing");
     loadProfilePreferences(api)
       .then((preferences) => {
         if (cancelled || !mounted.current) return;
         setLocale(preferences.locale);
         setTicketDefaults({ amount: preferences.ticketDefaultAmount, side: preferences.ticketDefaultSide });
         setSavedEventIds(new Set(preferences.savedEventIds));
+        setProfilePreferencesSyncStatus("synced");
       })
-      .catch(() => undefined)
+      .catch(() => {
+        if (!cancelled && mounted.current) setProfilePreferencesSyncStatus("error");
+      })
       .finally(() => {
         if (!cancelled && mounted.current) profilePreferencesReady.current = true;
       });
@@ -220,7 +235,13 @@ export default function App() {
       ticketDefaultAmount: ticketDefaults.amount,
       ticketDefaultSide: ticketDefaults.side,
       savedEventIds: [...savedEventIds],
-    }).catch(() => undefined);
+    })
+      .then(() => {
+        if (mounted.current) setProfilePreferencesSyncStatus("synced");
+      })
+      .catch(() => {
+        if (mounted.current) setProfilePreferencesSyncStatus("error");
+      });
   }, [api, locale, localeHydrated, savedEventIds, savedEventIdsHydrated, shouldSyncProfilePreferences, ticketDefaults, ticketDefaultsHydrated]);
 
   useEffect(() => {
@@ -582,6 +603,7 @@ export default function App() {
                 languagePreferenceValue={locale === "en" ? "English" : "\u4e2d\u6587"}
                 ticketDefaultAmount={ticketDefaults.amount}
                 ticketDefaultSide={ticketDefaults.side}
+                profileSyncStatus={profilePreferencesSyncStatus}
               />
             )}
           </>
