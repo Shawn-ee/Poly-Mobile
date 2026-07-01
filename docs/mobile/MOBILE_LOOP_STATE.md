@@ -2056,6 +2056,61 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 044
+
+Date: 2026-07-01
+Branch: mobile/cycle-044
+Goal: Show available fake balance in the trade ticket before order submission.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Trade Ticket now includes a `Fake balance` line alongside estimated cost and estimated payout.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/src/components/TradeTicket.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-044-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-044-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-044-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-044-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-044-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-044-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-044-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-044-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-044-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-044-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-044-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-044-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Ticket sizing now exposes available fake balance before order placement.
+Result: Passed Cycle 044 QA. Deep smoke verifies `Fake balance` and `10,000 USDT` in the ticket and preserves the full trading path.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 045 should add a clearer max/amount control or start selector-driven harness improvements.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
