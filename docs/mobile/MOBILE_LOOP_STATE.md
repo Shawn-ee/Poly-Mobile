@@ -3136,8 +3136,8 @@ Technical debt added:
 Technical debt resolved:
 - Mobile API client now has automated proof for Bearer auth, canonical limit-order idempotency/body, and encoded cancel endpoint behavior.
 Result: Passed Cycle 061 QA. Mobile API unit harness and mobile typecheck both pass.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `6495f74` (`Add Holiwyn mobile API request tests`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `449ae1e`.
 Next cycle: Cycle 062 should add a server-mode readiness/preflight script that checks required env and backend health before any authenticated server smoke.
 Harnesses run:
 - Server Auth Request Harness
