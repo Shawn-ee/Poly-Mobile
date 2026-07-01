@@ -4274,8 +4274,8 @@ Technical debt added:
 Technical debt resolved:
 - Cold Metro rebuilds and temporary Expo generic error screens now get more automated recovery before failing a smoke.
 Result: Passed Cycle 086 QA. Mobile typecheck, focused Search clear-query smoke, visual screenshot review, and mobile API tests pass.
-Commit: Pending branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `ebaaae7` (`Harden Holiwyn emulator smoke launch recovery`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `e9711e0`.
 Next cycle: Cycle 087 should continue product parity and will trigger the next heartbeat after cycles 085, 086, and 087.
 Harnesses run:
 - Emulator Runtime Harness
