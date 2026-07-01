@@ -5455,6 +5455,44 @@ Open blockers: None for autonomous mock-mode product/harness progress. Live auth
 Risks: Saved markets, Account session, language, ticket defaults, and mock Portfolio persistence are local-first; profile sync is guarded and visible on failure but still lacks live-backend proof; Portfolio counts, Home/Search/Futures market stats, Popular ranking, ticket quote math, market breadth counts, and close-position behavior remain local estimates until backend auth, profile, quote, popularity, order-book, and position APIs can feed them.
 Next three likely cycles: Continue Event Detail/trading polish, add more live-market affordances, and retry backend readiness if Docker/local Postgres become available.
 
+### Cycle 113
+
+Date: 2026-07-01
+Branch: mobile/cycle-113
+Goal: Surface live market and outcome breadth in Live screen and verify the live slate on emulator.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Live screen now shows compact market and outcome count pills above the live event card.
+Backend/API changed: No backend code change; counts are derived from the current live event payload.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/LiveScreen.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:live-summary` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-113-holiwyn-live-summary-smoke.png`
+- `docs/mobile/screenshots/cycle-113-holiwyn-live-summary.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-113-holiwyn-live-summary-home-start.xml`
+- `docs/mobile/harness/cycle-113-holiwyn-live-summary.xml`
+Bugs found:
+- First smoke run asserted a hidden market title. The harness was tightened to verify visible live-card text and rerun successfully.
+Technical debt added:
+- Live breadth counts are still client-derived from the loaded event payload.
+Technical debt resolved:
+- Live screen now communicates active tradable market/outcome breadth before the user opens a live event.
+Result: Passed Cycle 113 QA. Mobile typecheck, focused emulator live-summary smoke, and mobile API/profile-preference tests pass.
+Commit: `e77bfc2` (`Show Live market breadth summary`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `f098006`.
+Next cycle: Cycle 114 should continue live-market affordances or add another trading-detail refinement.
+Harnesses run:
+- Mobile Typecheck Harness
+- Live Summary Smoke Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- Initial focused smoke failed due to an over-specific hidden-title assertion. Updated to visible live-card evidence; rerun passed.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
