@@ -603,3 +603,21 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-032-holiwyn-search.png`
 - `docs/mobile/screenshots/cycle-032-holiwyn-search-query.png`
 Bugs: None found.
+
+### Cycle 033
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Portfolio now shows aggregate Invested, Current value, and Est. P/L summary cards after a mock trade.
+Screenshots:
+- `docs/mobile/screenshots/cycle-033-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-033-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-033-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-033-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-033-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-033-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-033-holiwyn-search-query.png`
+Bugs: None found.
