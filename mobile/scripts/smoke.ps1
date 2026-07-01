@@ -324,7 +324,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-live-ticket.png"
       $liveTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-ticket.xml"
-      Assert-HierarchyContains -Path $liveTicketHierarchy -Expected @("France", "France vs. Argentina", "Fake balance", "10,000 USDT", "Estimated cost", "Est. shares", "Avg price", "Place buy order")
+      Assert-HierarchyContains -Path $liveTicketHierarchy -Expected @("France", "France vs. Argentina", "Live World Cup", "Fake balance", "10,000 USDT", "Estimated cost", "Est. shares", "Avg price", "Place buy order")
       return
     }
 

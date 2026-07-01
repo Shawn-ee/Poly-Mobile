@@ -2346,3 +2346,25 @@ Bugs:
 - ADB initially reported the emulator offline, then recovered during the same smoke run. The focused smoke completed successfully.
 Visual QA:
 - Live France outcome opens a buy ticket showing `France`, `France vs. Argentina`, fake balance, estimates, and `Place buy order`.
+
+### Cycle 115
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run smoke:live-ticket`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Trade tickets opened from live events now show an in-play badge.
+Screenshots:
+- `docs/mobile/screenshots/cycle-115-holiwyn-live-ticket-badge-smoke.png`
+- `docs/mobile/screenshots/cycle-115-holiwyn-live-ticket-badge-ready.png`
+- `docs/mobile/screenshots/cycle-115-holiwyn-live-ticket-badge.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-115-holiwyn-live-ticket-badge-home-start.xml`
+- `docs/mobile/harness/cycle-115-holiwyn-live-ticket-badge-ready.xml`
+- `docs/mobile/harness/cycle-115-holiwyn-live-ticket-badge.xml`
+Bugs:
+- ADB initially reported the emulator offline, then recovered during the same focused smoke run.
+Visual QA:
+- Live France ticket shows a `LIVE WORLD CUP` badge above the Buy/Sell controls.
