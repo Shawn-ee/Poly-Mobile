@@ -110,6 +110,20 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-004-holiwyn-order-service-portfolio.png`
 Bugs: None found.
 
+### Cycle 008
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke`
+- Manual emulator tap-through: Home, featured future ticket, place mock order, Portfolio.
+Result: Passed. Extracted Portfolio component rendered fake balance and mock positions after order placement.
+Screenshots:
+- `docs/mobile/screenshots/cycle-008-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-008-holiwyn-portfolio-component.png`
+Bugs: None found.
+
 ### Cycle 007
 
 Date: 2026-07-01

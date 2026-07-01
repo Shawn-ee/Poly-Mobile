@@ -115,3 +115,16 @@ Findings:
 - `npm run typecheck`, `npm run smoke`, and manual ticket order QA passed.
 Decision: Approve Cycle 007 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 008
+
+Date: 2026-07-01
+Branch: mobile/cycle-008
+Reviewer: Lead/Reviewer pass
+Scope: Portfolio component extraction.
+Findings:
+- P1: Portfolio was retested after extraction through the mock order flow.
+- P2: The visible test state accumulated several mock positions from prior cycles; acceptable for runtime proof, but a resettable smoke harness would make screenshots cleaner.
+- `npm run typecheck`, `npm run smoke`, and manual Portfolio QA passed.
+Decision: Approve Cycle 008 for local commit/merge after scoped diff review.
+Merge approved: Yes
