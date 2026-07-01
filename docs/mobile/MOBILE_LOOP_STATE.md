@@ -5161,6 +5161,52 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 106
+
+Date: 2026-07-01
+Branch: mobile/cycle-106
+Goal: Retry backend readiness after profile preference sync work and record current live-backend gate status.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No UI change.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `docs/mobile/`.
+Tests run:
+- `npm run mobile:backend-readiness` from repo root.
+- `npm run typecheck` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- None; this was a backend readiness audit cycle.
+Harness evidence captured:
+- `docs/mobile/harness/cycle-106-mobile-backend-readiness.txt`
+Bugs found:
+- None in product code. Docker CLI and compose/DATABASE_URL configuration are ready, but Docker daemon and local Postgres TCP readiness remain unavailable.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Fresh readiness evidence confirms the profile-preference server seam is still gated only by local backend availability, not mobile type/API failures.
+Result: Passed Cycle 106 QA as a readiness audit. Live backend proof remains gated by Docker Desktop/local Postgres availability; mobile typecheck and mobile API tests pass.
+Commit: `60b7496` (`Record backend readiness after profile sync`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `efae505`.
+Next cycle: Cycle 107 should continue mock-mode product progress or add visible profile sync status for server-mode failure states.
+Harnesses run:
+- Backend Readiness Harness
+- Mobile Typecheck Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 106
+
+Completed cycles: 104, 105, 106 since the last heartbeat.
+Verified progress: Mobile has a typed profile-preferences API seam; server-mode/API-key guarded runtime profile preference load/save is wired; backend readiness was retried and still shows Docker daemon/local Postgres unavailable while mobile typecheck and API/profile preference tests pass.
+Current app state: Holiwyn mobile has verified Home discovery filters/saved markets/saved empty/search clear/card stats/futures stats, Search browse/query/clear/saved filtering/sort/saved empty/card stats/saved persistence, Event Detail grouped markets/props/group jumps/save/trading stats/depth/outcome ticket opening, featured futures trading, Futures list ticket/buy/sell/order/close coverage, ticket balance/max/preset sizing/share and price estimates, side-aware buy/sell tickets with persisted defaults, successful mock order, forced order failure, server order failure, Portfolio summary/detail/counts/compact count grid/close/activity/order confirmation/open-order cancel/local persistence, server-unavailable Portfolio fallback, Live refresh, localization with persisted language, Account/Login mock profile persistence plus preference summaries, and a guarded server profile-preferences sync seam on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history/order/cancel client seams are wired; Bearer API-key config and canonical request shape are tested; local credential generation and backend readiness harnesses exist; profile preferences now have typed mobile get/save plus guarded runtime sync; latest readiness evidence still shows Docker CLI and compose/DATABASE_URL ready, but Docker daemon and local Postgres TCP unavailable.
+Open blockers: None for autonomous mock-mode product/harness progress. Live authenticated backend proof remains gated by Docker Desktop/local Postgres availability.
+Risks: Saved markets, Account session, language, ticket defaults, and Portfolio persistence are local-first; profile sync is guarded and silent on failure until user-facing sync state is designed; Portfolio counts, Home/Search/Futures market stats, Popular ranking, ticket quote math, and close-position behavior remain local estimates until backend auth, profile, quote, popularity, order-book, and position APIs can feed them.
+Next three likely cycles: Add visible profile sync status for server mode, continue account/profile polish, and retry backend readiness if Docker/local Postgres become available.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
