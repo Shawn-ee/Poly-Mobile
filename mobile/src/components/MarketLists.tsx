@@ -15,6 +15,11 @@ const marketCardStats = (event: Event) => {
   };
 };
 
+const futureCardStats = (market: Market) => ({
+  volume: 12200 + market.outcomes.length * 2400,
+  liquidity: 7600 + market.outcomes.length * 1350,
+});
+
 export function MarketList({
   locale,
   events,
@@ -104,32 +109,47 @@ export function FutureList({
   locale,
   futures,
   openTicket,
+  statsCopy,
 }: {
   locale: Locale;
   futures: Market[];
   openTicket: (market: Market, outcome: Outcome) => void;
+  statsCopy?: MarketStatsCopy;
 }) {
   return (
     <View style={styles.eventList}>
-      {futures.map((market) => (
-        <View key={market.id} style={styles.eventCard}>
-          <Text style={styles.eventTitle}>{label(locale, market)}</Text>
-          {market.outcomes.map((outcome) => (
-            <View key={outcome.id} style={styles.teamRow}>
-              <Text style={styles.teamName}>{label(locale, outcome)}</Text>
-              <Text style={styles.oddsText}>{(100 / outcome.probability).toFixed(1)}x</Text>
-              <Pressable
-                accessibilityLabel={`future-outcome-${market.id}-${outcome.id}`}
-                style={[styles.probButton, { backgroundColor: outcome.color }]}
-                testID={`future-outcome-${market.id}-${outcome.id}`}
-                onPress={() => openTicket(market, outcome)}
-              >
-                <Text style={styles.probButtonText}>{outcome.probability}%</Text>
-              </Pressable>
-            </View>
-          ))}
-        </View>
-      ))}
+      {futures.map((market) => {
+        const stats = futureCardStats(market);
+        return (
+          <View key={market.id} style={styles.eventCard}>
+            <Text style={styles.eventTitle}>{label(locale, market)}</Text>
+            {statsCopy && (
+              <View style={styles.statsRow}>
+                <Text style={styles.statsText}>
+                  {statsCopy.volume}: {money(stats.volume)}
+                </Text>
+                <Text style={styles.statsText}>
+                  {statsCopy.liquidity}: {money(stats.liquidity)}
+                </Text>
+              </View>
+            )}
+            {market.outcomes.map((outcome) => (
+              <View key={outcome.id} style={styles.teamRow}>
+                <Text style={styles.teamName}>{label(locale, outcome)}</Text>
+                <Text style={styles.oddsText}>{(100 / outcome.probability).toFixed(1)}x</Text>
+                <Pressable
+                  accessibilityLabel={`future-outcome-${market.id}-${outcome.id}`}
+                  style={[styles.probButton, { backgroundColor: outcome.color }]}
+                  testID={`future-outcome-${market.id}-${outcome.id}`}
+                  onPress={() => openTicket(market, outcome)}
+                >
+                  <Text style={styles.probButtonText}>{outcome.probability}%</Text>
+                </Pressable>
+              </View>
+            ))}
+          </View>
+        );
+      })}
     </View>
   );
 }

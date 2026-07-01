@@ -125,7 +125,7 @@ export function HomeScreen({
           />
         )
       ) : (
-        <FutureList locale={locale} futures={futures} openTicket={openTicket} />
+        <FutureList locale={locale} futures={futures} openTicket={openTicket} statsCopy={{ volume: t.volume, liquidity: t.liquidity }} />
       )}
     </ScrollView>
   );

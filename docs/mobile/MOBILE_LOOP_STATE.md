@@ -4288,6 +4288,58 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 087
+
+Date: 2026-07-01
+Branch: mobile/cycle-087
+Goal: Add Volume/Liquidity context to Home Futures cards.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Home Futures cards now show localized Volume and Liquidity rows before outcomes.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/MarketLists.tsx`, `mobile/src/components/HomeScreen.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:future-card-stats` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-087-holiwyn-future-card-stats-smoke.png`
+- `docs/mobile/screenshots/cycle-087-holiwyn-future-card-stats.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-087-holiwyn-future-card-stats-home.xml`
+- `docs/mobile/harness/cycle-087-holiwyn-future-card-stats.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Futures Volume/Liquidity are deterministic local estimates until backend metrics are available.
+Technical debt resolved:
+- Futures cards now provide the same market context as match cards during discovery.
+Result: Passed Cycle 087 QA. Mobile typecheck, focused Futures card stats smoke, visual screenshot review, and mobile API tests pass.
+Commit: Pending branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 088 should continue product parity or retry backend readiness if local services become reachable.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Home Discovery Harness
+- Futures Harness
+- Screenshot Evidence Harness
+- Localization Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 087
+
+Completed cycles: 085, 086, 087 since the last heartbeat.
+Verified progress: Search now uses the same accessible close-icon Clear action as Home, the emulator smoke launch harness recovers better from temporary Expo/Metro generic error screens, and Home Futures cards now show Volume/Liquidity context.
+Current app state: Holiwyn mobile has verified Home discovery filters/saved markets/saved empty/search clear/card stats/futures stats, Search browse/query/clear/saved filtering/sort/saved empty/card stats, Event Detail grouped markets/props/group jumps/save/trading stats/depth/outcome ticket opening, featured futures trading, ticket balance/max/preset sizing/share and price estimates, side-aware buy/sell tickets, successful mock order, forced order failure, server order failure, Portfolio summary/detail/close/activity/order confirmation/open-order cancel, server-unavailable Portfolio fallback, Live refresh, localization, and Account/Login mock profile flows on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history/order/cancel client seams are wired; Bearer API-key config and canonical request shape are tested; local credential generation and backend readiness harnesses exist; latest UI smokes still use mock fallback because backend health is unavailable.
+Open blockers: None for autonomous product/harness progress. Live authenticated backend proof still waits on local backend/Docker availability.
+Risks: Account and Saved state are local/session-only; Home/Search market stats, Futures stats, Popular ranking, and ticket quote math remain local estimates until backend auth, quote, popularity, and order-book APIs can feed them.
+Next three likely cycles: Continue market/trading parity, improve futures/search affordances, and retry backend readiness when local services become reachable.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
