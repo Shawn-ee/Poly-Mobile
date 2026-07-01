@@ -3880,6 +3880,48 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 078
+
+Date: 2026-07-01
+Branch: mobile/cycle-078
+Goal: Add Volume/Liquidity context to Search result cards.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Search result cards now show localized Volume and Liquidity rows.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/SearchScreen.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:search-card-stats` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-078-holiwyn-search-card-stats-smoke.png`
+- `docs/mobile/screenshots/cycle-078-holiwyn-search-card-stats.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-078-holiwyn-search-card-stats-home.xml`
+- `docs/mobile/harness/cycle-078-holiwyn-search-card-stats.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Search card stats use local estimates until backend market metrics are available.
+Technical debt resolved:
+- Search cards now match Home card market-activity context.
+Result: Passed Cycle 078 QA. Mobile typecheck, focused Search card stats smoke, visual screenshot review, and mobile API tests pass.
+Commit: `PENDING`
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 079 should add richer search/discovery behavior or retry backend readiness if Docker daemon becomes available.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Search Harness
+- Discovery Metadata Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

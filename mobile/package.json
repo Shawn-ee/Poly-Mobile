@@ -22,6 +22,7 @@
     "smoke:home-saved": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -HomeSaved -Port 8093",
     "smoke:home-card-stats": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -HomeCardStats -Port 8094",
     "smoke:saved-search": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SavedSearch -Port 8095",
+    "smoke:search-card-stats": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SearchCardStats -Port 8096",
     "smoke:search-query": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SearchQuery -Port 8086",
     "smoke:server-unavailable": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerUnavailable -Port 8087",
     "smoke:server-order-failure": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerOrderFailure -Port 8088"

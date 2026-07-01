@@ -1562,3 +1562,23 @@ Bugs:
 - None found.
 Visual QA:
 - Search Saved filter shows one saved market with active star, correct result count, and visible trade buttons.
+
+### Cycle 078
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:search-card-stats`
+- `npm run test:mobile-api`
+Result: Passed. Search result cards now show localized Volume and Liquidity context.
+Screenshots:
+- `docs/mobile/screenshots/cycle-078-holiwyn-search-card-stats-smoke.png`
+- `docs/mobile/screenshots/cycle-078-holiwyn-search-card-stats.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-078-holiwyn-search-card-stats-home.xml`
+- `docs/mobile/harness/cycle-078-holiwyn-search-card-stats.xml`
+Bugs:
+- None found.
+Visual QA:
+- Search card stats fit without crowding outcome buttons or bottom navigation.
