@@ -61,12 +61,16 @@ export function EventDetail({
   t,
   openTicket,
   goBack,
+  isSaved,
+  toggleSavedEvent,
 }: {
   event: Event;
   locale: Locale;
   t: EventDetailCopy;
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
   goBack: () => void;
+  isSaved: boolean;
+  toggleSavedEvent: (event: Event) => void;
 }) {
   const groups = groupMarkets(event.markets);
   const stats = marketStats(event);
@@ -96,7 +100,17 @@ export function EventDetail({
       <ScrollView ref={scrollRef} style={styles.content} contentContainerStyle={styles.scrollPad}>
       <View style={styles.detailHero}>
         <Text style={styles.detailMeta}>{event.startsAt} · {label(locale, { label: event.tag, zhLabel: event.zhTag })}</Text>
-        <Text style={styles.detailTitle}>{label(locale, event)}</Text>
+        <View style={styles.detailTitleRow}>
+          <Text style={styles.detailTitle}>{label(locale, event)}</Text>
+          <Pressable
+            accessibilityLabel={`event-detail-save-${event.id}`}
+            onPress={() => toggleSavedEvent(event)}
+            style={[styles.saveButton, isSaved && styles.saveButtonActive]}
+            testID={`event-detail-save-${event.id}`}
+          >
+            <Text style={[styles.saveText, isSaved && styles.saveTextActive]}>{isSaved ? "★" : "☆"}</Text>
+          </Pressable>
+        </View>
         <View accessibilityLabel="event-detail-stats" style={styles.statsGrid} testID="event-detail-stats">
           <View style={styles.statCell}>
             <Text style={styles.statLabel}>{t.volume}</Text>
@@ -181,7 +195,12 @@ const styles = StyleSheet.create({
   backText: { color: "#f8fafc", fontWeight: "900" },
   detailHero: { padding: 18, borderRadius: 16, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginBottom: 4 },
   detailMeta: { color: "#94a3b8", fontWeight: "800", marginBottom: 8 },
-  detailTitle: { color: "#f8fafc", fontSize: 26, fontWeight: "900" },
+  detailTitleRow: { flexDirection: "row", alignItems: "center", gap: 10 },
+  detailTitle: { flex: 1, color: "#f8fafc", fontSize: 26, fontWeight: "900" },
+  saveButton: { width: 44, height: 44, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
+  saveButtonActive: { backgroundColor: "#fbbf24", borderColor: "#fbbf24" },
+  saveText: { color: "#94a3b8", fontSize: 24, fontWeight: "900" },
+  saveTextActive: { color: "#101827" },
   statsGrid: { flexDirection: "row", gap: 8, marginTop: 16 },
   statCell: { flex: 1, minHeight: 66, justifyContent: "center", paddingHorizontal: 10, borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
   statLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "900", textTransform: "uppercase", marginBottom: 5 },

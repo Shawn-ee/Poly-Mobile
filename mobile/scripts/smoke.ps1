@@ -19,7 +19,8 @@ param(
   [switch]$HomeCardStats,
   [switch]$SavedSearch,
   [switch]$SearchCardStats,
-  [switch]$SearchSavedEmpty
+  [switch]$SearchSavedEmpty,
+  [switch]$EventDetailSave
 )
 
 $ErrorActionPreference = "Stop"
@@ -160,11 +161,11 @@ try {
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
   }
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeCardStats -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeCardStats -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeCardStats -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeCardStats -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
@@ -326,6 +327,31 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-search-saved-empty.png"
       $searchSavedEmptyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search-saved-empty.xml"
       Assert-HierarchyContains -Path $searchSavedEmptyHierarchy -Expected @("Saved", "0 results", "No saved markets yet.")
+      return
+    }
+
+    if ($EventDetailSave) {
+      Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "event-card-mexico-ecuador"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-save-detail.png"
+      $eventDetailSaveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-save-detail.xml"
+      Assert-HierarchyContains -Path $eventDetailSaveHierarchy -Expected @("Mexico vs. Ecuador", "Volume", "Liquidity", "☆")
+      Invoke-TapHierarchyNode -Path $eventDetailSaveHierarchy -Identifier "event-detail-save-mexico-ecuador"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-save-star.png"
+      $eventDetailSavedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-save-star.xml"
+      Assert-HierarchyContains -Path $eventDetailSavedHierarchy -Expected @("Mexico vs. Ecuador", "★")
+      Invoke-TapHierarchyNode -Path $eventDetailSavedHierarchy -Identifier "event-detail-back"
+      Start-Sleep -Seconds 1
+      $eventDetailSaveHomeHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-save-home.xml"
+      Invoke-TapHierarchyNode -Path $eventDetailSaveHomeHierarchy -Identifier "holiwyn-search-tab"
+      Start-Sleep -Seconds 1
+      $eventDetailSaveSearchHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-save-search.xml"
+      Invoke-TapHierarchyNode -Path $eventDetailSaveSearchHierarchy -Identifier "search-filter-saved"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-save-search-saved.png"
+      $eventDetailSaveSearchSavedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-save-search-saved.xml"
+      Assert-HierarchyContains -Path $eventDetailSaveSearchSavedHierarchy -Expected @("Saved", "Mexico vs. Ecuador", "1 result", "★")
       return
     }
 

@@ -307,6 +307,8 @@ export default function App() {
             t={t}
             openTicket={openTicket}
             goBack={() => setSelectedEvent(null)}
+            isSaved={savedEventIds.has(selectedEvent.id)}
+            toggleSavedEvent={toggleSavedEvent}
           />
         ) : (
           <>

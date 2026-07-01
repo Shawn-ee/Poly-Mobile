@@ -1603,3 +1603,29 @@ Bugs:
 - None found.
 Visual QA:
 - Saved empty state is centered and does not conflict with filter chips or bottom navigation.
+
+### Cycle 080
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:event-detail-save`
+- `npm run test:mobile-api`
+Result: Passed. Event Detail now supports saving a market page and the saved state carries into Search Saved.
+Screenshots:
+- `docs/mobile/screenshots/cycle-080-holiwyn-event-detail-save-smoke.png`
+- `docs/mobile/screenshots/cycle-080-holiwyn-event-detail-save-detail.png`
+- `docs/mobile/screenshots/cycle-080-holiwyn-event-detail-save-star.png`
+- `docs/mobile/screenshots/cycle-080-holiwyn-event-detail-save-search-saved.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-080-holiwyn-event-detail-save-home-start.xml`
+- `docs/mobile/harness/cycle-080-holiwyn-event-detail-save-detail.xml`
+- `docs/mobile/harness/cycle-080-holiwyn-event-detail-save-star.xml`
+- `docs/mobile/harness/cycle-080-holiwyn-event-detail-save-home.xml`
+- `docs/mobile/harness/cycle-080-holiwyn-event-detail-save-search.xml`
+- `docs/mobile/harness/cycle-080-holiwyn-event-detail-save-search-saved.xml`
+Bugs:
+- None found.
+Visual QA:
+- Event Detail star fits in the hero and saved Search result keeps active star plus trade controls visible.
