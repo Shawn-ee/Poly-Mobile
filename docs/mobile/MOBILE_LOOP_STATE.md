@@ -430,7 +430,7 @@ Technical debt resolved:
 - Partial large-file debt: Games and Futures list rendering are now isolated from `App.tsx`.
 Result: Passed Cycle 010 QA. Extracted list components render Games/Home smoke and Futures tab.
 Commit: cycle branch HEAD (`Extract Holiwyn mobile market lists`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 011 should extract Event Detail or improve grouped World Cup props.
 Harnesses run:
 - QA Smoke Harness
