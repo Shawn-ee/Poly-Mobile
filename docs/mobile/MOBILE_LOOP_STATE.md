@@ -4455,8 +4455,8 @@ Technical debt added:
 Technical debt resolved:
 - Futures list entry points now have focused sell-ticket proof, not only buy-ticket proof.
 Result: Passed Cycle 090 QA. Mobile typecheck, focused Futures list sell smoke, visual screenshot review, and mobile API tests pass.
-Commit: Pending branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `058135f` (`Add Holiwyn futures list sell smoke`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `cfce440`.
 Next cycle: Cycle 091 should continue trading/portfolio parity and will trigger the next heartbeat after cycles 089, 090, and 091.
 Harnesses run:
 - Emulator Runtime Harness
