@@ -33,6 +33,7 @@ const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? 
 
 type MainTab = "home" | "live" | "portfolio" | "search";
 type WorldCupTab = "games" | "futures";
+type SearchFilter = "all" | "live" | "upcoming";
 const copy = {
   en: {
     promo: "Get 50",
@@ -50,6 +51,9 @@ const copy = {
     searchResults: "Results",
     topResults: "Top results",
     clearSearch: "Clear",
+    searchAll: "All",
+    searchLive: "Live",
+    searchUpcoming: "Upcoming",
     balance: "Fake balance",
     noPositions: "No positions yet",
     noPositionsBody: "Place a mock trade to see it here.",
@@ -83,6 +87,9 @@ const copy = {
     searchResults: "结果",
     topResults: "热门结果",
     clearSearch: "清除",
+    searchAll: "全部",
+    searchLive: "滚球",
+    searchUpcoming: "赛前",
     balance: "模拟余额",
     noPositions: "暂无持仓",
     noPositionsBody: "下一个模拟订单后会显示在这里。",
@@ -442,8 +449,15 @@ function SearchScreen({
   openEvent: (event: Event) => void;
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
 }) {
+  const [filter, setFilter] = useState<SearchFilter>("all");
   const hasQuery = query.trim().length > 0;
-  const resultLabel = locale === "zh" ? `${events.length} 个结果` : `${events.length} ${events.length === 1 ? "result" : "results"}`;
+  const visibleEvents = filter === "live" ? events.filter((event) => event.status === "live") : filter === "upcoming" ? events.filter((event) => event.status !== "live") : events;
+  const resultLabel = locale === "zh" ? `${visibleEvents.length} 个结果` : `${visibleEvents.length} ${visibleEvents.length === 1 ? "result" : "results"}`;
+  const filters: Array<[SearchFilter, string]> = [
+    ["all", t.searchAll],
+    ["live", t.searchLive],
+    ["upcoming", t.searchUpcoming],
+  ];
 
   return (
     <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
@@ -470,7 +484,20 @@ function SearchScreen({
           </Pressable>
         )}
       </View>
-      <MarketList locale={locale} events={events} empty={t.noResults} openEvent={openEvent} openTicket={openTicket} />
+      <View style={styles.searchFilters}>
+        {filters.map(([value, text]) => (
+          <Pressable
+            key={value}
+            accessibilityLabel={`search-filter-${value}`}
+            testID={`search-filter-${value}`}
+            style={[styles.searchFilterChip, filter === value && styles.searchFilterChipActive]}
+            onPress={() => setFilter(value)}
+          >
+            <Text style={[styles.searchFilterText, filter === value && styles.searchFilterTextActive]}>{text}</Text>
+          </Pressable>
+        ))}
+      </View>
+      <MarketList locale={locale} events={visibleEvents} empty={t.noResults} openEvent={openEvent} openTicket={openTicket} />
     </ScrollView>
   );
 }
@@ -539,6 +566,11 @@ const styles = StyleSheet.create({
   resultMeta: { color: "#8ea0b8", fontSize: 13, fontWeight: "800", marginTop: 3 },
   clearSearchButton: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, backgroundColor: "#1f2937" },
   clearSearchText: { color: "#dbeafe", fontWeight: "900" },
+  searchFilters: { flexDirection: "row", gap: 8, marginBottom: 12 },
+  searchFilterChip: { paddingHorizontal: 14, paddingVertical: 9, borderRadius: 999, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  searchFilterChipActive: { backgroundColor: "#1d6dff", borderColor: "#1d6dff" },
+  searchFilterText: { color: "#8ea0b8", fontWeight: "900" },
+  searchFilterTextActive: { color: "#ffffff" },
   segmented: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: "#263247", marginBottom: 10 },
   segment: { flex: 1, alignItems: "center", paddingVertical: 14 },
   segmentActive: { borderBottomWidth: 3, borderBottomColor: "#f8fafc" },
