@@ -233,6 +233,28 @@ Harness evidence:
 - `docs/mobile/harness/cycle-021-holiwyn-search.xml`
 Bugs: None found.
 
+### Cycle 022
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Live screen extraction preserved Live rendering and deep smoke assertions.
+Screenshots:
+- `docs/mobile/screenshots/cycle-022-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-022-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-022-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-022-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-022-holiwyn-search.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-022-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-022-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-022-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-022-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-022-holiwyn-search.xml`
+Bugs: None found.
+
 ### Cycle 014
 
 Date: 2026-07-01

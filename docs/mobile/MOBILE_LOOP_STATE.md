@@ -883,6 +883,47 @@ Open blockers: None for autonomous progress.
 Risks: Deep smoke still uses coordinate taps; typed-query behavior is not yet explicitly automated; server order mode remains unverified.
 Next three likely cycles: Add typed-query Search QA, improve live-market update behavior, and continue component extraction around Home/Featured Future.
 
+### Cycle 022
+
+Date: 2026-07-01
+Branch: mobile/cycle-022
+Goal: Extract Live tab UI into a dedicated component.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No intended visual changes.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/LiveScreen.tsx`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-022-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-022-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-022-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-022-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-022-holiwyn-search.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-022-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-022-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-022-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-022-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-022-holiwyn-search.xml`
+Bugs found: None.
+Technical debt added: None.
+Technical debt resolved:
+- Live UI logic moved out of `mobile/App.tsx`.
+Result: Passed Cycle 022 QA. Live tab remains covered by deep smoke after extraction.
+Commit: cycle branch HEAD (`Extract Holiwyn mobile live screen`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 023 should add typed-query Search QA or extract Home subcomponents.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures: None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
