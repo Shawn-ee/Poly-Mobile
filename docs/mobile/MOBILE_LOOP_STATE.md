@@ -1437,6 +1437,64 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 033
+
+Date: 2026-07-01
+Branch: mobile/cycle-033
+Goal: Add aggregate Portfolio summary metrics for fake-token positions.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio now shows Invested, Current value, and Est. P/L summary cards above individual positions.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-033-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-033-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-033-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-033-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-033-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-033-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-033-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-033-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-033-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-033-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-033-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-033-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-033-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-033-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Portfolio now has aggregate invested/current value/P&L context in addition to per-position detail.
+Result: Passed Cycle 033 QA. Portfolio summary is verified by deep smoke hierarchy assertions and screenshot evidence.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge after commit.
+Next cycle: Cycle 034 should continue portfolio/trading affordances or extract copy/localization concerns.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 033
+
+Completed cycles: 031, 032, 033 since the last heartbeat.
+Verified progress: Portfolio now shows per-position value/P&L, aggregate invested/current value/P&L summary, and the app header has been extracted into its own component.
+Current app state: Holiwyn mobile has verified Home, ticket, mock order, Portfolio summary/detail, Live refresh, Search browse, and typed Search zero-result flows on Android emulator.
+Current backend state: Backend health remains unavailable during emulator smoke; mock fallback remains verified and mobile API calls are bounded by timeout.
+Open blockers: None for autonomous progress.
+Risks: Portfolio P/L remains deterministic mock valuation; real server order mode, auth-backed positions, live odds deltas, and selector-based mobile automation remain unverified.
+Next three likely cycles: Add position action affordances, extract copy/localization to a dedicated module, and improve smoke taps toward selector-based automation.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

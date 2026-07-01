@@ -454,3 +454,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 032 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 033
+
+Date: 2026-07-01
+Branch: mobile/cycle-033
+Reviewer: Lead/Reviewer pass
+Scope: Portfolio aggregate summary metrics.
+Findings:
+- P1: Portfolio now exposes aggregate Invested, Current value, and Est. P/L cards, improving trading-app account context without touching deposit/withdraw.
+- P1: Deep smoke asserts the new `Invested` summary label along with existing position details.
+- P2: The valuation remains mock-only and should be replaced with backend/live quote marks when server-backed positions are ready.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 033 for local commit/merge after scoped diff review.
+Merge approved: Yes
