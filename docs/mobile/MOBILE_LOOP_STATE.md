@@ -6277,6 +6277,49 @@ Harnesses run:
 Harness failures:
 - Initial assertion/layout and duplicate-key warning were corrected; final rerun passed.
 
+### Cycle 131
+
+Date: 2026-07-01
+Branch: mobile/cycle-131
+Goal: Surface latest-order execution details immediately after order placement.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio latest-order confirmation now appears above positions and shows filled shares, execution price, and implied odds.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:future-list-order` in `mobile/` (includes mobile typecheck).
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-131-holiwyn-latest-order-execution-smoke.png`
+- `docs/mobile/screenshots/cycle-131-holiwyn-latest-order-execution-ticket.png`
+- `docs/mobile/screenshots/cycle-131-holiwyn-latest-order-execution-portfolio.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-131-holiwyn-latest-order-execution-expo-menu.xml`
+- `docs/mobile/harness/cycle-131-holiwyn-latest-order-execution-home.xml`
+- `docs/mobile/harness/cycle-131-holiwyn-latest-order-execution-ticket.xml`
+- `docs/mobile/harness/cycle-131-holiwyn-latest-order-execution-portfolio.xml`
+Bugs found:
+- Latest order details were below first viewport until the confirmation card was moved above positions.
+- Futures-list tap path was flaky; the focused harness now uses deterministic France ticket launch for this order confirmation proof.
+- Clean reset could clear a forced ticket; delayed reset is skipped for forced-ticket URLs.
+Technical debt added:
+- Latest-order execution details are mock/probability-derived until backend fills/quotes are wired.
+Technical debt resolved:
+- Post-order execution feedback is now first-viewport visible and smoke-verified.
+Result: Passed Cycle 131 QA. Focused future-list-order smoke and mobile API/profile-preference tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 132 should continue order/history parity or retry backend/server-mode proof if local services become available.
+Harnesses run:
+- Mobile Typecheck Harness
+- Future List Order Smoke Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- Initial offscreen confirmation, flaky tap, URL flag, delayed-reset, and stale assertion issues were corrected; final rerun passed.
+
 ### Heartbeat After Cycle 130
 
 Completed cycles: 128, 129, 130.

@@ -1890,3 +1890,19 @@ Findings:
 - Mobile typecheck through the smoke script and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 130 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 131
+
+Date: 2026-07-01
+Branch: mobile/cycle-131
+Reviewer: Lead/Reviewer pass
+Scope: Latest-order execution details and focused order smoke hardening.
+Findings:
+- P1: Latest order confirmation now appears above positions, making post-order feedback visible immediately after placement.
+- P1: Confirmation details include filled shares, execution price, and implied odds derived from the same mock economics as the ticket.
+- P1: `forceWorldCupWinnerFranceTicket=1` now survives clean-state reset by skipping the delayed second reset for forced-ticket URLs.
+- P1: Focused order smoke now uses deterministic ticket launch and verifies the execution detail row.
+- P2: Execution details remain mock/probability-derived until backend fills/quotes provide authoritative values.
+- Mobile typecheck through the smoke script and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 131 for local commit/merge after scoped diff review.
+Merge approved: Yes

@@ -43,6 +43,7 @@ export type OrderConfirmation = {
   outcome: string;
   side: "buy" | "sell";
   amount: number;
+  probability?: number;
   isLive?: boolean;
   liveClock?: string;
 };
@@ -69,6 +70,8 @@ type PortfolioCopy = {
   limitPrice: string;
   orderValue: string;
   impliedOdds: string;
+  filledShares: string;
+  executionPrice: string;
   cancelOrder: string;
   portfolioSyncing: string;
   portfolioSynced: string;
@@ -105,6 +108,11 @@ const pnlTotal = (positions: Position[]) =>
   positions.reduce((total, position) => total + estimatedPnl(position), 0);
 
 const decimalOdds = (price: number) => `${(1 / Math.max(price, 0.01)).toFixed(1)}x`;
+
+const orderShares = (order: OrderConfirmation) => {
+  const price = Math.max(order.probability ?? 0, 1) / 100;
+  return order.amount / price;
+};
 
 export function Portfolio({
   t,
@@ -215,6 +223,45 @@ export function Portfolio({
         </View>
       </View>
       {openOrdersSection}
+      {latestOrder && (
+        <View accessibilityLabel="latest-order-card" testID="latest-order-card" style={styles.confirmationCard}>
+          {latestOrder.isLive && (
+            <View accessibilityLabel="latest-order-live-badge" testID="latest-order-live-badge" style={styles.liveBadge}>
+              <Ionicons name="radio" color="#fecaca" size={13} />
+              <Text style={styles.liveBadgeText}>{t.liveNow}</Text>
+            </View>
+          )}
+          {latestOrder.liveClock && (
+            <Text accessibilityLabel="latest-order-live-clock" testID="latest-order-live-clock" style={styles.liveClock}>
+              {latestOrder.liveClock}
+            </Text>
+          )}
+          <View style={styles.confirmationTop}>
+            <Text style={styles.confirmationTitle}>{t.orderPlaced}</Text>
+            <Text style={styles.confirmationAmount}>{money(latestOrder.amount)}</Text>
+          </View>
+          <Text style={styles.confirmationMeta}>
+            {latestOrder.mode.toUpperCase()} - {latestOrder.side === "buy" ? t.buy : t.sell} - {latestOrder.outcome}
+          </Text>
+          <Text style={styles.confirmationMarket}>{latestOrder.title}</Text>
+          {typeof latestOrder.probability === "number" && (
+            <View accessibilityLabel="latest-order-execution-details" testID="latest-order-execution-details" style={styles.confirmationDetailGrid}>
+              <View style={styles.confirmationDetailItem}>
+                <Text style={styles.confirmationDetailLabel}>{t.filledShares}</Text>
+                <Text style={styles.confirmationDetailValue}>{orderShares(latestOrder).toFixed(2)}</Text>
+              </View>
+              <View style={styles.confirmationDetailItem}>
+                <Text style={styles.confirmationDetailLabel}>{t.executionPrice}</Text>
+                <Text style={styles.confirmationDetailValue}>{latestOrder.probability}%</Text>
+              </View>
+              <View style={styles.confirmationDetailItem}>
+                <Text style={styles.confirmationDetailLabel}>{t.impliedOdds}</Text>
+                <Text style={styles.confirmationDetailValue}>{decimalOdds(latestOrder.probability / 100)}</Text>
+              </View>
+            </View>
+          )}
+        </View>
+      )}
       {positions.length === 0 ? (
         <View style={styles.emptyCard}>
           <Ionicons name="wallet-outline" size={34} color="#64748b" />
@@ -286,29 +333,6 @@ export function Portfolio({
             </View>
           ))}
         </>
-      )}
-      {latestOrder && (
-        <View accessibilityLabel="latest-order-card" testID="latest-order-card" style={styles.confirmationCard}>
-          {latestOrder.isLive && (
-            <View accessibilityLabel="latest-order-live-badge" testID="latest-order-live-badge" style={styles.liveBadge}>
-              <Ionicons name="radio" color="#fecaca" size={13} />
-              <Text style={styles.liveBadgeText}>{t.liveNow}</Text>
-            </View>
-          )}
-          {latestOrder.liveClock && (
-            <Text accessibilityLabel="latest-order-live-clock" testID="latest-order-live-clock" style={styles.liveClock}>
-              {latestOrder.liveClock}
-            </Text>
-          )}
-          <View style={styles.confirmationTop}>
-            <Text style={styles.confirmationTitle}>{t.orderPlaced}</Text>
-            <Text style={styles.confirmationAmount}>{money(latestOrder.amount)}</Text>
-          </View>
-          <Text style={styles.confirmationMeta}>
-            {latestOrder.mode.toUpperCase()} - {latestOrder.side === "buy" ? t.buy : t.sell} - {latestOrder.outcome}
-          </Text>
-          <Text style={styles.confirmationMarket}>{latestOrder.title}</Text>
-        </View>
       )}
       {activities.length > 0 && (
         <View style={styles.activityBlock}>
@@ -395,6 +419,10 @@ const styles = StyleSheet.create({
   confirmationAmount: { color: "#dbeafe", fontWeight: "900" },
   confirmationMeta: { color: "#93c5fd", fontSize: 12, fontWeight: "900", marginTop: 8 },
   confirmationMarket: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 4 },
+  confirmationDetailGrid: { flexDirection: "row", gap: 8, marginTop: 12 },
+  confirmationDetailItem: { flex: 1, minHeight: 54, padding: 8, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#2b5ca8" },
+  confirmationDetailLabel: { color: "#93c5fd", fontSize: 10, fontWeight: "900" },
+  confirmationDetailValue: { color: "#f8fafc", fontSize: 12, fontWeight: "900", marginTop: 5 },
   openOrdersBlock: { marginTop: 16, padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   openOrdersTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginBottom: 10 },
   openOrderItem: { gap: 10, paddingVertical: 10, borderTopWidth: 1, borderTopColor: "#1f2937" },

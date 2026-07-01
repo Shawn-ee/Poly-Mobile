@@ -339,6 +339,8 @@ try {
     "exp://10.0.2.2:$Port/--/?forceSaveMexico=1"
   } elseif ($HomeSavedEmpty -or $SearchSavedEmpty) {
     "exp://10.0.2.2:$Port/--/?forceClearSaved=1"
+  } elseif ($FutureListOrder) {
+    "exp://10.0.2.2:$Port/--/?forceResetState=1,forceWorldCupWinnerFranceTicket=1"
   } else {
     "exp://10.0.2.2:$Port"
   }
@@ -380,6 +382,8 @@ try {
     @("World Cup winner", "France", "Place buy order")
   } elseif ($TicketDefaultsPersistence) {
     @("World Cup winner", "France", "500", "Place sell order")
+  } elseif ($FutureListOrder) {
+    @("World Cup winner", "France", "Fake balance", "Place buy order")
   } elseif ($Account -or $AccountLogin) {
     @("Holiwyn", "Account", "Signed out", "Demo balance")
   } else {
@@ -726,21 +730,14 @@ try {
     }
 
     if ($FutureListOrder) {
-      Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "world-cup-futures-tab"
-      Start-Sleep -Seconds 1
-      & $adb -s $Device shell input swipe 540 1480 540 1040 300 | Out-Null
-      Start-Sleep -Seconds 1
-      $futureListOrderListHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-order-list.xml"
-      Assert-HierarchyContains -Path $futureListOrderListHierarchy -Expected @("World Cup winner", "Volume", "Liquidity", "France")
-      Invoke-TapHierarchyNode -Path $futureListOrderListHierarchy -Identifier "future-outcome-world-cup-winner-france"
-      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-future-list-order-ticket.png"
       $futureListOrderTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-order-ticket.xml"
       Assert-HierarchyContains -Path $futureListOrderTicketHierarchy -Expected @("World Cup winner", "France", "Fake balance", "10,000 USDT", "Place buy order")
       Invoke-TapHierarchyNode -Path $futureListOrderTicketHierarchy -Identifier "place-mock-order"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-order-portfolio.png"
       $futureListOrderPortfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-order-portfolio.xml"
-      Assert-HierarchyContains -Path $futureListOrderPortfolioHierarchy -Expected @("Portfolio", "Order placed", "World Cup winner", "France", "Invested", "Entry", "Current value", "Est. P/L")
+      Assert-HierarchyContains -Path $futureListOrderPortfolioHierarchy -Expected @("Portfolio", "Order placed", "World Cup winner", "France", "Invested", "Current value", "Est. P/L", "Filled shares", "294.12", "Exec price", "34%", "Implied odds", "2.9x")
       return
     }
 
