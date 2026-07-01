@@ -262,6 +262,46 @@ Harnesses run:
 - Review Harness
 Harness failures: None.
 
+### Cycle 006
+
+Date: 2026-07-01
+Branch: mobile/cycle-006
+Goal: Extract bottom navigation into a focused component to reduce `mobile/App.tsx` size.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No intended visual changes; bottom navigation implementation moved to `mobile/src/components/BottomTabs.tsx`.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/BottomTabs.tsx`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-006-holiwyn-smoke.png`
+Bugs found: None.
+Technical debt added: None.
+Technical debt resolved:
+- Partial TD around `mobile/App.tsx` size: bottom navigation is now isolated.
+Result: Passed Cycle 006 QA. Bottom navigation behavior remains stable after component extraction.
+Commit: cycle branch HEAD (`Extract Holiwyn mobile bottom tabs`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 007 should extract Trade Ticket or Portfolio into a focused component, then verify mock order flow.
+Harnesses run:
+- QA Smoke Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures: None.
+
+### Heartbeat After Cycle 006
+
+Completed cycles: 004, 005, 006 since the last heartbeat.
+Verified progress: Ticket submission now routes through a mock/server order service boundary, shared presentation helpers are extracted, and bottom navigation is in its own component.
+Current app state: Android emulator smoke remains green; fake-token order flow still works; app shell is gradually becoming more maintainable.
+Current backend state: Backend health remains `ok`; no backend schema changes in these cycles.
+Open blockers: None for autonomous progress.
+Risks: Server order mode is still unverified with auth; `App.tsx` remains large; localization table still needs safe extraction after encoding cleanup.
+Next three likely cycles: Extract Trade Ticket component, extract Portfolio component, then add account/position adapter or improve World Cup market grouping.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

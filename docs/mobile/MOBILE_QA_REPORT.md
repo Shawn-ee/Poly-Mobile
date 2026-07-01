@@ -123,3 +123,15 @@ Result: Passed. Presentation helper extraction did not break launch/typecheck be
 Screenshots:
 - `docs/mobile/screenshots/cycle-005-holiwyn-smoke.png`
 Bugs: None found in runtime. Broad localization extraction was deferred to avoid encoding churn.
+
+### Cycle 006
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke`
+Result: Passed. Bottom navigation extraction did not break app launch or tab rendering.
+Screenshots:
+- `docs/mobile/screenshots/cycle-006-holiwyn-smoke.png`
+Bugs: None found.
