@@ -804,3 +804,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 057 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 058
+
+Date: 2026-07-01
+Branch: mobile/cycle-058
+Reviewer: Lead/Reviewer pass
+Scope: Focused Event Detail trade smoke.
+Findings:
+- P1: Event Detail outcome buttons now expose stable `event-detail-outcome-*` selectors.
+- P1: `smoke:event-detail-trade` proves a Mexico match-winner ticket opens directly from Event Detail, preserving event-market regression coverage after main deep smoke moved to featured futures.
+- P2: The focused smoke asserts ticket opening only; order placement remains covered by the main deep smoke path.
+- `npm run typecheck`, final `npm run smoke:event-detail-trade`, and `npm run smoke:deep` passed.
+Decision: Approve Cycle 058 for local commit/merge after scoped diff review.
+Merge approved: Yes

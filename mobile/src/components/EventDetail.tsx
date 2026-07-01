@@ -94,7 +94,12 @@ export function EventDetail({
               {market.outcomes.map((outcome) => (
                 <View key={outcome.id} style={styles.detailOutcome}>
                   <Text style={styles.teamName}>{label(locale, outcome)}</Text>
-                  <Pressable style={[styles.probButton, { backgroundColor: outcome.color }]} onPress={() => openTicket(market, outcome, event)}>
+                  <Pressable
+                    accessibilityLabel={`event-detail-outcome-${market.id}-${outcome.id}`}
+                    onPress={() => openTicket(market, outcome, event)}
+                    style={[styles.probButton, { backgroundColor: outcome.color }]}
+                    testID={`event-detail-outcome-${market.id}-${outcome.id}`}
+                  >
                     <Text style={styles.probButtonText}>{outcome.probability}%</Text>
                   </Pressable>
                 </View>

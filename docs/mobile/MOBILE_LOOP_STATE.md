@@ -2916,6 +2916,68 @@ Open blockers: None for autonomous progress.
 Risks: Main deep smoke now covers futures trading after Event Detail; event-row direct trade should get its own focused smoke if it remains a priority. Search typing still uses device keyboard commands.
 Next three likely cycles: Add focused event-row trade smoke, reduce Search keyboard device actions, and begin server-mode fixture planning for authenticated order/cancel proof.
 
+### Cycle 058
+
+Date: 2026-07-01
+Branch: mobile/cycle-058
+Goal: Add focused Event Detail market trade coverage without Home list scrolling.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Event Detail outcome buttons now expose stable `event-detail-outcome-*` selectors.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/src/components/EventDetail.tsx`, `mobile/package.json`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:event-detail-trade` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-058-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-event-detail-ticket.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-058-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-058-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-058-holiwyn-event-detail-ticket.xml`
+- `docs/mobile/harness/cycle-058-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-058-holiwyn-event-detail-back.xml`
+- `docs/mobile/harness/cycle-058-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-058-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-058-holiwyn-ticket-max.xml`
+- `docs/mobile/harness/cycle-058-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-058-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-058-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-058-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-058-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-058-holiwyn-search-query.xml`
+Bugs found:
+- Initial focused smoke expected `64%` in the ticket, but Trade Ticket does not render the probability label. Fixed the assertion to use visible market/outcome/balance/order copy.
+Technical debt added:
+- Focused event-detail trade smoke verifies ticket opening, not order placement; main deep smoke still verifies order placement through the featured futures ticket.
+Technical debt resolved:
+- Event Detail match-market ticket opening now has dedicated selector-based emulator proof.
+Result: Passed Cycle 058 QA after assertion recovery. Focused smoke verifies Mexico match-winner ticket opening from Event Detail; normal deep smoke verifies the full futures trade, close, Live, and Search flow.
+Commit: cycle branch HEAD (`pending`)
+Merged: Pending local merge.
+Next cycle: Cycle 059 should reduce Search keyboard device actions or start server-mode fixture proof.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- One recoverable focused-smoke assertion miss on non-rendered probability copy.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
