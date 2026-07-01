@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import type { Locale } from "../mocks/worldCup";
 import { money } from "../presentation/formatters";
 import type { OrderMode } from "../services/orderService";
@@ -24,6 +24,7 @@ type PortfolioCopy = {
   entry: string;
   currentValue: string;
   estimatedPnl: string;
+  closePosition: string;
 };
 
 const currentProbability = (position: Position) => {
@@ -31,20 +32,20 @@ const currentProbability = (position: Position) => {
   return Math.max(1, Math.min(99, position.probability + movement));
 };
 
-const positionValue = (position: Position) => {
+export const portfolioPositionValue = (position: Position) => {
   const entry = Math.max(1, position.probability);
   return position.amount * (currentProbability(position) / entry);
 };
 
 const estimatedPnl = (position: Position) => {
-  const value = positionValue(position);
+  const value = portfolioPositionValue(position);
   return position.side === "buy" ? value - position.amount : position.amount - value;
 };
 
 const investedTotal = (positions: Position[]) => positions.reduce((total, position) => total + position.amount, 0);
 
 const currentValueTotal = (positions: Position[]) =>
-  positions.reduce((total, position) => total + positionValue(position), 0);
+  positions.reduce((total, position) => total + portfolioPositionValue(position), 0);
 
 const pnlTotal = (positions: Position[]) =>
   positions.reduce((total, position) => total + estimatedPnl(position), 0);
@@ -53,11 +54,13 @@ export function Portfolio({
   t,
   balance,
   positions,
+  closePosition,
 }: {
   locale: Locale;
   t: PortfolioCopy;
   balance: number;
   positions: Position[];
+  closePosition: (position: Position) => void;
 }) {
   return (
     <ScrollView accessibilityLabel="portfolio-screen" testID="portfolio-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
@@ -104,7 +107,7 @@ export function Portfolio({
                 </View>
                 <View style={styles.positionDetailItem}>
                   <Text style={styles.positionDetailLabel}>{t.currentValue}</Text>
-                  <Text style={styles.positionDetailValue}>{money(positionValue(position))}</Text>
+                  <Text style={styles.positionDetailValue}>{money(portfolioPositionValue(position))}</Text>
                 </View>
                 <View style={styles.positionDetailItem}>
                   <Text style={styles.positionDetailLabel}>{t.estimatedPnl}</Text>
@@ -114,6 +117,14 @@ export function Portfolio({
                   </Text>
                 </View>
               </View>
+              <Pressable
+                accessibilityLabel={`close-position-${position.id}`}
+                onPress={() => closePosition(position)}
+                style={styles.closeButton}
+                testID={`close-position-${position.id}`}
+              >
+                <Text style={styles.closeButtonText}>{t.closePosition}</Text>
+              </Pressable>
             </View>
           ))}
         </>
@@ -145,4 +156,6 @@ const styles = StyleSheet.create({
   positionDetailValue: { color: "#f8fafc", fontSize: 13, fontWeight: "900", marginTop: 5 },
   pnlPositive: { color: "#22c55e" },
   pnlNegative: { color: "#ef4444" },
+  closeButton: { marginTop: 12, minHeight: 44, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
+  closeButtonText: { color: "#dbeafe", fontSize: 14, fontWeight: "900" },
 });

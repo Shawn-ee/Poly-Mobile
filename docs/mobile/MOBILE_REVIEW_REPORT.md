@@ -468,3 +468,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 033 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 034
+
+Date: 2026-07-01
+Branch: mobile/cycle-034
+Reviewer: Lead/Reviewer pass
+Scope: Portfolio close-position affordance.
+Findings:
+- P1: Portfolio positions now expose a `Close position` action in the fake-token flow, improving account/trading ergonomics.
+- P1: Deep smoke asserts the new action appears after a mock trade.
+- P2: The action is state-backed in app code, but the current smoke only verifies visibility; a future cycle should tap it and assert balance/empty-position state.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 034 for local commit/merge after scoped diff review.
+Merge approved: Yes

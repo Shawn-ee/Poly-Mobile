@@ -9,7 +9,7 @@ import { EventDetail } from "./src/components/EventDetail";
 import { Header } from "./src/components/Header";
 import { HomeScreen } from "./src/components/HomeScreen";
 import { LiveScreen } from "./src/components/LiveScreen";
-import { Portfolio, Position } from "./src/components/Portfolio";
+import { Portfolio, portfolioPositionValue, Position } from "./src/components/Portfolio";
 import { SearchScreen } from "./src/components/SearchScreen";
 import { Ticket, TradeTicket } from "./src/components/TradeTicket";
 import { WorldCupTab } from "./src/components/WorldCupSegmented";
@@ -57,6 +57,7 @@ const copy = {
     entry: "Entry",
     currentValue: "Current value",
     estimatedPnl: "Est. P/L",
+    closePosition: "Close position",
     estimatedCost: "Estimated cost",
     estimatedPayout: "Estimated payout",
     placeMockOrder: "Place mock order",
@@ -99,6 +100,7 @@ const copy = {
     entry: "\u5efa\u4ed3",
     currentValue: "\u5f53\u524d\u4ef7\u503c",
     estimatedPnl: "\u9884\u4f30\u76c8\u4e8f",
+    closePosition: "\u5e73\u4ed3",
     estimatedCost: "预计成本",
     estimatedPayout: "预计收益",
     placeMockOrder: "提交模拟订单",
@@ -216,6 +218,11 @@ export default function App() {
     setMainTab("portfolio");
   };
 
+  const closePosition = (position: Position) => {
+    setBalance((current) => current + portfolioPositionValue(position));
+    setPositions((current) => current.filter((item) => item.id !== position.id));
+  };
+
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar style="light" />
@@ -263,7 +270,7 @@ export default function App() {
               />
             )}
             {mainTab === "portfolio" && (
-              <Portfolio locale={locale} t={t} balance={balance} positions={positions} />
+              <Portfolio locale={locale} t={t} balance={balance} positions={positions} closePosition={closePosition} />
             )}
             {mainTab === "search" && (
               <SearchScreen
