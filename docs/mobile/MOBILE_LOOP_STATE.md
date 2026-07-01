@@ -1881,6 +1881,61 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 041
+
+Date: 2026-07-01
+Branch: mobile/cycle-041
+Goal: Add a backend Portfolio snapshot adapter seam for server-mode balance and open positions.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No visible mock-mode changes; server mode can now hydrate wallet balance and open positions from backend Portfolio data.
+Backend/API changed: Mobile now targets existing `GET /api/portfolio` through `PolyApi.getPortfolio()`.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/api.ts`, `mobile/src/types.ts`, `mobile/src/services/portfolioSnapshotService.ts`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-041-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-041-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-041-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-041-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-041-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-041-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-041-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-041-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-041-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-041-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-041-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-041-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Server-mode position mapping is a first-pass adapter and does not yet display open order rows or combo orders.
+Technical debt resolved:
+- Server-mode Portfolio can now hydrate wallet balance and open positions through a typed mobile boundary.
+Result: Passed Cycle 041 QA. Mock-mode smoke remains unchanged while server-mode Portfolio has a typed snapshot adapter seam.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 042 should expose server open orders in Portfolio or improve selector-driven harness actions, then write the next heartbeat.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

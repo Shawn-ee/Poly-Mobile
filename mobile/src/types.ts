@@ -74,3 +74,56 @@ export type PortfolioHistoryItem = {
   refundsTokens: number;
   realizedPnLTokens: number;
 };
+
+export type PortfolioPositionItem = {
+  market: {
+    id: string;
+    title: string;
+    status: string;
+    resolveTime: string | null;
+    createdAt: string;
+  };
+  outcome: string;
+  shares: number;
+  avgCost: number;
+  currentPrice: number;
+  valueTokens: number;
+  costBasisTokens: number;
+  totalCostBasisTokens: number;
+  pnlTokens: number;
+};
+
+export type PortfolioOpenOrderItem = {
+  id: string;
+  market: {
+    id: string;
+    title: string;
+    status: string;
+  };
+  outcome: {
+    id: string;
+    name: string;
+  };
+  side: "BUY" | "SELL";
+  status: string;
+  price: number;
+  size: number;
+  remaining: number;
+  reservedNotional: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PortfolioSnapshot = {
+  walletAvailableUSDC: number;
+  walletLockedUSDC: number;
+  walletTotalUSDC: number;
+  walletBalance: number;
+  totalValue: number;
+  totalCostBasis: number;
+  totalRealizedPnl: number;
+  totalPnl: number;
+  positions: PortfolioPositionItem[];
+  openOrders: PortfolioOpenOrderItem[];
+  comboOrders: unknown[];
+};

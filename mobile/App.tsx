@@ -24,6 +24,7 @@ import {
 } from "./src/mocks/worldCup";
 import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 import { loadPortfolioHistoryActivities } from "./src/services/portfolioHistoryService";
+import { loadPortfolioSnapshot } from "./src/services/portfolioSnapshotService";
 
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
 const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? "server" : "mock";
@@ -81,13 +82,20 @@ export default function App() {
   useEffect(() => {
     if (ORDER_MODE !== "server") return undefined;
     let cancelled = false;
-    loadPortfolioHistoryActivities(api)
-      .then((serverActivities) => {
-        if (!cancelled && serverActivities.length > 0) {
-          setActivities((current) => (current.length > 0 ? current : serverActivities));
+    Promise.allSettled([loadPortfolioSnapshot(api), loadPortfolioHistoryActivities(api)]).then(
+      ([snapshotResult, historyResult]) => {
+        if (cancelled) return;
+        if (snapshotResult.status === "fulfilled") {
+          setBalance(snapshotResult.value.balance);
+          if (snapshotResult.value.positions.length > 0) {
+            setPositions((current) => (current.length > 0 ? current : snapshotResult.value.positions));
+          }
         }
-      })
-      .catch(() => undefined);
+        if (historyResult.status === "fulfilled" && historyResult.value.length > 0) {
+          setActivities((current) => (current.length > 0 ? current : historyResult.value));
+        }
+      },
+    );
     return () => {
       cancelled = true;
     };
