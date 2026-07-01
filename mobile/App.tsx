@@ -21,6 +21,7 @@ import { Portfolio, Position } from "./src/components/Portfolio";
 import { SearchScreen } from "./src/components/SearchScreen";
 import { SportNav } from "./src/components/SportNav";
 import { Ticket, TradeTicket } from "./src/components/TradeTicket";
+import { WorldCupSegmented, WorldCupTab } from "./src/components/WorldCupSegmented";
 import {
   Event,
   Locale,
@@ -35,7 +36,6 @@ const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.
 const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? "server" : "mock";
 
 type MainTab = "home" | "live" | "portfolio" | "search";
-type WorldCupTab = "games" | "futures";
 const copy = {
   en: {
     promo: "Get 50",
@@ -364,7 +364,7 @@ function HomeScreen({
           style={styles.searchInput}
         />
       </View>
-      <Segmented
+      <WorldCupSegmented
         left={t.games}
         right={t.futures}
         value={worldCupTab}
@@ -376,29 +376,6 @@ function HomeScreen({
         <FutureList locale={locale} futures={futures} openTicket={openTicket} />
       )}
     </ScrollView>
-  );
-}
-
-function Segmented({
-  left,
-  right,
-  value,
-  setValue,
-}: {
-  left: string;
-  right: string;
-  value: WorldCupTab;
-  setValue: (tab: WorldCupTab) => void;
-}) {
-  return (
-    <View style={styles.segmented}>
-      <Pressable accessibilityLabel="world-cup-games-tab" testID="world-cup-games-tab" style={[styles.segment, value === "games" && styles.segmentActive]} onPress={() => setValue("games")}>
-        <Text style={[styles.segmentText, value === "games" && styles.segmentTextActive]}>{left}</Text>
-      </Pressable>
-      <Pressable accessibilityLabel="world-cup-futures-tab" testID="world-cup-futures-tab" style={[styles.segment, value === "futures" && styles.segmentActive]} onPress={() => setValue("futures")}>
-        <Text style={[styles.segmentText, value === "futures" && styles.segmentTextActive]}>{right}</Text>
-      </Pressable>
-    </View>
   );
 }
 

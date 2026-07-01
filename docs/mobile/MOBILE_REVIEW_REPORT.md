@@ -398,3 +398,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 028 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 029
+
+Date: 2026-07-01
+Branch: mobile/cycle-029
+Reviewer: Lead/Reviewer pass
+Scope: Home Games/Futures segmented control extraction.
+Findings:
+- P1: `WorldCupSegmented` now owns the Games/Futures tab UI and keeps the existing accessibility/test labels.
+- P2: The extracted component exports the `WorldCupTab` type, reducing local app type duplication.
+- P2: The broader Home screen composition still remains inline and should be a later extraction.
+- `npm run typecheck` and final `npm run smoke:deep` passed.
+Decision: Approve Cycle 029 for local commit/merge after scoped diff review.
+Merge approved: Yes
