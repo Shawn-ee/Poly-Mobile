@@ -6099,8 +6099,8 @@ Technical debt added:
 Technical debt resolved:
 - Event-detail trade smoke is more deterministic against stale state and Expo developer menu interruptions.
 Result: Passed Cycle 126 QA. Focused event-detail-trade smoke and mobile API/profile-preference tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `f8a389c` (`Show implied odds on trade tickets`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `b826052`.
 Next cycle: Cycle 127 should continue product-facing trade-ticket or market-depth polish, then write the next heartbeat after merge.
 Harnesses run:
 - Mobile Typecheck Harness
