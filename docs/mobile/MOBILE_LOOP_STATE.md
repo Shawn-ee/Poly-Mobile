@@ -5878,6 +5878,49 @@ Open blockers: None for autonomous mock-mode mobile progress. Backend live proof
 Risks: Expo Go/emulator clean reloads are now the main loop-speed risk, often returning blank UI hierarchy for one to three minutes after app-data clears. Live clock is local/mock text until backend live-state metadata feeds the app.
 Next three likely cycles: Optimize harness reset speed, add app-level reset/deep-link state controls, then continue live/detail trading polish or retry backend readiness.
 
+### Cycle 122
+
+Date: 2026-07-01
+Branch: mobile/cycle-122
+Goal: Reduce live-smoke emulator latency by replacing Expo Go package clears with app-level reset deep links.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No user-facing production flow change; added harness-only deep-link reset handling.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:live-ticket` in `mobile/` (includes mobile typecheck).
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-122-holiwyn-fast-live-reset-smoke.png`
+- `docs/mobile/screenshots/cycle-122-holiwyn-fast-live-reset-ready.png`
+- `docs/mobile/screenshots/cycle-122-holiwyn-fast-live-reset-ticket.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-122-holiwyn-fast-live-reset-expo-menu.xml`
+- `docs/mobile/harness/cycle-122-holiwyn-fast-live-reset-home.xml`
+- `docs/mobile/harness/cycle-122-holiwyn-fast-live-reset-ready.xml`
+- `docs/mobile/harness/cycle-122-holiwyn-fast-live-reset-ticket.xml`
+Bugs found:
+- Initial warm reset failed because the reset flag was handled only as an initial URL and could race stored Portfolio hydration.
+- The reset flag also needed a shell-safe separator in the ADB deep link. The final harness uses `,forceResetState=1`, warm URL event handling, and a delayed runtime reset.
+Technical debt added:
+- Many focused smokes still start Metro with `--clear`; this can be narrowed after more proof that app-level reset is sufficient.
+Technical debt resolved:
+- Live-ticket smoke no longer needs an Expo Go package data clear to start from clean fake-token state.
+Result: Passed Cycle 122 QA. Focused live-ticket smoke, visual screenshot review, and mobile API/profile-preference tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 123 should extend fast app-level reset to live-order/deep Portfolio smokes or continue reducing `--clear` usage safely.
+Harnesses run:
+- Mobile Typecheck Harness
+- Live Ticket Smoke Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- Two warm-reset attempts exposed stale state and retry-branch issues; reset handling was hardened and rerun passed.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

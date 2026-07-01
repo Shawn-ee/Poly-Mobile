@@ -1755,3 +1755,18 @@ Findings:
 - Mobile typecheck through the smoke script, focused live-portfolio-badge-deep smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 121 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 122
+
+Date: 2026-07-01
+Branch: mobile/cycle-122
+Reviewer: Lead/Reviewer pass
+Scope: Fast app-level reset for live smoke harnesses.
+Findings:
+- P1: Live smoke URLs now include `forceResetState=1` and the app clears relevant Holiwyn runtime/persisted state without wiping the Expo Go package.
+- P1: Warm deep links are handled through `Linking.addEventListener`, so repeated smoke runs can reset the app while Expo Go remains open.
+- P1: The focused live-ticket proof passes with `10,000 USDT`, `Live - 63'`, and the place-order CTA.
+- P2: The harness still starts Metro with `--clear` for many focused smokes; future cycles can selectively reduce that once bundle freshness remains proven.
+- Mobile typecheck through the smoke script, focused live-ticket smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 122 for local commit/merge after scoped diff review.
+Merge approved: Yes

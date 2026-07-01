@@ -2531,3 +2531,27 @@ Bugs:
 - Expo Go clean reload again spent multiple retries returning blank UI hierarchy before recovering.
 Visual QA:
 - Portfolio position, latest-order card, and Recent activity row all show live context with `LIVE WORLD CUP` and `Live - 63'`.
+
+### Cycle 122
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554` with Expo Go
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/` through the focused smoke script
+- `npm.cmd run smoke:live-ticket`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Live-ticket smoke now uses app-level reset state instead of clearing the Expo Go package for live flows.
+Screenshots:
+- `docs/mobile/screenshots/cycle-122-holiwyn-fast-live-reset-smoke.png`
+- `docs/mobile/screenshots/cycle-122-holiwyn-fast-live-reset-ready.png`
+- `docs/mobile/screenshots/cycle-122-holiwyn-fast-live-reset-ticket.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-122-holiwyn-fast-live-reset-expo-menu.xml`
+- `docs/mobile/harness/cycle-122-holiwyn-fast-live-reset-home.xml`
+- `docs/mobile/harness/cycle-122-holiwyn-fast-live-reset-ready.xml`
+- `docs/mobile/harness/cycle-122-holiwyn-fast-live-reset-ticket.xml`
+Bugs:
+- First fast-reset attempt still showed stale `9,900 USDT` because the reset deep link was only handled as an initial URL and then raced AsyncStorage hydration.
+- Fixed by handling warm URL events, using a shell-safe reset flag separator, and reapplying runtime reset shortly after launch.
+Visual QA:
+- Ticket modal shows `LIVE WORLD CUP`, `Live - 63'`, and clean `10,000 USDT` fake balance without an Expo Go package clear.

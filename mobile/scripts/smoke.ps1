@@ -310,7 +310,8 @@ try {
   } elseif ($EventDetailSummary -or $EventDetailMarketOutcomeCount) {
     "exp://10.0.2.2:$Port/--/?forceMexicoEcuadorDetail=1"
   } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
-    "exp://10.0.2.2:$Port/--/?forceLive=1"
+    $liveReset = if ($LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { ",forceResetState=1" } else { "" }
+    "exp://10.0.2.2:$Port/--/?forceLive=1$liveReset"
   } elseif ($SearchQuery -or $SearchClearQuery) {
     "exp://10.0.2.2:$Port/--/?forceSearchQuery=zzzz"
   } elseif ($HomeSearchQuery -or $HomeClearSearch) {
@@ -340,7 +341,7 @@ try {
   } else {
     "exp://10.0.2.2:$Port"
   }
-  if ($AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
+  if ($AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty) {
     & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
     Start-Sleep -Seconds 2
   }
