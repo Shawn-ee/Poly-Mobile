@@ -3087,8 +3087,8 @@ Technical debt added:
 Technical debt resolved:
 - Mobile server mode can now actually send the configured Bearer API key; `.env.example` uses the Android emulator host backend and declares order mode.
 Result: Passed Cycle 060 QA. Server auth config harness verifies API key wiring and env defaults; deep smoke verifies the normal mock app path remains stable.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `07a209b` (`Wire Holiwyn mobile server auth config`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `4d42a2f`.
 Next cycle: Cycle 061 should continue toward live authenticated server-mode proof, likely by adding a seeded backend readiness check or server-mode smoke preflight.
 Harnesses run:
 - QA Smoke Harness
