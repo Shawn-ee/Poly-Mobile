@@ -6662,8 +6662,8 @@ Technical debt added:
 Technical debt resolved:
 - Samsung real-device QA now covers an actual ticket-to-order-to-Portfolio path, not only static Portfolio history.
 Result: Passed Cycle 140 QA. Samsung order-placement smoke, mobile typecheck, and mobile API/history tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `1157e60` (`Add Samsung order placement smoke`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `fed281b`.
 Next cycle: Cycle 141 should continue server-mode order proof preparation or broaden Samsung smoke wrappers to another critical trading flow.
 Harnesses run:
 - Samsung Future List Order Smoke Harness
