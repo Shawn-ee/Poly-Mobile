@@ -1097,3 +1097,17 @@ Findings:
 - Mobile typecheck, focused Saved Search smoke, and mobile API request tests passed.
 Decision: Approve Cycle 077 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 078
+
+Date: 2026-07-01
+Branch: mobile/cycle-078
+Reviewer: Lead/Reviewer pass
+Scope: Search card market stats.
+Findings:
+- P1: Search result cards now reuse Volume/Liquidity metadata already present on Home cards.
+- P1: Focused Search card stats smoke opens Search and verifies Volume/Liquidity/USDT on the first result.
+- P2: Stats remain deterministic local estimates until backend market metrics are available.
+- Mobile typecheck, focused Search card stats smoke, and mobile API request tests passed.
+Decision: Approve Cycle 078 for local commit/merge after scoped diff review.
+Merge approved: Yes

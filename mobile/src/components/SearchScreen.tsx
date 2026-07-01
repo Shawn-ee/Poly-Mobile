@@ -16,6 +16,8 @@ type SearchScreenCopy = {
   searchLive: string;
   searchUpcoming: string;
   saved: string;
+  volume: string;
+  liquidity: string;
 };
 
 export function SearchScreen({
@@ -105,6 +107,7 @@ export function SearchScreen({
         openTicket={openTicket}
         savedEventIds={savedEventIds}
         toggleSavedEvent={toggleSavedEvent}
+        statsCopy={{ volume: t.volume, liquidity: t.liquidity }}
       />
     </ScrollView>
   );

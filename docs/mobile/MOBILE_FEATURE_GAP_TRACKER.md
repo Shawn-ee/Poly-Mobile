@@ -108,3 +108,4 @@ Status:
 | GAP-086 | Discovery | Saved markets watchlist | P1 | Yes | Verified | Cycle 075 adds local saved-event stars plus a Saved Home filter and verifies the flow in focused emulator smoke. |
 | GAP-087 | Discovery | Home market card stats | P1 | Yes | Verified | Cycle 076 adds Volume/Liquidity context to Home market cards and verifies the row in focused emulator smoke. |
 | GAP-088 | Discovery | Saved Search integration | P1 | Yes | Verified | Cycle 077 lifts saved-event state into the app shell and verifies Home-saved markets appear in Search's Saved filter. |
+| GAP-089 | Search | Search card market stats | P1 | Yes | Verified | Cycle 078 adds Volume/Liquidity context to Search result cards and verifies it in focused emulator smoke. |
