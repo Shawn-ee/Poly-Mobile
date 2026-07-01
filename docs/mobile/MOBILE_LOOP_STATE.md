@@ -6139,8 +6139,8 @@ Technical debt added:
 Technical debt resolved:
 - Event Detail now exposes payout-multiple context before the user opens a ticket.
 Result: Passed Cycle 127 QA. Focused event-detail-market-outcome-count smoke and mobile API/profile-preference tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `ee1abe4` (`Show Event Detail outcome odds`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `eb93202`.
 Next cycle: Cycle 128 should continue market-depth/trade-ticket parity or retry a backend/server-mode proof if local services become available.
 Harnesses run:
 - Mobile Typecheck Harness
