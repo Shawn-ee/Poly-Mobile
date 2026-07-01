@@ -1869,8 +1869,8 @@ Technical debt added:
 Technical debt resolved:
 - Portfolio activity no longer has to remain purely local when server mode is enabled.
 Result: Passed Cycle 040 QA. Mock-mode smoke remains unchanged while server-mode activity has a typed backend adapter seam.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Add Holiwyn portfolio history adapter`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 041 should add open-order/open-position backend adapter coverage or improve selector-driven harness actions.
 Harnesses run:
 - QA Smoke Harness
