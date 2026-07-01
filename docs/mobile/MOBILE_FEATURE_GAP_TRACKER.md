@@ -105,3 +105,4 @@ Status:
 | GAP-083 | Account/Login | User account entry point | P1 | Yes | Verified | Cycle 072 adds a localized Account tab with mock login methods, demo balance context, and focused emulator smoke coverage. |
 | GAP-084 | Account/Login | Mock sign-in state | P1 | Yes | Verified | Cycle 073 adds local Account sign-in/sign-out behavior with demo profile proof and focused emulator smoke coverage. |
 | GAP-085 | Discovery | Home market filters | P1 | Yes | Verified | Cycle 074 adds All/Live/Today filters to Home market discovery and verifies Live/Today filtering in focused emulator smoke. |
+| GAP-086 | Discovery | Saved markets watchlist | P1 | Yes | Verified | Cycle 075 adds local saved-event stars plus a Saved Home filter and verifies the flow in focused emulator smoke. |

@@ -1052,3 +1052,18 @@ Findings:
 - Mobile typecheck, focused Home filter smoke, and mobile API request tests passed.
 Decision: Approve Cycle 074 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 075
+
+Date: 2026-07-01
+Branch: mobile/cycle-075
+Reviewer: Lead/Reviewer pass
+Scope: Saved markets watchlist.
+Findings:
+- P1: Home market cards now expose a local save/star control when rendered from Home.
+- P1: Home discovery includes a Saved filter that shows only locally saved World Cup events.
+- P1: Focused Saved smoke scrolls to the first event, taps the star, switches to Saved, and verifies the saved market remains visible/tradable.
+- P2: Saved state is local and session-only until user profile/backend persistence exists.
+- Mobile typecheck, focused Saved smoke, and mobile API request tests passed.
+Decision: Approve Cycle 075 for local commit/merge after scoped diff review.
+Merge approved: Yes

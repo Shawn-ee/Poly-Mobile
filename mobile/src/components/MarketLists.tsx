@@ -8,18 +8,23 @@ export function MarketList({
   empty,
   openEvent,
   openTicket,
+  savedEventIds,
+  toggleSavedEvent,
 }: {
   locale: Locale;
   events: Event[];
   empty: string;
   openEvent: (event: Event) => void;
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
+  savedEventIds?: Set<string>;
+  toggleSavedEvent?: (event: Event) => void;
 }) {
   if (events.length === 0) return <Text style={styles.empty}>{empty}</Text>;
   return (
     <View style={styles.eventList}>
       {events.map((event) => {
         const winner = event.markets[0];
+        const isSaved = savedEventIds?.has(event.id) ?? false;
         return (
           <Pressable
             accessibilityLabel={`event-card-${event.id}`}
@@ -30,7 +35,22 @@ export function MarketList({
           >
             <View style={styles.eventMetaRow}>
               <Text style={styles.timeText}>{event.startsAt}</Text>
-              <Text style={[styles.eventTag, event.status === "live" && styles.liveTag]}>{label(locale, { label: event.tag, zhLabel: event.zhTag })}</Text>
+              <View style={styles.eventMetaRight}>
+                <Text style={[styles.eventTag, event.status === "live" && styles.liveTag]}>{label(locale, { label: event.tag, zhLabel: event.zhTag })}</Text>
+                {toggleSavedEvent && (
+                  <Pressable
+                    accessibilityLabel={`save-event-${event.id}`}
+                    testID={`save-event-${event.id}`}
+                    onPress={(pressEvent) => {
+                      pressEvent.stopPropagation();
+                      toggleSavedEvent(event);
+                    }}
+                    style={[styles.saveButton, isSaved && styles.saveButtonActive]}
+                  >
+                    <Text style={[styles.saveText, isSaved && styles.saveTextActive]}>{isSaved ? "★" : "☆"}</Text>
+                  </Pressable>
+                )}
+              </View>
             </View>
             <Text style={styles.eventTitle}>{label(locale, event)}</Text>
             {winner.outcomes.map((outcome) => (
@@ -92,9 +112,14 @@ const styles = StyleSheet.create({
   eventList: { gap: 12 },
   eventCard: { padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   eventMetaRow: { flexDirection: "row", justifyContent: "space-between", marginBottom: 10 },
+  eventMetaRight: { flexDirection: "row", alignItems: "center", gap: 8 },
   timeText: { color: "#94a3b8", fontWeight: "800" },
   eventTag: { color: "#94a3b8", fontWeight: "800" },
   liveTag: { color: "#ff4d4f" },
+  saveButton: { width: 34, height: 34, borderRadius: 8, alignItems: "center", justifyContent: "center", backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
+  saveButtonActive: { backgroundColor: "#fbbf24", borderColor: "#fbbf24" },
+  saveText: { color: "#94a3b8", fontSize: 19, fontWeight: "900" },
+  saveTextActive: { color: "#101827" },
   eventTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "900", marginBottom: 8 },
   teamRow: { flexDirection: "row", alignItems: "center", gap: 10, marginTop: 9 },
   teamName: { flex: 1, color: "#f8fafc", fontSize: 18, fontWeight: "800" },

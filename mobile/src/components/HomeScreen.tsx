@@ -7,7 +7,7 @@ import { FutureList, MarketList } from "./MarketLists";
 import { SportNav } from "./SportNav";
 import { WorldCupSegmented, WorldCupTab } from "./WorldCupSegmented";
 
-type HomeFilter = "all" | "live" | "today";
+type HomeFilter = "all" | "live" | "today" | "saved";
 
 type HomeScreenCopy = {
   games: string;
@@ -18,6 +18,7 @@ type HomeScreenCopy = {
   searchAll: string;
   searchLive: string;
   today: string;
+  saved: string;
 };
 
 export function HomeScreen({
@@ -44,19 +45,34 @@ export function HomeScreen({
   futures: Market[];
 }) {
   const [homeFilter, setHomeFilter] = useState<HomeFilter>("all");
+  const [savedEventIds, setSavedEventIds] = useState<Set<string>>(() => new Set());
   const homeFilters: Array<[HomeFilter, string]> = [
     ["all", t.searchAll],
     ["live", t.searchLive],
     ["today", t.today],
+    ["saved", t.saved],
   ];
+  const toggleSavedEvent = (event: Event) => {
+    setSavedEventIds((current) => {
+      const next = new Set(current);
+      if (next.has(event.id)) {
+        next.delete(event.id);
+      } else {
+        next.add(event.id);
+      }
+      return next;
+    });
+  };
   const visibleEvents = useMemo(
     () =>
       homeFilter === "live"
         ? events.filter((event) => event.status === "live")
         : homeFilter === "today"
           ? events.filter((event) => event.status === "today")
+          : homeFilter === "saved"
+            ? events.filter((event) => savedEventIds.has(event.id))
           : events,
-    [events, homeFilter],
+    [events, homeFilter, savedEventIds],
   );
 
   return (
@@ -89,7 +105,15 @@ export function HomeScreen({
       </View>
       <WorldCupSegmented left={t.games} right={t.futures} value={worldCupTab} setValue={setWorldCupTab} />
       {worldCupTab === "games" ? (
-        <MarketList locale={locale} events={visibleEvents} empty={t.noResults} openEvent={openEvent} openTicket={openTicket} />
+        <MarketList
+          locale={locale}
+          events={visibleEvents}
+          empty={t.noResults}
+          openEvent={openEvent}
+          openTicket={openTicket}
+          savedEventIds={savedEventIds}
+          toggleSavedEvent={toggleSavedEvent}
+        />
       ) : (
         <FutureList locale={locale} futures={futures} openTicket={openTicket} />
       )}
