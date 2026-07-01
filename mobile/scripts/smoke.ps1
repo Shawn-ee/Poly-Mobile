@@ -69,10 +69,16 @@ function Assert-HierarchyContainsAny {
 function Invoke-TapHierarchyNode {
   param(
     [string]$Path,
-    [string]$Identifier
+    [string]$Identifier,
+    [switch]$StartsWith
   )
   [xml]$hierarchy = Get-Content -Raw -Path $Path
-  $node = $hierarchy.SelectSingleNode("//*[@resource-id='$Identifier' or @content-desc='$Identifier']")
+  $query = if ($StartsWith) {
+    "//*[starts-with(@resource-id,'$Identifier') or starts-with(@content-desc,'$Identifier')]"
+  } else {
+    "//*[@resource-id='$Identifier' or @content-desc='$Identifier']"
+  }
+  $node = $hierarchy.SelectSingleNode($query)
   if (-not $node) {
     throw "UI hierarchy missing tappable node: $Identifier"
   }
@@ -177,30 +183,30 @@ try {
     $portfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio.xml"
     Assert-HierarchyContains -Path $portfolioHierarchy -Expected @("Fake balance", "Portfolio", "Invested", "Entry", "Current value", "Est. P/L", "Close position", "Order placed")
 
-    & $adb -s $Device shell input tap 540 1440 | Out-Null
+    Invoke-TapHierarchyNode -Path $portfolioHierarchy -Identifier "close-position-" -StartsWith
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-portfolio-closed.png"
     $portfolioClosedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-closed.xml"
     Assert-HierarchyContains -Path $portfolioClosedHierarchy -Expected @("Fake balance", "10,882.35 USDT", "No positions yet", "Recent activity", "Closed", "Bought")
 
-    & $adb -s $Device shell input tap 405 1740 | Out-Null
+    Invoke-TapHierarchyNode -Path $portfolioClosedHierarchy -Identifier "holiwyn-live-tab"
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-live.png"
     $liveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live.xml"
     Assert-HierarchyContains -Path $liveHierarchy -Expected @("Live World Cup", "Updated just now", "Refresh")
     Assert-HierarchyContainsAny -Path $liveHierarchy -ExpectedAny @("No live markets right now.", "Live ·")
 
-    & $adb -s $Device shell input tap 910 495 | Out-Null
+    Invoke-TapHierarchyNode -Path $liveHierarchy -Identifier "refresh-live-markets"
     $liveRefreshHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-live-refresh.xml" -Expected @("Updated just now", "refreshed", "Refresh") -Attempts 8 -DelaySeconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-live-refresh.png"
 
-    & $adb -s $Device shell input tap 945 1740 | Out-Null
+    Invoke-TapHierarchyNode -Path $liveRefreshHierarchy -Identifier "holiwyn-search-tab"
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-search.png"
     $searchHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search.xml"
     Assert-HierarchyContains -Path $searchHierarchy -Expected @("Search World Cup markets", "Top results", "All", "Upcoming")
 
-    & $adb -s $Device shell input tap 500 335 | Out-Null
+    Invoke-TapHierarchyNode -Path $searchHierarchy -Identifier "search-world-cup-markets"
     Start-Sleep -Seconds 1
     & $adb -s $Device shell input text zzzz | Out-Null
     Start-Sleep -Seconds 1
