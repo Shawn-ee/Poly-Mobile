@@ -1979,8 +1979,8 @@ Technical debt added:
 Technical debt resolved:
 - Server-mode Portfolio no longer drops backend open-order data.
 Result: Passed Cycle 042 QA. Mock-mode smoke remains unchanged while server-mode Portfolio can display open orders.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Show Holiwyn server open orders`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 043 should add open-order cancel/action affordance design or improve selector-driven harness actions.
 Harnesses run:
 - QA Smoke Harness
