@@ -959,7 +959,7 @@ Technical debt resolved:
 - Search deep smoke now proves the query field can enter a zero-result state and show `Clear`.
 Result: Passed Cycle 023 QA after Recovery Harness. Search query behavior is now explicitly verified.
 Commit: cycle branch HEAD (`Add Holiwyn mobile typed search smoke`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 024 should improve live market refresh/state behavior or continue Home component extraction, then write heartbeat after merge.
 Harnesses run:
 - QA Smoke Harness
