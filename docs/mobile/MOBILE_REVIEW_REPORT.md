@@ -62,3 +62,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke` passed.
 Decision: Approve Cycle 003 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 004
+
+Date: 2026-07-01
+Branch: mobile/cycle-004
+Reviewer: Lead/Reviewer pass
+Scope: Mobile order service boundary, mock/server mode preparation, Portfolio order-mode metadata.
+Findings:
+- P1: Server order mode is intentionally guarded and unverified with auth; default mock mode is correct for current fake-token requirement. Tracked as TD-008.
+- P1: `mobile/App.tsx` remains large; next cycle should begin component extraction unless a higher-risk backend integration is selected.
+- No deposit or withdrawal paths were introduced.
+- `npm run typecheck`, `npm run smoke`, and emulator mock order placement passed.
+Decision: Approve Cycle 004 for local commit/merge after scoped diff review.
+Merge approved: Yes

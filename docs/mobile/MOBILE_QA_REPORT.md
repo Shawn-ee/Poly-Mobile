@@ -95,3 +95,19 @@ Bugs:
 Notes:
 - Backend API adapter now targets `/api/events?category=sports&sportKey=soccer&leagueKey=world_cup` and `/api/events/:slug`.
 - Mock order placement remains local by design until authenticated order mode is proven.
+
+### Cycle 004
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke`
+- Manual emulator tap-through: featured future outcome, place order, Portfolio verification.
+Result: Passed. The new order service preserved mock order behavior and Portfolio displayed a `MOCK` position after ticket submission.
+Screenshots:
+- `docs/mobile/screenshots/cycle-004-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-004-holiwyn-order-service-portfolio.png`
+Bugs: None found.
+Notes:
+- Default mobile order mode is mock. Server mode requires `EXPO_PUBLIC_ORDER_MODE=server` and authenticated backend readiness.

@@ -33,3 +33,4 @@ Status:
 | GAP-011 | Bootstrap | Repo-local mobile app | P0 | Yes | Verified | `Poly/mobile` exists and launches on emulator. |
 | GAP-012 | Backend adapter | World Cup event/detail normalization | P0 | No | Verified | Cycle 003 added a typed mobile adapter for backend event/detail responses with mock fallback. |
 | GAP-013 | Harness | Repeatable emulator smoke | P0 | No | Verified | Cycle 003 added `npm run smoke` for typecheck, backend health probe, emulator launch, and screenshot capture. |
+| GAP-014 | Trading | Order service boundary | P0 | No | Verified | Cycle 004 routes ticket submissions through a mock/server service boundary; default remains safe mock mode. |
