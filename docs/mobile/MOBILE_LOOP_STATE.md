@@ -231,6 +231,37 @@ Harnesses run:
 - Review Harness
 Harness failures: None.
 
+### Cycle 005
+
+Date: 2026-07-01
+Branch: mobile/cycle-005
+Goal: Begin reducing `mobile/App.tsx` coupling by extracting shared presentation formatting helpers.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: None intended.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/presentation/formatters.ts`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-005-holiwyn-smoke.png`
+Bugs found:
+- Full copy-table extraction was deferred because existing source encoding made a broad patch riskier than the cycle warranted.
+Technical debt added:
+- TD-009: App copy table still lives in `mobile/App.tsx` and should move after encoding is normalized.
+Technical debt resolved: None.
+Result: Passed Cycle 005 QA. Shared `money` and `label` helpers now live under `mobile/src/presentation/`.
+Commit: cycle branch HEAD (`Extract Holiwyn mobile presentation helpers`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 006 should extract one visible component group from `App.tsx` or normalize localization strings into a dedicated file.
+Harnesses run:
+- QA Smoke Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures: None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

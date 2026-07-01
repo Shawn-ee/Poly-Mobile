@@ -111,3 +111,15 @@ Screenshots:
 Bugs: None found.
 Notes:
 - Default mobile order mode is mock. Server mode requires `EXPO_PUBLIC_ORDER_MODE=server` and authenticated backend readiness.
+
+### Cycle 005
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke`
+Result: Passed. Presentation helper extraction did not break launch/typecheck behavior.
+Screenshots:
+- `docs/mobile/screenshots/cycle-005-holiwyn-smoke.png`
+Bugs: None found in runtime. Broad localization extraction was deferred to avoid encoding churn.
