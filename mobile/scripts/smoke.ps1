@@ -137,6 +137,12 @@ try {
     $portfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio.xml"
     Assert-HierarchyContains -Path $portfolioHierarchy -Expected @("Fake balance", "Portfolio", "Invested", "Entry", "Current value", "Est. P/L", "Close position")
 
+    & $adb -s $Device shell input tap 540 1440 | Out-Null
+    Start-Sleep -Seconds 1
+    Save-Screenshot -Name "cycle-current-holiwyn-portfolio-closed.png"
+    $portfolioClosedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-closed.xml"
+    Assert-HierarchyContains -Path $portfolioClosedHierarchy -Expected @("Fake balance", "10,008.82 USDT", "No positions yet")
+
     & $adb -s $Device shell input tap 405 1740 | Out-Null
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-live.png"
