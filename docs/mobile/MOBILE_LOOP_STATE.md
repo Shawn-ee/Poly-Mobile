@@ -2530,6 +2530,16 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Heartbeat After Cycle 051
+
+Completed cycles: 049, 050, 051 since the last heartbeat.
+Verified progress: Portfolio now exposes server sync status states, Event Detail and event-market ticket opening use stable selector ids, and Trade Ticket catches failed submissions with localized retry feedback.
+Current app state: Holiwyn mobile has verified Home, Event Detail grouped markets/props, event-market ticket balance/max/preset sizing, mock order, Portfolio summary/detail/close/activity/order confirmation, Live refresh, Search browse, and typed Search zero-result flows on Android emulator.
+Current backend state: Server-mode Portfolio adapters and sync status remain wired; server-mode order failure handling is now UI-safe, but backend health is unavailable in smoke so server trading is not end-to-end verified.
+Open blockers: None for autonomous progress.
+Risks: Forced failure UI still needs a dedicated emulator harness; prop-section scrolling and Android hardware Back still use low-level device actions; authenticated server trading remains unverified.
+Next three likely cycles: Add forced-failure ticket harness, reduce prop/back device actions, and add open-order cancel/edit planning or UI shell.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
