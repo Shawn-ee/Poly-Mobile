@@ -36,8 +36,9 @@ export class PolyApi {
 
   listWorldCupEvents(search = "") {
     const params = new URLSearchParams({
+      category: "sports",
       sportKey: "soccer",
-      status: "LIVE",
+      leagueKey: "world_cup",
     });
     if (search.trim()) {
       params.set("search", search.trim());

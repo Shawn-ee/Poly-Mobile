@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Modal,
   Pressable,
@@ -11,6 +11,8 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { PolyApi } from "./src/api";
+import { normalizeEventDetail } from "./src/adapters/worldCupAdapter";
 import {
   Event,
   Locale,
@@ -19,6 +21,8 @@ import {
   worldCupEvents,
   worldCupFutures,
 } from "./src/mocks/worldCup";
+
+const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
 
 type MainTab = "home" | "live" | "portfolio" | "search";
 type WorldCupTab = "games" | "futures";
@@ -111,18 +115,51 @@ export default function App() {
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [balance, setBalance] = useState(10000);
   const [positions, setPositions] = useState<Position[]>([]);
+  const [events, setEvents] = useState<Event[]>(worldCupEvents);
+  const [futures] = useState<Market[]>(worldCupFutures);
   const t = copy[locale];
+
+  useEffect(() => {
+    let active = true;
+    const api = new PolyApi(DEFAULT_API_BASE);
+
+    const loadBackendWorldCup = async () => {
+      try {
+        const payload = await api.listWorldCupEvents();
+        const details = await Promise.all(
+          payload.events.slice(0, 8).map(async (event) => {
+            try {
+              return normalizeEventDetail(await api.getEvent(event.slug));
+            } catch {
+              return null;
+            }
+          }),
+        );
+        const normalized = details.filter((event): event is Event => Boolean(event));
+        if (active && normalized.length > 0) {
+          setEvents(normalized);
+        }
+      } catch {
+        if (active) setEvents(worldCupEvents);
+      }
+    };
+
+    loadBackendWorldCup();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const filteredEvents = useMemo(() => {
     const normalized = query.trim().toLowerCase();
-    if (!normalized) return worldCupEvents;
-    return worldCupEvents.filter((event) =>
+    if (!normalized) return events;
+    return events.filter((event) =>
       [event.title, event.zhTitle, event.tag, event.zhTag, ...event.teams.flatMap((team) => [team.name, team.zhName])]
         .join(" ")
         .toLowerCase()
         .includes(normalized),
     );
-  }, [query]);
+  }, [events, query]);
 
   const openTicket = (market: Market, outcome: Outcome, event?: Event) => {
     setTicket({ market, outcome, event, side: "buy" });
@@ -178,12 +215,13 @@ export default function App() {
                 setQuery={setQuery}
                 openEvent={setSelectedEvent}
                 openTicket={openTicket}
+                futures={futures}
               />
             )}
             {mainTab === "live" && (
               <MarketList
                 locale={locale}
-                events={worldCupEvents.filter((event) => event.status === "live")}
+                events={events.filter((event) => event.status === "live")}
                 empty={t.noResults}
                 openEvent={setSelectedEvent}
                 openTicket={openTicket}
@@ -262,6 +300,7 @@ function HomeScreen({
   setQuery,
   openEvent,
   openTicket,
+  futures,
 }: {
   locale: Locale;
   t: typeof copy.en;
@@ -272,11 +311,12 @@ function HomeScreen({
   setQuery: (query: string) => void;
   openEvent: (event: Event) => void;
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
+  futures: Market[];
 }) {
   return (
-    <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
+      <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
       <SportNav locale={locale} />
-      <FeaturedFuture locale={locale} openTicket={openTicket} />
+      <FeaturedFuture locale={locale} futures={futures} openTicket={openTicket} />
       <Text style={styles.sectionTitle}>{t.trending}</Text>
       <View style={styles.searchBox}>
         <Ionicons name="search" color="#94a3b8" size={20} />
@@ -297,7 +337,7 @@ function HomeScreen({
       {worldCupTab === "games" ? (
         <MarketList locale={locale} events={events} empty={t.noResults} openEvent={openEvent} openTicket={openTicket} />
       ) : (
-        <FutureList locale={locale} openTicket={openTicket} />
+        <FutureList locale={locale} futures={futures} openTicket={openTicket} />
       )}
     </ScrollView>
   );
@@ -322,8 +362,16 @@ function SportNav({ locale }: { locale: Locale }) {
   );
 }
 
-function FeaturedFuture({ locale, openTicket }: { locale: Locale; openTicket: (market: Market, outcome: Outcome) => void }) {
-  const market = worldCupFutures[0];
+function FeaturedFuture({
+  locale,
+  futures,
+  openTicket,
+}: {
+  locale: Locale;
+  futures: Market[];
+  openTicket: (market: Market, outcome: Outcome) => void;
+}) {
+  const market = futures[0] ?? worldCupFutures[0];
   return (
     <View style={styles.featureCard}>
       <View style={styles.featureHeader}>
@@ -406,10 +454,18 @@ function MarketList({
   );
 }
 
-function FutureList({ locale, openTicket }: { locale: Locale; openTicket: (market: Market, outcome: Outcome) => void }) {
+function FutureList({
+  locale,
+  futures,
+  openTicket,
+}: {
+  locale: Locale;
+  futures: Market[];
+  openTicket: (market: Market, outcome: Outcome) => void;
+}) {
   return (
     <View style={styles.eventList}>
-      {worldCupFutures.map((market) => (
+      {futures.map((market) => (
         <View key={market.id} style={styles.eventCard}>
           <Text style={styles.eventTitle}>{label(locale, market)}</Text>
           {market.outcomes.map((outcome) => (

@@ -47,3 +47,18 @@ Findings:
 - TypeScript passed and emulator smoke tests covered the changed flows.
 Decision: Approve Cycle 002 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 003
+
+Date: 2026-07-01
+Branch: mobile/cycle-003
+Reviewer: Lead/Reviewer pass with Reviewer Agent input
+Scope: Backend-compatible data adapter, World Cup API query correction, and repeatable emulator smoke harness.
+Findings:
+- P1: `mobile/App.tsx` remains a large single-file UI; acceptable for this cycle because adapter code is isolated in `mobile/src/adapters/worldCupAdapter.ts`.
+- P1: Real order placement remains intentionally mocked because backend order routes require auth/trading guards. Tracked as TD-007.
+- P2: Chinese strings rendered correctly in emulator in Cycle 002, but source display can appear mojibake in some shell output. Watch before expanding localization files.
+- API query no longer filters only `LIVE`, so scheduled World Cup matches can appear.
+- `npm run typecheck` and `npm run smoke` passed.
+Decision: Approve Cycle 003 for local commit/merge after scoped diff review.
+Merge approved: Yes
