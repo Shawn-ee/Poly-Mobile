@@ -57,7 +57,7 @@ Technical debt added:
 Technical debt resolved:
 Result:
 Commit: cycle branch HEAD (`Add Holiwyn mobile loop bootstrap`)
-Merged:
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle:
 Harnesses run:
 Harness failures:
