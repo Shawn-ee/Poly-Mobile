@@ -3922,6 +3922,58 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 079
+
+Date: 2026-07-01
+Branch: mobile/cycle-079
+Goal: Add a specific empty state for Search's Saved filter.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Search Saved now displays localized `No saved markets yet.` copy when no events are saved.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/SearchScreen.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:search-saved-empty` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-079-holiwyn-search-saved-empty-smoke.png`
+- `docs/mobile/screenshots/cycle-079-holiwyn-search-saved-empty.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-079-holiwyn-search-saved-empty-home.xml`
+- `docs/mobile/harness/cycle-079-holiwyn-search-saved-empty-screen.xml`
+- `docs/mobile/harness/cycle-079-holiwyn-search-saved-empty.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Saved empty state is text-only until richer onboarding or persistence is added.
+Technical debt resolved:
+- Search Saved no longer reuses generic no-results copy for the zero-saved state.
+Result: Passed Cycle 079 QA. Mobile typecheck, focused Search Saved empty smoke, visual screenshot review, and mobile API tests pass.
+Commit: `PENDING`
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 080 should continue search/discovery polish or retry backend readiness if Docker daemon becomes available.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Search Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 079
+
+Completed cycles: 077, 078, 079 since the last heartbeat.
+Verified progress: Saved markets now carry from Home into Search, Search cards show Volume/Liquidity market context, and Search Saved has a specific localized empty state.
+Current app state: Holiwyn mobile has verified Home discovery filters/saved markets/card stats, Search browse/query/saved filtering/saved empty/card stats, Event Detail grouped markets/props/group jumps/trading stats/depth/outcome ticket opening, featured futures trading, ticket balance/max/preset sizing/share and price estimates, side-aware buy/sell tickets, successful mock order, forced order failure, server order failure, Portfolio summary/detail/close/activity/order confirmation/open-order cancel, server-unavailable Portfolio fallback, Live refresh, localization, and Account/Login mock profile flows on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history/order/cancel client seams are wired; Bearer API-key config and canonical request shape are tested; local credential generation and backend readiness harnesses exist; latest readiness check still shows Docker daemon and local DB port unavailable.
+Open blockers: None for autonomous product/harness progress. Live authenticated backend proof still waits on Docker Desktop engine availability.
+Risks: Account and Saved state are local/session-only; Home/Search market stats and ticket quote math remain local estimates until backend auth, quote, and order-book APIs can feed them.
+Next three likely cycles: Add richer search/sort behavior, improve saved market affordances, and retry backend readiness when Docker daemon becomes reachable.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

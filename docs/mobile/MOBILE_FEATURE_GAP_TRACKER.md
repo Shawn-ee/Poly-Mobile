@@ -109,3 +109,4 @@ Status:
 | GAP-087 | Discovery | Home market card stats | P1 | Yes | Verified | Cycle 076 adds Volume/Liquidity context to Home market cards and verifies the row in focused emulator smoke. |
 | GAP-088 | Discovery | Saved Search integration | P1 | Yes | Verified | Cycle 077 lifts saved-event state into the app shell and verifies Home-saved markets appear in Search's Saved filter. |
 | GAP-089 | Search | Search card market stats | P1 | Yes | Verified | Cycle 078 adds Volume/Liquidity context to Search result cards and verifies it in focused emulator smoke. |
+| GAP-090 | Search | Saved empty state | P1 | Yes | Verified | Cycle 079 adds localized empty copy for Search's Saved filter and verifies the zero-saved state in focused emulator smoke. |
