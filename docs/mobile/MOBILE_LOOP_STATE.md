@@ -4571,6 +4571,53 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 093
+
+Date: 2026-07-01
+Branch: mobile/cycle-093
+Goal: Add a localized Recent activity count to Portfolio and verify it changes after a Futures mock order.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio now displays a Recent activity count card below balance/sync state.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/Portfolio.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:portfolio-activity-count` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-093-holiwyn-portfolio-activity-count-smoke.png`
+- `docs/mobile/screenshots/cycle-093-holiwyn-portfolio-activity-count-open.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-093-holiwyn-portfolio-activity-count-home-start.xml`
+- `docs/mobile/harness/cycle-093-holiwyn-portfolio-activity-count-empty.xml`
+- `docs/mobile/harness/cycle-093-holiwyn-portfolio-activity-count-home.xml`
+- `docs/mobile/harness/cycle-093-holiwyn-portfolio-activity-count-list.xml`
+- `docs/mobile/harness/cycle-093-holiwyn-portfolio-activity-count-ticket.xml`
+- `docs/mobile/harness/cycle-093-holiwyn-portfolio-activity-count-open.xml`
+Bugs found:
+- None. Initial harness assertion overreached to below-fold confirmation copy, then recovered by asserting visible Portfolio count/activity proof.
+Technical debt added:
+- Activity count is local-state based until server-backed portfolio history is fully available.
+Technical debt resolved:
+- Portfolio now gives a quick recent-activity count before detailed activity rows.
+Result: Passed Cycle 093 QA. Mobile typecheck, focused Portfolio activity-count smoke, visual screenshot review, and mobile API tests pass.
+Commit: `834d9a5` (`Add Holiwyn portfolio activity count`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `47c90b6`.
+Next cycle: Cycle 094 should continue portfolio/account persistence affordances or retry backend readiness if local services become reachable.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Portfolio Harness
+- Futures Harness
+- Trading Simulation Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
