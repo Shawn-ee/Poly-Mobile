@@ -110,6 +110,19 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-004-holiwyn-order-service-portfolio.png`
 Bugs: None found.
 
+### Cycle 013
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run smoke:deep`
+Result: Passed. Deep smoke captured Home, Trade Ticket, and Portfolio after placing a mock order.
+Screenshots:
+- `docs/mobile/screenshots/cycle-013-holiwyn-deep-home.png`
+- `docs/mobile/screenshots/cycle-013-holiwyn-deep-ticket.png`
+- `docs/mobile/screenshots/cycle-013-holiwyn-deep-portfolio.png`
+Bugs: None found.
+
 ### Cycle 012
 
 Date: 2026-07-01

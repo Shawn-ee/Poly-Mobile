@@ -180,3 +180,16 @@ Findings:
 - `npm run typecheck`, `npm run smoke`, and grouped Event Detail tap QA passed.
 Decision: Approve Cycle 012 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 013
+
+Date: 2026-07-01
+Branch: mobile/cycle-013
+Reviewer: Lead/Reviewer pass
+Scope: Deep smoke harness for Home, Ticket, and Portfolio.
+Findings:
+- P1: `npm run smoke:deep` verifies the fake-token trade path without manual taps.
+- P2: The deep smoke still relies on fixed emulator tap coordinates; future harness work should move toward accessibility IDs or Detox/Appium-style selectors.
+- Deep smoke passed and screenshots were captured.
+Decision: Approve Cycle 013 for local commit/merge after scoped diff review.
+Merge approved: Yes
