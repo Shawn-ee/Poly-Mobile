@@ -2659,3 +2659,24 @@ Bugs:
 - A later run captured the Expo developer menu over the app; the event-detail trade path now dismisses the menu, recaptures detail, and taps the outcome again.
 Visual QA:
 - Mexico buy ticket shows clean `10,000 USDT` fake balance, `Implied odds`, `1.6x`, estimated payout, and a visible `Place buy order` CTA.
+
+### Cycle 127
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554` with Expo Go
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/` through the focused smoke script
+- `npm.cmd run smoke:event-detail-market-outcome-count`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Event Detail outcome buttons now show decimal odds beneath the probability, giving users the same payout-multiple cue before they open a ticket.
+Screenshots:
+- `docs/mobile/screenshots/cycle-127-holiwyn-event-detail-outcome-odds-smoke.png`
+- `docs/mobile/screenshots/cycle-127-holiwyn-event-detail-outcome-odds.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-127-holiwyn-event-detail-outcome-odds-expo-menu.xml`
+- `docs/mobile/harness/cycle-127-holiwyn-event-detail-outcome-odds-home.xml`
+- `docs/mobile/harness/cycle-127-holiwyn-event-detail-outcome-odds.xml`
+Bugs:
+- First assertion expected the second outcome odds below the viewport; the harness now asserts the visible Mexico outcome odds proof.
+Visual QA:
+- Mexico outcome button shows `64%` with `1.6x` below it, and the market card still fits with bid/ask/spread and group-count context visible.

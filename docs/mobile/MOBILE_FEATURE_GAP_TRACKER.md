@@ -157,3 +157,4 @@ Status:
 | GAP-135 | Harness | No-clear live Portfolio smoke | P1 | No | Verified | Cycle 124 removes Metro `--clear` from proven live reset smokes, adds retry settle time, and verifies deep live order/Portfolio proof still passes. |
 | GAP-136 | Event detail | Market group count indicators | P1 | Yes | Verified | Cycle 125 adds visible Game lines/Props market counts to Event Detail group tabs and headers, then verifies Mexico vs. Ecuador shows `1 market` and `3 markets`. |
 | GAP-137 | Trade ticket | Implied odds on ticket | P1 | Yes | Verified | Cycle 126 adds implied decimal odds to the trade ticket and verifies Mexico vs. Ecuador buy ticket shows `Implied odds` and `1.6x`. |
+| GAP-138 | Event detail | Outcome odds on market buttons | P1 | Yes | Verified | Cycle 127 adds decimal odds under Event Detail outcome probabilities and verifies Mexico shows `64%` plus `1.6x`. |

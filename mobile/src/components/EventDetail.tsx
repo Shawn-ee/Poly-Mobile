@@ -59,6 +59,8 @@ const marketDepth = (market: Market) => {
   };
 };
 
+const outcomeOdds = (outcome: Outcome) => (outcome.probability > 0 ? 100 / outcome.probability : 0).toFixed(1);
+
 export function EventDetail({
   event,
   locale,
@@ -207,6 +209,7 @@ export function EventDetail({
                     testID={`event-detail-outcome-${market.id}-${outcome.id}`}
                   >
                     <Text style={styles.probButtonText}>{outcome.probability}%</Text>
+                    <Text style={styles.probButtonSubtext}>{outcomeOdds(outcome)}x</Text>
                   </Pressable>
                 </View>
               ))}
@@ -260,4 +263,5 @@ const styles = StyleSheet.create({
   teamName: { flex: 1, color: "#f8fafc", fontSize: 18, fontWeight: "800" },
   probButton: { minWidth: 86, alignItems: "center", paddingVertical: 12, paddingHorizontal: 14, borderRadius: 12 },
   probButtonText: { color: "#ffffff", fontSize: 18, fontWeight: "900" },
+  probButtonSubtext: { color: "rgba(255,255,255,0.82)", fontSize: 11, fontWeight: "900", marginTop: 2 },
 });
