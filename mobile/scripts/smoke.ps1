@@ -52,6 +52,45 @@ function Assert-HierarchyContains {
   }
 }
 
+function Assert-HierarchyContainsAny {
+  param(
+    [string]$Path,
+    [string[]]$ExpectedAny
+  )
+  $hierarchy = Get-Content -Raw -Path $Path
+  foreach ($value in $ExpectedAny) {
+    if ($hierarchy -match [regex]::Escape($value)) {
+      return
+    }
+  }
+  throw "UI hierarchy missing all expected alternatives: $($ExpectedAny -join ', ')"
+}
+
+function Wait-HierarchyContains {
+  param(
+    [string]$Name,
+    [string[]]$Expected,
+    [string]$RestartUrl = "",
+    [int]$Attempts = 5,
+    [int]$DelaySeconds = 4
+  )
+  for ($attempt = 1; $attempt -le $Attempts; $attempt++) {
+    if ($RestartUrl -and $attempt -gt 1) {
+      & $adb -s $Device shell am start -a android.intent.action.VIEW -d $RestartUrl | Out-Null
+    }
+    $path = Save-UiHierarchy -Name $Name
+    try {
+      Assert-HierarchyContains -Path $path -Expected $Expected
+      return $path
+    } catch {
+      if ($attempt -eq $Attempts) {
+        throw
+      }
+      Start-Sleep -Seconds $DelaySeconds
+    }
+  }
+}
+
 Push-Location $MobileRoot
 try {
   npm run typecheck
@@ -76,12 +115,12 @@ try {
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList @("expo", "start", "--host", "localhost", "--port", "$Port") -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
   Start-Sleep -Seconds 8
 
-  & $adb -s $Device shell am start -a android.intent.action.VIEW -d "exp://10.0.2.2:$Port" | Out-Null
+  $launchUrl = "exp://10.0.2.2:$Port"
+  & $adb -s $Device shell am start -a android.intent.action.VIEW -d $launchUrl | Out-Null
   Start-Sleep -Seconds 10
 
+  $homeHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-home.xml" -Expected @("Holiwyn", "World Cup", "Games", "Futures") -RestartUrl $launchUrl
   Save-Screenshot -Name "cycle-current-holiwyn-smoke.png"
-  $homeHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-home.xml"
-  Assert-HierarchyContains -Path $homeHierarchy -Expected @("Holiwyn", "World Cup", "Games", "Futures")
 
   if ($Deep) {
     & $adb -s $Device shell input tap 230 850 | Out-Null
@@ -100,13 +139,14 @@ try {
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-live.png"
     $liveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live.xml"
-    Assert-HierarchyContains -Path $liveHierarchy -Expected @("Live World Cup", "No live markets right now.")
+    Assert-HierarchyContains -Path $liveHierarchy -Expected @("Live World Cup")
+    Assert-HierarchyContainsAny -Path $liveHierarchy -ExpectedAny @("No live markets right now.", "Live ·")
 
     & $adb -s $Device shell input tap 945 1740 | Out-Null
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-search.png"
     $searchHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search.xml"
-    Assert-HierarchyContains -Path $searchHierarchy -Expected @("Search World Cup markets")
+    Assert-HierarchyContains -Path $searchHierarchy -Expected @("Search World Cup markets", "Top results")
   }
 }
 finally {

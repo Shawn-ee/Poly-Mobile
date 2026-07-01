@@ -48,3 +48,5 @@ Status:
 | GAP-026 | Live | Live tab empty/count state | P1 | No | Verified | Cycle 016 added a focused Live tab heading, count badge, and live-specific empty state. |
 | GAP-027 | Harness | Android UI hierarchy assertions | P1 | No | Verified | Cycle 017 saves uiautomator XML and asserts visible Home, Ticket, and Portfolio text during deep smoke. |
 | GAP-028 | Harness | Live/Search deep smoke coverage | P1 | No | Verified | Cycle 018 extends deep smoke to verify Live and Search tabs with screenshots and hierarchy assertions. |
+| GAP-029 | Search | Search result header/count | P1 | No | Verified | Cycle 019 adds Search result heading, count, clear affordance, and removes disruptive auto-focus. |
+| GAP-030 | Harness | Resilient Expo launch/live assertions | P1 | No | Verified | Cycle 019 waits for Holiwyn Home, retries the Expo URL, and accepts both empty and populated Live states. |

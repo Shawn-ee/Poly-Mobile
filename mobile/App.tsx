@@ -47,6 +47,9 @@ const copy = {
     today: "Today",
     tomorrow: "Tomorrow",
     marketSearch: "Search World Cup markets",
+    searchResults: "Results",
+    topResults: "Top results",
+    clearSearch: "Clear",
     balance: "Fake balance",
     noPositions: "No positions yet",
     noPositionsBody: "Place a mock trade to see it here.",
@@ -77,6 +80,9 @@ const copy = {
     today: "今天",
     tomorrow: "明天",
     marketSearch: "搜索世界杯市场",
+    searchResults: "结果",
+    topResults: "热门结果",
+    clearSearch: "清除",
     balance: "模拟余额",
     noPositions: "暂无持仓",
     noPositionsBody: "下一个模拟订单后会显示在这里。",
@@ -436,18 +442,33 @@ function SearchScreen({
   openEvent: (event: Event) => void;
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
 }) {
+  const hasQuery = query.trim().length > 0;
+  const resultLabel = locale === "zh" ? `${events.length} 个结果` : `${events.length} ${events.length === 1 ? "result" : "results"}`;
+
   return (
     <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
       <View style={styles.searchBox}>
         <Ionicons name="search" color="#94a3b8" size={20} />
         <TextInput
+          accessibilityLabel="search-world-cup-markets"
+          testID="search-world-cup-markets"
           value={query}
           onChangeText={setQuery}
           placeholder={t.marketSearch}
           placeholderTextColor="#64748b"
           style={styles.searchInput}
-          autoFocus
         />
+      </View>
+      <View style={styles.searchHeader}>
+        <View>
+          <Text style={styles.searchHeading}>{hasQuery ? t.searchResults : t.topResults}</Text>
+          <Text style={styles.resultMeta}>{resultLabel}</Text>
+        </View>
+        {hasQuery && (
+          <Pressable accessibilityLabel="clear-search" testID="clear-search" style={styles.clearSearchButton} onPress={() => setQuery("")}>
+            <Text style={styles.clearSearchText}>{t.clearSearch}</Text>
+          </Pressable>
+        )}
       </View>
       <MarketList locale={locale} events={events} empty={t.noResults} openEvent={openEvent} openTicket={openTicket} />
     </ScrollView>
@@ -513,6 +534,11 @@ const styles = StyleSheet.create({
   liveCount: { minWidth: 34, textAlign: "center", color: "#ffffff", fontWeight: "900", backgroundColor: "#ef4444", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 6 },
   searchBox: { flexDirection: "row", alignItems: "center", gap: 10, height: 52, paddingHorizontal: 14, borderRadius: 12, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginBottom: 14 },
   searchInput: { flex: 1, color: "#f8fafc", fontSize: 16, fontWeight: "700" },
+  searchHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 12 },
+  searchHeading: { color: "#f8fafc", fontSize: 20, fontWeight: "900" },
+  resultMeta: { color: "#8ea0b8", fontSize: 13, fontWeight: "800", marginTop: 3 },
+  clearSearchButton: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, backgroundColor: "#1f2937" },
+  clearSearchText: { color: "#dbeafe", fontWeight: "900" },
   segmented: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: "#263247", marginBottom: 10 },
   segment: { flex: 1, alignItems: "center", paddingVertical: 14 },
   segmentActive: { borderBottomWidth: 3, borderBottomColor: "#f8fafc" },
