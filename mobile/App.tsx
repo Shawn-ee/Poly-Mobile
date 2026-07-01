@@ -4,6 +4,7 @@ import { BackHandler, Linking, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PolyApi } from "./src/api";
 import { normalizeEventDetail } from "./src/adapters/worldCupAdapter";
+import { AccountScreen } from "./src/components/AccountScreen";
 import { BottomTabs } from "./src/components/BottomTabs";
 import { EventDetail } from "./src/components/EventDetail";
 import { Header } from "./src/components/Header";
@@ -47,7 +48,7 @@ const SMOKE_OPEN_ORDER: OpenOrder = {
   remaining: 250,
 };
 
-type MainTab = "home" | "live" | "portfolio" | "search";
+type MainTab = "home" | "live" | "portfolio" | "search" | "account";
 export default function App() {
   const [locale, setLocale] = useState<Locale>("en");
   const [mainTab, setMainTab] = useState<MainTab>("home");
@@ -89,6 +90,9 @@ export default function App() {
       if (forcedSearchQuery) {
         setQuery(decodeURIComponent(forcedSearchQuery));
         setMainTab("search");
+      }
+      if (url.includes("forceAccount=1")) {
+        setMainTab("account");
       }
     });
   }, []);
@@ -344,6 +348,7 @@ export default function App() {
                 openTicket={openTicket}
               />
             )}
+            {mainTab === "account" && <AccountScreen t={t} balance={balance} />}
           </>
         )}
         {!selectedEvent && <BottomTabs tab={mainTab} setTab={setMainTab} t={t} />}
