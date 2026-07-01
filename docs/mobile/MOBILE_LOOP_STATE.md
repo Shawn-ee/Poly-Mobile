@@ -5092,6 +5092,40 @@ Open blockers: None for autonomous mock-mode product/harness progress. Live auth
 Risks: Saved markets, Account session, language, ticket defaults, and Portfolio persistence are local-only; Portfolio counts, Home/Search/Futures market stats, Popular ranking, ticket quote math, and close-position behavior remain local estimates until backend auth, profile, quote, popularity, order-book, and position APIs can feed them.
 Next three likely cycles: Continue account/profile preference polish, add a profile sync adapter seam without enabling real money movement, and retry backend readiness if Docker/local Postgres become available.
 
+### Cycle 104
+
+Date: 2026-07-01
+Branch: mobile/cycle-104
+Goal: Add a typed backend profile-preferences sync seam for saved local mobile preferences.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No UI change.
+Backend/API changed: Mobile client can now call `/api/profile/preferences` with typed get/save methods.
+Database/schema changed: None.
+Files changed: `mobile/src/api.ts`, `mobile/src/types.ts`, `mobile/src/services/profilePreferencesService.ts`, `mobile/src/__tests__/api.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- None; this was a backend adapter seam with no intended UI change.
+Harness evidence captured:
+- Mobile API test output passed with 4 tests, including authenticated `PUT /api/profile/preferences` request shape.
+Bugs found:
+- None.
+Technical debt added:
+- Runtime profile sync remains disabled until backend auth/profile readiness is available.
+Technical debt resolved:
+- Mobile now has a typed sync target for local language, ticket default, and saved-market preference state.
+Result: Passed Cycle 104 QA. Mobile typecheck and mobile API tests pass.
+Commit: `f3bbd57` (`Add Holiwyn profile preferences sync seam`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `6febc02`.
+Next cycle: Cycle 105 should either add a guarded runtime profile-sync attempt in server/auth-ready mode or retry backend readiness if local Docker/Postgres becomes available.
+Harnesses run:
+- Mobile Typecheck Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
