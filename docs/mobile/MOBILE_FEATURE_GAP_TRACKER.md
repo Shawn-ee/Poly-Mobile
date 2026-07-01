@@ -125,3 +125,4 @@ Status:
 | GAP-103 | Portfolio | Open positions count | P1 | Yes | Verified | Cycle 092 adds a localized Open positions count to Portfolio and verifies it changes from 0 to 1 after a Futures mock order. |
 | GAP-104 | Portfolio | Recent activity count | P1 | Yes | Verified | Cycle 093 adds a localized Recent activity count to Portfolio and verifies it changes from 0 to 1 after a Futures mock order. |
 | GAP-105 | Portfolio | Closed trades count | P1 | Yes | Verified | Cycle 094 adds a localized Closed trades count to Portfolio and verifies it changes from 0 to 1 after a Futures mock order is closed. |
+| GAP-106 | Portfolio | Compact count grid | P1 | Yes | Verified | Cycle 095 compacts Open positions, Recent activity, and Closed trades into a three-tile grid and verifies the closed-state counts on emulator. |

@@ -1937,3 +1937,30 @@ Bugs:
 - None found. The first harness pass needed recovery because the new count card pushed the Close position button lower; the harness now scrolls to visible close proof before tapping.
 Visual QA:
 - Closed state shows Recent activity `2`, Closed trades `1`, no open positions, latest order confirmation, and a visible Closed row.
+
+### Cycle 095
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:portfolio-closed-count`
+- `npm run test:mobile-api`
+Result: Passed. Portfolio count cards are now a compact three-tile grid while preserving closed-flow behavior.
+Screenshots:
+- `docs/mobile/screenshots/cycle-095-holiwyn-portfolio-count-grid-smoke.png`
+- `docs/mobile/screenshots/cycle-095-holiwyn-portfolio-count-grid-closed.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-home-start.xml`
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-empty.xml`
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-home.xml`
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-list.xml`
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-ticket.xml`
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-open.xml`
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-ready.xml`
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-activity.xml`
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-closed.xml`
+Bugs:
+- None found. Harness now captures activity proof and top-of-Portfolio count-grid proof separately after close.
+Visual QA:
+- Compact grid shows Open positions `0`, Recent activity `2`, and Closed trades `1` in one row without overlap.
