@@ -84,6 +84,11 @@ export default function App() {
         setOpenOrders([SMOKE_OPEN_ORDER]);
         setMainTab("portfolio");
       }
+      const forcedSearchQuery = url.match(/[?&]forceSearchQuery=([^&]+)/)?.[1];
+      if (forcedSearchQuery) {
+        setQuery(decodeURIComponent(forcedSearchQuery));
+        setMainTab("search");
+      }
     });
   }, []);
 

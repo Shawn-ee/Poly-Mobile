@@ -89,3 +89,4 @@ Status:
 | GAP-067 | Event detail | Market group jump controls | P1 | No | Verified | Cycle 056 adds Event Detail group chips and uses the Props selector in deep smoke instead of a fixed prop-section swipe. |
 | GAP-068 | Harness | Featured futures trade smoke | P1 | No | Verified | Cycle 057 opens the ticket from the visible featured future selector and removes the post-back Home list swipe from deep smoke. |
 | GAP-069 | Harness | Focused Event Detail trade smoke | P1 | No | Verified | Cycle 058 adds Event Detail outcome selectors and a focused smoke that opens a Mexico match-winner ticket directly from Event Detail. |
+| GAP-070 | Harness | Focused Search query smoke | P1 | No | Verified | Cycle 059 adds a launch-query Search smoke that verifies zero-result Search without device keyboard entry. |
