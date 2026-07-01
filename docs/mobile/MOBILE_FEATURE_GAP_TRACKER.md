@@ -103,3 +103,4 @@ Status:
 | GAP-081 | Event detail | Market depth preview | P1 | Yes | Verified | Cycle 070 adds localized Best bid/Best ask/Spread depth rows to Event Detail market cards and verifies them in focused emulator smoke. |
 | GAP-082 | Trade ticket | Side-specific buy/sell copy | P1 | Yes | Verified | Cycle 071 adds side-aware ticket CTA/proceeds copy and a focused sell-ticket emulator smoke. |
 | GAP-083 | Account/Login | User account entry point | P1 | Yes | Verified | Cycle 072 adds a localized Account tab with mock login methods, demo balance context, and focused emulator smoke coverage. |
+| GAP-084 | Account/Login | Mock sign-in state | P1 | Yes | Verified | Cycle 073 adds local Account sign-in/sign-out behavior with demo profile proof and focused emulator smoke coverage. |

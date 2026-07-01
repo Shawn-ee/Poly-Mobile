@@ -1449,3 +1449,27 @@ Bugs:
 - Second smoke proved app render but asserted a below-fold fake-token row; the assertion was narrowed to first-viewport Account content.
 Visual QA:
 - Account screen and five-tab bottom navigation fit on emulator without overlap.
+
+### Cycle 073
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:account-login`
+- `npm run test:mobile-api`
+Result: Passed. Account now supports local mock sign-in from the phone/email actions, shows a Holiwyn Demo profile, and signs out back to the signed-out login state.
+Screenshots:
+- `docs/mobile/screenshots/cycle-073-holiwyn-account-login-smoke.png`
+- `docs/mobile/screenshots/cycle-073-holiwyn-account-signed-out-start.png`
+- `docs/mobile/screenshots/cycle-073-holiwyn-account-signed-in.png`
+- `docs/mobile/screenshots/cycle-073-holiwyn-account-signed-out.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-073-holiwyn-account-login-home.xml`
+- `docs/mobile/harness/cycle-073-holiwyn-account-signed-out-start.xml`
+- `docs/mobile/harness/cycle-073-holiwyn-account-signed-in.xml`
+- `docs/mobile/harness/cycle-073-holiwyn-account-signed-out.xml`
+Bugs:
+- None found.
+Visual QA:
+- Signed-in profile card, demo balance, sign-out action, and mock-auth warning fit on emulator without overlap.

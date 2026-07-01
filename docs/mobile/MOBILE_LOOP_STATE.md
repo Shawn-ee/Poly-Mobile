@@ -3649,6 +3649,51 @@ Open blockers: None for autonomous product/harness progress. Live backend proof 
 Risks: Account login remains mock-only; Event Detail depth and ticket quote math remain local estimates until backend auth, quote, and order-book APIs can feed them.
 Next three likely cycles: Add account/profile state polish, improve market discovery/filtering parity, and retry backend readiness when Docker daemon becomes reachable.
 
+### Cycle 073
+
+Date: 2026-07-01
+Branch: mobile/cycle-073
+Goal: Add local mock sign-in/sign-out behavior to the Account screen.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Account phone/email actions now activate a local signed-in state with Holiwyn Demo profile card, demo tier, mock-auth notice, and sign-out action.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/AccountScreen.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:account-login` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-073-holiwyn-account-login-smoke.png`
+- `docs/mobile/screenshots/cycle-073-holiwyn-account-signed-out-start.png`
+- `docs/mobile/screenshots/cycle-073-holiwyn-account-signed-in.png`
+- `docs/mobile/screenshots/cycle-073-holiwyn-account-signed-out.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-073-holiwyn-account-login-home.xml`
+- `docs/mobile/harness/cycle-073-holiwyn-account-signed-out-start.xml`
+- `docs/mobile/harness/cycle-073-holiwyn-account-signed-in.xml`
+- `docs/mobile/harness/cycle-073-holiwyn-account-signed-out.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Signed-in profile state is local/session-only until backend authentication is connected.
+Technical debt resolved:
+- Account login controls now produce visible app behavior instead of being static placeholders.
+Result: Passed Cycle 073 QA. Mobile typecheck, focused Account Login smoke, visual screenshot review, and mobile API tests pass.
+Commit: `PENDING`
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 074 should continue market discovery/trading parity or add account profile polish without implementing deposit/withdraw.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Account Simulation Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
