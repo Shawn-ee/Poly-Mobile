@@ -51,3 +51,4 @@ Status:
 | GAP-029 | Search | Search result header/count | P1 | No | Verified | Cycle 019 adds Search result heading, count, clear affordance, and removes disruptive auto-focus. |
 | GAP-030 | Harness | Resilient Expo launch/live assertions | P1 | No | Verified | Cycle 019 waits for Holiwyn Home, retries the Expo URL, and accepts both empty and populated Live states. |
 | GAP-031 | Search | Quick market filters | P1 | No | Verified | Cycle 020 adds All/Live/Upcoming filters and asserts them in deep smoke. |
+| GAP-032 | Architecture | Search screen component | P2 | Yes | Verified | Cycle 021 extracts Search tab UI and filter behavior into `mobile/src/components/SearchScreen.tsx`. |

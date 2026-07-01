@@ -288,3 +288,16 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 020 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 021
+
+Date: 2026-07-01
+Branch: mobile/cycle-021
+Reviewer: Lead/Reviewer pass
+Scope: Search screen component extraction.
+Findings:
+- P1: Search UI and filter behavior moved into a dedicated component without changing runtime behavior.
+- P2: `App.tsx` still owns broad app state and other inline screens; future extraction should continue in small verified cycles.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 021 for local commit/merge after scoped diff review.
+Merge approved: Yes

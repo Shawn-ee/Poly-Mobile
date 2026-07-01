@@ -16,6 +16,7 @@ import { BottomTabs } from "./src/components/BottomTabs";
 import { EventDetail } from "./src/components/EventDetail";
 import { FutureList, MarketList } from "./src/components/MarketLists";
 import { Portfolio, Position } from "./src/components/Portfolio";
+import { SearchScreen } from "./src/components/SearchScreen";
 import { Ticket, TradeTicket } from "./src/components/TradeTicket";
 import {
   Event,
@@ -33,7 +34,6 @@ const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? 
 
 type MainTab = "home" | "live" | "portfolio" | "search";
 type WorldCupTab = "games" | "futures";
-type SearchFilter = "all" | "live" | "upcoming";
 const copy = {
   en: {
     promo: "Get 50",
@@ -432,76 +432,6 @@ function Segmented({
   );
 }
 
-function SearchScreen({
-  locale,
-  t,
-  query,
-  setQuery,
-  events,
-  openEvent,
-  openTicket,
-}: {
-  locale: Locale;
-  t: typeof copy.en;
-  query: string;
-  setQuery: (query: string) => void;
-  events: Event[];
-  openEvent: (event: Event) => void;
-  openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
-}) {
-  const [filter, setFilter] = useState<SearchFilter>("all");
-  const hasQuery = query.trim().length > 0;
-  const visibleEvents = filter === "live" ? events.filter((event) => event.status === "live") : filter === "upcoming" ? events.filter((event) => event.status !== "live") : events;
-  const resultLabel = locale === "zh" ? `${visibleEvents.length} 个结果` : `${visibleEvents.length} ${visibleEvents.length === 1 ? "result" : "results"}`;
-  const filters: Array<[SearchFilter, string]> = [
-    ["all", t.searchAll],
-    ["live", t.searchLive],
-    ["upcoming", t.searchUpcoming],
-  ];
-
-  return (
-    <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
-      <View style={styles.searchBox}>
-        <Ionicons name="search" color="#94a3b8" size={20} />
-        <TextInput
-          accessibilityLabel="search-world-cup-markets"
-          testID="search-world-cup-markets"
-          value={query}
-          onChangeText={setQuery}
-          placeholder={t.marketSearch}
-          placeholderTextColor="#64748b"
-          style={styles.searchInput}
-        />
-      </View>
-      <View style={styles.searchHeader}>
-        <View>
-          <Text style={styles.searchHeading}>{hasQuery ? t.searchResults : t.topResults}</Text>
-          <Text style={styles.resultMeta}>{resultLabel}</Text>
-        </View>
-        {hasQuery && (
-          <Pressable accessibilityLabel="clear-search" testID="clear-search" style={styles.clearSearchButton} onPress={() => setQuery("")}>
-            <Text style={styles.clearSearchText}>{t.clearSearch}</Text>
-          </Pressable>
-        )}
-      </View>
-      <View style={styles.searchFilters}>
-        {filters.map(([value, text]) => (
-          <Pressable
-            key={value}
-            accessibilityLabel={`search-filter-${value}`}
-            testID={`search-filter-${value}`}
-            style={[styles.searchFilterChip, filter === value && styles.searchFilterChipActive]}
-            onPress={() => setFilter(value)}
-          >
-            <Text style={[styles.searchFilterText, filter === value && styles.searchFilterTextActive]}>{text}</Text>
-          </Pressable>
-        ))}
-      </View>
-      <MarketList locale={locale} events={visibleEvents} empty={t.noResults} openEvent={openEvent} openTicket={openTicket} />
-    </ScrollView>
-  );
-}
-
 function LiveScreen({
   locale,
   t,
@@ -561,16 +491,6 @@ const styles = StyleSheet.create({
   liveCount: { minWidth: 34, textAlign: "center", color: "#ffffff", fontWeight: "900", backgroundColor: "#ef4444", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 6 },
   searchBox: { flexDirection: "row", alignItems: "center", gap: 10, height: 52, paddingHorizontal: 14, borderRadius: 12, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginBottom: 14 },
   searchInput: { flex: 1, color: "#f8fafc", fontSize: 16, fontWeight: "700" },
-  searchHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 12 },
-  searchHeading: { color: "#f8fafc", fontSize: 20, fontWeight: "900" },
-  resultMeta: { color: "#8ea0b8", fontSize: 13, fontWeight: "800", marginTop: 3 },
-  clearSearchButton: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, backgroundColor: "#1f2937" },
-  clearSearchText: { color: "#dbeafe", fontWeight: "900" },
-  searchFilters: { flexDirection: "row", gap: 8, marginBottom: 12 },
-  searchFilterChip: { paddingHorizontal: 14, paddingVertical: 9, borderRadius: 999, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
-  searchFilterChipActive: { backgroundColor: "#1d6dff", borderColor: "#1d6dff" },
-  searchFilterText: { color: "#8ea0b8", fontWeight: "900" },
-  searchFilterTextActive: { color: "#ffffff" },
   segmented: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: "#263247", marginBottom: 10 },
   segment: { flex: 1, alignItems: "center", paddingVertical: 14 },
   segmentActive: { borderBottomWidth: 3, borderBottomColor: "#f8fafc" },
