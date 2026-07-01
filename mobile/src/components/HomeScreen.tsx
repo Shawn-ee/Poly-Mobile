@@ -21,6 +21,7 @@ type HomeScreenCopy = {
   saved: string;
   volume: string;
   liquidity: string;
+  noSavedMarkets: string;
 };
 
 export function HomeScreen({
@@ -68,6 +69,7 @@ export function HomeScreen({
           : events,
     [events, homeFilter, savedEventIds],
   );
+  const emptyCopy = homeFilter === "saved" ? t.noSavedMarkets : t.noResults;
 
   return (
     <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
@@ -97,18 +99,25 @@ export function HomeScreen({
           </Pressable>
         ))}
       </View>
+      {homeFilter === "saved" && visibleEvents.length === 0 && (
+        <Text accessibilityLabel="home-saved-empty" testID="home-saved-empty" style={styles.savedEmptyText}>
+          {t.noSavedMarkets}
+        </Text>
+      )}
       <WorldCupSegmented left={t.games} right={t.futures} value={worldCupTab} setValue={setWorldCupTab} />
       {worldCupTab === "games" ? (
-        <MarketList
-          locale={locale}
-          events={visibleEvents}
-          empty={t.noResults}
-          openEvent={openEvent}
-          openTicket={openTicket}
-          savedEventIds={savedEventIds}
-          toggleSavedEvent={toggleSavedEvent}
-          statsCopy={{ volume: t.volume, liquidity: t.liquidity }}
-        />
+        homeFilter === "saved" && visibleEvents.length === 0 ? null : (
+          <MarketList
+            locale={locale}
+            events={visibleEvents}
+            empty={emptyCopy}
+            openEvent={openEvent}
+            openTicket={openTicket}
+            savedEventIds={savedEventIds}
+            toggleSavedEvent={toggleSavedEvent}
+            statsCopy={{ volume: t.volume, liquidity: t.liquidity }}
+          />
+        )
       ) : (
         <FutureList locale={locale} futures={futures} openTicket={openTicket} />
       )}
@@ -127,4 +136,5 @@ const styles = StyleSheet.create({
   filterChipActive: { backgroundColor: "#1d6dff", borderColor: "#1d6dff" },
   filterText: { color: "#8ea0b8", fontWeight: "900" },
   filterTextActive: { color: "#ffffff" },
+  savedEmptyText: { color: "#94a3b8", fontWeight: "900", textAlign: "center", marginTop: 2, marginBottom: 14 },
 });

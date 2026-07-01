@@ -1650,3 +1650,23 @@ Bugs:
 - None found.
 Visual QA:
 - Live first sorting promotes the live France vs. Argentina market without crowding the Search filter row or bottom navigation.
+
+### Cycle 082
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:home-saved-empty`
+- `npm run test:mobile-api`
+Result: Passed. Home Saved now shows a specific empty state when no markets are saved.
+Screenshots:
+- `docs/mobile/screenshots/cycle-082-holiwyn-home-saved-empty-smoke.png`
+- `docs/mobile/screenshots/cycle-082-holiwyn-home-saved-empty.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-082-holiwyn-home-saved-empty-home.xml`
+- `docs/mobile/harness/cycle-082-holiwyn-home-saved-empty.xml`
+Bugs:
+- None found.
+Visual QA:
+- Saved empty copy is visible in the first viewport between the filter chips and Games/Futures control.
