@@ -1830,3 +1830,18 @@ Findings:
 - Mobile typecheck through the smoke script and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 126 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 127
+
+Date: 2026-07-01
+Branch: mobile/cycle-127
+Reviewer: Lead/Reviewer pass
+Scope: Event Detail outcome odds.
+Findings:
+- P1: Event Detail outcome buttons now show decimal odds below each probability.
+- P1: Focused market-outcome-count smoke verifies the visible Mexico outcome shows `64%` plus `1.6x`.
+- P1: The visual proof keeps the market card readable with bid/ask/spread and group-count context still visible.
+- P2: Odds still derive from local mock probability math; backend quote/depth odds remain a later integration target.
+- Mobile typecheck through the smoke script and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 127 for local commit/merge after scoped diff review.
+Merge approved: Yes

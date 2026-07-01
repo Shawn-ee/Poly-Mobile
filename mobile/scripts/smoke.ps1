@@ -1014,7 +1014,7 @@ try {
     }
 
     if ($EventDetailMarketOutcomeCount) {
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Match winner", "2 outcomes", "Best bid", "Best ask")
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Match winner", "2 outcomes", "Best bid", "Best ask", "64%", "1.6x")
       return
     }
 

@@ -6112,6 +6112,56 @@ Harnesses run:
 Harness failures:
 - Two initial smoke failures exposed stale state and Expo developer-menu interference; both recovery paths were hardened and rerun passed.
 
+### Cycle 127
+
+Date: 2026-07-01
+Branch: mobile/cycle-127
+Goal: Show decimal odds directly on Event Detail outcome buttons so users can compare payout multiples before opening a trade ticket.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Event Detail outcome buttons now render decimal odds under the probability, e.g. Mexico shows `64%` and `1.6x`.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/EventDetail.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:event-detail-market-outcome-count` in `mobile/` (includes mobile typecheck).
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-127-holiwyn-event-detail-outcome-odds-smoke.png`
+- `docs/mobile/screenshots/cycle-127-holiwyn-event-detail-outcome-odds.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-127-holiwyn-event-detail-outcome-odds-expo-menu.xml`
+- `docs/mobile/harness/cycle-127-holiwyn-event-detail-outcome-odds-home.xml`
+- `docs/mobile/harness/cycle-127-holiwyn-event-detail-outcome-odds.xml`
+Bugs found:
+- First harness assertion expected Ecuador odds that were below the exported viewport. The assertion now proves the visible Mexico probability/odds pair.
+Technical debt added:
+- Event Detail odds use local mock probability math until backend quote/depth odds are available.
+Technical debt resolved:
+- Event Detail now exposes payout-multiple context before the user opens a ticket.
+Result: Passed Cycle 127 QA. Focused event-detail-market-outcome-count smoke and mobile API/profile-preference tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 128 should continue market-depth/trade-ticket parity or retry a backend/server-mode proof if local services become available.
+Harnesses run:
+- Mobile Typecheck Harness
+- Event Detail Market Outcome Count Smoke Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- One initial offscreen assertion failure was corrected and rerun passed.
+
+### Heartbeat After Cycle 127
+
+Completed cycles: 125, 126, 127.
+Verified progress: Event Detail now exposes market-group counts, trade tickets show implied odds, and Event Detail outcome buttons show decimal odds before ticket open. Focused emulator smokes and mobile API/profile-preference tests passed for all three cycles.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, live badge/clock propagation, local persistence, market group counts, ticket implied odds, and outcome-button odds.
+Current backend state: Mobile API/profile-preference unit tests pass. Local backend health remained unavailable during these emulator QA cycles, so product-facing trade proofs used mock fallback.
+Device strategy: Samsung S23 remains Polymarket reference and later Holiwyn real-device QA; Android emulator remains the repeatable Holiwyn automation target; proper Android dev/APK harness remains a future stabilization milestone.
+Open blockers: None for autonomous progress.
+Risks: Expo Go/emulator UI hierarchy remains flaky; odds and depth are still local/mock-derived; backend-backed quote/order integration remains a major remaining final-goal gap.
+Next three likely cycles: continue market-depth/trade-ticket parity, add richer open-order/history detail, and retry backend/server-mode proof if local services become available.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
