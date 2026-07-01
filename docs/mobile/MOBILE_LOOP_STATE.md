@@ -4382,6 +4382,50 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 089
+
+Date: 2026-07-01
+Branch: mobile/cycle-089
+Goal: Add focused emulator proof that a Futures list ticket can place a mock order.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No product UI change; Futures list mock-order path now has focused smoke coverage.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:future-list-order` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-089-holiwyn-future-list-order-smoke.png`
+- `docs/mobile/screenshots/cycle-089-holiwyn-future-list-order-portfolio.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-089-holiwyn-future-list-order-home.xml`
+- `docs/mobile/harness/cycle-089-holiwyn-future-list-order-list.xml`
+- `docs/mobile/harness/cycle-089-holiwyn-future-list-order-ticket.xml`
+- `docs/mobile/harness/cycle-089-holiwyn-future-list-order-portfolio.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Futures order proof is still mock-token mode until authenticated backend order placement is available.
+Technical debt resolved:
+- Futures list path now has end-to-end proof from discovery to ticket to mock Portfolio position.
+Result: Passed Cycle 089 QA. Mobile typecheck, focused Futures list order smoke, visual screenshot review, and mobile API tests pass.
+Commit: Pending branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 090 should continue trading/portfolio parity or retry backend readiness if local services become reachable.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Futures Harness
+- Trading Simulation Harness
+- Portfolio Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

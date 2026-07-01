@@ -1796,3 +1796,25 @@ Bugs:
 - None found.
 Visual QA:
 - France / World Cup winner ticket shows Buy, fake balance, estimated shares, average price, payout, and Place buy order.
+
+### Cycle 089
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:future-list-order`
+- `npm run test:mobile-api`
+Result: Passed. A Futures list ticket can now place a mock order and create a Portfolio position.
+Screenshots:
+- `docs/mobile/screenshots/cycle-089-holiwyn-future-list-order-smoke.png`
+- `docs/mobile/screenshots/cycle-089-holiwyn-future-list-order-portfolio.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-089-holiwyn-future-list-order-home.xml`
+- `docs/mobile/harness/cycle-089-holiwyn-future-list-order-list.xml`
+- `docs/mobile/harness/cycle-089-holiwyn-future-list-order-ticket.xml`
+- `docs/mobile/harness/cycle-089-holiwyn-future-list-order-portfolio.xml`
+Bugs:
+- None found.
+Visual QA:
+- Portfolio shows 9,900 USDT balance, World Cup winner / France position, P/L details, close action, and mock order confirmation.
