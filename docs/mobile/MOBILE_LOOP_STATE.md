@@ -4770,6 +4770,61 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 097
+
+Date: 2026-07-01
+Branch: mobile/cycle-097
+Goal: Persist mock account sign-in state locally and verify Account restores after app restart.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Account now restores the local mock signed-in profile after restart.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/AccountScreen.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:account-persistence` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-097-holiwyn-account-persistence-smoke.png`
+- `docs/mobile/screenshots/cycle-097-holiwyn-account-persistence-seeded.png`
+- `docs/mobile/screenshots/cycle-097-holiwyn-account-persistence-signed-in.png`
+- `docs/mobile/screenshots/cycle-097-holiwyn-account-persistence-restored.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-097-holiwyn-account-persistence-home-start.xml`
+- `docs/mobile/harness/cycle-097-holiwyn-account-persistence-seeded.xml`
+- `docs/mobile/harness/cycle-097-holiwyn-account-persistence-signed-in.xml`
+- `docs/mobile/harness/cycle-097-holiwyn-account-persistence-restored.xml`
+Bugs found:
+- Fixed an account hydration race where an empty storage read could overwrite a fresh sign-in.
+Technical debt added:
+- Account session remains local mock state; real backend auth/profile sync is intentionally not implemented.
+Technical debt resolved:
+- Mock sign-in state is no longer session-only on the device.
+Result: Passed Cycle 097 QA. Mobile typecheck, focused account-persistence smoke, visual screenshot review, and mobile API tests pass.
+Commit: `391f923` (`Persist Holiwyn mock account session`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `eb64a93`.
+Next cycle: Cycle 098 should retry backend readiness or continue replacing session-only client state with durable local storage where safe.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Account Persistence Harness
+- Local Storage Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 097
+
+Completed cycles: 095, 096, 097 since the last heartbeat.
+Verified progress: Portfolio count metrics are now compact in the first viewport; Saved markets persist across app restart; Account mock sign-in persists across app restart.
+Current app state: Holiwyn mobile has verified Home discovery filters/saved markets/saved empty/search clear/card stats/futures stats, Search browse/query/clear/saved filtering/sort/saved empty/card stats/saved persistence, Event Detail grouped markets/props/group jumps/save/trading stats/depth/outcome ticket opening, featured futures trading, Futures list ticket/buy/sell/order/close coverage, ticket balance/max/preset sizing/share and price estimates, side-aware buy/sell tickets, successful mock order, forced order failure, server order failure, Portfolio summary/detail/counts/compact count grid/close/activity/order confirmation/open-order cancel, server-unavailable Portfolio fallback, Live refresh, localization, and Account/Login mock profile persistence on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history/order/cancel client seams are wired; Bearer API-key config and canonical request shape are tested; local credential generation and backend readiness harnesses exist; latest UI smokes still use mock fallback because backend health is unavailable.
+Open blockers: None for autonomous product/harness progress. Live authenticated backend proof still waits on local backend/Docker availability.
+Risks: Saved markets and Account persistence are local-only; Portfolio counts, Home/Search/Futures market stats, Popular ranking, ticket quote math, and close-position behavior remain local estimates until backend auth, profile, quote, popularity, order-book, and position APIs can feed them.
+Next three likely cycles: Retry backend readiness, persist language preference locally, and continue polishing user-facing account/profile state without enabling real money movement.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
