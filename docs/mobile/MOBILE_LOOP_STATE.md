@@ -3694,6 +3694,49 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 074
+
+Date: 2026-07-01
+Branch: mobile/cycle-074
+Goal: Add quick Home market filters for World Cup discovery.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Home now shows All/Live/Today filter chips under search and applies them to the Games market list.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/HomeScreen.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:home-filter` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-074-holiwyn-home-filter-smoke.png`
+- `docs/mobile/screenshots/cycle-074-holiwyn-home-filter-live.png`
+- `docs/mobile/screenshots/cycle-074-holiwyn-home-filter-today.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-074-holiwyn-home-filter-home.xml`
+- `docs/mobile/harness/cycle-074-holiwyn-home-filter-live.xml`
+- `docs/mobile/harness/cycle-074-holiwyn-home-filter-today.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Home filters are local UI state and do not yet persist or sync with backend query params.
+Technical debt resolved:
+- Home discovery now supports quick status filtering instead of a flat mixed list only.
+Result: Passed Cycle 074 QA. Mobile typecheck, focused Home filter smoke, visual screenshot review, and mobile API tests pass.
+Commit: `PENDING`
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 075 should continue discovery parity, likely watchlist/saved markets or richer market cards.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Discovery Filter Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

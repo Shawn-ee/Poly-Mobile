@@ -1473,3 +1473,25 @@ Bugs:
 - None found.
 Visual QA:
 - Signed-in profile card, demo balance, sign-out action, and mock-auth warning fit on emulator without overlap.
+
+### Cycle 074
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:home-filter`
+- `npm run test:mobile-api`
+Result: Passed. Home now has All/Live/Today filter chips for World Cup market discovery, and the smoke verifies Live and Today filtered results by selector.
+Screenshots:
+- `docs/mobile/screenshots/cycle-074-holiwyn-home-filter-smoke.png`
+- `docs/mobile/screenshots/cycle-074-holiwyn-home-filter-live.png`
+- `docs/mobile/screenshots/cycle-074-holiwyn-home-filter-today.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-074-holiwyn-home-filter-home.xml`
+- `docs/mobile/harness/cycle-074-holiwyn-home-filter-live.xml`
+- `docs/mobile/harness/cycle-074-holiwyn-home-filter-today.xml`
+Bugs:
+- None found.
+Visual QA:
+- Filter chips fit under search and above Games/Futures without overlapping the bottom navigation.
