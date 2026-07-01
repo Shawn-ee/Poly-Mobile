@@ -301,3 +301,16 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 021 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 022
+
+Date: 2026-07-01
+Branch: mobile/cycle-022
+Reviewer: Lead/Reviewer pass
+Scope: Live screen component extraction.
+Findings:
+- P1: Live UI moved into a dedicated component while preserving the live count and empty/populated state behavior.
+- P2: Home screen remains the largest inline surface in `App.tsx`; extract in a later cycle.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 022 for local commit/merge after scoped diff review.
+Merge approved: Yes
