@@ -6006,8 +6006,8 @@ Technical debt added:
 Technical debt resolved:
 - Proven live reset smokes no longer force Metro `--clear`; retry deep links now settle before hierarchy capture.
 Result: Passed Cycle 124 QA. Focused live-portfolio-badge-deep smoke and mobile API/profile-preference tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `683a055` (`Speed up live Portfolio smoke harness`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `f72c06e`.
 Next cycle: Cycle 125 should continue product-facing World Cup/Polymarket parity or add a future dev/APK harness milestone when the app is stable enough.
 Harnesses run:
 - Mobile Typecheck Harness
