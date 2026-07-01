@@ -2835,8 +2835,8 @@ Technical debt added:
 Technical debt resolved:
 - Deep smoke no longer uses a blind fixed swipe to reveal Event Detail Props.
 Result: Passed Cycle 056 QA after recovery. Deep smoke verifies Props via `event-detail-group-prop`, persistent back via `event-detail-back`, and the normal trade, close, Live, and Search flows.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `e2abf12` (`Add Holiwyn event detail group jumps`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `276c8cf`.
 Next cycle: Cycle 057 should continue reducing remaining home-list scroll/input device actions or add deeper server fixture coverage.
 Harnesses run:
 - QA Smoke Harness
