@@ -31,6 +31,7 @@
     "smoke:ticket-defaults-persistence": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -TicketDefaultsPersistence -Port 8116",
     "smoke:live-summary": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -LiveSummary -Port 8125",
     "smoke:live-ticket": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -LiveTicket -Port 8126",
+    "smoke:live-order": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -LiveOrder -Port 8127",
     "smoke:home-filter": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -HomeFilter -Port 8092",
     "smoke:home-saved": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -HomeSaved -Port 8093",
     "smoke:saved-persistence": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SavedPersistence -Port 8112",

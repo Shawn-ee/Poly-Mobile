@@ -2368,3 +2368,29 @@ Bugs:
 - ADB initially reported the emulator offline, then recovered during the same focused smoke run.
 Visual QA:
 - Live France ticket shows a `LIVE WORLD CUP` badge above the Buy/Sell controls.
+
+### Cycle 116
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554` with Expo Go
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run smoke:live-order`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Expo Go can support the current Holiwyn development loop, including live market opening, live ticket creation, fake-token order placement, and Portfolio proof.
+Screenshots:
+- `docs/mobile/screenshots/cycle-116-holiwyn-live-order-smoke.png`
+- `docs/mobile/screenshots/cycle-116-holiwyn-live-order-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-116-holiwyn-live-order-ticket.png`
+- `docs/mobile/screenshots/cycle-116-holiwyn-live-order-portfolio.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-116-holiwyn-expo-menu-recovered.xml`
+- `docs/mobile/harness/cycle-116-holiwyn-live-order-home.xml`
+- `docs/mobile/harness/cycle-116-holiwyn-live-order-ticket-ready.xml`
+- `docs/mobile/harness/cycle-116-holiwyn-live-order-ticket.xml`
+- `docs/mobile/harness/cycle-116-holiwyn-live-order-portfolio.xml`
+Bugs:
+- Expo Go can show its developer menu after a clean data reset or after a live outcome tap. The smoke harness now dismisses both first-run and regular Expo developer sheets, relaunches the Live deep link when needed, and retries the ticket tap before failing.
+- Initial Portfolio assertion expected a transient `Order placed` message, but the durable proof is the reduced fake balance plus the open France vs. Argentina position row. The assertion now checks the durable Portfolio state.
+Visual QA:
+- Portfolio shows `9,900 USDT`, `Open positions` count `1`, `Recent activity` count `1`, and a `France vs. Argentina` position with `MOCK - Buy - France - 41%`.
