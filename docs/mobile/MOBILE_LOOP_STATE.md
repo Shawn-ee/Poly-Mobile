@@ -5331,6 +5331,44 @@ Open blockers: None for autonomous mock-mode product/harness progress. Live auth
 Risks: Saved markets, Account session, language, ticket defaults, and mock Portfolio persistence are local-first; profile sync is guarded and visible on failure but still lacks live-backend proof; Portfolio counts, Home/Search/Futures market stats, Popular ranking, ticket quote math, and close-position behavior remain local estimates until backend auth, profile, quote, popularity, order-book, and position APIs can feed them.
 Next three likely cycles: Continue Account/profile polish, add another World Cup trading/detail refinement, and retry backend readiness if Docker/local Postgres become available.
 
+### Cycle 110
+
+Date: 2026-07-01
+Branch: mobile/cycle-110
+Goal: Surface estimated portfolio value in Account Preferences and verify seeded position valuation on emulator.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Account Preferences now includes a Portfolio value row above Open positions.
+Backend/API changed: No backend code change; the value uses the existing local position valuation helper and fake balance.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/AccountScreen.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:account-portfolio-value` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-110-holiwyn-account-portfolio-value-smoke.png`
+- `docs/mobile/screenshots/cycle-110-holiwyn-account-portfolio-value.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-110-holiwyn-account-portfolio-value-home-start.xml`
+- `docs/mobile/harness/cycle-110-holiwyn-account-portfolio-value.xml`
+Bugs found:
+- Initial visual evidence did not show the portfolio value row. The row was moved above Open positions and the focused smoke was rerun successfully.
+Technical debt added:
+- Portfolio value is estimated from local/mock position math until backend pricing and positions feed it.
+Technical debt resolved:
+- Account profile now reflects account-level estimated value, not only raw fake-token balance and counts.
+Result: Passed Cycle 110 QA. Mobile typecheck, focused emulator account-portfolio-value smoke, and mobile API/profile-preference tests pass.
+Commit: `40f5fff` (`Show Account portfolio value`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `765cb0d`.
+Next cycle: Cycle 111 should add another World Cup trading/detail refinement or retry backend readiness if local services become available.
+Harnesses run:
+- Mobile Typecheck Harness
+- Account Portfolio Value Smoke Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
