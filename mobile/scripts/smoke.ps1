@@ -11,7 +11,8 @@ param(
   [switch]$SearchQuery,
   [switch]$ServerUnavailable,
   [switch]$ServerOrderFailure,
-  [switch]$SellTicket
+  [switch]$SellTicket,
+  [switch]$Account
 )
 
 $ErrorActionPreference = "Stop"
@@ -152,11 +153,11 @@ try {
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
   }
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
@@ -166,6 +167,8 @@ try {
     "exp://10.0.2.2:$Port/--/?forceOpenOrder=1"
   } elseif ($SearchQuery) {
     "exp://10.0.2.2:$Port/--/?forceSearchQuery=zzzz"
+  } elseif ($Account) {
+    "exp://10.0.2.2:$Port/--/?forceAccount=1"
   } else {
     "exp://10.0.2.2:$Port"
   }
@@ -178,6 +181,8 @@ try {
     @("Holiwyn", "Portfolio", "Open orders", "Cancel")
   } elseif ($SearchQuery) {
     @("Holiwyn", "Search World Cup markets", "zzzz", "0 results")
+  } elseif ($Account) {
+    @("Holiwyn", "Account", "Signed out", "Demo balance")
   } else {
     @("Holiwyn", "World Cup", "Games", "Futures")
   }
@@ -210,6 +215,13 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-search-query.png"
       $searchQueryHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search-query.xml"
       Assert-HierarchyContains -Path $searchQueryHierarchy -Expected @("zzzz", "Results", "0 results", "No markets match your search.", "Clear")
+      return
+    }
+
+    if ($Account) {
+      Save-Screenshot -Name "cycle-current-holiwyn-account.png"
+      $accountHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account.xml"
+      Assert-HierarchyContains -Path $accountHierarchy -Expected @("Account", "Signed out", "Demo balance", "10,000 USDT", "Continue with phone", "Continue with email", "Mock login ready.", "Preferences")
       return
     }
 

@@ -3597,6 +3597,58 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 072
+
+Date: 2026-07-01
+Branch: mobile/cycle-072
+Goal: Add a user-facing Account/Login entry point while keeping authentication and wallet money movement mock-only.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Added a localized Account tab with signed-out state, mock phone/email login actions, demo balance card, preferences preview, and disabled deposit/withdraw copy.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/AccountScreen.tsx`, `mobile/src/components/BottomTabs.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:account` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-072-holiwyn-account-smoke.png`
+- `docs/mobile/screenshots/cycle-072-holiwyn-account.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-072-holiwyn-account-home.xml`
+- `docs/mobile/harness/cycle-072-holiwyn-account.xml`
+Bugs found:
+- First focused smoke run hit cold Metro startup while the packager cache was rebuilding; rerun reached the app.
+- The first account assertion included a below-fold fake-token row; smoke was narrowed to first-visible account content and then passed.
+Technical debt added:
+- Account login buttons are visual/mock only until backend auth is deliberately integrated.
+Technical debt resolved:
+- Holiwyn now has a first-class user account/login entry point instead of only Portfolio serving as a user area.
+Result: Passed Cycle 072 QA after harness assertion recovery. Mobile typecheck, focused Account smoke, visual screenshot review, and mobile API tests pass.
+Commit: `PENDING`
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 073 should deepen Account/profile behavior or add another Polymarket-like market discovery/trading detail while keeping wallet deposit/withdraw untouched.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Recovery Harness
+- Review Harness
+Harness failures:
+- One cold Metro launch failure and one over-broad below-fold assertion before final pass.
+
+### Heartbeat After Cycle 072
+
+Completed cycles: 070, 071, 072 since the last heartbeat.
+Verified progress: Event Detail now shows market depth context, Trade Ticket has side-specific Buy/Sell copy, and the app has a dedicated Account/Login tab with mock-only authentication controls.
+Current app state: Holiwyn mobile has verified Home, Event Detail grouped markets/props/group jumps/trading stats/depth/outcome ticket opening, featured futures trading, ticket balance/max/preset sizing/share and price estimates, side-aware buy/sell tickets, successful mock order, forced order failure, server order failure, Portfolio summary/detail/close/activity/order confirmation/open-order cancel, server-unavailable Portfolio fallback, Live refresh, Search browse/query, localization, and Account/Login entry flows on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history/order/cancel client seams are wired; Bearer API-key config and canonical request shape are tested; local credential generation and backend readiness harnesses exist; live authenticated backend order proof remains pending until Docker daemon/local DB are available.
+Open blockers: None for autonomous product/harness progress. Live backend proof still waits on Docker Desktop engine availability.
+Risks: Account login remains mock-only; Event Detail depth and ticket quote math remain local estimates until backend auth, quote, and order-book APIs can feed them.
+Next three likely cycles: Add account/profile state polish, improve market discovery/filtering parity, and retry backend readiness when Docker daemon becomes reachable.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

@@ -1,13 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-export type MainTab = "home" | "live" | "portfolio" | "search";
+export type MainTab = "home" | "live" | "portfolio" | "search" | "account";
 
 type BottomTabCopy = {
   home: string;
   live: string;
   portfolio: string;
   search: string;
+  account: string;
 };
 
 export function BottomTabs({
@@ -24,6 +25,7 @@ export function BottomTabs({
     ["live", "radio", t.live],
     ["portfolio", "person-circle-outline", t.portfolio],
     ["search", "search", t.search],
+    ["account", "person", t.account],
   ];
 
   return (

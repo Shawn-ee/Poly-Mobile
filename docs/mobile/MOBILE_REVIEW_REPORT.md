@@ -1007,3 +1007,18 @@ Findings:
 - Mobile typecheck, focused sell-ticket smoke, and mobile API request tests passed.
 Decision: Approve Cycle 071 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 072
+
+Date: 2026-07-01
+Branch: mobile/cycle-072
+Reviewer: Lead/Reviewer pass
+Scope: Account/Login entry point.
+Findings:
+- P1: Holiwyn now has a dedicated Account tab with signed-out state, mock phone/email login buttons, demo balance context, and disabled deposit/withdraw copy.
+- P1: Account copy is localized in English and Simplified Chinese through the existing app copy module.
+- P1: Focused Account smoke launches directly to the Account tab and asserts the first visible account viewport.
+- P2: Login controls remain non-functional by design until backend authentication is intentionally connected.
+- Mobile typecheck, focused Account smoke, and mobile API request tests passed.
+Decision: Approve Cycle 072 for local commit/merge after scoped diff review.
+Merge approved: Yes

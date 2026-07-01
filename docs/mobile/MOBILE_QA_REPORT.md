@@ -1428,3 +1428,24 @@ Bugs:
 - None found.
 Visual QA:
 - Sell ticket copy fits on emulator and the primary CTA remains visible.
+
+### Cycle 072
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:account`
+- `npm run test:mobile-api`
+Result: Passed after recovery. Holiwyn now has a localized Account tab with signed-out state, mock login methods, demo balance context, and disabled deposit/withdraw messaging.
+Screenshots:
+- `docs/mobile/screenshots/cycle-072-holiwyn-account-smoke.png`
+- `docs/mobile/screenshots/cycle-072-holiwyn-account.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-072-holiwyn-account-home.xml`
+- `docs/mobile/harness/cycle-072-holiwyn-account.xml`
+Bugs:
+- First smoke run hit a cold Metro startup before the packager was ready.
+- Second smoke proved app render but asserted a below-fold fake-token row; the assertion was narrowed to first-viewport Account content.
+Visual QA:
+- Account screen and five-tab bottom navigation fit on emulator without overlap.
