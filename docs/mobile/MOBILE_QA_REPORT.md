@@ -2094,3 +2094,23 @@ Bugs:
 - None found in product code. Harness recovered from a brittle two-parameter deep link by using one focused harness flag that both seeds defaults and opens the reference ticket.
 Visual QA:
 - Restored ticket shows France / World Cup winner, Sell selected, amount `500`, Estimated proceeds, and `Place sell order`.
+
+### Cycle 102
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:account-preferences`
+- `npm run test:mobile-api`
+Result: Passed. Account now shows the saved ticket default preference in the first viewport.
+Screenshots:
+- `docs/mobile/screenshots/cycle-102-holiwyn-account-preferences-smoke.png`
+- `docs/mobile/screenshots/cycle-102-holiwyn-account-preferences.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-102-holiwyn-account-preferences-home-start.xml`
+- `docs/mobile/harness/cycle-102-holiwyn-account-preferences.xml`
+Bugs:
+- None found in product code. Harness first tried to assert a below-fold row, then the layout was improved so preferences appear before login methods and the focused smoke verifies visible preference proof.
+Visual QA:
+- Account shows Preferences in the first viewport, including `Ticket default: Sell 500 USDT`.
