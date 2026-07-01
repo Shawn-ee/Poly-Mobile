@@ -34,6 +34,7 @@
     "smoke:live-order": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -LiveOrder -Port 8127",
     "smoke:live-order-close": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -LiveOrderClose -Port 8128",
     "smoke:live-portfolio-badge": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -LivePortfolioBadge -Port 8129",
+    "smoke:live-portfolio-badge-deep": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -LivePortfolioBadgeDeep -Port 8130",
     "smoke:home-filter": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -HomeFilter -Port 8092",
     "smoke:home-saved": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -HomeSaved -Port 8093",
     "smoke:saved-persistence": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SavedPersistence -Port 8112",
