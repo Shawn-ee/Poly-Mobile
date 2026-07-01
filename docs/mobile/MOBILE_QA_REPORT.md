@@ -1267,3 +1267,20 @@ Screenshots:
 Bugs:
 - Two initial nested PowerShell wrappers around the expected strict failure had quoting issues; final direct shell check passed.
 Server-mode note: Strict live server-mode smoke now has a deterministic gate, but the environment still needs a reachable backend and `EXPO_PUBLIC_API_KEY` before live authenticated proof can pass.
+
+### Cycle 064
+
+Date: 2026-07-01
+Device: Backend/mobile credential harness
+Build/run command:
+- `npm run mobile:dev-credential` attempted against local backend DB.
+- `npm run mobile:dev-credential:dry-run`
+- `npm run test:mobile-api`
+- `npm run preflight:server-mode` in `mobile/`
+- `npm run typecheck` in `mobile/`
+Result: Passed with documented environment recovery. Dry-run credential proof, mobile API tests, mobile preflight, and mobile typecheck pass.
+Screenshots:
+- None.
+Bugs:
+- Real credential creation could not complete because local Postgres was unavailable at `localhost:5432`; this is an environment prerequisite, not a code failure.
+Server-mode note: `mobile:dev-credential` is ready to create a fake-token mobile API key with 10,000 USDT target balance once local backend DB is running.

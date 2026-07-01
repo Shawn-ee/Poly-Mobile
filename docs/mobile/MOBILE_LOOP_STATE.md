@@ -3237,6 +3237,49 @@ Open blockers: None for autonomous progress in mock/harness development.
 Risks: Strict live server-mode proof remains gated by backend and seeded API credentials; main deep smoke still contains broad keyboard interaction for Search.
 Next three likely cycles: Discover safe local API-key generation, wire a backend readiness runbook/harness around seeded credentials, and attempt strict server-mode smoke once backend/key prerequisites exist.
 
+### Cycle 064
+
+Date: 2026-07-01
+Branch: mobile/cycle-064
+Goal: Add a safe local fake-token API credential helper for mobile server-mode development.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: None.
+Backend/API changed: Added a backend-local mobile dev credential script that uses canonical API credentials and fake-token ledger funding.
+Database/schema changed: None.
+Files changed: `scripts/create_mobile_dev_credential.ts`, `package.json`, `docs/mobile/`.
+Tests run:
+- `npm run mobile:dev-credential` from repo root.
+- `npm run mobile:dev-credential:dry-run` from repo root.
+- `npm run test:mobile-api` from repo root.
+- `npm run preflight:server-mode` in `mobile/`.
+- `npm run typecheck` in `mobile/`.
+Screenshots captured:
+- None; this cycle is a backend/mobile credential harness.
+Harness evidence captured:
+- Real credential command reached Prisma but could not connect to local Postgres at `localhost:5432`.
+- Dry-run command passed and printed the fake-token mobile credential plan, scopes, limits, and server-mode env names.
+- Mobile API tests, mobile preflight, and mobile typecheck passed.
+Bugs found:
+- None in code. Local database service is not currently reachable.
+Technical debt added:
+- Live mobile dev credential creation and strict server-mode proof still require local Postgres/backend to be running.
+Technical debt resolved:
+- The loop now has a single command to generate a mobile server-mode fake-token API key with 10,000 USDT target balance once backend services are up.
+Result: Passed Cycle 064 QA with documented environment recovery. Dry-run credential harness and mobile server-mode checks pass.
+Commit: cycle branch HEAD (`pending`)
+Merged: Pending local merge.
+Next cycle: Cycle 065 should add a backend readiness/run command harness or start local services so the real credential command and strict preflight can pass.
+Harnesses run:
+- Backend/API Harness
+- Trading Simulation Harness
+- Server Mode Preflight Harness
+- Server Auth Request Harness
+- Typecheck Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- Real credential creation failed because local Postgres was unavailable; dry-run recovery path passed.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

@@ -890,3 +890,17 @@ Findings:
 - P2: Strict preflight currently fails as expected because this environment has no live API key configured.
 Decision: Approve Cycle 063 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 064
+
+Date: 2026-07-01
+Branch: mobile/cycle-064
+Reviewer: Lead/Reviewer pass
+Scope: Mobile dev API credential helper.
+Findings:
+- P0: `mobile:dev-credential` creates a local fake-token user/API key using the existing canonical API credential model and scopes.
+- P0: The helper funds the mobile dev user up to the 10,000 USDT target through the existing ledger service and does not touch deposit/withdraw flows.
+- P1: Dry-run mode proves policy/env output without requiring DB access; live execution is correctly gated by local Postgres availability.
+- P1: Mobile API request tests, mobile server preflight, and mobile typecheck passed.
+Decision: Approve Cycle 064 for local commit/merge after scoped diff review.
+Merge approved: Yes
