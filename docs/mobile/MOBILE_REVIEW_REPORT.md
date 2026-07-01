@@ -947,3 +947,18 @@ Findings:
 - P1: Mobile typecheck, server-order-failure emulator smoke, and mobile API request tests passed.
 Decision: Approve Cycle 067 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 068
+
+Date: 2026-07-01
+Branch: mobile/cycle-068
+Reviewer: Lead/Reviewer pass
+Scope: Event Detail trading stats.
+Findings:
+- P1: Event Detail now exposes localized Volume, Liquidity, and Traders stats, adding trading context to World Cup market pages.
+- P1: Stats are deterministic mock values for offline mode and can later map to backend metrics without changing the UI contract.
+- P1: Focused Event Detail smoke asserts the stats and still opens a ticket from Event Detail.
+- P2: Visual QA on emulator shows no overlap in the stats strip.
+- Mobile typecheck, focused Event Detail smoke, and mobile API request tests passed.
+Decision: Approve Cycle 068 for local commit/merge after scoped diff review.
+Merge approved: Yes

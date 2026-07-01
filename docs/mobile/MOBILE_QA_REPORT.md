@@ -1340,3 +1340,25 @@ Harness evidence:
 Bugs:
 - None found.
 Server-mode note: This proves safe order failure handling while live authenticated backend proof remains blocked by local backend readiness.
+
+### Cycle 068
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:event-detail-trade`
+- `npm run test:mobile-api`
+Result: Passed. Event Detail now shows localized Volume, Liquidity, and Traders context without blocking ticket opening.
+Screenshots:
+- `docs/mobile/screenshots/cycle-068-holiwyn-stats-smoke.png`
+- `docs/mobile/screenshots/cycle-068-holiwyn-event-detail-stats.png`
+- `docs/mobile/screenshots/cycle-068-holiwyn-event-detail-ticket.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-068-holiwyn-stats-home.xml`
+- `docs/mobile/harness/cycle-068-holiwyn-event-detail-stats.xml`
+- `docs/mobile/harness/cycle-068-holiwyn-event-detail-ticket.xml`
+Bugs:
+- None found.
+Visual QA:
+- Event Detail stats fit on emulator without overlap; market group controls and outcome buttons remain visible.
