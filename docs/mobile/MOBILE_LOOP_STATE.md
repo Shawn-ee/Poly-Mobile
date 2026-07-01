@@ -335,6 +335,39 @@ Harnesses run:
 - Review Harness
 Harness failures: None.
 
+### Cycle 008
+
+Date: 2026-07-01
+Branch: mobile/cycle-008
+Goal: Extract Portfolio into a focused component and verify fake balance/positions still render.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No intended visual changes; Portfolio implementation moved to `mobile/src/components/Portfolio.tsx`.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke` in `mobile/`.
+- Emulator tap-through: Home, featured future ticket, place mock order, Portfolio verification.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-008-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-008-holiwyn-portfolio-component.png`
+Bugs found: None.
+Technical debt added: None.
+Technical debt resolved:
+- Partial large-file debt: Portfolio is now isolated from `App.tsx`.
+Result: Passed Cycle 008 QA. Extracted Portfolio renders fake balance and mock positions.
+Commit: cycle branch HEAD (`Extract Holiwyn mobile portfolio`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 009 should extract MarketList/FutureList or improve World Cup grouped markets.
+Harnesses run:
+- Trading Simulation Harness
+- QA Smoke Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures: None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

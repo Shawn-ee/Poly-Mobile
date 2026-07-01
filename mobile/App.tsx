@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { PolyApi } from "./src/api";
 import { normalizeEventDetail } from "./src/adapters/worldCupAdapter";
 import { BottomTabs } from "./src/components/BottomTabs";
+import { Portfolio, Position } from "./src/components/Portfolio";
 import { Ticket, TradeTicket } from "./src/components/TradeTicket";
 import {
   Event,
@@ -22,7 +23,7 @@ import {
   worldCupEvents,
   worldCupFutures,
 } from "./src/mocks/worldCup";
-import { label, money } from "./src/presentation/formatters";
+import { label } from "./src/presentation/formatters";
 import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
@@ -30,16 +31,6 @@ const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? 
 
 type MainTab = "home" | "live" | "portfolio" | "search";
 type WorldCupTab = "games" | "futures";
-type Position = {
-  id: string;
-  mode: OrderMode;
-  title: string;
-  outcome: string;
-  side: "buy" | "sell";
-  amount: number;
-  probability: number;
-};
-
 const copy = {
   en: {
     promo: "Get 50",
@@ -523,44 +514,6 @@ function EventDetail({
           ))}
         </View>
       ))}
-    </ScrollView>
-  );
-}
-
-function Portfolio({
-  locale,
-  t,
-  balance,
-  positions,
-}: {
-  locale: Locale;
-  t: typeof copy.en;
-  balance: number;
-  positions: Position[];
-}) {
-  return (
-    <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
-      <View style={styles.balanceCard}>
-        <Text style={styles.balanceLabel}>{t.balance}</Text>
-        <Text style={styles.balanceValue}>{money(balance)}</Text>
-      </View>
-      {positions.length === 0 ? (
-        <View style={styles.emptyCard}>
-          <Ionicons name="wallet-outline" size={34} color="#64748b" />
-          <Text style={styles.emptyTitle}>{t.noPositions}</Text>
-          <Text style={styles.emptyText}>{t.noPositionsBody}</Text>
-        </View>
-      ) : (
-        positions.map((position) => (
-          <View key={position.id} style={styles.positionCard}>
-            <Text style={styles.positionTitle}>{position.title}</Text>
-            <Text style={styles.positionMeta}>
-              {position.mode.toUpperCase()} · {position.side === "buy" ? t.buy : t.sell} · {position.outcome} · {position.probability}%
-            </Text>
-            <Text style={styles.positionValue}>{money(position.amount)}</Text>
-          </View>
-        ))
-      )}
     </ScrollView>
   );
 }
