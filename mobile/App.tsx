@@ -101,6 +101,7 @@ export default function App() {
   const api = useMemo(() => new PolyApi(DEFAULT_API_BASE, DEFAULT_API_KEY), []);
   const mounted = useRef(true);
   const profilePreferencesReady = useRef(false);
+  const skipPortfolioHydration = useRef(false);
   const shouldSyncProfilePreferences = ORDER_MODE === "server" && DEFAULT_API_KEY.length > 0;
   const accountPortfolioValue = useMemo(
     () => balance + positions.reduce((total, position) => total + portfolioPositionValue(position), 0),
@@ -154,6 +155,7 @@ export default function App() {
   useEffect(() => {
     AsyncStorage.getItem(PORTFOLIO_STORAGE_KEY)
       .then((stored) => {
+        if (skipPortfolioHydration.current) return;
         if (!mounted.current || !stored) return;
         const parsed = JSON.parse(stored) as StoredPortfolio;
         if (typeof parsed.balance === "number") setBalance(parsed.balance);
@@ -254,6 +256,7 @@ export default function App() {
     const shouldForceClosedWorldCupWinnerFrance = url.includes("forceClosedWorldCupWinnerFrance=1");
     setForceOrderFailure(url.includes("forceOrderFailure=1"));
     if (url.includes("forceResetState=1")) {
+      skipPortfolioHydration.current = true;
       const resetRuntimeState = () => {
         if (!mounted.current) return;
         setBalance(10000);
@@ -330,6 +333,7 @@ export default function App() {
         entryAmount: 100,
         side: "buy",
         probability: 34,
+        timestamp: "Today 2:04 PM",
       };
       const boughtActivity: PortfolioActivity = {
         id: "smoke-world-cup-winner-france-opened",
@@ -339,6 +343,7 @@ export default function App() {
         amount: 100,
         side: "buy",
         probability: 34,
+        timestamp: "Today 1:56 PM",
       };
       setBalance(10008.82);
       setPositions([]);
@@ -575,6 +580,7 @@ export default function App() {
         probability: result.probability,
         isLive: isLiveOrder,
         liveClock,
+        timestamp: t.justNow,
       },
       ...current,
     ]);
@@ -624,6 +630,7 @@ export default function App() {
         probability: position.probability,
         isLive: position.isLive,
         liveClock: position.liveClock,
+        timestamp: t.justNow,
       },
       ...current,
     ]);
@@ -639,6 +646,7 @@ export default function App() {
       amount: order.remaining,
       side: order.side,
       probability: Math.round(order.price * 100),
+      timestamp: t.justNow,
     };
     setActivities((current) =>
       current.some((activity) => activity.id === canceledActivity.id) ? current : [canceledActivity, ...current],

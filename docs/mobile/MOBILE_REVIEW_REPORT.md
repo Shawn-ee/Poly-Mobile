@@ -1982,3 +1982,19 @@ Findings:
 - Mobile typecheck and mobile API/profile-preference/activity-metric tests passed after the wrapper proof.
 Decision: Approve Cycle 136 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 137
+
+Date: 2026-07-01
+Branch: mobile/cycle-137
+Reviewer: Lead/Reviewer pass
+Scope: Portfolio activity timestamp context and forced-state hydration guard.
+Findings:
+- P1: `PortfolioActivity` now supports optional timestamps, and Recent activity rows render the timestamp directly under the action label.
+- P1: New mock opened/closed/canceled activities use localized `just now`; the forced closed-history proof uses deterministic times for stable Samsung assertions.
+- P1: Forced reset deep links now skip stale portfolio hydration, preventing stored activity snapshots from overwriting smoke-seeded state.
+- P1: Samsung proof verifies `Today 2:04 PM` in the closed World Cup winner history row.
+- P2: Backend portfolio history timestamps are not yet surfaced; this can be mapped from `market.resolveTime` or a future activity timestamp field once server history integration matures.
+- Samsung smoke wrapper, mobile typecheck, and mobile API/profile-preference/activity-metric tests passed.
+Decision: Approve Cycle 137 for local commit/merge after scoped diff review.
+Merge approved: Yes

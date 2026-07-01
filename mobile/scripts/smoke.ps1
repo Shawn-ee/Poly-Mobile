@@ -776,7 +776,7 @@ try {
     if ($FutureListClose) {
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-close-closed.png"
       $futureListCloseClosedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-close-closed.xml"
-      Assert-HierarchyContains -Path $futureListCloseClosedHierarchy -Expected @("Fake balance", "10,008.82 USDT", "No positions yet", "Recent activity", "Closed", "Bought", "World Cup winner", "Entry 34%", "Current value 108.82 USDT", "Est. P/L +8.82 USDT")
+      Assert-HierarchyContains -Path $futureListCloseClosedHierarchy -Expected @("Fake balance", "10,008.82 USDT", "No positions yet", "Recent activity", "Closed", "Today 2:04 PM", "Bought", "World Cup winner", "Entry 34%", "Current value 108.82 USDT", "Est. P/L +8.82 USDT")
       return
     }
 

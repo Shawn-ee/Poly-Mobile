@@ -2873,3 +2873,24 @@ Bugs:
 - The first wrapper attempt passed `-FutureListClose` through a string array and PowerShell treated it like a positional output path; fixed by passing the closed-history switch directly.
 Visual QA:
 - Samsung proof again shows the closed Portfolio history state with the expected fake balance, closed activity row, entry price, close value, and estimated P/L.
+
+### Cycle 137
+
+Date: 2026-07-01
+Device: Samsung S23 through Expo Go (`adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`)
+Build/run command:
+- `npm run smoke:samsung:closed-history`
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Portfolio Recent activity rows now show timestamp context, and the Samsung smoke proof verifies `Today 2:04 PM` in the closed World Cup winner history row.
+Screenshots:
+- `docs/mobile/screenshots/cycle-137-samsung-activity-time-smoke.png`
+- `docs/mobile/screenshots/cycle-137-samsung-activity-time-closed-history.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-137-samsung-activity-time-home.xml`
+- `docs/mobile/harness/cycle-137-samsung-activity-time-closed-history.xml`
+Bugs:
+- Forced deep-link state could be overwritten by stale portfolio storage hydration during startup; fixed by skipping portfolio hydration after forced reset links.
+- The first timestamp proof failed until the forced-state hydration race was fixed.
+Visual QA:
+- Samsung proof shows the closed activity row with `Closed`, `Today 2:04 PM`, `World Cup winner - France`, entry/current value/P/L details, and the close amount.

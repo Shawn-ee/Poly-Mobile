@@ -28,6 +28,7 @@ export type PortfolioActivity = {
   probability?: number;
   isLive?: boolean;
   liveClock?: string;
+  timestamp?: string;
 };
 
 export type OpenOrder = {
@@ -86,6 +87,7 @@ type PortfolioCopy = {
   activityCount: string;
   closedTrades: string;
   liveNow: string;
+  justNow: string;
 };
 
 const currentProbability = (position: Position) => {
@@ -351,6 +353,11 @@ export function Portfolio({
                       ? t.canceledOrder
                       : t.closedPosition}
                 </Text>
+                {activity.timestamp && (
+                  <Text accessibilityLabel={`activity-time-${activity.id}`} style={styles.activityTime}>
+                    {activity.timestamp}
+                  </Text>
+                )}
                 {activity.isLive && (
                   <Text accessibilityLabel="portfolio-activity-live-badge" style={styles.activityLiveText}>
                     {t.liveNow}
@@ -452,6 +459,7 @@ const styles = StyleSheet.create({
   activityIcon: { width: 28, height: 28, borderRadius: 8, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937" },
   activityMain: { flex: 1 },
   activityAction: { color: "#f8fafc", fontWeight: "900" },
+  activityTime: { color: "#64748b", fontSize: 11, fontWeight: "800", marginTop: 2 },
   activityLiveText: { alignSelf: "flex-start", color: "#fecaca", fontSize: 11, fontWeight: "900", marginTop: 3, textTransform: "uppercase" },
   activityLiveClock: { alignSelf: "flex-start", color: "#fca5a5", fontSize: 11, fontWeight: "900", marginTop: 2 },
   activityMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
