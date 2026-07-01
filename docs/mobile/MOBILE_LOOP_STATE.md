@@ -1008,7 +1008,7 @@ Technical debt resolved:
 - Live tab now communicates freshness and exposes an interactive refresh affordance.
 Result: Passed Cycle 024 QA after Recovery Harness. Live tab has refresh context and deep smoke proves the refreshed state.
 Commit: cycle branch HEAD (`Add Holiwyn mobile live refresh state`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 025 should connect live refresh to real event reload or continue Home component extraction.
 Harnesses run:
 - QA Smoke Harness
