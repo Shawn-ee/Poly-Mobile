@@ -971,6 +971,65 @@ Harnesses run:
 Harness failures:
 - Initial typed-query smoke failed because emulator handwriting captured ADB text. Added a smoke-only `EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT` path and reran successfully.
 
+### Cycle 024
+
+Date: 2026-07-01
+Branch: mobile/cycle-024
+Goal: Add Live tab freshness context and an interactive refresh control.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Live tab now shows `Updated just now`, a `Refresh` control, and changes to `Updated just now · refreshed` after tapping refresh.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/LiveScreen.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-024-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-024-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-024-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-024-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-024-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-024-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-024-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-024-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-024-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-024-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-024-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-024-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-024-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-024-holiwyn-search-query.xml`
+Bugs found:
+- Initial refresh tap coordinate matched the live count instead of proving the refreshed status; corrected with a better tap target and unambiguous `refreshed` assertion.
+Technical debt added:
+- TD-013: Live refresh is local UI state only; it does not refetch backend/live odds yet.
+Technical debt resolved:
+- Live tab now communicates freshness and exposes an interactive refresh affordance.
+Result: Passed Cycle 024 QA after Recovery Harness. Live tab has refresh context and deep smoke proves the refreshed state.
+Commit: cycle branch HEAD (`Add Holiwyn mobile live refresh state`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 025 should connect live refresh to real event reload or continue Home component extraction.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Recovery Harness
+- Review Harness
+Harness failures:
+- Initial live refresh assertion was too weak because `1` also matched the live count. The assertion now checks `refreshed` after tapping the refresh control.
+
+### Heartbeat After Cycle 024
+
+Completed cycles: 022, 023, 024 since the last heartbeat.
+Verified progress: Live screen is extracted, Search typed-query zero-result behavior is verified, and Live now has a refresh status affordance with smoke coverage.
+Current app state: Holiwyn mobile has verified Home, Ticket, Portfolio, Live, Search, typed Search query, and Live refresh interactions under deep smoke.
+Current backend state: Backend health was unavailable during recent smoke runs; mock fallback remained verified. No schema changes were made.
+Open blockers: None for autonomous progress.
+Risks: Live refresh is local UI state only; deep smoke still relies on coordinate taps; real server order mode remains unverified.
+Next three likely cycles: Connect Live refresh to event reload, extract Home screen pieces, and add portfolio P/L or open-order detail.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

@@ -328,3 +328,17 @@ Findings:
 - `npm run typecheck` and final `npm run smoke:deep` passed.
 Decision: Approve Cycle 023 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 024
+
+Date: 2026-07-01
+Branch: mobile/cycle-024
+Reviewer: Lead/Reviewer pass after Recovery Harness
+Scope: Live tab freshness and refresh control.
+Findings:
+- P1: Live tab now communicates freshness and exposes a refresh action, bringing it closer to sports live-market expectations.
+- P2: Refresh currently updates local UI state only; backend/live odds reload is tracked as debt.
+- P2: The final harness assertion checks `refreshed`, avoiding the earlier weak match against the live count.
+- `npm run typecheck` and final `npm run smoke:deep` passed.
+Decision: Approve Cycle 024 for local commit/merge after scoped diff review.
+Merge approved: Yes
