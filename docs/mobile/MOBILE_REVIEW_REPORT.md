@@ -919,3 +919,17 @@ Findings:
 - P1: Mobile API request tests, mobile server preflight, and mobile typecheck passed.
 Decision: Approve Cycle 065 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 066
+
+Date: 2026-07-01
+Branch: mobile/cycle-066
+Reviewer: Lead/Reviewer pass
+Scope: Server-unavailable emulator smoke.
+Findings:
+- P0: `smoke:server-unavailable` launches Holiwyn in server mode against an intentionally unreachable backend and verifies the Portfolio fallback UI.
+- P0: The smoke asserts `Server sync unavailable`, `Showing local fake-token portfolio.`, open orders, and cancel controls, proving the app remains usable while backend proof is blocked.
+- P1: The harness restores Expo environment variables after the run.
+- P1: Mobile typecheck, server-unavailable emulator smoke, and mobile API request tests passed.
+Decision: Approve Cycle 066 for local commit/merge after scoped diff review.
+Merge approved: Yes
