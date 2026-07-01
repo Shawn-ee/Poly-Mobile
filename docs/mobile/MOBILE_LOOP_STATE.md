@@ -6265,8 +6265,8 @@ Technical debt resolved:
 - Pending orders are no longer buried below the no-position empty state.
 - Open-order cancel smoke is cleaner and more repeatable.
 Result: Passed Cycle 130 QA. Focused open-order cancel smoke and mobile API/profile-preference tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `b106618` (`Improve mobile open order economics`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `72f7f54`.
 Next cycle: Cycle 131 should continue order/history parity or retry backend/server-mode proof if local services become available.
 Harnesses run:
 - Mobile Typecheck Harness
