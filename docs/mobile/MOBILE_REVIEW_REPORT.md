@@ -538,3 +538,17 @@ Findings:
 - `npm run typecheck` and final `npm run smoke:deep` passed.
 Decision: Approve Cycle 038 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 039
+
+Date: 2026-07-01
+Branch: mobile/cycle-039
+Reviewer: Lead/Reviewer pass
+Scope: Android Event Detail back behavior.
+Findings:
+- P1: Event Detail now intercepts Android hardware Back and returns to Home instead of exiting Expo.
+- P1: Deep smoke verifies Event Detail, scrolled props, hardware Back return to Home, and the downstream trading path without the forced relaunch workaround.
+- P2: Coordinate taps still drive several harness steps; selector-based Android automation remains a future improvement.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 039 for local commit/merge after scoped diff review.
+Merge approved: Yes

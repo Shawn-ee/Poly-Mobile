@@ -1760,6 +1760,72 @@ Harnesses run:
 Harness failures:
 - First two Cycle 038 smoke attempts exposed harness navigation assumptions; final rerun passed after scroll and relaunch recovery.
 
+### Cycle 039
+
+Date: 2026-07-01
+Branch: mobile/cycle-039
+Goal: Replace the Event Detail smoke relaunch workaround with real Android Back behavior.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No visual layout changes; Android hardware Back now returns from Event Detail to Home instead of exiting Expo.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-039-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-039-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-039-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-039-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-039-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-039-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-039-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-039-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-039-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-039-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-039-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-039-holiwyn-search-query.xml`
+Bugs found:
+- None in final verification.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Removed the need for a forced Expo relaunch after Event Detail verification.
+- Event Detail now has native Android back behavior aligned with user expectations.
+Result: Passed Cycle 039 QA. Deep smoke verifies Event Detail, scrolled props, Android Back return to Home, then ticket/Portfolio/Live/Search flows.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 040 should continue World Cup market parity or add server-backed order/history boundaries.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 039
+
+Completed cycles: 037, 038, 039 since the last heartbeat.
+Verified progress: Portfolio now shows recent fake-token Bought/Closed activity, Event Detail has richer soccer prop/live markets, and Android hardware Back returns from Event Detail to Home.
+Current app state: Holiwyn mobile has verified Home, Event Detail grouped markets/props, ticket, mock order, Portfolio summary/detail/close/activity, Live refresh, Search browse, and typed Search zero-result flows on Android emulator.
+Current backend state: Backend health remains unavailable during emulator smoke; mock fallback remains verified and mobile API calls remain bounded by timeout.
+Open blockers: None for autonomous progress.
+Risks: New activity history is local state only, expanded markets are mock-only, real server order mode and auth-backed positions remain unverified.
+Next three likely cycles: Add server-backed order/history adapter seams, expand event-detail trading ergonomics, and improve selector-driven automation for fewer coordinate taps.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
