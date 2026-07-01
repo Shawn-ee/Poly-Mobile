@@ -1321,3 +1321,18 @@ Findings:
 - Mobile typecheck, focused Portfolio position-count smoke, and mobile API request tests passed.
 Decision: Approve Cycle 092 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 093
+
+Date: 2026-07-01
+Branch: mobile/cycle-093
+Reviewer: Lead/Reviewer pass
+Scope: Portfolio recent activity count.
+Findings:
+- P1: Portfolio now shows a localized Recent activity count card.
+- P1: Focused smoke verifies the count is `0` on empty Portfolio and `1` after placing a Futures mock order.
+- P1: The harness recovered from an over-specific below-fold assertion by checking visible Portfolio activity/count proof instead.
+- P2: Count is local-state based until server-backed portfolio activity/history is fully available.
+- Mobile typecheck, focused Portfolio activity-count smoke, and mobile API request tests passed.
+Decision: Approve Cycle 093 for local commit/merge after scoped diff review.
+Merge approved: Yes

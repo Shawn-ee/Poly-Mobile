@@ -123,3 +123,4 @@ Status:
 | GAP-101 | Trading | Futures list sell ticket | P1 | Yes | Verified | Cycle 090 adds focused smoke coverage proving a Futures list ticket can switch to Sell and show proceeds/CTA copy. |
 | GAP-102 | Portfolio | Futures list close position | P1 | Yes | Verified | Cycle 091 adds focused smoke coverage proving a Futures list mock order can be closed and recorded in activity. |
 | GAP-103 | Portfolio | Open positions count | P1 | Yes | Verified | Cycle 092 adds a localized Open positions count to Portfolio and verifies it changes from 0 to 1 after a Futures mock order. |
+| GAP-104 | Portfolio | Recent activity count | P1 | Yes | Verified | Cycle 093 adds a localized Recent activity count to Portfolio and verifies it changes from 0 to 1 after a Futures mock order. |

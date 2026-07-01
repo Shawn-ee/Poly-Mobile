@@ -67,6 +67,7 @@ type PortfolioCopy = {
   portfolioSyncFallback: string;
   orderPlaced: string;
   openPositions: string;
+  activityCount: string;
 };
 
 const currentProbability = (position: Position) => {
@@ -145,6 +146,10 @@ export function Portfolio({
       <View accessibilityLabel="portfolio-position-count" testID="portfolio-position-count" style={styles.positionCountCard}>
         <Text style={styles.positionCountLabel}>{t.openPositions}</Text>
         <Text style={styles.positionCountValue}>{positions.length}</Text>
+      </View>
+      <View accessibilityLabel="portfolio-activity-count" testID="portfolio-activity-count" style={styles.positionCountCard}>
+        <Text style={styles.positionCountLabel}>{t.activityCount}</Text>
+        <Text style={styles.positionCountValue}>{activities.length}</Text>
       </View>
       {positions.length === 0 ? (
         <View style={styles.emptyCard}>
