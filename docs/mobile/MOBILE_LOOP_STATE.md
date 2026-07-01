@@ -1270,8 +1270,8 @@ Technical debt added:
 Technical debt resolved:
 - Home Games/Futures segmented control no longer lives inline in `App.tsx`.
 Result: Passed Cycle 029 QA. The segmented control is extracted and deep smoke still verifies Home, ticket, Portfolio, Live refresh, Search, and typed Search.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge after commit.
+Commit: cycle branch HEAD (`Extract Holiwyn World Cup segmented control`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 030 should extract the Home screen composition or add portfolio position detail, then write the next heartbeat after merge.
 Harnesses run:
 - QA Smoke Harness
