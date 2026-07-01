@@ -15,6 +15,7 @@ import {
   Portfolio,
   PortfolioActivity,
   portfolioPositionValue,
+  PortfolioSyncStatus,
   Position,
 } from "./src/components/Portfolio";
 import { SearchScreen } from "./src/components/SearchScreen";
@@ -49,6 +50,7 @@ export default function App() {
   const [latestOrder, setLatestOrder] = useState<OrderConfirmation | null>(null);
   const [openOrders, setOpenOrders] = useState<OpenOrder[]>([]);
   const [activities, setActivities] = useState<PortfolioActivity[]>([]);
+  const [portfolioSyncStatus, setPortfolioSyncStatus] = useState<PortfolioSyncStatus>(ORDER_MODE === "server" ? "syncing" : "hidden");
   const [events, setEvents] = useState<Event[]>(worldCupEvents);
   const [isRefreshingLive, setIsRefreshingLive] = useState(false);
   const [liveRefreshTick, setLiveRefreshTick] = useState(0);
@@ -91,9 +93,11 @@ export default function App() {
   useEffect(() => {
     if (ORDER_MODE !== "server") return undefined;
     let cancelled = false;
+    setPortfolioSyncStatus("syncing");
     Promise.allSettled([loadPortfolioSnapshot(api), loadPortfolioHistoryActivities(api)]).then(
       ([snapshotResult, historyResult]) => {
         if (cancelled) return;
+        setPortfolioSyncStatus(snapshotResult.status === "rejected" && historyResult.status === "rejected" ? "error" : "synced");
         if (snapshotResult.status === "fulfilled") {
           setBalance(snapshotResult.value.balance);
           if (snapshotResult.value.positions.length > 0) {
@@ -265,6 +269,7 @@ export default function App() {
                 latestOrder={latestOrder}
                 openOrders={openOrders}
                 activities={activities}
+                syncStatus={portfolioSyncStatus}
                 closePosition={closePosition}
               />
             )}

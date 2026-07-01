@@ -2359,6 +2359,63 @@ Open blockers: None for autonomous progress.
 Risks: Event-card opening, prop scroll, hardware Back, and first market ticket opening still use coordinates/key events; server-mode trading and Portfolio data are not yet end-to-end verified against an authenticated backend session.
 Next three likely cycles: Add server-mode Portfolio status states, continue selector-driven event/ticket opening, and add cancel/edit affordance planning for open orders.
 
+### Cycle 049
+
+Date: 2026-07-01
+Branch: mobile/cycle-049
+Goal: Add clear server-mode Portfolio sync status states.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio can now show a server sync status card in server order mode for syncing, synced, or unavailable states; mock mode keeps the existing Portfolio layout.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`, `mobile/src/localization/appCopy.ts`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-049-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-049-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-049-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-049-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-049-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-049-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-049-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-049-holiwyn-ticket-max.xml`
+- `docs/mobile/harness/cycle-049-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-049-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-049-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-049-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-049-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-049-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Server-mode sync status is typechecked but not server-smoked because backend health is unavailable and server trade submission would call the backend directly.
+Technical debt resolved:
+- Server-mode Portfolio failures no longer stay silent; users get a visible unavailable state with local fake-token fallback copy.
+Result: Passed Cycle 049 QA. Mock deep smoke remains stable and server-mode status wiring typechecks.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 050 should continue selector-driven event/ticket opening or add server-mode order failure handling.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

@@ -41,6 +41,8 @@ export type OrderConfirmation = {
   amount: number;
 };
 
+export type PortfolioSyncStatus = "hidden" | "syncing" | "synced" | "error";
+
 type PortfolioCopy = {
   balance: string;
   noPositions: string;
@@ -57,6 +59,10 @@ type PortfolioCopy = {
   closedPosition: string;
   openOrders: string;
   remaining: string;
+  portfolioSyncing: string;
+  portfolioSynced: string;
+  portfolioSyncError: string;
+  portfolioSyncFallback: string;
   orderPlaced: string;
 };
 
@@ -90,6 +96,7 @@ export function Portfolio({
   latestOrder,
   openOrders,
   activities,
+  syncStatus,
   closePosition,
 }: {
   locale: Locale;
@@ -99,14 +106,37 @@ export function Portfolio({
   latestOrder: OrderConfirmation | null;
   openOrders: OpenOrder[];
   activities: PortfolioActivity[];
+  syncStatus: PortfolioSyncStatus;
   closePosition: (position: Position) => void;
 }) {
+  const syncTitle =
+    syncStatus === "syncing"
+      ? t.portfolioSyncing
+      : syncStatus === "synced"
+        ? t.portfolioSynced
+        : syncStatus === "error"
+          ? t.portfolioSyncError
+          : "";
+
   return (
     <ScrollView accessibilityLabel="portfolio-screen" testID="portfolio-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
       <View accessibilityLabel="fake-balance-card" testID="fake-balance-card" style={styles.balanceCard}>
         <Text style={styles.balanceLabel}>{t.balance}</Text>
         <Text style={styles.balanceValue}>{money(balance)}</Text>
       </View>
+      {syncStatus !== "hidden" && (
+        <View accessibilityLabel="portfolio-sync-status" testID="portfolio-sync-status" style={styles.syncCard}>
+          <Ionicons
+            name={syncStatus === "error" ? "cloud-offline-outline" : "cloud-done-outline"}
+            size={20}
+            color={syncStatus === "error" ? "#fbbf24" : "#93c5fd"}
+          />
+          <View style={styles.syncTextBlock}>
+            <Text style={styles.syncTitle}>{syncTitle}</Text>
+            {syncStatus === "error" && <Text style={styles.syncBody}>{t.portfolioSyncFallback}</Text>}
+          </View>
+        </View>
+      )}
       {positions.length === 0 ? (
         <View style={styles.emptyCard}>
           <Ionicons name="wallet-outline" size={34} color="#64748b" />
@@ -232,6 +262,10 @@ const styles = StyleSheet.create({
   balanceCard: { padding: 18, borderRadius: 16, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginTop: 10 },
   balanceLabel: { color: "#94a3b8", fontWeight: "800" },
   balanceValue: { color: "#f8fafc", fontSize: 34, fontWeight: "900", marginTop: 6 },
+  syncCard: { flexDirection: "row", alignItems: "center", gap: 10, padding: 12, borderRadius: 12, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247", marginTop: 12 },
+  syncTextBlock: { flex: 1 },
+  syncTitle: { color: "#f8fafc", fontWeight: "900" },
+  syncBody: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
   emptyCard: { alignItems: "center", padding: 28, borderRadius: 16, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginTop: 16 },
   emptyTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "900", marginTop: 10 },
   emptyText: { color: "#94a3b8", textAlign: "center", marginTop: 6, fontWeight: "700" },
