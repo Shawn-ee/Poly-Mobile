@@ -3457,6 +3457,59 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 069
+
+Date: 2026-07-01
+Branch: mobile/cycle-069
+Goal: Add clearer pre-trade share and price estimates to the Trade Ticket.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Trade Ticket now shows localized estimated shares and average price rows.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/TradeTicket.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:event-detail-trade` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-069-holiwyn-ticket-math-smoke.png`
+- `docs/mobile/screenshots/cycle-069-holiwyn-ticket-math-event-detail.png`
+- `docs/mobile/screenshots/cycle-069-holiwyn-ticket-math.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-069-holiwyn-ticket-math-home.xml`
+- `docs/mobile/harness/cycle-069-holiwyn-ticket-math-event-detail.xml`
+- `docs/mobile/harness/cycle-069-holiwyn-ticket-math.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Share and average-price estimates still use local probability math until backend quote/depth data is available.
+Technical debt resolved:
+- Trade Ticket now gives users share quantity and average price context before submitting.
+Result: Passed Cycle 069 QA. Mobile typecheck, focused Event Detail smoke, visual screenshot review, and mobile API tests pass.
+Commit: cycle branch HEAD (`pending`)
+Merged: Pending local merge.
+Next cycle: Cycle 070 should continue toward order-book/depth context or retry backend readiness if Docker daemon is available.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Trading Simulation Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 069
+
+Completed cycles: 067, 068, 069 since the last heartbeat.
+Verified progress: Server-mode order failures now have emulator proof, Event Detail has trading stats, and Trade Ticket shows estimated shares plus average price before submission.
+Current app state: Holiwyn mobile has verified Home, Event Detail grouped markets/props/group jumps/trading stats/outcome ticket opening, featured futures trading, ticket balance/max/preset sizing/share and price estimates, successful mock order, forced order failure, server order failure, Portfolio summary/detail/close/activity/order confirmation/open-order cancel, server-unavailable Portfolio fallback, Live refresh, Search browse, typed Search zero-result, and no-keyboard Search zero-result flows on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history/order/cancel client seams are wired; Bearer API-key config and canonical request shape are tested; local credential generation and backend readiness harnesses exist; live authenticated backend order proof remains pending until Docker daemon/local DB are available.
+Open blockers: None for autonomous product/harness progress. Live backend proof waits on Docker Desktop engine availability.
+Risks: Event Detail stats and ticket share/price math are local estimates until backend quote/depth data can feed them.
+Next three likely cycles: Add order-book/depth preview context, improve ticket side-specific copy, and retry backend DB start when Docker daemon becomes reachable.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

@@ -196,7 +196,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-ticket.png"
       $serverTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-order-ticket.xml"
-      Assert-HierarchyContains -Path $serverTicketHierarchy -Expected @("Fake balance", "10,000 USDT", "Estimated cost", "Place mock order")
+      Assert-HierarchyContains -Path $serverTicketHierarchy -Expected @("Fake balance", "10,000 USDT", "Estimated cost", "Est. shares", "Avg price", "Place mock order")
       Invoke-TapHierarchyNode -Path $serverTicketHierarchy -Identifier "place-mock-order"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-error.png"
@@ -235,7 +235,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-ticket.png"
       $eventDetailTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-ticket.xml"
-      Assert-HierarchyContains -Path $eventDetailTicketHierarchy -Expected @("Mexico", "Mexico vs. Ecuador", "Fake balance", "10,000 USDT", "Place mock order")
+      Assert-HierarchyContains -Path $eventDetailTicketHierarchy -Expected @("Mexico", "Mexico vs. Ecuador", "Fake balance", "10,000 USDT", "Est. shares", "Avg price", "Place mock order")
       return
     }
 
@@ -255,7 +255,7 @@ try {
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-ticket.png"
     $ticketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket.xml"
-    Assert-HierarchyContains -Path $ticketHierarchy -Expected @("Fake balance", "10,000 USDT", "Max", "500 USDT", "1,000 USDT", "Estimated cost", "Estimated payout", "Place mock order")
+    Assert-HierarchyContains -Path $ticketHierarchy -Expected @("Fake balance", "10,000 USDT", "Max", "500 USDT", "1,000 USDT", "Estimated cost", "Est. shares", "Avg price", "Estimated payout", "Place mock order")
 
     if ($OrderFailure) {
       Invoke-TapHierarchyNode -Path $ticketHierarchy -Identifier "place-mock-order"
@@ -270,7 +270,7 @@ try {
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-ticket-max.png"
     $ticketMaxHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket-max.xml"
-    Assert-HierarchyContains -Path $ticketMaxHierarchy -Expected @("10,000", "Estimated cost", "10,000 USDT")
+    Assert-HierarchyContains -Path $ticketMaxHierarchy -Expected @("10,000", "Estimated cost", "Est. shares", "Avg price", "10,000 USDT")
 
     Invoke-TapHierarchyNode -Path $ticketMaxHierarchy -Identifier "place-mock-order"
     Start-Sleep -Seconds 1

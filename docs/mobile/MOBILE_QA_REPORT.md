@@ -1362,3 +1362,25 @@ Bugs:
 - None found.
 Visual QA:
 - Event Detail stats fit on emulator without overlap; market group controls and outcome buttons remain visible.
+
+### Cycle 069
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:event-detail-trade`
+- `npm run test:mobile-api`
+Result: Passed. Trade Ticket now shows localized estimated shares and average price while preserving ticket submission controls.
+Screenshots:
+- `docs/mobile/screenshots/cycle-069-holiwyn-ticket-math-smoke.png`
+- `docs/mobile/screenshots/cycle-069-holiwyn-ticket-math-event-detail.png`
+- `docs/mobile/screenshots/cycle-069-holiwyn-ticket-math.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-069-holiwyn-ticket-math-home.xml`
+- `docs/mobile/harness/cycle-069-holiwyn-ticket-math-event-detail.xml`
+- `docs/mobile/harness/cycle-069-holiwyn-ticket-math.xml`
+Bugs:
+- None found.
+Visual QA:
+- Ticket rows fit on emulator; the primary submit button remains visible.
