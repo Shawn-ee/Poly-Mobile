@@ -32,6 +32,12 @@ npm run smoke:samsung:closed-history
 
 The wrapper detects the PC LAN IP, targets the Samsung device, and preserves Expo Go's installed/ready state between runs.
 
+To verify the Samsung order-placement path, run:
+
+```powershell
+npm run smoke:samsung:future-list-order
+```
+
 ## Device Strategy
 
 - Samsung S23: use for Polymarket reference and, later, explicit Holiwyn real-device QA.

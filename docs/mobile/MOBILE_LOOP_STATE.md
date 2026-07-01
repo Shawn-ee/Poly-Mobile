@@ -6631,6 +6631,48 @@ Harnesses run:
 Harness failures:
 - Initial typecheck failed, then passed after probability narrowing fix.
 
+### Cycle 140
+
+Date: 2026-07-01
+Branch: mobile/cycle-140
+Goal: Add a Samsung-first order-placement proof for the World Cup winner flow.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; harness/device proof cycle.
+Backend/API changed: No backend route change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke-samsung.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `npm run smoke:samsung:future-list-order` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-140-samsung-order-placement-smoke.png`
+- `docs/mobile/screenshots/cycle-140-samsung-order-placement-ticket.png`
+- `docs/mobile/screenshots/cycle-140-samsung-order-placement-portfolio.png`
+- `docs/mobile/screenshots/cycle-140-samsung-order-placement-activity.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-140-samsung-order-placement-home.xml`
+- `docs/mobile/harness/cycle-140-samsung-order-placement-ticket.xml`
+- `docs/mobile/harness/cycle-140-samsung-order-placement-portfolio.xml`
+- `docs/mobile/harness/cycle-140-samsung-order-placement-activity.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Samsung order proof is still mock-mode/Expo Go; server-mode order placement remains pending.
+Technical debt resolved:
+- Samsung real-device QA now covers an actual ticket-to-order-to-Portfolio path, not only static Portfolio history.
+Result: Passed Cycle 140 QA. Samsung order-placement smoke, mobile typecheck, and mobile API/history tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 141 should continue server-mode order proof preparation or broaden Samsung smoke wrappers to another critical trading flow.
+Harnesses run:
+- Samsung Future List Order Smoke Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 139
 
 Completed cycles: 137, 138, 139.

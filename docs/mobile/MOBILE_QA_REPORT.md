@@ -2934,3 +2934,27 @@ Bugs:
 - Typecheck initially caught a probability narrowing issue in the shared activity execution row; fixed by making the non-closed branch use a fallback probability value.
 Visual QA:
 - Samsung proof keeps the closed Portfolio history row visible with timestamp, entry/current value/P/L details, fake balance, and closed activity labels intact.
+
+### Cycle 140
+
+Date: 2026-07-01
+Device: Samsung S23 through Expo Go (`adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`)
+Build/run command:
+- `npm run smoke:samsung:future-list-order`
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The Samsung wrapper now proves the order-placement path from the France World Cup winner ticket through Portfolio confirmation and Recent activity.
+Screenshots:
+- `docs/mobile/screenshots/cycle-140-samsung-order-placement-smoke.png`
+- `docs/mobile/screenshots/cycle-140-samsung-order-placement-ticket.png`
+- `docs/mobile/screenshots/cycle-140-samsung-order-placement-portfolio.png`
+- `docs/mobile/screenshots/cycle-140-samsung-order-placement-activity.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-140-samsung-order-placement-home.xml`
+- `docs/mobile/harness/cycle-140-samsung-order-placement-ticket.xml`
+- `docs/mobile/harness/cycle-140-samsung-order-placement-portfolio.xml`
+- `docs/mobile/harness/cycle-140-samsung-order-placement-activity.xml`
+Bugs:
+- None in the final run.
+Visual QA:
+- Samsung proof shows the ticket, fake balance, place-order CTA, Portfolio confirmation, execution details, and bought activity row for the France World Cup winner flow.
