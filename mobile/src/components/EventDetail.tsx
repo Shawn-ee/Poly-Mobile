@@ -7,6 +7,9 @@ import { label } from "../presentation/formatters";
 type EventDetailCopy = {
   worldCup: string;
   markets: string;
+  volume: string;
+  liquidity: string;
+  traders: string;
 };
 
 const groupLabels: Record<Market["type"], { en: string; zh: string }> = {
@@ -23,6 +26,19 @@ const groupMarkets = (markets: Market[]) => {
     .filter((group) => group.markets.length > 0);
 };
 
+const marketStats = (event: Event) => {
+  const outcomeCount = event.markets.reduce((total, market) => total + market.outcomes.length, 0);
+  const volume = event.markets.length * 18250 + outcomeCount * 750;
+  const liquidity = event.markets.length * 9400 + outcomeCount * 300;
+  const traders = event.markets.length * 214 + outcomeCount * 17;
+
+  return {
+    volume: `${volume.toLocaleString("en-US")} USDT`,
+    liquidity: `${liquidity.toLocaleString("en-US")} USDT`,
+    traders: traders.toLocaleString("en-US"),
+  };
+};
+
 export function EventDetail({
   event,
   locale,
@@ -37,6 +53,7 @@ export function EventDetail({
   goBack: () => void;
 }) {
   const groups = groupMarkets(event.markets);
+  const stats = marketStats(event);
   const scrollRef = useRef<ScrollView>(null);
   const groupOffsets = useRef<Record<Market["type"], number>>({
     future: 0,
@@ -64,6 +81,20 @@ export function EventDetail({
       <View style={styles.detailHero}>
         <Text style={styles.detailMeta}>{event.startsAt} · {label(locale, { label: event.tag, zhLabel: event.zhTag })}</Text>
         <Text style={styles.detailTitle}>{label(locale, event)}</Text>
+        <View accessibilityLabel="event-detail-stats" style={styles.statsGrid} testID="event-detail-stats">
+          <View style={styles.statCell}>
+            <Text style={styles.statLabel}>{t.volume}</Text>
+            <Text style={styles.statValue}>{stats.volume}</Text>
+          </View>
+          <View style={styles.statCell}>
+            <Text style={styles.statLabel}>{t.liquidity}</Text>
+            <Text style={styles.statValue}>{stats.liquidity}</Text>
+          </View>
+          <View style={styles.statCell}>
+            <Text style={styles.statLabel}>{t.traders}</Text>
+            <Text style={styles.statValue}>{stats.traders}</Text>
+          </View>
+        </View>
       </View>
       <Text style={styles.sectionTitle}>{t.markets}</Text>
       <View style={styles.groupTabs}>
@@ -121,6 +152,10 @@ const styles = StyleSheet.create({
   detailHero: { padding: 18, borderRadius: 16, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginBottom: 4 },
   detailMeta: { color: "#94a3b8", fontWeight: "800", marginBottom: 8 },
   detailTitle: { color: "#f8fafc", fontSize: 26, fontWeight: "900" },
+  statsGrid: { flexDirection: "row", gap: 8, marginTop: 16 },
+  statCell: { flex: 1, minHeight: 66, justifyContent: "center", paddingHorizontal: 10, borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
+  statLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "900", textTransform: "uppercase", marginBottom: 5 },
+  statValue: { color: "#f8fafc", fontSize: 13, fontWeight: "900" },
   sectionTitle: { color: "#f8fafc", fontSize: 24, fontWeight: "900", marginTop: 24, marginBottom: 12 },
   groupTabs: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 14 },
   groupTab: { minHeight: 36, paddingHorizontal: 12, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#111b2d", borderWidth: 1, borderColor: "#2b3b55" },

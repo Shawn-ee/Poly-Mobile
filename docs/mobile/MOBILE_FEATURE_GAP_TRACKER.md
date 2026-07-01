@@ -98,3 +98,4 @@ Status:
 | GAP-076 | Harness | Mobile backend readiness check | P0 | No | Verified | Cycle 065 adds `mobile:backend-readiness` with Docker daemon, compose, DB URL, and TCP-port checks plus an optional DB start command. |
 | GAP-077 | Harness | Server-unavailable emulator smoke | P0 | No | Verified | Cycle 066 adds `smoke:server-unavailable`, proving server mode shows Portfolio fallback when backend APIs are unreachable. |
 | GAP-078 | Harness | Server order failure emulator smoke | P0 | No | Verified | Cycle 067 adds `smoke:server-order-failure`, proving unreachable server order submission keeps the ticket open with retry feedback. |
+| GAP-079 | Event detail | Trading stats strip | P1 | Yes | Verified | Cycle 068 adds localized Volume/Liquidity/Traders stats to Event Detail and verifies them in focused emulator smoke. |

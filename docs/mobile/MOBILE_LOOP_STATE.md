@@ -3415,6 +3415,48 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 068
+
+Date: 2026-07-01
+Branch: mobile/cycle-068
+Goal: Add trading-context stats to Event Detail so World Cup market pages feel richer and more tradable.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Event Detail hero now includes localized Volume, Liquidity, and Traders stats.
+Backend/API changed: No backend change; stats are deterministic offline mock values with a future backend-metric seam.
+Database/schema changed: None.
+Files changed: `mobile/src/components/EventDetail.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:event-detail-trade` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-068-holiwyn-stats-smoke.png`
+- `docs/mobile/screenshots/cycle-068-holiwyn-event-detail-stats.png`
+- `docs/mobile/screenshots/cycle-068-holiwyn-event-detail-ticket.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-068-holiwyn-stats-home.xml`
+- `docs/mobile/harness/cycle-068-holiwyn-event-detail-stats.xml`
+- `docs/mobile/harness/cycle-068-holiwyn-event-detail-ticket.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Event Detail stats are mock-derived until backend market metrics are available.
+Technical debt resolved:
+- Event Detail now exposes basic trading context instead of only event title and market list.
+Result: Passed Cycle 068 QA. Mobile typecheck, focused Event Detail smoke, visual screenshot review, and mobile API tests pass.
+Commit: cycle branch HEAD (`pending`)
+Merged: Pending local merge.
+Next cycle: Cycle 069 should continue product depth, likely with order-book/depth context or richer ticket controls.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
