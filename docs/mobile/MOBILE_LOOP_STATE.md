@@ -6506,8 +6506,8 @@ Technical debt added:
 Technical debt resolved:
 - Samsung Holiwyn QA no longer depends on a long hand-written smoke command.
 Result: Passed Cycle 136 QA. One-command Samsung wrapper smoke, mobile typecheck, and mobile API/profile-preference/activity-metric tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `1ee908b` (`Add Samsung smoke wrapper`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `3c7c4e0`.
 Next cycle: Cycle 137 should resume product/backend parity work, using `npm run smoke:samsung:closed-history` or a sibling Samsung wrapper for visual proof.
 Harnesses run:
 - Samsung Smoke Wrapper Harness
