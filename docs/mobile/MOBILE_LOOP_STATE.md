@@ -2540,6 +2540,67 @@ Open blockers: None for autonomous progress.
 Risks: Forced failure UI still needs a dedicated emulator harness; prop-section scrolling and Android hardware Back still use low-level device actions; authenticated server trading remains unverified.
 Next three likely cycles: Add forced-failure ticket harness, reduce prop/back device actions, and add open-order cancel/edit planning or UI shell.
 
+### Cycle 052
+
+Date: 2026-07-01
+Branch: mobile/cycle-052
+Goal: Add a dedicated emulator harness for forced ticket-order failures.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No normal-path visual change; forced harness mode verifies the ticket order error card.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/package.json`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+- `npm run smoke:order-failure` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-052-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-search-query.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-order-failure-ticket-order-error.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-052-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-052-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-052-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-052-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-052-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-052-holiwyn-ticket-max.xml`
+- `docs/mobile/harness/cycle-052-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-052-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-052-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-052-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-052-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-052-holiwyn-search-query.xml`
+- `docs/mobile/harness/cycle-052-holiwyn-order-failure-ticket-order-error.xml`
+Bugs found:
+- Initial forced-failure attempts exposed two harness issues: Expo reused the normal bundle/port and direct query parameters opened an Expo error screen. Fixed by using a dedicated port and Expo `--/` deep-link format.
+Technical debt added:
+- Forced failure currently uses a launch URL flag and cleared Metro cache, which is appropriate for harness use but should stay out of production flows.
+Technical debt resolved:
+- Ticket order failure UI is now emulator-proven, not just typechecked.
+Result: Passed Cycle 052 QA. Deep smoke verifies the success path; forced-failure smoke verifies `Order failed. Try again.`, `ticket-order-error`, and the ticket staying open.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 053 should reduce prop/back device actions or add open-order cancel/edit planning UI.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- Two recoverable forced-failure harness setup misses before final pass.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

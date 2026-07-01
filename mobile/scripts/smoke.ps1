@@ -4,7 +4,8 @@ param(
   [string]$OutputDir = "docs\mobile\screenshots",
   [string]$BackendBaseUrl = "http://127.0.0.1:3000",
   [string]$HierarchyOutputDir = "docs\mobile\harness",
-  [switch]$Deep
+  [switch]$Deep,
+  [switch]$OrderFailure
 )
 
 $ErrorActionPreference = "Stop"
@@ -138,10 +139,14 @@ try {
   $expoErrorLog = Join-Path $MobileRoot "mobile-smoke-expo-error.log"
   $previousSmokeInputFlag = $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT
   $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT = "1"
-  $expo = Start-Process -FilePath "npx.cmd" -ArgumentList @("expo", "start", "--host", "localhost", "--port", "$Port") -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds 8
+  $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
+  if ($OrderFailure) {
+    $expoArgs += "--clear"
+  }
+  $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
+  Start-Sleep -Seconds $(if ($OrderFailure) { 18 } else { 8 })
 
-  $launchUrl = "exp://10.0.2.2:$Port"
+  $launchUrl = if ($OrderFailure) { "exp://10.0.2.2:$Port/--/?forceOrderFailure=1" } else { "exp://10.0.2.2:$Port" }
   & $adb -s $Device shell am start -a android.intent.action.VIEW -d $launchUrl | Out-Null
   Start-Sleep -Seconds 10
 
@@ -173,6 +178,15 @@ try {
     Save-Screenshot -Name "cycle-current-holiwyn-ticket.png"
     $ticketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket.xml"
     Assert-HierarchyContains -Path $ticketHierarchy -Expected @("Fake balance", "10,000 USDT", "Max", "500 USDT", "1,000 USDT", "Estimated cost", "Estimated payout", "Place mock order")
+
+    if ($OrderFailure) {
+      Invoke-TapHierarchyNode -Path $ticketHierarchy -Identifier "place-mock-order"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-ticket-order-error.png"
+      $ticketOrderErrorHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket-order-error.xml"
+      Assert-HierarchyContains -Path $ticketOrderErrorHierarchy -Expected @("Order failed. Try again.", "Place mock order", "ticket-order-error")
+      return
+    }
 
     Invoke-TapHierarchyNode -Path $ticketHierarchy -Identifier "ticket-max-amount"
     Start-Sleep -Seconds 1

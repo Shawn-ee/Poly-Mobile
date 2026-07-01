@@ -1,6 +1,6 @@
 ﻿import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { BackHandler, StyleSheet, View } from "react-native";
+import { BackHandler, Linking, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PolyApi } from "./src/api";
 import { normalizeEventDetail } from "./src/adapters/worldCupAdapter";
@@ -46,6 +46,7 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [ticketOrderError, setTicketOrderError] = useState<string | null>(null);
+  const [forceOrderFailure, setForceOrderFailure] = useState(false);
   const [balance, setBalance] = useState(10000);
   const [positions, setPositions] = useState<Position[]>([]);
   const [latestOrder, setLatestOrder] = useState<OrderConfirmation | null>(null);
@@ -64,6 +65,13 @@ export default function App() {
     return () => {
       mounted.current = false;
     };
+  }, []);
+
+  useEffect(() => {
+    Linking.getInitialURL().then((url) => {
+      if (!mounted.current || !url) return;
+      setForceOrderFailure(url.includes("forceOrderFailure=1"));
+    });
   }, []);
 
   const loadBackendWorldCup = useCallback(async () => {
@@ -159,6 +167,9 @@ export default function App() {
     setTicketOrderError(null);
     let result;
     try {
+      if (forceOrderFailure) {
+        throw new Error("Forced order failure for mobile harness.");
+      }
       result = await submitTicketOrder({
         mode: ORDER_MODE,
         api,
