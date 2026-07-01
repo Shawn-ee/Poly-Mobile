@@ -4555,8 +4555,8 @@ Technical debt added:
 Technical debt resolved:
 - Portfolio now gives a quick open-position count before detailed position cards.
 Result: Passed Cycle 092 QA. Mobile typecheck, focused Portfolio position-count smoke, visual screenshot review, and mobile API tests pass.
-Commit: Pending branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `d432d76` (`Add Holiwyn portfolio position count`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `3faf516`.
 Next cycle: Cycle 093 should continue portfolio/account persistence affordances or retry backend readiness if local services become reachable.
 Harnesses run:
 - Emulator Runtime Harness
