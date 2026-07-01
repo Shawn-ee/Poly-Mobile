@@ -44,3 +44,4 @@ Status:
 | GAP-022 | Event detail | Grouped market sections | P1 | No | Verified | Cycle 012 added Live/Game lines/Props/Futures grouping on Event Detail. |
 | GAP-023 | Harness | Deep trade smoke | P1 | No | Verified | Cycle 013 added `npm run smoke:deep` for Home, Ticket, mock order, and Portfolio screenshots. |
 | GAP-024 | Backend adapter | Generic futures title normalization | P1 | No | Verified | Cycle 014 normalizes generic backend futures fixtures to `World Cup futures` in mobile display. |
+| GAP-025 | Harness | Stable automation labels | P1 | No | Verified | Cycle 015 added labels/test IDs for featured futures, tabs, ticket, order button, Portfolio, and balance card. |

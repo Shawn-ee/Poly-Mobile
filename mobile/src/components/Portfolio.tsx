@@ -33,8 +33,8 @@ export function Portfolio({
   positions: Position[];
 }) {
   return (
-    <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
-      <View style={styles.balanceCard}>
+    <ScrollView accessibilityLabel="portfolio-screen" testID="portfolio-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
+      <View accessibilityLabel="fake-balance-card" testID="fake-balance-card" style={styles.balanceCard}>
         <Text style={styles.balanceLabel}>{t.balance}</Text>
         <Text style={styles.balanceValue}>{money(balance)}</Text>
       </View>

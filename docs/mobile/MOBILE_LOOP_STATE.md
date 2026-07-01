@@ -577,6 +577,49 @@ Harnesses run:
 - Review Harness
 Harness failures: None.
 
+### Cycle 015
+
+Date: 2026-07-01
+Branch: mobile/cycle-015
+Goal: Add stable accessibility labels/test IDs to critical mobile trading and navigation surfaces.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No visual changes.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/TradeTicket.tsx`, `mobile/src/components/Portfolio.tsx`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-015-holiwyn-labeled-home.png`
+- `docs/mobile/screenshots/cycle-015-holiwyn-labeled-ticket.png`
+- `docs/mobile/screenshots/cycle-015-holiwyn-labeled-portfolio.png`
+Bugs found: None.
+Technical debt added: None.
+Technical debt resolved:
+- Partial TD-010 progress: critical elements now have stable labels/test IDs for future selector-based harnesses.
+Result: Passed Cycle 015 QA. Deep smoke still passes after adding automation labels.
+Commit: cycle branch HEAD (`Label Holiwyn mobile smoke targets`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 016 should start using labels in harness where Android exposes them, or improve live market presentation.
+Harnesses run:
+- Trading Simulation Harness
+- QA Smoke Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures: None.
+
+### Heartbeat After Cycle 015
+
+Completed cycles: 013, 014, 015 since the last heartbeat.
+Verified progress: Deep smoke now covers Home, Ticket, and Portfolio; generic futures titles are normalized; key trading surfaces have stable labels/test IDs.
+Current app state: Holiwyn mobile has a stronger harness, clearer backend-fed futures display, and stable accessibility labels for critical flows.
+Current backend state: Backend health remains `ok`; no schema changes in these cycles.
+Open blockers: None for autonomous progress.
+Risks: Deep smoke still taps by coordinates even though labels now exist; server order mode remains unverified; localization table remains in `App.tsx`.
+Next three likely cycles: Explore selector-based Android harnessing, improve Live tab presentation, and normalize/extract localization copy.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

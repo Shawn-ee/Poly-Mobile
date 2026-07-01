@@ -125,6 +125,20 @@ Screenshots:
 Bugs:
 - Fixed user-hostile generic `Fixture ...` title in mobile adapter for futures bundles.
 
+### Cycle 015
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Added stable labels/test IDs to critical Home, Ticket, and Portfolio surfaces without breaking deep smoke.
+Screenshots:
+- `docs/mobile/screenshots/cycle-015-holiwyn-labeled-home.png`
+- `docs/mobile/screenshots/cycle-015-holiwyn-labeled-ticket.png`
+- `docs/mobile/screenshots/cycle-015-holiwyn-labeled-portfolio.png`
+Bugs: None found.
+
 ### Cycle 013
 
 Date: 2026-07-01

@@ -376,7 +376,13 @@ function FeaturedFuture({
       </View>
       <View style={styles.futureOutcomes}>
         {market.outcomes.map((outcome) => (
-          <Pressable key={outcome.id} style={styles.futureOutcome} onPress={() => openTicket(market, outcome)}>
+          <Pressable
+            key={outcome.id}
+            accessibilityLabel={`featured-future-${outcome.id}`}
+            testID={`featured-future-${outcome.id}`}
+            style={styles.futureOutcome}
+            onPress={() => openTicket(market, outcome)}
+          >
             <Text style={styles.futureName}>{label(locale, outcome)}</Text>
             <Text style={styles.futureProb}>{outcome.probability}%</Text>
           </Pressable>
@@ -399,10 +405,10 @@ function Segmented({
 }) {
   return (
     <View style={styles.segmented}>
-      <Pressable style={[styles.segment, value === "games" && styles.segmentActive]} onPress={() => setValue("games")}>
+      <Pressable accessibilityLabel="world-cup-games-tab" testID="world-cup-games-tab" style={[styles.segment, value === "games" && styles.segmentActive]} onPress={() => setValue("games")}>
         <Text style={[styles.segmentText, value === "games" && styles.segmentTextActive]}>{left}</Text>
       </Pressable>
-      <Pressable style={[styles.segment, value === "futures" && styles.segmentActive]} onPress={() => setValue("futures")}>
+      <Pressable accessibilityLabel="world-cup-futures-tab" testID="world-cup-futures-tab" style={[styles.segment, value === "futures" && styles.segmentActive]} onPress={() => setValue("futures")}>
         <Text style={[styles.segmentText, value === "futures" && styles.segmentTextActive]}>{right}</Text>
       </Pressable>
     </View>
