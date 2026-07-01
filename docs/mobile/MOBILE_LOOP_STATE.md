@@ -2235,6 +2235,63 @@ Harnesses run:
 Harness failures:
 - One recoverable Max coordinate miss before final pass.
 
+### Cycle 047
+
+Date: 2026-07-01
+Branch: mobile/cycle-047
+Goal: Reduce fragile coordinate taps in the trade-ticket harness path.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: None; this is a harness-only resilience cycle.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-047-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-047-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-047-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-047-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-047-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-047-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-047-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-047-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-047-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-047-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-047-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-047-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-047-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-047-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-047-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-047-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-047-holiwyn-ticket-max.xml`
+- `docs/mobile/harness/cycle-047-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-047-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-047-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-047-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-047-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-047-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Some navigation, close-position, Live refresh, and Search taps still use coordinates.
+Technical debt resolved:
+- Max sizing and mock order submission now tap by Android hierarchy id instead of fixed coordinates.
+Result: Passed Cycle 047 QA. Deep smoke verifies the selector-driven ticket taps across the full trade/Portfolio/Live/Search path.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 048 should continue selector-driven harness actions or add server-mode Portfolio status states.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

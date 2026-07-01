@@ -66,6 +66,24 @@ function Assert-HierarchyContainsAny {
   throw "UI hierarchy missing all expected alternatives: $($ExpectedAny -join ', ')"
 }
 
+function Invoke-TapHierarchyNode {
+  param(
+    [string]$Path,
+    [string]$Identifier
+  )
+  [xml]$hierarchy = Get-Content -Raw -Path $Path
+  $node = $hierarchy.SelectSingleNode("//*[@resource-id='$Identifier' or @content-desc='$Identifier']")
+  if (-not $node) {
+    throw "UI hierarchy missing tappable node: $Identifier"
+  }
+  if ($node.bounds -notmatch "^\[(\d+),(\d+)\]\[(\d+),(\d+)\]$") {
+    throw "UI hierarchy node has invalid bounds for $Identifier"
+  }
+  $x = [math]::Floor(([int]$Matches[1] + [int]$Matches[3]) / 2)
+  $y = [math]::Floor(([int]$Matches[2] + [int]$Matches[4]) / 2)
+  & $adb -s $Device shell input tap $x $y | Out-Null
+}
+
 function Wait-HierarchyContains {
   param(
     [string]$Name,
@@ -147,13 +165,13 @@ try {
     $ticketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket.xml"
     Assert-HierarchyContains -Path $ticketHierarchy -Expected @("Fake balance", "10,000 USDT", "Max", "500 USDT", "1,000 USDT", "Estimated cost", "Estimated payout", "Place mock order")
 
-    & $adb -s $Device shell input tap 995 955 | Out-Null
+    Invoke-TapHierarchyNode -Path $ticketHierarchy -Identifier "ticket-max-amount"
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-ticket-max.png"
     $ticketMaxHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket-max.xml"
     Assert-HierarchyContains -Path $ticketMaxHierarchy -Expected @("10,000", "Estimated cost", "10,000 USDT")
 
-    & $adb -s $Device shell input tap 540 1740 | Out-Null
+    Invoke-TapHierarchyNode -Path $ticketMaxHierarchy -Identifier "place-mock-order"
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-portfolio.png"
     $portfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio.xml"
