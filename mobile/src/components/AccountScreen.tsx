@@ -30,6 +30,7 @@ type AccountCopy = {
   ticketDefaultPreference: string;
   savedMarketsPreference: string;
   savedMarketsCount: string;
+  openPositions: string;
   profileSyncing: string;
   profileSynced: string;
   profileSyncError: string;
@@ -49,6 +50,7 @@ export function AccountScreen({
   ticketDefaultSide,
   profileSyncStatus,
   savedMarketCount,
+  openPositionCount,
 }: {
   t: AccountCopy;
   balance: number;
@@ -58,6 +60,7 @@ export function AccountScreen({
   ticketDefaultSide: "buy" | "sell";
   profileSyncStatus: ProfileSyncStatus;
   savedMarketCount: number;
+  openPositionCount: number;
 }) {
   const [signedIn, setSignedIn] = useState(false);
 
@@ -142,6 +145,12 @@ export function AccountScreen({
           <Ionicons name="star-outline" size={20} color="#93c5fd" />
           <Text style={styles.rowText}>
             {t.savedMarketsPreference}: {savedMarketCount} {t.savedMarketsCount}
+          </Text>
+        </View>
+        <View accessibilityLabel="account-open-positions" testID="account-open-positions" style={styles.row}>
+          <Ionicons name="podium-outline" size={20} color="#93c5fd" />
+          <Text style={styles.rowText}>
+            {t.openPositions}: {openPositionCount}
           </Text>
         </View>
         <View accessibilityLabel="account-ticket-defaults" testID="account-ticket-defaults" style={styles.row}>

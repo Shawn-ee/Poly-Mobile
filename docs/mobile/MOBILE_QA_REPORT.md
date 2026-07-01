@@ -2224,3 +2224,23 @@ Bugs:
 - None found.
 Visual QA:
 - Account Preferences shows `Saved markets: 1 saved` between Language and Ticket default after the harness seeds Mexico vs. Ecuador as saved.
+
+### Cycle 109
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:account-position-summary`
+- `npm run test:mobile-api`
+Result: Passed. Account Preferences now summarizes open World Cup positions count.
+Screenshots:
+- `docs/mobile/screenshots/cycle-109-holiwyn-account-position-summary-smoke.png`
+- `docs/mobile/screenshots/cycle-109-holiwyn-account-position-summary.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-109-holiwyn-account-position-summary-home-start.xml`
+- `docs/mobile/harness/cycle-109-holiwyn-account-position-summary.xml`
+Bugs:
+- None found.
+Visual QA:
+- Account Preferences shows `Open positions: 1` after the harness seeds a mock World Cup winner position.

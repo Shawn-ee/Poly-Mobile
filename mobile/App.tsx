@@ -318,6 +318,20 @@ export default function App() {
         AsyncStorage.setItem(SAVED_EVENTS_STORAGE_KEY, JSON.stringify([...seededSavedEvents])).catch(() => undefined);
         setMainTab("account");
       }
+      if (url.includes("forceAccountPositionSummary=1")) {
+        setPositions([
+          {
+            id: "smoke-account-position",
+            mode: "mock",
+            title: "World Cup winner",
+            outcome: "France",
+            side: "buy",
+            amount: 250,
+            probability: 24,
+          },
+        ]);
+        setMainTab("account");
+      }
     });
   }, []);
 
@@ -611,6 +625,7 @@ export default function App() {
                 ticketDefaultSide={ticketDefaults.side}
                 profileSyncStatus={profilePreferencesSyncStatus}
                 savedMarketCount={savedEventIds.size}
+                openPositionCount={positions.length}
               />
             )}
           </>

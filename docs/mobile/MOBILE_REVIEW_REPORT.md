@@ -1560,3 +1560,18 @@ Findings:
 - Mobile typecheck, focused account-saved-summary smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 108 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 109
+
+Date: 2026-07-01
+Branch: mobile/cycle-109
+Reviewer: Lead/Reviewer pass
+Scope: Account open-position summary.
+Findings:
+- P1: Account now receives open position count and renders it in Preferences with the existing localized Open positions label.
+- P1: The focused smoke seeds a mock World Cup winner position, opens Account, and verifies `Open positions: 1`.
+- P1: This keeps Account/profile closer to a trading app profile surface without touching deposit/withdraw flows.
+- P2: The row is a summary only; detailed position management remains in Portfolio.
+- Mobile typecheck, focused account-position-summary smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 109 for local commit/merge after scoped diff review.
+Merge approved: Yes
