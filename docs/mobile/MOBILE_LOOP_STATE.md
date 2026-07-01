@@ -643,7 +643,7 @@ Technical debt resolved:
 - Live tab no longer uses generic no-results copy.
 Result: Passed Cycle 016 QA. Live tab has a clearer user-facing state.
 Commit: cycle branch HEAD (`Improve Holiwyn mobile live tab`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 017 should normalize/extract localization copy or add selector-based harness probing.
 Harnesses run:
 - QA Smoke Harness
