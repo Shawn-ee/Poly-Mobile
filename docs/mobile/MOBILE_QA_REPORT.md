@@ -2555,3 +2555,32 @@ Bugs:
 - Fixed by handling warm URL events, using a shell-safe reset flag separator, and reapplying runtime reset shortly after launch.
 Visual QA:
 - Ticket modal shows `LIVE WORLD CUP`, `Live - 63'`, and clean `10,000 USDT` fake balance without an Expo Go package clear.
+
+### Cycle 123
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554` with Expo Go
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/` through the focused smoke script
+- `npm.cmd run smoke:live-portfolio-badge-deep`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The fast app-level reset path now supports the heavier live order to Portfolio deep-scroll proof.
+Screenshots:
+- `docs/mobile/screenshots/cycle-123-holiwyn-fast-live-portfolio-reset-smoke.png`
+- `docs/mobile/screenshots/cycle-123-holiwyn-fast-live-portfolio-reset-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-123-holiwyn-fast-live-portfolio-reset-ticket.png`
+- `docs/mobile/screenshots/cycle-123-holiwyn-fast-live-portfolio-reset-portfolio.png`
+- `docs/mobile/screenshots/cycle-123-holiwyn-fast-live-portfolio-reset-latest-order.png`
+- `docs/mobile/screenshots/cycle-123-holiwyn-fast-live-portfolio-reset-activity.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-123-holiwyn-fast-live-portfolio-reset-expo-menu.xml`
+- `docs/mobile/harness/cycle-123-holiwyn-fast-live-portfolio-reset-home.xml`
+- `docs/mobile/harness/cycle-123-holiwyn-fast-live-portfolio-reset-ticket-ready.xml`
+- `docs/mobile/harness/cycle-123-holiwyn-fast-live-portfolio-reset-ticket.xml`
+- `docs/mobile/harness/cycle-123-holiwyn-fast-live-portfolio-reset-portfolio.xml`
+- `docs/mobile/harness/cycle-123-holiwyn-fast-live-portfolio-reset-latest-order.xml`
+- `docs/mobile/harness/cycle-123-holiwyn-fast-live-portfolio-reset-activity.xml`
+Bugs:
+- Warm reset could leave a stale ticket modal open from the previous smoke. The reset path now also clears ticket, ticket error, selected event, and query state.
+Visual QA:
+- Deep Portfolio proof shows the live latest-order card and Recent activity row with `LIVE WORLD CUP`, `Live - 63'`, and France vs. Argentina context after a fresh live order.

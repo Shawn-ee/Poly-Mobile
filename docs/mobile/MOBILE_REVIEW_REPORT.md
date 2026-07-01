@@ -1770,3 +1770,18 @@ Findings:
 - Mobile typecheck through the smoke script, focused live-ticket smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 122 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 123
+
+Date: 2026-07-01
+Branch: mobile/cycle-123
+Reviewer: Lead/Reviewer pass
+Scope: Fast reset for live order/Portfolio proof.
+Findings:
+- P1: App-level reset now clears modal/search/detail state in addition to Portfolio and saved preferences, preventing warm smoke runs from landing on a stale ticket.
+- P1: Focused live-portfolio-badge-deep smoke passes without Expo Go package clear, proving the fast path works for live order, Portfolio position, latest-order, and activity evidence.
+- P1: The proof keeps clean fake-token assumptions while reducing the long blank hierarchy wait caused by package clearing.
+- P2: Metro still starts with `--clear`; future harness cycles can remove that selectively for stable flows.
+- Mobile typecheck through the smoke script, focused live-portfolio-badge-deep smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 123 for local commit/merge after scoped diff review.
+Merge approved: Yes

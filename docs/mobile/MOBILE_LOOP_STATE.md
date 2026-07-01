@@ -5921,6 +5921,55 @@ Harnesses run:
 Harness failures:
 - Two warm-reset attempts exposed stale state and retry-branch issues; reset handling was hardened and rerun passed.
 
+### Cycle 123
+
+Date: 2026-07-01
+Branch: mobile/cycle-123
+Goal: Extend fast app-level reset to live order and deep Portfolio smoke proof.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No user-facing production flow change; reset deep link now clears stale ticket, ticket error, selected event, and query state.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:live-portfolio-badge-deep` in `mobile/` (includes mobile typecheck).
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-123-holiwyn-fast-live-portfolio-reset-smoke.png`
+- `docs/mobile/screenshots/cycle-123-holiwyn-fast-live-portfolio-reset-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-123-holiwyn-fast-live-portfolio-reset-ticket.png`
+- `docs/mobile/screenshots/cycle-123-holiwyn-fast-live-portfolio-reset-portfolio.png`
+- `docs/mobile/screenshots/cycle-123-holiwyn-fast-live-portfolio-reset-latest-order.png`
+- `docs/mobile/screenshots/cycle-123-holiwyn-fast-live-portfolio-reset-activity.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-123-holiwyn-fast-live-portfolio-reset-expo-menu.xml`
+- `docs/mobile/harness/cycle-123-holiwyn-fast-live-portfolio-reset-home.xml`
+- `docs/mobile/harness/cycle-123-holiwyn-fast-live-portfolio-reset-ticket-ready.xml`
+- `docs/mobile/harness/cycle-123-holiwyn-fast-live-portfolio-reset-ticket.xml`
+- `docs/mobile/harness/cycle-123-holiwyn-fast-live-portfolio-reset-portfolio.xml`
+- `docs/mobile/harness/cycle-123-holiwyn-fast-live-portfolio-reset-latest-order.xml`
+- `docs/mobile/harness/cycle-123-holiwyn-fast-live-portfolio-reset-activity.xml`
+Bugs found:
+- Warm live smoke could retain an already-open ticket modal. The reset path now clears ticket/modal, ticket-error, selected-event, and query state before applying the live route.
+Technical debt added:
+- Metro `--clear` remains enabled for heavy focused smokes; reduce it after additional warm-reset evidence.
+Technical debt resolved:
+- Heavy live order to Portfolio proof no longer needs Expo Go package clearing to start from clean app state.
+Result: Passed Cycle 123 QA. Focused live-portfolio-badge-deep smoke, visual screenshot review, and mobile API/profile-preference tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 124 should selectively remove Metro `--clear` for proven live fast-reset smokes or continue live/detail trading polish.
+Harnesses run:
+- Mobile Typecheck Harness
+- Live Portfolio Badge Deep Smoke Harness
+- Trading Simulation Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- None after reset path was expanded.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
