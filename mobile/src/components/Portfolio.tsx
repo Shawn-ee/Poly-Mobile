@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { activityPnl, activityShares, decimalOdds } from "../domain/portfolioActivityMetrics";
 import type { Locale } from "../mocks/worldCup";
 import { money } from "../presentation/formatters";
 import type { OrderMode } from "../services/orderService";
@@ -22,6 +23,7 @@ export type PortfolioActivity = {
   title: string;
   outcome: string;
   amount: number;
+  entryAmount?: number;
   side?: "buy" | "sell";
   probability?: number;
   isLive?: boolean;
@@ -108,13 +110,6 @@ const currentValueTotal = (positions: Position[]) =>
 
 const pnlTotal = (positions: Position[]) =>
   positions.reduce((total, position) => total + estimatedPnl(position), 0);
-
-const decimalOdds = (price: number) => `${(1 / Math.max(price, 0.01)).toFixed(1)}x`;
-
-const orderShares = (order: { amount: number; probability?: number }) => {
-  const price = Math.max(order.probability ?? 0, 1) / 100;
-  return order.amount / price;
-};
 
 export function Portfolio({
   t,
@@ -250,7 +245,7 @@ export function Portfolio({
             <View accessibilityLabel="latest-order-execution-details" testID="latest-order-execution-details" style={styles.confirmationDetailGrid}>
               <View style={styles.confirmationDetailItem}>
                 <Text style={styles.confirmationDetailLabel}>{t.filledShares}</Text>
-                <Text style={styles.confirmationDetailValue}>{orderShares(latestOrder).toFixed(2)}</Text>
+                <Text style={styles.confirmationDetailValue}>{activityShares(latestOrder).toFixed(2)}</Text>
               </View>
               <View style={styles.confirmationDetailItem}>
                 <Text style={styles.confirmationDetailLabel}>{t.executionPrice}</Text>
@@ -371,8 +366,13 @@ export function Portfolio({
                 </Text>
                 {typeof activity.probability === "number" && activity.action !== "canceled" && (
                   <Text accessibilityLabel={`activity-execution-${activity.id}`} style={styles.activityExecution}>
-                    {t.filledShares} {orderShares(activity).toFixed(2)} - {t.executionPrice} {activity.probability}% - {t.impliedOdds}{" "}
-                    {decimalOdds(activity.probability / 100)}
+                    {activity.action === "closed"
+                      ? `${t.entry} ${activity.probability}% - ${t.currentValue} ${money(activity.amount)} - ${t.estimatedPnl} ${
+                          activityPnl(activity) >= 0 ? "+" : ""
+                        }${money(activityPnl(activity))}`
+                      : `${t.filledShares} ${activityShares(activity).toFixed(2)} - ${t.executionPrice} ${activity.probability}% - ${
+                          t.impliedOdds
+                        } ${decimalOdds(activity.probability / 100)}`}
                   </Text>
                 )}
               </View>

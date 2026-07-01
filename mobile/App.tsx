@@ -251,6 +251,7 @@ export default function App() {
   const handleLaunchUrl = useCallback((url: string | null) => {
     if (!mounted.current || !url) return;
     const shouldForceWorldCupWinnerFranceTicket = url.includes("forceWorldCupWinnerFranceTicket=1");
+    const shouldForceClosedWorldCupWinnerFrance = url.includes("forceClosedWorldCupWinnerFrance=1");
     setForceOrderFailure(url.includes("forceOrderFailure=1"));
     if (url.includes("forceResetState=1")) {
       const resetRuntimeState = () => {
@@ -271,7 +272,7 @@ export default function App() {
         setForceAccountSignedIn(false);
       };
       resetRuntimeState();
-      if (!shouldForceWorldCupWinnerFranceTicket) {
+      if (!shouldForceWorldCupWinnerFranceTicket && !shouldForceClosedWorldCupWinnerFrance) {
         setTimeout(resetRuntimeState, 750);
       }
       AsyncStorage.multiRemove([
@@ -316,6 +317,41 @@ export default function App() {
         latestOrder: null,
         openOrders: [SMOKE_OPEN_ORDER],
         activities: [],
+      };
+      AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
+    }
+    if (shouldForceClosedWorldCupWinnerFrance) {
+      const closedActivity: PortfolioActivity = {
+        id: "smoke-world-cup-winner-france-closed",
+        action: "closed",
+        title: "World Cup winner",
+        outcome: "France",
+        amount: 108.82,
+        entryAmount: 100,
+        side: "buy",
+        probability: 34,
+      };
+      const boughtActivity: PortfolioActivity = {
+        id: "smoke-world-cup-winner-france-opened",
+        action: "opened",
+        title: "World Cup winner",
+        outcome: "France",
+        amount: 100,
+        side: "buy",
+        probability: 34,
+      };
+      setBalance(10008.82);
+      setPositions([]);
+      setLatestOrder(null);
+      setOpenOrders([]);
+      setActivities([closedActivity, boughtActivity]);
+      setMainTab("portfolio");
+      const snapshot: StoredPortfolio = {
+        balance: 10008.82,
+        positions: [],
+        latestOrder: null,
+        openOrders: [],
+        activities: [closedActivity, boughtActivity],
       };
       AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
     }
@@ -583,6 +619,7 @@ export default function App() {
         title: position.title,
         outcome: position.outcome,
         amount: value,
+        entryAmount: position.amount,
         side: position.side,
         probability: position.probability,
         isLive: position.isLive,

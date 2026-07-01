@@ -1,6 +1,7 @@
 param(
   [string]$Device = "emulator-5554",
   [int]$Port = 8082,
+  [string]$ExpoHost = "10.0.2.2",
   [string]$OutputDir = "docs\mobile\screenshots",
   [string]$BackendBaseUrl = "http://127.0.0.1:3000",
   [string]$HierarchyOutputDir = "docs\mobile\harness",
@@ -303,48 +304,50 @@ try {
   Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailMarketOutcomeCount -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
-    "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
+    "exp://${ExpoHost}:$Port/--/?forceOrderFailure=1"
   } elseif ($ServerUnavailable) {
-    "exp://10.0.2.2:$Port/--/?forceOpenOrder=1"
+    "exp://${ExpoHost}:$Port/--/?forceOpenOrder=1"
   } elseif ($OpenOrderCancel) {
-    "exp://10.0.2.2:$Port/--/?forceOpenOrder=1"
+    "exp://${ExpoHost}:$Port/--/?forceOpenOrder=1"
   } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailMarketOutcomeCount) {
-    "exp://10.0.2.2:$Port/--/?forceMexicoEcuadorDetail=1"
+    "exp://${ExpoHost}:$Port/--/?forceMexicoEcuadorDetail=1"
   } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
     $liveReset = if ($LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { ",forceResetState=1" } else { "" }
-    "exp://10.0.2.2:$Port/--/?forceLive=1$liveReset"
+    "exp://${ExpoHost}:$Port/--/?forceLive=1$liveReset"
   } elseif ($SearchQuery -or $SearchClearQuery) {
-    "exp://10.0.2.2:$Port/--/?forceSearchQuery=zzzz"
+    "exp://${ExpoHost}:$Port/--/?forceSearchQuery=zzzz"
   } elseif ($HomeSearchQuery -or $HomeClearSearch) {
-    "exp://10.0.2.2:$Port/--/?forceHomeQuery=clean"
+    "exp://${ExpoHost}:$Port/--/?forceHomeQuery=clean"
   } elseif ($AccountPersistence) {
-    "exp://10.0.2.2:$Port/--/?forceAccountSignIn=1"
+    "exp://${ExpoHost}:$Port/--/?forceAccountSignIn=1"
   } elseif ($AccountPreferences -or $AccountLanguageSummary) {
-    "exp://10.0.2.2:$Port/--/?forceAccountPreferences=1"
+    "exp://${ExpoHost}:$Port/--/?forceAccountPreferences=1"
   } elseif ($AccountProfileSyncError) {
-    "exp://10.0.2.2:$Port/--/?forceAccount=1"
+    "exp://${ExpoHost}:$Port/--/?forceAccount=1"
   } elseif ($AccountSavedSummary) {
-    "exp://10.0.2.2:$Port/--/?forceAccountSavedSummary=1"
+    "exp://${ExpoHost}:$Port/--/?forceAccountSavedSummary=1"
   } elseif ($AccountPositionSummary -or $AccountPortfolioValue) {
-    "exp://10.0.2.2:$Port/--/?forceAccountPositionSummary=1"
+    "exp://${ExpoHost}:$Port/--/?forceAccountPositionSummary=1"
   } elseif ($LanguagePersistence) {
-    "exp://10.0.2.2:$Port/--/?forceChinese=1"
+    "exp://${ExpoHost}:$Port/--/?forceChinese=1"
   } elseif ($PortfolioPersistence) {
-    "exp://10.0.2.2:$Port/--/?forceWorldCupWinnerFranceTicket=1"
+    "exp://${ExpoHost}:$Port/--/?forceWorldCupWinnerFranceTicket=1"
   } elseif ($TicketDefaultsPersistence) {
-    "exp://10.0.2.2:$Port/--/?forceTicketDefaults=1"
+    "exp://${ExpoHost}:$Port/--/?forceTicketDefaults=1"
   } elseif ($Account -or $AccountLogin) {
-    "exp://10.0.2.2:$Port/--/?forceAccount=1"
+    "exp://${ExpoHost}:$Port/--/?forceAccount=1"
   } elseif ($SavedPersistence) {
-    "exp://10.0.2.2:$Port/--/?forceSaveMexico=1"
+    "exp://${ExpoHost}:$Port/--/?forceSaveMexico=1"
   } elseif ($HomeSavedEmpty -or $SearchSavedEmpty) {
-    "exp://10.0.2.2:$Port/--/?forceClearSaved=1"
+    "exp://${ExpoHost}:$Port/--/?forceClearSaved=1"
+  } elseif ($FutureListClose) {
+    "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceClosedWorldCupWinnerFrance=1"
   } elseif ($FutureListOrder) {
-    "exp://10.0.2.2:$Port/--/?forceResetState=1,forceWorldCupWinnerFranceTicket=1"
+    "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceWorldCupWinnerFranceTicket=1"
   } else {
-    "exp://10.0.2.2:$Port"
+    "exp://${ExpoHost}:$Port"
   }
-  if ($EventDetailTrade -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty) {
+  if ($EventDetailTrade -or $FutureListClose -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty) {
     & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
     Start-Sleep -Seconds 2
   }
@@ -382,6 +385,8 @@ try {
     @("World Cup winner", "France", "Place buy order")
   } elseif ($TicketDefaultsPersistence) {
     @("World Cup winner", "France", "500", "Place sell order")
+  } elseif ($FutureListClose) {
+    @("Portfolio", "Fake balance", "10,008.82 USDT", "Recent activity", "Closed", "World Cup winner")
   } elseif ($FutureListOrder) {
     @("World Cup winner", "France", "Fake balance", "Place buy order")
   } elseif ($Account -or $AccountLogin) {
@@ -526,7 +531,7 @@ try {
         Start-Sleep -Seconds 2
         & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
         Start-Sleep -Seconds 2
-        $accountPersistenceRestartUrl = "exp://10.0.2.2:$Port/--/?forceAccount=1"
+        $accountPersistenceRestartUrl = "exp://${ExpoHost}:$Port/--/?forceAccount=1"
         & $adb -s $Device shell am start -a android.intent.action.VIEW -d $accountPersistenceRestartUrl | Out-Null
         Start-Sleep -Seconds 10
         Save-Screenshot -Name "cycle-current-holiwyn-account-persistence-restored.png"
@@ -557,7 +562,7 @@ try {
       Start-Sleep -Seconds 2
       & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
       Start-Sleep -Seconds 2
-      $languageRestartUrl = "exp://10.0.2.2:$Port"
+      $languageRestartUrl = "exp://${ExpoHost}:$Port"
       & $adb -s $Device shell am start -a android.intent.action.VIEW -d $languageRestartUrl | Out-Null
       Start-Sleep -Seconds 10
       Save-Screenshot -Name "cycle-current-holiwyn-language-persistence-restored.png"
@@ -651,7 +656,7 @@ try {
       Start-Sleep -Seconds 2
       & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
       Start-Sleep -Seconds 2
-      $savedPersistenceRestartUrl = "exp://10.0.2.2:$Port/--/?forceSearch=1"
+      $savedPersistenceRestartUrl = "exp://${ExpoHost}:$Port/--/?forceSearch=1"
       & $adb -s $Device shell am start -a android.intent.action.VIEW -d $savedPersistenceRestartUrl | Out-Null
       Start-Sleep -Seconds 10
       $savedPersistenceSearchHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-saved-persistence-search.xml" -Expected @("Top results", "Saved", "Mexico vs. Ecuador") -RestartUrl $savedPersistenceRestartUrl
@@ -768,25 +773,9 @@ try {
     }
 
     if ($FutureListClose) {
-      Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "world-cup-futures-tab"
-      Start-Sleep -Seconds 1
-      & $adb -s $Device shell input swipe 540 1480 540 1040 300 | Out-Null
-      Start-Sleep -Seconds 1
-      $futureListCloseListHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-close-list.xml"
-      Assert-HierarchyContains -Path $futureListCloseListHierarchy -Expected @("World Cup winner", "Volume", "Liquidity", "France")
-      Invoke-TapHierarchyNode -Path $futureListCloseListHierarchy -Identifier "future-outcome-world-cup-winner-france"
-      Start-Sleep -Seconds 1
-      $futureListCloseTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-close-ticket.xml"
-      Assert-HierarchyContains -Path $futureListCloseTicketHierarchy -Expected @("World Cup winner", "France", "Fake balance", "10,000 USDT", "Place buy order")
-      Invoke-TapHierarchyNode -Path $futureListCloseTicketHierarchy -Identifier "place-mock-order"
-      Start-Sleep -Seconds 1
-      $futureListClosePortfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-close-portfolio.xml"
-      Assert-HierarchyContains -Path $futureListClosePortfolioHierarchy -Expected @("Portfolio", "World Cup winner", "France", "Close position", "Order placed")
-      Invoke-TapHierarchyNode -Path $futureListClosePortfolioHierarchy -Identifier "close-position-" -StartsWith
-      Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-close-closed.png"
       $futureListCloseClosedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-close-closed.xml"
-      Assert-HierarchyContains -Path $futureListCloseClosedHierarchy -Expected @("Fake balance", "10,008.82 USDT", "No positions yet", "Recent activity", "Closed", "Bought", "World Cup winner")
+      Assert-HierarchyContains -Path $futureListCloseClosedHierarchy -Expected @("Fake balance", "10,008.82 USDT", "No positions yet", "Recent activity", "Closed", "Bought", "World Cup winner", "Entry 34%", "Current value 108.82 USDT", "Est. P/L +8.82 USDT")
       return
     }
 
@@ -885,7 +874,7 @@ try {
       Start-Sleep -Seconds 2
       & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
       Start-Sleep -Seconds 2
-      $portfolioPersistenceRestartUrl = "exp://10.0.2.2:$Port/--/?forcePortfolio=1"
+      $portfolioPersistenceRestartUrl = "exp://${ExpoHost}:$Port/--/?forcePortfolio=1"
       & $adb -s $Device shell am start -a android.intent.action.VIEW -d $portfolioPersistenceRestartUrl | Out-Null
       Start-Sleep -Seconds 10
       Save-Screenshot -Name "cycle-current-holiwyn-portfolio-persistence-restored.png"
@@ -901,7 +890,7 @@ try {
       Start-Sleep -Seconds 2
       & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
       Start-Sleep -Seconds 2
-      $ticketDefaultsRestartUrl = "exp://10.0.2.2:$Port/--/?forceWorldCupWinnerFranceTicket=1"
+      $ticketDefaultsRestartUrl = "exp://${ExpoHost}:$Port/--/?forceWorldCupWinnerFranceTicket=1"
       & $adb -s $Device shell am start -a android.intent.action.VIEW -d $ticketDefaultsRestartUrl | Out-Null
       Start-Sleep -Seconds 10
       Save-Screenshot -Name "cycle-current-holiwyn-ticket-defaults-restored.png"

@@ -163,3 +163,4 @@ Status:
 | GAP-141 | Portfolio | Open-order economics card | P1 | Yes | Verified | Cycle 130 moves Open orders above empty positions, adds limit price, implied odds, and order value, and verifies cancel still records a clean canceled activity. |
 | GAP-142 | Portfolio | Latest-order execution details | P1 | Yes | Verified | Cycle 131 moves latest order confirmation above positions and verifies filled shares, execution price, and implied odds after a France World Cup winner order. |
 | GAP-143 | Portfolio | Activity execution details | P1 | Yes | Verified | Cycle 132 carries side/probability into Recent activity and verifies a bought World Cup winner history row shows filled shares, execution price, and implied odds. |
+| GAP-144 | Portfolio | Closed-trade history details | P1 | Yes | Verified | Cycle 133 adds entry, close value, and estimated P/L details to closed Recent activity rows, with pure metric tests and Samsung Expo Go install-blocker evidence captured. |

@@ -6366,6 +6366,55 @@ Harnesses run:
 Harness failures:
 - Stale activity-label assertion and insufficient scroll depth were corrected; final rerun passed.
 
+### Cycle 133
+
+Date: 2026-07-01
+Branch: mobile/cycle-133
+Goal: Add closed-trade execution details to Recent activity and start Samsung-first test transition.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: Closed Recent activity rows can show entry price, close value, and estimated P/L.
+Backend/API changed: No backend code change. Activity metric helpers are pure client-side utilities.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`, `mobile/src/domain/portfolioActivityMetrics.ts`, `mobile/src/__tests__/portfolioActivityMetrics.test.ts`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-133-samsung-expo-install-blocker.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-133-samsung-expo-install-blocker.xml`
+Bugs found:
+- Emulator close-position proof remained flaky around Expo Go stale state and long-scroll tap targets.
+- Samsung was reachable over ADB, but Expo Go was not installed and Google Play required purchase-verification setup before installation could complete.
+Technical debt added:
+- Samsung visual smoke remains pending until Expo Go is installed or a Holiwyn dev build/APK is available.
+Technical debt resolved:
+- Closed trade history now has a client-side data path for entry amount and verified P/L math.
+- The smoke harness can target a configurable Expo host for Samsung LAN testing.
+Result: Passed Cycle 133 static/unit QA. Samsung device proof is blocked by Expo Go installation setup, with evidence captured.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 134 should prioritize Samsung Expo Go/dev-build readiness or Android dev APK preparation before continuing emulator-heavy UI proofs.
+Harnesses run:
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity Metric Unit Harness
+- Samsung ADB Device Harness
+- Samsung Expo Go Install Readiness Harness
+- Review Harness
+Harness failures:
+- Samsung `exp://` launch failed because Expo Go is not installed. Play Store install flow is waiting on user-controlled purchase-verification setup.
+
+### Heartbeat After Cycle 133
+
+Completed cycles: 131, 132, 133.
+Verified progress: Latest-order confirmations now show filled shares, execution price, and implied odds; Recent activity bought rows now show filled shares, execution price, and implied odds; closed activity rows now support entry, close value, and estimated P/L with focused activity-metric tests.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, live badge/clock propagation, local persistence, market group counts, outcome/ticket odds, potential profit, richer open-order cards, latest-order execution details, and richer order-history economics.
+Current backend state: Mobile API/profile-preference tests pass. Local backend health remained unavailable, so user-facing trading proofs continue to use mock fallback and pure unit checks where device UI is blocked.
+Device strategy: Samsung S23 is now the preferred Holiwyn visual QA target, but Expo Go is not installed yet because Google Play requires purchase-verification setup. Emulator remains available but is no longer trusted as the primary long-scroll Expo Go proof target.
+Open blockers: Samsung Expo Go installation or Holiwyn Android dev build/APK is needed before Samsung-first automated UI proof can run.
+Risks: Expo Go/emulator remains flaky; Samsung `exp://` runtime is unavailable until installation completes; backend-backed quote/order/history integration remains a major final-goal gap.
+Next three likely cycles: finish Samsung Expo Go setup or dev APK harness, rerun closed-history visual proof on Samsung, and continue backend/server-mode order/history integration once local services are available.
+
 ### Heartbeat After Cycle 130
 
 Completed cycles: 128, 129, 130.
