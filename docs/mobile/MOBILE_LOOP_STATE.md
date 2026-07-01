@@ -2518,8 +2518,8 @@ Technical debt added:
 Technical debt resolved:
 - Failed server ticket submissions no longer bubble silently; the ticket remains open and shows localized retry copy.
 Result: Passed Cycle 051 QA. Mock deep smoke verifies successful event-market trading remains stable after order error handling was added.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Show Holiwyn ticket order failures`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 052 should add a dedicated forced-failure harness for the ticket error state or continue reducing prop/back device actions.
 Harnesses run:
 - QA Smoke Harness
