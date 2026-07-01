@@ -1863,3 +1863,27 @@ Bugs:
 - None found.
 Visual QA:
 - Closed state shows 10,008.82 USDT balance, no open positions, recent Closed activity, and previous mock order confirmation.
+
+### Cycle 092
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:portfolio-position-count`
+- `npm run test:mobile-api`
+Result: Passed. Portfolio now shows a localized Open positions count that reflects current position state.
+Screenshots:
+- `docs/mobile/screenshots/cycle-092-holiwyn-portfolio-position-count-smoke.png`
+- `docs/mobile/screenshots/cycle-092-holiwyn-portfolio-position-count-open.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-092-holiwyn-portfolio-position-count-home-start.xml`
+- `docs/mobile/harness/cycle-092-holiwyn-portfolio-position-count-empty.xml`
+- `docs/mobile/harness/cycle-092-holiwyn-portfolio-position-count-home.xml`
+- `docs/mobile/harness/cycle-092-holiwyn-portfolio-position-count-list.xml`
+- `docs/mobile/harness/cycle-092-holiwyn-portfolio-position-count-ticket.xml`
+- `docs/mobile/harness/cycle-092-holiwyn-portfolio-position-count-open.xml`
+Bugs:
+- None found.
+Visual QA:
+- Open positions count is visible above the summary grid and shows `1` after a Futures mock order.
