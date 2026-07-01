@@ -1725,3 +1725,18 @@ Findings:
 - Mobile typecheck through the smoke script, focused live-portfolio-badge-deep smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 119 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 120
+
+Date: 2026-07-01
+Branch: mobile/cycle-120
+Reviewer: Lead/Reviewer pass
+Scope: Live ticket clock context.
+Findings:
+- P1: TradeTicket now surfaces the live event clock under the Live World Cup badge, giving users immediate in-play context before placing an order.
+- P1: Focused live-ticket smoke verifies `ticket-live-clock` and `Live - 63'` alongside ticket context, fake balance, estimates, and CTA.
+- P1: The smoke harness now clears Expo Go for `LiveTicket` runs, preventing stale fake balance from leaking into live-ticket-only proof.
+- P2: The clock comes from local/mock `startsAt` text and is normalized for display; backend live clock metadata should replace it when available.
+- Mobile typecheck through the smoke script, focused live-ticket smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 120 for local commit/merge after scoped diff review.
+Merge approved: Yes
