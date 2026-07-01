@@ -325,7 +325,7 @@ Technical debt resolved:
 - Partial large-file debt: Trade Ticket is now isolated from `App.tsx`.
 Result: Passed Cycle 007 QA. Extracted ticket still submits mock orders and updates Portfolio.
 Commit: cycle branch HEAD (`Extract Holiwyn mobile trade ticket`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 008 should extract Portfolio or MarketList into focused components.
 Harnesses run:
 - Trading Simulation Harness
