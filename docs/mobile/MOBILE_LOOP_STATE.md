@@ -6555,6 +6555,44 @@ Harnesses run:
 Harness failures:
 - First Samsung timestamp assertion failed, then passed after the forced-state hydration guard.
 
+### Cycle 138
+
+Date: 2026-07-01
+Branch: mobile/cycle-138
+Goal: Map backend portfolio history times into mobile Recent activity timestamps.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No new visible component; backend-sourced activity rows can now populate the existing timestamp line.
+Backend/API changed: No backend route change; mobile adapter now consumes existing `resolveTime` and `createdAt` fields.
+Database/schema changed: None.
+Files changed: `mobile/src/services/portfolioHistoryService.ts`, `mobile/src/__tests__/portfolioHistoryService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm run smoke:samsung:closed-history` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-138-samsung-backend-history-time-smoke.png`
+- `docs/mobile/screenshots/cycle-138-samsung-backend-history-time-closed-history.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-138-samsung-backend-history-time-home.xml`
+- `docs/mobile/harness/cycle-138-samsung-backend-history-time-closed-history.xml`
+Bugs found:
+- First unit expectation used UTC display values; corrected tests to the app's explicit `America/Chicago` display timezone.
+Technical debt added:
+- User/profile timezone selection is still future work.
+Technical debt resolved:
+- Backend portfolio history rows no longer drop available time context when mapped into mobile Portfolio activity.
+Result: Passed Cycle 138 QA. Mobile typecheck, mobile API/history tests, and Samsung timestamp smoke pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 139 should continue backend-backed Portfolio parity or add another Samsung wrapper for a high-value trading flow.
+Harnesses run:
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History Unit Harness
+- Samsung Smoke Wrapper Harness
+- Review Harness
+Harness failures:
+- Initial timestamp unit expectations failed, then passed after timezone expectation correction.
+
 ### Heartbeat After Cycle 136
 
 Completed cycles: 134, 135, 136.

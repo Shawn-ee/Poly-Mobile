@@ -1998,3 +1998,19 @@ Findings:
 - Samsung smoke wrapper, mobile typecheck, and mobile API/profile-preference/activity-metric tests passed.
 Decision: Approve Cycle 137 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 138
+
+Date: 2026-07-01
+Branch: mobile/cycle-138
+Reviewer: Lead/Reviewer pass
+Scope: Backend resolved-history timestamp mapping.
+Findings:
+- P1: `portfolioHistoryToActivity` now maps backend `market.resolveTime` into the `PortfolioActivity.timestamp` field, so server-backed closed history can show time context in the mobile Portfolio.
+- P1: When `resolveTime` is unavailable, the adapter falls back to `market.createdAt` rather than dropping timestamp context entirely.
+- P1: Focused mobile unit tests cover payout amount mapping, resolved outcome fallback, resolve-time timestamp mapping, and creation-time fallback.
+- P2: The formatter uses the current local development timezone (`America/Chicago`) for deterministic tests and Samsung-cycle consistency; production may later want user/profile timezone selection.
+- P2: Local backend health remained unavailable, so this cycle proves adapter behavior with unit tests and preserves Samsung visual proof through the existing forced closed-history smoke.
+- Mobile typecheck, mobile API/history tests, and Samsung closed-history smoke passed.
+Decision: Approve Cycle 138 for local commit/merge after scoped diff review.
+Merge approved: Yes
