@@ -3737,6 +3737,61 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 075
+
+Date: 2026-07-01
+Branch: mobile/cycle-075
+Goal: Add a local saved-market watchlist flow to Home discovery.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Home market cards now have save/star controls and Home filter chips include Saved.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/HomeScreen.tsx`, `mobile/src/components/MarketLists.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:home-saved` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-075-holiwyn-home-saved-smoke.png`
+- `docs/mobile/screenshots/cycle-075-holiwyn-home-saved-star.png`
+- `docs/mobile/screenshots/cycle-075-holiwyn-home-saved-filter.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-075-holiwyn-home-saved-home.xml`
+- `docs/mobile/harness/cycle-075-holiwyn-home-saved-ready.xml`
+- `docs/mobile/harness/cycle-075-holiwyn-home-saved-star.xml`
+- `docs/mobile/harness/cycle-075-holiwyn-home-saved-filter.xml`
+Bugs found:
+- Initial smoke tapped a clipped save selector at the bottom of the viewport and landed on bottom navigation; harness recovered by scrolling before tapping the star.
+Technical debt added:
+- Saved-market state is local/session-only until account persistence is integrated.
+Technical debt resolved:
+- Home discovery now has a watchlist-style saved-market path instead of only status filters.
+Result: Passed Cycle 075 QA after harness recovery. Mobile typecheck, focused Saved smoke, visual screenshot review, and mobile API tests pass.
+Commit: `PENDING`
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 076 should continue trading/discovery parity or revisit backend readiness if Docker daemon becomes available.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Discovery Watchlist Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Recovery Harness
+- Review Harness
+Harness failures:
+- One recoverable clipped-selector tap before final pass.
+
+### Heartbeat After Cycle 075
+
+Completed cycles: 073, 074, 075 since the last heartbeat.
+Verified progress: Account now has local sign-in/sign-out behavior, Home has All/Live/Today filters, and Home supports a local Saved watchlist filter for World Cup events.
+Current app state: Holiwyn mobile has verified Home discovery filters/saved markets, Event Detail grouped markets/props/group jumps/trading stats/depth/outcome ticket opening, featured futures trading, ticket balance/max/preset sizing/share and price estimates, side-aware buy/sell tickets, successful mock order, forced order failure, server order failure, Portfolio summary/detail/close/activity/order confirmation/open-order cancel, server-unavailable Portfolio fallback, Live refresh, Search browse/query, localization, and Account/Login mock profile flows on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history/order/cancel client seams are wired; Bearer API-key config and canonical request shape are tested; local credential generation and backend readiness harnesses exist; live authenticated backend order proof remains pending until Docker daemon/local DB are available.
+Open blockers: None for autonomous product/harness progress. Live backend proof still waits on Docker Desktop engine availability.
+Risks: Account and Saved state are local/session-only; Event Detail depth and ticket quote math remain local estimates until backend auth, quote, and order-book APIs can feed them.
+Next three likely cycles: Add richer market-card metadata, improve saved/search integration, and retry backend readiness when Docker daemon becomes reachable.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

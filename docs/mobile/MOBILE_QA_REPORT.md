@@ -1495,3 +1495,26 @@ Bugs:
 - None found.
 Visual QA:
 - Filter chips fit under search and above Games/Futures without overlapping the bottom navigation.
+
+### Cycle 075
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:home-saved`
+- `npm run test:mobile-api`
+Result: Passed after recovery. Home now supports local saved-event stars and a Saved filter for World Cup market discovery.
+Screenshots:
+- `docs/mobile/screenshots/cycle-075-holiwyn-home-saved-smoke.png`
+- `docs/mobile/screenshots/cycle-075-holiwyn-home-saved-star.png`
+- `docs/mobile/screenshots/cycle-075-holiwyn-home-saved-filter.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-075-holiwyn-home-saved-home.xml`
+- `docs/mobile/harness/cycle-075-holiwyn-home-saved-ready.xml`
+- `docs/mobile/harness/cycle-075-holiwyn-home-saved-star.xml`
+- `docs/mobile/harness/cycle-075-holiwyn-home-saved-filter.xml`
+Bugs:
+- Initial smoke tapped a clipped star selector at the bottom of the viewport and landed on bottom navigation. Harness recovered by scrolling the Home list before tapping the save control.
+Visual QA:
+- Saved chip, active star, and saved event card fit cleanly and remain usable above the bottom navigation.
