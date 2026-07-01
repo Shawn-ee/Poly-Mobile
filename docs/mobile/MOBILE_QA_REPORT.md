@@ -1911,3 +1911,29 @@ Bugs:
 - None found. The first harness assertion reached for below-fold confirmation text, then recovered by asserting the visible Portfolio count/activity proof.
 Visual QA:
 - Recent activity count is visible above the summary grid and shows `1` after a Futures mock order.
+
+### Cycle 094
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:portfolio-closed-count`
+- `npm run test:mobile-api`
+Result: Passed. Portfolio now shows a localized Closed trades count that reflects closed-position activity.
+Screenshots:
+- `docs/mobile/screenshots/cycle-094-holiwyn-portfolio-closed-count-smoke.png`
+- `docs/mobile/screenshots/cycle-094-holiwyn-portfolio-closed-count-closed.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-094-holiwyn-portfolio-closed-count-home-start.xml`
+- `docs/mobile/harness/cycle-094-holiwyn-portfolio-closed-count-empty.xml`
+- `docs/mobile/harness/cycle-094-holiwyn-portfolio-closed-count-home.xml`
+- `docs/mobile/harness/cycle-094-holiwyn-portfolio-closed-count-list.xml`
+- `docs/mobile/harness/cycle-094-holiwyn-portfolio-closed-count-ticket.xml`
+- `docs/mobile/harness/cycle-094-holiwyn-portfolio-closed-count-open.xml`
+- `docs/mobile/harness/cycle-094-holiwyn-portfolio-closed-count-ready.xml`
+- `docs/mobile/harness/cycle-094-holiwyn-portfolio-closed-count-closed.xml`
+Bugs:
+- None found. The first harness pass needed recovery because the new count card pushed the Close position button lower; the harness now scrolls to visible close proof before tapping.
+Visual QA:
+- Closed state shows Recent activity `2`, Closed trades `1`, no open positions, latest order confirmation, and a visible Closed row.

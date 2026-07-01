@@ -28,6 +28,7 @@ param(
   [switch]$FutureListClose,
   [switch]$PortfolioPositionCount,
   [switch]$PortfolioActivityCount,
+  [switch]$PortfolioClosedCount,
   [switch]$SavedSearch,
   [switch]$SearchCardStats,
   [switch]$SearchSavedEmpty,
@@ -179,11 +180,11 @@ try {
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
   }
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
@@ -483,6 +484,38 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-portfolio-activity-count-open.png"
       $portfolioActivityOpenHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-activity-count-open.xml"
       Assert-HierarchyContains -Path $portfolioActivityOpenHierarchy -Expected @("Portfolio", "Open positions", "Recent activity", "1", "World Cup winner", "France")
+      return
+    }
+
+    if ($PortfolioClosedCount) {
+      Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "holiwyn-portfolio-tab"
+      Start-Sleep -Seconds 1
+      $portfolioClosedEmptyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-closed-count-empty.xml"
+      Assert-HierarchyContains -Path $portfolioClosedEmptyHierarchy -Expected @("Portfolio", "Open positions", "Recent activity", "Closed trades", "0", "No positions yet")
+      Invoke-TapHierarchyNode -Path $portfolioClosedEmptyHierarchy -Identifier "holiwyn-home-tab"
+      Start-Sleep -Seconds 1
+      $portfolioClosedHomeHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-closed-count-home.xml"
+      Invoke-TapHierarchyNode -Path $portfolioClosedHomeHierarchy -Identifier "world-cup-futures-tab"
+      Start-Sleep -Seconds 1
+      & $adb -s $Device shell input swipe 540 1480 540 1040 300 | Out-Null
+      Start-Sleep -Seconds 1
+      $portfolioClosedListHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-closed-count-list.xml"
+      Invoke-TapHierarchyNode -Path $portfolioClosedListHierarchy -Identifier "future-outcome-world-cup-winner-france"
+      Start-Sleep -Seconds 1
+      $portfolioClosedTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-closed-count-ticket.xml"
+      Invoke-TapHierarchyNode -Path $portfolioClosedTicketHierarchy -Identifier "place-mock-order"
+      Start-Sleep -Seconds 1
+      $portfolioClosedOpenHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-closed-count-open.xml"
+      Assert-HierarchyContains -Path $portfolioClosedOpenHierarchy -Expected @("Portfolio", "Open positions", "Recent activity", "Closed trades", "1", "World Cup winner", "France")
+      & $adb -s $Device shell input swipe 540 1460 540 860 300 | Out-Null
+      Start-Sleep -Seconds 1
+      $portfolioClosedReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-closed-count-ready.xml"
+      Assert-HierarchyContains -Path $portfolioClosedReadyHierarchy -Expected @("Close position", "World Cup winner", "France")
+      Invoke-TapHierarchyNode -Path $portfolioClosedReadyHierarchy -Identifier "close-position-" -StartsWith
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-portfolio-closed-count-closed.png"
+      $portfolioClosedClosedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-closed-count-closed.xml"
+      Assert-HierarchyContains -Path $portfolioClosedClosedHierarchy -Expected @("Portfolio", "Open positions", "Recent activity", "Closed trades", "1", "2", "Closed", "World Cup winner")
       return
     }
 
