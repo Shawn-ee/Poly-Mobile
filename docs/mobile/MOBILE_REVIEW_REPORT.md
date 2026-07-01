@@ -1921,3 +1921,19 @@ Findings:
 - Mobile typecheck, focused emulator smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 132 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 133
+
+Date: 2026-07-01
+Branch: mobile/cycle-133
+Reviewer: Lead/Reviewer pass
+Scope: Closed-trade Recent activity details and Samsung-first harness transition.
+Findings:
+- P1: Closed activity records now preserve `entryAmount`, letting history rows show entry, close value, and estimated P/L instead of only the close amount.
+- P1: Portfolio activity metric helpers cover filled shares, decimal odds, and closed-trade P/L with focused unit tests.
+- P1: The smoke harness now supports an `ExpoHost` parameter so Samsung runs can target the PC LAN address instead of emulator-only `10.0.2.2`.
+- P2: Samsung runtime verification is pending Expo Go installation; Play Store currently requires user purchase-verification setup.
+- P2: Backend history rows still need authoritative fill/close economics when server history integration matures.
+- Mobile typecheck and mobile API/profile-preference/activity-metric tests passed.
+Decision: Approve Cycle 133 for local commit/merge after scoped diff review, with Samsung visual proof deferred until Expo Go or dev APK is available.
+Merge approved: Yes

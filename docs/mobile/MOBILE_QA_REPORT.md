@@ -2796,3 +2796,21 @@ Bugs:
 - One scroll left Recent activity below the viewport; the harness now performs a second scroll before capturing the activity proof.
 Visual QA:
 - Recent activity shows `Bought`, `World Cup winner - France`, `100 USDT`, `Filled shares 294.12`, `Exec price 34%`, and `Implied odds 2.9x` without overlap.
+
+### Cycle 133
+
+Date: 2026-07-01
+Device: Samsung S23 attempted through Expo Go; Expo Go install was blocked by the Play Store purchase-verification setup prompt. No emulator proof was used for the final gate because the user requested Samsung-first testing.
+Build/run command:
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed for static/unit gates. Closed Recent activity rows now support entry price, close value, and estimated P/L details, and activity metric math is covered by focused tests.
+Screenshots:
+- `docs/mobile/screenshots/cycle-133-samsung-expo-install-blocker.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-133-samsung-expo-install-blocker.xml`
+Bugs:
+- Emulator/Expo Go close-position proof remained stale around long-scroll tap targets; Cycle 133 switched to deterministic closed-trade state plus pure metric tests.
+- Samsung Expo Go proof could not run because Expo Go was not installed and Google Play displayed a purchase-verification setup prompt requiring user action.
+Visual QA:
+- Samsung visual QA is pending Expo Go installation or a dev build/APK. The captured Samsung screen proves the current blocker.
