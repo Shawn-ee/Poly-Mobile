@@ -32,3 +32,18 @@ Findings:
 - Reference screenshots are stored only for internal UX mapping.
 Decision: Approve Cycle 001 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 002
+
+Date: 2026-07-01
+Branch: mobile/cycle-002
+Reviewer: Lead/Reviewer pass with Product Explorer input
+Scope: Dark-first Holiwyn app shell, mock World Cup data, Games/Futures tabs, event detail, trade ticket, fake order placement, Portfolio, Search, Live, and localization.
+Findings:
+- P1: The app is still mock-data first. Backend market and order adapters are required before it can be considered tradable against server state. Tracked as TD-004.
+- P2: Bottom safe-area spacing needs polish on long market lists. It is usable through scrolling but should be tightened before broader testing. Tracked as TD-005.
+- P2: Emoji/text placeholders are acceptable for cycle speed but should become brand-safe assets. Tracked as TD-006.
+- No Polymarket branding, logo, images, or protected copy were copied into Holiwyn.
+- TypeScript passed and emulator smoke tests covered the changed flows.
+Decision: Approve Cycle 002 for local commit/merge after scoped diff review.
+Merge approved: Yes

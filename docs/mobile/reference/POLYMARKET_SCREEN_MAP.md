@@ -45,7 +45,20 @@ Observed visible areas:
 Notes:
 
 - Screenshot: `docs/mobile/reference/screenshots/cycle-001-polymarket-world-cup-games.png`
-- Next observation should open one World Cup event detail and one trade ticket without submitting a trade.
+- Cycle 002 used these observed patterns to build original Holiwyn equivalents for Games, Futures, Event Detail, and Trade Ticket. Next reference observation should open one real World Cup event detail and one ticket on Samsung S23 without submitting a trade.
+
+## Holiwyn Mapping Notes
+
+### Cycle 002
+
+Implemented original Holiwyn equivalents:
+
+- Dark app shell with Holiwyn wordmark, language toggle, promotion button, notification button, category row, and bottom navigation.
+- World Cup Games and Futures tabs.
+- Game rows with event time, competition label, team rows, odds multipliers, and probability buttons.
+- Event detail with grouped markets and props.
+- Trade ticket with Buy/Sell side, amount, estimated cost, estimated payout, and fake-token order action.
+- Portfolio with fake balance and a newly placed mock position.
 
 ## Screenshot Index
 
