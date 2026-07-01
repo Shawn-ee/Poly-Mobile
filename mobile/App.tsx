@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Pressable,
   ScrollView,
@@ -124,39 +124,53 @@ export default function App() {
   const [balance, setBalance] = useState(10000);
   const [positions, setPositions] = useState<Position[]>([]);
   const [events, setEvents] = useState<Event[]>(worldCupEvents);
+  const [isRefreshingLive, setIsRefreshingLive] = useState(false);
+  const [liveRefreshTick, setLiveRefreshTick] = useState(0);
   const [futures] = useState<Market[]>(worldCupFutures);
   const t = copy[locale];
   const api = useMemo(() => new PolyApi(DEFAULT_API_BASE), []);
+  const mounted = useRef(true);
 
   useEffect(() => {
-    let active = true;
-
-    const loadBackendWorldCup = async () => {
-      try {
-        const payload = await api.listWorldCupEvents();
-        const details = await Promise.all(
-          payload.events.slice(0, 8).map(async (event) => {
-            try {
-              return normalizeEventDetail(await api.getEvent(event.slug));
-            } catch {
-              return null;
-            }
-          }),
-        );
-        const normalized = details.filter((event): event is Event => Boolean(event));
-        if (active && normalized.length > 0) {
-          setEvents(normalized);
-        }
-      } catch {
-        if (active) setEvents(worldCupEvents);
-      }
-    };
-
-    loadBackendWorldCup();
     return () => {
-      active = false;
+      mounted.current = false;
     };
+  }, []);
+
+  const loadBackendWorldCup = useCallback(async () => {
+    try {
+      const payload = await api.listWorldCupEvents();
+      const details = await Promise.all(
+        payload.events.slice(0, 8).map(async (event) => {
+          try {
+            return normalizeEventDetail(await api.getEvent(event.slug));
+          } catch {
+            return null;
+          }
+        }),
+      );
+      const normalized = details.filter((event): event is Event => Boolean(event));
+      if (mounted.current && normalized.length > 0) {
+        setEvents(normalized);
+      }
+    } catch {
+      if (mounted.current) setEvents(worldCupEvents);
+    }
   }, [api]);
+
+  useEffect(() => {
+    loadBackendWorldCup();
+  }, [loadBackendWorldCup]);
+
+  const refreshLiveMarkets = useCallback(async () => {
+    setIsRefreshingLive(true);
+    try {
+      await loadBackendWorldCup();
+      if (mounted.current) setLiveRefreshTick((tick) => tick + 1);
+    } finally {
+      if (mounted.current) setIsRefreshingLive(false);
+    }
+  }, [loadBackendWorldCup]);
 
   const filteredEvents = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -241,6 +255,9 @@ export default function App() {
                 locale={locale}
                 t={t}
                 events={events.filter((event) => event.status === "live")}
+                isRefreshing={isRefreshingLive}
+                refreshTick={liveRefreshTick}
+                onRefresh={refreshLiveMarkets}
                 openEvent={setSelectedEvent}
                 openTicket={openTicket}
               />

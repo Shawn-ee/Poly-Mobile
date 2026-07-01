@@ -342,3 +342,17 @@ Findings:
 - `npm run typecheck` and final `npm run smoke:deep` passed.
 Decision: Approve Cycle 024 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 025
+
+Date: 2026-07-01
+Branch: mobile/cycle-025
+Reviewer: Lead/Reviewer pass after Recovery Harness
+Scope: Live refresh event reload and API timeout behavior.
+Findings:
+- P1: Live refresh now invokes the shared World Cup event loader instead of only mutating component-local state.
+- P1: Mobile API requests now abort after 3.5 seconds, preventing emulator refresh from hanging indefinitely when the local backend is unavailable.
+- P2: Refresh evidence still proves fallback reload behavior; real backend freshness and live odds deltas remain future work when the backend is reachable.
+- `npm run typecheck` and final `npm run smoke:deep` passed.
+Decision: Approve Cycle 025 for local commit/merge after scoped diff review.
+Merge approved: Yes
