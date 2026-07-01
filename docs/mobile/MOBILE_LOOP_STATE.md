@@ -2965,8 +2965,8 @@ Technical debt added:
 Technical debt resolved:
 - Event Detail match-market ticket opening now has dedicated selector-based emulator proof.
 Result: Passed Cycle 058 QA after assertion recovery. Focused smoke verifies Mexico match-winner ticket opening from Event Detail; normal deep smoke verifies the full futures trade, close, Live, and Search flow.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `d173b3d` (`Add Holiwyn event detail trade smoke`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `c9f1841`.
 Next cycle: Cycle 059 should reduce Search keyboard device actions or start server-mode fixture proof.
 Harnesses run:
 - QA Smoke Harness
