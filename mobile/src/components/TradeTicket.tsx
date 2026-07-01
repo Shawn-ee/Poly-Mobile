@@ -44,7 +44,7 @@ export function TradeTicket({
   return (
     <Modal visible transparent animationType="slide">
       <View style={styles.modalShade}>
-        <View style={styles.ticket}>
+        <View accessibilityLabel="trade-ticket" testID="trade-ticket" style={styles.ticket}>
           <View style={styles.ticketTop}>
             <View>
               <Text style={styles.ticketTitle}>{label(locale, ticket.outcome)}</Text>
@@ -71,7 +71,7 @@ export function TradeTicket({
             <Text style={styles.estimateLabel}>{t.estimatedPayout}</Text>
             <Text style={styles.estimateValue}>{money(estimatedPayout)}</Text>
           </View>
-          <Pressable style={styles.primaryButton} onPress={() => placeOrder(numericAmount, side)}>
+          <Pressable accessibilityLabel="place-mock-order" testID="place-mock-order" style={styles.primaryButton} onPress={() => placeOrder(numericAmount, side)}>
             <Text style={styles.primaryText}>{t.placeMockOrder}</Text>
           </Pressable>
         </View>

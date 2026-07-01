@@ -206,3 +206,16 @@ Findings:
 - `npm run typecheck`, `npm run smoke`, and normalized detail QA passed.
 Decision: Approve Cycle 014 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 015
+
+Date: 2026-07-01
+Branch: mobile/cycle-015
+Reviewer: Lead/Reviewer pass
+Scope: Accessibility labels/test IDs for harness-critical surfaces.
+Findings:
+- P1: Labels cover featured futures, World Cup tabs, trade ticket, place order, Portfolio screen, and fake balance card.
+- P2: Harness still uses coordinates; labels are groundwork for a selector-based follow-up.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 015 for local commit/merge after scoped diff review.
+Merge approved: Yes
