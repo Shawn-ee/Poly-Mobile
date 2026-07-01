@@ -5493,6 +5493,46 @@ Harnesses run:
 Harness failures:
 - Initial focused smoke failed due to an over-specific hidden-title assertion. Updated to visible live-card evidence; rerun passed.
 
+### Cycle 114
+
+Date: 2026-07-01
+Branch: mobile/cycle-114
+Goal: Verify Live screen outcome buttons open the trade ticket with live event context.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No user-facing UI change; this cycle adds focused proof for the existing Live-to-ticket behavior.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run smoke:live-ticket` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-114-holiwyn-live-ticket-smoke.png`
+- `docs/mobile/screenshots/cycle-114-holiwyn-live-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-114-holiwyn-live-ticket.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-114-holiwyn-live-ticket-home-start.xml`
+- `docs/mobile/harness/cycle-114-holiwyn-live-ticket-ready.xml`
+- `docs/mobile/harness/cycle-114-holiwyn-live-ticket.xml`
+Bugs found:
+- ADB initially reported the emulator offline, then recovered during the same smoke run. The focused smoke completed successfully.
+Technical debt added:
+- This cycle strengthens focused harness coverage without changing product behavior.
+Technical debt resolved:
+- Live outcome ticket opening now has direct emulator proof instead of relying only on broad smoke coverage.
+Result: Passed Cycle 114 QA. Mobile typecheck, focused emulator live-ticket smoke, and mobile API/profile-preference tests pass.
+Commit: `1297424` (`Verify Live ticket opening`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `4b925f1`.
+Next cycle: Cycle 115 should continue live trading coverage or add a small product-facing live trading refinement, then write the heartbeat for Cycles 113-115.
+Harnesses run:
+- Mobile Typecheck Harness
+- Live Ticket Smoke Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None after ADB recovered during the smoke run.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
