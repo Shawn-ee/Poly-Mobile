@@ -101,4 +101,10 @@ export class PolyApi {
       }),
     });
   }
+
+  cancelOrder(orderId: string) {
+    return this.request(`/api/orders/${encodeURIComponent(orderId)}`, {
+      method: "DELETE",
+    });
+  }
 }

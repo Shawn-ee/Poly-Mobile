@@ -235,6 +235,25 @@ export default function App() {
     ]);
   };
 
+  const cancelOpenOrder = (order: OpenOrder) => {
+    setOpenOrders((current) => current.filter((item) => item.id !== order.id));
+    setActivities((current) => [
+      {
+        id: `${order.id}-canceled`,
+        action: "canceled",
+        title: order.title,
+        outcome: order.outcome,
+        amount: order.remaining,
+      },
+      ...current,
+    ]);
+    if (ORDER_MODE === "server") {
+      api.cancelOrder(order.id).catch(() => {
+        if (mounted.current) setPortfolioSyncStatus("error");
+      });
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar style="light" />
@@ -292,6 +311,7 @@ export default function App() {
                 activities={activities}
                 syncStatus={portfolioSyncStatus}
                 closePosition={closePosition}
+                cancelOpenOrder={cancelOpenOrder}
               />
             )}
             {mainTab === "search" && (

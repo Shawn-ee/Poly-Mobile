@@ -1028,3 +1028,26 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-052-holiwyn-order-failure-ticket-order-error.png`
 Bugs:
 - Initial forced-failure smoke reused normal bundle/port and then hit an Expo URL error; fixed with a dedicated port and Expo `--/` deep-link launch URL.
+
+### Cycle 053
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Portfolio open orders now have a localized Cancel affordance wired to canonical server cancellation, and normal mock trading/close/Live/Search paths remain stable.
+Screenshots:
+- `docs/mobile/screenshots/cycle-053-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-search-query.png`
+Bugs: None found.
+Server-mode note: Cancel calls `DELETE /api/orders/:id` in server mode, but the current emulator smoke stays on fake-token mock data and does not include an open-order fixture.
