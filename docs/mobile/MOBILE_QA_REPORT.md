@@ -1319,3 +1319,24 @@ Harness evidence:
 Bugs:
 - None found.
 Server-mode note: This proves graceful offline handling, not live authenticated order execution.
+
+### Cycle 067
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:server-order-failure`
+- `npm run test:mobile-api`
+Result: Passed. Server-mode order submission against a closed backend port keeps the ticket open and shows retry feedback.
+Screenshots:
+- `docs/mobile/screenshots/cycle-067-holiwyn-server-order-smoke.png`
+- `docs/mobile/screenshots/cycle-067-holiwyn-server-order-ticket.png`
+- `docs/mobile/screenshots/cycle-067-holiwyn-server-order-error.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-067-holiwyn-server-order-home.xml`
+- `docs/mobile/harness/cycle-067-holiwyn-server-order-ticket.xml`
+- `docs/mobile/harness/cycle-067-holiwyn-server-order-error.xml`
+Bugs:
+- None found.
+Server-mode note: This proves safe order failure handling while live authenticated backend proof remains blocked by local backend readiness.

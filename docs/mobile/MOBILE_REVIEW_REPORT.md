@@ -933,3 +933,17 @@ Findings:
 - P1: Mobile typecheck, server-unavailable emulator smoke, and mobile API request tests passed.
 Decision: Approve Cycle 066 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 067
+
+Date: 2026-07-01
+Branch: mobile/cycle-067
+Reviewer: Lead/Reviewer pass
+Scope: Server order failure emulator smoke.
+Findings:
+- P0: `smoke:server-order-failure` launches Holiwyn in server mode with an unreachable API base and verifies ticket-level retry feedback after order submission fails.
+- P0: The smoke proves no local Portfolio position is created on failed server submission because the ticket remains open with `ticket-order-error`.
+- P1: The harness reuses the server-mode env restore path added in Cycle 066.
+- P1: Mobile typecheck, server-order-failure emulator smoke, and mobile API request tests passed.
+Decision: Approve Cycle 067 for local commit/merge after scoped diff review.
+Merge approved: Yes

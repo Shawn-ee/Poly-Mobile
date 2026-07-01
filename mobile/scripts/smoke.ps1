@@ -9,7 +9,8 @@ param(
   [switch]$OpenOrderCancel,
   [switch]$EventDetailTrade,
   [switch]$SearchQuery,
-  [switch]$ServerUnavailable
+  [switch]$ServerUnavailable,
+  [switch]$ServerOrderFailure
 )
 
 $ErrorActionPreference = "Stop"
@@ -145,16 +146,16 @@ try {
   $previousOrderMode = $env:EXPO_PUBLIC_ORDER_MODE
   $previousApiBaseUrl = $env:EXPO_PUBLIC_API_BASE_URL
   $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT = "1"
-  if ($ServerUnavailable) {
+  if ($ServerUnavailable -or $ServerOrderFailure) {
     $env:EXPO_PUBLIC_ORDER_MODE = "server"
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
   }
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
@@ -187,6 +188,20 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-server-unavailable.png"
       $serverUnavailableHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-unavailable.xml"
       Assert-HierarchyContains -Path $serverUnavailableHierarchy -Expected @("Server sync unavailable", "Showing local fake-token portfolio.", "Open orders", "Cancel")
+      return
+    }
+
+    if ($ServerOrderFailure) {
+      Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "featured-future-france"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-server-order-ticket.png"
+      $serverTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-order-ticket.xml"
+      Assert-HierarchyContains -Path $serverTicketHierarchy -Expected @("Fake balance", "10,000 USDT", "Estimated cost", "Place mock order")
+      Invoke-TapHierarchyNode -Path $serverTicketHierarchy -Identifier "place-mock-order"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-server-order-error.png"
+      $serverOrderErrorHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-order-error.xml"
+      Assert-HierarchyContains -Path $serverOrderErrorHierarchy -Expected @("Order failed. Try again.", "ticket-order-error", "Place mock order")
       return
     }
 

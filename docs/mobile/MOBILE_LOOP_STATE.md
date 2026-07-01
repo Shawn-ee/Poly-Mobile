@@ -3373,6 +3373,48 @@ Open blockers: None for autonomous product/harness progress. Live backend proof 
 Risks: The app still uses mock fallback data for most verified emulator flows; live order execution has not yet been proven end to end from mobile.
 Next three likely cycles: Improve product UX depth independent of backend availability, add focused server-mode order failure smoke, and retry backend DB start when Docker daemon becomes reachable.
 
+### Cycle 067
+
+Date: 2026-07-01
+Branch: mobile/cycle-067
+Goal: Add emulator proof that failed server order submission stays safe and visible.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: None in product UI; added a server-order-failure smoke path that verifies existing ticket retry feedback under real server-mode fetch failure.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:server-order-failure` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-067-holiwyn-server-order-smoke.png`
+- `docs/mobile/screenshots/cycle-067-holiwyn-server-order-ticket.png`
+- `docs/mobile/screenshots/cycle-067-holiwyn-server-order-error.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-067-holiwyn-server-order-home.xml`
+- `docs/mobile/harness/cycle-067-holiwyn-server-order-ticket.xml`
+- `docs/mobile/harness/cycle-067-holiwyn-server-order-error.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Server order failure smoke uses an unreachable backend port; live authenticated order proof still waits on backend readiness.
+Technical debt resolved:
+- Server mode now has emulator proof that failed order submission leaves the ticket open with retry feedback and does not create a local fake position.
+Result: Passed Cycle 067 QA. Mobile typecheck, server-order-failure emulator smoke, and mobile API tests pass.
+Commit: cycle branch HEAD (`pending`)
+Merged: Pending local merge.
+Next cycle: Cycle 068 should continue product depth or add another focused server-mode safety harness while Docker daemon remains unavailable.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Trading Simulation Harness
+- Server Auth Request Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

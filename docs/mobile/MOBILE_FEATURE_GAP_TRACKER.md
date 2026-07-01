@@ -97,3 +97,4 @@ Status:
 | GAP-075 | Backend adapter | Mobile dev credential helper | P0 | No | Verified | Cycle 064 adds `mobile:dev-credential` plus dry-run proof to create a fake-token mobile API key when local Postgres is running. |
 | GAP-076 | Harness | Mobile backend readiness check | P0 | No | Verified | Cycle 065 adds `mobile:backend-readiness` with Docker daemon, compose, DB URL, and TCP-port checks plus an optional DB start command. |
 | GAP-077 | Harness | Server-unavailable emulator smoke | P0 | No | Verified | Cycle 066 adds `smoke:server-unavailable`, proving server mode shows Portfolio fallback when backend APIs are unreachable. |
+| GAP-078 | Harness | Server order failure emulator smoke | P0 | No | Verified | Cycle 067 adds `smoke:server-order-failure`, proving unreachable server order submission keeps the ticket open with retry feedback. |
