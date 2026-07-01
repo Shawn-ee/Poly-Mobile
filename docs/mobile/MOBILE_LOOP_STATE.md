@@ -1692,8 +1692,8 @@ Technical debt added:
 Technical debt resolved:
 - Portfolio now gives users immediate confirmation/history after mock buy and close actions.
 Result: Passed Cycle 037 QA. Deep smoke verifies `Recent activity`, `Closed`, and `Bought` after close-position behavior.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Add Holiwyn portfolio activity`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 038 should expand trading parity with richer order/market detail or begin selector-driven automation improvements.
 Harnesses run:
 - QA Smoke Harness
