@@ -510,3 +510,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 036 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 037
+
+Date: 2026-07-01
+Branch: mobile/cycle-037
+Reviewer: Lead/Reviewer pass
+Scope: Portfolio recent activity.
+Findings:
+- P1: Portfolio now shows visible Bought and Closed history rows after the fake-token trade lifecycle.
+- P1: Deep smoke asserts the activity section after the close flow, so the feature is behavior-verified on emulator.
+- P2: Activity history is local state only; server-backed order history remains a future backend integration task.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 037 for local commit/merge after scoped diff review.
+Merge approved: Yes

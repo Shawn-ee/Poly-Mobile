@@ -1654,6 +1654,56 @@ Open blockers: None for autonomous progress.
 Risks: Close-position automation still uses a coordinate tap; real server order mode, auth-backed positions, live odds deltas, and broader Polymarket sports parity remain unverified.
 Next three likely cycles: Add order/close confirmation detail, expand World Cup market groups and props, and improve mobile automation toward selector-driven taps.
 
+### Cycle 037
+
+Date: 2026-07-01
+Branch: mobile/cycle-037
+Goal: Add fake-token Portfolio activity history for buy and close actions.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio now shows `Recent activity` rows for `Bought` and `Closed` after the mock trade is closed.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-037-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-037-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-037-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-037-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-037-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-037-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-037-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-037-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-037-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-037-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-037-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-037-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-037-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-037-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-037-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-037-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Activity history is in local app state only; backend persistence should replace it when server-backed portfolios are added.
+Technical debt resolved:
+- Portfolio now gives users immediate confirmation/history after mock buy and close actions.
+Result: Passed Cycle 037 QA. Deep smoke verifies `Recent activity`, `Closed`, and `Bought` after close-position behavior.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 038 should expand trading parity with richer order/market detail or begin selector-driven automation improvements.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

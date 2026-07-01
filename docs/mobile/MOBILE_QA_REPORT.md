@@ -677,3 +677,22 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-036-holiwyn-search.png`
 - `docs/mobile/screenshots/cycle-036-holiwyn-search-query.png`
 Bugs: None found.
+
+### Cycle 037
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Portfolio now shows Recent activity rows for Bought and Closed after the fake-token close flow.
+Screenshots:
+- `docs/mobile/screenshots/cycle-037-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-037-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-037-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-037-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-037-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-037-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-037-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-037-holiwyn-search-query.png`
+Bugs: None found.
