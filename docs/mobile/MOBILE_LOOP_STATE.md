@@ -439,6 +439,38 @@ Harnesses run:
 - Review Harness
 Harness failures: None.
 
+### Cycle 011
+
+Date: 2026-07-01
+Branch: mobile/cycle-011
+Goal: Extract Event Detail into a focused component and verify event market detail rendering.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No intended visual changes; Event Detail implementation moved to `mobile/src/components/EventDetail.tsx`.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/EventDetail.tsx`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke` in `mobile/`.
+- Emulator tap-through to first visible event detail.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-011-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-011-holiwyn-event-detail-component.png`
+Bugs found: None.
+Technical debt added: None.
+Technical debt resolved:
+- Partial large-file debt: Event Detail is now isolated from `App.tsx`.
+Result: Passed Cycle 011 QA. Extracted detail screen renders event markets and outcome buttons.
+Commit: cycle branch HEAD (`Extract Holiwyn mobile event detail`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 012 should improve grouped World Cup props or extract Search/Home shell and write heartbeat.
+Harnesses run:
+- QA Smoke Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures: None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
