@@ -220,6 +220,12 @@ export default function App() {
       if (url.includes("forceAccount=1")) {
         setMainTab("account");
       }
+      if (url.includes("forceAccountPreferences=1")) {
+        const defaults: TicketDefaults = { amount: "500", side: "sell" };
+        setTicketDefaults(defaults);
+        AsyncStorage.setItem(TICKET_DEFAULTS_STORAGE_KEY, JSON.stringify(defaults)).catch(() => undefined);
+        setMainTab("account");
+      }
       if (url.includes("forceAccountSignIn=1")) {
         setForceAccountSignedIn(true);
         setMainTab("account");
@@ -528,7 +534,15 @@ export default function App() {
                 toggleSavedEvent={toggleSavedEvent}
               />
             )}
-            {mainTab === "account" && <AccountScreen t={t} balance={balance} forceSignedIn={forceAccountSignedIn} />}
+            {mainTab === "account" && (
+              <AccountScreen
+                t={t}
+                balance={balance}
+                forceSignedIn={forceAccountSignedIn}
+                ticketDefaultAmount={ticketDefaults.amount}
+                ticketDefaultSide={ticketDefaults.side}
+              />
+            )}
           </>
         )}
         {!selectedEvent && <BottomTabs tab={mainTab} setTab={setMainTab} t={t} />}

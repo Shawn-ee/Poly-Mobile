@@ -19,12 +19,15 @@ type AccountCopy = {
   signedInBody: string;
   demoBalance: string;
   demoBalanceBody: string;
+  buy: string;
+  sell: string;
   loginMethodPhone: string;
   loginMethodEmail: string;
   loginConnected: string;
   loginUnavailable: string;
   preferences: string;
   languagePreference: string;
+  ticketDefaultPreference: string;
   security: string;
   mockOnly: string;
 };
@@ -33,10 +36,14 @@ export function AccountScreen({
   t,
   balance,
   forceSignedIn,
+  ticketDefaultAmount,
+  ticketDefaultSide,
 }: {
   t: AccountCopy;
   balance: number;
   forceSignedIn?: boolean;
+  ticketDefaultAmount: string;
+  ticketDefaultSide: "buy" | "sell";
 }) {
   const [signedIn, setSignedIn] = useState(false);
 
@@ -93,6 +100,28 @@ export function AccountScreen({
       </View>
       <Text style={styles.helper}>{t.demoBalanceBody}</Text>
 
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>{t.preferences}</Text>
+        <View style={styles.row}>
+          <Ionicons name="language-outline" size={20} color="#93c5fd" />
+          <Text style={styles.rowText}>{t.languagePreference}</Text>
+        </View>
+        <View accessibilityLabel="account-ticket-defaults" testID="account-ticket-defaults" style={styles.row}>
+          <Ionicons name="swap-horizontal-outline" size={20} color="#93c5fd" />
+          <Text style={styles.rowText}>
+            {t.ticketDefaultPreference}: {ticketDefaultSide === "buy" ? t.buy : t.sell} {ticketDefaultAmount} USDT
+          </Text>
+        </View>
+        <View style={styles.row}>
+          <Ionicons name="shield-checkmark-outline" size={20} color="#93c5fd" />
+          <Text style={styles.rowText}>{t.security}</Text>
+        </View>
+        <View style={styles.row}>
+          <Ionicons name="flask-outline" size={20} color="#fbbf24" />
+          <Text style={styles.rowText}>{t.mockOnly}</Text>
+        </View>
+      </View>
+
       <View style={styles.actions}>
         {signedIn ? (
           <Pressable accessibilityLabel="account-sign-out" testID="account-sign-out" style={styles.secondaryButton} onPress={() => updateSignedIn(false)}>
@@ -115,22 +144,6 @@ export function AccountScreen({
       <Text accessibilityLabel="account-login-unavailable" testID="account-login-unavailable" style={styles.notice}>
         {signedIn ? t.loginConnected : t.loginUnavailable}
       </Text>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>{t.preferences}</Text>
-        <View style={styles.row}>
-          <Ionicons name="language-outline" size={20} color="#93c5fd" />
-          <Text style={styles.rowText}>{t.languagePreference}</Text>
-        </View>
-        <View style={styles.row}>
-          <Ionicons name="shield-checkmark-outline" size={20} color="#93c5fd" />
-          <Text style={styles.rowText}>{t.security}</Text>
-        </View>
-        <View style={styles.row}>
-          <Ionicons name="flask-outline" size={20} color="#fbbf24" />
-          <Text style={styles.rowText}>{t.mockOnly}</Text>
-        </View>
-      </View>
     </ScrollView>
   );
 }
