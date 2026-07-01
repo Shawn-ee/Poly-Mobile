@@ -1740,3 +1740,18 @@ Findings:
 - Mobile typecheck through the smoke script, focused live-ticket smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 120 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 121
+
+Date: 2026-07-01
+Branch: mobile/cycle-121
+Reviewer: Lead/Reviewer pass
+Scope: Portfolio live clock persistence.
+Findings:
+- P1: Live orders now store `liveClock` on open positions, latest-order confirmation, and activity records.
+- P1: Portfolio renders the live clock below the live badge for positions, latest-order card, and Recent activity.
+- P1: Focused deep Portfolio smoke verifies `Live - 63'` through the full live ticket to order to Portfolio flow.
+- P2: Expo Go reload latency remains the main loop speed risk; next cycle should reduce reliance on full Expo app clears.
+- Mobile typecheck through the smoke script, focused live-portfolio-badge-deep smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 121 for local commit/merge after scoped diff review.
+Merge approved: Yes

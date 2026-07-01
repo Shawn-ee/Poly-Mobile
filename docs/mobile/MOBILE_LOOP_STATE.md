@@ -5818,6 +5818,66 @@ Harnesses run:
 Harness failures:
 - First live-ticket smoke failed due stale Expo Go fake balance from a previous order; harness clear scope was fixed and rerun passed.
 
+### Cycle 121
+
+Date: 2026-07-01
+Branch: mobile/cycle-121
+Goal: Persist live match clock context from live ticket order into Portfolio position, latest-order, and activity rows.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio now shows live clock context below live badges for live-origin positions, latest-order cards, and activity rows.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:live-portfolio-badge-deep` in `mobile/` (includes mobile typecheck).
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-121-holiwyn-live-portfolio-clock-smoke.png`
+- `docs/mobile/screenshots/cycle-121-holiwyn-live-portfolio-clock-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-121-holiwyn-live-portfolio-clock-ticket.png`
+- `docs/mobile/screenshots/cycle-121-holiwyn-live-portfolio-clock-portfolio.png`
+- `docs/mobile/screenshots/cycle-121-holiwyn-live-portfolio-clock-latest-order.png`
+- `docs/mobile/screenshots/cycle-121-holiwyn-live-portfolio-clock-activity.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-121-holiwyn-expo-menu-recovered.xml`
+- `docs/mobile/harness/cycle-121-holiwyn-live-portfolio-clock-home.xml`
+- `docs/mobile/harness/cycle-121-holiwyn-live-portfolio-clock-ticket-ready.xml`
+- `docs/mobile/harness/cycle-121-holiwyn-live-portfolio-clock-ticket.xml`
+- `docs/mobile/harness/cycle-121-holiwyn-live-portfolio-clock-portfolio.xml`
+- `docs/mobile/harness/cycle-121-holiwyn-live-portfolio-clock-latest-order.xml`
+- `docs/mobile/harness/cycle-121-holiwyn-live-portfolio-clock-activity.xml`
+Bugs found:
+- Initial focused smoke found the activity clock below the second-scroll viewport; the harness now scrolls one extra step before activity assertions.
+- Expo Go clean reload remained slow and returned blank hierarchy for multiple retries before recovering.
+Technical debt added:
+- Live clock still comes from local/mock event text until backend live-clock metadata feeds Holiwyn.
+Technical debt resolved:
+- Live in-play time context now survives from ticket to Portfolio confirmation/activity instead of being visible only inside the ticket.
+Result: Passed Cycle 121 QA. Focused live-portfolio-badge-deep smoke, visual screenshot review, and mobile API/profile-preference tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 122 should reduce emulator/Expo harness latency by avoiding unnecessary full Expo Go clears and using app-level reset/deep-link state controls where safe.
+Harnesses run:
+- Mobile Typecheck Harness
+- Live Portfolio Badge Deep Smoke Harness
+- Trading Simulation Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- First run missed activity clock due insufficient scroll depth; harness scroll depth was fixed and rerun passed.
+
+### Heartbeat After Cycle 121
+
+Completed cycles: 119, 120, 121 since the last heartbeat.
+Verified progress: Portfolio live-context proof now covers open position, latest-order confirmation, and Recent activity rows; live tickets now show the match clock before order placement; live clock context now persists into Portfolio after a live order. All three cycles passed focused Android emulator smoke, mobile typecheck through the smoke scripts, visual screenshot review, and mobile API/profile-preference tests.
+Current app state: Holiwyn mobile has verified live discovery, live ticket opening, live order placement, live close, live Portfolio badges, live latest-order/activity badges, live ticket clock, and live clock persistence into Portfolio. Broader Home, Search, Event Detail, Futures, Portfolio, Account, localization, saved-state, and mock trading harnesses remain covered by prior cycles.
+Current backend state: Mock-mode mobile progress remains unblocked. Server-mode client seams and auth request tests exist, but live authenticated backend proof is still gated by local Docker/Postgres availability.
+Open blockers: None for autonomous mock-mode mobile progress. Backend live proof remains blocked by unavailable local backend services.
+Risks: Expo Go/emulator clean reloads are now the main loop-speed risk, often returning blank UI hierarchy for one to three minutes after app-data clears. Live clock is local/mock text until backend live-state metadata feeds the app.
+Next three likely cycles: Optimize harness reset speed, add app-level reset/deep-link state controls, then continue live/detail trading polish or retry backend readiness.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
