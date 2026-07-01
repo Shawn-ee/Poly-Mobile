@@ -64,6 +64,26 @@ export const worldCupEvents: Event[] = [
           { id: "under", label: "Under", zhLabel: "小于", probability: 53, color: "#7c3aed" },
         ],
       },
+      {
+        id: "mexico-ecuador-both-score",
+        title: "Both teams to score",
+        zhTitle: "双方都进球",
+        type: "prop",
+        outcomes: [
+          { id: "yes", label: "Yes", zhLabel: "是", probability: 51, color: "#0a8f61" },
+          { id: "no", label: "No", zhLabel: "否", probability: 49, color: "#64748b" },
+        ],
+      },
+      {
+        id: "mexico-ecuador-first-goal",
+        title: "First goal scorer team",
+        zhTitle: "首球球队",
+        type: "prop",
+        outcomes: [
+          { id: "mexico", label: "Mexico", zhLabel: "墨西哥", probability: 55, color: "#0a8f61" },
+          { id: "ecuador", label: "Ecuador", zhLabel: "厄瓜多尔", probability: 45, color: "#f4c20d" },
+        ],
+      },
     ],
   },
   {
@@ -125,6 +145,17 @@ export const worldCupEvents: Event[] = [
           { id: "france", label: "France", zhLabel: "法国", probability: 41, color: "#2563eb" },
           { id: "argentina", label: "Argentina", zhLabel: "阿根廷", probability: 39, color: "#60a5fa" },
           { id: "draw", label: "Draw", zhLabel: "平局", probability: 20, color: "#94a3b8" },
+        ],
+      },
+      {
+        id: "france-argentina-next-goal",
+        title: "Next goal",
+        zhTitle: "下一球",
+        type: "live",
+        outcomes: [
+          { id: "france", label: "France", zhLabel: "法国", probability: 44, color: "#2563eb" },
+          { id: "argentina", label: "Argentina", zhLabel: "阿根廷", probability: 38, color: "#60a5fa" },
+          { id: "none", label: "No goal", zhLabel: "无进球", probability: 18, color: "#94a3b8" },
         ],
       },
     ],

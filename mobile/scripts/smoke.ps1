@@ -125,6 +125,23 @@ try {
   Save-Screenshot -Name "cycle-current-holiwyn-smoke.png"
 
   if ($Deep) {
+    & $adb -s $Device shell input tap 500 1580 | Out-Null
+    Start-Sleep -Seconds 1
+    Save-Screenshot -Name "cycle-current-holiwyn-event-detail.png"
+    $eventDetailHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail.xml"
+    Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Mexico vs. Ecuador", "Markets", "Game lines", "Props", "Total goals over 2.5")
+
+    & $adb -s $Device shell input swipe 540 1600 540 650 500 | Out-Null
+    Start-Sleep -Seconds 1
+    Save-Screenshot -Name "cycle-current-holiwyn-event-detail-props.png"
+    $eventDetailPropsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-props.xml"
+    Assert-HierarchyContains -Path $eventDetailPropsHierarchy -Expected @("Both teams to score", "First goal scorer team")
+
+    & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
+    & $adb -s $Device shell am start -a android.intent.action.VIEW -d $launchUrl | Out-Null
+    Start-Sleep -Seconds 8
+    Wait-HierarchyContains -Name "cycle-current-holiwyn-home-after-detail.xml" -Expected @("Holiwyn", "World Cup", "Games", "Futures") -RestartUrl $launchUrl -Attempts 8 -DelaySeconds 2 | Out-Null
+
     & $adb -s $Device shell input tap 230 850 | Out-Null
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-ticket.png"

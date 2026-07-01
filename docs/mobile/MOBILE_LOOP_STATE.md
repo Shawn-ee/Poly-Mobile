@@ -1704,6 +1704,62 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 038
+
+Date: 2026-07-01
+Branch: mobile/cycle-038
+Goal: Expand World Cup event detail with additional prop/live markets and smoke coverage.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Mexico vs. Ecuador now includes Both teams to score and First goal scorer team prop markets; France vs. Argentina live detail now includes Next goal.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/src/mocks/worldCup.ts`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-038-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-038-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-038-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-038-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-038-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-038-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-038-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-038-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-038-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-038-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-038-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-038-holiwyn-search-query.xml`
+Bugs found:
+- Initial event-detail assertion expected below-fold props without scrolling; fixed by adding a scrolled prop capture.
+- Android Back exits Expo from the state-driven detail view; fixed the harness by relaunching and waiting for Home before continuing trade smoke.
+Technical debt added:
+- Deep smoke now restarts Expo after event-detail verification, adding runtime but improving reliability.
+Technical debt resolved:
+- Event-detail grouped market coverage now includes game-line and deeper props, not only the trading ticket path.
+Result: Passed Cycle 038 QA. Event detail verifies `Both teams to score` and `First goal scorer team`, then the existing ticket/Portfolio/Live/Search smoke path still passes.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 039 should continue market parity or improve in-app detail navigation/back behavior.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- First two Cycle 038 smoke attempts exposed harness navigation assumptions; final rerun passed after scroll and relaunch recovery.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

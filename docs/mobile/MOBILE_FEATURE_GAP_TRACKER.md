@@ -68,3 +68,4 @@ Status:
 | GAP-046 | Harness | Close-position behavior smoke | P1 | No | Verified | Cycle 035 taps Close position and verifies credited balance plus empty Portfolio state. |
 | GAP-047 | Localization | App copy module | P2 | No | Verified | Cycle 036 extracts English/Simplified Chinese app copy into `mobile/src/localization/appCopy.ts`. |
 | GAP-048 | Portfolio | Recent trading activity | P1 | No | Verified | Cycle 037 adds fake-token Bought/Closed activity rows and verifies them after close-position smoke. |
+| GAP-049 | Event detail | Expanded World Cup prop markets | P1 | No | Verified | Cycle 038 adds both-teams-to-score, first-goal-team, and live next-goal markets with event-detail smoke coverage. |
