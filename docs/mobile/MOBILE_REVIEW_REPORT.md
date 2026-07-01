@@ -1545,3 +1545,18 @@ Findings:
 - Mobile typecheck, focused account-profile-sync-error smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 107 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 108
+
+Date: 2026-07-01
+Branch: mobile/cycle-108
+Reviewer: Lead/Reviewer pass
+Scope: Account saved-market summary.
+Findings:
+- P1: Account now receives the saved-market count and renders it in Preferences with localized labels.
+- P1: The focused smoke seeds Mexico vs. Ecuador into saved markets, opens Account, and verifies `Saved markets: 1 saved`.
+- P1: Mock mode remains local-only; server profile sync can later carry this value through the existing saved-event preference seam.
+- P2: The count is a summary only; Account does not yet provide a saved-market management screen.
+- Mobile typecheck, focused account-saved-summary smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 108 for local commit/merge after scoped diff review.
+Merge approved: Yes

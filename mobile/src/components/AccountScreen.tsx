@@ -28,6 +28,8 @@ type AccountCopy = {
   preferences: string;
   languagePreference: string;
   ticketDefaultPreference: string;
+  savedMarketsPreference: string;
+  savedMarketsCount: string;
   profileSyncing: string;
   profileSynced: string;
   profileSyncError: string;
@@ -46,6 +48,7 @@ export function AccountScreen({
   ticketDefaultAmount,
   ticketDefaultSide,
   profileSyncStatus,
+  savedMarketCount,
 }: {
   t: AccountCopy;
   balance: number;
@@ -54,6 +57,7 @@ export function AccountScreen({
   ticketDefaultAmount: string;
   ticketDefaultSide: "buy" | "sell";
   profileSyncStatus: ProfileSyncStatus;
+  savedMarketCount: number;
 }) {
   const [signedIn, setSignedIn] = useState(false);
 
@@ -132,6 +136,12 @@ export function AccountScreen({
           <Ionicons name="language-outline" size={20} color="#93c5fd" />
           <Text style={styles.rowText}>
             {t.languagePreference}: {languagePreferenceValue}
+          </Text>
+        </View>
+        <View accessibilityLabel="account-saved-markets" testID="account-saved-markets" style={styles.row}>
+          <Ionicons name="star-outline" size={20} color="#93c5fd" />
+          <Text style={styles.rowText}>
+            {t.savedMarketsPreference}: {savedMarketCount} {t.savedMarketsCount}
           </Text>
         </View>
         <View accessibilityLabel="account-ticket-defaults" testID="account-ticket-defaults" style={styles.row}>
