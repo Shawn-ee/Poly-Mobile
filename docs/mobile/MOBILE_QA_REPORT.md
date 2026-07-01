@@ -512,3 +512,21 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-027-holiwyn-search.png`
 - `docs/mobile/screenshots/cycle-027-holiwyn-search-query.png`
 Bugs: None found.
+
+### Cycle 028
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Extracted the Home sports navigation row and preserved the full deep-smoke flow.
+Screenshots:
+- `docs/mobile/screenshots/cycle-028-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-028-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-028-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-028-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-028-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-028-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-028-holiwyn-search-query.png`
+Bugs: None found.

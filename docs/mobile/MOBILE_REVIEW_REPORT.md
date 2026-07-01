@@ -384,3 +384,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 027 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 028
+
+Date: 2026-07-01
+Branch: mobile/cycle-028
+Reviewer: Lead/Reviewer pass
+Scope: Home sports navigation extraction.
+Findings:
+- P1: `SportNav` is now a dedicated component, reducing `App.tsx` ownership of Home presentation.
+- P2: The component preserves the same sport labels and active World Cup state.
+- P2: Home still owns Search box, segmented Games/Futures control, and list composition.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 028 for local commit/merge after scoped diff review.
+Merge approved: Yes

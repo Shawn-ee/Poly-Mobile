@@ -1186,6 +1186,54 @@ Open blockers: None for autonomous progress.
 Risks: Deep smoke still depends on coordinate taps; server order mode and real live odds deltas remain unverified; Home screen still has inline SportNav and segmented tabs.
 Next three likely cycles: Extract Home support components, add portfolio position detail/P&L, and improve harness taps with selector-based actions.
 
+### Cycle 028
+
+Date: 2026-07-01
+Branch: mobile/cycle-028
+Goal: Extract the Home sports navigation row into a reusable component.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Home now renders the sport navigation row through `mobile/src/components/SportNav.tsx`.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/SportNav.tsx`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-028-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-028-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-028-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-028-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-028-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-028-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-028-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-028-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-028-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-028-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-028-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-028-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-028-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-028-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Home sports navigation no longer lives inline in `App.tsx`.
+Result: Passed Cycle 028 QA. Sports navigation is extracted and the deep smoke flow remains stable.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge after commit.
+Next cycle: Cycle 029 should extract the Games/Futures segmented control or add portfolio position detail.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

@@ -58,3 +58,4 @@ Status:
 | GAP-036 | Live | Refresh reload path | P1 | No | Verified | Cycle 025 wires Live refresh to the shared backend/mock World Cup event reload path and verifies fallback completion. |
 | GAP-037 | Architecture | Featured futures component | P2 | Yes | Verified | Cycle 026 renders the Home featured futures card through `mobile/src/components/FeaturedFuture.tsx`. |
 | GAP-038 | Architecture | Featured futures cleanup | P2 | No | Verified | Cycle 027 removes the stale inline featured-card implementation from `App.tsx`. |
+| GAP-039 | Architecture | Sports navigation component | P2 | Yes | Verified | Cycle 028 extracts the Home sports navigation row into `mobile/src/components/SportNav.tsx`. |
