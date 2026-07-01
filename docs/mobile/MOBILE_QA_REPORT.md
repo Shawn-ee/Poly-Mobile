@@ -110,6 +110,21 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-004-holiwyn-order-service-portfolio.png`
 Bugs: None found.
 
+### Cycle 014
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke`
+- Manual emulator tap-through to normalized event detail.
+Result: Passed. Generic backend fixture title is normalized to `World Cup futures` for futures bundles.
+Screenshots:
+- `docs/mobile/screenshots/cycle-014-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-014-holiwyn-normalized-event-detail.png`
+Bugs:
+- Fixed user-hostile generic `Fixture ...` title in mobile adapter for futures bundles.
+
 ### Cycle 013
 
 Date: 2026-07-01
