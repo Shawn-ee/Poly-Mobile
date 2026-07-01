@@ -530,3 +530,22 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-028-holiwyn-search.png`
 - `docs/mobile/screenshots/cycle-028-holiwyn-search-query.png`
 Bugs: None found.
+
+### Cycle 029
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed after launch retry. Extracted the Home Games/Futures segmented control and preserved the full deep-smoke flow.
+Screenshots:
+- `docs/mobile/screenshots/cycle-029-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-029-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-029-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-029-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-029-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-029-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-029-holiwyn-search-query.png`
+Bugs:
+- First Home hierarchy dump was incomplete during launch; existing wait/retry recovered without code changes.
