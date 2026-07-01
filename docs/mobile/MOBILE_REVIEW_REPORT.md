@@ -608,3 +608,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 043 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 044
+
+Date: 2026-07-01
+Branch: mobile/cycle-044
+Reviewer: Lead/Reviewer pass
+Scope: Trade Ticket available balance display.
+Findings:
+- P1: Trade Ticket now shows available fake balance before order submission, improving sizing clarity.
+- P1: Deep smoke asserts `Fake balance` and `10,000 USDT` in the ticket before placing the mock order.
+- P2: Ticket still lacks a max/percent sizing control; that remains a useful next trading ergonomics step.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 044 for local commit/merge after scoped diff review.
+Merge approved: Yes

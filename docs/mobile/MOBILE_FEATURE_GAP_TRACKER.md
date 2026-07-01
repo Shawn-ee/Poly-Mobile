@@ -74,3 +74,4 @@ Status:
 | GAP-052 | Backend adapter | Portfolio snapshot position seam | P1 | No | Verified | Cycle 041 adds a server-mode `/api/portfolio` adapter that maps backend wallet and open positions into mobile Portfolio state. |
 | GAP-053 | Portfolio | Server open orders display seam | P1 | No | Verified | Cycle 042 maps backend open orders into a Portfolio `Open orders` section for server mode while preserving mock smoke. |
 | GAP-054 | Trading | Order confirmation on Portfolio | P1 | No | Verified | Cycle 043 adds a visible `Order placed` confirmation after a mock trade and verifies it in deep smoke. |
+| GAP-055 | Trading ticket | Available balance display | P1 | No | Verified | Cycle 044 shows fake balance inside the trade ticket before submission and verifies it in deep smoke. |

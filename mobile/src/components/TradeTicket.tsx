@@ -15,6 +15,7 @@ type TradeTicketCopy = {
   buy: string;
   sell: string;
   amount: string;
+  balance: string;
   estimatedCost: string;
   estimatedPayout: string;
   placeMockOrder: string;
@@ -63,6 +64,10 @@ export function TradeTicket({
           </View>
           <Text style={styles.inputLabel}>{t.amount}</Text>
           <TextInput value={amount} onChangeText={setAmount} keyboardType="decimal-pad" style={styles.amountInput} />
+          <View style={styles.estimateLine}>
+            <Text style={styles.estimateLabel}>{t.balance}</Text>
+            <Text style={styles.estimateValue}>{money(balance)}</Text>
+          </View>
           <View style={styles.estimateLine}>
             <Text style={styles.estimateLabel}>{t.estimatedCost}</Text>
             <Text style={styles.estimateValue}>{money(Math.min(numericAmount, balance))}</Text>

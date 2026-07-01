@@ -823,3 +823,24 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-043-holiwyn-search.png`
 - `docs/mobile/screenshots/cycle-043-holiwyn-search-query.png`
 Bugs: None found.
+
+### Cycle 044
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Trade Ticket now shows available fake balance before submission and the full event-detail/trade/Portfolio/Live/Search smoke path remains stable.
+Screenshots:
+- `docs/mobile/screenshots/cycle-044-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-044-holiwyn-search-query.png`
+Bugs: None found.
