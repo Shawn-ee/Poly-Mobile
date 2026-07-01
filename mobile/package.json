@@ -35,6 +35,7 @@
     "smoke:portfolio-position-count": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -PortfolioPositionCount -Port 8109",
     "smoke:portfolio-activity-count": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -PortfolioActivityCount -Port 8110",
     "smoke:portfolio-closed-count": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -PortfolioClosedCount -Port 8111",
+    "smoke:portfolio-persistence": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -PortfolioPersistence -Port 8115",
     "smoke:saved-search": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SavedSearch -Port 8095",
     "smoke:search-card-stats": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SearchCardStats -Port 8096",
     "smoke:search-saved-empty": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SearchSavedEmpty -Port 8097",

@@ -41,6 +41,7 @@ const DEFAULT_API_KEY = process.env.EXPO_PUBLIC_API_KEY || "";
 const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? "server" : "mock";
 const SAVED_EVENTS_STORAGE_KEY = "holiwyn.savedEventIds.v1";
 const LANGUAGE_STORAGE_KEY = "holiwyn.language.v1";
+const PORTFOLIO_STORAGE_KEY = "holiwyn.portfolio.v1";
 const SMOKE_OPEN_ORDER: OpenOrder = {
   id: "smoke-open-order",
   title: "Mexico vs. Ecuador winner",
@@ -52,6 +53,14 @@ const SMOKE_OPEN_ORDER: OpenOrder = {
 };
 
 type MainTab = "home" | "live" | "portfolio" | "search" | "account";
+type StoredPortfolio = {
+  balance?: number;
+  positions?: Position[];
+  latestOrder?: OrderConfirmation | null;
+  openOrders?: OpenOrder[];
+  activities?: PortfolioActivity[];
+};
+
 export default function App() {
   const [locale, setLocale] = useState<Locale>("en");
   const [localeHydrated, setLocaleHydrated] = useState(false);
@@ -67,6 +76,7 @@ export default function App() {
   const [latestOrder, setLatestOrder] = useState<OrderConfirmation | null>(null);
   const [openOrders, setOpenOrders] = useState<OpenOrder[]>([]);
   const [activities, setActivities] = useState<PortfolioActivity[]>([]);
+  const [portfolioHydrated, setPortfolioHydrated] = useState(false);
   const [portfolioSyncStatus, setPortfolioSyncStatus] = useState<PortfolioSyncStatus>(ORDER_MODE === "server" ? "syncing" : "hidden");
   const [events, setEvents] = useState<Event[]>(worldCupEvents);
   const [savedEventIds, setSavedEventIds] = useState<Set<string>>(() => new Set());
@@ -124,9 +134,40 @@ export default function App() {
   }, [locale, localeHydrated]);
 
   useEffect(() => {
+    AsyncStorage.getItem(PORTFOLIO_STORAGE_KEY)
+      .then((stored) => {
+        if (!mounted.current || !stored) return;
+        const parsed = JSON.parse(stored) as StoredPortfolio;
+        if (typeof parsed.balance === "number") setBalance(parsed.balance);
+        if (Array.isArray(parsed.positions)) setPositions(parsed.positions);
+        if (parsed.latestOrder && typeof parsed.latestOrder === "object") setLatestOrder(parsed.latestOrder);
+        if (Array.isArray(parsed.openOrders)) setOpenOrders(parsed.openOrders);
+        if (Array.isArray(parsed.activities)) setActivities(parsed.activities);
+      })
+      .catch(() => undefined)
+      .finally(() => {
+        if (mounted.current) setPortfolioHydrated(true);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!portfolioHydrated) return;
+    const snapshot: StoredPortfolio = { balance, positions, latestOrder, openOrders, activities };
+    AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
+  }, [activities, balance, latestOrder, openOrders, portfolioHydrated, positions]);
+
+  useEffect(() => {
     Linking.getInitialURL().then((url) => {
       if (!mounted.current || !url) return;
       setForceOrderFailure(url.includes("forceOrderFailure=1"));
+      if (url.includes("forcePortfolio=1")) {
+        setMainTab("portfolio");
+      }
+      if (url.includes("forceWorldCupWinnerFranceTicket=1")) {
+        const market = worldCupFutures[0];
+        const outcome = market.outcomes[0];
+        setTicket({ market, outcome, side: "buy" });
+      }
       if (url.includes("forceOpenOrder=1")) {
         setOpenOrders([SMOKE_OPEN_ORDER]);
         setMainTab("portfolio");
