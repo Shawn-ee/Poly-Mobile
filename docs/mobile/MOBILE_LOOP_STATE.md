@@ -2461,8 +2461,8 @@ Technical debt added:
 Technical debt resolved:
 - Event detail opening and the first event-market ticket opening now use stable hierarchy ids instead of fixed tap coordinates.
 Result: Passed Cycle 050 QA. Deep smoke verifies event card selector, event outcome selector, Mexico event-market ticket, max-sized order, close balance `10,468.75 USDT`, Live refresh, and Search.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Use selector taps for Holiwyn event markets`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 051 should add server-mode order failure handling or continue reducing prop/back harness device actions.
 Harnesses run:
 - QA Smoke Harness
