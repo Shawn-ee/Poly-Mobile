@@ -2680,3 +2680,26 @@ Bugs:
 - First assertion expected the second outcome odds below the viewport; the harness now asserts the visible Mexico outcome odds proof.
 Visual QA:
 - Mexico outcome button shows `64%` with `1.6x` below it, and the market card still fits with bid/ask/spread and group-count context visible.
+
+### Cycle 128
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554` with Expo Go
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/` through the focused smoke script
+- `npm.cmd run smoke:event-detail-trade`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Trade tickets now show a potential-profit estimate in USDT so users can see upside before placing a fake-token order.
+Screenshots:
+- `docs/mobile/screenshots/cycle-128-holiwyn-ticket-potential-profit-smoke.png`
+- `docs/mobile/screenshots/cycle-128-holiwyn-ticket-potential-profit-event-detail.png`
+- `docs/mobile/screenshots/cycle-128-holiwyn-ticket-potential-profit-ticket.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-128-holiwyn-ticket-potential-profit-expo-menu.xml`
+- `docs/mobile/harness/cycle-128-holiwyn-ticket-potential-profit-home.xml`
+- `docs/mobile/harness/cycle-128-holiwyn-ticket-potential-profit-event-detail.xml`
+- `docs/mobile/harness/cycle-128-holiwyn-ticket-potential-profit-ticket.xml`
+Bugs:
+- None after focused verification.
+Visual QA:
+- Mexico buy ticket shows `Potential profit` with `56.25 USDT`; the payout, odds, and primary buy CTA remain visible.

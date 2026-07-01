@@ -6162,6 +6162,47 @@ Open blockers: None for autonomous progress.
 Risks: Expo Go/emulator UI hierarchy remains flaky; odds and depth are still local/mock-derived; backend-backed quote/order integration remains a major remaining final-goal gap.
 Next three likely cycles: continue market-depth/trade-ticket parity, add richer open-order/history detail, and retry backend/server-mode proof if local services become available.
 
+### Cycle 128
+
+Date: 2026-07-01
+Branch: mobile/cycle-128
+Goal: Add potential-profit visibility to trade tickets so users can see upside before placing fake-token orders.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Trade tickets now include a `Potential profit` row, e.g. Mexico 100 USDT buy shows `56.25 USDT`.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/TradeTicket.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:event-detail-trade` in `mobile/` (includes mobile typecheck).
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-128-holiwyn-ticket-potential-profit-smoke.png`
+- `docs/mobile/screenshots/cycle-128-holiwyn-ticket-potential-profit-event-detail.png`
+- `docs/mobile/screenshots/cycle-128-holiwyn-ticket-potential-profit-ticket.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-128-holiwyn-ticket-potential-profit-expo-menu.xml`
+- `docs/mobile/harness/cycle-128-holiwyn-ticket-potential-profit-home.xml`
+- `docs/mobile/harness/cycle-128-holiwyn-ticket-potential-profit-event-detail.xml`
+- `docs/mobile/harness/cycle-128-holiwyn-ticket-potential-profit-ticket.xml`
+Bugs found:
+- None after focused verification.
+Technical debt added:
+- Potential-profit math is mock/probability-derived until backend quotes/order economics are wired.
+Technical debt resolved:
+- Ticket economics are more complete before order submission.
+Result: Passed Cycle 128 QA. Focused event-detail-trade smoke and mobile API/profile-preference tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 129 should continue trade-ticket/open-order parity or retry a backend/server-mode proof if local services become available.
+Harnesses run:
+- Mobile Typecheck Harness
+- Event Detail Trade Smoke Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

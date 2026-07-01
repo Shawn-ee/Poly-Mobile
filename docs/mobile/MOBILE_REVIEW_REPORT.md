@@ -1845,3 +1845,18 @@ Findings:
 - Mobile typecheck through the smoke script and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 127 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 128
+
+Date: 2026-07-01
+Branch: mobile/cycle-128
+Reviewer: Lead/Reviewer pass
+Scope: Trade ticket potential profit.
+Findings:
+- P1: Trade tickets now show potential profit, calculated as estimated payout minus capped order cost.
+- P1: Focused event-detail-trade smoke verifies the Mexico buy ticket shows `Potential profit` and `56.25 USDT`.
+- P1: Visual QA confirms the added row does not hide the primary buy CTA.
+- P2: Profit math is still mock/probability-derived and should be replaced by backend quote/order economics when server quote integration is available.
+- Mobile typecheck through the smoke script and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 128 for local commit/merge after scoped diff review.
+Merge approved: Yes

@@ -1030,7 +1030,7 @@ try {
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-ticket.png"
       $eventDetailTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-ticket.xml"
-      Assert-HierarchyContains -Path $eventDetailTicketHierarchy -Expected @("Mexico", "Mexico vs. Ecuador", "Fake balance", "10,000 USDT", "Est. shares", "Avg price", "Implied odds", "1.6x", "Place buy order")
+      Assert-HierarchyContains -Path $eventDetailTicketHierarchy -Expected @("Mexico", "Mexico vs. Ecuador", "Fake balance", "10,000 USDT", "Est. shares", "Avg price", "Implied odds", "1.6x", "Estimated payout", "Potential profit", "56.25 USDT", "Place buy order")
       return
     }
 
@@ -1050,7 +1050,7 @@ try {
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-ticket.png"
     $ticketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket.xml"
-    Assert-HierarchyContains -Path $ticketHierarchy -Expected @("Fake balance", "10,000 USDT", "Max", "500 USDT", "1,000 USDT", "Estimated cost", "Est. shares", "Avg price", "Implied odds", "2.9x", "Estimated payout", "Place buy order")
+    Assert-HierarchyContains -Path $ticketHierarchy -Expected @("Fake balance", "10,000 USDT", "Max", "500 USDT", "1,000 USDT", "Estimated cost", "Est. shares", "Avg price", "Implied odds", "2.9x", "Estimated payout", "Potential profit", "Place buy order")
 
     if ($SellTicket) {
       Invoke-TapHierarchyNode -Path $ticketHierarchy -Identifier "ticket-side-sell"
