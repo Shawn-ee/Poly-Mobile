@@ -914,7 +914,7 @@ Technical debt resolved:
 - Live UI logic moved out of `mobile/App.tsx`.
 Result: Passed Cycle 022 QA. Live tab remains covered by deep smoke after extraction.
 Commit: cycle branch HEAD (`Extract Holiwyn mobile live screen`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 023 should add typed-query Search QA or extract Home subcomponents.
 Harnesses run:
 - QA Smoke Harness
