@@ -6069,6 +6069,49 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 126
+
+Date: 2026-07-01
+Branch: mobile/cycle-126
+Goal: Add implied odds to the trade ticket so users can scan the payout multiple before placing a fake-token order.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Trade tickets now show an `Implied odds` row, e.g. Mexico at 64% displays `1.6x`.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/TradeTicket.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:event-detail-trade` in `mobile/` (includes mobile typecheck).
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-126-holiwyn-ticket-implied-odds-smoke.png`
+- `docs/mobile/screenshots/cycle-126-holiwyn-ticket-implied-odds-event-detail.png`
+- `docs/mobile/screenshots/cycle-126-holiwyn-ticket-implied-odds-ticket.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-126-holiwyn-ticket-implied-odds-expo-menu.xml`
+- `docs/mobile/harness/cycle-126-holiwyn-ticket-implied-odds-home.xml`
+- `docs/mobile/harness/cycle-126-holiwyn-ticket-implied-odds-event-detail.xml`
+- `docs/mobile/harness/cycle-126-holiwyn-ticket-implied-odds-ticket.xml`
+Bugs found:
+- First run inherited stale 9,900 USDT fake balance; `EventDetailTrade` now uses an Expo Go data clear to guarantee clean fake-token state.
+- Another run captured the Expo developer menu over the app; the event-detail trade path now dismisses it and re-taps the outcome.
+Technical debt added:
+- Implied odds currently derive from mock probability math; backend quote/depth integration should eventually provide server-calculated odds.
+Technical debt resolved:
+- Event-detail trade smoke is more deterministic against stale state and Expo developer menu interruptions.
+Result: Passed Cycle 126 QA. Focused event-detail-trade smoke and mobile API/profile-preference tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 127 should continue product-facing trade-ticket or market-depth polish, then write the next heartbeat after merge.
+Harnesses run:
+- Mobile Typecheck Harness
+- Event Detail Trade Smoke Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- Two initial smoke failures exposed stale state and Expo developer-menu interference; both recovery paths were hardened and rerun passed.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

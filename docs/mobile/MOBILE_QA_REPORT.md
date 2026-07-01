@@ -2635,3 +2635,27 @@ Bugs:
 - None found after focused verification.
 Visual QA:
 - Mexico vs. Ecuador Event Detail shows `Game lines` with `1 market`, `Props` with `3 markets`, plus the existing `4 markets`, `8 outcomes`, best bid/ask/spread, and Match winner context.
+
+### Cycle 126
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554` with Expo Go
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/` through the focused smoke script
+- `npm.cmd run smoke:event-detail-trade`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Trade tickets now show implied decimal odds next to cost, shares, average price, and payout so users can scan the payout multiple before placing a fake-token order.
+Screenshots:
+- `docs/mobile/screenshots/cycle-126-holiwyn-ticket-implied-odds-smoke.png`
+- `docs/mobile/screenshots/cycle-126-holiwyn-ticket-implied-odds-event-detail.png`
+- `docs/mobile/screenshots/cycle-126-holiwyn-ticket-implied-odds-ticket.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-126-holiwyn-ticket-implied-odds-expo-menu.xml`
+- `docs/mobile/harness/cycle-126-holiwyn-ticket-implied-odds-home.xml`
+- `docs/mobile/harness/cycle-126-holiwyn-ticket-implied-odds-event-detail.xml`
+- `docs/mobile/harness/cycle-126-holiwyn-ticket-implied-odds-ticket.xml`
+Bugs:
+- The first focused smoke inherited stale fake-token balance; the harness now clears Expo Go data for `EventDetailTrade`.
+- A later run captured the Expo developer menu over the app; the event-detail trade path now dismisses the menu, recaptures detail, and taps the outcome again.
+Visual QA:
+- Mexico buy ticket shows clean `10,000 USDT` fake balance, `Implied odds`, `1.6x`, estimated payout, and a visible `Place buy order` CTA.

@@ -1815,3 +1815,18 @@ Findings:
 - Mobile typecheck through the smoke script and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 125 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 126
+
+Date: 2026-07-01
+Branch: mobile/cycle-126
+Reviewer: Lead/Reviewer pass
+Scope: Trade ticket implied odds.
+Findings:
+- P1: Trade tickets now show implied decimal odds derived from the selected outcome probability.
+- P1: The Mexico event-detail buy ticket verifies `Implied odds` and `1.6x` alongside fake balance, cost, shares, average price, payout, and CTA.
+- P1: The focused event-detail trade harness now starts from clean Expo Go state and recovers if the Expo developer menu appears over the app.
+- P2: This remains mock-mode order economics; backend quote/depth odds should replace mock probability math when server quote integration is available.
+- Mobile typecheck through the smoke script and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 126 for local commit/merge after scoped diff review.
+Merge approved: Yes
