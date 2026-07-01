@@ -462,7 +462,7 @@ Technical debt resolved:
 - Partial large-file debt: Event Detail is now isolated from `App.tsx`.
 Result: Passed Cycle 011 QA. Extracted detail screen renders event markets and outcome buttons.
 Commit: cycle branch HEAD (`Extract Holiwyn mobile event detail`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 012 should improve grouped World Cup props or extract Search/Home shell and write heartbeat.
 Harnesses run:
 - QA Smoke Harness
