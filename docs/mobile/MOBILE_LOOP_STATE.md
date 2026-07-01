@@ -5207,6 +5207,44 @@ Open blockers: None for autonomous mock-mode product/harness progress. Live auth
 Risks: Saved markets, Account session, language, ticket defaults, and Portfolio persistence are local-first; profile sync is guarded and silent on failure until user-facing sync state is designed; Portfolio counts, Home/Search/Futures market stats, Popular ranking, ticket quote math, and close-position behavior remain local estimates until backend auth, profile, quote, popularity, order-book, and position APIs can feed them.
 Next three likely cycles: Add visible profile sync status for server mode, continue account/profile polish, and retry backend readiness if Docker/local Postgres become available.
 
+### Cycle 107
+
+Date: 2026-07-01
+Branch: mobile/cycle-107
+Goal: Surface server-mode profile preference sync failures in Account and verify the recovery state on emulator.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Account Preferences now shows profile preference sync status when server-mode profile sync is enabled; mock mode remains local-only and hides this row.
+Backend/API changed: No backend endpoint change. Runtime profile preference load/save now updates visible sync status on success or failure.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/AccountScreen.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:account-profile-sync-error` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-107-holiwyn-account-profile-sync-error-smoke.png`
+- `docs/mobile/screenshots/cycle-107-holiwyn-account-profile-sync-error.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-107-holiwyn-account-profile-sync-error-home-start.xml`
+- `docs/mobile/harness/cycle-107-holiwyn-account-profile-sync-error.xml`
+Bugs found:
+- Initial visual review showed the fallback sentence too close to the bottom tab. The sync row was moved higher in Preferences and the focused smoke was rerun successfully.
+Technical debt added:
+- Profile sync status is a compact Account recovery surface; richer signed-in profile/auth states still need backend readiness.
+Technical debt resolved:
+- Server-mode profile preference failures are no longer silent in the user-facing Account screen.
+Result: Passed Cycle 107 QA. Mobile typecheck, focused emulator profile-sync-error smoke, and mobile API/profile-preference tests pass.
+Commit: `842bf2e` (`Show Account profile sync failures`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `37e6cf4`.
+Next cycle: Cycle 108 should continue Account/profile polish or add another backend-visible recovery state while mock-mode product progress remains unblocked.
+Harnesses run:
+- Mobile Typecheck Harness
+- Account Profile Sync Error Smoke Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
