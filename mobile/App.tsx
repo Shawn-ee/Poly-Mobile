@@ -248,103 +248,127 @@ export default function App() {
       });
   }, [api, locale, localeHydrated, savedEventIds, savedEventIdsHydrated, shouldSyncProfilePreferences, ticketDefaults, ticketDefaultsHydrated]);
 
-  useEffect(() => {
-    Linking.getInitialURL().then((url) => {
-      if (!mounted.current || !url) return;
-      setForceOrderFailure(url.includes("forceOrderFailure=1"));
-      if (url.includes("forcePortfolio=1")) {
-        setMainTab("portfolio");
-      }
-      if (url.includes("forceLive=1")) {
-        setMainTab("live");
-      }
-      if (url.includes("forceWorldCupWinnerFranceTicket=1")) {
-        const market = worldCupFutures[0];
-        const outcome = market.outcomes[0];
-        setTicket({ market, outcome, side: "buy" });
-      }
-      if (url.includes("forceMexicoEcuadorDetail=1")) {
-        const event = worldCupEvents.find((item) => item.id === "mexico-ecuador");
-        if (event) setSelectedEvent(event);
-      }
-      if (url.includes("forceTicketDefaults=1")) {
-        const defaults: TicketDefaults = { amount: "500", side: "sell" };
-        setTicketDefaults(defaults);
-        AsyncStorage.setItem(TICKET_DEFAULTS_STORAGE_KEY, JSON.stringify(defaults)).catch(() => undefined);
-        const market = worldCupFutures[0];
-        const outcome = market.outcomes[0];
-        setTicket({ market, outcome, side: "buy" });
-      }
-      if (url.includes("forceOpenOrder=1")) {
-        setOpenOrders([SMOKE_OPEN_ORDER]);
-        setMainTab("portfolio");
-      }
-      const forcedSearchQuery = url.match(/[?&]forceSearchQuery=([^&]+)/)?.[1];
-      if (forcedSearchQuery) {
-        setQuery(decodeURIComponent(forcedSearchQuery));
-        setMainTab("search");
-      }
-      const forcedHomeQuery = url.match(/[?&]forceHomeQuery=([^&]+)/)?.[1];
-      if (forcedHomeQuery) {
-        setQuery(decodeURIComponent(forcedHomeQuery));
-        setMainTab("home");
-      }
-      if (url.includes("forceAccount=1")) {
-        setMainTab("account");
-      }
-      if (url.includes("forceAccountPreferences=1")) {
-        const defaults: TicketDefaults = { amount: "500", side: "sell" };
-        setTicketDefaults(defaults);
-        AsyncStorage.setItem(TICKET_DEFAULTS_STORAGE_KEY, JSON.stringify(defaults)).catch(() => undefined);
-        setMainTab("account");
-      }
-      if (url.includes("forceAccountSignIn=1")) {
-        setForceAccountSignedIn(true);
-        setMainTab("account");
-      }
-      if (url.includes("forceChinese=1")) {
-        setLocale("zh");
-        AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, "zh").catch(() => undefined);
-      }
-      if (url.includes("forceEnglish=1")) {
-        setLocale("en");
-        AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, "en").catch(() => undefined);
-      }
-      if (url.includes("forceSearch=1")) {
-        setMainTab("search");
-      }
-      const shouldForceSaveMexico = url.includes("forceSaveMexico=1");
-      if (url.includes("forceClearSaved=1") && !shouldForceSaveMexico) {
+  const handleLaunchUrl = useCallback((url: string | null) => {
+    if (!mounted.current || !url) return;
+    setForceOrderFailure(url.includes("forceOrderFailure=1"));
+    if (url.includes("forceResetState=1")) {
+      const resetRuntimeState = () => {
+        if (!mounted.current) return;
+        setBalance(10000);
+        setPositions([]);
+        setLatestOrder(null);
+        setOpenOrders([]);
+        setActivities([]);
+        setTicketDefaults({ amount: "100", side: "buy" });
         setSavedEventIds(new Set());
-        AsyncStorage.removeItem(SAVED_EVENTS_STORAGE_KEY).catch(() => undefined);
-      }
-      if (shouldForceSaveMexico) {
-        const seededSavedEvents = new Set(["mexico-ecuador"]);
-        setSavedEventIds(seededSavedEvents);
-        AsyncStorage.setItem(SAVED_EVENTS_STORAGE_KEY, JSON.stringify([...seededSavedEvents])).catch(() => undefined);
-      }
-      if (url.includes("forceAccountSavedSummary=1")) {
-        const seededSavedEvents = new Set(["mexico-ecuador"]);
-        setSavedEventIds(seededSavedEvents);
-        AsyncStorage.setItem(SAVED_EVENTS_STORAGE_KEY, JSON.stringify([...seededSavedEvents])).catch(() => undefined);
-        setMainTab("account");
-      }
-      if (url.includes("forceAccountPositionSummary=1")) {
-        setPositions([
-          {
-            id: "smoke-account-position",
-            mode: "mock",
-            title: "World Cup winner",
-            outcome: "France",
-            side: "buy",
-            amount: 250,
-            probability: 24,
-          },
-        ]);
-        setMainTab("account");
-      }
-    });
+        setForceAccountSignedIn(false);
+      };
+      resetRuntimeState();
+      setTimeout(resetRuntimeState, 750);
+      AsyncStorage.multiRemove([
+        SAVED_EVENTS_STORAGE_KEY,
+        PORTFOLIO_STORAGE_KEY,
+        TICKET_DEFAULTS_STORAGE_KEY,
+      ]).catch(() => undefined);
+    }
+    if (url.includes("forcePortfolio=1")) {
+      setMainTab("portfolio");
+    }
+    if (url.includes("forceLive=1")) {
+      setMainTab("live");
+    }
+    if (url.includes("forceWorldCupWinnerFranceTicket=1")) {
+      const market = worldCupFutures[0];
+      const outcome = market.outcomes[0];
+      setTicket({ market, outcome, side: "buy" });
+    }
+    if (url.includes("forceMexicoEcuadorDetail=1")) {
+      const event = worldCupEvents.find((item) => item.id === "mexico-ecuador");
+      if (event) setSelectedEvent(event);
+    }
+    if (url.includes("forceTicketDefaults=1")) {
+      const defaults: TicketDefaults = { amount: "500", side: "sell" };
+      setTicketDefaults(defaults);
+      AsyncStorage.setItem(TICKET_DEFAULTS_STORAGE_KEY, JSON.stringify(defaults)).catch(() => undefined);
+      const market = worldCupFutures[0];
+      const outcome = market.outcomes[0];
+      setTicket({ market, outcome, side: "buy" });
+    }
+    if (url.includes("forceOpenOrder=1")) {
+      setOpenOrders([SMOKE_OPEN_ORDER]);
+      setMainTab("portfolio");
+    }
+    const forcedSearchQuery = url.match(/[?&]forceSearchQuery=([^&]+)/)?.[1];
+    if (forcedSearchQuery) {
+      setQuery(decodeURIComponent(forcedSearchQuery));
+      setMainTab("search");
+    }
+    const forcedHomeQuery = url.match(/[?&]forceHomeQuery=([^&]+)/)?.[1];
+    if (forcedHomeQuery) {
+      setQuery(decodeURIComponent(forcedHomeQuery));
+      setMainTab("home");
+    }
+    if (url.includes("forceAccount=1")) {
+      setMainTab("account");
+    }
+    if (url.includes("forceAccountPreferences=1")) {
+      const defaults: TicketDefaults = { amount: "500", side: "sell" };
+      setTicketDefaults(defaults);
+      AsyncStorage.setItem(TICKET_DEFAULTS_STORAGE_KEY, JSON.stringify(defaults)).catch(() => undefined);
+      setMainTab("account");
+    }
+    if (url.includes("forceAccountSignIn=1")) {
+      setForceAccountSignedIn(true);
+      setMainTab("account");
+    }
+    if (url.includes("forceChinese=1")) {
+      setLocale("zh");
+      AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, "zh").catch(() => undefined);
+    }
+    if (url.includes("forceEnglish=1")) {
+      setLocale("en");
+      AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, "en").catch(() => undefined);
+    }
+    if (url.includes("forceSearch=1")) {
+      setMainTab("search");
+    }
+    const shouldForceSaveMexico = url.includes("forceSaveMexico=1");
+    if (url.includes("forceClearSaved=1") && !shouldForceSaveMexico) {
+      setSavedEventIds(new Set());
+      AsyncStorage.removeItem(SAVED_EVENTS_STORAGE_KEY).catch(() => undefined);
+    }
+    if (shouldForceSaveMexico) {
+      const seededSavedEvents = new Set(["mexico-ecuador"]);
+      setSavedEventIds(seededSavedEvents);
+      AsyncStorage.setItem(SAVED_EVENTS_STORAGE_KEY, JSON.stringify([...seededSavedEvents])).catch(() => undefined);
+    }
+    if (url.includes("forceAccountSavedSummary=1")) {
+      const seededSavedEvents = new Set(["mexico-ecuador"]);
+      setSavedEventIds(seededSavedEvents);
+      AsyncStorage.setItem(SAVED_EVENTS_STORAGE_KEY, JSON.stringify([...seededSavedEvents])).catch(() => undefined);
+      setMainTab("account");
+    }
+    if (url.includes("forceAccountPositionSummary=1")) {
+      setPositions([
+        {
+          id: "smoke-account-position",
+          mode: "mock",
+          title: "World Cup winner",
+          outcome: "France",
+          side: "buy",
+          amount: 250,
+          probability: 24,
+        },
+      ]);
+      setMainTab("account");
+    }
   }, []);
+
+  useEffect(() => {
+    Linking.getInitialURL().then(handleLaunchUrl);
+    const subscription = Linking.addEventListener("url", (event) => handleLaunchUrl(event.url));
+    return () => subscription.remove();
+  }, [handleLaunchUrl]);
 
   const loadBackendWorldCup = useCallback(async () => {
     try {
