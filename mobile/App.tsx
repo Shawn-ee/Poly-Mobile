@@ -260,6 +260,10 @@ export default function App() {
         const outcome = market.outcomes[0];
         setTicket({ market, outcome, side: "buy" });
       }
+      if (url.includes("forceMexicoEcuadorDetail=1")) {
+        const event = worldCupEvents.find((item) => item.id === "mexico-ecuador");
+        if (event) setSelectedEvent(event);
+      }
       if (url.includes("forceTicketDefaults=1")) {
         const defaults: TicketDefaults = { amount: "500", side: "sell" };
         setTicketDefaults(defaults);
