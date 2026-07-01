@@ -544,6 +544,39 @@ Harnesses run:
 - Screenshot Evidence Harness
 Harness failures: None.
 
+### Cycle 014
+
+Date: 2026-07-01
+Branch: mobile/cycle-014
+Goal: Normalize generic backend-imported World Cup futures event titles for mobile display.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Backend-fed generic `Fixture ...` futures bundles now display as `World Cup futures`.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/src/adapters/worldCupAdapter.ts`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke` in `mobile/`.
+- Emulator tap-through to normalized event detail.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-014-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-014-holiwyn-normalized-event-detail.png`
+Bugs found: Generic backend fixture title was user-hostile on mobile; normalized in adapter for futures bundles.
+Technical debt added: None.
+Technical debt resolved:
+- Part of backend data-quality display risk from Cycle 012 heartbeat.
+Result: Passed Cycle 014 QA. Generic futures fixture title now renders as `World Cup futures`.
+Commit: cycle branch HEAD (`Normalize Holiwyn mobile futures titles`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 015 should add selector/testID scaffolding for deep smoke or improve live market presentation.
+Harnesses run:
+- Backend/API Harness
+- QA Smoke Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures: None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

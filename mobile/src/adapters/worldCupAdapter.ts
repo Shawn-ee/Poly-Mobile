@@ -55,6 +55,8 @@ const startsAt = (event: BackendEventSummary) => {
 
 const zhPassthrough = (value: string) => value;
 
+const isGenericFixtureTitle = (title: string) => /^fixture\b/i.test(title.trim());
+
 const normalizeOutcome = (outcome: BackendOutcome, index: number, total: number): Outcome => ({
   id: outcome.id,
   label: outcome.label || outcome.name || `Outcome ${index + 1}`,
@@ -83,10 +85,13 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
   const home = event.homeTeamName || event.title.split(/\s+vs\.?\s+/i)[0] || "Home";
   const away = event.awayTeamName || event.title.split(/\s+vs\.?\s+/i)[1] || "Away";
   const status = eventStatus(event);
+  const normalizedMarkets = markets.map(normalizeMarket).filter((market) => market.outcomes.length > 0);
+  const isFuturesBundle = normalizedMarkets.length > 0 && normalizedMarkets.every((market) => market.type === "future");
+  const title = isGenericFixtureTitle(event.title) && isFuturesBundle ? "World Cup futures" : event.title;
   return {
     id: event.slug || event.id,
-    title: event.title,
-    zhTitle: zhPassthrough(event.title),
+    title,
+    zhTitle: isGenericFixtureTitle(event.title) && isFuturesBundle ? "世界杯期货" : zhPassthrough(title),
     league: asTitleCase(event.leagueKey, "World Cup"),
     startsAt: startsAt(event),
     status,
@@ -96,7 +101,7 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
       { name: home, zhName: zhPassthrough(home), flag: "•" },
       { name: away, zhName: zhPassthrough(away), flag: "•" },
     ],
-    markets: markets.map(normalizeMarket).filter((market) => market.outcomes.length > 0),
+    markets: normalizedMarkets,
   };
 };
 

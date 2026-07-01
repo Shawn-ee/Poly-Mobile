@@ -193,3 +193,16 @@ Findings:
 - Deep smoke passed and screenshots were captured.
 Decision: Approve Cycle 013 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 014
+
+Date: 2026-07-01
+Branch: mobile/cycle-014
+Reviewer: Lead/Reviewer pass
+Scope: Backend event display normalization in mobile adapter.
+Findings:
+- P1: Normalization is narrowly scoped to generic fixture titles where all normalized markets are futures.
+- P2: More nuanced event naming is still needed for mixed grouped events and team-vs-team fixtures with incomplete metadata.
+- `npm run typecheck`, `npm run smoke`, and normalized detail QA passed.
+Decision: Approve Cycle 014 for local commit/merge after scoped diff review.
+Merge approved: Yes
