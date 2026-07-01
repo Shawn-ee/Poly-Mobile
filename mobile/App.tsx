@@ -45,6 +45,7 @@ export default function App() {
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [query, setQuery] = useState("");
   const [ticket, setTicket] = useState<Ticket | null>(null);
+  const [ticketOrderError, setTicketOrderError] = useState<string | null>(null);
   const [balance, setBalance] = useState(10000);
   const [positions, setPositions] = useState<Position[]>([]);
   const [latestOrder, setLatestOrder] = useState<OrderConfirmation | null>(null);
@@ -148,21 +149,29 @@ export default function App() {
   }, [events, query]);
 
   const openTicket = (market: Market, outcome: Outcome, event?: Event) => {
+    setTicketOrderError(null);
     setTicket({ market, outcome, event, side: "buy" });
   };
 
   const placeOrder = async (amount: number, side: "buy" | "sell") => {
     if (!ticket || amount <= 0) return;
     const cost = Math.min(amount, balance);
-    const result = await submitTicketOrder({
-      mode: ORDER_MODE,
-      api,
-      event: ticket.event,
-      market: ticket.market,
-      outcome: ticket.outcome,
-      side,
-      amount: cost,
-    });
+    setTicketOrderError(null);
+    let result;
+    try {
+      result = await submitTicketOrder({
+        mode: ORDER_MODE,
+        api,
+        event: ticket.event,
+        market: ticket.market,
+        outcome: ticket.outcome,
+        side,
+        amount: cost,
+      });
+    } catch {
+      setTicketOrderError(t.orderFailed);
+      return;
+    }
     setBalance((current) => current - cost);
     setPositions((current) => [
       {
@@ -195,6 +204,7 @@ export default function App() {
       ...current,
     ]);
     setTicket(null);
+    setTicketOrderError(null);
     setMainTab("portfolio");
   };
 
@@ -293,7 +303,11 @@ export default function App() {
         t={t}
         ticket={ticket}
         balance={balance}
-        close={() => setTicket(null)}
+        orderError={ticketOrderError}
+        close={() => {
+          setTicketOrderError(null);
+          setTicket(null);
+        }}
         placeOrder={placeOrder}
       />
     </SafeAreaView>

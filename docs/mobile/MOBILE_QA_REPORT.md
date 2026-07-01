@@ -980,3 +980,26 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-050-holiwyn-search-query.png`
 Bugs:
 - Initial event-outcome selector tap used clipped bounds under the bottom tab; added a small Home scroll before tapping and final rerun passed.
+
+### Cycle 051
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Ticket order failure handling is wired and successful mock event-market trading remains stable.
+Screenshots:
+- `docs/mobile/screenshots/cycle-051-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-search-query.png`
+Bugs: None found.
+Failure-state note: The failure message is typechecked and component-wired; forced failure should get a dedicated harness cycle.

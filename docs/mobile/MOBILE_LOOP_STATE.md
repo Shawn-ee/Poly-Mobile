@@ -2473,6 +2473,63 @@ Harnesses run:
 Harness failures:
 - One recoverable clipped-outcome selector tap before final pass.
 
+### Cycle 051
+
+Date: 2026-07-01
+Branch: mobile/cycle-051
+Goal: Add safe ticket-order failure feedback for server submission errors.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Trade Ticket can now show a localized order failure message while staying open for retry.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/TradeTicket.tsx`, `mobile/src/localization/appCopy.ts`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-051-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-051-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-051-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-051-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-051-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-051-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-051-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-051-holiwyn-ticket-max.xml`
+- `docs/mobile/harness/cycle-051-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-051-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-051-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-051-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-051-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-051-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Failure state is typechecked and component-wired but not forced in emulator because normal smoke runs safe mock mode.
+Technical debt resolved:
+- Failed server ticket submissions no longer bubble silently; the ticket remains open and shows localized retry copy.
+Result: Passed Cycle 051 QA. Mock deep smoke verifies successful event-market trading remains stable after order error handling was added.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 052 should add a dedicated forced-failure harness for the ticket error state or continue reducing prop/back device actions.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

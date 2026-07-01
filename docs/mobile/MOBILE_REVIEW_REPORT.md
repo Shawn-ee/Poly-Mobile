@@ -706,3 +706,17 @@ Findings:
 - `npm run typecheck` and final `npm run smoke:deep` passed.
 Decision: Approve Cycle 050 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 051
+
+Date: 2026-07-01
+Branch: mobile/cycle-051
+Reviewer: Lead/Reviewer pass
+Scope: Ticket order failure feedback.
+Findings:
+- P1: `placeOrder` now catches failed submissions, leaves the ticket open, and surfaces localized retry copy.
+- P1: Successful mock order behavior still clears the ticket, records activity, and navigates to Portfolio.
+- P2: The failure visual state is not yet emulator-forced; a later harness should inject a failed order mode and assert `ticket-order-error`.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 051 for local commit/merge after scoped diff review.
+Merge approved: Yes

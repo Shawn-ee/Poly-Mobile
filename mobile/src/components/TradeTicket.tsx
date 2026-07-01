@@ -20,6 +20,7 @@ type TradeTicketCopy = {
   estimatedCost: string;
   estimatedPayout: string;
   placeMockOrder: string;
+  orderFailed: string;
 };
 
 export function TradeTicket({
@@ -27,6 +28,7 @@ export function TradeTicket({
   t,
   ticket,
   balance,
+  orderError,
   close,
   placeOrder,
 }: {
@@ -34,8 +36,9 @@ export function TradeTicket({
   t: TradeTicketCopy;
   ticket: Ticket | null;
   balance: number;
+  orderError: string | null;
   close: () => void;
-  placeOrder: (amount: number, side: "buy" | "sell") => void;
+  placeOrder: (amount: number, side: "buy" | "sell") => void | Promise<void>;
 }) {
   const [amount, setAmount] = useState("100");
   const [side, setSide] = useState<"buy" | "sell">("buy");
@@ -96,6 +99,12 @@ export function TradeTicket({
             <Text style={styles.estimateLabel}>{t.estimatedPayout}</Text>
             <Text style={styles.estimateValue}>{money(estimatedPayout)}</Text>
           </View>
+          {orderError && (
+            <View accessibilityLabel="ticket-order-error" testID="ticket-order-error" style={styles.errorCard}>
+              <Ionicons name="alert-circle-outline" color="#fbbf24" size={18} />
+              <Text style={styles.errorText}>{orderError}</Text>
+            </View>
+          )}
           <Pressable accessibilityLabel="place-mock-order" testID="place-mock-order" style={styles.primaryButton} onPress={() => placeOrder(numericAmount, side)}>
             <Text style={styles.primaryText}>{t.placeMockOrder}</Text>
           </Pressable>
@@ -127,6 +136,8 @@ const styles = StyleSheet.create({
   estimateLine: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "#263247" },
   estimateLabel: { color: "#94a3b8", fontWeight: "800" },
   estimateValue: { color: "#f8fafc", fontWeight: "900" },
+  errorCard: { flexDirection: "row", alignItems: "center", gap: 8, padding: 10, borderRadius: 10, backgroundColor: "#1f1a0b", borderWidth: 1, borderColor: "#854d0e", marginTop: 12 },
+  errorText: { flex: 1, color: "#fde68a", fontWeight: "800" },
   primaryButton: { height: 54, borderRadius: 14, alignItems: "center", justifyContent: "center", backgroundColor: "#1d6dff", marginTop: 16 },
   primaryText: { color: "#ffffff", fontSize: 17, fontWeight: "900" },
 });
