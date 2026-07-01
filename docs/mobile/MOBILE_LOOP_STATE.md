@@ -2708,8 +2708,8 @@ Technical debt added:
 Technical debt resolved:
 - Open-order cancellation is now emulator-proven with before/after Portfolio evidence.
 Result: Passed Cycle 054 QA. Focused cancel smoke verifies the open-order Cancel control and canceled activity; normal deep smoke verifies the standard World Cup trade, close, Live, and Search flows still pass.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `91c1d9d` (`Add Holiwyn open order cancel smoke`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `ab3f478`.
 Next cycle: Cycle 055 should continue reducing remaining coordinate/keyevent actions or add combo/open-order server fixture work.
 Harnesses run:
 - QA Smoke Harness
