@@ -345,6 +345,8 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceClosedWorldCupWinnerFrance=1"
   } elseif ($FutureListOrder) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceWorldCupWinnerFranceTicket=1"
+  } elseif ($PortfolioClosedCount) {
+    "exp://${ExpoHost}:$Port/--/?forceResetState=1"
   } else {
     "exp://${ExpoHost}:$Port"
   }
