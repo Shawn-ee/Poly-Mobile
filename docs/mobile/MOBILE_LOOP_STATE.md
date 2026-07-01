@@ -1531,8 +1531,8 @@ Technical debt added:
 Technical debt resolved:
 - Portfolio positions now expose a close/cash-out action in the fake-token flow.
 Result: Passed Cycle 034 QA. Close-position affordance is verified by deep smoke hierarchy assertions and screenshot evidence.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge after commit.
+Commit: cycle branch HEAD (`Add Holiwyn close position action`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 035 should verify close-position behavior by tapping it or continue copy/localization extraction.
 Harnesses run:
 - QA Smoke Harness
