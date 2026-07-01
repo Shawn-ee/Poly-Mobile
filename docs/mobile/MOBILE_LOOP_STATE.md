@@ -3907,8 +3907,8 @@ Technical debt added:
 Technical debt resolved:
 - Search cards now match Home card market-activity context.
 Result: Passed Cycle 078 QA. Mobile typecheck, focused Search card stats smoke, visual screenshot review, and mobile API tests pass.
-Commit: `PENDING`
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `06b08be` (`Add Holiwyn search card market stats`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `ed174ac`.
 Next cycle: Cycle 079 should add richer search/discovery behavior or retry backend readiness if Docker daemon becomes available.
 Harnesses run:
 - Emulator Runtime Harness
