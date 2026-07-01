@@ -76,3 +76,16 @@ Findings:
 - `npm run typecheck`, `npm run smoke`, and emulator mock order placement passed.
 Decision: Approve Cycle 004 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 005
+
+Date: 2026-07-01
+Branch: mobile/cycle-005
+Reviewer: Lead/Reviewer pass
+Scope: Presentation helper extraction.
+Findings:
+- P2: This is intentionally a small architecture cycle; it reduces helper coupling but does not materially shrink the UI component tree yet.
+- P2: Localization table remains in `App.tsx`; broad extraction should wait until encoding is normalized. Tracked as TD-009.
+- `npm run typecheck` and `npm run smoke` passed.
+Decision: Approve Cycle 005 for local commit/merge after scoped diff review.
+Merge approved: Yes

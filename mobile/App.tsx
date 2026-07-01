@@ -21,6 +21,7 @@ import {
   worldCupEvents,
   worldCupFutures,
 } from "./src/mocks/worldCup";
+import { label, money } from "./src/presentation/formatters";
 import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
@@ -101,12 +102,6 @@ const copy = {
     noResults: "没有匹配的市场。",
     language: "EN",
   },
-};
-
-const money = (value: number) => `${value.toLocaleString(undefined, { maximumFractionDigits: 2 })} USDT`;
-const label = (locale: Locale, value: { label?: string; zhLabel?: string; title?: string; zhTitle?: string; name?: string; zhName?: string }) => {
-  if (locale === "zh") return value.zhLabel ?? value.zhTitle ?? value.zhName ?? value.label ?? value.title ?? value.name ?? "";
-  return value.label ?? value.title ?? value.name ?? value.zhLabel ?? value.zhTitle ?? value.zhName ?? "";
 };
 
 export default function App() {
