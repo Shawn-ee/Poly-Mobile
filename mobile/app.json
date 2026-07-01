@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "Holiwyn",
+    "slug": "holiwyn-mobile",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "holiwyn",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "package": "com.holiwyn.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#f6f8fb"
+      }
+    },
+    "extra": {
+      "apiBaseUrl": "http://10.0.2.2:3000"
+    }
+  }
+}
