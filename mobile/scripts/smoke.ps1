@@ -95,6 +95,18 @@ try {
     Save-Screenshot -Name "cycle-current-holiwyn-portfolio.png"
     $portfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio.xml"
     Assert-HierarchyContains -Path $portfolioHierarchy -Expected @("Fake balance", "Portfolio")
+
+    & $adb -s $Device shell input tap 405 1740 | Out-Null
+    Start-Sleep -Seconds 1
+    Save-Screenshot -Name "cycle-current-holiwyn-live.png"
+    $liveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live.xml"
+    Assert-HierarchyContains -Path $liveHierarchy -Expected @("Live World Cup", "No live markets right now.")
+
+    & $adb -s $Device shell input tap 945 1740 | Out-Null
+    Start-Sleep -Seconds 1
+    Save-Screenshot -Name "cycle-current-holiwyn-search.png"
+    $searchHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search.xml"
+    Assert-HierarchyContains -Path $searchHierarchy -Expected @("Search World Cup markets")
   }
 }
 finally {

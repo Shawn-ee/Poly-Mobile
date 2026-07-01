@@ -691,6 +691,57 @@ Harnesses run:
 - Audit Agent
 Harness failures: None.
 
+### Cycle 018
+
+Date: 2026-07-01
+Branch: mobile/cycle-018
+Goal: Extend the deep smoke harness to verify Live and Search tab navigation with screenshots and hierarchy assertions.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No product UI changes.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-018-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-018-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-018-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-018-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-018-holiwyn-search.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-018-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-018-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-018-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-018-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-018-holiwyn-search.xml`
+Bugs found: None.
+Technical debt added: None.
+Technical debt resolved:
+- Partial TD-011 progress: deep smoke now verifies Live and Search after coordinate navigation, reducing blind spots in the tab shell.
+Result: Passed Cycle 018 QA. Deep smoke now covers Home, Ticket, Portfolio, Live, and Search.
+Commit: cycle branch HEAD (`Extend Holiwyn mobile deep smoke tabs`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 019 should return to product work, likely richer search filtering UX or live market state refresh.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures: None.
+
+### Heartbeat After Cycle 018
+
+Completed cycles: 016, 017, 018 since the last heartbeat.
+Verified progress: Live tab presentation is clearer, Android smoke now saves UI hierarchy evidence, and deep smoke covers Home, Ticket, Portfolio, Live, and Search.
+Current app state: Holiwyn mobile has a dark World Cup shell, mock fake-token trading, portfolio state, live/search tabs, stable tab labels, and stronger automated emulator evidence.
+Current backend state: Backend health remains `ok`; no schema changes in these cycles.
+Open blockers: None for autonomous progress.
+Risks: Deep smoke still taps by coordinates; server order mode remains unverified; localization copy remains in `App.tsx`.
+Next three likely cycles: Improve search filtering UX, add richer live-market refresh/state handling, and extract localization copy once encoding is safe.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

@@ -142,6 +142,28 @@ Harness evidence:
 - `docs/mobile/harness/cycle-017-holiwyn-portfolio.xml`
 Bugs: None found.
 
+### Cycle 018
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Deep smoke now verifies Home, Ticket, Portfolio, Live, and Search with screenshots plus Android hierarchy assertions.
+Screenshots:
+- `docs/mobile/screenshots/cycle-018-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-018-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-018-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-018-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-018-holiwyn-search.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-018-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-018-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-018-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-018-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-018-holiwyn-search.xml`
+Bugs: None found.
+
 ### Cycle 014
 
 Date: 2026-07-01
