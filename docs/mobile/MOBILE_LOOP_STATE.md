@@ -742,6 +742,54 @@ Open blockers: None for autonomous progress.
 Risks: Deep smoke still taps by coordinates; server order mode remains unverified; localization copy remains in `App.tsx`.
 Next three likely cycles: Improve search filtering UX, add richer live-market refresh/state handling, and extract localization copy once encoding is safe.
 
+### Cycle 019
+
+Date: 2026-07-01
+Branch: mobile/cycle-019
+Goal: Improve Search tab result presentation and recover smoke reliability around app launch/live-state variance.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Search tab now shows a `Top results`/`Results` header, result count, clear button when filtering, and no longer auto-focuses the input on tab open.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-019-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-019-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-019-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-019-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-019-holiwyn-search.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-019-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-019-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-019-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-019-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-019-holiwyn-search.xml`
+Bugs found:
+- Search `autoFocus` triggered a stylus/keyboard overlay that hid market cards in the emulator screenshot.
+- Live tab hierarchy assertion assumed empty backend-fed state and failed under mock fallback live data.
+- App launch occasionally stayed on emulator home before hierarchy assertion.
+Technical debt added: None.
+Technical debt resolved:
+- Search no longer opens with keyboard/stylus overlay.
+- Smoke now waits for Holiwyn Home and retries the Expo URL before capturing Home.
+- Live smoke accepts either empty live state or visible live-market state.
+Result: Passed Cycle 019 QA after Recovery Harness. Search tab is cleaner and deep smoke is more resilient under backend mock fallback.
+Commit: cycle branch HEAD (`Improve Holiwyn mobile search results`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 020 should add typed-query search QA or richer market filters.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Recovery Harness
+- Review Harness
+Harness failures:
+- Initial `npm run smoke:deep` failed on live empty-state assumption and emulator launch timing; both were fixed and the final run passed.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

@@ -164,6 +164,31 @@ Harness evidence:
 - `docs/mobile/harness/cycle-018-holiwyn-search.xml`
 Bugs: None found.
 
+### Cycle 019
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed after recovery. Search shows result header/count without opening the keyboard overlay, and deep smoke waits for Home before screenshot capture.
+Screenshots:
+- `docs/mobile/screenshots/cycle-019-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-019-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-019-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-019-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-019-holiwyn-search.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-019-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-019-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-019-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-019-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-019-holiwyn-search.xml`
+Bugs fixed:
+- Search `autoFocus` opened a stylus/keyboard overlay over results.
+- Live smoke expected only an empty live state.
+- Smoke captured emulator home when the Expo URL did not land immediately.
+
 ### Cycle 014
 
 Date: 2026-07-01
