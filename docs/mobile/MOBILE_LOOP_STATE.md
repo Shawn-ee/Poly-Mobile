@@ -6517,6 +6517,44 @@ Harnesses run:
 Harness failures:
 - None after wrapper correction.
 
+### Cycle 137
+
+Date: 2026-07-01
+Branch: mobile/cycle-137
+Goal: Add timestamp context to Portfolio Recent activity and verify it on Samsung.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: Portfolio Recent activity rows now show optional timestamp text under the action label.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run smoke:samsung:closed-history` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-137-samsung-activity-time-smoke.png`
+- `docs/mobile/screenshots/cycle-137-samsung-activity-time-closed-history.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-137-samsung-activity-time-home.xml`
+- `docs/mobile/harness/cycle-137-samsung-activity-time-closed-history.xml`
+Bugs found:
+- First timestamp proof failed because stale portfolio storage hydration could overwrite forced deep-link activity rows. Added a forced-reset hydration guard and reran successfully.
+Technical debt added:
+- Backend portfolio history timestamps are still not mapped into mobile history rows.
+Technical debt resolved:
+- Mock and forced Portfolio activities now carry user-visible time context.
+Result: Passed Cycle 137 QA. Samsung timestamp smoke, mobile typecheck, and mobile API/profile-preference/activity-metric tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 138 should continue user-facing trade/history parity or map backend history time data when safe.
+Harnesses run:
+- Samsung Smoke Wrapper Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity Metric Unit Harness
+- Review Harness
+Harness failures:
+- First Samsung timestamp assertion failed, then passed after the forced-state hydration guard.
+
 ### Heartbeat After Cycle 136
 
 Completed cycles: 134, 135, 136.
