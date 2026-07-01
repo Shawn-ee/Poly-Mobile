@@ -1818,3 +1818,25 @@ Bugs:
 - None found.
 Visual QA:
 - Portfolio shows 9,900 USDT balance, World Cup winner / France position, P/L details, close action, and mock order confirmation.
+
+### Cycle 090
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:future-list-sell`
+- `npm run test:mobile-api`
+Result: Passed. Futures list ticket can switch to Sell and show sell-side proceeds/CTA copy.
+Screenshots:
+- `docs/mobile/screenshots/cycle-090-holiwyn-future-list-sell-smoke.png`
+- `docs/mobile/screenshots/cycle-090-holiwyn-future-list-sell-ticket.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-090-holiwyn-future-list-sell-home.xml`
+- `docs/mobile/harness/cycle-090-holiwyn-future-list-sell-list.xml`
+- `docs/mobile/harness/cycle-090-holiwyn-future-list-sell-ticket.xml`
+- `docs/mobile/harness/cycle-090-holiwyn-future-list-sell-active.xml`
+Bugs:
+- None found.
+Visual QA:
+- France / World Cup winner ticket shows Sell selected, Estimated proceeds, estimate rows, and Place sell order.

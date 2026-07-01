@@ -27,6 +27,7 @@
     "smoke:future-card-stats": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -FutureCardStats -Port 8104",
     "smoke:future-list-trade": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -FutureListTrade -Port 8105",
     "smoke:future-list-order": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -FutureListOrder -Port 8106",
+    "smoke:future-list-sell": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -FutureListSell -Port 8107",
     "smoke:saved-search": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SavedSearch -Port 8095",
     "smoke:search-card-stats": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SearchCardStats -Port 8096",
     "smoke:search-saved-empty": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SearchSavedEmpty -Port 8097",

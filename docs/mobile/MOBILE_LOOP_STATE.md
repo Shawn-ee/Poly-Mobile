@@ -4426,6 +4426,49 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 090
+
+Date: 2026-07-01
+Branch: mobile/cycle-090
+Goal: Add focused emulator proof that a Futures list ticket can switch to Sell.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No product UI change; Futures list sell-ticket path now has focused smoke coverage.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:future-list-sell` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-090-holiwyn-future-list-sell-smoke.png`
+- `docs/mobile/screenshots/cycle-090-holiwyn-future-list-sell-ticket.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-090-holiwyn-future-list-sell-home.xml`
+- `docs/mobile/harness/cycle-090-holiwyn-future-list-sell-list.xml`
+- `docs/mobile/harness/cycle-090-holiwyn-future-list-sell-ticket.xml`
+- `docs/mobile/harness/cycle-090-holiwyn-future-list-sell-active.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Sell order placement remains generic mock behavior until position-aware sell validation is modeled.
+Technical debt resolved:
+- Futures list entry points now have focused sell-ticket proof, not only buy-ticket proof.
+Result: Passed Cycle 090 QA. Mobile typecheck, focused Futures list sell smoke, visual screenshot review, and mobile API tests pass.
+Commit: Pending branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 091 should continue trading/portfolio parity and will trigger the next heartbeat after cycles 089, 090, and 091.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Futures Harness
+- Trading Simulation Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
