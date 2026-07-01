@@ -111,3 +111,4 @@ Status:
 | GAP-089 | Search | Search card market stats | P1 | Yes | Verified | Cycle 078 adds Volume/Liquidity context to Search result cards and verifies it in focused emulator smoke. |
 | GAP-090 | Search | Saved empty state | P1 | Yes | Verified | Cycle 079 adds localized empty copy for Search's Saved filter and verifies the zero-saved state in focused emulator smoke. |
 | GAP-091 | Event detail | Save from detail | P1 | Yes | Verified | Cycle 080 adds an Event Detail save/star control and verifies saved state appears in Search Saved. |
+| GAP-092 | Search | Search sort controls | P1 | Yes | Verified | Cycle 081 adds Popular/Live first sorting controls to Search and verifies Live first promotes live World Cup markets in focused emulator smoke. |

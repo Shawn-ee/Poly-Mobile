@@ -1629,3 +1629,24 @@ Bugs:
 - None found.
 Visual QA:
 - Event Detail star fits in the hero and saved Search result keeps active star plus trade controls visible.
+
+### Cycle 081
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:search-sort`
+- `npm run test:mobile-api`
+Result: Passed. Search now supports Popular and Live first result ordering.
+Screenshots:
+- `docs/mobile/screenshots/cycle-081-holiwyn-search-sort-smoke.png`
+- `docs/mobile/screenshots/cycle-081-holiwyn-search-sort-live.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-081-holiwyn-search-sort-home.xml`
+- `docs/mobile/harness/cycle-081-holiwyn-search-sort-screen.xml`
+- `docs/mobile/harness/cycle-081-holiwyn-search-sort-live.xml`
+Bugs:
+- None found.
+Visual QA:
+- Live first sorting promotes the live France vs. Argentina market without crowding the Search filter row or bottom navigation.

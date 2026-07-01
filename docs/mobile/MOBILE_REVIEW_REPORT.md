@@ -1141,3 +1141,18 @@ Findings:
 - Mobile typecheck, focused Event Detail save smoke, and mobile API request tests passed.
 Decision: Approve Cycle 080 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 081
+
+Date: 2026-07-01
+Branch: mobile/cycle-081
+Reviewer: Lead/Reviewer pass
+Scope: Search sort controls.
+Findings:
+- P1: Search now exposes Popular and Live first controls beneath the existing result filters.
+- P1: Live first sorting promotes live markets ahead of non-live results while preserving the existing Search card layout.
+- P1: Focused Search sort smoke opens Search, verifies sort controls, taps Live first, and confirms the live France vs. Argentina market plus Volume/Liquidity context.
+- P2: Popular ordering is currently based on local outcome depth until backend volume/popularity ranking is available.
+- Mobile typecheck, focused Search sort smoke, and mobile API request tests passed.
+Decision: Approve Cycle 081 for local commit/merge after scoped diff review.
+Merge approved: Yes
