@@ -3402,8 +3402,8 @@ Technical debt added:
 Technical debt resolved:
 - Server mode now has emulator proof that failed order submission leaves the ticket open with retry feedback and does not create a local fake position.
 Result: Passed Cycle 067 QA. Mobile typecheck, server-order-failure emulator smoke, and mobile API tests pass.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `d453ff1` (`Add Holiwyn server order failure smoke`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `67379d1`.
 Next cycle: Cycle 068 should continue product depth or add another focused server-mode safety harness while Docker daemon remains unavailable.
 Harnesses run:
 - Emulator Runtime Harness
