@@ -1319,8 +1319,8 @@ Technical debt added:
 Technical debt resolved:
 - Home screen composition no longer lives inline in `App.tsx`.
 Result: Passed Cycle 030 QA. Home extraction is visually stable and deep smoke still verifies Home, ticket, Portfolio, Live refresh, Search, and typed Search.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge after commit.
+Commit: cycle branch HEAD (`Extract Holiwyn home screen`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 031 should add richer portfolio position detail/P&L or continue extracting app-shell/header concerns.
 Harnesses run:
 - QA Smoke Harness
