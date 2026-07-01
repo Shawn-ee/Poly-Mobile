@@ -29,7 +29,13 @@ export function BottomTabs({
   return (
     <View style={styles.tabs}>
       {items.map(([key, icon, text]) => (
-        <Pressable key={key} style={styles.tabButton} onPress={() => setTab(key)}>
+        <Pressable
+          key={key}
+          accessibilityLabel={`holiwyn-${key}-tab`}
+          testID={`holiwyn-${key}-tab`}
+          style={styles.tabButton}
+          onPress={() => setTab(key)}
+        >
           <Ionicons name={icon} size={26} color={tab === key ? "#1d6dff" : "#64748b"} />
           <Text style={[styles.tabText, tab === key && styles.tabTextActive]}>{text}</Text>
         </Pressable>

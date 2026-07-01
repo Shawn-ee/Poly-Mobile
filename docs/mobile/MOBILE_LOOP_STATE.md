@@ -652,6 +652,45 @@ Harnesses run:
 - Review Harness
 Harness failures: None.
 
+### Cycle 017
+
+Date: 2026-07-01
+Branch: mobile/cycle-017
+Goal: Harden the Android smoke harness with UI hierarchy evidence and first text-based assertions.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Bottom tab buttons now expose stable `holiwyn-*-tab` accessibility labels/test IDs for future selector harnesses.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `mobile/src/components/BottomTabs.tsx`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-017-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-017-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-017-holiwyn-portfolio.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-017-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-017-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-017-holiwyn-portfolio.xml`
+Bugs found: None.
+Technical debt added:
+- TD-011: `smoke:deep` still uses coordinate taps; hierarchy assertions now verify landed screens, but taps should eventually use native selectors or a mobile E2E runner.
+Technical debt resolved:
+- Partial TD-010 progress: smoke now asserts visible Home, Ticket, and Portfolio screen text from Android hierarchy dumps.
+Result: Passed Cycle 017 QA. The smoke harness now saves inspectable XML evidence and fails if core visible screen text is missing.
+Commit: cycle branch HEAD (`Add Holiwyn mobile hierarchy smoke checks`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 018 should use the stronger harness to add Search or Live tab deep smoke coverage.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+- Audit Agent
+Harness failures: None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

@@ -232,3 +232,17 @@ Findings:
 - `npm run typecheck`, `npm run smoke`, and Live tab QA passed.
 Decision: Approve Cycle 016 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 017
+
+Date: 2026-07-01
+Branch: mobile/cycle-017
+Reviewer: Lead/Reviewer pass with Audit Agent recommendation
+Scope: Android smoke harness hierarchy evidence and bottom tab automation labels.
+Findings:
+- P1: Harness now saves Android UI hierarchy XML and asserts stable visible text for Home, Ticket, and Portfolio.
+- P2: Visible text assertions are safer than relying on React Native `testID`; bottom tab labels are still useful groundwork because they appear in the dumped hierarchy.
+- P2: Coordinate taps remain a known limitation, but landed-screen assertions reduce false confidence.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 017 for local commit/merge after scoped diff review.
+Merge approved: Yes

@@ -46,3 +46,4 @@ Status:
 | GAP-024 | Backend adapter | Generic futures title normalization | P1 | No | Verified | Cycle 014 normalizes generic backend futures fixtures to `World Cup futures` in mobile display. |
 | GAP-025 | Harness | Stable automation labels | P1 | No | Verified | Cycle 015 added labels/test IDs for featured futures, tabs, ticket, order button, Portfolio, and balance card. |
 | GAP-026 | Live | Live tab empty/count state | P1 | No | Verified | Cycle 016 added a focused Live tab heading, count badge, and live-specific empty state. |
+| GAP-027 | Harness | Android UI hierarchy assertions | P1 | No | Verified | Cycle 017 saves uiautomator XML and asserts visible Home, Ticket, and Portfolio text during deep smoke. |
