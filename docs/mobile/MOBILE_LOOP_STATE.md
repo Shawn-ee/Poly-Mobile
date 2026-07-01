@@ -1222,8 +1222,8 @@ Technical debt added:
 Technical debt resolved:
 - Home sports navigation no longer lives inline in `App.tsx`.
 Result: Passed Cycle 028 QA. Sports navigation is extracted and the deep smoke flow remains stable.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge after commit.
+Commit: cycle branch HEAD (`Extract Holiwyn sports navigation`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 029 should extract the Games/Futures segmented control or add portfolio position detail.
 Harnesses run:
 - QA Smoke Harness
