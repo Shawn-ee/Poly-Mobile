@@ -274,3 +274,17 @@ Findings:
 - `npm run typecheck` and final `npm run smoke:deep` passed.
 Decision: Approve Cycle 019 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 020
+
+Date: 2026-07-01
+Branch: mobile/cycle-020
+Reviewer: Lead/Reviewer pass
+Scope: Search quick filters.
+Findings:
+- P1: Search now supports quick browsing by all, live, and upcoming World Cup markets.
+- P2: Filter interaction is visually verified and labels are hierarchy-asserted; tapping each filter should become explicit harness coverage in a future cycle.
+- P2: Backend was unavailable during smoke, but mock fallback path is expected and verified.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 020 for local commit/merge after scoped diff review.
+Merge approved: Yes

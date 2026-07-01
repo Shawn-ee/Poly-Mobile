@@ -189,6 +189,28 @@ Bugs fixed:
 - Live smoke expected only an empty live state.
 - Smoke captured emulator home when the Expo URL did not land immediately.
 
+### Cycle 020
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Search tab displays `All`, `Live`, and `Upcoming` filters and deep smoke asserts those labels.
+Screenshots:
+- `docs/mobile/screenshots/cycle-020-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-020-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-020-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-020-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-020-holiwyn-search.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-020-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-020-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-020-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-020-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-020-holiwyn-search.xml`
+Bugs: None found.
+
 ### Cycle 014
 
 Date: 2026-07-01

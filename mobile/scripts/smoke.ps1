@@ -146,7 +146,7 @@ try {
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-search.png"
     $searchHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search.xml"
-    Assert-HierarchyContains -Path $searchHierarchy -Expected @("Search World Cup markets", "Top results")
+    Assert-HierarchyContains -Path $searchHierarchy -Expected @("Search World Cup markets", "Top results", "All", "Upcoming")
   }
 }
 finally {
