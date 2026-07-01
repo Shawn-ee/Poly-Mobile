@@ -1,17 +1,12 @@
-import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PolyApi } from "./src/api";
 import { normalizeEventDetail } from "./src/adapters/worldCupAdapter";
 import { BottomTabs } from "./src/components/BottomTabs";
 import { EventDetail } from "./src/components/EventDetail";
+import { Header } from "./src/components/Header";
 import { HomeScreen } from "./src/components/HomeScreen";
 import { LiveScreen } from "./src/components/LiveScreen";
 import { Portfolio, Position } from "./src/components/Portfolio";
@@ -292,39 +287,6 @@ export default function App() {
         placeOrder={placeOrder}
       />
     </SafeAreaView>
-  );
-}
-
-function Header({
-  locale,
-  promo,
-  language,
-  toggleLanguage,
-}: {
-  locale: Locale;
-  promo: string;
-  language: string;
-  toggleLanguage: () => void;
-}) {
-  return (
-    <View style={styles.header}>
-      <View style={styles.logo}>
-        <Text style={styles.logoMark}>H</Text>
-      </View>
-      <View style={styles.headerMain}>
-        <Text style={styles.brand}>Holiwyn</Text>
-        <Text style={styles.subBrand}>{locale === "zh" ? "利云体育" : "World Cup markets"}</Text>
-      </View>
-      <Pressable style={styles.langButton} onPress={toggleLanguage}>
-        <Text style={styles.langText}>{language}</Text>
-      </Pressable>
-      <Pressable style={styles.promoButton}>
-        <Text style={styles.promoText}>{promo}</Text>
-      </Pressable>
-      <Pressable style={styles.bell}>
-        <Ionicons name="notifications-outline" color="#f8fafc" size={20} />
-      </Pressable>
-    </View>
   );
 }
 
