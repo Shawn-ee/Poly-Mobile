@@ -4051,8 +4051,8 @@ Technical debt added:
 Technical debt resolved:
 - Search users can now prioritize live markets instead of relying on a single static result order.
 Result: Passed Cycle 081 QA. Mobile typecheck, focused Search sort smoke, visual screenshot review, and mobile API tests pass.
-Commit: Pending branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `4a653f0` (`Add Holiwyn search sort controls`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `be2695b`.
 Next cycle: Cycle 082 should continue search/discovery parity or add a richer market detail/trading affordance.
 Harnesses run:
 - Emulator Runtime Harness
