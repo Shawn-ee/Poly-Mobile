@@ -1164,8 +1164,8 @@ Technical debt added:
 Technical debt resolved:
 - TD-014: Removed the old inline `FeaturedFuture` function from `App.tsx` with a narrow, encoding-safe cleanup.
 Result: Passed Cycle 027 QA. The extracted featured futures component remains active and the deep smoke flow is unchanged.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge after commit.
+Commit: cycle branch HEAD (`Remove stale Holiwyn featured future code`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 028 should continue Home decomposition or add richer portfolio/open-position detail.
 Harnesses run:
 - QA Smoke Harness
