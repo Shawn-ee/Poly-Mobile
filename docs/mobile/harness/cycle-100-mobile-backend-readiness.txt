@@ -1,0 +1,17 @@
+MOBILE BACKEND READINESS
+Date: 2026-07-01
+Command: npm run mobile:backend-readiness
+
+PASS Docker CLI available: Docker version 29.2.0, build 0b9d198
+WARN Docker daemon is not reachable. Start Docker Desktop before starting local Postgres.
+PASS Compose file found.
+DATABASE_URL source: .env
+DATABASE_URL target: postgresql://postgres:[redacted]@localhost:5432/polymarket?schema=public
+DATABASE target parts: user=postgres host=localhost port=5432 database=polymarket
+WARN Database TCP port is not reachable at localhost:5432.
+PASS DATABASE_URL points at the local docker-compose port.
+
+Next steps reported by harness:
+1. Run npm run mobile:backend-readiness:start if local Postgres should be started.
+2. Run npm run db:push or npm run db:migrate when schema setup is needed.
+3. Run npm run mobile:dev-credential after database readiness passes.
