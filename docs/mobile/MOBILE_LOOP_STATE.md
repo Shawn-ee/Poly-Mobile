@@ -3028,8 +3028,8 @@ Technical debt added:
 Technical debt resolved:
 - Search zero-result state now has a focused emulator smoke that avoids `adb input text`.
 Result: Passed Cycle 059 QA. Focused search smoke verifies the zero-result Search state through a launch query; normal deep smoke still verifies the full app path.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `e5f17ca` (`Add Holiwyn focused search smoke`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `8ff4b0a`.
 Next cycle: Cycle 060 should start server-mode fixture proof or continue replacing keyboard entry in the main deep smoke.
 Harnesses run:
 - QA Smoke Harness
