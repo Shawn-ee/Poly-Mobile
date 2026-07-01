@@ -4368,8 +4368,8 @@ Technical debt added:
 Technical debt resolved:
 - Futures list outcome-to-ticket path now has focused emulator evidence, not only featured future coverage.
 Result: Passed Cycle 088 QA. Mobile typecheck, focused Futures list trade smoke, visual screenshot review, and mobile API tests pass.
-Commit: Pending branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `4170349` (`Add Holiwyn futures list trade smoke`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `928a525`.
 Next cycle: Cycle 089 should continue Futures trading proof, likely mock order placement from Futures list ticket.
 Harnesses run:
 - Emulator Runtime Harness
