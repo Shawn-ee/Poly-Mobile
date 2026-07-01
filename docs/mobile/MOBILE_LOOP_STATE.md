@@ -2404,8 +2404,8 @@ Technical debt added:
 Technical debt resolved:
 - Server-mode Portfolio failures no longer stay silent; users get a visible unavailable state with local fake-token fallback copy.
 Result: Passed Cycle 049 QA. Mock deep smoke remains stable and server-mode status wiring typechecks.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Show Holiwyn portfolio sync status`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 050 should continue selector-driven event/ticket opening or add server-mode order failure handling.
 Harnesses run:
 - QA Smoke Harness
