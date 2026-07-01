@@ -255,6 +255,31 @@ Harness evidence:
 - `docs/mobile/harness/cycle-022-holiwyn-search.xml`
 Bugs: None found.
 
+### Cycle 023
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed after recovery. Deep smoke types `zzzz` into Search and verifies the zero-result state.
+Screenshots:
+- `docs/mobile/screenshots/cycle-023-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-023-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-023-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-023-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-023-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-023-holiwyn-search-query.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-023-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-023-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-023-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-023-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-023-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-023-holiwyn-search-query.xml`
+Bugs fixed:
+- Emulator stylus handwriting intercepted ADB text input; smoke now disables soft input for Search while preserving normal app keyboard behavior outside smoke.
+
 ### Cycle 014
 
 Date: 2026-07-01

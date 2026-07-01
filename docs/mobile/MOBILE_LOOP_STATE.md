@@ -924,6 +924,53 @@ Harnesses run:
 - Review Harness
 Harness failures: None.
 
+### Cycle 023
+
+Date: 2026-07-01
+Branch: mobile/cycle-023
+Goal: Add typed-query Search harness coverage for zero-result filtering.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No intended production UI changes. Smoke mode disables soft input on Search to let ADB text enter the field reliably.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `mobile/src/components/SearchScreen.tsx`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-023-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-023-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-023-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-023-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-023-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-023-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-023-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-023-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-023-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-023-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-023-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-023-holiwyn-search-query.xml`
+Bugs found:
+- Android emulator stylus handwriting intercepted ADB text input before the Search field could receive it.
+Technical debt added:
+- TD-012: Search typed-query smoke uses a smoke-only soft-input flag because emulator handwriting intercepts ADB text.
+Technical debt resolved:
+- Search deep smoke now proves the query field can enter a zero-result state and show `Clear`.
+Result: Passed Cycle 023 QA after Recovery Harness. Search query behavior is now explicitly verified.
+Commit: cycle branch HEAD (`Add Holiwyn mobile typed search smoke`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 024 should improve live market refresh/state behavior or continue Home component extraction, then write heartbeat after merge.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Recovery Harness
+- Review Harness
+Harness failures:
+- Initial typed-query smoke failed because emulator handwriting captured ADB text. Added a smoke-only `EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT` path and reran successfully.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
