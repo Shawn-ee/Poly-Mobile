@@ -3625,8 +3625,8 @@ Technical debt added:
 Technical debt resolved:
 - Holiwyn now has a first-class user account/login entry point instead of only Portfolio serving as a user area.
 Result: Passed Cycle 072 QA after harness assertion recovery. Mobile typecheck, focused Account smoke, visual screenshot review, and mobile API tests pass.
-Commit: `PENDING`
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `8caf073` (`Add Holiwyn account entry point`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `627a665`.
 Next cycle: Cycle 073 should deepen Account/profile behavior or add another Polymarket-like market discovery/trading detail while keeping wallet deposit/withdraw untouched.
 Harnesses run:
 - Emulator Runtime Harness
