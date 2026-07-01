@@ -1352,3 +1352,18 @@ Findings:
 - Mobile typecheck, focused Portfolio closed-count smoke, and mobile API request tests passed.
 Decision: Approve Cycle 094 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 095
+
+Date: 2026-07-01
+Branch: mobile/cycle-095
+Reviewer: Lead/Reviewer pass
+Scope: Portfolio compact count grid.
+Findings:
+- P1: Open positions, Recent activity, and Closed trades now render as a compact three-tile grid.
+- P1: Focused smoke still verifies the Futures buy/close flow and closed-state counts after the layout change.
+- P1: Screenshot evidence shows `0`, `2`, and `1` count values fitting without overlap in the first viewport.
+- P2: Count values remain local activity-state based until server-backed portfolio history is fully available.
+- Mobile typecheck, focused Portfolio closed-count smoke, and mobile API request tests passed.
+Decision: Approve Cycle 095 for local commit/merge after scoped diff review.
+Merge approved: Yes

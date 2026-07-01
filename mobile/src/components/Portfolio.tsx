@@ -145,17 +145,19 @@ export function Portfolio({
           </View>
         </View>
       )}
-      <View accessibilityLabel="portfolio-position-count" testID="portfolio-position-count" style={styles.positionCountCard}>
-        <Text style={styles.positionCountLabel}>{t.openPositions}</Text>
-        <Text style={styles.positionCountValue}>{positions.length}</Text>
-      </View>
-      <View accessibilityLabel="portfolio-activity-count" testID="portfolio-activity-count" style={styles.positionCountCard}>
-        <Text style={styles.positionCountLabel}>{t.activityCount}</Text>
-        <Text style={styles.positionCountValue}>{activities.length}</Text>
-      </View>
-      <View accessibilityLabel="portfolio-closed-count" testID="portfolio-closed-count" style={styles.positionCountCard}>
-        <Text style={styles.positionCountLabel}>{t.closedTrades}</Text>
-        <Text style={styles.positionCountValue}>{closedActivityCount}</Text>
+      <View style={styles.countGrid}>
+        <View accessibilityLabel="portfolio-position-count" testID="portfolio-position-count" style={styles.countTile}>
+          <Text style={styles.positionCountLabel}>{t.openPositions}</Text>
+          <Text style={styles.positionCountValue}>{positions.length}</Text>
+        </View>
+        <View accessibilityLabel="portfolio-activity-count" testID="portfolio-activity-count" style={styles.countTile}>
+          <Text style={styles.positionCountLabel}>{t.activityCount}</Text>
+          <Text style={styles.positionCountValue}>{activities.length}</Text>
+        </View>
+        <View accessibilityLabel="portfolio-closed-count" testID="portfolio-closed-count" style={styles.countTile}>
+          <Text style={styles.positionCountLabel}>{t.closedTrades}</Text>
+          <Text style={styles.positionCountValue}>{closedActivityCount}</Text>
+        </View>
       </View>
       {positions.length === 0 ? (
         <View style={styles.emptyCard}>
@@ -302,8 +304,9 @@ const styles = StyleSheet.create({
   syncTextBlock: { flex: 1 },
   syncTitle: { color: "#f8fafc", fontWeight: "900" },
   syncBody: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
-  positionCountCard: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 14, paddingVertical: 12, borderRadius: 12, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247", marginTop: 12 },
-  positionCountLabel: { color: "#94a3b8", fontWeight: "900" },
+  countGrid: { flexDirection: "row", gap: 8, marginTop: 12 },
+  countTile: { flex: 1, minHeight: 84, justifyContent: "space-between", paddingHorizontal: 10, paddingVertical: 10, borderRadius: 12, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
+  positionCountLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "900" },
   positionCountValue: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
   emptyCard: { alignItems: "center", padding: 28, borderRadius: 16, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginTop: 16 },
   emptyTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "900", marginTop: 10 },

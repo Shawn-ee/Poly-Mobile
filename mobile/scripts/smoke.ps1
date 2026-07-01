@@ -513,9 +513,13 @@ try {
       Assert-HierarchyContains -Path $portfolioClosedReadyHierarchy -Expected @("Close position", "World Cup winner", "France")
       Invoke-TapHierarchyNode -Path $portfolioClosedReadyHierarchy -Identifier "close-position-" -StartsWith
       Start-Sleep -Seconds 1
+      $portfolioClosedActivityHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-closed-count-activity.xml"
+      Assert-HierarchyContains -Path $portfolioClosedActivityHierarchy -Expected @("Recent activity", "Closed", "Bought", "World Cup winner")
+      & $adb -s $Device shell input swipe 540 860 540 1460 300 | Out-Null
+      Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-portfolio-closed-count-closed.png"
       $portfolioClosedClosedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-closed-count-closed.xml"
-      Assert-HierarchyContains -Path $portfolioClosedClosedHierarchy -Expected @("Portfolio", "Open positions", "Recent activity", "Closed trades", "1", "2", "Closed", "World Cup winner")
+      Assert-HierarchyContains -Path $portfolioClosedClosedHierarchy -Expected @("Portfolio", "Open positions", "Recent activity", "Closed trades", "0", "1", "2", "No positions yet")
       return
     }
 
