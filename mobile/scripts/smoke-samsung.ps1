@@ -2,7 +2,8 @@ param(
   [string]$Device = "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
   [int]$Port = 8108,
   [string]$ExpoHost = "",
-  [switch]$FutureListClose
+  [switch]$FutureListClose,
+  [switch]$FutureListOrder
 )
 
 $ErrorActionPreference = "Stop"
@@ -42,4 +43,8 @@ Write-Host "Samsung smoke target: $Device"
 Write-Host "Expo host: $resolvedExpoHost"
 Write-Host "Expo port: $Port"
 
-& "$PSScriptRoot\smoke.ps1" -Deep -FutureListClose -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
+if ($FutureListOrder) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -FutureListOrder -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
+} else {
+  & "$PSScriptRoot\smoke.ps1" -Deep -FutureListClose -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
+}

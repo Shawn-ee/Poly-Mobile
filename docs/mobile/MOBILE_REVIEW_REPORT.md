@@ -2029,3 +2029,18 @@ Findings:
 - Samsung smoke wrapper, mobile typecheck, and mobile API/history tests passed.
 Decision: Approve Cycle 139 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 140
+
+Date: 2026-07-01
+Branch: mobile/cycle-140
+Reviewer: Lead/Reviewer pass
+Scope: Samsung order-placement smoke wrapper.
+Findings:
+- P1: `smoke-samsung.ps1` now supports `-FutureListOrder`, allowing the real phone to prove the order-placement path instead of only closed-history display.
+- P1: `npm run smoke:samsung:future-list-order` targets the Samsung S23, detects the LAN Expo host, opens the France World Cup winner ticket, places a mock order, and verifies Portfolio confirmation/activity.
+- P1: Captured Samsung evidence covers ticket, order confirmation, and Recent activity screens.
+- P2: This remains mock-order proof through Expo Go; server-mode order placement still needs live backend/API-key verification.
+- Samsung order smoke, mobile typecheck, and mobile API/history tests passed.
+Decision: Approve Cycle 140 for local commit/merge after scoped diff review.
+Merge approved: Yes
