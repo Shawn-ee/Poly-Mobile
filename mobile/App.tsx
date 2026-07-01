@@ -40,6 +40,7 @@ const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.
 const DEFAULT_API_KEY = process.env.EXPO_PUBLIC_API_KEY || "";
 const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? "server" : "mock";
 const SAVED_EVENTS_STORAGE_KEY = "holiwyn.savedEventIds.v1";
+const LANGUAGE_STORAGE_KEY = "holiwyn.language.v1";
 const SMOKE_OPEN_ORDER: OpenOrder = {
   id: "smoke-open-order",
   title: "Mexico vs. Ecuador winner",
@@ -53,6 +54,7 @@ const SMOKE_OPEN_ORDER: OpenOrder = {
 type MainTab = "home" | "live" | "portfolio" | "search" | "account";
 export default function App() {
   const [locale, setLocale] = useState<Locale>("en");
+  const [localeHydrated, setLocaleHydrated] = useState(false);
   const [mainTab, setMainTab] = useState<MainTab>("home");
   const [worldCupTab, setWorldCupTab] = useState<WorldCupTab>("games");
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
@@ -104,6 +106,24 @@ export default function App() {
   }, [savedEventIds, savedEventIdsHydrated]);
 
   useEffect(() => {
+    AsyncStorage.getItem(LANGUAGE_STORAGE_KEY)
+      .then((stored) => {
+        if (mounted.current && (stored === "en" || stored === "zh")) {
+          setLocale(stored);
+        }
+      })
+      .catch(() => undefined)
+      .finally(() => {
+        if (mounted.current) setLocaleHydrated(true);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!localeHydrated) return;
+    AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, locale).catch(() => undefined);
+  }, [locale, localeHydrated]);
+
+  useEffect(() => {
     Linking.getInitialURL().then((url) => {
       if (!mounted.current || !url) return;
       setForceOrderFailure(url.includes("forceOrderFailure=1"));
@@ -127,6 +147,14 @@ export default function App() {
       if (url.includes("forceAccountSignIn=1")) {
         setForceAccountSignedIn(true);
         setMainTab("account");
+      }
+      if (url.includes("forceChinese=1")) {
+        setLocale("zh");
+        AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, "zh").catch(() => undefined);
+      }
+      if (url.includes("forceEnglish=1")) {
+        setLocale("en");
+        AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, "en").catch(() => undefined);
       }
       if (url.includes("forceSearch=1")) {
         setMainTab("search");

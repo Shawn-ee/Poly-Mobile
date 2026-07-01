@@ -16,6 +16,7 @@ param(
   [switch]$Account,
   [switch]$AccountLogin,
   [switch]$AccountPersistence,
+  [switch]$LanguagePersistence,
   [switch]$HomeFilter,
   [switch]$HomeSaved,
   [switch]$SavedPersistence,
@@ -182,11 +183,11 @@ try {
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
   }
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $LanguagePersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $LanguagePersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
@@ -200,6 +201,8 @@ try {
     "exp://10.0.2.2:$Port/--/?forceHomeQuery=clean"
   } elseif ($AccountPersistence) {
     "exp://10.0.2.2:$Port/--/?forceAccountSignIn=1"
+  } elseif ($LanguagePersistence) {
+    "exp://10.0.2.2:$Port/--/?forceChinese=1"
   } elseif ($Account -or $AccountLogin) {
     "exp://10.0.2.2:$Port/--/?forceAccount=1"
   } elseif ($SavedPersistence) {
@@ -209,7 +212,7 @@ try {
   } else {
     "exp://10.0.2.2:$Port"
   }
-  if ($AccountPersistence -or $SavedPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty) {
+  if ($AccountPersistence -or $LanguagePersistence -or $SavedPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty) {
     & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
     Start-Sleep -Seconds 2
   }
@@ -226,6 +229,8 @@ try {
     @("Holiwyn", "Search World Cup markets", "clean", "Games")
   } elseif ($AccountPersistence) {
     @("Holiwyn", "Account", "Signed in", "Demo balance")
+  } elseif ($LanguagePersistence) {
+    @("Holiwyn", "EN")
   } elseif ($Account -or $AccountLogin) {
     @("Holiwyn", "Account", "Signed out", "Demo balance")
   } else {
@@ -307,6 +312,22 @@ try {
         $signedOutHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-signed-out.xml"
         Assert-HierarchyContains -Path $signedOutHierarchy -Expected @("Signed out", "Continue with phone", "Continue with email", "Mock login ready.")
       }
+      return
+    }
+
+    if ($LanguagePersistence) {
+      Save-Screenshot -Name "cycle-current-holiwyn-language-persistence-seeded.png"
+      $languageSeededHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-language-persistence-seeded.xml"
+      Assert-HierarchyContains -Path $languageSeededHierarchy -Expected @("Holiwyn", "EN")
+      Start-Sleep -Seconds 2
+      & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
+      Start-Sleep -Seconds 2
+      $languageRestartUrl = "exp://10.0.2.2:$Port"
+      & $adb -s $Device shell am start -a android.intent.action.VIEW -d $languageRestartUrl | Out-Null
+      Start-Sleep -Seconds 10
+      Save-Screenshot -Name "cycle-current-holiwyn-language-persistence-restored.png"
+      $languageRestoredHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-language-persistence-restored.xml"
+      Assert-HierarchyContains -Path $languageRestoredHierarchy -Expected @("Holiwyn", "EN")
       return
     }
 

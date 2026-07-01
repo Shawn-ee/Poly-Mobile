@@ -1397,3 +1397,18 @@ Findings:
 - Mobile typecheck, focused account-persistence smoke, and mobile API request tests passed.
 Decision: Approve Cycle 097 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 098
+
+Date: 2026-07-01
+Branch: mobile/cycle-098
+Reviewer: Lead/Reviewer pass
+Scope: Language preference persistence.
+Findings:
+- P1: Language preference now hydrates from and persists to AsyncStorage with a startup hydration guard.
+- P1: Harness-only `forceChinese` and `forceEnglish` deep links allow deterministic language-state proof.
+- P1: Focused smoke clears Expo data, seeds Chinese, restarts the app, and verifies restored Chinese mode through ASCII-safe hierarchy checks plus visual screenshot proof.
+- P2: Preference is local-only until backend profile sync exists.
+- Mobile typecheck, focused language-persistence smoke, and mobile API request tests passed.
+Decision: Approve Cycle 098 for local commit/merge after scoped diff review.
+Merge approved: Yes

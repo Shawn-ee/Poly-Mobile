@@ -128,3 +128,4 @@ Status:
 | GAP-106 | Portfolio | Compact count grid | P1 | Yes | Verified | Cycle 095 compacts Open positions, Recent activity, and Closed trades into a three-tile grid and verifies the closed-state counts on emulator. |
 | GAP-107 | Saved markets | Local saved-market persistence | P1 | Yes | Verified | Cycle 096 persists saved market ids with AsyncStorage and verifies a seeded saved market restores after app restart on emulator. |
 | GAP-108 | Account/Login | Local mock session persistence | P1 | Yes | Verified | Cycle 097 persists mock account sign-in state with AsyncStorage and verifies the signed-in Account screen restores after app restart. |
+| GAP-109 | Localization | Local language preference persistence | P1 | Yes | Verified | Cycle 098 persists the selected language with AsyncStorage and verifies Chinese Home restores after app restart on emulator. |
