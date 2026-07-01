@@ -29,6 +29,7 @@ try {
   }
 
   & $adb -s $Device reverse "tcp:$Port" "tcp:$Port" | Out-Null
+  & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
 
   $expoLog = Join-Path $MobileRoot "mobile-smoke-expo.log"
   $expoErrorLog = Join-Path $MobileRoot "mobile-smoke-expo-error.log"

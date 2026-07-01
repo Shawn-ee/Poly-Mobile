@@ -38,3 +38,4 @@ Status:
 | GAP-016 | Architecture | Bottom navigation component | P2 | Yes | Verified | Cycle 006 extracted bottom tabs into `mobile/src/components/BottomTabs.tsx`. |
 | GAP-017 | Architecture | Trade Ticket component | P1 | Yes | Verified | Cycle 007 extracted Trade Ticket into `mobile/src/components/TradeTicket.tsx` and verified mock order flow. |
 | GAP-018 | Architecture | Portfolio component | P1 | Yes | Verified | Cycle 008 extracted Portfolio into `mobile/src/components/Portfolio.tsx` and verified fake balance/positions. |
+| GAP-019 | Harness | Reset app state before smoke | P1 | No | Verified | Cycle 009 force-stops Expo Go before smoke launch so screenshots start from Home state. |

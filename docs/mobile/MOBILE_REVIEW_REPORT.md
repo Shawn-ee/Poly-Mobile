@@ -128,3 +128,16 @@ Findings:
 - `npm run typecheck`, `npm run smoke`, and manual Portfolio QA passed.
 Decision: Approve Cycle 008 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 009
+
+Date: 2026-07-01
+Branch: mobile/cycle-009
+Reviewer: Lead/Reviewer pass
+Scope: Smoke harness app-state reset.
+Findings:
+- P2: Force-stopping Expo Go before smoke launch prevents screenshots from inheriting prior in-memory navigation/order state.
+- P2: Harness still captures only one screen; future harness can add scripted taps for ticket and Portfolio.
+- `npm run smoke` passed and screenshot confirmed Home-state rendering.
+Decision: Approve Cycle 009 for local commit/merge after scoped diff review.
+Merge approved: Yes
