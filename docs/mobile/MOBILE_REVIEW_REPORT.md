@@ -636,3 +636,17 @@ Findings:
 - `npm run typecheck` and final `npm run smoke:deep` passed.
 Decision: Approve Cycle 045 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 046
+
+Date: 2026-07-01
+Branch: mobile/cycle-046
+Reviewer: Lead/Reviewer pass
+Scope: Trade Ticket amount preset controls.
+Findings:
+- P1: Trade Ticket now exposes common fake-token amount presets for 100, 500, and 1,000 USDT.
+- P1: Presets preserve the existing manual amount, Max sizing, estimated cost/payout, and mock order path.
+- P2: The harness still relies on coordinates for ticket actions; the Max coordinate was adjusted after the preset row changed layout.
+- `npm run typecheck` and final `npm run smoke:deep` passed.
+Decision: Approve Cycle 046 for local commit/merge after scoped diff review.
+Merge approved: Yes

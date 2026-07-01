@@ -2178,6 +2178,63 @@ Open blockers: None for autonomous progress.
 Risks: Ticket Max and several navigation actions still rely on coordinate taps; server-mode trading and Portfolio data are not yet end-to-end verified against an authenticated backend session.
 Next three likely cycles: Add ticket amount presets, add server-mode error/empty states, and reduce coordinate-based harness actions.
 
+### Cycle 046
+
+Date: 2026-07-01
+Branch: mobile/cycle-046
+Goal: Add amount preset controls to the trade ticket.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Trade Ticket now shows 100, 500, and 1,000 USDT preset chips below the amount input while preserving the Max sizing path.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/src/components/TradeTicket.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-046-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-046-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-046-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-046-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-046-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-046-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-046-holiwyn-ticket-max.xml`
+- `docs/mobile/harness/cycle-046-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-046-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-046-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-046-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-046-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-046-holiwyn-search-query.xml`
+Bugs found:
+- First smoke attempt tapped the amount input instead of Max after the preset row changed vertical layout; fixed the harness coordinate and reran to pass.
+Technical debt added:
+- Amount presets and Max are still verified through coordinate taps; selector-driven tapping remains a future harness improvement.
+Technical debt resolved:
+- Ticket users can now quickly choose common fake-token sizes without typing.
+Result: Passed Cycle 046 QA. Deep smoke verifies amount presets, Max sizing, max-sized close balance, and the full Live/Search path.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 047 should add server-mode error/empty states or start selector-driven harness actions.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- One recoverable Max coordinate miss before final pass.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

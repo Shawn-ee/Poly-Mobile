@@ -867,3 +867,26 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-045-holiwyn-search-query.png`
 Bugs:
 - Initial Max tap coordinate hit the wrong ticket control; adjusted the harness coordinate and final rerun passed.
+
+### Cycle 046
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Trade Ticket now has 100, 500, and 1,000 USDT preset controls while preserving Max sizing and the full event-detail/trade/Portfolio/Live/Search smoke path.
+Screenshots:
+- `docs/mobile/screenshots/cycle-046-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-046-holiwyn-search-query.png`
+Bugs:
+- Initial Max tap coordinate hit the amount input after the preset row shifted layout; adjusted the harness coordinate and final rerun passed.
