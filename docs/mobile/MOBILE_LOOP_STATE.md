@@ -2646,8 +2646,8 @@ Technical debt added:
 Technical debt resolved:
 - Server-mode open orders are no longer read-only in the mobile Portfolio surface.
 Result: Passed Cycle 053 QA. Deep smoke verifies the normal event-market trading, Portfolio, close-position, Live, and Search paths still pass after adding cancel controls.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `8669771` (`Add Holiwyn open order cancel affordance`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `9f26c17`.
 Next cycle: Cycle 054 should add an emulator-visible open-order cancel fixture/harness or continue reducing remaining device actions.
 Harnesses run:
 - QA Smoke Harness
