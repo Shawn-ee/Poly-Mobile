@@ -6430,9 +6430,9 @@ Technical debt added:
 Technical debt resolved:
 - Samsung APK/dev-build readiness is now explicit and locally checkable instead of only documented as a future plan.
 Result: Passed Cycle 134 QA. Android readiness check, mobile typecheck, and mobile API/profile-preference/activity-metric tests pass.
-Commit: Pending.
-Merged: Pending.
-Next cycle: Cycle 135 should attempt APK/dev-build tooling discovery or continue preparing Samsung install automation without depending on Expo Go.
+Commit: `44b57b2` (`Prepare Android APK readiness checks`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `21818c5`.
+Next cycle: Cycle 135 should run the Holiwyn smoke proof through Expo Go on the Samsung S23 and keep the emulator as fallback only.
 Harnesses run:
 - Android Dev Build Readiness Harness
 - Mobile Typecheck Harness
