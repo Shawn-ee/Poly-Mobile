@@ -34,6 +34,8 @@ export function HomeScreen({
   openEvent,
   openTicket,
   futures,
+  savedEventIds,
+  toggleSavedEvent,
 }: {
   locale: Locale;
   t: HomeScreenCopy;
@@ -45,26 +47,16 @@ export function HomeScreen({
   openEvent: (event: Event) => void;
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
   futures: Market[];
+  savedEventIds: Set<string>;
+  toggleSavedEvent: (event: Event) => void;
 }) {
   const [homeFilter, setHomeFilter] = useState<HomeFilter>("all");
-  const [savedEventIds, setSavedEventIds] = useState<Set<string>>(() => new Set());
   const homeFilters: Array<[HomeFilter, string]> = [
     ["all", t.searchAll],
     ["live", t.searchLive],
     ["today", t.today],
     ["saved", t.saved],
   ];
-  const toggleSavedEvent = (event: Event) => {
-    setSavedEventIds((current) => {
-      const next = new Set(current);
-      if (next.has(event.id)) {
-        next.delete(event.id);
-      } else {
-        next.add(event.id);
-      }
-      return next;
-    });
-  };
   const visibleEvents = useMemo(
     () =>
       homeFilter === "live"

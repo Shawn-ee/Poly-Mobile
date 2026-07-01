@@ -1082,3 +1082,18 @@ Findings:
 - Mobile typecheck, focused Home card stats smoke, and mobile API request tests passed.
 Decision: Approve Cycle 076 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 077
+
+Date: 2026-07-01
+Branch: mobile/cycle-077
+Reviewer: Lead/Reviewer pass
+Scope: Saved Search integration.
+Findings:
+- P1: Saved event state is now owned by `App.tsx`, so Home and Search share the same session watchlist.
+- P1: Search adds a Saved filter and shows saved-event star controls through the existing market list component.
+- P1: Focused Saved Search smoke saves Mexico on Home, opens Search, taps Saved, and verifies one saved result.
+- P2: Saved state remains local/session-only until account persistence is integrated.
+- Mobile typecheck, focused Saved Search smoke, and mobile API request tests passed.
+Decision: Approve Cycle 077 for local commit/merge after scoped diff review.
+Merge approved: Yes
