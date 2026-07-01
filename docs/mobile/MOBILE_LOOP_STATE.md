@@ -283,7 +283,7 @@ Technical debt resolved:
 - Partial TD around `mobile/App.tsx` size: bottom navigation is now isolated.
 Result: Passed Cycle 006 QA. Bottom navigation behavior remains stable after component extraction.
 Commit: cycle branch HEAD (`Extract Holiwyn mobile bottom tabs`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 007 should extract Trade Ticket or Portfolio into a focused component, then verify mock order flow.
 Harnesses run:
 - QA Smoke Harness
