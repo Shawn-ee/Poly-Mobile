@@ -639,3 +639,22 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-034-holiwyn-search.png`
 - `docs/mobile/screenshots/cycle-034-holiwyn-search-query.png`
 Bugs: None found.
+
+### Cycle 035
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Deep smoke now taps `Close position` and verifies the fake balance is credited back with an empty Portfolio state.
+Screenshots:
+- `docs/mobile/screenshots/cycle-035-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-035-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-035-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-035-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-035-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-035-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-035-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-035-holiwyn-search-query.png`
+Bugs: None found.

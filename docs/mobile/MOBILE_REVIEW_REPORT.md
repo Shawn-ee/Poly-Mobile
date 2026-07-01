@@ -482,3 +482,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 034 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 035
+
+Date: 2026-07-01
+Branch: mobile/cycle-035
+Reviewer: Lead/Reviewer pass
+Scope: Close-position behavior smoke verification.
+Findings:
+- P1: Deep smoke now taps `Close position` and verifies credited fake balance plus `No positions yet`, closing the Cycle 034 behavior gap.
+- P1: The behavior remains fake-token only and does not touch deposit, withdraw, or real-money paths.
+- P2: The harness still uses a coordinate tap for this action; selector-based automation remains useful future work.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 035 for local commit/merge after scoped diff review.
+Merge approved: Yes

@@ -1543,6 +1543,56 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 035
+
+Date: 2026-07-01
+Branch: mobile/cycle-035
+Goal: Verify the fake-token close-position behavior in deep smoke.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No visible app code changes; the deep smoke harness now closes the mock Portfolio position and verifies the resulting empty state.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-035-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-035-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-035-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-035-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-035-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-035-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-035-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-035-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-035-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-035-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-035-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-035-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-035-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-035-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-035-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-035-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Close-position behavior is now tapped and verified, not only visible.
+Result: Passed Cycle 035 QA. Deep smoke verifies the close action credits fake balance and returns Portfolio to `No positions yet`.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 036 should continue copy/localization extraction or add another trading/position affordance, then write the Cycle 034-036 heartbeat.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
