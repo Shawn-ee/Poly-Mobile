@@ -81,3 +81,4 @@ Status:
 | GAP-059 | Harness | Selector-driven navigation and close taps | P1 | No | Verified | Cycle 048 extends hierarchy taps to close-position, Live/Search tabs, Live refresh, and Search input. |
 | GAP-060 | Portfolio | Server sync status state | P1 | No | Verified | Cycle 049 adds server-mode syncing/synced/unavailable Portfolio status copy while keeping mock smoke hidden. |
 | GAP-061 | Harness | Selector-driven event opening | P1 | No | Verified | Cycle 050 adds stable event/outcome ids and verifies event detail plus event-market ticket opening by selector. |
+| GAP-062 | Trading ticket | Order failure feedback | P1 | No | Verified | Cycle 051 catches failed ticket submissions and keeps the ticket open with localized retry copy. |
