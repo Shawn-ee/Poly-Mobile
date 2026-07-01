@@ -23,6 +23,7 @@ type TradeTicketCopy = {
   averagePrice: string;
   impliedOdds: string;
   estimatedPayout: string;
+  potentialProfit: string;
   placeMockOrder: string;
   placeBuyOrder: string;
   placeSellOrder: string;
@@ -76,6 +77,7 @@ export function TradeTicket({
   const impliedOdds = ticket.outcome.probability > 0 ? 100 / ticket.outcome.probability : 0;
   const estimatedShares = averagePrice > 0 ? numericAmount / averagePrice : 0;
   const estimatedPayout = ticket.outcome.probability > 0 ? numericAmount * (100 / ticket.outcome.probability) : 0;
+  const potentialProfit = Math.max(estimatedPayout - Math.min(numericAmount, balance), 0);
   const primaryLabel = side === "buy" ? t.placeBuyOrder : t.placeSellOrder;
   const costLabel = side === "buy" ? t.estimatedCost : t.estimatedProceeds;
   const amountPresets = [100, 500, 1000];
@@ -164,6 +166,10 @@ export function TradeTicket({
           <View style={styles.estimateLine}>
             <Text style={styles.estimateLabel}>{t.estimatedPayout}</Text>
             <Text style={styles.estimateValue}>{money(estimatedPayout)}</Text>
+          </View>
+          <View style={styles.estimateLine}>
+            <Text style={styles.estimateLabel}>{t.potentialProfit}</Text>
+            <Text style={styles.estimateValue}>{money(potentialProfit)}</Text>
           </View>
           {orderError && (
             <View accessibilityLabel="ticket-order-error" testID="ticket-order-error" style={styles.errorCard}>
