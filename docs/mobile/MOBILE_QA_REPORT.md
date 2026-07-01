@@ -2151,3 +2151,20 @@ Bugs:
 - None found.
 Visual QA:
 - Not applicable; no UI changed in this cycle.
+
+### Cycle 105
+
+Date: 2026-07-01
+Device: Mobile API/typecheck harness
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run test:mobile-api`
+Result: Passed. Runtime profile preference sync is now wired behind server-mode and API-key guards, while mock mode remains local-only.
+Screenshots:
+- None; this was a guarded runtime/backend seam with no intended UI change.
+Harness evidence:
+- `npm run test:mobile-api` passed with 6 tests across API request shape and profile-preference mapper coverage.
+Bugs:
+- None found.
+Visual QA:
+- Not applicable; no UI changed in this cycle.

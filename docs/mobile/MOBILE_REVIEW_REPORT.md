@@ -1501,3 +1501,18 @@ Findings:
 - Mobile typecheck and mobile API request tests passed.
 Decision: Approve Cycle 104 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 105
+
+Date: 2026-07-01
+Branch: mobile/cycle-105
+Reviewer: Lead/Reviewer pass
+Scope: Guarded runtime profile preference sync.
+Findings:
+- P1: App shell now attempts profile preference load/save only when server mode and an API key are both present.
+- P1: Loaded server preferences hydrate locale, ticket defaults, and saved market ids into local app state.
+- P1: Later local preference changes save through the typed profile preference service after the initial server load attempt finishes.
+- P2: Sync failures are intentionally silent in the app until a user-facing backend account/sync status is designed.
+- Mobile typecheck and mobile API/profile-preference service tests passed.
+Decision: Approve Cycle 105 for local commit/merge after scoped diff review.
+Merge approved: Yes
