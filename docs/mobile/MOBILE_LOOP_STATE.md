@@ -494,7 +494,7 @@ Technical debt resolved:
 - Event Detail no longer presents all markets as one flat list.
 Result: Passed Cycle 012 QA. Group labels render on Event Detail and outcome buttons remain available.
 Commit: cycle branch HEAD (`Group Holiwyn mobile event detail markets`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 013 should improve backend event title/team normalization or add a deeper scripted smoke flow.
 Harnesses run:
 - QA Smoke Harness
