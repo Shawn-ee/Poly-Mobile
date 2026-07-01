@@ -5616,8 +5616,8 @@ Technical debt added:
 Technical debt resolved:
 - Live order placement now has direct Android emulator proof instead of relying on non-live order harnesses.
 Result: Passed Cycle 116 QA. Mobile typecheck, focused emulator live-order smoke, and mobile API/profile-preference tests pass.
-Commit: `TBD` (`Verify Live order placement`)
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `d92436a` (`Verify Live order placement`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `6e3ac5a`.
 Next cycle: Cycle 117 should continue live trading polish, likely close-position proof from a live order or another live/detail trading affordance.
 Harnesses run:
 - Mobile Typecheck Harness
