@@ -116,8 +116,8 @@ function Wait-HierarchyContains {
     [string]$Name,
     [string[]]$Expected,
     [string]$RestartUrl = "",
-    [int]$Attempts = 5,
-    [int]$DelaySeconds = 4
+    [int]$Attempts = 8,
+    [int]$DelaySeconds = 5
   )
   for ($attempt = 1; $attempt -le $Attempts; $attempt++) {
     if ($RestartUrl -and $attempt -gt 1) {
@@ -128,6 +128,12 @@ function Wait-HierarchyContains {
       Assert-HierarchyContains -Path $path -Expected $Expected
       return $path
     } catch {
+      $hierarchy = Get-Content -Raw -Path $path
+      if ($RestartUrl -and $hierarchy -match "Something went wrong\.") {
+        & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
+        Start-Sleep -Seconds 1
+        & $adb -s $Device shell am start -a android.intent.action.VIEW -d $RestartUrl | Out-Null
+      }
       if ($attempt -eq $Attempts) {
         throw
       }

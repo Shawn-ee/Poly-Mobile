@@ -1216,3 +1216,18 @@ Findings:
 - Mobile typecheck, focused Search clear-query smoke, and mobile API request tests passed.
 Decision: Approve Cycle 085 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 086
+
+Date: 2026-07-01
+Branch: mobile/cycle-086
+Reviewer: Lead/Reviewer pass
+Scope: Expo launch recovery hardening.
+Findings:
+- P1: `Wait-HierarchyContains` now allows more launch attempts for cold Metro rebuilds.
+- P1: If Expo Go shows `Something went wrong.` during launch, the harness force-stops Expo Go and restarts the target URL before retrying.
+- P1: Focused Search clear-query smoke still passes with the hardened launch path.
+- P2: This improves smoke reliability but does not replace a future custom dev-client build.
+- Mobile typecheck, focused Search clear-query smoke, and mobile API request tests passed.
+Decision: Approve Cycle 086 for local commit/merge after scoped diff review.
+Merge approved: Yes
