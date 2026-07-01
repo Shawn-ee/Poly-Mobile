@@ -6468,8 +6468,8 @@ Technical debt added:
 Technical debt resolved:
 - Samsung S23 is now a working Holiwyn QA target for Expo Go smokes using the PC LAN Expo host.
 Result: Passed Cycle 135 QA. Samsung Expo Go closed-history smoke, mobile typecheck, and mobile API/profile-preference/activity-metric tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `3fa880f` (`Verify Samsung Expo smoke lane`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `488e690`.
 Next cycle: Cycle 136 should continue product/backend parity work using Samsung for visual proof where possible, while keeping APK/dev-build work as the longer-term stable test lane.
 Harnesses run:
 - Samsung Expo Go Closed-History Smoke Harness
