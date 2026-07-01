@@ -253,7 +253,7 @@ Technical debt added:
 Technical debt resolved: None.
 Result: Passed Cycle 005 QA. Shared `money` and `label` helpers now live under `mobile/src/presentation/`.
 Commit: cycle branch HEAD (`Extract Holiwyn mobile presentation helpers`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 006 should extract one visible component group from `App.tsx` or normalize localization strings into a dedicated file.
 Harnesses run:
 - QA Smoke Harness
