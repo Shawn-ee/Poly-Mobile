@@ -6620,8 +6620,8 @@ Technical debt added:
 Technical debt resolved:
 - Backend portfolio history rows no longer lose entry/current/P/L economics when mapped into mobile Portfolio activity.
 Result: Passed Cycle 139 QA. Mobile typecheck, mobile API/history tests, and Samsung timestamp smoke pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `19a4f61` (`Map backend history economics`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `c9c8be9`.
 Next cycle: Cycle 140 should continue backend-backed history/trading parity or add a Samsung proof for a high-value order placement flow.
 Harnesses run:
 - Mobile Typecheck Harness
