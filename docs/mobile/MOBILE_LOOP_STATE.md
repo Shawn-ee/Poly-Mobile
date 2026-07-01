@@ -722,7 +722,7 @@ Technical debt resolved:
 - Partial TD-011 progress: deep smoke now verifies Live and Search after coordinate navigation, reducing blind spots in the tab shell.
 Result: Passed Cycle 018 QA. Deep smoke now covers Home, Ticket, Portfolio, Live, and Search.
 Commit: cycle branch HEAD (`Extend Holiwyn mobile deep smoke tabs`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 019 should return to product work, likely richer search filtering UX or live market state refresh.
 Harnesses run:
 - QA Smoke Harness
