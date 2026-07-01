@@ -356,3 +356,17 @@ Findings:
 - `npm run typecheck` and final `npm run smoke:deep` passed.
 Decision: Approve Cycle 025 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 026
+
+Date: 2026-07-01
+Branch: mobile/cycle-026
+Reviewer: Lead/Reviewer pass after Recovery Harness
+Scope: Featured futures card component extraction.
+Findings:
+- P1: Home now uses a dedicated `FeaturedFuture` component for the top futures card while preserving the ticket-opening interaction.
+- P2: The old inline `FeaturedFuture` function remains as dead code because removing the encoded block created a noisy file rewrite during recovery; this is tracked as TD-014.
+- P2: The extracted component uses the existing Expo icon set for the trophy badge and keeps stable automation labels on outcomes.
+- `npm run typecheck` and final `npm run smoke:deep` passed.
+Decision: Approve Cycle 026 for local commit/merge after scoped diff review.
+Merge approved: Yes

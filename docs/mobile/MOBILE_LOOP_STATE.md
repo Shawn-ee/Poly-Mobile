@@ -1079,6 +1079,55 @@ Harnesses run:
 Harness failures:
 - First Cycle 025 deep smoke failed because the app waited on an unavailable backend request. Added a mobile API timeout and changed the harness to wait for the refreshed Live hierarchy, then reran successfully.
 
+### Cycle 026
+
+Date: 2026-07-01
+Branch: mobile/cycle-026
+Goal: Extract the featured World Cup futures card into a reusable component without changing the trading flow.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Home now renders the featured futures card through `mobile/src/components/FeaturedFuture.tsx`.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/FeaturedFuture.tsx`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-026-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-026-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-026-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-026-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-026-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-026-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-026-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-026-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-026-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-026-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-026-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-026-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-026-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-026-holiwyn-search-query.xml`
+Bugs found:
+- An initial attempt to remove the encoded inline card block normalized too much of `App.tsx`; Recovery Harness restored the file and used a safer alias-based extraction.
+Technical debt added:
+- TD-014: The old inline `FeaturedFuture` function remains in `App.tsx` as dead code until an encoding-safe cleanup cycle removes it.
+Technical debt resolved:
+- None.
+Result: Passed Cycle 026 QA after Recovery Harness. The Home featured card is rendered by the new component and deep smoke still proves ticket, portfolio, live refresh, and search paths.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge after commit.
+Next cycle: Cycle 027 should remove the dead inline featured-card function with an encoding-safe patch or continue Home screen decomposition, then write the next heartbeat after merge.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Recovery Harness
+- Review Harness
+Harness failures:
+- First edit path created a noisy full-file diff in `App.tsx`; restored the file, rewired the extracted component with a narrow diff, and reran typecheck/deep smoke successfully.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

@@ -14,6 +14,7 @@ import { PolyApi } from "./src/api";
 import { normalizeEventDetail } from "./src/adapters/worldCupAdapter";
 import { BottomTabs } from "./src/components/BottomTabs";
 import { EventDetail } from "./src/components/EventDetail";
+import { FeaturedFuture as FeaturedFutureCard } from "./src/components/FeaturedFuture";
 import { LiveScreen } from "./src/components/LiveScreen";
 import { FutureList, MarketList } from "./src/components/MarketLists";
 import { Portfolio, Position } from "./src/components/Portfolio";
@@ -351,7 +352,7 @@ function HomeScreen({
   return (
       <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
       <SportNav locale={locale} />
-      <FeaturedFuture locale={locale} futures={futures} openTicket={openTicket} />
+      <FeaturedFutureCard locale={locale} futures={futures} openTicket={openTicket} />
       <Text style={styles.sectionTitle}>{t.trending}</Text>
       <View style={styles.searchBox}>
         <Ionicons name="search" color="#94a3b8" size={20} />
