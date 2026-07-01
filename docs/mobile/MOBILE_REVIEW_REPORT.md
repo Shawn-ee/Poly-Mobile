@@ -1022,3 +1022,18 @@ Findings:
 - Mobile typecheck, focused Account smoke, and mobile API request tests passed.
 Decision: Approve Cycle 072 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 073
+
+Date: 2026-07-01
+Branch: mobile/cycle-073
+Reviewer: Lead/Reviewer pass
+Scope: Account mock sign-in state.
+Findings:
+- P1: Account phone/email controls now activate a local signed-in state with a Holiwyn Demo profile card.
+- P1: A sign-out action returns the screen to the signed-out login state without touching backend auth or wallet money movement.
+- P1: Focused Account Login smoke taps sign-in, verifies the demo profile, taps sign-out, and verifies the signed-out state.
+- P2: Signed-in state is intentionally local and session-only until backend authentication is integrated.
+- Mobile typecheck, focused Account Login smoke, and mobile API request tests passed.
+Decision: Approve Cycle 073 for local commit/merge after scoped diff review.
+Merge approved: Yes

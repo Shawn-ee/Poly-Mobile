@@ -12,7 +12,8 @@ param(
   [switch]$ServerUnavailable,
   [switch]$ServerOrderFailure,
   [switch]$SellTicket,
-  [switch]$Account
+  [switch]$Account,
+  [switch]$AccountLogin
 )
 
 $ErrorActionPreference = "Stop"
@@ -153,11 +154,11 @@ try {
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
   }
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
@@ -167,7 +168,7 @@ try {
     "exp://10.0.2.2:$Port/--/?forceOpenOrder=1"
   } elseif ($SearchQuery) {
     "exp://10.0.2.2:$Port/--/?forceSearchQuery=zzzz"
-  } elseif ($Account) {
+  } elseif ($Account -or $AccountLogin) {
     "exp://10.0.2.2:$Port/--/?forceAccount=1"
   } else {
     "exp://10.0.2.2:$Port"
@@ -181,7 +182,7 @@ try {
     @("Holiwyn", "Portfolio", "Open orders", "Cancel")
   } elseif ($SearchQuery) {
     @("Holiwyn", "Search World Cup markets", "zzzz", "0 results")
-  } elseif ($Account) {
+  } elseif ($Account -or $AccountLogin) {
     @("Holiwyn", "Account", "Signed out", "Demo balance")
   } else {
     @("Holiwyn", "World Cup", "Games", "Futures")
@@ -218,10 +219,22 @@ try {
       return
     }
 
-    if ($Account) {
+    if ($Account -or $AccountLogin) {
       Save-Screenshot -Name "cycle-current-holiwyn-account.png"
       $accountHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account.xml"
       Assert-HierarchyContains -Path $accountHierarchy -Expected @("Account", "Signed out", "Demo balance", "10,000 USDT", "Continue with phone", "Continue with email", "Mock login ready.", "Preferences")
+      if ($AccountLogin) {
+        Invoke-TapHierarchyNode -Path $accountHierarchy -Identifier "account-login-phone"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "cycle-current-holiwyn-account-signed-in.png"
+        $signedInHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-signed-in.xml"
+        Assert-HierarchyContains -Path $signedInHierarchy -Expected @("Signed in", "Holiwyn Demo", "Demo", "Mock login active.", "Sign out")
+        Invoke-TapHierarchyNode -Path $signedInHierarchy -Identifier "account-sign-out"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "cycle-current-holiwyn-account-signed-out.png"
+        $signedOutHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-signed-out.xml"
+        Assert-HierarchyContains -Path $signedOutHierarchy -Expected @("Signed out", "Continue with phone", "Continue with email", "Mock login ready.")
+      }
       return
     }
 

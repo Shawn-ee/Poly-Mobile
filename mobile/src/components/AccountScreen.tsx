@@ -1,17 +1,24 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { money } from "../presentation/formatters";
 
 type AccountCopy = {
   account: string;
   accountStatus: string;
+  accountId: string;
+  accountTier: string;
   signedOut: string;
+  signedIn: string;
   signIn: string;
+  signOut: string;
   signInBody: string;
+  signedInBody: string;
   demoBalance: string;
   demoBalanceBody: string;
   loginMethodPhone: string;
   loginMethodEmail: string;
+  loginConnected: string;
   loginUnavailable: string;
   preferences: string;
   languagePreference: string;
@@ -26,18 +33,30 @@ export function AccountScreen({
   t: AccountCopy;
   balance: number;
 }) {
+  const [signedIn, setSignedIn] = useState(false);
+
   return (
     <ScrollView accessibilityLabel="account-screen" testID="account-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
       <View style={styles.hero}>
         <View style={styles.avatar}>
-          <Ionicons name="person-outline" size={30} color="#dbeafe" />
+          <Ionicons name={signedIn ? "checkmark" : "person-outline"} size={30} color="#dbeafe" />
         </View>
         <View style={styles.heroMain}>
           <Text style={styles.eyebrow}>{t.accountStatus}</Text>
-          <Text style={styles.title}>{t.signedOut}</Text>
-          <Text style={styles.body}>{t.signInBody}</Text>
+          <Text style={styles.title}>{signedIn ? t.signedIn : t.signedOut}</Text>
+          <Text style={styles.body}>{signedIn ? t.signedInBody : t.signInBody}</Text>
         </View>
       </View>
+
+      {signedIn && (
+        <View accessibilityLabel="account-profile-card" testID="account-profile-card" style={styles.profileCard}>
+          <View>
+            <Text style={styles.cardLabel}>{t.accountId}</Text>
+            <Text style={styles.profileName}>Holiwyn Demo</Text>
+          </View>
+          <Text style={styles.tier}>{t.accountTier}</Text>
+        </View>
+      )}
 
       <View style={styles.balanceCard}>
         <View>
@@ -49,17 +68,26 @@ export function AccountScreen({
       <Text style={styles.helper}>{t.demoBalanceBody}</Text>
 
       <View style={styles.actions}>
-        <Pressable accessibilityLabel="account-login-phone" testID="account-login-phone" style={styles.primaryButton}>
-          <Ionicons name="phone-portrait-outline" size={20} color="#ffffff" />
-          <Text style={styles.primaryText}>{t.loginMethodPhone}</Text>
-        </Pressable>
-        <Pressable accessibilityLabel="account-login-email" testID="account-login-email" style={styles.secondaryButton}>
-          <Ionicons name="mail-outline" size={20} color="#dbeafe" />
-          <Text style={styles.secondaryText}>{t.loginMethodEmail}</Text>
-        </Pressable>
+        {signedIn ? (
+          <Pressable accessibilityLabel="account-sign-out" testID="account-sign-out" style={styles.secondaryButton} onPress={() => setSignedIn(false)}>
+            <Ionicons name="log-out-outline" size={20} color="#dbeafe" />
+            <Text style={styles.secondaryText}>{t.signOut}</Text>
+          </Pressable>
+        ) : (
+          <>
+            <Pressable accessibilityLabel="account-login-phone" testID="account-login-phone" style={styles.primaryButton} onPress={() => setSignedIn(true)}>
+              <Ionicons name="phone-portrait-outline" size={20} color="#ffffff" />
+              <Text style={styles.primaryText}>{t.loginMethodPhone}</Text>
+            </Pressable>
+            <Pressable accessibilityLabel="account-login-email" testID="account-login-email" style={styles.secondaryButton} onPress={() => setSignedIn(true)}>
+              <Ionicons name="mail-outline" size={20} color="#dbeafe" />
+              <Text style={styles.secondaryText}>{t.loginMethodEmail}</Text>
+            </Pressable>
+          </>
+        )}
       </View>
       <Text accessibilityLabel="account-login-unavailable" testID="account-login-unavailable" style={styles.notice}>
-        {t.loginUnavailable}
+        {signedIn ? t.loginConnected : t.loginUnavailable}
       </Text>
 
       <View style={styles.section}>
@@ -90,6 +118,9 @@ const styles = StyleSheet.create({
   eyebrow: { color: "#93c5fd", fontSize: 12, fontWeight: "900", textTransform: "uppercase" },
   title: { color: "#f8fafc", fontSize: 25, fontWeight: "900", marginTop: 4 },
   body: { color: "#94a3b8", fontSize: 14, fontWeight: "700", lineHeight: 20, marginTop: 8 },
+  profileCard: { marginTop: 14, padding: 16, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  profileName: { color: "#f8fafc", fontSize: 22, fontWeight: "900", marginTop: 5 },
+  tier: { color: "#22c55e", fontWeight: "900" },
   balanceCard: { marginTop: 14, padding: 16, borderRadius: 14, backgroundColor: "#0f1f35", borderWidth: 1, borderColor: "#28456b", flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   cardLabel: { color: "#93c5fd", fontWeight: "900" },
   balanceValue: { color: "#f8fafc", fontSize: 30, fontWeight: "900", marginTop: 5 },
