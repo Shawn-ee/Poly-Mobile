@@ -2,7 +2,7 @@
 
 Current mission: Build Holiwyn, a World Cup-first sports prediction and trading mobile app with English and Simplified Chinese support.
 
-Current phase: Documentation setup. Autonomous development has not started.
+Current phase: Autonomous mobile product development in verified cycles.
 
 Launch mode: Long-running autonomous execution toward final Definition of Done. Phase 0 is the first gate, not the stopping point.
 
@@ -93,8 +93,8 @@ Technical debt added:
 - TD-003: current app fetches live backend events but has no seeded/mock World Cup markets in the repo-local app yet.
 Technical debt resolved: None.
 Result: Phase 0 passed. Samsung reference access works, emulator works, backend health works, repo-local Holiwyn app launches on emulator, screenshots captured.
-Commit:
-Merged:
+Commit: cycle branch HEAD (`Build Holiwyn World Cup mock trading shell`)
+Merged: Pending local merge after commit.
 Next cycle: Cycle 002 should build the Holiwyn app shell and mock World Cup data model in `mobile/`, dark-first, with English/Simplified Chinese support started.
 Harnesses run:
 - Reference Observation Harness
@@ -107,6 +107,56 @@ Harnesses run:
 Harness failures:
 - Initial Expo start command failed; recovered.
 - Initial clean screenshot was blocked by Expo developer overlay; recovered.
+
+### Cycle 002
+
+Date: 2026-07-01
+Branch: mobile/cycle-002
+Goal: Build the first usable Holiwyn dark-first World Cup app shell with mock markets, event detail, fake-token trading, portfolio, search, and English/Simplified Chinese switching.
+Reference app screens observed: Cycle 001 Polymarket Home and World Cup Games screenshots, plus Product Explorer/Audit notes for app-shell structure.
+Holiwyn screens changed: Home, World Cup Games, World Cup Futures, Event Detail, Trade Ticket, Portfolio, Live, Search, language toggle.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/mocks/worldCup.ts`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- Expo Metro launch on port 8082.
+- Emulator launch via Expo Go using `exp://10.0.2.2:8082`.
+- Emulator tap-through smoke test for Home, Games, Futures, Event Detail, Trade Ticket, mock order, Portfolio, and Chinese language mode.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-002-holiwyn-home.png`
+- `docs/mobile/screenshots/cycle-002-holiwyn-futures.png`
+- `docs/mobile/screenshots/cycle-002-holiwyn-futures-scrolled.png`
+- `docs/mobile/screenshots/cycle-002-holiwyn-games-scrolled.png`
+- `docs/mobile/screenshots/cycle-002-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-002-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-002-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-002-holiwyn-zh.png`
+Bugs found:
+- First screenshot capture method produced an unreadable PNG on Windows; recovered by capturing to device storage and pulling the file.
+- The first app launch screenshot was taken before the Expo activity finished focusing; recovered by verifying focused activity and recapturing.
+Technical debt added:
+- TD-004: Cycle 002 is mock-data first and not yet integrated with backend market/trading APIs.
+- TD-005: Some scroll areas need bottom safe-area spacing polish on smaller emulator viewports.
+- TD-006: Category icons/flags are placeholder emoji/text assets and should become brand-safe app assets.
+Technical debt resolved:
+- TD-002: Replaced bootstrap UI with a dark-first Holiwyn World Cup shell.
+- TD-003: Added seeded mock World Cup games, futures, props, and outcomes.
+Result: Passed Cycle 002 QA. Holiwyn now has a usable mock World Cup trading experience on the Android emulator.
+Commit:
+Merged:
+Next cycle: Cycle 003 should connect the mock-first UI structure to backend-compatible data adapters and start a repeatable app harness script for smoke evidence.
+Harnesses run:
+- Product Explorer/Audit Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- QA Smoke Harness
+- Trading Simulation Harness
+- Localization Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- Screenshot capture stream failed once; recovered with device-file pull.
 
 ## Heartbeat Template
 
