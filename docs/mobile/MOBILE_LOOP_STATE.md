@@ -5661,8 +5661,8 @@ Technical debt added:
 Technical debt resolved:
 - Live trading now has direct emulator proof for both opening and closing a mock position.
 Result: Passed Cycle 117 QA. Mobile typecheck, focused emulator live-order-close smoke, and mobile API/profile-preference tests pass.
-Commit: `TBD` (`Verify Live order close`)
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `600e3b9` (`Verify Live order close`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `c23dc58`.
 Next cycle: Cycle 118 should continue live trading polish or add live-order history/detail visibility, then write the heartbeat for Cycles 116-118.
 Harnesses run:
 - Mobile Typecheck Harness
