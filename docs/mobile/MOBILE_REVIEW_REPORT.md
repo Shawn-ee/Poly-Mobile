@@ -412,3 +412,17 @@ Findings:
 - `npm run typecheck` and final `npm run smoke:deep` passed.
 Decision: Approve Cycle 029 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 030
+
+Date: 2026-07-01
+Branch: mobile/cycle-030
+Reviewer: Lead/Reviewer pass
+Scope: Home screen component extraction.
+Findings:
+- P1: `HomeScreen` now owns Home layout composition, reducing `App.tsx` to state orchestration and app shell flow.
+- P1: The extracted Home screen preserves featured futures, Search, Games/Futures segmented control, and market list behavior under deep smoke.
+- P2: `App.tsx` still owns header, copy table, backend loading, and order state; further extraction remains useful.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 030 for local commit/merge after scoped diff review.
+Merge approved: Yes
