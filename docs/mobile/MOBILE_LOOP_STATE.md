@@ -6057,8 +6057,8 @@ Technical debt added:
 Technical debt resolved:
 - Event Detail group navigation is more informative and closer to a market-depth browsing experience.
 Result: Passed Cycle 125 QA. Focused event-detail-summary smoke and mobile API/profile-preference tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `919b4d3` (`Show event detail group counts`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `4b6c9aa`.
 Next cycle: Cycle 126 should continue product-facing market-detail/trading polish or add another stable no-clear harness reduction.
 Harnesses run:
 - Mobile Typecheck Harness
