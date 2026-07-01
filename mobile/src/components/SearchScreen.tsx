@@ -5,6 +5,7 @@ import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { MarketList } from "./MarketLists";
 
 type SearchFilter = "all" | "live" | "upcoming" | "saved";
+type SearchSort = "popular" | "live";
 
 type SearchScreenCopy = {
   marketSearch: string;
@@ -19,6 +20,8 @@ type SearchScreenCopy = {
   saved: string;
   volume: string;
   liquidity: string;
+  sortPopular: string;
+  sortLiveFirst: string;
 };
 
 export function SearchScreen({
@@ -43,9 +46,10 @@ export function SearchScreen({
   toggleSavedEvent: (event: Event) => void;
 }) {
   const [filter, setFilter] = useState<SearchFilter>("all");
+  const [sort, setSort] = useState<SearchSort>("popular");
   const disableSoftInputForSmoke = process.env.EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT === "1";
   const hasQuery = query.trim().length > 0;
-  const visibleEvents =
+  const filteredEvents =
     filter === "live"
       ? events.filter((event) => event.status === "live")
       : filter === "upcoming"
@@ -53,13 +57,27 @@ export function SearchScreen({
         : filter === "saved"
           ? events.filter((event) => savedEventIds.has(event.id))
         : events;
+  const visibleEvents = [...filteredEvents].sort((left, right) => {
+    if (sort === "live") {
+      const leftLive = left.status === "live" ? 0 : 1;
+      const rightLive = right.status === "live" ? 0 : 1;
+      if (leftLive !== rightLive) return leftLive - rightLive;
+    }
+    const leftDepth = left.markets.reduce((total, market) => total + market.outcomes.length, 0);
+    const rightDepth = right.markets.reduce((total, market) => total + market.outcomes.length, 0);
+    return rightDepth - leftDepth;
+  });
   const emptyCopy = filter === "saved" ? t.noSavedMarkets : t.noResults;
-  const resultLabel = locale === "zh" ? `${visibleEvents.length} 个结果` : `${visibleEvents.length} ${visibleEvents.length === 1 ? "result" : "results"}`;
+  const resultLabel = locale === "zh" ? `${visibleEvents.length} \u4e2a\u7ed3\u679c` : `${visibleEvents.length} ${visibleEvents.length === 1 ? "result" : "results"}`;
   const filters: Array<[SearchFilter, string]> = [
     ["all", t.searchAll],
     ["live", t.searchLive],
     ["upcoming", t.searchUpcoming],
     ["saved", t.saved],
+  ];
+  const sortOptions: Array<[SearchSort, string]> = [
+    ["popular", t.sortPopular],
+    ["live", t.sortLiveFirst],
   ];
 
   return (
@@ -101,6 +119,19 @@ export function SearchScreen({
           </Pressable>
         ))}
       </View>
+      <View style={styles.sortRow}>
+        {sortOptions.map(([value, text]) => (
+          <Pressable
+            key={value}
+            accessibilityLabel={`search-sort-${value}`}
+            testID={`search-sort-${value}`}
+            style={[styles.sortButton, sort === value && styles.sortButtonActive]}
+            onPress={() => setSort(value)}
+          >
+            <Text style={[styles.sortText, sort === value && styles.sortTextActive]}>{text}</Text>
+          </Pressable>
+        ))}
+      </View>
       <MarketList
         locale={locale}
         events={visibleEvents}
@@ -130,4 +161,9 @@ const styles = StyleSheet.create({
   searchFilterChipActive: { backgroundColor: "#1d6dff", borderColor: "#1d6dff" },
   searchFilterText: { color: "#8ea0b8", fontWeight: "900" },
   searchFilterTextActive: { color: "#ffffff" },
+  sortRow: { flexDirection: "row", gap: 8, marginBottom: 12 },
+  sortButton: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  sortButtonActive: { backgroundColor: "#1f2937", borderColor: "#3b82f6" },
+  sortText: { color: "#8ea0b8", fontSize: 12, fontWeight: "900" },
+  sortTextActive: { color: "#dbeafe" },
 });

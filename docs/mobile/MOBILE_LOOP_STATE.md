@@ -4023,6 +4023,49 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 081
+
+Date: 2026-07-01
+Branch: mobile/cycle-081
+Goal: Add Popular and Live first sorting controls to Search.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Search now includes a localized sort row with Popular and Live first controls; Live first promotes live World Cup markets.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/SearchScreen.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:search-sort` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-081-holiwyn-search-sort-smoke.png`
+- `docs/mobile/screenshots/cycle-081-holiwyn-search-sort-live.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-081-holiwyn-search-sort-home.xml`
+- `docs/mobile/harness/cycle-081-holiwyn-search-sort-screen.xml`
+- `docs/mobile/harness/cycle-081-holiwyn-search-sort-live.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Popular sorting uses local outcome-depth ranking until backend popularity/volume ranking is available.
+Technical debt resolved:
+- Search users can now prioritize live markets instead of relying on a single static result order.
+Result: Passed Cycle 081 QA. Mobile typecheck, focused Search sort smoke, visual screenshot review, and mobile API tests pass.
+Commit: Pending branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 082 should continue search/discovery parity or add a richer market detail/trading affordance.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Search Harness
+- Discovery Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
