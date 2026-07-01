@@ -2011,3 +2011,25 @@ Bugs:
 - Fixed an account hydration race where an empty storage read could overwrite a fresh sign-in.
 Visual QA:
 - Restored Account screen shows Signed in, Holiwyn Demo, Demo balance, and Sign out after app restart.
+
+### Cycle 098
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:language-persistence`
+- `npm run test:mobile-api`
+Result: Passed. Language preference now persists locally and restores after app restart.
+Screenshots:
+- `docs/mobile/screenshots/cycle-098-holiwyn-language-persistence-smoke.png`
+- `docs/mobile/screenshots/cycle-098-holiwyn-language-persistence-seeded.png`
+- `docs/mobile/screenshots/cycle-098-holiwyn-language-persistence-restored.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-098-holiwyn-language-persistence-home-start.xml`
+- `docs/mobile/harness/cycle-098-holiwyn-language-persistence-seeded.xml`
+- `docs/mobile/harness/cycle-098-holiwyn-language-persistence-restored.xml`
+Bugs:
+- None found in product code. Harness recovered from PowerShell Unicode parsing by using ASCII-safe assertions plus visual screenshot proof.
+Visual QA:
+- Restored Home shows Chinese copy after restart, including the `EN` language toggle, Chinese navigation labels, Chinese market title copy, and Chinese filter labels.
