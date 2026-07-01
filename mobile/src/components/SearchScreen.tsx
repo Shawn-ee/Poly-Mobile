@@ -4,7 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { MarketList } from "./MarketLists";
 
-type SearchFilter = "all" | "live" | "upcoming";
+type SearchFilter = "all" | "live" | "upcoming" | "saved";
 
 type SearchScreenCopy = {
   marketSearch: string;
@@ -15,6 +15,7 @@ type SearchScreenCopy = {
   searchAll: string;
   searchLive: string;
   searchUpcoming: string;
+  saved: string;
 };
 
 export function SearchScreen({
@@ -25,6 +26,8 @@ export function SearchScreen({
   events,
   openEvent,
   openTicket,
+  savedEventIds,
+  toggleSavedEvent,
 }: {
   locale: Locale;
   t: SearchScreenCopy;
@@ -33,6 +36,8 @@ export function SearchScreen({
   events: Event[];
   openEvent: (event: Event) => void;
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
+  savedEventIds: Set<string>;
+  toggleSavedEvent: (event: Event) => void;
 }) {
   const [filter, setFilter] = useState<SearchFilter>("all");
   const disableSoftInputForSmoke = process.env.EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT === "1";
@@ -42,12 +47,15 @@ export function SearchScreen({
       ? events.filter((event) => event.status === "live")
       : filter === "upcoming"
         ? events.filter((event) => event.status !== "live")
+        : filter === "saved"
+          ? events.filter((event) => savedEventIds.has(event.id))
         : events;
   const resultLabel = locale === "zh" ? `${visibleEvents.length} 个结果` : `${visibleEvents.length} ${visibleEvents.length === 1 ? "result" : "results"}`;
   const filters: Array<[SearchFilter, string]> = [
     ["all", t.searchAll],
     ["live", t.searchLive],
     ["upcoming", t.searchUpcoming],
+    ["saved", t.saved],
   ];
 
   return (
@@ -89,7 +97,15 @@ export function SearchScreen({
           </Pressable>
         ))}
       </View>
-      <MarketList locale={locale} events={visibleEvents} empty={t.noResults} openEvent={openEvent} openTicket={openTicket} />
+      <MarketList
+        locale={locale}
+        events={visibleEvents}
+        empty={t.noResults}
+        openEvent={openEvent}
+        openTicket={openTicket}
+        savedEventIds={savedEventIds}
+        toggleSavedEvent={toggleSavedEvent}
+      />
     </ScrollView>
   );
 }

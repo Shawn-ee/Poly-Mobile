@@ -65,6 +65,7 @@ export default function App() {
   const [activities, setActivities] = useState<PortfolioActivity[]>([]);
   const [portfolioSyncStatus, setPortfolioSyncStatus] = useState<PortfolioSyncStatus>(ORDER_MODE === "server" ? "syncing" : "hidden");
   const [events, setEvents] = useState<Event[]>(worldCupEvents);
+  const [savedEventIds, setSavedEventIds] = useState<Set<string>>(() => new Set());
   const [isRefreshingLive, setIsRefreshingLive] = useState(false);
   const [liveRefreshTick, setLiveRefreshTick] = useState(0);
   const [futures] = useState<Market[]>(worldCupFutures);
@@ -182,6 +183,18 @@ export default function App() {
   const openTicket = (market: Market, outcome: Outcome, event?: Event) => {
     setTicketOrderError(null);
     setTicket({ market, outcome, event, side: "buy" });
+  };
+
+  const toggleSavedEvent = (event: Event) => {
+    setSavedEventIds((current) => {
+      const next = new Set(current);
+      if (next.has(event.id)) {
+        next.delete(event.id);
+      } else {
+        next.add(event.id);
+      }
+      return next;
+    });
   };
 
   const placeOrder = async (amount: number, side: "buy" | "sell") => {
@@ -309,6 +322,8 @@ export default function App() {
                 openEvent={setSelectedEvent}
                 openTicket={openTicket}
                 futures={futures}
+                savedEventIds={savedEventIds}
+                toggleSavedEvent={toggleSavedEvent}
               />
             )}
             {mainTab === "live" && (
@@ -346,6 +361,8 @@ export default function App() {
                 events={filteredEvents}
                 openEvent={setSelectedEvent}
                 openTicket={openTicket}
+                savedEventIds={savedEventIds}
+                toggleSavedEvent={toggleSavedEvent}
               />
             )}
             {mainTab === "account" && <AccountScreen t={t} balance={balance} />}

@@ -1538,3 +1538,27 @@ Bugs:
 - First smoke run hit Expo cold Metro rebuild before app content appeared; rerun passed.
 Visual QA:
 - Volume/Liquidity row fits inside the event card and the first outcome button remains reachable.
+
+### Cycle 077
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:saved-search`
+- `npm run test:mobile-api`
+Result: Passed. Saved events now persist across Home and Search within the app session, and Search has a Saved filter.
+Screenshots:
+- `docs/mobile/screenshots/cycle-077-holiwyn-saved-search-smoke.png`
+- `docs/mobile/screenshots/cycle-077-holiwyn-saved-search-star.png`
+- `docs/mobile/screenshots/cycle-077-holiwyn-saved-search-filter.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-077-holiwyn-saved-search-home.xml`
+- `docs/mobile/harness/cycle-077-holiwyn-saved-search-home-ready.xml`
+- `docs/mobile/harness/cycle-077-holiwyn-saved-search-star.xml`
+- `docs/mobile/harness/cycle-077-holiwyn-saved-search-screen.xml`
+- `docs/mobile/harness/cycle-077-holiwyn-saved-search-filter.xml`
+Bugs:
+- None found.
+Visual QA:
+- Search Saved filter shows one saved market with active star, correct result count, and visible trade buttons.

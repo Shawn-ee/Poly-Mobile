@@ -3834,6 +3834,52 @@ Harnesses run:
 Harness failures:
 - One cold Metro launch miss before final pass.
 
+### Cycle 077
+
+Date: 2026-07-01
+Branch: mobile/cycle-077
+Goal: Share saved-event watchlist state between Home and Search.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Search now includes a Saved filter and saved stars use the same app-level saved-event state as Home.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/HomeScreen.tsx`, `mobile/src/components/SearchScreen.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:saved-search` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-077-holiwyn-saved-search-smoke.png`
+- `docs/mobile/screenshots/cycle-077-holiwyn-saved-search-star.png`
+- `docs/mobile/screenshots/cycle-077-holiwyn-saved-search-filter.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-077-holiwyn-saved-search-home.xml`
+- `docs/mobile/harness/cycle-077-holiwyn-saved-search-home-ready.xml`
+- `docs/mobile/harness/cycle-077-holiwyn-saved-search-star.xml`
+- `docs/mobile/harness/cycle-077-holiwyn-saved-search-screen.xml`
+- `docs/mobile/harness/cycle-077-holiwyn-saved-search-filter.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Saved events remain session-only until account/backend persistence is connected.
+Technical debt resolved:
+- Saved markets now carry across Home and Search instead of being trapped inside the Home component.
+Result: Passed Cycle 077 QA. Mobile typecheck, focused Saved Search smoke, visual screenshot review, and mobile API tests pass.
+Commit: `PENDING`
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 078 should add richer search/discovery behavior or retry backend readiness if Docker daemon becomes available.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Discovery Watchlist Harness
+- Search Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
