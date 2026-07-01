@@ -246,3 +246,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 017 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 018
+
+Date: 2026-07-01
+Branch: mobile/cycle-018
+Reviewer: Lead/Reviewer pass
+Scope: Deep smoke coverage for Live and Search tabs.
+Findings:
+- P1: Deep smoke now proves the main shell tabs beyond Home/Portfolio by asserting Live and Search hierarchy text.
+- P2: Search screenshot shows the intended search input and market list, but typed-query behavior still needs a future product/harness cycle.
+- P2: Coordinate taps remain tracked as TD-011.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 018 for local commit/merge after scoped diff review.
+Merge approved: Yes
