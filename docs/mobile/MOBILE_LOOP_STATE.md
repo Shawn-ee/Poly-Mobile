@@ -1804,8 +1804,8 @@ Technical debt resolved:
 - Removed the need for a forced Expo relaunch after Event Detail verification.
 - Event Detail now has native Android back behavior aligned with user expectations.
 Result: Passed Cycle 039 QA. Deep smoke verifies Event Detail, scrolled props, Android Back return to Home, then ticket/Portfolio/Live/Search flows.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Handle Holiwyn event detail back`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 040 should continue World Cup market parity or add server-backed order/history boundaries.
 Harnesses run:
 - QA Smoke Harness
