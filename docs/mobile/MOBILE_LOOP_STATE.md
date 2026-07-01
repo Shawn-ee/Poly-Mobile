@@ -1066,8 +1066,8 @@ Technical debt added:
 Technical debt resolved:
 - TD-013: Live refresh now calls the shared event reload path and falls back to mock World Cup events when the backend is unavailable.
 Result: Passed Cycle 025 QA after Recovery Harness. Live refresh now performs an async reload instead of only changing local UI state.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge after commit.
+Commit: cycle branch HEAD (`Wire Holiwyn live refresh to event reload`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 026 should continue app decomposition by extracting Home screen pieces or deepen backend-backed market reload evidence.
 Harnesses run:
 - QA Smoke Harness
