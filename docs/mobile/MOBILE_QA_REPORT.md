@@ -475,3 +475,22 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-025-holiwyn-search-query.png`
 Bugs:
 - Initial run failed because the unavailable backend request kept the refresh button disabled longer than the one-second smoke wait. Added a mobile API timeout and refresh-state hierarchy wait, then reran successfully.
+
+### Cycle 026
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed after Recovery Harness. Home renders the extracted featured futures card and the deep flow still opens a ticket, places a mock order, shows Portfolio, refreshes Live, and verifies Search.
+Screenshots:
+- `docs/mobile/screenshots/cycle-026-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-026-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-026-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-026-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-026-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-026-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-026-holiwyn-search-query.png`
+Bugs:
+- Initial cleanup approach created a noisy full-file diff in `App.tsx`; restored and used a narrow alias-based component extraction instead.
