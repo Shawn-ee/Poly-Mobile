@@ -1171,3 +1171,18 @@ Findings:
 - Mobile typecheck, focused Home Saved empty smoke, and mobile API request tests passed.
 Decision: Approve Cycle 082 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 083
+
+Date: 2026-07-01
+Branch: mobile/cycle-083
+Reviewer: Lead/Reviewer pass
+Scope: Market/outcome query matching.
+Findings:
+- P1: Shared Home/Search discovery matching now includes market titles and outcome labels.
+- P1: A Home launch harness query for `clean` proves the England clean-sheet market is discoverable even though the event title does not contain the query.
+- P1: Focused Home search-query smoke verifies the filtered England card plus Volume/Liquidity context.
+- P2: Matching remains simple substring search until a backend search/ranking endpoint exists.
+- Mobile typecheck, focused Home search-query smoke, and mobile API request tests passed.
+Decision: Approve Cycle 083 for local commit/merge after scoped diff review.
+Merge approved: Yes

@@ -92,6 +92,11 @@ export default function App() {
         setQuery(decodeURIComponent(forcedSearchQuery));
         setMainTab("search");
       }
+      const forcedHomeQuery = url.match(/[?&]forceHomeQuery=([^&]+)/)?.[1];
+      if (forcedHomeQuery) {
+        setQuery(decodeURIComponent(forcedHomeQuery));
+        setMainTab("home");
+      }
       if (url.includes("forceAccount=1")) {
         setMainTab("account");
       }
@@ -173,7 +178,18 @@ export default function App() {
     const normalized = query.trim().toLowerCase();
     if (!normalized) return events;
     return events.filter((event) =>
-      [event.title, event.zhTitle, event.tag, event.zhTag, ...event.teams.flatMap((team) => [team.name, team.zhName])]
+      [
+        event.title,
+        event.zhTitle,
+        event.tag,
+        event.zhTag,
+        ...event.teams.flatMap((team) => [team.name, team.zhName]),
+        ...event.markets.flatMap((market) => [
+          market.title,
+          market.zhTitle,
+          ...market.outcomes.flatMap((outcome) => [outcome.label, outcome.zhLabel]),
+        ]),
+      ]
         .join(" ")
         .toLowerCase()
         .includes(normalized),
