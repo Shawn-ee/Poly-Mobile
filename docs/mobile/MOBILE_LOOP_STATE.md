@@ -2280,8 +2280,8 @@ Technical debt added:
 Technical debt resolved:
 - Max sizing and mock order submission now tap by Android hierarchy id instead of fixed coordinates.
 Result: Passed Cycle 047 QA. Deep smoke verifies the selector-driven ticket taps across the full trade/Portfolio/Live/Search path.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Use selector taps in Holiwyn smoke`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 048 should continue selector-driven harness actions or add server-mode Portfolio status states.
 Harnesses run:
 - QA Smoke Harness
