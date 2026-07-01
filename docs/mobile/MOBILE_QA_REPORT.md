@@ -3028,3 +3028,32 @@ Bugs:
 - The first retry exposed that forced live reset could return the app to Home after launch; fixed by preserving `forceLive=1` during the delayed reset guard.
 Visual QA:
 - Samsung proof shows Live World Cup, the France vs. Argentina ticket, fake-balance order placement, Portfolio confirmation, live badge/clock, execution price, invested value, current value, and estimated P/L.
+
+### Cycle 144
+
+Date: 2026-07-01
+Device: Samsung S23 through Expo Go (`adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`)
+Build/run command:
+- `npm run smoke:samsung:live-order-close`
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The Samsung wrapper now proves the full live mock trading loop through ticket opening, order placement, close-position action, and live closed-history rows.
+Screenshots:
+- `docs/mobile/screenshots/cycle-144-samsung-live-close-smoke.png`
+- `docs/mobile/screenshots/cycle-144-samsung-live-close-ready.png`
+- `docs/mobile/screenshots/cycle-144-samsung-live-close-ticket.png`
+- `docs/mobile/screenshots/cycle-144-samsung-live-close-portfolio.png`
+- `docs/mobile/screenshots/cycle-144-samsung-live-close-action.png`
+- `docs/mobile/screenshots/cycle-144-samsung-live-close-closed.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-144-samsung-live-close-home.xml`
+- `docs/mobile/harness/cycle-144-samsung-live-close-ready.xml`
+- `docs/mobile/harness/cycle-144-samsung-live-close-ticket.xml`
+- `docs/mobile/harness/cycle-144-samsung-live-close-portfolio.xml`
+- `docs/mobile/harness/cycle-144-samsung-live-close-action.xml`
+- `docs/mobile/harness/cycle-144-samsung-live-close-closed.xml`
+Bugs:
+- Initial Samsung live-close run reached Portfolio but the close button was below the first visible hierarchy. The harness now scrolls the Portfolio card before tapping `close-position-`.
+- The first scrolled close run captured the correct closed state lower on the page, but the final assertion still expected top-of-Portfolio balance/counter text. The assertion now checks visible closed-state evidence instead.
+Visual QA:
+- Samsung proof shows live ticket opening, order placement, the scrolled Close position action, no open positions after close, live closed activity, live bought activity, close value, and P/L text.

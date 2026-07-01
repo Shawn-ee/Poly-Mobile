@@ -2090,3 +2090,19 @@ Findings:
 - Samsung live-order smoke, mobile typecheck, and mobile API/history tests passed.
 Decision: Approve Cycle 143 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 144
+
+Date: 2026-07-01
+Branch: mobile/cycle-144
+Reviewer: Lead/Reviewer pass
+Scope: Samsung live-position close smoke wrapper.
+Findings:
+- P1: `smoke-samsung.ps1` now supports `-LiveOrderClose`, and `npm run smoke:samsung:live-order-close` targets the S23 with a repeatable live close-position proof.
+- P1: The live-close harness scrolls the Portfolio view before tapping the close action, matching the physical phone layout where the button sits below the first viewport.
+- P1: The final closed-state assertion now checks visible closed-history evidence after the scrolled close action rather than top-of-page balance/counter text.
+- P1: Captured Samsung evidence verifies live ticket opening, order placement, close action, no-open-position empty state, live closed activity, live bought activity, close value, and P/L.
+- P2: This remains mock-mode live close proof; server-backed live close execution still needs device/API verification.
+- Samsung live-order-close smoke, mobile typecheck, and mobile API/history tests passed.
+Decision: Approve Cycle 144 for local commit/merge after scoped diff review.
+Merge approved: Yes
