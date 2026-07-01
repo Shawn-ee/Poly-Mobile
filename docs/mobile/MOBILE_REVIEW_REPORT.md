@@ -1575,3 +1575,18 @@ Findings:
 - Mobile typecheck, focused account-position-summary smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 109 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 110
+
+Date: 2026-07-01
+Branch: mobile/cycle-110
+Reviewer: Lead/Reviewer pass
+Scope: Account portfolio value summary.
+Findings:
+- P1: Account now receives estimated portfolio value derived from fake balance plus current open-position value.
+- P1: The focused smoke seeds a mock World Cup winner position and verifies `Portfolio value: 10,281.25 USDT`.
+- P1: Visual review moved the value row higher so the screenshot evidence shows it clearly above the bottom tab.
+- P2: The value is still estimated from local/mock position math until backend positions and pricing feed the mobile app.
+- Mobile typecheck, focused account-portfolio-value smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 110 for local commit/merge after scoped diff review.
+Merge approved: Yes

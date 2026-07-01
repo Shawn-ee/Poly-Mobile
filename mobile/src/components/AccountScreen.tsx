@@ -31,6 +31,7 @@ type AccountCopy = {
   savedMarketsPreference: string;
   savedMarketsCount: string;
   openPositions: string;
+  portfolioValue: string;
   profileSyncing: string;
   profileSynced: string;
   profileSyncError: string;
@@ -51,6 +52,7 @@ export function AccountScreen({
   profileSyncStatus,
   savedMarketCount,
   openPositionCount,
+  portfolioValue,
 }: {
   t: AccountCopy;
   balance: number;
@@ -61,6 +63,7 @@ export function AccountScreen({
   profileSyncStatus: ProfileSyncStatus;
   savedMarketCount: number;
   openPositionCount: number;
+  portfolioValue: number;
 }) {
   const [signedIn, setSignedIn] = useState(false);
 
@@ -145,6 +148,12 @@ export function AccountScreen({
           <Ionicons name="star-outline" size={20} color="#93c5fd" />
           <Text style={styles.rowText}>
             {t.savedMarketsPreference}: {savedMarketCount} {t.savedMarketsCount}
+          </Text>
+        </View>
+        <View accessibilityLabel="account-portfolio-value" testID="account-portfolio-value" style={styles.row}>
+          <Ionicons name="analytics-outline" size={20} color="#93c5fd" />
+          <Text style={styles.rowText}>
+            {t.portfolioValue}: {money(portfolioValue)}
           </Text>
         </View>
         <View accessibilityLabel="account-open-positions" testID="account-open-positions" style={styles.row}>

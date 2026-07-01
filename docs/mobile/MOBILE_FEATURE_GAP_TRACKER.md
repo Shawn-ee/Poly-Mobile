@@ -140,3 +140,4 @@ Status:
 | GAP-118 | Account/Profile | Visible profile sync failure state | P1 | No | Verified | Cycle 107 surfaces profile preference sync status in Account for server-mode/API-key builds and verifies the unavailable-backend recovery state on emulator. |
 | GAP-119 | Account/Profile | Saved-market count summary | P1 | Yes | Verified | Cycle 108 surfaces the saved World Cup market count in Account Preferences and verifies a seeded saved market shows as `Saved markets: 1 saved`. |
 | GAP-120 | Account/Profile | Open-position count summary | P1 | Yes | Verified | Cycle 109 surfaces open position count in Account Preferences and verifies a seeded World Cup winner position shows as `Open positions: 1`. |
+| GAP-121 | Account/Profile | Estimated portfolio value summary | P1 | Yes | Verified | Cycle 110 surfaces estimated portfolio value in Account Preferences and verifies a seeded World Cup winner position shows `Portfolio value: 10,281.25 USDT`. |
