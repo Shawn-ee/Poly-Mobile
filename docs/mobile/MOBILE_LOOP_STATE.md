@@ -3444,8 +3444,8 @@ Technical debt added:
 Technical debt resolved:
 - Event Detail now exposes basic trading context instead of only event title and market list.
 Result: Passed Cycle 068 QA. Mobile typecheck, focused Event Detail smoke, visual screenshot review, and mobile API tests pass.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `c515374` (`Add Holiwyn event detail trading stats`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `e4656b4`.
 Next cycle: Cycle 069 should continue product depth, likely with order-book/depth context or richer ticket controls.
 Harnesses run:
 - Emulator Runtime Harness
