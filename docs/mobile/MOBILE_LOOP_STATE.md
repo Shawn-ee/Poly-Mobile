@@ -2337,8 +2337,8 @@ Technical debt added:
 Technical debt resolved:
 - Close position, Live tab, Live refresh, Search tab, and Search input taps now resolve from Android hierarchy ids or prefixes.
 Result: Passed Cycle 048 QA. Deep smoke verifies the expanded selector-driven path across close-position, Live refresh, Search navigation, and typed Search.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Expand selector taps in Holiwyn smoke`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 049 should add server-mode Portfolio status states or continue selector-driven event opening.
 Harnesses run:
 - QA Smoke Harness
@@ -2348,6 +2348,16 @@ Harnesses run:
 - Review Harness
 Harness failures:
 - None.
+
+### Heartbeat After Cycle 048
+
+Completed cycles: 046, 047, 048 since the last heartbeat.
+Verified progress: Trade Ticket now has 100/500/1,000 USDT preset controls; the smoke harness taps ticket Max/order by hierarchy id; and close-position, Live tab, Live refresh, Search tab, and Search input taps are now selector-driven.
+Current app state: Holiwyn mobile has verified Home, Event Detail grouped markets/props, ticket balance/max/preset sizing, mock order, Portfolio summary/detail/close/activity/order confirmation, Live refresh, Search browse, and typed Search zero-result flows on Android emulator.
+Current backend state: Server-mode Portfolio adapters remain wired for history, wallet/open positions, and open orders; emulator smoke still verifies mock fallback because backend health is unavailable.
+Open blockers: None for autonomous progress.
+Risks: Event-card opening, prop scroll, hardware Back, and first market ticket opening still use coordinates/key events; server-mode trading and Portfolio data are not yet end-to-end verified against an authenticated backend session.
+Next three likely cycles: Add server-mode Portfolio status states, continue selector-driven event/ticket opening, and add cancel/edit affordance planning for open orders.
 
 ## Heartbeat Template
 
