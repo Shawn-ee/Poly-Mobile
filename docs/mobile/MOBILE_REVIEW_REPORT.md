@@ -734,3 +734,17 @@ Findings:
 - `npm run typecheck`, `npm run smoke:deep`, and `npm run smoke:order-failure` passed.
 Decision: Approve Cycle 052 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 053
+
+Date: 2026-07-01
+Branch: mobile/cycle-053
+Reviewer: Lead/Reviewer pass
+Scope: Portfolio open-order cancel affordance.
+Findings:
+- P1: Open-order rows now expose a localized Cancel control with stable `cancel-open-order-*` accessibility/test ids.
+- P1: Server mode calls the canonical `DELETE /api/orders/:id` endpoint and records immediate local canceled activity feedback.
+- P2: The emulator smoke remains mock-data based, so a later harness should inject or fetch a real open order before asserting the cancel row directly.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 053 for local commit/merge after scoped diff review.
+Merge approved: Yes

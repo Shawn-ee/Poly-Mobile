@@ -16,7 +16,7 @@ export type Position = {
 
 export type PortfolioActivity = {
   id: string;
-  action: "opened" | "closed";
+  action: "opened" | "closed" | "canceled";
   title: string;
   outcome: string;
   amount: number;
@@ -57,8 +57,10 @@ type PortfolioCopy = {
   recentActivity: string;
   openedPosition: string;
   closedPosition: string;
+  canceledOrder: string;
   openOrders: string;
   remaining: string;
+  cancelOrder: string;
   portfolioSyncing: string;
   portfolioSynced: string;
   portfolioSyncError: string;
@@ -98,6 +100,7 @@ export function Portfolio({
   activities,
   syncStatus,
   closePosition,
+  cancelOpenOrder,
 }: {
   locale: Locale;
   t: PortfolioCopy;
@@ -108,6 +111,7 @@ export function Portfolio({
   activities: PortfolioActivity[];
   syncStatus: PortfolioSyncStatus;
   closePosition: (position: Position) => void;
+  cancelOpenOrder: (order: OpenOrder) => void;
 }) {
   const syncTitle =
     syncStatus === "syncing"
@@ -226,6 +230,14 @@ export function Portfolio({
                 <Text style={styles.openOrderRemaining}>
                   {t.remaining}: {money(order.remaining)}
                 </Text>
+                <Pressable
+                  accessibilityLabel={`cancel-open-order-${order.id}`}
+                  onPress={() => cancelOpenOrder(order)}
+                  style={styles.cancelOrderButton}
+                  testID={`cancel-open-order-${order.id}`}
+                >
+                  <Text style={styles.cancelOrderText}>{t.cancelOrder}</Text>
+                </Pressable>
               </View>
             </View>
           ))}
@@ -237,11 +249,19 @@ export function Portfolio({
           {activities.slice(0, 5).map((activity) => (
             <View key={activity.id} style={styles.activityItem}>
               <View style={styles.activityIcon}>
-                <Ionicons name={activity.action === "opened" ? "arrow-up" : "checkmark"} size={16} color="#dbeafe" />
+                <Ionicons
+                  name={activity.action === "opened" ? "arrow-up" : activity.action === "canceled" ? "close" : "checkmark"}
+                  size={16}
+                  color="#dbeafe"
+                />
               </View>
               <View style={styles.activityMain}>
                 <Text style={styles.activityAction}>
-                  {activity.action === "opened" ? t.openedPosition : t.closedPosition}
+                  {activity.action === "opened"
+                    ? t.openedPosition
+                    : activity.action === "canceled"
+                      ? t.canceledOrder
+                      : t.closedPosition}
                 </Text>
                 <Text style={styles.activityMeta}>
                   {activity.title} - {activity.outcome}
@@ -293,13 +313,15 @@ const styles = StyleSheet.create({
   confirmationMarket: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 4 },
   openOrdersBlock: { marginTop: 16, padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   openOrdersTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginBottom: 10 },
-  openOrderItem: { flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 10, borderTopWidth: 1, borderTopColor: "#1f2937" },
+  openOrderItem: { flexDirection: "row", alignItems: "flex-start", gap: 10, paddingVertical: 10, borderTopWidth: 1, borderTopColor: "#1f2937" },
   openOrderMain: { flex: 1 },
   openOrderTitle: { color: "#f8fafc", fontWeight: "900" },
   openOrderMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
-  openOrderNumbers: { alignItems: "flex-end", maxWidth: 120 },
+  openOrderNumbers: { alignItems: "flex-end", maxWidth: 126 },
   openOrderPrice: { color: "#dbeafe", fontWeight: "900" },
   openOrderRemaining: { color: "#94a3b8", fontSize: 11, fontWeight: "800", marginTop: 3 },
+  cancelOrderButton: { minHeight: 32, paddingHorizontal: 10, borderRadius: 8, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155", marginTop: 8 },
+  cancelOrderText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
   activityBlock: { marginTop: 16, padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   activityTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginBottom: 10 },
   activityItem: { flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 10, borderTopWidth: 1, borderTopColor: "#1f2937" },

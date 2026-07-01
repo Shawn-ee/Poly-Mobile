@@ -2601,6 +2601,63 @@ Harnesses run:
 Harness failures:
 - Two recoverable forced-failure harness setup misses before final pass.
 
+### Cycle 053
+
+Date: 2026-07-01
+Branch: mobile/cycle-053
+Goal: Add a server-backed cancel affordance for Portfolio open orders.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio open-order rows now expose a localized `Cancel` action and canceled activity label.
+Backend/API changed: Mobile API client now calls canonical `DELETE /api/orders/:id` for server-mode order cancellation.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/api.ts`, `mobile/src/components/Portfolio.tsx`, `mobile/src/localization/appCopy.ts`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-053-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-053-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-053-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-053-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-053-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-053-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-053-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-053-holiwyn-ticket-max.xml`
+- `docs/mobile/harness/cycle-053-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-053-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-053-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-053-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-053-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-053-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Open-order cancellation is UI/API-wired but not server-emulator smoked because current mock smoke has no backend open-order fixture.
+Technical debt resolved:
+- Server-mode open orders are no longer read-only in the mobile Portfolio surface.
+Result: Passed Cycle 053 QA. Deep smoke verifies the normal event-market trading, Portfolio, close-position, Live, and Search paths still pass after adding cancel controls.
+Commit: cycle branch HEAD (`pending`)
+Merged: Pending local merge.
+Next cycle: Cycle 054 should add an emulator-visible open-order cancel fixture/harness or continue reducing remaining device actions.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
