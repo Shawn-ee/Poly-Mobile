@@ -494,3 +494,21 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-026-holiwyn-search-query.png`
 Bugs:
 - Initial cleanup approach created a noisy full-file diff in `App.tsx`; restored and used a narrow alias-based component extraction instead.
+
+### Cycle 027
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Removed the stale inline featured futures function while preserving the extracted component's Home, ticket, portfolio, Live refresh, and Search behavior.
+Screenshots:
+- `docs/mobile/screenshots/cycle-027-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-027-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-027-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-027-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-027-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-027-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-027-holiwyn-search-query.png`
+Bugs: None found.
