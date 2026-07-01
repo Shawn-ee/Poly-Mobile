@@ -9,7 +9,14 @@ import { EventDetail } from "./src/components/EventDetail";
 import { Header } from "./src/components/Header";
 import { HomeScreen } from "./src/components/HomeScreen";
 import { LiveScreen } from "./src/components/LiveScreen";
-import { OpenOrder, Portfolio, PortfolioActivity, portfolioPositionValue, Position } from "./src/components/Portfolio";
+import {
+  OpenOrder,
+  OrderConfirmation,
+  Portfolio,
+  PortfolioActivity,
+  portfolioPositionValue,
+  Position,
+} from "./src/components/Portfolio";
 import { SearchScreen } from "./src/components/SearchScreen";
 import { Ticket, TradeTicket } from "./src/components/TradeTicket";
 import { WorldCupTab } from "./src/components/WorldCupSegmented";
@@ -39,6 +46,7 @@ export default function App() {
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [balance, setBalance] = useState(10000);
   const [positions, setPositions] = useState<Position[]>([]);
+  const [latestOrder, setLatestOrder] = useState<OrderConfirmation | null>(null);
   const [openOrders, setOpenOrders] = useState<OpenOrder[]>([]);
   const [activities, setActivities] = useState<PortfolioActivity[]>([]);
   const [events, setEvents] = useState<Event[]>(worldCupEvents);
@@ -164,6 +172,14 @@ export default function App() {
       },
       ...current,
     ]);
+    setLatestOrder({
+      id: result.id,
+      mode: result.mode,
+      title: result.title,
+      outcome: result.outcome,
+      side: result.side,
+      amount: result.amount,
+    });
     setActivities((current) => [
       {
         id: `${result.id}-opened`,
@@ -246,6 +262,7 @@ export default function App() {
                 t={t}
                 balance={balance}
                 positions={positions}
+                latestOrder={latestOrder}
                 openOrders={openOrders}
                 activities={activities}
                 closePosition={closePosition}

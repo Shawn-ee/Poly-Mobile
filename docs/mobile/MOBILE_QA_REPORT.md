@@ -802,3 +802,24 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-042-holiwyn-search.png`
 - `docs/mobile/screenshots/cycle-042-holiwyn-search-query.png`
 Bugs: None found.
+
+### Cycle 043
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Portfolio now shows an `Order placed` confirmation after a mock trade and the close/activity/Live/Search smoke path remains stable.
+Screenshots:
+- `docs/mobile/screenshots/cycle-043-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-search-query.png`
+Bugs: None found.

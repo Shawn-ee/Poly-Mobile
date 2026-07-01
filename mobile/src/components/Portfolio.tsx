@@ -32,6 +32,15 @@ export type OpenOrder = {
   remaining: number;
 };
 
+export type OrderConfirmation = {
+  id: string;
+  mode: OrderMode;
+  title: string;
+  outcome: string;
+  side: "buy" | "sell";
+  amount: number;
+};
+
 type PortfolioCopy = {
   balance: string;
   noPositions: string;
@@ -48,6 +57,7 @@ type PortfolioCopy = {
   closedPosition: string;
   openOrders: string;
   remaining: string;
+  orderPlaced: string;
 };
 
 const currentProbability = (position: Position) => {
@@ -77,6 +87,7 @@ export function Portfolio({
   t,
   balance,
   positions,
+  latestOrder,
   openOrders,
   activities,
   closePosition,
@@ -85,6 +96,7 @@ export function Portfolio({
   t: PortfolioCopy;
   balance: number;
   positions: Position[];
+  latestOrder: OrderConfirmation | null;
   openOrders: OpenOrder[];
   activities: PortfolioActivity[];
   closePosition: (position: Position) => void;
@@ -155,6 +167,18 @@ export function Portfolio({
             </View>
           ))}
         </>
+      )}
+      {latestOrder && (
+        <View accessibilityLabel="latest-order-card" testID="latest-order-card" style={styles.confirmationCard}>
+          <View style={styles.confirmationTop}>
+            <Text style={styles.confirmationTitle}>{t.orderPlaced}</Text>
+            <Text style={styles.confirmationAmount}>{money(latestOrder.amount)}</Text>
+          </View>
+          <Text style={styles.confirmationMeta}>
+            {latestOrder.mode.toUpperCase()} - {latestOrder.side === "buy" ? t.buy : t.sell} - {latestOrder.outcome}
+          </Text>
+          <Text style={styles.confirmationMarket}>{latestOrder.title}</Text>
+        </View>
       )}
       {openOrders.length > 0 && (
         <View style={styles.openOrdersBlock}>
@@ -227,6 +251,12 @@ const styles = StyleSheet.create({
   pnlNegative: { color: "#ef4444" },
   closeButton: { marginTop: 12, minHeight: 44, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
   closeButtonText: { color: "#dbeafe", fontSize: 14, fontWeight: "900" },
+  confirmationCard: { marginTop: 16, padding: 14, borderRadius: 14, backgroundColor: "#12213a", borderWidth: 1, borderColor: "#2b5ca8" },
+  confirmationTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10 },
+  confirmationTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
+  confirmationAmount: { color: "#dbeafe", fontWeight: "900" },
+  confirmationMeta: { color: "#93c5fd", fontSize: 12, fontWeight: "900", marginTop: 8 },
+  confirmationMarket: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 4 },
   openOrdersBlock: { marginTop: 16, padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   openOrdersTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginBottom: 10 },
   openOrderItem: { flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 10, borderTopWidth: 1, borderTopColor: "#1f2937" },

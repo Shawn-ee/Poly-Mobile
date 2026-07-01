@@ -594,3 +594,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 042 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 043
+
+Date: 2026-07-01
+Branch: mobile/cycle-043
+Reviewer: Lead/Reviewer pass
+Scope: Portfolio order confirmation.
+Findings:
+- P1: Portfolio now shows an immediate `Order placed` confirmation after the mock order transitions into a position.
+- P1: Deep smoke asserts the confirmation and still verifies close-position behavior plus activity history.
+- P2: Confirmation is local state only; server-mode acknowledgement should eventually reflect backend order status.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 043 for local commit/merge after scoped diff review.
+Merge approved: Yes
