@@ -124,6 +124,24 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-016-holiwyn-live-tab.png`
 Bugs: None found.
 
+### Cycle 017
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Deep smoke now saves Android UI hierarchy XML and asserts visible Home, Ticket, and Portfolio text.
+Screenshots:
+- `docs/mobile/screenshots/cycle-017-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-017-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-017-holiwyn-portfolio.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-017-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-017-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-017-holiwyn-portfolio.xml`
+Bugs: None found.
+
 ### Cycle 014
 
 Date: 2026-07-01

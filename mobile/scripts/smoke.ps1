@@ -3,6 +3,7 @@ param(
   [int]$Port = 8082,
   [string]$OutputDir = "docs\mobile\screenshots",
   [string]$BackendBaseUrl = "http://127.0.0.1:3000",
+  [string]$HierarchyOutputDir = "docs\mobile\harness",
   [switch]$Deep
 )
 
@@ -11,7 +12,9 @@ $ErrorActionPreference = "Stop"
 $MobileRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $RepoRoot = Resolve-Path (Join-Path $MobileRoot "..")
 $ResolvedOutputDir = Join-Path $RepoRoot $OutputDir
+$ResolvedHierarchyOutputDir = Join-Path $RepoRoot $HierarchyOutputDir
 New-Item -ItemType Directory -Force -Path $ResolvedOutputDir | Out-Null
+New-Item -ItemType Directory -Force -Path $ResolvedHierarchyOutputDir | Out-Null
 
 function Save-Screenshot {
   param(
@@ -22,6 +25,31 @@ function Save-Screenshot {
   & $adb -s $Device shell screencap -p $remote | Out-Null
   & $adb -s $Device pull $remote $local | Out-Null
   Write-Host "Smoke screenshot: $local"
+}
+
+function Save-UiHierarchy {
+  param(
+    [string]$Name
+  )
+  $remote = "/sdcard/window-hierarchy.xml"
+  $local = Join-Path $ResolvedHierarchyOutputDir $Name
+  & $adb -s $Device shell uiautomator dump $remote | Out-Null
+  & $adb -s $Device pull $remote $local | Out-Null
+  Write-Host "UI hierarchy: $local"
+  return $local
+}
+
+function Assert-HierarchyContains {
+  param(
+    [string]$Path,
+    [string[]]$Expected
+  )
+  $hierarchy = Get-Content -Raw -Path $Path
+  foreach ($value in $Expected) {
+    if ($hierarchy -notmatch [regex]::Escape($value)) {
+      throw "UI hierarchy missing expected text or label: $value"
+    }
+  }
 }
 
 Push-Location $MobileRoot
@@ -52,15 +80,21 @@ try {
   Start-Sleep -Seconds 10
 
   Save-Screenshot -Name "cycle-current-holiwyn-smoke.png"
+  $homeHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-home.xml"
+  Assert-HierarchyContains -Path $homeHierarchy -Expected @("Holiwyn", "World Cup", "Games", "Futures")
 
   if ($Deep) {
     & $adb -s $Device shell input tap 230 850 | Out-Null
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-ticket.png"
+    $ticketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket.xml"
+    Assert-HierarchyContains -Path $ticketHierarchy -Expected @("Estimated cost", "Estimated payout", "Place mock order")
 
     & $adb -s $Device shell input tap 540 1740 | Out-Null
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-portfolio.png"
+    $portfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio.xml"
+    Assert-HierarchyContains -Path $portfolioHierarchy -Expected @("Fake balance", "Portfolio")
   }
 }
 finally {
