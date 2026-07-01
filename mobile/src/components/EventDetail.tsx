@@ -10,6 +10,9 @@ type EventDetailCopy = {
   volume: string;
   liquidity: string;
   traders: string;
+  bestBid: string;
+  bestAsk: string;
+  spread: string;
 };
 
 const groupLabels: Record<Market["type"], { en: string; zh: string }> = {
@@ -36,6 +39,19 @@ const marketStats = (event: Event) => {
     volume: `${volume.toLocaleString("en-US")} USDT`,
     liquidity: `${liquidity.toLocaleString("en-US")} USDT`,
     traders: traders.toLocaleString("en-US"),
+  };
+};
+
+const marketDepth = (market: Market) => {
+  const leadingProbability = Math.max(...market.outcomes.map((outcome) => outcome.probability));
+  const midpoint = leadingProbability / 100;
+  const bid = Math.max(midpoint - 0.02, 0.01);
+  const ask = Math.min(midpoint + 0.02, 0.99);
+
+  return {
+    bid: bid.toFixed(2),
+    ask: ask.toFixed(2),
+    spread: `${Math.round((ask - bid) * 100)}c`,
   };
 };
 
@@ -122,6 +138,20 @@ export function EventDetail({
           {group.markets.map((market) => (
             <View key={market.id} style={styles.marketBlock}>
               <Text style={styles.marketTitle}>{label(locale, market)}</Text>
+              <View accessibilityLabel={`market-depth-${market.id}`} style={styles.depthRow} testID={`market-depth-${market.id}`}>
+                <View style={styles.depthCell}>
+                  <Text style={styles.depthLabel}>{t.bestBid}</Text>
+                  <Text style={styles.depthValue}>{marketDepth(market).bid}</Text>
+                </View>
+                <View style={styles.depthCell}>
+                  <Text style={styles.depthLabel}>{t.bestAsk}</Text>
+                  <Text style={styles.depthValue}>{marketDepth(market).ask}</Text>
+                </View>
+                <View style={styles.depthCell}>
+                  <Text style={styles.depthLabel}>{t.spread}</Text>
+                  <Text style={styles.depthValue}>{marketDepth(market).spread}</Text>
+                </View>
+              </View>
               {market.outcomes.map((outcome) => (
                 <View key={outcome.id} style={styles.detailOutcome}>
                   <Text style={styles.teamName}>{label(locale, outcome)}</Text>
@@ -164,6 +194,10 @@ const styles = StyleSheet.create({
   groupTitle: { color: "#94a3b8", fontSize: 13, fontWeight: "900", textTransform: "uppercase" },
   marketBlock: { padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginBottom: 12 },
   marketTitle: { color: "#f8fafc", fontSize: 19, fontWeight: "900", marginBottom: 8 },
+  depthRow: { flexDirection: "row", gap: 8, marginBottom: 6 },
+  depthCell: { flex: 1, minHeight: 48, justifyContent: "center", paddingHorizontal: 9, borderRadius: 9, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
+  depthLabel: { color: "#94a3b8", fontSize: 10, fontWeight: "900", textTransform: "uppercase", marginBottom: 3 },
+  depthValue: { color: "#e0f2fe", fontSize: 13, fontWeight: "900" },
   detailOutcome: { flexDirection: "row", alignItems: "center", gap: 10, marginTop: 10 },
   teamName: { flex: 1, color: "#f8fafc", fontSize: 18, fontWeight: "800" },
   probButton: { minWidth: 86, alignItems: "center", paddingVertical: 12, paddingHorizontal: 14, borderRadius: 12 },

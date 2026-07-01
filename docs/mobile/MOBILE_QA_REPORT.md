@@ -1384,3 +1384,25 @@ Bugs:
 - None found.
 Visual QA:
 - Ticket rows fit on emulator; the primary submit button remains visible.
+
+### Cycle 070
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:event-detail-trade`
+- `npm run test:mobile-api`
+Result: Passed after assertion recovery. Event Detail market cards now show localized Best bid, Best ask, and Spread context while ticket opening still works.
+Screenshots:
+- `docs/mobile/screenshots/cycle-070-holiwyn-depth-smoke.png`
+- `docs/mobile/screenshots/cycle-070-holiwyn-event-detail-depth.png`
+- `docs/mobile/screenshots/cycle-070-holiwyn-depth-ticket.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-070-holiwyn-depth-home.xml`
+- `docs/mobile/harness/cycle-070-holiwyn-event-detail-depth.xml`
+- `docs/mobile/harness/cycle-070-holiwyn-depth-ticket.xml`
+Bugs:
+- Initial smoke expected `Total goals over 2.5` in the first viewport; the new depth row pushed that prop title below the fold. The assertion was corrected to check visible first-viewport content.
+Visual QA:
+- Depth row fits cleanly in the first market card; outcome buttons remain visible.

@@ -3510,6 +3510,50 @@ Open blockers: None for autonomous product/harness progress. Live backend proof 
 Risks: Event Detail stats and ticket share/price math are local estimates until backend quote/depth data can feed them.
 Next three likely cycles: Add order-book/depth preview context, improve ticket side-specific copy, and retry backend DB start when Docker daemon becomes reachable.
 
+### Cycle 070
+
+Date: 2026-07-01
+Branch: mobile/cycle-070
+Goal: Add market depth preview context to Event Detail market cards.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Event Detail market cards now show localized Best bid, Best ask, and Spread rows.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/EventDetail.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:event-detail-trade` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-070-holiwyn-depth-smoke.png`
+- `docs/mobile/screenshots/cycle-070-holiwyn-event-detail-depth.png`
+- `docs/mobile/screenshots/cycle-070-holiwyn-depth-ticket.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-070-holiwyn-depth-home.xml`
+- `docs/mobile/harness/cycle-070-holiwyn-event-detail-depth.xml`
+- `docs/mobile/harness/cycle-070-holiwyn-depth-ticket.xml`
+Bugs found:
+- First smoke run still expected `Total goals over 2.5` in the first viewport; the new depth row pushed that prop title below the fold, so the assertion was narrowed to first-viewport content.
+Technical debt added:
+- Depth preview values are local estimates until backend order-book data is available.
+Technical debt resolved:
+- Event Detail market cards now expose basic order-book context instead of only probability buttons.
+Result: Passed Cycle 070 QA after assertion recovery. Mobile typecheck, focused Event Detail smoke, visual screenshot review, and mobile API tests pass.
+Commit: cycle branch HEAD (`pending`)
+Merged: Pending local merge.
+Next cycle: Cycle 071 should continue trading UX depth, likely side-specific ticket copy or quote/depth mapping seams.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Trading Simulation Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Recovery Harness
+- Review Harness
+Harness failures:
+- One recoverable smoke assertion mismatch before final pass.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

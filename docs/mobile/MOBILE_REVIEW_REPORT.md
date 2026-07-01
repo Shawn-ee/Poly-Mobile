@@ -977,3 +977,18 @@ Findings:
 - Mobile typecheck, focused Event Detail smoke, and mobile API request tests passed.
 Decision: Approve Cycle 069 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 070
+
+Date: 2026-07-01
+Branch: mobile/cycle-070
+Reviewer: Lead/Reviewer pass
+Scope: Event Detail market depth preview.
+Findings:
+- P1: Event Detail market cards now show localized Best bid, Best ask, and Spread values.
+- P1: The depth values are deterministic local estimates for offline mode and can later be replaced by backend order-book data.
+- P1: Focused Event Detail smoke asserts the depth labels and still opens a ticket from the market card.
+- P2: Visual QA shows the first market card remains readable and outcome buttons remain reachable.
+- Mobile typecheck, focused Event Detail smoke, and mobile API request tests passed.
+Decision: Approve Cycle 070 for local commit/merge after scoped diff review.
+Merge approved: Yes
