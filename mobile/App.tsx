@@ -19,6 +19,7 @@ import { LiveScreen } from "./src/components/LiveScreen";
 import { FutureList, MarketList } from "./src/components/MarketLists";
 import { Portfolio, Position } from "./src/components/Portfolio";
 import { SearchScreen } from "./src/components/SearchScreen";
+import { SportNav } from "./src/components/SportNav";
 import { Ticket, TradeTicket } from "./src/components/TradeTicket";
 import {
   Event,
@@ -374,25 +375,6 @@ function HomeScreen({
       ) : (
         <FutureList locale={locale} futures={futures} openTicket={openTicket} />
       )}
-    </ScrollView>
-  );
-}
-
-function SportNav({ locale }: { locale: Locale }) {
-  const items = [
-    ["🧭", locale === "zh" ? "首页" : "Home"],
-    ["🏆", locale === "zh" ? "世界杯" : "World Cup"],
-    ["⚾", "MLB"],
-    ["🎾", locale === "zh" ? "网球" : "Tennis"],
-  ];
-  return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.sportRow}>
-      {items.map(([icon, text], index) => (
-        <View key={text} style={[styles.sportItem, index === 1 && styles.sportItemActive]}>
-          <Text style={styles.sportIcon}>{icon}</Text>
-          <Text style={[styles.sportLabel, index === 1 && styles.sportLabelActive]}>{text}</Text>
-        </View>
-      ))}
     </ScrollView>
   );
 }
