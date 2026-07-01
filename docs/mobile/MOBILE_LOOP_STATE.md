@@ -4677,6 +4677,55 @@ Open blockers: None for autonomous product/harness progress. Live authenticated 
 Risks: Portfolio counts, Account, and Saved state are local/session-only; Home/Search/Futures market stats, Popular ranking, ticket quote math, and close-position behavior remain local estimates until backend auth, quote, popularity, order-book, and position APIs can feed them.
 Next three likely cycles: Improve Portfolio count layout density, add persistence affordances for account/watchlist/session state, and retry backend readiness when local services become reachable.
 
+### Cycle 095
+
+Date: 2026-07-01
+Branch: mobile/cycle-095
+Goal: Compact the Portfolio count cards into a first-viewport grid and verify the closed-state counts.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio now shows Open positions, Recent activity, and Closed trades as a compact three-tile grid.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/Portfolio.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:portfolio-closed-count` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-095-holiwyn-portfolio-count-grid-smoke.png`
+- `docs/mobile/screenshots/cycle-095-holiwyn-portfolio-count-grid-closed.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-home-start.xml`
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-empty.xml`
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-home.xml`
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-list.xml`
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-ticket.xml`
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-open.xml`
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-ready.xml`
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-activity.xml`
+- `docs/mobile/harness/cycle-095-holiwyn-portfolio-count-grid-closed.xml`
+Bugs found:
+- None. Harness now captures activity-row proof and top-of-Portfolio count-grid proof separately after close.
+Technical debt added:
+- Count grid remains local activity-state based until server-backed portfolio history is fully available.
+Technical debt resolved:
+- Portfolio count metrics now fit in a compact first-viewport row instead of stacking vertically.
+Result: Passed Cycle 095 QA. Mobile typecheck, focused Portfolio closed-count smoke, visual screenshot review, and mobile API tests pass.
+Commit: `89d1865` (`Compact Holiwyn portfolio count grid`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `38d8a2f`.
+Next cycle: Cycle 096 should add persistence affordances for account/watchlist/session state or retry backend readiness if local services become reachable.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Portfolio Harness
+- Futures Harness
+- Trading Simulation Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
