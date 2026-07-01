@@ -1936,6 +1936,71 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 042
+
+Date: 2026-07-01
+Branch: mobile/cycle-042
+Goal: Surface server-mode open orders in Portfolio.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio can now render an `Open orders` section when server snapshot data includes open orders; mock-mode UI remains unchanged.
+Backend/API changed: Reuses existing `GET /api/portfolio` response open-order data through the mobile snapshot adapter.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/src/services/portfolioSnapshotService.ts`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-042-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-042-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-042-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-042-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-042-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-042-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-042-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-042-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-042-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-042-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-042-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-042-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-042-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-042-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-042-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-042-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-042-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-042-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-042-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-042-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-042-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Open orders are shown read-only; cancel/edit order actions remain future work.
+Technical debt resolved:
+- Server-mode Portfolio no longer drops backend open-order data.
+Result: Passed Cycle 042 QA. Mock-mode smoke remains unchanged while server-mode Portfolio can display open orders.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 043 should add open-order cancel/action affordance design or improve selector-driven harness actions.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 042
+
+Completed cycles: 040, 041, 042 since the last heartbeat.
+Verified progress: Server-mode Portfolio now has typed seams for resolved activity history, wallet/open positions, and open orders, while the mock-mode emulator smoke continues to pass.
+Current app state: Holiwyn mobile has verified Home, Event Detail grouped markets/props, ticket, mock order, Portfolio summary/detail/close/activity, Live refresh, Search browse, and typed Search zero-result flows on Android emulator.
+Current backend state: Mobile now targets existing backend Portfolio endpoints (`/api/portfolio/history` and `/api/portfolio`) in server mode; backend health remains unavailable during emulator smoke, so mock fallback remains the verified runtime path.
+Open blockers: None for autonomous progress.
+Risks: Server-mode Portfolio is typed and wired but not end-to-end verified against an authenticated backend session; open order actions such as cancel/edit are not implemented.
+Next three likely cycles: Add open-order cancel/action affordance, add server-mode error/empty states, and improve selector-driven automation for fewer coordinate taps.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

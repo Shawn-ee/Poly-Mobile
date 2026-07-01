@@ -1,9 +1,10 @@
 import type { PolyApi } from "../api";
-import type { Position } from "../components/Portfolio";
+import type { OpenOrder, Position } from "../components/Portfolio";
 
 export type PortfolioSnapshotResult = {
   balance: number;
   positions: Position[];
+  openOrders: OpenOrder[];
 };
 
 export const loadPortfolioSnapshot = async (api: PolyApi): Promise<PortfolioSnapshotResult> => {
@@ -18,6 +19,15 @@ export const loadPortfolioSnapshot = async (api: PolyApi): Promise<PortfolioSnap
       side: "buy",
       amount: position.costBasisTokens,
       probability: Math.round(position.avgCost * 100),
+    })),
+    openOrders: snapshot.openOrders.map((order) => ({
+      id: order.id,
+      title: order.market.title,
+      outcome: order.outcome.name,
+      side: order.side === "SELL" ? "sell" : "buy",
+      status: order.status,
+      price: order.price,
+      remaining: order.remaining,
     })),
   };
 };

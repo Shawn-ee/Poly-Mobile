@@ -9,7 +9,7 @@ import { EventDetail } from "./src/components/EventDetail";
 import { Header } from "./src/components/Header";
 import { HomeScreen } from "./src/components/HomeScreen";
 import { LiveScreen } from "./src/components/LiveScreen";
-import { Portfolio, PortfolioActivity, portfolioPositionValue, Position } from "./src/components/Portfolio";
+import { OpenOrder, Portfolio, PortfolioActivity, portfolioPositionValue, Position } from "./src/components/Portfolio";
 import { SearchScreen } from "./src/components/SearchScreen";
 import { Ticket, TradeTicket } from "./src/components/TradeTicket";
 import { WorldCupTab } from "./src/components/WorldCupSegmented";
@@ -39,6 +39,7 @@ export default function App() {
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [balance, setBalance] = useState(10000);
   const [positions, setPositions] = useState<Position[]>([]);
+  const [openOrders, setOpenOrders] = useState<OpenOrder[]>([]);
   const [activities, setActivities] = useState<PortfolioActivity[]>([]);
   const [events, setEvents] = useState<Event[]>(worldCupEvents);
   const [isRefreshingLive, setIsRefreshingLive] = useState(false);
@@ -89,6 +90,9 @@ export default function App() {
           setBalance(snapshotResult.value.balance);
           if (snapshotResult.value.positions.length > 0) {
             setPositions((current) => (current.length > 0 ? current : snapshotResult.value.positions));
+          }
+          if (snapshotResult.value.openOrders.length > 0) {
+            setOpenOrders((current) => (current.length > 0 ? current : snapshotResult.value.openOrders));
           }
         }
         if (historyResult.status === "fulfilled" && historyResult.value.length > 0) {
@@ -242,6 +246,7 @@ export default function App() {
                 t={t}
                 balance={balance}
                 positions={positions}
+                openOrders={openOrders}
                 activities={activities}
                 closePosition={closePosition}
               />

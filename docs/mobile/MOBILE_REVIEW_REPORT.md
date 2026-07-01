@@ -580,3 +580,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 041 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 042
+
+Date: 2026-07-01
+Branch: mobile/cycle-042
+Reviewer: Lead/Reviewer pass
+Scope: Server-mode Portfolio open orders display.
+Findings:
+- P1: Server snapshot open orders are now mapped into a typed mobile `OpenOrder` model and passed into Portfolio.
+- P1: Portfolio can render open order market, side, outcome, status, price, and remaining size when backend data exists.
+- P2: Open orders are read-only; cancel/edit actions remain a future trading parity step.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 042 for local commit/merge after scoped diff review.
+Merge approved: Yes
