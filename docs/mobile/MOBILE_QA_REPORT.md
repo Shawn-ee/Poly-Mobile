@@ -2324,3 +2324,25 @@ Bugs:
 - First smoke run asserted a hidden market title. The harness was tightened to verify visible live-card text and rerun successfully.
 Visual QA:
 - Live screen shows `2 markets` and `6 outcomes` above the France vs. Argentina live trading card.
+
+### Cycle 114
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run smoke:live-ticket`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Live screen outcome buttons now have focused proof that they open the trade ticket.
+Screenshots:
+- `docs/mobile/screenshots/cycle-114-holiwyn-live-ticket-smoke.png`
+- `docs/mobile/screenshots/cycle-114-holiwyn-live-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-114-holiwyn-live-ticket.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-114-holiwyn-live-ticket-home-start.xml`
+- `docs/mobile/harness/cycle-114-holiwyn-live-ticket-ready.xml`
+- `docs/mobile/harness/cycle-114-holiwyn-live-ticket.xml`
+Bugs:
+- ADB initially reported the emulator offline, then recovered during the same smoke run. The focused smoke completed successfully.
+Visual QA:
+- Live France outcome opens a buy ticket showing `France`, `France vs. Argentina`, fake balance, estimates, and `Place buy order`.

@@ -144,3 +144,4 @@ Status:
 | GAP-122 | Event detail | Market/outcome count summary | P1 | Yes | Verified | Cycle 111 surfaces Event Detail market and outcome counts and verifies Mexico vs. Ecuador shows `4 markets` and `8 outcomes`. |
 | GAP-123 | Event detail | Per-market outcome count | P1 | Yes | Verified | Cycle 112 surfaces per-market outcome counts and verifies Match winner shows `2 outcomes` on emulator. |
 | GAP-124 | Live markets | Live market breadth summary | P1 | Yes | Verified | Cycle 113 surfaces Live market/outcome counts and verifies the live slate shows `2 markets` and `6 outcomes` on emulator. |
+| GAP-125 | Live trading | Live outcome ticket opening | P1 | Yes | Verified | Cycle 114 verifies tapping France from the Live screen opens the buy ticket with France vs. Argentina context, fake balance, estimates, and place-order CTA. |
