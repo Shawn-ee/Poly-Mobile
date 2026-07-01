@@ -2614,3 +2614,24 @@ Bugs:
 - A retry run initially read stale Expo/home hierarchy after relaunch. The harness now waits briefly after each retry deep link before dumping the UI tree.
 Visual QA:
 - Latest-order and Recent activity screenshots show `LIVE WORLD CUP`, `Live - 63'`, `Mock order placed`, `Bought`, and France vs. Argentina after a live fake-token order.
+
+### Cycle 125
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554` with Expo Go
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/` through the focused smoke script
+- `npm.cmd run smoke:event-detail-summary`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Event Detail now surfaces market counts on group tabs and group headers so World Cup users can scan game-line and prop depth before opening individual outcomes.
+Screenshots:
+- `docs/mobile/screenshots/cycle-125-holiwyn-event-detail-group-counts-smoke.png`
+- `docs/mobile/screenshots/cycle-125-holiwyn-event-detail-group-counts.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-125-holiwyn-event-detail-group-counts-expo-menu.xml`
+- `docs/mobile/harness/cycle-125-holiwyn-event-detail-group-counts-home.xml`
+- `docs/mobile/harness/cycle-125-holiwyn-event-detail-group-counts.xml`
+Bugs:
+- None found after focused verification.
+Visual QA:
+- Mexico vs. Ecuador Event Detail shows `Game lines` with `1 market`, `Props` with `3 markets`, plus the existing `4 markets`, `8 outcomes`, best bid/ask/spread, and Match winner context.

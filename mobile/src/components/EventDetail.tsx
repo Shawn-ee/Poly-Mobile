@@ -86,6 +86,10 @@ export function EventDetail({
     prop: 0,
   });
   const groupLabel = (type: Market["type"]) => (locale === "zh" ? groupLabels[type].zh : groupLabels[type].en);
+  const groupCountLabel = (count: number) => {
+    if (locale === "en" && count === 1) return "1 market";
+    return `${count} ${t.marketCount}`;
+  };
   const scrollToGroup = (type: Market["type"]) => {
     scrollRef.current?.scrollTo({ y: Math.max(groupOffsets.current[type] - 8, 0), animated: false });
   };
@@ -155,6 +159,7 @@ export function EventDetail({
             testID={`event-detail-group-${group.type}`}
           >
             <Text style={styles.groupTabText}>{groupLabel(group.type)}</Text>
+            <Text style={styles.groupTabCount}>{groupCountLabel(group.markets.length)}</Text>
           </Pressable>
         ))}
       </View>
@@ -166,7 +171,10 @@ export function EventDetail({
           }}
           style={styles.marketGroup}
         >
-          <Text style={styles.groupTitle}>{groupLabel(group.type)}</Text>
+          <View style={styles.groupTitleRow}>
+            <Text style={styles.groupTitle}>{groupLabel(group.type)}</Text>
+            <Text style={styles.groupCount}>{groupCountLabel(group.markets.length)}</Text>
+          </View>
           {group.markets.map((market) => (
             <View key={market.id} style={styles.marketBlock}>
               <View style={styles.marketHeaderRow}>
@@ -233,10 +241,13 @@ const styles = StyleSheet.create({
   summaryText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
   sectionTitle: { color: "#f8fafc", fontSize: 24, fontWeight: "900", marginTop: 24, marginBottom: 12 },
   groupTabs: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 14 },
-  groupTab: { minHeight: 36, paddingHorizontal: 12, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#111b2d", borderWidth: 1, borderColor: "#2b3b55" },
+  groupTab: { minHeight: 42, paddingHorizontal: 12, paddingVertical: 7, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#111b2d", borderWidth: 1, borderColor: "#2b3b55" },
   groupTabText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
+  groupTabCount: { color: "#93c5fd", fontSize: 10, fontWeight: "900", marginTop: 2 },
   marketGroup: { gap: 10, marginBottom: 14 },
+  groupTitleRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10 },
   groupTitle: { color: "#94a3b8", fontSize: 13, fontWeight: "900", textTransform: "uppercase" },
+  groupCount: { color: "#93c5fd", fontSize: 12, fontWeight: "900" },
   marketBlock: { padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginBottom: 12 },
   marketHeaderRow: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 8 },
   marketTitle: { flex: 1, color: "#f8fafc", fontSize: 19, fontWeight: "900" },

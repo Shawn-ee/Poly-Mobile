@@ -1800,3 +1800,18 @@ Findings:
 - Mobile typecheck through the smoke script and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 124 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 125
+
+Date: 2026-07-01
+Branch: mobile/cycle-125
+Reviewer: Lead/Reviewer pass
+Scope: Event Detail market group count indicators.
+Findings:
+- P1: Event Detail group tabs now show per-category market counts, making game lines and props easier to scan before scrolling.
+- P1: Group section headers also show the same counts, preserving context after jumping into a market group.
+- P1: Focused event-detail-summary smoke verifies Mexico vs. Ecuador displays `Game lines`, `1 market`, `Props`, `3 markets`, `4 markets`, and `8 outcomes`.
+- P2: This is still mock-data backed in the focused emulator proof because local backend health was unavailable.
+- Mobile typecheck through the smoke script and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 125 for local commit/merge after scoped diff review.
+Merge approved: Yes
