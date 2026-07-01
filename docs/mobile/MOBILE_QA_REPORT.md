@@ -110,6 +110,18 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-004-holiwyn-order-service-portfolio.png`
 Bugs: None found.
 
+### Cycle 009
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run smoke`
+Result: Passed. Smoke harness force-stopped Expo Go before launch and captured a clean Home-state screenshot.
+Screenshots:
+- `docs/mobile/screenshots/cycle-009-holiwyn-smoke-reset-home.png`
+Bugs:
+- Fixed smoke screenshot state carryover from previous manual QA sessions.
+
 ### Cycle 008
 
 Date: 2026-07-01

@@ -368,6 +368,45 @@ Harnesses run:
 - Review Harness
 Harness failures: None.
 
+### Cycle 009
+
+Date: 2026-07-01
+Branch: mobile/cycle-009
+Goal: Make the mobile smoke harness reset Expo Go before launch so screenshots start from a clean app state.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: None.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run smoke` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-009-holiwyn-smoke-reset-home.png`
+Bugs found: Previous smoke screenshots could inherit in-memory Portfolio state; fixed by force-stopping Expo Go before app launch.
+Technical debt added: None.
+Technical debt resolved:
+- Smoke harness state carryover from Cycle 008 review.
+Result: Passed Cycle 009 QA. Smoke harness now starts on a clean Home state.
+Commit: cycle branch HEAD (`Reset Expo before Holiwyn mobile smoke`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 010 should extract MarketList/FutureList or add a grouped World Cup market presentation pass.
+Harnesses run:
+- QA Smoke Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Recovery Harness
+Harness failures: None after reset fix.
+
+### Heartbeat After Cycle 009
+
+Completed cycles: 007, 008, 009 since the last heartbeat.
+Verified progress: Trade Ticket and Portfolio were extracted into focused components and retested through mock order flow; smoke harness now resets app state before launch.
+Current app state: Cleaner component boundaries with stable emulator smoke, mock trading, Portfolio, and backend-capable Home data.
+Current backend state: Backend health remains `ok`; no backend schema changes in these cycles.
+Open blockers: None for autonomous progress.
+Risks: Market list and event detail are still inside `App.tsx`; server order mode remains unverified; localization table still needs safe extraction.
+Next three likely cycles: Extract market lists, extract event detail, then improve grouped World Cup market presentation.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
