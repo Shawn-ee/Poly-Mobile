@@ -1377,8 +1377,8 @@ Technical debt added:
 Technical debt resolved:
 - Portfolio now has basic position-level value/P&L detail instead of only stake amount.
 Result: Passed Cycle 031 QA. Portfolio detail is verified by deep smoke hierarchy assertions and screenshot evidence.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge after commit.
+Commit: cycle branch HEAD (`Add Holiwyn portfolio position detail`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 032 should add more Portfolio/open-position affordances or extract header/app-shell presentation.
 Harnesses run:
 - QA Smoke Harness
