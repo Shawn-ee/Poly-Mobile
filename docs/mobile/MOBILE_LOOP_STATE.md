@@ -4726,6 +4726,50 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 096
+
+Date: 2026-07-01
+Branch: mobile/cycle-096
+Goal: Persist saved market ids locally and verify a saved market restores after app restart.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Search now restores saved market state from local storage after restart.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:saved-persistence` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-096-holiwyn-saved-persistence-smoke.png`
+- `docs/mobile/screenshots/cycle-096-holiwyn-saved-persistence-seeded.png`
+- `docs/mobile/screenshots/cycle-096-holiwyn-saved-persistence-restored.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-096-holiwyn-saved-persistence-home-start.xml`
+- `docs/mobile/harness/cycle-096-holiwyn-saved-persistence-seeded.xml`
+- `docs/mobile/harness/cycle-096-holiwyn-saved-persistence-search.xml`
+- `docs/mobile/harness/cycle-096-holiwyn-saved-persistence-restored.xml`
+Bugs found:
+- None in product code. Harness recovered from an off-screen Home save tap, shell URL splitting on `&`, and unreliable star-glyph XML assertions by using deterministic storage seed plus visual screenshot proof.
+Technical debt added:
+- Saved markets persist locally only; they are not yet synced to authenticated backend profile storage.
+Technical debt resolved:
+- Saved market state is no longer session-only on the device.
+Result: Passed Cycle 096 QA. Mobile typecheck, focused saved-persistence smoke, visual screenshot review, and mobile API tests pass.
+Commit: `c6f461e` (`Persist Holiwyn saved markets locally`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `c7877fb`.
+Next cycle: Cycle 097 should add account/session persistence or retry backend readiness if local services become reachable.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Saved Markets Persistence Harness
+- Local Storage Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
