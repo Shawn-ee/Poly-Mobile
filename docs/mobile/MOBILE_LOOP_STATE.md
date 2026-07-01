@@ -831,6 +831,58 @@ Harnesses run:
 - Review Harness
 Harness failures: None.
 
+### Cycle 021
+
+Date: 2026-07-01
+Branch: mobile/cycle-021
+Goal: Extract Search tab UI into a dedicated component for safer future iteration.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No intended visual changes.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/SearchScreen.tsx`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-021-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-021-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-021-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-021-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-021-holiwyn-search.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-021-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-021-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-021-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-021-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-021-holiwyn-search.xml`
+Bugs found: None.
+Technical debt added: None.
+Technical debt resolved:
+- Search UI logic moved out of `mobile/App.tsx`.
+- Unused Search-only styles were removed from `mobile/App.tsx`.
+Result: Passed Cycle 021 QA. Search remains covered by deep smoke after extraction.
+Commit: cycle branch HEAD (`Extract Holiwyn mobile search screen`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 022 should add typed-query Search QA or improve live market refresh/state behavior.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures: None.
+
+### Heartbeat After Cycle 021
+
+Completed cycles: 019, 020, 021 since the last heartbeat.
+Verified progress: Search now has result count, clear affordance, quick filters, no keyboard overlay on entry, resilient smoke launch handling, and a dedicated component.
+Current app state: Holiwyn mobile keeps the World Cup trading shell working with Home, Ticket, Portfolio, Live, and Search covered by deep smoke.
+Current backend state: Backend health was unavailable during recent smoke runs, but mock fallback remained verified; no schema changes were made.
+Open blockers: None for autonomous progress.
+Risks: Deep smoke still uses coordinate taps; typed-query behavior is not yet explicitly automated; server order mode remains unverified.
+Next three likely cycles: Add typed-query Search QA, improve live-market update behavior, and continue component extraction around Home/Featured Future.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
