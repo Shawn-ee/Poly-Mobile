@@ -1146,3 +1146,28 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-057-holiwyn-search-query.png`
 Bugs: None found.
 Harness note: The close-position balance expectation changed to `10,882.35 USDT` because the smoke now max-trades the 34% France futures outcome.
+
+### Cycle 058
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:event-detail-trade`
+- `npm run smoke:deep`
+Result: Passed after assertion recovery. Focused smoke opens a Mexico match-winner ticket from Event Detail; normal deep smoke still passes.
+Screenshots:
+- `docs/mobile/screenshots/cycle-058-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-event-detail-ticket.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-058-holiwyn-search-query.png`
+Bugs:
+- Initial focused smoke expected probability copy that the ticket does not render; final pass asserts visible outcome, market, balance, and order controls.

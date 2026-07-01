@@ -6,7 +6,8 @@ param(
   [string]$HierarchyOutputDir = "docs\mobile\harness",
   [switch]$Deep,
   [switch]$OrderFailure,
-  [switch]$OpenOrderCancel
+  [switch]$OpenOrderCancel,
+  [switch]$EventDetailTrade
 )
 
 $ErrorActionPreference = "Stop"
@@ -141,11 +142,11 @@ try {
   $previousSmokeInputFlag = $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT
   $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT = "1"
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
@@ -179,6 +180,15 @@ try {
     Save-Screenshot -Name "cycle-current-holiwyn-event-detail.png"
     $eventDetailHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail.xml"
     Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Mexico vs. Ecuador", "Markets", "Game lines", "Props", "Total goals over 2.5")
+
+    if ($EventDetailTrade) {
+      Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-outcome-mexico-ecuador-winner-mexico"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-ticket.png"
+      $eventDetailTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-ticket.xml"
+      Assert-HierarchyContains -Path $eventDetailTicketHierarchy -Expected @("Mexico", "Mexico vs. Ecuador", "Fake balance", "10,000 USDT", "Place mock order")
+      return
+    }
 
     Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-group-prop"
     Start-Sleep -Seconds 1
