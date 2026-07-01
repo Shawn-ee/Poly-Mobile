@@ -4007,8 +4007,8 @@ Technical debt added:
 Technical debt resolved:
 - Users can save from Event Detail, not only from Home/Search lists.
 Result: Passed Cycle 080 QA. Mobile typecheck, focused Event Detail save smoke, visual screenshot review, and mobile API tests pass.
-Commit: `PENDING`
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `77ca5bb` (`Add Holiwyn event detail save action`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `4cff232`.
 Next cycle: Cycle 081 should continue saved/discovery parity or retry backend readiness if Docker daemon becomes available.
 Harnesses run:
 - Emulator Runtime Harness
