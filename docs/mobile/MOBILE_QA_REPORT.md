@@ -1171,3 +1171,29 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-058-holiwyn-search-query.png`
 Bugs:
 - Initial focused smoke expected probability copy that the ticket does not render; final pass asserts visible outcome, market, balance, and order controls.
+
+### Cycle 059
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:search-query`
+- `npm run smoke:deep`
+- `npm run smoke:search-query`
+Result: Passed. Focused Search smoke verifies `zzzz` zero-result state without keyboard input; normal deep smoke still passes.
+Screenshots:
+- `docs/mobile/screenshots/cycle-059-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-059-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-059-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-059-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-059-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-059-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-059-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-059-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-059-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-059-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-059-holiwyn-search-query.png`
+- `docs/mobile/screenshots/cycle-059-holiwyn-search-query-focused.png`
+Bugs: None found.
+Harness note: Focused Search uses `forceSearchQuery=zzzz` through the Expo launch URL.

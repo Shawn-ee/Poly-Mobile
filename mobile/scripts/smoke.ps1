@@ -7,7 +7,8 @@ param(
   [switch]$Deep,
   [switch]$OrderFailure,
   [switch]$OpenOrderCancel,
-  [switch]$EventDetailTrade
+  [switch]$EventDetailTrade,
+  [switch]$SearchQuery
 )
 
 $ErrorActionPreference = "Stop"
@@ -142,27 +143,42 @@ try {
   $previousSmokeInputFlag = $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT
   $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT = "1"
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
   } elseif ($OpenOrderCancel) {
     "exp://10.0.2.2:$Port/--/?forceOpenOrder=1"
+  } elseif ($SearchQuery) {
+    "exp://10.0.2.2:$Port/--/?forceSearchQuery=zzzz"
   } else {
     "exp://10.0.2.2:$Port"
   }
   & $adb -s $Device shell am start -a android.intent.action.VIEW -d $launchUrl | Out-Null
   Start-Sleep -Seconds 10
 
-  $launchExpected = if ($OpenOrderCancel) { @("Holiwyn", "Portfolio", "Open orders", "Cancel") } else { @("Holiwyn", "World Cup", "Games", "Futures") }
+  $launchExpected = if ($OpenOrderCancel) {
+    @("Holiwyn", "Portfolio", "Open orders", "Cancel")
+  } elseif ($SearchQuery) {
+    @("Holiwyn", "Search World Cup markets", "zzzz", "0 results")
+  } else {
+    @("Holiwyn", "World Cup", "Games", "Futures")
+  }
   $homeHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-home.xml" -Expected $launchExpected -RestartUrl $launchUrl
   Save-Screenshot -Name "cycle-current-holiwyn-smoke.png"
 
   if ($Deep) {
+    if ($SearchQuery) {
+      Save-Screenshot -Name "cycle-current-holiwyn-search-query.png"
+      $searchQueryHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search-query.xml"
+      Assert-HierarchyContains -Path $searchQueryHierarchy -Expected @("zzzz", "Results", "0 results", "No markets match your search.", "Clear")
+      return
+    }
+
     if ($OpenOrderCancel) {
       Save-Screenshot -Name "cycle-current-holiwyn-open-order.png"
       $openOrderHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-open-order.xml"
