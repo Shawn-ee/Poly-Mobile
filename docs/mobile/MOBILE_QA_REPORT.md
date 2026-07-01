@@ -2168,3 +2168,19 @@ Bugs:
 - None found.
 Visual QA:
 - Not applicable; no UI changed in this cycle.
+
+### Cycle 106
+
+Date: 2026-07-01
+Device: Backend readiness harness and Android mobile checks
+Build/run command:
+- `npm run mobile:backend-readiness`
+- `npm run typecheck` in `mobile/`
+- `npm run test:mobile-api`
+Result: Passed as a readiness audit. Docker CLI, compose file, and DATABASE_URL alignment are still present; Docker daemon and local Postgres TCP readiness are still unavailable.
+Harness evidence:
+- `docs/mobile/harness/cycle-106-mobile-backend-readiness.txt`
+Bugs:
+- None found in product code. Live backend/profile proof remains gated by Docker Desktop/local Postgres availability.
+Visual QA:
+- Not applicable; this was an environment/backend readiness retry cycle.
