@@ -692,3 +692,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 049 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 050
+
+Date: 2026-07-01
+Branch: mobile/cycle-050
+Reviewer: Lead/Reviewer pass
+Scope: Selector-driven event and event-outcome harness taps.
+Findings:
+- P1: Market event cards and outcome buttons now expose deterministic test/accessibility ids based on event, market, and outcome ids.
+- P1: Deep smoke uses those ids for Event Detail opening and event-market ticket opening, reducing coordinate dependence in the highest-value trading path.
+- P2: The harness still uses a device scroll before tapping a below-fold event outcome; prop scrolling and hardware Back remain lower-level actions.
+- `npm run typecheck` and final `npm run smoke:deep` passed.
+Decision: Approve Cycle 050 for local commit/merge after scoped diff review.
+Merge approved: Yes

@@ -21,7 +21,13 @@ export function MarketList({
       {events.map((event) => {
         const winner = event.markets[0];
         return (
-          <Pressable key={event.id} style={styles.eventCard} onPress={() => openEvent(event)}>
+          <Pressable
+            accessibilityLabel={`event-card-${event.id}`}
+            key={event.id}
+            style={styles.eventCard}
+            testID={`event-card-${event.id}`}
+            onPress={() => openEvent(event)}
+          >
             <View style={styles.eventMetaRow}>
               <Text style={styles.timeText}>{event.startsAt}</Text>
               <Text style={[styles.eventTag, event.status === "live" && styles.liveTag]}>{label(locale, { label: event.tag, zhLabel: event.zhTag })}</Text>
@@ -31,7 +37,12 @@ export function MarketList({
               <View key={outcome.id} style={styles.teamRow}>
                 <Text style={styles.teamName}>{outcome.label === "Draw" ? "🤝" : event.teams.find((team) => team.name === outcome.label)?.flag ?? "•"} {label(locale, outcome)}</Text>
                 <Text style={styles.oddsText}>{(100 / outcome.probability).toFixed(1)}x</Text>
-                <Pressable style={[styles.probButton, { backgroundColor: outcome.color }]} onPress={() => openTicket(winner, outcome, event)}>
+                <Pressable
+                  accessibilityLabel={`event-outcome-${event.id}-${winner.id}-${outcome.id}`}
+                  style={[styles.probButton, { backgroundColor: outcome.color }]}
+                  testID={`event-outcome-${event.id}-${winner.id}-${outcome.id}`}
+                  onPress={() => openTicket(winner, outcome, event)}
+                >
                   <Text style={styles.probButtonText}>{outcome.probability}%</Text>
                 </Pressable>
               </View>
@@ -61,7 +72,12 @@ export function FutureList({
             <View key={outcome.id} style={styles.teamRow}>
               <Text style={styles.teamName}>{label(locale, outcome)}</Text>
               <Text style={styles.oddsText}>{(100 / outcome.probability).toFixed(1)}x</Text>
-              <Pressable style={[styles.probButton, { backgroundColor: outcome.color }]} onPress={() => openTicket(market, outcome)}>
+              <Pressable
+                accessibilityLabel={`future-outcome-${market.id}-${outcome.id}`}
+                style={[styles.probButton, { backgroundColor: outcome.color }]}
+                testID={`future-outcome-${market.id}-${outcome.id}`}
+                onPress={() => openTicket(market, outcome)}
+              >
                 <Text style={styles.probButtonText}>{outcome.probability}%</Text>
               </Pressable>
             </View>
