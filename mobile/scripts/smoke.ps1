@@ -27,6 +27,7 @@ param(
   [switch]$FutureListSell,
   [switch]$FutureListClose,
   [switch]$PortfolioPositionCount,
+  [switch]$PortfolioActivityCount,
   [switch]$SavedSearch,
   [switch]$SearchCardStats,
   [switch]$SearchSavedEmpty,
@@ -178,11 +179,11 @@ try {
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
   }
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
@@ -458,6 +459,30 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-portfolio-position-count-open.png"
       $portfolioPositionOpenHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-position-count-open.xml"
       Assert-HierarchyContains -Path $portfolioPositionOpenHierarchy -Expected @("Portfolio", "Open positions", "1", "World Cup winner", "France", "Order placed")
+      return
+    }
+
+    if ($PortfolioActivityCount) {
+      Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "holiwyn-portfolio-tab"
+      Start-Sleep -Seconds 1
+      $portfolioActivityEmptyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-activity-count-empty.xml"
+      Assert-HierarchyContains -Path $portfolioActivityEmptyHierarchy -Expected @("Portfolio", "Recent activity", "0", "No positions yet")
+      Invoke-TapHierarchyNode -Path $portfolioActivityEmptyHierarchy -Identifier "holiwyn-home-tab"
+      Start-Sleep -Seconds 1
+      $portfolioActivityHomeHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-activity-count-home.xml"
+      Invoke-TapHierarchyNode -Path $portfolioActivityHomeHierarchy -Identifier "world-cup-futures-tab"
+      Start-Sleep -Seconds 1
+      & $adb -s $Device shell input swipe 540 1480 540 1040 300 | Out-Null
+      Start-Sleep -Seconds 1
+      $portfolioActivityListHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-activity-count-list.xml"
+      Invoke-TapHierarchyNode -Path $portfolioActivityListHierarchy -Identifier "future-outcome-world-cup-winner-france"
+      Start-Sleep -Seconds 1
+      $portfolioActivityTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-activity-count-ticket.xml"
+      Invoke-TapHierarchyNode -Path $portfolioActivityTicketHierarchy -Identifier "place-mock-order"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-portfolio-activity-count-open.png"
+      $portfolioActivityOpenHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-activity-count-open.xml"
+      Assert-HierarchyContains -Path $portfolioActivityOpenHierarchy -Expected @("Portfolio", "Open positions", "Recent activity", "1", "World Cup winner", "France")
       return
     }
 

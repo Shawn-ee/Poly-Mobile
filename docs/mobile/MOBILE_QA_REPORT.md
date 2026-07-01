@@ -1887,3 +1887,27 @@ Bugs:
 - None found.
 Visual QA:
 - Open positions count is visible above the summary grid and shows `1` after a Futures mock order.
+
+### Cycle 093
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:portfolio-activity-count`
+- `npm run test:mobile-api`
+Result: Passed. Portfolio now shows a localized Recent activity count that reflects order activity state.
+Screenshots:
+- `docs/mobile/screenshots/cycle-093-holiwyn-portfolio-activity-count-smoke.png`
+- `docs/mobile/screenshots/cycle-093-holiwyn-portfolio-activity-count-open.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-093-holiwyn-portfolio-activity-count-home-start.xml`
+- `docs/mobile/harness/cycle-093-holiwyn-portfolio-activity-count-empty.xml`
+- `docs/mobile/harness/cycle-093-holiwyn-portfolio-activity-count-home.xml`
+- `docs/mobile/harness/cycle-093-holiwyn-portfolio-activity-count-list.xml`
+- `docs/mobile/harness/cycle-093-holiwyn-portfolio-activity-count-ticket.xml`
+- `docs/mobile/harness/cycle-093-holiwyn-portfolio-activity-count-open.xml`
+Bugs:
+- None found. The first harness assertion reached for below-fold confirmation text, then recovered by asserting the visible Portfolio count/activity proof.
+Visual QA:
+- Recent activity count is visible above the summary grid and shows `1` after a Futures mock order.
