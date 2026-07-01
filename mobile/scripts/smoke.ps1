@@ -22,6 +22,7 @@ param(
   [switch]$HomeClearSearch,
   [switch]$HomeCardStats,
   [switch]$FutureCardStats,
+  [switch]$FutureListTrade,
   [switch]$SavedSearch,
   [switch]$SearchCardStats,
   [switch]$SearchSavedEmpty,
@@ -173,11 +174,11 @@ try {
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
   }
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
@@ -353,6 +354,21 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-future-card-stats.png"
       $futureCardStatsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-card-stats.xml"
       Assert-HierarchyContains -Path $futureCardStatsHierarchy -Expected @("World Cup winner", "Volume", "Liquidity", "USDT", "France", "Argentina", "Spain")
+      return
+    }
+
+    if ($FutureListTrade) {
+      Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "world-cup-futures-tab"
+      Start-Sleep -Seconds 1
+      & $adb -s $Device shell input swipe 540 1480 540 1040 300 | Out-Null
+      Start-Sleep -Seconds 1
+      $futureListTradeHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-trade-list.xml"
+      Assert-HierarchyContains -Path $futureListTradeHierarchy -Expected @("World Cup winner", "Volume", "Liquidity", "France")
+      Invoke-TapHierarchyNode -Path $futureListTradeHierarchy -Identifier "future-outcome-world-cup-winner-france"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-future-list-ticket.png"
+      $futureListTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-ticket.xml"
+      Assert-HierarchyContains -Path $futureListTicketHierarchy -Expected @("World Cup winner", "France", "Fake balance", "10,000 USDT", "Est. shares", "Avg price", "Place buy order")
       return
     }
 

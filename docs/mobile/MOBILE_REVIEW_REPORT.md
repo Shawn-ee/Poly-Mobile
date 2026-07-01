@@ -1246,3 +1246,18 @@ Findings:
 - Mobile typecheck, focused Futures card stats smoke, and mobile API request tests passed.
 Decision: Approve Cycle 087 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 088
+
+Date: 2026-07-01
+Branch: mobile/cycle-088
+Reviewer: Lead/Reviewer pass
+Scope: Futures list trade smoke.
+Findings:
+- P1: Added focused emulator coverage for opening a buy ticket from a Futures list outcome.
+- P1: The smoke switches to Futures, scrolls to World Cup winner, taps France, and verifies balance/estimate/CTA ticket details.
+- P1: This increases trading confidence without changing product behavior or backend contracts.
+- P2: Future cycles should still test actual mock order placement from Futures list tickets.
+- Mobile typecheck, focused Futures list trade smoke, and mobile API request tests passed.
+Decision: Approve Cycle 088 for local commit/merge after scoped diff review.
+Merge approved: Yes
