@@ -2099,8 +2099,8 @@ Technical debt added:
 Technical debt resolved:
 - Ticket sizing now exposes available fake balance before order placement.
 Result: Passed Cycle 044 QA. Deep smoke verifies `Fake balance` and `10,000 USDT` in the ticket and preserves the full trading path.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Show Holiwyn ticket balance`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 045 should add a clearer max/amount control or start selector-driven harness improvements.
 Harnesses run:
 - QA Smoke Harness
