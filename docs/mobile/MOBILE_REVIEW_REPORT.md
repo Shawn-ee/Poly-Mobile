@@ -1952,3 +1952,18 @@ Findings:
 - Android readiness check, mobile typecheck, and mobile API/profile-preference/activity-metric tests passed.
 Decision: Approve Cycle 134 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 135
+
+Date: 2026-07-01
+Branch: mobile/cycle-135
+Reviewer: Lead/Reviewer pass
+Scope: Samsung Expo Go smoke lane and physical-device harness hardening.
+Findings:
+- P1: Expo Go is now present on the Samsung S23 and ADB sees the phone as an active target, so Holiwyn real-device QA can proceed without relying on the slow emulator for this class of proof.
+- P1: The smoke harness now supports `-SkipPackageClear`, preserving Expo Go first-run state on physical devices while still allowing clean emulator resets when desired.
+- P1: The closed World Cup winner history proof passed on Samsung through `exp://172.16.200.14:8108`, verifying fake balance, closed activity, entry price, close value, and estimated P/L in the real-device UI hierarchy.
+- P2: This is still an Expo Go proof, not a preview APK/dev-client proof. APK/dev-build work remains the better long-term lane once credentials/network/build tooling are ready.
+- Mobile typecheck and mobile API/profile-preference/activity-metric tests passed after the Samsung proof.
+Decision: Approve Cycle 135 for local commit/merge after scoped diff review.
+Merge approved: Yes

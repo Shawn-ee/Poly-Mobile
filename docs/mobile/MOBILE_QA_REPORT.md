@@ -2833,3 +2833,23 @@ Bugs:
 - None.
 Visual QA:
 - Not applicable. The readiness checker confirms preview APK configuration is ready and warns that `expo-dev-client` is still needed before using the development-client profile.
+
+### Cycle 135
+
+Date: 2026-07-01
+Device: Samsung S23 through Expo Go (`adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`)
+Build/run command:
+- `powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -FutureListClose -Port 8108 -Device "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp" -ExpoHost 172.16.200.14 -SkipPackageClear`
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Expo Go is installed on the Samsung S23, and Holiwyn's closed World Cup winner history state now runs through the real phone using the PC LAN Expo host.
+Screenshots:
+- `docs/mobile/screenshots/cycle-135-samsung-closed-history-smoke.png`
+- `docs/mobile/screenshots/cycle-135-samsung-closed-history.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-135-samsung-closed-history-home.xml`
+- `docs/mobile/harness/cycle-135-samsung-closed-history.xml`
+Bugs:
+- Physical-device runs should not clear Expo Go package data by default because that can re-trigger first-run/onboarding state. The smoke harness now supports `-SkipPackageClear` for Samsung runs.
+Visual QA:
+- Samsung proof shows the closed-history Portfolio state with fake balance, no open positions, Recent activity, Closed, Bought, World Cup winner, entry price, close value, and estimated P/L without overlap.

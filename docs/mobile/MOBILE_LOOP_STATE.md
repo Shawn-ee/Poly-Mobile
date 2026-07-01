@@ -6441,6 +6441,44 @@ Harnesses run:
 Harness failures:
 - None. Readiness warning remains for missing `expo-dev-client`.
 
+### Cycle 135
+
+Date: 2026-07-01
+Branch: mobile/cycle-135
+Goal: Verify Holiwyn through Expo Go on the Samsung S23 and harden the smoke harness for physical-device runs.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; harness/device proof cycle.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -FutureListClose -Port 8108 -Device "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp" -ExpoHost 172.16.200.14 -SkipPackageClear` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-135-samsung-closed-history-smoke.png`
+- `docs/mobile/screenshots/cycle-135-samsung-closed-history.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-135-samsung-closed-history-home.xml`
+- `docs/mobile/harness/cycle-135-samsung-closed-history.xml`
+Bugs found:
+- Physical-device smoke runs can lose Expo Go first-run readiness when the harness clears `host.exp.exponent`; fixed with the `-SkipPackageClear` option.
+Technical debt added:
+- Samsung proof still depends on Expo Go rather than a dedicated preview APK/development client.
+Technical debt resolved:
+- Samsung S23 is now a working Holiwyn QA target for Expo Go smokes using the PC LAN Expo host.
+Result: Passed Cycle 135 QA. Samsung Expo Go closed-history smoke, mobile typecheck, and mobile API/profile-preference/activity-metric tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 136 should continue product/backend parity work using Samsung for visual proof where possible, while keeping APK/dev-build work as the longer-term stable test lane.
+Harnesses run:
+- Samsung Expo Go Closed-History Smoke Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity Metric Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 133
 
 Completed cycles: 131, 132, 133.
