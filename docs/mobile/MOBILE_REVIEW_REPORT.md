@@ -1620,3 +1620,18 @@ Findings:
 - Mobile typecheck, focused event-detail-market-outcome-count smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 112 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 113
+
+Date: 2026-07-01
+Branch: mobile/cycle-113
+Reviewer: Lead/Reviewer pass
+Scope: Live market breadth summary.
+Findings:
+- P1: Live screen now calculates and displays total live markets and outcomes above the live card list.
+- P1: Focused smoke opens Live directly and verifies `2 markets`, `6 outcomes`, and visible France vs. Argentina trading outcomes.
+- P1: The direct Live route improves harness reliability for future live-market cycles.
+- P2: Counts are still derived from local/mock event payloads until live backend market metadata feeds the app.
+- Mobile typecheck, focused live-summary smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 113 for local commit/merge after scoped diff review.
+Merge approved: Yes

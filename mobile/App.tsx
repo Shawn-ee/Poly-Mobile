@@ -255,6 +255,9 @@ export default function App() {
       if (url.includes("forcePortfolio=1")) {
         setMainTab("portfolio");
       }
+      if (url.includes("forceLive=1")) {
+        setMainTab("live");
+      }
       if (url.includes("forceWorldCupWinnerFranceTicket=1")) {
         const market = worldCupFutures[0];
         const outcome = market.outcomes[0];
