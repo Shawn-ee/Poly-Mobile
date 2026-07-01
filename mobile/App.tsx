@@ -3,10 +3,8 @@ import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,14 +12,12 @@ import { PolyApi } from "./src/api";
 import { normalizeEventDetail } from "./src/adapters/worldCupAdapter";
 import { BottomTabs } from "./src/components/BottomTabs";
 import { EventDetail } from "./src/components/EventDetail";
-import { FeaturedFuture as FeaturedFutureCard } from "./src/components/FeaturedFuture";
+import { HomeScreen } from "./src/components/HomeScreen";
 import { LiveScreen } from "./src/components/LiveScreen";
-import { FutureList, MarketList } from "./src/components/MarketLists";
 import { Portfolio, Position } from "./src/components/Portfolio";
 import { SearchScreen } from "./src/components/SearchScreen";
-import { SportNav } from "./src/components/SportNav";
 import { Ticket, TradeTicket } from "./src/components/TradeTicket";
-import { WorldCupSegmented, WorldCupTab } from "./src/components/WorldCupSegmented";
+import { WorldCupTab } from "./src/components/WorldCupSegmented";
 import {
   Event,
   Locale,
@@ -323,59 +319,6 @@ function Header({
         <Ionicons name="notifications-outline" color="#f8fafc" size={20} />
       </Pressable>
     </View>
-  );
-}
-
-function HomeScreen({
-  locale,
-  t,
-  worldCupTab,
-  setWorldCupTab,
-  events,
-  query,
-  setQuery,
-  openEvent,
-  openTicket,
-  futures,
-}: {
-  locale: Locale;
-  t: typeof copy.en;
-  worldCupTab: WorldCupTab;
-  setWorldCupTab: (tab: WorldCupTab) => void;
-  events: Event[];
-  query: string;
-  setQuery: (query: string) => void;
-  openEvent: (event: Event) => void;
-  openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
-  futures: Market[];
-}) {
-  return (
-      <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
-      <SportNav locale={locale} />
-      <FeaturedFutureCard locale={locale} futures={futures} openTicket={openTicket} />
-      <Text style={styles.sectionTitle}>{t.trending}</Text>
-      <View style={styles.searchBox}>
-        <Ionicons name="search" color="#94a3b8" size={20} />
-        <TextInput
-          value={query}
-          onChangeText={setQuery}
-          placeholder={t.marketSearch}
-          placeholderTextColor="#64748b"
-          style={styles.searchInput}
-        />
-      </View>
-      <WorldCupSegmented
-        left={t.games}
-        right={t.futures}
-        value={worldCupTab}
-        setValue={setWorldCupTab}
-      />
-      {worldCupTab === "games" ? (
-        <MarketList locale={locale} events={events} empty={t.noResults} openEvent={openEvent} openTicket={openTicket} />
-      ) : (
-        <FutureList locale={locale} futures={futures} openTicket={openTicket} />
-      )}
-    </ScrollView>
   );
 }
 

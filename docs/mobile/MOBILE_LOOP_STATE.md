@@ -1283,6 +1283,64 @@ Harnesses run:
 Harness failures:
 - First Home hierarchy dump was small during launch, but the existing wait/retry harness recovered and the final run passed.
 
+### Cycle 030
+
+Date: 2026-07-01
+Branch: mobile/cycle-030
+Goal: Extract the Home screen composition into a dedicated component.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Home now renders through `mobile/src/components/HomeScreen.tsx` while preserving the same World Cup layout, search box, featured futures card, segmented control, and market lists.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/HomeScreen.tsx`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-030-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-030-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-030-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-030-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-030-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-030-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-030-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-030-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-030-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-030-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-030-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-030-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-030-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-030-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Home screen composition no longer lives inline in `App.tsx`.
+Result: Passed Cycle 030 QA. Home extraction is visually stable and deep smoke still verifies Home, ticket, Portfolio, Live refresh, Search, and typed Search.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge after commit.
+Next cycle: Cycle 031 should add richer portfolio position detail/P&L or continue extracting app-shell/header concerns.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 030
+
+Completed cycles: 028, 029, 030 since the last heartbeat.
+Verified progress: Home sports nav, World Cup segmented control, and full Home screen composition are now dedicated components with deep smoke coverage.
+Current app state: Holiwyn mobile has verified Home, featured futures ticket, mock order to Portfolio, Live refresh, Search browse, and typed Search zero-result flows on the Android emulator.
+Current backend state: Backend health is still unavailable during emulator smoke; mock fallback remains verified and mobile API calls are bounded by timeout.
+Open blockers: None for autonomous progress.
+Risks: Deep smoke still uses coordinate taps; Portfolio is still basic and lacks P/L/open-position detail; real server order mode and live odds deltas remain unverified.
+Next three likely cycles: Add portfolio position detail/P&L, extract header/app shell presentation, and improve harness taps toward selector-based actions.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
