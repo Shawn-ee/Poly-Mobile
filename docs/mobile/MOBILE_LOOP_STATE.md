@@ -3539,8 +3539,8 @@ Technical debt added:
 Technical debt resolved:
 - Event Detail market cards now expose basic order-book context instead of only probability buttons.
 Result: Passed Cycle 070 QA after assertion recovery. Mobile typecheck, focused Event Detail smoke, visual screenshot review, and mobile API tests pass.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `aeeeef2` (`Add Holiwyn event detail depth preview`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `399d0eb`.
 Next cycle: Cycle 071 should continue trading UX depth, likely side-specific ticket copy or quote/depth mapping seams.
 Harnesses run:
 - Emulator Runtime Harness
