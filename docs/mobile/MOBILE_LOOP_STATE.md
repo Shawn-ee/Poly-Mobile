@@ -567,7 +567,7 @@ Technical debt resolved:
 - Part of backend data-quality display risk from Cycle 012 heartbeat.
 Result: Passed Cycle 014 QA. Generic futures fixture title now renders as `World Cup futures`.
 Commit: cycle branch HEAD (`Normalize Holiwyn mobile futures titles`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 015 should add selector/testID scaffolding for deep smoke or improve live market presentation.
 Harnesses run:
 - Backend/API Harness
