@@ -904,3 +904,18 @@ Findings:
 - P1: Mobile API request tests, mobile server preflight, and mobile typecheck passed.
 Decision: Approve Cycle 064 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 065
+
+Date: 2026-07-01
+Branch: mobile/cycle-065
+Reviewer: Lead/Reviewer pass
+Scope: Mobile backend readiness harness.
+Findings:
+- P0: `mobile:backend-readiness` gives the loop a safe, read-only backend readiness check for Docker, compose, DB URL source/target, and DB TCP reachability.
+- P0: `mobile:backend-readiness:start` provides the explicit recovery action to start the compose DB when Docker Desktop is available.
+- P1: The harness masks the database password when reporting `DATABASE_URL`.
+- P1: Current environment is accurately diagnosed: Docker CLI exists, daemon is not reachable, and local DB port is closed.
+- P1: Mobile API request tests, mobile server preflight, and mobile typecheck passed.
+Decision: Approve Cycle 065 for local commit/merge after scoped diff review.
+Merge approved: Yes

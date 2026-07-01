@@ -95,3 +95,4 @@ Status:
 | GAP-073 | Harness | Server-mode preflight | P0 | No | Verified | Cycle 062 adds a server-mode preflight that checks mobile auth wiring, backend health when available, API key shape, and emulator launch vars. |
 | GAP-074 | Harness | Strict server-mode launch gate | P0 | No | Verified | Cycle 063 lets server preflight honor env overrides and adds `preflight:server-mode:strict`, which refuses launch without backend/API key proof. |
 | GAP-075 | Backend adapter | Mobile dev credential helper | P0 | No | Verified | Cycle 064 adds `mobile:dev-credential` plus dry-run proof to create a fake-token mobile API key when local Postgres is running. |
+| GAP-076 | Harness | Mobile backend readiness check | P0 | No | Verified | Cycle 065 adds `mobile:backend-readiness` with Docker daemon, compose, DB URL, and TCP-port checks plus an optional DB start command. |
