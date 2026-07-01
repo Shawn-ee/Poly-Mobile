@@ -496,3 +496,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 035 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 036
+
+Date: 2026-07-01
+Branch: mobile/cycle-036
+Reviewer: Lead/Reviewer pass
+Scope: Localization copy extraction.
+Findings:
+- P1: `App.tsx` now imports bilingual app copy from `mobile/src/localization/appCopy.ts`, reducing app shell size and ownership.
+- P1: Simplified Chinese app copy is normalized with Unicode escapes in the localization module, reducing future encoding drift.
+- P2: Component-level copy prop types remain local and duplicated; a future shared `AppCopy` import could tighten type reuse.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 036 for local commit/merge after scoped diff review.
+Merge approved: Yes

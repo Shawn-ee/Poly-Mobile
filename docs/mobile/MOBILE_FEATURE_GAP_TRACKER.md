@@ -66,3 +66,4 @@ Status:
 | GAP-044 | Portfolio | Aggregate position summary | P1 | No | Verified | Cycle 033 adds Invested, Current value, and Est. P/L summary cards above fake-token positions. |
 | GAP-045 | Portfolio | Close-position affordance | P1 | No | Verified | Cycle 034 adds a fake-token `Close position` action to Portfolio position cards. |
 | GAP-046 | Harness | Close-position behavior smoke | P1 | No | Verified | Cycle 035 taps Close position and verifies credited balance plus empty Portfolio state. |
+| GAP-047 | Localization | App copy module | P2 | No | Verified | Cycle 036 extracts English/Simplified Chinese app copy into `mobile/src/localization/appCopy.ts`. |
