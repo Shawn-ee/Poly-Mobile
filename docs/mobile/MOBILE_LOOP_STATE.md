@@ -5956,8 +5956,8 @@ Technical debt added:
 Technical debt resolved:
 - Heavy live order to Portfolio proof no longer needs Expo Go package clearing to start from clean app state.
 Result: Passed Cycle 123 QA. Focused live-portfolio-badge-deep smoke, visual screenshot review, and mobile API/profile-preference tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `835213e` (`Harden fast live Portfolio reset`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `6d0560b`.
 Next cycle: Cycle 124 should selectively remove Metro `--clear` for proven live fast-reset smokes or continue live/detail trading polish.
 Harnesses run:
 - Mobile Typecheck Harness
