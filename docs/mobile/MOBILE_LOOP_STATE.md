@@ -2894,8 +2894,8 @@ Technical debt added:
 Technical debt resolved:
 - Deep smoke no longer uses a fixed Home list swipe after returning from Event Detail.
 Result: Passed Cycle 057 QA. Deep smoke verifies Event Detail/Props, returns Home, opens a featured futures ticket by selector, maxes/closes the position, and verifies Live/Search flows.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `bca4e24` (`Use featured future for Holiwyn deep smoke`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `48c8aa5`.
 Next cycle: Cycle 058 should add focused event-row trade smoke or continue reducing remaining keyboard/input device actions.
 Harnesses run:
 - QA Smoke Harness
