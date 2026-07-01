@@ -5,6 +5,7 @@ param(
   [string]$OutputDir = "docs\mobile\screenshots",
   [string]$BackendBaseUrl = "http://127.0.0.1:3000",
   [string]$HierarchyOutputDir = "docs\mobile\harness",
+  [switch]$SkipPackageClear,
   [switch]$Deep,
   [switch]$OrderFailure,
   [switch]$OpenOrderCancel,
@@ -347,7 +348,7 @@ try {
   } else {
     "exp://${ExpoHost}:$Port"
   }
-  if ($EventDetailTrade -or $FutureListClose -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty) {
+  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $FutureListClose -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
     & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
     Start-Sleep -Seconds 2
   }
