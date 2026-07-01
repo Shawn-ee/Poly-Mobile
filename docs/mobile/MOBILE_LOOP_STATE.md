@@ -3266,8 +3266,8 @@ Technical debt added:
 Technical debt resolved:
 - The loop now has a single command to generate a mobile server-mode fake-token API key with 10,000 USDT target balance once backend services are up.
 Result: Passed Cycle 064 QA with documented environment recovery. Dry-run credential harness and mobile server-mode checks pass.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `7946604` (`Add Holiwyn mobile dev credential helper`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `d96cec1`.
 Next cycle: Cycle 065 should add a backend readiness/run command harness or start local services so the real credential command and strict preflight can pass.
 Harnesses run:
 - Backend/API Harness
