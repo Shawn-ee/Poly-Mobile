@@ -3767,8 +3767,8 @@ Technical debt added:
 Technical debt resolved:
 - Home discovery now has a watchlist-style saved-market path instead of only status filters.
 Result: Passed Cycle 075 QA after harness recovery. Mobile typecheck, focused Saved smoke, visual screenshot review, and mobile API tests pass.
-Commit: `PENDING`
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `c067df6` (`Add Holiwyn saved market filter`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `720424b`.
 Next cycle: Cycle 076 should continue trading/discovery parity or revisit backend readiness if Docker daemon becomes available.
 Harnesses run:
 - Emulator Runtime Harness
