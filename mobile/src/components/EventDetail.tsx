@@ -169,7 +169,12 @@ export function EventDetail({
           <Text style={styles.groupTitle}>{groupLabel(group.type)}</Text>
           {group.markets.map((market) => (
             <View key={market.id} style={styles.marketBlock}>
-              <Text style={styles.marketTitle}>{label(locale, market)}</Text>
+              <View style={styles.marketHeaderRow}>
+                <Text style={styles.marketTitle}>{label(locale, market)}</Text>
+                <Text style={styles.marketOutcomeCount}>
+                  {market.outcomes.length} {t.outcomeCount}
+                </Text>
+              </View>
               <View accessibilityLabel={`market-depth-${market.id}`} style={styles.depthRow} testID={`market-depth-${market.id}`}>
                 <View style={styles.depthCell}>
                   <Text style={styles.depthLabel}>{t.bestBid}</Text>
@@ -233,7 +238,9 @@ const styles = StyleSheet.create({
   marketGroup: { gap: 10, marginBottom: 14 },
   groupTitle: { color: "#94a3b8", fontSize: 13, fontWeight: "900", textTransform: "uppercase" },
   marketBlock: { padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginBottom: 12 },
-  marketTitle: { color: "#f8fafc", fontSize: 19, fontWeight: "900", marginBottom: 8 },
+  marketHeaderRow: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 8 },
+  marketTitle: { flex: 1, color: "#f8fafc", fontSize: 19, fontWeight: "900" },
+  marketOutcomeCount: { color: "#93c5fd", fontSize: 12, fontWeight: "900" },
   depthRow: { flexDirection: "row", gap: 8, marginBottom: 6 },
   depthCell: { flex: 1, minHeight: 48, justifyContent: "center", paddingHorizontal: 9, borderRadius: 9, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
   depthLabel: { color: "#94a3b8", fontSize: 10, fontWeight: "900", textTransform: "uppercase", marginBottom: 3 },

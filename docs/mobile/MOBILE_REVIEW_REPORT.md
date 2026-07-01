@@ -1605,3 +1605,18 @@ Findings:
 - Mobile typecheck, focused event-detail-summary smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 111 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 112
+
+Date: 2026-07-01
+Branch: mobile/cycle-112
+Reviewer: Lead/Reviewer pass
+Scope: Event Detail per-market outcome count.
+Findings:
+- P1: Each Event Detail market card now displays its own outcome count next to the market title.
+- P1: Focused smoke opens Mexico vs. Ecuador detail directly and verifies Match winner shows `2 outcomes` with depth labels.
+- P1: ADB/emulator offline recovery was handled by restarting the emulator and rerunning the same focused smoke successfully.
+- P2: Counts are derived from the local event payload; backend metadata can replace or enrich them later.
+- Mobile typecheck, focused event-detail-market-outcome-count smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 112 for local commit/merge after scoped diff review.
+Merge approved: Yes
