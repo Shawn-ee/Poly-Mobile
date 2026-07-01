@@ -94,7 +94,7 @@ Technical debt added:
 Technical debt resolved: None.
 Result: Phase 0 passed. Samsung reference access works, emulator works, backend health works, repo-local Holiwyn app launches on emulator, screenshots captured.
 Commit: cycle branch HEAD (`Build Holiwyn World Cup mock trading shell`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 002 should build the Holiwyn app shell and mock World Cup data model in `mobile/`, dark-first, with English/Simplified Chinese support started.
 Harnesses run:
 - Reference Observation Harness
