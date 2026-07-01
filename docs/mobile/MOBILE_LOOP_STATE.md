@@ -4230,8 +4230,8 @@ Technical debt added:
 Technical debt resolved:
 - Home and Search now share the same compact clear-query interaction pattern.
 Result: Passed Cycle 085 QA. Mobile typecheck, focused Search clear-query smoke, visual screenshot review, and mobile API tests pass.
-Commit: Pending branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `78e26b7` (`Add Holiwyn search clear icon action`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `4acbd32`.
 Next cycle: Cycle 086 should continue search/discovery parity, strengthen smoke launch readiness, or add another trading affordance.
 Harnesses run:
 - Emulator Runtime Harness
