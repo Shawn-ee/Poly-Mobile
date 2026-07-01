@@ -1632,8 +1632,8 @@ Technical debt resolved:
 - Main app shell no longer owns the full bilingual copy table.
 - Simplified Chinese app copy is normalized with Unicode escapes in a dedicated module to avoid editor encoding drift.
 Result: Passed Cycle 036 QA. Deep smoke verifies the extracted copy still renders the full trading, Portfolio, Live, and Search flows.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Extract Holiwyn app copy`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 037 should continue trading parity, likely with order confirmation detail or additional market groups.
 Harnesses run:
 - QA Smoke Harness
