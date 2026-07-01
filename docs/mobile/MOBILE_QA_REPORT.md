@@ -3003,3 +3003,28 @@ Bugs:
 - Initial Samsung run inherited stale Portfolio state; fixed by launching the close-position smoke with `forceResetState=1`.
 Visual QA:
 - Samsung proof shows a clean Portfolio, an opened World Cup winner position, the close-position action, and final counters with no open positions, two activities, and one closed trade.
+
+### Cycle 143
+
+Date: 2026-07-01
+Device: Samsung S23 through Expo Go (`adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`)
+Build/run command:
+- `npm run smoke:samsung:live-order`
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The Samsung wrapper now proves the live-market trading path from Live World Cup through ticket opening, mock buy, and Portfolio confirmation with live metadata.
+Screenshots:
+- `docs/mobile/screenshots/cycle-143-samsung-live-order-smoke.png`
+- `docs/mobile/screenshots/cycle-143-samsung-live-order-ready.png`
+- `docs/mobile/screenshots/cycle-143-samsung-live-order-ticket.png`
+- `docs/mobile/screenshots/cycle-143-samsung-live-order-portfolio.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-143-samsung-live-order-home.xml`
+- `docs/mobile/harness/cycle-143-samsung-live-order-ready.xml`
+- `docs/mobile/harness/cycle-143-samsung-live-order-ticket.xml`
+- `docs/mobile/harness/cycle-143-samsung-live-order-portfolio.xml`
+Bugs:
+- Initial Samsung live-order run reached Portfolio but failed the older harness expectation for a combined `MOCK - Buy - France - 41%` label. The current UI separates order title and execution price, so the harness now checks `MOCK - Buy - France`, `Exec price`, and `41%`.
+- The first retry exposed that forced live reset could return the app to Home after launch; fixed by preserving `forceLive=1` during the delayed reset guard.
+Visual QA:
+- Samsung proof shows Live World Cup, the France vs. Argentina ticket, fake-balance order placement, Portfolio confirmation, live badge/clock, execution price, invested value, current value, and estimated P/L.

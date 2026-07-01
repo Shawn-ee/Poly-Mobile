@@ -472,7 +472,7 @@ try {
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "cycle-current-holiwyn-live-order-portfolio.png"
         $liveOrderPortfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-order-portfolio.xml"
-        Assert-HierarchyContains -Path $liveOrderPortfolioHierarchy -Expected @("Portfolio", "Fake balance", "9,900 USDT", "Open positions", "Recent activity", "1", "France vs. Argentina", "MOCK - Buy - France - 41%", "Invested", "Entry", "Current value", "Est. P/L", "Close position")
+        Assert-HierarchyContains -Path $liveOrderPortfolioHierarchy -Expected @("Portfolio", "Fake balance", "9,900 USDT", "Open positions", "Recent activity", "1", "France vs. Argentina", "MOCK - Buy - France", "Exec price", "41%", "Invested", "Current value", "Est. P/L")
         if ($LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
           Assert-HierarchyContains -Path $liveOrderPortfolioHierarchy -Expected @("LIVE WORLD CUP", "portfolio-position-live-badge")
         }
