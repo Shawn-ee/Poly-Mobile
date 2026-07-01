@@ -3174,8 +3174,8 @@ Technical debt added:
 Technical debt resolved:
 - Server-mode smoke now has a clear preflight gate instead of failing late inside the app.
 Result: Passed Cycle 062 QA. Server-mode preflight, mobile typecheck, and mobile API request tests all pass.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `5848974` (`Add Holiwyn server mode preflight`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `9b20bca`.
 Next cycle: Cycle 063 should either add strict-mode docs/evidence around seeded credentials or continue toward live authenticated backend proof when backend/API key are available.
 Harnesses run:
 - Server Mode Preflight Harness
