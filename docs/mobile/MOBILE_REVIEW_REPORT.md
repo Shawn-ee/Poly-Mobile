@@ -1695,3 +1695,18 @@ Findings:
 - Mobile typecheck, focused live-order-close smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 117 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 118
+
+Date: 2026-07-01
+Branch: mobile/cycle-118
+Reviewer: Lead/Reviewer pass
+Scope: Live-origin Portfolio badge.
+Findings:
+- P1: Live ticket orders now persist `isLive` metadata into open positions, latest-order confirmation, and activity records.
+- P1: Portfolio renders a compact Live World Cup badge on live-origin open positions; focused smoke verifies the visible position badge after a France live order.
+- P1: The heavier live-order smoke path now has a longer initial launch window to tolerate Expo Go blank startup.
+- P2: Latest-order and activity live badges are product-wired but not yet separately deep-scroll verified because they can sit below the first Android hierarchy viewport.
+- Mobile typecheck, focused live-portfolio-badge smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 118 for local commit/merge after scoped diff review.
+Merge approved: Yes

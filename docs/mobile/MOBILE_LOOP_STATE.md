@@ -5672,6 +5672,60 @@ Harnesses run:
 Harness failures:
 - Initial live-order-close run found no-op live outcome taps due to an invisible Expo touch layer; the harness was hardened and rerun successfully.
 
+### Cycle 118
+
+Date: 2026-07-01
+Branch: mobile/cycle-118
+Goal: Carry live-origin metadata into Portfolio and verify a visible live badge on a live position.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio open positions from live tickets now show a compact `Live World Cup` badge.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run smoke:live-portfolio-badge` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-118-holiwyn-live-portfolio-badge-smoke.png`
+- `docs/mobile/screenshots/cycle-118-holiwyn-live-portfolio-badge-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-118-holiwyn-live-portfolio-badge-ticket.png`
+- `docs/mobile/screenshots/cycle-118-holiwyn-live-portfolio-badge-portfolio.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-118-holiwyn-expo-menu-recovered.xml`
+- `docs/mobile/harness/cycle-118-holiwyn-live-portfolio-badge-home.xml`
+- `docs/mobile/harness/cycle-118-holiwyn-live-portfolio-badge-ticket-ready.xml`
+- `docs/mobile/harness/cycle-118-holiwyn-live-portfolio-badge-ticket.xml`
+- `docs/mobile/harness/cycle-118-holiwyn-live-portfolio-badge-portfolio.xml`
+Bugs found:
+- Initial focused proof expected a latest-order live badge that sits below the visible Android hierarchy after the open position card. The proof now verifies the visible position badge and leaves deeper-scroll coverage for a later cycle.
+- Expo Go blank startup can exceed the default live-order wait. Heavy live-order smokes now use a longer first-screen wait.
+Technical debt added:
+- Latest-order and activity live badges are product-wired but not separately deep-scroll verified yet.
+Technical debt resolved:
+- Users can now distinguish live-origin Portfolio positions from standard pre-match mock positions.
+Result: Passed Cycle 118 QA. Mobile typecheck, focused emulator live-portfolio-badge smoke, and mobile API/profile-preference tests pass.
+Commit: `TBD` (`Show Live Portfolio position badge`)
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 119 should add deeper-scroll proof for live activity/confirmation badges or continue live trading polish.
+Harnesses run:
+- Mobile Typecheck Harness
+- Live Portfolio Badge Smoke Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- Initial live-portfolio-badge attempt failed on an offscreen latest-order assertion; later smoke passed after focusing on visible position evidence.
+
+### Heartbeat After Cycle 118
+
+Completed cycles: 116, 117, 118 since the last heartbeat.
+Verified progress: Live World Cup trading now has focused emulator proof for opening a live ticket, placing a fake-token live order, landing in Portfolio, closing that live position, and showing a visible Live World Cup badge on the open live Portfolio position. All three cycles passed mobile typecheck, focused Android emulator smoke, and mobile API/profile-preference tests.
+Current app state: Holiwyn mobile has verified Home discovery filters/saved markets/saved empty/search clear/card stats/futures stats, Search browse/query/clear/saved filtering/sort/saved empty/card stats/saved persistence, Event Detail grouped markets/props/group jumps/save/trading stats/depth/outcome ticket opening/market breadth counts/per-market outcome counts, Live refresh/breadth summary/live ticket opening/live ticket badge/live order/live close/live Portfolio badge, featured futures trading, Futures list ticket/buy/sell/order/close coverage, ticket balance/max/preset sizing/share and price estimates, side-aware buy/sell tickets with persisted defaults, successful mock order, forced order failure, server order failure, Portfolio summary/detail/counts/compact count grid/close/activity/order confirmation/open-order cancel/local persistence, server-unavailable Portfolio fallback, localization with persisted language, Account/Login mock profile persistence plus language/ticket/saved/open-position/value summaries, and visible server profile-preference sync recovery on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history/order/cancel client seams are wired; Bearer API-key config and canonical request shape are tested; local credential generation and backend readiness harnesses exist; profile preferences have typed mobile get/save plus guarded runtime sync and a visible Account failure state; latest readiness evidence still shows Docker CLI and compose/DATABASE_URL ready, but Docker daemon and local Postgres TCP unavailable.
+Open blockers: None for autonomous mock-mode product/harness progress. Live authenticated backend proof remains gated by Docker Desktop/local Postgres availability.
+Risks: Saved markets, Account session, language, ticket defaults, and mock Portfolio persistence are local-first; profile sync is guarded and visible on failure but still lacks live-backend proof; Portfolio counts, Home/Search/Futures market stats, Popular ranking, ticket quote math, live labels, market breadth counts, live-position badge metadata, and close-position behavior remain local estimates until backend auth, profile, quote, popularity, order-book, live-state, and position APIs can feed them.
+Next three likely cycles: Add deeper-scroll proof for latest-order/activity live badges, continue live/detail trading polish, and retry backend readiness if Docker/local Postgres become available.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

@@ -478,6 +478,7 @@ export default function App() {
       setTicketOrderError(t.orderFailed);
       return;
     }
+    const isLiveOrder = ticket.event?.status === "live";
     setBalance((current) => current - cost);
     setPositions((current) => [
       {
@@ -488,6 +489,7 @@ export default function App() {
         side: result.side,
         amount: result.amount,
         probability: result.probability,
+        isLive: isLiveOrder,
       },
       ...current,
     ]);
@@ -498,6 +500,7 @@ export default function App() {
       outcome: result.outcome,
       side: result.side,
       amount: result.amount,
+      isLive: isLiveOrder,
     });
     setActivities((current) => [
       {
@@ -506,6 +509,7 @@ export default function App() {
         title: result.title,
         outcome: result.outcome,
         amount: result.amount,
+        isLive: isLiveOrder,
       },
       ...current,
     ]);
@@ -525,6 +529,7 @@ export default function App() {
         title: position.title,
         outcome: position.outcome,
         amount: value,
+        isLive: position.isLive,
       },
       ...current,
     ]);

@@ -2421,3 +2421,29 @@ Bugs:
 - Expo Go can leave a transparent touch layer after development-menu interruption. The live-ticket retry now clears the layer, relaunches the Live deep link, and retries instead of repeatedly tapping a swallowed target.
 Visual QA:
 - Closed-state Portfolio shows `10,007.32 USDT`, Open positions `0`, Recent activity `2`, Closed trades `1`, and the closed live France activity below the first viewport.
+
+### Cycle 118
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554` with Expo Go
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run smoke:live-portfolio-badge`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Live-origin trades now carry live metadata into Portfolio and show a visible Live World Cup badge on the open position.
+Screenshots:
+- `docs/mobile/screenshots/cycle-118-holiwyn-live-portfolio-badge-smoke.png`
+- `docs/mobile/screenshots/cycle-118-holiwyn-live-portfolio-badge-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-118-holiwyn-live-portfolio-badge-ticket.png`
+- `docs/mobile/screenshots/cycle-118-holiwyn-live-portfolio-badge-portfolio.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-118-holiwyn-expo-menu-recovered.xml`
+- `docs/mobile/harness/cycle-118-holiwyn-live-portfolio-badge-home.xml`
+- `docs/mobile/harness/cycle-118-holiwyn-live-portfolio-badge-ticket-ready.xml`
+- `docs/mobile/harness/cycle-118-holiwyn-live-portfolio-badge-ticket.xml`
+- `docs/mobile/harness/cycle-118-holiwyn-live-portfolio-badge-portfolio.xml`
+Bugs:
+- First badge smoke attempt asserted the latest-order badge, which sits below the visible Android hierarchy after the position card. The focused proof was tightened to the visible open-position badge.
+- Expo Go blank startup sometimes exceeded the default live-order wait. Heavy live-order smokes now use a longer first-screen wait.
+Visual QA:
+- Portfolio position card shows a red `LIVE WORLD CUP` badge above `France vs. Argentina` while preserving fake balance, counts, current value, and P/L.
