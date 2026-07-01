@@ -2001,6 +2001,61 @@ Open blockers: None for autonomous progress.
 Risks: Server-mode Portfolio is typed and wired but not end-to-end verified against an authenticated backend session; open order actions such as cancel/edit are not implemented.
 Next three likely cycles: Add open-order cancel/action affordance, add server-mode error/empty states, and improve selector-driven automation for fewer coordinate taps.
 
+### Cycle 043
+
+Date: 2026-07-01
+Branch: mobile/cycle-043
+Goal: Add a visible Portfolio order confirmation after mock trades.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio now shows a compact `Order placed` confirmation with mode, side, outcome, market, and amount after placing a mock trade.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-043-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-043-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-043-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-043-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-043-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-043-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-043-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-043-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-043-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-043-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-043-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-043-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-043-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Latest order confirmation is local state only; server-mode order acknowledgement copy should use backend order status when auth trading is active.
+Technical debt resolved:
+- Users now get an immediate visible confirmation after the mock order transitions into Portfolio.
+Result: Passed Cycle 043 QA. Deep smoke verifies `Order placed` after mock order and preserves close-position, activity, Live, and Search flows.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 044 should add a clearer order-status/error path or improve selector-driven harness actions.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
