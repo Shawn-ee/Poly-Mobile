@@ -18,6 +18,8 @@ type TradeTicketCopy = {
   max: string;
   balance: string;
   estimatedCost: string;
+  estimatedShares: string;
+  averagePrice: string;
   estimatedPayout: string;
   placeMockOrder: string;
   orderFailed: string;
@@ -44,6 +46,8 @@ export function TradeTicket({
   const [side, setSide] = useState<"buy" | "sell">("buy");
   if (!ticket) return null;
   const numericAmount = Number(amount) || 0;
+  const averagePrice = ticket.outcome.probability / 100;
+  const estimatedShares = averagePrice > 0 ? numericAmount / averagePrice : 0;
   const estimatedPayout = ticket.outcome.probability > 0 ? numericAmount * (100 / ticket.outcome.probability) : 0;
   const amountPresets = [100, 500, 1000];
 
@@ -94,6 +98,14 @@ export function TradeTicket({
           <View style={styles.estimateLine}>
             <Text style={styles.estimateLabel}>{t.estimatedCost}</Text>
             <Text style={styles.estimateValue}>{money(Math.min(numericAmount, balance))}</Text>
+          </View>
+          <View style={styles.estimateLine}>
+            <Text style={styles.estimateLabel}>{t.estimatedShares}</Text>
+            <Text style={styles.estimateValue}>{estimatedShares.toLocaleString(undefined, { maximumFractionDigits: 2 })} shares</Text>
+          </View>
+          <View style={styles.estimateLine}>
+            <Text style={styles.estimateLabel}>{t.averagePrice}</Text>
+            <Text style={styles.estimateValue}>{averagePrice.toFixed(2)} USDT</Text>
           </View>
           <View style={styles.estimateLine}>
             <Text style={styles.estimateLabel}>{t.estimatedPayout}</Text>

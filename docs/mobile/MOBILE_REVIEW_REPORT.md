@@ -962,3 +962,18 @@ Findings:
 - Mobile typecheck, focused Event Detail smoke, and mobile API request tests passed.
 Decision: Approve Cycle 068 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 069
+
+Date: 2026-07-01
+Branch: mobile/cycle-069
+Reviewer: Lead/Reviewer pass
+Scope: Trade Ticket estimate rows.
+Findings:
+- P1: Trade Ticket now shows estimated shares and average price, giving users clearer pre-trade context.
+- P1: New labels are localized in English and Simplified Chinese.
+- P1: Focused Event Detail ticket smoke asserts `Est. shares` and `Avg price` and still reaches the submit action.
+- P2: Visual QA on emulator shows the added rows fit without hiding the primary order button.
+- Mobile typecheck, focused Event Detail smoke, and mobile API request tests passed.
+Decision: Approve Cycle 069 for local commit/merge after scoped diff review.
+Merge approved: Yes
