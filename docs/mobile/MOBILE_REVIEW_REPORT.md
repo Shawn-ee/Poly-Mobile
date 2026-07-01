@@ -1590,3 +1590,18 @@ Findings:
 - Mobile typecheck, focused account-portfolio-value smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 110 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 111
+
+Date: 2026-07-01
+Branch: mobile/cycle-111
+Reviewer: Lead/Reviewer pass
+Scope: Event Detail market/outcome summary.
+Findings:
+- P1: Event Detail now displays compact market and outcome count pills in the hero.
+- P1: A focused smoke opens Mexico vs. Ecuador directly and verifies `4 markets`, `8 outcomes`, and the first Match winner market.
+- P1: The direct detail route removes a fragile below-fold tap dependency from this harness path.
+- P2: Counts are still derived client-side from the current event payload until backend market metadata is richer.
+- Mobile typecheck, focused event-detail-summary smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 111 for local commit/merge after scoped diff review.
+Merge approved: Yes

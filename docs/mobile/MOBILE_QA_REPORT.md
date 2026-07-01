@@ -2264,3 +2264,23 @@ Bugs:
 - Initial visual evidence did not show the new value row. The row was moved above Open positions and the focused smoke was rerun successfully.
 Visual QA:
 - Account Preferences shows `Portfolio value: 10,281.25 USDT` in the first viewport after the harness seeds a mock World Cup winner position.
+
+### Cycle 111
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:event-detail-summary`
+- `npm run test:mobile-api`
+Result: Passed. Event Detail now shows market and outcome counts in the hero.
+Screenshots:
+- `docs/mobile/screenshots/cycle-111-holiwyn-event-detail-summary-smoke.png`
+- `docs/mobile/screenshots/cycle-111-holiwyn-event-detail-summary.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-111-holiwyn-event-detail-summary-home-start.xml`
+- `docs/mobile/harness/cycle-111-holiwyn-event-detail-summary.xml`
+Bugs:
+- The first smoke attempt tried to tap a below-fold event card and failed to open Event Detail. The harness was hardened with a direct Mexico vs. Ecuador detail route and rerun successfully.
+Visual QA:
+- Mexico vs. Ecuador detail shows `4 markets` and `8 outcomes` in the first hero card while keeping the first Match winner market visible below.

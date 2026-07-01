@@ -10,6 +10,8 @@ type EventDetailCopy = {
   volume: string;
   liquidity: string;
   traders: string;
+  marketCount: string;
+  outcomeCount: string;
   bestBid: string;
   bestAsk: string;
   spread: string;
@@ -39,6 +41,8 @@ const marketStats = (event: Event) => {
     volume: `${volume.toLocaleString("en-US")} USDT`,
     liquidity: `${liquidity.toLocaleString("en-US")} USDT`,
     traders: traders.toLocaleString("en-US"),
+    marketCount: event.markets.length,
+    outcomeCount,
   };
 };
 
@@ -125,6 +129,20 @@ export function EventDetail({
             <Text style={styles.statValue}>{stats.traders}</Text>
           </View>
         </View>
+        <View accessibilityLabel="event-detail-market-summary" style={styles.summaryRow} testID="event-detail-market-summary">
+          <View style={styles.summaryPill}>
+            <Ionicons name="layers-outline" size={16} color="#93c5fd" />
+            <Text style={styles.summaryText}>
+              {stats.marketCount} {t.marketCount}
+            </Text>
+          </View>
+          <View style={styles.summaryPill}>
+            <Ionicons name="git-branch-outline" size={16} color="#93c5fd" />
+            <Text style={styles.summaryText}>
+              {stats.outcomeCount} {t.outcomeCount}
+            </Text>
+          </View>
+        </View>
       </View>
       <Text style={styles.sectionTitle}>{t.markets}</Text>
       <View style={styles.groupTabs}>
@@ -205,6 +223,9 @@ const styles = StyleSheet.create({
   statCell: { flex: 1, minHeight: 66, justifyContent: "center", paddingHorizontal: 10, borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
   statLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "900", textTransform: "uppercase", marginBottom: 5 },
   statValue: { color: "#f8fafc", fontSize: 13, fontWeight: "900" },
+  summaryRow: { flexDirection: "row", gap: 8, marginTop: 10 },
+  summaryPill: { flex: 1, minHeight: 38, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
+  summaryText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
   sectionTitle: { color: "#f8fafc", fontSize: 24, fontWeight: "900", marginTop: 24, marginBottom: 12 },
   groupTabs: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 14 },
   groupTab: { minHeight: 36, paddingHorizontal: 12, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#111b2d", borderWidth: 1, borderColor: "#2b3b55" },
