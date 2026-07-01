@@ -4825,6 +4825,49 @@ Open blockers: None for autonomous product/harness progress. Live authenticated 
 Risks: Saved markets and Account persistence are local-only; Portfolio counts, Home/Search/Futures market stats, Popular ranking, ticket quote math, and close-position behavior remain local estimates until backend auth, profile, quote, popularity, order-book, and position APIs can feed them.
 Next three likely cycles: Retry backend readiness, persist language preference locally, and continue polishing user-facing account/profile state without enabling real money movement.
 
+### Cycle 098
+
+Date: 2026-07-01
+Branch: mobile/cycle-098
+Goal: Persist language preference locally and verify Chinese Home restores after app restart.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Home now restores the selected English/Chinese language preference after restart.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:language-persistence` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-098-holiwyn-language-persistence-smoke.png`
+- `docs/mobile/screenshots/cycle-098-holiwyn-language-persistence-seeded.png`
+- `docs/mobile/screenshots/cycle-098-holiwyn-language-persistence-restored.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-098-holiwyn-language-persistence-home-start.xml`
+- `docs/mobile/harness/cycle-098-holiwyn-language-persistence-seeded.xml`
+- `docs/mobile/harness/cycle-098-holiwyn-language-persistence-restored.xml`
+Bugs found:
+- None in product code. Harness recovered from PowerShell Unicode parsing by using ASCII-safe hierarchy assertions plus visual screenshot proof.
+Technical debt added:
+- Language preference persists locally only; it is not yet synced to authenticated backend profile storage.
+Technical debt resolved:
+- Language choice is no longer session-only on the device.
+Result: Passed Cycle 098 QA. Mobile typecheck, focused language-persistence smoke, visual screenshot review, and mobile API tests pass.
+Commit: `ca29c9a` (`Persist Holiwyn language preference`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `50082c1`.
+Next cycle: Cycle 099 should retry backend readiness or continue durable local app settings/profile polish without enabling real money movement.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Language Persistence Harness
+- Local Storage Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
