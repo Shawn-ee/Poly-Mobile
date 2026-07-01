@@ -145,9 +145,9 @@ try {
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-ticket.png"
     $ticketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket.xml"
-    Assert-HierarchyContains -Path $ticketHierarchy -Expected @("Fake balance", "10,000 USDT", "Max", "Estimated cost", "Estimated payout", "Place mock order")
+    Assert-HierarchyContains -Path $ticketHierarchy -Expected @("Fake balance", "10,000 USDT", "Max", "500 USDT", "1,000 USDT", "Estimated cost", "Estimated payout", "Place mock order")
 
-    & $adb -s $Device shell input tap 995 1090 | Out-Null
+    & $adb -s $Device shell input tap 995 955 | Out-Null
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-ticket-max.png"
     $ticketMaxHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket-max.xml"

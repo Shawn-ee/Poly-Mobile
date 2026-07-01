@@ -42,6 +42,7 @@ export function TradeTicket({
   if (!ticket) return null;
   const numericAmount = Number(amount) || 0;
   const estimatedPayout = ticket.outcome.probability > 0 ? numericAmount * (100 / ticket.outcome.probability) : 0;
+  const amountPresets = [100, 500, 1000];
 
   return (
     <Modal visible transparent animationType="slide">
@@ -70,6 +71,19 @@ export function TradeTicket({
             </Pressable>
           </View>
           <TextInput value={amount} onChangeText={setAmount} keyboardType="decimal-pad" style={styles.amountInput} />
+          <View style={styles.presetRow}>
+            {amountPresets.map((preset) => (
+              <Pressable
+                accessibilityLabel={`ticket-preset-${preset}`}
+                key={preset}
+                onPress={() => setAmount(String(preset))}
+                style={styles.presetButton}
+                testID={`ticket-preset-${preset}`}
+              >
+                <Text style={styles.presetText}>{money(preset)}</Text>
+              </Pressable>
+            ))}
+          </View>
           <View style={styles.estimateLine}>
             <Text style={styles.estimateLabel}>{t.balance}</Text>
             <Text style={styles.estimateValue}>{money(balance)}</Text>
@@ -107,6 +121,9 @@ const styles = StyleSheet.create({
   inputLabel: { color: "#94a3b8", fontWeight: "800" },
   maxText: { color: "#93c5fd", fontWeight: "900" },
   amountInput: { height: 54, borderRadius: 12, paddingHorizontal: 14, backgroundColor: "#070c14", borderWidth: 1, borderColor: "#263247", color: "#f8fafc", fontSize: 22, fontWeight: "900" },
+  presetRow: { flexDirection: "row", gap: 8, marginTop: 10 },
+  presetButton: { flex: 1, minHeight: 40, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
+  presetText: { color: "#dbeafe", fontWeight: "900" },
   estimateLine: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "#263247" },
   estimateLabel: { color: "#94a3b8", fontWeight: "800" },
   estimateValue: { color: "#f8fafc", fontWeight: "900" },
