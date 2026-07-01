@@ -1237,3 +1237,17 @@ Bugs:
 - Initial Vitest run used the backend-only config and found no mobile tests; fixed with `vitest.mobile.config.mts`.
 - Initial typecheck rejected direct mock-call tuple casts; fixed by casting through `unknown`.
 Server-mode note: This proves mobile request shape and auth headers with mocked fetch, not a live backend order.
+
+### Cycle 062
+
+Date: 2026-07-01
+Device: Server-mode preflight harness
+Build/run command:
+- `npm run preflight:server-mode`
+- `npm run typecheck` in `mobile/`
+- `npm run test:mobile-api`
+Result: Passed. Preflight verifies mobile auth wiring and reports current backend/API-key readiness before strict server-mode smoke.
+Screenshots:
+- None.
+Bugs: None found.
+Server-mode note: Current environment has no reachable backend at `http://127.0.0.1:3000` and no `EXPO_PUBLIC_API_KEY`, so live authenticated proof is still pending.
