@@ -3186,6 +3186,57 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 063
+
+Date: 2026-07-01
+Branch: mobile/cycle-063
+Goal: Add a strict server-mode launch gate and environment override support for live authenticated smoke readiness.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: None.
+Backend/API changed: No runtime endpoint change; hardened the mobile preflight harness for strict server-mode readiness.
+Database/schema changed: None.
+Files changed: `mobile/scripts/server-mode-preflight.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run preflight:server-mode` in `mobile/`.
+- `npm run typecheck` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+- `npm run preflight:server-mode:strict` checked as an expected-failure gate without backend/API key.
+Screenshots captured:
+- None; this cycle is a server-mode readiness harness.
+Harness evidence captured:
+- Non-strict preflight passed config checks and printed server-mode launch vars.
+- Strict preflight correctly refused to pass without `EXPO_PUBLIC_API_KEY`.
+- Mobile API request tests still pass.
+Bugs found:
+- Initial nested PowerShell wrappers for the expected strict failure had quoting issues; final direct shell gate check passed.
+Technical debt added:
+- Live authenticated backend proof still requires a running backend plus seeded API key.
+Technical debt resolved:
+- Server-mode launch now has a deterministic strict gate for live-smoke readiness instead of a best-effort preflight only.
+Result: Passed Cycle 063 QA. Strict server-mode readiness is explicit and non-strict preflight/typecheck/API tests pass.
+Commit: cycle branch HEAD (`pending`)
+Merged: Pending local merge.
+Next cycle: Cycle 064 should continue toward live authenticated backend proof, likely by discovering/generating safe local API credentials or starting the backend readiness path.
+Harnesses run:
+- Server Mode Preflight Harness
+- Server Auth Config Harness
+- Server Auth Request Harness
+- Typecheck Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- Two recoverable wrapper quoting failures before final strict-gate proof.
+
+### Heartbeat After Cycle 063
+
+Completed cycles: 061, 062, 063 since the last heartbeat.
+Verified progress: Mobile API client server requests now have request-level tests, server-mode preflight verifies auth wiring/backend/API-key readiness, and strict preflight refuses live launch without backend and API-key proof.
+Current app state: Holiwyn mobile has verified Home, Event Detail grouped markets/props/group jumps/outcome ticket opening, featured futures trading, ticket balance/max/preset sizing, successful mock order, forced order failure, Portfolio summary/detail/close/activity/order confirmation/open-order cancel, Live refresh, Search browse, typed Search zero-result, and no-keyboard Search zero-result flows on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history/order/cancel client seams are wired; Bearer API-key config and canonical request shape are tested; live authenticated backend order proof is still pending because no backend/API key is available in this environment.
+Open blockers: None for autonomous progress in mock/harness development.
+Risks: Strict live server-mode proof remains gated by backend and seeded API credentials; main deep smoke still contains broad keyboard interaction for Search.
+Next three likely cycles: Discover safe local API-key generation, wire a backend readiness runbook/harness around seeded credentials, and attempt strict server-mode smoke once backend/key prerequisites exist.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

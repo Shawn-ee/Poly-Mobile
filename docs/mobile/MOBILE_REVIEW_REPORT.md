@@ -876,3 +876,17 @@ Findings:
 - `npm run preflight:server-mode`, mobile `npm run typecheck`, and `npm run test:mobile-api` passed.
 Decision: Approve Cycle 062 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 063
+
+Date: 2026-07-01
+Branch: mobile/cycle-063
+Reviewer: Lead/Reviewer pass
+Scope: Strict server-mode launch gate.
+Findings:
+- P0: `server-mode-preflight.ps1` now honors `HOLIWYN_BACKEND_BASE_URL` and `EXPO_PUBLIC_API_BASE_URL` environment overrides while retaining safe local/emulator defaults.
+- P0: `preflight:server-mode:strict` requires both backend and API-key proof, preventing accidental claims of live server readiness.
+- P1: Non-strict preflight, mobile typecheck, and mobile API request tests passed.
+- P2: Strict preflight currently fails as expected because this environment has no live API key configured.
+Decision: Approve Cycle 063 for local commit/merge after scoped diff review.
+Merge approved: Yes

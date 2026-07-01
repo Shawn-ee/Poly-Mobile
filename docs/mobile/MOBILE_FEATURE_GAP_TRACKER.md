@@ -93,3 +93,4 @@ Status:
 | GAP-071 | Backend adapter | Mobile API key server-mode auth | P0 | No | Verified | Cycle 060 passes `EXPO_PUBLIC_API_KEY` into `PolyApi`, updates emulator env defaults, and adds a server-auth config harness. |
 | GAP-072 | Backend adapter | Mobile canonical request tests | P0 | No | Verified | Cycle 061 adds a Vitest mobile API client harness covering Bearer auth, canonical limit order payload/idempotency, and cancel requests. |
 | GAP-073 | Harness | Server-mode preflight | P0 | No | Verified | Cycle 062 adds a server-mode preflight that checks mobile auth wiring, backend health when available, API key shape, and emulator launch vars. |
+| GAP-074 | Harness | Strict server-mode launch gate | P0 | No | Verified | Cycle 063 lets server preflight honor env overrides and adds `preflight:server-mode:strict`, which refuses launch without backend/API key proof. |
