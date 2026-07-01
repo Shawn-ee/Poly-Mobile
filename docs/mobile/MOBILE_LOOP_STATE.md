@@ -388,7 +388,7 @@ Technical debt resolved:
 - Smoke harness state carryover from Cycle 008 review.
 Result: Passed Cycle 009 QA. Smoke harness now starts on a clean Home state.
 Commit: cycle branch HEAD (`Reset Expo before Holiwyn mobile smoke`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 010 should extract MarketList/FutureList or add a grouped World Cup market presentation pass.
 Harnesses run:
 - QA Smoke Harness
