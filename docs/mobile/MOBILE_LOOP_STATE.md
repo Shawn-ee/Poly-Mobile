@@ -6392,8 +6392,8 @@ Technical debt resolved:
 - Closed trade history now has a client-side data path for entry amount and verified P/L math.
 - The smoke harness can target a configurable Expo host for Samsung LAN testing.
 Result: Passed Cycle 133 static/unit QA. Samsung device proof is blocked by Expo Go installation setup, with evidence captured.
-Commit: Pending.
-Merged: Pending.
+Commit: `fa4c8a4` (`Show closed trade activity details`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `a56e327`.
 Next cycle: Cycle 134 should prioritize Samsung Expo Go/dev-build readiness or Android dev APK preparation before continuing emulator-heavy UI proofs.
 Harnesses run:
 - Mobile Typecheck Harness
