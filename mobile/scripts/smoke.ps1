@@ -25,6 +25,7 @@ param(
   [switch]$FutureListTrade,
   [switch]$FutureListOrder,
   [switch]$FutureListSell,
+  [switch]$FutureListClose,
   [switch]$SavedSearch,
   [switch]$SearchCardStats,
   [switch]$SearchSavedEmpty,
@@ -176,11 +177,11 @@ try {
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
   }
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
@@ -409,6 +410,29 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-sell-ticket.png"
       $futureListSellActiveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-sell-active.xml"
       Assert-HierarchyContains -Path $futureListSellActiveHierarchy -Expected @("World Cup winner", "France", "Sell", "Estimated proceeds", "Est. shares", "Avg price", "Place sell order")
+      return
+    }
+
+    if ($FutureListClose) {
+      Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "world-cup-futures-tab"
+      Start-Sleep -Seconds 1
+      & $adb -s $Device shell input swipe 540 1480 540 1040 300 | Out-Null
+      Start-Sleep -Seconds 1
+      $futureListCloseListHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-close-list.xml"
+      Assert-HierarchyContains -Path $futureListCloseListHierarchy -Expected @("World Cup winner", "Volume", "Liquidity", "France")
+      Invoke-TapHierarchyNode -Path $futureListCloseListHierarchy -Identifier "future-outcome-world-cup-winner-france"
+      Start-Sleep -Seconds 1
+      $futureListCloseTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-close-ticket.xml"
+      Assert-HierarchyContains -Path $futureListCloseTicketHierarchy -Expected @("World Cup winner", "France", "Fake balance", "10,000 USDT", "Place buy order")
+      Invoke-TapHierarchyNode -Path $futureListCloseTicketHierarchy -Identifier "place-mock-order"
+      Start-Sleep -Seconds 1
+      $futureListClosePortfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-close-portfolio.xml"
+      Assert-HierarchyContains -Path $futureListClosePortfolioHierarchy -Expected @("Portfolio", "World Cup winner", "France", "Close position", "Order placed")
+      Invoke-TapHierarchyNode -Path $futureListClosePortfolioHierarchy -Identifier "close-position-" -StartsWith
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-future-list-close-closed.png"
+      $futureListCloseClosedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-close-closed.xml"
+      Assert-HierarchyContains -Path $futureListCloseClosedHierarchy -Expected @("Fake balance", "10,008.82 USDT", "No positions yet", "Recent activity", "Closed", "Bought", "World Cup winner")
       return
     }
 

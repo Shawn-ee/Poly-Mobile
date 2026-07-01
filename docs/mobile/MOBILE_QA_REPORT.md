@@ -1840,3 +1840,26 @@ Bugs:
 - None found.
 Visual QA:
 - France / World Cup winner ticket shows Sell selected, Estimated proceeds, estimate rows, and Place sell order.
+
+### Cycle 091
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:future-list-close`
+- `npm run test:mobile-api`
+Result: Passed. Futures list mock order positions can be closed and recorded in recent activity.
+Screenshots:
+- `docs/mobile/screenshots/cycle-091-holiwyn-future-list-close-smoke.png`
+- `docs/mobile/screenshots/cycle-091-holiwyn-future-list-close-closed.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-091-holiwyn-future-list-close-home.xml`
+- `docs/mobile/harness/cycle-091-holiwyn-future-list-close-list.xml`
+- `docs/mobile/harness/cycle-091-holiwyn-future-list-close-ticket.xml`
+- `docs/mobile/harness/cycle-091-holiwyn-future-list-close-portfolio.xml`
+- `docs/mobile/harness/cycle-091-holiwyn-future-list-close-closed.xml`
+Bugs:
+- None found.
+Visual QA:
+- Closed state shows 10,008.82 USDT balance, no open positions, recent Closed activity, and previous mock order confirmation.

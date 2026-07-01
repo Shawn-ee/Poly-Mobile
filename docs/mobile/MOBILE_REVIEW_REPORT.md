@@ -1291,3 +1291,18 @@ Findings:
 - Mobile typecheck, focused Futures list sell smoke, and mobile API request tests passed.
 Decision: Approve Cycle 090 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 091
+
+Date: 2026-07-01
+Branch: mobile/cycle-091
+Reviewer: Lead/Reviewer pass
+Scope: Futures list close-position smoke.
+Findings:
+- P1: Added focused emulator coverage for closing a position created from a Futures list mock order.
+- P1: The smoke buys France / World Cup winner, verifies Portfolio, closes the position, and verifies empty positions plus Closed/Bought activity.
+- P1: Balance recovery and recent activity are asserted through hierarchy and screenshot evidence.
+- P2: Closing remains local fake-token behavior until server-backed positions are fully integrated.
+- Mobile typecheck, focused Futures list close smoke, and mobile API request tests passed.
+Decision: Approve Cycle 091 for local commit/merge after scoped diff review.
+Merge approved: Yes

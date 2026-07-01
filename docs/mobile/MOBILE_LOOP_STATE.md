@@ -4469,6 +4469,61 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 091
+
+Date: 2026-07-01
+Branch: mobile/cycle-091
+Goal: Add focused emulator proof that a Futures list mock-order position can be closed.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No product UI change; Futures list close-position path now has focused smoke coverage.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:future-list-close` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-091-holiwyn-future-list-close-smoke.png`
+- `docs/mobile/screenshots/cycle-091-holiwyn-future-list-close-closed.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-091-holiwyn-future-list-close-home.xml`
+- `docs/mobile/harness/cycle-091-holiwyn-future-list-close-list.xml`
+- `docs/mobile/harness/cycle-091-holiwyn-future-list-close-ticket.xml`
+- `docs/mobile/harness/cycle-091-holiwyn-future-list-close-portfolio.xml`
+- `docs/mobile/harness/cycle-091-holiwyn-future-list-close-closed.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Close-position behavior remains local fake-token behavior until server-backed positions are fully integrated.
+Technical debt resolved:
+- Futures list trading path now has end-to-end proof through open position, close position, balance recovery, and activity history.
+Result: Passed Cycle 091 QA. Mobile typecheck, focused Futures list close smoke, visual screenshot review, and mobile API tests pass.
+Commit: Pending branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 092 should continue trading/portfolio parity or retry backend readiness if local services become reachable.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Futures Harness
+- Trading Simulation Harness
+- Portfolio Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 091
+
+Completed cycles: 089, 090, 091 since the last heartbeat.
+Verified progress: Futures list trading now has focused emulator proof for buy-ticket mock order placement, sell-ticket side switching, and close-position Portfolio recovery/activity.
+Current app state: Holiwyn mobile has verified Home discovery filters/saved markets/saved empty/search clear/card stats/futures stats, Search browse/query/clear/saved filtering/sort/saved empty/card stats, Event Detail grouped markets/props/group jumps/save/trading stats/depth/outcome ticket opening, featured futures trading, Futures list ticket/buy/sell/order/close coverage, ticket balance/max/preset sizing/share and price estimates, side-aware buy/sell tickets, successful mock order, forced order failure, server order failure, Portfolio summary/detail/close/activity/order confirmation/open-order cancel, server-unavailable Portfolio fallback, Live refresh, localization, and Account/Login mock profile flows on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history/order/cancel client seams are wired; Bearer API-key config and canonical request shape are tested; local credential generation and backend readiness harnesses exist; latest UI smokes still use mock fallback because backend health is unavailable.
+Open blockers: None for autonomous product/harness progress. Live authenticated backend proof still waits on local backend/Docker availability.
+Risks: Account and Saved state are local/session-only; Home/Search/Futures market stats, Popular ranking, ticket quote math, and close-position behavior remain local estimates until backend auth, quote, popularity, order-book, and position APIs can feed them.
+Next three likely cycles: Continue Futures/Portfolio parity, improve account/watchlist persistence affordances, and retry backend readiness when local services become reachable.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
