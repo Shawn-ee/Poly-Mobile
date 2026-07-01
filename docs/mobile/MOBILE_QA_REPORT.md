@@ -2721,3 +2721,27 @@ Bugs:
 - None.
 Visual QA:
 - Not applicable.
+
+### Cycle 130
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554` with Expo Go
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/` through the focused smoke script
+- `npm.cmd run smoke:open-order-cancel`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Portfolio Open orders now appear above the empty-position card, show limit price, implied odds, order value, and remaining amount, and still cancel into Recent activity.
+Screenshots:
+- `docs/mobile/screenshots/cycle-130-holiwyn-open-order-economics-smoke.png`
+- `docs/mobile/screenshots/cycle-130-holiwyn-open-order-economics.png`
+- `docs/mobile/screenshots/cycle-130-holiwyn-open-order-economics-canceled.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-130-holiwyn-open-order-economics-expo-menu.xml`
+- `docs/mobile/harness/cycle-130-holiwyn-open-order-economics-home.xml`
+- `docs/mobile/harness/cycle-130-holiwyn-open-order-economics.xml`
+- `docs/mobile/harness/cycle-130-holiwyn-open-order-economics-canceled.xml`
+Bugs:
+- Initial metric stack pushed Cancel/metrics too close to the bottom nav; fixed by moving Open orders higher and using a compact metric grid.
+- Repeated smoke runs could create duplicate canceled activity warning; fixed by making the open-order harness seed clean portfolio state and making cancel idempotent.
+Visual QA:
+- Open orders card shows `Limit 47%`, `Implied odds 2.1x`, `Order value 250 USDT`, `Remaining: 250 USDT`, and a visible Cancel button. Canceled state shows one clean Recent activity row.

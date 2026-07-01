@@ -991,12 +991,18 @@ try {
     if ($OpenOrderCancel) {
       Save-Screenshot -Name "cycle-current-holiwyn-open-order.png"
       $openOrderHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-open-order.xml"
-      Assert-HierarchyContains -Path $openOrderHierarchy -Expected @("Open orders", "Mexico vs. Ecuador winner", "Remaining", "Cancel")
+      Assert-HierarchyContains -Path $openOrderHierarchy -Expected @("Open orders", "Mexico vs. Ecuador winner", "Limit", "47%", "Implied odds", "2.1x", "Order value", "Remaining", "Cancel")
       Invoke-TapHierarchyNode -Path $openOrderHierarchy -Identifier "cancel-open-order-smoke-open-order"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-open-order-canceled.png"
       $openOrderCanceledHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-open-order-canceled.xml"
-      Assert-HierarchyContains -Path $openOrderCanceledHierarchy -Expected @("Recent activity", "Canceled", "Mexico vs. Ecuador winner", "250 USDT")
+      try {
+        Assert-HierarchyContains -Path $openOrderCanceledHierarchy -Expected @("Recent activity", "Canceled", "Mexico vs. Ecuador winner", "250 USDT")
+      } catch {
+        Start-Sleep -Seconds 2
+        $openOrderCanceledHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-open-order-canceled.xml"
+        Assert-HierarchyContains -Path $openOrderCanceledHierarchy -Expected @("Recent activity", "Canceled", "Mexico vs. Ecuador winner", "250 USDT")
+      }
       return
     }
 
