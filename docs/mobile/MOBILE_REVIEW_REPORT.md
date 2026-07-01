@@ -650,3 +650,17 @@ Findings:
 - `npm run typecheck` and final `npm run smoke:deep` passed.
 Decision: Approve Cycle 046 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 047
+
+Date: 2026-07-01
+Branch: mobile/cycle-047
+Reviewer: Lead/Reviewer pass
+Scope: Selector-driven ticket harness taps.
+Findings:
+- P1: Smoke harness now resolves tappable bounds from the Android UI hierarchy for `ticket-max-amount` and `place-mock-order`.
+- P1: This removes the exact coordinate drift that interrupted Cycle 046 after the ticket layout changed.
+- P2: Other smoke actions still use fixed coordinates; future cycles should continue moving stable controls onto hierarchy ids.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 047 for local commit/merge after scoped diff review.
+Merge approved: Yes
