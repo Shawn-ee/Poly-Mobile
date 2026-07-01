@@ -2853,3 +2853,23 @@ Bugs:
 - Physical-device runs should not clear Expo Go package data by default because that can re-trigger first-run/onboarding state. The smoke harness now supports `-SkipPackageClear` for Samsung runs.
 Visual QA:
 - Samsung proof shows the closed-history Portfolio state with fake balance, no open positions, Recent activity, Closed, Bought, World Cup winner, entry price, close value, and estimated P/L without overlap.
+
+### Cycle 136
+
+Date: 2026-07-01
+Device: Samsung S23 through Expo Go (`adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`)
+Build/run command:
+- `npm run smoke:samsung:closed-history`
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The one-command Samsung wrapper detected `172.16.200.14`, launched Expo Go on the phone, and verified the closed-history UI hierarchy.
+Screenshots:
+- `docs/mobile/screenshots/cycle-136-samsung-wrapper-smoke.png`
+- `docs/mobile/screenshots/cycle-136-samsung-wrapper-closed-history.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-136-samsung-wrapper-home.xml`
+- `docs/mobile/harness/cycle-136-samsung-wrapper-closed-history.xml`
+Bugs:
+- The first wrapper attempt passed `-FutureListClose` through a string array and PowerShell treated it like a positional output path; fixed by passing the closed-history switch directly.
+Visual QA:
+- Samsung proof again shows the closed Portfolio history state with the expected fake balance, closed activity row, entry price, close value, and estimated P/L.

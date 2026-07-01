@@ -24,6 +24,14 @@ Native Android-first client for Holiwyn World Cup prediction markets. The backen
 
 For the Android emulator, run `adb reverse tcp:3000 tcp:3000` and use `http://127.0.0.1:3000`. For a physical Android phone, use your computer's LAN IP, for example `http://192.168.1.20:3000`.
 
+For the Samsung S23 Expo Go smoke lane, keep wireless debugging connected and run:
+
+```powershell
+npm run smoke:samsung:closed-history
+```
+
+The wrapper detects the PC LAN IP, targets the Samsung device, and preserves Expo Go's installed/ready state between runs.
+
 ## Device Strategy
 
 - Samsung S23: use for Polymarket reference and, later, explicit Holiwyn real-device QA.
