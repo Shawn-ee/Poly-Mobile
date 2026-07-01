@@ -197,6 +197,40 @@ Harnesses run:
 Harness failures:
 - Three harness implementation issues found and fixed before approval.
 
+### Cycle 004
+
+Date: 2026-07-01
+Branch: mobile/cycle-004
+Goal: Add a mobile order service boundary so trade tickets remain safe in mock mode while preparing a guarded server order path.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio position metadata now shows whether an order came from MOCK or SERVER mode.
+Backend/API changed: None. Mobile service can call existing `POST /api/orders` only when `EXPO_PUBLIC_ORDER_MODE=server`; default remains mock.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/services/orderService.ts`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke` in `mobile/`.
+- Emulator mock ticket placement through the order service.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-004-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-004-holiwyn-order-service-portfolio.png`
+Bugs found: None in product flow. Smoke harness remained stable.
+Technical debt added:
+- TD-008: Server order mode exists as a guarded code path but is not verified with authenticated backend access.
+Technical debt resolved:
+- Partial TD-007 progress: ticket submission now uses a service boundary with mock/server modes; authenticated server mode remains disabled by default.
+Result: Passed Cycle 004 QA. Fake-token trading still works and is now isolated behind an order service.
+Commit: cycle branch HEAD (`Add Holiwyn mobile order service boundary`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 005 should reduce `mobile/App.tsx` size by extracting reusable World Cup components or continue toward authenticated account/position adapter work if backend auth is ready.
+Harnesses run:
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- QA Smoke Harness
+- Review Harness
+Harness failures: None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

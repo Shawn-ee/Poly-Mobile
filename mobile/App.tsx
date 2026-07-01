@@ -21,8 +21,10 @@ import {
   worldCupEvents,
   worldCupFutures,
 } from "./src/mocks/worldCup";
+import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
+const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? "server" : "mock";
 
 type MainTab = "home" | "live" | "portfolio" | "search";
 type WorldCupTab = "games" | "futures";
@@ -34,6 +36,7 @@ type Ticket = {
 };
 type Position = {
   id: string;
+  mode: OrderMode;
   title: string;
   outcome: string;
   side: "buy" | "sell";
@@ -118,10 +121,10 @@ export default function App() {
   const [events, setEvents] = useState<Event[]>(worldCupEvents);
   const [futures] = useState<Market[]>(worldCupFutures);
   const t = copy[locale];
+  const api = useMemo(() => new PolyApi(DEFAULT_API_BASE), []);
 
   useEffect(() => {
     let active = true;
-    const api = new PolyApi(DEFAULT_API_BASE);
 
     const loadBackendWorldCup = async () => {
       try {
@@ -148,7 +151,7 @@ export default function App() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [api]);
 
   const filteredEvents = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -165,18 +168,28 @@ export default function App() {
     setTicket({ market, outcome, event, side: "buy" });
   };
 
-  const placeOrder = (amount: number, side: "buy" | "sell") => {
+  const placeOrder = async (amount: number, side: "buy" | "sell") => {
     if (!ticket || amount <= 0) return;
     const cost = Math.min(amount, balance);
+    const result = await submitTicketOrder({
+      mode: ORDER_MODE,
+      api,
+      event: ticket.event,
+      market: ticket.market,
+      outcome: ticket.outcome,
+      side,
+      amount: cost,
+    });
     setBalance((current) => current - cost);
     setPositions((current) => [
       {
-        id: `${ticket.market.id}-${ticket.outcome.id}-${Date.now()}`,
-        title: label(locale, ticket.event ?? ticket.market),
-        outcome: label(locale, ticket.outcome),
-        side,
-        amount: cost,
-        probability: ticket.outcome.probability,
+        id: result.id,
+        mode: result.mode,
+        title: result.title,
+        outcome: result.outcome,
+        side: result.side,
+        amount: result.amount,
+        probability: result.probability,
       },
       ...current,
     ]);
@@ -552,7 +565,7 @@ function Portfolio({
           <View key={position.id} style={styles.positionCard}>
             <Text style={styles.positionTitle}>{position.title}</Text>
             <Text style={styles.positionMeta}>
-              {position.side === "buy" ? t.buy : t.sell} · {position.outcome} · {position.probability}%
+              {position.mode.toUpperCase()} · {position.side === "buy" ? t.buy : t.sell} · {position.outcome} · {position.probability}%
             </Text>
             <Text style={styles.positionValue}>{money(position.amount)}</Text>
           </View>
