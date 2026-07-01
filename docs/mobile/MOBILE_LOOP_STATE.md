@@ -6582,8 +6582,8 @@ Technical debt added:
 Technical debt resolved:
 - Backend portfolio history rows no longer drop available time context when mapped into mobile Portfolio activity.
 Result: Passed Cycle 138 QA. Mobile typecheck, mobile API/history tests, and Samsung timestamp smoke pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `b3046bb` (`Map backend history timestamps`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `69b2ef1`.
 Next cycle: Cycle 139 should continue backend-backed Portfolio parity or add another Samsung wrapper for a high-value trading flow.
 Harnesses run:
 - Mobile Typecheck Harness
