@@ -5762,8 +5762,8 @@ Technical debt added:
 Technical debt resolved:
 - Cycle 118's unverified latest-order/activity live badge note is now covered by focused deep-scroll emulator evidence.
 Result: Passed Cycle 119 QA. Focused live-portfolio-badge-deep smoke, visual screenshot review, and mobile API/profile-preference tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `6826de9` (`Verify Live Portfolio badge depth`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `d70a928`.
 Next cycle: Cycle 120 should continue live/detail trading polish or retry backend readiness if Docker/local Postgres become available.
 Harnesses run:
 - Mobile Typecheck Harness
