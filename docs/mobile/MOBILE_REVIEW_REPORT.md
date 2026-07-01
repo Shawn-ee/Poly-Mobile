@@ -1486,3 +1486,18 @@ Findings:
 - Mobile typecheck, focused account-language-summary smoke, and mobile API request tests passed.
 Decision: Approve Cycle 103 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 104
+
+Date: 2026-07-01
+Branch: mobile/cycle-104
+Reviewer: Lead/Reviewer pass
+Scope: Profile preferences sync seam.
+Findings:
+- P1: `PolyApi` now exposes typed get/save methods for `/api/profile/preferences`.
+- P1: A profile preferences service maps local app state to backend shape for locale, ticket default amount/side, and saved event ids.
+- P1: Mobile API tests verify authenticated PUT request shape and JSON payload for saved preferences.
+- P2: Runtime sync remains intentionally disabled until backend auth/profile readiness is available.
+- Mobile typecheck and mobile API request tests passed.
+Decision: Approve Cycle 104 for local commit/merge after scoped diff review.
+Merge approved: Yes

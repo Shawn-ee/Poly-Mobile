@@ -69,4 +69,38 @@ describe("Holiwyn mobile API client", () => {
     expect(init.method).toBe("DELETE");
     expect(headers.get("Authorization")).toBe("Bearer pk_live_test.secret");
   });
+
+  test("saves authenticated profile preferences with canonical local settings", async () => {
+    const fetchImpl = vi.fn(async () =>
+      jsonResponse({
+        preferences: {
+          locale: "en",
+          ticketDefaultAmount: "500",
+          ticketDefaultSide: "SELL",
+          savedEventIds: ["mexico-ecuador"],
+        },
+      }),
+    );
+    vi.stubGlobal("fetch", fetchImpl);
+
+    await new PolyApi("https://api.example.test", "pk_live_test.secret").saveProfilePreferences({
+      locale: "en",
+      ticketDefaultAmount: "500",
+      ticketDefaultSide: "SELL",
+      savedEventIds: ["mexico-ecuador"],
+    });
+
+    const [url, init] = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
+    const headers = init.headers as Headers;
+    expect(url).toBe("https://api.example.test/api/profile/preferences");
+    expect(init.method).toBe("PUT");
+    expect(headers.get("Authorization")).toBe("Bearer pk_live_test.secret");
+    expect(headers.get("Content-Type")).toBe("application/json");
+    expect(JSON.parse(String(init.body))).toEqual({
+      locale: "en",
+      ticketDefaultAmount: "500",
+      ticketDefaultSide: "SELL",
+      savedEventIds: ["mexico-ecuador"],
+    });
+  });
 });

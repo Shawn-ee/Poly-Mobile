@@ -2134,3 +2134,20 @@ Bugs:
 - None found.
 Visual QA:
 - Account Preferences shows `Language: English` and `Ticket default: Sell 500 USDT` in the first viewport.
+
+### Cycle 104
+
+Date: 2026-07-01
+Device: Mobile API/typecheck harness
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run test:mobile-api`
+Result: Passed. Mobile now has a typed profile-preferences API seam and local/server mapper for eventual authenticated preference sync.
+Screenshots:
+- None; this was a backend adapter seam with no intended UI change.
+Harness evidence:
+- `npm run test:mobile-api` passed with 4 tests, including authenticated `PUT /api/profile/preferences` request shape.
+Bugs:
+- None found.
+Visual QA:
+- Not applicable; no UI changed in this cycle.

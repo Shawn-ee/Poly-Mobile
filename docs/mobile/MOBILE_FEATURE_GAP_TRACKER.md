@@ -134,3 +134,4 @@ Status:
 | GAP-112 | Trade ticket | Local ticket default persistence | P1 | Yes | Verified | Cycle 101 persists the user's ticket amount and buy/sell side locally, then verifies a 500 USDT sell ticket restores after app restart. |
 | GAP-113 | Account/Profile | Account preference summary | P1 | Yes | Verified | Cycle 102 surfaces saved ticket defaults in Account preferences and verifies the Account screen shows Sell 500 USDT on emulator. |
 | GAP-114 | Account/Profile | Account language summary | P1 | Yes | Verified | Cycle 103 surfaces the current language value in Account preferences and verifies Language: English on emulator. |
+| GAP-115 | Backend adapter | Profile preferences sync seam | P1 | No | Verified | Cycle 104 adds a typed `/api/profile/preferences` client seam and local/server preference mapper for language, ticket defaults, and saved markets. |
