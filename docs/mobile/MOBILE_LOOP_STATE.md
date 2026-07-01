@@ -1581,8 +1581,8 @@ Technical debt added:
 Technical debt resolved:
 - Close-position behavior is now tapped and verified, not only visible.
 Result: Passed Cycle 035 QA. Deep smoke verifies the close action credits fake balance and returns Portfolio to `No positions yet`.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Verify Holiwyn close position smoke`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 036 should continue copy/localization extraction or add another trading/position affordance, then write the Cycle 034-036 heartbeat.
 Harnesses run:
 - QA Smoke Harness
