@@ -821,7 +821,7 @@ Technical debt resolved:
 - Search can now narrow results by live/upcoming state without requiring typed input.
 Result: Passed Cycle 020 QA. Search tab has quick filters and deep smoke asserts the filter labels.
 Commit: cycle branch HEAD (`Add Holiwyn mobile search filters`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 021 should add typed-query harness coverage or improve live market refresh/state behavior.
 Harnesses run:
 - QA Smoke Harness
