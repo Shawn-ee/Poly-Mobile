@@ -2156,8 +2156,8 @@ Technical debt added:
 Technical debt resolved:
 - Ticket users can now quickly size to available fake balance without manual input.
 Result: Passed Cycle 045 QA. Deep smoke verifies `Max`, the updated `10,000 USDT` estimated cost, max-sized close balance, and the full Live/Search path.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Add Holiwyn ticket max control`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 046 should improve ticket amount presets or reduce coordinate-based harness taps.
 Harnesses run:
 - QA Smoke Harness
