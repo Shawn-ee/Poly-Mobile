@@ -3310,8 +3310,8 @@ Technical debt added:
 Technical debt resolved:
 - The loop now has an explicit readiness diagnosis and recovery command before live backend credential and strict mobile proof attempts.
 Result: Passed Cycle 065 QA with documented environment recovery. Backend readiness, mobile API tests, mobile preflight, and mobile typecheck pass.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `4dfb618` (`Add Holiwyn mobile backend readiness harness`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `e771a16`.
 Next cycle: Cycle 066 should either start the local DB when Docker daemon is available or continue with a mock/server harness that does not require DB state.
 Harnesses run:
 - Backend/API Harness
