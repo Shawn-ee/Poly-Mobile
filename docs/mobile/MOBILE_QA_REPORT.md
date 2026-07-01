@@ -1222,3 +1222,18 @@ Screenshots:
 Bugs:
 - Initial `check:server-auth` run failed because of a PowerShell escaping error in the new harness; final rerun passed.
 Server-mode note: This verifies configuration wiring, not live authenticated order placement.
+
+### Cycle 061
+
+Date: 2026-07-01
+Device: Request-level unit harness
+Build/run command:
+- `npm run test:mobile-api`
+- `npm run typecheck` in `mobile/`
+Result: Passed. Mobile API client sends Bearer auth, canonical order idempotency/body, and encoded cancel requests.
+Screenshots:
+- None.
+Bugs:
+- Initial Vitest run used the backend-only config and found no mobile tests; fixed with `vitest.mobile.config.mts`.
+- Initial typecheck rejected direct mock-call tuple casts; fixed by casting through `unknown`.
+Server-mode note: This proves mobile request shape and auth headers with mocked fetch, not a live backend order.

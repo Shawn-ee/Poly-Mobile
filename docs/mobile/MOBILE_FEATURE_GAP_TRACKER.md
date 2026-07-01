@@ -91,3 +91,4 @@ Status:
 | GAP-069 | Harness | Focused Event Detail trade smoke | P1 | No | Verified | Cycle 058 adds Event Detail outcome selectors and a focused smoke that opens a Mexico match-winner ticket directly from Event Detail. |
 | GAP-070 | Harness | Focused Search query smoke | P1 | No | Verified | Cycle 059 adds a launch-query Search smoke that verifies zero-result Search without device keyboard entry. |
 | GAP-071 | Backend adapter | Mobile API key server-mode auth | P0 | No | Verified | Cycle 060 passes `EXPO_PUBLIC_API_KEY` into `PolyApi`, updates emulator env defaults, and adds a server-auth config harness. |
+| GAP-072 | Backend adapter | Mobile canonical request tests | P0 | No | Verified | Cycle 061 adds a Vitest mobile API client harness covering Bearer auth, canonical limit order payload/idempotency, and cancel requests. |
