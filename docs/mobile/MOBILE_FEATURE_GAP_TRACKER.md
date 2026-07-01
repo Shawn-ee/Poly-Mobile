@@ -85,3 +85,4 @@ Status:
 | GAP-063 | Harness | Forced order-failure smoke | P1 | No | Verified | Cycle 052 adds a dedicated forced-failure smoke that verifies `ticket-order-error` on emulator. |
 | GAP-064 | Portfolio | Open order cancel affordance | P1 | No | Verified | Cycle 053 adds cancel controls for server open orders, calls canonical `DELETE /api/orders/:id` in server mode, and records local canceled activity feedback. |
 | GAP-065 | Harness | Open-order cancel smoke | P1 | No | Verified | Cycle 054 adds a harness-only open-order fixture and emulator smoke that taps Cancel and verifies canceled activity feedback. |
+| GAP-066 | Harness | Selector-driven Event Detail back | P1 | No | Verified | Cycle 055 adds a stable Event Detail back id and replaces the Android Back keyevent with a selector tap in deep smoke. |

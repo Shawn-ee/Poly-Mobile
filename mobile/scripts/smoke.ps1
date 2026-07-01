@@ -186,7 +186,10 @@ try {
     $eventDetailPropsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-props.xml"
     Assert-HierarchyContains -Path $eventDetailPropsHierarchy -Expected @("Both teams to score", "First goal scorer team")
 
-    & $adb -s $Device shell input keyevent 4 | Out-Null
+    & $adb -s $Device shell input swipe 540 650 540 1600 500 | Out-Null
+    Start-Sleep -Seconds 1
+    $eventDetailBackHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-back.xml"
+    Invoke-TapHierarchyNode -Path $eventDetailBackHierarchy -Identifier "event-detail-back"
     Start-Sleep -Seconds 1
     Wait-HierarchyContains -Name "cycle-current-holiwyn-home-after-detail.xml" -Expected @("Holiwyn", "World Cup", "Games", "Futures") -Attempts 5 -DelaySeconds 1 | Out-Null
 

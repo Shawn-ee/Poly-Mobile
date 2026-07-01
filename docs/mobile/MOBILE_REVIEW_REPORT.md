@@ -762,3 +762,17 @@ Findings:
 - `npm run typecheck`, `npm run smoke:open-order-cancel`, and `npm run smoke:deep` passed.
 Decision: Approve Cycle 054 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 055
+
+Date: 2026-07-01
+Branch: mobile/cycle-055
+Reviewer: Lead/Reviewer pass
+Scope: Selector-driven Event Detail back navigation.
+Findings:
+- P1: Event Detail back control now exposes stable `event-detail-back` accessibility/test ids.
+- P1: Deep smoke taps that selector after prop verification and no longer uses Android hardware Back for this route.
+- P2: The harness still uses scroll gestures to reveal props and return the back control to view; future cycles can reduce those remaining device actions.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 055 for local commit/merge after scoped diff review.
+Merge approved: Yes
