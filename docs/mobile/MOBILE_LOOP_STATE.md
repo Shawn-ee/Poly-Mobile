@@ -4201,6 +4201,50 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 085
+
+Date: 2026-07-01
+Branch: mobile/cycle-085
+Goal: Align Search clear action with Home's close-icon treatment and verify query recovery.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Search now shows an accessible close-icon Clear action when a query is active and restores Top results when tapped.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/SearchScreen.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:search-clear-query` in `mobile/` after one Recovery Harness rerun.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-085-holiwyn-search-clear-query-smoke.png`
+- `docs/mobile/screenshots/cycle-085-holiwyn-search-clear-query-before.png`
+- `docs/mobile/screenshots/cycle-085-holiwyn-search-clear-query-after.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-085-holiwyn-search-clear-query-home.xml`
+- `docs/mobile/harness/cycle-085-holiwyn-search-clear-query-ready.xml`
+- `docs/mobile/harness/cycle-085-holiwyn-search-clear-query-after.xml`
+Bugs found:
+- None in app code. First smoke attempt hit Expo Go's generic error screen while Metro rebuilt cache; rerun passed without code changes.
+Technical debt added:
+- Smoke launch can still be sensitive to cold Metro rebuild timing on new ports.
+Technical debt resolved:
+- Home and Search now share the same compact clear-query interaction pattern.
+Result: Passed Cycle 085 QA. Mobile typecheck, focused Search clear-query smoke, visual screenshot review, and mobile API tests pass.
+Commit: Pending branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 086 should continue search/discovery parity, strengthen smoke launch readiness, or add another trading affordance.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Search Harness
+- Discovery Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Recovery Harness
+- Review Harness
+Harness failures:
+- Recovered: first emulator smoke attempt showed Expo Go generic error while Metro rebuilt cache; rerun passed.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
