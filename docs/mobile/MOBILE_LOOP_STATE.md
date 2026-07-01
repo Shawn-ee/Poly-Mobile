@@ -5775,6 +5775,49 @@ Harnesses run:
 Harness failures:
 - Backend health unavailable; continued through documented mock fallback because this cycle did not require live backend access.
 
+### Cycle 120
+
+Date: 2026-07-01
+Branch: mobile/cycle-120
+Goal: Show live match clock context on live trade tickets and verify it in focused emulator smoke.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Trade tickets opened from live events now show a normalized live clock row below the Live World Cup badge.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/TradeTicket.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:live-ticket` in `mobile/` (includes mobile typecheck).
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-120-holiwyn-live-ticket-clock-smoke.png`
+- `docs/mobile/screenshots/cycle-120-holiwyn-live-ticket-clock-ready.png`
+- `docs/mobile/screenshots/cycle-120-holiwyn-live-ticket-clock-ticket.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-120-holiwyn-expo-menu-recovered.xml`
+- `docs/mobile/harness/cycle-120-holiwyn-live-ticket-clock-ready.xml`
+- `docs/mobile/harness/cycle-120-holiwyn-live-ticket-clock-ticket.xml`
+Bugs found:
+- Initial focused smoke exposed stale Expo Go fake balance in live-ticket-only runs. The harness now clears Expo Go for `LiveTicket` as well as live order runs.
+- Expo Go hierarchy was slow after the clear/reload and recovered through existing retry logic.
+Technical debt added:
+- Live ticket clock is derived from local/mock `startsAt` text until backend live clock metadata is available.
+Technical debt resolved:
+- Live ticket users now see in-play time context before confirming a live order.
+Result: Passed Cycle 120 QA. Focused live-ticket smoke, visual screenshot review, and mobile API/profile-preference tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 121 should continue live/detail trading polish or retry backend readiness if Docker/local Postgres become available, then write the heartbeat for Cycles 119-121.
+Harnesses run:
+- Mobile Typecheck Harness
+- Live Ticket Smoke Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- First live-ticket smoke failed due stale Expo Go fake balance from a previous order; harness clear scope was fixed and rerun passed.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

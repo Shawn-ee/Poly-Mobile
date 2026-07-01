@@ -2478,3 +2478,26 @@ Bugs:
 Visual QA:
 - The latest-order card shows `LIVE WORLD CUP`, `Mock order placed`, `100 USDT`, `MOCK - Buy - France`, and `France vs. Argentina`.
 - The Recent activity row shows `Bought`, `LIVE WORLD CUP`, `100 USDT`, and `France vs. Argentina - France`.
+
+### Cycle 120
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554` with Expo Go
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/` through the focused smoke script
+- `npm.cmd run smoke:live-ticket`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Live trade tickets now show the in-play clock under the Live World Cup badge.
+Screenshots:
+- `docs/mobile/screenshots/cycle-120-holiwyn-live-ticket-clock-smoke.png`
+- `docs/mobile/screenshots/cycle-120-holiwyn-live-ticket-clock-ready.png`
+- `docs/mobile/screenshots/cycle-120-holiwyn-live-ticket-clock-ticket.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-120-holiwyn-expo-menu-recovered.xml`
+- `docs/mobile/harness/cycle-120-holiwyn-live-ticket-clock-ready.xml`
+- `docs/mobile/harness/cycle-120-holiwyn-live-ticket-clock-ticket.xml`
+Bugs:
+- First run exposed stale Expo Go Portfolio state in live-ticket-only smoke, with fake balance already reduced from a prior order. The harness now clears Expo Go for `LiveTicket` runs, not just live order runs.
+- Expo Go hierarchy was slow immediately after the clear/reload and recovered through existing retries.
+Visual QA:
+- Ticket modal shows `France`, `France vs. Argentina`, `LIVE WORLD CUP`, `Live - 63'`, clean `10,000 USDT` fake balance, estimates, and `Place buy order`.

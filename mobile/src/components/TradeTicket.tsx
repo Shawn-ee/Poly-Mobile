@@ -78,6 +78,9 @@ export function TradeTicket({
   const costLabel = side === "buy" ? t.estimatedCost : t.estimatedProceeds;
   const amountPresets = [100, 500, 1000];
   const isLiveTicket = ticket.event?.status === "live";
+  const liveClock = isLiveTicket
+    ? ticket.event?.startsAt.replace(/[^\x00-\x7F]+/g, "-").replace(/\s+-\s+/g, " - ")
+    : null;
 
   return (
     <Modal visible transparent animationType="slide">
@@ -92,6 +95,11 @@ export function TradeTicket({
                   <Ionicons name="radio-outline" color="#fecaca" size={14} />
                   <Text style={styles.liveBadgeText}>{t.liveNow}</Text>
                 </View>
+              )}
+              {liveClock && (
+                <Text accessibilityLabel="ticket-live-clock" testID="ticket-live-clock" style={styles.liveClock}>
+                  {liveClock}
+                </Text>
               )}
             </View>
             <Pressable onPress={close} style={styles.closeButton}>
@@ -174,6 +182,7 @@ const styles = StyleSheet.create({
   ticketSub: { color: "#94a3b8", fontWeight: "800", marginTop: 4 },
   liveBadge: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, marginTop: 8, paddingHorizontal: 9, paddingVertical: 5, borderRadius: 999, backgroundColor: "#451a1a", borderWidth: 1, borderColor: "#7f1d1d" },
   liveBadgeText: { color: "#fecaca", fontSize: 11, fontWeight: "900", textTransform: "uppercase" },
+  liveClock: { marginTop: 6, color: "#fca5a5", fontSize: 13, fontWeight: "900" },
   closeButton: { width: 42, height: 42, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937" },
   ticketSideRow: { flexDirection: "row", gap: 10, marginTop: 18 },
   sideButton: { flex: 1, alignItems: "center", paddingVertical: 12, borderRadius: 12, backgroundColor: "#1f2937" },
