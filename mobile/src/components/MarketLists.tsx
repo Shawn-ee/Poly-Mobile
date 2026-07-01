@@ -1,6 +1,19 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
-import { label } from "../presentation/formatters";
+import { label, money } from "../presentation/formatters";
+
+type MarketStatsCopy = {
+  volume: string;
+  liquidity: string;
+};
+
+const marketCardStats = (event: Event) => {
+  const outcomeCount = event.markets.reduce((total, market) => total + market.outcomes.length, 0);
+  return {
+    volume: 8200 + outcomeCount * 1150,
+    liquidity: 4200 + event.markets.length * 950,
+  };
+};
 
 export function MarketList({
   locale,
@@ -10,6 +23,7 @@ export function MarketList({
   openTicket,
   savedEventIds,
   toggleSavedEvent,
+  statsCopy,
 }: {
   locale: Locale;
   events: Event[];
@@ -18,6 +32,7 @@ export function MarketList({
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
   savedEventIds?: Set<string>;
   toggleSavedEvent?: (event: Event) => void;
+  statsCopy?: MarketStatsCopy;
 }) {
   if (events.length === 0) return <Text style={styles.empty}>{empty}</Text>;
   return (
@@ -25,6 +40,7 @@ export function MarketList({
       {events.map((event) => {
         const winner = event.markets[0];
         const isSaved = savedEventIds?.has(event.id) ?? false;
+        const stats = marketCardStats(event);
         return (
           <Pressable
             accessibilityLabel={`event-card-${event.id}`}
@@ -53,6 +69,16 @@ export function MarketList({
               </View>
             </View>
             <Text style={styles.eventTitle}>{label(locale, event)}</Text>
+            {statsCopy && (
+              <View style={styles.statsRow}>
+                <Text style={styles.statsText}>
+                  {statsCopy.volume}: {money(stats.volume)}
+                </Text>
+                <Text style={styles.statsText}>
+                  {statsCopy.liquidity}: {money(stats.liquidity)}
+                </Text>
+              </View>
+            )}
             {winner.outcomes.map((outcome) => (
               <View key={outcome.id} style={styles.teamRow}>
                 <Text style={styles.teamName}>{outcome.label === "Draw" ? "🤝" : event.teams.find((team) => team.name === outcome.label)?.flag ?? "•"} {label(locale, outcome)}</Text>
@@ -121,6 +147,8 @@ const styles = StyleSheet.create({
   saveText: { color: "#94a3b8", fontSize: 19, fontWeight: "900" },
   saveTextActive: { color: "#101827" },
   eventTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "900", marginBottom: 8 },
+  statsRow: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 4 },
+  statsText: { color: "#93c5fd", fontSize: 12, fontWeight: "900" },
   teamRow: { flexDirection: "row", alignItems: "center", gap: 10, marginTop: 9 },
   teamName: { flex: 1, color: "#f8fafc", fontSize: 18, fontWeight: "800" },
   oddsText: { color: "#a7b1c2", width: 48, textAlign: "right", fontSize: 17, fontWeight: "800" },

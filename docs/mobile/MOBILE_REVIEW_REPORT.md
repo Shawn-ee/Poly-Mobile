@@ -1067,3 +1067,18 @@ Findings:
 - Mobile typecheck, focused Saved smoke, and mobile API request tests passed.
 Decision: Approve Cycle 075 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 076
+
+Date: 2026-07-01
+Branch: mobile/cycle-076
+Reviewer: Lead/Reviewer pass
+Scope: Home market card stats.
+Findings:
+- P1: Home event cards now show Volume and Liquidity context using existing localized labels.
+- P1: Stats are deterministic local estimates and align with the Event Detail stats/depth direction.
+- P1: Focused Home card stats smoke scrolls to the first event and verifies Volume/Liquidity/USDT.
+- P2: Values should later map to backend quote/order-book liquidity once available.
+- Mobile typecheck, focused Home card stats smoke, and mobile API request tests passed.
+Decision: Approve Cycle 076 for local commit/merge after scoped diff review.
+Merge approved: Yes
