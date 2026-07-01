@@ -3323,6 +3323,56 @@ Harnesses run:
 Harness failures:
 - Docker daemon and DB TCP port unavailable; readiness harness correctly diagnosed the environment.
 
+### Cycle 066
+
+Date: 2026-07-01
+Branch: mobile/cycle-066
+Goal: Add emulator proof that server mode degrades safely when backend APIs are unavailable.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: None in product UI; added a server-unavailable smoke path that verifies the existing Portfolio fallback state.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:server-unavailable` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-066-holiwyn-server-unavailable-smoke.png`
+- `docs/mobile/screenshots/cycle-066-holiwyn-server-unavailable.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-066-holiwyn-server-unavailable-home.xml`
+- `docs/mobile/harness/cycle-066-holiwyn-server-unavailable.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Server-unavailable smoke proves graceful degradation only; live authenticated backend order proof still waits on backend readiness and API key.
+Technical debt resolved:
+- Server mode now has emulator proof that unreachable backend APIs show the local fake-token Portfolio fallback instead of crashing or pretending sync passed.
+Result: Passed Cycle 066 QA. Mobile typecheck, server-unavailable emulator smoke, and mobile API tests pass.
+Commit: cycle branch HEAD (`pending`)
+Merged: Pending local merge.
+Next cycle: Cycle 067 should continue product depth while backend daemon is unavailable, or attempt DB start if Docker Desktop becomes reachable.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Server Mode Preflight Harness
+- Server Auth Request Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 066
+
+Completed cycles: 064, 065, 066 since the last heartbeat.
+Verified progress: The loop can now generate a fake-token mobile API credential when local Postgres is running, diagnose backend readiness before attempting live proof, and verify on emulator that server mode falls back safely when backend APIs are unreachable.
+Current app state: Holiwyn mobile has verified Home, Event Detail grouped markets/props/group jumps/outcome ticket opening, featured futures trading, ticket balance/max/preset sizing, successful mock order, forced order failure, Portfolio summary/detail/close/activity/order confirmation/open-order cancel, server-unavailable Portfolio fallback, Live refresh, Search browse, typed Search zero-result, and no-keyboard Search zero-result flows on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history/order/cancel client seams are wired; Bearer API-key config and canonical request shape are tested; local credential generation and backend readiness harnesses exist; live authenticated backend order proof is still pending because Docker daemon/local DB are unavailable.
+Open blockers: None for autonomous product/harness progress. Live backend proof waits on Docker Desktop engine availability.
+Risks: The app still uses mock fallback data for most verified emulator flows; live order execution has not yet been proven end to end from mobile.
+Next three likely cycles: Improve product UX depth independent of backend availability, add focused server-mode order failure smoke, and retry backend DB start when Docker daemon becomes reachable.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

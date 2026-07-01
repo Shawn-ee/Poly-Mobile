@@ -96,3 +96,4 @@ Status:
 | GAP-074 | Harness | Strict server-mode launch gate | P0 | No | Verified | Cycle 063 lets server preflight honor env overrides and adds `preflight:server-mode:strict`, which refuses launch without backend/API key proof. |
 | GAP-075 | Backend adapter | Mobile dev credential helper | P0 | No | Verified | Cycle 064 adds `mobile:dev-credential` plus dry-run proof to create a fake-token mobile API key when local Postgres is running. |
 | GAP-076 | Harness | Mobile backend readiness check | P0 | No | Verified | Cycle 065 adds `mobile:backend-readiness` with Docker daemon, compose, DB URL, and TCP-port checks plus an optional DB start command. |
+| GAP-077 | Harness | Server-unavailable emulator smoke | P0 | No | Verified | Cycle 066 adds `smoke:server-unavailable`, proving server mode shows Portfolio fallback when backend APIs are unreachable. |

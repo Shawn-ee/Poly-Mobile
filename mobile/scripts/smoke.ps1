@@ -8,7 +8,8 @@ param(
   [switch]$OrderFailure,
   [switch]$OpenOrderCancel,
   [switch]$EventDetailTrade,
-  [switch]$SearchQuery
+  [switch]$SearchQuery,
+  [switch]$ServerUnavailable
 )
 
 $ErrorActionPreference = "Stop"
@@ -141,16 +142,24 @@ try {
   $expoLog = Join-Path $MobileRoot "mobile-smoke-expo.log"
   $expoErrorLog = Join-Path $MobileRoot "mobile-smoke-expo-error.log"
   $previousSmokeInputFlag = $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT
+  $previousOrderMode = $env:EXPO_PUBLIC_ORDER_MODE
+  $previousApiBaseUrl = $env:EXPO_PUBLIC_API_BASE_URL
   $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT = "1"
+  if ($ServerUnavailable) {
+    $env:EXPO_PUBLIC_ORDER_MODE = "server"
+    $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
+  }
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
+  } elseif ($ServerUnavailable) {
+    "exp://10.0.2.2:$Port/--/?forceOpenOrder=1"
   } elseif ($OpenOrderCancel) {
     "exp://10.0.2.2:$Port/--/?forceOpenOrder=1"
   } elseif ($SearchQuery) {
@@ -161,7 +170,9 @@ try {
   & $adb -s $Device shell am start -a android.intent.action.VIEW -d $launchUrl | Out-Null
   Start-Sleep -Seconds 10
 
-  $launchExpected = if ($OpenOrderCancel) {
+  $launchExpected = if ($ServerUnavailable) {
+    @("Holiwyn", "Portfolio", "Server sync unavailable", "Showing local fake-token portfolio.")
+  } elseif ($OpenOrderCancel) {
     @("Holiwyn", "Portfolio", "Open orders", "Cancel")
   } elseif ($SearchQuery) {
     @("Holiwyn", "Search World Cup markets", "zzzz", "0 results")
@@ -172,6 +183,13 @@ try {
   Save-Screenshot -Name "cycle-current-holiwyn-smoke.png"
 
   if ($Deep) {
+    if ($ServerUnavailable) {
+      Save-Screenshot -Name "cycle-current-holiwyn-server-unavailable.png"
+      $serverUnavailableHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-unavailable.xml"
+      Assert-HierarchyContains -Path $serverUnavailableHierarchy -Expected @("Server sync unavailable", "Showing local fake-token portfolio.", "Open orders", "Cancel")
+      return
+    }
+
     if ($SearchQuery) {
       Save-Screenshot -Name "cycle-current-holiwyn-search-query.png"
       $searchQueryHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-search-query.xml"
@@ -287,6 +305,16 @@ finally {
     Remove-Item Env:\EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT -ErrorAction SilentlyContinue
   } else {
     $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT = $previousSmokeInputFlag
+  }
+  if ($null -eq $previousOrderMode) {
+    Remove-Item Env:\EXPO_PUBLIC_ORDER_MODE -ErrorAction SilentlyContinue
+  } else {
+    $env:EXPO_PUBLIC_ORDER_MODE = $previousOrderMode
+  }
+  if ($null -eq $previousApiBaseUrl) {
+    Remove-Item Env:\EXPO_PUBLIC_API_BASE_URL -ErrorAction SilentlyContinue
+  } else {
+    $env:EXPO_PUBLIC_API_BASE_URL = $previousApiBaseUrl
   }
   Pop-Location
 }

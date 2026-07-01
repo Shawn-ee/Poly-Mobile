@@ -1300,3 +1300,22 @@ Screenshots:
 Bugs:
 - None in code.
 Server-mode note: The next live-backend step is to start Docker Desktop/local Postgres, then run `mobile:backend-readiness:start`, schema setup, `mobile:dev-credential`, and strict preflight.
+
+### Cycle 066
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:server-unavailable`
+- `npm run test:mobile-api`
+Result: Passed. Server-mode emulator launch against a closed backend port shows the Portfolio fallback instead of crashing or pretending sync succeeded.
+Screenshots:
+- `docs/mobile/screenshots/cycle-066-holiwyn-server-unavailable-smoke.png`
+- `docs/mobile/screenshots/cycle-066-holiwyn-server-unavailable.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-066-holiwyn-server-unavailable-home.xml`
+- `docs/mobile/harness/cycle-066-holiwyn-server-unavailable.xml`
+Bugs:
+- None found.
+Server-mode note: This proves graceful offline handling, not live authenticated order execution.
