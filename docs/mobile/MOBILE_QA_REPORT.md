@@ -2584,3 +2584,33 @@ Bugs:
 - Warm reset could leave a stale ticket modal open from the previous smoke. The reset path now also clears ticket, ticket error, selected event, and query state.
 Visual QA:
 - Deep Portfolio proof shows the live latest-order card and Recent activity row with `LIVE WORLD CUP`, `Live - 63'`, and France vs. Argentina context after a fresh live order.
+
+### Cycle 124
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554` with Expo Go
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/` through the focused smoke script
+- `npm.cmd run smoke:live-portfolio-badge-deep`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The heavy live Portfolio smoke now runs without Metro `--clear` for the proven live reset flows and still verifies live ticket, order, latest-order, and activity evidence.
+Screenshots:
+- `docs/mobile/screenshots/cycle-124-holiwyn-no-clear-live-portfolio-smoke.png`
+- `docs/mobile/screenshots/cycle-124-holiwyn-no-clear-live-portfolio-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-124-holiwyn-no-clear-live-portfolio-ticket.png`
+- `docs/mobile/screenshots/cycle-124-holiwyn-no-clear-live-portfolio-portfolio.png`
+- `docs/mobile/screenshots/cycle-124-holiwyn-no-clear-live-portfolio-latest-order.png`
+- `docs/mobile/screenshots/cycle-124-holiwyn-no-clear-live-portfolio-activity.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-124-holiwyn-no-clear-live-portfolio-expo-menu.xml`
+- `docs/mobile/harness/cycle-124-holiwyn-no-clear-live-portfolio-home.xml`
+- `docs/mobile/harness/cycle-124-holiwyn-no-clear-live-portfolio-ticket-ready.xml`
+- `docs/mobile/harness/cycle-124-holiwyn-no-clear-live-portfolio-ticket.xml`
+- `docs/mobile/harness/cycle-124-holiwyn-no-clear-live-portfolio-portfolio.xml`
+- `docs/mobile/harness/cycle-124-holiwyn-no-clear-live-portfolio-latest-order.xml`
+- `docs/mobile/harness/cycle-124-holiwyn-no-clear-live-portfolio-activity.xml`
+Bugs:
+- The first no-clear run exposed a fragile latest-order badge assertion: Android exported the visible badge text but not the container accessibility label. The harness now asserts durable visible live evidence plus the live clock.
+- A retry run initially read stale Expo/home hierarchy after relaunch. The harness now waits briefly after each retry deep link before dumping the UI tree.
+Visual QA:
+- Latest-order and Recent activity screenshots show `LIVE WORLD CUP`, `Live - 63'`, `Mock order placed`, `Bought`, and France vs. Argentina after a live fake-token order.

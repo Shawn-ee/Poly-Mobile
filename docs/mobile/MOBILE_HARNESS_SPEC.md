@@ -101,6 +101,7 @@ Actions:
 2. Launch the Expo/React Native app on emulator.
 3. Confirm the app opens.
 4. Confirm the changed screen is reachable.
+5. Keep Samsung S23 out of default Holiwyn automation; use it only for Polymarket reference or explicit later-stage real-device QA.
 
 Outputs:
 
@@ -118,6 +119,7 @@ Failure handling:
 - Restart app/emulator once.
 - Clear stale app state only if safe and documented.
 - If failure persists, run Recovery Harness.
+- If Expo Go becomes the bottleneck, prefer harness fixes first; add a proper Android development build/APK harness as a stabilization milestone when the app flow is mature enough.
 
 ## 6. Screenshot Evidence Harness
 

@@ -1785,3 +1785,18 @@ Findings:
 - Mobile typecheck through the smoke script, focused live-portfolio-badge-deep smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 123 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 124
+
+Date: 2026-07-01
+Branch: mobile/cycle-124
+Reviewer: Lead/Reviewer pass
+Scope: No-clear live Portfolio smoke harness.
+Findings:
+- P1: Proven live reset smokes no longer force Metro `--clear`, reducing repeated Expo rebuild cost for the heaviest live Portfolio proof.
+- P1: Retry deep-link launches now pause before UI dump, avoiding stale hierarchy reads after Expo Go relaunch.
+- P1: Deep live Portfolio proof still passes and verifies live ticket, mock order, open position, latest-order, and Recent activity evidence.
+- P2: Expo Go remains a speed bottleneck; documented device policy now keeps Samsung for reference/later real-device QA and emulator for repeatable Holiwyn automation, with a future dev/APK harness milestone.
+- Mobile typecheck through the smoke script and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 124 for local commit/merge after scoped diff review.
+Merge approved: Yes

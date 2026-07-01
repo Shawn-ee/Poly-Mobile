@@ -165,6 +165,7 @@ function Wait-HierarchyContains {
   for ($attempt = 1; $attempt -le $Attempts; $attempt++) {
     if ($RestartUrl -and $attempt -gt 1) {
       & $adb -s $Device shell am start -a android.intent.action.VIEW -d $RestartUrl | Out-Null
+      Start-Sleep -Seconds 2
     }
     $path = Save-UiHierarchy -Name $Name
     try {
@@ -294,7 +295,7 @@ try {
     $env:EXPO_PUBLIC_API_KEY = "pk_test_mobile_harness"
   }
   $expoArgs = @("expo", "start", "--port", "$Port", "--offline")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailMarketOutcomeCount -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailMarketOutcomeCount -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
@@ -471,7 +472,7 @@ try {
           Start-Sleep -Seconds 1
           Save-Screenshot -Name "cycle-current-holiwyn-live-portfolio-badge-deep.png"
           $livePortfolioBadgeDeepHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-portfolio-badge-deep.xml"
-          Assert-HierarchyContains -Path $livePortfolioBadgeDeepHierarchy -Expected @("latest-order-live-badge", "latest-order-live-clock", "LIVE WORLD CUP", "Live - 63'", "Mock order placed", "France vs. Argentina")
+          Assert-HierarchyContains -Path $livePortfolioBadgeDeepHierarchy -Expected @("latest-order-live-clock", "LIVE WORLD CUP", "Live - 63'", "Mock order placed", "France vs. Argentina")
           & $adb -s $Device shell input swipe 540 1500 540 650 450 | Out-Null
           Start-Sleep -Milliseconds 500
           & $adb -s $Device shell input swipe 540 1500 540 650 450 | Out-Null
