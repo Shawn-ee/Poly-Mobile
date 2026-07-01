@@ -1924,8 +1924,8 @@ Technical debt added:
 Technical debt resolved:
 - Server-mode Portfolio can now hydrate wallet balance and open positions through a typed mobile boundary.
 Result: Passed Cycle 041 QA. Mock-mode smoke remains unchanged while server-mode Portfolio has a typed snapshot adapter seam.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Add Holiwyn portfolio snapshot adapter`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 042 should expose server open orders in Portfolio or improve selector-driven harness actions, then write the next heartbeat.
 Harnesses run:
 - QA Smoke Harness
