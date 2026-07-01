@@ -24,6 +24,7 @@
     "smoke:home-search-query": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -HomeSearchQuery -Port 8101",
     "smoke:home-clear-search": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -HomeClearSearch -Port 8102",
     "smoke:home-card-stats": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -HomeCardStats -Port 8094",
+    "smoke:future-card-stats": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -FutureCardStats -Port 8104",
     "smoke:saved-search": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SavedSearch -Port 8095",
     "smoke:search-card-stats": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SearchCardStats -Port 8096",
     "smoke:search-saved-empty": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SearchSavedEmpty -Port 8097",

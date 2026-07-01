@@ -1755,3 +1755,23 @@ Bugs:
 - None found.
 Visual QA:
 - Search clear-query flow still returns to Top results after harness hardening.
+
+### Cycle 087
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:future-card-stats`
+- `npm run test:mobile-api`
+Result: Passed. Home Futures cards now show localized Volume and Liquidity context.
+Screenshots:
+- `docs/mobile/screenshots/cycle-087-holiwyn-future-card-stats-smoke.png`
+- `docs/mobile/screenshots/cycle-087-holiwyn-future-card-stats.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-087-holiwyn-future-card-stats-home.xml`
+- `docs/mobile/harness/cycle-087-holiwyn-future-card-stats.xml`
+Bugs:
+- None found.
+Visual QA:
+- World Cup winner futures card shows Volume/Liquidity without crowding the first outcome row or bottom navigation.

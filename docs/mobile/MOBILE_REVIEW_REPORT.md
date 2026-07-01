@@ -1231,3 +1231,18 @@ Findings:
 - Mobile typecheck, focused Search clear-query smoke, and mobile API request tests passed.
 Decision: Approve Cycle 086 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 087
+
+Date: 2026-07-01
+Branch: mobile/cycle-087
+Reviewer: Lead/Reviewer pass
+Scope: Futures card market stats.
+Findings:
+- P1: Home Futures cards now show localized Volume and Liquidity context, matching match-card discovery context.
+- P1: Focused Futures card stats smoke switches to Futures, scrolls the card into view, and verifies World Cup winner plus Volume/Liquidity/USDT.
+- P1: Stats are deterministic local estimates and do not change backend/API behavior.
+- P2: Futures stats should later map to backend liquidity/volume metrics once available.
+- Mobile typecheck, focused Futures card stats smoke, and mobile API request tests passed.
+Decision: Approve Cycle 087 for local commit/merge after scoped diff review.
+Merge approved: Yes
