@@ -13,6 +13,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PolyApi } from "./src/api";
 import { normalizeEventDetail } from "./src/adapters/worldCupAdapter";
+import { BottomTabs } from "./src/components/BottomTabs";
 import {
   Event,
   Locale,
@@ -662,25 +663,6 @@ function TradeTicket({
         </View>
       </View>
     </Modal>
-  );
-}
-
-function BottomTabs({ tab, setTab, t }: { tab: MainTab; setTab: (tab: MainTab) => void; t: typeof copy.en }) {
-  const items: Array<[MainTab, keyof typeof Ionicons.glyphMap, string]> = [
-    ["home", "compass", t.home],
-    ["live", "radio", t.live],
-    ["portfolio", "person-circle-outline", t.portfolio],
-    ["search", "search", t.search],
-  ];
-  return (
-    <View style={styles.tabs}>
-      {items.map(([key, icon, text]) => (
-        <Pressable key={key} style={styles.tabButton} onPress={() => setTab(key)}>
-          <Ionicons name={icon} size={26} color={tab === key ? "#1d6dff" : "#64748b"} />
-          <Text style={[styles.tabText, tab === key && styles.tabTextActive]}>{text}</Text>
-        </Pressable>
-      ))}
-    </View>
   );
 }
 

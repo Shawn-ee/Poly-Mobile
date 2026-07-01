@@ -89,3 +89,16 @@ Findings:
 - `npm run typecheck` and `npm run smoke` passed.
 Decision: Approve Cycle 005 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 006
+
+Date: 2026-07-01
+Branch: mobile/cycle-006
+Reviewer: Lead/Reviewer pass
+Scope: Bottom navigation component extraction.
+Findings:
+- P2: Extracted bottom tabs reduce `App.tsx` coupling without changing runtime behavior.
+- P2: Some now-unused tab styles remain in `App.tsx`; harmless but should be cleaned during broader component extraction.
+- `npm run typecheck` and `npm run smoke` passed.
+Decision: Approve Cycle 006 for local commit/merge after scoped diff review.
+Merge approved: Yes
