@@ -2111,6 +2111,63 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 045
+
+Date: 2026-07-01
+Branch: mobile/cycle-045
+Goal: Add a Max amount control to the trade ticket.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Trade Ticket now includes a `Max` affordance beside Amount; tapping it fills the ticket amount with the available fake balance and updates estimated cost.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/src/components/TradeTicket.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-045-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-045-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-045-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-045-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-045-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-045-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-045-holiwyn-ticket-max.xml`
+- `docs/mobile/harness/cycle-045-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-045-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-045-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-045-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-045-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-045-holiwyn-search-query.xml`
+Bugs found:
+- First smoke attempt tapped the Sell control instead of Max; fixed the harness coordinate and reran to pass.
+Technical debt added:
+- The Max harness still uses coordinates; selector-driven tapping remains a future improvement.
+Technical debt resolved:
+- Ticket users can now quickly size to available fake balance without manual input.
+Result: Passed Cycle 045 QA. Deep smoke verifies `Max`, the updated `10,000 USDT` estimated cost, max-sized close balance, and the full Live/Search path.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 046 should improve ticket amount presets or reduce coordinate-based harness taps.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- One recoverable harness coordinate miss before final pass.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

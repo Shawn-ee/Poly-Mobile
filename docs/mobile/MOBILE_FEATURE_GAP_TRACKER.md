@@ -75,3 +75,4 @@ Status:
 | GAP-053 | Portfolio | Server open orders display seam | P1 | No | Verified | Cycle 042 maps backend open orders into a Portfolio `Open orders` section for server mode while preserving mock smoke. |
 | GAP-054 | Trading | Order confirmation on Portfolio | P1 | No | Verified | Cycle 043 adds a visible `Order placed` confirmation after a mock trade and verifies it in deep smoke. |
 | GAP-055 | Trading ticket | Available balance display | P1 | No | Verified | Cycle 044 shows fake balance inside the trade ticket before submission and verifies it in deep smoke. |
+| GAP-056 | Trading ticket | Max amount control | P1 | No | Verified | Cycle 045 adds a Max control that fills the ticket amount with available fake balance and verifies the updated estimate. |

@@ -145,7 +145,13 @@ try {
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-ticket.png"
     $ticketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket.xml"
-    Assert-HierarchyContains -Path $ticketHierarchy -Expected @("Fake balance", "10,000 USDT", "Estimated cost", "Estimated payout", "Place mock order")
+    Assert-HierarchyContains -Path $ticketHierarchy -Expected @("Fake balance", "10,000 USDT", "Max", "Estimated cost", "Estimated payout", "Place mock order")
+
+    & $adb -s $Device shell input tap 995 1090 | Out-Null
+    Start-Sleep -Seconds 1
+    Save-Screenshot -Name "cycle-current-holiwyn-ticket-max.png"
+    $ticketMaxHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket-max.xml"
+    Assert-HierarchyContains -Path $ticketMaxHierarchy -Expected @("10,000", "Estimated cost", "10,000 USDT")
 
     & $adb -s $Device shell input tap 540 1740 | Out-Null
     Start-Sleep -Seconds 1
@@ -157,7 +163,7 @@ try {
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-portfolio-closed.png"
     $portfolioClosedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-closed.xml"
-    Assert-HierarchyContains -Path $portfolioClosedHierarchy -Expected @("Fake balance", "10,008.82 USDT", "No positions yet", "Recent activity", "Closed", "Bought")
+    Assert-HierarchyContains -Path $portfolioClosedHierarchy -Expected @("Fake balance", "10,882.35 USDT", "No positions yet", "Recent activity", "Closed", "Bought")
 
     & $adb -s $Device shell input tap 405 1740 | Out-Null
     Start-Sleep -Seconds 1
