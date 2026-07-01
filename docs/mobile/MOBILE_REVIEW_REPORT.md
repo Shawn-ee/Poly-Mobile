@@ -1126,3 +1126,18 @@ Findings:
 - Mobile typecheck, focused Search Saved empty smoke, and mobile API request tests passed.
 Decision: Approve Cycle 079 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 080
+
+Date: 2026-07-01
+Branch: mobile/cycle-080
+Reviewer: Lead/Reviewer pass
+Scope: Event Detail save control.
+Findings:
+- P1: Event Detail now exposes a save/star control bound to the app-level saved-event state.
+- P1: Saved state created from Event Detail appears in Search's Saved filter.
+- P1: Focused Event Detail save smoke opens Mexico, saves it, returns Home, opens Search Saved, and verifies one saved result.
+- P2: Saved state remains local/session-only until account persistence is integrated.
+- Mobile typecheck, focused Event Detail save smoke, and mobile API request tests passed.
+Decision: Approve Cycle 080 for local commit/merge after scoped diff review.
+Merge approved: Yes

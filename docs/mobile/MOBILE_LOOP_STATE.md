@@ -3974,6 +3974,55 @@ Open blockers: None for autonomous product/harness progress. Live authenticated 
 Risks: Account and Saved state are local/session-only; Home/Search market stats and ticket quote math remain local estimates until backend auth, quote, and order-book APIs can feed them.
 Next three likely cycles: Add richer search/sort behavior, improve saved market affordances, and retry backend readiness when Docker daemon becomes reachable.
 
+### Cycle 080
+
+Date: 2026-07-01
+Branch: mobile/cycle-080
+Goal: Add save/star support to Event Detail and verify it carries into Search Saved.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Event Detail hero now includes a save/star control bound to shared saved-event state.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/EventDetail.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:event-detail-save` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-080-holiwyn-event-detail-save-smoke.png`
+- `docs/mobile/screenshots/cycle-080-holiwyn-event-detail-save-detail.png`
+- `docs/mobile/screenshots/cycle-080-holiwyn-event-detail-save-star.png`
+- `docs/mobile/screenshots/cycle-080-holiwyn-event-detail-save-search-saved.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-080-holiwyn-event-detail-save-home-start.xml`
+- `docs/mobile/harness/cycle-080-holiwyn-event-detail-save-detail.xml`
+- `docs/mobile/harness/cycle-080-holiwyn-event-detail-save-star.xml`
+- `docs/mobile/harness/cycle-080-holiwyn-event-detail-save-home.xml`
+- `docs/mobile/harness/cycle-080-holiwyn-event-detail-save-search.xml`
+- `docs/mobile/harness/cycle-080-holiwyn-event-detail-save-search-saved.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Event Detail saved state is local/session-only until account persistence is integrated.
+Technical debt resolved:
+- Users can save from Event Detail, not only from Home/Search lists.
+Result: Passed Cycle 080 QA. Mobile typecheck, focused Event Detail save smoke, visual screenshot review, and mobile API tests pass.
+Commit: `PENDING`
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 081 should continue saved/discovery parity or retry backend readiness if Docker daemon becomes available.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Event Detail Harness
+- Discovery Watchlist Harness
+- Search Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
