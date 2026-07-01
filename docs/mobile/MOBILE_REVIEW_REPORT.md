@@ -1412,3 +1412,18 @@ Findings:
 - Mobile typecheck, focused language-persistence smoke, and mobile API request tests passed.
 Decision: Approve Cycle 098 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 099
+
+Date: 2026-07-01
+Branch: mobile/cycle-099
+Reviewer: Lead/Reviewer pass
+Scope: Mock Portfolio persistence.
+Findings:
+- P1: Fake-token balance, positions, latest order, open orders, and activity now hydrate from and persist to AsyncStorage with a startup hydration guard.
+- P1: Focused smoke opens the France World Cup winner ticket, places a real mock ticket order, restarts Expo Go, and verifies Portfolio restores the open position and activity count.
+- P1: Visual evidence confirms restored balance and position cards match the placed order state after restart.
+- P2: Portfolio persistence is local mock storage only; authenticated server portfolio remains the eventual source of truth.
+- Mobile typecheck, focused portfolio-persistence smoke, and mobile API request tests passed.
+Decision: Approve Cycle 099 for local commit/merge after scoped diff review.
+Merge approved: Yes

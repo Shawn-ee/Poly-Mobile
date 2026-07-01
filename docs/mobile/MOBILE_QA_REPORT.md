@@ -2033,3 +2033,26 @@ Bugs:
 - None found in product code. Harness recovered from PowerShell Unicode parsing by using ASCII-safe assertions plus visual screenshot proof.
 Visual QA:
 - Restored Home shows Chinese copy after restart, including the `EN` language toggle, Chinese navigation labels, Chinese market title copy, and Chinese filter labels.
+
+### Cycle 099
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:portfolio-persistence`
+- `npm run test:mobile-api`
+Result: Passed. Mock Portfolio state now persists locally and restores after app restart.
+Screenshots:
+- `docs/mobile/screenshots/cycle-099-holiwyn-portfolio-persistence-ticket.png`
+- `docs/mobile/screenshots/cycle-099-holiwyn-portfolio-persistence-open.png`
+- `docs/mobile/screenshots/cycle-099-holiwyn-portfolio-persistence-restored.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-099-holiwyn-portfolio-persistence-home-start.xml`
+- `docs/mobile/harness/cycle-099-holiwyn-portfolio-persistence-ticket.xml`
+- `docs/mobile/harness/cycle-099-holiwyn-portfolio-persistence-open.xml`
+- `docs/mobile/harness/cycle-099-holiwyn-portfolio-persistence-restored.xml`
+Bugs:
+- None found in product code. Harness recovered from a cleared-start tap interception by opening the focused ticket through a harness-only deep link while still placing the order through the real ticket CTA.
+Visual QA:
+- Restored Portfolio shows 9,900 USDT balance, Open positions `1`, Recent activity `1`, Closed trades `0`, and the World Cup winner / France position after restart.
