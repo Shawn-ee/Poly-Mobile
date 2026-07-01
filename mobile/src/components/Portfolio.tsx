@@ -20,6 +20,24 @@ type PortfolioCopy = {
   noPositionsBody: string;
   buy: string;
   sell: string;
+  entry: string;
+  currentValue: string;
+  estimatedPnl: string;
+};
+
+const currentProbability = (position: Position) => {
+  const movement = position.side === "buy" ? 3 : -3;
+  return Math.max(1, Math.min(99, position.probability + movement));
+};
+
+const positionValue = (position: Position) => {
+  const entry = Math.max(1, position.probability);
+  return position.amount * (currentProbability(position) / entry);
+};
+
+const estimatedPnl = (position: Position) => {
+  const value = positionValue(position);
+  return position.side === "buy" ? value - position.amount : position.amount - value;
 };
 
 export function Portfolio({
@@ -52,6 +70,23 @@ export function Portfolio({
               {position.mode.toUpperCase()} · {position.side === "buy" ? t.buy : t.sell} · {position.outcome} · {position.probability}%
             </Text>
             <Text style={styles.positionValue}>{money(position.amount)}</Text>
+            <View style={styles.positionDetailGrid}>
+              <View style={styles.positionDetailItem}>
+                <Text style={styles.positionDetailLabel}>{t.entry}</Text>
+                <Text style={styles.positionDetailValue}>{position.probability}%</Text>
+              </View>
+              <View style={styles.positionDetailItem}>
+                <Text style={styles.positionDetailLabel}>{t.currentValue}</Text>
+                <Text style={styles.positionDetailValue}>{money(positionValue(position))}</Text>
+              </View>
+              <View style={styles.positionDetailItem}>
+                <Text style={styles.positionDetailLabel}>{t.estimatedPnl}</Text>
+                <Text style={[styles.positionDetailValue, estimatedPnl(position) >= 0 ? styles.pnlPositive : styles.pnlNegative]}>
+                  {estimatedPnl(position) >= 0 ? "+" : ""}
+                  {money(estimatedPnl(position))}
+                </Text>
+              </View>
+            </View>
           </View>
         ))
       )}
@@ -72,4 +107,10 @@ const styles = StyleSheet.create({
   positionTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
   positionMeta: { color: "#94a3b8", marginTop: 5, fontWeight: "800" },
   positionValue: { color: "#22c55e", fontSize: 22, fontWeight: "900", marginTop: 8 },
+  positionDetailGrid: { flexDirection: "row", gap: 8, marginTop: 12 },
+  positionDetailItem: { flex: 1, padding: 10, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
+  positionDetailLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },
+  positionDetailValue: { color: "#f8fafc", fontSize: 13, fontWeight: "900", marginTop: 5 },
+  pnlPositive: { color: "#22c55e" },
+  pnlNegative: { color: "#ef4444" },
 });
