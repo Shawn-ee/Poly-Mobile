@@ -14,6 +14,7 @@ type HomeScreenCopy = {
   futures: string;
   trending: string;
   marketSearch: string;
+  clearSearch: string;
   noResults: string;
   searchAll: string;
   searchLive: string;
@@ -85,6 +86,11 @@ export function HomeScreen({
           style={styles.searchInput}
           value={query}
         />
+        {query.trim().length > 0 && (
+          <Pressable accessibilityLabel={t.clearSearch} testID="home-clear-search" onPress={() => setQuery("")} style={styles.clearButton}>
+            <Ionicons name="close-circle" color="#bfdbfe" size={18} />
+          </Pressable>
+        )}
       </View>
       <View style={styles.filterRow}>
         {homeFilters.map(([value, text]) => (
@@ -131,6 +137,7 @@ const styles = StyleSheet.create({
   sectionTitle: { color: "#f8fafc", fontSize: 24, fontWeight: "900", marginTop: 24, marginBottom: 12 },
   searchBox: { flexDirection: "row", alignItems: "center", gap: 10, height: 52, paddingHorizontal: 14, borderRadius: 12, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginBottom: 14 },
   searchInput: { flex: 1, color: "#f8fafc", fontSize: 16, fontWeight: "700" },
+  clearButton: { width: 34, height: 34, alignItems: "center", justifyContent: "center", borderRadius: 8, backgroundColor: "#1f2937" },
   filterRow: { flexDirection: "row", gap: 8, marginBottom: 12 },
   filterChip: { paddingHorizontal: 14, paddingVertical: 9, borderRadius: 999, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   filterChipActive: { backgroundColor: "#1d6dff", borderColor: "#1d6dff" },
