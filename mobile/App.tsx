@@ -28,7 +28,6 @@ import {
   worldCupEvents,
   worldCupFutures,
 } from "./src/mocks/worldCup";
-import { label } from "./src/presentation/formatters";
 import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
@@ -395,40 +394,6 @@ function SportNav({ locale }: { locale: Locale }) {
         </View>
       ))}
     </ScrollView>
-  );
-}
-
-function FeaturedFuture({
-  locale,
-  futures,
-  openTicket,
-}: {
-  locale: Locale;
-  futures: Market[];
-  openTicket: (market: Market, outcome: Outcome) => void;
-}) {
-  const market = futures[0] ?? worldCupFutures[0];
-  return (
-    <View style={styles.featureCard}>
-      <View style={styles.featureHeader}>
-        <Text style={styles.featureTitle}>{label(locale, market).toUpperCase()}</Text>
-        <Text style={styles.featureBadge}>🏆</Text>
-      </View>
-      <View style={styles.futureOutcomes}>
-        {market.outcomes.map((outcome) => (
-          <Pressable
-            key={outcome.id}
-            accessibilityLabel={`featured-future-${outcome.id}`}
-            testID={`featured-future-${outcome.id}`}
-            style={styles.futureOutcome}
-            onPress={() => openTicket(market, outcome)}
-          >
-            <Text style={styles.futureName}>{label(locale, outcome)}</Text>
-            <Text style={styles.futureProb}>{outcome.probability}%</Text>
-          </Pressable>
-        ))}
-      </View>
-    </View>
   );
 }
 

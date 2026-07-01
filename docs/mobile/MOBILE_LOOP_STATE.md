@@ -1128,6 +1128,64 @@ Harnesses run:
 Harness failures:
 - First edit path created a noisy full-file diff in `App.tsx`; restored the file, rewired the extracted component with a narrow diff, and reran typecheck/deep smoke successfully.
 
+### Cycle 027
+
+Date: 2026-07-01
+Branch: mobile/cycle-027
+Goal: Remove the stale inline featured futures function after Cycle 026 extraction.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No visual behavior change; Home continues to use `FeaturedFuture.tsx`.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-027-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-027-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-027-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-027-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-027-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-027-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-027-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-027-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-027-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-027-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-027-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-027-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-027-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-027-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- None.
+Technical debt resolved:
+- TD-014: Removed the old inline `FeaturedFuture` function from `App.tsx` with a narrow, encoding-safe cleanup.
+Result: Passed Cycle 027 QA. The extracted featured futures component remains active and the deep smoke flow is unchanged.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge after commit.
+Next cycle: Cycle 028 should continue Home decomposition or add richer portfolio/open-position detail.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 027
+
+Completed cycles: 025, 026, 027 since the last heartbeat.
+Verified progress: Live refresh now calls the shared backend/mock reload path, the featured futures card has a dedicated component, and the stale inline featured-card implementation has been removed.
+Current app state: Holiwyn mobile has deep-smoke coverage for Home, featured future ticket, mock order to Portfolio, Live refresh, Search browse, and typed zero-result Search.
+Current backend state: Backend health remains unavailable during emulator smoke, so mock fallback is still the verified path. Mobile API requests now time out quickly instead of hanging.
+Open blockers: None for autonomous progress.
+Risks: Deep smoke still depends on coordinate taps; server order mode and real live odds deltas remain unverified; Home screen still has inline SportNav and segmented tabs.
+Next three likely cycles: Extract Home support components, add portfolio position detail/P&L, and improve harness taps with selector-based actions.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

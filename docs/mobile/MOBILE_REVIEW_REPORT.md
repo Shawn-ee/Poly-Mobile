@@ -370,3 +370,17 @@ Findings:
 - `npm run typecheck` and final `npm run smoke:deep` passed.
 Decision: Approve Cycle 026 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 027
+
+Date: 2026-07-01
+Branch: mobile/cycle-027
+Reviewer: Lead/Reviewer pass
+Scope: Remove stale inline featured futures implementation.
+Findings:
+- P1: TD-014 is resolved; `App.tsx` no longer carries the dead inline featured futures function.
+- P2: The extracted `FeaturedFuture` component remains wired from Home and keeps the same ticket-opening behavior under deep smoke.
+- P2: Home still owns SportNav, search box, segmented tabs, and list composition; further extraction remains useful.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 027 for local commit/merge after scoped diff review.
+Merge approved: Yes

@@ -57,3 +57,4 @@ Status:
 | GAP-035 | Live | Freshness and refresh affordance | P1 | No | Verified | Cycle 024 adds Live freshness copy, Refresh control, and refreshed-state smoke coverage. |
 | GAP-036 | Live | Refresh reload path | P1 | No | Verified | Cycle 025 wires Live refresh to the shared backend/mock World Cup event reload path and verifies fallback completion. |
 | GAP-037 | Architecture | Featured futures component | P2 | Yes | Verified | Cycle 026 renders the Home featured futures card through `mobile/src/components/FeaturedFuture.tsx`. |
+| GAP-038 | Architecture | Featured futures cleanup | P2 | No | Verified | Cycle 027 removes the stale inline featured-card implementation from `App.tsx`. |
