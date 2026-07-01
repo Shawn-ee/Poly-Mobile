@@ -1,5 +1,6 @@
 ﻿import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BackHandler, Linking, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PolyApi } from "./src/api";
@@ -38,6 +39,7 @@ import { loadPortfolioSnapshot } from "./src/services/portfolioSnapshotService";
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
 const DEFAULT_API_KEY = process.env.EXPO_PUBLIC_API_KEY || "";
 const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? "server" : "mock";
+const SAVED_EVENTS_STORAGE_KEY = "holiwyn.savedEventIds.v1";
 const SMOKE_OPEN_ORDER: OpenOrder = {
   id: "smoke-open-order",
   title: "Mexico vs. Ecuador winner",
@@ -66,6 +68,7 @@ export default function App() {
   const [portfolioSyncStatus, setPortfolioSyncStatus] = useState<PortfolioSyncStatus>(ORDER_MODE === "server" ? "syncing" : "hidden");
   const [events, setEvents] = useState<Event[]>(worldCupEvents);
   const [savedEventIds, setSavedEventIds] = useState<Set<string>>(() => new Set());
+  const [savedEventIdsHydrated, setSavedEventIdsHydrated] = useState(false);
   const [isRefreshingLive, setIsRefreshingLive] = useState(false);
   const [liveRefreshTick, setLiveRefreshTick] = useState(0);
   const [futures] = useState<Market[]>(worldCupFutures);
@@ -78,6 +81,26 @@ export default function App() {
       mounted.current = false;
     };
   }, []);
+
+  useEffect(() => {
+    AsyncStorage.getItem(SAVED_EVENTS_STORAGE_KEY)
+      .then((stored) => {
+        if (!mounted.current || !stored) return;
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          setSavedEventIds(new Set(parsed.filter((id): id is string => typeof id === "string")));
+        }
+      })
+      .catch(() => undefined)
+      .finally(() => {
+        if (mounted.current) setSavedEventIdsHydrated(true);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!savedEventIdsHydrated) return;
+    AsyncStorage.setItem(SAVED_EVENTS_STORAGE_KEY, JSON.stringify([...savedEventIds])).catch(() => undefined);
+  }, [savedEventIds, savedEventIdsHydrated]);
 
   useEffect(() => {
     Linking.getInitialURL().then((url) => {
@@ -99,6 +122,19 @@ export default function App() {
       }
       if (url.includes("forceAccount=1")) {
         setMainTab("account");
+      }
+      if (url.includes("forceSearch=1")) {
+        setMainTab("search");
+      }
+      const shouldForceSaveMexico = url.includes("forceSaveMexico=1");
+      if (url.includes("forceClearSaved=1") && !shouldForceSaveMexico) {
+        setSavedEventIds(new Set());
+        AsyncStorage.removeItem(SAVED_EVENTS_STORAGE_KEY).catch(() => undefined);
+      }
+      if (shouldForceSaveMexico) {
+        const seededSavedEvents = new Set(["mexico-ecuador"]);
+        setSavedEventIds(seededSavedEvents);
+        AsyncStorage.setItem(SAVED_EVENTS_STORAGE_KEY, JSON.stringify([...seededSavedEvents])).catch(() => undefined);
       }
     });
   }, []);

@@ -17,6 +17,7 @@ param(
   [switch]$AccountLogin,
   [switch]$HomeFilter,
   [switch]$HomeSaved,
+  [switch]$SavedPersistence,
   [switch]$HomeSavedEmpty,
   [switch]$HomeSearchQuery,
   [switch]$HomeClearSearch,
@@ -180,11 +181,11 @@ try {
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
   }
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
@@ -198,8 +199,16 @@ try {
     "exp://10.0.2.2:$Port/--/?forceHomeQuery=clean"
   } elseif ($Account -or $AccountLogin) {
     "exp://10.0.2.2:$Port/--/?forceAccount=1"
+  } elseif ($SavedPersistence) {
+    "exp://10.0.2.2:$Port/--/?forceSaveMexico=1"
+  } elseif ($HomeSavedEmpty -or $SearchSavedEmpty) {
+    "exp://10.0.2.2:$Port/--/?forceClearSaved=1"
   } else {
     "exp://10.0.2.2:$Port"
+  }
+  if ($SavedPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty) {
+    & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
+    Start-Sleep -Seconds 2
   }
   & $adb -s $Device shell am start -a android.intent.action.VIEW -d $launchUrl | Out-Null
   Start-Sleep -Seconds 10
@@ -309,6 +318,25 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-home-saved-filter.png"
       $savedFilterHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-home-saved-filter.xml"
       Assert-HierarchyContains -Path $savedFilterHierarchy -Expected @("Saved", "Mexico vs. Ecuador", "Games")
+      return
+    }
+
+    if ($SavedPersistence) {
+      Save-Screenshot -Name "cycle-current-holiwyn-saved-persistence-seeded.png"
+      $savedPersistenceSeededHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-saved-persistence-seeded.xml"
+      Assert-HierarchyContains -Path $savedPersistenceSeededHierarchy -Expected @("Holiwyn", "World Cup", "Games", "Futures")
+      Start-Sleep -Seconds 2
+      & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
+      Start-Sleep -Seconds 2
+      $savedPersistenceRestartUrl = "exp://10.0.2.2:$Port/--/?forceSearch=1"
+      & $adb -s $Device shell am start -a android.intent.action.VIEW -d $savedPersistenceRestartUrl | Out-Null
+      Start-Sleep -Seconds 10
+      $savedPersistenceSearchHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-saved-persistence-search.xml" -Expected @("Top results", "Saved", "Mexico vs. Ecuador") -RestartUrl $savedPersistenceRestartUrl
+      & $adb -s $Device shell input tap 716 650 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-saved-persistence-restored.png"
+      $savedPersistenceFilterHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-saved-persistence-filter.xml"
+      Assert-HierarchyContains -Path $savedPersistenceFilterHierarchy -Expected @("Top results", "Saved", "Mexico vs. Ecuador", "Group Stage")
       return
     }
 

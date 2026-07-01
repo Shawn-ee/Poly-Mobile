@@ -20,6 +20,7 @@
     "smoke:account-login": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -AccountLogin -Port 8091",
     "smoke:home-filter": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -HomeFilter -Port 8092",
     "smoke:home-saved": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -HomeSaved -Port 8093",
+    "smoke:saved-persistence": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SavedPersistence -Port 8112",
     "smoke:home-saved-empty": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -HomeSavedEmpty -Port 8100",
     "smoke:home-search-query": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -HomeSearchQuery -Port 8101",
     "smoke:home-clear-search": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -HomeClearSearch -Port 8102",

@@ -126,3 +126,4 @@ Status:
 | GAP-104 | Portfolio | Recent activity count | P1 | Yes | Verified | Cycle 093 adds a localized Recent activity count to Portfolio and verifies it changes from 0 to 1 after a Futures mock order. |
 | GAP-105 | Portfolio | Closed trades count | P1 | Yes | Verified | Cycle 094 adds a localized Closed trades count to Portfolio and verifies it changes from 0 to 1 after a Futures mock order is closed. |
 | GAP-106 | Portfolio | Compact count grid | P1 | Yes | Verified | Cycle 095 compacts Open positions, Recent activity, and Closed trades into a three-tile grid and verifies the closed-state counts on emulator. |
+| GAP-107 | Saved markets | Local saved-market persistence | P1 | Yes | Verified | Cycle 096 persists saved market ids with AsyncStorage and verifies a seeded saved market restores after app restart on emulator. |

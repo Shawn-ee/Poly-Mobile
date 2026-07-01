@@ -1367,3 +1367,18 @@ Findings:
 - Mobile typecheck, focused Portfolio closed-count smoke, and mobile API request tests passed.
 Decision: Approve Cycle 095 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 096
+
+Date: 2026-07-01
+Branch: mobile/cycle-096
+Reviewer: Lead/Reviewer pass
+Scope: Saved-market persistence.
+Findings:
+- P1: Saved market ids now hydrate from and persist to AsyncStorage with a startup hydration guard.
+- P1: Harness-only deep links can clear, seed, and open Search state for deterministic persistence proof.
+- P1: Focused smoke clears local Expo data, seeds Mexico vs. Ecuador into saved storage, restarts the app, and verifies Search restores the saved market.
+- P2: The normal user tap-to-save UI was already covered in earlier cycles; this cycle focuses on storage durability.
+- Mobile typecheck, focused saved-persistence smoke, and mobile API request tests passed.
+Decision: Approve Cycle 096 for local commit/merge after scoped diff review.
+Merge approved: Yes

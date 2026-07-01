@@ -1964,3 +1964,26 @@ Bugs:
 - None found. Harness now captures activity proof and top-of-Portfolio count-grid proof separately after close.
 Visual QA:
 - Compact grid shows Open positions `0`, Recent activity `2`, and Closed trades `1` in one row without overlap.
+
+### Cycle 096
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:saved-persistence`
+- `npm run test:mobile-api`
+Result: Passed. Saved market ids now persist locally and restore after app restart.
+Screenshots:
+- `docs/mobile/screenshots/cycle-096-holiwyn-saved-persistence-smoke.png`
+- `docs/mobile/screenshots/cycle-096-holiwyn-saved-persistence-seeded.png`
+- `docs/mobile/screenshots/cycle-096-holiwyn-saved-persistence-restored.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-096-holiwyn-saved-persistence-home-start.xml`
+- `docs/mobile/harness/cycle-096-holiwyn-saved-persistence-seeded.xml`
+- `docs/mobile/harness/cycle-096-holiwyn-saved-persistence-search.xml`
+- `docs/mobile/harness/cycle-096-holiwyn-saved-persistence-restored.xml`
+Bugs:
+- None found in product code. Harness recovered from an off-screen Home save tap, shell `&` URL splitting, and unreliable star-glyph XML assertions by using a deterministic storage seed plus visual screenshot proof.
+Visual QA:
+- Restored Search screen shows Mexico vs. Ecuador with a filled saved star after app restart.
