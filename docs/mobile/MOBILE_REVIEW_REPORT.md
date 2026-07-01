@@ -622,3 +622,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 044 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 045
+
+Date: 2026-07-01
+Branch: mobile/cycle-045
+Reviewer: Lead/Reviewer pass
+Scope: Trade Ticket Max amount control.
+Findings:
+- P1: Trade Ticket now exposes a `Max` control for fast fake-balance sizing.
+- P1: Deep smoke taps Max and verifies the updated ticket estimate before placing the order.
+- P2: Max is still tested through coordinates; selector-driven mobile automation remains a useful harness improvement.
+- `npm run typecheck` and final `npm run smoke:deep` passed.
+Decision: Approve Cycle 045 for local commit/merge after scoped diff review.
+Merge approved: Yes

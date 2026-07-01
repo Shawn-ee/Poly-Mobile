@@ -844,3 +844,26 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-044-holiwyn-search.png`
 - `docs/mobile/screenshots/cycle-044-holiwyn-search-query.png`
 Bugs: None found.
+
+### Cycle 045
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Trade Ticket now has a Max control that fills the ticket amount with available fake balance and updates estimated cost.
+Screenshots:
+- `docs/mobile/screenshots/cycle-045-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-045-holiwyn-search-query.png`
+Bugs:
+- Initial Max tap coordinate hit the wrong ticket control; adjusted the harness coordinate and final rerun passed.

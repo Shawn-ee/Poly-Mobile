@@ -15,6 +15,7 @@ type TradeTicketCopy = {
   buy: string;
   sell: string;
   amount: string;
+  max: string;
   balance: string;
   estimatedCost: string;
   estimatedPayout: string;
@@ -62,7 +63,12 @@ export function TradeTicket({
               </Pressable>
             ))}
           </View>
-          <Text style={styles.inputLabel}>{t.amount}</Text>
+          <View style={styles.amountHeader}>
+            <Text style={styles.inputLabel}>{t.amount}</Text>
+            <Pressable accessibilityLabel="ticket-max-amount" testID="ticket-max-amount" onPress={() => setAmount(String(Math.floor(balance)))}>
+              <Text style={styles.maxText}>{t.max}</Text>
+            </Pressable>
+          </View>
           <TextInput value={amount} onChangeText={setAmount} keyboardType="decimal-pad" style={styles.amountInput} />
           <View style={styles.estimateLine}>
             <Text style={styles.estimateLabel}>{t.balance}</Text>
@@ -97,7 +103,9 @@ const styles = StyleSheet.create({
   sideButtonActive: { backgroundColor: "#1d6dff" },
   sideText: { color: "#94a3b8", fontWeight: "900" },
   sideTextActive: { color: "#ffffff" },
-  inputLabel: { color: "#94a3b8", fontWeight: "800", marginTop: 18, marginBottom: 8 },
+  amountHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 18, marginBottom: 8 },
+  inputLabel: { color: "#94a3b8", fontWeight: "800" },
+  maxText: { color: "#93c5fd", fontWeight: "900" },
   amountInput: { height: 54, borderRadius: 12, paddingHorizontal: 14, backgroundColor: "#070c14", borderWidth: 1, borderColor: "#263247", color: "#f8fafc", fontSize: 22, fontWeight: "900" },
   estimateLine: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "#263247" },
   estimateLabel: { color: "#94a3b8", fontWeight: "800" },
