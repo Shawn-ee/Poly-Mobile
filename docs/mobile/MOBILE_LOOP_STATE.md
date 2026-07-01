@@ -2777,8 +2777,8 @@ Technical debt added:
 Technical debt resolved:
 - Deep smoke no longer relies on Android hardware Back for Event Detail return navigation.
 Result: Passed Cycle 055 QA. Deep smoke verifies Event Detail back navigation through `event-detail-back` and the normal World Cup trade, close, Live, and Search flows.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `4a73434` (`Use selector for Holiwyn event detail back smoke`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `d028247`.
 Next cycle: Cycle 056 should continue reducing prop-section scroll/device actions or add deeper server/fixture coverage.
 Harnesses run:
 - QA Smoke Harness
