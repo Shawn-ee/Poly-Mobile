@@ -250,6 +250,7 @@ export default function App() {
 
   const handleLaunchUrl = useCallback((url: string | null) => {
     if (!mounted.current || !url) return;
+    const shouldForceWorldCupWinnerFranceTicket = url.includes("forceWorldCupWinnerFranceTicket=1");
     setForceOrderFailure(url.includes("forceOrderFailure=1"));
     if (url.includes("forceResetState=1")) {
       const resetRuntimeState = () => {
@@ -263,12 +264,16 @@ export default function App() {
         setTicketOrderError(null);
         setSelectedEvent(null);
         setQuery("");
+        setMainTab("home");
+        setWorldCupTab("games");
         setTicketDefaults({ amount: "100", side: "buy" });
         setSavedEventIds(new Set());
         setForceAccountSignedIn(false);
       };
       resetRuntimeState();
-      setTimeout(resetRuntimeState, 750);
+      if (!shouldForceWorldCupWinnerFranceTicket) {
+        setTimeout(resetRuntimeState, 750);
+      }
       AsyncStorage.multiRemove([
         SAVED_EVENTS_STORAGE_KEY,
         PORTFOLIO_STORAGE_KEY,
@@ -281,7 +286,7 @@ export default function App() {
     if (url.includes("forceLive=1")) {
       setMainTab("live");
     }
-    if (url.includes("forceWorldCupWinnerFranceTicket=1")) {
+    if (shouldForceWorldCupWinnerFranceTicket) {
       const market = worldCupFutures[0];
       const outcome = market.outcomes[0];
       setTicket({ market, outcome, side: "buy" });
@@ -544,6 +549,7 @@ export default function App() {
       outcome: result.outcome,
       side: result.side,
       amount: result.amount,
+      probability: result.probability,
       isLive: isLiveOrder,
       liveClock,
     });

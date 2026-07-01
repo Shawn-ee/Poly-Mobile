@@ -2745,3 +2745,28 @@ Bugs:
 - Repeated smoke runs could create duplicate canceled activity warning; fixed by making the open-order harness seed clean portfolio state and making cancel idempotent.
 Visual QA:
 - Open orders card shows `Limit 47%`, `Implied odds 2.1x`, `Order value 250 USDT`, `Remaining: 250 USDT`, and a visible Cancel button. Canceled state shows one clean Recent activity row.
+
+### Cycle 131
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554` with Expo Go
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/` through the focused smoke script
+- `npm.cmd run smoke:future-list-order`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Latest order confirmation now appears above positions and shows filled shares, execution price, and implied odds after a France World Cup winner order.
+Screenshots:
+- `docs/mobile/screenshots/cycle-131-holiwyn-latest-order-execution-smoke.png`
+- `docs/mobile/screenshots/cycle-131-holiwyn-latest-order-execution-ticket.png`
+- `docs/mobile/screenshots/cycle-131-holiwyn-latest-order-execution-portfolio.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-131-holiwyn-latest-order-execution-expo-menu.xml`
+- `docs/mobile/harness/cycle-131-holiwyn-latest-order-execution-home.xml`
+- `docs/mobile/harness/cycle-131-holiwyn-latest-order-execution-ticket.xml`
+- `docs/mobile/harness/cycle-131-holiwyn-latest-order-execution-portfolio.xml`
+Bugs:
+- The first proof showed latest order details below the first viewport; fixed by moving the confirmation above positions.
+- The old futures tab tap path was flaky under emulator reset; the focused proof now opens the same France World Cup winner ticket through a deterministic harness deep link.
+- `forceResetState=1` could clear a forced ticket after launch; fixed by skipping the delayed reset when forcing the France ticket.
+Visual QA:
+- Portfolio shows `Mock order placed`, `Filled shares 294.12`, `Exec price 34%`, and `Implied odds 2.9x` before the position summary.
