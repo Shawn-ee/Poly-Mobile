@@ -5908,8 +5908,8 @@ Technical debt added:
 Technical debt resolved:
 - Live-ticket smoke no longer needs an Expo Go package data clear to start from clean fake-token state.
 Result: Passed Cycle 122 QA. Focused live-ticket smoke, visual screenshot review, and mobile API/profile-preference tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `0aabe82` (`Speed up live mobile smoke reset`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `b8c3c96`.
 Next cycle: Cycle 123 should extend fast app-level reset to live-order/deep Portfolio smokes or continue reducing `--clear` usage safely.
 Harnesses run:
 - Mobile Typecheck Harness
