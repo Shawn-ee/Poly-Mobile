@@ -2703,3 +2703,21 @@ Bugs:
 - None after focused verification.
 Visual QA:
 - Mexico buy ticket shows `Potential profit` with `56.25 USDT`; the payout, odds, and primary buy CTA remain visible.
+
+### Cycle 129
+
+Date: 2026-07-01
+Device: Documentation-only cycle; no device launch required.
+Build/run command:
+- Reviewed device/build policy text in mobile docs and README.
+Result: Passed. The agreed setup is now codified: Samsung S23 is for Polymarket reference and later explicit Holiwyn real-device QA, the emulator remains the repeatable Holiwyn automation target, and a proper Android development build/APK is the next stability milestone once core flows are ready or Expo Go becomes the main bottleneck.
+Screenshots:
+- None; documentation policy cycle.
+Harness evidence:
+- `docs/mobile/MOBILE_APP_AUTONOMOUS_DEVELOPMENT_LOOP.md`
+- `docs/mobile/MOBILE_HARNESS_SPEC.md`
+- `mobile/README.md`
+Bugs:
+- None.
+Visual QA:
+- Not applicable.

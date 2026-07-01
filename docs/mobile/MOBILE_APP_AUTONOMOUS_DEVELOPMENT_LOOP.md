@@ -82,6 +82,7 @@ Purpose:
 - Capture reference screenshots.
 - Compare UX behavior.
 - Later-stage real-device QA target for Holiwyn once emulator automation is stable.
+- Optional Holiwyn real-device QA target only after emulator checks pass or when the Lead Agent explicitly needs physical-device confirmation.
 
 Rules:
 
@@ -89,6 +90,7 @@ Rules:
 - Avoid private account, wallet, deposit, withdraw, and final trade confirmation actions.
 - If a screen exposes sensitive data, navigate away or record only a text summary without screenshots.
 - Do not use Samsung S23 as the default Holiwyn automation device during normal cycles; reserve it for reference and explicit real-device QA.
+- Never let Holiwyn QA on Samsung replace repeatable emulator evidence for cycle acceptance.
 
 ### Android Emulator
 
@@ -98,6 +100,7 @@ Purpose:
 - Run Expo/React Native app.
 - Capture Holiwyn screenshots.
 - Test app behavior after each cycle.
+- Run automated smoke loops, screenshots, hierarchy dumps, and regression checks.
 
 Rules:
 
@@ -105,6 +108,23 @@ Rules:
 - Keep emulator and Samsung roles separate: Samsung is reference, emulator is product under development.
 - Prefer repeatable emulator screenshots and harness output for cycle acceptance.
 - When Holiwyn becomes stable enough, add a proper Android development build/APK harness so QA is no longer dependent on Expo Go for app-feel validation.
+
+### Android Development Build/APK Milestone
+
+Expo Go is acceptable during fast iteration, but it is not the final development target.
+
+Add a proper Android development build/APK when one of these becomes true:
+
+- Core navigation, market browsing, ticket, portfolio, account, and localization flows are stable enough to justify native-app QA.
+- Expo Go startup, reload, or developer-menu behavior becomes the main source of harness delay or false failures.
+- The app needs native capabilities, push notification testing, signed builds, deep-link behavior, or realistic install/update validation.
+
+Development build rules:
+
+- Keep emulator automation as the first QA lane.
+- Use Samsung S23 for real-device Holiwyn QA only after the emulator path passes or when physical behavior must be checked.
+- Preserve Expo Go only as a fast fallback while the development build becomes the closer-to-production QA target.
+- Do not introduce production payments, deposit, or withdraw while creating the development build.
 
 ## 5. Tech Stack
 

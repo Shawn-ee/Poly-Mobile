@@ -1860,3 +1860,17 @@ Findings:
 - Mobile typecheck through the smoke script and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 128 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 129
+
+Date: 2026-07-01
+Branch: mobile/cycle-129
+Reviewer: Lead/Reviewer pass
+Scope: Device strategy and Android development build/APK policy.
+Findings:
+- P1: Documentation now clearly separates Samsung S23 reference/later real-device QA from emulator-based Holiwyn automation.
+- P1: The harness spec now includes a Development Build/APK Harness with pass criteria, fallback behavior, and payment/deposit/withdraw guardrails.
+- P1: The mobile README gives contributors the same practical device strategy: Expo Go for fast iteration, emulator for repeatable automation, and dev build/APK once core flows are stable.
+- P2: No app runtime behavior changed in this cycle, so no emulator smoke was required.
+Decision: Approve Cycle 129 for local commit/merge after scoped diff review.
+Merge approved: Yes
