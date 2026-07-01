@@ -12,6 +12,7 @@ type SearchScreenCopy = {
   topResults: string;
   clearSearch: string;
   noResults: string;
+  noSavedMarkets: string;
   searchAll: string;
   searchLive: string;
   searchUpcoming: string;
@@ -52,6 +53,7 @@ export function SearchScreen({
         : filter === "saved"
           ? events.filter((event) => savedEventIds.has(event.id))
         : events;
+  const emptyCopy = filter === "saved" ? t.noSavedMarkets : t.noResults;
   const resultLabel = locale === "zh" ? `${visibleEvents.length} 个结果` : `${visibleEvents.length} ${visibleEvents.length === 1 ? "result" : "results"}`;
   const filters: Array<[SearchFilter, string]> = [
     ["all", t.searchAll],
@@ -102,7 +104,7 @@ export function SearchScreen({
       <MarketList
         locale={locale}
         events={visibleEvents}
-        empty={t.noResults}
+        empty={emptyCopy}
         openEvent={openEvent}
         openTicket={openTicket}
         savedEventIds={savedEventIds}

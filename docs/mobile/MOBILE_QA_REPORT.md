@@ -1582,3 +1582,24 @@ Bugs:
 - None found.
 Visual QA:
 - Search card stats fit without crowding outcome buttons or bottom navigation.
+
+### Cycle 079
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:search-saved-empty`
+- `npm run test:mobile-api`
+Result: Passed. Search Saved now has a localized empty state when no markets are saved.
+Screenshots:
+- `docs/mobile/screenshots/cycle-079-holiwyn-search-saved-empty-smoke.png`
+- `docs/mobile/screenshots/cycle-079-holiwyn-search-saved-empty.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-079-holiwyn-search-saved-empty-home.xml`
+- `docs/mobile/harness/cycle-079-holiwyn-search-saved-empty-screen.xml`
+- `docs/mobile/harness/cycle-079-holiwyn-search-saved-empty.xml`
+Bugs:
+- None found.
+Visual QA:
+- Saved empty state is centered and does not conflict with filter chips or bottom navigation.
