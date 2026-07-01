@@ -1826,6 +1826,61 @@ Open blockers: None for autonomous progress.
 Risks: New activity history is local state only, expanded markets are mock-only, real server order mode and auth-backed positions remain unverified.
 Next three likely cycles: Add server-backed order/history adapter seams, expand event-detail trading ergonomics, and improve selector-driven automation for fewer coordinate taps.
 
+### Cycle 040
+
+Date: 2026-07-01
+Branch: mobile/cycle-040
+Goal: Add a backend Portfolio history adapter seam for server-mode activity.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No visible mock-mode changes; Portfolio activity can now hydrate from backend history when server order mode is enabled.
+Backend/API changed: Mobile now targets existing `GET /api/portfolio/history` through `PolyApi.getPortfolioHistory()`.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/api.ts`, `mobile/src/types.ts`, `mobile/src/services/portfolioHistoryService.ts`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-040-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-040-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-040-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-040-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-040-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-040-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-040-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-040-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-040-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-040-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-040-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-040-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-040-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-040-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-040-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-040-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-040-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-040-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-040-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-040-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-040-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Server-mode history is read-only and only maps resolved backend history; live/open server positions still need a dedicated adapter.
+Technical debt resolved:
+- Portfolio activity no longer has to remain purely local when server mode is enabled.
+Result: Passed Cycle 040 QA. Mock-mode smoke remains unchanged while server-mode activity has a typed backend adapter seam.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 041 should add open-order/open-position backend adapter coverage or improve selector-driven harness actions.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
