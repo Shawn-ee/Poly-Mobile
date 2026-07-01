@@ -6743,8 +6743,8 @@ Technical debt added:
 Technical debt resolved:
 - Samsung real-device QA now covers buy order placement, sell-ticket readiness, and position close behavior.
 Result: Passed Cycle 142 QA. Samsung close-position smoke, mobile typecheck, and mobile API/history tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `f981a0f` (`Add Samsung close position smoke`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `5d5e08d`.
 Next cycle: Cycle 143 should continue server-mode order execution proof preparation or broaden Samsung proof to live-market trading paths.
 Harnesses run:
 - Samsung Portfolio Close Position Smoke Harness
