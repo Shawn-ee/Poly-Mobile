@@ -6544,8 +6544,8 @@ Technical debt added:
 Technical debt resolved:
 - Mock and forced Portfolio activities now carry user-visible time context.
 Result: Passed Cycle 137 QA. Samsung timestamp smoke, mobile typecheck, and mobile API/profile-preference/activity-metric tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `02bf386` (`Add portfolio activity timestamps`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `c29283e`.
 Next cycle: Cycle 138 should continue user-facing trade/history parity or map backend history time data when safe.
 Harnesses run:
 - Samsung Smoke Wrapper Harness
