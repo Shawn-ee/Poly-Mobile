@@ -524,3 +524,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 037 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 038
+
+Date: 2026-07-01
+Branch: mobile/cycle-038
+Reviewer: Lead/Reviewer pass
+Scope: Expanded World Cup markets and event-detail smoke coverage.
+Findings:
+- P1: Event detail now includes additional soccer props (`Both teams to score`, `First goal scorer team`) and a live `Next goal` market in mock data.
+- P1: Deep smoke now opens Event Detail, verifies grouped game-line/prop markets, scrolls to below-fold props, and then reruns the existing trade/Portfolio/Live/Search path.
+- P2: The harness uses an Expo relaunch after detail verification because Android Back exits the state-driven view; improving app-level back handling remains a useful next step.
+- `npm run typecheck` and final `npm run smoke:deep` passed.
+Decision: Approve Cycle 038 for local commit/merge after scoped diff review.
+Merge approved: Yes

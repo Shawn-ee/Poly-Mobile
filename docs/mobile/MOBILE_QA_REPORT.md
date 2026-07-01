@@ -696,3 +696,25 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-037-holiwyn-search.png`
 - `docs/mobile/screenshots/cycle-037-holiwyn-search-query.png`
 Bugs: None found.
+
+### Cycle 038
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Event detail now verifies expanded World Cup prop markets before the existing ticket, Portfolio, Live, and Search flow.
+Screenshots:
+- `docs/mobile/screenshots/cycle-038-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-038-holiwyn-search-query.png`
+Bugs:
+- Early Cycle 038 smoke attempts exposed event-detail below-fold and Android Back assumptions; harness was updated and final rerun passed.
