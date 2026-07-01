@@ -42,6 +42,7 @@ const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? 
 const SAVED_EVENTS_STORAGE_KEY = "holiwyn.savedEventIds.v1";
 const LANGUAGE_STORAGE_KEY = "holiwyn.language.v1";
 const PORTFOLIO_STORAGE_KEY = "holiwyn.portfolio.v1";
+const TICKET_DEFAULTS_STORAGE_KEY = "holiwyn.ticketDefaults.v1";
 const SMOKE_OPEN_ORDER: OpenOrder = {
   id: "smoke-open-order",
   title: "Mexico vs. Ecuador winner",
@@ -60,6 +61,10 @@ type StoredPortfolio = {
   openOrders?: OpenOrder[];
   activities?: PortfolioActivity[];
 };
+type TicketDefaults = {
+  amount: string;
+  side: "buy" | "sell";
+};
 
 export default function App() {
   const [locale, setLocale] = useState<Locale>("en");
@@ -77,6 +82,8 @@ export default function App() {
   const [openOrders, setOpenOrders] = useState<OpenOrder[]>([]);
   const [activities, setActivities] = useState<PortfolioActivity[]>([]);
   const [portfolioHydrated, setPortfolioHydrated] = useState(false);
+  const [ticketDefaults, setTicketDefaults] = useState<TicketDefaults>({ amount: "100", side: "buy" });
+  const [ticketDefaultsHydrated, setTicketDefaultsHydrated] = useState(false);
   const [portfolioSyncStatus, setPortfolioSyncStatus] = useState<PortfolioSyncStatus>(ORDER_MODE === "server" ? "syncing" : "hidden");
   const [events, setEvents] = useState<Event[]>(worldCupEvents);
   const [savedEventIds, setSavedEventIds] = useState<Set<string>>(() => new Set());
@@ -157,6 +164,26 @@ export default function App() {
   }, [activities, balance, latestOrder, openOrders, portfolioHydrated, positions]);
 
   useEffect(() => {
+    AsyncStorage.getItem(TICKET_DEFAULTS_STORAGE_KEY)
+      .then((stored) => {
+        if (!mounted.current || !stored) return;
+        const parsed = JSON.parse(stored) as Partial<TicketDefaults>;
+        if (typeof parsed.amount === "string" && (parsed.side === "buy" || parsed.side === "sell")) {
+          setTicketDefaults({ amount: parsed.amount, side: parsed.side });
+        }
+      })
+      .catch(() => undefined)
+      .finally(() => {
+        if (mounted.current) setTicketDefaultsHydrated(true);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!ticketDefaultsHydrated) return;
+    AsyncStorage.setItem(TICKET_DEFAULTS_STORAGE_KEY, JSON.stringify(ticketDefaults)).catch(() => undefined);
+  }, [ticketDefaults, ticketDefaultsHydrated]);
+
+  useEffect(() => {
     Linking.getInitialURL().then((url) => {
       if (!mounted.current || !url) return;
       setForceOrderFailure(url.includes("forceOrderFailure=1"));
@@ -164,6 +191,14 @@ export default function App() {
         setMainTab("portfolio");
       }
       if (url.includes("forceWorldCupWinnerFranceTicket=1")) {
+        const market = worldCupFutures[0];
+        const outcome = market.outcomes[0];
+        setTicket({ market, outcome, side: "buy" });
+      }
+      if (url.includes("forceTicketDefaults=1")) {
+        const defaults: TicketDefaults = { amount: "500", side: "sell" };
+        setTicketDefaults(defaults);
+        AsyncStorage.setItem(TICKET_DEFAULTS_STORAGE_KEY, JSON.stringify(defaults)).catch(() => undefined);
         const market = worldCupFutures[0];
         const outcome = market.outcomes[0];
         setTicket({ market, outcome, side: "buy" });
@@ -504,6 +539,9 @@ export default function App() {
         ticket={ticket}
         balance={balance}
         orderError={ticketOrderError}
+        defaultAmount={ticketDefaults.amount}
+        defaultSide={ticketDefaults.side}
+        onPreferencesChange={(next) => setTicketDefaults(next)}
         close={() => {
           setTicketOrderError(null);
           setTicket(null);

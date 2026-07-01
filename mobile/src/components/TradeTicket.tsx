@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import type { Locale, Event, Market, Outcome } from "../mocks/worldCup";
 import { label, money } from "../presentation/formatters";
@@ -34,6 +34,9 @@ export function TradeTicket({
   ticket,
   balance,
   orderError,
+  defaultAmount,
+  defaultSide,
+  onPreferencesChange,
   close,
   placeOrder,
 }: {
@@ -42,12 +45,30 @@ export function TradeTicket({
   ticket: Ticket | null;
   balance: number;
   orderError: string | null;
+  defaultAmount: string;
+  defaultSide: "buy" | "sell";
+  onPreferencesChange: (next: { amount: string; side: "buy" | "sell" }) => void;
   close: () => void;
   placeOrder: (amount: number, side: "buy" | "sell") => void | Promise<void>;
 }) {
-  const [amount, setAmount] = useState("100");
-  const [side, setSide] = useState<"buy" | "sell">("buy");
+  const [amount, setAmountState] = useState(defaultAmount);
+  const [side, setSideState] = useState<"buy" | "sell">(defaultSide);
+
+  useEffect(() => {
+    if (!ticket) return;
+    setAmountState(defaultAmount);
+    setSideState(defaultSide);
+  }, [defaultAmount, defaultSide, ticket]);
+
   if (!ticket) return null;
+  const setAmount = (nextAmount: string) => {
+    setAmountState(nextAmount);
+    onPreferencesChange({ amount: nextAmount, side });
+  };
+  const setSide = (nextSide: "buy" | "sell") => {
+    setSideState(nextSide);
+    onPreferencesChange({ amount, side: nextSide });
+  };
   const numericAmount = Number(amount) || 0;
   const averagePrice = ticket.outcome.probability / 100;
   const estimatedShares = averagePrice > 0 ? numericAmount / averagePrice : 0;

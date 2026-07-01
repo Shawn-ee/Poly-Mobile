@@ -131,3 +131,4 @@ Status:
 | GAP-109 | Localization | Local language preference persistence | P1 | Yes | Verified | Cycle 098 persists the selected language with AsyncStorage and verifies Chinese Home restores after app restart on emulator. |
 | GAP-110 | Portfolio | Local mock portfolio persistence | P1 | Yes | Verified | Cycle 099 persists fake-token balance, positions, latest order, open orders, and activity locally, then verifies a placed World Cup winner position restores after app restart. |
 | GAP-111 | Backend adapter | Fresh backend readiness retry | P0 | No | Verified | Cycle 100 reruns the backend readiness harness and confirms Docker CLI/config are present, while Docker daemon and local Postgres remain unavailable for live backend proof. |
+| GAP-112 | Trade ticket | Local ticket default persistence | P1 | Yes | Verified | Cycle 101 persists the user's ticket amount and buy/sell side locally, then verifies a 500 USDT sell ticket restores after app restart. |
