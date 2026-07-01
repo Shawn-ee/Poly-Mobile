@@ -5533,6 +5533,56 @@ Harnesses run:
 Harness failures:
 - None after ADB recovered during the smoke run.
 
+### Cycle 115
+
+Date: 2026-07-01
+Branch: mobile/cycle-115
+Goal: Add an in-play badge to tickets opened from live events and verify it on emulator.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Trade tickets opened from live events now show a `Live World Cup` badge above Buy/Sell controls.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/TradeTicket.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run smoke:live-ticket` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-115-holiwyn-live-ticket-badge-smoke.png`
+- `docs/mobile/screenshots/cycle-115-holiwyn-live-ticket-badge-ready.png`
+- `docs/mobile/screenshots/cycle-115-holiwyn-live-ticket-badge.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-115-holiwyn-live-ticket-badge-home-start.xml`
+- `docs/mobile/harness/cycle-115-holiwyn-live-ticket-badge-ready.xml`
+- `docs/mobile/harness/cycle-115-holiwyn-live-ticket-badge.xml`
+Bugs found:
+- ADB initially reported the emulator offline, then recovered during the same focused smoke run.
+Technical debt added:
+- Badge text is based on existing app copy and event status; richer backend live-state metadata can refine it later.
+Technical debt resolved:
+- Users can now tell when a ticket is being placed from an in-play World Cup market.
+Result: Passed Cycle 115 QA. Mobile typecheck, focused emulator live-ticket smoke, and mobile API/profile-preference tests pass.
+Commit: `5cb6968` (`Show live badge on tickets`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `380a2b0`.
+Next cycle: Cycle 116 should continue live trading affordances, add live order placement proof, or retry backend readiness if local services become available.
+Harnesses run:
+- Mobile Typecheck Harness
+- Live Ticket Smoke Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None after ADB recovered during the smoke run.
+
+### Heartbeat After Cycle 115
+
+Completed cycles: 113, 114, 115 since the last heartbeat.
+Verified progress: Live screen now shows live market/outcome breadth, live outcome tapping has focused ticket-opening proof, and live-origin tickets show a visible Live World Cup badge. All three cycles passed mobile typecheck, focused Android emulator smoke, and mobile API/profile-preference tests.
+Current app state: Holiwyn mobile has verified Home discovery filters/saved markets/saved empty/search clear/card stats/futures stats, Search browse/query/clear/saved filtering/sort/saved empty/card stats/saved persistence, Event Detail grouped markets/props/group jumps/save/trading stats/depth/outcome ticket opening/market breadth counts/per-market outcome counts, Live refresh/breadth summary/live ticket opening/live ticket badge, featured futures trading, Futures list ticket/buy/sell/order/close coverage, ticket balance/max/preset sizing/share and price estimates, side-aware buy/sell tickets with persisted defaults, successful mock order, forced order failure, server order failure, Portfolio summary/detail/counts/compact count grid/close/activity/order confirmation/open-order cancel/local persistence, server-unavailable Portfolio fallback, localization with persisted language, Account/Login mock profile persistence plus language/ticket/saved/open-position/value summaries, and visible server profile-preference sync recovery on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history/order/cancel client seams are wired; Bearer API-key config and canonical request shape are tested; local credential generation and backend readiness harnesses exist; profile preferences have typed mobile get/save plus guarded runtime sync and a visible Account failure state; latest readiness evidence still shows Docker CLI and compose/DATABASE_URL ready, but Docker daemon and local Postgres TCP unavailable.
+Open blockers: None for autonomous mock-mode product/harness progress. Live authenticated backend proof remains gated by Docker Desktop/local Postgres availability.
+Risks: Saved markets, Account session, language, ticket defaults, and mock Portfolio persistence are local-first; profile sync is guarded and visible on failure but still lacks live-backend proof; Portfolio counts, Home/Search/Futures market stats, Popular ranking, ticket quote math, live labels, market breadth counts, and close-position behavior remain local estimates until backend auth, profile, quote, popularity, order-book, and position APIs can feed them.
+Next three likely cycles: Add live order placement proof, continue live/detail trading polish, and retry backend readiness if Docker/local Postgres become available.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
