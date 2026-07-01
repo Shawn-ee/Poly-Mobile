@@ -3865,8 +3865,8 @@ Technical debt added:
 Technical debt resolved:
 - Saved markets now carry across Home and Search instead of being trapped inside the Home component.
 Result: Passed Cycle 077 QA. Mobile typecheck, focused Saved Search smoke, visual screenshot review, and mobile API tests pass.
-Commit: `PENDING`
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `9b57c39` (`Share Holiwyn saved markets with search`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `a62356d`.
 Next cycle: Cycle 078 should add richer search/discovery behavior or retry backend readiness if Docker daemon becomes available.
 Harnesses run:
 - Emulator Runtime Harness
