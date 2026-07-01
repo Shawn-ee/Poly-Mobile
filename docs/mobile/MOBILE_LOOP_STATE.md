@@ -358,7 +358,7 @@ Technical debt resolved:
 - Partial large-file debt: Portfolio is now isolated from `App.tsx`.
 Result: Passed Cycle 008 QA. Extracted Portfolio renders fake balance and mock positions.
 Commit: cycle branch HEAD (`Extract Holiwyn mobile portfolio`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 009 should extract MarketList/FutureList or improve World Cup grouped markets.
 Harnesses run:
 - Trading Simulation Harness
