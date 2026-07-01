@@ -5245,6 +5245,44 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 108
+
+Date: 2026-07-01
+Branch: mobile/cycle-108
+Goal: Surface saved World Cup market count in Account Preferences and verify seeded saved-market state on emulator.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Account Preferences now includes a saved-market count row.
+Backend/API changed: No backend code change; the row uses the same saved-market state already included in the profile preferences seam.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/AccountScreen.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:account-saved-summary` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-108-holiwyn-account-saved-summary-smoke.png`
+- `docs/mobile/screenshots/cycle-108-holiwyn-account-saved-summary.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-108-holiwyn-account-saved-summary-home-start.xml`
+- `docs/mobile/harness/cycle-108-holiwyn-account-saved-summary.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Account shows the saved count only as a summary; saved-market management still lives in Home/Search/Event Detail.
+Technical debt resolved:
+- Account profile now reflects saved World Cup market state instead of only language and ticket defaults.
+Result: Passed Cycle 108 QA. Mobile typecheck, focused emulator account-saved-summary smoke, and mobile API/profile-preference tests pass.
+Commit: `ac8a6f9` (`Show Account saved market count`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `5f6068f`.
+Next cycle: Cycle 109 should add another Account/profile preference summary or retry backend readiness, then write the heartbeat for Cycles 107-109.
+Harnesses run:
+- Mobile Typecheck Harness
+- Account Saved Summary Smoke Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
