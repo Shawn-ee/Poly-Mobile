@@ -221,7 +221,7 @@ Technical debt resolved:
 - Partial TD-007 progress: ticket submission now uses a service boundary with mock/server modes; authenticated server mode remains disabled by default.
 Result: Passed Cycle 004 QA. Fake-token trading still works and is now isolated behind an order service.
 Commit: cycle branch HEAD (`Add Holiwyn mobile order service boundary`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 005 should reduce `mobile/App.tsx` size by extracting reusable World Cup components or continue toward authenticated account/position adapter work if backend auth is ready.
 Harnesses run:
 - Trading Simulation Harness
