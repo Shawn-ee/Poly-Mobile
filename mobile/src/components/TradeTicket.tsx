@@ -21,6 +21,7 @@ type TradeTicketCopy = {
   estimatedProceeds: string;
   estimatedShares: string;
   averagePrice: string;
+  impliedOdds: string;
   estimatedPayout: string;
   placeMockOrder: string;
   placeBuyOrder: string;
@@ -72,6 +73,7 @@ export function TradeTicket({
   };
   const numericAmount = Number(amount) || 0;
   const averagePrice = ticket.outcome.probability / 100;
+  const impliedOdds = ticket.outcome.probability > 0 ? 100 / ticket.outcome.probability : 0;
   const estimatedShares = averagePrice > 0 ? numericAmount / averagePrice : 0;
   const estimatedPayout = ticket.outcome.probability > 0 ? numericAmount * (100 / ticket.outcome.probability) : 0;
   const primaryLabel = side === "buy" ? t.placeBuyOrder : t.placeSellOrder;
@@ -154,6 +156,10 @@ export function TradeTicket({
           <View style={styles.estimateLine}>
             <Text style={styles.estimateLabel}>{t.averagePrice}</Text>
             <Text style={styles.estimateValue}>{averagePrice.toFixed(2)} USDT</Text>
+          </View>
+          <View style={styles.estimateLine}>
+            <Text style={styles.estimateLabel}>{t.impliedOdds}</Text>
+            <Text style={styles.estimateValue}>{impliedOdds.toFixed(1)}x</Text>
           </View>
           <View style={styles.estimateLine}>
             <Text style={styles.estimateLabel}>{t.estimatedPayout}</Text>
