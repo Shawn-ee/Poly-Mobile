@@ -407,6 +407,38 @@ Open blockers: None for autonomous progress.
 Risks: Market list and event detail are still inside `App.tsx`; server order mode remains unverified; localization table still needs safe extraction.
 Next three likely cycles: Extract market lists, extract event detail, then improve grouped World Cup market presentation.
 
+### Cycle 010
+
+Date: 2026-07-01
+Branch: mobile/cycle-010
+Goal: Extract Games/Futures market list rendering into focused components.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No intended visual changes; `MarketList` and `FutureList` moved to `mobile/src/components/MarketLists.tsx`.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/MarketLists.tsx`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke` in `mobile/`.
+- Emulator tap-through to Futures tab.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-010-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-010-holiwyn-futures-list.png`
+Bugs found: None.
+Technical debt added: None.
+Technical debt resolved:
+- Partial large-file debt: Games and Futures list rendering are now isolated from `App.tsx`.
+Result: Passed Cycle 010 QA. Extracted list components render Games/Home smoke and Futures tab.
+Commit: cycle branch HEAD (`Extract Holiwyn mobile market lists`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 011 should extract Event Detail or improve grouped World Cup props.
+Harnesses run:
+- QA Smoke Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures: None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

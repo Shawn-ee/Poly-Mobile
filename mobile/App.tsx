@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { PolyApi } from "./src/api";
 import { normalizeEventDetail } from "./src/adapters/worldCupAdapter";
 import { BottomTabs } from "./src/components/BottomTabs";
+import { FutureList, MarketList } from "./src/components/MarketLists";
 import { Portfolio, Position } from "./src/components/Portfolio";
 import { Ticket, TradeTicket } from "./src/components/TradeTicket";
 import {
@@ -403,76 +404,6 @@ function Segmented({
       <Pressable style={[styles.segment, value === "futures" && styles.segmentActive]} onPress={() => setValue("futures")}>
         <Text style={[styles.segmentText, value === "futures" && styles.segmentTextActive]}>{right}</Text>
       </Pressable>
-    </View>
-  );
-}
-
-function MarketList({
-  locale,
-  events,
-  empty,
-  openEvent,
-  openTicket,
-}: {
-  locale: Locale;
-  events: Event[];
-  empty: string;
-  openEvent: (event: Event) => void;
-  openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
-}) {
-  if (events.length === 0) return <Text style={styles.empty}>{empty}</Text>;
-  return (
-    <View style={styles.eventList}>
-      {events.map((event) => {
-        const winner = event.markets[0];
-        return (
-          <Pressable key={event.id} style={styles.eventCard} onPress={() => openEvent(event)}>
-            <View style={styles.eventMetaRow}>
-              <Text style={styles.timeText}>{event.startsAt}</Text>
-              <Text style={[styles.eventTag, event.status === "live" && styles.liveTag]}>{label(locale, { label: event.tag, zhLabel: event.zhTag })}</Text>
-            </View>
-            <Text style={styles.eventTitle}>{label(locale, event)}</Text>
-            {winner.outcomes.map((outcome) => (
-              <View key={outcome.id} style={styles.teamRow}>
-                <Text style={styles.teamName}>{outcome.label === "Draw" ? "🤝" : event.teams.find((team) => team.name === outcome.label)?.flag ?? "•"} {label(locale, outcome)}</Text>
-                <Text style={styles.oddsText}>{(100 / outcome.probability).toFixed(1)}x</Text>
-                <Pressable style={[styles.probButton, { backgroundColor: outcome.color }]} onPress={() => openTicket(winner, outcome, event)}>
-                  <Text style={styles.probButtonText}>{outcome.probability}%</Text>
-                </Pressable>
-              </View>
-            ))}
-          </Pressable>
-        );
-      })}
-    </View>
-  );
-}
-
-function FutureList({
-  locale,
-  futures,
-  openTicket,
-}: {
-  locale: Locale;
-  futures: Market[];
-  openTicket: (market: Market, outcome: Outcome) => void;
-}) {
-  return (
-    <View style={styles.eventList}>
-      {futures.map((market) => (
-        <View key={market.id} style={styles.eventCard}>
-          <Text style={styles.eventTitle}>{label(locale, market)}</Text>
-          {market.outcomes.map((outcome) => (
-            <View key={outcome.id} style={styles.teamRow}>
-              <Text style={styles.teamName}>{label(locale, outcome)}</Text>
-              <Text style={styles.oddsText}>{(100 / outcome.probability).toFixed(1)}x</Text>
-              <Pressable style={[styles.probButton, { backgroundColor: outcome.color }]} onPress={() => openTicket(market, outcome)}>
-                <Text style={styles.probButtonText}>{outcome.probability}%</Text>
-              </Pressable>
-            </View>
-          ))}
-        </View>
-      ))}
     </View>
   );
 }
