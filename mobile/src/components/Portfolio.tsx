@@ -22,6 +22,16 @@ export type PortfolioActivity = {
   amount: number;
 };
 
+export type OpenOrder = {
+  id: string;
+  title: string;
+  outcome: string;
+  side: "buy" | "sell";
+  status: string;
+  price: number;
+  remaining: number;
+};
+
 type PortfolioCopy = {
   balance: string;
   noPositions: string;
@@ -36,6 +46,8 @@ type PortfolioCopy = {
   recentActivity: string;
   openedPosition: string;
   closedPosition: string;
+  openOrders: string;
+  remaining: string;
 };
 
 const currentProbability = (position: Position) => {
@@ -65,6 +77,7 @@ export function Portfolio({
   t,
   balance,
   positions,
+  openOrders,
   activities,
   closePosition,
 }: {
@@ -72,6 +85,7 @@ export function Portfolio({
   t: PortfolioCopy;
   balance: number;
   positions: Position[];
+  openOrders: OpenOrder[];
   activities: PortfolioActivity[];
   closePosition: (position: Position) => void;
 }) {
@@ -142,6 +156,27 @@ export function Portfolio({
           ))}
         </>
       )}
+      {openOrders.length > 0 && (
+        <View style={styles.openOrdersBlock}>
+          <Text style={styles.openOrdersTitle}>{t.openOrders}</Text>
+          {openOrders.slice(0, 5).map((order) => (
+            <View key={order.id} style={styles.openOrderItem}>
+              <View style={styles.openOrderMain}>
+                <Text style={styles.openOrderTitle}>{order.title}</Text>
+                <Text style={styles.openOrderMeta}>
+                  {order.side === "buy" ? t.buy : t.sell} - {order.outcome} - {order.status}
+                </Text>
+              </View>
+              <View style={styles.openOrderNumbers}>
+                <Text style={styles.openOrderPrice}>{Math.round(order.price * 100)}%</Text>
+                <Text style={styles.openOrderRemaining}>
+                  {t.remaining}: {money(order.remaining)}
+                </Text>
+              </View>
+            </View>
+          ))}
+        </View>
+      )}
       {activities.length > 0 && (
         <View style={styles.activityBlock}>
           <Text style={styles.activityTitle}>{t.recentActivity}</Text>
@@ -192,6 +227,15 @@ const styles = StyleSheet.create({
   pnlNegative: { color: "#ef4444" },
   closeButton: { marginTop: 12, minHeight: 44, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
   closeButtonText: { color: "#dbeafe", fontSize: 14, fontWeight: "900" },
+  openOrdersBlock: { marginTop: 16, padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  openOrdersTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginBottom: 10 },
+  openOrderItem: { flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 10, borderTopWidth: 1, borderTopColor: "#1f2937" },
+  openOrderMain: { flex: 1 },
+  openOrderTitle: { color: "#f8fafc", fontWeight: "900" },
+  openOrderMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
+  openOrderNumbers: { alignItems: "flex-end", maxWidth: 120 },
+  openOrderPrice: { color: "#dbeafe", fontWeight: "900" },
+  openOrderRemaining: { color: "#94a3b8", fontSize: 11, fontWeight: "800", marginTop: 3 },
   activityBlock: { marginTop: 16, padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   activityTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginBottom: 10 },
   activityItem: { flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 10, borderTopWidth: 1, borderTopColor: "#1f2937" },
