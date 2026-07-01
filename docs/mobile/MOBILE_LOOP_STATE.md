@@ -5726,6 +5726,55 @@ Open blockers: None for autonomous mock-mode product/harness progress. Live auth
 Risks: Saved markets, Account session, language, ticket defaults, and mock Portfolio persistence are local-first; profile sync is guarded and visible on failure but still lacks live-backend proof; Portfolio counts, Home/Search/Futures market stats, Popular ranking, ticket quote math, live labels, market breadth counts, live-position badge metadata, and close-position behavior remain local estimates until backend auth, profile, quote, popularity, order-book, live-state, and position APIs can feed them.
 Next three likely cycles: Add deeper-scroll proof for latest-order/activity live badges, continue live/detail trading polish, and retry backend readiness if Docker/local Postgres become available.
 
+### Cycle 119
+
+Date: 2026-07-01
+Branch: mobile/cycle-119
+Goal: Add deeper-scroll proof for live latest-order and Recent activity badges after a live World Cup order.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No user-facing UI change; this cycle adds focused emulator proof for product behavior wired in Cycle 118.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:live-portfolio-badge-deep` in `mobile/` (includes mobile typecheck).
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-119-holiwyn-live-portfolio-badge-deep-smoke.png`
+- `docs/mobile/screenshots/cycle-119-holiwyn-live-portfolio-badge-deep-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-119-holiwyn-live-portfolio-badge-deep-ticket.png`
+- `docs/mobile/screenshots/cycle-119-holiwyn-live-portfolio-badge-deep-portfolio.png`
+- `docs/mobile/screenshots/cycle-119-holiwyn-live-portfolio-badge-deep-latest-order.png`
+- `docs/mobile/screenshots/cycle-119-holiwyn-live-portfolio-badge-deep-activity.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-119-holiwyn-expo-menu-recovered.xml`
+- `docs/mobile/harness/cycle-119-holiwyn-live-portfolio-badge-deep-home.xml`
+- `docs/mobile/harness/cycle-119-holiwyn-live-portfolio-badge-deep-ticket-ready.xml`
+- `docs/mobile/harness/cycle-119-holiwyn-live-portfolio-badge-deep-ticket.xml`
+- `docs/mobile/harness/cycle-119-holiwyn-live-portfolio-badge-deep-portfolio.xml`
+- `docs/mobile/harness/cycle-119-holiwyn-live-portfolio-badge-deep-latest-order.xml`
+- `docs/mobile/harness/cycle-119-holiwyn-live-portfolio-badge-deep-activity.xml`
+Bugs found:
+- Backend health was unavailable during the focused smoke, so Holiwyn used the documented mock fallback. This did not block the mock-mode Portfolio proof.
+- Latest-order and activity evidence sits below the first Portfolio viewport; the harness now captures staged deeper scroll positions.
+Technical debt added:
+- Live latest-order/activity proof remains mock-mode until backend-backed live trading is available locally.
+Technical debt resolved:
+- Cycle 118's unverified latest-order/activity live badge note is now covered by focused deep-scroll emulator evidence.
+Result: Passed Cycle 119 QA. Focused live-portfolio-badge-deep smoke, visual screenshot review, and mobile API/profile-preference tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 120 should continue live/detail trading polish or retry backend readiness if Docker/local Postgres become available.
+Harnesses run:
+- Mobile Typecheck Harness
+- Live Portfolio Badge Deep Smoke Harness
+- Trading Simulation Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- Backend health unavailable; continued through documented mock fallback because this cycle did not require live backend access.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

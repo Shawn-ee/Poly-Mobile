@@ -51,7 +51,8 @@ param(
   [switch]$LiveTicket,
   [switch]$LiveOrder,
   [switch]$LiveOrderClose,
-  [switch]$LivePortfolioBadge
+  [switch]$LivePortfolioBadge,
+  [switch]$LivePortfolioBadgeDeep
 )
 
 $ErrorActionPreference = "Stop"
@@ -293,12 +294,12 @@ try {
     $env:EXPO_PUBLIC_API_KEY = "pk_test_mobile_harness"
   }
   $expoArgs = @("expo", "start", "--port", "$Port", "--offline")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailMarketOutcomeCount -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailMarketOutcomeCount -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
   Wait-ExpoReady -Port $Port
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailMarketOutcomeCount -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailMarketOutcomeCount -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
@@ -308,7 +309,7 @@ try {
     "exp://10.0.2.2:$Port/--/?forceOpenOrder=1"
   } elseif ($EventDetailSummary -or $EventDetailMarketOutcomeCount) {
     "exp://10.0.2.2:$Port/--/?forceMexicoEcuadorDetail=1"
-  } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge) {
+  } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
     "exp://10.0.2.2:$Port/--/?forceLive=1"
   } elseif ($SearchQuery -or $SearchClearQuery) {
     "exp://10.0.2.2:$Port/--/?forceSearchQuery=zzzz"
@@ -339,7 +340,7 @@ try {
   } else {
     "exp://10.0.2.2:$Port"
   }
-  if ($AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge) {
+  if ($AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
     & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
     Start-Sleep -Seconds 2
   }
@@ -353,7 +354,7 @@ try {
     @("Holiwyn", "Portfolio", "Open orders", "Cancel")
   } elseif ($EventDetailSummary -or $EventDetailMarketOutcomeCount) {
     @("Mexico vs. Ecuador", "4 markets", "8 outcomes")
-  } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge) {
+  } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
     @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina")
   } elseif ($SearchQuery -or $SearchClearQuery) {
     @("Holiwyn", "Search World Cup markets", "zzzz", "0 results")
@@ -382,7 +383,7 @@ try {
   } else {
     @("Holiwyn", "World Cup", "Games", "Futures")
   }
-  $launchAttempts = if ($LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge) { 14 } else { 8 }
+  $launchAttempts = if ($LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 14 } else { 8 }
   $homeHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-home.xml" -Expected $launchExpected -RestartUrl $launchUrl -Attempts $launchAttempts
   Save-Screenshot -Name "cycle-current-holiwyn-smoke.png"
 
@@ -415,7 +416,7 @@ try {
       return
     }
 
-    if ($LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge) {
+    if ($LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
       Save-Screenshot -Name "cycle-current-holiwyn-live-ticket-ready.png"
       $liveTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-ticket-ready.xml"
       Assert-HierarchyContains -Path $liveTicketReadyHierarchy -Expected @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina")
@@ -452,14 +453,26 @@ try {
           $liveTicketReadyHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-live-ticket-ready.xml" -Expected @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina") -RestartUrl $launchUrl -Attempts 4 -DelaySeconds 2
         }
       }
-      if ($LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge) {
+      if ($LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
         Invoke-TapHierarchyNode -Path $liveTicketHierarchy -Identifier "place-mock-order"
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "cycle-current-holiwyn-live-order-portfolio.png"
         $liveOrderPortfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-order-portfolio.xml"
         Assert-HierarchyContains -Path $liveOrderPortfolioHierarchy -Expected @("Portfolio", "Fake balance", "9,900 USDT", "Open positions", "Recent activity", "1", "France vs. Argentina", "MOCK - Buy - France - 41%", "Invested", "Entry", "Current value", "Est. P/L", "Close position")
-        if ($LivePortfolioBadge) {
+        if ($LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
           Assert-HierarchyContains -Path $liveOrderPortfolioHierarchy -Expected @("LIVE WORLD CUP", "portfolio-position-live-badge")
+        }
+        if ($LivePortfolioBadgeDeep) {
+          & $adb -s $Device shell input swipe 540 1500 540 650 450 | Out-Null
+          Start-Sleep -Seconds 1
+          Save-Screenshot -Name "cycle-current-holiwyn-live-portfolio-badge-deep.png"
+          $livePortfolioBadgeDeepHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-portfolio-badge-deep.xml"
+          Assert-HierarchyContains -Path $livePortfolioBadgeDeepHierarchy -Expected @("latest-order-live-badge", "LIVE WORLD CUP", "Mock order placed", "France vs. Argentina")
+          & $adb -s $Device shell input swipe 540 1500 540 650 450 | Out-Null
+          Start-Sleep -Seconds 1
+          Save-Screenshot -Name "cycle-current-holiwyn-live-portfolio-badge-activity.png"
+          $livePortfolioBadgeActivityHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-portfolio-badge-activity.xml"
+          Assert-HierarchyContains -Path $livePortfolioBadgeActivityHierarchy -Expected @("portfolio-activity-live-badge", "LIVE WORLD CUP", "Recent activity", "Bought", "France vs. Argentina")
         }
         if ($LiveOrderClose) {
           Invoke-TapHierarchyNode -Path $liveOrderPortfolioHierarchy -Identifier "close-position-" -StartsWith

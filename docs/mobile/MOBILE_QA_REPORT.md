@@ -2447,3 +2447,34 @@ Bugs:
 - Expo Go blank startup sometimes exceeded the default live-order wait. Heavy live-order smokes now use a longer first-screen wait.
 Visual QA:
 - Portfolio position card shows a red `LIVE WORLD CUP` badge above `France vs. Argentina` while preserving fake balance, counts, current value, and P/L.
+
+### Cycle 119
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554` with Expo Go
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/` through the focused smoke script
+- `npm.cmd run smoke:live-portfolio-badge-deep`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Live-origin Portfolio metadata now has deep-scroll proof for the latest-order confirmation card and Recent activity row.
+Screenshots:
+- `docs/mobile/screenshots/cycle-119-holiwyn-live-portfolio-badge-deep-smoke.png`
+- `docs/mobile/screenshots/cycle-119-holiwyn-live-portfolio-badge-deep-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-119-holiwyn-live-portfolio-badge-deep-ticket.png`
+- `docs/mobile/screenshots/cycle-119-holiwyn-live-portfolio-badge-deep-portfolio.png`
+- `docs/mobile/screenshots/cycle-119-holiwyn-live-portfolio-badge-deep-latest-order.png`
+- `docs/mobile/screenshots/cycle-119-holiwyn-live-portfolio-badge-deep-activity.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-119-holiwyn-expo-menu-recovered.xml`
+- `docs/mobile/harness/cycle-119-holiwyn-live-portfolio-badge-deep-home.xml`
+- `docs/mobile/harness/cycle-119-holiwyn-live-portfolio-badge-deep-ticket-ready.xml`
+- `docs/mobile/harness/cycle-119-holiwyn-live-portfolio-badge-deep-ticket.xml`
+- `docs/mobile/harness/cycle-119-holiwyn-live-portfolio-badge-deep-portfolio.xml`
+- `docs/mobile/harness/cycle-119-holiwyn-live-portfolio-badge-deep-latest-order.xml`
+- `docs/mobile/harness/cycle-119-holiwyn-live-portfolio-badge-deep-activity.xml`
+Bugs:
+- Backend health was unavailable during the focused smoke, so the app used its documented mock fallback. This is acceptable for this mock-mode Portfolio proof.
+- The latest-order card and Recent activity row require deeper scrolling than the Cycle 118 first-viewport proof. The new smoke uses staged scroll captures and assertions.
+Visual QA:
+- The latest-order card shows `LIVE WORLD CUP`, `Mock order placed`, `100 USDT`, `MOCK - Buy - France`, and `France vs. Argentina`.
+- The Recent activity row shows `Bought`, `LIVE WORLD CUP`, `100 USDT`, and `France vs. Argentina - France`.

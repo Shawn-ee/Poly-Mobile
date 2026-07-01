@@ -1710,3 +1710,18 @@ Findings:
 - Mobile typecheck, focused live-portfolio-badge smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 118 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 119
+
+Date: 2026-07-01
+Branch: mobile/cycle-119
+Reviewer: Lead/Reviewer pass
+Scope: Deep-scroll proof for live Portfolio latest-order and activity badges.
+Findings:
+- P1: Focused smoke now verifies the live latest-order card below the open position, including `LIVE WORLD CUP`, `Mock order placed`, `100 USDT`, and France vs. Argentina context.
+- P1: Focused smoke then scrolls further and verifies the Recent activity row keeps the live badge and bought France live-market context.
+- P1: This closes the Cycle 118 proof gap without product UI churn; the product behavior was already wired, and this cycle strengthens repeatable evidence.
+- P2: Backend health remained unavailable during the smoke, so this is mock-mode evidence only. Live backend proof remains gated by local backend availability.
+- Mobile typecheck through the smoke script, focused live-portfolio-badge-deep smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 119 for local commit/merge after scoped diff review.
+Merge approved: Yes

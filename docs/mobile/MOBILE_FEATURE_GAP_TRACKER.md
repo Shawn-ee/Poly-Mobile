@@ -149,3 +149,4 @@ Status:
 | GAP-127 | Live trading | Live mock order placement proof | P1 | Yes | Verified | Cycle 116 verifies a France live ticket can place a fake-token mock order and land in Portfolio with a France vs. Argentina position. |
 | GAP-128 | Live trading | Live mock position close proof | P1 | Yes | Verified | Cycle 117 verifies a live France mock order can be closed from Portfolio, returning value to fake balance and increasing closed-trade count. |
 | GAP-129 | Portfolio | Live-origin position badge | P1 | Yes | Verified | Cycle 118 preserves live-origin metadata from ticket to Portfolio and verifies a visible Live World Cup badge on the open France vs. Argentina position. |
+| GAP-130 | Portfolio | Live confirmation/activity badge proof | P1 | Yes | Verified | Cycle 119 adds deep-scroll emulator proof for live latest-order and Recent activity badges after a live France order. |
