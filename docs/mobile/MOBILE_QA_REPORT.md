@@ -912,3 +912,25 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-047-holiwyn-search.png`
 - `docs/mobile/screenshots/cycle-047-holiwyn-search-query.png`
 Bugs: None found.
+
+### Cycle 048
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. The deep smoke now taps close-position, Live/Search tabs, Live refresh, and Search input through Android hierarchy ids or prefixes.
+Screenshots:
+- `docs/mobile/screenshots/cycle-048-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-search-query.png`
+Bugs: None found.

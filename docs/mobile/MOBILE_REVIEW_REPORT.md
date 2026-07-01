@@ -664,3 +664,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 047 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 048
+
+Date: 2026-07-01
+Branch: mobile/cycle-048
+Reviewer: Lead/Reviewer pass
+Scope: Expanded selector-driven harness taps.
+Findings:
+- P1: Smoke harness now supports prefix matching, allowing dynamic close-position controls to be tapped without fixed coordinates.
+- P1: Close-position, Live tab, Live refresh, Search tab, and Search input actions now resolve from Android hierarchy ids.
+- P2: Event-card selection, prop scrolling, hardware Back, and initial ticket opening still use coordinates/key events.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 048 for local commit/merge after scoped diff review.
+Merge approved: Yes

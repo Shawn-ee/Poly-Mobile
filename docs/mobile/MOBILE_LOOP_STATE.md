@@ -2292,6 +2292,63 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 048
+
+Date: 2026-07-01
+Branch: mobile/cycle-048
+Goal: Extend selector-driven harness taps beyond the trade ticket.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: None; this is a harness-only resilience cycle.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-048-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-048-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-048-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-048-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-048-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-048-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-048-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-048-holiwyn-ticket-max.xml`
+- `docs/mobile/harness/cycle-048-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-048-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-048-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-048-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-048-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-048-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Event-card opening, prop scroll, hardware Back, and first market ticket opening still use low-level coordinates/key events.
+Technical debt resolved:
+- Close position, Live tab, Live refresh, Search tab, and Search input taps now resolve from Android hierarchy ids or prefixes.
+Result: Passed Cycle 048 QA. Deep smoke verifies the expanded selector-driven path across close-position, Live refresh, Search navigation, and typed Search.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 049 should add server-mode Portfolio status states or continue selector-driven event opening.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

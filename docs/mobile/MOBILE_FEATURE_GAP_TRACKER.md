@@ -78,3 +78,4 @@ Status:
 | GAP-056 | Trading ticket | Max amount control | P1 | No | Verified | Cycle 045 adds a Max control that fills the ticket amount with available fake balance and verifies the updated estimate. |
 | GAP-057 | Trading ticket | Amount preset controls | P1 | No | Verified | Cycle 046 adds 100/500/1,000 USDT preset controls to Trade Ticket and verifies them in deep smoke. |
 | GAP-058 | Harness | Selector-driven ticket taps | P1 | No | Verified | Cycle 047 replaces fragile Max/order coordinates with Android hierarchy taps by stable control id. |
+| GAP-059 | Harness | Selector-driven navigation and close taps | P1 | No | Verified | Cycle 048 extends hierarchy taps to close-position, Live/Search tabs, Live refresh, and Search input. |
