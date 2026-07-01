@@ -36,3 +36,4 @@ Status:
 | GAP-014 | Trading | Order service boundary | P0 | No | Verified | Cycle 004 routes ticket submissions through a mock/server service boundary; default remains safe mock mode. |
 | GAP-015 | Architecture | Presentation helper extraction | P2 | No | Verified | Cycle 005 moved money and label helpers into `mobile/src/presentation/formatters.ts`. |
 | GAP-016 | Architecture | Bottom navigation component | P2 | Yes | Verified | Cycle 006 extracted bottom tabs into `mobile/src/components/BottomTabs.tsx`. |
+| GAP-017 | Architecture | Trade Ticket component | P1 | Yes | Verified | Cycle 007 extracted Trade Ticket into `mobile/src/components/TradeTicket.tsx` and verified mock order flow. |

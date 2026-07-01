@@ -2,7 +2,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useMemo, useState } from "react";
 import {
-  Modal,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -14,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { PolyApi } from "./src/api";
 import { normalizeEventDetail } from "./src/adapters/worldCupAdapter";
 import { BottomTabs } from "./src/components/BottomTabs";
+import { Ticket, TradeTicket } from "./src/components/TradeTicket";
 import {
   Event,
   Locale,
@@ -30,12 +30,6 @@ const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? 
 
 type MainTab = "home" | "live" | "portfolio" | "search";
 type WorldCupTab = "games" | "futures";
-type Ticket = {
-  event?: Event;
-  market: Market;
-  outcome: Outcome;
-  side: "buy" | "sell";
-};
 type Position = {
   id: string;
   mode: OrderMode;
@@ -603,66 +597,6 @@ function SearchScreen({
       </View>
       <MarketList locale={locale} events={events} empty={t.noResults} openEvent={openEvent} openTicket={openTicket} />
     </ScrollView>
-  );
-}
-
-function TradeTicket({
-  locale,
-  t,
-  ticket,
-  balance,
-  close,
-  placeOrder,
-}: {
-  locale: Locale;
-  t: typeof copy.en;
-  ticket: Ticket | null;
-  balance: number;
-  close: () => void;
-  placeOrder: (amount: number, side: "buy" | "sell") => void;
-}) {
-  const [amount, setAmount] = useState("100");
-  const [side, setSide] = useState<"buy" | "sell">("buy");
-  if (!ticket) return null;
-  const numericAmount = Number(amount) || 0;
-  const estimatedPayout = ticket.outcome.probability > 0 ? numericAmount * (100 / ticket.outcome.probability) : 0;
-
-  return (
-    <Modal visible transparent animationType="slide">
-      <View style={styles.modalShade}>
-        <View style={styles.ticket}>
-          <View style={styles.ticketTop}>
-            <View>
-              <Text style={styles.ticketTitle}>{label(locale, ticket.outcome)}</Text>
-              <Text style={styles.ticketSub}>{label(locale, ticket.event ?? ticket.market)}</Text>
-            </View>
-            <Pressable onPress={close} style={styles.closeButton}>
-              <Ionicons name="close" color="#f8fafc" size={22} />
-            </Pressable>
-          </View>
-          <View style={styles.ticketSideRow}>
-            {(["buy", "sell"] as const).map((option) => (
-              <Pressable key={option} style={[styles.sideButton, side === option && styles.sideButtonActive]} onPress={() => setSide(option)}>
-                <Text style={[styles.sideText, side === option && styles.sideTextActive]}>{option === "buy" ? t.buy : t.sell}</Text>
-              </Pressable>
-            ))}
-          </View>
-          <Text style={styles.inputLabel}>{t.amount}</Text>
-          <TextInput value={amount} onChangeText={setAmount} keyboardType="decimal-pad" style={styles.amountInput} />
-          <View style={styles.estimateLine}>
-            <Text style={styles.estimateLabel}>{t.estimatedCost}</Text>
-            <Text style={styles.estimateValue}>{money(Math.min(numericAmount, balance))}</Text>
-          </View>
-          <View style={styles.estimateLine}>
-            <Text style={styles.estimateLabel}>{t.estimatedPayout}</Text>
-            <Text style={styles.estimateValue}>{money(estimatedPayout)}</Text>
-          </View>
-          <Pressable style={styles.primaryButton} onPress={() => placeOrder(numericAmount, side)}>
-            <Text style={styles.primaryText}>{t.placeMockOrder}</Text>
-          </Pressable>
-        </View>
-      </View>
-    </Modal>
   );
 }
 
