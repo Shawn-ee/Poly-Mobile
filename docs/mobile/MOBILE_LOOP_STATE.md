@@ -6191,8 +6191,8 @@ Technical debt added:
 Technical debt resolved:
 - Ticket economics are more complete before order submission.
 Result: Passed Cycle 128 QA. Focused event-detail-trade smoke and mobile API/profile-preference tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `6079c57` (`Show potential profit on trade tickets`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `b938fc5`.
 Next cycle: Cycle 129 should continue trade-ticket/open-order parity or retry a backend/server-mode proof if local services become available.
 Harnesses run:
 - Mobile Typecheck Harness
