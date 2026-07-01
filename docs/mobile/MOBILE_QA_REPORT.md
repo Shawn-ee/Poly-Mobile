@@ -2204,3 +2204,23 @@ Bugs:
 - Initial visual review showed the fallback sentence too close to the bottom tab. The row was moved higher in Preferences and the focused smoke was rerun successfully.
 Visual QA:
 - Account Preferences shows `Profile sync unavailable` and `Using local preferences on this device.` clearly above the language and ticket defaults rows.
+
+### Cycle 108
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:account-saved-summary`
+- `npm run test:mobile-api`
+Result: Passed. Account Preferences now summarizes the user's saved World Cup markets count.
+Screenshots:
+- `docs/mobile/screenshots/cycle-108-holiwyn-account-saved-summary-smoke.png`
+- `docs/mobile/screenshots/cycle-108-holiwyn-account-saved-summary.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-108-holiwyn-account-saved-summary-home-start.xml`
+- `docs/mobile/harness/cycle-108-holiwyn-account-saved-summary.xml`
+Bugs:
+- None found.
+Visual QA:
+- Account Preferences shows `Saved markets: 1 saved` between Language and Ticket default after the harness seeds Mexico vs. Ecuador as saved.

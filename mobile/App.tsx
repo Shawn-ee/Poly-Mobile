@@ -312,6 +312,12 @@ export default function App() {
         setSavedEventIds(seededSavedEvents);
         AsyncStorage.setItem(SAVED_EVENTS_STORAGE_KEY, JSON.stringify([...seededSavedEvents])).catch(() => undefined);
       }
+      if (url.includes("forceAccountSavedSummary=1")) {
+        const seededSavedEvents = new Set(["mexico-ecuador"]);
+        setSavedEventIds(seededSavedEvents);
+        AsyncStorage.setItem(SAVED_EVENTS_STORAGE_KEY, JSON.stringify([...seededSavedEvents])).catch(() => undefined);
+        setMainTab("account");
+      }
     });
   }, []);
 
@@ -604,6 +610,7 @@ export default function App() {
                 ticketDefaultAmount={ticketDefaults.amount}
                 ticketDefaultSide={ticketDefaults.side}
                 profileSyncStatus={profilePreferencesSyncStatus}
+                savedMarketCount={savedEventIds.size}
               />
             )}
           </>
