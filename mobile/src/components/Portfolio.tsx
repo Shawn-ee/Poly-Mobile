@@ -12,6 +12,7 @@ export type Position = {
   side: "buy" | "sell";
   amount: number;
   probability: number;
+  isLive?: boolean;
 };
 
 export type PortfolioActivity = {
@@ -20,6 +21,7 @@ export type PortfolioActivity = {
   title: string;
   outcome: string;
   amount: number;
+  isLive?: boolean;
 };
 
 export type OpenOrder = {
@@ -39,6 +41,7 @@ export type OrderConfirmation = {
   outcome: string;
   side: "buy" | "sell";
   amount: number;
+  isLive?: boolean;
 };
 
 export type PortfolioSyncStatus = "hidden" | "syncing" | "synced" | "error";
@@ -69,6 +72,7 @@ type PortfolioCopy = {
   openPositions: string;
   activityCount: string;
   closedTrades: string;
+  liveNow: string;
 };
 
 const currentProbability = (position: Position) => {
@@ -186,6 +190,12 @@ export function Portfolio({
           </View>
           {positions.map((position) => (
             <View key={position.id} style={styles.positionCard}>
+              {position.isLive && (
+                <View accessibilityLabel="portfolio-position-live-badge" testID="portfolio-position-live-badge" style={styles.liveBadge}>
+                  <Ionicons name="radio" color="#fecaca" size={13} />
+                  <Text style={styles.liveBadgeText}>{t.liveNow}</Text>
+                </View>
+              )}
               <Text style={styles.positionTitle}>{position.title}</Text>
               <Text style={styles.positionMeta}>
                 {position.mode.toUpperCase()} - {position.side === "buy" ? t.buy : t.sell} - {position.outcome} - {position.probability}%
@@ -222,6 +232,12 @@ export function Portfolio({
       )}
       {latestOrder && (
         <View accessibilityLabel="latest-order-card" testID="latest-order-card" style={styles.confirmationCard}>
+          {latestOrder.isLive && (
+            <View accessibilityLabel="latest-order-live-badge" testID="latest-order-live-badge" style={styles.liveBadge}>
+              <Ionicons name="radio" color="#fecaca" size={13} />
+              <Text style={styles.liveBadgeText}>{t.liveNow}</Text>
+            </View>
+          )}
           <View style={styles.confirmationTop}>
             <Text style={styles.confirmationTitle}>{t.orderPlaced}</Text>
             <Text style={styles.confirmationAmount}>{money(latestOrder.amount)}</Text>
@@ -281,6 +297,11 @@ export function Portfolio({
                       ? t.canceledOrder
                       : t.closedPosition}
                 </Text>
+                {activity.isLive && (
+                  <Text accessibilityLabel="portfolio-activity-live-badge" style={styles.activityLiveText}>
+                    {t.liveNow}
+                  </Text>
+                )}
                 <Text style={styles.activityMeta}>
                   {activity.title} - {activity.outcome}
                 </Text>
@@ -316,6 +337,8 @@ const styles = StyleSheet.create({
   summaryLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },
   summaryValue: { color: "#f8fafc", fontSize: 13, fontWeight: "900", marginTop: 8 },
   positionCard: { padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginTop: 12 },
+  liveBadge: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, marginBottom: 8, paddingHorizontal: 9, paddingVertical: 5, borderRadius: 999, backgroundColor: "#451a1a", borderWidth: 1, borderColor: "#7f1d1d" },
+  liveBadgeText: { color: "#fecaca", fontSize: 11, fontWeight: "900", textTransform: "uppercase" },
   positionTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
   positionMeta: { color: "#94a3b8", marginTop: 5, fontWeight: "800" },
   positionValue: { color: "#22c55e", fontSize: 22, fontWeight: "900", marginTop: 8 },
@@ -350,6 +373,7 @@ const styles = StyleSheet.create({
   activityIcon: { width: 28, height: 28, borderRadius: 8, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937" },
   activityMain: { flex: 1 },
   activityAction: { color: "#f8fafc", fontWeight: "900" },
+  activityLiveText: { alignSelf: "flex-start", color: "#fecaca", fontSize: 11, fontWeight: "900", marginTop: 3, textTransform: "uppercase" },
   activityMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
   activityAmount: { color: "#dbeafe", fontWeight: "900" },
 });
