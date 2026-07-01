@@ -6879,8 +6879,8 @@ Technical debt added:
 Technical debt resolved:
 - Samsung real-device QA now covers live badge/clock propagation across latest-order, open-position, and activity rows.
 Result: Passed Cycle 145 QA. Samsung deep live metadata smoke, mobile typecheck, and mobile API/history tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `ffe988b` (`Add Samsung live metadata smoke`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `2b6d122`.
 Next cycle: Cycle 146 should continue toward server-mode device order execution or backend-backed live history parity.
 Harnesses run:
 - Samsung Deep Live Portfolio Metadata Smoke Harness
