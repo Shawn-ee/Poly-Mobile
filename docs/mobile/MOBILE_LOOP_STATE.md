@@ -5804,8 +5804,8 @@ Technical debt added:
 Technical debt resolved:
 - Live ticket users now see in-play time context before confirming a live order.
 Result: Passed Cycle 120 QA. Focused live-ticket smoke, visual screenshot review, and mobile API/profile-preference tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `95a8cf2` (`Show live clock on tickets`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `750a0b5`.
 Next cycle: Cycle 121 should continue live/detail trading polish or retry backend readiness if Docker/local Postgres become available, then write the heartbeat for Cycles 119-121.
 Harnesses run:
 - Mobile Typecheck Harness
