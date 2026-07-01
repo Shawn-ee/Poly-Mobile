@@ -1,6 +1,7 @@
 import type { EventDetail, EventSummary, Market, Quote } from "./types";
 
 const trimSlash = (value: string) => value.replace(/\/+$/, "");
+const REQUEST_TIMEOUT_MS = 3500;
 
 export class PolyApi {
   baseUrl: string;
@@ -13,6 +14,8 @@ export class PolyApi {
 
   private async request<T>(path: string, init?: RequestInit): Promise<T> {
     const headers = new Headers(init?.headers);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
     headers.set("Accept", "application/json");
     if (this.apiKey) {
       headers.set("Authorization", `Bearer ${this.apiKey}`);
@@ -21,17 +24,22 @@ export class PolyApi {
       headers.set("Content-Type", "application/json");
     }
 
-    const response = await fetch(`${this.baseUrl}${path}`, {
-      ...init,
-      headers,
-    });
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok) {
-      const message =
-        payload?.error?.message ?? payload?.error ?? `Request failed with ${response.status}`;
-      throw new Error(String(message));
+    try {
+      const response = await fetch(`${this.baseUrl}${path}`, {
+        ...init,
+        headers,
+        signal: controller.signal,
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        const message =
+          payload?.error?.message ?? payload?.error ?? `Request failed with ${response.status}`;
+        throw new Error(String(message));
+      }
+      return payload as T;
+    } finally {
+      clearTimeout(timeout);
     }
-    return payload as T;
   }
 
   listWorldCupEvents(search = "") {

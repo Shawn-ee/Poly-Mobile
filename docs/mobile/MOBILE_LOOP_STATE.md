@@ -1030,6 +1030,55 @@ Open blockers: None for autonomous progress.
 Risks: Live refresh is local UI state only; deep smoke still relies on coordinate taps; real server order mode remains unverified.
 Next three likely cycles: Connect Live refresh to event reload, extract Home screen pieces, and add portfolio P/L or open-order detail.
 
+### Cycle 025
+
+Date: 2026-07-01
+Branch: mobile/cycle-025
+Goal: Connect Live refresh to the shared backend/mock event reload path.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Live tab refresh now calls the app-level World Cup event loader and keeps the refreshed status after the async reload completes.
+Backend/API changed: Mobile API requests now use a 3.5 second timeout so unavailable local backend calls fall back quickly on emulator.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/api.ts`, `mobile/src/components/LiveScreen.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-025-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-025-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-025-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-025-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-025-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-025-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-025-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-025-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-025-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-025-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-025-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-025-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-025-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-025-holiwyn-search-query.xml`
+Bugs found:
+- Initial deep smoke captured the Live refresh screen while the unreachable emulator backend request was still pending, so the refreshed state had not appeared yet.
+Technical debt added:
+- None.
+Technical debt resolved:
+- TD-013: Live refresh now calls the shared event reload path and falls back to mock World Cup events when the backend is unavailable.
+Result: Passed Cycle 025 QA after Recovery Harness. Live refresh now performs an async reload instead of only changing local UI state.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge after commit.
+Next cycle: Cycle 026 should continue app decomposition by extracting Home screen pieces or deepen backend-backed market reload evidence.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Recovery Harness
+- Review Harness
+Harness failures:
+- First Cycle 025 deep smoke failed because the app waited on an unavailable backend request. Added a mobile API timeout and changed the harness to wait for the refreshed Live hierarchy, then reran successfully.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

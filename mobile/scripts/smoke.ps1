@@ -145,10 +145,8 @@ try {
     Assert-HierarchyContainsAny -Path $liveHierarchy -ExpectedAny @("No live markets right now.", "Live ·")
 
     & $adb -s $Device shell input tap 910 495 | Out-Null
-    Start-Sleep -Seconds 1
+    $liveRefreshHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-live-refresh.xml" -Expected @("Updated just now", "refreshed", "Refresh") -Attempts 8 -DelaySeconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-live-refresh.png"
-    $liveRefreshHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-refresh.xml"
-    Assert-HierarchyContains -Path $liveRefreshHierarchy -Expected @("Updated just now", "refreshed", "Refresh")
 
     & $adb -s $Device shell input tap 945 1740 | Out-Null
     Start-Sleep -Seconds 1

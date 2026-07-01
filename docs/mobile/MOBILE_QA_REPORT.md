@@ -456,3 +456,22 @@ Result: Passed. Bottom navigation extraction did not break app launch or tab ren
 Screenshots:
 - `docs/mobile/screenshots/cycle-006-holiwyn-smoke.png`
 Bugs: None found.
+
+### Cycle 025
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed after Recovery Harness. Live refresh now waits for the shared event reload path, falls back when the backend is unavailable, and preserves Home/Ticket/Portfolio/Live/Search coverage.
+Screenshots:
+- `docs/mobile/screenshots/cycle-025-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-025-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-025-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-025-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-025-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-025-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-025-holiwyn-search-query.png`
+Bugs:
+- Initial run failed because the unavailable backend request kept the refresh button disabled longer than the one-second smoke wait. Added a mobile API timeout and refresh-state hierarchy wait, then reran successfully.

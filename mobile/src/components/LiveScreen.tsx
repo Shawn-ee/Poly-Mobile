@@ -1,5 +1,4 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { MarketList } from "./MarketLists";
@@ -15,17 +14,21 @@ export function LiveScreen({
   locale,
   t,
   events,
+  isRefreshing,
+  refreshTick,
+  onRefresh,
   openEvent,
   openTicket,
 }: {
   locale: Locale;
   t: LiveScreenCopy;
   events: Event[];
+  isRefreshing: boolean;
+  refreshTick: number;
+  onRefresh: () => void;
   openEvent: (event: Event) => void;
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
 }) {
-  const [refreshCount, setRefreshCount] = useState(0);
-
   return (
     <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
       <View style={styles.liveHeader}>
@@ -33,8 +36,14 @@ export function LiveScreen({
         <Text style={styles.liveCount}>{events.length}</Text>
       </View>
       <View style={styles.liveStatusRow}>
-        <Text style={styles.liveStatusText}>{refreshCount === 0 ? t.liveUpdated : `${t.liveUpdated} · refreshed`}</Text>
-        <Pressable accessibilityLabel="refresh-live-markets" testID="refresh-live-markets" style={styles.refreshButton} onPress={() => setRefreshCount((count) => count + 1)}>
+        <Text style={styles.liveStatusText}>{refreshTick === 0 ? t.liveUpdated : `${t.liveUpdated} - refreshed`}</Text>
+        <Pressable
+          accessibilityLabel="refresh-live-markets"
+          disabled={isRefreshing}
+          onPress={onRefresh}
+          style={[styles.refreshButton, isRefreshing && styles.refreshButtonDisabled]}
+          testID="refresh-live-markets"
+        >
           <Ionicons name="refresh" color="#dbeafe" size={16} />
           <Text style={styles.refreshText}>{t.refreshLive}</Text>
         </Pressable>
@@ -53,5 +62,6 @@ const styles = StyleSheet.create({
   liveStatusRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 14 },
   liveStatusText: { color: "#8ea0b8", fontWeight: "800" },
   refreshButton: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, backgroundColor: "#1f2937" },
+  refreshButtonDisabled: { opacity: 0.7 },
   refreshText: { color: "#dbeafe", fontWeight: "900" },
 });
