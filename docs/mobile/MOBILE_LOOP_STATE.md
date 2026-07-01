@@ -5705,8 +5705,8 @@ Technical debt added:
 Technical debt resolved:
 - Users can now distinguish live-origin Portfolio positions from standard pre-match mock positions.
 Result: Passed Cycle 118 QA. Mobile typecheck, focused emulator live-portfolio-badge smoke, and mobile API/profile-preference tests pass.
-Commit: `TBD` (`Show Live Portfolio position badge`)
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `704c402` (`Show Live Portfolio position badge`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `cb9bf6b`.
 Next cycle: Cycle 119 should add deeper-scroll proof for live activity/confirmation badges or continue live trading polish.
 Harnesses run:
 - Mobile Typecheck Harness
