@@ -4145,8 +4145,8 @@ Technical debt added:
 Technical debt resolved:
 - Market-specific terms like `clean` can now surface relevant World Cup event cards from Home/Search.
 Result: Passed Cycle 083 QA. Mobile typecheck, focused Home search-query smoke, visual screenshot review, and mobile API tests pass.
-Commit: Pending branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `d5aa985` (`Expand Holiwyn market search matching`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `b9bb806`.
 Next cycle: Cycle 084 should continue market discovery/trading parity or retry backend readiness if local services become reachable.
 Harnesses run:
 - Emulator Runtime Harness
