@@ -1987,3 +1987,27 @@ Bugs:
 - None found in product code. Harness recovered from an off-screen Home save tap, shell `&` URL splitting, and unreliable star-glyph XML assertions by using a deterministic storage seed plus visual screenshot proof.
 Visual QA:
 - Restored Search screen shows Mexico vs. Ecuador with a filled saved star after app restart.
+
+### Cycle 097
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:account-persistence`
+- `npm run test:mobile-api`
+Result: Passed. Mock account sign-in now persists locally and restores after app restart.
+Screenshots:
+- `docs/mobile/screenshots/cycle-097-holiwyn-account-persistence-smoke.png`
+- `docs/mobile/screenshots/cycle-097-holiwyn-account-persistence-seeded.png`
+- `docs/mobile/screenshots/cycle-097-holiwyn-account-persistence-signed-in.png`
+- `docs/mobile/screenshots/cycle-097-holiwyn-account-persistence-restored.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-097-holiwyn-account-persistence-home-start.xml`
+- `docs/mobile/harness/cycle-097-holiwyn-account-persistence-seeded.xml`
+- `docs/mobile/harness/cycle-097-holiwyn-account-persistence-signed-in.xml`
+- `docs/mobile/harness/cycle-097-holiwyn-account-persistence-restored.xml`
+Bugs:
+- Fixed an account hydration race where an empty storage read could overwrite a fresh sign-in.
+Visual QA:
+- Restored Account screen shows Signed in, Holiwyn Demo, Demo balance, and Sign out after app restart.

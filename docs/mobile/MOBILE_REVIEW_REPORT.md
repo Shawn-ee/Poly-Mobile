@@ -1382,3 +1382,18 @@ Findings:
 - Mobile typecheck, focused saved-persistence smoke, and mobile API request tests passed.
 Decision: Approve Cycle 096 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 097
+
+Date: 2026-07-01
+Branch: mobile/cycle-097
+Reviewer: Lead/Reviewer pass
+Scope: Account mock session persistence.
+Findings:
+- P1: Account mock sign-in state now hydrates from and persists to AsyncStorage.
+- P1: Empty storage no longer overwrites a fresh sign-in after mount.
+- P1: Focused smoke clears local Expo data, seeds signed-in account state, restarts the app, and verifies Account restores as Signed in.
+- P2: This remains mock local account state; real backend auth is intentionally not implemented yet.
+- Mobile typecheck, focused account-persistence smoke, and mobile API request tests passed.
+Decision: Approve Cycle 097 for local commit/merge after scoped diff review.
+Merge approved: Yes

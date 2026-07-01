@@ -69,6 +69,7 @@ export default function App() {
   const [events, setEvents] = useState<Event[]>(worldCupEvents);
   const [savedEventIds, setSavedEventIds] = useState<Set<string>>(() => new Set());
   const [savedEventIdsHydrated, setSavedEventIdsHydrated] = useState(false);
+  const [forceAccountSignedIn, setForceAccountSignedIn] = useState(false);
   const [isRefreshingLive, setIsRefreshingLive] = useState(false);
   const [liveRefreshTick, setLiveRefreshTick] = useState(0);
   const [futures] = useState<Market[]>(worldCupFutures);
@@ -121,6 +122,10 @@ export default function App() {
         setMainTab("home");
       }
       if (url.includes("forceAccount=1")) {
+        setMainTab("account");
+      }
+      if (url.includes("forceAccountSignIn=1")) {
+        setForceAccountSignedIn(true);
         setMainTab("account");
       }
       if (url.includes("forceSearch=1")) {
@@ -419,7 +424,7 @@ export default function App() {
                 toggleSavedEvent={toggleSavedEvent}
               />
             )}
-            {mainTab === "account" && <AccountScreen t={t} balance={balance} />}
+            {mainTab === "account" && <AccountScreen t={t} balance={balance} forceSignedIn={forceAccountSignedIn} />}
           </>
         )}
         {!selectedEvent && <BottomTabs tab={mainTab} setTab={setMainTab} t={t} />}
