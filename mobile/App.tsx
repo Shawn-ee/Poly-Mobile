@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+﻿import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,6 +13,7 @@ import { Portfolio, portfolioPositionValue, Position } from "./src/components/Po
 import { SearchScreen } from "./src/components/SearchScreen";
 import { Ticket, TradeTicket } from "./src/components/TradeTicket";
 import { WorldCupTab } from "./src/components/WorldCupSegmented";
+import { appCopy } from "./src/localization/appCopy";
 import {
   Event,
   Locale,
@@ -27,95 +28,6 @@ const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.
 const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? "server" : "mock";
 
 type MainTab = "home" | "live" | "portfolio" | "search";
-const copy = {
-  en: {
-    promo: "Get 50",
-    home: "Home",
-    live: "Live",
-    portfolio: "Portfolio",
-    search: "Search",
-    worldCup: "World Cup",
-    games: "Games",
-    futures: "Futures",
-    trending: "Trending",
-    today: "Today",
-    tomorrow: "Tomorrow",
-    marketSearch: "Search World Cup markets",
-    searchResults: "Results",
-    topResults: "Top results",
-    clearSearch: "Clear",
-    searchAll: "All",
-    searchLive: "Live",
-    searchUpcoming: "Upcoming",
-    balance: "Fake balance",
-    noPositions: "No positions yet",
-    noPositionsBody: "Place a mock trade to see it here.",
-    buy: "Buy",
-    sell: "Sell",
-    amount: "Amount",
-    invested: "Invested",
-    entry: "Entry",
-    currentValue: "Current value",
-    estimatedPnl: "Est. P/L",
-    closePosition: "Close position",
-    estimatedCost: "Estimated cost",
-    estimatedPayout: "Estimated payout",
-    placeMockOrder: "Place mock order",
-    orderPlaced: "Mock order placed",
-    eventDetail: "Event detail",
-    markets: "Markets",
-    liveNow: "Live World Cup",
-    liveUpdated: "Updated just now",
-    refreshLive: "Refresh",
-    noLive: "No live markets right now.",
-    noResults: "No markets match your search.",
-    language: "中文",
-  },
-  zh: {
-    promo: "领取50",
-    home: "首页",
-    live: "滚球",
-    portfolio: "持仓",
-    search: "搜索",
-    worldCup: "世界杯",
-    games: "比赛",
-    futures: "期货",
-    trending: "热门",
-    today: "今天",
-    tomorrow: "明天",
-    marketSearch: "搜索世界杯市场",
-    searchResults: "结果",
-    topResults: "热门结果",
-    clearSearch: "清除",
-    searchAll: "全部",
-    searchLive: "滚球",
-    searchUpcoming: "赛前",
-    balance: "模拟余额",
-    noPositions: "暂无持仓",
-    noPositionsBody: "下一个模拟订单后会显示在这里。",
-    buy: "买入",
-    sell: "卖出",
-    amount: "金额",
-    invested: "\u5df2\u6295\u5165",
-    entry: "\u5efa\u4ed3",
-    currentValue: "\u5f53\u524d\u4ef7\u503c",
-    estimatedPnl: "\u9884\u4f30\u76c8\u4e8f",
-    closePosition: "\u5e73\u4ed3",
-    estimatedCost: "预计成本",
-    estimatedPayout: "预计收益",
-    placeMockOrder: "提交模拟订单",
-    orderPlaced: "模拟订单已提交",
-    eventDetail: "赛事详情",
-    markets: "市场",
-    liveNow: "世界杯滚球",
-    liveUpdated: "刚刚更新",
-    refreshLive: "刷新",
-    noLive: "当前没有滚球市场。",
-    noResults: "没有匹配的市场。",
-    language: "EN",
-  },
-};
-
 export default function App() {
   const [locale, setLocale] = useState<Locale>("en");
   const [mainTab, setMainTab] = useState<MainTab>("home");
@@ -129,7 +41,7 @@ export default function App() {
   const [isRefreshingLive, setIsRefreshingLive] = useState(false);
   const [liveRefreshTick, setLiveRefreshTick] = useState(0);
   const [futures] = useState<Market[]>(worldCupFutures);
-  const t = copy[locale];
+  const t = appCopy[locale];
   const api = useMemo(() => new PolyApi(DEFAULT_API_BASE), []);
   const mounted = useRef(true);
 

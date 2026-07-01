@@ -1593,6 +1593,67 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 036
+
+Date: 2026-07-01
+Branch: mobile/cycle-036
+Goal: Extract app localization copy from the main app shell.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No intended layout changes; English and Simplified Chinese copy now live in `mobile/src/localization/appCopy.ts`.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/localization/appCopy.ts`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-036-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-036-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-036-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-036-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-036-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-036-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-036-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-036-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-036-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-036-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-036-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-036-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-036-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-036-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-036-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-036-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Main app shell no longer owns the full bilingual copy table.
+- Simplified Chinese app copy is normalized with Unicode escapes in a dedicated module to avoid editor encoding drift.
+Result: Passed Cycle 036 QA. Deep smoke verifies the extracted copy still renders the full trading, Portfolio, Live, and Search flows.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 037 should continue trading parity, likely with order confirmation detail or additional market groups.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 036
+
+Completed cycles: 034, 035, 036 since the last heartbeat.
+Verified progress: Portfolio positions now expose a close action, deep smoke taps and verifies that close behavior, and bilingual app copy has been extracted into a dedicated localization module.
+Current app state: Holiwyn mobile has verified Home, ticket, mock order, Portfolio summary/detail/close, Live refresh, Search browse, and typed Search zero-result flows on Android emulator.
+Current backend state: Backend health remains unavailable during emulator smoke; mock fallback remains verified and mobile API calls are still bounded by timeout.
+Open blockers: None for autonomous progress.
+Risks: Close-position automation still uses a coordinate tap; real server order mode, auth-backed positions, live odds deltas, and broader Polymarket sports parity remain unverified.
+Next three likely cycles: Add order/close confirmation detail, expand World Cup market groups and props, and improve mobile automation toward selector-driven taps.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
