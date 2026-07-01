@@ -6308,8 +6308,8 @@ Technical debt added:
 Technical debt resolved:
 - Post-order execution feedback is now first-viewport visible and smoke-verified.
 Result: Passed Cycle 131 QA. Focused future-list-order smoke and mobile API/profile-preference tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `41fef3b` (`Show latest order execution details`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `2b2f9b4`.
 Next cycle: Cycle 132 should continue order/history parity or retry backend/server-mode proof if local services become available.
 Harnesses run:
 - Mobile Typecheck Harness
