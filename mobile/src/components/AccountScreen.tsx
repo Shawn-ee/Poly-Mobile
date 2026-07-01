@@ -1,7 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { money } from "../presentation/formatters";
+
+const ACCOUNT_SESSION_STORAGE_KEY = "holiwyn.accountSignedIn.v1";
 
 type AccountCopy = {
   account: string;
@@ -29,11 +32,34 @@ type AccountCopy = {
 export function AccountScreen({
   t,
   balance,
+  forceSignedIn,
 }: {
   t: AccountCopy;
   balance: number;
+  forceSignedIn?: boolean;
 }) {
   const [signedIn, setSignedIn] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    AsyncStorage.getItem(ACCOUNT_SESSION_STORAGE_KEY)
+      .then((stored) => {
+        if (mounted && stored !== null) setSignedIn(stored === "true");
+      })
+      .catch(() => undefined);
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (forceSignedIn) updateSignedIn(true);
+  }, [forceSignedIn]);
+
+  const updateSignedIn = (nextSignedIn: boolean) => {
+    setSignedIn(nextSignedIn);
+    AsyncStorage.setItem(ACCOUNT_SESSION_STORAGE_KEY, nextSignedIn ? "true" : "false").catch(() => undefined);
+  };
 
   return (
     <ScrollView accessibilityLabel="account-screen" testID="account-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
@@ -69,17 +95,17 @@ export function AccountScreen({
 
       <View style={styles.actions}>
         {signedIn ? (
-          <Pressable accessibilityLabel="account-sign-out" testID="account-sign-out" style={styles.secondaryButton} onPress={() => setSignedIn(false)}>
+          <Pressable accessibilityLabel="account-sign-out" testID="account-sign-out" style={styles.secondaryButton} onPress={() => updateSignedIn(false)}>
             <Ionicons name="log-out-outline" size={20} color="#dbeafe" />
             <Text style={styles.secondaryText}>{t.signOut}</Text>
           </Pressable>
         ) : (
           <>
-            <Pressable accessibilityLabel="account-login-phone" testID="account-login-phone" style={styles.primaryButton} onPress={() => setSignedIn(true)}>
+            <Pressable accessibilityLabel="account-login-phone" testID="account-login-phone" style={styles.primaryButton} onPress={() => updateSignedIn(true)}>
               <Ionicons name="phone-portrait-outline" size={20} color="#ffffff" />
               <Text style={styles.primaryText}>{t.loginMethodPhone}</Text>
             </Pressable>
-            <Pressable accessibilityLabel="account-login-email" testID="account-login-email" style={styles.secondaryButton} onPress={() => setSignedIn(true)}>
+            <Pressable accessibilityLabel="account-login-email" testID="account-login-email" style={styles.secondaryButton} onPress={() => updateSignedIn(true)}>
               <Ionicons name="mail-outline" size={20} color="#dbeafe" />
               <Text style={styles.secondaryText}>{t.loginMethodEmail}</Text>
             </Pressable>
