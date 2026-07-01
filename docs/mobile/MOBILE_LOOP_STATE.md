@@ -2588,8 +2588,8 @@ Technical debt added:
 Technical debt resolved:
 - Ticket order failure UI is now emulator-proven, not just typechecked.
 Result: Passed Cycle 052 QA. Deep smoke verifies the success path; forced-failure smoke verifies `Order failed. Try again.`, `ticket-order-error`, and the ticket staying open.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Add Holiwyn order failure smoke`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 053 should reduce prop/back device actions or add open-order cancel/edit planning UI.
 Harnesses run:
 - QA Smoke Harness
