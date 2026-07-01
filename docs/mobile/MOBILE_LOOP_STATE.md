@@ -1748,8 +1748,8 @@ Technical debt added:
 Technical debt resolved:
 - Event-detail grouped market coverage now includes game-line and deeper props, not only the trading ticket path.
 Result: Passed Cycle 038 QA. Event detail verifies `Both teams to score` and `First goal scorer team`, then the existing ticket/Portfolio/Live/Search smoke path still passes.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Expand Holiwyn World Cup props`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 039 should continue market parity or improve in-app detail navigation/back behavior.
 Harnesses run:
 - QA Smoke Harness
