@@ -1341,6 +1341,54 @@ Open blockers: None for autonomous progress.
 Risks: Deep smoke still uses coordinate taps; Portfolio is still basic and lacks P/L/open-position detail; real server order mode and live odds deltas remain unverified.
 Next three likely cycles: Add portfolio position detail/P&L, extract header/app shell presentation, and improve harness taps toward selector-based actions.
 
+### Cycle 031
+
+Date: 2026-07-01
+Branch: mobile/cycle-031
+Goal: Add richer Portfolio position detail for fake-token trades.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio position cards now show entry probability, current value, and estimated P/L after a mock trade.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-031-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-031-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-031-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-031-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-031-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-031-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-031-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-031-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-031-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-031-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-031-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-031-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-031-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-031-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Portfolio now has basic position-level value/P&L detail instead of only stake amount.
+Result: Passed Cycle 031 QA. Portfolio detail is verified by deep smoke hierarchy assertions and screenshot evidence.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge after commit.
+Next cycle: Cycle 032 should add more Portfolio/open-position affordances or extract header/app-shell presentation.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

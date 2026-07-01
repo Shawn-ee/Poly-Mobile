@@ -426,3 +426,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 030 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 031
+
+Date: 2026-07-01
+Branch: mobile/cycle-031
+Reviewer: Lead/Reviewer pass
+Scope: Portfolio position detail.
+Findings:
+- P1: Portfolio positions now show entry probability, current value, and estimated P/L, improving trading-app parity without touching wallet deposit/withdraw flows.
+- P1: Deep smoke now asserts the new Portfolio detail labels after placing a mock order.
+- P2: The P/L model is deterministic mock valuation; real mark prices and server-backed positions remain future work.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 031 for local commit/merge after scoped diff review.
+Merge approved: Yes
