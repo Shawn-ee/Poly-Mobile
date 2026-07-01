@@ -1336,3 +1336,19 @@ Findings:
 - Mobile typecheck, focused Portfolio activity-count smoke, and mobile API request tests passed.
 Decision: Approve Cycle 093 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 094
+
+Date: 2026-07-01
+Branch: mobile/cycle-094
+Reviewer: Lead/Reviewer pass
+Scope: Portfolio closed trades count.
+Findings:
+- P1: Portfolio now shows a localized Closed trades count card.
+- P1: Focused smoke verifies the count starts at `0` and reaches `1` after a Futures mock order is closed.
+- P1: The same smoke verifies Recent activity reaches `2` after the buy and close actions.
+- P1: Harness recovery scrolls to the close control after the new count card changes vertical layout.
+- P2: Count is local activity-state based until server-backed portfolio history is fully available.
+- Mobile typecheck, focused Portfolio closed-count smoke, and mobile API request tests passed.
+Decision: Approve Cycle 094 for local commit/merge after scoped diff review.
+Merge approved: Yes

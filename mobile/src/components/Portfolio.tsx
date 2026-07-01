@@ -68,6 +68,7 @@ type PortfolioCopy = {
   orderPlaced: string;
   openPositions: string;
   activityCount: string;
+  closedTrades: string;
 };
 
 const currentProbability = (position: Position) => {
@@ -115,6 +116,7 @@ export function Portfolio({
   closePosition: (position: Position) => void;
   cancelOpenOrder: (order: OpenOrder) => void;
 }) {
+  const closedActivityCount = activities.filter((activity) => activity.action === "closed").length;
   const syncTitle =
     syncStatus === "syncing"
       ? t.portfolioSyncing
@@ -150,6 +152,10 @@ export function Portfolio({
       <View accessibilityLabel="portfolio-activity-count" testID="portfolio-activity-count" style={styles.positionCountCard}>
         <Text style={styles.positionCountLabel}>{t.activityCount}</Text>
         <Text style={styles.positionCountValue}>{activities.length}</Text>
+      </View>
+      <View accessibilityLabel="portfolio-closed-count" testID="portfolio-closed-count" style={styles.positionCountCard}>
+        <Text style={styles.positionCountLabel}>{t.closedTrades}</Text>
+        <Text style={styles.positionCountValue}>{closedActivityCount}</Text>
       </View>
       {positions.length === 0 ? (
         <View style={styles.emptyCard}>
