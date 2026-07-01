@@ -35,6 +35,7 @@ The Lead Agent chooses which harnesses apply to a cycle. For UI cycles, the Refe
 | Review Harness | Review code, UX, safety, and debt | Every cycle before merge |
 | Git Cycle Harness | Branch, commit, and local merge | Every verified cycle |
 | Recovery Harness | Continue after non-hard blockers | Any failed harness |
+| Development Build/APK Harness | Validate Holiwyn outside Expo Go | Later stable mobile QA cycles |
 
 ## 4. Reference Observation Harness
 
@@ -121,6 +122,12 @@ Failure handling:
 - If failure persists, run Recovery Harness.
 - If Expo Go becomes the bottleneck, prefer harness fixes first; add a proper Android development build/APK harness as a stabilization milestone when the app flow is mature enough.
 
+Device policy:
+
+- Samsung S23 is the Polymarket reference device and later optional Holiwyn real-device QA target.
+- Android emulator is the default Holiwyn automation device for smoke loops, screenshots, and repeatable regression evidence.
+- Do not move normal Holiwyn cycle acceptance to Samsung while emulator automation is still available.
+
 ## 6. Screenshot Evidence Harness
 
 Purpose:
@@ -202,6 +209,54 @@ Failure handling:
 - Fix endpoint or mobile contract mismatch when possible.
 - If backend is unavailable but UI can continue with mock data, continue and document deferred integration.
 - If backend is required for the cycle and unavailable after recovery, mark hard blocker.
+
+## 7A. Development Build/APK Harness
+
+Purpose:
+
+- Move Holiwyn QA closer to a real installed Android app after the Expo Go phase.
+- Reduce Expo Go-specific startup, reload, and developer-menu instability.
+- Validate install, launch, deep links, native configuration, and app identity before production-style QA.
+
+When to run:
+
+- After core World Cup navigation, market detail, ticket, portfolio, account, search, live, and localization flows are stable.
+- When Expo Go becomes the main bottleneck for reliable overnight automation.
+- Before using Samsung S23 for routine Holiwyn real-device QA.
+
+Inputs:
+
+- Holiwyn mobile app code.
+- Android emulator.
+- Local development build or debug APK configuration.
+- Current fake-token/mock or safe server-mode environment.
+
+Actions:
+
+1. Build or install the Holiwyn Android development build/APK.
+2. Launch the installed Holiwyn app on the emulator.
+3. Run the same smoke paths used by the Expo Go harness.
+4. Capture screenshots and hierarchy evidence from the installed app.
+5. Record any native configuration differences from Expo Go.
+
+Outputs:
+
+- Build/install result in `docs/mobile/MOBILE_QA_REPORT.md`.
+- Screenshot evidence under `docs/mobile/screenshots/`.
+- Any native-build gaps in `docs/mobile/MOBILE_FEATURE_GAP_TRACKER.md` or `docs/mobile/MOBILE_TECH_DEBT.md`.
+
+Pass criteria:
+
+- APK installs or development build launches on emulator.
+- Core smoke paths pass without Expo Go.
+- App identity, language, navigation, ticket, and portfolio behavior match the accepted Expo Go behavior.
+
+Failure handling:
+
+- Fall back to Expo Go only to keep feature development moving.
+- Record the native-build failure as tech debt.
+- Use Recovery Harness and Reviewer Agent before changing native configuration broadly.
+- Do not use production payment, deposit, or withdraw features in this harness.
 
 ## 8. Data/Schema Harness
 

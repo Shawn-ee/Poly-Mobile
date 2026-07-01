@@ -6203,6 +6203,37 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 129
+
+Date: 2026-07-01
+Branch: mobile/cycle-129
+Goal: Codify the agreed device strategy: Samsung S23 for Polymarket reference/later explicit Holiwyn real-device QA, Android emulator for repeatable Holiwyn automation, and Android development build/APK as the next stable-app QA milestone after Expo Go.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: None.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `docs/mobile/MOBILE_APP_AUTONOMOUS_DEVELOPMENT_LOOP.md`, `docs/mobile/MOBILE_HARNESS_SPEC.md`, `mobile/README.md`, `docs/mobile/MOBILE_FEATURE_GAP_TRACKER.md`, `docs/mobile/MOBILE_QA_REPORT.md`, `docs/mobile/MOBILE_REVIEW_REPORT.md`, `docs/mobile/MOBILE_LOOP_STATE.md`.
+Tests run:
+- Documentation policy review by scoped diff.
+Screenshots captured:
+- None; documentation-only policy cycle.
+Bugs found:
+- None.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Device/build QA policy is now explicit instead of only implied by prior cycle notes.
+Result: Passed Cycle 129 QA. Device roles and the future dev build/APK harness are documented for future autonomous cycles.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 130 should continue trade-ticket/open-order parity or begin preparing the dev-build/APK harness only if core-flow stability and loop speed justify it.
+Harnesses run:
+- Documentation Review Harness
+- Review Harness
+- Git Cycle Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

@@ -159,3 +159,4 @@ Status:
 | GAP-137 | Trade ticket | Implied odds on ticket | P1 | Yes | Verified | Cycle 126 adds implied decimal odds to the trade ticket and verifies Mexico vs. Ecuador buy ticket shows `Implied odds` and `1.6x`. |
 | GAP-138 | Event detail | Outcome odds on market buttons | P1 | Yes | Verified | Cycle 127 adds decimal odds under Event Detail outcome probabilities and verifies Mexico shows `64%` plus `1.6x`. |
 | GAP-139 | Trade ticket | Potential profit estimate | P1 | Yes | Verified | Cycle 128 adds a potential-profit row to trade tickets and verifies the Mexico buy ticket shows `56.25 USDT`. |
+| GAP-140 | Harness | Samsung/emulator/dev-build device strategy | P1 | No | Verified | Cycle 129 codifies Samsung as Polymarket reference/later real-device QA, emulator as repeatable Holiwyn automation, and Android dev build/APK as the next stable-app QA milestone after Expo Go. |

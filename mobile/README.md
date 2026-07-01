@@ -24,6 +24,13 @@ Native Android-first client for Holiwyn World Cup prediction markets. The backen
 
 For the Android emulator, run `adb reverse tcp:3000 tcp:3000` and use `http://127.0.0.1:3000`. For a physical Android phone, use your computer's LAN IP, for example `http://192.168.1.20:3000`.
 
+## Device Strategy
+
+- Samsung S23: use for Polymarket reference and, later, explicit Holiwyn real-device QA.
+- Android emulator: use for automated Holiwyn development loops, screenshots, smoke tests, and repeatable checks.
+- Expo Go: acceptable for fast iteration while the app is changing quickly.
+- Android development build/APK: create once core Holiwyn flows are stable or Expo Go becomes the main testing bottleneck.
+
 ## Product Direction
 
 Use Polymarket as a product reference for prediction-market patterns such as event browsing, odds as probabilities, fast buy/sell tickets, positions, and account funding. Do not copy their exact UI, brand, icons, copy, or assets. This app should stay focused on soccer and World Cup markets under the Holiwyn brand.
