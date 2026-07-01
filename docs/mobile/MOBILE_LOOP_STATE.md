@@ -471,6 +471,48 @@ Harnesses run:
 - Review Harness
 Harness failures: None.
 
+### Cycle 012
+
+Date: 2026-07-01
+Branch: mobile/cycle-012
+Goal: Improve Event Detail market presentation with grouped World Cup market sections.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Event Detail now groups markets by Live markets, Game lines, Props, and Futures.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/src/components/EventDetail.tsx`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke` in `mobile/`.
+- Emulator tap-through to grouped event detail.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-012-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-012-holiwyn-grouped-event-detail.png`
+Bugs found: None.
+Technical debt added: None.
+Technical debt resolved:
+- Event Detail no longer presents all markets as one flat list.
+Result: Passed Cycle 012 QA. Group labels render on Event Detail and outcome buttons remain available.
+Commit: cycle branch HEAD (`Group Holiwyn mobile event detail markets`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 013 should improve backend event title/team normalization or add a deeper scripted smoke flow.
+Harnesses run:
+- QA Smoke Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures: None.
+
+### Heartbeat After Cycle 012
+
+Completed cycles: 010, 011, 012 since the last heartbeat.
+Verified progress: Market lists and Event Detail are extracted into components, and Event Detail now shows grouped market sections.
+Current app state: Holiwyn mobile has cleaner screen boundaries, backend-capable event hydration, mock trading, Portfolio, and grouped Event Detail sections.
+Current backend state: Backend health remains `ok`; no schema changes in these cycles.
+Open blockers: None for autonomous progress.
+Risks: Backend-imported World Cup events can still have generic fixture titles; server order mode remains guarded and unverified; smoke harness still captures only one default path automatically.
+Next three likely cycles: Normalize backend event/team display, add scripted smoke taps for ticket/Portfolio, and expand World Cup props/live grouping polish.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
