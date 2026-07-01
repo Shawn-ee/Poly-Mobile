@@ -114,3 +114,4 @@ Status:
 | GAP-092 | Search | Search sort controls | P1 | Yes | Verified | Cycle 081 adds Popular/Live first sorting controls to Search and verifies Live first promotes live World Cup markets in focused emulator smoke. |
 | GAP-093 | Discovery | Home Saved empty state | P1 | Yes | Verified | Cycle 082 adds a first-viewport saved-empty message on Home and verifies it in focused emulator smoke. |
 | GAP-094 | Discovery | Market/outcome query matching | P1 | Yes | Verified | Cycle 083 extends Home/Search discovery matching to market and outcome labels and verifies a clean-sheet query on Home. |
+| GAP-095 | Discovery | Home search clear action | P1 | Yes | Verified | Cycle 084 adds a Home search Clear action and verifies it restores the full market list in focused emulator smoke. |

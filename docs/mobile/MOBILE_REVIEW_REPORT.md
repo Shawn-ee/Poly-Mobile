@@ -1186,3 +1186,18 @@ Findings:
 - Mobile typecheck, focused Home search-query smoke, and mobile API request tests passed.
 Decision: Approve Cycle 083 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 084
+
+Date: 2026-07-01
+Branch: mobile/cycle-084
+Reviewer: Lead/Reviewer pass
+Scope: Home search clear action.
+Findings:
+- P1: Home search now shows an accessible close-icon Clear action only when a query is active.
+- P1: Clearing the query restores the full Home market list without leaving stale filtered state.
+- P1: Focused Home clear-search smoke launches with `clean`, taps Clear, scrolls to the restored list, and verifies Mexico plus Volume/Liquidity context.
+- P2: Search tab still uses text Clear and can later align with the icon treatment if desired.
+- Mobile typecheck, focused Home clear-search smoke, and mobile API request tests passed.
+Decision: Approve Cycle 084 for local commit/merge after scoped diff review.
+Merge approved: Yes

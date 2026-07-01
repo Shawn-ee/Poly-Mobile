@@ -1690,3 +1690,24 @@ Bugs:
 - None found.
 Visual QA:
 - The `clean` query surfaces England vs. Congo DR with Volume/Liquidity visible and without layout overlap.
+
+### Cycle 084
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:home-clear-search`
+- `npm run test:mobile-api`
+Result: Passed. Home search now exposes a Clear action when a query is active.
+Screenshots:
+- `docs/mobile/screenshots/cycle-084-holiwyn-home-clear-search-smoke.png`
+- `docs/mobile/screenshots/cycle-084-holiwyn-home-clear-search.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-084-holiwyn-home-clear-search-home.xml`
+- `docs/mobile/harness/cycle-084-holiwyn-home-clear-search-ready.xml`
+- `docs/mobile/harness/cycle-084-holiwyn-home-clear-search.xml`
+Bugs:
+- None found.
+Visual QA:
+- Clearing the `clean` query restores the placeholder and full Home list with Mexico vs. Ecuador visible.

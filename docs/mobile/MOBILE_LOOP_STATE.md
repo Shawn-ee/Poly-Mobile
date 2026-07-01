@@ -4159,6 +4159,48 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 084
+
+Date: 2026-07-01
+Branch: mobile/cycle-084
+Goal: Add a Clear action to Home search and verify the full market list returns.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Home search now shows an accessible close-icon Clear action when a query is active and clears the shared query state when tapped.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/HomeScreen.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:home-clear-search` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-084-holiwyn-home-clear-search-smoke.png`
+- `docs/mobile/screenshots/cycle-084-holiwyn-home-clear-search.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-084-holiwyn-home-clear-search-home.xml`
+- `docs/mobile/harness/cycle-084-holiwyn-home-clear-search-ready.xml`
+- `docs/mobile/harness/cycle-084-holiwyn-home-clear-search.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Search tab still uses text Clear and can later align with Home's icon treatment if desired.
+Technical debt resolved:
+- Home users can now clear an active query without manually deleting text.
+Result: Passed Cycle 084 QA. Mobile typecheck, focused Home clear-search smoke, visual screenshot review, and mobile API tests pass.
+Commit: Pending branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 085 should continue market discovery/trading parity or retry backend readiness if local services become reachable.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Home Discovery Harness
+- Search Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

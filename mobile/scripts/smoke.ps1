@@ -18,6 +18,7 @@ param(
   [switch]$HomeSaved,
   [switch]$HomeSavedEmpty,
   [switch]$HomeSearchQuery,
+  [switch]$HomeClearSearch,
   [switch]$HomeCardStats,
   [switch]$SavedSearch,
   [switch]$SearchCardStats,
@@ -164,11 +165,11 @@ try {
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
   }
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeCardStats -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeCardStats -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $SearchQuery -or $ServerUnavailable -or $ServerOrderFailure -or $SellTicket -or $Account -or $AccountLogin -or $HomeFilter -or $HomeSaved -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
@@ -178,7 +179,7 @@ try {
     "exp://10.0.2.2:$Port/--/?forceOpenOrder=1"
   } elseif ($SearchQuery) {
     "exp://10.0.2.2:$Port/--/?forceSearchQuery=zzzz"
-  } elseif ($HomeSearchQuery) {
+  } elseif ($HomeSearchQuery -or $HomeClearSearch) {
     "exp://10.0.2.2:$Port/--/?forceHomeQuery=clean"
   } elseif ($Account -or $AccountLogin) {
     "exp://10.0.2.2:$Port/--/?forceAccount=1"
@@ -194,7 +195,7 @@ try {
     @("Holiwyn", "Portfolio", "Open orders", "Cancel")
   } elseif ($SearchQuery) {
     @("Holiwyn", "Search World Cup markets", "zzzz", "0 results")
-  } elseif ($HomeSearchQuery) {
+  } elseif ($HomeSearchQuery -or $HomeClearSearch) {
     @("Holiwyn", "Search World Cup markets", "clean", "Games")
   } elseif ($Account -or $AccountLogin) {
     @("Holiwyn", "Account", "Signed out", "Demo balance")
@@ -299,6 +300,19 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-home-search-query.png"
       $homeSearchQueryHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-home-search-query.xml"
       Assert-HierarchyContains -Path $homeSearchQueryHierarchy -Expected @("clean", "England vs. Congo DR", "Volume", "Liquidity")
+      return
+    }
+
+    if ($HomeClearSearch) {
+      $homeClearReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-home-clear-search-ready.xml"
+      Assert-HierarchyContains -Path $homeClearReadyHierarchy -Expected @("clean", "Clear", "home-clear-search")
+      Invoke-TapHierarchyNode -Path $homeClearReadyHierarchy -Identifier "home-clear-search"
+      Start-Sleep -Seconds 1
+      & $adb -s $Device shell input swipe 540 1480 540 980 300 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-home-clear-search.png"
+      $homeClearSearchHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-home-clear-search.xml"
+      Assert-HierarchyContains -Path $homeClearSearchHierarchy -Expected @("Search World Cup markets", "Mexico vs. Ecuador", "Volume", "Liquidity")
       return
     }
 
