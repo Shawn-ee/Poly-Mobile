@@ -3819,8 +3819,8 @@ Technical debt added:
 Technical debt resolved:
 - Home cards now provide market activity context instead of only title, tag, and outcome prices.
 Result: Passed Cycle 076 QA after cold-launch rerun. Mobile typecheck, focused Home card stats smoke, visual screenshot review, and mobile API tests pass.
-Commit: `PENDING`
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `a28d08d` (`Add Holiwyn home card market stats`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `4f66fb1`.
 Next cycle: Cycle 077 should improve saved/search integration or retry backend readiness if Docker daemon is available.
 Harnesses run:
 - Emulator Runtime Harness
