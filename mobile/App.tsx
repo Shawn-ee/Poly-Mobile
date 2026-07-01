@@ -35,6 +35,7 @@ import {
 import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 import { loadPortfolioHistoryActivities } from "./src/services/portfolioHistoryService";
 import { loadPortfolioSnapshot } from "./src/services/portfolioSnapshotService";
+import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
 
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
 const DEFAULT_API_KEY = process.env.EXPO_PUBLIC_API_KEY || "";
@@ -95,6 +96,8 @@ export default function App() {
   const t = appCopy[locale];
   const api = useMemo(() => new PolyApi(DEFAULT_API_BASE, DEFAULT_API_KEY), []);
   const mounted = useRef(true);
+  const profilePreferencesReady = useRef(false);
+  const shouldSyncProfilePreferences = ORDER_MODE === "server" && DEFAULT_API_KEY.length > 0;
 
   useEffect(() => {
     return () => {
@@ -182,6 +185,43 @@ export default function App() {
     if (!ticketDefaultsHydrated) return;
     AsyncStorage.setItem(TICKET_DEFAULTS_STORAGE_KEY, JSON.stringify(ticketDefaults)).catch(() => undefined);
   }, [ticketDefaults, ticketDefaultsHydrated]);
+
+  useEffect(() => {
+    if (!shouldSyncProfilePreferences || !localeHydrated || !savedEventIdsHydrated || !ticketDefaultsHydrated) return;
+    let cancelled = false;
+    loadProfilePreferences(api)
+      .then((preferences) => {
+        if (cancelled || !mounted.current) return;
+        setLocale(preferences.locale);
+        setTicketDefaults({ amount: preferences.ticketDefaultAmount, side: preferences.ticketDefaultSide });
+        setSavedEventIds(new Set(preferences.savedEventIds));
+      })
+      .catch(() => undefined)
+      .finally(() => {
+        if (!cancelled && mounted.current) profilePreferencesReady.current = true;
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [api, localeHydrated, savedEventIdsHydrated, shouldSyncProfilePreferences, ticketDefaultsHydrated]);
+
+  useEffect(() => {
+    if (
+      !shouldSyncProfilePreferences ||
+      !profilePreferencesReady.current ||
+      !localeHydrated ||
+      !savedEventIdsHydrated ||
+      !ticketDefaultsHydrated
+    ) {
+      return;
+    }
+    saveProfilePreferences(api, {
+      locale,
+      ticketDefaultAmount: ticketDefaults.amount,
+      ticketDefaultSide: ticketDefaults.side,
+      savedEventIds: [...savedEventIds],
+    }).catch(() => undefined);
+  }, [api, locale, localeHydrated, savedEventIds, savedEventIdsHydrated, shouldSyncProfilePreferences, ticketDefaults, ticketDefaultsHydrated]);
 
   useEffect(() => {
     Linking.getInitialURL().then((url) => {
