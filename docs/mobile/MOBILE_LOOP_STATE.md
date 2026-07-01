@@ -4315,8 +4315,8 @@ Technical debt added:
 Technical debt resolved:
 - Futures cards now provide the same market context as match cards during discovery.
 Result: Passed Cycle 087 QA. Mobile typecheck, focused Futures card stats smoke, visual screenshot review, and mobile API tests pass.
-Commit: Pending branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `a00e225` (`Add Holiwyn futures card stats`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `5cd3b9b`.
 Next cycle: Cycle 088 should continue product parity or retry backend readiness if local services become reachable.
 Harnesses run:
 - Emulator Runtime Harness
