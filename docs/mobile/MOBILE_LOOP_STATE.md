@@ -600,7 +600,7 @@ Technical debt resolved:
 - Partial TD-010 progress: critical elements now have stable labels/test IDs for future selector-based harnesses.
 Result: Passed Cycle 015 QA. Deep smoke still passes after adding automation labels.
 Commit: cycle branch HEAD (`Label Holiwyn mobile smoke targets`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 016 should start using labels in harness where Android exposes them, or improve live market presentation.
 Harnesses run:
 - Trading Simulation Harness
