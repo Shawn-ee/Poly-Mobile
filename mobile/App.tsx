@@ -59,6 +59,8 @@ const copy = {
     orderPlaced: "Mock order placed",
     eventDetail: "Event detail",
     markets: "Markets",
+    liveNow: "Live World Cup",
+    noLive: "No live markets right now.",
     noResults: "No markets match your search.",
     language: "中文",
   },
@@ -87,6 +89,8 @@ const copy = {
     orderPlaced: "模拟订单已提交",
     eventDetail: "赛事详情",
     markets: "市场",
+    liveNow: "世界杯滚球",
+    noLive: "当前没有滚球市场。",
     noResults: "没有匹配的市场。",
     language: "EN",
   },
@@ -215,10 +219,10 @@ export default function App() {
               />
             )}
             {mainTab === "live" && (
-              <MarketList
+              <LiveScreen
                 locale={locale}
+                t={t}
                 events={events.filter((event) => event.status === "live")}
-                empty={t.noResults}
                 openEvent={setSelectedEvent}
                 openTicket={openTicket}
               />
@@ -450,6 +454,30 @@ function SearchScreen({
   );
 }
 
+function LiveScreen({
+  locale,
+  t,
+  events,
+  openEvent,
+  openTicket,
+}: {
+  locale: Locale;
+  t: typeof copy.en;
+  events: Event[];
+  openEvent: (event: Event) => void;
+  openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
+}) {
+  return (
+    <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
+      <View style={styles.liveHeader}>
+        <Text style={styles.sectionTitle}>{t.liveNow}</Text>
+        <Text style={styles.liveCount}>{events.length}</Text>
+      </View>
+      <MarketList locale={locale} events={events} empty={t.noLive} openEvent={openEvent} openTicket={openTicket} />
+    </ScrollView>
+  );
+}
+
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: "#070c14" },
   shell: { flex: 1, backgroundColor: "#070c14" },
@@ -481,6 +509,8 @@ const styles = StyleSheet.create({
   futureName: { color: "#f8fafc", fontWeight: "800" },
   futureProb: { color: "#c7d2fe", fontSize: 20, fontWeight: "900", marginTop: 4 },
   sectionTitle: { color: "#f8fafc", fontSize: 24, fontWeight: "900", marginTop: 24, marginBottom: 12 },
+  liveHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  liveCount: { minWidth: 34, textAlign: "center", color: "#ffffff", fontWeight: "900", backgroundColor: "#ef4444", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 6 },
   searchBox: { flexDirection: "row", alignItems: "center", gap: 10, height: 52, paddingHorizontal: 14, borderRadius: 12, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginBottom: 14 },
   searchInput: { flex: 1, color: "#f8fafc", fontSize: 16, fontWeight: "700" },
   segmented: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: "#263247", marginBottom: 10 },
