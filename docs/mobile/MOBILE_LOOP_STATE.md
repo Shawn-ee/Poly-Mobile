@@ -5000,6 +5000,47 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 102
+
+Date: 2026-07-01
+Branch: mobile/cycle-102
+Goal: Surface saved ticket defaults in Account preferences and verify Account displays the seeded preference.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Account preferences now show the saved ticket default side and amount, and preferences appear above login actions.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/AccountScreen.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:account-preferences` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-102-holiwyn-account-preferences-smoke.png`
+- `docs/mobile/screenshots/cycle-102-holiwyn-account-preferences.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-102-holiwyn-account-preferences-home-start.xml`
+- `docs/mobile/harness/cycle-102-holiwyn-account-preferences.xml`
+Bugs found:
+- None in product code. Harness first tried to assert a below-fold row, then the layout was improved so preferences appear before login methods and the focused smoke verifies visible preference proof.
+Technical debt added:
+- Account preference display is local-only until backend profile/preference sync exists.
+Technical debt resolved:
+- Account no longer shows only generic preference copy; it now reflects the user's saved ticket default.
+Result: Passed Cycle 102 QA. Mobile typecheck, focused account-preferences smoke, visual screenshot review, and mobile API tests pass.
+Commit: `649fb84` (`Show Holiwyn account ticket preferences`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `011ee8b`.
+Next cycle: Cycle 103 should add another user-facing account/profile preference or retry backend readiness if Docker/local Postgres become available, then write the next heartbeat.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Account Preferences Harness
+- Local Storage Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
