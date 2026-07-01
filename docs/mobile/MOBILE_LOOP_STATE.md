@@ -6754,6 +6754,49 @@ Harnesses run:
 Harness failures:
 - Initial Samsung close-position run failed on stale state, then passed after reset hardening.
 
+### Cycle 143
+
+Date: 2026-07-01
+Branch: mobile/cycle-143
+Goal: Add a Samsung-first live-market order proof for the France vs. Argentina World Cup live flow.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; harness/device proof cycle plus launch-state hardening.
+Backend/API changed: No backend route change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/scripts/smoke-samsung.ps1`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `npm run smoke:samsung:live-order` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-143-samsung-live-order-smoke.png`
+- `docs/mobile/screenshots/cycle-143-samsung-live-order-ready.png`
+- `docs/mobile/screenshots/cycle-143-samsung-live-order-ticket.png`
+- `docs/mobile/screenshots/cycle-143-samsung-live-order-portfolio.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-143-samsung-live-order-home.xml`
+- `docs/mobile/harness/cycle-143-samsung-live-order-ready.xml`
+- `docs/mobile/harness/cycle-143-samsung-live-order-ticket.xml`
+- `docs/mobile/harness/cycle-143-samsung-live-order-portfolio.xml`
+Bugs found:
+- Forced live reset launches could return to Home after the delayed reset. Fixed by preserving `forceLive=1` in the reset guard.
+- The live-order harness expected an older combined order/price label. Updated it to match the current separated execution-detail UI.
+Technical debt added:
+- Live-order proof remains mock-mode/Expo Go; server-backed live order and close execution remain pending.
+Technical debt resolved:
+- Samsung real-device QA now covers live-market ticket opening and mock order placement through Portfolio confirmation.
+Result: Passed Cycle 143 QA. Samsung live-order smoke, mobile typecheck, and mobile API/history tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 144 should add Samsung live-position close proof or continue toward server-mode device order execution.
+Harnesses run:
+- Samsung Live Order Smoke Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History Unit Harness
+- Review Harness
+Harness failures:
+- Initial Samsung live-order proof failed on reset-state/navigation and then on a stale harness label expectation; both were fixed before final pass.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

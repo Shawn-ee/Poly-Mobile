@@ -2074,3 +2074,19 @@ Findings:
 - Samsung close-position smoke, mobile typecheck, and mobile API/history tests passed.
 Decision: Approve Cycle 142 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 143
+
+Date: 2026-07-01
+Branch: mobile/cycle-143
+Reviewer: Lead/Reviewer pass
+Scope: Samsung live-order smoke wrapper.
+Findings:
+- P1: `smoke-samsung.ps1` now supports `-LiveOrder`, giving the physical phone a repeatable proof for the live-market buy path.
+- P1: Forced reset launch handling now preserves `forceLive=1`, preventing clean-state Samsung live smokes from being returned to Home after the delayed reset.
+- P1: The live-order smoke now aligns with the current Portfolio UI by checking separated order title and execution-price fields.
+- P1: Captured Samsung evidence verifies Live World Cup, ticket opening, mock buy placement, Portfolio confirmation, live badge/clock, execution price, invested value, current value, and P/L.
+- P2: This remains mock-mode live trading proof; server-backed live order execution and close execution still need later device/API verification.
+- Samsung live-order smoke, mobile typecheck, and mobile API/history tests passed.
+Decision: Approve Cycle 143 for local commit/merge after scoped diff review.
+Merge approved: Yes

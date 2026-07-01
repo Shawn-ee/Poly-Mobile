@@ -254,6 +254,7 @@ export default function App() {
     if (!mounted.current || !url) return;
     const shouldForceWorldCupWinnerFranceTicket = url.includes("forceWorldCupWinnerFranceTicket=1");
     const shouldForceClosedWorldCupWinnerFrance = url.includes("forceClosedWorldCupWinnerFrance=1");
+    const shouldForceLive = url.includes("forceLive=1");
     setForceOrderFailure(url.includes("forceOrderFailure=1"));
     if (url.includes("forceResetState=1")) {
       skipPortfolioHydration.current = true;
@@ -275,7 +276,7 @@ export default function App() {
         setForceAccountSignedIn(false);
       };
       resetRuntimeState();
-      if (!shouldForceWorldCupWinnerFranceTicket && !shouldForceClosedWorldCupWinnerFrance) {
+      if (!shouldForceWorldCupWinnerFranceTicket && !shouldForceClosedWorldCupWinnerFrance && !shouldForceLive) {
         setTimeout(resetRuntimeState, 750);
       }
       AsyncStorage.multiRemove([
@@ -287,7 +288,7 @@ export default function App() {
     if (url.includes("forcePortfolio=1")) {
       setMainTab("portfolio");
     }
-    if (url.includes("forceLive=1")) {
+    if (shouldForceLive) {
       setMainTab("live");
     }
     if (shouldForceWorldCupWinnerFranceTicket) {
