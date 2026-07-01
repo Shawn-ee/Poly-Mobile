@@ -5369,6 +5369,44 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 111
+
+Date: 2026-07-01
+Branch: mobile/cycle-111
+Goal: Surface market/outcome count summary in Event Detail and verify Mexico vs. Ecuador detail on emulator.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Event Detail hero now includes compact market and outcome count pills.
+Backend/API changed: No backend code change; counts are derived from the event payload already used by Event Detail.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/EventDetail.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:event-detail-summary` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-111-holiwyn-event-detail-summary-smoke.png`
+- `docs/mobile/screenshots/cycle-111-holiwyn-event-detail-summary.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-111-holiwyn-event-detail-summary-home-start.xml`
+- `docs/mobile/harness/cycle-111-holiwyn-event-detail-summary.xml`
+Bugs found:
+- The first smoke attempt tried to tap a below-fold event card and failed to open Event Detail. The harness was hardened with a direct Mexico vs. Ecuador detail route and rerun successfully.
+Technical debt added:
+- Event Detail counts are client-derived until backend market metadata is richer.
+Technical debt resolved:
+- Event Detail now gives users a quick count of market breadth and tradable outcomes before they scroll.
+Result: Passed Cycle 111 QA. Mobile typecheck, focused emulator event-detail-summary smoke, and mobile API/profile-preference tests pass.
+Commit: `8753662` (`Show Event Detail market summary`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `0f03559`.
+Next cycle: Cycle 112 should continue World Cup detail/trading polish or retry backend readiness if local services become available.
+Harnesses run:
+- Mobile Typecheck Harness
+- Event Detail Summary Smoke Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- Initial Event Detail summary smoke failed because the harness tapped a below-fold card instead of opening detail. Fixed with direct detail deep link; rerun passed.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
