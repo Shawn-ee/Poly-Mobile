@@ -5126,6 +5126,41 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 105
+
+Date: 2026-07-01
+Branch: mobile/cycle-105
+Goal: Wire guarded runtime profile-preference load/save while keeping mock mode local-only.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No UI change.
+Backend/API changed: App shell now uses the profile-preferences service only when server mode and an API key are both present.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/__tests__/profilePreferencesService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- None; this was a guarded runtime/backend seam with no intended UI change.
+Harness evidence captured:
+- Mobile API test output passed with 6 tests across API request shape and profile-preference mapper coverage.
+Bugs found:
+- None in product code. Process recovery created `mobile/cycle-105` from the pre-cycle parent and merged it after an accidental direct loop-branch commit.
+Technical debt added:
+- Sync failures are silent until a user-facing profile sync status is designed.
+Technical debt resolved:
+- Server-authenticated builds can now hydrate and save language, ticket defaults, and saved markets through the typed profile preferences seam.
+Result: Passed Cycle 105 QA. Mobile typecheck and mobile API/profile-preference service tests pass.
+Commit: `a4b2a0a` (`Guard Holiwyn profile preference sync`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `d2c6298`.
+Next cycle: Cycle 106 should retry backend readiness or add visible profile sync status for server-mode failures, then write the next heartbeat.
+Harnesses run:
+- Mobile Typecheck Harness
+- Server Auth Request Harness
+- Profile Preferences Service Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
