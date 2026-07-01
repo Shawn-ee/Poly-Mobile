@@ -280,6 +280,33 @@ Harness evidence:
 Bugs fixed:
 - Emulator stylus handwriting intercepted ADB text input; smoke now disables soft input for Search while preserving normal app keyboard behavior outside smoke.
 
+### Cycle 024
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed after recovery. Live tab shows freshness copy, refresh control, and a verified refreshed state.
+Screenshots:
+- `docs/mobile/screenshots/cycle-024-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-024-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-024-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-024-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-024-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-024-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-024-holiwyn-search-query.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-024-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-024-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-024-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-024-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-024-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-024-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-024-holiwyn-search-query.xml`
+Bugs fixed:
+- Initial Live refresh assertion could pass by matching the live count. The final harness checks the `refreshed` status text.
+
 ### Cycle 014
 
 Date: 2026-07-01

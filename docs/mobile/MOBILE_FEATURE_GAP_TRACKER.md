@@ -54,3 +54,4 @@ Status:
 | GAP-032 | Architecture | Search screen component | P2 | Yes | Verified | Cycle 021 extracts Search tab UI and filter behavior into `mobile/src/components/SearchScreen.tsx`. |
 | GAP-033 | Architecture | Live screen component | P2 | Yes | Verified | Cycle 022 extracts Live tab UI into `mobile/src/components/LiveScreen.tsx`. |
 | GAP-034 | Harness | Typed-query Search smoke | P1 | No | Verified | Cycle 023 types a zero-result query and asserts Results, Clear, and no-results Search state. |
+| GAP-035 | Live | Freshness and refresh affordance | P1 | No | Verified | Cycle 024 adds Live freshness copy, Refresh control, and refreshed-state smoke coverage. |
