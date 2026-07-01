@@ -560,6 +560,8 @@ export default function App() {
         title: result.title,
         outcome: result.outcome,
         amount: result.amount,
+        side: result.side,
+        probability: result.probability,
         isLive: isLiveOrder,
         liveClock,
       },
@@ -581,6 +583,8 @@ export default function App() {
         title: position.title,
         outcome: position.outcome,
         amount: value,
+        side: position.side,
+        probability: position.probability,
         isLive: position.isLive,
         liveClock: position.liveClock,
       },
@@ -596,6 +600,8 @@ export default function App() {
       title: order.title,
       outcome: order.outcome,
       amount: order.remaining,
+      side: order.side,
+      probability: Math.round(order.price * 100),
     };
     setActivities((current) =>
       current.some((activity) => activity.id === canceledActivity.id) ? current : [canceledActivity, ...current],

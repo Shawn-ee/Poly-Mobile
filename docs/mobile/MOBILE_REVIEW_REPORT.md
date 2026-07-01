@@ -1906,3 +1906,18 @@ Findings:
 - Mobile typecheck through the smoke script and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 131 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 132
+
+Date: 2026-07-01
+Branch: mobile/cycle-132
+Reviewer: Lead/Reviewer pass
+Scope: Recent activity execution details for order history parity.
+Findings:
+- P1: Opened and closed activity records can now carry side and probability metadata without breaking existing backend history rows.
+- P1: Bought Recent activity rows show filled shares, execution price, and implied odds using the same mock trade economics as the ticket/latest-order confirmation.
+- P1: The future-list-order smoke now scrolls into Recent activity and verifies the execution detail line after placing the France World Cup winner order.
+- P2: Backend history rows still do not provide execution price/share metadata; the optional fields keep the UI compatible until server fills/history are richer.
+- Mobile typecheck, focused emulator smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 132 for local commit/merge after scoped diff review.
+Merge approved: Yes

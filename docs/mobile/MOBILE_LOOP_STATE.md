@@ -6320,6 +6320,52 @@ Harnesses run:
 Harness failures:
 - Initial offscreen confirmation, flaky tap, URL flag, delayed-reset, and stale assertion issues were corrected; final rerun passed.
 
+### Cycle 132
+
+Date: 2026-07-01
+Branch: mobile/cycle-132
+Goal: Add execution-style details to Recent activity for order history parity.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Recent activity bought rows now show filled shares, execution price, and implied odds.
+Backend/API changed: No backend code change. Activity execution metadata is optional so existing backend history rows remain compatible.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run smoke:future-list-order` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-132-holiwyn-activity-execution-smoke.png`
+- `docs/mobile/screenshots/cycle-132-holiwyn-activity-execution-ticket.png`
+- `docs/mobile/screenshots/cycle-132-holiwyn-activity-execution-portfolio.png`
+- `docs/mobile/screenshots/cycle-132-holiwyn-activity-execution-activity.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-132-holiwyn-activity-execution-expo-menu.xml`
+- `docs/mobile/harness/cycle-132-holiwyn-activity-execution-home.xml`
+- `docs/mobile/harness/cycle-132-holiwyn-activity-execution-ticket.xml`
+- `docs/mobile/harness/cycle-132-holiwyn-activity-execution-portfolio.xml`
+- `docs/mobile/harness/cycle-132-holiwyn-activity-execution-activity.xml`
+Bugs found:
+- Initial activity assertion used stale copy; fixed to verify `Bought`.
+- One scroll did not reach the activity card; fixed with a second scroll before activity capture.
+Technical debt added:
+- Backend-backed history still lacks authoritative execution share/price fields.
+Technical debt resolved:
+- Recent activity now preserves useful execution context for mock trades instead of showing only action, market, outcome, and amount.
+Result: Passed Cycle 132 QA. Typecheck, focused future-list-order smoke, and mobile API/profile-preference tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 133 should continue order/history parity, likely with close/cancel history detail proof, or retry backend/server-mode proof if local services become available.
+Harnesses run:
+- Mobile Typecheck Harness
+- Future List Order Smoke Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Visual Review Harness
+- Review Harness
+Harness failures:
+- Stale activity-label assertion and insufficient scroll depth were corrected; final rerun passed.
+
 ### Heartbeat After Cycle 130
 
 Completed cycles: 128, 129, 130.
