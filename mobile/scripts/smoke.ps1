@@ -149,7 +149,7 @@ try {
   Save-Screenshot -Name "cycle-current-holiwyn-smoke.png"
 
   if ($Deep) {
-    & $adb -s $Device shell input tap 500 1580 | Out-Null
+    Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "event-card-mexico-ecuador"
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-event-detail.png"
     $eventDetailHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail.xml"
@@ -165,7 +165,10 @@ try {
     Start-Sleep -Seconds 1
     Wait-HierarchyContains -Name "cycle-current-holiwyn-home-after-detail.xml" -Expected @("Holiwyn", "World Cup", "Games", "Futures") -Attempts 5 -DelaySeconds 1 | Out-Null
 
-    & $adb -s $Device shell input tap 230 850 | Out-Null
+    & $adb -s $Device shell input swipe 540 1550 540 900 350 | Out-Null
+    Start-Sleep -Seconds 1
+    $homeAfterDetailHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-home-after-detail.xml"
+    Invoke-TapHierarchyNode -Path $homeAfterDetailHierarchy -Identifier "event-outcome-mexico-ecuador-mexico-ecuador-winner-mexico"
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-ticket.png"
     $ticketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket.xml"
@@ -187,7 +190,7 @@ try {
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-portfolio-closed.png"
     $portfolioClosedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-closed.xml"
-    Assert-HierarchyContains -Path $portfolioClosedHierarchy -Expected @("Fake balance", "10,882.35 USDT", "No positions yet", "Recent activity", "Closed", "Bought")
+    Assert-HierarchyContains -Path $portfolioClosedHierarchy -Expected @("Fake balance", "10,468.75 USDT", "No positions yet", "Recent activity", "Closed", "Bought")
 
     Invoke-TapHierarchyNode -Path $portfolioClosedHierarchy -Identifier "holiwyn-live-tab"
     Start-Sleep -Seconds 1

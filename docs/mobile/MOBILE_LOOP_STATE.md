@@ -2416,6 +2416,63 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 050
+
+Date: 2026-07-01
+Branch: mobile/cycle-050
+Goal: Move event opening and event-market ticket opening onto selector-driven harness controls.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No visible UI change; event cards and probability buttons now expose stable automation ids.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/src/components/MarketLists.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-050-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-050-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-050-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-050-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-050-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-050-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-050-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-050-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-050-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-050-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-050-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-050-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-050-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-050-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-050-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-050-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-050-holiwyn-ticket-max.xml`
+- `docs/mobile/harness/cycle-050-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-050-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-050-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-050-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-050-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-050-holiwyn-search-query.xml`
+Bugs found:
+- First selector attempt tapped a clipped event outcome under the bottom tab; added a Home scroll before tapping and reran to pass.
+Technical debt added:
+- Prop-section scrolling and Android hardware Back still use low-level device actions.
+Technical debt resolved:
+- Event detail opening and the first event-market ticket opening now use stable hierarchy ids instead of fixed tap coordinates.
+Result: Passed Cycle 050 QA. Deep smoke verifies event card selector, event outcome selector, Mexico event-market ticket, max-sized order, close balance `10,468.75 USDT`, Live refresh, and Search.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 051 should add server-mode order failure handling or continue reducing prop/back harness device actions.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- One recoverable clipped-outcome selector tap before final pass.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
