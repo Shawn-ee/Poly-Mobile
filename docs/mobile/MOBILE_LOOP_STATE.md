@@ -6702,8 +6702,8 @@ Technical debt added:
 Technical debt resolved:
 - Samsung real-device QA now covers both buy/order placement and sell-ticket readiness.
 Result: Passed Cycle 141 QA. Samsung sell-ticket smoke, mobile typecheck, and mobile API/history tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `85c0001` (`Add Samsung sell ticket smoke`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `2dc0586`.
 Next cycle: Cycle 142 should add a Samsung proof for closing an open position or continue server-mode order proof preparation.
 Harnesses run:
 - Samsung Future List Sell Smoke Harness
