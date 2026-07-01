@@ -440,3 +440,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 031 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 032
+
+Date: 2026-07-01
+Branch: mobile/cycle-032
+Reviewer: Lead/Reviewer pass
+Scope: Header component extraction.
+Findings:
+- P1: `Header` now owns brand, language toggle, promo, and notification presentation.
+- P2: Header extraction preserves the visible Home shell and full deep-smoke flow.
+- P2: Copy still lives in `App.tsx`; extracting localization remains useful after the current component work.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 032 for local commit/merge after scoped diff review.
+Merge approved: Yes

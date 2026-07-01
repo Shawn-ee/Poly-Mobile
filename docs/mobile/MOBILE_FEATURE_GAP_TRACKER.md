@@ -62,3 +62,4 @@ Status:
 | GAP-040 | Architecture | World Cup segmented control component | P2 | Yes | Verified | Cycle 029 extracts the Home Games/Futures segmented control into `mobile/src/components/WorldCupSegmented.tsx`. |
 | GAP-041 | Architecture | Home screen component | P2 | Yes | Verified | Cycle 030 extracts Home screen composition into `mobile/src/components/HomeScreen.tsx`. |
 | GAP-042 | Portfolio | Position value and P/L detail | P1 | No | Verified | Cycle 031 adds Entry, Current value, and Est. P/L to fake-token Portfolio positions. |
+| GAP-043 | Architecture | Header component | P2 | Yes | Verified | Cycle 032 extracts brand/language/promo/notification header into `mobile/src/components/Header.tsx`. |
