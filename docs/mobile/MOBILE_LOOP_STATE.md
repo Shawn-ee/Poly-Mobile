@@ -4118,6 +4118,47 @@ Open blockers: None for autonomous product/harness progress. Live authenticated 
 Risks: Account and Saved state are local/session-only; Home/Search market stats, Popular ranking, and ticket quote math remain local estimates until backend auth, quote, popularity, and order-book APIs can feed them.
 Next three likely cycles: Add richer saved/search affordances, improve market detail trading parity, and retry backend readiness when local services become reachable.
 
+### Cycle 083
+
+Date: 2026-07-01
+Branch: mobile/cycle-083
+Goal: Extend Home/Search discovery matching to market and outcome labels.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Home/Search queries now match event title/tag/team names plus market titles and outcome labels.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:home-search-query` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-083-holiwyn-home-search-query-smoke.png`
+- `docs/mobile/screenshots/cycle-083-holiwyn-home-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-083-holiwyn-home-search-query-home.xml`
+- `docs/mobile/harness/cycle-083-holiwyn-home-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Discovery still uses local substring matching until backend search/ranking is available.
+Technical debt resolved:
+- Market-specific terms like `clean` can now surface relevant World Cup event cards from Home/Search.
+Result: Passed Cycle 083 QA. Mobile typecheck, focused Home search-query smoke, visual screenshot review, and mobile API tests pass.
+Commit: Pending branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 084 should continue market discovery/trading parity or retry backend readiness if local services become reachable.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Home Discovery Harness
+- Search Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

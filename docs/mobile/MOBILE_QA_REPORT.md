@@ -1670,3 +1670,23 @@ Bugs:
 - None found.
 Visual QA:
 - Saved empty copy is visible in the first viewport between the filter chips and Games/Futures control.
+
+### Cycle 083
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:home-search-query`
+- `npm run test:mobile-api`
+Result: Passed. Home/Search discovery now matches market and outcome labels, not only event/team names.
+Screenshots:
+- `docs/mobile/screenshots/cycle-083-holiwyn-home-search-query-smoke.png`
+- `docs/mobile/screenshots/cycle-083-holiwyn-home-search-query.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-083-holiwyn-home-search-query-home.xml`
+- `docs/mobile/harness/cycle-083-holiwyn-home-search-query.xml`
+Bugs:
+- None found.
+Visual QA:
+- The `clean` query surfaces England vs. Congo DR with Volume/Liquidity visible and without layout overlap.

@@ -113,3 +113,4 @@ Status:
 | GAP-091 | Event detail | Save from detail | P1 | Yes | Verified | Cycle 080 adds an Event Detail save/star control and verifies saved state appears in Search Saved. |
 | GAP-092 | Search | Search sort controls | P1 | Yes | Verified | Cycle 081 adds Popular/Live first sorting controls to Search and verifies Live first promotes live World Cup markets in focused emulator smoke. |
 | GAP-093 | Discovery | Home Saved empty state | P1 | Yes | Verified | Cycle 082 adds a first-viewport saved-empty message on Home and verifies it in focused emulator smoke. |
+| GAP-094 | Discovery | Market/outcome query matching | P1 | Yes | Verified | Cycle 083 extends Home/Search discovery matching to market and outcome labels and verifies a clean-sheet query on Home. |
