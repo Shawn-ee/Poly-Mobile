@@ -36,12 +36,14 @@ export function AccountScreen({
   t,
   balance,
   forceSignedIn,
+  languagePreferenceValue,
   ticketDefaultAmount,
   ticketDefaultSide,
 }: {
   t: AccountCopy;
   balance: number;
   forceSignedIn?: boolean;
+  languagePreferenceValue: string;
   ticketDefaultAmount: string;
   ticketDefaultSide: "buy" | "sell";
 }) {
@@ -104,7 +106,9 @@ export function AccountScreen({
         <Text style={styles.sectionTitle}>{t.preferences}</Text>
         <View style={styles.row}>
           <Ionicons name="language-outline" size={20} color="#93c5fd" />
-          <Text style={styles.rowText}>{t.languagePreference}</Text>
+          <Text style={styles.rowText}>
+            {t.languagePreference}: {languagePreferenceValue}
+          </Text>
         </View>
         <View accessibilityLabel="account-ticket-defaults" testID="account-ticket-defaults" style={styles.row}>
           <Ionicons name="swap-horizontal-outline" size={20} color="#93c5fd" />
