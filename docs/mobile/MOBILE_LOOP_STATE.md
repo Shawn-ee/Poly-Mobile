@@ -2658,6 +2658,79 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 054
+
+Date: 2026-07-01
+Branch: mobile/cycle-054
+Goal: Add emulator-visible harness coverage for open-order cancellation.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No normal-path visual change; harness launch can open Portfolio with a fake open order for cancellation proof.
+Backend/API changed: None beyond the Cycle 053 cancel endpoint wiring.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/package.json`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:open-order-cancel` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-054-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-open-order.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-open-order-canceled.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-054-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-054-holiwyn-open-order.xml`
+- `docs/mobile/harness/cycle-054-holiwyn-open-order-canceled.xml`
+- `docs/mobile/harness/cycle-054-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-054-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-054-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-054-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-054-holiwyn-ticket-max.xml`
+- `docs/mobile/harness/cycle-054-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-054-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-054-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-054-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-054-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-054-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- The open-order fixture is harness-only and should remain isolated from production launches.
+Technical debt resolved:
+- Open-order cancellation is now emulator-proven with before/after Portfolio evidence.
+Result: Passed Cycle 054 QA. Focused cancel smoke verifies the open-order Cancel control and canceled activity; normal deep smoke verifies the standard World Cup trade, close, Live, and Search flows still pass.
+Commit: cycle branch HEAD (`pending`)
+Merged: Pending local merge.
+Next cycle: Cycle 055 should continue reducing remaining coordinate/keyevent actions or add combo/open-order server fixture work.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 054
+
+Completed cycles: 052, 053, 054 since the last heartbeat.
+Verified progress: Ticket order failures now have a dedicated emulator smoke, Portfolio open orders have a Cancel affordance wired to the canonical server cancel endpoint, and a focused emulator harness proves open-order cancellation with local canceled activity feedback.
+Current app state: Holiwyn mobile has verified Home, Event Detail grouped markets/props, event-market ticket balance/max/preset sizing, successful mock order, forced order failure, Portfolio summary/detail/close/activity/order confirmation, open-order cancel, Live refresh, Search browse, and typed Search zero-result flows on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history and order-cancel API seams are wired; backend health is unavailable during mobile smoke, so authenticated server trading and server-backed cancellation still need seeded end-to-end verification.
+Open blockers: None for autonomous progress.
+Risks: Some deep-smoke navigation still uses scroll/keyevent actions; open-order cancel server behavior is API-wired but not verified against a live authenticated backend order; no deposit/withdraw work has been touched.
+Next three likely cycles: Reduce remaining low-level harness actions, add emulator-visible server/fixture coverage for open-order paths, and expand World Cup market/trade parity.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

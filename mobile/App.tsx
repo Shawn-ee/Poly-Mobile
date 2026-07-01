@@ -36,6 +36,15 @@ import { loadPortfolioSnapshot } from "./src/services/portfolioSnapshotService";
 
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
 const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? "server" : "mock";
+const SMOKE_OPEN_ORDER: OpenOrder = {
+  id: "smoke-open-order",
+  title: "Mexico vs. Ecuador winner",
+  outcome: "Mexico",
+  side: "buy",
+  status: "OPEN",
+  price: 0.47,
+  remaining: 250,
+};
 
 type MainTab = "home" | "live" | "portfolio" | "search";
 export default function App() {
@@ -71,6 +80,10 @@ export default function App() {
     Linking.getInitialURL().then((url) => {
       if (!mounted.current || !url) return;
       setForceOrderFailure(url.includes("forceOrderFailure=1"));
+      if (url.includes("forceOpenOrder=1")) {
+        setOpenOrders([SMOKE_OPEN_ORDER]);
+        setMainTab("portfolio");
+      }
     });
   }, []);
 

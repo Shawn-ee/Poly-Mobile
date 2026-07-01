@@ -5,7 +5,8 @@ param(
   [string]$BackendBaseUrl = "http://127.0.0.1:3000",
   [string]$HierarchyOutputDir = "docs\mobile\harness",
   [switch]$Deep,
-  [switch]$OrderFailure
+  [switch]$OrderFailure,
+  [switch]$OpenOrderCancel
 )
 
 $ErrorActionPreference = "Stop"
@@ -140,20 +141,39 @@ try {
   $previousSmokeInputFlag = $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT
   $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT = "1"
   $expoArgs = @("expo", "start", "--host", "localhost", "--port", "$Port")
-  if ($OrderFailure) {
+  if ($OrderFailure -or $OpenOrderCancel) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
-  Start-Sleep -Seconds $(if ($OrderFailure) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel) { 18 } else { 8 })
 
-  $launchUrl = if ($OrderFailure) { "exp://10.0.2.2:$Port/--/?forceOrderFailure=1" } else { "exp://10.0.2.2:$Port" }
+  $launchUrl = if ($OrderFailure) {
+    "exp://10.0.2.2:$Port/--/?forceOrderFailure=1"
+  } elseif ($OpenOrderCancel) {
+    "exp://10.0.2.2:$Port/--/?forceOpenOrder=1"
+  } else {
+    "exp://10.0.2.2:$Port"
+  }
   & $adb -s $Device shell am start -a android.intent.action.VIEW -d $launchUrl | Out-Null
   Start-Sleep -Seconds 10
 
-  $homeHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-home.xml" -Expected @("Holiwyn", "World Cup", "Games", "Futures") -RestartUrl $launchUrl
+  $launchExpected = if ($OpenOrderCancel) { @("Holiwyn", "Portfolio", "Open orders", "Cancel") } else { @("Holiwyn", "World Cup", "Games", "Futures") }
+  $homeHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-home.xml" -Expected $launchExpected -RestartUrl $launchUrl
   Save-Screenshot -Name "cycle-current-holiwyn-smoke.png"
 
   if ($Deep) {
+    if ($OpenOrderCancel) {
+      Save-Screenshot -Name "cycle-current-holiwyn-open-order.png"
+      $openOrderHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-open-order.xml"
+      Assert-HierarchyContains -Path $openOrderHierarchy -Expected @("Open orders", "Mexico vs. Ecuador winner", "Remaining", "Cancel")
+      Invoke-TapHierarchyNode -Path $openOrderHierarchy -Identifier "cancel-open-order-smoke-open-order"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-open-order-canceled.png"
+      $openOrderCanceledHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-open-order-canceled.xml"
+      Assert-HierarchyContains -Path $openOrderCanceledHierarchy -Expected @("Recent activity", "Canceled", "Mexico vs. Ecuador winner", "250 USDT")
+      return
+    }
+
     Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "event-card-mexico-ecuador"
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-event-detail.png"
