@@ -1115,8 +1115,8 @@ Technical debt added:
 Technical debt resolved:
 - None.
 Result: Passed Cycle 026 QA after Recovery Harness. The Home featured card is rendered by the new component and deep smoke still proves ticket, portfolio, live refresh, and search paths.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge after commit.
+Commit: cycle branch HEAD (`Extract Holiwyn featured futures card`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 027 should remove the dead inline featured-card function with an encoding-safe patch or continue Home screen decomposition, then write the next heartbeat after merge.
 Harnesses run:
 - QA Smoke Harness
