@@ -5854,8 +5854,8 @@ Technical debt added:
 Technical debt resolved:
 - Live in-play time context now survives from ticket to Portfolio confirmation/activity instead of being visible only inside the ticket.
 Result: Passed Cycle 121 QA. Focused live-portfolio-badge-deep smoke, visual screenshot review, and mobile API/profile-preference tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `9469c4b` (`Persist live clock in Portfolio`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `fd6cad0`.
 Next cycle: Cycle 122 should reduce emulator/Expo harness latency by avoiding unnecessary full Expo Go clears and using app-level reset/deep-link state controls where safe.
 Harnesses run:
 - Mobile Typecheck Harness
