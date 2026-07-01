@@ -127,3 +127,11 @@ export type PortfolioSnapshot = {
   openOrders: PortfolioOpenOrderItem[];
   comboOrders: unknown[];
 };
+
+export type ProfilePreferences = {
+  locale: "en" | "zh";
+  ticketDefaultAmount: string;
+  ticketDefaultSide: "BUY" | "SELL";
+  savedEventIds: string[];
+  updatedAt?: string;
+};

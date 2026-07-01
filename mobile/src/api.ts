@@ -1,4 +1,4 @@
-import type { EventDetail, EventSummary, Market, PortfolioHistoryItem, PortfolioSnapshot, Quote } from "./types";
+import type { EventDetail, EventSummary, Market, PortfolioHistoryItem, PortfolioSnapshot, ProfilePreferences, Quote } from "./types";
 
 const trimSlash = (value: string) => value.replace(/\/+$/, "");
 const REQUEST_TIMEOUT_MS = 3500;
@@ -105,6 +105,17 @@ export class PolyApi {
   cancelOrder(orderId: string) {
     return this.request(`/api/orders/${encodeURIComponent(orderId)}`, {
       method: "DELETE",
+    });
+  }
+
+  getProfilePreferences() {
+    return this.request<{ preferences: ProfilePreferences }>(`/api/profile/preferences`);
+  }
+
+  saveProfilePreferences(input: ProfilePreferences) {
+    return this.request<{ preferences: ProfilePreferences }>(`/api/profile/preferences`, {
+      method: "PUT",
+      body: JSON.stringify(input),
     });
   }
 }
