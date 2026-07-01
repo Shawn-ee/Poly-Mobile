@@ -3214,8 +3214,8 @@ Technical debt added:
 Technical debt resolved:
 - Server-mode launch now has a deterministic strict gate for live-smoke readiness instead of a best-effort preflight only.
 Result: Passed Cycle 063 QA. Strict server-mode readiness is explicit and non-strict preflight/typecheck/API tests pass.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `accd858` (`Add Holiwyn strict server preflight gate`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `5719f63`.
 Next cycle: Cycle 064 should continue toward live authenticated backend proof, likely by discovering/generating safe local API credentials or starting the backend readiness path.
 Harnesses run:
 - Server Mode Preflight Harness
