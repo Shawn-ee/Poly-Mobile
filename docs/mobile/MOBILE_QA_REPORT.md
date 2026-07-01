@@ -2894,3 +2894,23 @@ Bugs:
 - The first timestamp proof failed until the forced-state hydration race was fixed.
 Visual QA:
 - Samsung proof shows the closed activity row with `Closed`, `Today 2:04 PM`, `World Cup winner - France`, entry/current value/P/L details, and the close amount.
+
+### Cycle 138
+
+Date: 2026-07-01
+Device: Samsung S23 through Expo Go (`adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`)
+Build/run command:
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+- `npm run smoke:samsung:closed-history`
+Result: Passed. Backend portfolio history now maps `resolveTime` or fallback `createdAt` into mobile activity timestamps, and the Samsung timestamp smoke remains green.
+Screenshots:
+- `docs/mobile/screenshots/cycle-138-samsung-backend-history-time-smoke.png`
+- `docs/mobile/screenshots/cycle-138-samsung-backend-history-time-closed-history.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-138-samsung-backend-history-time-home.xml`
+- `docs/mobile/harness/cycle-138-samsung-backend-history-time-closed-history.xml`
+Bugs:
+- Initial adapter test expected UTC display values; corrected expectations to the app's explicit `America/Chicago` display timezone.
+Visual QA:
+- Samsung proof still shows the closed Portfolio history row with timestamp context and no regression in fake balance, closed activity, entry/current value, or P/L rows.
