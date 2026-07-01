@@ -5627,6 +5627,51 @@ Harnesses run:
 Harness failures:
 - Initial live-order attempts exposed Expo Go developer-menu interruption and an over-specific transient Portfolio assertion; both were hardened and rerun successfully.
 
+### Cycle 117
+
+Date: 2026-07-01
+Branch: mobile/cycle-117
+Goal: Verify a live World Cup mock order can be closed from Portfolio after placement.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: No user-facing UI change; this cycle adds focused live open-and-close lifecycle proof.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run smoke:live-order-close` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-117-holiwyn-live-order-close-smoke.png`
+- `docs/mobile/screenshots/cycle-117-holiwyn-live-order-close-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-117-holiwyn-live-order-close-ticket.png`
+- `docs/mobile/screenshots/cycle-117-holiwyn-live-order-close-portfolio.png`
+- `docs/mobile/screenshots/cycle-117-holiwyn-live-order-close-closed.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-117-holiwyn-expo-menu-recovered.xml`
+- `docs/mobile/harness/cycle-117-holiwyn-live-order-close-home.xml`
+- `docs/mobile/harness/cycle-117-holiwyn-live-order-close-ticket-ready.xml`
+- `docs/mobile/harness/cycle-117-holiwyn-live-order-close-ticket.xml`
+- `docs/mobile/harness/cycle-117-holiwyn-live-order-close-portfolio.xml`
+- `docs/mobile/harness/cycle-117-holiwyn-live-order-close-closed.xml`
+Bugs found:
+- Expo Go can leave a transparent touch layer above Holiwyn after developer-menu interruption. The live-ticket retry path now clears it, relaunches the Live deep link, and retries the tap.
+Technical debt added:
+- Close-position value remains local mock math until backend pricing and position settlement are available.
+Technical debt resolved:
+- Live trading now has direct emulator proof for both opening and closing a mock position.
+Result: Passed Cycle 117 QA. Mobile typecheck, focused emulator live-order-close smoke, and mobile API/profile-preference tests pass.
+Commit: `TBD` (`Verify Live order close`)
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 118 should continue live trading polish or add live-order history/detail visibility, then write the heartbeat for Cycles 116-118.
+Harnesses run:
+- Mobile Typecheck Harness
+- Live Order Close Smoke Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- Initial live-order-close run found no-op live outcome taps due to an invisible Expo touch layer; the harness was hardened and rerun successfully.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

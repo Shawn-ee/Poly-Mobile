@@ -2394,3 +2394,30 @@ Bugs:
 - Initial Portfolio assertion expected a transient `Order placed` message, but the durable proof is the reduced fake balance plus the open France vs. Argentina position row. The assertion now checks the durable Portfolio state.
 Visual QA:
 - Portfolio shows `9,900 USDT`, `Open positions` count `1`, `Recent activity` count `1`, and a `France vs. Argentina` position with `MOCK - Buy - France - 41%`.
+
+### Cycle 117
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554` with Expo Go
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run smoke:live-order-close`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Live World Cup order placement now has focused close-position lifecycle proof on Android emulator.
+Screenshots:
+- `docs/mobile/screenshots/cycle-117-holiwyn-live-order-close-smoke.png`
+- `docs/mobile/screenshots/cycle-117-holiwyn-live-order-close-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-117-holiwyn-live-order-close-ticket.png`
+- `docs/mobile/screenshots/cycle-117-holiwyn-live-order-close-portfolio.png`
+- `docs/mobile/screenshots/cycle-117-holiwyn-live-order-close-closed.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-117-holiwyn-expo-menu-recovered.xml`
+- `docs/mobile/harness/cycle-117-holiwyn-live-order-close-home.xml`
+- `docs/mobile/harness/cycle-117-holiwyn-live-order-close-ticket-ready.xml`
+- `docs/mobile/harness/cycle-117-holiwyn-live-order-close-ticket.xml`
+- `docs/mobile/harness/cycle-117-holiwyn-live-order-close-portfolio.xml`
+- `docs/mobile/harness/cycle-117-holiwyn-live-order-close-closed.xml`
+Bugs:
+- Expo Go can leave a transparent touch layer after development-menu interruption. The live-ticket retry now clears the layer, relaunches the Live deep link, and retries instead of repeatedly tapping a swallowed target.
+Visual QA:
+- Closed-state Portfolio shows `10,007.32 USDT`, Open positions `0`, Recent activity `2`, Closed trades `1`, and the closed live France activity below the first viewport.

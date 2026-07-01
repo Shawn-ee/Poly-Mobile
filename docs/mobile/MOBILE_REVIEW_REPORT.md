@@ -1680,3 +1680,18 @@ Findings:
 - Mobile typecheck, focused live-order smoke, and mobile API/profile-preference tests passed.
 Decision: Approve Cycle 116 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 117
+
+Date: 2026-07-01
+Branch: mobile/cycle-117
+Reviewer: Lead/Reviewer pass
+Scope: Live mock order close-position proof.
+Findings:
+- P1: Focused smoke now proves the live trading lifecycle from Live screen to ticket, order placement, Portfolio position, and close-position action.
+- P1: Closed-state proof verifies fake balance `10,007.32 USDT`, open positions `0`, recent activity `2`, and closed trades `1`.
+- P1: The live ticket harness now recovers from both visible Expo developer menus and transparent Expo touch-layer interruptions.
+- P2: Close-position value remains local mock math until backend pricing/position settlement feeds the app.
+- Mobile typecheck, focused live-order-close smoke, and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 117 for local commit/merge after scoped diff review.
+Merge approved: Yes
