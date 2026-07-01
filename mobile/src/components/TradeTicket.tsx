@@ -1,0 +1,102 @@
+import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
+import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import type { Locale, Event, Market, Outcome } from "../mocks/worldCup";
+import { label, money } from "../presentation/formatters";
+
+export type Ticket = {
+  event?: Event;
+  market: Market;
+  outcome: Outcome;
+  side: "buy" | "sell";
+};
+
+type TradeTicketCopy = {
+  buy: string;
+  sell: string;
+  amount: string;
+  estimatedCost: string;
+  estimatedPayout: string;
+  placeMockOrder: string;
+};
+
+export function TradeTicket({
+  locale,
+  t,
+  ticket,
+  balance,
+  close,
+  placeOrder,
+}: {
+  locale: Locale;
+  t: TradeTicketCopy;
+  ticket: Ticket | null;
+  balance: number;
+  close: () => void;
+  placeOrder: (amount: number, side: "buy" | "sell") => void;
+}) {
+  const [amount, setAmount] = useState("100");
+  const [side, setSide] = useState<"buy" | "sell">("buy");
+  if (!ticket) return null;
+  const numericAmount = Number(amount) || 0;
+  const estimatedPayout = ticket.outcome.probability > 0 ? numericAmount * (100 / ticket.outcome.probability) : 0;
+
+  return (
+    <Modal visible transparent animationType="slide">
+      <View style={styles.modalShade}>
+        <View style={styles.ticket}>
+          <View style={styles.ticketTop}>
+            <View>
+              <Text style={styles.ticketTitle}>{label(locale, ticket.outcome)}</Text>
+              <Text style={styles.ticketSub}>{label(locale, ticket.event ?? ticket.market)}</Text>
+            </View>
+            <Pressable onPress={close} style={styles.closeButton}>
+              <Ionicons name="close" color="#f8fafc" size={22} />
+            </Pressable>
+          </View>
+          <View style={styles.ticketSideRow}>
+            {(["buy", "sell"] as const).map((option) => (
+              <Pressable key={option} style={[styles.sideButton, side === option && styles.sideButtonActive]} onPress={() => setSide(option)}>
+                <Text style={[styles.sideText, side === option && styles.sideTextActive]}>{option === "buy" ? t.buy : t.sell}</Text>
+              </Pressable>
+            ))}
+          </View>
+          <Text style={styles.inputLabel}>{t.amount}</Text>
+          <TextInput value={amount} onChangeText={setAmount} keyboardType="decimal-pad" style={styles.amountInput} />
+          <View style={styles.estimateLine}>
+            <Text style={styles.estimateLabel}>{t.estimatedCost}</Text>
+            <Text style={styles.estimateValue}>{money(Math.min(numericAmount, balance))}</Text>
+          </View>
+          <View style={styles.estimateLine}>
+            <Text style={styles.estimateLabel}>{t.estimatedPayout}</Text>
+            <Text style={styles.estimateValue}>{money(estimatedPayout)}</Text>
+          </View>
+          <Pressable style={styles.primaryButton} onPress={() => placeOrder(numericAmount, side)}>
+            <Text style={styles.primaryText}>{t.placeMockOrder}</Text>
+          </Pressable>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+const styles = StyleSheet.create({
+  modalShade: { flex: 1, justifyContent: "flex-end", backgroundColor: "rgba(0,0,0,0.5)" },
+  ticket: { padding: 18, borderTopLeftRadius: 20, borderTopRightRadius: 20, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  ticketTop: { flexDirection: "row", justifyContent: "space-between", gap: 12 },
+  ticketTitle: { color: "#f8fafc", fontSize: 24, fontWeight: "900" },
+  ticketSub: { color: "#94a3b8", fontWeight: "800", marginTop: 4 },
+  closeButton: { width: 42, height: 42, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937" },
+  ticketSideRow: { flexDirection: "row", gap: 10, marginTop: 18 },
+  sideButton: { flex: 1, alignItems: "center", paddingVertical: 12, borderRadius: 12, backgroundColor: "#1f2937" },
+  sideButtonActive: { backgroundColor: "#1d6dff" },
+  sideText: { color: "#94a3b8", fontWeight: "900" },
+  sideTextActive: { color: "#ffffff" },
+  inputLabel: { color: "#94a3b8", fontWeight: "800", marginTop: 18, marginBottom: 8 },
+  amountInput: { height: 54, borderRadius: 12, paddingHorizontal: 14, backgroundColor: "#070c14", borderWidth: 1, borderColor: "#263247", color: "#f8fafc", fontSize: 22, fontWeight: "900" },
+  estimateLine: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "#263247" },
+  estimateLabel: { color: "#94a3b8", fontWeight: "800" },
+  estimateValue: { color: "#f8fafc", fontWeight: "900" },
+  primaryButton: { height: 54, borderRadius: 14, alignItems: "center", justifyContent: "center", backgroundColor: "#1d6dff", marginTop: 16 },
+  primaryText: { color: "#ffffff", fontSize: 17, fontWeight: "900" },
+});
