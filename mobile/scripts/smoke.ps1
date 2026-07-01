@@ -738,6 +738,13 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-order-portfolio.png"
       $futureListOrderPortfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-order-portfolio.xml"
       Assert-HierarchyContains -Path $futureListOrderPortfolioHierarchy -Expected @("Portfolio", "Order placed", "World Cup winner", "France", "Invested", "Current value", "Est. P/L", "Filled shares", "294.12", "Exec price", "34%", "Implied odds", "2.9x")
+      & $adb -s $Device shell input swipe 540 1600 540 720 500 | Out-Null
+      Start-Sleep -Seconds 1
+      & $adb -s $Device shell input swipe 540 1600 540 720 500 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-future-list-order-activity.png"
+      $futureListOrderActivityHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-order-activity.xml"
+      Assert-HierarchyContains -Path $futureListOrderActivityHierarchy -Expected @("Recent activity", "Bought", "World Cup winner", "France", "Filled shares 294.12", "Exec price 34%", "Implied odds 2.9x")
       return
     }
 

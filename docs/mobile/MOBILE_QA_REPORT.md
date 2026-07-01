@@ -2770,3 +2770,29 @@ Bugs:
 - `forceResetState=1` could clear a forced ticket after launch; fixed by skipping the delayed reset when forcing the France ticket.
 Visual QA:
 - Portfolio shows `Mock order placed`, `Filled shares 294.12`, `Exec price 34%`, and `Implied odds 2.9x` before the position summary.
+
+### Cycle 132
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554` with Expo Go
+Build/run command:
+- `npm.cmd run typecheck`
+- `npm.cmd run smoke:future-list-order`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Recent activity now carries execution-style details for bought positions after a France World Cup winner order.
+Screenshots:
+- `docs/mobile/screenshots/cycle-132-holiwyn-activity-execution-smoke.png`
+- `docs/mobile/screenshots/cycle-132-holiwyn-activity-execution-ticket.png`
+- `docs/mobile/screenshots/cycle-132-holiwyn-activity-execution-portfolio.png`
+- `docs/mobile/screenshots/cycle-132-holiwyn-activity-execution-activity.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-132-holiwyn-activity-execution-expo-menu.xml`
+- `docs/mobile/harness/cycle-132-holiwyn-activity-execution-home.xml`
+- `docs/mobile/harness/cycle-132-holiwyn-activity-execution-ticket.xml`
+- `docs/mobile/harness/cycle-132-holiwyn-activity-execution-portfolio.xml`
+- `docs/mobile/harness/cycle-132-holiwyn-activity-execution-activity.xml`
+Bugs:
+- First rerun asserted old copy `Opened position`; corrected to the actual visible `Bought` label.
+- One scroll left Recent activity below the viewport; the harness now performs a second scroll before capturing the activity proof.
+Visual QA:
+- Recent activity shows `Bought`, `World Cup winner - France`, `100 USDT`, `Filled shares 294.12`, `Exec price 34%`, and `Implied odds 2.9x` without overlap.

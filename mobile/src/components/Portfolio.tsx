@@ -22,6 +22,8 @@ export type PortfolioActivity = {
   title: string;
   outcome: string;
   amount: number;
+  side?: "buy" | "sell";
+  probability?: number;
   isLive?: boolean;
   liveClock?: string;
 };
@@ -109,7 +111,7 @@ const pnlTotal = (positions: Position[]) =>
 
 const decimalOdds = (price: number) => `${(1 / Math.max(price, 0.01)).toFixed(1)}x`;
 
-const orderShares = (order: OrderConfirmation) => {
+const orderShares = (order: { amount: number; probability?: number }) => {
   const price = Math.max(order.probability ?? 0, 1) / 100;
   return order.amount / price;
 };
@@ -367,6 +369,12 @@ export function Portfolio({
                 <Text style={styles.activityMeta}>
                   {activity.title} - {activity.outcome}
                 </Text>
+                {typeof activity.probability === "number" && activity.action !== "canceled" && (
+                  <Text accessibilityLabel={`activity-execution-${activity.id}`} style={styles.activityExecution}>
+                    {t.filledShares} {orderShares(activity).toFixed(2)} - {t.executionPrice} {activity.probability}% - {t.impliedOdds}{" "}
+                    {decimalOdds(activity.probability / 100)}
+                  </Text>
+                )}
               </View>
               <Text style={styles.activityAmount}>{money(activity.amount)}</Text>
             </View>
@@ -447,5 +455,6 @@ const styles = StyleSheet.create({
   activityLiveText: { alignSelf: "flex-start", color: "#fecaca", fontSize: 11, fontWeight: "900", marginTop: 3, textTransform: "uppercase" },
   activityLiveClock: { alignSelf: "flex-start", color: "#fca5a5", fontSize: 11, fontWeight: "900", marginTop: 2 },
   activityMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
+  activityExecution: { color: "#93c5fd", fontSize: 11, fontWeight: "900", marginTop: 4 },
   activityAmount: { color: "#dbeafe", fontWeight: "900" },
 });
