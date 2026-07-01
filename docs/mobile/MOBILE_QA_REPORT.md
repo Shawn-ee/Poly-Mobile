@@ -1051,3 +1051,29 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-053-holiwyn-search-query.png`
 Bugs: None found.
 Server-mode note: Cancel calls `DELETE /api/orders/:id` in server mode, but the current emulator smoke stays on fake-token mock data and does not include an open-order fixture.
+
+### Cycle 054
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:open-order-cancel`
+- `npm run smoke:deep`
+Result: Passed. A harness-only open order now verifies the Portfolio Cancel control and canceled activity feedback, while the normal deep smoke still passes.
+Screenshots:
+- `docs/mobile/screenshots/cycle-054-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-open-order.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-open-order-canceled.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-054-holiwyn-search-query.png`
+Bugs: None found.
+Harness note: The open-order fixture is driven by a launch URL flag and is intentionally limited to smoke coverage.

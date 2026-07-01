@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "smoke": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1",
     "smoke:deep": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep",
-    "smoke:order-failure": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -OrderFailure -Port 8083"
+    "smoke:order-failure": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -OrderFailure -Port 8083",
+    "smoke:open-order-cancel": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -OpenOrderCancel -Port 8084"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
