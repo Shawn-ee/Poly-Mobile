@@ -1425,8 +1425,8 @@ Technical debt added:
 Technical debt resolved:
 - Header presentation no longer lives inline in `App.tsx`.
 Result: Passed Cycle 032 QA. Header extraction is visually stable and deep smoke still verifies the full flow.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge after commit.
+Commit: cycle branch HEAD (`Extract Holiwyn app header`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 033 should add another user-facing trading/portfolio affordance or extract copy/backend-loading concerns, then write the next heartbeat after merge.
 Harnesses run:
 - QA Smoke Harness
