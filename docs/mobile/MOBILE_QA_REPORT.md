@@ -2284,3 +2284,23 @@ Bugs:
 - The first smoke attempt tried to tap a below-fold event card and failed to open Event Detail. The harness was hardened with a direct Mexico vs. Ecuador detail route and rerun successfully.
 Visual QA:
 - Mexico vs. Ecuador detail shows `4 markets` and `8 outcomes` in the first hero card while keeping the first Match winner market visible below.
+
+### Cycle 112
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:event-detail-market-outcome-count`
+- `npm run test:mobile-api`
+Result: Passed. Event Detail market cards now show their own outcome count.
+Screenshots:
+- `docs/mobile/screenshots/cycle-112-holiwyn-event-detail-market-outcome-count-smoke.png`
+- `docs/mobile/screenshots/cycle-112-holiwyn-event-detail-market-outcome-count.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-112-holiwyn-event-detail-market-outcome-count-home-start.xml`
+- `docs/mobile/harness/cycle-112-holiwyn-event-detail-market-outcome-count.xml`
+Bugs:
+- First run failed because ADB reset and the emulator went offline. The emulator was restarted, boot readiness was confirmed, and the same smoke passed on rerun.
+Visual QA:
+- Match winner card shows `2 outcomes` next to the market title while preserving Best bid, Best ask, Spread, and outcome action buttons.

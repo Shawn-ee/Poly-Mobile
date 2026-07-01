@@ -142,3 +142,4 @@ Status:
 | GAP-120 | Account/Profile | Open-position count summary | P1 | Yes | Verified | Cycle 109 surfaces open position count in Account Preferences and verifies a seeded World Cup winner position shows as `Open positions: 1`. |
 | GAP-121 | Account/Profile | Estimated portfolio value summary | P1 | Yes | Verified | Cycle 110 surfaces estimated portfolio value in Account Preferences and verifies a seeded World Cup winner position shows `Portfolio value: 10,281.25 USDT`. |
 | GAP-122 | Event detail | Market/outcome count summary | P1 | Yes | Verified | Cycle 111 surfaces Event Detail market and outcome counts and verifies Mexico vs. Ecuador shows `4 markets` and `8 outcomes`. |
+| GAP-123 | Event detail | Per-market outcome count | P1 | Yes | Verified | Cycle 112 surfaces per-market outcome counts and verifies Match winner shows `2 outcomes` on emulator. |
