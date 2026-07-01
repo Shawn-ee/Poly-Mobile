@@ -1003,3 +1003,28 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-051-holiwyn-search-query.png`
 Bugs: None found.
 Failure-state note: The failure message is typechecked and component-wired; forced failure should get a dedicated harness cycle.
+
+### Cycle 052
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+- `npm run smoke:order-failure`
+Result: Passed. Normal event-market trading still passes, and forced order failure now verifies the ticket error card on emulator.
+Screenshots:
+- `docs/mobile/screenshots/cycle-052-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-search-query.png`
+- `docs/mobile/screenshots/cycle-052-holiwyn-order-failure-ticket-order-error.png`
+Bugs:
+- Initial forced-failure smoke reused normal bundle/port and then hit an Expo URL error; fixed with a dedicated port and Expo `--/` deep-link launch URL.

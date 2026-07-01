@@ -720,3 +720,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 051 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 052
+
+Date: 2026-07-01
+Branch: mobile/cycle-052
+Reviewer: Lead/Reviewer pass
+Scope: Forced order-failure emulator harness.
+Findings:
+- P1: Smoke harness now has `smoke:order-failure`, which launches Holiwyn with a runtime deep-link flag and asserts `ticket-order-error`.
+- P1: Normal `smoke:deep` still verifies the successful event-market trade, close, Live, and Search flows.
+- P2: Forced failure uses a dedicated harness launch path and should remain test-only; no production wallet/deposit behavior was added.
+- `npm run typecheck`, `npm run smoke:deep`, and `npm run smoke:order-failure` passed.
+Decision: Approve Cycle 052 for local commit/merge after scoped diff review.
+Merge approved: Yes
