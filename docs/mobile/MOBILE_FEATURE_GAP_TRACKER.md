@@ -70,3 +70,4 @@ Status:
 | GAP-048 | Portfolio | Recent trading activity | P1 | No | Verified | Cycle 037 adds fake-token Bought/Closed activity rows and verifies them after close-position smoke. |
 | GAP-049 | Event detail | Expanded World Cup prop markets | P1 | No | Verified | Cycle 038 adds both-teams-to-score, first-goal-team, and live next-goal markets with event-detail smoke coverage. |
 | GAP-050 | Navigation | Android Event Detail back behavior | P1 | No | Verified | Cycle 039 intercepts Android hardware Back on Event Detail and verifies return-to-Home smoke. |
+| GAP-051 | Backend adapter | Portfolio history activity seam | P1 | No | Verified | Cycle 040 adds a server-mode `/api/portfolio/history` adapter that maps resolved backend history into Portfolio activity rows. |

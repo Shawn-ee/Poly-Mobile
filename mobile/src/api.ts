@@ -1,4 +1,4 @@
-import type { EventDetail, EventSummary, Market, Quote } from "./types";
+import type { EventDetail, EventSummary, Market, PortfolioHistoryItem, Quote } from "./types";
 
 const trimSlash = (value: string) => value.replace(/\/+$/, "");
 const REQUEST_TIMEOUT_MS = 3500;
@@ -71,6 +71,10 @@ export class PolyApi {
     return this.request<{ marketId: string; quotes: Quote[] }>(
       `/api/markets/${encodeURIComponent(marketId)}/quote${suffix}`,
     );
+  }
+
+  getPortfolioHistory() {
+    return this.request<{ history: PortfolioHistoryItem[] }>(`/api/portfolio/history`);
   }
 
   placeLimitOrder(input: {

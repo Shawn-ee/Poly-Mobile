@@ -56,3 +56,21 @@ export type Quote = {
   midPrice: string | number | null;
   lastPrice: string | number | null;
 };
+
+export type PortfolioHistoryItem = {
+  market: {
+    id: string;
+    title: string;
+    status: string;
+    resolveTime: string | null;
+    resolvedOutcomeId: string | null;
+    createdAt: string;
+  };
+  resolvedOutcomeName: string | null;
+  totalBuyCostTokens: number;
+  totalSellProceedsTokens: number;
+  netInvestedTokens: number;
+  winningsTokens: number;
+  refundsTokens: number;
+  realizedPnLTokens: number;
+};

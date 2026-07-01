@@ -552,3 +552,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 039 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 040
+
+Date: 2026-07-01
+Branch: mobile/cycle-040
+Reviewer: Lead/Reviewer pass
+Scope: Server-mode Portfolio history adapter.
+Findings:
+- P1: Mobile now has a typed `GET /api/portfolio/history` client method and maps resolved backend history into Portfolio activity rows.
+- P1: The adapter is only loaded in server order mode, so fake-token mock development and smoke behavior remain unchanged.
+- P2: The adapter covers resolved history only; open orders/positions still need a dedicated server-mode Portfolio path.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 040 for local commit/merge after scoped diff review.
+Merge approved: Yes
