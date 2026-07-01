@@ -1156,3 +1156,18 @@ Findings:
 - Mobile typecheck, focused Search sort smoke, and mobile API request tests passed.
 Decision: Approve Cycle 081 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 082
+
+Date: 2026-07-01
+Branch: mobile/cycle-082
+Reviewer: Lead/Reviewer pass
+Scope: Home Saved empty state.
+Findings:
+- P1: Home now shows `No saved markets yet.` when the Saved filter has no events.
+- P1: The empty copy is placed above the Games/Futures switch so it is visible immediately after tapping Saved.
+- P1: Focused Home Saved empty smoke taps the Saved filter and verifies the empty copy, selected Saved state, and Games context.
+- P2: Saved state remains local/session-only until account persistence is integrated.
+- Mobile typecheck, focused Home Saved empty smoke, and mobile API request tests passed.
+Decision: Approve Cycle 082 for local commit/merge after scoped diff review.
+Merge approved: Yes
