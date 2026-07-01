@@ -2184,3 +2184,23 @@ Bugs:
 - None found in product code. Live backend/profile proof remains gated by Docker Desktop/local Postgres availability.
 Visual QA:
 - Not applicable; this was an environment/backend readiness retry cycle.
+
+### Cycle 107
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:account-profile-sync-error`
+- `npm run test:mobile-api`
+Result: Passed. Account now shows profile preference sync status for server-mode/API-key builds, including the unavailable-backend fallback state.
+Screenshots:
+- `docs/mobile/screenshots/cycle-107-holiwyn-account-profile-sync-error-smoke.png`
+- `docs/mobile/screenshots/cycle-107-holiwyn-account-profile-sync-error.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-107-holiwyn-account-profile-sync-error-home-start.xml`
+- `docs/mobile/harness/cycle-107-holiwyn-account-profile-sync-error.xml`
+Bugs:
+- Initial visual review showed the fallback sentence too close to the bottom tab. The row was moved higher in Preferences and the focused smoke was rerun successfully.
+Visual QA:
+- Account Preferences shows `Profile sync unavailable` and `Using local preferences on this device.` clearly above the language and ticket defaults rows.

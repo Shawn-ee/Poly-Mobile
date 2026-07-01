@@ -28,9 +28,15 @@ type AccountCopy = {
   preferences: string;
   languagePreference: string;
   ticketDefaultPreference: string;
+  profileSyncing: string;
+  profileSynced: string;
+  profileSyncError: string;
+  profileSyncFallback: string;
   security: string;
   mockOnly: string;
 };
+
+type ProfileSyncStatus = "hidden" | "syncing" | "synced" | "error";
 
 export function AccountScreen({
   t,
@@ -39,6 +45,7 @@ export function AccountScreen({
   languagePreferenceValue,
   ticketDefaultAmount,
   ticketDefaultSide,
+  profileSyncStatus,
 }: {
   t: AccountCopy;
   balance: number;
@@ -46,6 +53,7 @@ export function AccountScreen({
   languagePreferenceValue: string;
   ticketDefaultAmount: string;
   ticketDefaultSide: "buy" | "sell";
+  profileSyncStatus: ProfileSyncStatus;
 }) {
   const [signedIn, setSignedIn] = useState(false);
 
@@ -69,6 +77,15 @@ export function AccountScreen({
     setSignedIn(nextSignedIn);
     AsyncStorage.setItem(ACCOUNT_SESSION_STORAGE_KEY, nextSignedIn ? "true" : "false").catch(() => undefined);
   };
+
+  const profileSyncCopy =
+    profileSyncStatus === "syncing"
+      ? t.profileSyncing
+      : profileSyncStatus === "synced"
+        ? t.profileSynced
+        : profileSyncStatus === "error"
+          ? t.profileSyncError
+          : "";
 
   return (
     <ScrollView accessibilityLabel="account-screen" testID="account-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
@@ -104,6 +121,13 @@ export function AccountScreen({
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t.preferences}</Text>
+        {profileSyncStatus !== "hidden" && (
+          <View accessibilityLabel="account-profile-sync" testID="account-profile-sync" style={styles.row}>
+            <Ionicons name={profileSyncStatus === "error" ? "cloud-offline-outline" : "cloud-done-outline"} size={20} color={profileSyncStatus === "error" ? "#fbbf24" : "#93c5fd"} />
+            <Text style={styles.rowText}>{profileSyncCopy}</Text>
+          </View>
+        )}
+        {profileSyncStatus === "error" && <Text style={styles.syncFallback}>{t.profileSyncFallback}</Text>}
         <View style={styles.row}>
           <Ionicons name="language-outline" size={20} color="#93c5fd" />
           <Text style={styles.rowText}>
@@ -178,4 +202,5 @@ const styles = StyleSheet.create({
   sectionTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "900", marginBottom: 10 },
   row: { minHeight: 44, flexDirection: "row", alignItems: "center", gap: 10, borderTopWidth: 1, borderTopColor: "#1f2937" },
   rowText: { flex: 1, color: "#cbd5e1", fontWeight: "800" },
+  syncFallback: { color: "#94a3b8", fontWeight: "700", lineHeight: 19, marginTop: -2, marginBottom: 8, paddingLeft: 30 },
 });

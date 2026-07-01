@@ -137,3 +137,4 @@ Status:
 | GAP-115 | Backend adapter | Profile preferences sync seam | P1 | No | Verified | Cycle 104 adds a typed `/api/profile/preferences` client seam and local/server preference mapper for language, ticket defaults, and saved markets. |
 | GAP-116 | Backend adapter | Guarded runtime profile preference sync | P1 | No | Verified | Cycle 105 wires profile preference load/save behind server-mode plus API-key guards and verifies mapper behavior with focused tests. |
 | GAP-117 | Backend adapter | Backend readiness retry after profile seam | P0 | No | Verified | Cycle 106 reruns backend readiness after profile-sync work and confirms Docker daemon/local Postgres remain unavailable for live backend proof. |
+| GAP-118 | Account/Profile | Visible profile sync failure state | P1 | No | Verified | Cycle 107 surfaces profile preference sync status in Account for server-mode/API-key builds and verifies the unavailable-backend recovery state on emulator. |
