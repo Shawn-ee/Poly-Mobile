@@ -2731,6 +2731,64 @@ Open blockers: None for autonomous progress.
 Risks: Some deep-smoke navigation still uses scroll/keyevent actions; open-order cancel server behavior is API-wired but not verified against a live authenticated backend order; no deposit/withdraw work has been touched.
 Next three likely cycles: Reduce remaining low-level harness actions, add emulator-visible server/fixture coverage for open-order paths, and expand World Cup market/trade parity.
 
+### Cycle 055
+
+Date: 2026-07-01
+Branch: mobile/cycle-055
+Goal: Replace Event Detail hardware-back smoke behavior with a selector-driven UI back tap.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Event Detail back control now exposes stable `event-detail-back` accessibility/test ids.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/src/components/EventDetail.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:deep` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-055-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-055-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-055-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-055-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-055-holiwyn-ticket-max.png`
+- `docs/mobile/screenshots/cycle-055-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-055-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-055-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-055-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-055-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-055-holiwyn-search-query.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-055-holiwyn-home.xml`
+- `docs/mobile/harness/cycle-055-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-055-holiwyn-event-detail-props.xml`
+- `docs/mobile/harness/cycle-055-holiwyn-event-detail-back.xml`
+- `docs/mobile/harness/cycle-055-holiwyn-home-after-detail.xml`
+- `docs/mobile/harness/cycle-055-holiwyn-ticket.xml`
+- `docs/mobile/harness/cycle-055-holiwyn-ticket-max.xml`
+- `docs/mobile/harness/cycle-055-holiwyn-portfolio.xml`
+- `docs/mobile/harness/cycle-055-holiwyn-portfolio-closed.xml`
+- `docs/mobile/harness/cycle-055-holiwyn-live.xml`
+- `docs/mobile/harness/cycle-055-holiwyn-live-refresh.xml`
+- `docs/mobile/harness/cycle-055-holiwyn-search.xml`
+- `docs/mobile/harness/cycle-055-holiwyn-search-query.xml`
+Bugs found:
+- None.
+Technical debt added:
+- The harness still uses scroll gestures around prop visibility and returning the back control to view.
+Technical debt resolved:
+- Deep smoke no longer relies on Android hardware Back for Event Detail return navigation.
+Result: Passed Cycle 055 QA. Deep smoke verifies Event Detail back navigation through `event-detail-back` and the normal World Cup trade, close, Live, and Search flows.
+Commit: cycle branch HEAD (`pending`)
+Merged: Pending local merge.
+Next cycle: Cycle 056 should continue reducing prop-section scroll/device actions or add deeper server/fixture coverage.
+Harnesses run:
+- QA Smoke Harness
+- Trading Simulation Harness
+- Emulator Runtime Harness
+- Screenshot Evidence Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

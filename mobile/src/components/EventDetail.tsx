@@ -38,7 +38,12 @@ export function EventDetail({
   const groups = groupMarkets(event.markets);
   return (
     <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
-      <Pressable style={styles.backButton} onPress={goBack}>
+      <Pressable
+        accessibilityLabel="event-detail-back"
+        onPress={goBack}
+        style={styles.backButton}
+        testID="event-detail-back"
+      >
         <Ionicons name="chevron-back" size={18} color="#f8fafc" />
         <Text style={styles.backText}>{t.worldCup}</Text>
       </Pressable>
