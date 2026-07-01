@@ -110,6 +110,20 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-004-holiwyn-order-service-portfolio.png`
 Bugs: None found.
 
+### Cycle 016
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke`
+- Manual emulator tap-through to Live tab.
+Result: Passed. Live tab displays a dedicated heading, count badge, and live-specific empty state.
+Screenshots:
+- `docs/mobile/screenshots/cycle-016-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-016-holiwyn-live-tab.png`
+Bugs: None found.
+
 ### Cycle 014
 
 Date: 2026-07-01
