@@ -180,14 +180,12 @@ try {
     $eventDetailHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail.xml"
     Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Mexico vs. Ecuador", "Markets", "Game lines", "Props", "Total goals over 2.5")
 
-    & $adb -s $Device shell input swipe 540 1600 540 650 500 | Out-Null
+    Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-group-prop"
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-event-detail-props.png"
     $eventDetailPropsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-props.xml"
     Assert-HierarchyContains -Path $eventDetailPropsHierarchy -Expected @("Both teams to score", "First goal scorer team")
 
-    & $adb -s $Device shell input swipe 540 650 540 1600 500 | Out-Null
-    Start-Sleep -Seconds 1
     $eventDetailBackHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-back.xml"
     Invoke-TapHierarchyNode -Path $eventDetailBackHierarchy -Identifier "event-detail-back"
     Start-Sleep -Seconds 1

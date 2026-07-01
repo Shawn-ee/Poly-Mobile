@@ -776,3 +776,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 055 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 056
+
+Date: 2026-07-01
+Branch: mobile/cycle-056
+Reviewer: Lead/Reviewer pass
+Scope: Event Detail group jump controls and prop selector smoke.
+Findings:
+- P1: Event Detail now exposes market group jump chips such as `event-detail-group-prop`, improving navigation and reducing fixed-coordinate smoke behavior.
+- P1: The back control is persistent above the scroll area, so it remains available after jumping to lower market groups.
+- P2: The first run uncovered the back-visibility issue; the final run passed after the persistent-back recovery.
+- `npm run typecheck` and final `npm run smoke:deep` passed.
+Decision: Approve Cycle 056 for local commit/merge after scoped diff review.
+Merge approved: Yes
