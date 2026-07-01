@@ -7,7 +7,8 @@ param(
   [switch]$FutureListSell,
   [switch]$PortfolioClosedCount,
   [switch]$LiveOrder,
-  [switch]$LiveOrderClose
+  [switch]$LiveOrderClose,
+  [switch]$LivePortfolioBadgeDeep
 )
 
 $ErrorActionPreference = "Stop"
@@ -57,6 +58,8 @@ if ($FutureListOrder) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LiveOrder -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($LiveOrderClose) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LiveOrderClose -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
+} elseif ($LivePortfolioBadgeDeep) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -LivePortfolioBadgeDeep -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } else {
   & "$PSScriptRoot\smoke.ps1" -Deep -FutureListClose -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 }

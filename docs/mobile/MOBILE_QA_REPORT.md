@@ -3057,3 +3057,31 @@ Bugs:
 - The first scrolled close run captured the correct closed state lower on the page, but the final assertion still expected top-of-Portfolio balance/counter text. The assertion now checks visible closed-state evidence instead.
 Visual QA:
 - Samsung proof shows live ticket opening, order placement, the scrolled Close position action, no open positions after close, live closed activity, live bought activity, close value, and P/L text.
+
+### Cycle 145
+
+Date: 2026-07-01
+Device: Samsung S23 through Expo Go (`adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`)
+Build/run command:
+- `npm run smoke:samsung:live-portfolio-badge-deep`
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The Samsung wrapper now proves deep live metadata propagation from ticket/order into latest order, open position, and activity rows.
+Screenshots:
+- `docs/mobile/screenshots/cycle-145-samsung-live-metadata-smoke.png`
+- `docs/mobile/screenshots/cycle-145-samsung-live-metadata-ready.png`
+- `docs/mobile/screenshots/cycle-145-samsung-live-metadata-ticket.png`
+- `docs/mobile/screenshots/cycle-145-samsung-live-metadata-portfolio.png`
+- `docs/mobile/screenshots/cycle-145-samsung-live-metadata-position.png`
+- `docs/mobile/screenshots/cycle-145-samsung-live-metadata-activity.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-145-samsung-live-metadata-home.xml`
+- `docs/mobile/harness/cycle-145-samsung-live-metadata-ready.xml`
+- `docs/mobile/harness/cycle-145-samsung-live-metadata-ticket.xml`
+- `docs/mobile/harness/cycle-145-samsung-live-metadata-portfolio.xml`
+- `docs/mobile/harness/cycle-145-samsung-live-metadata-position.xml`
+- `docs/mobile/harness/cycle-145-samsung-live-metadata-activity.xml`
+Bugs:
+- Initial Samsung run scrolled past the latest-order clock before asserting it. The harness now checks latest-order live clock before scrolling and checks position/activity clocks after scrolling.
+Visual QA:
+- Samsung proof shows live ticket opening, mock order placement, latest-order live clock, open-position live badge/clock, and Recent activity live badge/clock on the real phone.
