@@ -141,3 +141,16 @@ Findings:
 - `npm run smoke` passed and screenshot confirmed Home-state rendering.
 Decision: Approve Cycle 009 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 010
+
+Date: 2026-07-01
+Branch: mobile/cycle-010
+Reviewer: Lead/Reviewer pass
+Scope: Games/Futures market list component extraction.
+Findings:
+- P1: Home/Games and Futures list paths were both verified on emulator after extraction.
+- P2: Event Detail still owns similar market-row rendering inside `App.tsx`; next extraction should address it or deliberately improve the grouped props UI.
+- `npm run typecheck`, `npm run smoke`, and Futures tap QA passed.
+Decision: Approve Cycle 010 for local commit/merge after scoped diff review.
+Merge approved: Yes

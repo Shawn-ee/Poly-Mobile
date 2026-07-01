@@ -122,6 +122,20 @@ Screenshots:
 Bugs:
 - Fixed smoke screenshot state carryover from previous manual QA sessions.
 
+### Cycle 010
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke`
+- Manual emulator tap-through to Futures tab.
+Result: Passed. Extracted MarketList/FutureList components rendered both default Games/Home smoke and Futures tab.
+Screenshots:
+- `docs/mobile/screenshots/cycle-010-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-010-holiwyn-futures-list.png`
+Bugs: None found.
+
 ### Cycle 008
 
 Date: 2026-07-01
