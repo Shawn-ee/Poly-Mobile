@@ -6030,6 +6030,45 @@ Open blockers: None for autonomous progress.
 Risks: Expo Go and emulator UI hierarchy remain slow/flaky; backend live integration is still weaker than mock trading proof; broad Polymarket World Cup parity still requires many more product cycles.
 Next three likely cycles: add a product-facing World Cup market detail polish, extend fast no-clear harness strategy to another stable smoke family, and retry backend readiness/server-mode proof when local services are available.
 
+### Cycle 125
+
+Date: 2026-07-01
+Branch: mobile/cycle-125
+Goal: Improve Event Detail market scanning with visible group count indicators.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Event Detail group tabs and group section headers now show the number of markets in each group, including `1 market` for Game lines and `3 markets` for Props on Mexico vs. Ecuador.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/EventDetail.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:event-detail-summary` in `mobile/` (includes mobile typecheck).
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-125-holiwyn-event-detail-group-counts-smoke.png`
+- `docs/mobile/screenshots/cycle-125-holiwyn-event-detail-group-counts.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-125-holiwyn-event-detail-group-counts-expo-menu.xml`
+- `docs/mobile/harness/cycle-125-holiwyn-event-detail-group-counts-home.xml`
+- `docs/mobile/harness/cycle-125-holiwyn-event-detail-group-counts.xml`
+Bugs found:
+- None after focused verification.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Event Detail group navigation is more informative and closer to a market-depth browsing experience.
+Result: Passed Cycle 125 QA. Focused event-detail-summary smoke and mobile API/profile-preference tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 126 should continue product-facing market-detail/trading polish or add another stable no-clear harness reduction.
+Harnesses run:
+- Mobile Typecheck Harness
+- Event Detail Summary Smoke Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
