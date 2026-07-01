@@ -4411,8 +4411,8 @@ Technical debt added:
 Technical debt resolved:
 - Futures list path now has end-to-end proof from discovery to ticket to mock Portfolio position.
 Result: Passed Cycle 089 QA. Mobile typecheck, focused Futures list order smoke, visual screenshot review, and mobile API tests pass.
-Commit: Pending branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `9310c15` (`Add Holiwyn futures list order smoke`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `0c90403`.
 Next cycle: Cycle 090 should continue trading/portfolio parity or retry backend readiness if local services become reachable.
 Harnesses run:
 - Emulator Runtime Harness
