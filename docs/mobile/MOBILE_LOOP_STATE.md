@@ -6479,6 +6479,55 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 136
+
+Date: 2026-07-01
+Branch: mobile/cycle-136
+Goal: Turn the verified Samsung Expo Go proof into a one-command repeatable harness.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; harness/device proof cycle.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke-samsung.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `npm run smoke:samsung:closed-history` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-136-samsung-wrapper-smoke.png`
+- `docs/mobile/screenshots/cycle-136-samsung-wrapper-closed-history.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-136-samsung-wrapper-home.xml`
+- `docs/mobile/harness/cycle-136-samsung-wrapper-closed-history.xml`
+Bugs found:
+- First wrapper attempt passed `-FutureListClose` as a string array and PowerShell treated it as a positional output directory; fixed by passing the switch directly.
+Technical debt added:
+- The wrapper is Windows/PowerShell-specific and targets the current known Samsung device id.
+Technical debt resolved:
+- Samsung Holiwyn QA no longer depends on a long hand-written smoke command.
+Result: Passed Cycle 136 QA. One-command Samsung wrapper smoke, mobile typecheck, and mobile API/profile-preference/activity-metric tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 137 should resume product/backend parity work, using `npm run smoke:samsung:closed-history` or a sibling Samsung wrapper for visual proof.
+Harnesses run:
+- Samsung Smoke Wrapper Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity Metric Unit Harness
+- Review Harness
+Harness failures:
+- None after wrapper correction.
+
+### Heartbeat After Cycle 136
+
+Completed cycles: 134, 135, 136.
+Verified progress: Android APK/dev-build readiness is explicit, Samsung Expo Go is installed and verified as a Holiwyn QA target, and the Samsung closed-history proof now runs from a one-command npm wrapper.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, live badge/clock propagation, local persistence, market group counts, outcome/ticket odds, potential profit, open-order economics, latest-order execution details, and richer order-history economics.
+Current backend state: Mobile API/profile-preference/activity-metric tests pass. Local backend health remained unavailable during smoke runs, so device proofs continue to use mock fallback.
+Device strategy: Samsung S23 is now the primary Holiwyn visual QA target for Expo Go smokes. The emulator remains fallback only for repeatable checks that cannot yet run on the phone. Preview APK/dev-client builds remain the long-term stable lane.
+Open blockers: None for autonomous progress. Backend-backed quote/order/history integration remains a large final-goal gap.
+Risks: Expo Go still depends on LAN reachability and an installed Expo runtime; the Samsung wrapper is Windows/local-device specific; real backend order/history proof is still pending local service availability or a reachable test backend.
+Next three likely cycles: resume user-facing market/trading parity, add Samsung wrappers for the next high-value smoke flows, and retry backend/server-mode proof when local services are reachable.
+
 ### Heartbeat After Cycle 133
 
 Completed cycles: 131, 132, 133.

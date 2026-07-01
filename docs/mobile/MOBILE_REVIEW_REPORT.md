@@ -1967,3 +1967,18 @@ Findings:
 - Mobile typecheck and mobile API/profile-preference/activity-metric tests passed after the Samsung proof.
 Decision: Approve Cycle 135 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 136
+
+Date: 2026-07-01
+Branch: mobile/cycle-136
+Reviewer: Lead/Reviewer pass
+Scope: One-command Samsung smoke wrapper.
+Findings:
+- P1: `npm run smoke:samsung:closed-history` now gives the loop a repeatable Samsung proof command instead of requiring a long hand-written Expo Go launch command.
+- P1: `smoke-samsung.ps1` detects the PC LAN IPv4 address through `ipconfig`, prefers the active `172.16.*` network, targets the known Samsung device, and preserves Expo Go package state with `-SkipPackageClear`.
+- P1: The wrapper was verified on the Samsung S23 and captured the same closed World Cup winner history proof as Cycle 135.
+- P2: The wrapper is Windows/PowerShell-specific, matching the current local development machine; cross-platform harnessing can wait until the project needs macOS/Linux mobile build runners.
+- Mobile typecheck and mobile API/profile-preference/activity-metric tests passed after the wrapper proof.
+Decision: Approve Cycle 136 for local commit/merge after scoped diff review.
+Merge approved: Yes
