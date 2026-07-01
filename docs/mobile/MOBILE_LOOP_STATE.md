@@ -3792,6 +3792,48 @@ Open blockers: None for autonomous product/harness progress. Live backend proof 
 Risks: Account and Saved state are local/session-only; Event Detail depth and ticket quote math remain local estimates until backend auth, quote, and order-book APIs can feed them.
 Next three likely cycles: Add richer market-card metadata, improve saved/search integration, and retry backend readiness when Docker daemon becomes reachable.
 
+### Cycle 076
+
+Date: 2026-07-01
+Branch: mobile/cycle-076
+Goal: Add quick Volume/Liquidity context to Home event cards.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Home event cards now show localized Volume and Liquidity rows above the outcome prices.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/HomeScreen.tsx`, `mobile/src/components/MarketLists.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:home-card-stats` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-076-holiwyn-home-card-stats-smoke.png`
+- `docs/mobile/screenshots/cycle-076-holiwyn-home-card-stats.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-076-holiwyn-home-card-stats-home.xml`
+- `docs/mobile/harness/cycle-076-holiwyn-home-card-stats.xml`
+Bugs found:
+- First focused smoke run hit Expo cold Metro rebuild before app content appeared; rerun passed.
+Technical debt added:
+- Home card Volume/Liquidity values are deterministic local estimates until backend market metrics are available.
+Technical debt resolved:
+- Home cards now provide market activity context instead of only title, tag, and outcome prices.
+Result: Passed Cycle 076 QA after cold-launch rerun. Mobile typecheck, focused Home card stats smoke, visual screenshot review, and mobile API tests pass.
+Commit: `PENDING`
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 077 should improve saved/search integration or retry backend readiness if Docker daemon is available.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Discovery Metadata Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Recovery Harness
+- Review Harness
+Harness failures:
+- One cold Metro launch miss before final pass.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

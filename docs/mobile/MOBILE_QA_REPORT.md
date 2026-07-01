@@ -1518,3 +1518,23 @@ Bugs:
 - Initial smoke tapped a clipped star selector at the bottom of the viewport and landed on bottom navigation. Harness recovered by scrolling the Home list before tapping the save control.
 Visual QA:
 - Saved chip, active star, and saved event card fit cleanly and remain usable above the bottom navigation.
+
+### Cycle 076
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:home-card-stats`
+- `npm run test:mobile-api`
+Result: Passed after cold-launch rerun. Home event cards now show localized Volume and Liquidity context before opening Event Detail.
+Screenshots:
+- `docs/mobile/screenshots/cycle-076-holiwyn-home-card-stats-smoke.png`
+- `docs/mobile/screenshots/cycle-076-holiwyn-home-card-stats.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-076-holiwyn-home-card-stats-home.xml`
+- `docs/mobile/harness/cycle-076-holiwyn-home-card-stats.xml`
+Bugs:
+- First smoke run hit Expo cold Metro rebuild before app content appeared; rerun passed.
+Visual QA:
+- Volume/Liquidity row fits inside the event card and the first outcome button remains reachable.

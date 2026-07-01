@@ -19,6 +19,8 @@ type HomeScreenCopy = {
   searchLive: string;
   today: string;
   saved: string;
+  volume: string;
+  liquidity: string;
 };
 
 export function HomeScreen({
@@ -113,6 +115,7 @@ export function HomeScreen({
           openTicket={openTicket}
           savedEventIds={savedEventIds}
           toggleSavedEvent={toggleSavedEvent}
+          statsCopy={{ volume: t.volume, liquidity: t.liquidity }}
         />
       ) : (
         <FutureList locale={locale} futures={futures} openTicket={openTicket} />
