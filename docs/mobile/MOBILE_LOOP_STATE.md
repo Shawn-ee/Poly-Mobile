@@ -6353,8 +6353,8 @@ Technical debt added:
 Technical debt resolved:
 - Recent activity now preserves useful execution context for mock trades instead of showing only action, market, outcome, and amount.
 Result: Passed Cycle 132 QA. Typecheck, focused future-list-order smoke, and mobile API/profile-preference tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `edd3945` (`Show activity execution details`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `1f0e34b`.
 Next cycle: Cycle 133 should continue order/history parity, likely with close/cancel history detail proof, or retry backend/server-mode proof if local services become available.
 Harnesses run:
 - Mobile Typecheck Harness
