@@ -680,7 +680,7 @@ Technical debt resolved:
 - Partial TD-010 progress: smoke now asserts visible Home, Ticket, and Portfolio screen text from Android hierarchy dumps.
 Result: Passed Cycle 017 QA. The smoke harness now saves inspectable XML evidence and fails if core visible screen text is missing.
 Commit: cycle branch HEAD (`Add Holiwyn mobile hierarchy smoke checks`)
-Merged: Pending local merge after commit.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 018 should use the stronger harness to add Search or Live tab deep smoke coverage.
 Harnesses run:
 - QA Smoke Harness
