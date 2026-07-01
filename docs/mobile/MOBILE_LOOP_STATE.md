@@ -4093,8 +4093,8 @@ Technical debt added:
 Technical debt resolved:
 - Home Saved no longer falls back to generic no-results behavior when the watchlist is empty.
 Result: Passed Cycle 082 QA. Mobile typecheck, focused Home Saved empty smoke, visual screenshot review, and mobile API tests pass.
-Commit: Pending branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `0172d47` (`Add Holiwyn home saved empty state`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `4bb4964`.
 Next cycle: Cycle 083 should add another discovery/trading parity feature or retry backend readiness if Docker daemon becomes reachable.
 Harnesses run:
 - Emulator Runtime Harness
