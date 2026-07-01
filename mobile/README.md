@@ -38,6 +38,12 @@ To verify the Samsung order-placement path, run:
 npm run smoke:samsung:future-list-order
 ```
 
+To verify the Samsung sell-ticket path, run:
+
+```powershell
+npm run smoke:samsung:future-list-sell
+```
+
 ## Device Strategy
 
 - Samsung S23: use for Polymarket reference and, later, explicit Holiwyn real-device QA.

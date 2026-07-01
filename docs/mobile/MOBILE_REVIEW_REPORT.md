@@ -2044,3 +2044,18 @@ Findings:
 - Samsung order smoke, mobile typecheck, and mobile API/history tests passed.
 Decision: Approve Cycle 140 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 141
+
+Date: 2026-07-01
+Branch: mobile/cycle-141
+Reviewer: Lead/Reviewer pass
+Scope: Samsung sell-ticket smoke wrapper.
+Findings:
+- P1: `smoke-samsung.ps1` now supports `-FutureListSell`, giving the physical phone a repeatable sell-side ticket proof.
+- P1: `npm run smoke:samsung:future-list-sell` targets the Samsung S23, opens the World Cup winner futures list, taps France, switches to Sell, and verifies estimated proceeds/share/average-price copy.
+- P1: Captured Samsung evidence covers futures list, initial ticket, and active sell ticket states.
+- P2: This is sell-ticket readiness proof, not server-mode sell order submission.
+- Samsung sell smoke, mobile typecheck, and mobile API/history tests passed.
+Decision: Approve Cycle 141 for local commit/merge after scoped diff review.
+Merge approved: Yes

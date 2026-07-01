@@ -6673,6 +6673,46 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 141
+
+Date: 2026-07-01
+Branch: mobile/cycle-141
+Goal: Add a Samsung-first sell-ticket proof for the World Cup winner flow.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; harness/device proof cycle.
+Backend/API changed: No backend route change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke-samsung.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `npm run smoke:samsung:future-list-sell` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-141-samsung-sell-ticket-smoke.png`
+- `docs/mobile/screenshots/cycle-141-samsung-sell-ticket-active.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-141-samsung-sell-ticket-home.xml`
+- `docs/mobile/harness/cycle-141-samsung-sell-ticket-list.xml`
+- `docs/mobile/harness/cycle-141-samsung-sell-ticket-ticket.xml`
+- `docs/mobile/harness/cycle-141-samsung-sell-ticket-active.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Samsung sell proof stops at sell-ticket readiness; sell order submission remains future work.
+Technical debt resolved:
+- Samsung real-device QA now covers both buy/order placement and sell-ticket readiness.
+Result: Passed Cycle 141 QA. Samsung sell-ticket smoke, mobile typecheck, and mobile API/history tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 142 should add a Samsung proof for closing an open position or continue server-mode order proof preparation.
+Harnesses run:
+- Samsung Future List Sell Smoke Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 139
 
 Completed cycles: 137, 138, 139.
