@@ -3583,8 +3583,8 @@ Technical debt added:
 Technical debt resolved:
 - Ticket copy no longer uses the same generic mock-order CTA for Buy and Sell flows.
 Result: Passed Cycle 071 QA. Mobile typecheck, focused sell-ticket smoke, visual screenshot review, and mobile API tests pass.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `5d3b10e` (`Add Holiwyn side-specific ticket copy`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `b202fae`.
 Next cycle: Cycle 072 should add another trading-product detail or retry backend readiness if Docker daemon becomes available.
 Harnesses run:
 - Emulator Runtime Harness
