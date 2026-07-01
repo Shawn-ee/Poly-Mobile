@@ -718,3 +718,24 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-038-holiwyn-search-query.png`
 Bugs:
 - Early Cycle 038 smoke attempts exposed event-detail below-fold and Android Back assumptions; harness was updated and final rerun passed.
+
+### Cycle 039
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Android hardware Back now returns from Event Detail to Home, and the full event-detail/trade/Portfolio/Live/Search smoke path passes without forced Expo relaunch.
+Screenshots:
+- `docs/mobile/screenshots/cycle-039-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-039-holiwyn-search-query.png`
+Bugs: None found in final verification.

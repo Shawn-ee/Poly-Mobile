@@ -1,6 +1,6 @@
 ﻿import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { BackHandler, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PolyApi } from "./src/api";
 import { normalizeEventDetail } from "./src/adapters/worldCupAdapter";
@@ -76,6 +76,15 @@ export default function App() {
   useEffect(() => {
     loadBackendWorldCup();
   }, [loadBackendWorldCup]);
+
+  useEffect(() => {
+    if (!selectedEvent) return undefined;
+    const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
+      setSelectedEvent(null);
+      return true;
+    });
+    return () => subscription.remove();
+  }, [selectedEvent]);
 
   const refreshLiveMarkets = useCallback(async () => {
     setIsRefreshingLive(true);

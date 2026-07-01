@@ -137,10 +137,9 @@ try {
     $eventDetailPropsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-props.xml"
     Assert-HierarchyContains -Path $eventDetailPropsHierarchy -Expected @("Both teams to score", "First goal scorer team")
 
-    & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
-    & $adb -s $Device shell am start -a android.intent.action.VIEW -d $launchUrl | Out-Null
-    Start-Sleep -Seconds 8
-    Wait-HierarchyContains -Name "cycle-current-holiwyn-home-after-detail.xml" -Expected @("Holiwyn", "World Cup", "Games", "Futures") -RestartUrl $launchUrl -Attempts 8 -DelaySeconds 2 | Out-Null
+    & $adb -s $Device shell input keyevent 4 | Out-Null
+    Start-Sleep -Seconds 1
+    Wait-HierarchyContains -Name "cycle-current-holiwyn-home-after-detail.xml" -Expected @("Holiwyn", "World Cup", "Games", "Futures") -Attempts 5 -DelaySeconds 1 | Out-Null
 
     & $adb -s $Device shell input tap 230 850 | Out-Null
     Start-Sleep -Seconds 1
