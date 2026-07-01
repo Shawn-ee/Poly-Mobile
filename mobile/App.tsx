@@ -479,6 +479,9 @@ export default function App() {
       return;
     }
     const isLiveOrder = ticket.event?.status === "live";
+    const liveClock = isLiveOrder
+      ? ticket.event?.startsAt.replace(/[^\x00-\x7F]+/g, "-").replace(/\s+-\s+/g, " - ")
+      : undefined;
     setBalance((current) => current - cost);
     setPositions((current) => [
       {
@@ -490,6 +493,7 @@ export default function App() {
         amount: result.amount,
         probability: result.probability,
         isLive: isLiveOrder,
+        liveClock,
       },
       ...current,
     ]);
@@ -501,6 +505,7 @@ export default function App() {
       side: result.side,
       amount: result.amount,
       isLive: isLiveOrder,
+      liveClock,
     });
     setActivities((current) => [
       {
@@ -510,6 +515,7 @@ export default function App() {
         outcome: result.outcome,
         amount: result.amount,
         isLive: isLiveOrder,
+        liveClock,
       },
       ...current,
     ]);
@@ -530,6 +536,7 @@ export default function App() {
         outcome: position.outcome,
         amount: value,
         isLive: position.isLive,
+        liveClock: position.liveClock,
       },
       ...current,
     ]);

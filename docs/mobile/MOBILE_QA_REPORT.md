@@ -2501,3 +2501,33 @@ Bugs:
 - Expo Go hierarchy was slow immediately after the clear/reload and recovered through existing retries.
 Visual QA:
 - Ticket modal shows `France`, `France vs. Argentina`, `LIVE WORLD CUP`, `Live - 63'`, clean `10,000 USDT` fake balance, estimates, and `Place buy order`.
+
+### Cycle 121
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554` with Expo Go
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/` through the focused smoke script
+- `npm.cmd run smoke:live-portfolio-badge-deep`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Live clock context now survives order placement and appears in Portfolio position, latest-order, and Recent activity evidence.
+Screenshots:
+- `docs/mobile/screenshots/cycle-121-holiwyn-live-portfolio-clock-smoke.png`
+- `docs/mobile/screenshots/cycle-121-holiwyn-live-portfolio-clock-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-121-holiwyn-live-portfolio-clock-ticket.png`
+- `docs/mobile/screenshots/cycle-121-holiwyn-live-portfolio-clock-portfolio.png`
+- `docs/mobile/screenshots/cycle-121-holiwyn-live-portfolio-clock-latest-order.png`
+- `docs/mobile/screenshots/cycle-121-holiwyn-live-portfolio-clock-activity.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-121-holiwyn-expo-menu-recovered.xml`
+- `docs/mobile/harness/cycle-121-holiwyn-live-portfolio-clock-home.xml`
+- `docs/mobile/harness/cycle-121-holiwyn-live-portfolio-clock-ticket-ready.xml`
+- `docs/mobile/harness/cycle-121-holiwyn-live-portfolio-clock-ticket.xml`
+- `docs/mobile/harness/cycle-121-holiwyn-live-portfolio-clock-portfolio.xml`
+- `docs/mobile/harness/cycle-121-holiwyn-live-portfolio-clock-latest-order.xml`
+- `docs/mobile/harness/cycle-121-holiwyn-live-portfolio-clock-activity.xml`
+Bugs:
+- First run showed the activity clock below the second-scroll viewport even though position and latest-order clocks were present. The proof now scrolls one extra step before asserting activity clock evidence.
+- Expo Go clean reload again spent multiple retries returning blank UI hierarchy before recovering.
+Visual QA:
+- Portfolio position, latest-order card, and Recent activity row all show live context with `LIVE WORLD CUP` and `Live - 63'`.

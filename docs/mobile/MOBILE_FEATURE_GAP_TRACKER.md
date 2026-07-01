@@ -151,3 +151,4 @@ Status:
 | GAP-129 | Portfolio | Live-origin position badge | P1 | Yes | Verified | Cycle 118 preserves live-origin metadata from ticket to Portfolio and verifies a visible Live World Cup badge on the open France vs. Argentina position. |
 | GAP-130 | Portfolio | Live confirmation/activity badge proof | P1 | Yes | Verified | Cycle 119 adds deep-scroll emulator proof for live latest-order and Recent activity badges after a live France order. |
 | GAP-131 | Live trading | Live ticket clock context | P1 | Yes | Verified | Cycle 120 shows the live match clock on live trade tickets and verifies `ticket-live-clock` with `Live - 63'` on emulator. |
+| GAP-132 | Portfolio | Live clock persists after order | P1 | Yes | Verified | Cycle 121 carries the live clock into Portfolio position, latest-order, and activity rows after a live France order. |

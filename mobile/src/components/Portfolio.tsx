@@ -13,6 +13,7 @@ export type Position = {
   amount: number;
   probability: number;
   isLive?: boolean;
+  liveClock?: string;
 };
 
 export type PortfolioActivity = {
@@ -22,6 +23,7 @@ export type PortfolioActivity = {
   outcome: string;
   amount: number;
   isLive?: boolean;
+  liveClock?: string;
 };
 
 export type OpenOrder = {
@@ -42,6 +44,7 @@ export type OrderConfirmation = {
   side: "buy" | "sell";
   amount: number;
   isLive?: boolean;
+  liveClock?: string;
 };
 
 export type PortfolioSyncStatus = "hidden" | "syncing" | "synced" | "error";
@@ -196,6 +199,11 @@ export function Portfolio({
                   <Text style={styles.liveBadgeText}>{t.liveNow}</Text>
                 </View>
               )}
+              {position.liveClock && (
+                <Text accessibilityLabel="portfolio-position-live-clock" testID="portfolio-position-live-clock" style={styles.liveClock}>
+                  {position.liveClock}
+                </Text>
+              )}
               <Text style={styles.positionTitle}>{position.title}</Text>
               <Text style={styles.positionMeta}>
                 {position.mode.toUpperCase()} - {position.side === "buy" ? t.buy : t.sell} - {position.outcome} - {position.probability}%
@@ -237,6 +245,11 @@ export function Portfolio({
               <Ionicons name="radio" color="#fecaca" size={13} />
               <Text style={styles.liveBadgeText}>{t.liveNow}</Text>
             </View>
+          )}
+          {latestOrder.liveClock && (
+            <Text accessibilityLabel="latest-order-live-clock" testID="latest-order-live-clock" style={styles.liveClock}>
+              {latestOrder.liveClock}
+            </Text>
           )}
           <View style={styles.confirmationTop}>
             <Text style={styles.confirmationTitle}>{t.orderPlaced}</Text>
@@ -302,6 +315,11 @@ export function Portfolio({
                     {t.liveNow}
                   </Text>
                 )}
+                {activity.liveClock && (
+                  <Text accessibilityLabel="portfolio-activity-live-clock" style={styles.activityLiveClock}>
+                    {activity.liveClock}
+                  </Text>
+                )}
                 <Text style={styles.activityMeta}>
                   {activity.title} - {activity.outcome}
                 </Text>
@@ -339,6 +357,7 @@ const styles = StyleSheet.create({
   positionCard: { padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginTop: 12 },
   liveBadge: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, marginBottom: 8, paddingHorizontal: 9, paddingVertical: 5, borderRadius: 999, backgroundColor: "#451a1a", borderWidth: 1, borderColor: "#7f1d1d" },
   liveBadgeText: { color: "#fecaca", fontSize: 11, fontWeight: "900", textTransform: "uppercase" },
+  liveClock: { alignSelf: "flex-start", color: "#fca5a5", fontSize: 12, fontWeight: "900", marginBottom: 8 },
   positionTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
   positionMeta: { color: "#94a3b8", marginTop: 5, fontWeight: "800" },
   positionValue: { color: "#22c55e", fontSize: 22, fontWeight: "900", marginTop: 8 },
@@ -374,6 +393,7 @@ const styles = StyleSheet.create({
   activityMain: { flex: 1 },
   activityAction: { color: "#f8fafc", fontWeight: "900" },
   activityLiveText: { alignSelf: "flex-start", color: "#fecaca", fontSize: 11, fontWeight: "900", marginTop: 3, textTransform: "uppercase" },
+  activityLiveClock: { alignSelf: "flex-start", color: "#fca5a5", fontSize: 11, fontWeight: "900", marginTop: 2 },
   activityMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
   activityAmount: { color: "#dbeafe", fontWeight: "900" },
 });
