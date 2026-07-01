@@ -2814,3 +2814,22 @@ Bugs:
 - Samsung Expo Go proof could not run because Expo Go was not installed and Google Play displayed a purchase-verification setup prompt requiring user action.
 Visual QA:
 - Samsung visual QA is pending Expo Go installation or a dev build/APK. The captured Samsung screen proves the current blocker.
+
+### Cycle 134
+
+Date: 2026-07-01
+Device: Configuration/readiness cycle; no phone launch required.
+Build/run command:
+- `npm.cmd run check:android-dev-build`
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Holiwyn now has Android APK/dev-build readiness artifacts, including `eas.json`, an npm readiness check, and README guidance.
+Screenshots:
+- None; configuration readiness cycle.
+Harness evidence:
+- `mobile/eas.json`
+- `mobile/scripts/check-android-dev-build-readiness.ps1`
+Bugs:
+- None.
+Visual QA:
+- Not applicable. The readiness checker confirms preview APK configuration is ready and warns that `expo-dev-client` is still needed before using the development-client profile.

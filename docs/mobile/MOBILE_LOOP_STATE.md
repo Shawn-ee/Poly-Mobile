@@ -6404,6 +6404,43 @@ Harnesses run:
 Harness failures:
 - Samsung `exp://` launch failed because Expo Go is not installed. Play Store install flow is waiting on user-controlled purchase-verification setup.
 
+### Cycle 134
+
+Date: 2026-07-01
+Branch: mobile/cycle-134
+Goal: Prepare Holiwyn for Samsung APK/dev-build testing instead of relying on Expo Go.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; configuration/readiness cycle.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/eas.json`, `mobile/scripts/check-android-dev-build-readiness.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run check:android-dev-build` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- None.
+Harness evidence captured:
+- `mobile/eas.json`
+- `mobile/scripts/check-android-dev-build-readiness.ps1`
+Bugs found:
+- None.
+Technical debt added:
+- `expo-dev-client` is still not installed, so the verified near-term route is `preview-apk`; full dev-client builds require that dependency and build tooling.
+Technical debt resolved:
+- Samsung APK/dev-build readiness is now explicit and locally checkable instead of only documented as a future plan.
+Result: Passed Cycle 134 QA. Android readiness check, mobile typecheck, and mobile API/profile-preference/activity-metric tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 135 should attempt APK/dev-build tooling discovery or continue preparing Samsung install automation without depending on Expo Go.
+Harnesses run:
+- Android Dev Build Readiness Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity Metric Unit Harness
+- Review Harness
+Harness failures:
+- None. Readiness warning remains for missing `expo-dev-client`.
+
 ### Heartbeat After Cycle 133
 
 Completed cycles: 131, 132, 133.

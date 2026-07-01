@@ -31,6 +31,20 @@ For the Android emulator, run `adb reverse tcp:3000 tcp:3000` and use `http://12
 - Expo Go: acceptable for fast iteration while the app is changing quickly.
 - Android development build/APK: create once core Holiwyn flows are stable or Expo Go becomes the main testing bottleneck.
 
+## Android APK Readiness
+
+Run the local readiness check before trying a Samsung APK/dev-build lane:
+
+```powershell
+npm run check:android-dev-build
+```
+
+Current build profiles live in `eas.json`:
+
+- `preview-apk`: internal Android APK profile for Samsung install/QA without relying on Expo Go.
+- `development`: Android development-client APK profile; this requires adding `expo-dev-client` before use.
+- `production`: Android app bundle profile for later release preparation.
+
 ## Product Direction
 
 Use Polymarket as a product reference for prediction-market patterns such as event browsing, odds as probabilities, fast buy/sell tickets, positions, and account funding. Do not copy their exact UI, brand, icons, copy, or assets. This app should stay focused on soccer and World Cup markets under the Holiwyn brand.

@@ -8,6 +8,7 @@
     "android": "expo start --android",
     "typecheck": "tsc --noEmit",
     "check:server-auth": "powershell -ExecutionPolicy Bypass -File ./scripts/check-server-auth-config.ps1",
+    "check:android-dev-build": "powershell -ExecutionPolicy Bypass -File ./scripts/check-android-dev-build-readiness.ps1",
     "preflight:server-mode": "powershell -ExecutionPolicy Bypass -File ./scripts/server-mode-preflight.ps1",
     "preflight:server-mode:strict": "powershell -ExecutionPolicy Bypass -File ./scripts/server-mode-preflight.ps1 -RequireBackend -RequireApiKey",
     "smoke": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1",

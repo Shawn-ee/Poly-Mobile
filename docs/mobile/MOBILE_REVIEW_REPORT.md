@@ -1937,3 +1937,18 @@ Findings:
 - Mobile typecheck and mobile API/profile-preference/activity-metric tests passed.
 Decision: Approve Cycle 133 for local commit/merge after scoped diff review, with Samsung visual proof deferred until Expo Go or dev APK is available.
 Merge approved: Yes
+
+### Cycle 134
+
+Date: 2026-07-01
+Branch: mobile/cycle-134
+Reviewer: Lead/Reviewer pass
+Scope: Android preview APK/development build readiness.
+Findings:
+- P1: `eas.json` now defines `preview-apk`, `development`, and `production` Android build profiles, giving the loop a concrete path away from Expo Go.
+- P1: `npm run check:android-dev-build` validates app identity, Android package, scheme, EAS APK profiles, and Samsung ADB visibility.
+- P1: The checker explicitly warns that `expo-dev-client` is not installed yet, so the current verified path is preview APK readiness rather than a full dev-client build.
+- P2: Actual APK generation still requires EAS/local build setup and likely network/credentials; this cycle prepares and verifies config only.
+- Android readiness check, mobile typecheck, and mobile API/profile-preference/activity-metric tests passed.
+Decision: Approve Cycle 134 for local commit/merge after scoped diff review.
+Merge approved: Yes
