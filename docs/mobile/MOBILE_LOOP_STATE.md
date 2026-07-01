@@ -4618,6 +4618,65 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 094
+
+Date: 2026-07-01
+Branch: mobile/cycle-094
+Goal: Add a localized Closed trades count to Portfolio and verify it changes after a Futures mock order is closed.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio now displays a Closed trades count card below balance/sync state.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/Portfolio.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:portfolio-closed-count` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-094-holiwyn-portfolio-closed-count-smoke.png`
+- `docs/mobile/screenshots/cycle-094-holiwyn-portfolio-closed-count-closed.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-094-holiwyn-portfolio-closed-count-home-start.xml`
+- `docs/mobile/harness/cycle-094-holiwyn-portfolio-closed-count-empty.xml`
+- `docs/mobile/harness/cycle-094-holiwyn-portfolio-closed-count-home.xml`
+- `docs/mobile/harness/cycle-094-holiwyn-portfolio-closed-count-list.xml`
+- `docs/mobile/harness/cycle-094-holiwyn-portfolio-closed-count-ticket.xml`
+- `docs/mobile/harness/cycle-094-holiwyn-portfolio-closed-count-open.xml`
+- `docs/mobile/harness/cycle-094-holiwyn-portfolio-closed-count-ready.xml`
+- `docs/mobile/harness/cycle-094-holiwyn-portfolio-closed-count-closed.xml`
+Bugs found:
+- None. Initial harness assertion did not account for the new vertical layout pushing Close position lower; recovered by scrolling to visible close proof before tapping.
+Technical debt added:
+- Closed trades count is local activity-state based until server-backed portfolio history is fully available.
+Technical debt resolved:
+- Portfolio now exposes open, activity, and closed-trade counts before detailed rows.
+Result: Passed Cycle 094 QA. Mobile typecheck, focused Portfolio closed-count smoke, visual screenshot review, and mobile API tests pass.
+Commit: `56d2887` (`Add Holiwyn portfolio closed count`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `ead8dba`.
+Next cycle: Cycle 095 should improve Portfolio count layout density or add account/watchlist persistence affordances.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Portfolio Harness
+- Futures Harness
+- Trading Simulation Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 094
+
+Completed cycles: 092, 093, 094 since the last heartbeat.
+Verified progress: Portfolio now has focused emulator proof for Open positions, Recent activity, and Closed trades counts through Futures mock order and close flows.
+Current app state: Holiwyn mobile has verified Home discovery filters/saved markets/saved empty/search clear/card stats/futures stats, Search browse/query/clear/saved filtering/sort/saved empty/card stats, Event Detail grouped markets/props/group jumps/save/trading stats/depth/outcome ticket opening, featured futures trading, Futures list ticket/buy/sell/order/close coverage, ticket balance/max/preset sizing/share and price estimates, side-aware buy/sell tickets, successful mock order, forced order failure, server order failure, Portfolio summary/detail/counts/close/activity/order confirmation/open-order cancel, server-unavailable Portfolio fallback, Live refresh, localization, and Account/Login mock profile flows on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history/order/cancel client seams are wired; Bearer API-key config and canonical request shape are tested; local credential generation and backend readiness harnesses exist; latest UI smokes still use mock fallback because backend health is unavailable.
+Open blockers: None for autonomous product/harness progress. Live authenticated backend proof still waits on local backend/Docker availability.
+Risks: Portfolio counts, Account, and Saved state are local/session-only; Home/Search/Futures market stats, Popular ranking, ticket quote math, and close-position behavior remain local estimates until backend auth, quote, popularity, order-book, and position APIs can feed them.
+Next three likely cycles: Improve Portfolio count layout density, add persistence affordances for account/watchlist/session state, and retry backend readiness when local services become reachable.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
