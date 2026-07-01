@@ -8,6 +8,8 @@ type LiveScreenCopy = {
   liveUpdated: string;
   refreshLive: string;
   noLive: string;
+  marketCount: string;
+  outcomeCount: string;
 };
 
 export function LiveScreen({
@@ -29,6 +31,12 @@ export function LiveScreen({
   openEvent: (event: Event) => void;
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
 }) {
+  const liveMarketCount = events.reduce((total, event) => total + event.markets.length, 0);
+  const liveOutcomeCount = events.reduce(
+    (total, event) => total + event.markets.reduce((marketTotal, market) => marketTotal + market.outcomes.length, 0),
+    0,
+  );
+
   return (
     <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
       <View style={styles.liveHeader}>
@@ -48,6 +56,20 @@ export function LiveScreen({
           <Text style={styles.refreshText}>{t.refreshLive}</Text>
         </Pressable>
       </View>
+      <View accessibilityLabel="live-market-summary" style={styles.summaryRow} testID="live-market-summary">
+        <View style={styles.summaryPill}>
+          <Ionicons name="layers-outline" color="#93c5fd" size={16} />
+          <Text style={styles.summaryText}>
+            {liveMarketCount} {t.marketCount}
+          </Text>
+        </View>
+        <View style={styles.summaryPill}>
+          <Ionicons name="git-branch-outline" color="#93c5fd" size={16} />
+          <Text style={styles.summaryText}>
+            {liveOutcomeCount} {t.outcomeCount}
+          </Text>
+        </View>
+      </View>
       <MarketList locale={locale} events={events} empty={t.noLive} openEvent={openEvent} openTicket={openTicket} />
     </ScrollView>
   );
@@ -64,4 +86,7 @@ const styles = StyleSheet.create({
   refreshButton: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, backgroundColor: "#1f2937" },
   refreshButtonDisabled: { opacity: 0.7 },
   refreshText: { color: "#dbeafe", fontWeight: "900" },
+  summaryRow: { flexDirection: "row", gap: 8, marginBottom: 14 },
+  summaryPill: { flex: 1, minHeight: 42, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, borderRadius: 10, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  summaryText: { color: "#dbeafe", fontSize: 13, fontWeight: "900" },
 });

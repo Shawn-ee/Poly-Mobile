@@ -2304,3 +2304,23 @@ Bugs:
 - First run failed because ADB reset and the emulator went offline. The emulator was restarted, boot readiness was confirmed, and the same smoke passed on rerun.
 Visual QA:
 - Match winner card shows `2 outcomes` next to the market title while preserving Best bid, Best ask, Spread, and outcome action buttons.
+
+### Cycle 113
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck` in `mobile/`
+- `npm run smoke:live-summary`
+- `npm run test:mobile-api`
+Result: Passed. Live screen now summarizes live market and outcome breadth.
+Screenshots:
+- `docs/mobile/screenshots/cycle-113-holiwyn-live-summary-smoke.png`
+- `docs/mobile/screenshots/cycle-113-holiwyn-live-summary.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-113-holiwyn-live-summary-home-start.xml`
+- `docs/mobile/harness/cycle-113-holiwyn-live-summary.xml`
+Bugs:
+- First smoke run asserted a hidden market title. The harness was tightened to verify visible live-card text and rerun successfully.
+Visual QA:
+- Live screen shows `2 markets` and `6 outcomes` above the France vs. Argentina live trading card.
