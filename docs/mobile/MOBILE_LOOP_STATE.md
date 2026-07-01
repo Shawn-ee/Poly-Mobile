@@ -4524,6 +4524,53 @@ Open blockers: None for autonomous product/harness progress. Live authenticated 
 Risks: Account and Saved state are local/session-only; Home/Search/Futures market stats, Popular ranking, ticket quote math, and close-position behavior remain local estimates until backend auth, quote, popularity, order-book, and position APIs can feed them.
 Next three likely cycles: Continue Futures/Portfolio parity, improve account/watchlist persistence affordances, and retry backend readiness when local services become reachable.
 
+### Cycle 092
+
+Date: 2026-07-01
+Branch: mobile/cycle-092
+Goal: Add a localized Open positions count to Portfolio and verify it changes after a Futures mock order.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio now displays an Open positions count card below balance/sync state.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/Portfolio.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:portfolio-position-count` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-092-holiwyn-portfolio-position-count-smoke.png`
+- `docs/mobile/screenshots/cycle-092-holiwyn-portfolio-position-count-open.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-092-holiwyn-portfolio-position-count-home-start.xml`
+- `docs/mobile/harness/cycle-092-holiwyn-portfolio-position-count-empty.xml`
+- `docs/mobile/harness/cycle-092-holiwyn-portfolio-position-count-home.xml`
+- `docs/mobile/harness/cycle-092-holiwyn-portfolio-position-count-list.xml`
+- `docs/mobile/harness/cycle-092-holiwyn-portfolio-position-count-ticket.xml`
+- `docs/mobile/harness/cycle-092-holiwyn-portfolio-position-count-open.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Position count is local-state based until server-backed portfolio state is fully available.
+Technical debt resolved:
+- Portfolio now gives a quick open-position count before detailed position cards.
+Result: Passed Cycle 092 QA. Mobile typecheck, focused Portfolio position-count smoke, visual screenshot review, and mobile API tests pass.
+Commit: Pending branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 093 should continue portfolio/account persistence affordances or retry backend readiness if local services become reachable.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Portfolio Harness
+- Futures Harness
+- Trading Simulation Harness
+- Localization Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

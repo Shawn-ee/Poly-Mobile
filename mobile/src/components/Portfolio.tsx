@@ -66,6 +66,7 @@ type PortfolioCopy = {
   portfolioSyncError: string;
   portfolioSyncFallback: string;
   orderPlaced: string;
+  openPositions: string;
 };
 
 const currentProbability = (position: Position) => {
@@ -141,6 +142,10 @@ export function Portfolio({
           </View>
         </View>
       )}
+      <View accessibilityLabel="portfolio-position-count" testID="portfolio-position-count" style={styles.positionCountCard}>
+        <Text style={styles.positionCountLabel}>{t.openPositions}</Text>
+        <Text style={styles.positionCountValue}>{positions.length}</Text>
+      </View>
       {positions.length === 0 ? (
         <View style={styles.emptyCard}>
           <Ionicons name="wallet-outline" size={34} color="#64748b" />
@@ -286,6 +291,9 @@ const styles = StyleSheet.create({
   syncTextBlock: { flex: 1 },
   syncTitle: { color: "#f8fafc", fontWeight: "900" },
   syncBody: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
+  positionCountCard: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 14, paddingVertical: 12, borderRadius: 12, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247", marginTop: 12 },
+  positionCountLabel: { color: "#94a3b8", fontWeight: "900" },
+  positionCountValue: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
   emptyCard: { alignItems: "center", padding: 28, borderRadius: 16, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginTop: 16 },
   emptyTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "900", marginTop: 10 },
   emptyText: { color: "#94a3b8", textAlign: "center", marginTop: 6, fontWeight: "700" },

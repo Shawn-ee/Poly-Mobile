@@ -1306,3 +1306,18 @@ Findings:
 - Mobile typecheck, focused Futures list close smoke, and mobile API request tests passed.
 Decision: Approve Cycle 091 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 092
+
+Date: 2026-07-01
+Branch: mobile/cycle-092
+Reviewer: Lead/Reviewer pass
+Scope: Portfolio open positions count.
+Findings:
+- P1: Portfolio now shows a localized Open positions count card.
+- P1: Focused smoke verifies the count is `0` on empty Portfolio and `1` after placing a Futures mock order.
+- P1: The count sits above the summary grid and improves scanability without changing trading math.
+- P2: Count is local-state based until server-backed portfolio state is fully available.
+- Mobile typecheck, focused Portfolio position-count smoke, and mobile API request tests passed.
+Decision: Approve Cycle 092 for local commit/merge after scoped diff review.
+Merge approved: Yes
