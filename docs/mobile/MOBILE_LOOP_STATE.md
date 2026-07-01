@@ -5041,6 +5041,57 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 103
+
+Date: 2026-07-01
+Branch: mobile/cycle-103
+Goal: Surface the current language value in Account preferences and verify it on emulator.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Account preferences now show `Language: English` or the localized language value, alongside saved ticket defaults.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/AccountScreen.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:account-language-summary` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-103-holiwyn-account-language-summary-smoke.png`
+- `docs/mobile/screenshots/cycle-103-holiwyn-account-language-summary.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-103-holiwyn-account-language-summary-home-start.xml`
+- `docs/mobile/harness/cycle-103-holiwyn-account-language-summary.xml`
+Bugs found:
+- None.
+Technical debt added:
+- Account preference summaries remain local-only until backend profile/preference sync exists.
+Technical debt resolved:
+- Account language preference no longer appears as generic instruction copy; it now reflects current app state.
+Result: Passed Cycle 103 QA. Mobile typecheck, focused account-language-summary smoke, visual screenshot review, and mobile API tests pass.
+Commit: `917da15` (`Show Holiwyn account language preference`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `37c4400`.
+Next cycle: Cycle 104 should continue account/profile preference polish, improve profile sync seams, or retry backend readiness if Docker/local Postgres become available.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Account Language Summary Harness
+- Local Storage Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 103
+
+Completed cycles: 101, 102, 103 since the last heartbeat.
+Verified progress: Trade ticket amount/side defaults persist after restart; Account preferences now show saved ticket defaults; Account preferences now show the active language value in the first viewport.
+Current app state: Holiwyn mobile has verified Home discovery filters/saved markets/saved empty/search clear/card stats/futures stats, Search browse/query/clear/saved filtering/sort/saved empty/card stats/saved persistence, Event Detail grouped markets/props/group jumps/save/trading stats/depth/outcome ticket opening, featured futures trading, Futures list ticket/buy/sell/order/close coverage, ticket balance/max/preset sizing/share and price estimates, side-aware buy/sell tickets with persisted defaults, successful mock order, forced order failure, server order failure, Portfolio summary/detail/counts/compact count grid/close/activity/order confirmation/open-order cancel/local persistence, server-unavailable Portfolio fallback, Live refresh, localization with persisted language, and Account/Login mock profile persistence plus preference summaries on Android emulator.
+Current backend state: Server-mode Portfolio snapshot/history/order/cancel client seams are wired; Bearer API-key config and canonical request shape are tested; local credential generation and backend readiness harnesses exist; latest readiness evidence still shows Docker CLI and compose/DATABASE_URL ready, but Docker daemon and local Postgres TCP unavailable.
+Open blockers: None for autonomous mock-mode product/harness progress. Live authenticated backend proof remains gated by Docker Desktop/local Postgres availability.
+Risks: Saved markets, Account session, language, ticket defaults, and Portfolio persistence are local-only; Portfolio counts, Home/Search/Futures market stats, Popular ranking, ticket quote math, and close-position behavior remain local estimates until backend auth, profile, quote, popularity, order-book, and position APIs can feed them.
+Next three likely cycles: Continue account/profile preference polish, add a profile sync adapter seam without enabling real money movement, and retry backend readiness if Docker/local Postgres become available.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
