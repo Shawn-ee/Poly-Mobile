@@ -120,3 +120,4 @@ Status:
 | GAP-098 | Discovery | Futures card market stats | P1 | Yes | Verified | Cycle 087 adds Volume/Liquidity context to Home Futures cards and verifies it in focused emulator smoke. |
 | GAP-099 | Trading | Futures list ticket opening | P1 | Yes | Verified | Cycle 088 adds focused smoke coverage proving a Futures list outcome opens the buy ticket with balance and estimates. |
 | GAP-100 | Trading | Futures list mock order | P1 | Yes | Verified | Cycle 089 adds focused smoke coverage proving a Futures list ticket can place a mock order and create a Portfolio position. |
+| GAP-101 | Trading | Futures list sell ticket | P1 | Yes | Verified | Cycle 090 adds focused smoke coverage proving a Futures list ticket can switch to Sell and show proceeds/CTA copy. |

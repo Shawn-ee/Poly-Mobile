@@ -1276,3 +1276,18 @@ Findings:
 - Mobile typecheck, focused Futures list order smoke, and mobile API request tests passed.
 Decision: Approve Cycle 089 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 090
+
+Date: 2026-07-01
+Branch: mobile/cycle-090
+Reviewer: Lead/Reviewer pass
+Scope: Futures list sell ticket smoke.
+Findings:
+- P1: Added focused emulator coverage for switching a Futures list ticket to Sell.
+- P1: The smoke opens France / World Cup winner from Futures, taps Sell, and verifies Estimated proceeds plus Place sell order.
+- P1: This confirms side-specific ticket copy works from Futures list entry points, not only match/event-detail tickets.
+- P2: Future cycles should add sell order placement behavior once position-aware selling is modeled.
+- Mobile typecheck, focused Futures list sell smoke, and mobile API request tests passed.
+Decision: Approve Cycle 090 for local commit/merge after scoped diff review.
+Merge approved: Yes
