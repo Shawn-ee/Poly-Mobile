@@ -2223,8 +2223,8 @@ Technical debt added:
 Technical debt resolved:
 - Ticket users can now quickly choose common fake-token sizes without typing.
 Result: Passed Cycle 046 QA. Deep smoke verifies amount presets, Max sizing, max-sized close balance, and the full Live/Search path.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: cycle branch HEAD (`Add Holiwyn ticket amount presets`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Cycle 047 should add server-mode error/empty states or start selector-driven harness actions.
 Harnesses run:
 - QA Smoke Harness
