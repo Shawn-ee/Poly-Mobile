@@ -1874,3 +1874,19 @@ Findings:
 - P2: No app runtime behavior changed in this cycle, so no emulator smoke was required.
 Decision: Approve Cycle 129 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 130
+
+Date: 2026-07-01
+Branch: mobile/cycle-130
+Reviewer: Lead/Reviewer pass
+Scope: Portfolio open-order economics and cancel hardening.
+Findings:
+- P1: Open orders now render before the no-position empty card, so pending orders are visible and actionable without extra scrolling.
+- P1: Each open order shows limit price, implied odds, order value, remaining amount, and a visible Cancel button.
+- P1: `forceOpenOrder=1` now seeds a clean fake-token portfolio, preventing stale canceled activity from polluting repeatable smoke runs.
+- P1: Cancel is idempotent and no longer inserts duplicate canceled activity rows if a tap/retry fires twice.
+- P2: Open-order economics are still mock fixture values until backend orderbook/quote integration becomes the source of truth.
+- Mobile typecheck through the smoke script and mobile API/profile-preference tests passed.
+Decision: Approve Cycle 130 for local commit/merge after scoped diff review.
+Merge approved: Yes

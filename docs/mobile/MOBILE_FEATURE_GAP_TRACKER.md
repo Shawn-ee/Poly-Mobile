@@ -160,3 +160,4 @@ Status:
 | GAP-138 | Event detail | Outcome odds on market buttons | P1 | Yes | Verified | Cycle 127 adds decimal odds under Event Detail outcome probabilities and verifies Mexico shows `64%` plus `1.6x`. |
 | GAP-139 | Trade ticket | Potential profit estimate | P1 | Yes | Verified | Cycle 128 adds a potential-profit row to trade tickets and verifies the Mexico buy ticket shows `56.25 USDT`. |
 | GAP-140 | Harness | Samsung/emulator/dev-build device strategy | P1 | No | Verified | Cycle 129 codifies Samsung as Polymarket reference/later real-device QA, emulator as repeatable Holiwyn automation, and Android dev build/APK as the next stable-app QA milestone after Expo Go. |
+| GAP-141 | Portfolio | Open-order economics card | P1 | Yes | Verified | Cycle 130 moves Open orders above empty positions, adds limit price, implied odds, and order value, and verifies cancel still records a clean canceled activity. |

@@ -299,8 +299,20 @@ export default function App() {
       setTicket({ market, outcome, side: "buy" });
     }
     if (url.includes("forceOpenOrder=1")) {
+      setBalance(10000);
+      setPositions([]);
+      setLatestOrder(null);
       setOpenOrders([SMOKE_OPEN_ORDER]);
+      setActivities([]);
       setMainTab("portfolio");
+      const snapshot: StoredPortfolio = {
+        balance: 10000,
+        positions: [],
+        latestOrder: null,
+        openOrders: [SMOKE_OPEN_ORDER],
+        activities: [],
+      };
+      AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
     }
     const forcedSearchQuery = url.match(/[?&]forceSearchQuery=([^&]+)/)?.[1];
     if (forcedSearchQuery) {
@@ -572,16 +584,16 @@ export default function App() {
 
   const cancelOpenOrder = (order: OpenOrder) => {
     setOpenOrders((current) => current.filter((item) => item.id !== order.id));
-    setActivities((current) => [
-      {
-        id: `${order.id}-canceled`,
-        action: "canceled",
-        title: order.title,
-        outcome: order.outcome,
-        amount: order.remaining,
-      },
-      ...current,
-    ]);
+    const canceledActivity: PortfolioActivity = {
+      id: `${order.id}-canceled`,
+      action: "canceled",
+      title: order.title,
+      outcome: order.outcome,
+      amount: order.remaining,
+    };
+    setActivities((current) =>
+      current.some((activity) => activity.id === canceledActivity.id) ? current : [canceledActivity, ...current],
+    );
     if (ORDER_MODE === "server") {
       api.cancelOrder(order.id).catch(() => {
         if (mounted.current) setPortfolioSyncStatus("error");

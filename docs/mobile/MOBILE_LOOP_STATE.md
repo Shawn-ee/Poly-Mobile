@@ -6234,6 +6234,60 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 130
+
+Date: 2026-07-01
+Branch: mobile/cycle-130
+Goal: Improve Portfolio open-order clarity with visible economics and keep cancel behavior repeatable under harness reruns.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio Open orders now render above the empty-position card and show limit price, implied odds, order value, remaining amount, and Cancel.
+Backend/API changed: No backend code change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:open-order-cancel` in `mobile/` (includes mobile typecheck).
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-130-holiwyn-open-order-economics-smoke.png`
+- `docs/mobile/screenshots/cycle-130-holiwyn-open-order-economics.png`
+- `docs/mobile/screenshots/cycle-130-holiwyn-open-order-economics-canceled.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-130-holiwyn-open-order-economics-expo-menu.xml`
+- `docs/mobile/harness/cycle-130-holiwyn-open-order-economics-home.xml`
+- `docs/mobile/harness/cycle-130-holiwyn-open-order-economics.xml`
+- `docs/mobile/harness/cycle-130-holiwyn-open-order-economics-canceled.xml`
+Bugs found:
+- First open-order metric stack pushed Cancel and metrics too low; fixed by moving Open orders above the no-position empty state and using compact metric cards.
+- Repeated smoke runs could create duplicate canceled activity warnings; fixed by clean-seeding `forceOpenOrder=1` and making cancel idempotent.
+Technical debt added:
+- Open-order economics are still mock fixture values until backend orderbook/quote integration is wired.
+Technical debt resolved:
+- Pending orders are no longer buried below the no-position empty state.
+- Open-order cancel smoke is cleaner and more repeatable.
+Result: Passed Cycle 130 QA. Focused open-order cancel smoke and mobile API/profile-preference tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 131 should continue order/history parity or retry backend/server-mode proof if local services become available.
+Harnesses run:
+- Mobile Typecheck Harness
+- Open Order Cancel Smoke Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- Initial assertion/layout and duplicate-key warning were corrected; final rerun passed.
+
+### Heartbeat After Cycle 130
+
+Completed cycles: 128, 129, 130.
+Verified progress: Trade tickets now show potential profit, the Samsung/emulator/dev-build policy is codified, and Portfolio open orders show limit price, implied odds, order value, remaining amount, and clean cancel behavior. Focused emulator smokes and mobile API/profile-preference tests passed for the product cycles.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, live badge/clock propagation, local persistence, market group counts, outcome/ticket odds, potential profit, and richer open-order cards.
+Current backend state: Mobile API/profile-preference unit tests pass. Local backend health remained unavailable during these cycles, so user-facing trade proofs used mock fallback.
+Device strategy: Samsung S23 remains Polymarket reference and later explicit Holiwyn real-device QA; Android emulator remains the repeatable Holiwyn automation target; Android dev build/APK is documented as the next stable-app QA milestone after Expo Go.
+Open blockers: None for autonomous progress.
+Risks: Expo Go/emulator UI hierarchy still produces transient null dumps; odds/order economics are mock-derived; backend-backed quote/order integration remains a major remaining final-goal gap.
+Next three likely cycles: continue order/history parity, add richer portfolio trade detail, and retry backend/server-mode proof if local services become available.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
