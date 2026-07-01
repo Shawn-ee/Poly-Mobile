@@ -566,3 +566,17 @@ Findings:
 - `npm run typecheck` and `npm run smoke:deep` passed.
 Decision: Approve Cycle 040 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 041
+
+Date: 2026-07-01
+Branch: mobile/cycle-041
+Reviewer: Lead/Reviewer pass
+Scope: Server-mode Portfolio snapshot adapter.
+Findings:
+- P1: Mobile now has a typed `GET /api/portfolio` client method and maps backend wallet/open-position data into mobile balance and Portfolio positions.
+- P1: The adapter is gated to server order mode, preserving safe fake-token mock behavior in normal emulator development.
+- P2: Open orders and combo orders are typed at the response boundary but not yet displayed in Portfolio.
+- `npm run typecheck` and `npm run smoke:deep` passed.
+Decision: Approve Cycle 041 for local commit/merge after scoped diff review.
+Merge approved: Yes

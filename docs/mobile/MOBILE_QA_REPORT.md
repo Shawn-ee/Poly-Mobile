@@ -760,3 +760,24 @@ Screenshots:
 - `docs/mobile/screenshots/cycle-040-holiwyn-search.png`
 - `docs/mobile/screenshots/cycle-040-holiwyn-search-query.png`
 Bugs: None found.
+
+### Cycle 041
+
+Date: 2026-07-01
+Device: Android emulator `emulator-5554`
+Build/run command:
+- `npm run typecheck`
+- `npm run smoke:deep`
+Result: Passed. Added a server-mode Portfolio snapshot adapter while preserving the full mock-mode event-detail/trade/Portfolio/Live/Search smoke path.
+Screenshots:
+- `docs/mobile/screenshots/cycle-041-holiwyn-smoke.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-event-detail-props.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-ticket.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-portfolio.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-portfolio-closed.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-live.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-live-refresh.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-search.png`
+- `docs/mobile/screenshots/cycle-041-holiwyn-search-query.png`
+Bugs: None found.
