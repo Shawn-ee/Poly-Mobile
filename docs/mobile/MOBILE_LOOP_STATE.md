@@ -4868,6 +4868,50 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 099
+
+Date: 2026-07-01
+Branch: mobile/cycle-099
+Goal: Persist mock Portfolio state locally and verify a placed World Cup winner position restores after app restart.
+Reference app screens observed: No new Samsung reference screens.
+Holiwyn screens changed: Portfolio now restores fake-token balance, positions, latest order, open orders, and activity after restart.
+Backend/API changed: No backend change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `npm run smoke:portfolio-persistence` in `mobile/`.
+- `npm run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-099-holiwyn-portfolio-persistence-ticket.png`
+- `docs/mobile/screenshots/cycle-099-holiwyn-portfolio-persistence-open.png`
+- `docs/mobile/screenshots/cycle-099-holiwyn-portfolio-persistence-restored.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-099-holiwyn-portfolio-persistence-home-start.xml`
+- `docs/mobile/harness/cycle-099-holiwyn-portfolio-persistence-ticket.xml`
+- `docs/mobile/harness/cycle-099-holiwyn-portfolio-persistence-open.xml`
+- `docs/mobile/harness/cycle-099-holiwyn-portfolio-persistence-restored.xml`
+Bugs found:
+- None in product code. Harness recovered from cleared-start tap interception by opening the focused ticket through a harness-only deep link while still placing the order through the real ticket CTA.
+Technical debt added:
+- Portfolio persistence is local mock storage only; authenticated server portfolio remains the eventual source of truth.
+Technical debt resolved:
+- Fake-token Portfolio state is no longer session-only on the device.
+Result: Passed Cycle 099 QA. Mobile typecheck, focused portfolio-persistence smoke, visual screenshot review, and mobile API tests pass.
+Commit: `be4ed7a` (`Persist Holiwyn mock portfolio state`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `e76ac16`.
+Next cycle: Cycle 100 should retry backend readiness or add another high-value verified user-flow polish, then write the next heartbeat.
+Harnesses run:
+- Emulator Runtime Harness
+- QA Smoke Harness
+- Portfolio Persistence Harness
+- Local Storage Harness
+- Screenshot Evidence Harness
+- Server Auth Request Harness
+- Review Harness
+Harness failures:
+- None.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
