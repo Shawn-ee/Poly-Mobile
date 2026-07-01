@@ -3350,8 +3350,8 @@ Technical debt added:
 Technical debt resolved:
 - Server mode now has emulator proof that unreachable backend APIs show the local fake-token Portfolio fallback instead of crashing or pretending sync passed.
 Result: Passed Cycle 066 QA. Mobile typecheck, server-unavailable emulator smoke, and mobile API tests pass.
-Commit: cycle branch HEAD (`pending`)
-Merged: Pending local merge.
+Commit: `fd93c13` (`Add Holiwyn server unavailable smoke`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `13db411`.
 Next cycle: Cycle 067 should continue product depth while backend daemon is unavailable, or attempt DB start if Docker Desktop becomes reachable.
 Harnesses run:
 - Emulator Runtime Harness
