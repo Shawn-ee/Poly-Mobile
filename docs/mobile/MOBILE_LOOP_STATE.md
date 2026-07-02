@@ -8146,8 +8146,8 @@ Technical debt added:
 Technical debt resolved:
 - None.
 Result: Passed Cycle 177 QA. Samsung future-list order smoke passed with the slippage row visible, mobile typecheck passed, and mobile API/service tests pass.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `37624b4` (`Show ticket slippage setting`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `f35b12c`.
 Next cycle: Cycle 178 should continue ticket/order parity, user-configurable ticket settings, or backend readiness recovery if Docker/DB/API-key state changes.
 Harnesses run:
 - Samsung Future List Order Smoke Harness
