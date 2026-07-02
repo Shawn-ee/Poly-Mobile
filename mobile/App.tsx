@@ -41,6 +41,7 @@ import {
   applyTicketQuotesToEvent,
   applyTicketQuotesToMarket,
   applyTicketQuotesToMarkets,
+  loadMarketQuotesById,
   loadTicketQuotes,
 } from "./src/services/quoteService";
 
@@ -460,16 +461,7 @@ export default function App() {
         }
         const quotedEvents = await Promise.all(
           normalized.map(async (event) => {
-            const quotesByMarketId = new Map();
-            await Promise.all(
-              event.markets.map(async (market) => {
-                try {
-                  quotesByMarketId.set(market.id, await loadTicketQuotes(api, market.id));
-                } catch {
-                  // Keep the event payload odds when a market quote endpoint is unavailable.
-                }
-              }),
-            );
+            const quotesByMarketId = await loadMarketQuotesById(api, event.markets.map((market) => market.id));
             return applyTicketQuotesToEvent(event, quotesByMarketId);
           }),
         );
@@ -488,21 +480,8 @@ export default function App() {
     if (ORDER_MODE !== "server") return undefined;
     let cancelled = false;
     const marketIds = futures.map((market) => market.id);
-    Promise.all(
-      marketIds.map(async (marketId) => {
-        try {
-          return { marketId, quotes: await loadTicketQuotes(api, marketId) };
-        } catch {
-          return { marketId, quotes: null };
-        }
-      }),
-    ).then((results) => {
+    loadMarketQuotesById(api, marketIds).then((quotesByMarketId) => {
       if (cancelled || !mounted.current) return;
-      const quotesByMarketId = new Map(
-        results
-          .filter((result): result is { marketId: string; quotes: NonNullable<typeof result.quotes> } => result.quotes !== null)
-          .map((result) => [result.marketId, result.quotes]),
-      );
       if (quotesByMarketId.size === 0) return;
       setFutures((current) => applyTicketQuotesToMarkets(current, quotesByMarketId));
     });
@@ -619,21 +598,16 @@ export default function App() {
     let cancelled = false;
     const eventId = selectedEvent.id;
     const marketIds = selectedEvent.markets.map((market) => market.id);
-    Promise.all(
-      marketIds.map(async (marketId) => ({
-        marketId,
-        quotes: await loadTicketQuotes(api, marketId),
-      })),
-    )
-      .then((results) => {
+    loadMarketQuotesById(api, marketIds)
+      .then((quotesByMarketId) => {
         if (cancelled || !mounted.current) return;
         setSelectedEvent((current) => {
           if (!current || current.id !== eventId) return current;
           let changed = false;
           const markets = current.markets.map((market) => {
-            const result = results.find((item) => item.marketId === market.id);
-            if (!result) return market;
-            const quotedMarket = applyTicketQuotesToMarket(market, result.quotes);
+            const quotes = quotesByMarketId.get(market.id);
+            if (!quotes) return market;
+            const quotedMarket = applyTicketQuotesToMarket(market, quotes);
             if (quotedMarket !== market) changed = true;
             return quotedMarket;
           });

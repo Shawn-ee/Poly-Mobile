@@ -50,6 +50,28 @@ export const loadTicketQuotes = async (api: PolyApi, marketId: string, outcomeId
   return payload.quotes.map(quoteToTicketQuote);
 };
 
+export const loadMarketQuotesById = async (
+  api: PolyApi,
+  marketIds: string[],
+): Promise<Map<string, TicketQuote[]>> => {
+  const uniqueMarketIds = [...new Set(marketIds)];
+  const results = await Promise.all(
+    uniqueMarketIds.map(async (marketId) => {
+      try {
+        return { marketId, quotes: await loadTicketQuotes(api, marketId) };
+      } catch {
+        return { marketId, quotes: null };
+      }
+    }),
+  );
+
+  return new Map(
+    results
+      .filter((result): result is { marketId: string; quotes: TicketQuote[] } => result.quotes !== null)
+      .map((result) => [result.marketId, result.quotes]),
+  );
+};
+
 export const applyTicketQuoteToOutcome = <TOutcome extends QuoteableOutcome>(
   outcome: TOutcome,
   quotes: TicketQuote[],

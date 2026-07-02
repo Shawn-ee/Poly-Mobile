@@ -7547,6 +7547,50 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 163
+
+Date: 2026-07-01
+Branch: mobile/cycle-163
+Goal: Extract a shared server market quote loader for partial-success quote refresh.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No visual layout change. Server quote refresh now uses a shared tested loader.
+Backend/API changed: No runtime API route change. Mobile quote calls now deduplicate market ids and preserve successful market quotes when adjacent quote calls fail.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/services/quoteService.ts`, `mobile/src/__tests__/quoteService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Unit evidence:
+- Mobile API/service suite passed 9 files and 40 tests.
+- New tests cover market-id deduplication and partial failure recovery in quote loading.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Event-list, event-detail, and futures quote refresh no longer duplicate per-market quote loading and partial-failure behavior in `App.tsx`.
+Result: Passed Cycle 163 QA. Mobile typecheck and mobile API/service tests pass.
+Commit: Pending.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 164 should retry structured backend/server readiness evidence or add a server-mode quote proof harness.
+Harnesses run:
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync/Quote Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 163
+
+Completed cycles: 161, 162, 163.
+Verified progress: Backend-loaded event lists, open event details, and futures now share normalized server quote refresh behavior; the quote loader is tested for deduplication and partial-success recovery.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, local persistence, market group counts, outcome/ticket odds, potential profit, open-order economics, latest-order execution details, timestamped order history, backend-compatible resolved-history mapping, Samsung-proven core/live trading flows, Samsung-proven server Portfolio/account fallback, and unit-covered server order/Portfolio/cancel/quote mapping.
+Current backend state: Mobile API/profile-preference/activity/history/order/open-order/portfolio snapshot/portfolio sync/quote tests pass. Server quote refresh is wired at the app layer, but successful device proof still depends on reachable backend credentials and database services.
+Device strategy: Samsung S23 remains the primary Holiwyn visual QA and server-mode device-readiness target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane once the app is steadier.
+Open blockers: None for autonomous progress. Successful live server-backed quote/order proof on device still depends on Docker daemon, DB TCP, and API-key readiness.
+Risks: Successful authenticated order execution, Portfolio hydration, cancel execution, and quote refresh are still unproven on device; Expo Go proof still depends on LAN reachability.
+Next three likely cycles: rerun structured readiness gates, add quote-specific server proof harnessing, and continue server-backed trading proof preparation.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.

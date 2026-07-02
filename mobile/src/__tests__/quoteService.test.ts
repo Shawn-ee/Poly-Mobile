@@ -5,6 +5,7 @@ import {
   applyTicketQuotesToEvent,
   applyTicketQuotesToMarket,
   applyTicketQuotesToMarkets,
+  loadMarketQuotesById,
   loadTicketQuotes,
   quoteToTicketQuote,
 } from "../services/quoteService";
@@ -118,6 +119,53 @@ describe("quote service", () => {
       },
     ]);
     expect(getMarketQuote).toHaveBeenCalledWith("winner", "usa");
+  });
+
+  test("loads market quotes by id while deduplicating market ids", async () => {
+    const getMarketQuote = vi.fn(async () => ({
+      marketId: "winner",
+      quotes: [
+        {
+          outcomeId: "france",
+          outcomeName: "France",
+          bestBid: 0.41,
+          bestAsk: 0.43,
+          midPrice: 0.42,
+          lastPrice: null,
+        },
+      ],
+    }));
+    const api = { getMarketQuote } as unknown as PolyApi;
+
+    const quotesByMarketId = await loadMarketQuotesById(api, ["winner", "winner"]);
+
+    expect(getMarketQuote).toHaveBeenCalledTimes(1);
+    expect(quotesByMarketId.get("winner")?.[0].probability).toBe(42);
+  });
+
+  test("loads market quotes by id while skipping failed market quote calls", async () => {
+    const getMarketQuote = vi.fn(async (marketId: string) => {
+      if (marketId === "broken") throw new Error("offline");
+      return {
+        marketId,
+        quotes: [
+          {
+            outcomeId: "france",
+            outcomeName: "France",
+            bestBid: 0.41,
+            bestAsk: 0.43,
+            midPrice: 0.42,
+            lastPrice: null,
+          },
+        ],
+      };
+    });
+    const api = { getMarketQuote } as unknown as PolyApi;
+
+    const quotesByMarketId = await loadMarketQuotesById(api, ["winner", "broken"]);
+
+    expect([...quotesByMarketId.keys()]).toEqual(["winner"]);
+    expect(quotesByMarketId.has("broken")).toBe(false);
   });
 
   test("applies a matching ticket quote to an outcome by id", () => {
