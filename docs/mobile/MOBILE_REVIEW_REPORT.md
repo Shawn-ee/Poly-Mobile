@@ -2260,3 +2260,19 @@ Findings:
 - Samsung server-unavailable smoke, mobile typecheck, and mobile API/service tests passed.
 Decision: Approve Cycle 154 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 155
+
+Date: 2026-07-01
+Branch: mobile/cycle-155
+Reviewer: Lead/Reviewer pass
+Scope: Samsung account profile-sync fallback proof.
+Findings:
+- P1: `smoke-samsung.ps1` now supports `-AccountProfileSyncError`, and `mobile/package.json` exposes `smoke:samsung:account-profile-sync-error`.
+- P1: The Samsung S23 proof verifies Account profile-sync fallback through Expo Go, including Preferences, unavailable sync copy, local fallback copy, and local preference rows.
+- P1: Cycle evidence was preserved as screenshot and UI hierarchy files under Cycle 155 names.
+- P1: The first smoke failure correctly showed the lower `Fake-token mode only` row was below the S23 viewport. The assertion was narrowed to visible first-screen fallback indicators and the rerun passed.
+- P2: This is graceful-degradation proof, not successful authenticated profile sync. Successful server-backed sync still depends on Docker/DB/API-key readiness.
+- Samsung account-profile-sync-error smoke, mobile typecheck, and mobile API/service tests passed.
+Decision: Approve Cycle 155 for local commit/merge after scoped diff review.
+Merge approved: Yes

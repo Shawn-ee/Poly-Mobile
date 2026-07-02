@@ -7251,6 +7251,43 @@ Open blockers: None for autonomous progress. Successful server-backed device ord
 Risks: Successful authenticated order execution and Portfolio hydration are still unproven on device; Docker daemon/local DB are currently unavailable; Expo Go proof still depends on LAN reachability.
 Next three likely cycles: add Samsung account/profile server fallback proof, improve API-key/credential readiness reporting, and continue backend-facing service coverage or retry live server proof if readiness changes.
 
+### Cycle 155
+
+Date: 2026-07-01
+Branch: mobile/cycle-155
+Goal: Add and verify Samsung S23 coverage for Account profile-sync fallback.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No product UI change. Added Samsung wrapper coverage for the existing Account profile-sync fallback state.
+Backend/API changed: No runtime API route change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke-samsung.ps1`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/screenshots/cycle-155-holiwyn-account-profile-sync-error.png`, `docs/mobile/harness/cycle-155-holiwyn-account-profile-sync-error.xml`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:samsung:account-profile-sync-error` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Visual evidence:
+- `docs/mobile/screenshots/cycle-155-holiwyn-account-profile-sync-error.png`.
+- `docs/mobile/harness/cycle-155-holiwyn-account-profile-sync-error.xml`.
+Verified UI:
+- Samsung S23 shows Account in server mode with Preferences, `Profile sync unavailable`, `Using local preferences on this device.`, `Language: English`, and `Saved markets: 0 saved`.
+Bugs found:
+- Initial Samsung smoke failed because the deep assertion expected `Fake-token mode only`, which is below the S23 first viewport. Adjusted the assertion to visible fallback and local-preference indicators and reran successfully.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Account profile-sync fallback is now proven on the Samsung S23, not only through emulator-era smoke coverage.
+Result: Passed Cycle 155 QA. Samsung smoke, mobile typecheck, and mobile API/service tests pass.
+Commit: Pending.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 156 should improve API-key/credential readiness reporting or add another Samsung proof around server-mode trade/portfolio recovery.
+Harnesses run:
+- Samsung Account Profile-Sync Fallback Smoke
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Portfolio Snapshot/Portfolio Sync Unit Harness
+- Review Harness
+Harness failures:
+- First Samsung run failed on a below-viewport assertion; fixed and reran successfully.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.
