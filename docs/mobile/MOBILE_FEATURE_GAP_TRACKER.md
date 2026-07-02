@@ -20,6 +20,7 @@ Status:
 
 | ID | Area | Feature | Priority | Reference Observed | Holiwyn Status | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| GAP-284 | Portfolio | Backend Portfolio quote depth mapping | P1 | No | Verified | Cycle 271 maps optional backend Portfolio position bid/ask depth into mobile positions so live snapshots can feed server position re-trade tickets. |
 | GAP-283 | Portfolio | Server position re-trade quote depth | P1 | No | Verified | Cycle 270 carries server position quote depth into Buy/Sell position tickets, guards against fallback/crossed depth, and verifies both sides on Samsung. |
 | GAP-282 | Harness | Server ticket non-crossed spread guard | P1 | No | Verified | Cycle 269 makes server ticket smokes fail on negative spread text and verifies the guard with the cleaned Samsung open-order cancel proof. |
 | GAP-281 | Harness | Non-crossed server open-order proof liquidity | P1 | No | Verified | Cycle 268 adds clean open-order quote liquidity prep so the Samsung server cancel proof shows a normal positive spread while preserving pending-order behavior. |
