@@ -1248,7 +1248,20 @@ try {
       Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-group-prop"
       Start-Sleep -Seconds 1
       $eventDetailPropOrderPropsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-prop-order-props.xml"
-      Assert-HierarchyContains -Path $eventDetailPropOrderPropsHierarchy -Expected @("Props", "Both teams to score", "Yes", "event-detail-outcome-mexico-ecuador-both-score-yes")
+      try {
+        Assert-HierarchyContains -Path $eventDetailPropOrderPropsHierarchy -Expected @("Props", "Both teams to score", "Yes", "event-detail-outcome-mexico-ecuador-both-score-yes")
+      } catch {
+        if ((Dismiss-ExpoDeveloperMenuIfPresent -Path $eventDetailPropOrderPropsHierarchy)) {
+          $eventDetailHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail.xml"
+          Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-group-prop"
+          Start-Sleep -Seconds 1
+        } else {
+          & $adb -s $Device shell input swipe 540 1760 540 980 450 | Out-Null
+          Start-Sleep -Seconds 1
+        }
+        $eventDetailPropOrderPropsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-prop-order-props.xml"
+        Assert-HierarchyContains -Path $eventDetailPropOrderPropsHierarchy -Expected @("Props", "Both teams to score", "Yes", "event-detail-outcome-mexico-ecuador-both-score-yes")
+      }
       Invoke-TapHierarchyNode -Path $eventDetailPropOrderPropsHierarchy -Identifier "event-detail-outcome-mexico-ecuador-both-score-yes"
       Start-Sleep -Seconds 1
       $eventDetailPropOrderTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-prop-order-ticket.xml"
@@ -1257,7 +1270,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-prop-order-portfolio.png"
       $eventDetailPropOrderPortfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-prop-order-portfolio.xml"
-      Assert-HierarchyContains -Path $eventDetailPropOrderPortfolioHierarchy -Expected @("Portfolio", "Open positions", "Recent activity", "1", "Mexico vs. Ecuador - Yes", "Buy - Filled shares 196.08 - Exec price 51% - Implied odds 2.0x", "Order placed", "MOCK - Buy - Yes", "Filled shares", "196.08", "Exec price", "51%", "Implied odds", "2.0x")
+      Assert-HierarchyContains -Path $eventDetailPropOrderPortfolioHierarchy -Expected @("Portfolio", "Open positions", "Recent activity", "1", "Both teams to score - Yes", "Buy - Filled shares 196.08 - Exec price 51% - Implied odds 2.0x", "Order placed", "MOCK - Buy - Yes", "Both teams to score", "Filled shares", "196.08", "Exec price", "51%", "Implied odds", "2.0x")
       return
     }
 
@@ -1265,23 +1278,36 @@ try {
       Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-group-prop"
       Start-Sleep -Seconds 1
       $eventDetailPropClosePropsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-prop-close-props.xml"
-      Assert-HierarchyContains -Path $eventDetailPropClosePropsHierarchy -Expected @("Props", "Both teams to score", "Yes", "event-detail-outcome-mexico-ecuador-both-score-yes")
+      try {
+        Assert-HierarchyContains -Path $eventDetailPropClosePropsHierarchy -Expected @("Props", "Both teams to score", "Yes", "event-detail-outcome-mexico-ecuador-both-score-yes")
+      } catch {
+        if ((Dismiss-ExpoDeveloperMenuIfPresent -Path $eventDetailPropClosePropsHierarchy)) {
+          $eventDetailHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail.xml"
+          Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-group-prop"
+          Start-Sleep -Seconds 1
+        } else {
+          & $adb -s $Device shell input swipe 540 1760 540 980 450 | Out-Null
+          Start-Sleep -Seconds 1
+        }
+        $eventDetailPropClosePropsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-prop-close-props.xml"
+        Assert-HierarchyContains -Path $eventDetailPropClosePropsHierarchy -Expected @("Props", "Both teams to score", "Yes", "event-detail-outcome-mexico-ecuador-both-score-yes")
+      }
       Invoke-TapHierarchyNode -Path $eventDetailPropClosePropsHierarchy -Identifier "event-detail-outcome-mexico-ecuador-both-score-yes"
       Start-Sleep -Seconds 1
       $eventDetailPropCloseTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-prop-close-ticket.xml"
       Invoke-TapHierarchyNode -Path $eventDetailPropCloseTicketHierarchy -Identifier "place-mock-order"
       Start-Sleep -Seconds 1
       $eventDetailPropClosePortfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-prop-close-portfolio.xml"
-      Assert-HierarchyContains -Path $eventDetailPropClosePortfolioHierarchy -Expected @("Portfolio", "Open positions", "1", "Mexico vs. Ecuador - Yes", "Order placed")
+      Assert-HierarchyContains -Path $eventDetailPropClosePortfolioHierarchy -Expected @("Portfolio", "Open positions", "1", "Both teams to score - Yes", "Order placed")
       & $adb -s $Device shell input swipe 540 1540 540 760 300 | Out-Null
       Start-Sleep -Seconds 1
       $eventDetailPropCloseReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-prop-close-ready.xml"
-      Assert-HierarchyContains -Path $eventDetailPropCloseReadyHierarchy -Expected @("Mexico vs. Ecuador", "MOCK - Buy - Yes - 51%", "Close position")
+      Assert-HierarchyContains -Path $eventDetailPropCloseReadyHierarchy -Expected @("Both teams to score", "MOCK - Buy - Yes - 51%", "Close position")
       Invoke-TapHierarchyNode -Path $eventDetailPropCloseReadyHierarchy -Identifier "close-position-" -StartsWith
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-prop-close-closed.png"
       $eventDetailPropCloseClosedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-prop-close-closed.xml"
-      Assert-HierarchyContains -Path $eventDetailPropCloseClosedHierarchy -Expected @("Portfolio", "No positions yet", "Recent activity", "Closed", "Bought", "Mexico vs. Ecuador - Yes", "105.88 USDT", "Entry 51% - Current value 105.88 USDT - Est. P/L +5.88 USDT", "Buy - Filled shares 196.08 - Exec price 51% - Implied odds 2.0x")
+      Assert-HierarchyContains -Path $eventDetailPropCloseClosedHierarchy -Expected @("Portfolio", "No positions yet", "Recent activity", "Closed", "Bought", "Both teams to score - Yes", "105.88 USDT", "Entry 51% - Current value 105.88 USDT - Est. P/L +5.88 USDT", "Buy - Filled shares 196.08 - Exec price 51% - Implied odds 2.0x")
       return
     }
 

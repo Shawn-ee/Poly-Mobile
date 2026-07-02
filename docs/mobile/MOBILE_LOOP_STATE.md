@@ -10118,6 +10118,28 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 256
+
+Date: 2026-07-02
+Branch: mobile/cycle-256-prop-position-title-proof
+Status: Verified; pending local merge.
+Objective: Make prop-market Portfolio positions use the prop market title instead of only the event title.
+Implemented:
+- Updated order title selection so game-line event orders keep event titles while prop/live/future orders use market titles.
+- Added a unit test for Event Detail prop order title behavior.
+- Updated Samsung prop order/close proof expectations to require `Both teams to score`.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 68 tests.
+- `npm.cmd run smoke:samsung:event-detail-prop-order` passed on Samsung S23 with Expo host `172.16.200.14` and port `8171`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-order-props.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-order-ticket.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-order-portfolio.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-prop-order-portfolio.png`.
+Commit: pending
+Merge: pending
+
 ### Heartbeat After Cycle 255
 
 Completed cycles: 253, 254, 255.

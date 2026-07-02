@@ -18,7 +18,55 @@ const outcome = {
   color: "#2563eb",
 };
 
+const event = {
+  id: "mexico-ecuador",
+  title: "Mexico vs. Ecuador",
+  zhTitle: "Mexico vs. Ecuador",
+  league: "World Cup",
+  startsAt: "Today 8:00 PM",
+  status: "today" as const,
+  tag: "Group Stage",
+  zhTag: "Group Stage",
+  teams: [],
+  markets: [],
+};
+
+const propMarket = {
+  id: "mexico-ecuador-both-score",
+  title: "Both teams to score",
+  zhTitle: "Both teams to score",
+  type: "prop" as const,
+  outcomes: [],
+};
+
+const propOutcome = {
+  id: "yes",
+  label: "Yes",
+  zhLabel: "Yes",
+  probability: 51,
+  color: "#0a8f61",
+};
+
 describe("ticket order service", () => {
+  test("uses prop market title for event detail prop orders", async () => {
+    const result = await submitTicketOrder({
+      mode: "mock",
+      api: {} as PolyApi,
+      event,
+      market: propMarket,
+      outcome: propOutcome,
+      side: "buy",
+      amount: 100,
+    });
+
+    expect(result).toMatchObject({
+      mode: "mock",
+      title: "Both teams to score",
+      outcome: "Yes",
+      probability: 51,
+    });
+  });
+
   test("submits server-mode ticket orders with canonical price, size, side, and identifiers", async () => {
     const placeLimitOrder = vi.fn(async () => ({ order: { id: "server-order-1" } }));
     const api = { placeLimitOrder } as unknown as PolyApi;

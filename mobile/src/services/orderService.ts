@@ -44,10 +44,15 @@ type ServerOrderResponse = {
 const label = (value: { label?: string; title?: string; name?: string }) =>
   value.label ?? value.title ?? value.name ?? "Market";
 
+const orderTitle = (input: TicketOrderInput) => {
+  if (input.event && input.market.type === "game-line") return label(input.event);
+  return label(input.market);
+};
+
 const mockOrder = (input: TicketOrderInput): TicketOrderResult => ({
   id: `mock-${input.market.id}-${input.outcome.id}-${Date.now()}`,
   mode: "mock",
-  title: label(input.event ?? input.market),
+  title: orderTitle(input),
   outcome: label(input.outcome),
   side: input.side,
   amount: input.amount,
