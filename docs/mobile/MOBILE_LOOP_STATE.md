@@ -9688,8 +9688,8 @@ Evidence:
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`.
 Notes:
 - The summary records user `holiwyn-mobile-proof-cycle-220-open` and the reusable evidence paths without storing the API token.
-Commit: TBD
-Merge: TBD
+Commit: 8c455bb
+Merge: a8558f4
 
 ### Heartbeat After Cycle 220
 
