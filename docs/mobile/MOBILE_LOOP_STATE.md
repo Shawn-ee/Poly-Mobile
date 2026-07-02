@@ -9849,7 +9849,7 @@ Next three likely cycles: integrate the proof-noise gate into Samsung proof wrap
 
 Date: 2026-07-02
 Branch: mobile/cycle-227-proof-gate-wrappers
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Integrate proof-noise gates into reusable Samsung proof wrappers so long runs fail fast on stale proof leftovers.
 Implemented:
 - Added pre/post proof-noise gate execution to `scripts/mobile_samsung_server_order_proof.ps1`.
@@ -9870,8 +9870,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof-noise-gate.json`.
 Notes:
 - Both post-gates passed with 0 proof users affected by open orders and 0 proof users affected by locked balances.
-Commit: pending
-Merge: pending
+Commit: c6d5f66
+Merge: 3d049bf
 
 ### Heartbeat After Cycle 223
 
