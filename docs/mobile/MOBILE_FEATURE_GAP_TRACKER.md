@@ -208,3 +208,4 @@ Status:
 | GAP-186 | Trading ticket | Ticket market depth strip | P1 | Yes | Verified | Cycle 175 adds a compact Best bid/Best ask/Spread strip to the Trade Ticket and verifies it on the Samsung S23 future-order flow. |
 | GAP-187 | Trading ticket | Ticket estimated fee row | P1 | Yes | Verified | Cycle 176 adds a visible `Est. fee` row with a 0 USDT fake-token estimate and verifies it on the Samsung S23 future-order flow. |
 | GAP-188 | Trading ticket | Ticket slippage setting | P1 | Yes | Verified | Cycle 177 adds a visible `Slippage` row with a 1% setting and verifies it on the Samsung S23 future-order flow. |
+| GAP-189 | Trading ticket | Adjustable ticket slippage selector | P1 | Yes | Verified | Cycle 178 turns the static slippage row into 0.5%/1%/2% controls and verifies selecting 2% on the Samsung S23 future-order flow. |
