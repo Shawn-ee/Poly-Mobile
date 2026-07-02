@@ -83,9 +83,9 @@ export function TradeTicket({
   useEffect(() => {
     if (!ticket) return;
     setAmountState(defaultAmount);
-    setSideState(defaultSide);
+    setSideState(ticket.side);
     setSlippageState(defaultSlippage);
-  }, [defaultAmount, defaultSide, defaultSlippage, ticket]);
+  }, [defaultAmount, defaultSlippage, ticket]);
 
   if (!ticket) return null;
   const setAmount = (nextAmount: string) => {

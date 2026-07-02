@@ -126,6 +126,7 @@ export function Portfolio({
   activities,
   syncStatus,
   closePosition,
+  openPositionTrade,
   cancelOpenOrder,
 }: {
   locale: Locale;
@@ -137,6 +138,7 @@ export function Portfolio({
   activities: PortfolioActivity[];
   syncStatus: PortfolioSyncStatus;
   closePosition: (position: Position) => void;
+  openPositionTrade: (position: Position, side: "buy" | "sell") => void;
   cancelOpenOrder: (order: OpenOrder) => void;
 }) {
   const closedActivityCount = activities.filter((activity) => activity.action === "closed").length;
@@ -340,14 +342,32 @@ export function Portfolio({
                   {typeof position.currentPrice === "number" ? ` - ${t.currentPrice} ${Math.round(position.currentPrice * 100)}%` : ""}
                 </Text>
               )}
-              <Pressable
-                accessibilityLabel={`close-position-${position.id}`}
-                onPress={() => closePosition(position)}
-                style={styles.closeButton}
-                testID={`close-position-${position.id}`}
-              >
-                <Text style={styles.closeButtonText}>{t.closePosition}</Text>
-              </Pressable>
+              <View style={styles.positionActionRow}>
+                <Pressable
+                  accessibilityLabel={`position-trade-buy-${position.id}`}
+                  onPress={() => openPositionTrade(position, "buy")}
+                  style={styles.positionTradeButton}
+                  testID={`position-trade-buy-${position.id}`}
+                >
+                  <Text style={styles.positionTradeButtonText}>{t.buy}</Text>
+                </Pressable>
+                <Pressable
+                  accessibilityLabel={`position-trade-sell-${position.id}`}
+                  onPress={() => openPositionTrade(position, "sell")}
+                  style={styles.positionTradeButton}
+                  testID={`position-trade-sell-${position.id}`}
+                >
+                  <Text style={styles.positionTradeButtonText}>{t.sell}</Text>
+                </Pressable>
+                <Pressable
+                  accessibilityLabel={`close-position-${position.id}`}
+                  onPress={() => closePosition(position)}
+                  style={styles.closeButton}
+                  testID={`close-position-${position.id}`}
+                >
+                  <Text style={styles.closeButtonText}>{t.closePosition}</Text>
+                </Pressable>
+              </View>
             </View>
           ))}
         </>
@@ -447,7 +467,10 @@ const styles = StyleSheet.create({
   positionServerMeta: { color: "#93c5fd", fontSize: 12, fontWeight: "800", marginTop: 10 },
   pnlPositive: { color: "#22c55e" },
   pnlNegative: { color: "#ef4444" },
-  closeButton: { marginTop: 12, minHeight: 44, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
+  positionActionRow: { flexDirection: "row", gap: 8, marginTop: 12 },
+  positionTradeButton: { flex: 1, minHeight: 44, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#0f766e", borderWidth: 1, borderColor: "#14b8a6" },
+  positionTradeButtonText: { color: "#ecfeff", fontSize: 14, fontWeight: "900" },
+  closeButton: { flex: 1.35, minHeight: 44, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
   closeButtonText: { color: "#dbeafe", fontSize: 14, fontWeight: "900" },
   confirmationCard: { marginTop: 16, padding: 14, borderRadius: 14, backgroundColor: "#12213a", borderWidth: 1, borderColor: "#2b5ca8" },
   confirmationTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10 },

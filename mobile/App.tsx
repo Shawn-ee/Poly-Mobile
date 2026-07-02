@@ -38,6 +38,7 @@ import { closePositionOnServer } from "./src/services/positionCloseService";
 import { serverClosedPortfolioFixture, serverHydratedPortfolioFixture } from "./src/services/portfolioFixtureService";
 import { applyServerPortfolioState } from "./src/services/portfolioStateApplyService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
+import { resolvePositionTradeTarget } from "./src/services/positionTradeTargetService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
 import {
   applyTicketQuoteToOutcome,
@@ -603,9 +604,9 @@ export default function App() {
     );
   }, [events, query]);
 
-  const openTicket = (market: Market, outcome: Outcome, event?: Event) => {
+  const openTicket = (market: Market, outcome: Outcome, event?: Event, side?: "buy" | "sell") => {
     setTicketOrderError(null);
-    setTicket({ market, outcome, event, side: "buy" });
+    setTicket({ market, outcome, event, side: side ?? ticketDefaults.side });
   };
 
   useEffect(() => {
@@ -809,6 +810,17 @@ export default function App() {
     ]);
   };
 
+  const openPositionTrade = (position: Position, side: "buy" | "sell") => {
+    const target = resolvePositionTradeTarget({ position, futures, events });
+    if (!target) {
+      setPortfolioSyncStatus("error");
+      return;
+    }
+    setSelectedEvent(target.event ?? null);
+    setMainTab("portfolio");
+    openTicket(target.market, target.outcome, target.event, side);
+  };
+
   const cancelOpenOrder = (order: OpenOrder) => {
     setOpenOrders((current) => current.filter((item) => item.id !== order.id));
     const canceledActivity = openOrderCanceledActivity(order, t.justNow);
@@ -879,6 +891,7 @@ export default function App() {
                 activities={activities}
                 syncStatus={portfolioSyncStatus}
                 closePosition={closePosition}
+                openPositionTrade={openPositionTrade}
                 cancelOpenOrder={cancelOpenOrder}
               />
             )}
