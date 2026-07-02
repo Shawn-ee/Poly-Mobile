@@ -71,6 +71,7 @@
     "smoke:samsung:event-detail-props": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -EventDetailProps -Port 8169",
     "smoke:samsung:event-detail-prop-ticket": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -EventDetailPropTicket -Port 8170",
     "smoke:samsung:event-detail-prop-order": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -EventDetailPropOrder -Port 8171",
+    "smoke:samsung:event-detail-prop-close": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -EventDetailPropClose -Port 8172",
     "smoke:samsung:event-detail-outcome-depth": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -EventDetailMarketOutcomeCount -Port 8162",
     "smoke:samsung:event-detail-sell-default": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -EventDetailSellDefault -Port 8163",
     "smoke:samsung:event-detail-sell-ticket": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -EventDetailSellDefaultTrade -Port 8164",
