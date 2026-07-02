@@ -7277,8 +7277,8 @@ Technical debt added:
 Technical debt resolved:
 - Account profile-sync fallback is now proven on the Samsung S23, not only through emulator-era smoke coverage.
 Result: Passed Cycle 155 QA. Samsung smoke, mobile typecheck, and mobile API/service tests pass.
-Commit: Pending.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `3308993` (`Add Samsung account profile fallback smoke`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `64ceef9`.
 Next cycle: Cycle 156 should improve API-key/credential readiness reporting or add another Samsung proof around server-mode trade/portfolio recovery.
 Harnesses run:
 - Samsung Account Profile-Sync Fallback Smoke
