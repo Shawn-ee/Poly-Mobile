@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
 import type { PolyApi } from "../api";
-import { applyTicketQuoteToOutcome, loadTicketQuotes, quoteToTicketQuote } from "../services/quoteService";
+import { applyTicketQuoteToOutcome, applyTicketQuotesToMarket, loadTicketQuotes, quoteToTicketQuote } from "../services/quoteService";
 import type { Quote } from "../types";
 
 describe("quote service", () => {
@@ -165,5 +165,61 @@ describe("quote service", () => {
         },
       ]),
     ).toBe(outcome);
+  });
+
+  test("applies ticket quotes across matching market outcomes", () => {
+    const market = {
+      id: "winner",
+      title: "World Cup winner",
+      outcomes: [
+        { id: "france", label: "France", probability: 34 },
+        { id: "argentina", label: "Argentina", probability: 19 },
+      ],
+    };
+
+    expect(
+      applyTicketQuotesToMarket(market, [
+        {
+          outcomeId: "france",
+          outcomeName: "France",
+          probability: 42,
+          bestBid: 41,
+          bestAsk: 43,
+          midPrice: 42,
+          lastPrice: null,
+        },
+        {
+          outcomeId: "argentina",
+          outcomeName: "Argentina",
+          probability: 21,
+          bestBid: 20,
+          bestAsk: 22,
+          midPrice: 21,
+          lastPrice: null,
+        },
+      ]).outcomes.map((outcome) => outcome.probability),
+    ).toEqual([42, 21]);
+  });
+
+  test("keeps the original market when no outcome quotes match", () => {
+    const market = {
+      id: "winner",
+      title: "World Cup winner",
+      outcomes: [{ id: "spain", label: "Spain", probability: 11 }],
+    };
+
+    expect(
+      applyTicketQuotesToMarket(market, [
+        {
+          outcomeId: "france",
+          outcomeName: "France",
+          probability: 42,
+          bestBid: 41,
+          bestAsk: 43,
+          midPrice: 42,
+          lastPrice: null,
+        },
+      ]),
+    ).toBe(market);
   });
 });

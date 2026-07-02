@@ -67,3 +67,24 @@ export const applyTicketQuoteToOutcome = <TOutcome extends QuoteableOutcome>(
     probability: quote.probability,
   };
 };
+
+export const applyTicketQuotesToMarket = <
+  TOutcome extends QuoteableOutcome,
+  TMarket extends { outcomes: TOutcome[] },
+>(
+  market: TMarket,
+  quotes: TicketQuote[],
+): TMarket => {
+  let changed = false;
+  const outcomes = market.outcomes.map((outcome) => {
+    const quotedOutcome = applyTicketQuoteToOutcome(outcome, quotes);
+    if (quotedOutcome !== outcome) changed = true;
+    return quotedOutcome;
+  });
+
+  if (!changed) return market;
+  return {
+    ...market,
+    outcomes,
+  };
+};

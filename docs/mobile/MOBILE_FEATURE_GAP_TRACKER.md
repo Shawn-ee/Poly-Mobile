@@ -190,3 +190,4 @@ Status:
 | GAP-168 | Backend adapter | Server open-order cancel service tests | P1 | No | Verified | Cycle 157 extracts open-order cancel activity/server-call behavior into a tested service covering mock mode, server mode, and duplicate activity prevention. |
 | GAP-169 | Backend adapter | Server quote normalization service | P1 | No | Verified | Cycle 158 adds a tested quote service that normalizes backend bid/ask/mid/last prices into mobile ticket-ready probabilities. |
 | GAP-170 | Trading ticket | Server quote hydration seam | P1 | No | Verified | Cycle 159 wires normalized server quotes into open tickets in server mode while preserving local ticket odds when quotes fail or do not match. |
+| GAP-171 | Event detail | Server quote refresh seam | P1 | No | Verified | Cycle 160 wires normalized server quotes into open event-detail markets in server mode while preserving local market odds when quote refresh fails. |
