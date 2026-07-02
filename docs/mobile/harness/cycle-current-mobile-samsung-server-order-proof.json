@@ -1,9 +1,9 @@
 ﻿{
     "ready":  true,
     "side":  "sell",
-    "username":  "holiwyn-mobile-proof-cycle-215-sell",
-    "userId":  "f4d721a3-818a-4282-baab-675c06d737b5",
-    "keyId":  "pk_live_d2e824280be3dbd0",
+    "username":  "holiwyn-mobile-proof-cycle-216-sellc",
+    "userId":  "17bc33d1-5ef4-4982-8d20-2f2763975201",
+    "keyId":  "pk_live_9c527be18ec97644",
     "port":  8159,
     "summaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof.json"
 }

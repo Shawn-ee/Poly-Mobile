@@ -44,24 +44,34 @@ async function createMaker() {
 }
 
 async function findMobileServerOrderTarget() {
-  const event = await prisma.event.findUnique({
-    where: { slug: eventSlug },
-    include: {
-      markets: {
-        where: {
-          status: "LIVE",
-          visibility: "PUBLIC",
-          isListed: true,
-          isCanceled: false,
-          mechanism: "ORDERBOOK",
-          outcomes: { some: { isActive: true } },
-        },
-        include: { outcomes: { where: { isActive: true }, orderBy: { displayOrder: "asc" } } },
-        orderBy: [{ marketGroupKey: "asc" }, { displayOrder: "asc" }, { createdAt: "asc" }],
-      },
+  const marketInclude = {
+    where: {
+      status: "LIVE" as const,
+      visibility: "PUBLIC" as const,
+      isListed: true,
+      isCanceled: false,
+      mechanism: "ORDERBOOK" as const,
+      outcomes: { some: { isActive: true } },
     },
-  });
-  if (!event) throw new Error(`Missing event ${eventSlug}.`);
+    include: {
+      outcomes: { where: { isActive: true }, orderBy: { displayOrder: "asc" as const } },
+    },
+    orderBy: [{ marketGroupKey: "asc" as const }, { displayOrder: "asc" as const }, { createdAt: "asc" as const }],
+  };
+  const event =
+    (await prisma.event.findUnique({
+      where: { slug: eventSlug },
+      include: { markets: marketInclude },
+    })) ??
+    (
+      await prisma.event.findMany({
+        where: { category: "sports", sportKey: "soccer", leagueKey: "world_cup" },
+        orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }],
+        include: { markets: marketInclude },
+        take: 8,
+      })
+    ).find((item) => item.markets.length > 0);
+  if (!event) throw new Error(`Missing event ${eventSlug} and no fallback World Cup event with live public orderbook markets was found.`);
   const market = event.markets.find((item) => item.outcomes.length > 0);
   if (!market) throw new Error(`Event ${eventSlug} has no live public orderbook market with active outcomes.`);
   const outcome = market.outcomes[0];

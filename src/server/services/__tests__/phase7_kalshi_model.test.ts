@@ -378,6 +378,13 @@ describe("Phase 7 Kalshi-style public model", () => {
     expect(snapshot.collateralUSDC).toBe("7");
     expect(snapshot.byOutcome[yesId]).toBe("7");
     expect(snapshot.byOutcome[noId]).toBe("7");
+    const positions = await prisma.position.findMany({
+      where: { userId: user.id, marketId: market.id },
+      orderBy: { outcomeId: "asc" },
+    });
+    expect(positions).toHaveLength(2);
+    expect(num(positions[0].avgCost)).toBeCloseTo(0.5, 6);
+    expect(num(positions[1].avgCost)).toBeCloseTo(0.5, 6);
   });
 
   test("rejects invalid non-collateralized inventory seeding", async () => {
