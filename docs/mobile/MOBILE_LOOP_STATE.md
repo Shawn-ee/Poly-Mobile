@@ -10118,6 +10118,39 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 258
+
+Date: 2026-07-02
+Branch: mobile/cycle-258-open-order-payout-parity
+Status: Verified; pending local merge.
+Objective: Improve pending open-order economics parity by showing potential payout beside remaining value.
+Implemented:
+- Added localized `Potential payout` / `\u6f5c\u5728\u8d54\u4ed8` copy for Portfolio open orders.
+- Added a Portfolio open-order payout line using remaining contract shares as max payout.
+- Strengthened the Samsung open-order cancel smoke to require `Potential payout` and `250 USDT` before canceling.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 68 tests.
+- `npm.cmd run smoke:samsung:open-order-cancel` passed on Samsung S23 with Expo host `172.16.200.14` and port `8160`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-open-order.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-open-order-canceled.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-open-order.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-open-order-canceled.png`.
+Commit: pending
+Merge: pending
+
+### Heartbeat After Cycle 258
+
+Completed cycles: 256, 257, 258.
+Verified progress: Prop orders now preserve the prop market title in Portfolio, prop close flow has Samsung real-device proof after the title change, and pending open orders now show potential payout alongside remaining value before cancellation.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung real-device QA, server quote/order/Portfolio sync paths, prop betting coverage, and clearer open-order economics.
+Current backend state: Local backend/mobile API tests pass with 15 files and 68 tests. The latest cycle did not change backend schema or deposit/withdraw behavior.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go. Emulator remains fallback only because it is slow/stale. Proper dev build/APK remains a later stabilization lane.
+Open blockers: None for autonomous progress.
+Risks: Open-order payout currently uses remaining shares as max payout, which matches binary contracts but may need richer wording for sell orders and multi-outcome settlement variants later.
+Next three likely cycles: add open-order payout/proceeds distinction for sell orders, continue ticket/orderbook depth parity for Event Detail prop markets, and add a real-device proof for live-market order economics.
+
 ### Cycle 257
 
 Date: 2026-07-02

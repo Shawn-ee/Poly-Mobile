@@ -96,6 +96,7 @@ type PortfolioCopy = {
   remainingValue: string;
   limitPrice: string;
   orderValue: string;
+  potentialPayout: string;
   placed: string;
   size: string;
   filled: string;
@@ -123,6 +124,8 @@ const estimatedPnl = estimatedPositionPnl;
 const openOrderRemainingShares = (order: OpenOrder) => order.remainingShares ?? order.remaining;
 
 const openOrderValue = (order: OpenOrder) => order.orderValue ?? openOrderRemainingShares(order) * order.price;
+
+const openOrderPotentialPayout = (order: OpenOrder) => openOrderRemainingShares(order);
 
 const openOrderFilledShares = (order: OpenOrder) =>
   typeof order.originalShares === "number" ? Math.max(order.originalShares - openOrderRemainingShares(order), 0) : undefined;
@@ -247,6 +250,9 @@ export function Portfolio({
             </View>
             <Text accessibilityLabel={`open-order-remaining-value-${order.id}`} style={styles.openOrderRemaining}>
               {t.remaining}: {openOrderRemainingShares(order).toLocaleString(undefined, { maximumFractionDigits: 2 })} {t.shares} ({t.remainingValue}: {money(openOrderValue(order))})
+            </Text>
+            <Text accessibilityLabel={`open-order-potential-payout-${order.id}`} style={styles.openOrderRemaining}>
+              {t.potentialPayout}: {money(openOrderPotentialPayout(order))}
             </Text>
             {typeof order.originalShares === "number" && (
               <Text accessibilityLabel={`open-order-size-${order.id}`} style={styles.openOrderPlaced}>
