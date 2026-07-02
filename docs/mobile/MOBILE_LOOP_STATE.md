@@ -9414,8 +9414,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-mobile-server-order-fill-liquidity.json`.
 Notes:
 - This converts the Cycle 209 economics correction into a stronger repeatable device harness: the ticket estimate and filled execution must agree.
-Commit: pending
-Merge: pending
+Commit: 9f67009
+Merge: 0394d84
 
 ### Heartbeat After Cycle 142
 
