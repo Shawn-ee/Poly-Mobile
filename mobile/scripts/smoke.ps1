@@ -134,6 +134,22 @@ function Assert-HierarchyContainsAny {
   throw "UI hierarchy missing all expected alternatives: $($ExpectedAny -join ', ')"
 }
 
+function Assert-ServerTicketUsesQuotedDepthSizes {
+  param(
+    [string]$Path
+  )
+  $hierarchy = Get-Content -Raw -Path $Path
+  if ($hierarchy -notmatch "Best bid [0-9.]+ USDT \([^)]+ shares\)") {
+    throw "Server ticket depth is missing bid size text from quote snapshot."
+  }
+  if ($hierarchy -notmatch "Best ask [0-9.]+ USDT \([^)]+ shares\)") {
+    throw "Server ticket depth is missing ask size text from quote snapshot."
+  }
+  if ($hierarchy -match "Best bid 0.31 USDT \(680 shares\)" -or $hierarchy -match "Best ask 0.38 USDT \(1.65k shares\)") {
+    throw "Server ticket depth is still using local fallback sizes instead of quote snapshot sizes."
+  }
+}
+
 function Invoke-TapHierarchyNode {
   param(
     [string]$Path,
@@ -420,11 +436,11 @@ try {
   } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
     @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina")
   } elseif ($ServerOrderFailure) {
-    @("World Cup winner", "France", "Trading mode: Server mode", "Best bid", "Best ask", "Spread", "Fake balance", "Place buy order")
+    @("World Cup winner", "France", "Trading mode: Server mode", "Best bid", "Best ask", "Spread", "Fake balance")
   } elseif ($ServerSellOrderFilled) {
-    @("Trading mode: Server mode", "Best bid", "Best ask", "Spread", "Fake balance", "Place sell order")
+    @("Trading mode: Server mode", "Best bid", "Best ask", "Spread", "Fake balance")
   } elseif ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerOpenOrderCancel) {
-    @("Trading mode: Server mode", "Best bid", "Best ask", "Spread", "Fake balance", "Place buy order")
+    @("Trading mode: Server mode", "Best bid", "Best ask", "Spread", "Fake balance")
   } elseif ($ServerFilledTradeHistory) {
     @("Portfolio", "Server portfolio synced", "Recent activity")
   } elseif ($ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails) {
@@ -475,8 +491,12 @@ try {
     if ($ServerOrderFailure) {
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-ticket.png"
       $serverTicketHierarchy = $homeHierarchy
-      Assert-HierarchyContains -Path $serverTicketHierarchy -Expected @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "Estimated cost", "Est. fee", "0 USDT", "ticket-slippage", "Slippage", "0.5%", "1%", "2%", "Est. shares", "Avg price", "Place buy order")
-      Invoke-TapHierarchyNode -Path $serverTicketHierarchy -Identifier "place-mock-order"
+      Assert-HierarchyContains -Path $serverTicketHierarchy -Expected @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "Estimated cost", "Est. fee", "0 USDT", "ticket-slippage", "Slippage", "0.5%", "1%", "2%", "Est. shares", "Avg price")
+      & $adb -s $Device shell input swipe 540 1760 540 760 450 | Out-Null
+      Start-Sleep -Seconds 1
+      $serverTicketOrderReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-order-ticket-ready.xml"
+      Assert-HierarchyContains -Path $serverTicketOrderReadyHierarchy -Expected @("place-mock-order", "Place buy order")
+      Invoke-TapHierarchyNode -Path $serverTicketOrderReadyHierarchy -Identifier "place-mock-order"
       Wait-HierarchyContains -Name "cycle-current-holiwyn-server-order-error.xml" -Expected @("Order failed. Try again.", "ticket-order-error", "ticket-order-error-detail", "Place buy order") -Attempts 12 -DelaySeconds 2 | Out-Null
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-error.png"
       $serverOrderErrorHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-order-error.xml"
@@ -488,14 +508,21 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-success-ticket.png"
       $serverOrderSuccessTicketHierarchy = $homeHierarchy
       $serverOrderTicketExpected = if ($ServerSellOrderFilled) {
-        @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "Estimated proceeds", "Est. fee", "0 USDT", "Est. shares", "200 shares", "Avg price", "Place sell order")
+        @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "Estimated proceeds", "Est. fee", "0 USDT", "Est. shares", "200 shares", "Avg price")
       } elseif ($ServerOpenOrderCancel) {
-        @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "Estimated cost", "Est. fee", "0 USDT", "Est. shares", "100 shares", "Avg price", "Place buy order")
+        @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "Estimated cost", "Est. fee", "0 USDT", "Est. shares", "100 shares", "Avg price")
       } else {
-        @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "Estimated cost", "Est. fee", "0 USDT", "Est. shares", "200 shares", "Avg price", "Place buy order")
+        @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "Estimated cost", "Est. fee", "0 USDT", "Est. shares", "200 shares", "Avg price")
       }
       Assert-HierarchyContains -Path $serverOrderSuccessTicketHierarchy -Expected $serverOrderTicketExpected
-      Invoke-TapHierarchyNode -Path $serverOrderSuccessTicketHierarchy -Identifier "place-mock-order"
+      Assert-ServerTicketUsesQuotedDepthSizes -Path $serverOrderSuccessTicketHierarchy
+      & $adb -s $Device shell input swipe 540 1760 540 760 450 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-server-order-success-ticket-ready.png"
+      $serverOrderSuccessTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-order-success-ticket-ready.xml"
+      $serverOrderButtonExpected = if ($ServerSellOrderFilled) { @("place-mock-order", "Place sell order") } else { @("place-mock-order", "Place buy order") }
+      Assert-HierarchyContains -Path $serverOrderSuccessTicketReadyHierarchy -Expected $serverOrderButtonExpected
+      Invoke-TapHierarchyNode -Path $serverOrderSuccessTicketReadyHierarchy -Identifier "place-mock-order"
       $serverOrderSuccessExpected = if ($ServerSellOrderFilled) {
         @("Portfolio", "Server portfolio synced", "Order placed", "SERVER - Sell - YES - FILLED", "Filled shares", "200.00", "Remaining", "0.00")
       } elseif ($ServerOrderFilled) {

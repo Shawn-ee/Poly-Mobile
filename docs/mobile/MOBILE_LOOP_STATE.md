@@ -10118,6 +10118,36 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 265
+
+Date: 2026-07-02
+Branch: mobile/cycle-265-server-ticket-depth-size-proof
+Status: Verified and locally merged.
+Objective: Prove the server-backed ticket depth strip uses backend quote-snapshot bid/ask sizes, not only deterministic fallback sizes.
+Implemented:
+- Added a launch URL version trigger so server-order proof deep links auto-open the ticket whether the URL arrives before or after server World Cup events load.
+- Strengthened the server-order smoke harness with a quoted-depth assertion that requires bid/ask share sizes and rejects the local fallback-size pattern.
+- Made server order smokes scroll-aware after the top-of-ticket depth assertion so the order button can be tapped on the dense scroll-safe ticket sheet.
+Recovery:
+- First recovery run failed before opening the ticket because the proof flag was set after server events had already loaded; fixed by rerunning the server-ticket effect on launch URL changes.
+- Second recovery run opened the ticket and proved backend depth sizes but failed because `Place buy order` was below the first visible scroll position; fixed by splitting top-depth and submit-button assertions across two scroll positions.
+Verification:
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 16 files and 70 tests.
+- `npm.cmd run mobile:samsung-server-order-proof` passed on Samsung S23 with Expo host `172.16.200.14` and port `8158`.
+- The proof seeded `Paraguay vs Australia: Both teams to score`, prepared maker liquidity, created a temporary mobile credential, placed a backend BUY order, and verified the order reached `FILLED`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-home.xml` shows `Best bid 0.47 USDT (1k shares) - Best ask 0.50 USDT (2.5k shares) - Spread 3c`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-ticket-ready.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+- `docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof.json`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket-ready.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
+Result: Passed Cycle 265 QA. Server-mode ticket depth now has a Samsung proof that backend quote sizes are visible before placing a filled backend order.
+Commit: pending.
+Merge: pending.
+
 ### Cycle 264
 
 Date: 2026-07-02
