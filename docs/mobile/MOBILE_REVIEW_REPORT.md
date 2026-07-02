@@ -2769,3 +2769,18 @@ Findings:
 - Mobile API/service tests and mobile typecheck passed.
 Decision: Approve Cycle 186 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 187
+
+Date: 2026-07-01
+Branch: mobile/cycle-187
+Reviewer: Lead/Reviewer pass
+Scope: Server order acknowledgement details in mobile ticket receipts.
+Findings:
+- P1: `submitTicketOrder` now preserves canonical server order `status`, `size`, `remaining`, and fill sizes instead of returning only the id.
+- P1: Server response normalization handles both explicit `fills` arrays and `size - remaining` derivation, covering immediate fills and open/partial orders.
+- P1: `App.tsx` carries acknowledgement details into `latestOrder`, and Portfolio shows backend status plus backend-filled/remaining quantities when present.
+- P2: Latest-order receipt status is now more server-truthful, but open-position state is still optimistic/local until authenticated Portfolio hydration succeeds.
+- Mobile API/service tests and mobile typecheck passed.
+Decision: Approve Cycle 187 for local commit/merge after scoped diff review.
+Merge approved: Yes

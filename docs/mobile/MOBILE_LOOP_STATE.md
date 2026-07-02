@@ -8542,6 +8542,52 @@ Harnesses run:
 Harness failures:
 - Initial typecheck failure from narrow test mocks; fixed and rerun passed.
 
+## Cycle 187
+
+Date: 2026-07-01
+Branch: mobile/cycle-187
+Goal: Preserve real server order acknowledgement status and fill/remaining details in mobile ticket receipts.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: Portfolio latest-order confirmation now includes backend order status when available and prefers backend filled/remaining size details over mock-derived filled shares.
+Backend/API changed: No backend route change; mobile server-order response normalization now consumes canonical order status, size, remaining, and fills.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/services/orderService.ts`, `mobile/src/components/Portfolio.tsx`, `mobile/src/__tests__/orderService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm.cmd run typecheck` in `mobile/`.
+Screenshots captured:
+- None; mobile service/type cycle.
+Harness evidence:
+- Mobile API/service suite passed with 9 files and 45 tests.
+- Mobile typecheck passed.
+Bugs found:
+- First UI pass showed the remaining label before the value was changed; corrected so server remaining size is shown when present.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Server-mode latest-order confirmations no longer discard canonical order status or fill/remaining quantities.
+Result: Passed Cycle 187 QA. Mobile order service tests and typecheck pass.
+Commit: pending (`Preserve server order acknowledgement details`).
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Continue toward final DoD by carrying server acknowledgement details into persisted/open-order portfolio hydration or preparing a Samsung fixture proof for the richer receipt card.
+Harnesses run:
+- Mobile API/Order Service Unit Harness
+- Mobile Typecheck Harness
+- Review Harness
+Harness failures:
+- Initial UI detail mismatch fixed before test run.
+
+### Heartbeat After Cycle 187
+
+Completed cycles: 185, 186, 187.
+Verified progress: Backend profile-preference storage now has direct service coverage, mobile profile load/save helpers are unit-proven, and server-mode order acknowledgements now retain backend status plus fill/remaining details for the latest-order receipt.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, adjustable/persisted ticket slippage, Account preference summaries, typed profile sync, server quote seams, and latest-order receipt details that can reflect canonical server order status and partial-fill state.
+Current backend state: Profile preferences have user-scoped persistence and scope-separated read/write routes. Mobile API/profile/order/portfolio/history/quote tests are green; server-backed trading proof remains readiness-gated.
+Device strategy: Samsung S23 remains preferred for Holiwyn visual and server-mode QA through Expo Go; emulator remains fallback only.
+Open blockers: None for autonomous progress. Successful live server-backed Samsung proof remains gated by Docker daemon, local database TCP, API key, backend health, and quote readiness.
+Risks: Latest-order receipt now carries server acknowledgement details, but authenticated on-device order execution and full Portfolio hydration are still not proven on Samsung.
+Next three likely cycles: persist/display server acknowledgement details through Portfolio hydration, add a fixture-backed Samsung receipt proof, or retry server-proof readiness if local services become available.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.

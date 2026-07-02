@@ -21,6 +21,24 @@ export type TicketOrderResult = {
   side: "buy" | "sell";
   amount: number;
   probability: number;
+  status?: string;
+  size?: number;
+  filledSize?: number;
+  remainingSize?: number;
+};
+
+type ServerOrderResponse = {
+  order?: {
+    id?: string;
+    status?: string;
+    size?: string | number | null;
+    remaining?: string | number | null;
+  };
+  fills?: Array<{ size?: string | number | null }>;
+  id?: string;
+  status?: string;
+  size?: string | number | null;
+  remaining?: string | number | null;
 };
 
 const label = (value: { label?: string; title?: string; name?: string }) =>
@@ -35,6 +53,27 @@ const mockOrder = (input: TicketOrderInput): TicketOrderResult => ({
   amount: input.amount,
   probability: input.outcome.probability,
 });
+
+const numericField = (value: string | number | null | undefined) => {
+  if (typeof value === "number") return Number.isFinite(value) ? value : undefined;
+  if (typeof value === "string" && value.trim()) {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+  return undefined;
+};
+
+const filledSizeFromResponse = (response: ServerOrderResponse) => {
+  const totalFromFills = response.fills?.reduce((total, fill) => total + (numericField(fill.size) ?? 0), 0);
+  if (totalFromFills && totalFromFills > 0) return totalFromFills;
+
+  const size = numericField(response.order?.size ?? response.size);
+  const remaining = numericField(response.order?.remaining ?? response.remaining);
+  if (typeof size === "number" && typeof remaining === "number") {
+    return Math.max(0, size - remaining);
+  }
+  return undefined;
+};
 
 export const submitTicketOrder = async (input: TicketOrderInput): Promise<TicketOrderResult> => {
   if (input.amount <= 0) {
@@ -52,11 +91,18 @@ export const submitTicketOrder = async (input: TicketOrderInput): Promise<Ticket
     price: (input.outcome.probability / 100).toFixed(2),
     size: input.amount.toFixed(2),
   });
-  const response = payload && typeof payload === "object" ? (payload as { order?: { id?: string }; id?: string }) : {};
+  const response = payload && typeof payload === "object" ? (payload as ServerOrderResponse) : {};
+  const size = numericField(response.order?.size ?? response.size);
+  const remainingSize = numericField(response.order?.remaining ?? response.remaining);
+  const status = response.order?.status ?? response.status;
 
   return {
     ...mockOrder(input),
     id: response.order?.id ?? response.id ?? `server-${Date.now()}`,
     mode: "server",
+    status,
+    size,
+    filledSize: filledSizeFromResponse(response),
+    remainingSize,
   };
 };

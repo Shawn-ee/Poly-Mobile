@@ -49,6 +49,10 @@ export type OrderConfirmation = {
   side: "buy" | "sell";
   amount: number;
   probability?: number;
+  status?: string;
+  size?: number;
+  filledSize?: number;
+  remainingSize?: number;
   isLive?: boolean;
   liveClock?: string;
 };
@@ -241,21 +245,30 @@ export function Portfolio({
           </View>
           <Text style={styles.confirmationMeta}>
             {latestOrder.mode.toUpperCase()} - {latestOrder.side === "buy" ? t.buy : t.sell} - {latestOrder.outcome}
+            {latestOrder.status ? ` - ${latestOrder.status}` : ""}
           </Text>
           <Text style={styles.confirmationMarket}>{latestOrder.title}</Text>
           {typeof latestOrder.probability === "number" && (
             <View accessibilityLabel="latest-order-execution-details" testID="latest-order-execution-details" style={styles.confirmationDetailGrid}>
               <View style={styles.confirmationDetailItem}>
                 <Text style={styles.confirmationDetailLabel}>{t.filledShares}</Text>
-                <Text style={styles.confirmationDetailValue}>{activityShares(latestOrder).toFixed(2)}</Text>
+                <Text style={styles.confirmationDetailValue}>
+                  {(latestOrder.filledSize ?? activityShares(latestOrder)).toFixed(2)}
+                </Text>
               </View>
               <View style={styles.confirmationDetailItem}>
                 <Text style={styles.confirmationDetailLabel}>{t.executionPrice}</Text>
                 <Text style={styles.confirmationDetailValue}>{latestOrder.probability}%</Text>
               </View>
               <View style={styles.confirmationDetailItem}>
-                <Text style={styles.confirmationDetailLabel}>{t.impliedOdds}</Text>
-                <Text style={styles.confirmationDetailValue}>{decimalOdds(latestOrder.probability / 100)}</Text>
+                <Text style={styles.confirmationDetailLabel}>
+                  {typeof latestOrder.remainingSize === "number" ? t.remaining : t.impliedOdds}
+                </Text>
+                <Text style={styles.confirmationDetailValue}>
+                  {typeof latestOrder.remainingSize === "number"
+                    ? latestOrder.remainingSize.toFixed(2)
+                    : decimalOdds(latestOrder.probability / 100)}
+                </Text>
               </View>
             </View>
           )}
