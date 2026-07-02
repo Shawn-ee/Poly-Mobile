@@ -287,3 +287,4 @@ Status:
 | GAP-265 | Event detail | Samsung event detail props proof command | P1 | Yes | Verified | Cycle 252 adds a named Samsung event-detail-props proof that opens the Props group and verifies the prop market rows. |
 | GAP-266 | Event detail | Samsung prop market ticket proof | P1 | Yes | Verified | Cycle 253 adds a Samsung proof that opens a prop market outcome from Event Detail and verifies the trade ticket. |
 | GAP-267 | Event detail | Samsung prop market order proof | P1 | Yes | Verified | Cycle 254 adds a Samsung proof that places a fake-token order from an Event Detail prop ticket and verifies Portfolio state. |
+| GAP-268 | Event detail | Samsung prop market close proof | P1 | Yes | Verified | Cycle 255 adds a Samsung proof that opens a prop position, closes it from Portfolio, and verifies closed activity. |

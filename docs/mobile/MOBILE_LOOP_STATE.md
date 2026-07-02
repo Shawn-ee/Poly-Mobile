@@ -10118,6 +10118,30 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 255
+
+Date: 2026-07-02
+Branch: mobile/cycle-255-event-detail-prop-close-proof
+Status: Verified; pending local merge.
+Objective: Prove a prop-market fake-token position can be closed from Portfolio.
+Implemented:
+- Added `EventDetailPropClose` smoke path that opens a prop order, scrolls to the position action, closes it, and verifies closed activity.
+- Added Samsung wrapper support for `EventDetailPropClose`.
+- Added package script `smoke:samsung:event-detail-prop-close`.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:event-detail-prop-close` passed on Samsung S23 with Expo host `172.16.200.14` and port `8172`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-close-props.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-close-ticket.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-close-portfolio.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-close-ready.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-close-closed.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-prop-close-closed.png`.
+Commit: pending
+Merge: pending
+
 ### Cycle 254
 
 Date: 2026-07-02
