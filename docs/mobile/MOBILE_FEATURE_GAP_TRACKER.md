@@ -20,6 +20,7 @@ Status:
 
 | ID | Area | Feature | Priority | Reference Observed | Holiwyn Status | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| GAP-291 | Harness | Disposable proof cleanup and isolation | P1 | No | Verified | Cycle 278 adds a dry-run/apply cleanup harness scoped to mobile backend position proof slugs and user prefixes, removes stale failed proof artifacts, and verifies the Samsung server-order proof still passes with the cleanup hook. |
 | GAP-290 | Harness | Backend-only position to real server open-order proof | P1 | No | Verified | Cycle 277 proves a disposable backend-created World Cup position appears on Samsung Portfolio, opens a quote-backed Buy ticket, submits a real server BUY order at 0.49, and returns to Portfolio with an OPEN order. |
 | GAP-289 | Harness | Backend-only position fallback device proof | P1 | No | Verified | Cycle 276 adds a Samsung proof for a backend-only Portfolio position opening a server ticket with preserved 47/50 quote depth. |
 | GAP-288 | Portfolio | Backend-only position trade target fallback | P1 | No | Verified | Cycle 275 lets server Portfolio positions open Buy/Sell tickets even when their backend market is not loaded in local Home/Event lists, preserving quote depth. |

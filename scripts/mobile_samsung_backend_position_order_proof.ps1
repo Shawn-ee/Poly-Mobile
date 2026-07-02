@@ -44,6 +44,11 @@ $previousApiKey = $env:EXPO_PUBLIC_API_KEY
 try {
   Push-Location $repoRoot
   try {
+    $cleanupRaw = cmd /c npx.cmd tsx scripts/cleanup_mobile_backend_position_order_proofs.ts --apply --maxAgeMinutes=60 --summaryPath=docs/mobile/harness/cycle-current-mobile-backend-position-order-cleanup-before.json 2>&1 | Out-String
+    if ($LASTEXITCODE -ne 0) {
+      throw "Backend position order stale cleanup failed with exit code $LASTEXITCODE.`n$cleanupRaw"
+    }
+
     $setupRaw = cmd /c npx.cmd tsx scripts/create_mobile_backend_position_order_proof.ts --summaryPath=$SetupSummaryPath 2>&1 | Out-String
     if ($LASTEXITCODE -ne 0) {
       throw "Backend position order proof setup failed with exit code $LASTEXITCODE.`n$setupRaw"
