@@ -2181,3 +2181,18 @@ Findings:
 - Expected-blocked gate, mobile typecheck, and mobile API/history tests passed.
 Decision: Approve Cycle 149 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 150
+
+Date: 2026-07-01
+Branch: mobile/cycle-150
+Reviewer: Lead/Reviewer pass
+Scope: Server ticket order service coverage.
+Findings:
+- P1: `orderService.test.ts` now verifies server-mode ticket orders call the API with canonical side, market id, outcome id, probability-derived price, and fixed-size string.
+- P1: Server response mapping now has test coverage for nested order id and top-level id fallback behavior.
+- P1: Non-positive ticket amounts are verified to fail before any API call, preserving client-side guard behavior.
+- P2: This is unit coverage for the service seam; successful authenticated device execution still depends on backend readiness and API key availability.
+- Mobile typecheck and mobile API/service tests passed.
+Decision: Approve Cycle 150 for local commit/merge after scoped diff review.
+Merge approved: Yes

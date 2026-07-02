@@ -7058,6 +7058,39 @@ Harnesses run:
 Harness failures:
 - Initial expected-blocked gate design returned nonzero; fixed before final pass.
 
+### Cycle 150
+
+Date: 2026-07-01
+Branch: mobile/cycle-150
+Goal: Add server-mode ticket order service coverage without requiring a running backend database.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; backend-facing service test cycle.
+Backend/API changed: No runtime API route change. Added unit coverage for mobile server-mode order submission mapping.
+Database/schema changed: None.
+Files changed: `mobile/src/__tests__/orderService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Unit evidence:
+- Mobile API/service suite passed 5 files and 14 tests.
+- New tests cover canonical order payload mapping, nested/top-level server order id mapping, and non-positive amount rejection before API calls.
+Bugs found:
+- Typecheck caught incomplete fixtures and an invalid market type literal; fixed before final pass.
+Technical debt added:
+- This proves service mapping only; successful authenticated server-backed Samsung execution remains gated by backend/API readiness.
+Technical debt resolved:
+- Server-mode ticket submission now has focused service-level regression coverage.
+Result: Passed Cycle 150 QA. Mobile typecheck and mobile API/service tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 151 should continue backend-facing parity that can be verified without DB, or add credential-readiness gate coverage.
+Harnesses run:
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order-Service Unit Harness
+- Review Harness
+Harness failures:
+- Initial typecheck failed on incomplete test fixtures; fixed before final pass.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.

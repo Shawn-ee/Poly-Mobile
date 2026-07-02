@@ -3170,3 +3170,23 @@ Bugs:
 - Initial gate command correctly blocked but returned a failing npm exit for expected-blocked harness use. Added `-ExpectBlocked` and `gate:server-success:expect-blocked`.
 Visual QA:
 - No app screenshot cycle; this is a server-readiness gate cycle.
+
+### Cycle 150
+
+Date: 2026-07-01
+Device: Mobile order service unit harness
+Build/run command:
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The mobile order service now has focused server-mode mapping coverage.
+Unit evidence:
+- `mobile/src/__tests__/orderService.test.ts`
+- Mobile API suite: 5 files, 14 tests passed.
+Covered behavior:
+- Server-mode buy tickets submit canonical `BUY` side, probability-derived price, fixed-size string, market id, and outcome id.
+- Server responses map nested order ids and top-level id fallbacks into Portfolio-ready order results.
+- Non-positive order amounts are rejected before calling the API.
+Bugs:
+- Typecheck caught incomplete test fixtures; fixed by matching the full `Market` and `Outcome` shapes and using the `future` market literal.
+Visual QA:
+- No app screenshot cycle; this is backend-facing service coverage.
