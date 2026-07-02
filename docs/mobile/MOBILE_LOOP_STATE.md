@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-264-ticket-depth-size-parity
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Bring ticket market-depth display closer to Event Detail depth by showing bid/ask share sizes even when explicit backend sizes are absent.
 Implemented:
 - Added fallback bid/ask size formatting to `TradeTicket` using the same probability-based model as Event Detail.
@@ -10139,8 +10139,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-ticket-order-ready.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-prop-ticket.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-prop-ticket-order-ready.png`.
-Commit: pending
-Merge: pending
+Commit: 395d6b7
+Merge: 702de56
 
 ### Heartbeat After Cycle 264
 
