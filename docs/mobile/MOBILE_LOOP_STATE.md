@@ -9725,6 +9725,30 @@ Notes:
 Commit: 0dcdcf6
 Merge: faf5a6d
 
+### Cycle 222
+
+Date: 2026-07-02
+Branch: mobile/cycle-222-open-cancel-proof-metadata
+Status: Verified and locally merged.
+Objective: Add authoritative order metadata to the reusable Samsung open-order cancel proof.
+Implemented:
+- Added `scripts/summarize_mobile_open_order_cancel_proof.ts` to query the proof user's latest orders from the local database.
+- Embedded `orderSummary` in the root Samsung open-order cancel proof JSON, including canceled order id, status counts, market/outcome, price, size, remaining, notional, and API-key/cancel attribution.
+- Kept proof output non-secret by recording key ids only, not the generated API token.
+Verification:
+- `npx.cmd tsx scripts/summarize_mobile_open_order_cancel_proof.ts --username=holiwyn-mobile-proof-cycle-221-open` returned the expected canceled 100-share, 1 USDT proof order.
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run mobile:samsung-open-order-cancel-proof -- -Username holiwyn-mobile-proof-cycle-222-open` passed on Samsung S23.
+Evidence:
+- `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`.
+Notes:
+- The proof summary now records latest canceled order `966814e7-edc4-40dd-93fa-cf8a42bc6877`, status `CANCELED`, price `0.01`, size `100`, notional `1`, and market `Paraguay vs Australia: Both teams to score`.
+Commit: TBD
+Merge: TBD
+
 ### Heartbeat After Cycle 217
 
 Completed cycles: 215, 216, 217.

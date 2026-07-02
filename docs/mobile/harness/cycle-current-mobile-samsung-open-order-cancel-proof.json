@@ -1,10 +1,89 @@
 ﻿{
     "ready":  true,
-    "username":  "holiwyn-mobile-proof-cycle-221-open",
-    "userId":  "9450e8a6-41af-4ddd-b061-8840856cd329",
-    "keyId":  "pk_live_571b8b0a19d831fe",
+    "username":  "holiwyn-mobile-proof-cycle-222-open",
+    "userId":  "9435ee65-2c63-4267-bfcf-00a26d462437",
+    "keyId":  "pk_live_d1218653826793c6",
     "port":  8156,
     "summaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json",
+    "orderSummary":  {
+                         "username":  "holiwyn-mobile-proof-cycle-222-open",
+                         "userId":  "9435ee65-2c63-4267-bfcf-00a26d462437",
+                         "orderCount":  1,
+                         "statusCounts":  {
+                                              "CANCELED":  1
+                                          },
+                         "latestOrder":  {
+                                             "id":  "966814e7-edc4-40dd-93fa-cf8a42bc6877",
+                                             "status":  "CANCELED",
+                                             "side":  "BUY",
+                                             "market":  {
+                                                            "id":  "49a21c1b-893e-4139-ac54-6ad79d2ee204",
+                                                            "title":  "Paraguay vs Australia: Both teams to score"
+                                                        },
+                                             "outcome":  {
+                                                             "id":  "67d221dd-6139-4643-82ee-2470944b692a",
+                                                             "name":  "Yes"
+                                                         },
+                                             "price":  "0.01",
+                                             "size":  "100",
+                                             "remaining":  "100",
+                                             "reservedNotional":  "0",
+                                             "notional":  "1",
+                                             "remainingNotional":  "1",
+                                             "apiKeyId":  "pk_live_d1218653826793c6",
+                                             "canceledByApiKeyId":  "pk_live_d1218653826793c6",
+                                             "createdAt":  "2026-07-02T08:08:10.004Z",
+                                             "updatedAt":  "2026-07-02T08:08:13.032Z"
+                                         },
+                         "latestCanceledOrder":  {
+                                                     "id":  "966814e7-edc4-40dd-93fa-cf8a42bc6877",
+                                                     "status":  "CANCELED",
+                                                     "side":  "BUY",
+                                                     "market":  {
+                                                                    "id":  "49a21c1b-893e-4139-ac54-6ad79d2ee204",
+                                                                    "title":  "Paraguay vs Australia: Both teams to score"
+                                                                },
+                                                     "outcome":  {
+                                                                     "id":  "67d221dd-6139-4643-82ee-2470944b692a",
+                                                                     "name":  "Yes"
+                                                                 },
+                                                     "price":  "0.01",
+                                                     "size":  "100",
+                                                     "remaining":  "100",
+                                                     "reservedNotional":  "0",
+                                                     "notional":  "1",
+                                                     "remainingNotional":  "1",
+                                                     "apiKeyId":  "pk_live_d1218653826793c6",
+                                                     "canceledByApiKeyId":  "pk_live_d1218653826793c6",
+                                                     "createdAt":  "2026-07-02T08:08:10.004Z",
+                                                     "updatedAt":  "2026-07-02T08:08:13.032Z"
+                                                 },
+                         "recentOrders":  [
+                                              {
+                                                  "id":  "966814e7-edc4-40dd-93fa-cf8a42bc6877",
+                                                  "status":  "CANCELED",
+                                                  "side":  "BUY",
+                                                  "market":  {
+                                                                 "id":  "49a21c1b-893e-4139-ac54-6ad79d2ee204",
+                                                                 "title":  "Paraguay vs Australia: Both teams to score"
+                                                             },
+                                                  "outcome":  {
+                                                                  "id":  "67d221dd-6139-4643-82ee-2470944b692a",
+                                                                  "name":  "Yes"
+                                                              },
+                                                  "price":  "0.01",
+                                                  "size":  "100",
+                                                  "remaining":  "100",
+                                                  "reservedNotional":  "0",
+                                                  "notional":  "1",
+                                                  "remainingNotional":  "1",
+                                                  "apiKeyId":  "pk_live_d1218653826793c6",
+                                                  "canceledByApiKeyId":  "pk_live_d1218653826793c6",
+                                                  "createdAt":  "2026-07-02T08:08:10.004Z",
+                                                  "updatedAt":  "2026-07-02T08:08:13.032Z"
+                                              }
+                                          ]
+                     },
     "evidence":  {
                      "portfolioXml":  "docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml",
                      "canceledXml":  "docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml",
