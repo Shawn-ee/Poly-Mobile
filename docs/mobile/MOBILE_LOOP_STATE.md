@@ -9814,6 +9814,37 @@ Notes:
 Commit: 4c151d6
 Merge: 70cae2c
 
+### Cycle 226
+
+Date: 2026-07-02
+Branch: mobile/cycle-226-activity-source-detail
+Status: Verified; pending local merge.
+Objective: Make Portfolio activity execution rows clearer by showing Buy/Sell side in the execution detail.
+Implemented:
+- Added a Portfolio activity side prefix so filled and canceled activity rows render `Buy - ...` or `Sell - ...` before the existing share, execution price, implied odds, or limit detail.
+- Kept the existing activity action labels (`Bought`, `Sold`, `Canceled`) and preserved the existing execution detail wording after the prefix.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:future-list-order` passed on Samsung S23.
+- Captured hierarchy includes `Buy - Filled shares 294.12 - Exec price 34% - Implied odds 2.9x`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-future-list-order-activity.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-future-list-order-activity.png`.
+Commit: pending
+Merge: pending
+
+### Heartbeat After Cycle 226
+
+Completed cycles: 224, 225, 226.
+Verified progress: The autonomous harness now has a read-only proof-noise report, a failing proof-noise gate for leftover open/locked proof state, and Portfolio activity execution rows now show the Buy/Sell side in Samsung-proven Recent activity.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung real-device QA, server quote/order/Portfolio sync, backend-derived filled/canceled activity with side/share/price detail, latest activity/order previews, BUY/SELL filled-order proof wrappers, and open-order cancel proof wrappers with DB-backed summaries.
+Current backend state: Local Docker/Postgres backend supports mobile API-key Portfolio/profile/order flows, canonical order create/cancel, matching, correct complete-set mint cost basis, recent-trade/canceled-order history, repeatable World Cup seeding/liquidity for mobile proofs, and proof-noise reporting/gating.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: Proof runs still mutate local database state; the new gate detects open/locked leftovers, but disposable per-cycle markets or DB snapshot restore would make overnight proof runs cleaner.
+Next three likely cycles: integrate the proof-noise gate into Samsung proof wrappers, continue order-history/open-order detail parity, and add more World Cup event detail/trading parity.
+
 ### Heartbeat After Cycle 223
 
 Completed cycles: 221, 222, 223.
