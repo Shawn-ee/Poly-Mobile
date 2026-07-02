@@ -1,0 +1,27 @@
+﻿{
+    "ready":  false,
+    "expectedBlocked":  true,
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "deviceReachable":  true,
+    "quoteReadinessPath":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\docs\\mobile\\harness\\cycle-current-quote-readiness.json",
+    "quoteReadinessReady":  false,
+    "backendBaseUrl":  "http://127.0.0.1:3000",
+    "backendHealthReachable":  false,
+    "worldCupEventsReachable":  false,
+    "eventDetailReachable":  false,
+    "marketQuoteReachable":  false,
+    "discoveredEventSlug":  null,
+    "discoveredMarketId":  null,
+    "quoteCount":  0,
+    "quoteReadinessFailures":  [
+                                   "Backend health unavailable at http://127.0.0.1:3000: The operation has timed out."
+                               ],
+    "failures":  [
+                     "Server quote readiness is blocked."
+                 ],
+    "nextActions":  [
+                        "Run npm run quote-readiness:expect-blocked:summary after backend state changes.",
+                        "Keep Samsung wireless debugging connected before server quote proof.",
+                        "Attempt Samsung server quote proof only after this gate reports ready."
+                    ]
+}
