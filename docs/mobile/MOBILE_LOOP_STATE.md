@@ -9845,6 +9845,34 @@ Open blockers: None for autonomous progress.
 Risks: Proof runs still mutate local database state; the new gate detects open/locked leftovers, but disposable per-cycle markets or DB snapshot restore would make overnight proof runs cleaner.
 Next three likely cycles: integrate the proof-noise gate into Samsung proof wrappers, continue order-history/open-order detail parity, and add more World Cup event detail/trading parity.
 
+### Cycle 227
+
+Date: 2026-07-02
+Branch: mobile/cycle-227-proof-gate-wrappers
+Status: Verified; pending local merge.
+Objective: Integrate proof-noise gates into reusable Samsung proof wrappers so long runs fail fast on stale proof leftovers.
+Implemented:
+- Added pre/post proof-noise gate execution to `scripts/mobile_samsung_server_order_proof.ps1`.
+- Added pre/post proof-noise gate execution to `scripts/mobile_samsung_open_order_cancel_proof.ps1`.
+- Embedded each wrapper's pre/post `harnessGate` result and gate summary paths into the wrapper proof JSON.
+Verification:
+- `npm.cmd run mobile:proof-noise-gate` passed.
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run mobile:samsung-server-order-proof -- -Side buy -Username holiwyn-mobile-proof-cycle-227-buy` passed on Samsung S23 and embedded passing pre/post gates.
+- `npm.cmd run mobile:samsung-open-order-cancel-proof -- -Username holiwyn-mobile-proof-cycle-227-open` passed on Samsung S23 and embedded passing pre/post gates.
+Evidence:
+- `docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof.json`.
+- `docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof-noise-gate-pre.json`.
+- `docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof-noise-gate.json`.
+- `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
+- `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof-noise-gate-pre.json`.
+- `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof-noise-gate.json`.
+Notes:
+- Both post-gates passed with 0 proof users affected by open orders and 0 proof users affected by locked balances.
+Commit: pending
+Merge: pending
+
 ### Heartbeat After Cycle 223
 
 Completed cycles: 221, 222, 223.

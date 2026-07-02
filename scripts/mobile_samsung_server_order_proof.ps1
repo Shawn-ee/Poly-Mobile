@@ -39,6 +39,31 @@ function Invoke-CheckedNative {
   }
 }
 
+function Invoke-ProofNoiseGate {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$RepoRoot,
+    [Parameter(Mandatory = $true)]
+    [string]$Label,
+    [Parameter(Mandatory = $true)]
+    [string]$SummaryPath
+  )
+
+  Push-Location $RepoRoot
+  try {
+    Invoke-CheckedNative -Label $Label -Command {
+      cmd /c npx.cmd tsx scripts/mobile_proof_noise_report.ts --failOnOpenOrders --failOnLockedBalance --summaryPath=$SummaryPath
+    }
+    $resolvedGatePath = Join-Path $RepoRoot $SummaryPath
+    if (-not (Test-Path $resolvedGatePath)) {
+      throw "$Label did not write proof noise gate summary: $SummaryPath."
+    }
+    return Get-Content -Raw -Path $resolvedGatePath | ConvertFrom-Json
+  } finally {
+    Pop-Location
+  }
+}
+
 function Read-LiquiditySummary {
   param(
     [Parameter(Mandatory = $true)]
@@ -73,6 +98,11 @@ try {
 
   Push-Location $repoRoot
   try {
+    $preProofNoiseGate = Invoke-ProofNoiseGate `
+      -RepoRoot $repoRoot `
+      -Label "Pre-proof noise gate" `
+      -SummaryPath "docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof-noise-gate-pre.json"
+
     Invoke-CheckedNative -Label "World Cup proof seed" -Command { cmd /c npx.cmd tsx scripts/import_worldcup_today_markets.ts }
     if ($Side -eq "sell") {
       Invoke-CheckedNative -Label "Sell liquidity preparation" -Command { cmd /c npm.cmd run mobile:server-sell-fill-liquidity }
@@ -102,6 +132,11 @@ try {
       Pop-Location
     }
 
+    $postProofNoiseGate = Invoke-ProofNoiseGate `
+      -RepoRoot $repoRoot `
+      -Label "Post-proof noise gate" `
+      -SummaryPath "docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof-noise-gate.json"
+
     $orderSummaryRaw = cmd /c npx.cmd tsx scripts/summarize_mobile_open_order_cancel_proof.ts --username=$proofUsername 2>&1 | Out-String
     $orderSummary = ConvertFrom-FirstJsonObject -Raw $orderSummaryRaw
 
@@ -118,6 +153,12 @@ try {
       makerOrder = $liquiditySummary.makerOrder
       mobileUser = $liquiditySummary.mobileUser
       orderSummary = $orderSummary
+      proofNoiseGate = [ordered]@{
+        pre = $preProofNoiseGate.harnessGate
+        post = $postProofNoiseGate.harnessGate
+        preSummaryPath = "docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof-noise-gate-pre.json"
+        postSummaryPath = "docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof-noise-gate.json"
+      }
       summaryPath = $SummaryPath
     }
     New-Item -ItemType Directory -Force -Path (Split-Path -Parent $resolvedSummaryPath) | Out-Null
