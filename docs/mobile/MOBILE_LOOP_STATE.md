@@ -8333,6 +8333,47 @@ Open blockers: None for autonomous progress. Successful server-backed trading an
 Risks: Expo Go still depends on LAN stability; server profile preferences are currently mobile-client ready but not proven end-to-end against a real backend route.
 Next three likely cycles: add or verify backend profile-preferences storage, continue backend-backed order/history parity that can be unit-tested, and rerun Samsung proofs when a user-visible surface changes.
 
+## Cycle 182
+
+Date: 2026-07-01
+Branch: mobile/cycle-182
+Goal: Add real backend profile-preferences storage and an authenticated route for Holiwyn mobile sync.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No direct UI change.
+Backend/API changed: Added GET/PUT `/api/profile/preferences`, profile-preference validation, account preference rate-limit route id, and user-scoped JSONB persistence.
+Database/schema changed: Added `UserProfilePreference` with `userId`, `preferences`, `createdAt`, and `updatedAt`.
+Files changed: `prisma/schema.prisma`, `prisma/migrations/20260701000100_add_user_profile_preferences/migration.sql`, `src/app/api/profile/preferences/route.ts`, `src/server/services/profilePreferences.ts`, `src/server/services/canonicalRateLimit.ts`, `src/__tests__/profile.preferences.route.test.ts`, `docs/mobile/`.
+Tests run:
+- `npx.cmd prisma validate`.
+- `npx.cmd jest src/__tests__/profile.preferences.route.test.ts --runInBand`.
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm.cmd run typecheck` in `mobile/`.
+Screenshots captured:
+- None; backend/API route cycle.
+Harness evidence:
+- Prisma schema is valid.
+- Focused profile-preferences route tests passed with 3 tests.
+- Mobile API/service suite passed with 9 files and 41 tests.
+- Mobile typecheck passed.
+Bugs found:
+- None in final run.
+Technical debt added:
+- Route currently uses existing `account:read` canonical scope for both GET and PUT because no account-write preference scope exists yet.
+Technical debt resolved:
+- Profile preferences are no longer mobile-client-only; backend route/table support exists for language, saved markets, ticket default amount/side, and ticket default slippage.
+Result: Passed Cycle 182 QA. Backend profile-preference persistence and mobile contract checks pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Continue toward final DoD by wiring a server-mode device proof for profile preference sync when backend/API-key readiness is available, or continue backend-backed trading parity that can be tested offline.
+Harnesses run:
+- Prisma Schema Harness
+- Backend Route Unit Harness
+- Mobile API/Profile Preference Unit Harness
+- Mobile Typecheck Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.

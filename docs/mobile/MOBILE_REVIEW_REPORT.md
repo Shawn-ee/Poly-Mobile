@@ -2690,3 +2690,19 @@ Findings:
 - Mobile typecheck and mobile API/service tests passed.
 Decision: Approve Cycle 181 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 182
+
+Date: 2026-07-01
+Branch: mobile/cycle-182
+Reviewer: Lead/Reviewer pass
+Scope: Backend profile-preferences route and persistence.
+Findings:
+- P1: Added a real authenticated GET/PUT `/api/profile/preferences` endpoint for Holiwyn mobile preference sync.
+- P1: Added `UserProfilePreference` storage as a user-scoped JSONB row with cascade delete from `User`.
+- P1: Backend validation now requires the full canonical mobile payload, including `ticketDefaultSlippage`, before save.
+- P1: Route tests cover actor-scoped GET, PUT with slippage, and invalid-payload rejection before storage.
+- P2: The route uses the existing `account:read` API-key scope because the canonical scope list does not yet define account-write preferences; this is acceptable for non-financial profile settings but should be revisited if broader settings are added.
+- Prisma validation, focused Jest route tests, mobile API/service tests, and mobile typecheck passed.
+Decision: Approve Cycle 182 for local commit/merge after scoped diff review.
+Merge approved: Yes
