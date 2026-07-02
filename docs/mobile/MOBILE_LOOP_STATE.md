@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-252-event-detail-props-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Make Event Detail Props section a named Samsung proof.
 Implemented:
 - Added `EventDetailProps` smoke path that opens the Props group and verifies prop rows.
@@ -10135,8 +10135,8 @@ Verification:
 Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail-props.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-props.png`.
-Commit: pending
-Merge: pending
+Commit: 09b40a6
+Merge: 47776f5
 
 ### Cycle 251
 
