@@ -9475,7 +9475,7 @@ Merge: ba3b67e
 
 Date: 2026-07-02
 Branch: mobile/cycle-213
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Isolate Samsung server sell-fill proofs onto cycle-specific mobile proof users so Portfolio state starts clean.
 Implemented:
 - Added `MOBILE_DEV_USERNAME`/`--username=` support to the mobile dev credential helper.
@@ -9497,8 +9497,8 @@ Evidence:
 Notes:
 - Default `holiwyn-mobile-dev` behavior remains available; isolated proof users are opt-in through environment or script argument.
 - The first isolated proof failure was a useful Recovery Harness pass, not a device failure.
-Commit: pending
-Merge: pending
+Commit: 9094669
+Merge: a2d1d46
 
 ### Heartbeat After Cycle 211
 
