@@ -213,7 +213,10 @@ export function EventDetail({
                   <View style={styles.outcomeTextBlock}>
                     <Text style={styles.teamName}>{label(locale, outcome)}</Text>
                     <Text
+                      adjustsFontSizeToFit
                       accessibilityLabel={`event-detail-outcome-depth-${market.id}-${outcome.id}`}
+                      minimumFontScale={0.82}
+                      numberOfLines={1}
                       style={styles.outcomeDepthText}
                     >
                       {t.bestBid} {outcomeDepth(outcome).bid} - {t.bestAsk} {outcomeDepth(outcome).ask}
