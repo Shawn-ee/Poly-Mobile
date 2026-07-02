@@ -7,6 +7,12 @@ import {
 } from "../domain/portfolioPositionMetrics";
 import type { Locale } from "../mocks/worldCup";
 import { money } from "../presentation/formatters";
+import {
+  openOrderPotentialCopyKey,
+  openOrderPotentialValue,
+  openOrderRemainingShares,
+  openOrderValue,
+} from "../services/openOrderEconomicsService";
 import type { OrderMode } from "../services/orderService";
 
 export type Position = {
@@ -97,6 +103,7 @@ type PortfolioCopy = {
   limitPrice: string;
   orderValue: string;
   potentialPayout: string;
+  potentialProceeds: string;
   placed: string;
   size: string;
   filled: string;
@@ -120,12 +127,6 @@ type PortfolioCopy = {
 export { portfolioPositionValue };
 
 const estimatedPnl = estimatedPositionPnl;
-
-const openOrderRemainingShares = (order: OpenOrder) => order.remainingShares ?? order.remaining;
-
-const openOrderValue = (order: OpenOrder) => order.orderValue ?? openOrderRemainingShares(order) * order.price;
-
-const openOrderPotentialPayout = (order: OpenOrder) => openOrderRemainingShares(order);
 
 const openOrderFilledShares = (order: OpenOrder) =>
   typeof order.originalShares === "number" ? Math.max(order.originalShares - openOrderRemainingShares(order), 0) : undefined;
@@ -252,7 +253,7 @@ export function Portfolio({
               {t.remaining}: {openOrderRemainingShares(order).toLocaleString(undefined, { maximumFractionDigits: 2 })} {t.shares} ({t.remainingValue}: {money(openOrderValue(order))})
             </Text>
             <Text accessibilityLabel={`open-order-potential-payout-${order.id}`} style={styles.openOrderRemaining}>
-              {t.potentialPayout}: {money(openOrderPotentialPayout(order))}
+              {t[openOrderPotentialCopyKey(order)]}: {money(openOrderPotentialValue(order))}
             </Text>
             {typeof order.originalShares === "number" && (
               <Text accessibilityLabel={`open-order-size-${order.id}`} style={styles.openOrderPlaced}>

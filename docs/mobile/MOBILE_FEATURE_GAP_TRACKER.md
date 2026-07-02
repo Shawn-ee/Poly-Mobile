@@ -20,6 +20,7 @@ Status:
 
 | ID | Area | Feature | Priority | Reference Observed | Holiwyn Status | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| GAP-272 | Portfolio | Sell-side open-order proceeds wording | P1 | No | Verified | Cycle 259 adds tested open-order economics helpers so sell orders show proceeds wording while buy orders keep payout wording. |
 | GAP-271 | Portfolio | Open-order potential payout detail | P1 | No | Verified | Cycle 258 adds localized potential payout economics to pending open orders and verifies it on Samsung open-order cancel proof. |
 | GAP-001 | App shell | Bottom navigation | P0 | Yes | Verified | Cycle 002 added Home, Live, Portfolio, Search and dark-first shell. |
 | GAP-002 | World Cup | Games tab | P0 | Yes | Verified | Cycle 002 added mock Games list with live and scheduled World Cup rows. |
