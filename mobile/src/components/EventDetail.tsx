@@ -101,6 +101,13 @@ type DisplayOutcome = {
   miniLine?: number;
 };
 
+type GameLineGroup = {
+  id: string;
+  title: string;
+  subtitle?: string;
+  rows: DisplayOutcome[];
+};
+
 const makeTieOutcome = (): DisplayOutcome => ({
   id: "tie-reg-time",
   label: "Tie",
@@ -139,11 +146,19 @@ export function EventDetail({
   const [activeTab, setActiveTab] = useState<"game-lines" | "player-props">("game-lines");
   const [activeHeaderTab, setActiveHeaderTab] = useState<"game" | "chat">("game");
   const [chartFilter, setChartFilter] = useState<ChartFilter>("Game");
+  const [spreadPeriod, setSpreadPeriod] = useState<"Reg. Time" | "1st Half" | "2nd Half">("Reg. Time");
   const gameLineMarkets = useMemo(() => event.markets.filter((market) => market.type !== "prop" && market.type !== "future"), [event.markets]);
   const propMarkets = useMemo(() => event.markets.filter((market) => market.type === "prop"), [event.markets]);
   const primaryMarket = gameLineMarkets[0] ?? event.markets[0];
   const primaryOutcomes = primaryMarket?.outcomes.slice(0, 2) ?? [];
-  const [expandedMarketId, setExpandedMarketId] = useState("regulation-time-winner");
+  const [expandedMarketIds, setExpandedMarketIds] = useState<Record<string, boolean>>({
+    "regulation-time-winner": true,
+    spread: true,
+    totals: true,
+    "first-half-winner": true,
+    "second-half-winner": true,
+    "team-total-goals": true,
+  });
   const stats = marketStats(event);
   const position = positions.find((item) =>
     event.markets.some((market) => market.id === item.marketId || market.title === item.title),
@@ -179,6 +194,92 @@ export function EventDetail({
       miniLine: Math.max(18, rightOutcome.probability),
     }] : []),
   ];
+  const spreadRows: DisplayOutcome[] = [
+    { id: "spread-yes", label: `Yes, ${teamCode(teamA?.name ?? "Home")} -1.5`, color: leftOutcome?.color ?? "#22c55e", probability: spreadPeriod === "Reg. Time" ? 34 : spreadPeriod === "1st Half" ? 21 : 29, odds: spreadPeriod === "Reg. Time" ? "2.9x" : "4.8x", icon: "Y", miniLine: 42 },
+    { id: "spread-no", label: "No", color: "#64748b", probability: spreadPeriod === "Reg. Time" ? 66 : spreadPeriod === "1st Half" ? 79 : 71, odds: spreadPeriod === "Reg. Time" ? "1.5x" : "1.3x", icon: "N", miniLine: 66 },
+  ];
+  const gameLineGroups: GameLineGroup[] = [
+    {
+      id: "totals",
+      title: "Totals",
+      subtitle: "Total goals over 2.5",
+      rows: [
+        { id: "totals-over", label: "Over 2.5", color: "#22c55e", probability: 52, odds: "1.9x", icon: "O", miniLine: 52 },
+        { id: "totals-under", label: "Under 2.5", color: "#64748b", probability: 49, odds: "2.0x", icon: "U", miniLine: 49 },
+      ],
+    },
+    {
+      id: "first-half-winner",
+      title: "1st Half Winner",
+      subtitle: "Who wins the first half?",
+      rows: [
+        { id: "first-home", label: `${leftOutcome ? label(locale, leftOutcome) : teamA?.name ?? "Home"} 1H`, color: leftOutcome?.color ?? "#22c55e", probability: 44, odds: "2.3x", icon: teamA?.flag ?? "", miniLine: 44 },
+        { id: "first-tie", label: "Tie 1H", color: "#38bdf8", probability: 45, odds: "2.2x", icon: "%", miniLine: 45 },
+        { id: "first-away", label: `${rightOutcome ? label(locale, rightOutcome) : teamB?.name ?? "Away"} 1H`, color: rightOutcome?.color ?? "#ef4444", probability: 15, odds: "6.7x", icon: teamB?.flag ?? "", miniLine: 15 },
+      ],
+    },
+    {
+      id: "second-half-winner",
+      title: "2nd Half Winner",
+      subtitle: "Who wins the second half?",
+      rows: [
+        { id: "second-home", label: `${leftOutcome ? label(locale, leftOutcome) : teamA?.name ?? "Home"} 2H`, color: leftOutcome?.color ?? "#22c55e", probability: 54, odds: "1.9x", icon: teamA?.flag ?? "", miniLine: 54 },
+        { id: "second-tie", label: "Tie 2H", color: "#38bdf8", probability: 33, odds: "3.0x", icon: "%", miniLine: 33 },
+        { id: "second-away", label: `${rightOutcome ? label(locale, rightOutcome) : teamB?.name ?? "Away"} 2H`, color: rightOutcome?.color ?? "#ef4444", probability: 19, odds: "5.3x", icon: teamB?.flag ?? "", miniLine: 19 },
+      ],
+    },
+    {
+      id: "team-total-goals",
+      title: "Full Game Team Total Goals (Reg. Time)",
+      subtitle: `${teamCode(teamA?.name ?? "Home")} goals over 1.5`,
+      rows: [
+        { id: "team-total-over", label: `${teamCode(teamA?.name ?? "Home")} Over 1.5`, color: leftOutcome?.color ?? "#22c55e", probability: 57, odds: "1.8x", icon: teamA?.flag ?? "", miniLine: 57 },
+        { id: "team-total-under", label: `${teamCode(teamA?.name ?? "Home")} Under 1.5`, color: "#64748b", probability: 44, odds: "2.3x", icon: "U", miniLine: 44 },
+      ],
+    },
+  ];
+  const toggleGroup = (id: string) => {
+    setExpandedMarketIds((current) => ({ ...current, [id]: !current[id] }));
+  };
+  const renderParityOutcomeRow = (outcome: DisplayOutcome, marketId: string, matchingOutcome?: Outcome) => (
+    <View key={outcome.id} style={styles.parityOutcomeRow}>
+      <View style={styles.parityOutcomeIcon}>
+        <Text style={styles.parityOutcomeIconText}>{outcome.icon}</Text>
+      </View>
+      <View style={styles.parityOutcomeTextBlock}>
+        <Text style={styles.teamName}>{outcome.label}</Text>
+        <View style={styles.miniLineTrack}>
+          <View style={[styles.miniLineFill, { backgroundColor: outcome.color, width: `${Math.min(100, Math.max(12, outcome.miniLine ?? outcome.probability))}%` }]} />
+        </View>
+      </View>
+      <Text style={styles.oddsMultiplier}>{outcome.odds}</Text>
+      <Pressable
+        accessibilityLabel={`event-detail-outcome-${marketId}-${outcome.id}`}
+        onPress={() => matchingOutcome && primaryMarket && openTicket(primaryMarket, matchingOutcome, event, defaultSide)}
+        style={[styles.parityProbButton, { backgroundColor: outcome.color }]}
+        testID={`event-detail-outcome-${marketId}-${outcome.id}`}
+      >
+        <Text style={styles.parityProbText}>{outcome.probability}%</Text>
+      </Pressable>
+    </View>
+  );
+  const renderGroup = (group: GameLineGroup) => (
+    <View key={group.id} style={styles.marketBlock}>
+      <Pressable
+        accessibilityLabel={`event-detail-market-toggle-${group.id} ${group.title} ${group.subtitle ?? ""}`}
+        onPress={() => toggleGroup(group.id)}
+        style={styles.marketHeaderRow}
+        testID={`event-detail-market-toggle-${group.id}`}
+      >
+        <View style={styles.marketTitleBlock}>
+          <Text style={styles.marketTitle}>{group.title}</Text>
+          {group.subtitle && <Text style={styles.marketSubcopy}>{group.subtitle}</Text>}
+        </View>
+        <Ionicons name={expandedMarketIds[group.id] ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
+      </Pressable>
+      {expandedMarketIds[group.id] && group.rows.map((outcome) => renderParityOutcomeRow(outcome, group.id))}
+    </View>
+  );
 
   return (
     <View style={styles.screen}>
@@ -437,7 +538,7 @@ export function EventDetail({
               <View style={styles.marketBlock}>
                 <Pressable
                   accessibilityLabel={`event-detail-market-toggle-regulation-time-winner event-detail-market-toggle-${primaryMarket.id}`}
-                  onPress={() => setExpandedMarketId((current) => (current === "regulation-time-winner" ? "" : "regulation-time-winner"))}
+                  onPress={() => toggleGroup("regulation-time-winner")}
                   style={styles.marketHeaderRow}
                   testID={`event-detail-market-toggle-${primaryMarket.id}`}
                 >
@@ -445,9 +546,9 @@ export function EventDetail({
                     <Text style={styles.marketTitle}>Regulation Time Winner</Text>
                     <Text style={styles.marketSubcopy}>90 Minutes Plus Stoppage Time</Text>
                   </View>
-                  <Ionicons name={expandedMarketId === "regulation-time-winner" ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
+                  <Ionicons name={expandedMarketIds["regulation-time-winner"] ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
                 </Pressable>
-                {expandedMarketId === "regulation-time-winner" && (
+                {expandedMarketIds["regulation-time-winner"] && (
                   <>
                     <View accessibilityLabel={`market-depth-${primaryMarket.id}`} style={styles.depthRow} testID={`market-depth-${primaryMarket.id}`}>
                       <Text style={styles.depthText}>{t.bestBid} {marketDepth(primaryMarket).bid}</Text>
@@ -456,33 +557,51 @@ export function EventDetail({
                     </View>
                     {regulationWinnerRows.map((outcome) => {
                       const matchingOutcome = primaryMarket.outcomes.find((item) => item.id === outcome.id);
-                      return (
-                        <View key={outcome.id} style={styles.parityOutcomeRow}>
-                          <View style={styles.parityOutcomeIcon}>
-                            <Text style={styles.parityOutcomeIconText}>{outcome.icon}</Text>
-                          </View>
-                          <View style={styles.parityOutcomeTextBlock}>
-                            <Text style={styles.teamName}>{outcome.label}</Text>
-                            <View style={styles.miniLineTrack}>
-                              <View style={[styles.miniLineFill, { backgroundColor: outcome.color, width: `${Math.min(100, Math.max(12, outcome.miniLine ?? outcome.probability))}%` }]} />
-                            </View>
-                          </View>
-                          <Text style={styles.oddsMultiplier}>{outcome.odds}</Text>
-                          <Pressable
-                            accessibilityLabel={`event-detail-outcome-${primaryMarket.id}-${outcome.id}`}
-                            onPress={() => matchingOutcome && openTicket(primaryMarket, matchingOutcome, event, defaultSide)}
-                            style={[styles.parityProbButton, { backgroundColor: outcome.color }]}
-                            testID={`event-detail-outcome-${primaryMarket.id}-${outcome.id}`}
-                          >
-                            <Text style={styles.parityProbText}>{outcome.probability}%</Text>
-                          </Pressable>
-                        </View>
-                      );
+                      return renderParityOutcomeRow(outcome, primaryMarket.id, matchingOutcome);
                     })}
                   </>
                 )}
               </View>
             )}
+            <View style={styles.marketBlock}>
+              <Pressable
+                accessibilityLabel={`event-detail-market-toggle-spread Spread ${teamCode(teamA?.name ?? "Home")} to win by over 1.5 goals 1.5`}
+                onPress={() => toggleGroup("spread")}
+                style={styles.marketHeaderRow}
+                testID="event-detail-market-toggle-spread"
+              >
+                <View style={styles.marketTitleBlock}>
+                  <Text style={styles.marketTitle}>Spread</Text>
+                  <Text style={styles.marketSubcopy}>{teamCode(teamA?.name ?? "Home")} to win by over 1.5 goals</Text>
+                </View>
+                <View style={styles.headerRightCluster}>
+                  <View style={styles.lineValuePill}>
+                    <Text style={styles.lineValueText}>1.5</Text>
+                    <Ionicons name="chevron-down" color="#86efac" size={16} />
+                  </View>
+                  <Ionicons name={expandedMarketIds.spread ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
+                </View>
+              </Pressable>
+              {expandedMarketIds.spread && (
+                <>
+                  <View style={styles.subSegmentRow}>
+                    {(["Reg. Time", "1st Half", "2nd Half"] as const).map((period) => (
+                      <Pressable
+                        accessibilityLabel={`event-detail-spread-period-${period}`}
+                        key={period}
+                        onPress={() => setSpreadPeriod(period)}
+                        style={[styles.subSegment, spreadPeriod === period && styles.subSegmentActive]}
+                        testID={`event-detail-spread-period-${period.replace(/[^A-Za-z0-9]/g, "-").toLowerCase()}`}
+                      >
+                        <Text style={[styles.subSegmentText, spreadPeriod === period && styles.subSegmentTextActive]}>{period}</Text>
+                      </Pressable>
+                    ))}
+                  </View>
+                  {spreadRows.map((outcome) => renderParityOutcomeRow(outcome, "spread"))}
+                </>
+              )}
+            </View>
+            {gameLineGroups.map((group) => renderGroup(group))}
           </View>
         )}
       </ScrollView>
@@ -581,6 +700,14 @@ const styles = StyleSheet.create({
   marketTitle: { color: "#d1d5db", fontSize: 18, fontWeight: "800" },
   marketSubtitle: { color: "#8b93a3", fontSize: 15, fontWeight: "700", marginTop: 4 },
   marketSubcopy: { color: "#6b7280", fontSize: 14, fontWeight: "700", marginTop: 2 },
+  headerRightCluster: { flexDirection: "row", alignItems: "center", gap: 10 },
+  lineValuePill: { minWidth: 58, minHeight: 32, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 2, borderRadius: 999, backgroundColor: "#052e1b", paddingHorizontal: 10 },
+  lineValueText: { color: "#86efac", fontSize: 14, fontWeight: "900" },
+  subSegmentRow: { flexDirection: "row", alignItems: "center", gap: 8, marginTop: 12, marginBottom: 4 },
+  subSegment: { flex: 1, minHeight: 36, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#111827" },
+  subSegmentActive: { backgroundColor: "#273244" },
+  subSegmentText: { color: "#8b93a3", fontSize: 12, fontWeight: "900" },
+  subSegmentTextActive: { color: "#f8fafc" },
   depthRow: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 10, marginBottom: 6 },
   depthText: { color: "#8b93a3", fontSize: 11, fontWeight: "800" },
   parityOutcomeRow: { minHeight: 60, flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 9 },

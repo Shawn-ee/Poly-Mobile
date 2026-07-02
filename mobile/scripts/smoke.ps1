@@ -1426,11 +1426,21 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-game-line-collapsed.png"
       $eventDetailCollapsedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-game-line-collapsed.xml"
-      Assert-HierarchyContains -Path $eventDetailCollapsedHierarchy -Expected @("Match winner", "Regulation Time Winner", "90 Minutes Plus Stoppage Time")
+      Assert-HierarchyContains -Path $eventDetailCollapsedHierarchy -Expected @("Regulation Time Winner", "90 Minutes Plus Stoppage Time")
       $eventDetailCollapsedSnapshot = Get-Content -Raw -Path $eventDetailCollapsedHierarchy
       if ($eventDetailCollapsedSnapshot -match [regex]::Escape("Mexico (Reg. Time)") -or $eventDetailCollapsedSnapshot -match [regex]::Escape("Tie")) {
         throw "Collapsed game-line row still exposes regulation-time outcome rows."
       }
+      & $adb -s $Device shell input swipe 540 1800 540 850 450 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-game-line-groups.png"
+      $eventDetailGroupsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-game-line-groups.xml"
+      Assert-HierarchyContains -Path $eventDetailGroupsHierarchy -Expected @("Spread", "MEX to win by over 1.5 goals", "1.5", "Reg. Time", "1st Half", "2nd Half", "Yes, MEX -1.5", "No", "Totals", "Total goals over 2.5", "1st Half Winner", "Who wins the first half?", "Tie 1H")
+      & $adb -s $Device shell input swipe 540 1800 540 720 500 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-game-line-deeper-groups.png"
+      $eventDetailDeeperGroupsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-game-line-deeper-groups.xml"
+      Assert-HierarchyContains -Path $eventDetailDeeperGroupsHierarchy -Expected @("2nd Half Winner", "Who wins the second half?", "Tie 2H", "Full Game Team Total Goals (Reg. Time)", "MEX goals over 1.5", "MEX Over 1.5", "MEX Under 1.5")
       return
     }
 
