@@ -36,7 +36,13 @@ import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 import { appendUniqueActivity, cancelOpenOrderOnServer, openOrderCanceledActivity } from "./src/services/openOrderService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
-import { applyTicketQuoteToOutcome, applyTicketQuotesToEvent, applyTicketQuotesToMarket, loadTicketQuotes } from "./src/services/quoteService";
+import {
+  applyTicketQuoteToOutcome,
+  applyTicketQuotesToEvent,
+  applyTicketQuotesToMarket,
+  applyTicketQuotesToMarkets,
+  loadTicketQuotes,
+} from "./src/services/quoteService";
 
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
 const DEFAULT_API_KEY = process.env.EXPO_PUBLIC_API_KEY || "";
@@ -97,7 +103,7 @@ export default function App() {
   const [forceAccountSignedIn, setForceAccountSignedIn] = useState(false);
   const [isRefreshingLive, setIsRefreshingLive] = useState(false);
   const [liveRefreshTick, setLiveRefreshTick] = useState(0);
-  const [futures] = useState<Market[]>(worldCupFutures);
+  const [futures, setFutures] = useState<Market[]>(worldCupFutures);
   const t = appCopy[locale];
   const api = useMemo(() => new PolyApi(DEFAULT_API_BASE, DEFAULT_API_KEY), []);
   const mounted = useRef(true);
@@ -477,6 +483,33 @@ export default function App() {
   useEffect(() => {
     loadBackendWorldCup();
   }, [loadBackendWorldCup]);
+
+  useEffect(() => {
+    if (ORDER_MODE !== "server") return undefined;
+    let cancelled = false;
+    const marketIds = futures.map((market) => market.id);
+    Promise.all(
+      marketIds.map(async (marketId) => {
+        try {
+          return { marketId, quotes: await loadTicketQuotes(api, marketId) };
+        } catch {
+          return { marketId, quotes: null };
+        }
+      }),
+    ).then((results) => {
+      if (cancelled || !mounted.current) return;
+      const quotesByMarketId = new Map(
+        results
+          .filter((result): result is { marketId: string; quotes: NonNullable<typeof result.quotes> } => result.quotes !== null)
+          .map((result) => [result.marketId, result.quotes]),
+      );
+      if (quotesByMarketId.size === 0) return;
+      setFutures((current) => applyTicketQuotesToMarkets(current, quotesByMarketId));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [api]);
 
   useEffect(() => {
     if (ORDER_MODE !== "server") return undefined;
