@@ -9220,6 +9220,31 @@ Notes:
 Commit: 5df51d2
 Merge: 123f098
 
+### Cycle 204
+
+Date: 2026-07-02
+Branch: mobile/cycle-204
+Status: Verified; pending local merge stamp.
+Objective: Make backend filled trades visible in mobile Recent activity before market resolution.
+Implemented:
+- Extended `/api/portfolio/history` with a backward-compatible `recentTrades` array.
+- Added mobile `PortfolioRecentTradeItem` typing and API response typing.
+- Mapped backend BUY trades into `Opened` activity and SELL trades into `Closed` activity.
+- Extended backend history route and mobile history mapper tests.
+Verification:
+- `npx.cmd jest --runInBand src/__tests__/portfolio.history.route.test.ts src/__tests__/orders.cancel.route.test.ts` passed with 2 suites and 4 tests.
+- `npm.cmd run test:mobile-api` passed with 15 files and 64 tests.
+- `npm.cmd run typecheck` passed in `mobile/`.
+- Live local `/api/portfolio/history` probe returned `recentTradeCount: 0` for the mobile dev account, confirming endpoint reachability and that the next cycle still needs a real filled-trade proof.
+Evidence:
+- Focused backend route test output.
+- Mobile service test output.
+- Live endpoint probe summary.
+Notes:
+- This cycle prepares the app/backend history surface for a filled-order/matching proof with prepared liquidity.
+Commit: PENDING
+Merge: PENDING
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

@@ -1,6 +1,6 @@
 import type { PolyApi } from "../api";
 import type { PortfolioActivity } from "../components/Portfolio";
-import type { PortfolioCanceledOrderItem } from "../types";
+import type { PortfolioCanceledOrderItem, PortfolioRecentTradeItem } from "../types";
 
 const formatHistoryTimestamp = (value: string | null) => {
   if (!value) return undefined;
@@ -41,7 +41,26 @@ export const canceledOrdersToActivity = (orders: PortfolioCanceledOrderItem[] = 
     timestamp: formatHistoryTimestamp(order.canceledAt),
   }));
 
+export const recentTradesToActivity = (trades: PortfolioRecentTradeItem[] = []): PortfolioActivity[] =>
+  trades.map((trade) => {
+    const executionPrice = trade.shares > 0 ? trade.cost / trade.shares : 0;
+    return {
+      id: `trade-${trade.id}`,
+      action: trade.side === "SELL" ? "closed" : "opened",
+      title: trade.market.title,
+      outcome: trade.outcome.name,
+      amount: trade.cost,
+      side: trade.side === "SELL" ? "sell" : "buy",
+      probability: Math.round(executionPrice * 100),
+      timestamp: formatHistoryTimestamp(trade.createdAt),
+    };
+  });
+
 export const loadPortfolioHistoryActivities = async (api: PolyApi): Promise<PortfolioActivity[]> => {
   const payload = await api.getPortfolioHistory();
-  return [...canceledOrdersToActivity(payload.canceledOrders), ...portfolioHistoryToActivity(payload.history)];
+  return [
+    ...recentTradesToActivity(payload.recentTrades),
+    ...canceledOrdersToActivity(payload.canceledOrders),
+    ...portfolioHistoryToActivity(payload.history),
+  ];
 };

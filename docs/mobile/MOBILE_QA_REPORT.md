@@ -2722,6 +2722,32 @@ Bugs:
 Visual QA:
 - Not applicable.
 
+### Cycle 204
+
+Date: 2026-07-02
+Device: Backend route/unit harness, mobile service unit harness, and live local endpoint probe
+Build/run command:
+- `npx.cmd jest --runInBand src/__tests__/portfolio.history.route.test.ts src/__tests__/orders.cancel.route.test.ts`
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+- Live local `/api/portfolio/history` probe with the mobile dev credential
+Result: Passed. Backend filled trades can now hydrate mobile Recent activity before market resolution.
+Harness evidence:
+- Focused Jest route tests passed with 2 suites and 4 tests.
+- Mobile API/service suite passed with 15 files and 64 tests.
+- Mobile typecheck passed.
+- Live local endpoint probe returned `recentTradeCount: 0` for the mobile dev account, confirming no filled-trade proof exists yet while the endpoint shape remains reachable.
+Screenshot evidence:
+- None; this was a backend/mobile mapping cycle.
+Structured findings:
+- `/api/portfolio/history` now returns `recentTrades` alongside resolved `history` and `canceledOrders`.
+- Mobile maps backend BUY trades into `Opened` activity rows and SELL trades into `Closed` activity rows with execution price, amount, side, and timestamp.
+- This prepares the app for the next filled-order/matching proof cycle.
+Bugs:
+- None in final run.
+Visual QA:
+- Not applicable.
+
 ### Cycle 203
 
 Date: 2026-07-02

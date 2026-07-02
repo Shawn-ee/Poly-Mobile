@@ -94,6 +94,24 @@ export type PortfolioCanceledOrderItem = {
   canceledAt: string;
 };
 
+export type PortfolioRecentTradeItem = {
+  id: string;
+  market: {
+    id: string;
+    title: string;
+    status: string;
+  };
+  outcome: {
+    id: string;
+    name: string;
+  };
+  side: "BUY" | "SELL";
+  shares: number;
+  cost: number;
+  fee: number;
+  createdAt: string;
+};
+
 export type PortfolioPositionItem = {
   market: {
     id: string;

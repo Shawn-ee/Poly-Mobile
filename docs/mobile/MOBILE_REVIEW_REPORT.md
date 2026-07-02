@@ -3029,3 +3029,18 @@ Findings:
 - Focused backend route tests, mobile API/service tests, mobile typecheck, and live endpoint probe passed.
 Decision: Approve Cycle 203 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 204
+
+Date: 2026-07-02
+Branch: mobile/cycle-204
+Reviewer: Lead/Reviewer pass
+Scope: Pre-resolution filled-trade activity.
+Findings:
+- P0: `/api/portfolio/history` now exposes `recentTrades`, allowing filled/matched order activity to appear before market resolution.
+- P0: Mobile maps backend BUY and SELL trades into Recent activity rows with execution price and timestamp.
+- P1: Focused route coverage proves API-key history reads return `recentTrades` beside `canceledOrders` and resolved history.
+- P1: The live local endpoint is reachable for the mobile dev credential, but currently has zero recent trades, so the next proof still needs prepared liquidity/matching.
+- Focused backend route tests, mobile API/service tests, mobile typecheck, and live endpoint probe passed.
+Decision: Approve Cycle 204 for local commit/merge after scoped diff review.
+Merge approved: Yes

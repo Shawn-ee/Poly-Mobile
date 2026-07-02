@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { canceledOrdersToActivity, portfolioHistoryToActivity } from "../services/portfolioHistoryService";
+import { canceledOrdersToActivity, portfolioHistoryToActivity, recentTradesToActivity } from "../services/portfolioHistoryService";
 import type { PortfolioHistoryItem } from "../types";
 
 const historyItem = (overrides: Partial<PortfolioHistoryItem> = {}): PortfolioHistoryItem => ({
@@ -97,6 +97,66 @@ describe("portfolio history activity mapping", () => {
         side: "buy",
         probability: 50,
         timestamp: "Jul 2, 12:55 AM",
+      }),
+    ]);
+  });
+
+  test("maps backend recent trades into pre-resolution activity rows", () => {
+    expect(
+      recentTradesToActivity([
+        {
+          id: "trade-1",
+          market: {
+            id: "world-cup-winner",
+            title: "Will France win the 2026 FIFA World Cup?",
+            status: "LIVE",
+          },
+          outcome: {
+            id: "yes",
+            name: "YES",
+          },
+          side: "BUY",
+          shares: 200,
+          cost: 100,
+          fee: 0,
+          createdAt: "2026-07-02T06:10:00.000Z",
+        },
+        {
+          id: "trade-2",
+          market: {
+            id: "world-cup-winner",
+            title: "Will France win the 2026 FIFA World Cup?",
+            status: "LIVE",
+          },
+          outcome: {
+            id: "yes",
+            name: "YES",
+          },
+          side: "SELL",
+          shares: 50,
+          cost: 30,
+          fee: 0,
+          createdAt: "2026-07-02T06:12:00.000Z",
+        },
+      ]),
+    ).toEqual([
+      expect.objectContaining({
+        id: "trade-trade-1",
+        action: "opened",
+        title: "Will France win the 2026 FIFA World Cup?",
+        outcome: "YES",
+        amount: 100,
+        side: "buy",
+        probability: 50,
+        timestamp: "Jul 2, 1:10 AM",
+      }),
+      expect.objectContaining({
+        id: "trade-trade-2",
+        action: "closed",
+        amount: 30,
+        side: "sell",
+        probability: 60,
+        timestamp: "Jul 2, 1:12 AM",
       }),
     ]);
   });

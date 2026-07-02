@@ -54,6 +54,29 @@ export async function GET(request: NextRequest) {
     take: 50,
   });
 
+  const recentTrades = await prisma.trade.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      market: {
+        select: {
+          id: true,
+          title: true,
+          status: true,
+        },
+      },
+      outcome: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+    take: 50,
+  });
+
   const marketMap = new Map<
     string,
     {
@@ -167,6 +190,16 @@ export async function GET(request: NextRequest) {
       size: Number(order.amount),
       remaining: Number(order.remaining),
       canceledAt: order.updatedAt,
+    })),
+    recentTrades: recentTrades.map((trade) => ({
+      id: trade.id,
+      market: trade.market,
+      outcome: trade.outcome,
+      side: trade.side,
+      shares: Number(trade.shares),
+      cost: Number(trade.cost),
+      fee: Number(trade.fee),
+      createdAt: trade.createdAt,
     })),
   });
 }
