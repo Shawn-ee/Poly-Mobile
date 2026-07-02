@@ -3966,3 +3966,29 @@ Bugs:
 - Fixed a hydration mismatch where server-loaded amount and side replaced local defaults but slippage stayed stale.
 Visual QA:
 - No visual regression expected; visible slippage UI remains covered by Cycle 179 Samsung evidence.
+
+### Cycle 182
+
+Date: 2026-07-01
+Device: Backend/service harness
+Build/run command:
+- `npx.cmd prisma validate`
+- `npx.cmd jest src/__tests__/profile.preferences.route.test.ts --runInBand`
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+Result: Passed. The backend now exposes authenticated profile-preference GET/PUT support for the mobile preference payload, including `ticketDefaultSlippage`.
+Harness evidence:
+- Prisma schema validation passed with the new `UserProfilePreference` model.
+- Route tests passed with 3 tests covering GET, canonical PUT including slippage, and invalid payload rejection.
+- Mobile API/service suite passed with 9 files and 41 tests.
+- Mobile typecheck passed.
+Screenshot evidence:
+- None; backend/API route cycle.
+Structured findings:
+- `/api/profile/preferences` now runs through canonical auth/rate-limit helpers using the account read lane.
+- Preferences are stored in a user-scoped JSONB row and returned with defaults for older/missing fields.
+- PUT requires locale, ticket default amount, side, slippage, and saved-event ids before writing.
+Bugs:
+- None in final run.
+Visual QA:
+- No visual change.

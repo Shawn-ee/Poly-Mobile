@@ -15,7 +15,8 @@ export type CanonicalRateLimitRouteId =
   | "fills:list"
   | "account:balance"
   | "account:positions"
-  | "account:ledger";
+  | "account:ledger"
+  | "account:preferences";
 
 export type CanonicalRateLimitRule = {
   windowMs: number;
@@ -36,6 +37,7 @@ export const CANONICAL_RATE_LIMITS: Record<CanonicalRateLimitRouteId, CanonicalR
   "account:balance": { windowMs: 60_000, max: 120 },
   "account:positions": { windowMs: 60_000, max: 120 },
   "account:ledger": { windowMs: 60_000, max: 120 },
+  "account:preferences": { windowMs: 60_000, max: 120 },
 };
 
 type ConsumeParams = {
