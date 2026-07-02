@@ -8940,8 +8940,8 @@ Technical debt added:
 Technical debt resolved:
 - Both Buy and Sell re-trade actions from Portfolio now have Samsung proof coverage.
 Result: Passed Cycle 196 QA. Mobile tests, typecheck, and Samsung server-position Buy trade smoke pass.
-Commit: `PENDING` (`PENDING`).
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `6b0f986` (`Add Samsung position buy trade proof`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `7227bd5`.
 Next cycle: Continue toward final DoD by adding richer position/order detail parity or improving authenticated server proof readiness recovery.
 Harnesses run:
 - Mobile API/Service Harness
