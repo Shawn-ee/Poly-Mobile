@@ -195,3 +195,4 @@ Status:
 | GAP-173 | Futures | Server quote refreshed futures | P1 | No | Verified | Cycle 162 refreshes World Cup futures cards from normalized server quotes in server mode while preserving local futures when quote calls fail. |
 | GAP-174 | Backend adapter | Shared market quote loading helper | P1 | No | Verified | Cycle 163 extracts a tested market quote loader that deduplicates market ids and preserves partial success across event-list, event-detail, and futures quote refresh paths. |
 | GAP-175 | Harness | Server quote readiness report | P0 | No | Verified | Cycle 164 adds a quote-readiness harness that discovers World Cup event/market/quote availability and writes structured blocker evidence before server-mode device quote proof. |
+| GAP-176 | Harness | Samsung quote proof gate | P0 | No | Verified | Cycle 165 adds a Samsung quote-proof gate that combines device reachability with quote readiness before attempting server-mode quote proof. |
