@@ -67,8 +67,8 @@ Technical debt added:
 Technical debt resolved:
 - Added machine-readable and markdown Definition of Done sweep reports.
 Result: Passed sweep harness, but did not declare mission complete. Result: 7 verified, 3 partial, 0 blocked.
-Commit: pending.
-Merged: pending.
+Commit: cycle branch HEAD (`Add mobile Definition of Done sweep`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Close or explicitly downgrade the three partial DoD items: emulator reliability, final QA/review signoff, and actual APK availability.
 Harnesses run:
 - Definition of Done Sweep Harness
