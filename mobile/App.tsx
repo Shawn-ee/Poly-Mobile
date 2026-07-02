@@ -914,6 +914,7 @@ export default function App() {
             locale={locale}
             t={t}
             openTicket={openTicket}
+            defaultSide={ticketDefaults.side}
             goBack={() => setSelectedEvent(null)}
             isSaved={savedEventIds.has(selectedEvent.id)}
             toggleSavedEvent={toggleSavedEvent}

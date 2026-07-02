@@ -10118,6 +10118,27 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 244
+
+Date: 2026-07-02
+Branch: mobile/cycle-244-event-outcome-default-side-label
+Status: Verified; pending local merge.
+Objective: Keep Event Detail outcome button action copy aligned with the ticket side that will open.
+Implemented:
+- Passed the current ticket default side into Event Detail.
+- Changed Event Detail outcome button action text to use localized Buy or Sell based on that default side.
+- Preserved the Samsung default Buy proof assertion for `Buy - 1.6x`.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:event-detail-outcome-depth` passed on Samsung S23 with Expo host `172.16.200.14` and port `8162`.
+- Captured hierarchy still verifies the default Buy path with `Buy - 1.6x`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
+Commit: pending
+Merge: pending
+
 ### Cycle 243
 
 Date: 2026-07-02
