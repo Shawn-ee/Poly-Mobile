@@ -9309,7 +9309,7 @@ Merge: 0f36834
 
 Date: 2026-07-02
 Branch: mobile/cycle-207
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Make the newest backend-filled trade activity visible near the top of Portfolio after server sync.
 Implemented:
 - Added a latest-activity preview card directly under the Portfolio counters.
@@ -9326,8 +9326,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-mobile-filled-trade-proof.json`.
 Notes:
 - This cycle responds to the Cycle 206 proof: filled activity was correct, but it could be buried below accumulated positions and open orders on the dev account.
-Commit: PENDING
-Merge: PENDING
+Commit: 00278f3
+Merge: 161c65f
 
 ### Heartbeat After Cycle 142
 
