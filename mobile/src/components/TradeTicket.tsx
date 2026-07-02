@@ -29,6 +29,9 @@ type TradeTicketCopy = {
   placeSellOrder: string;
   orderFailed: string;
   liveNow: string;
+  tradingMode: string;
+  tradingModeMock: string;
+  tradingModeServer: string;
 };
 
 export function TradeTicket({
@@ -37,6 +40,7 @@ export function TradeTicket({
   ticket,
   balance,
   orderError,
+  tradingMode,
   defaultAmount,
   defaultSide,
   onPreferencesChange,
@@ -48,6 +52,7 @@ export function TradeTicket({
   ticket: Ticket | null;
   balance: number;
   orderError: string | null;
+  tradingMode: "mock" | "server";
   defaultAmount: string;
   defaultSide: "buy" | "sell";
   onPreferencesChange: (next: { amount: string; side: "buy" | "sell" }) => void;
@@ -82,6 +87,7 @@ export function TradeTicket({
   const costLabel = side === "buy" ? t.estimatedCost : t.estimatedProceeds;
   const amountPresets = [100, 500, 1000];
   const isLiveTicket = ticket.event?.status === "live";
+  const tradingModeValue = tradingMode === "server" ? t.tradingModeServer : t.tradingModeMock;
   const liveClock = isLiveTicket
     ? ticket.event?.startsAt.replace(/[^\x00-\x7F]+/g, "-").replace(/\s+-\s+/g, " - ")
     : null;
@@ -94,6 +100,9 @@ export function TradeTicket({
             <View>
               <Text style={styles.ticketTitle}>{label(locale, ticket.outcome)}</Text>
               <Text style={styles.ticketSub}>{label(locale, ticket.event ?? ticket.market)}</Text>
+              <View accessibilityLabel="ticket-trading-mode" testID="ticket-trading-mode" style={styles.modePill}>
+                <Text style={styles.modePillText}>{t.tradingMode}: {tradingModeValue}</Text>
+              </View>
               {isLiveTicket && (
                 <View accessibilityLabel="ticket-live-badge" testID="ticket-live-badge" style={styles.liveBadge}>
                   <Ionicons name="radio-outline" color="#fecaca" size={14} />
@@ -192,6 +201,8 @@ const styles = StyleSheet.create({
   ticketTop: { flexDirection: "row", justifyContent: "space-between", gap: 12 },
   ticketTitle: { color: "#f8fafc", fontSize: 24, fontWeight: "900" },
   ticketSub: { color: "#94a3b8", fontWeight: "800", marginTop: 4 },
+  modePill: { alignSelf: "flex-start", marginTop: 8, paddingHorizontal: 9, paddingVertical: 5, borderRadius: 8, backgroundColor: "#172033", borderWidth: 1, borderColor: "#2d3a50" },
+  modePillText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
   liveBadge: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, marginTop: 8, paddingHorizontal: 9, paddingVertical: 5, borderRadius: 999, backgroundColor: "#451a1a", borderWidth: 1, borderColor: "#7f1d1d" },
   liveBadgeText: { color: "#fecaca", fontSize: 11, fontWeight: "900", textTransform: "uppercase" },
   liveClock: { marginTop: 6, color: "#fca5a5", fontSize: 13, fontWeight: "900" },

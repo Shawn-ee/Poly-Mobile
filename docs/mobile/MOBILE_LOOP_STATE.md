@@ -7946,6 +7946,45 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 173
+
+Date: 2026-07-01
+Branch: mobile/cycle-173
+Goal: Show the current trading mode directly in the Trade Ticket and verify it on Samsung before order placement.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: Trade Ticket now shows a localized `Trading mode` pill, including `Fake-token mock` in mock mode and `Server mode` in server mode.
+Backend/API changed: No runtime API route change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/TradeTicket.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/harness/cycle-173-holiwyn-future-list-order-ticket.xml`, `docs/mobile/harness/cycle-173-holiwyn-future-list-order-portfolio.xml`, `docs/mobile/screenshots/cycle-173-holiwyn-future-list-order-ticket.png`, `docs/mobile/screenshots/cycle-173-holiwyn-future-list-order-portfolio.png`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:samsung:future-list-order` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-173-holiwyn-future-list-order-ticket.png`.
+- `docs/mobile/screenshots/cycle-173-holiwyn-future-list-order-portfolio.png`.
+Harness evidence:
+- `docs/mobile/harness/cycle-173-holiwyn-future-list-order-ticket.xml`.
+- `docs/mobile/harness/cycle-173-holiwyn-future-list-order-portfolio.xml`.
+- Samsung hierarchy shows `ticket-trading-mode` and `Trading mode: Fake-token mock` before order placement.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Users and QA no longer need to infer ticket order mode from Account status or build environment while placing a trade.
+Result: Passed Cycle 173 QA. Samsung future-list order smoke passed, mobile typecheck passed, and mobile API/service tests pass.
+Commit: cycle branch HEAD (`Show ticket trading mode`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 174 should continue product-facing server-mode clarity or improve decision recovery instructions while backend readiness remains gated.
+Harnesses run:
+- Samsung Future List Order Smoke Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync/Quote Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.

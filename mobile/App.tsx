@@ -841,6 +841,7 @@ export default function App() {
         ticket={ticket}
         balance={balance}
         orderError={ticketOrderError}
+        tradingMode={ORDER_MODE}
         defaultAmount={ticketDefaults.amount}
         defaultSide={ticketDefaults.side}
         onPreferencesChange={(next) => setTicketDefaults(next)}
