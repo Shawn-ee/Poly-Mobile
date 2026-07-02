@@ -52,6 +52,8 @@ import {
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
 const DEFAULT_API_KEY = process.env.EXPO_PUBLIC_API_KEY || "";
 const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? "server" : "mock";
+const SMOKE_OPEN_SERVER_ORDER_PRICE = 1;
+const SMOKE_OPEN_SERVER_ORDER_AMOUNT = "1";
 const SAVED_EVENTS_STORAGE_KEY = "holiwyn.savedEventIds.v1";
 const LANGUAGE_STORAGE_KEY = "holiwyn.language.v1";
 const PORTFOLIO_STORAGE_KEY = "holiwyn.portfolio.v1";
@@ -118,6 +120,7 @@ export default function App() {
   const skipPortfolioHydration = useRef(false);
   const forceServerCloseFixture = useRef(false);
   const forceServerOrderProof = useRef(false);
+  const forceServerOpenOrderProof = useRef(false);
   const forceServerOrderSide = useRef<"buy" | "sell">("buy");
   const shouldSyncProfilePreferences = ORDER_MODE === "server" && DEFAULT_API_KEY.length > 0;
   const accountPortfolioValue = useMemo(
@@ -278,6 +281,7 @@ export default function App() {
     const shouldForceClosedWorldCupWinnerFrance = url.includes("forceClosedWorldCupWinnerFrance=1");
     const shouldForceServerPortfolioFixture = url.includes("forceServerPortfolioFixture=1");
     forceServerOrderProof.current = url.includes("forceServerOrderProof=1");
+    forceServerOpenOrderProof.current = url.includes("forceServerOpenOrderProof=1");
     forceServerOrderSide.current = url.includes("forceServerOrderSide=sell") ? "sell" : "buy";
     forceServerCloseFixture.current = url.includes("forceServerCloseFixture=1");
     const shouldForceLive = url.includes("forceLive=1");
@@ -489,8 +493,14 @@ export default function App() {
     const outcome = market?.outcomes[0];
     if (!event || !market || !outcome) return;
     forceServerOrderProof.current = false;
+    const ticketOutcome = forceServerOpenOrderProof.current
+      ? { ...outcome, probability: SMOKE_OPEN_SERVER_ORDER_PRICE }
+      : outcome;
+    if (forceServerOpenOrderProof.current) {
+      setTicketDefaults({ amount: SMOKE_OPEN_SERVER_ORDER_AMOUNT, side: "buy", slippage: "1%" });
+    }
     setSelectedEvent(event);
-    setTicket({ event, market, outcome, side: forceServerOrderSide.current });
+    setTicket({ event, market, outcome: ticketOutcome, side: forceServerOrderSide.current });
   }, [events]);
 
   useEffect(() => {
@@ -634,6 +644,7 @@ export default function App() {
 
   useEffect(() => {
     if (ORDER_MODE !== "server" || !ticket) return undefined;
+    if (forceServerOpenOrderProof.current) return undefined;
     let cancelled = false;
     const marketId = ticket.market.id;
     const outcomeId = ticket.outcome.id;

@@ -11,6 +11,8 @@ const order: OpenOrder = {
   status: "OPEN",
   price: 0.34,
   remaining: 125,
+  remainingShares: 125,
+  orderValue: 42.5,
 };
 
 describe("open order service", () => {
@@ -20,7 +22,7 @@ describe("open order service", () => {
       action: "canceled",
       title: "World Cup winner",
       outcome: "France",
-      amount: 125,
+      amount: 42.5,
       side: "buy",
       probability: 34,
       timestamp: "Just now",

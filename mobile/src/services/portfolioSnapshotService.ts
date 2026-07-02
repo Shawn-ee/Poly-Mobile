@@ -34,6 +34,8 @@ export const loadPortfolioSnapshot = async (api: PolyApi): Promise<PortfolioSnap
       status: order.status,
       price: order.price,
       remaining: order.remaining,
+      remainingShares: order.remaining,
+      orderValue: order.remaining * order.price,
     })),
   };
 };

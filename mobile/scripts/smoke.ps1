@@ -329,6 +329,8 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceOpenOrder=1"
   } elseif ($ServerSellOrderFilled) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerOrderProof=1,forceServerOrderSide=sell"
+  } elseif ($ServerOpenOrderCancel) {
+    "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerOrderProof=1,forceServerOpenOrderProof=1"
   } elseif ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerOpenOrderCancel) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerOrderProof=1"
   } elseif ($ServerFilledTradeHistory) {
@@ -475,6 +477,8 @@ try {
       $serverOrderSuccessTicketHierarchy = $homeHierarchy
       $serverOrderTicketExpected = if ($ServerSellOrderFilled) {
         @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "Estimated proceeds", "Est. fee", "0 USDT", "Est. shares", "200 shares", "Avg price", "Place sell order")
+      } elseif ($ServerOpenOrderCancel) {
+        @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "Estimated cost", "Est. fee", "0 USDT", "Est. shares", "100 shares", "Avg price", "Place buy order")
       } else {
         @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "Estimated cost", "Est. fee", "0 USDT", "Est. shares", "200 shares", "Avg price", "Place buy order")
       }
@@ -485,7 +489,7 @@ try {
       } elseif ($ServerOrderFilled) {
         @("Portfolio", "Server portfolio synced", "Order placed", "SERVER - Buy - YES - FILLED", "Filled shares", "200.00", "Remaining", "0.00")
       } else {
-        @("Portfolio", "Server portfolio synced", "Open orders", "Buy - YES - OPEN", "Remaining")
+        @("Portfolio", "Server portfolio synced", "Open orders", "Buy - YES - OPEN", "Remaining", "100 shares")
       }
       $serverOrderSuccessPortfolioHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-server-order-success-portfolio.xml" -Expected $serverOrderSuccessExpected -Attempts 14 -DelaySeconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-success-portfolio.png"
@@ -507,7 +511,7 @@ try {
         Start-Sleep -Seconds 1
         $serverOrderCancelHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-open-order-canceled.xml"
         Save-Screenshot -Name "cycle-current-holiwyn-server-open-order-canceled.png"
-        Assert-HierarchyContains -Path $serverOrderCancelHierarchy -Expected @("portfolio-screen", "Canceled", "YES", "100 USDT")
+        Assert-HierarchyContains -Path $serverOrderCancelHierarchy -Expected @("portfolio-screen", "Canceled", "YES", "1 USDT")
       }
       return
     }
