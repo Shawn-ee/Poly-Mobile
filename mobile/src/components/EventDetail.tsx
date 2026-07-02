@@ -101,7 +101,7 @@ export function EventDetail({
   event: Event;
   locale: Locale;
   t: EventDetailCopy;
-  openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
+  openTicket: (market: Market, outcome: Outcome, event?: Event, side?: "buy" | "sell") => void;
   defaultSide: "buy" | "sell";
   goBack: () => void;
   isSaved: boolean;
@@ -260,7 +260,7 @@ export function EventDetail({
                   </View>
                   <Pressable
                     accessibilityLabel={`event-detail-outcome-${market.id}-${outcome.id}`}
-                    onPress={() => openTicket(market, outcome, event)}
+                    onPress={() => openTicket(market, outcome, event, defaultSide)}
                     style={[styles.probButton, { backgroundColor: outcome.color }]}
                     testID={`event-detail-outcome-${market.id}-${outcome.id}`}
                   >
