@@ -7650,8 +7650,8 @@ Technical debt added:
 Technical debt resolved:
 - Samsung server quote proof now has a readiness gate instead of relying on manual judgment about device/backend state.
 Result: Passed Cycle 165 QA. Samsung quote proof gate blocked as expected, mobile typecheck passed, and mobile API/service tests pass.
-Commit: Pending.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `50b00aa` (`Add Samsung quote proof gate`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `c2801bd`.
 Next cycle: Cycle 166 should either retry backend readiness after environment changes or add a proof wrapper that consumes this gate when ready.
 Harnesses run:
 - Samsung Quote Proof Gate Harness
