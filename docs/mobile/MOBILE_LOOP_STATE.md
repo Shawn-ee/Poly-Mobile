@@ -8403,8 +8403,8 @@ Technical debt added:
 Technical debt resolved:
 - Cycle 182's read-scope write permission debt is resolved; preference writes now have explicit account mutation scope.
 Result: Passed Cycle 183 QA. Profile-preference write authorization and mobile dev credential scope checks pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `7eaf3b4` (`Require account write for profile preferences`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `949ba6d`.
 Next cycle: Continue toward final DoD by adding server-mode profile sync readiness/proof harnessing, or continue backend-backed trading parity that can be tested without a live local backend.
 Harnesses run:
 - Backend Route/Auth Unit Harness
