@@ -7350,8 +7350,8 @@ Technical debt added:
 Technical debt resolved:
 - Open-order cancellation now has a tested service seam instead of living entirely inside `App.tsx`.
 Result: Passed Cycle 157 QA. Mobile typecheck and mobile API/service tests pass.
-Commit: Pending.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `b6ada70` (`Extract mobile open order cancel service`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `3c0cc71`.
 Next cycle: Cycle 158 should continue server-backed cancel/order readiness, retry readiness if environment changes, or add Samsung proof around an adjacent server-mode recovery flow.
 Harnesses run:
 - Mobile Typecheck Harness
