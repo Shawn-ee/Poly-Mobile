@@ -20,6 +20,7 @@ Status:
 
 | ID | Area | Feature | Priority | Reference Observed | Holiwyn Status | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| GAP-274 | Live trading | Live ticket price movement warning | P1 | No | Verified | Cycle 261 adds a localized live-price movement warning to live tickets and verifies it through Samsung live-order proof. |
 | GAP-273 | Harness | Sell-side open-order device proof | P1 | No | Verified | Cycle 260 adds a Samsung proof for pending sell orders showing potential proceeds and canceled sell activity. |
 | GAP-272 | Portfolio | Sell-side open-order proceeds wording | P1 | No | Verified | Cycle 259 adds tested open-order economics helpers so sell orders show proceeds wording while buy orders keep payout wording. |
 | GAP-271 | Portfolio | Open-order potential payout detail | P1 | No | Verified | Cycle 258 adds localized potential payout economics to pending open orders and verifies it on Samsung open-order cancel proof. |

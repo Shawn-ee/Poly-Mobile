@@ -10118,6 +10118,42 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 261
+
+Date: 2026-07-02
+Branch: mobile/cycle-261-live-ticket-price-movement-warning
+Status: Verified; pending local merge.
+Objective: Add live-market price movement guidance to the trade ticket and prove live order placement still works.
+Implemented:
+- Added localized `Prices may move before fill.` copy for live tickets in English and Simplified Chinese.
+- Included the warning in the live clock line to keep the ticket compact and preserve the visible trading/economics controls.
+- Updated the Samsung live-order proof to require the warning and to assert the more specific `Live match winner` market title after order placement.
+Recovery:
+- First Samsung run exposed ticket top clipping after the warning was added; compacted the warning into the live clock line.
+- Second Samsung run exposed an outdated event-title assertion; updated the proof to assert the current live market title.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 16 files and 70 tests.
+- `npm.cmd run smoke:samsung:live-order` passed on Samsung S23 with Expo host `172.16.200.14` and port `8143`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-live-ticket.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-live-order-portfolio.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-live-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-live-order-portfolio.png`.
+Commit: pending
+Merge: pending
+
+### Heartbeat After Cycle 261
+
+Completed cycles: 259, 260, 261.
+Verified progress: Open-order economics now distinguish buy payout from sell proceeds, sell-side pending orders have Samsung real-device proof, and live tickets now warn users that prices may move before fill while preserving live order placement proof.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung real-device QA, server quote/order/Portfolio sync paths, Event Detail prop betting coverage, buy/sell pending-order economics, and improved live-ticket trading guidance.
+Current backend state: Local backend/mobile API tests pass with 16 files and 70 tests. The latest cycles did not change backend schema or deposit/withdraw behavior.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go. Emulator remains fallback only because it is slow/stale. Proper dev build/APK remains a later stabilization lane.
+Open blockers: None for autonomous progress.
+Risks: Live ticket layout is dense on Samsung; future ticket additions should prefer compact copy, collapsible detail, or a proper scrollable sheet to avoid clipping the top/bottom controls.
+Next three likely cycles: add a compact/scroll-safe ticket layout guard, extend live sell-ticket proof, and continue Event Detail orderbook/depth parity for prop/live markets.
+
 ### Cycle 260
 
 Date: 2026-07-02
