@@ -7394,8 +7394,8 @@ Technical debt added:
 Technical debt resolved:
 - Backend quotes now have a tested normalization seam before wiring live server prices into trade tickets.
 Result: Passed Cycle 158 QA. Mobile typecheck and mobile API/service tests pass.
-Commit: Pending.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `c067ab7` (`Add mobile quote normalization service`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `37a1703`.
 Next cycle: Cycle 159 should continue server-backed ticket hydration by wiring normalized quotes into the ticket/detail path where it can be verified safely.
 Harnesses run:
 - Mobile Typecheck Harness
