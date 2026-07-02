@@ -3424,3 +3424,26 @@ Bugs:
 - None in final run.
 Visual QA:
 - No app screenshot cycle; this is server-mode event-detail quote refresh plumbing with existing UI preserved.
+
+### Cycle 161
+
+Date: 2026-07-01
+Device: Mobile event-list quote enrichment unit/typecheck harness
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Backend-loaded World Cup event lists can now be enriched with normalized quote probabilities in server mode before Home/Live render them.
+Unit evidence:
+- `mobile/src/services/quoteService.ts`
+- `mobile/src/__tests__/quoteService.test.ts`
+- `mobile/App.tsx`
+- Mobile API/service suite: 9 files, 36 tests passed.
+Covered behavior:
+- Event-wide quote helper applies quotes across multiple markets.
+- Events with no matching market quotes preserve their original object and payload odds.
+- Backend event loading enriches normalized event details with per-market quote calls in server mode.
+- Quote endpoint failures keep the existing event payload probabilities.
+Bugs:
+- None in final run.
+Visual QA:
+- No app screenshot cycle; this is server-mode event-list quote enrichment plumbing with existing UI preserved.

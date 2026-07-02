@@ -1,6 +1,12 @@
 import { describe, expect, test, vi } from "vitest";
 import type { PolyApi } from "../api";
-import { applyTicketQuoteToOutcome, applyTicketQuotesToMarket, loadTicketQuotes, quoteToTicketQuote } from "../services/quoteService";
+import {
+  applyTicketQuoteToOutcome,
+  applyTicketQuotesToEvent,
+  applyTicketQuotesToMarket,
+  loadTicketQuotes,
+  quoteToTicketQuote,
+} from "../services/quoteService";
 import type { Quote } from "../types";
 
 describe("quote service", () => {
@@ -221,5 +227,78 @@ describe("quote service", () => {
         },
       ]),
     ).toBe(market);
+  });
+
+  test("applies ticket quotes across event markets", () => {
+    const event = {
+      id: "mexico-ecuador",
+      markets: [
+        {
+          id: "match-winner",
+          outcomes: [
+            { id: "mexico", label: "Mexico", probability: 64 },
+            { id: "ecuador", label: "Ecuador", probability: 36 },
+          ],
+        },
+        {
+          id: "total-goals",
+          outcomes: [
+            { id: "over", label: "Over", probability: 47 },
+            { id: "under", label: "Under", probability: 53 },
+          ],
+        },
+      ],
+    };
+
+    const quotedEvent = applyTicketQuotesToEvent(
+      event,
+      new Map([
+        [
+          "match-winner",
+          [
+            {
+              outcomeId: "mexico",
+              outcomeName: "Mexico",
+              probability: 66,
+              bestBid: 65,
+              bestAsk: 67,
+              midPrice: 66,
+              lastPrice: null,
+            },
+          ],
+        ],
+        [
+          "total-goals",
+          [
+            {
+              outcomeId: "under",
+              outcomeName: "Under",
+              probability: 55,
+              bestBid: 54,
+              bestAsk: 56,
+              midPrice: 55,
+              lastPrice: null,
+            },
+          ],
+        ],
+      ]),
+    );
+
+    expect(quotedEvent.markets[0].outcomes.map((outcome) => outcome.probability)).toEqual([66, 36]);
+    expect(quotedEvent.markets[1].outcomes.map((outcome) => outcome.probability)).toEqual([47, 55]);
+  });
+
+  test("keeps the original event when no market quotes match", () => {
+    const event = {
+      id: "mexico-ecuador",
+      markets: [
+        {
+          id: "match-winner",
+          outcomes: [{ id: "mexico", label: "Mexico", probability: 64 }],
+        },
+      ],
+    };
+
+    expect(applyTicketQuotesToEvent(event, new Map())).toBe(event);
   });
 });

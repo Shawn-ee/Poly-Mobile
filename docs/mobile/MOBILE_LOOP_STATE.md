@@ -7481,6 +7481,39 @@ Open blockers: None for autonomous progress. Successful live server-backed quote
 Risks: Event-list quote freshness is not yet refreshed after initial payload hydration; successful authenticated order execution, Portfolio hydration, and cancel execution are still unproven on device; Expo Go proof still depends on LAN reachability.
 Next three likely cycles: extend quote freshness to home/live/futures lists, improve server-mode quote/order proof harnessing, and retry readiness gates if Docker/DB/API-key state changes.
 
+### Cycle 161
+
+Date: 2026-07-01
+Branch: mobile/cycle-161
+Goal: Enrich backend-loaded World Cup event lists with normalized server quotes in server mode.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No visual layout change. Home/Live event list probabilities can now reflect quote-enriched backend event payloads.
+Backend/API changed: No runtime API route change. Mobile backend event loading now calls market quote endpoints after normalizing event details in server order mode.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/services/quoteService.ts`, `mobile/src/__tests__/quoteService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Unit evidence:
+- Mobile API/service suite passed 9 files and 36 tests.
+- New tests cover event-wide quote application and preserving event objects when no market quotes match.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Backend-loaded Home/Live event lists no longer depend only on initial event payload odds when quote endpoints are available.
+Result: Passed Cycle 161 QA. Mobile typecheck and mobile API/service tests pass.
+Commit: Pending.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 162 should add server quote freshness for futures or improve quote proof harnessing.
+Harnesses run:
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync/Quote Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.

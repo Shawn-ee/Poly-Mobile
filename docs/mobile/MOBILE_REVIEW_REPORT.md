@@ -2356,3 +2356,19 @@ Findings:
 - Mobile typecheck and mobile API/service tests passed.
 Decision: Approve Cycle 160 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 161
+
+Date: 2026-07-01
+Branch: mobile/cycle-161
+Reviewer: Lead/Reviewer pass
+Scope: Server quote enrichment for backend-loaded event lists.
+Findings:
+- P1: `applyTicketQuotesToEvent` gives the app a tested way to apply quote probabilities across multiple markets within an event.
+- P1: `loadBackendWorldCup` now enriches normalized event detail payloads with per-market quotes in server mode before setting Home/Live event state.
+- P1: Market quote failures are isolated per market and leave the existing event payload probabilities intact.
+- P1: Mock mode and backend-unavailable fallback still keep the existing local World Cup events.
+- P2: Futures quote freshness still uses the local futures state and should be handled in a later cycle.
+- Mobile typecheck and mobile API/service tests passed.
+Decision: Approve Cycle 161 for local commit/merge after scoped diff review.
+Merge approved: Yes
