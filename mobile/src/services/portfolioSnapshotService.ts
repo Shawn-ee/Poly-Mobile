@@ -19,6 +19,10 @@ export const loadPortfolioSnapshot = async (api: PolyApi): Promise<PortfolioSnap
       side: "buy",
       amount: position.costBasisTokens,
       probability: Math.round(position.avgCost * 100),
+      shares: position.shares,
+      currentPrice: position.currentPrice,
+      currentValue: position.valueTokens,
+      pnl: position.pnlTokens,
     })),
     openOrders: snapshot.openOrders.map((order) => ({
       id: order.id,

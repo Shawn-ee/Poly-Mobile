@@ -8588,6 +8588,42 @@ Open blockers: None for autonomous progress. Successful live server-backed Samsu
 Risks: Latest-order receipt now carries server acknowledgement details, but authenticated on-device order execution and full Portfolio hydration are still not proven on Samsung.
 Next three likely cycles: persist/display server acknowledgement details through Portfolio hydration, add a fixture-backed Samsung receipt proof, or retry server-proof readiness if local services become available.
 
+## Cycle 188
+
+Date: 2026-07-01
+Branch: mobile/cycle-188
+Goal: Make server-hydrated Portfolio positions use backend shares, current value, current price, and P/L instead of mock movement math.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: Portfolio position cards can now show backend shares/current price, and current value/P&L totals prefer server economics when hydrated.
+Backend/API changed: No backend route change; mobile Portfolio snapshot mapping now consumes existing backend position economics.
+Database/schema changed: None.
+Files changed: `mobile/src/components/Portfolio.tsx`, `mobile/src/domain/portfolioPositionMetrics.ts`, `mobile/src/services/portfolioSnapshotService.ts`, `mobile/src/__tests__/portfolioPositionMetrics.test.ts`, `mobile/src/__tests__/portfolioSnapshotService.test.ts`, `mobile/src/localization/appCopy.ts`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm.cmd run typecheck` in `mobile/`.
+Screenshots captured:
+- None; mobile service/math cycle.
+Harness evidence:
+- Mobile API/service suite passed with 10 files and 47 tests.
+- Mobile typecheck passed.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Server-hydrated Portfolio values are no longer recomputed from the local mock price-movement heuristic.
+Result: Passed Cycle 188 QA. Mobile snapshot/position metric tests and typecheck pass.
+Commit: pending (`Use server portfolio position economics`).
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Continue toward final DoD by proving the richer Portfolio position row on Samsung with a fixture or by extending authenticated close/sell behavior for server-hydrated positions.
+Harnesses run:
+- Mobile Portfolio Snapshot Harness
+- Mobile Portfolio Position Metrics Harness
+- Mobile Typecheck Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.
