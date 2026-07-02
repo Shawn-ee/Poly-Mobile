@@ -10026,6 +10026,41 @@ Evidence:
 Commit: 4fc00e8
 Merge: 20fefc2
 
+### Cycle 235
+
+Date: 2026-07-02
+Branch: mobile/cycle-235-portfolio-open-orders-count
+Status: Verified; pending local merge.
+Objective: Add a visible Portfolio open-order count and prove the count changes during the Samsung mock cancel flow.
+Implemented:
+- Added a fourth Portfolio summary tile labeled `Open orders`.
+- Changed the summary tiles to a stable two-by-two layout for mobile width.
+- Tightened the open-order cancel smoke so it requires the open-order count tile before and after cancel.
+- Updated the open-order cancel launch URL/reset handling so stale persisted mock Portfolio state cannot overwrite the forced open-order fixture.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:open-order-cancel` passed on Samsung S23 with Expo host `172.16.200.14` and port `8160`.
+- Captured before hierarchy includes `portfolio-open-order-count`, `Open orders`, `Buy - Mexico - OPEN`, and `Implied odds`; captured after hierarchy includes `portfolio-open-order-count`, `Open orders`, `Canceled`, and `Buy - Canceled 250.00 shares - Limit 47%`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-open-order.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-open-order-canceled.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-open-order.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-open-order-canceled.png`.
+Commit: pending
+Merge: pending
+
+### Heartbeat After Cycle 235
+
+Completed cycles: 233, 234, 235.
+Verified progress: Canceled activity proofing is now side-aware in both server and mock cancel flows, the mock open-order cancel proof has a dedicated Samsung S23 wrapper, and Portfolio now shows an Open orders count tile that moves from 1 to 0 during the cancel proof.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token and server-mode trading, Samsung real-device QA, server quote/order/Portfolio sync, backend-derived filled/canceled activity with side/share/price detail, open-order cards with notional/remaining value/original size/fill progress/placed time, Portfolio count tiles for positions/open orders/activity/closed trades, latest activity/order previews, BUY/SELL filled-order proof wrappers, and gated open-order cancel proof wrappers with DB-backed summaries.
+Current backend state: Local Docker/Postgres backend supports mobile API-key Portfolio/profile/order flows, canonical order create/cancel, matching, correct complete-set mint cost basis, recent-trade/canceled-order history, repeatable World Cup seeding/liquidity for mobile proofs, and proof-noise reporting/gating.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go for server-backed and mock proof flows. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: Expo Go persisted state can still affect mock proof flows unless the smoke launch URL uses `forceResetState=1`; Cycle 235 fixed this for open-order cancel, but similar fixture flows should keep using explicit reset flags.
+Next three likely cycles: continue Portfolio/order detail parity, add stronger proof cleanup or disposable market isolation, and improve World Cup event detail/trading parity.
+
 ### Heartbeat After Cycle 232
 
 Completed cycles: 230, 231, 232.
