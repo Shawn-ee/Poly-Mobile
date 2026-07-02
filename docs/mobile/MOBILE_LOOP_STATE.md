@@ -7615,8 +7615,8 @@ Technical debt added:
 Technical debt resolved:
 - The loop now has a quote-specific server readiness gate instead of inferring quote proof readiness from broader backend gates.
 Result: Passed Cycle 164 QA. Quote-readiness blocked as expected, mobile typecheck passed, and mobile API/service tests pass.
-Commit: Pending.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `c846ef9` (`Add mobile quote readiness harness`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `a0304c4`.
 Next cycle: Cycle 165 should use the quote readiness evidence to either retry backend readiness or add a Samsung quote-proof wrapper that is gated by readiness.
 Harnesses run:
 - Mobile Quote Readiness Harness
