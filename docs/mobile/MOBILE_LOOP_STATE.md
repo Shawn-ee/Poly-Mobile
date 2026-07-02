@@ -9280,6 +9280,31 @@ Open blockers: None for autonomous progress.
 Risks: The filled-trade proof is backend-only this cycle; the next device cycle should refresh Portfolio on Samsung and verify the filled trade appears visually in Recent activity. The local dev account now has accumulated proof data, so tests should keep avoiding exact-balance assumptions.
 Next three likely cycles: prove backend recent-trade history visually on Samsung, add a direct server-mode filled-order UI path when liquidity exists, and continue Portfolio/trading parity polish toward Polymarket-style World Cup workflows.
 
+### Cycle 206
+
+Date: 2026-07-02
+Branch: mobile/cycle-206
+Status: Verified; pending local merge.
+Objective: Prove backend filled-trade history appears visually on Samsung in server-mode Portfolio.
+Implemented:
+- Added `ServerFilledTradeHistory` to the Samsung smoke wrapper.
+- Added a lower-level smoke path that launches server-mode Portfolio, waits for backend sync, scrolls to Recent activity, and asserts the filled-trade activity details.
+- Added `npm run smoke:samsung:server-filled-trade-history`.
+Verification:
+- `npm.cmd run mobile:filled-trade-proof` passed and refreshed a filled World Cup proof trade.
+- `npm.cmd run smoke:samsung:server-filled-trade-history` passed on Samsung S23 through Expo Go with backend health `ok`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 64 tests.
+- `npm.cmd run typecheck` passed in `mobile/`.
+Evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-filled-trade-history.png`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-filled-trade-history.xml`.
+- `docs/mobile/harness/cycle-current-mobile-filled-trade-proof.json`.
+Notes:
+- The first smoke attempt reached Portfolio but asserted the sync badge after it had scrolled away; the final proof asserts sync during launch and checks the deeper activity row text.
+- The proof used an in-process local mobile dev API key and did not write the secret to docs.
+Commit: PENDING
+Merge: PENDING
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

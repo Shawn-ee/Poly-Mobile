@@ -4592,3 +4592,30 @@ Bugs:
 - Fixed the proof harness dependency on mutable seeded-market orderbook state.
 Visual QA:
 - No app visual run this cycle.
+
+### Cycle 206
+
+Date: 2026-07-02
+Device: Samsung S23 via Expo Go, local Docker-backed backend, and mobile service unit harness
+Build/run command:
+- `npm.cmd run mobile:filled-trade-proof`
+- `npm.cmd run smoke:samsung:server-filled-trade-history` in `mobile/`
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+Result: Passed. Samsung now visually proves backend-filled trade history in server-mode Portfolio.
+Harness evidence:
+- The backend proof created a fresh dev-only World Cup filled BUY trade for `holiwyn-mobile-dev`.
+- The Samsung smoke launched server-mode Portfolio through Expo Go with a fresh in-process mobile dev API key.
+- Backend health reported `ok`.
+- The final hierarchy verifies `Recent activity`, `Bought`, `World Cup Mobile Filled Trade Proof`, `YES`, `1 USDT`, `Filled shares 2.00`, `Exec price 50%`, and `Implied odds 2.0x`.
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-filled-trade-history.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-filled-trade-history.xml`
+Structured findings:
+- The first smoke attempt reached server Portfolio but stopped above Recent activity and asserted the sync badge after it had scrolled out of view.
+- The final smoke asserts sync during launch, then scrolls deeper and checks the actual user-visible Recent activity row.
+- The API key used for the proof stayed in process and was not written to docs.
+Bugs:
+- Fixed the server filled-trade smoke scroll depth and activity labels (`Bought`, `Exec price`) to match the real UI.
+Visual QA:
+- Passed on Samsung S23 through Expo Go.
