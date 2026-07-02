@@ -22,6 +22,27 @@ Evidence folder:
 - `13-player-props-tab.png` / `.xml`: Player Props tab selected.
 - `14-spread-first-half.png` / `.xml`: attempted first-half spread interaction capture.
 - `15-spread-second-half.png` / `.xml`: attempted second-half spread interaction capture.
+- `16-human-current-before-extra.png` / `.xml`: resumed human interaction pass.
+- `17-human-top-reset.png` / `.xml`: returned near top.
+- `18-chart-tap-middle.png` / `.xml`: normal chart tap.
+- `19-chart-long-press-middle.png` / `.xml`: chart long-press after release.
+- `20-chart-filter-all.png` / `.xml`: chart filter set to `All`.
+- `21-chart-filter-live.png` / `.xml`: chart filter area interaction.
+- `22-chart-filter-game.png` / `.xml`: chart filter returned to `Game`.
+- `23-human-scroll-lines.png` / `.xml`: human scroll through Game Lines.
+- `24-reg-winner-collapse.png` / `.xml`: Regulation Time Winner collapse attempt.
+- `25-reg-winner-expand.png` / `.xml`: Regulation Time Winner expand attempt.
+- `26-spread-line-dropdown-tap.png` / `.xml`: spread line-value/dropdown area tap.
+- `27-spread-first-half-tap.png` / `.xml`: Spread `1st Half` segment tap.
+- `28-spread-second-half-tap.png` / `.xml`: Spread `2nd Half` segment tap.
+- `29-player-props-human.png` / `.xml`: Player Props selected from human pass.
+- `30-player-props-expand-goals.png` / `.xml`: Goals prop group expanded.
+- `31-player-props-scroll-deeper.png` / `.xml`: deeper Player Props and rules area.
+- `32-player-props-scroll-bottomish.png` / `.xml`: bottom-ish Player Props/rules/more-events area.
+- `33-before-chart-hold.png` / `.xml`: chart before held screenshot attempt.
+- `34-chart-held-live.png` / `.xml`: screenshot captured while chart press was being held.
+- `35-chart-green-trace-tap.png` / `.xml`: targeted tap on green chart trace.
+- `36-chart-red-trace-tap.png` / `.xml`: targeted tap on red chart trace.
 
 ## Page Header
 
@@ -50,6 +71,12 @@ Evidence folder:
 - The chart updates over time; captured percentages changed from `POR 76% / CRO 25%` to `POR 74% / CRO 27%`.
 - Trade-size markers appear along the left side of the chart, e.g. `+$9`, `+$39`, `+$1`, later `+$4`, `+$479`.
 - Chart area includes an `All / Game / Live` segmented filter. `Game` was selected in the observed state.
+- Human interaction pass:
+  - Normal taps and held press were performed on the chart area and on the green/red traces.
+  - The screenshots captured after release and during a held press did not show a persistent tooltip/crosshair.
+  - The chart still visibly reacted as live data changed over time: clock, chat count, trade markers, and probabilities changed while captures were taken.
+  - The `All / Game / Live` filter is visibly interactive; `All` selected state was captured in `20-chart-filter-all.png`.
+  - Because the tooltip may only render under a finger and may not persist in screenshot timing, Holiwyn criteria should require real filterable movement and can treat a press tooltip as P1 unless later reference evidence captures it clearly.
 
 ## Social Preview And Chat
 
@@ -163,13 +190,38 @@ Game Lines is the default selected tab.
 
 Player Props is not blank in the real app.
 
-Observed state: `13-player-props-tab.png`.
+Observed states: `13-player-props-tab.png`, `29-player-props-human.png`, `30-player-props-expand-goals.png`, `31-player-props-scroll-deeper.png`, `32-player-props-scroll-bottomish.png`.
 
 - `Player Props` tab can be selected.
 - The same scoreboard/chart/primary buttons remain visible above.
 - First visible Player Props group: `Goals (Reg. Time)`.
-- Group appears collapsed with a chevron.
+- `Goals (Reg. Time)` expands into player rows.
+- Expanded prop group includes a search/filter icon, `All`, `Croatia`, and `Portugal` filter chips.
+- Player rows use jersey icons, player names, a stat line dropdown such as `0+`, odds multiplier, and probability button.
+- Observed rows include:
+  - Cristiano Ronaldo, `0+`, `2.564x`, `39%`.
+  - Bruno Fernandes, `0+`, `10.00x`, `10%`.
+  - Ante Budimir, `0+`, `33.33x`, `3%`.
+  - Rafael Leao, `0+`, around `7%` to `10%` depending capture.
+  - Joao Felix, `0+`, around `7%`.
+- `Show all` appears after the first visible player list.
+- Additional collapsed prop groups observed:
+  - `Assists (Reg. Time)`
+  - `Goals + Assists (Reg. Time)`
+  - `Shots (Reg. Time)`
+  - `Shots on Target (Reg. Time)`
+  - `Goalkeeper Saves (Reg. Time)`
 - This contradicts the earlier Holiwyn prototype decision to leave Player Props blank.
+
+## Lower Page Content
+
+After prop groups, the real app shows:
+
+- `Market Rules` section with chevron.
+- Rule market selector, observed as `POR to advance`.
+- Rule text explaining settlement source and conditions.
+- `View Full Rules`.
+- `More Events`, showing other World Cup events with time, teams, and probabilities.
 
 ## Interactions Observed
 
@@ -180,6 +232,8 @@ Observed state: `13-player-props-tab.png`.
 - Market groups use chevrons and expandable rows.
 - Spread includes nested segmented controls and a dropdown line-value pill.
 - Player Props tab reveals prop groups, not an empty placeholder.
+- Player Props filters and player stat dropdown affordances are visible.
+- Market Rules and More Events appear near the lower page.
 
 ## Empty And Error States
 
