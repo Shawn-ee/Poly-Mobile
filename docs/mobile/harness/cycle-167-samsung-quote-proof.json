@@ -1,0 +1,36 @@
+﻿{
+    "ready":  false,
+    "expectedBlocked":  true,
+    "proofStatus":  "blocked-before-device-proof",
+    "proofAttempted":  false,
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "preflightSummaryPath":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\docs\\mobile\\harness\\cycle-current-samsung-quote-proof-preflight.json",
+    "backendBaseUrl":  "http://127.0.0.1:3000",
+    "launchEnvironment":  {
+                              "EXPO_PUBLIC_API_BASE_URL":  "http://127.0.0.1:3000",
+                              "EXPO_PUBLIC_ORDER_MODE":  "server"
+                          },
+    "quoteContext":  {
+                         "eventSlug":  null,
+                         "marketId":  null,
+                         "quoteCount":  0
+                     },
+    "prerequisiteState":  {
+                              "deviceReachable":  true,
+                              "backendHealthReachable":  false,
+                              "worldCupEventsReachable":  false,
+                              "eventDetailReachable":  false,
+                              "marketQuoteReachable":  false,
+                              "quoteReadinessReady":  false,
+                              "gateReady":  false
+                          },
+    "failures":  [
+                     "Backend health unavailable at http://127.0.0.1:3000: The operation has timed out.",
+                     "Server quote readiness is blocked."
+                 ],
+    "nextActions":  [
+                        "If ready is false, fix the listed prerequisite failures before launching the server-mode Samsung quote proof.",
+                        "If ready is true, launch Holiwyn on Samsung with the recorded launch environment and verify a World Cup ticket quote uses server values.",
+                        "Capture the resulting Samsung screen evidence and promote this harness from readiness proof to visual quote proof."
+                    ]
+}
