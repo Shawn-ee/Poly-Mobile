@@ -8651,8 +8651,8 @@ Technical debt added:
 Technical debt resolved:
 - Server-hydrated mobile positions now retain the market/outcome identity required for a canonical sell order.
 Result: Passed Cycle 189 QA. Backend route, mobile mapping, and typecheck harnesses pass.
-Commit: pending (`Preserve server portfolio position identifiers`).
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `e21616c` (`Preserve server portfolio position identifiers`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `a3f62bb`.
 Next cycle: Continue toward final DoD by using these identifiers to route server-mode close-position into a canonical SELL order or by adding a fixture-backed Samsung proof of server-hydrated Portfolio rows.
 Harnesses run:
 - Backend Portfolio Route Harness
