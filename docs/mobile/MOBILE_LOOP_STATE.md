@@ -9722,8 +9722,8 @@ Evidence:
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`.
 Notes:
 - The S23 canceled activity row shows `Canceled 100.00 shares - Limit 1%` alongside `1 USDT`.
-Commit: TBD
-Merge: TBD
+Commit: 0dcdcf6
+Merge: faf5a6d
 
 ### Heartbeat After Cycle 217
 
