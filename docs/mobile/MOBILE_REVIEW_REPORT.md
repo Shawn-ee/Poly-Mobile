@@ -2121,3 +2121,18 @@ Findings:
 - Samsung deep live metadata smoke, mobile typecheck, and mobile API/history tests passed.
 Decision: Approve Cycle 145 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 146
+
+Date: 2026-07-01
+Branch: mobile/cycle-146
+Reviewer: Lead/Reviewer pass
+Scope: Samsung server-order failure recovery smoke wrapper.
+Findings:
+- P1: `smoke-samsung.ps1` now supports `-ServerOrderFailure`, and `npm run smoke:samsung:server-order-failure` proves server-mode order failure behavior on the S23.
+- P1: The smoke now launches `ServerOrderFailure` through a clean forced ticket deep link, preventing stale phone state from corrupting the balance expectation.
+- P1: The server-order-failure path now uses the forced ticket hierarchy directly and waits for the unavailable-backend retry error instead of relying on emulator-era navigation/timing assumptions.
+- P2: This is negative server-mode recovery proof, not successful server-backed execution. A reachable backend/API-key device proof remains the next major integration gap.
+- Samsung server-order-failure smoke, mobile typecheck, and mobile API/history tests passed.
+Decision: Approve Cycle 146 for local commit/merge after scoped diff review.
+Merge approved: Yes

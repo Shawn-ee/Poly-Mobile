@@ -343,7 +343,7 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceClearSaved=1"
   } elseif ($FutureListClose) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceClosedWorldCupWinnerFrance=1"
-  } elseif ($FutureListOrder) {
+  } elseif ($FutureListOrder -or $ServerOrderFailure) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceWorldCupWinnerFranceTicket=1"
   } elseif ($PortfolioClosedCount) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1"
@@ -366,6 +366,8 @@ try {
     @("Mexico vs. Ecuador", "4 markets", "8 outcomes")
   } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
     @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina")
+  } elseif ($ServerOrderFailure) {
+    @("World Cup winner", "France", "Fake balance", "Place buy order")
   } elseif ($SearchQuery -or $SearchClearQuery) {
     @("Holiwyn", "Search World Cup markets", "zzzz", "0 results")
   } elseif ($HomeSearchQuery -or $HomeClearSearch) {
@@ -410,13 +412,11 @@ try {
     }
 
     if ($ServerOrderFailure) {
-      Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "featured-future-france"
-      Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-ticket.png"
-      $serverTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-order-ticket.xml"
+      $serverTicketHierarchy = $homeHierarchy
       Assert-HierarchyContains -Path $serverTicketHierarchy -Expected @("Fake balance", "10,000 USDT", "Estimated cost", "Est. shares", "Avg price", "Place buy order")
       Invoke-TapHierarchyNode -Path $serverTicketHierarchy -Identifier "place-mock-order"
-      Start-Sleep -Seconds 1
+      Wait-HierarchyContains -Name "cycle-current-holiwyn-server-order-error.xml" -Expected @("Order failed. Try again.", "ticket-order-error", "Place buy order") -Attempts 12 -DelaySeconds 2 | Out-Null
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-error.png"
       $serverOrderErrorHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-order-error.xml"
       Assert-HierarchyContains -Path $serverOrderErrorHierarchy -Expected @("Order failed. Try again.", "ticket-order-error", "Place buy order")

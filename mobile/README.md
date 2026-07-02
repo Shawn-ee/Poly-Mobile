@@ -68,6 +68,12 @@ To verify Samsung deep live Portfolio badge and clock propagation, run:
 npm run smoke:samsung:live-portfolio-badge-deep
 ```
 
+To verify Samsung server-mode order failure recovery, run:
+
+```powershell
+npm run smoke:samsung:server-order-failure
+```
+
 ## Device Strategy
 
 - Samsung S23: use for Polymarket reference and, later, explicit Holiwyn real-device QA.

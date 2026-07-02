@@ -6901,6 +6901,47 @@ Open blockers: None for autonomous progress.
 Risks: Server-mode order/close execution is still unproven on device; backend history still lacks full fill-level metadata; Expo Go proof depends on LAN reachability and installed runtime.
 Next three likely cycles: prepare a reachable server-mode Samsung order proof, add backend-backed live history metadata mapping if API data allows it, and continue reducing Expo Go dependence with the APK/dev-client lane.
 
+### Cycle 146
+
+Date: 2026-07-01
+Branch: mobile/cycle-146
+Goal: Add a Samsung-first server-mode order failure recovery proof.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; harness/device proof cycle.
+Backend/API changed: No backend route change. Samsung server-order-failure proof uses the existing unavailable-backend server-mode path.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke-samsung.ps1`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `npm run smoke:samsung:server-order-failure` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-146-samsung-server-order-failure-smoke.png`
+- `docs/mobile/screenshots/cycle-146-samsung-server-order-failure-ticket.png`
+- `docs/mobile/screenshots/cycle-146-samsung-server-order-failure-error.png`
+Harness evidence captured:
+- `docs/mobile/harness/cycle-146-samsung-server-order-failure-ticket.xml`
+- `docs/mobile/harness/cycle-146-samsung-server-order-failure-error.xml`
+Bugs found:
+- Initial Samsung run inherited stale balance. Fixed by launching `ServerOrderFailure` through `forceResetState=1,forceWorldCupWinnerFranceTicket=1`.
+- The server-order-failure harness still tried to tap the futures row after forced ticket launch. Fixed by using the forced ticket hierarchy directly.
+- The unavailable-backend failure took longer on the phone than the old fixed wait. Fixed by waiting for retry error text.
+Technical debt added:
+- This is a negative server-mode recovery proof; successful server-backed order execution on device remains pending.
+Technical debt resolved:
+- Samsung real-device QA now covers server-mode unavailable-backend order failure and retry feedback.
+Result: Passed Cycle 146 QA. Samsung server-order-failure smoke, mobile typecheck, and mobile API/history tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 147 should continue toward a reachable server-mode Samsung order proof or add backend readiness automation for a device-accessible local API.
+Harnesses run:
+- Samsung Server Order Failure Smoke Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History Unit Harness
+- Review Harness
+Harness failures:
+- Initial Samsung server-order-failure attempts exposed stale state, old emulator navigation, and fixed-wait timing gaps; all were fixed before final pass.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.
