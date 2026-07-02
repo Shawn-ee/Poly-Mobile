@@ -10118,6 +10118,30 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 248
+
+Date: 2026-07-02
+Branch: mobile/cycle-248-samsung-live-ticket-proof
+Status: Verified; pending local merge.
+Objective: Make live ticket readiness a named Samsung proof without placing an order.
+Implemented:
+- Added Samsung wrapper switch for `LiveTicket`.
+- Added package script `smoke:samsung:live-ticket`.
+- Reused the existing live-ticket harness assertions for live clock, market depth, estimated cost, slippage, and Buy CTA.
+Verification:
+- First `npm.cmd run smoke:samsung:live-ticket` run opened the live ticket but failed on title text that was outside the captured hierarchy after the ticket content shifted.
+- Tightened the proof around stable live-ticket signals: live badge/clock, market depth, estimated cost, slippage controls, and Buy CTA.
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:live-ticket` passed on Samsung S23 with Expo host `172.16.200.14` and port `8166`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-live-ticket-ready.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-live-ticket.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-live-ticket-ready.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-live-ticket.png`.
+Commit: pending
+Merge: pending
+
 ### Cycle 247
 
 Date: 2026-07-02
