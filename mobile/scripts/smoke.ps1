@@ -1185,7 +1185,7 @@ try {
     if ($OpenOrderCancel) {
       Save-Screenshot -Name "cycle-current-holiwyn-open-order.png"
       $openOrderHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-open-order.xml"
-      Assert-HierarchyContains -Path $openOrderHierarchy -Expected @("portfolio-open-order-count", "Open orders", "1", "Mexico vs. Ecuador winner", "Limit", "47%", "Implied odds", "2.1x", "Order value", "Remaining", "Cancel")
+      Assert-HierarchyContains -Path $openOrderHierarchy -Expected @("portfolio-open-order-count", "Open orders", "1", "Mexico vs. Ecuador winner", "Limit", "47%", "Implied odds", "2.1x", "Order value", "Remaining", "Potential payout", "250 USDT", "Cancel")
       Invoke-TapHierarchyNode -Path $openOrderHierarchy -Identifier "cancel-open-order-smoke-open-order"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-open-order-canceled.png"
