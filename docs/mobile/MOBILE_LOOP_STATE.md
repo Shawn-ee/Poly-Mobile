@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-262-scroll-safe-trade-ticket
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Make the trade ticket sheet resilient when dense live-market economics exceed the initial viewport.
 Implemented:
 - Converted the trade ticket bottom sheet content into a scrollable container with a 94% max-height shell.
@@ -10138,8 +10138,8 @@ Evidence:
 - `docs/mobile/screenshots/cycle-current-holiwyn-live-ticket.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-live-ticket-order-ready.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-live-order-portfolio.png`.
-Commit: pending
-Merge: pending
+Commit: cbed8ad
+Merge: f863965
 
 ### Cycle 261
 
