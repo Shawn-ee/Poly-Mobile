@@ -4,11 +4,22 @@ Current mission: Build Holiwyn, a World Cup-first sports prediction and trading 
 
 Current phase: Autonomous mobile product development in verified cycles.
 
-Latest verified cycle: Cycle 282 reconciled Android runtime proof with the Samsung-first QA strategy. Current Definition of Done sweep result is 9 verified, 1 partial, and 0 blocked; Holiwyn is close, but not ready to declare final mission complete until an actual APK is available for the Samsung APK lane.
+Latest verified cycle: Cycle 283 added APK artifact build-lane diagnosis. Current Definition of Done sweep result is 9 verified, 1 partial, and 0 blocked; Holiwyn is close, but not ready to declare final mission complete until an actual APK is available for the Samsung APK lane.
 
 Next milestone path:
 
-Milestone path status: A, B, C, and D have completed. Final QA/review signoff has passed. Samsung S23 is now the documented active Android runtime proof target. The final sweep does not declare the mission done because actual APK availability remains partial.
+Milestone path status: A, B, C, and D have completed. Final QA/review signoff has passed. Samsung S23 is now the documented active Android runtime proof target. The APK lane now has explicit artifact-readiness evidence; the final sweep does not declare the mission done because actual APK availability remains partial.
+
+## Heartbeat: Cycles 281-283
+
+Date: 2026-07-02
+Summary: Final QA/review signoff passed, the Android runtime DoD was reconciled to the Samsung-first QA strategy, and the APK lane now has an artifact-readiness harness that distinguishes missing APK, unavailable EAS CLI, missing native Android project, and missing Gradle wrapper from available Android SDK/Java prerequisites.
+Verification:
+- Final QA/review signoff passed with zero unresolved P0 gaps.
+- Definition of Done sweep remains 9 verified, 1 partial, 0 blocked.
+- Android APK artifact readiness records `apk_missing` with no current EAS or local Gradle build capability.
+- Samsung APK smoke still records `apk_missing` cleanly in allow-missing mode.
+Next focus: create or import `mobile/dist/holiwyn-preview.apk` by installing/using EAS CLI or generating `mobile/android` for a local Gradle build, then run the Samsung APK smoke without allow-missing.
 
 ## Heartbeat: Cycles 278-280
 
@@ -56,6 +67,44 @@ When stuck, run the Recovery Harness. The Lead Agent should ask Audit Agent or R
 Every three completed cycles, add a heartbeat summary.
 
 ## Cycle Template
+
+### Cycle 283
+
+Date: 2026-07-02
+Branch: mobile/cycle-283-apk-artifact-build-lane
+Goal: Strengthen the final APK lane by proving exactly which APK build/install prerequisites are present and which artifact blockers remain.
+Reference app screens observed: None; this was a build-lane harness cycle.
+Holiwyn screens changed: None.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/scripts/check-android-apk-artifact-readiness.ps1`, `mobile/package.json`, `package.json`, `scripts/mobile_definition_of_done_sweep.ts`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `cmd /c npm.cmd run mobile:android-apk-artifact-readiness`.
+- `cmd /c npm.cmd run check:android-dev-build` in `mobile/`.
+- `cmd /c npm.cmd run smoke:samsung:apk:allow-missing` in `mobile/`.
+- `cmd /c npm.cmd run mobile:definition-of-done-sweep`.
+- `cmd /c npm.cmd run test:mobile-api`.
+- `cmd /c npm.cmd run typecheck` in `mobile/`.
+Screenshots captured: None.
+Bugs found:
+- Fixed PowerShell JSON summary construction in the new artifact readiness harness after the first dry run exposed typed-list/inline-expression compatibility issues.
+Technical debt added:
+- TD-286: No `mobile/dist/holiwyn-preview.apk` exists.
+- TD-287: EAS CLI is not installed locally/globally, and `mobile/android`/Gradle wrapper do not exist, so the current workstation cannot launch an APK build lane without adding tooling or generating native Android files.
+Technical debt resolved:
+- TD-285 clarified: the APK blocker is now a precise artifact/build-lane diagnosis rather than a generic missing APK note.
+Result: Passed harness cycle. Updated DoD sweep result: 9 verified, 1 partial, 0 blocked.
+Commit: cycle branch HEAD (`Add Android APK artifact readiness harness`)
+Merged: Pending local merge after commit.
+Next cycle: Install/use EAS CLI or generate `mobile/android` for local Gradle assembly, produce `mobile/dist/holiwyn-preview.apk`, then rerun Samsung APK smoke without allow-missing.
+Harnesses run:
+- APK Artifact Readiness Harness
+- Android Dev-Build Readiness Harness
+- Samsung APK Smoke Harness
+- Definition of Done Sweep Harness
+- Mobile API Test Harness
+- Typecheck Harness
+Harness failures: None after harness implementation fix.
 
 ### Cycle 282
 

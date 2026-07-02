@@ -20,6 +20,7 @@ Status:
 
 | ID | Area | Feature | Priority | Reference Observed | Holiwyn Status | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| GAP-296 | Harness | APK artifact build-lane diagnosis | P1 | No | Verified | Cycle 283 adds an APK artifact readiness harness that proves app/build config, Android SDK, platform-tools, Java, APK file presence, EAS CLI availability, native Android project presence, and Gradle wrapper availability; current blocker remains `apk_missing` plus unavailable EAS/native build lane. |
 | GAP-295 | Harness | Android runtime DoD reconciliation | P1 | No | Verified | Cycle 282 reconciles the DoD with the user-approved Samsung-first QA strategy, treating Samsung S23 as the active Android runtime proof target; the DoD sweep is now 9 verified, 1 partial, 0 blocked. |
 | GAP-294 | Harness | Final QA/review signoff | P1 | No | Verified | Cycle 281 adds final QA/review signoff artifacts, audits 54 P0 gaps as verified with zero unresolved P0 gaps, and updates the Definition of Done sweep to 8 verified, 2 partial, 0 blocked. |
 | GAP-293 | Harness | Definition of Done parity sweep | P1 | No | Verified | Cycle 280 adds a mobile Definition of Done sweep harness and final parity report; current result is 7 verified, 3 partial, 0 blocked, so the mission is close but not declared complete. |

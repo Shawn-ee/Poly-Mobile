@@ -31,6 +31,7 @@ const evidence = {
   finalSignoff: "docs/mobile/harness/cycle-current-mobile-final-signoff.json",
   samsungServerOrder: "docs/mobile/harness/cycle-current-mobile-samsung-backend-position-order-proof.json",
   androidReadiness: "docs/mobile/harness/cycle-current-android-dev-build-readiness.json",
+  androidApkArtifactReadiness: "docs/mobile/harness/cycle-current-android-apk-artifact-readiness.json",
   samsungApk: "docs/mobile/harness/cycle-current-samsung-apk-smoke.json",
   cleanup: "docs/mobile/harness/cycle-current-mobile-backend-position-order-cleanup-after.json",
   portfolioScreenshot: "docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-order-portfolio.png",
@@ -123,8 +124,8 @@ const criteria: Criterion[] = [
     id: "dod-apk-lane",
     criterion: "Samsung QA is moving off Expo Go toward dev build/APK.",
     status: exists(evidence.samsungApk) ? "partial" : "blocked",
-    evidence: [evidence.androidReadiness, evidence.samsungApk],
-    notes: "APK install/launch harness exists and records apk_missing cleanly; actual APK generation remains the blocker.",
+    evidence: [evidence.androidReadiness, evidence.androidApkArtifactReadiness, evidence.samsungApk],
+    notes: "APK install/launch harness exists and artifact-readiness evidence identifies the remaining apk_missing build artifact blocker.",
   },
 ];
 
