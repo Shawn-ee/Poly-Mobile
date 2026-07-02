@@ -8733,8 +8733,8 @@ Technical debt added:
 Technical debt resolved:
 - Server-mode Portfolio snapshots can now clear stale local positions/orders, and server close no longer relies on local cash-out state after SELL acknowledgement.
 Result: Passed Cycle 191 QA. Mobile state-apply tests and typecheck pass.
-Commit: pending (`Refresh portfolio after server close`).
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `63b1849` (`Refresh portfolio after server close`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `e0dbd9b`.
 Next cycle: Continue toward final DoD with fixture-backed Samsung proof for server-hydrated Portfolio rows or authenticated close refresh proof once backend readiness allows it.
 Harnesses run:
 - Mobile Portfolio State Apply Harness
