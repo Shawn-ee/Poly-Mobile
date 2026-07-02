@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-240-event-market-depth-units
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Make Event Detail market-level depth cells show explicit price units like the ticket and outcome depth rows.
 Implemented:
 - Added `USDT` units to Event Detail market-level Best bid and Best ask values.
@@ -10135,8 +10135,8 @@ Verification:
 Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
-Commit: pending
-Merge: pending
+Commit: db7b4a7
+Merge: 8c861b0
 
 ### Cycle 239
 
