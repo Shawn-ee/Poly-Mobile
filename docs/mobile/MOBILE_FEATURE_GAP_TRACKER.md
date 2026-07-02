@@ -269,3 +269,4 @@ Status:
 | GAP-247 | Harness | Samsung mock open-order cancel wrapper | P1 | No | Verified | Cycle 234 adds a Samsung-targeted mock open-order cancel command and tightens that smoke to require `Buy - Canceled 250.00 shares - Limit 47%`. |
 | GAP-248 | Portfolio | Open-order count summary tile | P1 | Yes | Verified | Cycle 235 adds an Open orders count tile to Portfolio, preserves the forced open-order fixture during reset, and verifies the count moving from 1 to 0 on Samsung S23. |
 | GAP-249 | Account | Open-order account summary | P1 | Yes | Verified | Cycle 236 adds `Open orders` to the Account preferences summary, seeds one pending order in the account summary fixture, and verifies it on Samsung S23. |
+| GAP-250 | Account | Open-order value summary | P1 | Yes | Verified | Cycle 237 adds `Open order value` to the Account preferences summary, calculates pending order value from open-order notional, and verifies `117.5 USDT` on Samsung S23. |

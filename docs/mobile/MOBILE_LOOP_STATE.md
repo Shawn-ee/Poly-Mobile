@@ -10073,6 +10073,28 @@ Evidence:
 Commit: cefd3af
 Merge: 1062d76
 
+### Cycle 237
+
+Date: 2026-07-02
+Branch: mobile/cycle-237-account-open-order-value
+Status: Verified; pending local merge.
+Objective: Add pending open-order value to the Account summary so users can see both count and notional exposure outside Portfolio.
+Implemented:
+- Added localized `openOrderValue` copy for English and Simplified Chinese.
+- Added an `Open order value` row to `AccountScreen`.
+- Computed Account open-order value from open-order `orderValue` or remaining shares times price.
+- Tightened the Samsung account summary smoke to require `Open order value: 117.5 USDT`.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:account-position-summary` passed on Samsung S23 with Expo host `172.16.200.14` and port `8161`.
+- Captured hierarchy includes `Open positions: 1`, `Open orders: 1`, `account-open-order-value`, `Open order value: 117.5 USDT`, and `Ticket default: Buy 100 USDT`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-account-position-summary.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-account-position-summary.png`.
+Commit: pending
+Merge: pending
+
 ### Heartbeat After Cycle 235
 
 Completed cycles: 233, 234, 235.

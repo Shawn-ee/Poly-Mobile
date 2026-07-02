@@ -68,6 +68,9 @@ const SMOKE_OPEN_ORDER: OpenOrder = {
   remaining: 250,
 };
 
+const openOrderRemainingShares = (order: OpenOrder) => order.remainingShares ?? order.remaining;
+const openOrderValue = (order: OpenOrder) => order.orderValue ?? openOrderRemainingShares(order) * order.price;
+
 type MainTab = "home" | "live" | "portfolio" | "search" | "account";
 type StoredPortfolio = {
   balance?: number;
@@ -126,6 +129,10 @@ export default function App() {
   const accountPortfolioValue = useMemo(
     () => balance + positions.reduce((total, position) => total + portfolioPositionValue(position), 0),
     [balance, positions],
+  );
+  const accountOpenOrderValue = useMemo(
+    () => openOrders.reduce((total, order) => total + openOrderValue(order), 0),
+    [openOrders],
   );
 
   useEffect(() => {
@@ -982,6 +989,7 @@ export default function App() {
                 savedMarketCount={savedEventIds.size}
                 openPositionCount={positions.length}
                 openOrderCount={openOrders.length}
+                openOrderValue={accountOpenOrderValue}
                 portfolioValue={accountPortfolioValue}
                 tradingMode={ORDER_MODE}
               />
