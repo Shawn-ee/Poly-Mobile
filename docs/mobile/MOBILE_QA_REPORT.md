@@ -4046,3 +4046,28 @@ Bugs:
 - First decision-harness run exposed that nested credential dry-run executed from `mobile/` and could not find the root npm script; fixed by running the dry-run from the repo root.
 Visual QA:
 - No visual change.
+
+### Cycle 185
+
+Date: 2026-07-01
+Device: Backend/service unit harness
+Build/run command:
+- `npx.cmd jest src/server/services/__tests__/profilePreferences.test.ts src/__tests__/profile.preferences.route.test.ts --runInBand`
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+Result: Passed. Backend profile-preference storage behavior now has focused service coverage in addition to route coverage.
+Harness evidence:
+- Backend profile-preference service and route tests passed with 2 files and 7 tests.
+- Mobile API/service suite passed with 9 files and 41 tests.
+- Mobile typecheck passed.
+Screenshot evidence:
+- None; backend service test cycle.
+Structured findings:
+- Service returns canonical defaults when no preference row exists.
+- Legacy stored payloads without slippage normalize to `1%` and filter invalid saved-event ids.
+- Save/upsert returns canonical preferences including `ticketDefaultSlippage`.
+- Parser rejects incomplete payloads before storage.
+Bugs:
+- None in final run.
+Visual QA:
+- No visual change.
