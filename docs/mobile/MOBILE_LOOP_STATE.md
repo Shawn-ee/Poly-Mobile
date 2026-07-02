@@ -10118,6 +10118,28 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 260
+
+Date: 2026-07-02
+Branch: mobile/cycle-260-sell-open-order-device-proof
+Status: Verified; pending local merge.
+Objective: Prove sell-side open-order proceeds wording and cancel activity on Samsung.
+Implemented:
+- Added a sell-side forced open-order fixture with `Sell - Mexico - OPEN`, 52% limit price, and 52 USDT order value.
+- Added `smoke:samsung:open-sell-order-cancel` on port `8173`.
+- Extended the smoke harness to capture separate sell-open-order evidence and verify `Potential proceeds` before canceling.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 16 files and 70 tests.
+- `npm.cmd run smoke:samsung:open-sell-order-cancel` passed on Samsung S23 with Expo host `172.16.200.14` and port `8173`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-open-sell-order.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-open-sell-order-canceled.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-open-sell-order.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-open-sell-order-canceled.png`.
+Commit: pending
+Merge: pending
+
 ### Cycle 259
 
 Date: 2026-07-02

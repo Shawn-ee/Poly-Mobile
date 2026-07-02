@@ -67,6 +67,16 @@ const SMOKE_OPEN_ORDER: OpenOrder = {
   price: 0.47,
   remaining: 250,
 };
+const SMOKE_OPEN_SELL_ORDER: OpenOrder = {
+  id: "smoke-open-sell-order",
+  title: "Mexico vs. Ecuador winner",
+  outcome: "Mexico",
+  side: "sell",
+  status: "OPEN",
+  price: 0.52,
+  remaining: 100,
+  orderValue: 52,
+};
 
 const openOrderRemainingShares = (order: OpenOrder) => order.remainingShares ?? order.remaining;
 const openOrderValue = (order: OpenOrder) => order.orderValue ?? openOrderRemainingShares(order) * order.price;
@@ -289,6 +299,7 @@ export default function App() {
     const shouldForceClosedWorldCupWinnerFrance = url.includes("forceClosedWorldCupWinnerFrance=1");
     const shouldForceServerPortfolioFixture = url.includes("forceServerPortfolioFixture=1");
     const shouldForceOpenOrder = url.includes("forceOpenOrder=1");
+    const forcedOpenOrder = url.includes("forceOpenOrderSide=sell") ? SMOKE_OPEN_SELL_ORDER : SMOKE_OPEN_ORDER;
     forceServerOrderProof.current = url.includes("forceServerOrderProof=1");
     forceServerOpenOrderProof.current = url.includes("forceServerOpenOrderProof=1");
     forceServerOrderSide.current = url.includes("forceServerOrderSide=sell") ? "sell" : "buy";
@@ -368,14 +379,14 @@ export default function App() {
       setBalance(10000);
       setPositions([]);
       setLatestOrder(null);
-      setOpenOrders([SMOKE_OPEN_ORDER]);
+      setOpenOrders([forcedOpenOrder]);
       setActivities([]);
       setMainTab("portfolio");
       const snapshot: StoredPortfolio = {
         balance: 10000,
         positions: [],
         latestOrder: null,
-        openOrders: [SMOKE_OPEN_ORDER],
+        openOrders: [forcedOpenOrder],
         activities: [],
       };
       AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
