@@ -765,9 +765,17 @@ try {
     if ($AccountPositionSummary) {
       & $adb -s $Device shell input swipe 540 1700 540 850 500 | Out-Null
       Start-Sleep -Seconds 1
+      $accountPositionCandidate = Save-UiHierarchy -Name "cycle-current-holiwyn-account-position-summary.xml"
+      if ((Dismiss-ExpoDeveloperMenuIfPresent -Path $accountPositionCandidate)) {
+        & $adb -s $Device shell am start -a android.intent.action.VIEW -d $launchUrl | Out-Null
+        Start-Sleep -Seconds 3
+        Wait-HierarchyContains -Name "cycle-current-holiwyn-account-position-summary.xml" -Expected @("Account", "Preferences", "Open positions: 1", "Open orders: 1", "Open order value: 117.5 USDT") -RestartUrl $launchUrl -Attempts 4 -DelaySeconds 2 | Out-Null
+        & $adb -s $Device shell input swipe 540 1700 540 850 500 | Out-Null
+        Start-Sleep -Seconds 1
+      }
       Save-Screenshot -Name "cycle-current-holiwyn-account-position-summary.png"
       $accountPositionSummaryHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-position-summary.xml"
-      Assert-HierarchyContains -Path $accountPositionSummaryHierarchy -Expected @("Account", "Preferences", "Open positions: 1", "Open orders: 1", "Open order value: 117.5 USDT", "Ticket default: Buy 100 USDT")
+      Assert-HierarchyContains -Path $accountPositionSummaryHierarchy -Expected @("Account", "Preferences", "Open positions: 1", "Open orders: 1", "Open order value: 117.5 USDT", "Total exposure: 10,398.75 USDT", "Ticket default: Buy 100 USDT")
       return
     }
 
