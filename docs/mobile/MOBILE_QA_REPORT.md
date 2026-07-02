@@ -3889,3 +3889,34 @@ Bugs:
 - None in final run.
 Visual QA:
 - Screenshot reviewed; the segmented slippage control fits within the Samsung ticket layout without clipping the header or CTA.
+
+### Cycle 179
+
+Date: 2026-07-01
+Device: Samsung S23 via Expo Go
+Build/run command:
+- `npm.cmd run smoke:samsung:future-list-order` in `mobile/`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The Trade Ticket now persists the selected slippage default locally, and Account shows `Ticket default: Buy 100 USDT - Slippage 2%` after the Samsung future-order flow.
+Harness evidence:
+- `docs/mobile/harness/cycle-179-holiwyn-future-list-order-ticket.xml`
+- `docs/mobile/harness/cycle-179-holiwyn-future-list-order-portfolio.xml`
+- `docs/mobile/harness/cycle-179-holiwyn-future-list-order-activity.xml`
+- `docs/mobile/harness/cycle-179-holiwyn-future-list-order-account.xml`
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-179-holiwyn-future-list-order-ticket.png`
+- `docs/mobile/screenshots/cycle-179-holiwyn-future-list-order-portfolio.png`
+- `docs/mobile/screenshots/cycle-179-holiwyn-future-list-order-activity.png`
+- `docs/mobile/screenshots/cycle-179-holiwyn-future-list-order-account.png`
+Structured findings:
+- Account shows `account-ticket-defaults`.
+- Account shows `Ticket default: Buy 100 USDT - Slippage 2%`.
+- Header shows `Holiwyn` on one line after the Samsung visual proof exposed brand wrapping.
+Unit evidence:
+- Mobile API/service suite: 9 files, 40 tests passed.
+Bugs:
+- First reruns exposed stale/persisted slippage state breaking a strict default-selected assertion; smoke now accepts persisted state and still verifies final 2% selection.
+- Account screenshot exposed header brand wrapping; fixed with single-line fitted header text.
+Visual QA:
+- Screenshot reviewed; Account shows persisted slippage default and corrected single-line Holiwyn header.

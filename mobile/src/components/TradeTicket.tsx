@@ -58,6 +58,7 @@ export function TradeTicket({
   tradingMode,
   defaultAmount,
   defaultSide,
+  defaultSlippage,
   onPreferencesChange,
   close,
   placeOrder,
@@ -70,28 +71,34 @@ export function TradeTicket({
   tradingMode: "mock" | "server";
   defaultAmount: string;
   defaultSide: "buy" | "sell";
-  onPreferencesChange: (next: { amount: string; side: "buy" | "sell" }) => void;
+  defaultSlippage: string;
+  onPreferencesChange: (next: { amount: string; side: "buy" | "sell"; slippage: string }) => void;
   close: () => void;
   placeOrder: (amount: number, side: "buy" | "sell") => void | Promise<void>;
 }) {
   const [amount, setAmountState] = useState(defaultAmount);
   const [side, setSideState] = useState<"buy" | "sell">(defaultSide);
-  const [slippage, setSlippage] = useState("1%");
+  const [slippage, setSlippageState] = useState(defaultSlippage);
 
   useEffect(() => {
     if (!ticket) return;
     setAmountState(defaultAmount);
     setSideState(defaultSide);
-  }, [defaultAmount, defaultSide, ticket]);
+    setSlippageState(defaultSlippage);
+  }, [defaultAmount, defaultSide, defaultSlippage, ticket]);
 
   if (!ticket) return null;
   const setAmount = (nextAmount: string) => {
     setAmountState(nextAmount);
-    onPreferencesChange({ amount: nextAmount, side });
+    onPreferencesChange({ amount: nextAmount, side, slippage });
   };
   const setSide = (nextSide: "buy" | "sell") => {
     setSideState(nextSide);
-    onPreferencesChange({ amount, side: nextSide });
+    onPreferencesChange({ amount, side: nextSide, slippage });
+  };
+  const setSlippage = (nextSlippage: string) => {
+    setSlippageState(nextSlippage);
+    onPreferencesChange({ amount, side, slippage: nextSlippage });
   };
   const numericAmount = Number(amount) || 0;
   const averagePrice = ticket.outcome.probability / 100;

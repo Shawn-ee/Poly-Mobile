@@ -8208,6 +8208,50 @@ Open blockers: None for autonomous progress. Successful live server-backed tradi
 Risks: Slippage selection is local-only, fee is static 0 USDT, and authenticated server-backed order execution/Portfolio hydration/cancel execution remain unproven on device.
 Next three likely cycles: continue order-ticket parity, add persistent/user-configurable ticket controls, or retry server-proof recovery if backend infrastructure becomes available.
 
+### Cycle 179
+
+Date: 2026-07-01
+Branch: mobile/cycle-179
+Goal: Persist selected ticket slippage locally, show it in Account defaults, and keep Samsung proof stable across retained phone state.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: Trade Ticket slippage selection now persists through ticket defaults; Account ticket defaults show saved slippage; Header keeps the Holiwyn brand on one line.
+Backend/API changed: No runtime API route change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/TradeTicket.tsx`, `mobile/src/components/AccountScreen.tsx`, `mobile/src/components/Header.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/harness/cycle-179-holiwyn-future-list-order-ticket.xml`, `docs/mobile/harness/cycle-179-holiwyn-future-list-order-portfolio.xml`, `docs/mobile/harness/cycle-179-holiwyn-future-list-order-activity.xml`, `docs/mobile/harness/cycle-179-holiwyn-future-list-order-account.xml`, `docs/mobile/screenshots/cycle-179-holiwyn-future-list-order-ticket.png`, `docs/mobile/screenshots/cycle-179-holiwyn-future-list-order-portfolio.png`, `docs/mobile/screenshots/cycle-179-holiwyn-future-list-order-activity.png`, `docs/mobile/screenshots/cycle-179-holiwyn-future-list-order-account.png`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:samsung:future-list-order` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-179-holiwyn-future-list-order-ticket.png`.
+- `docs/mobile/screenshots/cycle-179-holiwyn-future-list-order-portfolio.png`.
+- `docs/mobile/screenshots/cycle-179-holiwyn-future-list-order-activity.png`.
+- `docs/mobile/screenshots/cycle-179-holiwyn-future-list-order-account.png`.
+Harness evidence:
+- `docs/mobile/harness/cycle-179-holiwyn-future-list-order-ticket.xml`.
+- `docs/mobile/harness/cycle-179-holiwyn-future-list-order-portfolio.xml`.
+- `docs/mobile/harness/cycle-179-holiwyn-future-list-order-activity.xml`.
+- `docs/mobile/harness/cycle-179-holiwyn-future-list-order-account.xml`.
+Bugs found:
+- Samsung rerun exposed persisted slippage state invalidating a strict `ticket-slippage-one-selected` expectation; recovered by making the smoke accept persisted defaults while still proving final 2% selection.
+- Samsung Account proof exposed Holiwyn header wrapping; recovered with single-line fitted header text.
+Technical debt added:
+- Slippage preference is local-only and not yet part of server profile preference sync.
+Technical debt resolved:
+- Persisted slippage now appears in Account ticket defaults, and Samsung future-order proof is stable across retained phone state.
+Result: Passed Cycle 179 QA. Samsung future-list order smoke completed ticket/order/Portfolio/activity flow, then Account verified `Ticket default: Buy 100 USDT - Slippage 2%`; mobile typecheck passed, and mobile API/service tests pass.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 180 should continue user-configurable ticket settings, add server/profile sync coverage for slippage, or retry backend readiness recovery if Docker/DB/API-key state changes.
+Harnesses run:
+- Samsung Future List Order Smoke Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync/Quote Unit Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- Initial Samsung reruns failed on strict default-state assumptions; recovered in-cycle with persistence-aware assertions.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.

@@ -414,7 +414,7 @@ try {
     if ($ServerOrderFailure) {
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-ticket.png"
       $serverTicketHierarchy = $homeHierarchy
-      Assert-HierarchyContains -Path $serverTicketHierarchy -Expected @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "Estimated cost", "Est. fee", "0 USDT", "ticket-slippage", "ticket-slippage-one-selected", "Slippage", "0.5%", "1%", "2%", "Est. shares", "Avg price", "Place buy order")
+      Assert-HierarchyContains -Path $serverTicketHierarchy -Expected @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "Estimated cost", "Est. fee", "0 USDT", "ticket-slippage", "Slippage", "0.5%", "1%", "2%", "Est. shares", "Avg price", "Place buy order")
       Invoke-TapHierarchyNode -Path $serverTicketHierarchy -Identifier "place-mock-order"
       Wait-HierarchyContains -Name "cycle-current-holiwyn-server-order-error.xml" -Expected @("Order failed. Try again.", "ticket-order-error", "Place buy order") -Attempts 12 -DelaySeconds 2 | Out-Null
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-error.png"
@@ -440,7 +440,7 @@ try {
         Assert-HierarchyContains -Path $liveTicketReadyHierarchy -Expected @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina")
       }
       $liveTicketHierarchy = ""
-      $liveTicketExpected = @("France", "France vs. Argentina", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Live World Cup", "ticket-live-clock", "Live - 63'", "Fake balance", "10,000 USDT", "Estimated cost", "Est. fee", "0 USDT", "ticket-slippage", "ticket-slippage-one-selected", "Slippage", "0.5%", "1%", "2%", "Est. shares", "Avg price", "Place buy order")
+      $liveTicketExpected = @("France", "France vs. Argentina", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Live World Cup", "ticket-live-clock", "Live - 63'", "Fake balance", "10,000 USDT", "Estimated cost", "Est. fee", "0 USDT", "ticket-slippage", "Slippage", "0.5%", "1%", "2%", "Est. shares", "Avg price", "Place buy order")
       for ($liveTicketAttempt = 1; $liveTicketAttempt -le 3; $liveTicketAttempt++) {
         Invoke-TapHierarchyNode -Path $liveTicketReadyHierarchy -Identifier "event-outcome-france-argentina-final-france-argentina-live-france"
         Start-Sleep -Seconds 1
@@ -742,15 +742,17 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-ticket.png"
       $futureListTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-ticket.xml"
-      Assert-HierarchyContains -Path $futureListTicketHierarchy -Expected @("World Cup winner", "France", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "Est. fee", "0 USDT", "ticket-slippage", "ticket-slippage-one-selected", "Slippage", "0.5%", "1%", "2%", "Est. shares", "Avg price", "Place buy order")
+      Assert-HierarchyContains -Path $futureListTicketHierarchy -Expected @("World Cup winner", "France", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "Est. fee", "0 USDT", "ticket-slippage", "Slippage", "0.5%", "1%", "2%", "Est. shares", "Avg price", "Place buy order")
       return
     }
 
     if ($FutureListOrder) {
       $futureListOrderTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-order-ticket.xml"
-      Assert-HierarchyContains -Path $futureListOrderTicketHierarchy -Expected @("World Cup winner", "France", "ticket-trading-mode", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "ticket-estimated-fee", "Est. fee", "0 USDT", "ticket-slippage", "ticket-slippage-one-selected", "Slippage", "0.5%", "1%", "2%", "Fake balance", "10,000 USDT", "Place buy order")
-      Invoke-TapHierarchyNode -Path $futureListOrderTicketHierarchy -Identifier "ticket-slippage-two"
-      Start-Sleep -Seconds 1
+      Assert-HierarchyContains -Path $futureListOrderTicketHierarchy -Expected @("World Cup winner", "France", "ticket-trading-mode", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "ticket-estimated-fee", "Est. fee", "0 USDT", "ticket-slippage", "Slippage", "0.5%", "1%", "2%", "Fake balance", "10,000 USDT", "Place buy order")
+      if (-not (Select-String -Path $futureListOrderTicketHierarchy -Pattern "ticket-slippage-two-selected" -Quiet)) {
+        Invoke-TapHierarchyNode -Path $futureListOrderTicketHierarchy -Identifier "ticket-slippage-two"
+        Start-Sleep -Seconds 1
+      }
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-order-ticket.png"
       $futureListOrderTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-order-ticket.xml"
       Assert-HierarchyContains -Path $futureListOrderTicketHierarchy -Expected @("ticket-slippage-two-selected", "Slippage", "2%", "Place buy order")
@@ -766,6 +768,13 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-order-activity.png"
       $futureListOrderActivityHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-order-activity.xml"
       Assert-HierarchyContains -Path $futureListOrderActivityHierarchy -Expected @("Recent activity", "Bought", "World Cup winner", "France", "Filled shares 294.12", "Exec price 34%", "Implied odds 2.9x")
+      Invoke-TapHierarchyNode -Path $futureListOrderActivityHierarchy -Identifier "holiwyn-account-tab"
+      Start-Sleep -Seconds 1
+      & $adb -s $Device shell input swipe 540 1680 540 780 450 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-future-list-order-account.png"
+      $futureListOrderAccountHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-order-account.xml"
+      Assert-HierarchyContains -Path $futureListOrderAccountHierarchy -Expected @("account-ticket-defaults", "Ticket default", "Buy 100 USDT", "Slippage 2%")
       return
     }
 

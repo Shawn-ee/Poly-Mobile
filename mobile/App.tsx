@@ -73,6 +73,7 @@ type StoredPortfolio = {
 type TicketDefaults = {
   amount: string;
   side: "buy" | "sell";
+  slippage: string;
 };
 type ProfilePreferencesSyncStatus = "hidden" | "syncing" | "synced" | "error";
 
@@ -92,7 +93,7 @@ export default function App() {
   const [openOrders, setOpenOrders] = useState<OpenOrder[]>([]);
   const [activities, setActivities] = useState<PortfolioActivity[]>([]);
   const [portfolioHydrated, setPortfolioHydrated] = useState(false);
-  const [ticketDefaults, setTicketDefaults] = useState<TicketDefaults>({ amount: "100", side: "buy" });
+  const [ticketDefaults, setTicketDefaults] = useState<TicketDefaults>({ amount: "100", side: "buy", slippage: "1%" });
   const [ticketDefaultsHydrated, setTicketDefaultsHydrated] = useState(false);
   const [portfolioSyncStatus, setPortfolioSyncStatus] = useState<PortfolioSyncStatus>(ORDER_MODE === "server" ? "syncing" : "hidden");
   const [profilePreferencesSyncStatus, setProfilePreferencesSyncStatus] = useState<ProfilePreferencesSyncStatus>(
@@ -190,7 +191,7 @@ export default function App() {
         if (!mounted.current || !stored) return;
         const parsed = JSON.parse(stored) as Partial<TicketDefaults>;
         if (typeof parsed.amount === "string" && (parsed.side === "buy" || parsed.side === "sell")) {
-          setTicketDefaults({ amount: parsed.amount, side: parsed.side });
+          setTicketDefaults({ amount: parsed.amount, side: parsed.side, slippage: typeof parsed.slippage === "string" ? parsed.slippage : "1%" });
         }
       })
       .catch(() => undefined)
@@ -219,7 +220,7 @@ export default function App() {
       .then((preferences) => {
         if (cancelled || !mounted.current) return;
         setLocale(preferences.locale);
-        setTicketDefaults({ amount: preferences.ticketDefaultAmount, side: preferences.ticketDefaultSide });
+        setTicketDefaults((current) => ({ amount: preferences.ticketDefaultAmount, side: preferences.ticketDefaultSide, slippage: current.slippage }));
         setSavedEventIds(new Set(preferences.savedEventIds));
         setProfilePreferencesSyncStatus("synced");
       })
@@ -279,7 +280,7 @@ export default function App() {
         setQuery("");
         setMainTab("home");
         setWorldCupTab("games");
-        setTicketDefaults({ amount: "100", side: "buy" });
+        setTicketDefaults({ amount: "100", side: "buy", slippage: "1%" });
         setSavedEventIds(new Set());
         setForceAccountSignedIn(false);
       };
@@ -309,7 +310,7 @@ export default function App() {
       if (event) setSelectedEvent(event);
     }
     if (url.includes("forceTicketDefaults=1")) {
-      const defaults: TicketDefaults = { amount: "500", side: "sell" };
+      const defaults: TicketDefaults = { amount: "500", side: "sell", slippage: "1%" };
       setTicketDefaults(defaults);
       AsyncStorage.setItem(TICKET_DEFAULTS_STORAGE_KEY, JSON.stringify(defaults)).catch(() => undefined);
       const market = worldCupFutures[0];
@@ -383,7 +384,7 @@ export default function App() {
       setMainTab("account");
     }
     if (url.includes("forceAccountPreferences=1")) {
-      const defaults: TicketDefaults = { amount: "500", side: "sell" };
+      const defaults: TicketDefaults = { amount: "500", side: "sell", slippage: "1%" };
       setTicketDefaults(defaults);
       AsyncStorage.setItem(TICKET_DEFAULTS_STORAGE_KEY, JSON.stringify(defaults)).catch(() => undefined);
       setMainTab("account");
@@ -824,6 +825,7 @@ export default function App() {
                 languagePreferenceValue={locale === "en" ? "English" : "\u4e2d\u6587"}
                 ticketDefaultAmount={ticketDefaults.amount}
                 ticketDefaultSide={ticketDefaults.side}
+                ticketDefaultSlippage={ticketDefaults.slippage}
                 profileSyncStatus={profilePreferencesSyncStatus}
                 savedMarketCount={savedEventIds.size}
                 openPositionCount={positions.length}
@@ -844,6 +846,7 @@ export default function App() {
         tradingMode={ORDER_MODE}
         defaultAmount={ticketDefaults.amount}
         defaultSide={ticketDefaults.side}
+        defaultSlippage={ticketDefaults.slippage}
         onPreferencesChange={(next) => setTicketDefaults(next)}
         close={() => {
           setTicketOrderError(null);

@@ -28,6 +28,7 @@ type AccountCopy = {
   preferences: string;
   languagePreference: string;
   ticketDefaultPreference: string;
+  slippage: string;
   savedMarketsPreference: string;
   savedMarketsCount: string;
   openPositions: string;
@@ -52,6 +53,7 @@ export function AccountScreen({
   languagePreferenceValue,
   ticketDefaultAmount,
   ticketDefaultSide,
+  ticketDefaultSlippage,
   profileSyncStatus,
   savedMarketCount,
   openPositionCount,
@@ -64,6 +66,7 @@ export function AccountScreen({
   languagePreferenceValue: string;
   ticketDefaultAmount: string;
   ticketDefaultSide: "buy" | "sell";
+  ticketDefaultSlippage: string;
   profileSyncStatus: ProfileSyncStatus;
   savedMarketCount: number;
   openPositionCount: number;
@@ -170,7 +173,7 @@ export function AccountScreen({
         <View accessibilityLabel="account-ticket-defaults" testID="account-ticket-defaults" style={styles.row}>
           <Ionicons name="swap-horizontal-outline" size={20} color="#93c5fd" />
           <Text style={styles.rowText}>
-            {t.ticketDefaultPreference}: {ticketDefaultSide === "buy" ? t.buy : t.sell} {ticketDefaultAmount} USDT
+            {t.ticketDefaultPreference}: {ticketDefaultSide === "buy" ? t.buy : t.sell} {ticketDefaultAmount} USDT - {t.slippage} {ticketDefaultSlippage}
           </Text>
         </View>
         <View accessibilityLabel="account-trading-mode" testID="account-trading-mode" style={styles.row}>
