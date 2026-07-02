@@ -7909,6 +7909,54 @@ Harnesses run:
 Harness failures:
 - Initial Samsung Account Preferences assertion missed an offscreen row; recovered with a scroll and rerun.
 
+### Cycle 172
+
+Date: 2026-07-01
+Branch: mobile/cycle-172
+Goal: Verify Account server-mode fallback clearly shows server trading mode on Samsung.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: Account server-mode fallback proof now asserts `Trading mode: Server mode` alongside profile sync failure and fake-token safety copy.
+Backend/API changed: No runtime API route change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `docs/mobile/harness/cycle-172-holiwyn-account-profile-sync-error.xml`, `docs/mobile/screenshots/cycle-172-holiwyn-account-profile-sync-error.png`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:samsung:account-profile-sync-error` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-172-holiwyn-account-profile-sync-error.png`.
+Harness evidence:
+- `docs/mobile/harness/cycle-172-holiwyn-account-profile-sync-error.xml`.
+- Samsung hierarchy shows `Profile sync unavailable`, `Using local preferences on this device.`, `Trading mode: Server mode`, and `Fake-token mode only`.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- QA can now distinguish mock-mode Account status from server-mode Account fallback status directly in the app.
+Result: Passed Cycle 172 QA. Samsung Account profile-sync fallback smoke passed, mobile typecheck passed, and mobile API/service tests pass.
+Commit: cycle branch HEAD (`Verify account server trading mode`)
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 173 should continue product-facing server-mode clarity or retry readiness if backend state changes.
+Harnesses run:
+- Samsung Account Profile Sync Fallback Smoke Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync/Quote Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 172
+
+Completed cycles: 170, 171, 172.
+Verified progress: Server-proof decision blockers now have stable categories, Account Preferences visibly reports mock trading mode, and Samsung now proves server-mode Account fallback reports `Trading mode: Server mode` while keeping fake-token safety copy visible.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, market quote refresh seams, server order/Portfolio/cancel/quote service coverage, strict server-proof decision harnessing, and visible Account trading-mode status.
+Current backend state: Mobile API/profile-preference/activity/history/order/open-order/portfolio snapshot/portfolio sync/quote tests pass. Readiness evidence still shows server-backed proof is gated by Docker daemon, local DB TCP, API key, backend health, and quote readiness.
+Device strategy: Samsung S23 remains the primary Holiwyn visual QA and server-mode proof target through Expo Go. The latest Samsung Account fallback proof passed.
+Open blockers: None for autonomous progress. Successful live server-backed trading remains gated by backend readiness and credentials.
+Risks: Successful authenticated order execution, Portfolio hydration, cancel execution, and quote refresh are still unproven on device; Expo Go proof still depends on LAN reachability.
+Next three likely cycles: add more product-facing server-mode clarity, improve decision next actions, or retry readiness after environment changes.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.
