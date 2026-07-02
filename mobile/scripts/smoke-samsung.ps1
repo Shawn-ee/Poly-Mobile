@@ -11,6 +11,7 @@ param(
   [switch]$EventDetailSellDefaultTrade,
   [switch]$OpenOrderCancel,
   [switch]$PortfolioClosedCount,
+  [switch]$LiveTicket,
   [switch]$LiveOrder,
   [switch]$LiveOrderClose,
   [switch]$LivePortfolioBadgeDeep,
@@ -84,6 +85,8 @@ if ($FutureListOrder) {
   & "$PSScriptRoot\smoke.ps1" -Deep -OpenOrderCancel -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($PortfolioClosedCount) {
   & "$PSScriptRoot\smoke.ps1" -Deep -PortfolioClosedCount -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
+} elseif ($LiveTicket) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -LiveTicket -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($LiveOrder) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LiveOrder -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($LiveOrderClose) {

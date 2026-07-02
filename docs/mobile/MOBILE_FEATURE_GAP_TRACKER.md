@@ -280,3 +280,4 @@ Status:
 | GAP-258 | Event detail | Sell-default action proof | P1 | Yes | Verified | Cycle 245 adds a Samsung Event Detail proof path for forced Sell defaults and verifies `Sell - 1.6x` on the Mexico outcome button. |
 | GAP-259 | Event detail | Sell-default ticket handoff proof | P1 | Yes | Verified | Cycle 246 taps a Sell-labeled Event Detail outcome and verifies the opened ticket shows `Estimated proceeds` and `Place sell order` on Samsung S23. |
 | GAP-260 | Event detail | Buy ticket handoff proof | P1 | Yes | Verified | Cycle 247 adds a Samsung Event Detail Buy-ticket handoff proof and verifies `Estimated cost` plus `Place buy order` after tapping Mexico. |
+| GAP-261 | Live markets | Samsung live ticket proof command | P1 | Yes | Verified | Cycle 248 adds a named Samsung live-ticket proof command that opens France vs. Argentina live ticket and verifies live clock, depth, estimated cost, and buy CTA. |
