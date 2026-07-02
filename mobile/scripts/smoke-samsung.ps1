@@ -5,6 +5,7 @@ param(
   [switch]$FutureListClose,
   [switch]$FutureListOrder,
   [switch]$FutureListSell,
+  [switch]$OpenOrderCancel,
   [switch]$PortfolioClosedCount,
   [switch]$LiveOrder,
   [switch]$LiveOrderClose,
@@ -66,6 +67,8 @@ if ($FutureListOrder) {
   & "$PSScriptRoot\smoke.ps1" -Deep -FutureListOrder -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($FutureListSell) {
   & "$PSScriptRoot\smoke.ps1" -Deep -FutureListSell -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
+} elseif ($OpenOrderCancel) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -OpenOrderCancel -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($PortfolioClosedCount) {
   & "$PSScriptRoot\smoke.ps1" -Deep -PortfolioClosedCount -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($LiveOrder) {
