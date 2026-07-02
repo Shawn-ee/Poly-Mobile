@@ -10118,6 +10118,29 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 269
+
+Date: 2026-07-02
+Branch: mobile/cycle-269-server-depth-noncrossed-guard
+Status: Verified and locally merged.
+Objective: Make the server ticket smoke harness fail if backend quote depth regresses to a crossed negative spread.
+Implemented:
+- Extended `Assert-ServerTicketUsesQuotedDepthSizes` so server tickets with `Spread -...c` fail immediately.
+- Re-ran the cleaned Samsung open-order/cancel proof to verify the guard passes with the seeded non-crossed 1%/5% quote.
+Verification:
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 16 files and 70 tests.
+- `npm.cmd run mobile:samsung-open-order-cancel-proof` passed on Samsung S23 with Expo host `172.16.200.14` and port `8156`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-home.xml` shows `Best bid 0.01 USDT (500 shares) - Best ask 0.05 USDT (2.5k shares) - Spread 4c`.
+- `docs/mobile/harness/cycle-current-mobile-server-open-order-quote-liquidity.json`.
+- `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`.
+Result: Passed Cycle 269 QA. Server ticket depth proofs now enforce size presence and non-crossed spread text.
+Commit: pending.
+Merge: pending.
+
 ### Cycle 268
 
 Date: 2026-07-02

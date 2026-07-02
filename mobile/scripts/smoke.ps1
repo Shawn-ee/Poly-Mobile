@@ -145,6 +145,9 @@ function Assert-ServerTicketUsesQuotedDepthSizes {
   if ($hierarchy -notmatch "Best ask [0-9.]+ USDT \([^)]+ shares\)") {
     throw "Server ticket depth is missing ask size text from quote snapshot."
   }
+  if ($hierarchy -match "Spread -[0-9]+c") {
+    throw "Server ticket depth shows a crossed negative spread."
+  }
   if ($hierarchy -match "Best bid 0.31 USDT \(680 shares\)" -or $hierarchy -match "Best ask 0.38 USDT \(1.65k shares\)") {
     throw "Server ticket depth is still using local fallback sizes instead of quote snapshot sizes."
   }
