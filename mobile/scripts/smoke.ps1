@@ -1416,16 +1416,38 @@ try {
     }
 
     if ($EventDetailMarketOutcomeCount) {
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Match winner", "2 outcomes", "Best bid", "0.62 USDT", "Best ask", "0.66 USDT", "64%", "Buy - 1.6x", "Liquidity: Best bid 1.28k shares - Best ask 900 shares", "event-detail-outcome-depth-size-mexico-ecuador-winner-mexico", "Best bid 0.61 USDT - Best ask 0.68 USDT", "event-detail-outcome-depth-mexico-ecuador-winner-mexico")
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Match winner", "Regulation Time Winner", "90 Minutes Plus Stoppage Time", "Best bid", "0.62 USDT", "Best ask", "0.66 USDT")
+      & $adb -s $Device shell input swipe 540 1800 540 1220 350 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-game-line-expanded.png"
+      $eventDetailExpandedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-game-line-expanded.xml"
+      Assert-HierarchyContains -Path $eventDetailExpandedHierarchy -Expected @("Match winner", "Regulation Time Winner", "90 Minutes Plus Stoppage Time", "64%", "Buy - 1.6x", "Liquidity: Best bid 1.28k shares - Best ask 900 shares", "event-detail-outcome-depth-size-mexico-ecuador-winner-mexico", "Best bid 0.61 USDT - Best ask 0.68 USDT", "event-detail-outcome-depth-mexico-ecuador-winner-mexico")
+      Invoke-TapHierarchyNode -Path $eventDetailExpandedHierarchy -Identifier "event-detail-market-toggle-mexico-ecuador-winner"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-game-line-collapsed.png"
+      $eventDetailCollapsedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-game-line-collapsed.xml"
+      Assert-HierarchyContains -Path $eventDetailCollapsedHierarchy -Expected @("Match winner", "Regulation Time Winner", "90 Minutes Plus Stoppage Time")
+      $eventDetailCollapsedSnapshot = Get-Content -Raw -Path $eventDetailCollapsedHierarchy
+      if ($eventDetailCollapsedSnapshot -match [regex]::Escape("event-detail-outcome-depth-size-mexico-ecuador-winner-mexico")) {
+        throw "Collapsed game-line row still exposes outcome depth details."
+      }
       return
     }
 
     if ($EventDetailProps) {
-      Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-group-prop"
+      Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-player-props-tab"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-props.png"
       $eventDetailPropsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-props.xml"
-      Assert-HierarchyContains -Path $eventDetailPropsHierarchy -Expected @("Props", "3 markets", "Both teams to score", "First goal scorer team")
+      Assert-HierarchyContains -Path $eventDetailPropsHierarchy -Expected @("Player Props", "event-detail-player-props-empty")
+      $eventDetailPropsSnapshot = Get-Content -Raw -Path $eventDetailPropsHierarchy
+      if (
+        $eventDetailPropsSnapshot -match [regex]::Escape("Both teams to score") -or
+        $eventDetailPropsSnapshot -match [regex]::Escape("First goal scorer team") -or
+        $eventDetailPropsSnapshot -match [regex]::Escape("event-detail-outcome-mexico-ecuador-both-score-yes")
+      ) {
+        throw "Player Props tab should stay blank for the game-page-only goal."
+      }
       return
     }
 
