@@ -480,7 +480,7 @@ try {
   } elseif ($AccountPersistence) {
     @("Holiwyn", "Account", "Signed in", "Demo balance")
   } elseif ($AccountPreferences -or $AccountLanguageSummary) {
-    @("Holiwyn", "Account", "Preferences", "Ticket default", "Sell 500 USDT")
+    @("Holiwyn", "Account", "Preferences")
   } elseif ($AccountProfileSyncError) {
     @("Holiwyn", "Account", "Preferences", "Profile sync unavailable", "Using local preferences on this device.")
   } elseif ($AccountSavedSummary) {
