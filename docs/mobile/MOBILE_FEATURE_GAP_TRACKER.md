@@ -20,6 +20,7 @@ Status:
 
 | ID | Area | Feature | Priority | Reference Observed | Holiwyn Status | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| GAP-281 | Harness | Non-crossed server open-order proof liquidity | P1 | No | Verified | Cycle 268 adds clean open-order quote liquidity prep so the Samsung server cancel proof shows a normal positive spread while preserving pending-order behavior. |
 | GAP-280 | Trading ticket | Server open-order depth/cancel proof | P1 | No | Verified | Cycle 267 verifies the server open-order ticket path on Samsung with quote-snapshot depth sizes, 1 USDT pending order creation, cancel action, and clean post-proof noise gates. |
 | GAP-279 | Trading ticket | Server sell ticket depth-size proof | P1 | No | Verified | Cycle 266 verifies the server-mode Sell ticket on Samsung with quote-snapshot bid/ask sizes, proceeds wording, scroll-to-submit behavior, and a filled backend SELL order. |
 | GAP-278 | Trading ticket | Server-backed ticket depth-size proof | P1 | No | Verified | Cycle 265 strengthens the Samsung server-order proof so the ticket must show quote-snapshot bid/ask sizes and reject local fallback sizes before placing a filled backend order. |

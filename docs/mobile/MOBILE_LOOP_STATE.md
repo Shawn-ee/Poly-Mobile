@@ -10118,6 +10118,34 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 268
+
+Date: 2026-07-02
+Branch: mobile/cycle-268-clean-open-order-proof-liquidity
+Status: Verified and locally merged.
+Objective: Clean up the server open-order/cancel proof liquidity so the ticket shows a normal non-crossed spread while still creating a pending order.
+Implemented:
+- Added `scripts/prepare_mobile_server_open_order_quote.ts` to cancel stale open/partial orders in the proof target and seed a clean 1% bid plus 5% ask.
+- Wired the Samsung open-order cancel proof wrapper to run the quote-liquidity prep before launching Expo.
+- Added the liquidity summary path into the proof JSON so future audits can inspect the seeded bid/ask orders.
+Recovery:
+- First prep run exposed insufficient maker funding for a 2,500-share ask mint; increased maker proof funding and reran successfully.
+Verification:
+- `npx.cmd tsx scripts/prepare_mobile_server_open_order_quote.ts` passed and wrote clean bid/ask liquidity.
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 16 files and 70 tests.
+- `npm.cmd run mobile:samsung-open-order-cancel-proof` passed on Samsung S23 with Expo host `172.16.200.14` and port `8156`.
+Evidence:
+- `docs/mobile/harness/cycle-current-mobile-server-open-order-quote-liquidity.json` reports stale orders canceled and seeded bid `0.01`/ask `0.05`.
+- `docs/mobile/harness/cycle-current-holiwyn-home.xml` shows `Best bid 0.01 USDT (500 shares) - Best ask 0.05 USDT (2.5k shares) - Spread 4c`.
+- `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`.
+Result: Passed Cycle 268 QA. The open-order/cancel proof now starts from clean non-crossed backend liquidity while preserving the pending 1 USDT order and clean cancel behavior.
+Commit: pending.
+Merge: pending.
+
 ### Cycle 267
 
 Date: 2026-07-02
