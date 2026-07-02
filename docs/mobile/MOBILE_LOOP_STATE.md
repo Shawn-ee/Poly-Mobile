@@ -9449,7 +9449,7 @@ Merge: eeb3666
 
 Date: 2026-07-02
 Branch: mobile/cycle-212
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Make backend SELL trade activity read as a pre-resolution sell execution instead of a resolved closed trade.
 Implemented:
 - Added a distinct Portfolio activity action for sold trades with English and Simplified Chinese copy.
@@ -9468,8 +9468,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
 Notes:
 - This separates ordinary sell executions from resolved/closed market history, so the latest activity feed now matches the trade receipt economics.
-Commit: pending
-Merge: pending
+Commit: b27de21
+Merge: ba3b67e
 
 ### Heartbeat After Cycle 211
 
