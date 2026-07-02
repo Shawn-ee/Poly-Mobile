@@ -7514,6 +7514,39 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 162
+
+Date: 2026-07-01
+Branch: mobile/cycle-162
+Goal: Refresh World Cup futures cards from normalized server quotes in server mode.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No visual layout change. Featured futures and futures-list probabilities can now reflect server quote refresh.
+Backend/API changed: No runtime API route change. Mobile now calls market quote endpoints for futures markets in server order mode.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/services/quoteService.ts`, `mobile/src/__tests__/quoteService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Unit evidence:
+- Mobile API/service suite passed 9 files and 38 tests.
+- New tests cover market-list quote application and preserving market lists when no quotes match.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Futures cards no longer depend only on local seeded probabilities when server quote endpoints are available.
+Result: Passed Cycle 162 QA. Mobile typecheck and mobile API/service tests pass.
+Commit: Pending.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 163 should improve server-mode quote/order proof harnessing or retry backend readiness evidence.
+Harnesses run:
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync/Quote Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.

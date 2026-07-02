@@ -3447,3 +3447,26 @@ Bugs:
 - None in final run.
 Visual QA:
 - No app screenshot cycle; this is server-mode event-list quote enrichment plumbing with existing UI preserved.
+
+### Cycle 162
+
+Date: 2026-07-01
+Device: Mobile futures quote refresh unit/typecheck harness
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. World Cup futures can now refresh from normalized server quotes in server mode before featured futures and futures lists render.
+Unit evidence:
+- `mobile/src/services/quoteService.ts`
+- `mobile/src/__tests__/quoteService.test.ts`
+- `mobile/App.tsx`
+- Mobile API/service suite: 9 files, 38 tests passed.
+Covered behavior:
+- Market-list quote helper applies quotes to matching futures markets.
+- Unmatched futures markets preserve their original objects and local odds.
+- Futures quote refresh runs only in server mode.
+- Quote endpoint failures preserve local futures probabilities.
+Bugs:
+- None in final run.
+Visual QA:
+- No app screenshot cycle; this is server-mode futures quote refresh plumbing with existing UI preserved.

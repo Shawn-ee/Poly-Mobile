@@ -2372,3 +2372,19 @@ Findings:
 - Mobile typecheck and mobile API/service tests passed.
 Decision: Approve Cycle 161 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 162
+
+Date: 2026-07-01
+Branch: mobile/cycle-162
+Reviewer: Lead/Reviewer pass
+Scope: Server quote refresh for World Cup futures.
+Findings:
+- P1: `applyTicketQuotesToMarkets` gives the app a tested way to update standalone market lists such as futures.
+- P1: `App.tsx` now stores futures in state and refreshes them from normalized server quotes in server order mode.
+- P1: Failed futures quote calls are ignored per market, preserving local futures probabilities and keeping the UI usable.
+- P1: Existing featured futures and futures-list components automatically consume the refreshed futures state.
+- P2: A live backend/device proof is still pending reachable credentials and database services.
+- Mobile typecheck and mobile API/service tests passed.
+Decision: Approve Cycle 162 for local commit/merge after scoped diff review.
+Merge approved: Yes

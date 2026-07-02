@@ -4,6 +4,7 @@ import {
   applyTicketQuoteToOutcome,
   applyTicketQuotesToEvent,
   applyTicketQuotesToMarket,
+  applyTicketQuotesToMarkets,
   loadTicketQuotes,
   quoteToTicketQuote,
 } from "../services/quoteService";
@@ -300,5 +301,52 @@ describe("quote service", () => {
     };
 
     expect(applyTicketQuotesToEvent(event, new Map())).toBe(event);
+  });
+
+  test("applies ticket quotes across a market list", () => {
+    const markets = [
+      {
+        id: "world-cup-winner",
+        outcomes: [{ id: "france", label: "France", probability: 34 }],
+      },
+      {
+        id: "golden-boot",
+        outcomes: [{ id: "mbappe", label: "Mbappe", probability: 22 }],
+      },
+    ];
+
+    const quotedMarkets = applyTicketQuotesToMarkets(
+      markets,
+      new Map([
+        [
+          "world-cup-winner",
+          [
+            {
+              outcomeId: "france",
+              outcomeName: "France",
+              probability: 39,
+              bestBid: 38,
+              bestAsk: 40,
+              midPrice: 39,
+              lastPrice: null,
+            },
+          ],
+        ],
+      ]),
+    );
+
+    expect(quotedMarkets[0].outcomes[0].probability).toBe(39);
+    expect(quotedMarkets[1]).toBe(markets[1]);
+  });
+
+  test("keeps the original market list when no market quotes match", () => {
+    const markets = [
+      {
+        id: "world-cup-winner",
+        outcomes: [{ id: "france", label: "France", probability: 34 }],
+      },
+    ];
+
+    expect(applyTicketQuotesToMarkets(markets, new Map())).toBe(markets);
   });
 });

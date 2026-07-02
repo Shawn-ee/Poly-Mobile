@@ -112,3 +112,22 @@ export const applyTicketQuotesToEvent = <
     markets,
   };
 };
+
+export const applyTicketQuotesToMarkets = <
+  TOutcome extends QuoteableOutcome,
+  TMarket extends { id: string; outcomes: TOutcome[] },
+>(
+  markets: TMarket[],
+  quotesByMarketId: Map<string, TicketQuote[]>,
+): TMarket[] => {
+  let changed = false;
+  const quotedMarkets = markets.map((market) => {
+    const quotes = quotesByMarketId.get(market.id);
+    if (!quotes) return market;
+    const quotedMarket = applyTicketQuotesToMarket(market, quotes);
+    if (quotedMarket !== market) changed = true;
+    return quotedMarket;
+  });
+
+  return changed ? quotedMarkets : markets;
+};
