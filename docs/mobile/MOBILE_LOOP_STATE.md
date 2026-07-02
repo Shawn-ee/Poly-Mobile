@@ -7833,6 +7833,45 @@ Open blockers: None for autonomous progress. Successful server-backed Samsung pr
 Risks: Successful authenticated order execution, Portfolio hydration, cancel execution, and quote refresh are still unproven on device; Expo Go proof still depends on LAN reachability.
 Next three likely cycles: improve the combined decision report, add product-facing proof that does not need live backend readiness, or retry readiness after environment changes.
 
+### Cycle 170
+
+Date: 2026-07-01
+Branch: mobile/cycle-170
+Goal: Normalize combined Samsung server-proof blockers into stable categories for autonomous recovery.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; harness/reporting cycle.
+Backend/API changed: No runtime API route change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/samsung-server-proof-decision.ps1`, `docs/mobile/harness/cycle-170-samsung-server-proof-decision.json`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run decision:samsung:server-proof:expect-blocked:summary` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Harness evidence:
+- `docs/mobile/harness/cycle-170-samsung-server-proof-decision.json`.
+- Report shows `ready=false`, decision `do-not-run-server-backed-samsung-proof`, blocker categories `docker-daemon`, `database-tcp`, `api-key`, `backend-health`, and `quote-readiness`, Samsung reachable, and quote proof not attempted.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Combined proof blockers now have stable categories, reducing duplicate text variants and improving overnight recovery decisions.
+Result: Passed Cycle 170 QA. Combined decision harness blocked as expected with normalized blocker categories, mobile typecheck passed, and mobile API/service tests pass.
+Commit: cycle branch HEAD (`Normalize server proof blocker categories`).
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 171 should add product-facing proof that does not need live backend readiness or improve server proof decision next-action specificity.
+Harnesses run:
+- Samsung Server Proof Decision Harness
+- Mobile Backend Readiness Harness
+- Mobile Credential Readiness Harness
+- Server Success Gate Harness
+- Samsung Quote Proof Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync/Quote Unit Harness
+- Review Harness
+Harness failures:
+- Server-backed Samsung proof is blocked as expected by the normalized blocker categories.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.
