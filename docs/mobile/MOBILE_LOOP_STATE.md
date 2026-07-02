@@ -9074,7 +9074,7 @@ Next three likely cycles: add a strict server-success gate driven by readiness J
 
 Date: 2026-07-02
 Branch: mobile/cycle-199
-Status: Verified on branch; pending local merge stamp.
+Status: Verified and locally merged.
 Objective: Prove a successful server-backed fake-token order on Samsung S23.
 Implemented:
 - Added a server-order proof launch path that opens a real backend World Cup ticket instead of mock France fixture ids.
@@ -9096,8 +9096,8 @@ Evidence:
 Notes:
 - The S23 Portfolio receipt shows `SERVER - Buy - YES - OPEN`, `Filled shares 0.00`, `Exec price 50%`, and `Remaining 100.00`.
 - Portfolio snapshot sync still reports unavailable in this proof; order submission and receipt display are verified, snapshot sync remains a follow-up.
-Commit: PENDING
-Merge: PENDING
+Commit: 5c1a6c8
+Merge: 5304d35
 
 ### Heartbeat After Cycle 199
 
