@@ -489,7 +489,7 @@ try {
       } elseif ($ServerOrderFilled) {
         @("Portfolio", "Server portfolio synced", "Order placed", "SERVER - Buy - YES - FILLED", "Filled shares", "200.00", "Remaining", "0.00")
       } else {
-        @("Portfolio", "Server portfolio synced", "Open orders", "Buy - YES - OPEN", "Remaining", "100 shares")
+        @("Portfolio", "Server portfolio synced", "Open orders", "Buy - YES - OPEN", "Remaining: 100 shares (Remaining value: 1 USDT)", "Size: 100 shares", "Filled: 0 shares (0%)")
       }
       $serverOrderSuccessPortfolioHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-server-order-success-portfolio.xml" -Expected $serverOrderSuccessExpected -Attempts 14 -DelaySeconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-success-portfolio.png"
