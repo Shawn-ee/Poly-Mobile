@@ -74,10 +74,46 @@ describe("position trade target service", () => {
     });
   });
 
-  test("returns undefined when no matching market outcome exists", () => {
+  test("builds a fallback server ticket target when the backend market is not loaded locally", () => {
+    const target = resolvePositionTradeTarget({
+      position: {
+        ...futurePosition,
+        marketId: "backend-proof-market",
+        outcomeId: "backend-proof-yes",
+        title: "World Cup backend proof",
+        outcome: "YES",
+        currentPrice: 0.485,
+        bestBid: 47,
+        bestAsk: 50,
+        bestBidSize: 1000,
+        bestAskSize: 2500,
+      },
+      futures: worldCupFutures,
+      events: worldCupEvents,
+    });
+
+    expect(target).toMatchObject({
+      market: {
+        id: "backend-proof-market",
+        title: "World Cup backend proof",
+        type: "future",
+      },
+      outcome: {
+        id: "backend-proof-yes",
+        label: "YES",
+        probability: 49,
+        bestBid: 47,
+        bestAsk: 50,
+        bestBidSize: 1000,
+        bestAskSize: 2500,
+      },
+    });
+  });
+
+  test("returns undefined when no matching market exists and backend identifiers are missing", () => {
     expect(
       resolvePositionTradeTarget({
-        position: { ...futurePosition, marketId: "missing", title: "Missing", outcome: "Nobody" },
+        position: { ...futurePosition, marketId: undefined, outcomeId: undefined, title: "Missing", outcome: "Nobody" },
         futures: worldCupFutures,
         events: worldCupEvents,
       }),
