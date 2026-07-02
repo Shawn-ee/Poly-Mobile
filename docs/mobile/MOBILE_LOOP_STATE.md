@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-270-server-position-depth-guard
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Ensure server-backed position re-trade tickets use quoted depth instead of local fallback depth on both Buy and Sell.
 Implemented:
 - Added optional bid/ask quote depth fields to Portfolio positions and carried those fields into resolved position trade targets.
@@ -10145,8 +10145,8 @@ Evidence:
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-position-trade-ticket.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-position-buy-trade-ticket.png`.
 Result: Passed Cycle 270 QA. Server position re-trade tickets now preserve quote depth and are guarded against fallback or crossed spread regressions on both sides.
-Commit: pending.
-Merge: pending.
+Commit: d72ea28
+Merge: 92825ba
 
 ### Cycle 269
 
