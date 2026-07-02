@@ -7371,6 +7371,39 @@ Open blockers: None for autonomous progress. Successful server-backed device ord
 Risks: Successful authenticated order execution, Portfolio hydration, and cancel execution are still unproven on device; Docker daemon/local DB are currently unavailable; Expo Go proof still depends on LAN reachability.
 Next three likely cycles: continue server-backed cancel/order readiness, improve credential/API-key handoff once DB is available, and add or refresh Samsung proofs for server-mode recovery flows.
 
+### Cycle 158
+
+Date: 2026-07-01
+Branch: mobile/cycle-158
+Goal: Add service-level coverage for backend quote normalization into mobile ticket-ready odds.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No visual behavior change. Added a quote service seam for future server-backed ticket hydration.
+Backend/API changed: No runtime API route change. Mobile now has a service wrapper around `PolyApi.getMarketQuote`.
+Database/schema changed: None.
+Files changed: `mobile/src/services/quoteService.ts`, `mobile/src/__tests__/quoteService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Unit evidence:
+- Mobile API/service suite passed 9 files and 29 tests.
+- New tests cover decimal/string conversion, mid-price preference, last-price fallback, bid/ask midpoint fallback, one-sided fallback, invalid quote handling, and API loading.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Backend quotes now have a tested normalization seam before wiring live server prices into trade tickets.
+Result: Passed Cycle 158 QA. Mobile typecheck and mobile API/service tests pass.
+Commit: Pending.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 159 should continue server-backed ticket hydration by wiring normalized quotes into the ticket/detail path where it can be verified safely.
+Harnesses run:
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync/Quote Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.
