@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-257-prop-close-title-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Verify prop close flow preserves the prop market title in Portfolio and closed activity.
 Implemented:
 - Reused the strengthened `smoke:samsung:event-detail-prop-close` proof after Cycle 256 title changes.
@@ -10135,8 +10135,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-close-ready.xml`.
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-close-closed.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-prop-close-closed.png`.
-Commit: pending
-Merge: pending
+Commit: b6f38c7
+Merge: 96f43b8
 
 ### Cycle 256
 
