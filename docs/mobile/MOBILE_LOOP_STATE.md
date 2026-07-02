@@ -9772,6 +9772,27 @@ Notes:
 Commit: ab5ed73
 Merge: fdc159d
 
+### Cycle 224
+
+Date: 2026-07-02
+Branch: mobile/cycle-224-proof-noise-report
+Status: Verified; pending local merge.
+Objective: Add read-only visibility into accumulated mobile proof database state before destructive cleanup work.
+Implemented:
+- Added `scripts/mobile_proof_noise_report.ts` to summarize Holiwyn mobile proof users, orders, fills, credentials, latest rows, and open-order leftovers.
+- Added `npm run mobile:proof-noise-report` so the loop can generate a repeatable JSON evidence file.
+Verification:
+- `npm.cmd run mobile:proof-noise-report` passed and wrote `docs/mobile/harness/cycle-current-mobile-proof-noise-report.json`.
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+Evidence:
+- `docs/mobile/harness/cycle-current-mobile-proof-noise-report.json`.
+Notes:
+- Current proof-state baseline is 8 proof users, 8 proof orders, 4 filled orders, 4 canceled orders, 5 taker fills, 8 API credentials, and no open-order leftovers.
+- The cycle is intentionally non-destructive; cleanup remains a later explicit harness cycle.
+Commit: pending
+Merge: pending
+
 ### Heartbeat After Cycle 223
 
 Completed cycles: 221, 222, 223.
