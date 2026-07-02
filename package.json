@@ -77,6 +77,8 @@
     "mobile:samsung-backend-position-order-proof": "powershell -ExecutionPolicy Bypass -File scripts/mobile_samsung_backend_position_order_proof.ps1",
     "mobile:backend-position-order-portfolio-proof": "tsx scripts/prove_mobile_backend_position_order_portfolio.ts",
     "mobile:samsung-api-key-diagnostic": "powershell -ExecutionPolicy Bypass -File scripts/mobile_samsung_api_key_diagnostic.ps1",
+    "mobile:backend-position-order-cleanup": "tsx scripts/cleanup_mobile_backend_position_order_proofs.ts",
+    "mobile:backend-position-order-cleanup:stale": "tsx scripts/cleanup_mobile_backend_position_order_proofs.ts --apply --maxAgeMinutes=60",
     "mobile:samsung-open-order-cancel-proof": "powershell -ExecutionPolicy Bypass -File scripts/mobile_samsung_open_order_cancel_proof.ps1",
     "mobile:proof-noise-report": "tsx scripts/mobile_proof_noise_report.ts --summaryPath=docs/mobile/harness/cycle-current-mobile-proof-noise-report.json",
     "mobile:proof-noise-gate": "tsx scripts/mobile_proof_noise_report.ts --failOnOpenOrders --failOnLockedBalance --summaryPath=docs/mobile/harness/cycle-current-mobile-proof-noise-gate.json",

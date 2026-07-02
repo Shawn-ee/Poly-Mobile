@@ -4,11 +4,10 @@ Current mission: Build Holiwyn, a World Cup-first sports prediction and trading 
 
 Current phase: Autonomous mobile product development in verified cycles.
 
-Latest verified cycle: Cycle 277 passed Milestone A on Samsung S23. The proof created a disposable backend World Cup position, rendered it in Holiwyn Portfolio through the runtime API key, opened a quote-backed Buy ticket, placed a real server BUY order, and verified the resulting OPEN order in Portfolio and backend order summary.
+Latest verified cycle: Cycle 278 passed Milestone B cleanup/isolation. The loop now has a proof-only cleanup harness, removed stale failed backend-position proof artifacts, and re-ran the Samsung server-order proof successfully with the cleanup hook in place.
 
 Next milestone path:
 
-- Milestone B: add proof cleanup and isolated disposable markets.
 - Milestone C: move Samsung QA from Expo Go toward dev build/APK.
 - Milestone D: run a final parity sweep against the mobile Definition of Done.
 
@@ -47,6 +46,45 @@ When stuck, run the Recovery Harness. The Lead Agent should ask Audit Agent or R
 Every three completed cycles, add a heartbeat summary.
 
 ## Cycle Template
+
+### Cycle 278
+
+Date: 2026-07-02
+Branch: mobile/cycle-278-proof-cleanup-isolation
+Goal: Pass Milestone B by adding cleanup and isolation for disposable backend position order proof artifacts.
+Reference app screens observed: No new Polymarket reference capture; Samsung S23 used for Holiwyn QA after cleanup hook integration.
+Holiwyn screens changed: None. Harness/backend proof maintenance only.
+Backend/API changed: Added a proof-only cleanup harness scoped to `mobile-backend-position-order-` market slugs and Holiwyn backend-position proof user prefixes.
+Database/schema changed: None.
+Files changed: `scripts/cleanup_mobile_backend_position_order_proofs.ts`, `scripts/mobile_samsung_backend_position_order_proof.ps1`, `package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `cmd /c npx.cmd tsx scripts/cleanup_mobile_backend_position_order_proofs.ts --summaryPath=docs/mobile/harness/cycle-current-mobile-backend-position-order-cleanup-dry-run.json`.
+- `cmd /c npx.cmd tsx scripts/cleanup_mobile_backend_position_order_proofs.ts --apply --maxAgeMinutes=20 --summaryPath=docs/mobile/harness/cycle-current-mobile-backend-position-order-cleanup-apply.json`.
+- `cmd /c npx.cmd tsx scripts/cleanup_mobile_backend_position_order_proofs.ts --summaryPath=docs/mobile/harness/cycle-current-mobile-backend-position-order-cleanup-after.json`.
+- `cmd /c npm.cmd run mobile:samsung-backend-position-order-proof -- -Port 8192`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-order-ready.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-order-ticket.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-order-portfolio.png`
+Bugs found:
+- Repeated Cycle 277 attempts left 19 proof markets, 57 proof users, and 19 proof API credentials before cleanup.
+Technical debt added:
+- TD-279: The cleanup hook keeps current proof data for auditability; a later retention policy can tighten this once proof summaries are enough.
+Technical debt resolved:
+- Resolved stale failed proof artifact buildup by deleting 15 old proof markets, 45 proof users, 15 credentials, and related proof orders/positions/fills/ledger rows with scoped selectors.
+Result: Passed Milestone B. After cleanup, only recent proof rows remained, and the Samsung server-order proof still passed with a fresh disposable market and OPEN order.
+Commit: pending.
+Merged: pending.
+Next cycle: Milestone C, start moving Samsung QA from Expo Go toward dev build/APK.
+Harnesses run:
+- Backend Cleanup Harness
+- Backend/API Harness
+- Samsung Runtime Harness
+- Server Trading Harness
+- Screenshot Evidence Harness
+- Recovery Harness
+Harness failures: None after implementation.
 
 ### Cycle 277
 

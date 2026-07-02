@@ -1,0 +1,22 @@
+{
+  "ready": true,
+  "applied": true,
+  "cutoff": "2026-07-02T12:51:15.940Z",
+  "selectors": {
+    "marketSlugPrefix": "mobile-backend-position-order-",
+    "userPrefixes": [
+      "holiwyn_mobile_backend_position_order_user_",
+      "holiwyn_mobile_backend_position_order_bid_",
+      "holiwyn_mobile_backend_position_order_ask_"
+    ]
+  },
+  "counts": {
+    "markets": 0,
+    "users": 0,
+    "credentials": 0
+  },
+  "deleted": {},
+  "markets": [],
+  "users": [],
+  "credentials": []
+}
