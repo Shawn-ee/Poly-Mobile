@@ -10145,8 +10145,8 @@ Evidence:
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket-ready.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
 Result: Passed Cycle 265 QA. Server-mode ticket depth now has a Samsung proof that backend quote sizes are visible before placing a filled backend order.
-Commit: pending.
-Merge: pending.
+Commit: 729a81d
+Merge: 9b52acf
 
 ### Cycle 264
 
