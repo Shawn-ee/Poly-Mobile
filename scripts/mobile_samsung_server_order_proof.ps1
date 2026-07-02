@@ -22,6 +22,20 @@ function ConvertFrom-FirstJsonObject {
   return $Raw.Substring($jsonStart) | ConvertFrom-Json
 }
 
+function Invoke-CheckedNative {
+  param(
+    [Parameter(Mandatory = $true)]
+    [scriptblock]$Command,
+    [Parameter(Mandatory = $true)]
+    [string]$Label
+  )
+
+  & $Command
+  if ($LASTEXITCODE -ne 0) {
+    throw "$Label failed with exit code $LASTEXITCODE."
+  }
+}
+
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $stamp = Get-Date -Format "yyyyMMddHHmmss"
 $proofUsername = if ($Username) { $Username } else { "holiwyn-mobile-proof-$Side-$stamp" }
@@ -36,9 +50,9 @@ try {
   Push-Location $repoRoot
   try {
     if ($Side -eq "sell") {
-      cmd /c npm.cmd run mobile:server-sell-fill-liquidity
+      Invoke-CheckedNative -Label "Sell liquidity preparation" -Command { cmd /c npm.cmd run mobile:server-sell-fill-liquidity }
     } else {
-      cmd /c npm.cmd run mobile:server-order-fill-liquidity
+      Invoke-CheckedNative -Label "Buy liquidity preparation" -Command { cmd /c npm.cmd run mobile:server-order-fill-liquidity }
     }
 
     $credentialRaw = cmd /c npm.cmd run mobile:dev-credential 2>&1 | Out-String
@@ -49,10 +63,14 @@ try {
     try {
       if ($Side -eq "sell") {
         $resolvedPort = if ($Port -gt 0) { $Port } else { 8159 }
-        powershell -ExecutionPolicy Bypass -File .\scripts\smoke-samsung.ps1 -ServerSellOrderFilled -Port $resolvedPort
+        Invoke-CheckedNative -Label "Samsung sell order smoke" -Command {
+          powershell -ExecutionPolicy Bypass -File .\scripts\smoke-samsung.ps1 -ServerSellOrderFilled -Port $resolvedPort
+        }
       } else {
         $resolvedPort = if ($Port -gt 0) { $Port } else { 8158 }
-        powershell -ExecutionPolicy Bypass -File .\scripts\smoke-samsung.ps1 -ServerOrderFilled -Port $resolvedPort
+        Invoke-CheckedNative -Label "Samsung buy order smoke" -Command {
+          powershell -ExecutionPolicy Bypass -File .\scripts\smoke-samsung.ps1 -ServerOrderFilled -Port $resolvedPort
+        }
       }
     } finally {
       Pop-Location

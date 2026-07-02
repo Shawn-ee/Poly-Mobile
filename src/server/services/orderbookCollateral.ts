@@ -189,7 +189,7 @@ export const mintCompleteSetForPublicOrderbook = async (params: {
       data: { collateralUSDC: { increment: qty } },
     });
 
-    const perOutcomeCost = qty.div(new Prisma.Decimal(outcomeIds.length));
+    const perOutcomeCost = new Prisma.Decimal(1).div(new Prisma.Decimal(outcomeIds.length));
     for (const outcomeId of outcomeIds) {
       const existing = await tx.position.findUnique({
         where: {

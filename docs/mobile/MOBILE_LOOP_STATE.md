@@ -9563,6 +9563,34 @@ Notes:
 Commit: bd150bb
 Merge: 9ca5dd3
 
+### Cycle 216
+
+Date: 2026-07-02
+Branch: mobile/cycle-216-complete-set-cost-basis
+Status: Verified and ready for local merge.
+Objective: Fix complete-set mint cost basis so server sell-proof Portfolio totals look like normal user economics.
+Implemented:
+- Changed complete-set minting to store per-share outcome cost as `1 / outcomeCount` instead of `quantity / outcomeCount`.
+- Added backend regression coverage that minted binary positions carry `avgCost` of 0.5 while preserving collateral/share conservation.
+- Hardened the reusable Samsung server-order proof wrapper so failed native liquidity or smoke commands stop the wrapper instead of writing a success summary.
+- Made buy/sell liquidity helpers fall back to the same updated/created event ordering used by the mobile `/api/events` feed when the historical fixture slug is absent.
+Verification:
+- `npm.cmd run test:mobile-api` passed with 15 files and 65 tests.
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npx.cmd vitest run src/server/services/__tests__/phase7_kalshi_model.test.ts` passed with 21 tests.
+- `npm.cmd run mobile:samsung-server-order-proof -- -Side sell -Username holiwyn-mobile-proof-cycle-216-sellc` passed on Samsung S23.
+Evidence:
+- `docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof.json`.
+- `docs/mobile/harness/cycle-current-mobile-server-sell-fill-liquidity.json`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
+Notes:
+- The successful Samsung proof used the fallback-selected Paraguay vs Australia World Cup market and shows `Sold`, filled shares `200.00`, execution price `50%`, and Portfolio summary totals `Invested 200 USDT`, `Current value 200 USDT`, `Est. P/L +0 USDT`.
+- A first wrapper rerun correctly failed after the smoke exposed mismatched helper/app target selection; the harness now treats that class of failure as non-success.
+Commit: cycle branch HEAD
+Merge: pending
+
 ### Heartbeat After Cycle 211
 
 Completed cycles: 209, 210, 211.

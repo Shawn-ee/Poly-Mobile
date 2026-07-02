@@ -1,53 +1,39 @@
 {
   "ready": true,
   "event": {
-    "id": "f74fcd67-edb5-4437-ab41-c52966d86f40",
-    "slug": "fixture-2026-fifa-world-cup",
-    "title": "Fixture 2026 FIFA World Cup"
+    "id": "f45686f1-e5e5-445b-82c9-f44a962ec249",
+    "slug": "world-cup-2026-paraguay-vs-australia-2026-06-25",
+    "title": "Paraguay vs Australia"
   },
   "market": {
-    "id": "1ad00821-d801-4d37-8b12-1ec9d415a8a0",
-    "title": "Will France win the 2026 FIFA World Cup?"
+    "id": "2eaf2b1e-7eca-4bc3-8544-b555abfd54ea",
+    "title": "Paraguay vs Australia: Both teams to score"
   },
   "outcome": {
-    "id": "af91e922-9856-4c0f-8d84-21d77a7a189d",
-    "name": "YES"
+    "id": "ebc9c913-8421-43de-afdf-08968128e86e",
+    "name": "Yes"
   },
   "mobileUser": {
-    "id": "f4d721a3-818a-4282-baab-675c06d737b5",
-    "username": "holiwyn-mobile-proof-cycle-215-sell",
+    "id": "17bc33d1-5ef4-4982-8d20-2f2763975201",
+    "username": "holiwyn-mobile-proof-cycle-216-sellc",
     "shares": "300",
     "reservedShares": "0"
   },
   "makerOrder": {
-    "id": "128d3e24-1570-4bac-9d8c-252617509808",
-    "status": "PARTIAL",
+    "id": "5871aeef-500d-43d8-a0db-d9fc03c4bc2b",
+    "status": "OPEN",
     "price": "0.50",
     "size": "500",
     "requiredRemaining": "250",
-    "remaining": "480"
+    "remaining": "500"
   },
   "attempts": [
     {
       "attempt": 1,
-      "makerOrderId": "d64a7795-000b-484d-b7a9-503ca4e4cae1",
-      "status": "FILLED",
-      "remaining": "0",
-      "fillCount": 2
-    },
-    {
-      "attempt": 2,
-      "makerOrderId": "38d50e4f-655c-42bb-ac20-58104eb0a3c1",
-      "status": "FILLED",
-      "remaining": "0",
-      "fillCount": 2
-    },
-    {
-      "attempt": 3,
-      "makerOrderId": "128d3e24-1570-4bac-9d8c-252617509808",
-      "status": "PARTIAL",
-      "remaining": "480",
-      "fillCount": 1
+      "makerOrderId": "5871aeef-500d-43d8-a0db-d9fc03c4bc2b",
+      "status": "OPEN",
+      "remaining": "500",
+      "fillCount": 0
     }
   ]
 }
