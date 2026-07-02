@@ -8808,8 +8808,8 @@ Technical debt added:
 Technical debt resolved:
 - Samsung can now verify server-shaped Portfolio economics without requiring live backend readiness, and forced fixture launches no longer fight reset timing.
 Result: Passed Cycle 193 QA. Mobile tests, typecheck, and Samsung server Portfolio fixture smoke pass.
-Commit: `PENDING` (`PENDING`).
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `2d42be5` (`Add Samsung server portfolio fixture proof`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `34c2a11`.
 Next cycle: Continue toward final DoD by either using the fixture path to prove server close refresh visuals, or retrying server-proof readiness when backend/device prerequisites allow.
 Harnesses run:
 - Mobile Portfolio Fixture Harness
