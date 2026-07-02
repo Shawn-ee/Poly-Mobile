@@ -9539,7 +9539,7 @@ Next three likely cycles: improve server Portfolio proof snapshots, add richer o
 
 Date: 2026-07-02
 Branch: mobile/cycle-215
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Wrap isolated Samsung server-order proofs into a reusable root harness command.
 Implemented:
 - Added `scripts/mobile_samsung_server_order_proof.ps1`.
@@ -9560,8 +9560,8 @@ Evidence:
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
 Notes:
 - The summary file records the most recent wrapper run, which was the SELL proof.
-Commit: pending
-Merge: pending
+Commit: bd150bb
+Merge: 9ca5dd3
 
 ### Heartbeat After Cycle 211
 
