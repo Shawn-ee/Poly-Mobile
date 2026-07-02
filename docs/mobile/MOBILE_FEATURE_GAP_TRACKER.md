@@ -262,3 +262,5 @@ Status:
 | GAP-240 | Harness | Proof-noise gated Samsung wrappers | P1 | No | Verified | Cycle 227 runs proof-noise gates before and after the reusable Samsung filled-order and open-order cancel proof wrappers, embedding both gate results in wrapper summaries. |
 | GAP-241 | Portfolio | Open-order placed time | P1 | Yes | Verified | Cycle 228 maps backend open-order `createdAt` into a placed-time line on Portfolio open-order cards and verifies it on Samsung S23. |
 | GAP-242 | Portfolio | Open-order original size | P1 | Yes | Verified | Cycle 229 maps backend open-order `size` into an original Size line on Portfolio open-order cards and verifies it on Samsung S23. |
+| GAP-243 | Portfolio | Open-order fill progress | P1 | Yes | Verified | Cycle 230 derives filled shares/percent from original size minus remaining shares and verifies `Filled: 0 shares (0%)` on Samsung S23. |
+| GAP-244 | Portfolio | Open-order remaining value context | P1 | Yes | Verified | Cycle 231 folds remaining USDT value into the open-order remaining-shares line and verifies `Remaining: 100 shares (Remaining value: 1 USDT)` on Samsung S23. |

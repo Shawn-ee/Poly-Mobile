@@ -9939,6 +9939,28 @@ Evidence:
 Commit: 10170ef
 Merge: 1f0e09d
 
+### Cycle 231
+
+Date: 2026-07-02
+Branch: mobile/cycle-231-open-order-remaining-value
+Status: Verified; pending local merge.
+Objective: Show remaining USDT value beside remaining shares on mobile Portfolio open-order cards.
+Implemented:
+- Added localized `remainingValue` copy in English and Simplified Chinese.
+- Folded remaining value into the existing remaining-shares row to avoid adding card height.
+- Tightened open-order card spacing so Size, Filled, and Placed rows stay visible on the Samsung S23 viewport.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run mobile:samsung-open-order-cancel-proof -- -Username holiwyn-mobile-proof-cycle-231-open-final` passed on Samsung S23.
+- Captured hierarchy includes `Remaining: 100 shares (Remaining value: 1 USDT)`, `Size: 100 shares`, `Filled: 0 shares (0%)`, and `Placed: Jul 2, 3:50 AM`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
+- `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
+Commit: pending
+Merge: pending
+
 ### Heartbeat After Cycle 229
 
 Completed cycles: 227, 228, 229.
