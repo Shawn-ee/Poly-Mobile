@@ -9818,7 +9818,7 @@ Merge: 70cae2c
 
 Date: 2026-07-02
 Branch: mobile/cycle-226-activity-source-detail
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Make Portfolio activity execution rows clearer by showing Buy/Sell side in the execution detail.
 Implemented:
 - Added a Portfolio activity side prefix so filled and canceled activity rows render `Buy - ...` or `Sell - ...` before the existing share, execution price, implied odds, or limit detail.
@@ -9831,8 +9831,8 @@ Verification:
 Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-future-list-order-activity.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-future-list-order-activity.png`.
-Commit: pending
-Merge: pending
+Commit: 6018ea9
+Merge: 5a850ae
 
 ### Heartbeat After Cycle 226
 
