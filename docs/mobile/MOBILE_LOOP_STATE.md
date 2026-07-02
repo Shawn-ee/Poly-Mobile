@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-254-event-detail-prop-order-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Prove a prop-market Event Detail ticket can place a fake-token order and land in Portfolio.
 Implemented:
 - Added `EventDetailPropOrder` smoke path that opens the prop ticket, places the mock order, and verifies Portfolio state.
@@ -10137,8 +10137,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-order-ticket.xml`.
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-order-portfolio.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-prop-order-portfolio.png`.
-Commit: pending
-Merge: pending
+Commit: 5e567ae
+Merge: 8ce3bbf
 
 ### Cycle 253
 
