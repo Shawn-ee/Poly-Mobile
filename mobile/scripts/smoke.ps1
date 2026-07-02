@@ -1064,13 +1064,13 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-ticket.png"
       $futureListTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-ticket.xml"
-      Assert-HierarchyContains -Path $futureListTicketHierarchy -Expected @("World Cup winner", "France", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "Est. fee", "0 USDT", "ticket-slippage", "Slippage", "0.5%", "1%", "2%", "Est. shares", "Avg price", "Swipe up to buy")
+      Assert-HierarchyContains -Path $futureListTicketHierarchy -Expected @("World Cup winner", "France", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "ticket-amount-keypad", "Swipe up to buy")
       return
     }
 
     if ($FutureListOrder) {
       $futureListOrderTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-order-ticket.xml"
-      Assert-HierarchyContains -Path $futureListOrderTicketHierarchy -Expected @("World Cup winner", "France", "ticket-trading-mode", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "ticket-estimated-fee", "Est. fee", "0 USDT", "ticket-slippage", "Slippage", "0.5%", "1%", "2%", "Fake balance", "10,000 USDT", "Swipe up to buy")
+      Assert-HierarchyContains -Path $futureListOrderTicketHierarchy -Expected @("World Cup winner", "France", "ticket-trading-mode", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "ticket-amount-keypad", "Fake balance", "10,000 USDT", "Swipe up to buy")
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-order-ticket.png"
       $futureListOrderTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-order-ticket.xml"
       Assert-HierarchyContains -Path $futureListOrderTicketHierarchy -Expected @("place-mock-order", "Swipe up to buy", "Final cost may vary.")

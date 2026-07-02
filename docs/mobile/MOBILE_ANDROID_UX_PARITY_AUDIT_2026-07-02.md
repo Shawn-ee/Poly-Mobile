@@ -59,6 +59,21 @@ Verification:
 
 Remaining: custom ticket keypad/completion animation and final parity sweep.
 
+### Cycle 288 - Ticket keypad and final sweep
+
+Status: verified on Samsung S23.
+
+- Added a compact numeric keypad to the trade ticket so amount entry no longer relies only on the Android soft keyboard.
+- Kept direct text amount entry and quick amount chips for fast manual edits.
+- Updated the Samsung order proof to verify the keypad and swipe rail on the visible ticket screen.
+
+Verification:
+
+- `npm run typecheck`
+- `npm run smoke:samsung:future-list-order`
+
+Remaining: completion animation and broader visual polish, but the audit's functional P0/P1 blockers are now covered by verified cycles.
+
 ## Critical Fixes
 
 | Priority | Area | Finding | Evidence | Recommendation |
@@ -101,8 +116,8 @@ Holiwyn should use these as interaction references only. Do not copy Polymarket 
 
 - Order submit P0 was repaired in Cycle 285 and verified through Samsung Portfolio order placement.
 - Ticket footer P0 was repaired in Cycle 285 with a sticky submit rail above Android navigation.
-- Ticket now has swipe-submit and final-cost caution; confirmation motion is still missing.
-- Amount entry is still a normal text field with preset buttons, not a trading keypad.
+- Ticket now has swipe-submit and final-cost caution; completion animation is still missing.
+- Amount entry now includes a compact keypad, direct text input, and preset buttons.
 - Search keyboard coverage was improved in Cycle 286 with dismiss controls and keyboard-aware padding; final manual keyboard QA remains useful.
 - Header action feedback was repaired in Cycle 286 for `Get 50` and notifications.
 - Portfolio rows were made visibly actionable in Cycle 287 with detail toggles and expanded panels.
