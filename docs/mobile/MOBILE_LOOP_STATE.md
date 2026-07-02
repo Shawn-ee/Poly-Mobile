@@ -6942,6 +6942,44 @@ Harnesses run:
 Harness failures:
 - Initial Samsung server-order-failure attempts exposed stale state, old emulator navigation, and fixed-wait timing gaps; all were fixed before final pass.
 
+### Cycle 147
+
+Date: 2026-07-01
+Branch: mobile/cycle-147
+Goal: Add a Samsung server-mode preflight that produces phone-ready launch variables before successful backend order proof.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; harness/device preflight cycle.
+Backend/API changed: No backend route change. Added a Samsung-specific wrapper around existing server-mode preflight checks.
+Database/schema changed: None.
+Files changed: `mobile/scripts/samsung-server-mode-preflight.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `npm run preflight:samsung:server-mode` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Preflight evidence:
+- Samsung ADB target reachable.
+- Device API base URL resolved to `http://172.16.200.14:3000`.
+- Server-mode auth config checks passed.
+- Backend health unavailable at `http://127.0.0.1:3000`; live server request proof skipped.
+- `EXPO_PUBLIC_API_KEY` missing; authenticated account preflight skipped.
+Bugs found:
+- Initial LAN resolver used `Get-NetIPConfiguration` and failed with CIM access denied. Fixed by switching to the proven `ipconfig` parsing resolver from the Samsung smoke wrapper.
+Technical debt added:
+- This cycle prepares Samsung server-mode launch variables; successful authenticated server-backed order execution remains pending until backend/API-key readiness.
+Technical debt resolved:
+- Samsung server-mode preflight no longer depends on emulator-only API base defaults.
+Result: Passed Cycle 147 QA. Samsung server-mode preflight, mobile typecheck, and mobile API/history tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 148 should continue backend/API readiness, likely by improving local backend readiness reporting or adding a strict Samsung server-mode gate for successful order proof.
+Harnesses run:
+- Samsung Server Mode Preflight Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History Unit Harness
+- Review Harness
+Harness failures:
+- Initial preflight failed on Windows network configuration permissions; fixed before final pass.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

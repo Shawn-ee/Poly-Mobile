@@ -74,6 +74,12 @@ To verify Samsung server-mode order failure recovery, run:
 npm run smoke:samsung:server-order-failure
 ```
 
+Before a Samsung server-mode success proof, verify the phone launch variables with:
+
+```powershell
+npm run preflight:samsung:server-mode
+```
+
 ## Device Strategy
 
 - Samsung S23: use for Polymarket reference and, later, explicit Holiwyn real-device QA.
