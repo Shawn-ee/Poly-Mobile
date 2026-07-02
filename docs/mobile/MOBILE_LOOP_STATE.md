@@ -10118,11 +10118,22 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Heartbeat After Cycle 250
+
+Completed cycles: 248, 249, 250.
+Verified progress: Samsung real-device QA now has named proofs for live ticket readiness, live summary presence, and live summary refresh/status controls. The live ticket harness is stable against hierarchy cropping, and the live summary proof now asserts both content rows and stable UI control labels.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung real-device QA, server quote/order/Portfolio sync paths, and growing named proof coverage for key Polymarket-style soccer trading surfaces.
+Current backend state: Local backend/mobile API tests pass with 15 files and 67 tests. Docker being active helps keep backend-backed checks available; the latest Samsung live proof used the healthy local backend path.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go. Emulator remains fallback only because it is slow/stale in this environment. A proper development build/APK remains the next better long-term device lane once the Expo prototype stabilizes.
+Open blockers: None for autonomous progress.
+Risks: Expo Go proof still depends on LAN reachability and local device state; repeated proof captures overwrite `cycle-current` evidence; full Polymarket-style parity still needs richer orderbook/open-order depth and more World Cup event detail coverage.
+Next three likely cycles: harden event-detail market summary proofs, add richer orderbook/depth parity checks, and continue Samsung-first proof commands for the highest-value World Cup trading flows.
+
 ### Cycle 250
 
 Date: 2026-07-02
 Branch: mobile/cycle-250-live-summary-controls-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Tighten the Samsung live summary proof to cover refresh/status controls.
 Implemented:
 - Required the live summary harness to assert `Updated just now`, `Refresh`, and `live-market-summary`.
@@ -10134,8 +10145,8 @@ Verification:
 Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-live-summary.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-live-summary.png`.
-Commit: pending
-Merge: pending
+Commit: 15caf24
+Merge: 8ab9e8e
 
 ### Cycle 249
 
