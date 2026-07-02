@@ -10138,8 +10138,8 @@ Evidence:
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`.
 Result: Passed Cycle 269 QA. Server ticket depth proofs now enforce size presence and non-crossed spread text.
-Commit: pending.
-Merge: pending.
+Commit: 2160cd1
+Merge: fb31849
 
 ### Cycle 268
 
