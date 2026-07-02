@@ -10118,6 +10118,25 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 250
+
+Date: 2026-07-02
+Branch: mobile/cycle-250-live-summary-controls-proof
+Status: Verified; pending local merge.
+Objective: Tighten the Samsung live summary proof to cover refresh/status controls.
+Implemented:
+- Required the live summary harness to assert `Updated just now`, `Refresh`, and `live-market-summary`.
+- Kept the existing live market count and France/Argentina/Draw row assertions.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:live-summary` passed on Samsung S23 with Expo host `172.16.200.14` and port `8167`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-live-summary.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-live-summary.png`.
+Commit: pending
+Merge: pending
+
 ### Cycle 249
 
 Date: 2026-07-02
