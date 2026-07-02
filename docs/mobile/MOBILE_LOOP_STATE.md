@@ -78,8 +78,8 @@ Technical debt added:
 Technical debt resolved:
 - TD-284 resolved: emulator reliability is no longer the primary Android runtime blocker because the DoD and harness docs now reflect Samsung S23 as the active Android QA target when the emulator is slow/stale.
 Result: Passed. Updated DoD sweep result: 9 verified, 1 partial, 0 blocked.
-Commit: pending.
-Merged: pending.
+Commit: cycle branch HEAD (`Reconcile Android runtime DoD with Samsung QA`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Generate/provide `dist/holiwyn-preview.apk` or record a stronger build blocker after attempting the APK lane.
 Harnesses run:
 - Definition of Done Sweep Harness
