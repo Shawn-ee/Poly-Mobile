@@ -8252,6 +8252,41 @@ Harnesses run:
 Harness failures:
 - Initial Samsung reruns failed on strict default-state assumptions; recovered in-cycle with persistence-aware assertions.
 
+### Cycle 180
+
+Date: 2026-07-01
+Branch: mobile/cycle-180
+Goal: Extend the profile-preference service/API seam so ticket slippage defaults can sync when server support is available.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No direct UI change; Cycle 179 Account UI already surfaces the slippage default.
+Backend/API changed: Mobile profile preference type, mapper, and client tests now include `ticketDefaultSlippage`.
+Database/schema changed: None.
+Files changed: `mobile/src/types.ts`, `mobile/src/services/profilePreferencesService.ts`, `mobile/src/__tests__/profilePreferencesService.test.ts`, `mobile/src/__tests__/api.test.ts`, `mobile/App.tsx`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- None; service/API seam cycle. Cycle 179 Samsung Account screenshot remains the current UI evidence for visible slippage defaults.
+Harness evidence:
+- Mobile profile preference mapper tests now cover `ticketDefaultSlippage` local-to-server, server-to-local, and missing-field fallback.
+- Mobile API client test now covers saving `ticketDefaultSlippage` to `/api/profile/preferences`.
+Bugs found:
+- None in final run.
+Technical debt added:
+- Backend persistence/storage for the slippage field remains unproven until backend route/schema support is verified or added.
+Technical debt resolved:
+- Slippage default now has a typed mobile profile sync seam instead of remaining local-only.
+Result: Passed Cycle 180 QA. Mobile typecheck passed, and mobile API/service suite passes with 9 files and 41 tests.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 181 should inspect/add backend profile-preference persistence for `ticketDefaultSlippage` or continue order-ticket parity if backend readiness remains gated.
+Harnesses run:
+- Mobile Typecheck Harness
+- Mobile API/Profile Preference Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.

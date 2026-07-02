@@ -77,6 +77,7 @@ describe("Holiwyn mobile API client", () => {
           locale: "en",
           ticketDefaultAmount: "500",
           ticketDefaultSide: "SELL",
+          ticketDefaultSlippage: "2%",
           savedEventIds: ["mexico-ecuador"],
         },
       }),
@@ -87,6 +88,7 @@ describe("Holiwyn mobile API client", () => {
       locale: "en",
       ticketDefaultAmount: "500",
       ticketDefaultSide: "SELL",
+      ticketDefaultSlippage: "2%",
       savedEventIds: ["mexico-ecuador"],
     });
 
@@ -100,6 +102,7 @@ describe("Holiwyn mobile API client", () => {
       locale: "en",
       ticketDefaultAmount: "500",
       ticketDefaultSide: "SELL",
+      ticketDefaultSlippage: "2%",
       savedEventIds: ["mexico-ecuador"],
     });
   });

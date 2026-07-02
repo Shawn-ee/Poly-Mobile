@@ -249,6 +249,7 @@ export default function App() {
       locale,
       ticketDefaultAmount: ticketDefaults.amount,
       ticketDefaultSide: ticketDefaults.side,
+      ticketDefaultSlippage: ticketDefaults.slippage,
       savedEventIds: [...savedEventIds],
     })
       .then(() => {
