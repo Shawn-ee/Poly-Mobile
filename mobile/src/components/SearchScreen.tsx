@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { MarketList } from "./MarketLists";
 
@@ -47,6 +47,7 @@ export function SearchScreen({
 }) {
   const [filter, setFilter] = useState<SearchFilter>("all");
   const [sort, setSort] = useState<SearchSort>("popular");
+  const [isInputFocused, setIsInputFocused] = useState(false);
   const disableSoftInputForSmoke = process.env.EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT === "1";
   const hasQuery = query.trim().length > 0;
   const filteredEvents =
@@ -81,7 +82,14 @@ export function SearchScreen({
   ];
 
   return (
-    <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
+    <ScrollView
+      automaticallyAdjustKeyboardInsets
+      keyboardDismissMode="on-drag"
+      keyboardShouldPersistTaps="handled"
+      onScrollBeginDrag={Keyboard.dismiss}
+      style={styles.content}
+      contentContainerStyle={[styles.scrollPad, isInputFocused && styles.scrollPadKeyboard]}
+    >
       <View style={styles.searchBox}>
         <Ionicons name="search" color="#94a3b8" size={20} />
         <TextInput
@@ -93,7 +101,17 @@ export function SearchScreen({
           placeholderTextColor="#64748b"
           style={styles.searchInput}
           showSoftInputOnFocus={!disableSoftInputForSmoke}
+          returnKeyType="search"
+          blurOnSubmit
+          onBlur={() => setIsInputFocused(false)}
+          onFocus={() => setIsInputFocused(true)}
+          onSubmitEditing={Keyboard.dismiss}
         />
+        {isInputFocused && (
+          <Pressable accessibilityLabel="dismiss-search-keyboard" testID="dismiss-search-keyboard" style={styles.dismissKeyboardButton} onPress={Keyboard.dismiss}>
+            <Ionicons name="chevron-down-circle" color="#dbeafe" size={20} />
+          </Pressable>
+        )}
       </View>
       <View style={styles.searchHeader}>
         <View>
@@ -149,8 +167,10 @@ export function SearchScreen({
 const styles = StyleSheet.create({
   content: { flex: 1 },
   scrollPad: { paddingHorizontal: 16, paddingBottom: 110 },
+  scrollPadKeyboard: { paddingBottom: 360 },
   searchBox: { flexDirection: "row", alignItems: "center", gap: 10, height: 52, paddingHorizontal: 14, borderRadius: 12, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginBottom: 14 },
   searchInput: { flex: 1, color: "#f8fafc", fontSize: 16, fontWeight: "700" },
+  dismissKeyboardButton: { width: 34, height: 34, alignItems: "center", justifyContent: "center", borderRadius: 8, backgroundColor: "#1f2937" },
   searchHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 12 },
   searchHeading: { color: "#f8fafc", fontSize: 20, fontWeight: "900" },
   resultMeta: { color: "#8ea0b8", fontSize: 13, fontWeight: "800", marginTop: 3 },
