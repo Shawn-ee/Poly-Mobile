@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-263-live-sell-order-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Add real-device proof that live markets support sell-side ticket submission and sold Portfolio activity.
 Implemented:
 - Added `LiveSellOrder` support to the core smoke harness.
@@ -10141,8 +10141,8 @@ Evidence:
 - `docs/mobile/screenshots/cycle-current-holiwyn-live-sell-ticket.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-live-sell-ticket-order-ready.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-live-sell-order-portfolio.png`.
-Commit: pending
-Merge: pending
+Commit: 57d69a8
+Merge: 1c5bd1c
 
 ### Cycle 262
 
