@@ -3013,3 +3013,19 @@ Findings:
 - Focused backend route test, mobile API/service tests, and mobile typecheck passed.
 Decision: Approve Cycle 202 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 203
+
+Date: 2026-07-02
+Branch: mobile/cycle-203
+Reviewer: Lead/Reviewer pass
+Scope: Durable backend canceled-order activity.
+Findings:
+- P0: `/api/portfolio/history` now includes canceled order activity data without breaking the existing resolved-history payload.
+- P0: Mobile Portfolio history maps backend canceled orders into durable `Canceled` activity rows, reducing reliance on the local preserved receipt from Cycle 201.
+- P1: Added focused route coverage proving API-key history reads return `canceledOrders` and anonymous reads stop before canceled-order lookup.
+- P1: Added mobile service coverage for canceled order activity mapping.
+- P1: Live local endpoint probe confirms canceled S23 proof orders are returned by the backend.
+- Focused backend route tests, mobile API/service tests, mobile typecheck, and live endpoint probe passed.
+Decision: Approve Cycle 203 for local commit/merge after scoped diff review.
+Merge approved: Yes

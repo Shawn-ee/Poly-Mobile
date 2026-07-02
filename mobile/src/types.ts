@@ -75,6 +75,25 @@ export type PortfolioHistoryItem = {
   realizedPnLTokens: number;
 };
 
+export type PortfolioCanceledOrderItem = {
+  id: string;
+  market: {
+    id: string;
+    title: string;
+    status: string;
+  };
+  outcome: {
+    id: string;
+    name: string;
+  };
+  side: "BUY" | "SELL";
+  status: string;
+  price: number;
+  size: number;
+  remaining: number;
+  canceledAt: string;
+};
+
 export type PortfolioPositionItem = {
   market: {
     id: string;

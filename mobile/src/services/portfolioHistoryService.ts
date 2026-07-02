@@ -1,5 +1,6 @@
 import type { PolyApi } from "../api";
 import type { PortfolioActivity } from "../components/Portfolio";
+import type { PortfolioCanceledOrderItem } from "../types";
 
 const formatHistoryTimestamp = (value: string | null) => {
   if (!value) return undefined;
@@ -28,7 +29,19 @@ export const portfolioHistoryToActivity = (history: Awaited<ReturnType<PolyApi["
     };
   });
 
+export const canceledOrdersToActivity = (orders: PortfolioCanceledOrderItem[] = []): PortfolioActivity[] =>
+  orders.map((order) => ({
+    id: `canceled-order-${order.id}`,
+    action: "canceled",
+    title: order.market.title,
+    outcome: order.outcome.name,
+    amount: order.remaining,
+    side: order.side === "SELL" ? "sell" : "buy",
+    probability: Math.round(order.price * 100),
+    timestamp: formatHistoryTimestamp(order.canceledAt),
+  }));
+
 export const loadPortfolioHistoryActivities = async (api: PolyApi): Promise<PortfolioActivity[]> => {
   const payload = await api.getPortfolioHistory();
-  return portfolioHistoryToActivity(payload.history);
+  return [...canceledOrdersToActivity(payload.canceledOrders), ...portfolioHistoryToActivity(payload.history)];
 };

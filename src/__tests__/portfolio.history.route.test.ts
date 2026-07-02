@@ -1,0 +1,116 @@
+import { NextRequest } from "next/server";
+
+const mockGetUserId = jest.fn();
+const mockRequireCanonicalActor = jest.fn();
+
+const mockPrisma = {
+  trade: {
+    findMany: jest.fn(),
+  },
+  ledgerEntry: {
+    findMany: jest.fn(),
+  },
+  order: {
+    findMany: jest.fn(),
+  },
+};
+
+jest.mock("@/lib/auth", () => ({
+  getUserId: () => mockGetUserId(),
+}));
+
+jest.mock("@/lib/canonicalAuth", () => ({
+  requireCanonicalActor: (...args: unknown[]) => mockRequireCanonicalActor(...args),
+}));
+
+jest.mock("@/lib/db", () => ({
+  prisma: mockPrisma,
+}));
+
+describe("GET /api/portfolio/history canceled orders", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockGetUserId.mockResolvedValue("session-user-1");
+    mockRequireCanonicalActor.mockResolvedValue({ userId: "api-user-1" });
+    mockPrisma.trade.findMany.mockResolvedValue([]);
+    mockPrisma.ledgerEntry.findMany.mockResolvedValue([]);
+    mockPrisma.order.findMany.mockResolvedValue([
+      {
+        id: "order-canceled-1",
+        side: "BUY",
+        status: "CANCELED",
+        price: 0.5,
+        amount: 200,
+        remaining: 100,
+        updatedAt: new Date("2026-07-02T05:55:00.000Z"),
+        market: {
+          id: "market-world-cup-winner",
+          title: "Will France win the 2026 FIFA World Cup?",
+          status: "LIVE",
+        },
+        outcome: {
+          id: "yes",
+          name: "YES",
+        },
+      },
+    ]);
+  });
+
+  test("returns API-key actor canceled orders beside resolved history", async () => {
+    const { GET } = await import("@/app/api/portfolio/history/route");
+    const response = await GET(
+      new NextRequest("http://localhost/api/portfolio/history", {
+        headers: { Authorization: "Bearer pk_live_test.secret" },
+      }),
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(mockRequireCanonicalActor).toHaveBeenCalledWith(expect.any(NextRequest), ["account:read"]);
+    expect(mockGetUserId).not.toHaveBeenCalled();
+    expect(mockPrisma.order.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          userId: "api-user-1",
+          status: "CANCELED",
+        },
+        take: 50,
+      }),
+    );
+    expect(body).toEqual({
+      history: [],
+      canceledOrders: [
+        {
+          id: "order-canceled-1",
+          market: {
+            id: "market-world-cup-winner",
+            title: "Will France win the 2026 FIFA World Cup?",
+            status: "LIVE",
+          },
+          outcome: {
+            id: "yes",
+            name: "YES",
+          },
+          side: "BUY",
+          status: "CANCELED",
+          price: 0.5,
+          size: 200,
+          remaining: 100,
+          canceledAt: "2026-07-02T05:55:00.000Z",
+        },
+      ],
+    });
+  });
+
+  test("blocks anonymous history reads before canceled-order lookup", async () => {
+    mockGetUserId.mockResolvedValue(null);
+
+    const { GET } = await import("@/app/api/portfolio/history/route");
+    const response = await GET(new NextRequest("http://localhost/api/portfolio/history"));
+    const body = await response.json();
+
+    expect(response.status).toBe(401);
+    expect(body.error).toBe("Unauthorized");
+    expect(mockPrisma.order.findMany).not.toHaveBeenCalled();
+  });
+});

@@ -9195,6 +9195,31 @@ Open blockers: None for autonomous progress.
 Risks: The local mobile dev account has accumulated several open proof orders, so exact fake balance is no longer a stable assertion; canceled order activity is locally preserved because backend portfolio history is still resolved-history focused; filled/matching proof remains separate.
 Next three likely cycles: add filled-order/matching proof with prepared liquidity, expose backend canceled-order activity in a durable history feed, and continue polishing server Portfolio history parity.
 
+### Cycle 203
+
+Date: 2026-07-02
+Branch: mobile/cycle-203
+Status: Verified; pending local merge stamp.
+Objective: Make canceled server orders durable in backend Portfolio history and mobile Recent activity.
+Implemented:
+- Extended `/api/portfolio/history` with a backward-compatible `canceledOrders` array.
+- Added mobile `PortfolioCanceledOrderItem` typing and API response typing.
+- Mapped backend canceled orders into mobile `Canceled` activity rows.
+- Added focused backend route coverage and mobile mapping coverage.
+Verification:
+- `npx.cmd jest --runInBand src/__tests__/portfolio.history.route.test.ts src/__tests__/orders.cancel.route.test.ts` passed with 2 suites and 4 tests.
+- `npm.cmd run test:mobile-api` passed with 15 files and 63 tests.
+- `npm.cmd run typecheck` passed in `mobile/`.
+- Live local `/api/portfolio/history` probe returned 3 canceled orders, including `CANCELED` `YES` order activity from the S23 proof account.
+Evidence:
+- Focused backend route test output.
+- Mobile service test output.
+- Live endpoint probe summary.
+Notes:
+- This resolves the main Cycle 201 history gap by making canceled-order activity backend-derived on the next Portfolio history sync.
+Commit: PENDING
+Merge: PENDING
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

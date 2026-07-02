@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { portfolioHistoryToActivity } from "../services/portfolioHistoryService";
+import { canceledOrdersToActivity, portfolioHistoryToActivity } from "../services/portfolioHistoryService";
 import type { PortfolioHistoryItem } from "../types";
 
 const historyItem = (overrides: Partial<PortfolioHistoryItem> = {}): PortfolioHistoryItem => ({
@@ -61,6 +61,42 @@ describe("portfolio history activity mapping", () => {
         amount: 64,
         entryAmount: 64,
         timestamp: "Jun 12, 1:05 PM",
+      }),
+    ]);
+  });
+
+  test("maps backend canceled orders into durable canceled activity rows", () => {
+    expect(
+      canceledOrdersToActivity([
+        {
+          id: "order-canceled-1",
+          market: {
+            id: "world-cup-winner",
+            title: "Will France win the 2026 FIFA World Cup?",
+            status: "LIVE",
+          },
+          outcome: {
+            id: "yes",
+            name: "YES",
+          },
+          side: "BUY",
+          status: "CANCELED",
+          price: 0.5,
+          size: 200,
+          remaining: 100,
+          canceledAt: "2026-07-02T05:55:00.000Z",
+        },
+      ]),
+    ).toEqual([
+      expect.objectContaining({
+        id: "canceled-order-order-canceled-1",
+        action: "canceled",
+        title: "Will France win the 2026 FIFA World Cup?",
+        outcome: "YES",
+        amount: 100,
+        side: "buy",
+        probability: 50,
+        timestamp: "Jul 2, 12:55 AM",
       }),
     ]);
   });
