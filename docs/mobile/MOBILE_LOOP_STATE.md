@@ -7021,6 +7021,43 @@ Harnesses run:
 Harness failures:
 - None in final run.
 
+### Cycle 149
+
+Date: 2026-07-01
+Branch: mobile/cycle-149
+Goal: Add a strict readiness gate before attempting successful server-backed Samsung order proof.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; server-readiness gate cycle.
+Backend/API changed: No backend route change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/server-success-gate.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `npm run gate:server-success:expect-blocked` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Gate evidence:
+- Docker daemon not reachable.
+- Database TCP not reachable at `localhost:5432`.
+- `EXPO_PUBLIC_API_KEY` missing.
+- Expected-blocked mode passed.
+Bugs found:
+- Initial gate command blocked correctly but returned a failing npm exit for expected-blocked harness use. Added `-ExpectBlocked` and `gate:server-success:expect-blocked`.
+Technical debt added:
+- The gate prevents premature success-proof attempts but does not start Docker or generate credentials.
+Technical debt resolved:
+- Successful server-backed Samsung proof now has an explicit prerequisite gate driven by structured readiness evidence.
+Result: Passed Cycle 149 QA. Expected-blocked gate, mobile typecheck, and mobile API/history tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Cycle 150 should continue backend/API readiness or add server-backed order/history parity that can be verified with unit tests while DB remains unavailable.
+Harnesses run:
+- Server Success Gate Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History Unit Harness
+- Review Harness
+Harness failures:
+- Initial expected-blocked gate design returned nonzero; fixed before final pass.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.

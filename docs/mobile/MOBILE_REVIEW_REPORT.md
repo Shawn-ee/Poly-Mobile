@@ -2166,3 +2166,18 @@ Findings:
 - Backend readiness summary, mobile typecheck, and mobile API/history tests passed.
 Decision: Approve Cycle 148 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 149
+
+Date: 2026-07-01
+Branch: mobile/cycle-149
+Reviewer: Lead/Reviewer pass
+Scope: Server success readiness gate.
+Findings:
+- P1: `gate:server-success` now reads the structured backend readiness summary and API key state before allowing successful server-backed Samsung order proof attempts.
+- P1: The gate checks Docker CLI, Docker daemon, compose file, DB TCP reachability, default compose DB URL, and `pk_live_*` API-key shape.
+- P1: `gate:server-success:expect-blocked` lets the autonomous harness verify current blockers without treating an expected refusal as a failed cycle.
+- P2: The gate does not start Docker or generate credentials; it prevents wasted success-proof attempts until those prerequisites are ready.
+- Expected-blocked gate, mobile typecheck, and mobile API/history tests passed.
+Decision: Approve Cycle 149 for local commit/merge after scoped diff review.
+Merge approved: Yes

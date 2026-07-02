@@ -3151,3 +3151,22 @@ Bugs:
 - None in final run.
 Visual QA:
 - No app screenshot cycle; this is a backend-readiness harness cycle.
+
+### Cycle 149
+
+Date: 2026-07-01
+Device: Server success readiness gate
+Build/run command:
+- `npm run gate:server-success:expect-blocked`
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The server success gate blocks successful Samsung server-backed order proof attempts when readiness evidence is incomplete, and can verify expected blocked state without failing the harness.
+Gate evidence:
+- Docker daemon was not reachable.
+- Database TCP was not reachable at `localhost:5432`.
+- `EXPO_PUBLIC_API_KEY` was missing.
+- Expected-blocked mode returned success after confirming these blockers.
+Bugs:
+- Initial gate command correctly blocked but returned a failing npm exit for expected-blocked harness use. Added `-ExpectBlocked` and `gate:server-success:expect-blocked`.
+Visual QA:
+- No app screenshot cycle; this is a server-readiness gate cycle.
