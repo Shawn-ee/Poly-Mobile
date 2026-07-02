@@ -9567,7 +9567,7 @@ Merge: 9ca5dd3
 
 Date: 2026-07-02
 Branch: mobile/cycle-216-complete-set-cost-basis
-Status: Verified and ready for local merge.
+Status: Verified and locally merged.
 Objective: Fix complete-set mint cost basis so server sell-proof Portfolio totals look like normal user economics.
 Implemented:
 - Changed complete-set minting to store per-share outcome cost as `1 / outcomeCount` instead of `quantity / outcomeCount`.
@@ -9588,8 +9588,8 @@ Evidence:
 Notes:
 - The successful Samsung proof used the fallback-selected Paraguay vs Australia World Cup market and shows `Sold`, filled shares `200.00`, execution price `50%`, and Portfolio summary totals `Invested 200 USDT`, `Current value 200 USDT`, `Est. P/L +0 USDT`.
 - A first wrapper rerun correctly failed after the smoke exposed mismatched helper/app target selection; the harness now treats that class of failure as non-success.
-Commit: cycle branch HEAD
-Merge: pending
+Commit: 30a5d2e
+Merge: 3727f81
 
 ### Heartbeat After Cycle 211
 
