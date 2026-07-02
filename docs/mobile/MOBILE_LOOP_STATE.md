@@ -7935,8 +7935,8 @@ Technical debt added:
 Technical debt resolved:
 - QA can now distinguish mock-mode Account status from server-mode Account fallback status directly in the app.
 Result: Passed Cycle 172 QA. Samsung Account profile-sync fallback smoke passed, mobile typecheck passed, and mobile API/service tests pass.
-Commit: cycle branch HEAD (`Verify account server trading mode`)
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `b8ecbf3` (`Verify account server trading mode`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `f79f691`.
 Next cycle: Cycle 173 should continue product-facing server-mode clarity or retry readiness if backend state changes.
 Harnesses run:
 - Samsung Account Profile Sync Fallback Smoke Harness
