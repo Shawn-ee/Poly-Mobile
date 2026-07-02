@@ -8444,8 +8444,8 @@ Technical debt added:
 Technical debt resolved:
 - Credential readiness now proves the mobile dev credential generator matches the current canonical scope requirements before server-backed Samsung proof attempts.
 Result: Passed Cycle 184 QA. Credential scope readiness and combined Samsung decision harness pass in expected-blocked mode.
-Commit: Pending.
-Merged: Pending.
+Commit: `a491432` (`Verify mobile credential scopes in readiness`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `a8a6acc`.
 Next cycle: Continue toward final DoD by adding profile-sync server proof fixtures or continuing backend-backed trading parity that can be unit-tested without a live local backend.
 Harnesses run:
 - Mobile Credential Readiness Harness
