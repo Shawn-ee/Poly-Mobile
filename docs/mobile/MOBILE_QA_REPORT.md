@@ -3679,3 +3679,27 @@ Bugs:
 - None in final run.
 Visual QA:
 - No app screenshot cycle; this is decision-report normalization for autonomous recovery.
+
+### Cycle 171
+
+Date: 2026-07-01
+Device: Samsung S23 via Expo Go
+Build/run command:
+- `npm.cmd run smoke:samsung:account-preferences` in `mobile/`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Account Preferences now shows the current trading mode and the Samsung smoke verifies fake-token mode is visible.
+Harness evidence:
+- `docs/mobile/harness/cycle-171-holiwyn-account-preferences.xml`
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-171-holiwyn-account-preferences.png`
+Structured findings:
+- Account Preferences includes `Trading mode: Fake-token mock`.
+- Existing `Fake-token mode only` safety line remains visible.
+- Samsung smoke uses mock fallback because backend health is unavailable.
+Unit evidence:
+- Mobile API/service suite: 9 files, 40 tests passed.
+Bugs:
+- First Samsung smoke failed because the new row was below the first viewport; fixed by scrolling the Account Preferences smoke before asserting lower rows.
+Visual QA:
+- Samsung S23 screenshot captured after scrolling Account Preferences.
