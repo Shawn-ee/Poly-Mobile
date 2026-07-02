@@ -9394,6 +9394,29 @@ Notes:
 Commit: 2b4b2ff
 Merge: bb0d031
 
+### Cycle 210
+
+Date: 2026-07-02
+Branch: mobile/cycle-210
+Status: Verified and locally merged.
+Objective: Harden the Samsung filled-order proof by asserting the pre-submit ticket estimate matches the backend-filled share result.
+Implemented:
+- Extended the Samsung server filled-order smoke to assert `200 shares` on the ticket before order submission.
+Verification:
+- `npm.cmd run test:mobile-api` passed with 15 files and 65 tests.
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run mobile:server-order-fill-liquidity` passed with 500 resting maker shares and a 250-share readiness threshold.
+- `npm.cmd run smoke:samsung:server-order-filled` passed on Samsung S23 through Expo Go with backend health `ok`.
+Evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+- `docs/mobile/harness/cycle-current-mobile-server-order-fill-liquidity.json`.
+Notes:
+- This converts the Cycle 209 economics correction into a stronger repeatable device harness: the ticket estimate and filled execution must agree.
+Commit: pending
+Merge: pending
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

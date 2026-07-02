@@ -468,7 +468,7 @@ try {
     if ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerOpenOrderCancel) {
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-success-ticket.png"
       $serverOrderSuccessTicketHierarchy = $homeHierarchy
-      Assert-HierarchyContains -Path $serverOrderSuccessTicketHierarchy -Expected @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "Estimated cost", "Est. fee", "0 USDT", "Est. shares", "Avg price", "Place buy order")
+      Assert-HierarchyContains -Path $serverOrderSuccessTicketHierarchy -Expected @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "Estimated cost", "Est. fee", "0 USDT", "Est. shares", "200 shares", "Avg price", "Place buy order")
       Invoke-TapHierarchyNode -Path $serverOrderSuccessTicketHierarchy -Identifier "place-mock-order"
       $serverOrderSuccessExpected = if ($ServerOrderFilled) {
         @("Portfolio", "Server portfolio synced", "Order placed", "SERVER - Buy - YES - FILLED", "Filled shares", "200.00", "Remaining", "0.00")
