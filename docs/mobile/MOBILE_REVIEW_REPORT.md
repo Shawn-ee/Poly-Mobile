@@ -2643,3 +2643,20 @@ Findings:
 - Samsung future-list order smoke, mobile typecheck, and mobile API/service tests passed.
 Decision: Approve Cycle 178 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 179
+
+Date: 2026-07-01
+Branch: mobile/cycle-179
+Reviewer: Lead/Reviewer pass
+Scope: Persisted ticket slippage defaults, Account visibility, Samsung proof hardening, and header polish.
+Findings:
+- P1: Ticket defaults now include slippage, so selecting 2% in the Trade Ticket persists locally with amount and side.
+- P1: Account Preferences now shows the saved ticket slippage in the `account-ticket-defaults` row.
+- P1: Samsung future-list order smoke verifies the ticket/order path, navigates to Account, and asserts `Ticket default: Buy 100 USDT - Slippage 2%`.
+- P1: The Samsung harness no longer assumes a clean 1% default when package state is intentionally retained; it accepts persisted state and still verifies final 2% selection.
+- P2: Header text now uses single-line fitted labels so `Holiwyn` does not wrap on the Samsung Account proof.
+- P2: Slippage preference remains local-only and is not yet included in server profile preference sync.
+- Samsung future-list order smoke, mobile typecheck, and mobile API/service tests passed.
+Decision: Approve Cycle 179 for local commit/merge after scoped diff review.
+Merge approved: Yes

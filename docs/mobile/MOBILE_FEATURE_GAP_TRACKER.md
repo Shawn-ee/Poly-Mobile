@@ -209,3 +209,4 @@ Status:
 | GAP-187 | Trading ticket | Ticket estimated fee row | P1 | Yes | Verified | Cycle 176 adds a visible `Est. fee` row with a 0 USDT fake-token estimate and verifies it on the Samsung S23 future-order flow. |
 | GAP-188 | Trading ticket | Ticket slippage setting | P1 | Yes | Verified | Cycle 177 adds a visible `Slippage` row with a 1% setting and verifies it on the Samsung S23 future-order flow. |
 | GAP-189 | Trading ticket | Adjustable ticket slippage selector | P1 | Yes | Verified | Cycle 178 turns the static slippage row into 0.5%/1%/2% controls and verifies selecting 2% on the Samsung S23 future-order flow. |
+| GAP-190 | Account/Profile | Persisted ticket slippage default | P1 | Yes | Verified | Cycle 179 persists selected ticket slippage locally, shows it in Account ticket defaults, hardens Samsung proof for persisted selector state, and fixes header brand wrapping. |
