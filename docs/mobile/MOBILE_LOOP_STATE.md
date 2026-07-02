@@ -9642,6 +9642,31 @@ Notes:
 Commit: 664d53e
 Merge: bea9d62
 
+### Cycle 219
+
+Date: 2026-07-02
+Branch: mobile/cycle-219-open-order-shares-notional
+Status: Verified and locally merged.
+Objective: Separate open-order remaining shares from order value/notional in Portfolio.
+Implemented:
+- Added explicit `remainingShares` and `orderValue` fields to mobile open-order mapping so backend `remaining` is treated as shares.
+- Updated Portfolio open-order cards to show order value as USDT and remaining quantity as shares.
+- Updated local cancel receipts and backend canceled-order history mapping to use remaining shares times limit price for the displayed USDT amount.
+- Hardened the Samsung server open-order cancel proof with a smoke-only low-price, small-size order path so the proof remains open instead of accidentally filling against live liquidity.
+Verification:
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:server-open-order-cancel` passed on Samsung S23 with isolated user `holiwyn-mobile-proof-cycle-219-open-2`.
+Evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml`.
+Notes:
+- The successful S23 proof shows the open order as `Order value 1 USDT` and `Remaining: 100 shares`, then canceled activity as `1 USDT`.
+Commit: TBD
+Merge: TBD
+
 ### Heartbeat After Cycle 217
 
 Completed cycles: 215, 216, 217.

@@ -111,6 +111,8 @@ describe("portfolio snapshot service", () => {
           status: "OPEN",
           price: 0.28,
           remaining: 60,
+          remainingShares: 60,
+          orderValue: 16.8,
         },
         {
           id: "sell-order-1",
@@ -120,6 +122,8 @@ describe("portfolio snapshot service", () => {
           status: "OPEN",
           price: 0.47,
           remaining: 25,
+          remainingShares: 25,
+          orderValue: 11.75,
         },
       ],
     });

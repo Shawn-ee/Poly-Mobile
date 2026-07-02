@@ -50,6 +50,8 @@ export type OpenOrder = {
   status: string;
   price: number;
   remaining: number;
+  remainingShares?: number;
+  orderValue?: number;
 };
 
 export type OrderConfirmation = {
@@ -91,6 +93,7 @@ type PortfolioCopy = {
   remaining: string;
   limitPrice: string;
   orderValue: string;
+  shares: string;
   impliedOdds: string;
   filledShares: string;
   executionPrice: string;
@@ -110,6 +113,10 @@ type PortfolioCopy = {
 export { portfolioPositionValue };
 
 const estimatedPnl = estimatedPositionPnl;
+
+const openOrderRemainingShares = (order: OpenOrder) => order.remainingShares ?? order.remaining;
+
+const openOrderValue = (order: OpenOrder) => order.orderValue ?? openOrderRemainingShares(order) * order.price;
 
 const investedTotal = (positions: Position[]) => positions.reduce((total, position) => total + position.amount, 0);
 
@@ -204,11 +211,11 @@ export function Portfolio({
               </View>
               <View style={styles.openOrderMetricBox}>
                 <Text style={styles.openOrderMetricLabel}>{t.orderValue}</Text>
-                <Text style={styles.openOrderMetricValue}>{money(order.remaining)}</Text>
+                <Text style={styles.openOrderMetricValue}>{money(openOrderValue(order))}</Text>
               </View>
             </View>
             <Text style={styles.openOrderRemaining}>
-              {t.remaining}: {money(order.remaining)}
+              {t.remaining}: {openOrderRemainingShares(order).toLocaleString(undefined, { maximumFractionDigits: 2 })} {t.shares}
             </Text>
           </View>
         ))}
