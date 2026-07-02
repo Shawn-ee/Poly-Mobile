@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-243-event-outcome-buy-affordance
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Make Event Detail outcome buttons communicate the trade action before users open a ticket.
 Implemented:
 - Added localized Buy copy beside the displayed odds on Event Detail outcome buttons.
@@ -10135,8 +10135,8 @@ Verification:
 Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
-Commit: pending
-Merge: pending
+Commit: 78f5561
+Merge: 7144dc7
 
 ### Cycle 242
 
