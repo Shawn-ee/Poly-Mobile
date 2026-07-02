@@ -3176,3 +3176,17 @@ Findings:
 - Mobile API/service tests, mobile typecheck, direct order probe, sell liquidity proof, and Samsung server sell-fill smoke passed.
 Decision: Approve Cycle 213 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 214
+
+Date: 2026-07-02
+Branch: mobile/cycle-214
+Reviewer: Lead/Reviewer pass
+Scope: Server-order failure detail on the mobile trade ticket.
+Findings:
+- P1: The ticket now separates the stable localized retry text from the raw server/network detail, improving QA recovery without replacing user-facing copy.
+- P1: The detail line has a stable `ticket-order-error-detail` id and is covered by the Samsung server-order-failure smoke.
+- P2: The detail is intentionally plain backend/network text for the current development build; production-friendly error taxonomy can be refined later.
+- Mobile API/service tests, mobile typecheck, and Samsung server-order-failure smoke passed.
+Decision: Approve Cycle 214 for local commit/merge after scoped diff review.
+Merge approved: Yes

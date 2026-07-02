@@ -9500,6 +9500,41 @@ Notes:
 Commit: 9094669
 Merge: a2d1d46
 
+### Cycle 214
+
+Date: 2026-07-02
+Branch: mobile/cycle-214
+Status: Verified; pending local merge.
+Objective: Surface backend/server order failure detail in the mobile trade ticket for faster QA recovery.
+Implemented:
+- Added a second-line ticket error detail field with stable `ticket-order-error-detail` accessibility/test id.
+- Wired order submission failures to keep the localized retry message while showing the thrown server/network detail when available.
+- Updated the Samsung server-order-failure smoke to assert the detail field exists.
+Verification:
+- `npm.cmd run test:mobile-api` passed with 15 files and 65 tests.
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run smoke:samsung:server-order-failure` passed on Samsung S23 through Expo Go.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-error.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-error.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-smoke.png`.
+Notes:
+- The Samsung proof showed localized `Order failed. Try again.` plus detail text `Aborted` from the unreachable server request.
+Commit: pending
+Merge: pending
+
+### Heartbeat After Cycle 214
+
+Completed cycles: 212, 213, 214.
+Verified progress: Sell activity now distinguishes `Sold` from resolved `Closed`, server sell-fill proof users can be isolated per cycle, and ticket order failures now show backend/network detail for faster harness recovery.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung real-device QA, server quote/order/Portfolio sync, server open-order cancel, backend-derived filled/canceled activity, latest activity/order previews, buy-fill proof, sell-fill proof, isolated proof-user support, and clearer server-order failure display.
+Current backend state: Local Docker/Postgres backend supports mobile API-key Portfolio/profile/order flows, guarded canonical order create/cancel, matching, complete-set minting for dev proofs, recent-trade/canceled-order history, and deterministic buy/sell fill liquidity harnesses.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: Server proof account aggregates can still look odd because complete-set minting creates non-user-facing proof inventory; future cycles should focus assertions on latest order/activity or add a dedicated user-facing proof snapshot.
+Next three likely cycles: improve server Portfolio proof snapshots, add richer orderbook/open-order detail parity, and continue World Cup market detail/trading parity.
+
 ### Heartbeat After Cycle 211
 
 Completed cycles: 209, 210, 211.

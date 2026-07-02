@@ -55,6 +55,7 @@ export function TradeTicket({
   ticket,
   balance,
   orderError,
+  orderErrorDetail,
   tradingMode,
   defaultAmount,
   defaultSide,
@@ -68,6 +69,7 @@ export function TradeTicket({
   ticket: Ticket | null;
   balance: number;
   orderError: string | null;
+  orderErrorDetail?: string | null;
   tradingMode: "mock" | "server";
   defaultAmount: string;
   defaultSide: "buy" | "sell";
@@ -237,7 +239,14 @@ export function TradeTicket({
           {orderError && (
             <View accessibilityLabel="ticket-order-error" testID="ticket-order-error" style={styles.errorCard}>
               <Ionicons name="alert-circle-outline" color="#fbbf24" size={18} />
-              <Text style={styles.errorText}>{orderError}</Text>
+              <View style={styles.errorTextBlock}>
+                <Text style={styles.errorText}>{orderError}</Text>
+                {orderErrorDetail && (
+                  <Text accessibilityLabel="ticket-order-error-detail" testID="ticket-order-error-detail" style={styles.errorDetailText}>
+                    {orderErrorDetail}
+                  </Text>
+                )}
+              </View>
             </View>
           )}
           <Pressable accessibilityLabel="place-mock-order" testID="place-mock-order" style={styles.primaryButton} onPress={() => placeOrder(numericAmount, side)}>
@@ -284,7 +293,9 @@ const styles = StyleSheet.create({
   slippageText: { color: "#cbd5e1", fontSize: 12, fontWeight: "900" },
   slippageTextActive: { color: "#ffffff" },
   errorCard: { flexDirection: "row", alignItems: "center", gap: 8, padding: 10, borderRadius: 10, backgroundColor: "#1f1a0b", borderWidth: 1, borderColor: "#854d0e", marginTop: 12 },
-  errorText: { flex: 1, color: "#fde68a", fontWeight: "800" },
+  errorTextBlock: { flex: 1, gap: 3 },
+  errorText: { color: "#fde68a", fontWeight: "800" },
+  errorDetailText: { color: "#fcd34d", fontSize: 12, fontWeight: "700" },
   primaryButton: { height: 50, borderRadius: 14, alignItems: "center", justifyContent: "center", backgroundColor: "#1d6dff", marginTop: 12 },
   primaryText: { color: "#ffffff", fontSize: 17, fontWeight: "900" },
 });

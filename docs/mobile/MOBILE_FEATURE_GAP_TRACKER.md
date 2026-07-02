@@ -246,3 +246,4 @@ Status:
 | GAP-224 | Portfolio | Server-authoritative post-order refresh | P0 | Yes | Verified | Cycle 211 refreshes Portfolio from backend state after server order submission instead of adding local optimistic positions/balance changes. |
 | GAP-225 | Portfolio | Sold activity execution details | P1 | Yes | Verified | Cycle 212 maps recent backend SELL trades to `Sold` activity with filled shares, execution price, and implied odds, while keeping resolved market history as `Closed`. |
 | GAP-226 | Harness | Isolated mobile proof users | P1 | No | Verified | Cycle 213 lets credential and sell-liquidity helpers target cycle-specific proof users, then verifies Samsung sell-fill against a fresh account with 300 shares and 0 reserved shares. |
+| GAP-227 | Trading ticket | Server failure detail | P1 | No | Verified | Cycle 214 adds a ticket error detail line and verifies on Samsung that server-order failures show both retry copy and backend/network detail. |
