@@ -8951,6 +8951,46 @@ Harnesses run:
 Harness failures:
 - None.
 
+## Cycle 197
+
+Date: 2026-07-02
+Branch: mobile/cycle-197
+Goal: Add scannable server-position detail tiles to Portfolio and prove them on the Samsung S23.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: Server-hydrated Portfolio position cards now show Filled shares and Current price as separate detail tiles below the compact server summary.
+Backend/API changed: No backend route change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/Portfolio.tsx`, `mobile/scripts/smoke.ps1`, `mobile/scripts/smoke-samsung.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run smoke:samsung:server-position-details` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-details-ready.png`
+Harness evidence:
+- Mobile API/service suite passed with 14 files and 58 tests.
+- Mobile typecheck passed.
+- Samsung smoke passed on `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` through Expo host `172.16.200.14`, port `8154`.
+- UI hierarchy evidence captured at `docs/mobile/harness/cycle-current-holiwyn-server-position-details-ready.xml`.
+- The final Samsung rerun reported backend health `ok`, making backend/server readiness a good Cycle 198 target.
+Bugs found:
+- Initial proof captured the screenshot before scrolling to the new detail tiles; fixed the harness to capture after scrolling and reran successfully.
+Technical debt added:
+- The detail proof remains fixture-backed and does not yet prove live authenticated Portfolio hydration.
+Technical debt resolved:
+- Server-style Portfolio positions now show shares/current price in a clearer trading-app layout, with stable Samsung proof selectors.
+Result: Passed Cycle 197 QA. Mobile tests, typecheck, and Samsung server-position detail smoke pass.
+Commit: `PENDING_CYCLE_197_COMMIT` (`Add server position detail tiles`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `PENDING_CYCLE_197_MERGE`.
+Next cycle: Retry backend/server readiness gates now that Docker is running and the latest Samsung smoke saw backend health `ok`.
+Harnesses run:
+- Mobile API/Service Harness
+- Mobile Typecheck Harness
+- Samsung Server Position Details Smoke Harness
+- Review Harness
+Harness failures:
+- First details screenshot was captured before the scroll; fixed and rerun passed.
+
 ### Heartbeat After Cycle 196
 
 Completed cycles: 194, 195, 196.

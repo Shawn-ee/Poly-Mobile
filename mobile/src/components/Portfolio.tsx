@@ -342,6 +342,30 @@ export function Portfolio({
                   {typeof position.currentPrice === "number" ? ` - ${t.currentPrice} ${Math.round(position.currentPrice * 100)}%` : ""}
                 </Text>
               )}
+              {(typeof position.shares === "number" || typeof position.currentPrice === "number") && (
+                <View style={styles.positionServerDetailGrid}>
+                  {typeof position.shares === "number" && (
+                    <View
+                      accessibilityLabel={`position-filled-shares-${position.id}`}
+                      style={styles.positionServerDetailItem}
+                      testID={`position-filled-shares-${position.id}`}
+                    >
+                      <Text style={styles.positionServerDetailLabel}>{t.filledShares}</Text>
+                      <Text style={styles.positionServerDetailValue}>{position.shares.toFixed(2)}</Text>
+                    </View>
+                  )}
+                  {typeof position.currentPrice === "number" && (
+                    <View
+                      accessibilityLabel={`position-current-price-${position.id}`}
+                      style={styles.positionServerDetailItem}
+                      testID={`position-current-price-${position.id}`}
+                    >
+                      <Text style={styles.positionServerDetailLabel}>{t.currentPrice}</Text>
+                      <Text style={styles.positionServerDetailValue}>{Math.round(position.currentPrice * 100)}%</Text>
+                    </View>
+                  )}
+                </View>
+              )}
               <View style={styles.positionActionRow}>
                 <Pressable
                   accessibilityLabel={`position-trade-buy-${position.id}`}
@@ -465,6 +489,10 @@ const styles = StyleSheet.create({
   positionDetailLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },
   positionDetailValue: { color: "#f8fafc", fontSize: 13, fontWeight: "900", marginTop: 5 },
   positionServerMeta: { color: "#93c5fd", fontSize: 12, fontWeight: "800", marginTop: 10 },
+  positionServerDetailGrid: { flexDirection: "row", gap: 8, marginTop: 10 },
+  positionServerDetailItem: { flex: 1, minHeight: 58, padding: 10, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1d4ed8" },
+  positionServerDetailLabel: { color: "#93c5fd", fontSize: 11, fontWeight: "900" },
+  positionServerDetailValue: { color: "#f8fafc", fontSize: 13, fontWeight: "900", marginTop: 5 },
   pnlPositive: { color: "#22c55e" },
   pnlNegative: { color: "#ef4444" },
   positionActionRow: { flexDirection: "row", gap: 8, marginTop: 12 },

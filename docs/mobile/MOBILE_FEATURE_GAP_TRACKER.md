@@ -227,3 +227,4 @@ Status:
 | GAP-205 | Harness | Samsung server close refresh fixture proof | P1 | Yes | Verified | Cycle 194 adds deterministic server-close refresh fixture state and verifies on Samsung that closing a server-style position lands in synced no-position Portfolio history. |
 | GAP-206 | Portfolio | Position re-trade actions | P1 | Yes | Verified | Cycle 195 adds Buy/Sell actions to position cards, resolves positions back to World Cup markets/outcomes, and verifies a Samsung server-position Sell ticket opens correctly. |
 | GAP-207 | Harness | Samsung position Buy re-trade proof | P1 | Yes | Verified | Cycle 196 adds a Samsung/base smoke for Buy from a server-style Portfolio position and verifies the server-mode Buy ticket opens correctly. |
+| GAP-208 | Portfolio | Server position detail tiles | P1 | Yes | Verified | Cycle 197 adds scannable Filled shares and Current price tiles to server-hydrated Portfolio positions and verifies them on the Samsung S23. |
