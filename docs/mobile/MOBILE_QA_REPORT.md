@@ -4767,3 +4767,30 @@ Bugs:
 - Fixed backend recent SELL trades being shown with resolved-history `Closed` economics.
 Visual QA:
 - Passed on Samsung S23 through Expo Go.
+
+### Cycle 213
+
+Date: 2026-07-02
+Device: Samsung S23 via Expo Go, local Docker-backed backend, mobile service unit harness, direct backend probe, and server sell-liquidity harness
+Build/run command:
+- `MOBILE_DEV_USERNAME=holiwyn-mobile-proof-cycle-213 npm.cmd run mobile:dev-credential:dry-run`
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+- Direct `POST /api/orders` SELL probe with isolated proof credentials
+- `MOBILE_DEV_USERNAME=holiwyn-mobile-proof-cycle-213b npm.cmd run mobile:server-sell-fill-liquidity`
+- `npm.cmd run smoke:samsung:server-sell-order-filled` in `mobile/`
+Result: Passed. Samsung sell-fill proof now runs with a cycle-specific proof user instead of the accumulated shared mobile dev account.
+Harness evidence:
+- Initial isolated phone proof failed at the ticket with `Order failed. Try again.`
+- Direct backend probe identified `TRADING_NOT_ALLOWLISTED`.
+- After credential helper hardening, direct SELL order filled and final Samsung proof passed with fresh `holiwyn-mobile-proof-cycle-213b`.
+- Liquidity evidence shows the final proof user started with 300 shares and 0 reserved shares.
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`
+- `docs/mobile/harness/cycle-current-mobile-server-sell-fill-liquidity.json`
+Bugs:
+- Fixed isolated proof users being unable to pass the internal trading gate.
+Visual QA:
+- Passed on Samsung S23 through Expo Go.

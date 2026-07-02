@@ -3161,3 +3161,18 @@ Findings:
 - Mobile API/service tests, mobile typecheck, sell liquidity proof, and Samsung server sell-fill smoke passed.
 Decision: Approve Cycle 212 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 213
+
+Date: 2026-07-02
+Branch: mobile/cycle-213
+Reviewer: Lead/Reviewer pass
+Scope: Isolated mobile proof users for server-mode Samsung sell-fill QA.
+Findings:
+- P1: The dev credential helper now supports cycle-specific usernames and refuses production execution before creating local credentials/fake funding.
+- P1: Generated local proof users are marked as internal trading users, which is required for the guarded canonical order route.
+- P1: The sell-fill liquidity helper now uses the same proof username, so credentials, shares, and phone proof can target the same clean account.
+- P2: The first isolated phone proof failure was recovered through direct backend probing; this validates the Recovery Harness path.
+- Mobile API/service tests, mobile typecheck, direct order probe, sell liquidity proof, and Samsung server sell-fill smoke passed.
+Decision: Approve Cycle 213 for local commit/merge after scoped diff review.
+Merge approved: Yes
