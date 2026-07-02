@@ -8769,8 +8769,8 @@ Technical debt added:
 Technical debt resolved:
 - Server-hydrated Portfolio UI can now be launched deterministically without requiring live backend readiness.
 Result: Passed Cycle 192 QA. Mobile fixture tests and typecheck pass.
-Commit: pending (`Add server portfolio fixture state`).
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `31e5e03` (`Add server portfolio fixture state`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `cab61a3`.
 Next cycle: Use `forceServerPortfolioFixture=1` in a Samsung smoke to prove the synced server Portfolio row, shares/current price copy, and P/L display on-device.
 Harnesses run:
 - Mobile Portfolio Fixture Harness
