@@ -52,6 +52,7 @@ export type OpenOrder = {
   remaining: number;
   remainingShares?: number;
   orderValue?: number;
+  placedAt?: string;
 };
 
 export type OrderConfirmation = {
@@ -93,6 +94,7 @@ type PortfolioCopy = {
   remaining: string;
   limitPrice: string;
   orderValue: string;
+  placed: string;
   shares: string;
   impliedOdds: string;
   filledShares: string;
@@ -227,6 +229,11 @@ export function Portfolio({
             <Text style={styles.openOrderRemaining}>
               {t.remaining}: {openOrderRemainingShares(order).toLocaleString(undefined, { maximumFractionDigits: 2 })} {t.shares}
             </Text>
+            {order.placedAt && (
+              <Text accessibilityLabel={`open-order-placed-${order.id}`} style={styles.openOrderPlaced}>
+                {t.placed}: {order.placedAt}
+              </Text>
+            )}
           </View>
         ))}
       </View>
@@ -578,6 +585,7 @@ const styles = StyleSheet.create({
   openOrderMetricLabel: { color: "#64748b", fontSize: 10, fontWeight: "900" },
   openOrderMetricValue: { color: "#dbeafe", fontSize: 11, fontWeight: "900", marginTop: 5 },
   openOrderRemaining: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },
+  openOrderPlaced: { color: "#64748b", fontSize: 11, fontWeight: "800" },
   cancelOrderButton: { minHeight: 36, minWidth: 92, paddingHorizontal: 10, borderRadius: 8, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
   cancelOrderText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
   activityBlock: { marginTop: 16, padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },

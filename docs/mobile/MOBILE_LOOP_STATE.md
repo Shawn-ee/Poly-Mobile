@@ -9873,6 +9873,28 @@ Notes:
 Commit: c6d5f66
 Merge: 3d049bf
 
+### Cycle 228
+
+Date: 2026-07-02
+Branch: mobile/cycle-228-open-order-time
+Status: Verified; pending local merge.
+Objective: Add backend order placement time to mobile Portfolio open-order cards.
+Implemented:
+- Added optional `placedAt` to mobile `OpenOrder` models.
+- Mapped backend `PortfolioOpenOrderItem.createdAt` into a Central-time display string in `portfolioSnapshotService`.
+- Rendered `Placed: <time>` under remaining shares on open-order cards with English and Simplified Chinese copy.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run mobile:samsung-open-order-cancel-proof -- -Username holiwyn-mobile-proof-cycle-228-open` passed on Samsung S23.
+- Captured hierarchy includes `Placed: Jul 2, 3:31 AM` with `open-order-placed-d507bb62-7764-44cd-9f39-dfaa30d57ac8`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
+- `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
+Commit: pending
+Merge: pending
+
 ### Heartbeat After Cycle 223
 
 Completed cycles: 221, 222, 223.

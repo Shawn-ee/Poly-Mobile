@@ -7,6 +7,18 @@ export type PortfolioSnapshotResult = {
   openOrders: OpenOrder[];
 };
 
+const formatOpenOrderTimestamp = (value: string) => {
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return undefined;
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: "America/Chicago",
+  }).format(parsed);
+};
+
 export const loadPortfolioSnapshot = async (api: PolyApi): Promise<PortfolioSnapshotResult> => {
   const snapshot = await api.getPortfolio();
   return {
@@ -36,6 +48,7 @@ export const loadPortfolioSnapshot = async (api: PolyApi): Promise<PortfolioSnap
       remaining: order.remaining,
       remainingShares: order.remaining,
       orderValue: order.remaining * order.price,
+      placedAt: formatOpenOrderTimestamp(order.createdAt),
     })),
   };
 };
