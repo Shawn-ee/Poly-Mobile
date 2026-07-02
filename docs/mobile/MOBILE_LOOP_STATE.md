@@ -8106,8 +8106,8 @@ Technical debt added:
 Technical debt resolved:
 - None.
 Result: Passed Cycle 176 QA. Samsung future-list order smoke passed with the estimated-fee row visible, mobile typecheck passed, and mobile API/service tests pass.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `f309079` (`Show ticket estimated fee`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `b064589`.
 Next cycle: Cycle 177 should continue ticket/order parity or use backend readiness recovery if Docker/DB/API-key state changes.
 Harnesses run:
 - Samsung Future List Order Smoke Harness
