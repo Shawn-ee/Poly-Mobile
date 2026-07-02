@@ -4364,3 +4364,34 @@ Bugs:
 - Initial proof captured the screenshot before the scroll; harness was corrected and rerun successfully.
 Visual QA:
 - Passed on Samsung S23 through Expo Go.
+
+### Cycle 198
+
+Date: 2026-07-02
+Device: Backend/Docker readiness harness plus Samsung server-proof decision harness
+Build/run command:
+- `npm.cmd run mobile:backend-readiness:summary` from repo root.
+- `npm.cmd run mobile:credential-readiness:summary` from repo root.
+- `npm.cmd run mobile:dev-credential` from repo root.
+- `npm.cmd run gate:server-success` in `mobile/`.
+- `npm.cmd run decision:samsung:server-proof` in `mobile/`.
+Result: Passed. The server-backed Samsung proof decision is now ready.
+Harness evidence:
+- Docker CLI and daemon are reachable outside the sandbox.
+- Local Postgres `poly_postgres` is healthy and reachable at `localhost:5432`.
+- Backend health reports `ok` with DB connected.
+- A local Holiwyn mobile dev credential was created for `holiwyn-mobile-dev`; docs do not store the secret token.
+- Credential readiness reports `readyForServerBackedSamsungProof: true`.
+- Server-success gate reports Docker, DB TCP, and API key ready.
+- Quote readiness found `fixture-2026-fifa-world-cup`, market `1ad00821-d801-4d37-8b12-1ec9d415a8a0`, and 2 quotes.
+- Combined Samsung server-proof decision reports `ready: true` and `decision: run-server-backed-samsung-proof`.
+Screenshot evidence:
+- None; this was a readiness/harness cycle.
+Structured findings:
+- The prior Docker blocker was partly real state and partly harness sensitivity to sandboxed Docker pipe access.
+- The backend readiness script now has a `docker ps` fallback when `docker info` is blocked or overly strict.
+- The next cycle can attempt actual server-backed Samsung visual proof instead of fixture-backed proof.
+Bugs:
+- Credential readiness initially read stale backend readiness because backend and credential summaries were run in parallel. Final verification reran them sequentially.
+Visual QA:
+- No app visual run this cycle.

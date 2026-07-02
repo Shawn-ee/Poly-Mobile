@@ -96,17 +96,37 @@ try {
   if ($dockerAvailable) {
     Write-Host "PASS Docker CLI available: $dockerVersion"
     $summary.dockerCliAvailable = $true
+    $previousErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
     try {
-      docker info --format "{{.ServerVersion}}" *> $null
-      $dockerDaemonAvailable = $LASTEXITCODE -eq 0
-      if ($dockerDaemonAvailable) {
-        Write-Host "PASS Docker daemon is reachable."
-        $summary.dockerDaemonReachable = $true
+      $dockerInfoOutput = docker info --format "{{.ServerVersion}}" 2>&1
+      $dockerInfoExitCode = $LASTEXITCODE
+      if ($dockerInfoExitCode -eq 0) {
+        $dockerDaemonAvailable = $true
       } else {
-        Write-Host "WARN Docker daemon is not reachable. Start Docker Desktop before starting local Postgres."
+        $dockerPsOutput = docker ps --format "{{.ID}}" 2>&1
+        $dockerPsExitCode = $LASTEXITCODE
+        $dockerDaemonAvailable = $dockerPsExitCode -eq 0
       }
-    } catch {
+    } finally {
+      $ErrorActionPreference = $previousErrorActionPreference
+    }
+
+    if ($dockerDaemonAvailable) {
+      if ($dockerInfoExitCode -eq 0) {
+        Write-Host "PASS Docker daemon is reachable."
+      } else {
+        Write-Host "PASS Docker daemon is reachable through docker ps fallback."
+      }
+      $summary.dockerDaemonReachable = $true
+    } else {
       Write-Host "WARN Docker daemon is not reachable. Start Docker Desktop before starting local Postgres."
+      if ($dockerInfoOutput) {
+        Write-Host ($dockerInfoOutput | Out-String).Trim()
+      }
+      if ($dockerPsOutput) {
+        Write-Host ($dockerPsOutput | Out-String).Trim()
+      }
     }
   }
 } catch {
@@ -132,9 +152,15 @@ if ($StartDb) {
 }
 
 if ($dockerAvailable -and $dockerDaemonAvailable) {
-  docker compose -f $ComposeFile ps db
-  if ($LASTEXITCODE -ne 0) {
-    Write-Host "WARN Could not inspect docker compose db service."
+  $previousErrorActionPreference = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+  try {
+    docker compose -f $ComposeFile ps db
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "WARN Could not inspect docker compose db service."
+    }
+  } finally {
+    $ErrorActionPreference = $previousErrorActionPreference
   }
 }
 

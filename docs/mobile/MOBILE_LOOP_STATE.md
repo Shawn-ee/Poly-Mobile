@@ -8991,6 +8991,52 @@ Harnesses run:
 Harness failures:
 - First details screenshot was captured before the scroll; fixed and rerun passed.
 
+## Cycle 198
+
+Date: 2026-07-02
+Branch: mobile/cycle-198
+Goal: Recover server-backed Samsung proof readiness now that Docker/Postgres are running.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None.
+Backend/API changed: No route change. Local mobile dev credential created for server-backed fake-token proof.
+Database/schema changed: No schema change. Local Postgres was used to create/fund `holiwyn-mobile-dev`.
+Files changed: `scripts/mobile_backend_readiness.ps1`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run mobile:backend-readiness:summary` from repo root.
+- `npm.cmd run mobile:credential-readiness:summary` from repo root.
+- `npm.cmd run mobile:dev-credential` from repo root.
+- `npm.cmd run gate:server-success` in `mobile/`.
+- `npm.cmd run decision:samsung:server-proof` in `mobile/`.
+Screenshots captured: None.
+Harness evidence:
+- Docker CLI and daemon are reachable outside the sandbox.
+- Local Postgres `poly_postgres` is healthy and reachable at `localhost:5432`.
+- Backend health reports `ok` and DB connected.
+- Credential readiness reports `readyForServerBackedSamsungProof: true`.
+- Server-success gate reports Docker, DB TCP, and API key ready.
+- Quote readiness reports backend health, World Cup events, event detail, and market quote availability.
+- Combined Samsung server-proof decision reports `ready: true` and `decision: run-server-backed-samsung-proof`.
+Bugs found:
+- Credential readiness initially read stale backend readiness because backend and credential summaries were run in parallel; rerunning sequentially fixed the evidence.
+- The backend readiness script used `docker info` as its only daemon probe, which can be too strict under local pipe-permission behavior. Added a `docker ps` fallback.
+Technical debt added:
+- The actual server-backed Samsung visual trade proof is still pending; Cycle 198 only proves the gates are ready.
+Technical debt resolved:
+- Server-backed Samsung proof is no longer blocked by Docker, DB TCP, missing credential, quote readiness, or Samsung reachability.
+Result: Passed Cycle 198 readiness. The next cycle should run the actual server-backed Samsung proof.
+Commit: `PENDING_CYCLE_198_COMMIT` (`Recover server proof readiness`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `PENDING_CYCLE_198_MERGE`.
+Next cycle: Run successful server-backed Samsung proof using the generated local dev credential and capture visual evidence.
+Harnesses run:
+- Docker/Backend Readiness Harness
+- Mobile Credential Readiness Harness
+- Server Success Gate Harness
+- Samsung Quote Proof Decision Harness
+- Review Harness
+Harness failures:
+- Initial sandboxed Docker/npm probe could not access the Docker pipe; reran required Docker gates outside the sandbox.
+- Initial parallel summary run produced stale credential evidence; reran sequentially.
+
 ### Heartbeat After Cycle 196
 
 Completed cycles: 194, 195, 196.
