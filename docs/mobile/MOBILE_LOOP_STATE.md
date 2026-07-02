@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-244-event-outcome-default-side-label
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Keep Event Detail outcome button action copy aligned with the ticket side that will open.
 Implemented:
 - Passed the current ticket default side into Event Detail.
@@ -10136,8 +10136,19 @@ Verification:
 Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
-Commit: pending
-Merge: pending
+Commit: 1ab35c5
+Merge: 9275ed2
+
+### Heartbeat After Cycle 244
+
+Completed cycles: 242, 243, 244.
+Verified progress: Event Detail outcome rows now carry richer pre-ticket trading context: visible liquidity-size depth, explicit Buy/odds action copy, and default-side-aware action labels. The Samsung S23 proof continues to validate the Mexico match-winner card with depth, liquidity, and action affordance visible together.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token and server-mode trading, Samsung real-device QA, server quote/order/Portfolio sync, backend-derived filled/canceled activity with side/share/price detail, open-order cards with notional/remaining value/original size/fill progress/placed time, Portfolio count tiles, Account exposure rows, latest activity/order previews, proof wrappers, and much clearer Event Detail market/outcome depth before ticket open.
+Current backend state: Local Docker/Postgres backend supports mobile API-key Portfolio/profile/order flows, canonical order create/cancel, matching, complete-set mint cost basis, recent-trade/canceled-order history, repeatable World Cup seeding/liquidity for mobile proofs, and proof-noise reporting/gating.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go for proof flows. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: Expo Go remains LAN/runtime dependent; proof state remains noisy from repeated autonomous orders; Event Detail sell-default behavior is wired by prop and typecheck but not yet separately proven with a forced sell-default visual smoke.
+Next three likely cycles: add a sell-default Event Detail proof path, continue market/outcome depth parity, and add more ticket-open consistency assertions from Event Detail rows.
 
 ### Cycle 243
 
