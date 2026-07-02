@@ -7537,8 +7537,8 @@ Technical debt added:
 Technical debt resolved:
 - Futures cards no longer depend only on local seeded probabilities when server quote endpoints are available.
 Result: Passed Cycle 162 QA. Mobile typecheck and mobile API/service tests pass.
-Commit: Pending.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `dfa84eb` (`Refresh mobile futures from server quotes`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `64b7a48`.
 Next cycle: Cycle 163 should improve server-mode quote/order proof harnessing or retry backend readiness evidence.
 Harnesses run:
 - Mobile Typecheck Harness
