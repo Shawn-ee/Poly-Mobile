@@ -13,6 +13,7 @@ param(
   [switch]$AccountProfileSyncError,
   [switch]$ServerUnavailable,
   [switch]$ServerOrderFailure,
+  [switch]$ServerOrderSuccess,
   [switch]$ServerPortfolioFixture,
   [switch]$ServerCloseFixture,
   [switch]$ServerPositionTrade,
@@ -77,6 +78,28 @@ if ($FutureListOrder) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerUnavailable -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($ServerOrderFailure) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerOrderFailure -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
+} elseif ($ServerOrderSuccess) {
+  if (-not $env:EXPO_PUBLIC_API_KEY) {
+    throw "EXPO_PUBLIC_API_KEY is required for Samsung server order success smoke."
+  }
+  $previousOrderMode = $env:EXPO_PUBLIC_ORDER_MODE
+  $previousApiBaseUrl = $env:EXPO_PUBLIC_API_BASE_URL
+  $env:EXPO_PUBLIC_ORDER_MODE = "server"
+  $env:EXPO_PUBLIC_API_BASE_URL = "http://${resolvedExpoHost}:3000"
+  try {
+    & "$PSScriptRoot\smoke.ps1" -Deep -ServerOrderSuccess -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
+  } finally {
+    if ($null -eq $previousOrderMode) {
+      Remove-Item Env:\EXPO_PUBLIC_ORDER_MODE -ErrorAction SilentlyContinue
+    } else {
+      $env:EXPO_PUBLIC_ORDER_MODE = $previousOrderMode
+    }
+    if ($null -eq $previousApiBaseUrl) {
+      Remove-Item Env:\EXPO_PUBLIC_API_BASE_URL -ErrorAction SilentlyContinue
+    } else {
+      $env:EXPO_PUBLIC_API_BASE_URL = $previousApiBaseUrl
+    }
+  }
 } elseif ($ServerPortfolioFixture) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerPortfolioFixture -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($ServerCloseFixture) {

@@ -9070,6 +9070,46 @@ Open blockers: None for autonomous progress. Successful server-backed device ord
 Risks: Successful authenticated order execution is still unproven on device; Docker daemon/local DB are currently unavailable; Expo Go proof still depends on LAN reachability.
 Next three likely cycles: add a strict server-success gate driven by readiness JSON, improve credential-readiness reporting, and continue backend-backed order/history parity work that can be unit-tested without a running DB.
 
+### Cycle 199
+
+Date: 2026-07-02
+Branch: mobile/cycle-199
+Status: Verified on branch; pending local merge stamp.
+Objective: Prove a successful server-backed fake-token order on Samsung S23.
+Implemented:
+- Added a server-order proof launch path that opens a real backend World Cup ticket instead of mock France fixture ids.
+- Hardened server quote normalization so positive tiny quotes stay visible and zero `midPrice` falls back to bid/ask midpoint.
+- Hardened World Cup event normalization so zero backend `price` does not override positive bid/ask data.
+- Prevented empty quote responses from overwriting valid event prices with zero-probability ticket math.
+- Cleared Event Detail after successful order placement so Portfolio receipt is visible.
+- Added Samsung and local smoke commands for `server-order-success`.
+Verification:
+- `npm.cmd run test:mobile-api` passed with 15 files and 62 tests.
+- `npm.cmd run typecheck` passed in `mobile/`.
+- Backend health reported `ok` with DB connected.
+- Direct local backend order probe returned 200 and created an `OPEN` limit order.
+- `npm.cmd run smoke:samsung:server-order-success` passed on Samsung S23 through Expo Go.
+Evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`
+Notes:
+- The S23 Portfolio receipt shows `SERVER - Buy - YES - OPEN`, `Filled shares 0.00`, `Exec price 50%`, and `Remaining 100.00`.
+- Portfolio snapshot sync still reports unavailable in this proof; order submission and receipt display are verified, snapshot sync remains a follow-up.
+Commit: PENDING
+Merge: PENDING
+
+### Heartbeat After Cycle 199
+
+Completed cycles: 197, 198, 199.
+Verified progress: Portfolio server positions now show scannable detail tiles, Docker/Postgres/API-key readiness recovered to green, and Samsung now proves a successful server-backed fake-token order receipt in Holiwyn.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, local persistence, market group counts, outcome/ticket odds, potential profit, open-order economics, latest-order execution details, timestamped order history, server position details, position re-trade actions, and a Samsung-proven local server-order receipt.
+Current backend state: Local Docker/Postgres backend is healthy. Trading beta can be enabled for local fake-token proof with the Holiwyn mobile dev user allowlisted. Direct order submission returned 200 and created an OPEN limit order.
+Device strategy: Samsung S23 remains the primary Holiwyn visual QA and server-backed proof target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: Portfolio snapshot/profile sync still reports unavailable on the S23 proof; server order is OPEN with no fill, so matching/fill proof remains separate; temporary local trading-beta env must be kept controlled.
+Next three likely cycles: fix authenticated Portfolio/profile sync on Samsung, prove server open-order cancellation from the real receipt, and add a filled-order/matching proof once local liquidity is prepared.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

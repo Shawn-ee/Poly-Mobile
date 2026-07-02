@@ -20,6 +20,23 @@ const asProbability = (value: string | number | null | undefined, index: number,
   return Math.max(1, Math.min(99, Math.round(parsed * 100)));
 };
 
+const firstPositivePrice = (...values: (string | number | null | undefined)[]) => {
+  for (const value of values) {
+    const parsed = typeof value === "number" ? value : Number(value);
+    if (Number.isFinite(parsed) && parsed > 0) return parsed;
+  }
+  return null;
+};
+
+const outcomeProbabilityPrice = (outcome: BackendOutcome) => {
+  const price = firstPositivePrice(outcome.price);
+  if (price !== null) return price;
+  const bid = firstPositivePrice(outcome.bestBid);
+  const ask = firstPositivePrice(outcome.bestAsk);
+  if (bid !== null && ask !== null) return (bid + ask) / 2;
+  return ask ?? bid ?? outcome.price;
+};
+
 const asTitleCase = (value: string | null | undefined, fallback: string) => {
   const clean = (value || fallback).replace(/[_-]+/g, " ").trim();
   if (!clean) return fallback;
@@ -61,7 +78,7 @@ const normalizeOutcome = (outcome: BackendOutcome, index: number, total: number)
   id: outcome.id,
   label: outcome.label || outcome.name || `Outcome ${index + 1}`,
   zhLabel: zhPassthrough(outcome.label || outcome.name || `选项 ${index + 1}`),
-  probability: asProbability(outcome.price ?? outcome.bestAsk ?? outcome.bestBid, index, total),
+  probability: asProbability(outcomeProbabilityPrice(outcome), index, total),
   color: COLORS[index % COLORS.length],
 });
 

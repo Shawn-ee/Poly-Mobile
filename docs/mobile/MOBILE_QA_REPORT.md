@@ -4395,3 +4395,35 @@ Bugs:
 - Credential readiness initially read stale backend readiness because backend and credential summaries were run in parallel. Final verification reran them sequentially.
 Visual QA:
 - No app visual run this cycle.
+
+### Cycle 199
+
+Date: 2026-07-02
+Device: Samsung S23 via Expo Go, local Docker-backed backend, and mobile service unit harness
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run smoke:samsung:server-order-success` in `mobile/`
+Result: Passed. Samsung now proves a successful server-backed fake-token order receipt in Portfolio.
+Harness evidence:
+- Mobile API/service suite passed with 15 files and 62 tests.
+- Mobile typecheck passed.
+- Backend health reports `ok` with DB connected.
+- Local dev server was restarted with temporary trading-beta settings for the fake-token proof.
+- A direct local order probe returned 200 with an `OPEN` order before the final Samsung run.
+- Samsung smoke passed on `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` through Expo host `172.16.200.14`, port `8155`.
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`
+Structured findings:
+- The ticket renders server mode, usable bid/ask depth, 200 estimated shares, 0.50 USDT average price, and 2.0x implied odds.
+- The Portfolio receipt shows `Order placed`, `SERVER - Buy - YES - OPEN`, `Filled shares 0.00`, `Exec price 50%`, and `Remaining 100.00`.
+- Empty quote responses no longer overwrite valid backend event prices with zero-probability ticket math.
+- Successful order navigation now clears Event Detail so Portfolio is visible after submit.
+Bugs:
+- Fixed zero-share ticket math caused by empty/zero quote overwrites.
+- Fixed successful order navigation leaving Event Detail above the Portfolio tab.
+- Tightened the Samsung proof to assert the real `OPEN` order receipt instead of requiring a green portfolio snapshot sync banner.
+Visual QA:
+- Passed on Samsung S23 through Expo Go.
