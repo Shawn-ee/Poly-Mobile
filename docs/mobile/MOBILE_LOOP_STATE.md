@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-245-event-detail-sell-default-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Prove Event Detail outcome action labels switch to Sell when the ticket default side is Sell.
 Implemented:
 - Added a `forceMexicoEcuadorDetailSellDefault=1` launch flag that opens Mexico/Ecuador Event Detail with Sell ticket defaults.
@@ -10138,8 +10138,8 @@ Verification:
 Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
-Commit: pending
-Merge: pending
+Commit: 18f5182
+Merge: 5e57ae1
 
 ### Cycle 244
 
