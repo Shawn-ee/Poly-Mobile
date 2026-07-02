@@ -9391,8 +9391,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
 Notes:
 - This preserves the user-facing amount as USDT while making the backend order size match the ticket's own estimated shares row.
-Commit: pending
-Merge: pending
+Commit: 2b4b2ff
+Merge: bb0d031
 
 ### Heartbeat After Cycle 142
 
