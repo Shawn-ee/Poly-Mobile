@@ -113,6 +113,7 @@ describe("portfolio snapshot service", () => {
           remaining: 60,
           remainingShares: 60,
           orderValue: 16.8,
+          placedAt: "Jun 5, 9:00 AM",
         },
         {
           id: "sell-order-1",
@@ -124,6 +125,7 @@ describe("portfolio snapshot service", () => {
           remaining: 25,
           remainingShares: 25,
           orderValue: 11.75,
+          placedAt: "Jun 6, 9:00 AM",
         },
       ],
     });
