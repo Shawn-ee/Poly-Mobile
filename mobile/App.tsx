@@ -36,7 +36,7 @@ import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 import { appendUniqueActivity, cancelOpenOrderOnServer, openOrderCanceledActivity } from "./src/services/openOrderService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
-import { applyTicketQuoteToOutcome, applyTicketQuotesToMarket, loadTicketQuotes } from "./src/services/quoteService";
+import { applyTicketQuoteToOutcome, applyTicketQuotesToEvent, applyTicketQuotesToMarket, loadTicketQuotes } from "./src/services/quoteService";
 
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
 const DEFAULT_API_KEY = process.env.EXPO_PUBLIC_API_KEY || "";
@@ -448,7 +448,26 @@ export default function App() {
       );
       const normalized = details.filter((event): event is Event => Boolean(event));
       if (mounted.current && normalized.length > 0) {
-        setEvents(normalized);
+        if (ORDER_MODE !== "server") {
+          setEvents(normalized);
+          return;
+        }
+        const quotedEvents = await Promise.all(
+          normalized.map(async (event) => {
+            const quotesByMarketId = new Map();
+            await Promise.all(
+              event.markets.map(async (market) => {
+                try {
+                  quotesByMarketId.set(market.id, await loadTicketQuotes(api, market.id));
+                } catch {
+                  // Keep the event payload odds when a market quote endpoint is unavailable.
+                }
+              }),
+            );
+            return applyTicketQuotesToEvent(event, quotesByMarketId);
+          }),
+        );
+        if (mounted.current) setEvents(quotedEvents);
       }
     } catch {
       if (mounted.current) setEvents(worldCupEvents);
