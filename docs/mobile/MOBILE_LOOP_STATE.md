@@ -68,8 +68,8 @@ Technical debt added:
 Technical debt resolved:
 - Samsung QA now has a named APK install/launch harness and machine-readable readiness summaries instead of only documentation.
 Result: Passed Milestone C harness transition. Android preview APK configuration is ready, Samsung device visibility is checked, and missing APK is recorded as a clean blocker.
-Commit: pending.
-Merged: pending.
+Commit: cycle branch HEAD (`Add Samsung APK smoke lane`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Milestone D, run a final parity sweep against the mobile Definition of Done.
 Harnesses run:
 - Development Build/APK Harness
