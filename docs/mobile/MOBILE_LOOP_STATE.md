@@ -9921,7 +9921,7 @@ Merge: 2459713
 
 Date: 2026-07-02
 Branch: mobile/cycle-230-open-order-fill-progress
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Show open-order fill progress on mobile Portfolio open-order cards.
 Implemented:
 - Derived filled shares from original order size minus remaining shares on mobile `OpenOrder` rows.
@@ -9936,8 +9936,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
 - `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
-Commit: pending
-Merge: pending
+Commit: 10170ef
+Merge: 1f0e09d
 
 ### Heartbeat After Cycle 229
 
