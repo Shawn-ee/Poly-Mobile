@@ -7898,8 +7898,8 @@ Technical debt added:
 Technical debt resolved:
 - QA can now see the current mobile trading mode inside the app instead of inferring it from build variables or docs.
 Result: Passed Cycle 171 QA. Samsung Account Preferences smoke passed, mobile typecheck passed, and mobile API/service tests pass.
-Commit: cycle branch HEAD (`Show account trading mode`)
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `d8696fe` (`Show account trading mode`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `c4ff67f`.
 Next cycle: Cycle 172 should continue product-facing proof that does not require live backend readiness or improve server-mode status clarity.
 Harnesses run:
 - Samsung Account Preferences Smoke Harness
