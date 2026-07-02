@@ -10118,6 +10118,44 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 267
+
+Date: 2026-07-02
+Branch: mobile/cycle-267-server-open-order-depth-cancel-proof
+Status: Verified and locally merged.
+Objective: Verify the server open-order/cancel path still works with backend quote-size ticket depth and scroll-aware submit behavior.
+Implemented:
+- Reused the Cycle 265 server ticket depth-size assertion for the open-order proof path.
+- Captured refreshed Samsung evidence for a 1 USDT server open order, Portfolio open-order state, cancel action, and canceled-order state.
+Verification:
+- `npm.cmd run mobile:samsung-open-order-cancel-proof` passed on Samsung S23 with Expo host `172.16.200.14` and port `8156`.
+- The proof created a temporary mobile credential, placed a backend BUY order at `0.01`, verified it as an open order, canceled it from Portfolio, and confirmed the final status was `CANCELED`.
+- Pre- and post-proof noise gates passed with zero affected open-order or locked-balance users.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-home.xml` shows `Best bid 0.50 USDT (500 shares) - Best ask 0.05 USDT (2.48k shares) - Spread -45c`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-ticket-ready.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml`.
+- `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket-ready.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`.
+Result: Passed Cycle 267 QA. The server open-order/cancel path is proven on Samsung after the scroll-safe ticket changes, and backend quote sizes remain visible on the ticket.
+Commit: pending.
+Merge: pending.
+
+### Heartbeat After Cycle 267
+
+Completed cycles: 265, 266, 267.
+Verified progress: Server-mode tickets now have Samsung real-device proof for backend quote-size display across filled Buy, filled Sell, and open-order/cancel paths. The server ticket deep-link race is fixed, ticket submit is scroll-aware, and proof wrappers leave no open-order or locked-balance noise behind.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token and server-mode trading, Samsung real-device QA, server quote/order/Portfolio sync, backend-derived filled/canceled activity, scroll-safe ticket sheets, buy/sell/open-order server proof coverage, Event Detail prop betting, live buy/sell order proof, and richer ticket depth information.
+Current backend state: Local backend and Postgres are available for mobile server proofs. Buy/sell filled-order and open-order cancel wrappers create temporary mobile credentials, seed World Cup proof markets, and verify clean pre/post noise gates.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go. Emulator remains fallback only because it is slow/stale. A proper dev build/APK remains the next stabilization lane once the app surface is stable enough.
+Open blockers: None for autonomous progress.
+Risks: Proof fixtures can create crossed-book depth during open-order/cancel seeding, as seen by the `Spread -45c` ticket evidence in Cycle 267; this is a harness/liquidity artifact to smooth later. Repeated proof captures still overwrite `cycle-current` evidence.
+Next three likely cycles: add cleaner server proof liquidity for non-crossed open-order depth, extend live/Event Detail server-backed quote proof, and add a compact ticket layout guard for smaller Android viewports.
+
 ### Cycle 266
 
 Date: 2026-07-02
