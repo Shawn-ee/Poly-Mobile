@@ -7427,8 +7427,8 @@ Technical debt added:
 Technical debt resolved:
 - Trade tickets no longer have to rely only on local/mock outcome probabilities when server-mode quotes are available.
 Result: Passed Cycle 159 QA. Mobile typecheck and mobile API/service tests pass.
-Commit: Pending.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `9583f66` (`Hydrate mobile tickets from server quotes`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `7909297`.
 Next cycle: Cycle 160 should add broader event-detail quote refresh or another server-mode ticket proof, then write the next heartbeat.
 Harnesses run:
 - Mobile Typecheck Harness
