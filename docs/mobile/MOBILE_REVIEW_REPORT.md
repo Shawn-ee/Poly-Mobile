@@ -2292,3 +2292,19 @@ Findings:
 - Credential readiness summary, credential dry-run, mobile typecheck, and mobile API/service tests passed.
 Decision: Approve Cycle 156 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 157
+
+Date: 2026-07-01
+Branch: mobile/cycle-157
+Reviewer: Lead/Reviewer pass
+Scope: Open-order cancel service coverage.
+Findings:
+- P1: `openOrderService.ts` extracts canceled activity mapping, duplicate activity prevention, and server-mode cancel calls from the app shell.
+- P1: Mock-mode cancel is verified to avoid backend calls.
+- P1: Server-mode cancel is verified to call the backend cancel API with the order id.
+- P1: `App.tsx` now uses the service boundary while preserving existing optimistic removal and error-status behavior.
+- P2: This is service-level coverage; successful authenticated cancel execution on Samsung still depends on backend/credential readiness.
+- Mobile typecheck and mobile API/service tests passed.
+Decision: Approve Cycle 157 for local commit/merge after scoped diff review.
+Merge approved: Yes

@@ -3333,3 +3333,25 @@ Bugs:
 - None in final run.
 Visual QA:
 - No app screenshot cycle; this is a credential-readiness harness cycle.
+
+### Cycle 157
+
+Date: 2026-07-01
+Device: Mobile open-order service unit harness
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Open-order cancel behavior now has focused service coverage before later server-backed cancel proof.
+Unit evidence:
+- `mobile/src/services/openOrderService.ts`
+- `mobile/src/__tests__/openOrderService.test.ts`
+- Mobile API/service suite: 8 files, 24 tests passed.
+Covered behavior:
+- Open orders map into canceled Portfolio activity rows with side, amount, probability, and timestamp.
+- Duplicate canceled activity rows are prevented after repeated taps or retries.
+- Mock-mode cancel does not call the backend.
+- Server-mode cancel calls the backend cancel API with the canonical order id.
+Bugs:
+- None in final run.
+Visual QA:
+- No app screenshot cycle; this is backend-facing service coverage.
