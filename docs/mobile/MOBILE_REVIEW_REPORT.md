@@ -2196,3 +2196,19 @@ Findings:
 - Mobile typecheck and mobile API/service tests passed.
 Decision: Approve Cycle 150 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 151
+
+Date: 2026-07-01
+Branch: mobile/cycle-151
+Reviewer: Lead/Reviewer pass
+Scope: Server portfolio snapshot service coverage.
+Findings:
+- P1: `portfolioSnapshotService.test.ts` now verifies backend wallet available balance maps into the mobile Portfolio balance used by the account UI.
+- P1: Server positions now have regression coverage for stable server ids, market title, outcome, cost-basis amount, and probability mapping.
+- P1: BUY and SELL open-order mapping is covered, including title, outcome, side, status, limit price, and remaining amount.
+- P1: Empty server portfolios are verified to remain renderable for new Holiwyn accounts with the default 10,000 USDT fake-token balance.
+- P2: This is unit coverage for the service seam; live authenticated Portfolio hydration on Samsung still depends on backend readiness and API key availability.
+- Mobile typecheck and mobile API/service tests passed.
+Decision: Approve Cycle 151 for local commit/merge after scoped diff review.
+Merge approved: Yes
