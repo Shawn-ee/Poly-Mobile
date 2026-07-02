@@ -9305,6 +9305,30 @@ Notes:
 Commit: de167c2
 Merge: 0f36834
 
+### Cycle 207
+
+Date: 2026-07-02
+Branch: mobile/cycle-207
+Status: Verified; pending local merge.
+Objective: Make the newest backend-filled trade activity visible near the top of Portfolio after server sync.
+Implemented:
+- Added a latest-activity preview card directly under the Portfolio counters.
+- Reused existing activity labels and execution-detail formatting for the preview.
+- Updated the Samsung server filled-trade history smoke to assert the preview card as the primary proof surface.
+Verification:
+- `npm.cmd run mobile:filled-trade-proof` passed and refreshed a filled World Cup proof trade.
+- `npm.cmd run smoke:samsung:server-filled-trade-history` passed on Samsung S23 through Expo Go with backend health `ok`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 64 tests.
+- `npm.cmd run typecheck` passed in `mobile/`.
+Evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-filled-trade-history.png`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-filled-trade-history.xml`.
+- `docs/mobile/harness/cycle-current-mobile-filled-trade-proof.json`.
+Notes:
+- This cycle responds to the Cycle 206 proof: filled activity was correct, but it could be buried below accumulated positions and open orders on the dev account.
+Commit: PENDING
+Merge: PENDING
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

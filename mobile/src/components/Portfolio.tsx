@@ -117,6 +117,18 @@ const currentValueTotal = (positions: Position[]) =>
 const pnlTotal = (positions: Position[]) =>
   positions.reduce((total, position) => total + estimatedPnl(position), 0);
 
+const activityActionLabel = (activity: PortfolioActivity, t: PortfolioCopy) =>
+  activity.action === "opened" ? t.openedPosition : activity.action === "canceled" ? t.canceledOrder : t.closedPosition;
+
+const activityExecutionText = (activity: PortfolioActivity, t: PortfolioCopy) =>
+  activity.action === "closed"
+    ? `${t.entry} ${typeof activity.probability === "number" ? `${activity.probability}%` : money(activity.entryAmount ?? activity.amount)} - ${t.currentValue} ${money(activity.amount)} - ${t.estimatedPnl} ${
+        activityPnl(activity) >= 0 ? "+" : ""
+      }${money(activityPnl(activity))}`
+    : `${t.filledShares} ${activityShares(activity).toFixed(2)} - ${t.executionPrice} ${activity.probability ?? 0}% - ${
+        t.impliedOdds
+      } ${decimalOdds((activity.probability ?? 0) / 100)}`;
+
 export function Portfolio({
   t,
   balance,
@@ -142,6 +154,7 @@ export function Portfolio({
   cancelOpenOrder: (order: OpenOrder) => void;
 }) {
   const closedActivityCount = activities.filter((activity) => activity.action === "closed").length;
+  const latestActivity = activities[0];
   const syncTitle =
     syncStatus === "syncing"
       ? t.portfolioSyncing
@@ -227,6 +240,30 @@ export function Portfolio({
           <Text style={styles.positionCountValue}>{closedActivityCount}</Text>
         </View>
       </View>
+      {latestActivity && (
+        <View accessibilityLabel="latest-activity-card" testID="latest-activity-card" style={styles.latestActivityCard}>
+          <View style={styles.latestActivityTop}>
+            <Text style={styles.latestActivityLabel}>{t.recentActivity}</Text>
+            <Text style={styles.latestActivityAmount}>{money(latestActivity.amount)}</Text>
+          </View>
+          <Text style={styles.latestActivityAction}>{activityActionLabel(latestActivity, t)}</Text>
+          {latestActivity.timestamp && (
+            <Text accessibilityLabel={`latest-activity-time-${latestActivity.id}`} style={styles.activityTime}>
+              {latestActivity.timestamp}
+            </Text>
+          )}
+          <Text style={styles.latestActivityMeta}>
+            {latestActivity.title} - {latestActivity.outcome}
+          </Text>
+          {(typeof latestActivity.probability === "number" ||
+            (latestActivity.action === "closed" && typeof latestActivity.entryAmount === "number")) &&
+            latestActivity.action !== "canceled" && (
+              <Text accessibilityLabel={`latest-activity-execution-${latestActivity.id}`} style={styles.activityExecution}>
+                {activityExecutionText(latestActivity, t)}
+              </Text>
+            )}
+        </View>
+      )}
       {openOrdersSection}
       {latestOrder && (
         <View accessibilityLabel="latest-order-card" testID="latest-order-card" style={styles.confirmationCard}>
@@ -410,11 +447,7 @@ export function Portfolio({
               </View>
               <View style={styles.activityMain}>
                 <Text style={styles.activityAction}>
-                  {activity.action === "opened"
-                    ? t.openedPosition
-                    : activity.action === "canceled"
-                      ? t.canceledOrder
-                      : t.closedPosition}
+                  {activityActionLabel(activity, t)}
                 </Text>
                 {activity.timestamp && (
                   <Text accessibilityLabel={`activity-time-${activity.id}`} style={styles.activityTime}>
@@ -437,13 +470,7 @@ export function Portfolio({
                 {(typeof activity.probability === "number" || (activity.action === "closed" && typeof activity.entryAmount === "number")) &&
                   activity.action !== "canceled" && (
                   <Text accessibilityLabel={`activity-execution-${activity.id}`} style={styles.activityExecution}>
-                    {activity.action === "closed"
-                      ? `${t.entry} ${typeof activity.probability === "number" ? `${activity.probability}%` : money(activity.entryAmount ?? activity.amount)} - ${t.currentValue} ${money(activity.amount)} - ${t.estimatedPnl} ${
-                          activityPnl(activity) >= 0 ? "+" : ""
-                        }${money(activityPnl(activity))}`
-                      : `${t.filledShares} ${activityShares(activity).toFixed(2)} - ${t.executionPrice} ${activity.probability ?? 0}% - ${
-                          t.impliedOdds
-                        } ${decimalOdds((activity.probability ?? 0) / 100)}`}
+                    {activityExecutionText(activity, t)}
                   </Text>
                 )}
               </View>
@@ -470,6 +497,12 @@ const styles = StyleSheet.create({
   countTile: { flex: 1, minHeight: 84, justifyContent: "space-between", paddingHorizontal: 10, paddingVertical: 10, borderRadius: 12, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
   positionCountLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "900" },
   positionCountValue: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
+  latestActivityCard: { marginTop: 12, padding: 14, borderRadius: 14, backgroundColor: "#0f1f1d", borderWidth: 1, borderColor: "#155e75" },
+  latestActivityTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10 },
+  latestActivityLabel: { color: "#99f6e4", fontSize: 12, fontWeight: "900", textTransform: "uppercase" },
+  latestActivityAmount: { color: "#dbeafe", fontWeight: "900" },
+  latestActivityAction: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginTop: 8 },
+  latestActivityMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "800", marginTop: 4 },
   emptyCard: { alignItems: "center", padding: 28, borderRadius: 16, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginTop: 16 },
   emptyTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "900", marginTop: 10 },
   emptyText: { color: "#94a3b8", textAlign: "center", marginTop: 6, fontWeight: "700" },

@@ -489,17 +489,9 @@ try {
     }
 
     if ($ServerFilledTradeHistory) {
-      & $adb -s $Device shell input swipe 540 1720 540 620 500 | Out-Null
-      Start-Sleep -Seconds 1
-      & $adb -s $Device shell input swipe 540 1720 540 620 500 | Out-Null
-      Start-Sleep -Seconds 1
-      & $adb -s $Device shell input swipe 540 1800 540 450 650 | Out-Null
-      Start-Sleep -Seconds 1
-      & $adb -s $Device shell input swipe 540 1800 540 450 650 | Out-Null
-      Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-server-filled-trade-history.png"
       $serverFilledTradeHistoryHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-filled-trade-history.xml"
-      Assert-HierarchyContains -Path $serverFilledTradeHistoryHierarchy -Expected @("portfolio-screen", "Recent activity", "Bought", "World Cup Mobile Filled Trade Proof", "YES", "Filled shares 2.00", "Exec price 50%", "Implied odds 2.0x", "1 USDT")
+      Assert-HierarchyContains -Path $serverFilledTradeHistoryHierarchy -Expected @("portfolio-screen", "latest-activity-card", "Bought", "World Cup Mobile Filled Trade Proof", "YES", "Filled shares 2.00", "Exec price 50%", "Implied odds 2.0x", "1 USDT")
       return
     }
 

@@ -3074,3 +3074,17 @@ Findings:
 - Samsung server filled-trade history proof, mobile API/service tests, and mobile typecheck passed.
 Decision: Approve Cycle 206 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 207
+
+Date: 2026-07-02
+Branch: mobile/cycle-207
+Reviewer: Lead/Reviewer pass
+Scope: Latest backend activity preview.
+Findings:
+- P1: Portfolio now surfaces the newest backend-derived activity directly under the counters, so filled trades are visible without scrolling past accumulated positions and open orders.
+- P1: The preview reuses existing activity economics formatting for filled shares, execution price, implied odds, amount, timestamp, title, and outcome.
+- P1: The Samsung server-history smoke now verifies the top activity card as the intended proof surface.
+- Mobile API/service tests, mobile typecheck, and Samsung server filled-trade history proof passed.
+Decision: Approve Cycle 207 for local commit/merge after scoped diff review.
+Merge approved: Yes
