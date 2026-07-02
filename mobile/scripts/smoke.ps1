@@ -430,7 +430,7 @@ try {
   } elseif ($AccountSavedSummary) {
     @("Holiwyn", "Account", "Preferences", "Saved markets", "1 saved")
   } elseif ($AccountPositionSummary) {
-    @("Holiwyn", "Account", "Preferences", "Open positions: 1", "Open orders: 1")
+    @("Holiwyn", "Account", "Preferences", "Open positions: 1", "Open orders: 1", "Open order value: 117.5 USDT")
   } elseif ($AccountPortfolioValue) {
     @("Holiwyn", "Account", "Preferences", "Open positions: 1")
   } elseif ($LanguagePersistence) {
@@ -767,7 +767,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-account-position-summary.png"
       $accountPositionSummaryHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-position-summary.xml"
-      Assert-HierarchyContains -Path $accountPositionSummaryHierarchy -Expected @("Account", "Preferences", "Open positions: 1", "Open orders: 1", "Ticket default: Buy 100 USDT")
+      Assert-HierarchyContains -Path $accountPositionSummaryHierarchy -Expected @("Account", "Preferences", "Open positions: 1", "Open orders: 1", "Open order value: 117.5 USDT", "Ticket default: Buy 100 USDT")
       return
     }
 
