@@ -3211,3 +3211,25 @@ Bugs:
 - None in final run.
 Visual QA:
 - No app screenshot cycle; this is backend-facing service coverage.
+
+### Cycle 152
+
+Date: 2026-07-01
+Device: Mobile portfolio sync service unit harness
+Build/run command:
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Server Portfolio sync resolution now has a focused service harness.
+Unit evidence:
+- `mobile/src/services/portfolioSyncService.ts`
+- `mobile/src/__tests__/portfolioSyncService.test.ts`
+- Mobile API/service suite: 7 files, 20 tests passed.
+Covered behavior:
+- Full snapshot plus history success returns `synced` with both payloads.
+- Snapshot-only success returns `synced` so positions/orders can hydrate even if history fails.
+- History-only success returns `synced` so closed activity can hydrate even if snapshot fails.
+- Full server Portfolio failure returns `error`, preserving the visible local fake-token fallback state.
+Bugs:
+- None in final run.
+Visual QA:
+- No app screenshot cycle; this is backend-facing service coverage.

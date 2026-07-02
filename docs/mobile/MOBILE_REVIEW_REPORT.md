@@ -2212,3 +2212,19 @@ Findings:
 - Mobile typecheck and mobile API/service tests passed.
 Decision: Approve Cycle 151 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 152
+
+Date: 2026-07-01
+Branch: mobile/cycle-152
+Reviewer: Lead/Reviewer pass
+Scope: Server Portfolio sync recovery service.
+Findings:
+- P1: `portfolioSyncService.ts` extracts server Portfolio sync resolution from `App.tsx`, giving the app one tested decision point for server snapshot/history recovery.
+- P1: The new harness proves full success returns synced state with snapshot and activity payloads.
+- P1: Partial success remains synced when either snapshot or history succeeds, preserving useful server data instead of falling into full local fallback.
+- P1: Full server failure returns error, preserving the visible fake-token fallback message on the Portfolio screen.
+- P2: This is service-level recovery coverage; live server Portfolio hydration on Samsung still depends on backend readiness and API key availability.
+- Mobile typecheck and mobile API/service tests passed.
+Decision: Approve Cycle 152 for local commit/merge after scoped diff review.
+Merge approved: Yes
