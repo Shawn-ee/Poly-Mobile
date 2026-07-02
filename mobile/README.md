@@ -143,6 +143,14 @@ Current build profiles live in `eas.json`:
 - `development`: Android development-client APK profile; this requires adding `expo-dev-client` before use.
 - `production`: Android app bundle profile for later release preparation.
 
+Samsung APK smoke lane:
+
+```powershell
+npm run smoke:samsung:apk:allow-missing
+```
+
+This records a structured blocker when `dist/holiwyn-preview.apk` is not present. Once an APK is built, place it at that path or pass `-ApkPath` directly to `scripts/samsung-apk-smoke.ps1`, then run `npm run smoke:samsung:apk` to install and launch `com.holiwyn.mobile` on the Samsung.
+
 ## Product Direction
 
 Use Polymarket as a product reference for prediction-market patterns such as event browsing, odds as probabilities, fast buy/sell tickets, positions, and account funding. Do not copy their exact UI, brand, icons, copy, or assets. This app should stay focused on soccer and World Cup markets under the Holiwyn brand.

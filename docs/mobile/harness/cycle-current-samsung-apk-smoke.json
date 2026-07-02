@@ -1,0 +1,10 @@
+﻿{
+    "ready":  false,
+    "status":  "blocked",
+    "blocker":  "apk_missing",
+    "checkedAt":  "2026-07-02T13:55:36.7138088Z",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "apkPath":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\mobile\\.\\dist\\holiwyn-preview.apk",
+    "packageName":  "com.holiwyn.mobile",
+    "launchUrl":  "holiwyn://qa?forcePortfolio=1"
+}

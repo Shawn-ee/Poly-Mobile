@@ -4,11 +4,10 @@ Current mission: Build Holiwyn, a World Cup-first sports prediction and trading 
 
 Current phase: Autonomous mobile product development in verified cycles.
 
-Latest verified cycle: Cycle 278 passed Milestone B cleanup/isolation. The loop now has a proof-only cleanup harness, removed stale failed backend-position proof artifacts, and re-ran the Samsung server-order proof successfully with the cleanup hook in place.
+Latest verified cycle: Cycle 279 passed Milestone C's dev-build/APK transition harness. The Samsung QA lane now has a local APK install/launch smoke with structured blocker evidence, while Expo Go remains the fallback until `dist/holiwyn-preview.apk` exists.
 
 Next milestone path:
 
-- Milestone C: move Samsung QA from Expo Go toward dev build/APK.
 - Milestone D: run a final parity sweep against the mobile Definition of Done.
 
 Launch mode: Long-running autonomous execution toward final Definition of Done. Phase 0 is the first gate, not the stopping point.
@@ -46,6 +45,37 @@ When stuck, run the Recovery Harness. The Lead Agent should ask Audit Agent or R
 Every three completed cycles, add a heartbeat summary.
 
 ## Cycle Template
+
+### Cycle 279
+
+Date: 2026-07-02
+Branch: mobile/cycle-279-samsung-dev-build-readiness
+Goal: Pass Milestone C by moving Samsung QA toward a preview APK/dev-build lane instead of relying only on Expo Go.
+Reference app screens observed: None. This was harness/readiness work for Holiwyn QA packaging.
+Holiwyn screens changed: None.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/scripts/check-android-dev-build-readiness.ps1`, `mobile/scripts/samsung-apk-smoke.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `cmd /c npm.cmd run typecheck` in `mobile/`.
+- `cmd /c npm.cmd run check:android-dev-build` in `mobile/`.
+- `cmd /c npm.cmd run smoke:samsung:apk:allow-missing` in `mobile/`.
+Screenshots captured: None. APK smoke is currently a structured readiness/blocker harness.
+Bugs found: None.
+Technical debt added:
+- TD-280: `dist/holiwyn-preview.apk` does not exist yet, so the APK smoke correctly records `apk_missing`.
+- TD-281: `expo-dev-client` is still not installed; preview APK is the immediate lane, full dev-client remains pending dependency/build setup.
+Technical debt resolved:
+- Samsung QA now has a named APK install/launch harness and machine-readable readiness summaries instead of only documentation.
+Result: Passed Milestone C harness transition. Android preview APK configuration is ready, Samsung device visibility is checked, and missing APK is recorded as a clean blocker.
+Commit: pending.
+Merged: pending.
+Next cycle: Milestone D, run a final parity sweep against the mobile Definition of Done.
+Harnesses run:
+- Development Build/APK Harness
+- Samsung Device Harness
+- Typecheck Harness
+Harness failures: None; APK absence is expected blocker evidence, not a harness failure.
 
 ### Cycle 278
 
