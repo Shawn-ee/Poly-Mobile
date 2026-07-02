@@ -2784,3 +2784,18 @@ Findings:
 - Mobile API/service tests and mobile typecheck passed.
 Decision: Approve Cycle 187 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 188
+
+Date: 2026-07-01
+Branch: mobile/cycle-188
+Reviewer: Lead/Reviewer pass
+Scope: Server Portfolio position economics.
+Findings:
+- P1: `loadPortfolioSnapshot` now preserves backend position `shares`, `currentPrice`, `valueTokens`, and `pnlTokens`.
+- P1: Portfolio value/P&L math is extracted into a domain helper and now prefers server `currentValue`/`pnl` before falling back to mock movement math.
+- P1: Position cards expose backend shares and current price when available, improving server-hydrated account transparency.
+- P2: Close-position remains a local optimistic action for hydrated server positions until authenticated close/sell flows are implemented.
+- Mobile API/service tests and mobile typecheck passed.
+Decision: Approve Cycle 188 for local commit/merge after scoped diff review.
+Merge approved: Yes

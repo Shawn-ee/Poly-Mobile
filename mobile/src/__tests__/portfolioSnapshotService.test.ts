@@ -93,6 +93,10 @@ describe("portfolio snapshot service", () => {
           side: "buy",
           amount: 210,
           probability: 42,
+          shares: 500,
+          currentPrice: 0.51,
+          currentValue: 255,
+          pnl: 45,
         },
       ],
       openOrders: [

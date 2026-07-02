@@ -1,6 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { activityPnl, activityShares, decimalOdds } from "../domain/portfolioActivityMetrics";
+import {
+  estimatedPositionPnl,
+  portfolioPositionValue,
+} from "../domain/portfolioPositionMetrics";
 import type { Locale } from "../mocks/worldCup";
 import { money } from "../presentation/formatters";
 import type { OrderMode } from "../services/orderService";
@@ -13,6 +17,10 @@ export type Position = {
   side: "buy" | "sell";
   amount: number;
   probability: number;
+  shares?: number;
+  currentPrice?: number;
+  currentValue?: number;
+  pnl?: number;
   isLive?: boolean;
   liveClock?: string;
 };
@@ -68,6 +76,7 @@ type PortfolioCopy = {
   invested: string;
   entry: string;
   currentValue: string;
+  currentPrice: string;
   estimatedPnl: string;
   closePosition: string;
   recentActivity: string;
@@ -94,20 +103,9 @@ type PortfolioCopy = {
   justNow: string;
 };
 
-const currentProbability = (position: Position) => {
-  const movement = position.side === "buy" ? 3 : -3;
-  return Math.max(1, Math.min(99, position.probability + movement));
-};
+export { portfolioPositionValue };
 
-export const portfolioPositionValue = (position: Position) => {
-  const entry = Math.max(1, position.probability);
-  return position.amount * (currentProbability(position) / entry);
-};
-
-const estimatedPnl = (position: Position) => {
-  const value = portfolioPositionValue(position);
-  return position.side === "buy" ? value - position.amount : position.amount - value;
-};
+const estimatedPnl = estimatedPositionPnl;
 
 const investedTotal = (positions: Position[]) => positions.reduce((total, position) => total + position.amount, 0);
 
@@ -334,6 +332,12 @@ export function Portfolio({
                   </Text>
                 </View>
               </View>
+              {typeof position.shares === "number" && (
+                <Text accessibilityLabel={`position-shares-${position.id}`} style={styles.positionServerMeta}>
+                  {t.filledShares}: {position.shares.toFixed(2)}
+                  {typeof position.currentPrice === "number" ? ` - ${t.currentPrice} ${Math.round(position.currentPrice * 100)}%` : ""}
+                </Text>
+              )}
               <Pressable
                 accessibilityLabel={`close-position-${position.id}`}
                 onPress={() => closePosition(position)}
@@ -438,6 +442,7 @@ const styles = StyleSheet.create({
   positionDetailItem: { flex: 1, padding: 10, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
   positionDetailLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },
   positionDetailValue: { color: "#f8fafc", fontSize: 13, fontWeight: "900", marginTop: 5 },
+  positionServerMeta: { color: "#93c5fd", fontSize: 12, fontWeight: "800", marginTop: 10 },
   pnlPositive: { color: "#22c55e" },
   pnlNegative: { color: "#ef4444" },
   closeButton: { marginTop: 12, minHeight: 44, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },

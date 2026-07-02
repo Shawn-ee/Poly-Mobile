@@ -4116,3 +4116,26 @@ Bugs:
 - Initial UI patch changed the detail label before the value; corrected so remaining orders show remaining size instead of odds under a remaining label.
 Visual QA:
 - No Samsung visual run this cycle; next visual receipt proof should use the Samsung S23 once a server-backed or fixture-backed order state is available.
+
+### Cycle 188
+
+Date: 2026-07-01
+Device: Mobile service unit harness
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+Result: Passed. Server-hydrated Portfolio positions now preserve backend economics and renderable position metadata.
+Harness evidence:
+- Mobile API/service suite passed with 10 files and 47 tests.
+- Mobile typecheck passed.
+Screenshot evidence:
+- None; mapping/math cycle.
+Structured findings:
+- Backend `shares`, `currentPrice`, `valueTokens`, and `pnlTokens` now map into mobile position models.
+- Portfolio current-value totals and card values prefer server `currentValue`.
+- Estimated P/L prefers server `pnl`.
+- Position cards can display backend shares and current price when Portfolio hydration provides them.
+Bugs:
+- None in final run.
+Visual QA:
+- No Samsung visual run this cycle; future fixture-backed Portfolio proof should assert the server shares/current-price row on-device.
