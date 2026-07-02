@@ -27,6 +27,22 @@ Verification:
 
 Remaining: custom keypad/completion animation, search keyboard coverage, top action feedback, and portfolio row/action polish.
 
+### Cycle 286 - Search and header feedback
+
+Status: verified on Samsung S23.
+
+- Added keyboard-aware Search scroll behavior, drag-to-dismiss, return-key dismissal, and a visible keyboard-dismiss control while the search field is focused.
+- Added extra focused bottom padding so result cards can scroll above the keyboard area.
+- Added visible feedback for `Get 50` and notification taps without enabling real deposit/withdraw behavior.
+
+Verification:
+
+- `npm run typecheck`
+- Samsung search proof via `smoke.ps1 -Deep -SearchQuery`
+- Direct Samsung UI checks for `header-action-feedback` after `Get 50` and notification taps.
+
+Remaining: portfolio row/action polish, custom keypad/completion animation, and final parity sweep.
+
 ## Critical Fixes
 
 | Priority | Area | Finding | Evidence | Recommendation |
@@ -71,8 +87,8 @@ Holiwyn should use these as interaction references only. Do not copy Polymarket 
 - Ticket footer P0 was repaired in Cycle 285 with a sticky submit rail above Android navigation.
 - Ticket now has swipe-submit and final-cost caution; confirmation motion is still missing.
 - Amount entry is still a normal text field with preset buttons, not a trading keypad.
-- Search keeps the keyboard open over results and bottom tabs.
-- Header action buttons do not communicate state.
+- Search keyboard coverage was improved in Cycle 286 with dismiss controls and keyboard-aware padding; final manual keyboard QA remains useful.
+- Header action feedback was repaired in Cycle 286 for `Get 50` and notifications.
 - Bottom nav has five tabs while Polymarket uses four; Account may be better as a profile entry or portfolio sub-area later.
 - Some icons render as generic/emoji-like symbols rather than a polished icon system.
 - Accessibility/UIAutomator text is usable after fresh dumps, but earlier captures showed encoding noise; keep an eye on Chinese accessibility labels during automated testing.
