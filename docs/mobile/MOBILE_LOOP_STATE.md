@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-246-event-detail-sell-ticket-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Prove a Sell-labeled Event Detail outcome opens a Sell ticket.
 Implemented:
 - Added `EventDetailSellDefaultTrade` smoke flow that launches Sell-default Event Detail, taps Mexico, and verifies the ticket.
@@ -10140,8 +10140,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail-sell-ticket.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-sell-ticket.png`.
-Commit: pending
-Merge: pending
+Commit: 752262d
+Merge: 0b0f39d
 
 ### Cycle 245
 
