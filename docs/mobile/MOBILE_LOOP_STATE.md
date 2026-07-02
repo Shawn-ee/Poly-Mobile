@@ -7091,6 +7091,50 @@ Harnesses run:
 Harness failures:
 - Initial typecheck failed on incomplete test fixtures; fixed before final pass.
 
+### Cycle 151
+
+Date: 2026-07-01
+Branch: mobile/cycle-151
+Goal: Add backend portfolio snapshot mapping coverage without requiring a running database.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; backend-facing service test cycle.
+Backend/API changed: No runtime API route change. Added unit coverage for mobile server portfolio snapshot mapping.
+Database/schema changed: None.
+Files changed: `mobile/src/__tests__/portfolioSnapshotService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Unit evidence:
+- Mobile API/service suite passed 6 files and 16 tests.
+- New tests cover wallet available balance mapping, server-mode position shape, BUY/SELL open-order mapping, and empty new-account portfolio snapshots.
+Bugs found:
+- None in final run.
+Technical debt added:
+- This proves the service mapping only; successful authenticated server-backed Portfolio hydration on Samsung remains gated by backend/API readiness.
+Technical debt resolved:
+- Server portfolio snapshots now have focused service-level regression coverage.
+Result: Passed Cycle 151 QA. Mobile typecheck and mobile API/service tests pass.
+Commit: Pending.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 152 should continue backend-facing parity that can be verified without DB, or add a credential/device harness around server-mode Portfolio hydration once readiness improves.
+Harnesses run:
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Portfolio-Snapshot Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 151
+
+Completed cycles: 149, 150, 151.
+Verified progress: The loop now has a server-success readiness gate that refuses wasted Samsung success-proof attempts until Docker, local DB TCP, compose URL, and API key are ready. Server-mode order submission and Portfolio snapshot hydration both have focused service tests, so the mobile app's backend-facing trading and Portfolio seams are less fragile while live backend execution is unavailable.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, local persistence, market group counts, outcome/ticket odds, potential profit, open-order economics, latest-order execution details, timestamped order history, backend-compatible resolved-history mapping, Samsung-proven core/live trading flows, Samsung-proven server-mode failure recovery, and unit-covered server order/Portfolio mapping.
+Current backend state: Mobile API/profile-preference/activity/history/order/portfolio snapshot tests pass. Structured readiness still shows Docker daemon and local database TCP unavailable, and successful authenticated order proof still requires a valid `EXPO_PUBLIC_API_KEY`.
+Device strategy: Samsung S23 remains the primary Holiwyn visual QA and server-mode device-readiness target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane once the app is steadier.
+Open blockers: None for autonomous progress. Successful server-backed device order/Portfolio execution is blocked by Docker daemon/DB/API-key readiness, but the loop can continue improving gates, harnesses, and app/backend seams.
+Risks: Successful authenticated order execution and Portfolio hydration are still unproven on device; Docker daemon/local DB are currently unavailable; Expo Go proof still depends on LAN reachability.
+Next three likely cycles: add server-mode Portfolio hydration failure/recovery proof, improve credential-readiness reporting, and continue backend-facing service coverage that can be unit-tested without a running DB.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.

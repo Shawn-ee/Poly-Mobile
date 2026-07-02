@@ -3190,3 +3190,24 @@ Bugs:
 - Typecheck caught incomplete test fixtures; fixed by matching the full `Market` and `Outcome` shapes and using the `future` market literal.
 Visual QA:
 - No app screenshot cycle; this is backend-facing service coverage.
+
+### Cycle 151
+
+Date: 2026-07-01
+Device: Mobile portfolio snapshot service unit harness
+Build/run command:
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The mobile portfolio snapshot service now has focused backend-to-Portfolio mapping coverage.
+Unit evidence:
+- `mobile/src/__tests__/portfolioSnapshotService.test.ts`
+- Mobile API/service suite: 6 files, 16 tests passed.
+Covered behavior:
+- Server wallet available balance maps to the app Portfolio balance.
+- Backend positions map into server-mode Portfolio positions with stable ids, title, outcome, cost basis, and implied probability.
+- Backend BUY and SELL open orders map into mobile open-order rows with side, status, price, and remaining amount.
+- Empty server portfolios stay renderable for new Holiwyn accounts with the default 10,000 USDT fake-token state.
+Bugs:
+- None in final run.
+Visual QA:
+- No app screenshot cycle; this is backend-facing service coverage.
