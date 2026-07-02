@@ -50,6 +50,27 @@ describe("quote service", () => {
     });
   });
 
+  test("maps best level sizes into ticket quotes", () => {
+    const quote: Quote = {
+      outcomeId: "yes",
+      outcomeName: "Yes",
+      bestBid: "0.50",
+      bestAsk: "0.54",
+      bestBidSize: "500.25",
+      bestAskSize: 120,
+      midPrice: "0.52",
+      lastPrice: null,
+    };
+
+    expect(quoteToTicketQuote(quote)).toMatchObject({
+      outcomeId: "yes",
+      bestBid: 50,
+      bestAsk: 54,
+      bestBidSize: 500.25,
+      bestAskSize: 120,
+    });
+  });
+
   test("falls back to positive bid ask midpoint when mid price is zero", () => {
     const quote: Quote = {
       outcomeId: "yes",
@@ -218,7 +239,33 @@ describe("quote service", () => {
           lastPrice: null,
         },
       ]),
-    ).toEqual({ ...outcome, probability: 42 });
+    ).toEqual({ ...outcome, probability: 42, bestBid: 41, bestAsk: 43, bestBidSize: null, bestAskSize: null });
+  });
+
+  test("applies matching quote sizes to an outcome", () => {
+    const outcome = { id: "yes", label: "Yes", zhLabel: "Yes", probability: 49, color: "#2563eb" };
+
+    expect(
+      applyTicketQuoteToOutcome(outcome, [
+        {
+          outcomeId: "yes",
+          outcomeName: "Yes",
+          probability: 52,
+          bestBid: 50,
+          bestAsk: 54,
+          bestBidSize: 500,
+          bestAskSize: 120,
+          midPrice: 52,
+          lastPrice: null,
+        },
+      ]),
+    ).toMatchObject({
+      probability: 52,
+      bestBid: 50,
+      bestAsk: 54,
+      bestBidSize: 500,
+      bestAskSize: 120,
+    });
   });
 
   test("applies a matching ticket quote to an outcome by label fallback", () => {

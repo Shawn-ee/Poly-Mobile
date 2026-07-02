@@ -5,6 +5,10 @@ export type Outcome = {
   label: string;
   zhLabel: string;
   probability: number;
+  bestBid?: number | null;
+  bestAsk?: number | null;
+  bestBidSize?: number | null;
+  bestAskSize?: number | null;
   color: string;
 };
 

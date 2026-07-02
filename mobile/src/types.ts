@@ -53,6 +53,8 @@ export type Quote = {
   outcomeName: string;
   bestBid: string | number | null;
   bestAsk: string | number | null;
+  bestBidSize?: string | number | null;
+  bestAskSize?: string | number | null;
   midPrice: string | number | null;
   lastPrice: string | number | null;
 };

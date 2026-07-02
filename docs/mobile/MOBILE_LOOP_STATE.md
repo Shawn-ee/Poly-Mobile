@@ -9616,6 +9616,32 @@ Notes:
 Commit: 01c2233
 Merge: 489177d
 
+### Cycle 218
+
+Date: 2026-07-02
+Branch: mobile/cycle-218-ticket-depth-liquidity
+Status: Verified and ready for local merge.
+Objective: Show best-level orderbook liquidity size in the server-mode trade ticket.
+Implemented:
+- Extended canonical market quotes with aggregate best bid/ask sizes from the public orderbook snapshot.
+- Added optional best bid/ask size fields to mobile quote types and propagated them into hydrated outcomes.
+- Updated the trade ticket depth pill to show size beside the best bid/ask price when available.
+- Added English and Simplified Chinese copy for the depth-size share label.
+Verification:
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run build` passed for the Next.js app.
+- `npm.cmd run mobile:samsung-server-order-proof -- -Side buy -Username holiwyn-mobile-proof-cycle-218-buy` passed on Samsung S23.
+Evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`.
+- `docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof.json`.
+- `docs/mobile/harness/cycle-current-mobile-server-order-fill-liquidity.json`.
+Notes:
+- Samsung ticket screenshot shows `Best ask 0.50 USDT (800 shares)` in the server-mode depth pill.
+- Build passed with the existing Next.js workspace-root warning about multiple lockfiles.
+Commit: cycle branch HEAD
+Merge: pending
+
 ### Heartbeat After Cycle 217
 
 Completed cycles: 215, 216, 217.
