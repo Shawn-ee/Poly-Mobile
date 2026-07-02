@@ -7570,8 +7570,8 @@ Technical debt added:
 Technical debt resolved:
 - Event-list, event-detail, and futures quote refresh no longer duplicate per-market quote loading and partial-failure behavior in `App.tsx`.
 Result: Passed Cycle 163 QA. Mobile typecheck and mobile API/service tests pass.
-Commit: Pending.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `a1a0e19` (`Share mobile market quote loading`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `d6684c9`.
 Next cycle: Cycle 164 should retry structured backend/server readiness evidence or add a server-mode quote proof harness.
 Harnesses run:
 - Mobile Typecheck Harness
