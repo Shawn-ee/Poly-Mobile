@@ -2579,3 +2579,19 @@ Findings:
 - Decision harness, mobile typecheck, and mobile API/service tests passed.
 Decision: Approve Cycle 174 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 175
+
+Date: 2026-07-01
+Branch: mobile/cycle-175
+Reviewer: Lead/Reviewer pass
+Scope: Trade Ticket market-depth visibility and Samsung proof.
+Findings:
+- P1: Trade Ticket now shows a compact market-depth pill with Best bid, Best ask, and Spread derived from the selected outcome probability.
+- P1: The Samsung future-list order smoke asserts `ticket-market-depth`, the depth labels, and the existing trading-mode indicator before order placement.
+- P1: The first full-row depth layout exposed header clipping on the Samsung S23; the final compact pill preserves visible title/subtitle, trading mode, depth, estimates, and CTA.
+- P1: The mock World Cup winner order still lands in Portfolio and Recent activity with execution details after the ticket change.
+- P2: Depth values are mock/quote-derived UI context until live server quote readiness and successful server-backed proof are available.
+- Samsung future-list order smoke, mobile typecheck, and mobile API/service tests passed.
+Decision: Approve Cycle 175 for local commit/merge after scoped diff review.
+Merge approved: Yes

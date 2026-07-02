@@ -3777,3 +3777,31 @@ Bugs:
 - None in final run.
 Visual QA:
 - No app screenshot cycle; this is a structured recovery-report harness cycle.
+
+### Cycle 175
+
+Date: 2026-07-01
+Device: Samsung S23 via Expo Go
+Build/run command:
+- `npm.cmd run smoke:samsung:future-list-order` in `mobile/`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The Trade Ticket now shows compact market depth before order placement and the Samsung future-order proof verifies it alongside a successful mock order.
+Harness evidence:
+- `docs/mobile/harness/cycle-175-holiwyn-future-list-order-ticket.xml`
+- `docs/mobile/harness/cycle-175-holiwyn-future-list-order-portfolio.xml`
+- `docs/mobile/harness/cycle-175-holiwyn-future-list-order-activity.xml`
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-175-holiwyn-future-list-order-ticket.png`
+- `docs/mobile/screenshots/cycle-175-holiwyn-future-list-order-portfolio.png`
+- `docs/mobile/screenshots/cycle-175-holiwyn-future-list-order-activity.png`
+Structured findings:
+- Ticket shows `ticket-market-depth`.
+- Ticket shows `Best bid 0.31 USDT - Best ask 0.38 USDT - Spread 7c`.
+- Initial full-row depth layout clipped the ticket header on Samsung; final compact pill layout preserves the full title, trading mode, market depth, and order button.
+Unit evidence:
+- Mobile API/service suite: 9 files, 40 tests passed.
+Bugs:
+- First Samsung attempt exposed a real visual-fit issue where the taller depth strip could clip the ticket header; fixed by compacting the depth pill and ticket vertical rhythm.
+Visual QA:
+- Samsung S23 screenshot captured for the corrected ticket layout and post-order Portfolio/activity states.

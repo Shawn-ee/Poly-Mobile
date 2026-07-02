@@ -32,7 +32,20 @@ type TradeTicketCopy = {
   tradingMode: string;
   tradingModeMock: string;
   tradingModeServer: string;
+  bestBid: string;
+  bestAsk: string;
+  spread: string;
 };
+
+function marketDepth(probability: number) {
+  const bid = Math.max(probability - 3, 1) / 100;
+  const ask = Math.min(probability + 4, 99) / 100;
+  return {
+    bid: `${bid.toFixed(2)} USDT`,
+    ask: `${ask.toFixed(2)} USDT`,
+    spread: `${Math.round((ask - bid) * 100)}c`,
+  };
+}
 
 export function TradeTicket({
   locale,
@@ -88,6 +101,7 @@ export function TradeTicket({
   const amountPresets = [100, 500, 1000];
   const isLiveTicket = ticket.event?.status === "live";
   const tradingModeValue = tradingMode === "server" ? t.tradingModeServer : t.tradingModeMock;
+  const depth = marketDepth(ticket.outcome.probability);
   const liveClock = isLiveTicket
     ? ticket.event?.startsAt.replace(/[^\x00-\x7F]+/g, "-").replace(/\s+-\s+/g, " - ")
     : null;
@@ -102,6 +116,11 @@ export function TradeTicket({
               <Text style={styles.ticketSub}>{label(locale, ticket.event ?? ticket.market)}</Text>
               <View accessibilityLabel="ticket-trading-mode" testID="ticket-trading-mode" style={styles.modePill}>
                 <Text style={styles.modePillText}>{t.tradingMode}: {tradingModeValue}</Text>
+              </View>
+              <View accessibilityLabel="ticket-market-depth" testID="ticket-market-depth" style={styles.depthPill}>
+                <Text style={styles.depthPillText}>
+                  {t.bestBid} {depth.bid} - {t.bestAsk} {depth.ask} - {t.spread} {depth.spread}
+                </Text>
               </View>
               {isLiveTicket && (
                 <View accessibilityLabel="ticket-live-badge" testID="ticket-live-badge" style={styles.liveBadge}>
@@ -197,33 +216,35 @@ export function TradeTicket({
 
 const styles = StyleSheet.create({
   modalShade: { flex: 1, justifyContent: "flex-end", backgroundColor: "rgba(0,0,0,0.5)" },
-  ticket: { padding: 18, borderTopLeftRadius: 20, borderTopRightRadius: 20, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  ticket: { paddingHorizontal: 18, paddingTop: 12, paddingBottom: 14, borderTopLeftRadius: 20, borderTopRightRadius: 20, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   ticketTop: { flexDirection: "row", justifyContent: "space-between", gap: 12 },
   ticketTitle: { color: "#f8fafc", fontSize: 24, fontWeight: "900" },
   ticketSub: { color: "#94a3b8", fontWeight: "800", marginTop: 4 },
   modePill: { alignSelf: "flex-start", marginTop: 8, paddingHorizontal: 9, paddingVertical: 5, borderRadius: 8, backgroundColor: "#172033", borderWidth: 1, borderColor: "#2d3a50" },
   modePillText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
+  depthPill: { alignSelf: "flex-start", maxWidth: "100%", marginTop: 6, paddingHorizontal: 9, paddingVertical: 5, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
+  depthPillText: { color: "#e0f2fe", fontSize: 11, fontWeight: "900" },
   liveBadge: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, marginTop: 8, paddingHorizontal: 9, paddingVertical: 5, borderRadius: 999, backgroundColor: "#451a1a", borderWidth: 1, borderColor: "#7f1d1d" },
   liveBadgeText: { color: "#fecaca", fontSize: 11, fontWeight: "900", textTransform: "uppercase" },
   liveClock: { marginTop: 6, color: "#fca5a5", fontSize: 13, fontWeight: "900" },
   closeButton: { width: 42, height: 42, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937" },
   ticketSideRow: { flexDirection: "row", gap: 10, marginTop: 18 },
-  sideButton: { flex: 1, alignItems: "center", paddingVertical: 12, borderRadius: 12, backgroundColor: "#1f2937" },
+  sideButton: { flex: 1, alignItems: "center", paddingVertical: 10, borderRadius: 12, backgroundColor: "#1f2937" },
   sideButtonActive: { backgroundColor: "#1d6dff" },
   sideText: { color: "#94a3b8", fontWeight: "900" },
   sideTextActive: { color: "#ffffff" },
-  amountHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 18, marginBottom: 8 },
+  amountHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 12, marginBottom: 6 },
   inputLabel: { color: "#94a3b8", fontWeight: "800" },
   maxText: { color: "#93c5fd", fontWeight: "900" },
-  amountInput: { height: 54, borderRadius: 12, paddingHorizontal: 14, backgroundColor: "#070c14", borderWidth: 1, borderColor: "#263247", color: "#f8fafc", fontSize: 22, fontWeight: "900" },
-  presetRow: { flexDirection: "row", gap: 8, marginTop: 10 },
-  presetButton: { flex: 1, minHeight: 40, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
+  amountInput: { height: 48, borderRadius: 12, paddingHorizontal: 14, backgroundColor: "#070c14", borderWidth: 1, borderColor: "#263247", color: "#f8fafc", fontSize: 22, fontWeight: "900" },
+  presetRow: { flexDirection: "row", gap: 8, marginTop: 8 },
+  presetButton: { flex: 1, minHeight: 36, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
   presetText: { color: "#dbeafe", fontWeight: "900" },
-  estimateLine: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "#263247" },
+  estimateLine: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: "#263247" },
   estimateLabel: { color: "#94a3b8", fontWeight: "800" },
   estimateValue: { color: "#f8fafc", fontWeight: "900" },
   errorCard: { flexDirection: "row", alignItems: "center", gap: 8, padding: 10, borderRadius: 10, backgroundColor: "#1f1a0b", borderWidth: 1, borderColor: "#854d0e", marginTop: 12 },
   errorText: { flex: 1, color: "#fde68a", fontWeight: "800" },
-  primaryButton: { height: 54, borderRadius: 14, alignItems: "center", justifyContent: "center", backgroundColor: "#1d6dff", marginTop: 16 },
+  primaryButton: { height: 50, borderRadius: 14, alignItems: "center", justifyContent: "center", backgroundColor: "#1d6dff", marginTop: 12 },
   primaryText: { color: "#ffffff", fontSize: 17, fontWeight: "900" },
 });

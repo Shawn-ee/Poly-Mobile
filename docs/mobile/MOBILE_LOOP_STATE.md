@@ -8024,6 +8024,59 @@ Harnesses run:
 Harness failures:
 - Server-backed Samsung proof is blocked as expected by backend/API-key/quote readiness categories.
 
+### Cycle 175
+
+Date: 2026-07-01
+Branch: mobile/cycle-175
+Goal: Add compact market-depth context to the Trade Ticket and verify the order flow on Samsung.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: Trade Ticket now shows `Best bid`, `Best ask`, and `Spread` in a compact pill under the trading-mode row.
+Backend/API changed: No runtime API route change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/TradeTicket.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/harness/cycle-175-holiwyn-future-list-order-ticket.xml`, `docs/mobile/harness/cycle-175-holiwyn-future-list-order-portfolio.xml`, `docs/mobile/harness/cycle-175-holiwyn-future-list-order-activity.xml`, `docs/mobile/screenshots/cycle-175-holiwyn-future-list-order-ticket.png`, `docs/mobile/screenshots/cycle-175-holiwyn-future-list-order-portfolio.png`, `docs/mobile/screenshots/cycle-175-holiwyn-future-list-order-activity.png`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:samsung:future-list-order` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-175-holiwyn-future-list-order-ticket.png`.
+- `docs/mobile/screenshots/cycle-175-holiwyn-future-list-order-portfolio.png`.
+- `docs/mobile/screenshots/cycle-175-holiwyn-future-list-order-activity.png`.
+Harness evidence:
+- `docs/mobile/harness/cycle-175-holiwyn-future-list-order-ticket.xml`.
+- `docs/mobile/harness/cycle-175-holiwyn-future-list-order-portfolio.xml`.
+- `docs/mobile/harness/cycle-175-holiwyn-future-list-order-activity.xml`.
+- Samsung hierarchy shows `ticket-market-depth` and `Best bid 0.31 USDT - Best ask 0.38 USDT - Spread 7c` before order placement.
+Bugs found:
+- Initial full-row depth layout clipped the ticket header on Samsung. Recovered by compacting the depth display and reducing ticket vertical padding/row heights, then reran the Samsung proof successfully.
+Technical debt added:
+- Ticket depth remains mock/quote-derived until successful server quote readiness and server-backed Samsung proof are available.
+Technical debt resolved:
+- Trade Ticket now exposes market depth context directly on the order surface instead of requiring users to inspect Event Detail.
+Result: Passed Cycle 175 QA. Samsung future-list order smoke passed with the corrected compact depth layout, mobile typecheck passed, and mobile API/service tests pass.
+Commit: cycle branch HEAD (`Show ticket market depth`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 176 should continue ticket/order parity or use backend readiness recovery if Docker/DB/API-key state changes.
+Harnesses run:
+- Samsung Future List Order Smoke Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync/Quote Unit Harness
+- Review Harness
+- Recovery Harness
+Harness failures:
+- First Samsung visual proof exposed header clipping from the taller depth strip; recovered in-cycle with compact layout and rerun.
+
+### Heartbeat After Cycle 175
+
+Completed cycles: 173, 174, 175.
+Verified progress: Trade Ticket now visibly reports trading mode and compact bid/ask/spread depth on the Samsung S23, and the server-proof decision harness now emits category-specific recovery plans for blocked live server-backed proof.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, ticket trading-mode/depth context, market quote refresh seams, server order/Portfolio/cancel/quote service coverage, and strict server-proof decision harnessing.
+Current backend state: Mobile API/profile-preference/activity/history/order/open-order/portfolio snapshot/portfolio sync/quote tests pass. Readiness evidence still gates successful live server-backed trading on Docker daemon, local DB TCP, API key, backend health, and quote readiness.
+Device strategy: Samsung S23 remains the primary Holiwyn visual QA and server-mode proof target through Expo Go. This heartbeat includes another Samsung-caught visual-fit fix, reinforcing the phone-first QA choice.
+Open blockers: None for autonomous progress. Successful live server-backed trading remains gated by backend readiness and credentials.
+Risks: Successful authenticated order execution, Portfolio hydration, cancel execution, and live quote refresh are still unproven on device; Expo Go proof still depends on LAN reachability.
+Next three likely cycles: continue ticket/order parity, add more market-detail parity that can be Samsung-proven, or retry the server-proof recovery plan if backend infrastructure becomes available.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.
