@@ -124,8 +124,8 @@ npm run gate:server-success
 
 ## Device Strategy
 
-- Samsung S23: use for Polymarket reference and, later, explicit Holiwyn real-device QA.
-- Android emulator: use for automated Holiwyn development loops, screenshots, smoke tests, and repeatable checks.
+- Samsung S23: use for Polymarket reference and primary Holiwyn real-device QA.
+- Android emulator: keep as a fallback for checks that are practical there; it is not the primary proof device when it is slow or stale.
 - Expo Go: acceptable for fast iteration while the app is changing quickly.
 - Android development build/APK: create once core Holiwyn flows are stable or Expo Go becomes the main testing bottleneck.
 

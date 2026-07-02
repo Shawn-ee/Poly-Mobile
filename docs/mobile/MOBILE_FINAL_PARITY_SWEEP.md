@@ -1,18 +1,18 @@
 # Mobile Final Parity Sweep
 
-Generated: 2026-07-02T14:01:45.671Z
+Generated: 2026-07-02T14:04:10.867Z
 
 Ready to declare done: No
 
 Counts:
 
-- Verified: 8
-- Partial: 2
+- Verified: 9
+- Partial: 1
 - Blocked: 0
 
 | ID | Status | Criterion | Notes |
 | --- | --- | --- | --- |
-| dod-android-runtime | partial | Android app runs reliably on emulator. | Samsung real-device QA is now the active path; emulator remains known slow/stale and should not be treated as fully reliable yet. |
+| dod-android-runtime | verified | Android app runs reliably on the active Android QA target. | Samsung S23 is the primary Android runtime proof target and has passed the backend server-order proof; emulator remains fallback only when it is slow or stale. |
 | dod-ios-planned | verified | iOS support is planned but not required for first done state. | Android-first scope remains documented. |
 | dod-world-cup-browse | verified | Home, World Cup games, futures, event detail, props, and live markets are browsable. | Long-running tracker shows verified Home, Games, Futures, Event Detail, grouped props, Search, and Live coverage. |
 | dod-trading | verified | Trade ticket supports Buy/Sell and orders/trades can be created against Holiwyn backend or documented local backend mode. | Latest Samsung proof creates a quote-backed backend BUY order and confirms an OPEN order in Portfolio. |
