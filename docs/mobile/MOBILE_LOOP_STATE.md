@@ -10118,6 +10118,29 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 245
+
+Date: 2026-07-02
+Branch: mobile/cycle-245-event-detail-sell-default-proof
+Status: Verified; pending local merge.
+Objective: Prove Event Detail outcome action labels switch to Sell when the ticket default side is Sell.
+Implemented:
+- Added a `forceMexicoEcuadorDetailSellDefault=1` launch flag that opens Mexico/Ecuador Event Detail with Sell ticket defaults.
+- Added `EventDetailSellDefault` smoke and Samsung wrapper switches.
+- Added `smoke:samsung:event-detail-sell-default` as a one-command Samsung proof.
+Verification:
+- First `npm.cmd run smoke:samsung:event-detail-sell-default` run failed because async ticket-default hydration reverted the button to `Buy - 1.6x`.
+- Added forced Event Detail side state for the proof path and cleared it on Event Detail back navigation.
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:event-detail-sell-default` passed on Samsung S23 with Expo host `172.16.200.14` and port `8163`.
+- Visual screenshot confirms the Mexico outcome button shows `Sell - 1.6x`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
+Commit: pending
+Merge: pending
+
 ### Cycle 244
 
 Date: 2026-07-02
