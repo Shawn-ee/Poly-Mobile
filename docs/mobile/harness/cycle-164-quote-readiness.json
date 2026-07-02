@@ -1,0 +1,20 @@
+﻿{
+    "ready":  false,
+    "expectedBlocked":  true,
+    "backendBaseUrl":  "http://127.0.0.1:3000",
+    "backendHealthReachable":  false,
+    "worldCupEventsReachable":  false,
+    "eventDetailReachable":  false,
+    "marketQuoteReachable":  false,
+    "discoveredEventSlug":  null,
+    "discoveredMarketId":  null,
+    "quoteCount":  0,
+    "failures":  [
+                     "Backend health unavailable at http://127.0.0.1:3000: The operation has timed out."
+                 ],
+    "nextActions":  [
+                        "Start the backend on the configured HOLIWYN_BACKEND_BASE_URL.",
+                        "Seed or import World Cup events with at least one market.",
+                        "Ensure /api/markets/:id/quote responds for ORDERBOOK markets before server-mode quote device proof."
+                    ]
+}

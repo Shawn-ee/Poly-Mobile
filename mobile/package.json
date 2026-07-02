@@ -16,6 +16,8 @@
     "gate:server-success": "powershell -ExecutionPolicy Bypass -File ./scripts/server-success-gate.ps1",
     "gate:server-success:expect-blocked": "powershell -ExecutionPolicy Bypass -File ./scripts/server-success-gate.ps1 -ExpectBlocked",
     "gate:server-success:expect-blocked:summary": "powershell -ExecutionPolicy Bypass -File ./scripts/server-success-gate.ps1 -ExpectBlocked -SummaryPath ../docs/mobile/harness/cycle-current-server-success-gate.json",
+    "quote-readiness": "powershell -ExecutionPolicy Bypass -File ./scripts/quote-readiness.ps1",
+    "quote-readiness:expect-blocked:summary": "powershell -ExecutionPolicy Bypass -File ./scripts/quote-readiness.ps1 -ExpectBlocked -SummaryPath ../docs/mobile/harness/cycle-current-quote-readiness.json",
     "smoke": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1",
     "smoke:deep": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep",
     "smoke:order-failure": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -OrderFailure -Port 8083",
