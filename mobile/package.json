@@ -5,7 +5,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
+    "android": "expo run:android",
     "typecheck": "tsc --noEmit",
     "check:server-auth": "powershell -ExecutionPolicy Bypass -File ./scripts/check-server-auth-config.ps1",
     "check:android-dev-build": "powershell -ExecutionPolicy Bypass -File ./scripts/check-android-dev-build-readiness.ps1",
@@ -123,12 +123,14 @@
     "smoke:server-close-fixture": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerCloseFixture -Port 8090",
     "smoke:server-position-trade": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerPositionTrade -Port 8091",
     "smoke:server-position-buy-trade": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerPositionBuyTrade -Port 8092",
-    "smoke:server-position-details": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerPositionDetails -Port 8093"
+    "smoke:server-position-details": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerPositionDetails -Port 8093",
+    "ios": "expo run:ios"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
     "@react-native-async-storage/async-storage": "2.2.0",
     "expo": "^54.0.29",
+    "expo-font": "~14.0.12",
     "expo-status-bar": "~3.0.9",
     "react": "19.1.0",
     "react-native": "0.81.5",

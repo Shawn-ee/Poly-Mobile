@@ -1,12 +1,12 @@
 {
   "ready": true,
-  "readyToDeclareDone": false,
+  "readyToDeclareDone": true,
   "counts": {
-    "verified": 9,
-    "partial": 1,
+    "verified": 10,
+    "partial": 0,
     "blocked": 0
   },
-  "generatedAt": "2026-07-02T14:12:16.533Z",
+  "generatedAt": "2026-07-02T14:41:03.391Z",
   "criteria": [
     {
       "id": "dod-android-runtime",
@@ -104,17 +104,16 @@
     {
       "id": "dod-apk-lane",
       "criterion": "Samsung QA is moving off Expo Go toward dev build/APK.",
-      "status": "partial",
+      "status": "verified",
       "evidence": [
         "docs/mobile/harness/cycle-current-android-dev-build-readiness.json",
         "docs/mobile/harness/cycle-current-android-apk-artifact-readiness.json",
         "docs/mobile/harness/cycle-current-samsung-apk-smoke.json"
       ],
-      "notes": "APK install/launch harness exists and artifact-readiness evidence identifies the remaining apk_missing build artifact blocker."
+      "notes": "APK artifact exists and the Samsung APK smoke installed, launched, verified foreground focus, and found no crash dialog."
     }
   ],
   "nextActions": [
-    "Generate or provide dist/holiwyn-preview.apk, then run npm run smoke:samsung:apk.",
-    "Keep Samsung server-order proof as the main real-device trading regression until the APK lane exists."
+    "Declare mobile Definition of Done complete."
   ]
 }

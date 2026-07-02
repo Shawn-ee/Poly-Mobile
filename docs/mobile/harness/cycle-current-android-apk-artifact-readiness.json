@@ -1,29 +1,25 @@
 ﻿{
-    "checkedAt":  "2026-07-02T14:12:04.0897313Z",
-    "ready":  false,
+    "checkedAt":  "2026-07-02T14:38:20.2099952Z",
+    "ready":  true,
     "nextActions":  [
-                        "Build or provide mobile/dist/holiwyn-preview.apk, then run npm run smoke:samsung:apk.",
-                        "Install eas-cli or use an existing generated APK artifact.",
-                        "Use the managed preview-apk lane once EAS CLI is available, or explicitly generate mobile/android before local Gradle assembly."
+                        "Install eas-cli or use an existing generated APK artifact."
                     ],
     "apkPath":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\mobile\\.\\dist\\holiwyn-preview.apk",
     "warnings":  [
                      "EAS CLI is unavailable; cloud/local EAS builds cannot be launched from this workspace yet.",
-                     "No native Android project exists; local Gradle builds require a prebuild step, while EAS can build from managed Expo config.",
-                     "No Gradle wrapper exists; local APK assembly is unavailable until mobile/android is generated.",
                      "expo-dev-client is not installed; the immediate path is preview-apk rather than a dev-client APK."
                  ],
     "mobileRoot":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\mobile",
     "buildCapabilities":  {
                               "canAttemptCloudEasBuild":  false,
-                              "canAttemptLocalGradleBuild":  false,
-                              "canRunApkSmoke":  false
+                              "canAttemptLocalGradleBuild":  true,
+                              "canRunApkSmoke":  true
                           },
     "findings":  [
                      {
                          "id":  "apk-file",
-                         "ready":  false,
-                         "detail":  "APK is missing at C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\mobile\\.\\dist\\holiwyn-preview.apk."
+                         "ready":  true,
+                         "detail":  "APK exists at C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\mobile\\.\\dist\\holiwyn-preview.apk."
                      },
                      {
                          "id":  "expo-config",
@@ -67,13 +63,13 @@
                      },
                      {
                          "id":  "native-android-project",
-                         "ready":  false,
-                         "detail":  "mobile/android does not exist; managed Expo project has not been prebuilt locally."
+                         "ready":  true,
+                         "detail":  "mobile/android exists."
                      },
                      {
                          "id":  "gradle-wrapper",
-                         "ready":  false,
-                         "detail":  "Gradle wrapper is not available because mobile/android is not generated."
+                         "ready":  true,
+                         "detail":  "Gradle wrapper exists."
                      },
                      {
                          "id":  "expo-dev-client",
@@ -81,9 +77,9 @@
                          "detail":  "expo-dev-client is not installed; preview APK is the current managed-build lane."
                      }
                  ],
-    "status":  "apk_artifact_missing",
+    "status":  "apk_ready_for_samsung_smoke",
     "repoRoot":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly",
     "blockers":  [
-                     "apk_missing"
+
                  ]
 }
