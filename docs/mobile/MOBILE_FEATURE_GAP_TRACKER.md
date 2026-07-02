@@ -285,3 +285,4 @@ Status:
 | GAP-263 | Live markets | Live summary control proof | P1 | Yes | Verified | Cycle 250 tightens the Samsung live-summary proof to require the summary accessibility label plus live status and refresh controls. |
 | GAP-264 | Event detail | Samsung event detail summary proof command | P1 | Yes | Verified | Cycle 251 adds a named Samsung event-detail-summary proof and requires the market summary accessibility label with grouped market counts. |
 | GAP-265 | Event detail | Samsung event detail props proof command | P1 | Yes | Verified | Cycle 252 adds a named Samsung event-detail-props proof that opens the Props group and verifies the prop market rows. |
+| GAP-266 | Event detail | Samsung prop market ticket proof | P1 | Yes | Verified | Cycle 253 adds a Samsung proof that opens a prop market outcome from Event Detail and verifies the trade ticket. |
