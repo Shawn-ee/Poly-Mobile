@@ -280,6 +280,7 @@ export default function App() {
     const shouldForceWorldCupWinnerFranceTicket = url.includes("forceWorldCupWinnerFranceTicket=1");
     const shouldForceClosedWorldCupWinnerFrance = url.includes("forceClosedWorldCupWinnerFrance=1");
     const shouldForceServerPortfolioFixture = url.includes("forceServerPortfolioFixture=1");
+    const shouldForceOpenOrder = url.includes("forceOpenOrder=1");
     forceServerOrderProof.current = url.includes("forceServerOrderProof=1");
     forceServerOpenOrderProof.current = url.includes("forceServerOpenOrderProof=1");
     forceServerOrderSide.current = url.includes("forceServerOrderSide=sell") ? "sell" : "buy";
@@ -311,6 +312,7 @@ export default function App() {
         !shouldForceWorldCupWinnerFranceTicket &&
         !shouldForceClosedWorldCupWinnerFrance &&
         !shouldForceServerPortfolioFixture &&
+        !shouldForceOpenOrder &&
         !forceServerOrderProof.current &&
         !shouldForceLive
       ) {
@@ -345,7 +347,7 @@ export default function App() {
       const outcome = market.outcomes[0];
       setTicket({ market, outcome, side: "buy" });
     }
-    if (url.includes("forceOpenOrder=1")) {
+    if (shouldForceOpenOrder) {
       setBalance(10000);
       setPositions([]);
       setLatestOrder(null);

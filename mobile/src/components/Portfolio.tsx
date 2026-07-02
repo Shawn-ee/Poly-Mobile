@@ -292,6 +292,10 @@ export function Portfolio({
           <Text style={styles.positionCountLabel}>{t.openPositions}</Text>
           <Text style={styles.positionCountValue}>{positions.length}</Text>
         </View>
+        <View accessibilityLabel="portfolio-open-order-count" testID="portfolio-open-order-count" style={styles.countTile}>
+          <Text style={styles.positionCountLabel}>{t.openOrders}</Text>
+          <Text style={styles.positionCountValue}>{openOrders.length}</Text>
+        </View>
         <View accessibilityLabel="portfolio-activity-count" testID="portfolio-activity-count" style={styles.countTile}>
           <Text style={styles.positionCountLabel}>{t.activityCount}</Text>
           <Text style={styles.positionCountValue}>{activities.length}</Text>
@@ -551,8 +555,8 @@ const styles = StyleSheet.create({
   syncTextBlock: { flex: 1 },
   syncTitle: { color: "#f8fafc", fontWeight: "900" },
   syncBody: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
-  countGrid: { flexDirection: "row", gap: 8, marginTop: 12 },
-  countTile: { flex: 1, minHeight: 84, justifyContent: "space-between", paddingHorizontal: 10, paddingVertical: 10, borderRadius: 12, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
+  countGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 12 },
+  countTile: { flexGrow: 1, flexBasis: "48%", minHeight: 72, justifyContent: "space-between", paddingHorizontal: 10, paddingVertical: 10, borderRadius: 12, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
   positionCountLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "900" },
   positionCountValue: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
   latestActivityCard: { marginTop: 12, padding: 14, borderRadius: 14, backgroundColor: "#0f1f1d", borderWidth: 1, borderColor: "#155e75" },
