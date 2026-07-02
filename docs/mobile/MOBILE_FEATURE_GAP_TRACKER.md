@@ -261,3 +261,4 @@ Status:
 | GAP-239 | Portfolio history | Activity side execution detail | P1 | Yes | Verified | Cycle 226 prefixes filled and canceled activity execution rows with Buy/Sell side and verifies the updated Recent activity text on Samsung S23. |
 | GAP-240 | Harness | Proof-noise gated Samsung wrappers | P1 | No | Verified | Cycle 227 runs proof-noise gates before and after the reusable Samsung filled-order and open-order cancel proof wrappers, embedding both gate results in wrapper summaries. |
 | GAP-241 | Portfolio | Open-order placed time | P1 | Yes | Verified | Cycle 228 maps backend open-order `createdAt` into a placed-time line on Portfolio open-order cards and verifies it on Samsung S23. |
+| GAP-242 | Portfolio | Open-order original size | P1 | Yes | Verified | Cycle 229 maps backend open-order `size` into an original Size line on Portfolio open-order cards and verifies it on Samsung S23. |
