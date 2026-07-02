@@ -2563,3 +2563,19 @@ Findings:
 - Samsung future-list order smoke, mobile typecheck, and mobile API/service tests passed.
 Decision: Approve Cycle 173 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 174
+
+Date: 2026-07-01
+Branch: mobile/cycle-174
+Reviewer: Lead/Reviewer pass
+Scope: Server-proof decision recovery plan.
+Findings:
+- P1: The combined Samsung server-proof decision report now attaches a `recovery` object to each normalized blocker.
+- P1: The top-level `recoveryPlan` gives category, owner, action, verification command, and ready signal, so the autonomous loop can choose recovery work without asking the user.
+- P1: Current evidence includes recovery plans for Docker daemon, database TCP, API key, backend health, and quote-readiness blockers.
+- P1: Console output now prints recovery action and verification command under each blocker for quick loop diagnostics.
+- P2: This does not clear infrastructure blockers or prove successful server-backed trading; it improves decision quality while those gates remain closed.
+- Decision harness, mobile typecheck, and mobile API/service tests passed.
+Decision: Approve Cycle 174 for local commit/merge after scoped diff review.
+Merge approved: Yes

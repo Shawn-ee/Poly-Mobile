@@ -7985,6 +7985,45 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 174
+
+Date: 2026-07-01
+Branch: mobile/cycle-174
+Goal: Add category-specific recovery plans to the combined Samsung server-proof decision report.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; harness/reporting cycle.
+Backend/API changed: No runtime API route change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/samsung-server-proof-decision.ps1`, `docs/mobile/harness/cycle-174-samsung-server-proof-decision.json`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run decision:samsung:server-proof:expect-blocked:summary` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Harness evidence:
+- `docs/mobile/harness/cycle-174-samsung-server-proof-decision.json`.
+- Report shows `ready=false`, decision `do-not-run-server-backed-samsung-proof`, blocker categories `docker-daemon`, `database-tcp`, `api-key`, `backend-health`, and `quote-readiness`, plus recovery plans with owner/action/verify command/ready signal for each category.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- The autonomous loop now has machine-readable recovery guidance for each known server-backed Samsung proof blocker instead of relying on broad generic next actions.
+Result: Passed Cycle 174 QA. Combined decision harness blocked as expected with structured recovery plans, mobile typecheck passed, and mobile API/service tests pass.
+Commit: cycle branch HEAD (`Add server proof recovery plan`)
+Merged: Pending local merge after commit.
+Next cycle: Cycle 175 should add another product-facing server-mode clarity proof or use the new recovery plan to retry/readiness-check infrastructure if the environment changes.
+Harnesses run:
+- Samsung Server Proof Decision Harness
+- Mobile Backend Readiness Harness
+- Mobile Credential Readiness Harness
+- Server Success Gate Harness
+- Samsung Quote Proof Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync/Quote Unit Harness
+- Review Harness
+Harness failures:
+- Server-backed Samsung proof is blocked as expected by backend/API-key/quote readiness categories.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.
