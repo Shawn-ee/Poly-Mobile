@@ -9943,7 +9943,7 @@ Merge: 1f0e09d
 
 Date: 2026-07-02
 Branch: mobile/cycle-231-open-order-remaining-value
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Show remaining USDT value beside remaining shares on mobile Portfolio open-order cards.
 Implemented:
 - Added localized `remainingValue` copy in English and Simplified Chinese.
@@ -9958,8 +9958,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
 - `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
-Commit: pending
-Merge: pending
+Commit: 2e3f285
+Merge: 226c7d1
 
 ### Heartbeat After Cycle 229
 
