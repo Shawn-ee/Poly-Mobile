@@ -28,11 +28,13 @@ param(
   [switch]$ServerSellOrderFilled,
   [switch]$ServerOpenOrderCancel,
   [switch]$ServerFilledTradeHistory,
+  [switch]$ServerApiKeyDiagnostic,
   [switch]$ServerPortfolioFixture,
   [switch]$ServerCloseFixture,
   [switch]$ServerPositionTrade,
   [switch]$ServerPositionBuyTrade,
   [switch]$ServerPositionFallbackTrade,
+  [switch]$ServerPositionFallbackOrder,
   [switch]$ServerPositionDetails,
   [switch]$SellTicket,
   [switch]$Account,
@@ -194,6 +196,14 @@ function Invoke-ExpoMenuCloseButton {
   return $true
 }
 
+function Start-DeepLink {
+  param(
+    [string]$Url
+  )
+  $quotedUrl = "'$Url'"
+  & $adb -s $Device shell am start -a android.intent.action.VIEW -d $quotedUrl | Out-Null
+}
+
 function Wait-HierarchyContains {
   param(
     [string]$Name,
@@ -204,7 +214,7 @@ function Wait-HierarchyContains {
   )
   for ($attempt = 1; $attempt -le $Attempts; $attempt++) {
     if ($RestartUrl -and $attempt -gt 1) {
-      & $adb -s $Device shell am start -a android.intent.action.VIEW -d $RestartUrl | Out-Null
+      Start-DeepLink -Url $RestartUrl
       Start-Sleep -Seconds 2
     }
     $path = Save-UiHierarchy -Name $Name
@@ -216,7 +226,7 @@ function Wait-HierarchyContains {
       if ($RestartUrl -and $hierarchy -match "Something went wrong\.") {
         & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
         Start-Sleep -Seconds 1
-        & $adb -s $Device shell am start -a android.intent.action.VIEW -d $RestartUrl | Out-Null
+        Start-DeepLink -Url $RestartUrl
       }
       if ($attempt -eq $Attempts) {
         throw
@@ -334,7 +344,7 @@ try {
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
     $env:EXPO_PUBLIC_API_KEY = "pk_test_mobile_harness"
   }
-  if ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory) {
+  if ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPositionFallbackOrder) {
     if (-not $env:EXPO_PUBLIC_API_KEY) {
       throw "EXPO_PUBLIC_API_KEY is required for server order/history smoke."
     }
@@ -344,12 +354,12 @@ try {
     }
   }
   $expoArgs = @("expo", "start", "--port", "$Port", "--offline")
-  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary) {
+  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
   Wait-ExpoReady -Port $Port
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://${ExpoHost}:$Port/--/?forceOrderFailure=1"
@@ -363,6 +373,9 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerOrderProof=1"
   } elseif ($ServerFilledTradeHistory) {
     "exp://${ExpoHost}:$Port/--/?forcePortfolio=1"
+  } elseif ($ServerApiKeyDiagnostic) {
+    $encodedApiKey = [uri]::EscapeDataString($env:EXPO_PUBLIC_API_KEY)
+    "exp://${ExpoHost}:$Port/--/?forceResetState=1,forcePortfolio=1,forceApiKeyDiagnostic=1,apiKey=$encodedApiKey"
   } elseif ($ServerPortfolioFixture) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerPortfolioFixture=1"
   } elseif ($ServerCloseFixture) {
@@ -373,6 +386,9 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerPortfolioFixture=1"
   } elseif ($ServerPositionFallbackTrade) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerPortfolioFallbackFixture=1"
+  } elseif ($ServerPositionFallbackOrder) {
+    $encodedApiKey = [uri]::EscapeDataString($env:EXPO_PUBLIC_API_KEY)
+    "exp://${ExpoHost}:$Port/--/?forceResetState=1,forcePortfolio=1,forceRuntimePortfolioSync=1,apiKey=$encodedApiKey"
   } elseif ($ServerPositionDetails) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerPortfolioFixture=1"
   } elseif ($OpenSellOrderCancel) {
@@ -429,7 +445,7 @@ try {
     & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
     Start-Sleep -Seconds 2
   }
-  & $adb -s $Device shell am start -a android.intent.action.VIEW -d $launchUrl | Out-Null
+  Start-DeepLink -Url $launchUrl
   Start-Sleep -Seconds 10
   Dismiss-ExpoDeveloperMenuIfPresent | Out-Null
 
@@ -449,8 +465,12 @@ try {
     @("Trading mode: Server mode", "Best bid", "Best ask", "Spread", "Fake balance")
   } elseif ($ServerFilledTradeHistory) {
     @("Portfolio", "Server portfolio synced", "Recent activity")
+  } elseif ($ServerApiKeyDiagnostic) {
+    @("Runtime PolyApi key", "positions 1", "World Cup Backend Position Order Proof")
   } elseif ($ServerPositionFallbackTrade) {
     @("Portfolio", "Server portfolio synced", "Open positions", "1", "World Cup backend proof", "SERVER - Buy - YES - 42%")
+  } elseif ($ServerPositionFallbackOrder) {
+    @("Portfolio", "Server portfolio synced", "Open positions", "1", "World Cup Backend Position Order Proof")
   } elseif ($ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails) {
     @("Portfolio", "Server portfolio synced", "Open positions", "1", "World Cup winner", "SERVER - Buy - France - 42%")
   } elseif ($SearchQuery -or $SearchClearQuery) {
@@ -570,6 +590,13 @@ try {
       return
     }
 
+    if ($ServerApiKeyDiagnostic) {
+      Save-Screenshot -Name "cycle-current-holiwyn-server-api-key-diagnostic.png"
+      $serverApiKeyDiagnosticHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-api-key-diagnostic.xml"
+      Assert-HierarchyContains -Path $serverApiKeyDiagnosticHierarchy -Expected @("api-key-diagnostic", "Runtime PolyApi key", "positions 1", "World Cup Backend Position Order Proof")
+      return
+    }
+
     if ($ServerPortfolioFixture) {
       Save-Screenshot -Name "cycle-current-holiwyn-server-portfolio-fixture.png"
       $serverPortfolioFixtureHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-portfolio-fixture.xml"
@@ -651,6 +678,30 @@ try {
       return
     }
 
+    if ($ServerPositionFallbackOrder) {
+      Save-Screenshot -Name "cycle-current-holiwyn-server-position-fallback-order-ready.png"
+      & $adb -s $Device shell input swipe 540 1750 540 850 450 | Out-Null
+      & $adb -s $Device shell input swipe 540 1750 540 850 450 | Out-Null
+      Start-Sleep -Seconds 1
+      $serverPositionFallbackOrderReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-fallback-order-ready.xml"
+      Assert-HierarchyContains -Path $serverPositionFallbackOrderReadyHierarchy -Expected @("World Cup Backend Position Order Proof", "SERVER - Buy - YES - 50%", "Buy", "Sell", "Close position")
+      Invoke-TapHierarchyNode -Path $serverPositionFallbackOrderReadyHierarchy -Identifier "position-trade-buy-" -StartsWith
+      Start-Sleep -Seconds 2
+      Save-Screenshot -Name "cycle-current-holiwyn-server-position-fallback-order-ticket.png"
+      $serverPositionFallbackOrderTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-fallback-order-ticket.xml"
+      Assert-HierarchyContains -Path $serverPositionFallbackOrderTicketHierarchy -Expected @("World Cup Backend Position Order Proof", "YES", "Trading mode: Server mode", "Buy", "Estimated cost", "Est. shares", "Avg price")
+      Assert-ServerTicketUsesQuotedDepthSizes -Path $serverPositionFallbackOrderTicketHierarchy
+      & $adb -s $Device shell input swipe 540 1850 540 950 450 | Out-Null
+      Start-Sleep -Seconds 1
+      $serverPositionFallbackOrderButtonHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-fallback-order-ticket-button.xml"
+      Assert-HierarchyContains -Path $serverPositionFallbackOrderButtonHierarchy -Expected @("place-mock-order", "Place buy order")
+      Invoke-TapHierarchyNode -Path $serverPositionFallbackOrderButtonHierarchy -Identifier "place-mock-order"
+      $serverPositionFallbackOrderPortfolioHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-server-position-fallback-order-portfolio.xml" -Expected @("Portfolio", "Order placed", "SERVER - Buy - YES - OPEN", "World Cup Backend Position Order Proof", "Remaining:", "Potential payout") -Attempts 14 -DelaySeconds 2
+      Save-Screenshot -Name "cycle-current-holiwyn-server-position-fallback-order-portfolio.png"
+      Assert-HierarchyContains -Path $serverPositionFallbackOrderPortfolioHierarchy -Expected @("portfolio-screen", "latest-order-card", "open-order-remaining-value-", "open-order-potential-payout-")
+      return
+    }
+
     if ($ServerPositionDetails) {
       & $adb -s $Device shell input swipe 540 1750 540 850 450 | Out-Null
       Start-Sleep -Seconds 1
@@ -688,7 +739,7 @@ try {
           break
         } catch {
           if ((Dismiss-ExpoDeveloperMenuIfPresent -Path $liveTicketHierarchy)) {
-            & $adb -s $Device shell am start -a android.intent.action.VIEW -d $launchUrl | Out-Null
+            Start-DeepLink -Url $launchUrl
             Start-Sleep -Seconds 3
             $liveTicketReadyHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-live-ticket-ready.xml" -Expected @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina") -RestartUrl $launchUrl -Attempts 4 -DelaySeconds 2
             Assert-HierarchyContains -Path $liveTicketReadyHierarchy -Expected @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina")
@@ -699,7 +750,7 @@ try {
           }
           & $adb -s $Device shell input keyevent 4 | Out-Null
           Start-Sleep -Seconds 1
-          & $adb -s $Device shell am start -a android.intent.action.VIEW -d $launchUrl | Out-Null
+          Start-DeepLink -Url $launchUrl
           Start-Sleep -Seconds 3
           $liveTicketReadyHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-live-ticket-ready.xml" -Expected @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina") -RestartUrl $launchUrl -Attempts 4 -DelaySeconds 2
         }
@@ -870,7 +921,7 @@ try {
       Start-Sleep -Seconds 1
       $accountPositionCandidate = Save-UiHierarchy -Name "cycle-current-holiwyn-account-position-summary.xml"
       if ((Dismiss-ExpoDeveloperMenuIfPresent -Path $accountPositionCandidate)) {
-        & $adb -s $Device shell am start -a android.intent.action.VIEW -d $launchUrl | Out-Null
+        Start-DeepLink -Url $launchUrl
         Start-Sleep -Seconds 3
         Wait-HierarchyContains -Name "cycle-current-holiwyn-account-position-summary.xml" -Expected @("Account", "Preferences", "Open positions: 1", "Open orders: 1", "Open order value: 117.5 USDT") -RestartUrl $launchUrl -Attempts 4 -DelaySeconds 2 | Out-Null
         & $adb -s $Device shell input swipe 540 1700 540 850 500 | Out-Null

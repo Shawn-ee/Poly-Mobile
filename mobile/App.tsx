@@ -1,7 +1,7 @@
 ﻿import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { BackHandler, Linking, StyleSheet, View } from "react-native";
+import { BackHandler, Linking, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PolyApi } from "./src/api";
 import { normalizeEventDetail } from "./src/adapters/worldCupAdapter";
@@ -128,8 +128,12 @@ export default function App() {
   const [liveRefreshTick, setLiveRefreshTick] = useState(0);
   const [launchUrlVersion, setLaunchUrlVersion] = useState(0);
   const [futures, setFutures] = useState<Market[]>(worldCupFutures);
+  const [runtimeApiKey, setRuntimeApiKey] = useState(DEFAULT_API_KEY);
+  const [apiKeyDiagnosticEnabled, setApiKeyDiagnosticEnabled] = useState(false);
+  const [apiKeyDiagnostic, setApiKeyDiagnostic] = useState<string | null>(null);
+  const [forcedRuntimePortfolioSyncNonce, setForcedRuntimePortfolioSyncNonce] = useState(0);
   const t = appCopy[locale];
-  const api = useMemo(() => new PolyApi(DEFAULT_API_BASE, DEFAULT_API_KEY), []);
+  const api = useMemo(() => new PolyApi(DEFAULT_API_BASE, runtimeApiKey), [runtimeApiKey]);
   const mounted = useRef(true);
   const profilePreferencesReady = useRef(false);
   const skipPortfolioHydration = useRef(false);
@@ -137,7 +141,7 @@ export default function App() {
   const forceServerOrderProof = useRef(false);
   const forceServerOpenOrderProof = useRef(false);
   const forceServerOrderSide = useRef<"buy" | "sell">("buy");
-  const shouldSyncProfilePreferences = ORDER_MODE === "server" && DEFAULT_API_KEY.length > 0;
+  const shouldSyncProfilePreferences = ORDER_MODE === "server" && runtimeApiKey.length > 0;
   const accountPortfolioValue = useMemo(
     () => balance + positions.reduce((total, position) => total + portfolioPositionValue(position), 0),
     [balance, positions],
@@ -300,12 +304,26 @@ export default function App() {
     const shouldForceClosedWorldCupWinnerFrance = url.includes("forceClosedWorldCupWinnerFrance=1");
     const shouldForceServerPortfolioFixture = url.includes("forceServerPortfolioFixture=1");
     const shouldForceServerPortfolioFallbackFixture = url.includes("forceServerPortfolioFallbackFixture=1");
+    const shouldForcePortfolio = url.includes("forcePortfolio=1");
     const shouldForceOpenOrder = url.includes("forceOpenOrder=1");
     const forcedOpenOrder = url.includes("forceOpenOrderSide=sell") ? SMOKE_OPEN_SELL_ORDER : SMOKE_OPEN_ORDER;
+    const apiKeyMatch = url.match(/[?&,]apiKey=([^&,]+)/);
+    const shouldForceRuntimePortfolioSync =
+      url.includes("forceRuntimePortfolioSync=1") || (shouldForcePortfolio && Boolean(apiKeyMatch?.[1]));
     forceServerOrderProof.current = url.includes("forceServerOrderProof=1");
     forceServerOpenOrderProof.current = url.includes("forceServerOpenOrderProof=1");
     forceServerOrderSide.current = url.includes("forceServerOrderSide=sell") ? "sell" : "buy";
     forceServerCloseFixture.current = url.includes("forceServerCloseFixture=1");
+    if (apiKeyMatch?.[1]) {
+      setRuntimeApiKey(decodeURIComponent(apiKeyMatch[1]));
+    }
+    if (shouldForceRuntimePortfolioSync) {
+      setForcedRuntimePortfolioSyncNonce((value) => value + 1);
+    }
+    if (url.includes("forceApiKeyDiagnostic=1")) {
+      setApiKeyDiagnosticEnabled(true);
+      setMainTab("portfolio");
+    }
     setLaunchUrlVersion((value) => value + 1);
     const shouldForceLive = url.includes("forceLive=1");
     setForceOrderFailure(url.includes("forceOrderFailure=1"));
@@ -335,6 +353,7 @@ export default function App() {
         !shouldForceClosedWorldCupWinnerFrance &&
         !shouldForceServerPortfolioFixture &&
         !shouldForceServerPortfolioFallbackFixture &&
+        !shouldForcePortfolio &&
         !shouldForceOpenOrder &&
         !forceServerOrderProof.current &&
         !shouldForceLive
@@ -347,7 +366,7 @@ export default function App() {
         TICKET_DEFAULTS_STORAGE_KEY,
       ]).catch(() => undefined);
     }
-    if (url.includes("forcePortfolio=1")) {
+    if (shouldForcePortfolio) {
       setMainTab("portfolio");
     }
     if (shouldForceLive) {
@@ -562,6 +581,32 @@ export default function App() {
     return () => subscription.remove();
   }, [handleLaunchUrl]);
 
+  useEffect(() => {
+    if (!apiKeyDiagnosticEnabled) return;
+    if (!runtimeApiKey) {
+      setApiKeyDiagnostic("Launch API key missing");
+      return;
+    }
+    const keyId = runtimeApiKey.split(".")[0] ?? "unknown";
+    let cancelled = false;
+    setApiKeyDiagnostic(`Launch API key received ${keyId}`);
+    new PolyApi(DEFAULT_API_BASE, runtimeApiKey)
+      .getPortfolio()
+      .then((snapshot) => {
+        if (cancelled || !mounted.current) return;
+        const firstTitle = snapshot.positions[0]?.market?.title ?? "none";
+        setApiKeyDiagnostic(`Runtime PolyApi key ${keyId}; positions ${snapshot.positions.length}; first ${firstTitle}`);
+      })
+      .catch((error) => {
+        if (cancelled || !mounted.current) return;
+        const message = error instanceof Error ? error.message : "unknown";
+        setApiKeyDiagnostic(`Runtime PolyApi error ${keyId}; ${message}`);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [apiKeyDiagnosticEnabled, runtimeApiKey]);
+
   const loadBackendWorldCup = useCallback(async () => {
     try {
       const payload = await api.listWorldCupEvents();
@@ -635,7 +680,7 @@ export default function App() {
   }, [api, applyServerState]);
 
   useEffect(() => {
-    if (ORDER_MODE !== "server") return undefined;
+    if (ORDER_MODE !== "server" || runtimeApiKey.length === 0) return undefined;
     let cancelled = false;
     setPortfolioSyncStatus("syncing");
     loadServerPortfolioState(api).then((serverState) => {
@@ -646,7 +691,23 @@ export default function App() {
     return () => {
       cancelled = true;
     };
-  }, [api, applyServerState]);
+  }, [api, applyServerState, runtimeApiKey]);
+
+  useEffect(() => {
+    if (forcedRuntimePortfolioSyncNonce === 0 || ORDER_MODE !== "server" || runtimeApiKey.length === 0) return undefined;
+    let cancelled = false;
+    const runtimeApi = new PolyApi(DEFAULT_API_BASE, runtimeApiKey);
+    setPortfolioSyncStatus("syncing");
+    loadServerPortfolioState(runtimeApi).then((serverState) => {
+      if (cancelled || !mounted.current) return;
+      applyServerState(serverState);
+    }).catch(() => {
+      if (!cancelled && mounted.current) setPortfolioSyncStatus("error");
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [applyServerState, forcedRuntimePortfolioSyncNonce, runtimeApiKey]);
 
   useEffect(() => {
     if (!selectedEvent) return undefined;
@@ -996,19 +1057,26 @@ export default function App() {
               />
             )}
             {mainTab === "portfolio" && (
-              <Portfolio
-                locale={locale}
-                t={t}
-                balance={balance}
-                positions={positions}
-                latestOrder={latestOrder}
-                openOrders={openOrders}
-                activities={activities}
-                syncStatus={portfolioSyncStatus}
-                closePosition={closePosition}
-                openPositionTrade={openPositionTrade}
-                cancelOpenOrder={cancelOpenOrder}
-              />
+              <>
+                {apiKeyDiagnosticEnabled && (
+                  <View accessibilityLabel="api-key-diagnostic" testID="api-key-diagnostic" style={styles.diagnosticCard}>
+                    <Text style={styles.diagnosticText}>{apiKeyDiagnostic ?? "Launch API key diagnostic pending"}</Text>
+                  </View>
+                )}
+                <Portfolio
+                  locale={locale}
+                  t={t}
+                  balance={balance}
+                  positions={positions}
+                  latestOrder={latestOrder}
+                  openOrders={openOrders}
+                  activities={activities}
+                  syncStatus={portfolioSyncStatus}
+                  closePosition={closePosition}
+                  openPositionTrade={openPositionTrade}
+                  cancelOpenOrder={cancelOpenOrder}
+                />
+              </>
             )}
             {mainTab === "search" && (
               <SearchScreen
@@ -1084,6 +1152,8 @@ const styles = StyleSheet.create({
   promoText: { color: "#ffffff", fontWeight: "900" },
   bell: { width: 42, height: 42, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   content: { flex: 1 },
+  diagnosticCard: { paddingHorizontal: 16, paddingVertical: 10, backgroundColor: "#0f172a", borderBottomWidth: 1, borderBottomColor: "#263247" },
+  diagnosticText: { color: "#93c5fd", fontSize: 13, fontWeight: "800" },
   scrollPad: { paddingHorizontal: 16, paddingBottom: 110 },
   sportRow: { gap: 16, paddingVertical: 8 },
   sportItem: { alignItems: "center", gap: 6, opacity: 0.66 },

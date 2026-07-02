@@ -1,0 +1,116 @@
+﻿{
+    "ready":  true,
+    "port":  8191,
+    "setup":  {
+                  "user":  {
+                               "id":  "951d6167-aab3-4c52-9271-caf52ec7bff5",
+                               "username":  "holiwyn_mobile_backend_position_order_user_5a4e7ab9"
+                           },
+                  "keyId":  "pk_live_6dcea0a830f0f76b",
+                  "market":  {
+                                 "id":  "5f82f81a-a97a-40a5-a820-1f9f9dd326eb",
+                                 "title":  "World Cup Backend Position Order Proof"
+                             },
+                  "outcome":  {
+                                  "id":  "4437a638-6397-49fa-8ca3-8ffdfae5e80d",
+                                  "name":  "YES"
+                              },
+                  "seededDepth":  {
+                                      "bestBid":  0.47,
+                                      "bestAsk":  0.5,
+                                      "bestBidSize":  1000,
+                                      "bestAskSize":  2500,
+                                      "expectedTicketProbability":  49
+                                  },
+                  "setupSummaryPath":  "docs/mobile/harness/cycle-current-mobile-backend-position-order-setup.json"
+              },
+    "orderSummary":  {
+                         "username":  "holiwyn_mobile_backend_position_order_user_5a4e7ab9",
+                         "userId":  "951d6167-aab3-4c52-9271-caf52ec7bff5",
+                         "orderCount":  2,
+                         "statusCounts":  {
+                                              "OPEN":  1,
+                                              "FILLED":  1
+                                          },
+                         "latestOrder":  {
+                                             "id":  "38035888-00bf-421e-8faa-89bd03b03932",
+                                             "status":  "OPEN",
+                                             "side":  "BUY",
+                                             "market":  {
+                                                            "id":  "5f82f81a-a97a-40a5-a820-1f9f9dd326eb",
+                                                            "title":  "World Cup Backend Position Order Proof"
+                                                        },
+                                             "outcome":  {
+                                                             "id":  "4437a638-6397-49fa-8ca3-8ffdfae5e80d",
+                                                             "name":  "YES"
+                                                         },
+                                             "price":  "0.49",
+                                             "size":  "204.08",
+                                             "remaining":  "204.08",
+                                             "reservedNotional":  "99.9992",
+                                             "notional":  "99.9992",
+                                             "remainingNotional":  "99.9992",
+                                             "apiKeyId":  "pk_live_6dcea0a830f0f76b",
+                                             "canceledByApiKeyId":  null,
+                                             "createdAt":  "2026-07-02T13:46:51.029Z",
+                                             "updatedAt":  "2026-07-02T13:46:51.037Z"
+                                         },
+                         "latestCanceledOrder":  null,
+                         "recentOrders":  [
+                                              {
+                                                  "id":  "38035888-00bf-421e-8faa-89bd03b03932",
+                                                  "status":  "OPEN",
+                                                  "side":  "BUY",
+                                                  "market":  {
+                                                                 "id":  "5f82f81a-a97a-40a5-a820-1f9f9dd326eb",
+                                                                 "title":  "World Cup Backend Position Order Proof"
+                                                             },
+                                                  "outcome":  {
+                                                                  "id":  "4437a638-6397-49fa-8ca3-8ffdfae5e80d",
+                                                                  "name":  "YES"
+                                                              },
+                                                  "price":  "0.49",
+                                                  "size":  "204.08",
+                                                  "remaining":  "204.08",
+                                                  "reservedNotional":  "99.9992",
+                                                  "notional":  "99.9992",
+                                                  "remainingNotional":  "99.9992",
+                                                  "apiKeyId":  "pk_live_6dcea0a830f0f76b",
+                                                  "canceledByApiKeyId":  null,
+                                                  "createdAt":  "2026-07-02T13:46:51.029Z",
+                                                  "updatedAt":  "2026-07-02T13:46:51.037Z"
+                                              },
+                                              {
+                                                  "id":  "5405b79a-01a9-4227-bd4c-7d9759607cff",
+                                                  "status":  "FILLED",
+                                                  "side":  "BUY",
+                                                  "market":  {
+                                                                 "id":  "5f82f81a-a97a-40a5-a820-1f9f9dd326eb",
+                                                                 "title":  "World Cup Backend Position Order Proof"
+                                                             },
+                                                  "outcome":  {
+                                                                  "id":  "4437a638-6397-49fa-8ca3-8ffdfae5e80d",
+                                                                  "name":  "YES"
+                                                              },
+                                                  "price":  "0.5",
+                                                  "size":  "500",
+                                                  "remaining":  "0",
+                                                  "reservedNotional":  "0",
+                                                  "notional":  "250",
+                                                  "remainingNotional":  "0",
+                                                  "apiKeyId":  null,
+                                                  "canceledByApiKeyId":  null,
+                                                  "createdAt":  "2026-07-02T13:45:59.915Z",
+                                                  "updatedAt":  "2026-07-02T13:45:59.942Z"
+                                              }
+                                          ]
+                     },
+    "evidence":  {
+                     "readyHierarchy":  "docs/mobile/harness/cycle-current-holiwyn-server-position-fallback-order-ready.xml",
+                     "ticketHierarchy":  "docs/mobile/harness/cycle-current-holiwyn-server-position-fallback-order-ticket.xml",
+                     "portfolioHierarchy":  "docs/mobile/harness/cycle-current-holiwyn-server-position-fallback-order-portfolio.xml",
+                     "ticketScreenshot":  "docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-order-ticket.png",
+                     "portfolioScreenshot":  "docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-order-portfolio.png"
+                 },
+    "summaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-backend-position-order-proof.json"
+}

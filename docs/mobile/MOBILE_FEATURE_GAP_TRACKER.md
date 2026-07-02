@@ -20,6 +20,7 @@ Status:
 
 | ID | Area | Feature | Priority | Reference Observed | Holiwyn Status | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| GAP-290 | Harness | Backend-only position to real server open-order proof | P1 | No | Verified | Cycle 277 proves a disposable backend-created World Cup position appears on Samsung Portfolio, opens a quote-backed Buy ticket, submits a real server BUY order at 0.49, and returns to Portfolio with an OPEN order. |
 | GAP-289 | Harness | Backend-only position fallback device proof | P1 | No | Verified | Cycle 276 adds a Samsung proof for a backend-only Portfolio position opening a server ticket with preserved 47/50 quote depth. |
 | GAP-288 | Portfolio | Backend-only position trade target fallback | P1 | No | Verified | Cycle 275 lets server Portfolio positions open Buy/Sell tickets even when their backend market is not loaded in local Home/Event lists, preserving quote depth. |
 | GAP-287 | Backend harness | Live Portfolio quote-depth proof | P1 | No | Verified | Cycle 274 adds a live `/api/portfolio` proof that creates a disposable World Cup orderbook market, seeds 47/50 quote depth, authenticates with an API key, and verifies response position quote fields. |
