@@ -87,6 +87,7 @@
     "smoke:samsung:live-sell-order": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -LiveSellOrder -Port 8174",
     "smoke:samsung:live-order-close": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -LiveOrderClose -Port 8144",
     "smoke:samsung:live-portfolio-badge-deep": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -LivePortfolioBadgeDeep -Port 8145",
+    "smoke:samsung:tabs": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung-tabs.ps1 -Port 8180",
     "smoke:samsung:account-preferences": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -AccountPreferences -Port 8149",
     "smoke:samsung:account-profile-sync-error": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -AccountProfileSyncError -Port 8148",
     "smoke:samsung:account-position-summary": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -AccountPositionSummary -Port 8161",
