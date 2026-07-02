@@ -10118,6 +10118,41 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 264
+
+Date: 2026-07-02
+Branch: mobile/cycle-264-ticket-depth-size-parity
+Status: Verified; pending local merge.
+Objective: Bring ticket market-depth display closer to Event Detail depth by showing bid/ask share sizes even when explicit backend sizes are absent.
+Implemented:
+- Added fallback bid/ask size formatting to `TradeTicket` using the same probability-based model as Event Detail.
+- Strengthened the Event Detail prop-ticket Samsung proof to require `Best bid 0.48 USDT (1.02k shares)` and `Best ask 0.55 USDT (1.23k shares)`.
+- Made the prop-ticket proof state-isolated and scroll-aware for the scroll-safe ticket sheet.
+Recovery:
+- First Samsung run inherited prior Sell defaults and exposed that the button is now below the initial scroll position; added package clear for prop-ticket proof and scrolled to the order button.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 16 files and 70 tests.
+- `npm.cmd run smoke:samsung:event-detail-prop-ticket` passed on Samsung S23 with Expo host `172.16.200.14` and port `8170`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-ticket.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-ticket-order-ready.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-prop-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-prop-ticket-order-ready.png`.
+Commit: pending
+Merge: pending
+
+### Heartbeat After Cycle 264
+
+Completed cycles: 262, 263, 264.
+Verified progress: The trade ticket sheet is scroll-safe, live markets now have Samsung proof for both buy and sell order submission, and ticket market depth now includes bid/ask share sizes for prop tickets.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung real-device QA, server quote/order/Portfolio sync paths, Event Detail prop betting coverage, buy/sell pending-order economics, improved live-ticket guidance, and denser ticket orderbook information.
+Current backend state: Local backend/mobile API tests pass with 16 files and 70 tests. The latest cycles did not change backend schema or deposit/withdraw behavior.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go. Emulator remains fallback only because it is slow/stale. Proper dev build/APK remains a later stabilization lane.
+Open blockers: None for autonomous progress.
+Risks: Ticket orderbook depth still uses deterministic fallback sizes in mock/offline mode when backend liquidity sizes are absent; server-backed depth size mapping should be revisited as backend orderbook coverage grows.
+Next three likely cycles: add server-backed ticket depth-size proof, extend Event Detail live-market ticket proof, and add a compact ticket depth layout check for smaller Android screens.
+
 ### Cycle 263
 
 Date: 2026-07-02

@@ -399,7 +399,7 @@ try {
   } else {
     "exp://${ExpoHost}:$Port"
   }
-  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $EventDetailPropOrder -or $EventDetailPropClose -or $FutureListClose -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
+  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $FutureListClose -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
     & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
     Start-Sleep -Seconds 2
   }
@@ -1280,7 +1280,12 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-prop-ticket.png"
       $eventDetailPropTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-prop-ticket.xml"
-      Assert-HierarchyContains -Path $eventDetailPropTicketHierarchy -Expected @("Yes", "Mexico vs. Ecuador", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid 0.48 USDT", "Best ask 0.55 USDT", "Estimated cost", "196.08 shares", "0.51 USDT", "2.0x", "Place buy order")
+      Assert-HierarchyContains -Path $eventDetailPropTicketHierarchy -Expected @("Yes", "Mexico vs. Ecuador", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid 0.48 USDT (1.02k shares)", "Best ask 0.55 USDT (1.23k shares)", "Estimated cost", "196.08 shares", "0.51 USDT", "2.0x")
+      & $adb -s $Device shell input swipe 540 1760 540 760 450 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-prop-ticket-order-ready.png"
+      $eventDetailPropTicketOrderReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-prop-ticket-order-ready.xml"
+      Assert-HierarchyContains -Path $eventDetailPropTicketOrderReadyHierarchy -Expected @("place-mock-order", "Place buy order")
       return
     }
 
