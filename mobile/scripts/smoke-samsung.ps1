@@ -9,6 +9,7 @@ param(
   [switch]$LiveOrder,
   [switch]$LiveOrderClose,
   [switch]$LivePortfolioBadgeDeep,
+  [switch]$ServerUnavailable,
   [switch]$ServerOrderFailure
 )
 
@@ -61,6 +62,8 @@ if ($FutureListOrder) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LiveOrderClose -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($LivePortfolioBadgeDeep) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LivePortfolioBadgeDeep -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
+} elseif ($ServerUnavailable) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -ServerUnavailable -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($ServerOrderFailure) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerOrderFailure -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } else {

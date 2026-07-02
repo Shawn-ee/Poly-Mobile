@@ -3257,3 +3257,27 @@ Bugs:
 - The first summary used an unresolved `mobile\..` readiness path; fixed by resolving the path before summary generation.
 Visual QA:
 - No app screenshot cycle; this is a server-readiness gate cycle.
+
+### Cycle 154
+
+Date: 2026-07-01
+Device: Samsung S23 ADB target (`adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`)
+Build/run command:
+- `npm.cmd run smoke:samsung:server-unavailable` in `mobile/`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The Samsung S23 now verifies Holiwyn's server Portfolio fallback state through Expo Go when server Portfolio sync is unavailable.
+Visual evidence:
+- `docs/mobile/screenshots/cycle-154-holiwyn-server-unavailable.png`
+- `docs/mobile/harness/cycle-154-holiwyn-server-unavailable.xml`
+Verified UI:
+- Portfolio screen opens in server mode.
+- Fake balance remains visible at `10,000 USDT`.
+- `Server sync unavailable` and `Showing local fake-token portfolio.` are visible.
+- Empty local state remains usable with Open positions, Recent activity, Closed trades, and No positions yet.
+Unit evidence:
+- Mobile API/service suite: 7 files, 20 tests passed.
+Bugs:
+- Initial Samsung smoke expected an unrelated Open orders card and failed after proving the fallback screen. Tightened the assertion to the actual fallback contract and reran successfully.
+Visual QA:
+- Samsung screenshot and UI hierarchy captured and copied to Cycle 154 evidence files.

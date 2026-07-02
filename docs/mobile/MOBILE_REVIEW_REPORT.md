@@ -2244,3 +2244,19 @@ Findings:
 - Expected-blocked gate summary, mobile typecheck, and mobile API/service tests passed.
 Decision: Approve Cycle 153 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 154
+
+Date: 2026-07-01
+Branch: mobile/cycle-154
+Reviewer: Lead/Reviewer pass
+Scope: Samsung server Portfolio fallback proof.
+Findings:
+- P1: `smoke-samsung.ps1` now supports `-ServerUnavailable`, and `mobile/package.json` exposes `smoke:samsung:server-unavailable`.
+- P1: The Samsung S23 proof verifies the Portfolio server-sync fallback state through Expo Go, including fake balance, unavailable sync copy, local count tiles, and empty Portfolio state.
+- P1: Cycle evidence was preserved as screenshot and UI hierarchy files under Cycle 154 names.
+- P1: The first smoke failure correctly revealed an over-specific assertion that expected an Open orders card. The assertion was narrowed to the actual fallback contract and the rerun passed.
+- P2: This is graceful-degradation proof, not successful authenticated Portfolio hydration. Successful server-backed sync still depends on Docker/DB/API-key readiness.
+- Samsung server-unavailable smoke, mobile typecheck, and mobile API/service tests passed.
+Decision: Approve Cycle 154 for local commit/merge after scoped diff review.
+Merge approved: Yes
