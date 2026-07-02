@@ -1,4 +1,4 @@
-import type { EventDetail, EventSummary, Market, PortfolioHistoryItem, PortfolioSnapshot, ProfilePreferences, Quote } from "./types";
+import type { EventDetail, EventSummary, Market, PortfolioCanceledOrderItem, PortfolioHistoryItem, PortfolioSnapshot, ProfilePreferences, Quote } from "./types";
 
 const trimSlash = (value: string) => value.replace(/\/+$/, "");
 const REQUEST_TIMEOUT_MS = 3500;
@@ -74,7 +74,7 @@ export class PolyApi {
   }
 
   getPortfolioHistory() {
-    return this.request<{ history: PortfolioHistoryItem[] }>(`/api/portfolio/history`);
+    return this.request<{ history: PortfolioHistoryItem[]; canceledOrders?: PortfolioCanceledOrderItem[] }>(`/api/portfolio/history`);
   }
 
   getPortfolio() {

@@ -2722,6 +2722,32 @@ Bugs:
 Visual QA:
 - Not applicable.
 
+### Cycle 203
+
+Date: 2026-07-02
+Device: Backend route/unit harness, mobile service unit harness, and live local endpoint probe
+Build/run command:
+- `npx.cmd jest --runInBand src/__tests__/portfolio.history.route.test.ts src/__tests__/orders.cancel.route.test.ts`
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+- Live local `/api/portfolio/history` probe with the mobile dev credential
+Result: Passed. Canceled server orders now return as durable backend activity for mobile Portfolio history.
+Harness evidence:
+- Focused Jest route tests passed with 2 suites and 4 tests.
+- Mobile API/service suite passed with 15 files and 63 tests.
+- Mobile typecheck passed.
+- Live local endpoint probe returned `canceledCount: 3`, first canceled status `CANCELED`, and first canceled outcome `YES`.
+Screenshot evidence:
+- None; this was a backend/mobile mapping cycle.
+Structured findings:
+- `/api/portfolio/history` remains backward compatible with `history` while adding `canceledOrders`.
+- Mobile maps backend canceled orders into `Canceled` Recent activity rows with title, outcome, remaining amount, side, price, and timestamp.
+- API-key actor handling for history remains covered.
+Bugs:
+- None in final run.
+Visual QA:
+- Not applicable.
+
 ### Cycle 130
 
 Date: 2026-07-01

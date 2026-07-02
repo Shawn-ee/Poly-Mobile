@@ -30,6 +30,30 @@ export async function GET(request: NextRequest) {
     orderBy: { createdAt: "desc" },
   });
 
+  const canceledOrders = await prisma.order.findMany({
+    where: {
+      userId,
+      status: "CANCELED",
+    },
+    include: {
+      market: {
+        select: {
+          id: true,
+          title: true,
+          status: true,
+        },
+      },
+      outcome: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+    orderBy: { updatedAt: "desc" },
+    take: 50,
+  });
+
   const marketMap = new Map<
     string,
     {
@@ -131,5 +155,18 @@ export async function GET(request: NextRequest) {
     return bTime - aTime;
   });
 
-  return NextResponse.json({ history: items.slice(0, 50) });
+  return NextResponse.json({
+    history: items.slice(0, 50),
+    canceledOrders: canceledOrders.map((order) => ({
+      id: order.id,
+      market: order.market,
+      outcome: order.outcome,
+      side: order.side,
+      status: order.status,
+      price: Number(order.price),
+      size: Number(order.amount),
+      remaining: Number(order.remaining),
+      canceledAt: order.updatedAt,
+    })),
+  });
 }
