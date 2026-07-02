@@ -7114,8 +7114,8 @@ Technical debt added:
 Technical debt resolved:
 - Server portfolio snapshots now have focused service-level regression coverage.
 Result: Passed Cycle 151 QA. Mobile typecheck and mobile API/service tests pass.
-Commit: Pending.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `8cca593` (`Add mobile portfolio snapshot service tests`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `8c4106a`.
 Next cycle: Cycle 152 should continue backend-facing parity that can be verified without DB, or add a credential/device harness around server-mode Portfolio hydration once readiness improves.
 Harnesses run:
 - Mobile Typecheck Harness
