@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-253-event-detail-prop-ticket-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Prove Event Detail prop-market outcomes can open a trade ticket on Samsung.
 Implemented:
 - Added `EventDetailPropTicket` smoke path that opens Props and taps `Both teams to score` Yes.
@@ -10136,8 +10136,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-ticket-props.xml`.
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-ticket.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-prop-ticket.png`.
-Commit: pending
-Merge: pending
+Commit: 2bfbcce
+Merge: 15d9b72
 
 ### Cycle 252
 
