@@ -9199,7 +9199,7 @@ Next three likely cycles: add filled-order/matching proof with prepared liquidit
 
 Date: 2026-07-02
 Branch: mobile/cycle-203
-Status: Verified; pending local merge stamp.
+Status: Verified and locally merged.
 Objective: Make canceled server orders durable in backend Portfolio history and mobile Recent activity.
 Implemented:
 - Extended `/api/portfolio/history` with a backward-compatible `canceledOrders` array.
@@ -9217,8 +9217,8 @@ Evidence:
 - Live endpoint probe summary.
 Notes:
 - This resolves the main Cycle 201 history gap by making canceled-order activity backend-derived on the next Portfolio history sync.
-Commit: PENDING
-Merge: PENDING
+Commit: 5df51d2
+Merge: 123f098
 
 ### Heartbeat After Cycle 142
 
