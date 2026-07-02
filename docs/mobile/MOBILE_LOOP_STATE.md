@@ -6969,8 +6969,8 @@ Technical debt added:
 Technical debt resolved:
 - Samsung server-mode preflight no longer depends on emulator-only API base defaults.
 Result: Passed Cycle 147 QA. Samsung server-mode preflight, mobile typecheck, and mobile API/history tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `3e1ec8e` (`Add Samsung server mode preflight`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `f8a5882`.
 Next cycle: Cycle 148 should continue backend/API readiness, likely by improving local backend readiness reporting or adding a strict Samsung server-mode gate for successful order proof.
 Harnesses run:
 - Samsung Server Mode Preflight Harness
