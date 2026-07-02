@@ -8186,8 +8186,8 @@ Technical debt added:
 Technical debt resolved:
 - Static 1% slippage display is now an adjustable selector with Samsung-proven behavior.
 Result: Passed Cycle 178 QA. Samsung future-list order smoke selected 2% slippage and completed the mock order, mobile typecheck passed, and mobile API/service tests pass.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `ad7826d` (`Make ticket slippage selectable`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `52078a6`.
 Next cycle: Cycle 179 should continue user-configurable ticket settings, order-type parity, or backend readiness recovery if Docker/DB/API-key state changes.
 Harnesses run:
 - Samsung Future List Order Smoke Harness
