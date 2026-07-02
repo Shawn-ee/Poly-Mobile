@@ -9797,7 +9797,7 @@ Merge: 8e47401
 
 Date: 2026-07-02
 Branch: mobile/cycle-225-proof-noise-gate
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Turn the proof-state report into a recovery gate for long autonomous runs.
 Implemented:
 - Added `--failOnOpenOrders` and `--failOnLockedBalance` options to `scripts/mobile_proof_noise_report.ts`.
@@ -9811,8 +9811,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-mobile-proof-noise-gate.json`.
 Notes:
 - Current gate result: passed, with 0 proof users affected by open orders and 0 proof users affected by locked balances.
-Commit: pending
-Merge: pending
+Commit: 4c151d6
+Merge: 70cae2c
 
 ### Heartbeat After Cycle 223
 
