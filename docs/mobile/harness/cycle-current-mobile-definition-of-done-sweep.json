@@ -2,11 +2,11 @@
   "ready": true,
   "readyToDeclareDone": false,
   "counts": {
-    "verified": 7,
-    "partial": 3,
+    "verified": 8,
+    "partial": 2,
     "blocked": 0
   },
-  "generatedAt": "2026-07-02T13:58:09.233Z",
+  "generatedAt": "2026-07-02T14:01:45.671Z",
   "criteria": [
     {
       "id": "dod-android-runtime",
@@ -91,13 +91,14 @@
     {
       "id": "dod-final-cycle",
       "criterion": "Final cycle includes passing required harnesses, final QA report, final review report, final feature gap tracker, screenshots, and no unresolved P0 debt.",
-      "status": "partial",
+      "status": "verified",
       "evidence": [
-        "docs/mobile/MOBILE_QA_REPORT.md",
-        "docs/mobile/MOBILE_REVIEW_REPORT.md",
+        "docs/mobile/MOBILE_FINAL_QA_SIGNOFF.md",
+        "docs/mobile/MOBILE_FINAL_REVIEW_SIGNOFF.md",
+        "docs/mobile/harness/cycle-current-mobile-final-signoff.json",
         "docs/mobile/MOBILE_FEATURE_GAP_TRACKER.md"
       ],
-      "notes": "This sweep is the final-cycle audit artifact, but a dedicated final QA/review signoff and P0 debt closeout still need one more review pass before declaring mission complete."
+      "notes": "Final QA/review signoff passed and the feature tracker has zero unresolved P0 gaps."
     },
     {
       "id": "dod-apk-lane",
@@ -111,7 +112,6 @@
     }
   ],
   "nextActions": [
-    "Run a final QA/review signoff pass and close or explicitly downgrade remaining P0 debt.",
     "Generate or provide dist/holiwyn-preview.apk, then run npm run smoke:samsung:apk.",
     "Keep Samsung server-order proof as the main real-device trading regression until the APK lane exists."
   ]

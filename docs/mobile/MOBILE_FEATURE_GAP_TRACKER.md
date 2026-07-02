@@ -20,6 +20,7 @@ Status:
 
 | ID | Area | Feature | Priority | Reference Observed | Holiwyn Status | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| GAP-294 | Harness | Final QA/review signoff | P1 | No | Verified | Cycle 281 adds final QA/review signoff artifacts, audits 54 P0 gaps as verified with zero unresolved P0 gaps, and updates the Definition of Done sweep to 8 verified, 2 partial, 0 blocked. |
 | GAP-293 | Harness | Definition of Done parity sweep | P1 | No | Verified | Cycle 280 adds a mobile Definition of Done sweep harness and final parity report; current result is 7 verified, 3 partial, 0 blocked, so the mission is close but not declared complete. |
 | GAP-292 | Harness | Samsung APK smoke lane | P1 | No | Verified | Cycle 279 adds a Samsung APK install/launch harness, readiness JSON output, and an allow-missing blocker mode so QA can move from Expo Go toward preview APK/dev-build runs when an APK is available. |
 | GAP-291 | Harness | Disposable proof cleanup and isolation | P1 | No | Verified | Cycle 278 adds a dry-run/apply cleanup harness scoped to mobile backend position proof slugs and user prefixes, removes stale failed proof artifacts, and verifies the Samsung server-order proof still passes with the cleanup hook. |

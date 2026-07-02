@@ -4,11 +4,22 @@ Current mission: Build Holiwyn, a World Cup-first sports prediction and trading 
 
 Current phase: Autonomous mobile product development in verified cycles.
 
-Latest verified cycle: Cycle 280 completed Milestone D's Definition of Done parity sweep. Current result is 7 verified, 3 partial, and 0 blocked; Holiwyn is close, but not ready to declare final mission complete until the remaining partial items are resolved or explicitly downgraded.
+Latest verified cycle: Cycle 281 completed final QA/review signoff. Current Definition of Done sweep result is 8 verified, 2 partial, and 0 blocked; Holiwyn is close, but not ready to declare final mission complete until emulator reliability is either re-proven/re-scoped and an actual APK is available for the Samsung APK lane.
 
 Next milestone path:
 
-Milestone path status: A, B, C, and D have completed. The final sweep did not declare the mission done because emulator reliability, final QA/review signoff, and actual APK availability remain partial.
+Milestone path status: A, B, C, and D have completed. Final QA/review signoff has passed. The final sweep does not declare the mission done because emulator reliability and actual APK availability remain partial.
+
+## Heartbeat: Cycles 278-280
+
+Date: 2026-07-02
+Summary: Milestone B cleaned stale proof state and added scoped cleanup; Milestone C added Samsung APK readiness/smoke blocker evidence; Milestone D added the Definition of Done sweep.
+Verification:
+- Samsung backend position order proof passed after cleanup hook integration.
+- Android dev-build readiness passed for preview APK configuration.
+- Samsung APK smoke recorded `apk_missing` cleanly.
+- Definition of Done sweep ran with 7 verified, 3 partial, 0 blocked before Cycle 281 signoff.
+Next focus: close final QA/review signoff, then resolve the two remaining partials: emulator reliability and actual APK artifact availability.
 
 Launch mode: Long-running autonomous execution toward final Definition of Done. Phase 0 is the first gate, not the stopping point.
 
@@ -45,6 +56,39 @@ When stuck, run the Recovery Harness. The Lead Agent should ask Audit Agent or R
 Every three completed cycles, add a heartbeat summary.
 
 ## Cycle Template
+
+### Cycle 281
+
+Date: 2026-07-02
+Branch: mobile/cycle-281-final-qa-review-signoff
+Goal: Close the Definition of Done final-cycle partial by adding final QA/review signoff and P0-debt audit evidence.
+Reference app screens observed: None; this was an evidence/signoff cycle using accumulated Samsung and harness proof artifacts.
+Holiwyn screens changed: None.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `scripts/mobile_final_qa_review_signoff.ts`, `scripts/mobile_definition_of_done_sweep.ts`, `package.json`, `docs/mobile/`.
+Tests run:
+- `cmd /c npm.cmd run mobile:final-qa-review-signoff`.
+- `cmd /c npm.cmd run mobile:definition-of-done-sweep`.
+- `cmd /c npm.cmd run test:mobile-api`.
+- `cmd /c npm.cmd run typecheck` in `mobile/`.
+Screenshots captured: No new screenshots; signoff references current Samsung server-order screenshots.
+Bugs found: None.
+Technical debt added:
+- TD-283: Actual `dist/holiwyn-preview.apk` remains unavailable; APK smoke lane is prepared but still blocked on the artifact.
+- TD-284: Emulator reliability remains partial in this workstation; Samsung is the stronger current QA target.
+Technical debt resolved:
+- TD-282 resolved: final QA/review signoff passed with 54 P0 gaps verified and zero unresolved P0 gaps.
+Result: Passed final QA/review signoff. Updated DoD sweep result: 8 verified, 2 partial, 0 blocked.
+Commit: pending.
+Merged: pending.
+Next cycle: Resolve the APK artifact partial or re-scope/re-prove Android runtime reliability with the Samsung/APK lane.
+Harnesses run:
+- Final QA/Review Signoff Harness
+- Definition of Done Sweep Harness
+- Mobile API Test Harness
+- Typecheck Harness
+Harness failures: None.
 
 ### Cycle 280
 
