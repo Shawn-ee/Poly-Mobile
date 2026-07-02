@@ -407,7 +407,7 @@ try {
     if ($ServerUnavailable) {
       Save-Screenshot -Name "cycle-current-holiwyn-server-unavailable.png"
       $serverUnavailableHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-unavailable.xml"
-      Assert-HierarchyContains -Path $serverUnavailableHierarchy -Expected @("Server sync unavailable", "Showing local fake-token portfolio.", "Open orders", "Cancel")
+      Assert-HierarchyContains -Path $serverUnavailableHierarchy -Expected @("Server sync unavailable", "Showing local fake-token portfolio.", "Fake balance", "Open positions", "No positions yet")
       return
     }
 

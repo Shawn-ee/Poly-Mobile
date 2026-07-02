@@ -7203,6 +7203,54 @@ Harnesses run:
 Harness failures:
 - None in final run.
 
+### Cycle 154
+
+Date: 2026-07-01
+Branch: mobile/cycle-154
+Goal: Add and verify Samsung S23 coverage for server Portfolio sync fallback.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No product UI change. Added Samsung wrapper coverage for the existing Portfolio server-sync fallback state.
+Backend/API changed: No runtime API route change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke-samsung.ps1`, `mobile/scripts/smoke.ps1`, `mobile/package.json`, `docs/mobile/screenshots/cycle-154-holiwyn-server-unavailable.png`, `docs/mobile/harness/cycle-154-holiwyn-server-unavailable.xml`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:samsung:server-unavailable` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Visual evidence:
+- `docs/mobile/screenshots/cycle-154-holiwyn-server-unavailable.png`.
+- `docs/mobile/harness/cycle-154-holiwyn-server-unavailable.xml`.
+Verified UI:
+- Samsung S23 shows Portfolio in server mode with fake balance, `Server sync unavailable`, `Showing local fake-token portfolio.`, open-position/recent-activity/closed-trade count tiles, and empty local Portfolio state.
+Bugs found:
+- Initial Samsung smoke failed because the deep assertion expected an unrelated Open orders card. Adjusted the server-unavailable assertion to the actual Portfolio fallback contract and reran successfully.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Server Portfolio fallback is now proven on the Samsung S23, not only through emulator-era smoke coverage.
+Result: Passed Cycle 154 QA. Samsung smoke, mobile typecheck, and mobile API/service tests pass.
+Commit: Pending.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 155 should continue toward server-backed execution readiness or add another Samsung proof around account/profile server fallback.
+Harnesses run:
+- Samsung Server-Unavailable Portfolio Fallback Smoke
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Portfolio Snapshot/Portfolio Sync Unit Harness
+- Review Harness
+Harness failures:
+- First Samsung run failed on an over-specific Open orders assertion; fixed and reran successfully.
+
+### Heartbeat After Cycle 154
+
+Completed cycles: 152, 153, 154.
+Verified progress: Server Portfolio sync recovery now has a tested service boundary, server-success gating writes machine-readable blocker evidence, and the Samsung S23 now proves the Portfolio server-sync fallback state through Expo Go.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, local persistence, market group counts, outcome/ticket odds, potential profit, open-order economics, latest-order execution details, timestamped order history, backend-compatible resolved-history mapping, Samsung-proven core/live trading flows, Samsung-proven server-mode order failure recovery, Samsung-proven server Portfolio fallback, and unit-covered server order/Portfolio sync mapping.
+Current backend state: Mobile API/profile-preference/activity/history/order/portfolio snapshot/portfolio sync tests pass. Structured readiness still shows Docker daemon and local database TCP unavailable, and successful authenticated server proof still requires a valid `EXPO_PUBLIC_API_KEY`.
+Device strategy: Samsung S23 remains the primary Holiwyn visual QA and server-mode device-readiness target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane once the app is steadier.
+Open blockers: None for autonomous progress. Successful server-backed device order/Portfolio execution is blocked by Docker daemon/DB/API-key readiness, but graceful recovery is now proven on the phone.
+Risks: Successful authenticated order execution and Portfolio hydration are still unproven on device; Docker daemon/local DB are currently unavailable; Expo Go proof still depends on LAN reachability.
+Next three likely cycles: add Samsung account/profile server fallback proof, improve API-key/credential readiness reporting, and continue backend-facing service coverage or retry live server proof if readiness changes.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.
