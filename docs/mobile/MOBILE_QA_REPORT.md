@@ -3355,3 +3355,26 @@ Bugs:
 - None in final run.
 Visual QA:
 - No app screenshot cycle; this is backend-facing service coverage.
+
+### Cycle 158
+
+Date: 2026-07-01
+Device: Mobile quote service unit harness
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Backend market quotes can now be normalized into mobile ticket-ready probabilities before later UI/server hydration work.
+Unit evidence:
+- `mobile/src/services/quoteService.ts`
+- `mobile/src/__tests__/quoteService.test.ts`
+- Mobile API/service suite: 9 files, 29 tests passed.
+Covered behavior:
+- Decimal and string quote values map into visible whole-number percentages.
+- Mid price is preferred for ticket probability.
+- Last price, bid/ask midpoint, and one-sided quotes provide fallback probabilities.
+- Invalid or negative quote values are ignored instead of leaking bad odds into the ticket.
+- `loadTicketQuotes` calls the backend quote endpoint with market and outcome ids, then normalizes the response.
+Bugs:
+- None in final run.
+Visual QA:
+- No app screenshot cycle; this is backend-facing service coverage.

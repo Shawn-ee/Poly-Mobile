@@ -2308,3 +2308,19 @@ Findings:
 - Mobile typecheck and mobile API/service tests passed.
 Decision: Approve Cycle 157 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 158
+
+Date: 2026-07-01
+Branch: mobile/cycle-158
+Reviewer: Lead/Reviewer pass
+Scope: Backend quote normalization service coverage.
+Findings:
+- P1: `quoteService.ts` gives the app a tested boundary for converting backend quote payloads into ticket-ready probabilities and best bid/ask display values.
+- P1: Mid-price, last-price, bid/ask midpoint, and one-sided fallback behavior now have focused regression coverage.
+- P1: Invalid and negative quote values are normalized away, keeping bad backend data from producing misleading ticket odds.
+- P1: `loadTicketQuotes` is verified to call the backend market quote API with market and outcome ids before mapping the response.
+- P2: This is service-level coverage; wiring live server quotes into the visible ticket remains a later cycle.
+- Mobile typecheck and mobile API/service tests passed.
+Decision: Approve Cycle 158 for local commit/merge after scoped diff review.
+Merge approved: Yes
