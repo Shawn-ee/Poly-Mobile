@@ -90,6 +90,7 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [ticketOrderError, setTicketOrderError] = useState<string | null>(null);
+  const [ticketOrderErrorDetail, setTicketOrderErrorDetail] = useState<string | null>(null);
   const [forceOrderFailure, setForceOrderFailure] = useState(false);
   const [balance, setBalance] = useState(10000);
   const [positions, setPositions] = useState<Position[]>([]);
@@ -292,6 +293,7 @@ export default function App() {
         setActivities([]);
         setTicket(null);
         setTicketOrderError(null);
+        setTicketOrderErrorDetail(null);
         setSelectedEvent(null);
         setQuery("");
         setMainTab("home");
@@ -626,6 +628,7 @@ export default function App() {
 
   const openTicket = (market: Market, outcome: Outcome, event?: Event, side?: "buy" | "sell") => {
     setTicketOrderError(null);
+    setTicketOrderErrorDetail(null);
     setTicket({ market, outcome, event, side: side ?? ticketDefaults.side });
   };
 
@@ -706,6 +709,7 @@ export default function App() {
     if (!ticket || amount <= 0) return;
     const cost = Math.min(amount, balance);
     setTicketOrderError(null);
+    setTicketOrderErrorDetail(null);
     let result;
     try {
       if (forceOrderFailure) {
@@ -720,8 +724,10 @@ export default function App() {
         side,
         amount: cost,
       });
-    } catch {
+    } catch (error) {
       setTicketOrderError(t.orderFailed);
+      const detail = error instanceof Error ? error.message.trim() : "";
+      setTicketOrderErrorDetail(detail && detail !== t.orderFailed ? detail : null);
       return;
     }
     const isLiveOrder = ticket.event?.status === "live";
@@ -778,6 +784,7 @@ export default function App() {
     ]);
     setTicket(null);
     setTicketOrderError(null);
+    setTicketOrderErrorDetail(null);
     setSelectedEvent(null);
     setMainTab("portfolio");
     if (ORDER_MODE === "server") {
@@ -974,6 +981,7 @@ export default function App() {
         ticket={ticket}
         balance={balance}
         orderError={ticketOrderError}
+        orderErrorDetail={ticketOrderErrorDetail}
         tradingMode={ORDER_MODE}
         defaultAmount={ticketDefaults.amount}
         defaultSide={ticketDefaults.side}
@@ -981,6 +989,7 @@ export default function App() {
         onPreferencesChange={(next) => setTicketDefaults(next)}
         close={() => {
           setTicketOrderError(null);
+          setTicketOrderErrorDetail(null);
           setTicket(null);
         }}
         placeOrder={placeOrder}

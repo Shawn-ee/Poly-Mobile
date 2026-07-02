@@ -4794,3 +4794,24 @@ Bugs:
 - Fixed isolated proof users being unable to pass the internal trading gate.
 Visual QA:
 - Passed on Samsung S23 through Expo Go.
+
+### Cycle 214
+
+Date: 2026-07-02
+Device: Samsung S23 via Expo Go, mobile service unit harness, and server-order-failure smoke
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run smoke:samsung:server-order-failure` in `mobile/`
+Result: Passed. The server-order failure ticket now keeps the localized retry message and exposes a separate detail line for the backend/network failure.
+Harness evidence:
+- Samsung proof intentionally pointed server mode at an unreachable API base URL.
+- Ticket error proof covers `Order failed. Try again.`, `ticket-order-error`, `ticket-order-error-detail`, and `Place buy order`.
+- Captured hierarchy shows detail text `Aborted`.
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-ticket.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-error.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-error.xml`
+Bugs: None found after the detail-line implementation.
+Visual QA:
+- Passed on Samsung S23 through Expo Go.
