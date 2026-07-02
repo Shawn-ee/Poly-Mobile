@@ -8054,8 +8054,8 @@ Technical debt added:
 Technical debt resolved:
 - Trade Ticket now exposes market depth context directly on the order surface instead of requiring users to inspect Event Detail.
 Result: Passed Cycle 175 QA. Samsung future-list order smoke passed with the corrected compact depth layout, mobile typecheck passed, and mobile API/service tests pass.
-Commit: cycle branch HEAD (`Show ticket market depth`)
-Merged: Pending local merge after commit.
+Commit: `25b5de1` (`Show ticket market depth`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `f289832`.
 Next cycle: Cycle 176 should continue ticket/order parity or use backend readiness recovery if Docker/DB/API-key state changes.
 Harnesses run:
 - Samsung Future List Order Smoke Harness
