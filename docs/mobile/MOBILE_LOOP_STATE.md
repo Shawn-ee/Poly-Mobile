@@ -9137,6 +9137,33 @@ Notes:
 Commit: 750ae74
 Merge: a63102c
 
+### Cycle 201
+
+Date: 2026-07-02
+Branch: mobile/cycle-201
+Status: Verified; pending local merge stamp.
+Objective: Prove a synced server-backed open order can be canceled from the Samsung Portfolio UI.
+Implemented:
+- Added `smoke:server-open-order-cancel` and `smoke:samsung:server-open-order-cancel`.
+- Extended the server-order smoke path to place a real server order, wait for synced Portfolio, tap a real Cancel button, and scroll to the canceled receipt.
+- Force-stopped Expo Go before server-order deep-link launches so server proof URLs are handled reliably as initial URLs on Samsung.
+- Refreshed server Portfolio after server-mode cancel succeeds while preserving the local canceled activity receipt after the refresh.
+Verification:
+- `npm.cmd run test:mobile-api` passed with 15 files and 62 tests.
+- `npm.cmd run typecheck` passed in `mobile/`.
+- Local backend health reported `ok`.
+- `npm.cmd run smoke:samsung:server-open-order-cancel` passed on Samsung S23 through Expo Go.
+Evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml`
+Notes:
+- The local mobile dev account has multiple previous proof orders, so the cancel proof scrolls past remaining open orders before asserting the canceled receipt.
+- Backend order cancel accepted through the canonical `DELETE /api/orders/:id` route; docs do not store the secret mobile credential.
+Commit: PENDING
+Merge: PENDING
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

@@ -4259,6 +4259,37 @@ Bugs:
 Visual QA:
 - Passed on Samsung S23 through Expo Go.
 
+### Cycle 201
+
+Date: 2026-07-02
+Device: Samsung S23 via Expo Go, local Docker-backed backend, and mobile service unit harness
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run smoke:samsung:server-open-order-cancel` in `mobile/`
+Result: Passed. Samsung now proves a synced server open order can be canceled from Portfolio.
+Harness evidence:
+- Mobile API/service suite passed with 15 files and 62 tests.
+- Mobile typecheck passed.
+- Local backend health reported `ok`.
+- The first Samsung recovery run proved the backend accepted `DELETE /api/orders/:id` with 200; final Samsung proof passed after the harness scrolled to the canceled receipt.
+- Samsung smoke passed on `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` through Expo host `172.16.200.14`, port `8156`.
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml`
+Structured findings:
+- The proof opens a server-mode World Cup ticket, places a fake-token server order, waits for `Server portfolio synced`, taps a real `Cancel` button, and verifies the canceled `YES` activity row.
+- Server-mode cancellation now refreshes Portfolio after the backend cancel succeeds, while preserving the local canceled receipt if resolved history does not yet include canceled order activity.
+- The Samsung server-order smoke now force-stops Expo Go before the deep link so `forceServerOrderProof` is handled reliably as an initial URL.
+Bugs:
+- Initial proof exposed a stale/deep-link launch issue where Expo stayed on Home instead of opening the server ticket; fixed with a force-stop before server-order launch.
+- Initial visual assertion looked for the canceled receipt above older open orders; fixed by scrolling to Recent activity after cancel.
+Visual QA:
+- Passed on Samsung S23 through Expo Go.
+
 ### Cycle 200
 
 Date: 2026-07-02

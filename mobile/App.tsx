@@ -844,9 +844,20 @@ export default function App() {
     setOpenOrders((current) => current.filter((item) => item.id !== order.id));
     const canceledActivity = openOrderCanceledActivity(order, t.justNow);
     setActivities((current) => appendUniqueActivity(current, canceledActivity));
-    cancelOpenOrderOnServer({ mode: ORDER_MODE, api, order }).catch(() => {
-      if (mounted.current) setPortfolioSyncStatus("error");
-    });
+    cancelOpenOrderOnServer({ mode: ORDER_MODE, api, order })
+      .then(() => {
+        if (ORDER_MODE === "server") {
+          return refreshServerPortfolio().then(() => {
+            if (mounted.current) {
+              setActivities((current) => appendUniqueActivity(current, canceledActivity));
+            }
+          });
+        }
+        return undefined;
+      })
+      .catch(() => {
+        if (mounted.current) setPortfolioSyncStatus("error");
+      });
   };
 
   return (
