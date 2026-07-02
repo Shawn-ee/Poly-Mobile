@@ -4259,6 +4259,29 @@ Bugs:
 Visual QA:
 - Passed on Samsung S23 through Expo Go.
 
+### Cycle 202
+
+Date: 2026-07-02
+Device: Backend route test harness plus mobile service unit harness
+Build/run command:
+- `npx.cmd jest --runInBand src/__tests__/orders.cancel.route.test.ts`
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+Result: Passed. Backend coverage now locks down the canonical order cancel route used by Samsung server-mode Portfolio.
+Harness evidence:
+- Focused Jest route test passed with 1 suite and 2 tests.
+- Mobile API/service suite passed with 15 files and 62 tests.
+- Mobile typecheck passed.
+Screenshot evidence:
+- None; this was a backend route coverage cycle.
+Structured findings:
+- `DELETE /api/orders/:id` is tested to require `orders:write`, look up only the current canonical actor's order, run API-key cancel governance, pass `apiCredentialId` into cancel/unlock, emit market/user updates, and return mobile-safe cancel metadata.
+- The route returns 404 without governance or cancel side effects when the actor does not own the order.
+Bugs:
+- Initial test isolation loaded the real canonical API module before mocks; fixed by using a tiny mocked canonical error class in the route test.
+Visual QA:
+- Not applicable.
+
 ### Cycle 201
 
 Date: 2026-07-02
