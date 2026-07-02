@@ -35,7 +35,7 @@ import {
 import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 import { appendUniqueActivity, cancelOpenOrderOnServer, openOrderCanceledActivity } from "./src/services/openOrderService";
 import { closePositionOnServer } from "./src/services/positionCloseService";
-import { serverClosedPortfolioFixture, serverHydratedPortfolioFixture } from "./src/services/portfolioFixtureService";
+import { serverBackendOnlyPortfolioFixture, serverClosedPortfolioFixture, serverHydratedPortfolioFixture } from "./src/services/portfolioFixtureService";
 import { applyServerPortfolioState } from "./src/services/portfolioStateApplyService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { resolvePositionTradeTarget } from "./src/services/positionTradeTargetService";
@@ -299,6 +299,7 @@ export default function App() {
     const shouldForceWorldCupWinnerFranceTicket = url.includes("forceWorldCupWinnerFranceTicket=1");
     const shouldForceClosedWorldCupWinnerFrance = url.includes("forceClosedWorldCupWinnerFrance=1");
     const shouldForceServerPortfolioFixture = url.includes("forceServerPortfolioFixture=1");
+    const shouldForceServerPortfolioFallbackFixture = url.includes("forceServerPortfolioFallbackFixture=1");
     const shouldForceOpenOrder = url.includes("forceOpenOrder=1");
     const forcedOpenOrder = url.includes("forceOpenOrderSide=sell") ? SMOKE_OPEN_SELL_ORDER : SMOKE_OPEN_ORDER;
     forceServerOrderProof.current = url.includes("forceServerOrderProof=1");
@@ -333,6 +334,7 @@ export default function App() {
         !shouldForceWorldCupWinnerFranceTicket &&
         !shouldForceClosedWorldCupWinnerFrance &&
         !shouldForceServerPortfolioFixture &&
+        !shouldForceServerPortfolioFallbackFixture &&
         !shouldForceOpenOrder &&
         !forceServerOrderProof.current &&
         !shouldForceLive
@@ -395,6 +397,24 @@ export default function App() {
     }
     if (shouldForceServerPortfolioFixture) {
       const fixture = serverHydratedPortfolioFixture();
+      setBalance(fixture.balance);
+      setPositions(fixture.positions);
+      setLatestOrder(fixture.latestOrder);
+      setOpenOrders(fixture.openOrders);
+      setActivities(fixture.activities);
+      setPortfolioSyncStatus("synced");
+      setMainTab("portfolio");
+      const snapshot: StoredPortfolio = {
+        balance: fixture.balance,
+        positions: fixture.positions,
+        latestOrder: fixture.latestOrder,
+        openOrders: fixture.openOrders,
+        activities: fixture.activities,
+      };
+      AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
+    }
+    if (shouldForceServerPortfolioFallbackFixture) {
+      const fixture = serverBackendOnlyPortfolioFixture();
       setBalance(fixture.balance);
       setPositions(fixture.positions);
       setLatestOrder(fixture.latestOrder);
