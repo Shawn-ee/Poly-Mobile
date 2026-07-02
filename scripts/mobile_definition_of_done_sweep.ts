@@ -26,6 +26,9 @@ const evidence = {
   gapTracker: "docs/mobile/MOBILE_FEATURE_GAP_TRACKER.md",
   qaReport: "docs/mobile/MOBILE_QA_REPORT.md",
   reviewReport: "docs/mobile/MOBILE_REVIEW_REPORT.md",
+  finalQaSignoff: "docs/mobile/MOBILE_FINAL_QA_SIGNOFF.md",
+  finalReviewSignoff: "docs/mobile/MOBILE_FINAL_REVIEW_SIGNOFF.md",
+  finalSignoff: "docs/mobile/harness/cycle-current-mobile-final-signoff.json",
   samsungServerOrder: "docs/mobile/harness/cycle-current-mobile-samsung-backend-position-order-proof.json",
   androidReadiness: "docs/mobile/harness/cycle-current-android-dev-build-readiness.json",
   samsungApk: "docs/mobile/harness/cycle-current-samsung-apk-smoke.json",
@@ -33,6 +36,22 @@ const evidence = {
   portfolioScreenshot: "docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-order-portfolio.png",
   ticketScreenshot: "docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-order-ticket.png",
 };
+
+const readJson = <T,>(file: string): T | null => {
+  try {
+    return JSON.parse(fs.readFileSync(path.resolve(file), "utf8")) as T;
+  } catch {
+    return null;
+  }
+};
+
+const finalSignoff = readJson<{ qaSignoff?: string; reviewSignoff?: string; unresolvedP0GapCount?: number }>(evidence.finalSignoff);
+const hasPassingFinalSignoff =
+  finalSignoff?.qaSignoff === "pass" &&
+  finalSignoff.reviewSignoff === "pass" &&
+  finalSignoff.unresolvedP0GapCount === 0 &&
+  exists(evidence.finalQaSignoff) &&
+  exists(evidence.finalReviewSignoff);
 
 const criteria: Criterion[] = [
   {
@@ -94,9 +113,11 @@ const criteria: Criterion[] = [
   {
     id: "dod-final-cycle",
     criterion: "Final cycle includes passing required harnesses, final QA report, final review report, final feature gap tracker, screenshots, and no unresolved P0 debt.",
-    status: "partial",
-    evidence: [evidence.qaReport, evidence.reviewReport, evidence.gapTracker],
-    notes: "This sweep is the final-cycle audit artifact, but a dedicated final QA/review signoff and P0 debt closeout still need one more review pass before declaring mission complete.",
+    status: hasPassingFinalSignoff ? "verified" : "partial",
+    evidence: [evidence.finalQaSignoff, evidence.finalReviewSignoff, evidence.finalSignoff, evidence.gapTracker],
+    notes: hasPassingFinalSignoff
+      ? "Final QA/review signoff passed and the feature tracker has zero unresolved P0 gaps."
+      : "This sweep is the final-cycle audit artifact, but a dedicated final QA/review signoff and P0 debt closeout still need one more review pass before declaring mission complete.",
   },
   {
     id: "dod-apk-lane",
@@ -125,7 +146,7 @@ const summary = {
   nextActions: readyToDeclareDone
     ? ["Declare mobile Definition of Done complete."]
     : [
-        "Run a final QA/review signoff pass and close or explicitly downgrade remaining P0 debt.",
+        ...(hasPassingFinalSignoff ? [] : ["Run a final QA/review signoff pass and close or explicitly downgrade remaining P0 debt."]),
         "Generate or provide dist/holiwyn-preview.apk, then run npm run smoke:samsung:apk.",
         "Keep Samsung server-order proof as the main real-device trading regression until the APK lane exists.",
       ],

@@ -1,0 +1,24 @@
+{
+  "ready": true,
+  "generatedAt": "2026-07-02T14:01:39.566Z",
+  "p0GapCount": 54,
+  "verifiedP0GapCount": 54,
+  "unresolvedP0GapCount": 0,
+  "unresolvedP0Gaps": [],
+  "qaSignoff": "pass",
+  "reviewSignoff": "pass",
+  "evidence": {
+    "paritySweep": "docs/mobile/MOBILE_FINAL_PARITY_SWEEP.md",
+    "gapTracker": "docs/mobile/MOBILE_FEATURE_GAP_TRACKER.md",
+    "samsungServerOrder": "docs/mobile/harness/cycle-current-mobile-samsung-backend-position-order-proof.json",
+    "androidReadiness": "docs/mobile/harness/cycle-current-android-dev-build-readiness.json",
+    "samsungApkSmoke": "docs/mobile/harness/cycle-current-samsung-apk-smoke.json",
+    "mobileApiTests": "cmd /c npm.cmd run test:mobile-api",
+    "mobileTypecheck": "cmd /c npm.cmd run typecheck (mobile)"
+  },
+  "residualRisks": [
+    "Samsung APK smoke is ready but blocked until dist/holiwyn-preview.apk exists.",
+    "Emulator reliability remains partial in this workstation environment; Samsung is the stronger QA target.",
+    "Deposit, withdraw, and EBPay remain intentionally out of scope."
+  ]
+}
