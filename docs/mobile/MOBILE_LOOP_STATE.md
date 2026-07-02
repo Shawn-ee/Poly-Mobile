@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-256-prop-position-title-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Make prop-market Portfolio positions use the prop market title instead of only the event title.
 Implemented:
 - Updated order title selection so game-line event orders keep event titles while prop/live/future orders use market titles.
@@ -10137,8 +10137,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-order-ticket.xml`.
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-order-portfolio.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-prop-order-portfolio.png`.
-Commit: pending
-Merge: pending
+Commit: 236f8a1
+Merge: f61d679
 
 ### Heartbeat After Cycle 255
 
