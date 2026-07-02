@@ -126,6 +126,7 @@ export default function App() {
   const [forceAccountSignedIn, setForceAccountSignedIn] = useState(false);
   const [isRefreshingLive, setIsRefreshingLive] = useState(false);
   const [liveRefreshTick, setLiveRefreshTick] = useState(0);
+  const [launchUrlVersion, setLaunchUrlVersion] = useState(0);
   const [futures, setFutures] = useState<Market[]>(worldCupFutures);
   const t = appCopy[locale];
   const api = useMemo(() => new PolyApi(DEFAULT_API_BASE, DEFAULT_API_KEY), []);
@@ -304,6 +305,7 @@ export default function App() {
     forceServerOpenOrderProof.current = url.includes("forceServerOpenOrderProof=1");
     forceServerOrderSide.current = url.includes("forceServerOrderSide=sell") ? "sell" : "buy";
     forceServerCloseFixture.current = url.includes("forceServerCloseFixture=1");
+    setLaunchUrlVersion((value) => value + 1);
     const shouldForceLive = url.includes("forceLive=1");
     setForceOrderFailure(url.includes("forceOrderFailure=1"));
     if (url.includes("forceResetState=1")) {
@@ -532,7 +534,7 @@ export default function App() {
     }
     setSelectedEvent(event);
     setTicket({ event, market, outcome: ticketOutcome, side: forceServerOrderSide.current });
-  }, [events]);
+  }, [events, launchUrlVersion]);
 
   useEffect(() => {
     Linking.getInitialURL().then(handleLaunchUrl);
