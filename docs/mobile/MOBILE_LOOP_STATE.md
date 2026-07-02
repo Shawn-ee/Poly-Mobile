@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-239-event-outcome-depth
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Improve World Cup Event Detail trading parity by showing outcome-level bid/ask context before users open a ticket.
 Implemented:
 - Added outcome-level depth text under each Event Detail outcome row.
@@ -10137,8 +10137,8 @@ Verification:
 Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
-Commit: pending
-Merge: pending
+Commit: 441349c
+Merge: e6b77fe
 
 ### Heartbeat After Cycle 238
 
