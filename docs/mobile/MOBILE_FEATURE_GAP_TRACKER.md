@@ -271,3 +271,4 @@ Status:
 | GAP-249 | Account | Open-order account summary | P1 | Yes | Verified | Cycle 236 adds `Open orders` to the Account preferences summary, seeds one pending order in the account summary fixture, and verifies it on Samsung S23. |
 | GAP-250 | Account | Open-order value summary | P1 | Yes | Verified | Cycle 237 adds `Open order value` to the Account preferences summary, calculates pending order value from open-order notional, and verifies `117.5 USDT` on Samsung S23. |
 | GAP-251 | Account | Total exposure summary | P1 | Yes | Verified | Cycle 238 adds `Total exposure` to Account as Portfolio value plus pending open-order value, hardens account summary proof overlay recovery, and verifies `10,398.75 USDT` on Samsung S23. |
+| GAP-252 | Event detail | Outcome-level bid/ask context | P1 | Yes | Verified | Cycle 239 adds per-outcome bid/ask context on Event Detail rows and verifies `Best bid 0.61 USDT - Best ask 0.68 USDT` on Samsung S23. |

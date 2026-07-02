@@ -61,6 +61,15 @@ const marketDepth = (market: Market) => {
 
 const outcomeOdds = (outcome: Outcome) => (outcome.probability > 0 ? 100 / outcome.probability : 0).toFixed(1);
 
+const outcomeDepth = (outcome: Outcome) => {
+  const bid = (outcome.bestBid ?? Math.max(outcome.probability - 3, 1)) / 100;
+  const ask = (outcome.bestAsk ?? Math.min(outcome.probability + 4, 99)) / 100;
+  return {
+    bid: `${bid.toFixed(2)} USDT`,
+    ask: `${ask.toFixed(2)} USDT`,
+  };
+};
+
 export function EventDetail({
   event,
   locale,
@@ -201,7 +210,15 @@ export function EventDetail({
               </View>
               {market.outcomes.map((outcome) => (
                 <View key={outcome.id} style={styles.detailOutcome}>
-                  <Text style={styles.teamName}>{label(locale, outcome)}</Text>
+                  <View style={styles.outcomeTextBlock}>
+                    <Text style={styles.teamName}>{label(locale, outcome)}</Text>
+                    <Text
+                      accessibilityLabel={`event-detail-outcome-depth-${market.id}-${outcome.id}`}
+                      style={styles.outcomeDepthText}
+                    >
+                      {t.bestBid} {outcomeDepth(outcome).bid} - {t.bestAsk} {outcomeDepth(outcome).ask}
+                    </Text>
+                  </View>
                   <Pressable
                     accessibilityLabel={`event-detail-outcome-${market.id}-${outcome.id}`}
                     onPress={() => openTicket(market, outcome, event)}
@@ -260,7 +277,9 @@ const styles = StyleSheet.create({
   depthLabel: { color: "#94a3b8", fontSize: 10, fontWeight: "900", textTransform: "uppercase", marginBottom: 3 },
   depthValue: { color: "#e0f2fe", fontSize: 13, fontWeight: "900" },
   detailOutcome: { flexDirection: "row", alignItems: "center", gap: 10, marginTop: 10 },
-  teamName: { flex: 1, color: "#f8fafc", fontSize: 18, fontWeight: "800" },
+  outcomeTextBlock: { flex: 1, paddingRight: 4 },
+  teamName: { color: "#f8fafc", fontSize: 18, fontWeight: "800" },
+  outcomeDepthText: { color: "#94a3b8", fontSize: 11, fontWeight: "800", marginTop: 3 },
   probButton: { minWidth: 86, alignItems: "center", paddingVertical: 12, paddingHorizontal: 14, borderRadius: 12 },
   probButtonText: { color: "#ffffff", fontSize: 18, fontWeight: "900" },
   probButtonSubtext: { color: "rgba(255,255,255,0.82)", fontSize: 11, fontWeight: "900", marginTop: 2 },

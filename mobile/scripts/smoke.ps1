@@ -1210,7 +1210,7 @@ try {
     }
 
     if ($EventDetailMarketOutcomeCount) {
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Match winner", "2 outcomes", "Best bid", "Best ask", "64%", "1.6x")
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Match winner", "2 outcomes", "Best bid", "Best ask", "64%", "1.6x", "Best bid 0.61 USDT - Best ask 0.68 USDT", "event-detail-outcome-depth-mexico-ecuador-winner-mexico")
       return
     }
 
