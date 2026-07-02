@@ -8687,8 +8687,8 @@ Technical debt added:
 Technical debt resolved:
 - Server-mode close-position no longer performs only a local fake cash-out; it now attempts a canonical SELL order before local state removal.
 Result: Passed Cycle 190 QA. Mobile close service tests and typecheck pass.
-Commit: pending (`Submit server position closes as sell orders`).
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `399832f` (`Submit server position closes as sell orders`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `7652d35`.
 Next cycle: Continue toward final DoD by proving server close behavior with a fixture/Samsung path or by refreshing Portfolio after server close acknowledgement.
 Harnesses run:
 - Mobile Position Close Service Harness
