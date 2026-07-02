@@ -764,6 +764,7 @@ export default function App() {
         title: result.title,
         outcome: result.outcome,
         amount: result.amount,
+        shares: result.filledSize ?? result.size,
         side: result.side,
         probability: result.probability,
         isLive: isLiveOrder,

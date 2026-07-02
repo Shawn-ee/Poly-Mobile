@@ -50,6 +50,7 @@ export const recentTradesToActivity = (trades: PortfolioRecentTradeItem[] = []):
       title: trade.market.title,
       outcome: trade.outcome.name,
       amount: trade.cost,
+      shares: trade.shares,
       side: trade.side === "SELL" ? "sell" : "buy",
       probability: Math.round(executionPrice * 100),
       timestamp: formatHistoryTimestamp(trade.createdAt),
