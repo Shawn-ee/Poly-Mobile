@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-275-portfolio-position-fallback-ticket
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Let backend-only Portfolio positions open server trade tickets even when their market is not present in local World Cup lists.
 Implemented:
 - Added a fallback position trade target builder in `positionTradeTargetService`.
@@ -10138,8 +10138,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-server-position-buy-trade-ticket-button.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-position-buy-trade-ticket.png`.
 Result: Passed Cycle 275 QA. Server Portfolio positions can now remain tradable from Portfolio even when the backend market is not currently loaded into the local market lists.
-Commit: pending.
-Merge: pending.
+Commit: 8a7a99d
+Merge: f7d4409
 
 ### Cycle 274
 
