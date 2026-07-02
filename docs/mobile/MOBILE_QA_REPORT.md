@@ -3233,3 +3233,27 @@ Bugs:
 - None in final run.
 Visual QA:
 - No app screenshot cycle; this is backend-facing service coverage.
+
+### Cycle 153
+
+Date: 2026-07-01
+Device: Server success gate harness
+Build/run command:
+- `npm.cmd run gate:server-success:expect-blocked:summary` in `mobile/`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The server-success gate now writes structured JSON blocker evidence while preserving expected-blocked behavior.
+Harness evidence:
+- `docs/mobile/harness/cycle-153-server-success-gate.json`
+Structured findings:
+- `ready`: false
+- `dockerCliAvailable`: true
+- `dockerDaemonReachable`: false
+- `databaseTcpReachable`: false
+- `usesDefaultLocalComposePort`: true
+- `apiKeyPresent`: false
+- `apiKeyLooksValid`: false
+Bugs:
+- The first summary used an unresolved `mobile\..` readiness path; fixed by resolving the path before summary generation.
+Visual QA:
+- No app screenshot cycle; this is a server-readiness gate cycle.
