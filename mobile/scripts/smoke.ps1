@@ -511,7 +511,7 @@ try {
         Start-Sleep -Seconds 1
         $serverOrderCancelHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-open-order-canceled.xml"
         Save-Screenshot -Name "cycle-current-holiwyn-server-open-order-canceled.png"
-        Assert-HierarchyContains -Path $serverOrderCancelHierarchy -Expected @("portfolio-screen", "Canceled", "YES", "1 USDT")
+        Assert-HierarchyContains -Path $serverOrderCancelHierarchy -Expected @("portfolio-screen", "Canceled", "YES", "1 USDT", "Canceled 100.00 shares - Limit 1%")
       }
       return
     }
@@ -1173,11 +1173,11 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-open-order-canceled.png"
       $openOrderCanceledHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-open-order-canceled.xml"
       try {
-        Assert-HierarchyContains -Path $openOrderCanceledHierarchy -Expected @("Recent activity", "Canceled", "Mexico vs. Ecuador winner", "250 USDT")
+        Assert-HierarchyContains -Path $openOrderCanceledHierarchy -Expected @("Recent activity", "Canceled", "Mexico vs. Ecuador winner", "117.5 USDT", "Canceled 250.00 shares - Limit 47%")
       } catch {
         Start-Sleep -Seconds 2
         $openOrderCanceledHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-open-order-canceled.xml"
-        Assert-HierarchyContains -Path $openOrderCanceledHierarchy -Expected @("Recent activity", "Canceled", "Mexico vs. Ecuador winner", "250 USDT")
+        Assert-HierarchyContains -Path $openOrderCanceledHierarchy -Expected @("Recent activity", "Canceled", "Mexico vs. Ecuador winner", "117.5 USDT", "Canceled 250.00 shares - Limit 47%")
       }
       return
     }

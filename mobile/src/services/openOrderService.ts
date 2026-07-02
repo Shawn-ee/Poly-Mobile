@@ -8,6 +8,7 @@ export const openOrderCanceledActivity = (order: OpenOrder, timestamp: string): 
   title: order.title,
   outcome: order.outcome,
   amount: order.orderValue ?? (order.remainingShares ?? order.remaining) * order.price,
+  shares: order.remainingShares ?? order.remaining,
   side: order.side,
   probability: Math.round(order.price * 100),
   timestamp,
