@@ -9249,7 +9249,7 @@ Merge: 748e6e4
 
 Date: 2026-07-02
 Branch: mobile/cycle-205
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Add a repeatable filled-trade proof harness for the mobile dev account.
 Implemented:
 - Added `scripts/prove_mobile_filled_trade.ts`.
@@ -9266,8 +9266,8 @@ Evidence:
 - Mobile service test output.
 Notes:
 - The initial proof tried to reuse a seeded World Cup market and left the BUY open; the final proof creates an isolated World Cup proof market so autonomous reruns are deterministic.
-Commit: PENDING
-Merge: PENDING
+Commit: 3515b6e
+Merge: c959ee1
 
 ### Heartbeat After Cycle 205
 
