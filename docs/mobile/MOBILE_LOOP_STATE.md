@@ -8567,8 +8567,8 @@ Technical debt added:
 Technical debt resolved:
 - Server-mode latest-order confirmations no longer discard canonical order status or fill/remaining quantities.
 Result: Passed Cycle 187 QA. Mobile order service tests and typecheck pass.
-Commit: pending (`Preserve server order acknowledgement details`).
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `a4eb37d` (`Preserve server order acknowledgement details`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `4afbb4a`.
 Next cycle: Continue toward final DoD by carrying server acknowledgement details into persisted/open-order portfolio hydration or preparing a Samsung fixture proof for the richer receipt card.
 Harnesses run:
 - Mobile API/Order Service Unit Harness
