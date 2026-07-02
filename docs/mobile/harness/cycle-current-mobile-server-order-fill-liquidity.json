@@ -1,20 +1,20 @@
 {
   "ready": true,
   "event": {
-    "id": "f74fcd67-edb5-4437-ab41-c52966d86f40",
-    "slug": "fixture-2026-fifa-world-cup",
-    "title": "Fixture 2026 FIFA World Cup"
+    "id": "9f662a7d-5700-43e4-b4f1-50e99cef6ec9",
+    "slug": "world-cup-2026-paraguay-vs-australia-2026-06-25",
+    "title": "Paraguay vs Australia"
   },
   "market": {
-    "id": "1ad00821-d801-4d37-8b12-1ec9d415a8a0",
-    "title": "Will France win the 2026 FIFA World Cup?"
+    "id": "49a21c1b-893e-4139-ac54-6ad79d2ee204",
+    "title": "Paraguay vs Australia: Both teams to score"
   },
   "outcome": {
-    "id": "af91e922-9856-4c0f-8d84-21d77a7a189d",
-    "name": "YES"
+    "id": "67d221dd-6139-4643-82ee-2470944b692a",
+    "name": "Yes"
   },
   "makerOrder": {
-    "id": "7bc40d15-aeed-44f5-88a4-23bd6a93ad3a",
+    "id": "7f8a6daf-aa1e-4cfd-8ecc-523babf69b8e",
     "status": "OPEN",
     "price": "0.50",
     "size": "500",
@@ -24,7 +24,7 @@
   "attempts": [
     {
       "attempt": 1,
-      "makerOrderId": "7bc40d15-aeed-44f5-88a4-23bd6a93ad3a",
+      "makerOrderId": "7f8a6daf-aa1e-4cfd-8ecc-523babf69b8e",
       "status": "OPEN",
       "remaining": "500",
       "fillCount": 0
