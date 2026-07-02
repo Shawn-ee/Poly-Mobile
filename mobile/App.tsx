@@ -92,6 +92,7 @@ export default function App() {
   const [mainTab, setMainTab] = useState<MainTab>("home");
   const [worldCupTab, setWorldCupTab] = useState<WorldCupTab>("games");
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [eventDetailForcedSide, setEventDetailForcedSide] = useState<"buy" | "sell" | null>(null);
   const [query, setQuery] = useState("");
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [ticketOrderError, setTicketOrderError] = useState<string | null>(null);
@@ -343,6 +344,15 @@ export default function App() {
       setTicket({ market, outcome, side: "buy" });
     }
     if (url.includes("forceMexicoEcuadorDetail=1")) {
+      const event = worldCupEvents.find((item) => item.id === "mexico-ecuador");
+      setEventDetailForcedSide(null);
+      if (event) setSelectedEvent(event);
+    }
+    if (url.includes("forceMexicoEcuadorDetailSellDefault=1")) {
+      const defaults: TicketDefaults = { amount: "100", side: "sell", slippage: "1%" };
+      setTicketDefaults(defaults);
+      setEventDetailForcedSide("sell");
+      AsyncStorage.setItem(TICKET_DEFAULTS_STORAGE_KEY, JSON.stringify(defaults)).catch(() => undefined);
       const event = worldCupEvents.find((item) => item.id === "mexico-ecuador");
       if (event) setSelectedEvent(event);
     }
@@ -914,8 +924,11 @@ export default function App() {
             locale={locale}
             t={t}
             openTicket={openTicket}
-            defaultSide={ticketDefaults.side}
-            goBack={() => setSelectedEvent(null)}
+            defaultSide={eventDetailForcedSide ?? ticketDefaults.side}
+            goBack={() => {
+              setEventDetailForcedSide(null);
+              setSelectedEvent(null);
+            }}
             isSaved={savedEventIds.has(selectedEvent.id)}
             toggleSavedEvent={toggleSavedEvent}
           />

@@ -277,3 +277,4 @@ Status:
 | GAP-255 | Event detail | Outcome-level liquidity size context | P1 | Yes | Verified | Cycle 242 adds a per-outcome liquidity-size row under Event Detail outcomes, prefers real best-level sizes, falls back to stable mock sizes, and verifies `Liquidity: Best bid 1.28k shares - Best ask 900 shares` on Samsung S23. |
 | GAP-256 | Event detail | Outcome button buy affordance | P1 | Yes | Verified | Cycle 243 adds explicit `Buy` action copy beside Event Detail outcome odds and verifies `Buy - 1.6x` on Samsung S23. |
 | GAP-257 | Event detail | Outcome button default-side alignment | P1 | Yes | Verified | Cycle 244 makes Event Detail outcome button action copy follow the current ticket default side so the visible action matches the ticket that opens. |
+| GAP-258 | Event detail | Sell-default action proof | P1 | Yes | Verified | Cycle 245 adds a Samsung Event Detail proof path for forced Sell defaults and verifies `Sell - 1.6x` on the Mexico outcome button. |
