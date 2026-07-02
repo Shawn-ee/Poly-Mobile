@@ -16,6 +16,9 @@ function ConvertFrom-FirstJsonObject {
     $jsonStart = $Raw.IndexOf("{`n  `"userId`"")
   }
   if ($jsonStart -lt 0) {
+    $jsonStart = $Raw.IndexOf("{")
+  }
+  if ($jsonStart -lt 0) {
     throw "Command did not emit a parseable JSON object."
   }
 
@@ -99,6 +102,9 @@ try {
       Pop-Location
     }
 
+    $orderSummaryRaw = cmd /c npx.cmd tsx scripts/summarize_mobile_open_order_cancel_proof.ts --username=$proofUsername 2>&1 | Out-String
+    $orderSummary = ConvertFrom-FirstJsonObject -Raw $orderSummaryRaw
+
     $summary = [ordered]@{
       ready = $true
       side = $Side
@@ -111,6 +117,7 @@ try {
       outcome = $liquiditySummary.outcome
       makerOrder = $liquiditySummary.makerOrder
       mobileUser = $liquiditySummary.mobileUser
+      orderSummary = $orderSummary
       summaryPath = $SummaryPath
     }
     New-Item -ItemType Directory -Force -Path (Split-Path -Parent $resolvedSummaryPath) | Out-Null
