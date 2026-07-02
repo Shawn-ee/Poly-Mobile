@@ -7504,8 +7504,8 @@ Technical debt added:
 Technical debt resolved:
 - Backend-loaded Home/Live event lists no longer depend only on initial event payload odds when quote endpoints are available.
 Result: Passed Cycle 161 QA. Mobile typecheck and mobile API/service tests pass.
-Commit: Pending.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `ee09fee` (`Enrich mobile event lists with server quotes`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `a6a7e4a`.
 Next cycle: Cycle 162 should add server quote freshness for futures or improve quote proof harnessing.
 Harnesses run:
 - Mobile Typecheck Harness
