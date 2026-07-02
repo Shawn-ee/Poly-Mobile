@@ -14,6 +14,8 @@ export const loadPortfolioSnapshot = async (api: PolyApi): Promise<PortfolioSnap
     positions: snapshot.positions.map((position) => ({
       id: `server-${position.market.id}-${position.outcome}`,
       mode: "server",
+      marketId: position.market.id,
+      outcomeId: position.outcomeId,
       title: position.market.title,
       outcome: position.outcome,
       side: "buy",
