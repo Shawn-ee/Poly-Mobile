@@ -7857,8 +7857,8 @@ Technical debt added:
 Technical debt resolved:
 - Combined proof blockers now have stable categories, reducing duplicate text variants and improving overnight recovery decisions.
 Result: Passed Cycle 170 QA. Combined decision harness blocked as expected with normalized blocker categories, mobile typecheck passed, and mobile API/service tests pass.
-Commit: cycle branch HEAD (`Normalize server proof blocker categories`).
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `692a29d` (`Normalize server proof blocker categories`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `963c95a`.
 Next cycle: Cycle 171 should add product-facing proof that does not need live backend readiness or improve server proof decision next-action specificity.
 Harnesses run:
 - Samsung Server Proof Decision Harness
