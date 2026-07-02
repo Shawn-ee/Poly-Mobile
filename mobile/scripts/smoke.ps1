@@ -414,7 +414,7 @@ try {
     if ($ServerOrderFailure) {
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-ticket.png"
       $serverTicketHierarchy = $homeHierarchy
-      Assert-HierarchyContains -Path $serverTicketHierarchy -Expected @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "Estimated cost", "Est. shares", "Avg price", "Place buy order")
+      Assert-HierarchyContains -Path $serverTicketHierarchy -Expected @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "Estimated cost", "Est. fee", "0 USDT", "Est. shares", "Avg price", "Place buy order")
       Invoke-TapHierarchyNode -Path $serverTicketHierarchy -Identifier "place-mock-order"
       Wait-HierarchyContains -Name "cycle-current-holiwyn-server-order-error.xml" -Expected @("Order failed. Try again.", "ticket-order-error", "Place buy order") -Attempts 12 -DelaySeconds 2 | Out-Null
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-error.png"
@@ -440,7 +440,7 @@ try {
         Assert-HierarchyContains -Path $liveTicketReadyHierarchy -Expected @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina")
       }
       $liveTicketHierarchy = ""
-      $liveTicketExpected = @("France", "France vs. Argentina", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Live World Cup", "ticket-live-clock", "Live - 63'", "Fake balance", "10,000 USDT", "Estimated cost", "Est. shares", "Avg price", "Place buy order")
+      $liveTicketExpected = @("France", "France vs. Argentina", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Live World Cup", "ticket-live-clock", "Live - 63'", "Fake balance", "10,000 USDT", "Estimated cost", "Est. fee", "0 USDT", "Est. shares", "Avg price", "Place buy order")
       for ($liveTicketAttempt = 1; $liveTicketAttempt -le 3; $liveTicketAttempt++) {
         Invoke-TapHierarchyNode -Path $liveTicketReadyHierarchy -Identifier "event-outcome-france-argentina-final-france-argentina-live-france"
         Start-Sleep -Seconds 1
@@ -742,14 +742,14 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-ticket.png"
       $futureListTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-ticket.xml"
-      Assert-HierarchyContains -Path $futureListTicketHierarchy -Expected @("World Cup winner", "France", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "Est. shares", "Avg price", "Place buy order")
+      Assert-HierarchyContains -Path $futureListTicketHierarchy -Expected @("World Cup winner", "France", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "Est. fee", "0 USDT", "Est. shares", "Avg price", "Place buy order")
       return
     }
 
     if ($FutureListOrder) {
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-order-ticket.png"
       $futureListOrderTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-order-ticket.xml"
-      Assert-HierarchyContains -Path $futureListOrderTicketHierarchy -Expected @("World Cup winner", "France", "ticket-trading-mode", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "Place buy order")
+      Assert-HierarchyContains -Path $futureListOrderTicketHierarchy -Expected @("World Cup winner", "France", "ticket-trading-mode", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "ticket-estimated-fee", "Est. fee", "0 USDT", "Fake balance", "10,000 USDT", "Place buy order")
       Invoke-TapHierarchyNode -Path $futureListOrderTicketHierarchy -Identifier "place-mock-order"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-order-portfolio.png"

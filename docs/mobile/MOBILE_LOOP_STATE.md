@@ -8077,6 +8077,46 @@ Open blockers: None for autonomous progress. Successful live server-backed tradi
 Risks: Successful authenticated order execution, Portfolio hydration, cancel execution, and live quote refresh are still unproven on device; Expo Go proof still depends on LAN reachability.
 Next three likely cycles: continue ticket/order parity, add more market-detail parity that can be Samsung-proven, or retry the server-proof recovery plan if backend infrastructure becomes available.
 
+### Cycle 176
+
+Date: 2026-07-01
+Branch: mobile/cycle-176
+Goal: Add explicit estimated fee visibility to the Trade Ticket and verify the order flow on Samsung.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: Trade Ticket now shows an `Est. fee` row with `0 USDT` in the estimate block before order placement.
+Backend/API changed: No runtime API route change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/TradeTicket.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `docs/mobile/harness/cycle-176-holiwyn-future-list-order-ticket.xml`, `docs/mobile/harness/cycle-176-holiwyn-future-list-order-portfolio.xml`, `docs/mobile/harness/cycle-176-holiwyn-future-list-order-activity.xml`, `docs/mobile/screenshots/cycle-176-holiwyn-future-list-order-ticket.png`, `docs/mobile/screenshots/cycle-176-holiwyn-future-list-order-portfolio.png`, `docs/mobile/screenshots/cycle-176-holiwyn-future-list-order-activity.png`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:samsung:future-list-order` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-176-holiwyn-future-list-order-ticket.png`.
+- `docs/mobile/screenshots/cycle-176-holiwyn-future-list-order-portfolio.png`.
+- `docs/mobile/screenshots/cycle-176-holiwyn-future-list-order-activity.png`.
+Harness evidence:
+- `docs/mobile/harness/cycle-176-holiwyn-future-list-order-ticket.xml`.
+- `docs/mobile/harness/cycle-176-holiwyn-future-list-order-portfolio.xml`.
+- `docs/mobile/harness/cycle-176-holiwyn-future-list-order-activity.xml`.
+Bugs found:
+- None in final run.
+Technical debt added:
+- Fee value is static 0 USDT until backend fee policy/pricing is ready.
+Technical debt resolved:
+- None.
+Result: Passed Cycle 176 QA. Samsung future-list order smoke passed with the estimated-fee row visible, mobile typecheck passed, and mobile API/service tests pass.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 177 should continue ticket/order parity or use backend readiness recovery if Docker/DB/API-key state changes.
+Harnesses run:
+- Samsung Future List Order Smoke Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync/Quote Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.

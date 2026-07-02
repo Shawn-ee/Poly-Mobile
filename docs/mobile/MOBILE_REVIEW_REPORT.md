@@ -2595,3 +2595,19 @@ Findings:
 - Samsung future-list order smoke, mobile typecheck, and mobile API/service tests passed.
 Decision: Approve Cycle 175 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 176
+
+Date: 2026-07-01
+Branch: mobile/cycle-176
+Reviewer: Lead/Reviewer pass
+Scope: Trade Ticket estimated fee visibility and Samsung proof.
+Findings:
+- P1: Trade Ticket now shows an `Est. fee` row in the estimate block, making fee treatment explicit before a fake-token order is placed.
+- P1: The Samsung future-list order smoke asserts `ticket-estimated-fee`, `Est. fee`, and `0 USDT` in the ticket UI.
+- P1: The added row preserves visible ticket title, trading mode, market depth, quantity, estimated cost, estimated payout, and CTA on Samsung.
+- P1: The mock World Cup winner order still lands in Portfolio and Recent activity after the ticket estimate change.
+- P2: Fee value is intentionally static at 0 USDT until backend fee policy or live order pricing is ready.
+- Samsung future-list order smoke, mobile typecheck, and mobile API/service tests passed.
+Decision: Approve Cycle 176 for local commit/merge after scoped diff review.
+Merge approved: Yes
