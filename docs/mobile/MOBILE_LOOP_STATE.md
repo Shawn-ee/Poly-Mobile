@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-242-event-outcome-depth-size
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Add outcome-level liquidity size context to Event Detail so users can see available depth before opening a ticket.
 Implemented:
 - Added a compact per-outcome liquidity-size row below Event Detail outcome names.
@@ -10136,8 +10136,8 @@ Verification:
 Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
-Commit: pending
-Merge: pending
+Commit: f536e45
+Merge: 3af0c5c
 
 ### Cycle 241
 
