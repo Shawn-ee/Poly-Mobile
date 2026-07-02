@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-249-samsung-live-summary-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Make live market summary a named Samsung proof.
 Implemented:
 - Added Samsung wrapper switch for `LiveSummary`.
@@ -10135,8 +10135,8 @@ Verification:
 Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-live-summary.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-live-summary.png`.
-Commit: pending
-Merge: pending
+Commit: f44c9a2
+Merge: e14d7d9
 
 ### Cycle 248
 
