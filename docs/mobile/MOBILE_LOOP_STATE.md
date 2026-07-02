@@ -10099,7 +10099,7 @@ Merge: 15ea3ff
 
 Date: 2026-07-02
 Branch: mobile/cycle-238-account-total-exposure
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Add a combined total exposure summary to Account so users can see Portfolio value plus pending open-order value in one place.
 Implemented:
 - Added localized `totalExposure` copy for English and Simplified Chinese.
@@ -10115,8 +10115,8 @@ Verification:
 Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-account-position-summary.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-account-position-summary.png`.
-Commit: pending
-Merge: pending
+Commit: 341ad7f
+Merge: 8623cde
 
 ### Heartbeat After Cycle 238
 
