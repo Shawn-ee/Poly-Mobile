@@ -4566,3 +4566,29 @@ Bugs:
 - Tightened the Samsung proof to assert the real `OPEN` order receipt instead of requiring a green portfolio snapshot sync banner.
 Visual QA:
 - Passed on Samsung S23 through Expo Go.
+
+### Cycle 205
+
+Date: 2026-07-02
+Device: Backend matching harness plus mobile service/type harness
+Build/run command:
+- `npm.cmd run mobile:filled-trade-proof`
+- `npx.cmd jest --runInBand src/__tests__/portfolio.history.route.test.ts src/__tests__/orders.cancel.route.test.ts`
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+Result: Passed. The Holiwyn mobile dev account now has repeatable backend evidence for a real filled World Cup fake-token trade.
+Harness evidence:
+- The proof harness created a dev-only public World Cup orderbook market.
+- Prepared maker liquidity rested a SELL order and `holiwyn-mobile-dev` crossed it with a BUY.
+- The taker order finished `FILLED` with one fill and two recent trade rows.
+- The JSON proof was written to `docs/mobile/harness/cycle-current-mobile-filled-trade-proof.json`.
+Screenshot evidence:
+- None; this was a backend proof and mobile service verification cycle.
+Structured findings:
+- The first attempt reused a seeded World Cup market and produced an open BUY because existing book state made the proof non-repeatable.
+- The final harness creates an isolated dev World Cup proof market, which makes overnight runs deterministic while still exercising the real matching path.
+- The proof uses the existing mobile dev API credential when available but does not write any secret token to source or docs.
+Bugs:
+- Fixed the proof harness dependency on mutable seeded-market orderbook state.
+Visual QA:
+- No app visual run this cycle.

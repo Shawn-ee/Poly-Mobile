@@ -1,0 +1,31 @@
+{
+  "ready": true,
+  "buyerUsername": "holiwyn-mobile-dev",
+  "market": {
+    "id": "8472f17c-92a7-4409-89cc-821afc47a828",
+    "title": "World Cup Mobile Filled Trade Proof 512ba7f7"
+  },
+  "outcome": {
+    "id": "a82f1bd6-6f77-48db-a2b7-ad910450103a",
+    "name": "YES"
+  },
+  "makerOrder": {
+    "id": "8b061112-dcfd-482d-90b9-efb5b9ba79f6",
+    "status": "OPEN"
+  },
+  "takerOrder": {
+    "id": "0038496c-d5d0-40dc-b4b5-e72e7bc1889b",
+    "status": "FILLED"
+  },
+  "fillCount": 1,
+  "recentTradeCount": 2,
+  "latestTrade": {
+    "id": "0e7ebba9-a075-4647-9557-a88edfa10e0a",
+    "side": "BUY",
+    "shares": 2,
+    "cost": 1,
+    "marketTitle": "World Cup Mobile Filled Trade Proof 512ba7f7",
+    "outcomeName": "YES"
+  },
+  "usedApiCredential": true
+}

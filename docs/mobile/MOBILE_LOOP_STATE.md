@@ -9245,6 +9245,41 @@ Notes:
 Commit: 748e6e4
 Merge: 748e6e4
 
+### Cycle 205
+
+Date: 2026-07-02
+Branch: mobile/cycle-205
+Status: Verified; pending local merge.
+Objective: Add a repeatable filled-trade proof harness for the mobile dev account.
+Implemented:
+- Added `scripts/prove_mobile_filled_trade.ts`.
+- Added `npm run mobile:filled-trade-proof`.
+- The harness creates a dev-only public World Cup orderbook market, prepares maker liquidity, places a crossing BUY for `holiwyn-mobile-dev`, and writes a non-secret proof summary.
+Verification:
+- `npm.cmd run mobile:filled-trade-proof` passed and produced one filled taker order, one fill, and recent trade rows for the mobile dev account.
+- `npx.cmd jest --runInBand src/__tests__/portfolio.history.route.test.ts src/__tests__/orders.cancel.route.test.ts` passed with 2 suites and 4 tests.
+- `npm.cmd run test:mobile-api` passed with 15 files and 64 tests.
+- `npm.cmd run typecheck` passed in `mobile/`.
+Evidence:
+- `docs/mobile/harness/cycle-current-mobile-filled-trade-proof.json`.
+- Focused backend route test output.
+- Mobile service test output.
+Notes:
+- The initial proof tried to reuse a seeded World Cup market and left the BUY open; the final proof creates an isolated World Cup proof market so autonomous reruns are deterministic.
+Commit: PENDING
+Merge: PENDING
+
+### Heartbeat After Cycle 205
+
+Completed cycles: 203, 204, 205.
+Verified progress: Backend Portfolio history now includes durable canceled-order activity and pre-resolution recent trades, mobile maps those records into Recent activity, and a repeatable backend proof can create a real filled fake-token World Cup BUY trade for the Holiwyn mobile dev account.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, server quote/order/Portfolio sync, server open-order cancel, backend-derived canceled activity, and backend-derived recent trade activity.
+Current backend state: Local Docker/Postgres backend supports mobile API-key Portfolio/profile/order flows, canonical order create/cancel, canceled-order history, recent-trade history, and a deterministic filled-trade proof harness.
+Device strategy: Samsung S23 remains the primary Holiwyn visual QA and server-backed proof target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: The filled-trade proof is backend-only this cycle; the next device cycle should refresh Portfolio on Samsung and verify the filled trade appears visually in Recent activity. The local dev account now has accumulated proof data, so tests should keep avoiding exact-balance assumptions.
+Next three likely cycles: prove backend recent-trade history visually on Samsung, add a direct server-mode filled-order UI path when liquidity exists, and continue Portfolio/trading parity polish toward Polymarket-style World Cup workflows.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.
