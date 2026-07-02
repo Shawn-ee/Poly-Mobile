@@ -7081,8 +7081,8 @@ Technical debt added:
 Technical debt resolved:
 - Server-mode ticket submission now has focused service-level regression coverage.
 Result: Passed Cycle 150 QA. Mobile typecheck and mobile API/service tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `add2ccf` (`Add mobile server order service tests`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `4d68a72`.
 Next cycle: Cycle 151 should continue backend-facing parity that can be verified without DB, or add credential-readiness gate coverage.
 Harnesses run:
 - Mobile Typecheck Harness
