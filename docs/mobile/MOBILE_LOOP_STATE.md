@@ -7460,8 +7460,8 @@ Technical debt added:
 Technical debt resolved:
 - Event-detail market buttons can now receive server-refreshed probabilities instead of relying only on the initial event payload.
 Result: Passed Cycle 160 QA. Mobile typecheck and mobile API/service tests pass.
-Commit: Pending.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `580e6cc` (`Refresh event detail odds from server quotes`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `0b80b9c`.
 Next cycle: Cycle 161 should extend quote freshness toward home/live/futures lists or add a server-mode quote-refresh smoke once a reachable test backend is available.
 Harnesses run:
 - Mobile Typecheck Harness
