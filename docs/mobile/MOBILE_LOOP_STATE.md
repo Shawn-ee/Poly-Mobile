@@ -9664,8 +9664,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml`.
 Notes:
 - The successful S23 proof shows the open order as `Order value 1 USDT` and `Remaining: 100 shares`, then canceled activity as `1 USDT`.
-Commit: TBD
-Merge: TBD
+Commit: e9ba082
+Merge: c26f886
 
 ### Heartbeat After Cycle 217
 
