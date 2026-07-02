@@ -8900,8 +8900,8 @@ Technical debt added:
 Technical debt resolved:
 - Portfolio is now a trading surface, not only a passive position/history screen.
 Result: Passed Cycle 195 QA. Mobile tests, typecheck, and Samsung server-position trade smoke pass.
-Commit: `PENDING` (`PENDING`).
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `fbee5cb` (`Add portfolio position re-trade actions`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `99b9fde`.
 Next cycle: Continue toward final DoD by adding richer position/order detail parity or improving authenticated server proof readiness recovery.
 Harnesses run:
 - Mobile Position Trade Target Harness
