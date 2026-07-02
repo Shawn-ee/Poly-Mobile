@@ -8157,6 +8157,57 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 178
+
+Date: 2026-07-01
+Branch: mobile/cycle-178
+Goal: Turn static ticket slippage display into an adjustable selector and verify the order flow on Samsung.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: Trade Ticket now shows compact 0.5%, 1%, and 2% slippage controls; Samsung proof selects 2% before placing the order.
+Backend/API changed: No runtime API route change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/TradeTicket.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/harness/cycle-178-holiwyn-future-list-order-ticket.xml`, `docs/mobile/harness/cycle-178-holiwyn-future-list-order-portfolio.xml`, `docs/mobile/harness/cycle-178-holiwyn-future-list-order-activity.xml`, `docs/mobile/screenshots/cycle-178-holiwyn-future-list-order-ticket.png`, `docs/mobile/screenshots/cycle-178-holiwyn-future-list-order-portfolio.png`, `docs/mobile/screenshots/cycle-178-holiwyn-future-list-order-activity.png`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:samsung:future-list-order` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-178-holiwyn-future-list-order-ticket.png`.
+- `docs/mobile/screenshots/cycle-178-holiwyn-future-list-order-portfolio.png`.
+- `docs/mobile/screenshots/cycle-178-holiwyn-future-list-order-activity.png`.
+Harness evidence:
+- `docs/mobile/harness/cycle-178-holiwyn-future-list-order-ticket.xml`.
+- `docs/mobile/harness/cycle-178-holiwyn-future-list-order-portfolio.xml`.
+- `docs/mobile/harness/cycle-178-holiwyn-future-list-order-activity.xml`.
+Bugs found:
+- None in final run.
+Technical debt added:
+- Slippage selection is local ticket UI state until persistent settings and server-side execution semantics are ready.
+Technical debt resolved:
+- Static 1% slippage display is now an adjustable selector with Samsung-proven behavior.
+Result: Passed Cycle 178 QA. Samsung future-list order smoke selected 2% slippage and completed the mock order, mobile typecheck passed, and mobile API/service tests pass.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 179 should continue user-configurable ticket settings, order-type parity, or backend readiness recovery if Docker/DB/API-key state changes.
+Harnesses run:
+- Samsung Future List Order Smoke Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync/Quote Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 178
+
+Completed cycles: 176, 177, 178.
+Verified progress: Trade Ticket now exposes estimated fee, visible slippage, and adjustable 0.5%/1%/2% slippage controls, all Samsung-proven inside the World Cup winner future-order flow.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, ticket trading-mode/depth/fee/slippage controls, market quote refresh seams, server order/Portfolio/cancel/quote service coverage, and strict server-proof decision harnessing.
+Current backend state: Mobile API/profile-preference/activity/history/order/open-order/portfolio snapshot/portfolio sync/quote tests pass. Successful live server-backed proof remains gated by Docker daemon, local DB TCP, API key, backend health, and quote readiness.
+Device strategy: Samsung S23 remains the primary Holiwyn visual QA and server-mode proof target through Expo Go. Emulator remains fallback only.
+Open blockers: None for autonomous progress. Successful live server-backed trading remains gated by backend readiness and credentials.
+Risks: Slippage selection is local-only, fee is static 0 USDT, and authenticated server-backed order execution/Portfolio hydration/cancel execution remain unproven on device.
+Next three likely cycles: continue order-ticket parity, add persistent/user-configurable ticket controls, or retry server-proof recovery if backend infrastructure becomes available.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.

@@ -76,6 +76,7 @@ export function TradeTicket({
 }) {
   const [amount, setAmountState] = useState(defaultAmount);
   const [side, setSideState] = useState<"buy" | "sell">(defaultSide);
+  const [slippage, setSlippage] = useState("1%");
 
   useEffect(() => {
     if (!ticket) return;
@@ -101,6 +102,11 @@ export function TradeTicket({
   const primaryLabel = side === "buy" ? t.placeBuyOrder : t.placeSellOrder;
   const costLabel = side === "buy" ? t.estimatedCost : t.estimatedProceeds;
   const amountPresets = [100, 500, 1000];
+  const slippageOptions = [
+    { key: "half", value: "0.5%" },
+    { key: "one", value: "1%" },
+    { key: "two", value: "2%" },
+  ];
   const isLiveTicket = ticket.event?.status === "live";
   const tradingModeValue = tradingMode === "server" ? t.tradingModeServer : t.tradingModeMock;
   const depth = marketDepth(ticket.outcome.probability);
@@ -187,7 +193,19 @@ export function TradeTicket({
           </View>
           <View accessibilityLabel="ticket-slippage" testID="ticket-slippage" style={styles.estimateLine}>
             <Text style={styles.estimateLabel}>{t.slippage}</Text>
-            <Text style={styles.estimateValue}>1%</Text>
+            <View style={styles.slippageControls}>
+              {slippageOptions.map((option) => (
+                <Pressable
+                  accessibilityLabel={`ticket-slippage-${option.key}${slippage === option.value ? "-selected" : ""}`}
+                  key={option.key}
+                  onPress={() => setSlippage(option.value)}
+                  style={[styles.slippageButton, slippage === option.value && styles.slippageButtonActive]}
+                  testID={`ticket-slippage-${option.key}${slippage === option.value ? "-selected" : ""}`}
+                >
+                  <Text style={[styles.slippageText, slippage === option.value && styles.slippageTextActive]}>{option.value}</Text>
+                </Pressable>
+              ))}
+            </View>
           </View>
           <View style={styles.estimateLine}>
             <Text style={styles.estimateLabel}>{t.estimatedShares}</Text>
@@ -253,6 +271,11 @@ const styles = StyleSheet.create({
   estimateLine: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: "#263247" },
   estimateLabel: { color: "#94a3b8", fontWeight: "800" },
   estimateValue: { color: "#f8fafc", fontWeight: "900" },
+  slippageControls: { flexDirection: "row", gap: 6 },
+  slippageButton: { minWidth: 54, minHeight: 32, alignItems: "center", justifyContent: "center", borderRadius: 8, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
+  slippageButtonActive: { backgroundColor: "#1d6dff", borderColor: "#60a5fa" },
+  slippageText: { color: "#cbd5e1", fontSize: 12, fontWeight: "900" },
+  slippageTextActive: { color: "#ffffff" },
   errorCard: { flexDirection: "row", alignItems: "center", gap: 8, padding: 10, borderRadius: 10, backgroundColor: "#1f1a0b", borderWidth: 1, borderColor: "#854d0e", marginTop: 12 },
   errorText: { flex: 1, color: "#fde68a", fontWeight: "800" },
   primaryButton: { height: 50, borderRadius: 14, alignItems: "center", justifyContent: "center", backgroundColor: "#1d6dff", marginTop: 12 },

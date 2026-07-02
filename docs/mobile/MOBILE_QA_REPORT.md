@@ -3861,3 +3861,31 @@ Bugs:
 - None in final run.
 Visual QA:
 - Screenshot reviewed; the added slippage row fits within the Samsung ticket layout without clipping the header or CTA.
+
+### Cycle 178
+
+Date: 2026-07-01
+Device: Samsung S23 via Expo Go
+Build/run command:
+- `npm.cmd run smoke:samsung:future-list-order` in `mobile/`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The Trade Ticket now has adjustable slippage controls and the Samsung future-order proof verifies selecting 2% before placing a successful mock order.
+Harness evidence:
+- `docs/mobile/harness/cycle-178-holiwyn-future-list-order-ticket.xml`
+- `docs/mobile/harness/cycle-178-holiwyn-future-list-order-portfolio.xml`
+- `docs/mobile/harness/cycle-178-holiwyn-future-list-order-activity.xml`
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-178-holiwyn-future-list-order-ticket.png`
+- `docs/mobile/screenshots/cycle-178-holiwyn-future-list-order-portfolio.png`
+- `docs/mobile/screenshots/cycle-178-holiwyn-future-list-order-activity.png`
+Structured findings:
+- Ticket first shows default `ticket-slippage-one-selected`.
+- Samsung smoke taps `ticket-slippage-two` and final ticket evidence shows `ticket-slippage-two-selected`.
+- Ticket shows `0.5%`, `1%`, and `2%` controls while preserving the full market title, trading mode, market depth, fee/slippage rows, order estimates, and order button.
+Unit evidence:
+- Mobile API/service suite: 9 files, 40 tests passed.
+Bugs:
+- None in final run.
+Visual QA:
+- Screenshot reviewed; the segmented slippage control fits within the Samsung ticket layout without clipping the header or CTA.
