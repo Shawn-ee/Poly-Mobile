@@ -10030,7 +10030,7 @@ Merge: 20fefc2
 
 Date: 2026-07-02
 Branch: mobile/cycle-235-portfolio-open-orders-count
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Add a visible Portfolio open-order count and prove the count changes during the Samsung mock cancel flow.
 Implemented:
 - Added a fourth Portfolio summary tile labeled `Open orders`.
@@ -10047,8 +10047,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-open-order-canceled.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-open-order.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-open-order-canceled.png`.
-Commit: pending
-Merge: pending
+Commit: c0f5956
+Merge: 90130f7
 
 ### Heartbeat After Cycle 235
 
