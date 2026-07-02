@@ -8312,8 +8312,8 @@ Technical debt added:
 Technical debt resolved:
 - Server-loaded profile preferences now hydrate all ticket defaults carried by the mobile profile-preference seam.
 Result: Passed Cycle 181 QA. Mobile typecheck and mobile API/service tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `704ca86` (`Hydrate profile slippage defaults`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `3d75951`.
 Next cycle: Continue toward the final DoD by either adding a real backend profile-preferences route/storage or moving to the next trading parity gap that can be verified without backend readiness.
 Harnesses run:
 - Mobile Typecheck Harness
