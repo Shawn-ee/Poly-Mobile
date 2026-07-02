@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     scopes: ["account:read"],
     routeId: "account:preferences",
     fallbackMessage: "Failed to load profile preferences.",
-    handler: async (actor) => getProfilePreferences({ userId: actor.userId }),
+    handler: async (actor) => ({ body: await getProfilePreferences({ userId: actor.userId }) }),
   });
 }
 
@@ -25,7 +25,7 @@ export async function PUT(request: NextRequest) {
     handler: async (actor) => {
       const body = await request.json().catch(() => null);
       const preferences = parseProfilePreferencesInput(body);
-      return saveProfilePreferences({ userId: actor.userId, preferences });
+      return { body: await saveProfilePreferences({ userId: actor.userId, preferences }) };
     },
   });
 }

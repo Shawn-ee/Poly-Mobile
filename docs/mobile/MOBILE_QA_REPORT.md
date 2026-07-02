@@ -4259,6 +4259,39 @@ Bugs:
 Visual QA:
 - Passed on Samsung S23 through Expo Go.
 
+### Cycle 200
+
+Date: 2026-07-02
+Device: Samsung S23 via Expo Go, local Docker-backed backend, focused backend route tests, and mobile service unit harness
+Build/run command:
+- `npx.cmd jest --runInBand src/__tests__/profile.preferences.route.test.ts src/__tests__/portfolio.open-orders.route.test.ts`
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run smoke:samsung:server-order-success` in `mobile/`
+Result: Passed. Samsung now proves synced Portfolio state after a server-backed fake-token order.
+Harness evidence:
+- Focused backend route tests passed with 2 suites and 8 tests.
+- Mobile API/service suite passed with 15 files and 62 tests.
+- Mobile typecheck passed.
+- Existing local migration `20260701000100_add_user_profile_preferences` was applied successfully to the Docker-backed DB.
+- Direct endpoint probes returned 200 for API-key `/api/portfolio`, `/api/portfolio/history`, and profile-preferences GET/PUT.
+- Samsung smoke passed on `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` through Expo host `172.16.200.14`, port `8155`.
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`
+Structured findings:
+- The synced Portfolio screen shows `Server portfolio synced`, `Open orders`, `Buy - YES - OPEN`, `Remaining: 100 USDT`, and a visible `Cancel` action.
+- Legacy Portfolio endpoints now resolve `Authorization: Bearer ...` API-key actors through `account:read` before falling back to session auth.
+- Profile preferences now return the canonical route wrapper shape correctly.
+- The server-order smoke no longer assumes a fixed 10,000 USDT balance because prior successful open orders reserve fake-token funds.
+Bugs:
+- Fixed mobile API-key Portfolio 401s.
+- Fixed profile-preferences 500s caused by returning the wrong canonical route shape.
+- Fixed an over-specific Samsung balance assertion that broke once real server orders accumulated.
+Visual QA:
+- Passed on Samsung S23 through Expo Go.
+
 ### Cycle 194
 
 Date: 2026-07-02

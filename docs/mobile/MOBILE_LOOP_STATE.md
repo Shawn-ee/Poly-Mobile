@@ -9110,6 +9110,33 @@ Open blockers: None for autonomous progress.
 Risks: Portfolio snapshot/profile sync still reports unavailable on the S23 proof; server order is OPEN with no fill, so matching/fill proof remains separate; temporary local trading-beta env must be kept controlled.
 Next three likely cycles: fix authenticated Portfolio/profile sync on Samsung, prove server open-order cancellation from the real receipt, and add a filled-order/matching proof once local liquidity is prepared.
 
+### Cycle 200
+
+Date: 2026-07-02
+Branch: mobile/cycle-200
+Status: Verified on branch; pending local merge stamp.
+Objective: Make authenticated Portfolio/profile sync work for Samsung server-order proof.
+Implemented:
+- Added API-key actor support to legacy `/api/portfolio` and `/api/portfolio/history` while preserving session fallback.
+- Fixed `/api/profile/preferences` to return `{ body }` through the canonical route wrapper.
+- Applied the existing `20260701000100_add_user_profile_preferences` migration to the local Docker-backed database.
+- Hardened the server-order Samsung smoke so it asserts synced open-order state instead of fixed local balance or optimistic receipt text.
+Verification:
+- `npx.cmd jest --runInBand src/__tests__/profile.preferences.route.test.ts src/__tests__/portfolio.open-orders.route.test.ts` passed with 2 suites and 8 tests.
+- `npm.cmd run test:mobile-api` passed with 15 files and 62 tests.
+- `npm.cmd run typecheck` passed in `mobile/`.
+- API-key endpoint probes for Portfolio, Portfolio history, and profile preferences returned 200.
+- `npm.cmd run smoke:samsung:server-order-success` passed on Samsung S23 through Expo Go.
+Evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`
+Notes:
+- The final S23 Portfolio screenshot shows `Server portfolio synced`, `Open orders`, `Buy - YES - OPEN`, `Remaining: 100 USDT`, and `Cancel`.
+- The local mobile dev account now has multiple OPEN proof orders, so fake balance is below 10,000 USDT because reserved notional is working.
+Commit: PENDING
+Merge: PENDING
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

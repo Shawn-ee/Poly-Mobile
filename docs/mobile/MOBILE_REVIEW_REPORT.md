@@ -2965,3 +2965,20 @@ Findings:
 - Mobile API/service tests, mobile typecheck, and Samsung server-order success smoke passed.
 Decision: Approve Cycle 199 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 200
+
+Date: 2026-07-02
+Branch: mobile/cycle-200
+Reviewer: Lead/Reviewer pass
+Scope: Authenticated Portfolio/profile sync for mobile API keys.
+Findings:
+- P0: Legacy Portfolio and Portfolio history endpoints now accept canonical API-key actors with `account:read`, unblocking Samsung server Portfolio sync for Expo/mobile clients.
+- P0: Profile preferences now return `{ body }` through `runCanonicalRoute`, fixing the canonical route response contract and removing the 500 seen during Samsung proof.
+- P0: The existing `UserProfilePreference` migration was applied to the local Docker DB, and profile GET/PUT probes now return 200.
+- P1: Samsung server-order proof now verifies the stronger server-synced state: `Server portfolio synced`, `Open orders`, `Buy - YES - OPEN`, `Remaining`, and `Cancel`.
+- P1: The server-order harness no longer assumes a pristine 10,000 USDT balance, which is correct once real open orders reserve funds.
+- P2: The proof still creates OPEN limit orders, not filled trades; fill/matching proof remains a follow-up.
+- Focused backend route tests, mobile API/service tests, mobile typecheck, and Samsung server-order success smoke passed.
+Decision: Approve Cycle 200 for local commit/merge after scoped diff review.
+Merge approved: Yes

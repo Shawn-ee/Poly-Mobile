@@ -16,12 +16,12 @@ jest.mock("@/lib/canonicalRoute", () => ({
     request: NextRequest;
     scopes: string[];
     routeId: string;
-    handler: (actor: { userId: string }) => Promise<unknown>;
+    handler: (actor: { userId: string }) => Promise<{ body: unknown }>;
   }) => {
     observedRouteScopes[params.request.method] = params.scopes;
     try {
-      const body = await params.handler({ userId: "user-1" });
-      return NextResponse.json(body);
+      const result = await params.handler({ userId: "user-1" });
+      return NextResponse.json(result.body);
     } catch (error) {
       if (error instanceof CanonicalApiError) {
         return NextResponse.json({ error: { code: error.code, message: error.message } }, { status: error.status });
@@ -51,10 +51,20 @@ describe("profile preferences route", () => {
 
   test("GET loads preferences for the authenticated actor", async () => {
     const response = await GET(new NextRequest("http://localhost/api/profile/preferences"));
+    const body = await response.json();
 
     expect(response.status).toBe(200);
     expect(observedRouteScopes.GET).toEqual(["account:read"]);
     expect(getProfilePreferences).toHaveBeenCalledWith({ userId: "user-1" });
+    expect(body).toEqual({
+      preferences: {
+        locale: "en",
+        ticketDefaultAmount: "100",
+        ticketDefaultSide: "BUY",
+        ticketDefaultSlippage: "1%",
+        savedEventIds: [],
+      },
+    });
   });
 
   test("PUT saves canonical mobile preferences including slippage", async () => {
@@ -70,11 +80,21 @@ describe("profile preferences route", () => {
         }),
       }),
     );
+    const body = await response.json();
 
     expect(response.status).toBe(200);
     expect(observedRouteScopes.PUT).toEqual(["account:write"]);
     expect(saveProfilePreferences).toHaveBeenCalledWith({
       userId: "user-1",
+      preferences: {
+        locale: "zh",
+        ticketDefaultAmount: "500",
+        ticketDefaultSide: "SELL",
+        ticketDefaultSlippage: "2%",
+        savedEventIds: ["world-cup-winner"],
+      },
+    });
+    expect(body).toEqual({
       preferences: {
         locale: "zh",
         ticketDefaultAmount: "500",
