@@ -264,3 +264,4 @@ Status:
 | GAP-242 | Portfolio | Open-order original size | P1 | Yes | Verified | Cycle 229 maps backend open-order `size` into an original Size line on Portfolio open-order cards and verifies it on Samsung S23. |
 | GAP-243 | Portfolio | Open-order fill progress | P1 | Yes | Verified | Cycle 230 derives filled shares/percent from original size minus remaining shares and verifies `Filled: 0 shares (0%)` on Samsung S23. |
 | GAP-244 | Portfolio | Open-order remaining value context | P1 | Yes | Verified | Cycle 231 folds remaining USDT value into the open-order remaining-shares line and verifies `Remaining: 100 shares (Remaining value: 1 USDT)` on Samsung S23. |
+| GAP-245 | Harness | Open-order detail regression assertions | P1 | No | Verified | Cycle 232 tightens the Samsung server open-order cancel smoke so it fails unless remaining value, original size, and fill progress are visible before cancel. |
