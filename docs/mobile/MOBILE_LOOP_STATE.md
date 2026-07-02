@@ -10118,6 +10118,27 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 242
+
+Date: 2026-07-02
+Branch: mobile/cycle-242-event-outcome-depth-size
+Status: Verified; pending local merge.
+Objective: Add outcome-level liquidity size context to Event Detail so users can see available depth before opening a ticket.
+Implemented:
+- Added a compact per-outcome liquidity-size row below Event Detail outcome names.
+- Preferred real `bestBidSize`/`bestAskSize` values when present and used stable mock fallback sizes when quote sizes are unavailable.
+- Tightened the Samsung Event Detail smoke to require the Mexico liquidity-size row and its accessibility label.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:event-detail-outcome-depth` passed on Samsung S23 with Expo host `172.16.200.14` and port `8162`.
+- Captured hierarchy includes `Liquidity: Best bid 1.28k shares - Best ask 900 shares` and `event-detail-outcome-depth-size-mexico-ecuador-winner-mexico`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
+Commit: pending
+Merge: pending
+
 ### Cycle 241
 
 Date: 2026-07-02

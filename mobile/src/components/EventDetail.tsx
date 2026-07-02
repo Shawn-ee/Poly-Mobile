@@ -15,6 +15,7 @@ type EventDetailCopy = {
   bestBid: string;
   bestAsk: string;
   spread: string;
+  shares: string;
 };
 
 const groupLabels: Record<Market["type"], { en: string; zh: string }> = {
@@ -68,6 +69,21 @@ const outcomeDepth = (outcome: Outcome) => {
     bid: `${bid.toFixed(2)} USDT`,
     ask: `${ask.toFixed(2)} USDT`,
   };
+};
+
+const formatSize = (size: number) => {
+  if (size >= 1000) return `${(size / 1000).toFixed(size >= 10000 ? 0 : 2).replace(/\.?0+$/, "")}k`;
+  return size.toLocaleString(undefined, { maximumFractionDigits: 2 });
+};
+
+const outcomeDepthSize = (outcome: Outcome, labels: { bid: string; ask: string; shares: string }) => {
+  const fallbackBidSize = Math.max(Math.round(outcome.probability * 20), 100);
+  const fallbackAskSize = Math.max(Math.round((100 - outcome.probability) * 25), 100);
+  const bidSize = typeof outcome.bestBidSize === "number" && Number.isFinite(outcome.bestBidSize) && outcome.bestBidSize > 0 ? outcome.bestBidSize : fallbackBidSize;
+  const askSize = typeof outcome.bestAskSize === "number" && Number.isFinite(outcome.bestAskSize) && outcome.bestAskSize > 0 ? outcome.bestAskSize : fallbackAskSize;
+  const bid = formatSize(bidSize);
+  const ask = formatSize(askSize);
+  return `${labels.bid} ${bid} ${labels.shares} - ${labels.ask} ${ask} ${labels.shares}`;
 };
 
 export function EventDetail({
@@ -212,6 +228,21 @@ export function EventDetail({
                 <View key={outcome.id} style={styles.detailOutcome}>
                   <View style={styles.outcomeTextBlock}>
                     <Text style={styles.teamName}>{label(locale, outcome)}</Text>
+                    {(() => {
+                      const sizeText = outcomeDepthSize(outcome, { bid: t.bestBid, ask: t.bestAsk, shares: t.shares });
+                      if (!sizeText) return null;
+                      return (
+                      <Text
+                        adjustsFontSizeToFit
+                        accessibilityLabel={`event-detail-outcome-depth-size-${market.id}-${outcome.id}`}
+                        minimumFontScale={0.82}
+                        numberOfLines={1}
+                        style={styles.outcomeSizeText}
+                      >
+                        {t.liquidity}: {sizeText}
+                      </Text>
+                      );
+                    })()}
                     <Text
                       adjustsFontSizeToFit
                       accessibilityLabel={`event-detail-outcome-depth-${market.id}-${outcome.id}`}
@@ -282,6 +313,7 @@ const styles = StyleSheet.create({
   detailOutcome: { flexDirection: "row", alignItems: "center", gap: 10, marginTop: 10 },
   outcomeTextBlock: { flex: 1, paddingRight: 4 },
   teamName: { color: "#f8fafc", fontSize: 18, fontWeight: "800" },
+  outcomeSizeText: { color: "#bfdbfe", fontSize: 10, fontWeight: "900", marginTop: 3 },
   outcomeDepthText: { color: "#94a3b8", fontSize: 11, fontWeight: "800", marginTop: 3 },
   probButton: { minWidth: 86, alignItems: "center", paddingVertical: 12, paddingHorizontal: 14, borderRadius: 12 },
   probButtonText: { color: "#ffffff", fontSize: 18, fontWeight: "900" },

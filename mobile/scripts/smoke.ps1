@@ -1210,7 +1210,7 @@ try {
     }
 
     if ($EventDetailMarketOutcomeCount) {
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Match winner", "2 outcomes", "Best bid", "0.62 USDT", "Best ask", "0.66 USDT", "64%", "1.6x", "Best bid 0.61 USDT - Best ask 0.68 USDT", "event-detail-outcome-depth-mexico-ecuador-winner-mexico")
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Match winner", "2 outcomes", "Best bid", "0.62 USDT", "Best ask", "0.66 USDT", "64%", "1.6x", "Liquidity: Best bid 1.28k shares - Best ask 900 shares", "event-detail-outcome-depth-size-mexico-ecuador-winner-mexico", "Best bid 0.61 USDT - Best ask 0.68 USDT", "event-detail-outcome-depth-mexico-ecuador-winner-mexico")
       return
     }
 
