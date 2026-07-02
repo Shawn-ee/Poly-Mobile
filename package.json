@@ -72,6 +72,7 @@
     "mobile:filled-trade-proof": "tsx scripts/prove_mobile_filled_trade.ts --summaryPath=docs/mobile/harness/cycle-current-mobile-filled-trade-proof.json",
     "mobile:server-order-fill-liquidity": "tsx scripts/prepare_mobile_server_order_fill.ts --summaryPath=docs/mobile/harness/cycle-current-mobile-server-order-fill-liquidity.json",
     "mobile:server-sell-fill-liquidity": "tsx scripts/prepare_mobile_server_sell_fill.ts --summaryPath=docs/mobile/harness/cycle-current-mobile-server-sell-fill-liquidity.json",
+    "mobile:samsung-server-order-proof": "powershell -ExecutionPolicy Bypass -File scripts/mobile_samsung_server_order_proof.ps1",
     "bots:reset-state": "tsx scripts/reset_bot_state.ts",
     "bot:e2e:seed": "tsx tests/bot-e2e/seed.ts",
     "bot:e2e:run": "npm run bot:e2e:seed && node tests/bot-e2e/run.mjs",

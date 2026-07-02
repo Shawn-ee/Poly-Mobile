@@ -9535,6 +9535,34 @@ Open blockers: None for autonomous progress.
 Risks: Server proof account aggregates can still look odd because complete-set minting creates non-user-facing proof inventory; future cycles should focus assertions on latest order/activity or add a dedicated user-facing proof snapshot.
 Next three likely cycles: improve server Portfolio proof snapshots, add richer orderbook/open-order detail parity, and continue World Cup market detail/trading parity.
 
+### Cycle 215
+
+Date: 2026-07-02
+Branch: mobile/cycle-215
+Status: Verified; pending local merge.
+Objective: Wrap isolated Samsung server-order proofs into a reusable root harness command.
+Implemented:
+- Added `scripts/mobile_samsung_server_order_proof.ps1`.
+- Added `npm run mobile:samsung-server-order-proof`.
+- The runner accepts `-Side buy|sell`, creates/uses an isolated proof username, prepares matching backend liquidity, generates the matching mobile credential, runs the Samsung smoke, and writes a summary JSON.
+- Fixed the runner credential parser after the first run grabbed the wrong JSON object from mixed command output.
+Verification:
+- Initial BUY wrapper attempt prepared liquidity but failed at credential JSON parsing; parser was fixed.
+- `npm.cmd run mobile:samsung-server-order-proof -- -Side buy -Username holiwyn-mobile-proof-cycle-215-buy` passed on Samsung S23.
+- `npm.cmd run mobile:samsung-server-order-proof -- -Side sell -Username holiwyn-mobile-proof-cycle-215-sell` passed on Samsung S23.
+- `npm.cmd run test:mobile-api` passed with 15 files and 65 tests.
+Evidence:
+- `docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof.json`.
+- `docs/mobile/harness/cycle-current-mobile-server-order-fill-liquidity.json`.
+- `docs/mobile/harness/cycle-current-mobile-server-sell-fill-liquidity.json`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
+Notes:
+- The summary file records the most recent wrapper run, which was the SELL proof.
+Commit: pending
+Merge: pending
+
 ### Heartbeat After Cycle 211
 
 Completed cycles: 209, 210, 211.
