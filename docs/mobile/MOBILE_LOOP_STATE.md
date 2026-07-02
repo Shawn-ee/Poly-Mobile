@@ -7807,8 +7807,8 @@ Technical debt added:
 Technical debt resolved:
 - The loop now has one combined go/no-go report for server-backed Samsung proof instead of relying on separate blocker interpretation.
 Result: Passed Cycle 169 QA. Combined decision harness blocked as expected, mobile typecheck passed, and mobile API/service tests pass.
-Commit: cycle branch HEAD (`Add Samsung server proof decision harness`).
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `6e9a852` (`Add Samsung server proof decision harness`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `579ff5f`.
 Next cycle: Cycle 170 should continue server-backed trading proof preparation by improving the decision report or by adding product-facing proof that does not require live backend readiness.
 Harnesses run:
 - Samsung Server Proof Decision Harness
