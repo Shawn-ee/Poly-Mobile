@@ -12,7 +12,8 @@ param(
   [switch]$AccountPreferences,
   [switch]$AccountProfileSyncError,
   [switch]$ServerUnavailable,
-  [switch]$ServerOrderFailure
+  [switch]$ServerOrderFailure,
+  [switch]$ServerPortfolioFixture
 )
 
 $ErrorActionPreference = "Stop"
@@ -72,6 +73,8 @@ if ($FutureListOrder) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerUnavailable -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($ServerOrderFailure) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerOrderFailure -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
+} elseif ($ServerPortfolioFixture) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -ServerPortfolioFixture -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } else {
   & "$PSScriptRoot\smoke.ps1" -Deep -FutureListClose -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 }

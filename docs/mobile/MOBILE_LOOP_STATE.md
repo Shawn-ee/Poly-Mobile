@@ -8779,6 +8779,58 @@ Harnesses run:
 Harness failures:
 - None.
 
+## Cycle 193
+
+Date: 2026-07-01
+Branch: mobile/cycle-193
+Goal: Prove the server-hydrated Portfolio fixture on the Samsung S23 and expose it as a one-command smoke lane.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No normal user-flow visual change; proof launches now show the synced server Portfolio row on-device.
+Backend/API changed: No backend route change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/scripts/smoke.ps1`, `mobile/scripts/smoke-samsung.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run smoke:samsung:server-portfolio-fixture` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-portfolio-fixture.png`
+Harness evidence:
+- Mobile API/service suite passed with 13 files and 54 tests.
+- Mobile typecheck passed.
+- Samsung smoke passed on `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` through Expo host `172.16.200.14`, port `8150`.
+- UI hierarchy evidence captured at `docs/mobile/harness/cycle-current-holiwyn-server-portfolio-fixture.xml`.
+Bugs found:
+- `forceResetState=1` delayed reset initially cleared the server Portfolio fixture back to Home. Fixed by exempting `forceServerPortfolioFixture=1` from the delayed reset path.
+- Initial proof assertion included below-fold activity timestamp copy. The final assertion is limited to visible synced Portfolio, server row, shares/current price, and P/L proof.
+Technical debt added:
+- Fixture proof still does not replace a successful authenticated server Portfolio hydration proof.
+Technical debt resolved:
+- Samsung can now verify server-shaped Portfolio economics without requiring live backend readiness, and forced fixture launches no longer fight reset timing.
+Result: Passed Cycle 193 QA. Mobile tests, typecheck, and Samsung server Portfolio fixture smoke pass.
+Commit: `PENDING` (`PENDING`).
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Continue toward final DoD by either using the fixture path to prove server close refresh visuals, or retrying server-proof readiness when backend/device prerequisites allow.
+Harnesses run:
+- Mobile Portfolio Fixture Harness
+- Mobile Typecheck Harness
+- Samsung Server Portfolio Fixture Smoke Harness
+- Review Harness
+Harness failures:
+- First Samsung run reset back to Home; fixed before final proof.
+- Second Samsung run over-asserted below-fold activity timestamp; scoped the final proof to visible Portfolio evidence.
+
+### Heartbeat After Cycle 193
+
+Completed cycles: 191, 192, 193.
+Verified progress: Server Portfolio snapshots now reconcile app state authoritatively, deterministic server-hydrated Portfolio fixtures exist, and Samsung now proves the synced server Portfolio row with server economics, filled shares, current price, and P/L.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, adjustable/persisted ticket slippage, typed profile sync, server quote seams, latest-order server acknowledgement details, server-hydrated Portfolio economics, server-mode close-position SELL calls, server Portfolio refresh application, and Samsung-proven fixture-backed server Portfolio UI.
+Current backend state: Profile preferences have user-scoped persistence and scope-separated read/write routes. `/api/portfolio` returns position ids/economics and open-order data; mobile API/profile/order/portfolio/history/quote/close-position/fixture service tests are green.
+Device strategy: Samsung S23 is now the primary Holiwyn visual QA target through Expo Go and is materially faster/more reliable than the emulator for interactive UI proof. Emulator remains fallback only for repeatable checks that cannot yet run on the phone.
+Open blockers: None for autonomous progress. Successful live server-backed Samsung trading/Portfolio proof remains gated by Docker daemon, local database TCP, API key, backend health, and quote readiness.
+Risks: Fixture proof does not prove authenticated server fill settlement; Expo Go still depends on LAN reachability and occasional menu dismissal.
+Next three likely cycles: add fixture-backed server close refresh proof, improve authenticated server proof readiness recovery, or continue Polymarket-like Portfolio/order detail parity.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.
