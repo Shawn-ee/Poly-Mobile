@@ -7872,6 +7872,43 @@ Harnesses run:
 Harness failures:
 - Server-backed Samsung proof is blocked as expected by the normalized blocker categories.
 
+### Cycle 171
+
+Date: 2026-07-01
+Branch: mobile/cycle-171
+Goal: Add a visible Account trading-mode summary and verify it on Samsung.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: Account Preferences now shows `Trading mode: Fake-token mock` in mock builds and has localized copy for server mode.
+Backend/API changed: No runtime API route change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/AccountScreen.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `mobile/scripts/smoke-samsung.ps1`, `mobile/package.json`, `docs/mobile/harness/cycle-171-holiwyn-account-preferences.xml`, `docs/mobile/screenshots/cycle-171-holiwyn-account-preferences.png`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:samsung:account-preferences` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-171-holiwyn-account-preferences.png`.
+Harness evidence:
+- `docs/mobile/harness/cycle-171-holiwyn-account-preferences.xml`.
+- Samsung hierarchy shows `Trading mode: Fake-token mock` and `Fake-token mode only`.
+Bugs found:
+- First Samsung Account Preferences smoke failed because the new trading-mode row was below the first viewport; fixed by scrolling before the lower-row assertion and reran successfully.
+Technical debt added:
+- None.
+Technical debt resolved:
+- QA can now see the current mobile trading mode inside the app instead of inferring it from build variables or docs.
+Result: Passed Cycle 171 QA. Samsung Account Preferences smoke passed, mobile typecheck passed, and mobile API/service tests pass.
+Commit: cycle branch HEAD (`Show account trading mode`)
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 172 should continue product-facing proof that does not require live backend readiness or improve server-mode status clarity.
+Harnesses run:
+- Samsung Account Preferences Smoke Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync/Quote Unit Harness
+- Review Harness
+Harness failures:
+- Initial Samsung Account Preferences assertion missed an offscreen row; recovered with a scroll and rerun.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.

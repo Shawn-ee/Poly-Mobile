@@ -9,6 +9,7 @@ param(
   [switch]$LiveOrder,
   [switch]$LiveOrderClose,
   [switch]$LivePortfolioBadgeDeep,
+  [switch]$AccountPreferences,
   [switch]$AccountProfileSyncError,
   [switch]$ServerUnavailable,
   [switch]$ServerOrderFailure
@@ -63,6 +64,8 @@ if ($FutureListOrder) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LiveOrderClose -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($LivePortfolioBadgeDeep) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LivePortfolioBadgeDeep -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
+} elseif ($AccountPreferences) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -AccountPreferences -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($AccountProfileSyncError) {
   & "$PSScriptRoot\smoke.ps1" -Deep -AccountProfileSyncError -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($ServerUnavailable) {

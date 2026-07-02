@@ -32,6 +32,9 @@ type AccountCopy = {
   savedMarketsCount: string;
   openPositions: string;
   portfolioValue: string;
+  tradingMode: string;
+  tradingModeMock: string;
+  tradingModeServer: string;
   profileSyncing: string;
   profileSynced: string;
   profileSyncError: string;
@@ -53,6 +56,7 @@ export function AccountScreen({
   savedMarketCount,
   openPositionCount,
   portfolioValue,
+  tradingMode,
 }: {
   t: AccountCopy;
   balance: number;
@@ -64,6 +68,7 @@ export function AccountScreen({
   savedMarketCount: number;
   openPositionCount: number;
   portfolioValue: number;
+  tradingMode: "mock" | "server";
 }) {
   const [signedIn, setSignedIn] = useState(false);
 
@@ -166,6 +171,12 @@ export function AccountScreen({
           <Ionicons name="swap-horizontal-outline" size={20} color="#93c5fd" />
           <Text style={styles.rowText}>
             {t.ticketDefaultPreference}: {ticketDefaultSide === "buy" ? t.buy : t.sell} {ticketDefaultAmount} USDT
+          </Text>
+        </View>
+        <View accessibilityLabel="account-trading-mode" testID="account-trading-mode" style={styles.row}>
+          <Ionicons name="server-outline" size={20} color={tradingMode === "server" ? "#22c55e" : "#fbbf24"} />
+          <Text style={styles.rowText}>
+            {t.tradingMode}: {tradingMode === "server" ? t.tradingModeServer : t.tradingModeMock}
           </Text>
         </View>
         <View style={styles.row}>

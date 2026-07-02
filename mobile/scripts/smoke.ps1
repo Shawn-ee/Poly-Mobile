@@ -580,9 +580,11 @@ try {
     }
 
     if ($AccountPreferences) {
+      & $adb -s $Device shell input swipe 540 1700 540 950 450 | Out-Null
+      Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-account-preferences.png"
       $accountPreferencesHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-preferences.xml"
-      Assert-HierarchyContains -Path $accountPreferencesHierarchy -Expected @("Account", "Preferences", "Ticket default", "Sell 500 USDT", "Fake-token mode only")
+      Assert-HierarchyContains -Path $accountPreferencesHierarchy -Expected @("Account", "Preferences", "Ticket default", "Sell 500 USDT", "Trading mode: Fake-token mock", "Fake-token mode only")
       return
     }
 

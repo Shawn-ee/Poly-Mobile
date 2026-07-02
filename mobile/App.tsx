@@ -828,6 +828,7 @@ export default function App() {
                 savedMarketCount={savedEventIds.size}
                 openPositionCount={positions.length}
                 portfolioValue={accountPortfolioValue}
+                tradingMode={ORDER_MODE}
               />
             )}
           </>

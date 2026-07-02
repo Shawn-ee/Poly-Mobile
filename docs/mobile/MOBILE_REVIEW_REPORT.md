@@ -2516,3 +2516,19 @@ Findings:
 - Decision harness, mobile typecheck, and mobile API/service tests passed.
 Decision: Approve Cycle 170 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 171
+
+Date: 2026-07-01
+Branch: mobile/cycle-171
+Reviewer: Lead/Reviewer pass
+Scope: Account trading-mode summary and Samsung proof.
+Findings:
+- P1: Account Preferences now exposes a visible trading-mode row with stable `account-trading-mode` accessibility/test id.
+- P1: English and Chinese copy now distinguish fake-token mock mode from server mode without enabling deposits or withdrawals.
+- P1: `smoke:samsung:account-preferences` provides a Samsung proof path for Account Preferences and asserts the new trading-mode row.
+- P1: The first Samsung run caught a legitimate viewport issue; the smoke now scrolls before asserting lower Account Preferences rows and passes.
+- P2: This is a product-facing status improvement; it does not enable real server-backed trading.
+- Samsung Account Preferences smoke, mobile typecheck, and mobile API/service tests passed.
+Decision: Approve Cycle 171 for local commit/merge after scoped diff review.
+Merge approved: Yes
