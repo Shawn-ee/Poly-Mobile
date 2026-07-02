@@ -3281,3 +3281,27 @@ Bugs:
 - Initial Samsung smoke expected an unrelated Open orders card and failed after proving the fallback screen. Tightened the assertion to the actual fallback contract and reran successfully.
 Visual QA:
 - Samsung screenshot and UI hierarchy captured and copied to Cycle 154 evidence files.
+
+### Cycle 155
+
+Date: 2026-07-01
+Device: Samsung S23 ADB target (`adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`)
+Build/run command:
+- `npm.cmd run smoke:samsung:account-profile-sync-error` in `mobile/`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The Samsung S23 now verifies Holiwyn's Account profile-sync fallback state through Expo Go when profile preferences sync is unavailable.
+Visual evidence:
+- `docs/mobile/screenshots/cycle-155-holiwyn-account-profile-sync-error.png`
+- `docs/mobile/harness/cycle-155-holiwyn-account-profile-sync-error.xml`
+Verified UI:
+- Account screen opens in server mode.
+- Preferences section is visible.
+- `Profile sync unavailable` and `Using local preferences on this device.` are visible.
+- Local preference rows remain visible, including `Language: English` and `Saved markets: 0 saved`.
+Unit evidence:
+- Mobile API/service suite: 7 files, 20 tests passed.
+Bugs:
+- Initial Samsung smoke expected `Fake-token mode only`, which sits below the first viewport on the S23. Tightened the assertion to visible first-screen fallback and preference-row indicators, then reran successfully.
+Visual QA:
+- Samsung screenshot and UI hierarchy captured and copied to Cycle 155 evidence files.
