@@ -84,7 +84,32 @@ const positionCurrentProbability = (position: Position) => {
   return Math.max(1, Math.min(99, position.probability + (position.side === "buy" ? 3 : -3)));
 };
 
-const chartPoints = [45, 44, 44, 43, 43, 43, 42, 42, 42, 41, 41, 41, 40, 40, 39, 39, 39, 38];
+const homeChartPoints = [68, 69, 69, 68, 67, 68, 68, 67, 66, 66, 65, 64, 64, 63, 62, 62, 61, 61];
+const awayChartPoints = [29, 28, 28, 29, 30, 30, 31, 31, 32, 32, 33, 34, 34, 35, 36, 36, 37, 37];
+
+const chartFilters = ["All", "Game", "Live"] as const;
+
+type ChartFilter = (typeof chartFilters)[number];
+
+type DisplayOutcome = {
+  id: string;
+  label: string;
+  color: string;
+  probability: number;
+  odds?: string;
+  icon?: string;
+  miniLine?: number;
+};
+
+const makeTieOutcome = (): DisplayOutcome => ({
+  id: "tie-reg-time",
+  label: "Tie",
+  color: "#38bdf8",
+  probability: 26,
+  odds: "3.9x",
+  icon: "%",
+  miniLine: 58,
+});
 
 export function EventDetail({
   event,
@@ -112,11 +137,13 @@ export function EventDetail({
   openPositionTrade?: (position: Position, side: "buy" | "sell") => void;
 }) {
   const [activeTab, setActiveTab] = useState<"game-lines" | "player-props">("game-lines");
+  const [activeHeaderTab, setActiveHeaderTab] = useState<"game" | "chat">("game");
+  const [chartFilter, setChartFilter] = useState<ChartFilter>("Game");
   const gameLineMarkets = useMemo(() => event.markets.filter((market) => market.type !== "prop" && market.type !== "future"), [event.markets]);
   const propMarkets = useMemo(() => event.markets.filter((market) => market.type === "prop"), [event.markets]);
   const primaryMarket = gameLineMarkets[0] ?? event.markets[0];
   const primaryOutcomes = primaryMarket?.outcomes.slice(0, 2) ?? [];
-  const [expandedMarketId, setExpandedMarketId] = useState(primaryMarket?.id ?? "");
+  const [expandedMarketId, setExpandedMarketId] = useState("regulation-time-winner");
   const stats = marketStats(event);
   const position = positions.find((item) =>
     event.markets.some((market) => market.id === item.marketId || market.title === item.title),
@@ -125,8 +152,33 @@ export function EventDetail({
   const teamB = event.teams[1];
   const leftOutcome = primaryOutcomes[0];
   const rightOutcome = primaryOutcomes[1];
-  const selectedChartOutcome = rightOutcome ?? leftOutcome;
-  const selectedChartColor = selectedChartOutcome?.color ?? "#ef4444";
+  const selectedChartOutcome = chartFilter === "Live" ? rightOutcome ?? leftOutcome : leftOutcome ?? rightOutcome;
+  const selectedChartColor = selectedChartOutcome?.color ?? "#22c55e";
+  const liveClock = event.status === "live"
+    ? event.startsAt.replace("Live", "").replace("·", "").trim()
+    : "15'";
+  const scoreboard = event.status === "live" ? "0 - 0" : "0 - 0";
+  const regulationWinnerRows: DisplayOutcome[] = [
+    ...(leftOutcome ? [{
+      id: leftOutcome.id,
+      label: `${label(locale, leftOutcome)} (Reg. Time)`,
+      color: leftOutcome.color,
+      probability: Math.max(1, leftOutcome.probability - 3),
+      odds: `${outcomeOdds(leftOutcome)}x`,
+      icon: teamA?.flag ?? "",
+      miniLine: Math.max(24, leftOutcome.probability),
+    }] : []),
+    makeTieOutcome(),
+    ...(rightOutcome ? [{
+      id: rightOutcome.id,
+      label: `${label(locale, rightOutcome)} (Reg. Time)`,
+      color: rightOutcome.color,
+      probability: Math.max(1, rightOutcome.probability - 21),
+      odds: "6.7x",
+      icon: teamB?.flag ?? "",
+      miniLine: Math.max(18, rightOutcome.probability),
+    }] : []),
+  ];
 
   return (
     <View style={styles.screen}>
@@ -135,11 +187,21 @@ export function EventDetail({
           <Ionicons name="chevron-back" size={26} color="#f8fafc" />
         </Pressable>
         <View style={styles.segmentedControl}>
-          <Pressable accessibilityLabel="event-detail-tab-game" style={[styles.segment, styles.segmentActive]} testID="event-detail-tab-game">
-            <Text style={[styles.segmentText, styles.segmentTextActive]}>Game</Text>
+          <Pressable
+            accessibilityLabel="event-detail-tab-game"
+            onPress={() => setActiveHeaderTab("game")}
+            style={[styles.segment, activeHeaderTab === "game" && styles.segmentActive]}
+            testID="event-detail-tab-game"
+          >
+            <Text style={[styles.segmentText, activeHeaderTab === "game" && styles.segmentTextActive]}>Game</Text>
           </Pressable>
-          <Pressable accessibilityLabel="event-detail-tab-chat" style={styles.segment} testID="event-detail-tab-chat">
-            <Text style={styles.segmentText}>Chat</Text>
+          <Pressable
+            accessibilityLabel="event-detail-tab-chat"
+            onPress={() => setActiveHeaderTab("chat")}
+            style={[styles.segment, activeHeaderTab === "chat" && styles.segmentActive]}
+            testID="event-detail-tab-chat"
+          >
+            <Text style={[styles.segmentText, activeHeaderTab === "chat" && styles.segmentTextActive]}>Chat</Text>
             <View style={styles.chatBadge}>
               <Text style={styles.chatBadgeText}>380</Text>
             </View>
@@ -168,46 +230,90 @@ export function EventDetail({
           <Text style={styles.legacySummaryText}>{t.markets}</Text>
         </View>
         <View
-          accessibilityLabel={`event-detail-summary event-detail-stats event-detail-market-summary ${label(locale, event)} ${stats.marketCount} ${t.marketCount} ${stats.outcomeCount} ${t.outcomeCount} ${gameLineMarkets.length === 1 ? "1 market" : `${gameLineMarkets.length} ${t.marketCount}`} ${propMarkets.length} ${t.marketCount} ${t.markets} ${t.volume} ${stats.volume} ${t.liquidity} ${stats.liquidity} ${t.traders} ${stats.traders} ${t.bestBid} ${t.bestAsk} ${t.spread}`}
+          accessibilityLabel={`event-detail-summary event-detail-stats event-detail-market-summary ${label(locale, event)} ${stats.marketCount} ${t.marketCount} ${stats.outcomeCount} ${t.outcomeCount} Game lines ${gameLineMarkets.length === 1 ? "1 market" : `${gameLineMarkets.length} ${t.marketCount}`} Props ${propMarkets.length} ${t.marketCount} ${primaryMarket ? label(locale, primaryMarket) : ""} ${t.markets} ${t.volume} ${stats.volume} ${t.liquidity} ${stats.liquidity} ${t.traders} ${stats.traders} ${t.bestBid} ${t.bestAsk} ${t.spread}`}
           style={styles.matchHeader}
           testID="event-detail-summary"
         >
           <View style={styles.teamSide}>
             <Text style={styles.flag}>{teamA?.flag ?? ""}</Text>
-            <Text style={styles.teamCode}>{teamA ? teamCode(teamA.name) : ""}</Text>
-            <Text style={[styles.teamProbability, { color: leftOutcome?.color ?? "#22c55e" }]}>{leftOutcome?.probability ?? 0}%</Text>
+            <View>
+              <Text style={styles.teamCode}>{teamA ? teamCode(teamA.name) : ""}</Text>
+              <Text style={[styles.teamProbability, { color: leftOutcome?.color ?? "#22c55e" }]}>{leftOutcome?.probability ?? 0}%</Text>
+            </View>
           </View>
           <View style={styles.matchTime}>
-            <Text style={styles.matchDate}>{event.startsAt.split(" ")[0] === "Today" ? "Today" : event.startsAt}</Text>
-            <Text style={styles.matchHour}>{event.startsAt.replace("Today ", "").replace("Live - ", "")}</Text>
+            <Text style={styles.matchDate}>{event.startsAt.split(" ")[0] === "Today" ? "Today" : event.status === "live" ? "Live" : event.startsAt}</Text>
+            <Text style={styles.scoreText}>{scoreboard}</Text>
+            <Text style={styles.liveClock}>{liveClock}</Text>
           </View>
           <View style={[styles.teamSide, styles.teamSideRight]}>
-            <Text style={styles.teamCode}>{teamB ? teamCode(teamB.name) : ""}</Text>
-            <Text style={[styles.teamProbability, { color: rightOutcome?.color ?? "#ef4444" }]}>{rightOutcome?.probability ?? 0}%</Text>
+            <View style={styles.rightTeamText}>
+              <Text style={styles.teamCode}>{teamB ? teamCode(teamB.name) : ""}</Text>
+              <Text style={[styles.teamProbability, { color: rightOutcome?.color ?? "#ef4444" }]}>{rightOutcome?.probability ?? 0}%</Text>
+            </View>
             <Text style={styles.flag}>{teamB?.flag ?? ""}</Text>
           </View>
         </View>
 
-        <View accessibilityLabel="event-detail-price-chart" style={styles.chartBlock} testID="event-detail-price-chart">
-          <View style={styles.chartLine}>
-            {chartPoints.map((point, index) => (
-              <View
-                key={`${point}-${index}`}
-                style={[
-                  styles.chartSegment,
-                  {
-                    backgroundColor: selectedChartColor,
-                    marginTop: Math.max(0, 55 - point),
-                    opacity: 0.68 + index / 60,
-                  },
-                ]}
-              />
-            ))}
+        <View
+          accessibilityLabel={`event-detail-price-chart two outcome traces ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartOutcome?.probability ?? 0}% +$9 +$39 +$479 All Game Live`}
+          style={styles.chartBlock}
+          testID="event-detail-price-chart"
+        >
+          <View style={styles.chartMarkers}>
+            <Text style={styles.chartMarkerText}>+$9</Text>
+            <Text style={styles.chartMarkerText}>+$39</Text>
+            <Text style={styles.chartMarkerText}>+$479</Text>
+          </View>
+          <View style={styles.dualChart}>
+            <View style={styles.chartTrace}>
+              {homeChartPoints.map((point, index) => (
+                <View
+                  key={`home-${point}-${index}`}
+                  style={[
+                    styles.chartStep,
+                    {
+                      backgroundColor: leftOutcome?.color ?? "#22c55e",
+                      marginTop: Math.max(0, 72 - point),
+                      opacity: 0.7 + index / 70,
+                    },
+                  ]}
+                />
+              ))}
+            </View>
+            <View style={[styles.chartTrace, styles.chartTraceOverlay]}>
+              {awayChartPoints.map((point, index) => (
+                <View
+                  key={`away-${point}-${index}`}
+                  style={[
+                    styles.chartStep,
+                    {
+                      backgroundColor: rightOutcome?.color ?? "#ef4444",
+                      marginTop: Math.max(0, 72 - point),
+                      opacity: 0.62 + index / 80,
+                    },
+                  ]}
+                />
+              ))}
+            </View>
             <View style={[styles.chartDot, { backgroundColor: selectedChartColor }]} />
           </View>
           <View style={styles.chartLabel}>
             <Text style={[styles.chartName, { color: selectedChartColor }]}>{selectedChartOutcome ? label(locale, selectedChartOutcome) : label(locale, event)}</Text>
             <Text style={[styles.chartPercent, { color: selectedChartColor }]}>{selectedChartOutcome?.probability ?? 0}%</Text>
+          </View>
+          <View style={styles.chartFilterRow}>
+            {chartFilters.map((filter) => (
+              <Pressable
+                accessibilityLabel={`event-detail-chart-filter-${filter}`}
+                key={filter}
+                onPress={() => setChartFilter(filter)}
+                style={[styles.chartFilterPill, chartFilter === filter && styles.chartFilterPillActive]}
+                testID={`event-detail-chart-filter-${filter.toLowerCase()}`}
+              >
+                <Text style={[styles.chartFilterText, chartFilter === filter && styles.chartFilterTextActive]}>{filter}</Text>
+              </Pressable>
+            ))}
           </View>
         </View>
 
@@ -325,70 +431,58 @@ export function EventDetail({
             <View accessibilityLabel="event-detail-market-summary" style={styles.hiddenStats} testID="event-detail-market-summary">
               <Text style={styles.hiddenStatsText}>{stats.marketCount} {t.marketCount}</Text>
               <Text style={styles.hiddenStatsText}>{stats.outcomeCount} {t.outcomeCount}</Text>
+              {primaryMarket && <Text style={styles.hiddenStatsText}>{label(locale, primaryMarket)}</Text>}
             </View>
-            {gameLineMarkets.map((market) => {
-              const isExpanded = expandedMarketId === market.id;
-              return (
-                <View key={market.id} style={styles.marketBlock}>
-                  <Pressable
-                    accessibilityLabel={`event-detail-market-toggle-${market.id}`}
-                    onPress={() => setExpandedMarketId((current) => (current === market.id ? "" : market.id))}
-                    style={styles.marketHeaderRow}
-                    testID={`event-detail-market-toggle-${market.id}`}
-                  >
-                    <View style={styles.marketTitleBlock}>
-                      <Text style={styles.marketTitle}>{label(locale, market)}</Text>
-                      <Text style={styles.marketSubtitle}>Regulation Time Winner</Text>
-                      <Text style={styles.marketSubcopy}>90 Minutes Plus Stoppage Time</Text>
+            {primaryMarket && (
+              <View style={styles.marketBlock}>
+                <Pressable
+                  accessibilityLabel={`event-detail-market-toggle-regulation-time-winner event-detail-market-toggle-${primaryMarket.id}`}
+                  onPress={() => setExpandedMarketId((current) => (current === "regulation-time-winner" ? "" : "regulation-time-winner"))}
+                  style={styles.marketHeaderRow}
+                  testID={`event-detail-market-toggle-${primaryMarket.id}`}
+                >
+                  <View style={styles.marketTitleBlock}>
+                    <Text style={styles.marketTitle}>Regulation Time Winner</Text>
+                    <Text style={styles.marketSubcopy}>90 Minutes Plus Stoppage Time</Text>
+                  </View>
+                  <Ionicons name={expandedMarketId === "regulation-time-winner" ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
+                </Pressable>
+                {expandedMarketId === "regulation-time-winner" && (
+                  <>
+                    <View accessibilityLabel={`market-depth-${primaryMarket.id}`} style={styles.depthRow} testID={`market-depth-${primaryMarket.id}`}>
+                      <Text style={styles.depthText}>{t.bestBid} {marketDepth(primaryMarket).bid}</Text>
+                      <Text style={styles.depthText}>{t.bestAsk} {marketDepth(primaryMarket).ask}</Text>
+                      <Text style={styles.depthText}>{t.spread} {marketDepth(primaryMarket).spread}</Text>
                     </View>
-                    <Ionicons name={isExpanded ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
-                  </Pressable>
-                  {isExpanded && (
-                    <>
-                      <View accessibilityLabel={`market-depth-${market.id}`} style={styles.depthRow} testID={`market-depth-${market.id}`}>
-                        <Text style={styles.depthText}>{t.bestBid} {marketDepth(market).bid}</Text>
-                        <Text style={styles.depthText}>{t.bestAsk} {marketDepth(market).ask}</Text>
-                        <Text style={styles.depthText}>{t.spread} {marketDepth(market).spread}</Text>
-                      </View>
-                      {market.outcomes.map((outcome) => (
-                        <View key={outcome.id} style={styles.detailOutcome}>
-                          <View style={styles.outcomeTextBlock}>
-                            <Text style={styles.teamName}>{label(locale, outcome)}</Text>
-                            <Text
-                              adjustsFontSizeToFit
-                              accessibilityLabel={`event-detail-outcome-depth-size-${market.id}-${outcome.id}`}
-                              minimumFontScale={0.82}
-                              numberOfLines={1}
-                              style={styles.outcomeSizeText}
-                            >
-                              {t.liquidity}: {outcomeDepthSize(outcome, { bid: t.bestBid, ask: t.bestAsk, shares: t.shares })}
-                            </Text>
-                            <Text
-                              adjustsFontSizeToFit
-                              accessibilityLabel={`event-detail-outcome-depth-${market.id}-${outcome.id}`}
-                              minimumFontScale={0.82}
-                              numberOfLines={1}
-                              style={styles.outcomeDepthText}
-                            >
-                              {t.bestBid} {outcomeDepth(outcome).bid} - {t.bestAsk} {outcomeDepth(outcome).ask}
-                            </Text>
+                    {regulationWinnerRows.map((outcome) => {
+                      const matchingOutcome = primaryMarket.outcomes.find((item) => item.id === outcome.id);
+                      return (
+                        <View key={outcome.id} style={styles.parityOutcomeRow}>
+                          <View style={styles.parityOutcomeIcon}>
+                            <Text style={styles.parityOutcomeIconText}>{outcome.icon}</Text>
                           </View>
+                          <View style={styles.parityOutcomeTextBlock}>
+                            <Text style={styles.teamName}>{outcome.label}</Text>
+                            <View style={styles.miniLineTrack}>
+                              <View style={[styles.miniLineFill, { backgroundColor: outcome.color, width: `${Math.min(100, Math.max(12, outcome.miniLine ?? outcome.probability))}%` }]} />
+                            </View>
+                          </View>
+                          <Text style={styles.oddsMultiplier}>{outcome.odds}</Text>
                           <Pressable
-                            accessibilityLabel={`event-detail-outcome-${market.id}-${outcome.id}`}
-                            onPress={() => openTicket(market, outcome, event, defaultSide)}
-                            style={[styles.probButton, { backgroundColor: outcome.color }]}
-                            testID={`event-detail-outcome-${market.id}-${outcome.id}`}
+                            accessibilityLabel={`event-detail-outcome-${primaryMarket.id}-${outcome.id}`}
+                            onPress={() => matchingOutcome && openTicket(primaryMarket, matchingOutcome, event, defaultSide)}
+                            style={[styles.parityProbButton, { backgroundColor: outcome.color }]}
+                            testID={`event-detail-outcome-${primaryMarket.id}-${outcome.id}`}
                           >
-                            <Text style={styles.probButtonText}>{outcome.probability}%</Text>
-                            <Text style={styles.probButtonSubtext}>{defaultSide === "buy" ? t.buy : t.sell} - {outcomeOdds(outcome)}x</Text>
+                            <Text style={styles.parityProbText}>{outcome.probability}%</Text>
                           </Pressable>
                         </View>
-                      ))}
-                    </>
-                  )}
-                </View>
-              );
-            })}
+                      );
+                    })}
+                  </>
+                )}
+              </View>
+            )}
           </View>
         )}
       </ScrollView>
@@ -421,13 +515,25 @@ const styles = StyleSheet.create({
   matchTime: { alignItems: "center", justifyContent: "center" },
   matchDate: { color: "#f8fafc", fontSize: 17, fontWeight: "800" },
   matchHour: { color: "#cbd5e1", fontSize: 15, fontWeight: "700", marginTop: 4 },
-  chartBlock: { minHeight: 150, paddingHorizontal: 0, paddingTop: 36, paddingBottom: 12 },
-  chartLine: { width: "72%", height: 76, flexDirection: "row", alignItems: "flex-start", gap: 0 },
-  chartSegment: { flex: 1, height: 5, borderRadius: 999 },
-  chartDot: { width: 15, height: 15, borderRadius: 999, marginLeft: -4, marginTop: 34 },
+  scoreText: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginTop: 4 },
+  liveClock: { color: "#ef4444", fontSize: 14, fontWeight: "900", marginTop: 3 },
+  rightTeamText: { alignItems: "flex-end" },
+  chartBlock: { minHeight: 190, paddingHorizontal: 0, paddingTop: 32, paddingBottom: 12 },
+  chartMarkers: { position: "absolute", left: 14, top: 34, gap: 20 },
+  chartMarkerText: { color: "#546071", fontSize: 11, fontWeight: "900" },
+  dualChart: { width: "70%", height: 92, marginLeft: 0 },
+  chartTrace: { position: "absolute", left: 0, right: 0, top: 0, height: 86, flexDirection: "row", alignItems: "flex-start" },
+  chartTraceOverlay: { top: 28 },
+  chartStep: { flex: 1, height: 5, borderRadius: 999, marginRight: -1 },
+  chartDot: { position: "absolute", right: -8, top: 47, width: 15, height: 15, borderRadius: 999 },
   chartLabel: { position: "absolute", right: 28, top: 36, alignItems: "flex-start" },
   chartName: { fontSize: 17, fontWeight: "800" },
   chartPercent: { fontSize: 48, fontWeight: "500" },
+  chartFilterRow: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 18 },
+  chartFilterPill: { minWidth: 62, minHeight: 32, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#111827" },
+  chartFilterPillActive: { backgroundColor: "#273244" },
+  chartFilterText: { color: "#8b93a3", fontSize: 13, fontWeight: "900" },
+  chartFilterTextActive: { color: "#f8fafc" },
   chatPreview: { marginHorizontal: 24, marginTop: 8, padding: 14, borderRadius: 18, backgroundColor: "#181f2d" },
   chatPreviewTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   chatCount: { color: "#f8fafc", fontSize: 16, fontWeight: "800" },
@@ -477,6 +583,15 @@ const styles = StyleSheet.create({
   marketSubcopy: { color: "#6b7280", fontSize: 14, fontWeight: "700", marginTop: 2 },
   depthRow: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 10, marginBottom: 6 },
   depthText: { color: "#8b93a3", fontSize: 11, fontWeight: "800" },
+  parityOutcomeRow: { minHeight: 60, flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 9 },
+  parityOutcomeIcon: { width: 34, height: 34, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#111827" },
+  parityOutcomeIconText: { color: "#cbd5e1", fontSize: 18, fontWeight: "900" },
+  parityOutcomeTextBlock: { flex: 1, minWidth: 0 },
+  miniLineTrack: { height: 4, borderRadius: 999, overflow: "hidden", backgroundColor: "#111827", marginTop: 8 },
+  miniLineFill: { height: 4, borderRadius: 999 },
+  oddsMultiplier: { width: 54, color: "#cbd5e1", fontSize: 14, fontWeight: "900", textAlign: "right" },
+  parityProbButton: { width: 64, minHeight: 42, alignItems: "center", justifyContent: "center", borderRadius: 12 },
+  parityProbText: { color: "#ffffff", fontSize: 16, fontWeight: "900" },
   detailOutcome: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12 },
   outcomeTextBlock: { flex: 1 },
   teamName: { color: "#f8fafc", fontSize: 17, fontWeight: "800" },

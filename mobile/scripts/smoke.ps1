@@ -1421,15 +1421,15 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-game-line-expanded.png"
       $eventDetailExpandedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-game-line-expanded.xml"
-      Assert-HierarchyContains -Path $eventDetailExpandedHierarchy -Expected @("Match winner", "Regulation Time Winner", "90 Minutes Plus Stoppage Time", "64%", "Buy - 1.6x", "Liquidity: Best bid 1.28k shares - Best ask 900 shares", "event-detail-outcome-depth-size-mexico-ecuador-winner-mexico", "Best bid 0.61 USDT - Best ask 0.68 USDT", "event-detail-outcome-depth-mexico-ecuador-winner-mexico")
+      Assert-HierarchyContains -Path $eventDetailExpandedHierarchy -Expected @("Regulation Time Winner", "90 Minutes Plus Stoppage Time", "Mexico (Reg. Time)", "Tie", "Ecuador (Reg. Time)", "1.6x", "3.9x", "6.7x", "61%", "26%", "15%", "event-detail-outcome-mexico-ecuador-winner-mexico")
       Invoke-TapHierarchyNode -Path $eventDetailExpandedHierarchy -Identifier "event-detail-market-toggle-mexico-ecuador-winner"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-game-line-collapsed.png"
       $eventDetailCollapsedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-game-line-collapsed.xml"
       Assert-HierarchyContains -Path $eventDetailCollapsedHierarchy -Expected @("Match winner", "Regulation Time Winner", "90 Minutes Plus Stoppage Time")
       $eventDetailCollapsedSnapshot = Get-Content -Raw -Path $eventDetailCollapsedHierarchy
-      if ($eventDetailCollapsedSnapshot -match [regex]::Escape("event-detail-outcome-depth-size-mexico-ecuador-winner-mexico")) {
-        throw "Collapsed game-line row still exposes outcome depth details."
+      if ($eventDetailCollapsedSnapshot -match [regex]::Escape("Mexico (Reg. Time)") -or $eventDetailCollapsedSnapshot -match [regex]::Escape("Tie")) {
+        throw "Collapsed game-line row still exposes regulation-time outcome rows."
       }
       return
     }
