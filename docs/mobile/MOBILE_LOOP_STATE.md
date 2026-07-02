@@ -8708,6 +8708,42 @@ Open blockers: None for autonomous progress. Successful live server-backed Samsu
 Risks: Server close now submits a SELL order, but successful authenticated execution, fill settlement, and refreshed Portfolio proof are still not proven on Samsung.
 Next three likely cycles: add Portfolio refresh after server close acknowledgement, add a fixture-backed Samsung proof for server-hydrated Portfolio rows, or retry server-proof readiness if local services become available.
 
+## Cycle 191
+
+Date: 2026-07-01
+Branch: mobile/cycle-191
+Goal: Reconcile Portfolio from server snapshots after server-mode close-position acknowledgement.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No direct visual change.
+Backend/API changed: No backend route change; mobile now applies `/api/portfolio` snapshots authoritatively in server mode.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/services/portfolioStateApplyService.ts`, `mobile/src/__tests__/portfolioStateApplyService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm.cmd run typecheck` in `mobile/`.
+Screenshots captured:
+- None; mobile state reconciliation cycle.
+Harness evidence:
+- Mobile API/service suite passed with 12 files and 53 tests.
+- Mobile typecheck passed.
+Bugs found:
+- Initial app patch needed a cancellation-safe initial sync path; corrected before test run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Server-mode Portfolio snapshots can now clear stale local positions/orders, and server close no longer relies on local cash-out state after SELL acknowledgement.
+Result: Passed Cycle 191 QA. Mobile state-apply tests and typecheck pass.
+Commit: pending (`Refresh portfolio after server close`).
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Continue toward final DoD with fixture-backed Samsung proof for server-hydrated Portfolio rows or authenticated close refresh proof once backend readiness allows it.
+Harnesses run:
+- Mobile Portfolio State Apply Harness
+- Mobile Position Close Refresh Harness
+- Mobile Typecheck Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.
