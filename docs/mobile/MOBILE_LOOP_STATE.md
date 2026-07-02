@@ -10118,6 +10118,28 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 271
+
+Date: 2026-07-02
+Branch: mobile/cycle-271-portfolio-snapshot-quote-depth
+Status: Verified; pending local merge.
+Objective: Preserve backend Portfolio position quote depth so live server snapshots can feed position re-trade tickets.
+Implemented:
+- Added optional `bestBid`, `bestAsk`, `bestBidSize`, and `bestAskSize` fields to mobile Portfolio position snapshot types.
+- Normalized backend decimal/string quote prices into mobile percentage-point depth values in `loadPortfolioSnapshot`.
+- Extended the Portfolio snapshot test to prove quote depth and share sizes survive the API adapter.
+Verification:
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 16 files and 71 tests.
+- `npm.cmd run smoke:samsung:server-position-buy-trade` passed on Samsung S23 with Expo host `172.16.200.14` and port `8153`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-server-position-buy-trade-ticket.xml` shows `Best bid 0.47 USDT (1k shares) - Best ask 0.50 USDT (2.5k shares) - Spread 3c`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-position-buy-trade-ticket-button.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-buy-trade-ticket.png`.
+Result: Passed Cycle 271 QA. Backend Portfolio snapshots can now carry quote depth forward into position re-trade tickets when the server provides those fields.
+Commit: pending.
+Merge: pending.
+
 ### Cycle 270
 
 Date: 2026-07-02

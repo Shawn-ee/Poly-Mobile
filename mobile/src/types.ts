@@ -127,6 +127,10 @@ export type PortfolioPositionItem = {
   shares: number;
   avgCost: number;
   currentPrice: number;
+  bestBid?: number | string | null;
+  bestAsk?: number | string | null;
+  bestBidSize?: number | string | null;
+  bestAskSize?: number | string | null;
   valueTokens: number;
   costBasisTokens: number;
   totalCostBasisTokens: number;
