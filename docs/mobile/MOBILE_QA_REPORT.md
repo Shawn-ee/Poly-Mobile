@@ -3655,3 +3655,27 @@ Bugs:
 - None in final run.
 Visual QA:
 - No app screenshot cycle; this is the combined overnight decision harness for server-backed Samsung proof.
+
+### Cycle 170
+
+Date: 2026-07-01
+Device: Samsung server proof decision harness
+Build/run command:
+- `npm.cmd run decision:samsung:server-proof:expect-blocked:summary` in `mobile/`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The combined decision report now emits canonical blocker categories and deduplicates text variants like API-key failures.
+Harness evidence:
+- `docs/mobile/harness/cycle-170-samsung-server-proof-decision.json`
+Structured findings:
+- `ready`: false
+- `decision`: `do-not-run-server-backed-samsung-proof`
+- `blockerCategories`: `docker-daemon`, `database-tcp`, `api-key`, `backend-health`, `quote-readiness`
+- Samsung device reachable: true
+- Quote proof attempted: false
+Unit evidence:
+- Mobile API/service suite: 9 files, 40 tests passed.
+Bugs:
+- None in final run.
+Visual QA:
+- No app screenshot cycle; this is decision-report normalization for autonomous recovery.

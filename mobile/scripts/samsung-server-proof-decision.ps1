@@ -42,7 +42,46 @@ $quoteProof = Get-Content -Raw $quoteProofPath | ConvertFrom-Json
 
 $ready = [bool]$credentialReadiness.readyForServerBackedSamsungProof -and [bool]$serverSuccessGate.ready -and [bool]$quoteProof.ready
 $blockers = @($credentialReadiness.blockers) + @($serverSuccessGate.failures) + @($quoteProof.failures)
-$uniqueBlockers = @($blockers | Where-Object { $_ } | Select-Object -Unique)
+
+function Get-BlockerCategory {
+  param([string]$Blocker)
+
+  $normalized = $Blocker.ToLowerInvariant()
+  if ($normalized -match "docker daemon") {
+    return "docker-daemon"
+  }
+  if ($normalized -match "database tcp") {
+    return "database-tcp"
+  }
+  if ($normalized -match "api key|expo_public_api_key") {
+    return "api-key"
+  }
+  if ($normalized -match "backend health") {
+    return "backend-health"
+  }
+  if ($normalized -match "quote readiness") {
+    return "quote-readiness"
+  }
+  if ($normalized -match "docker cli") {
+    return "docker-cli"
+  }
+  if ($normalized -match "compose") {
+    return "compose"
+  }
+  return "other"
+}
+
+$blockerMap = [ordered]@{}
+foreach ($blocker in @($blockers | Where-Object { $_ })) {
+  $category = Get-BlockerCategory $blocker
+  if (-not $blockerMap.Contains($category)) {
+    $blockerMap[$category] = [ordered]@{
+      category = $category
+      message = $blocker
+    }
+  }
+}
+$normalizedBlockers = @($blockerMap.Values)
 
 $summary = [ordered]@{
   ready = [bool]$ready
@@ -69,7 +108,8 @@ $summary = [ordered]@{
     samsungDeviceReachable = [bool]$quoteProof.prerequisiteState.deviceReachable
     marketQuoteReachable = [bool]$quoteProof.prerequisiteState.marketQuoteReachable
   }
-  blockers = @($uniqueBlockers)
+  blockerCategories = @($normalizedBlockers | ForEach-Object { $_.category })
+  blockers = @($normalizedBlockers)
   nextActions = @(
     "Do not run the successful server-backed Samsung proof until ready is true.",
     "If Docker daemon or DB TCP are blockers, start Docker Desktop and local Postgres, then rerun this decision harness.",
@@ -94,8 +134,8 @@ if ($SummaryPath.Trim()) {
 
 if (-not $ready) {
   Write-Host "BLOCKED Server-backed Samsung proof decision: do not run proof yet."
-  foreach ($blocker in $uniqueBlockers) {
-    Write-Host "- $blocker"
+  foreach ($blocker in $normalizedBlockers) {
+    Write-Host "- [$($blocker.category)] $($blocker.message)"
   }
   if ($ExpectBlocked) {
     Write-Host "PASS Server-backed Samsung proof decision blocked as expected."

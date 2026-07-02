@@ -2500,3 +2500,19 @@ Findings:
 - Combined decision harness, mobile typecheck, and mobile API/service tests passed.
 Decision: Approve Cycle 169 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 170
+
+Date: 2026-07-01
+Branch: mobile/cycle-170
+Reviewer: Lead/Reviewer pass
+Scope: Normalized server-proof decision blockers.
+Findings:
+- P1: `samsung-server-proof-decision.ps1` now classifies blockers into canonical categories for Docker daemon, database TCP, API key, backend health, quote readiness, Docker CLI, compose, and fallback `other`.
+- P1: The decision summary now includes both `blockerCategories` and structured blocker objects, preserving human-readable messages while giving the harness stable machine-readable recovery keys.
+- P1: Cycle evidence confirms duplicate API-key blocker text is collapsed into one `api-key` category.
+- P1: The expected-blocked decision command still exits successfully and blocks server-backed Samsung proof before any misleading device proof attempt.
+- P2: This improves recovery signal quality only; successful live server-backed device trading remains gated by infrastructure readiness.
+- Decision harness, mobile typecheck, and mobile API/service tests passed.
+Decision: Approve Cycle 170 for local commit/merge after scoped diff review.
+Merge approved: Yes
