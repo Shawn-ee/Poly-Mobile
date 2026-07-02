@@ -31,6 +31,7 @@ type TradeTicketCopy = {
   placeSellOrder: string;
   orderFailed: string;
   liveNow: string;
+  livePriceMovement: string;
   tradingMode: string;
   tradingModeMock: string;
   tradingModeServer: string;
@@ -131,6 +132,7 @@ export function TradeTicket({
   const liveClock = isLiveTicket
     ? ticket.event?.startsAt.replace(/[^\x00-\x7F]+/g, "-").replace(/\s+-\s+/g, " - ")
     : null;
+  const liveClockText = liveClock ? `${liveClock} - ${t.livePriceMovement}` : null;
 
   return (
     <Modal visible transparent animationType="slide">
@@ -154,9 +156,9 @@ export function TradeTicket({
                   <Text style={styles.liveBadgeText}>{t.liveNow}</Text>
                 </View>
               )}
-              {liveClock && (
+              {liveClockText && (
                 <Text accessibilityLabel="ticket-live-clock" testID="ticket-live-clock" style={styles.liveClock}>
-                  {liveClock}
+                  {liveClockText}
                 </Text>
               )}
             </View>

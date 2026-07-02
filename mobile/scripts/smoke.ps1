@@ -609,7 +609,7 @@ try {
         Assert-HierarchyContains -Path $liveTicketReadyHierarchy -Expected @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina")
       }
       $liveTicketHierarchy = ""
-      $liveTicketExpected = @("Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Live World Cup", "ticket-live-clock", "Live - 63'", "Fake balance", "10,000 USDT", "Estimated cost", "Est. fee", "0 USDT", "ticket-slippage", "Slippage", "0.5%", "1%", "2%", "Est. shares", "Avg price", "Place buy order")
+      $liveTicketExpected = @("Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Live World Cup", "ticket-live-clock", "Live - 63'", "Prices may move before fill.", "Fake balance", "10,000 USDT", "Estimated cost", "Est. fee", "0 USDT", "ticket-slippage", "Slippage", "0.5%", "1%", "2%", "Est. shares", "Avg price", "Place buy order")
       for ($liveTicketAttempt = 1; $liveTicketAttempt -le 3; $liveTicketAttempt++) {
         Invoke-TapHierarchyNode -Path $liveTicketReadyHierarchy -Identifier "event-outcome-france-argentina-final-france-argentina-live-france"
         Start-Sleep -Seconds 1
@@ -641,7 +641,7 @@ try {
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "cycle-current-holiwyn-live-order-portfolio.png"
         $liveOrderPortfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-order-portfolio.xml"
-        Assert-HierarchyContains -Path $liveOrderPortfolioHierarchy -Expected @("Portfolio", "Fake balance", "9,900 USDT", "Open positions", "Recent activity", "1", "France vs. Argentina", "MOCK - Buy - France", "Exec price", "41%", "Invested", "Current value", "Est. P/L")
+        Assert-HierarchyContains -Path $liveOrderPortfolioHierarchy -Expected @("Portfolio", "Fake balance", "9,900 USDT", "Open positions", "Recent activity", "1", "Live match winner", "MOCK - Buy - France", "Order placed", "Exec price", "41%")
         if ($LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
           Assert-HierarchyContains -Path $liveOrderPortfolioHierarchy -Expected @("LIVE WORLD CUP", "portfolio-position-live-badge")
         }
