@@ -9595,7 +9595,7 @@ Merge: 3727f81
 
 Date: 2026-07-02
 Branch: mobile/cycle-217-proof-summary-target
-Status: Verified and ready for local merge.
+Status: Verified and locally merged.
 Objective: Make reusable Samsung server-order proof summaries self-diagnosing after seed resets.
 Implemented:
 - The Samsung server-order proof wrapper now idempotently seeds the local World Cup proof market set before liquidity preparation.
@@ -9613,8 +9613,8 @@ Evidence:
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
 Notes:
 - The latest summary records the BUY proof against Paraguay vs Australia: Both teams to score, outcome Yes, maker order `7f8a6daf-aa1e-4cfd-8ecc-523babf69b8e`.
-Commit: cycle branch HEAD
-Merge: pending
+Commit: 01c2233
+Merge: 489177d
 
 ### Heartbeat After Cycle 217
 
