@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db";
 import { API_KEY_SCOPES, createApiCredential, updateApiCredential } from "@/lib/canonicalAuth";
 import { applyDeposit, getOrCreateUserBalance } from "@/server/services/ledger";
 
-const USERNAME = "holiwyn-mobile-dev";
+const DEFAULT_USERNAME = "holiwyn-mobile-dev";
 const DEFAULT_TARGET_BALANCE = "10000.000000";
 const DEFAULT_MAX_ORDER_SIZE = "1000.000000";
 const DEFAULT_MAX_ORDER_NOTIONAL = "1000.000000";
@@ -12,6 +12,13 @@ const DEFAULT_MAX_OPEN_ORDERS = 20;
 const DEFAULT_DAILY_NOTIONAL = "10000.000000";
 const DEFAULT_CHAIN_ID = 8453;
 const isDryRun = process.argv.includes("--dry-run");
+
+const argValue = (name: string) => {
+  const prefix = `--${name}=`;
+  return process.argv.find((arg) => arg.startsWith(prefix))?.slice(prefix.length);
+};
+
+const username = argValue("username") ?? process.env.MOBILE_DEV_USERNAME ?? DEFAULT_USERNAME;
 
 async function fundUserToTarget(userId: string, targetBalance: Prisma.Decimal) {
   const balance = await getOrCreateUserBalance(userId);
@@ -39,6 +46,10 @@ async function fundUserToTarget(userId: string, targetBalance: Prisma.Decimal) {
 }
 
 async function main() {
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("Refusing to create a mobile dev credential in production.");
+  }
+
   const targetBalance = new Prisma.Decimal(
     process.env.MOBILE_DEV_TARGET_BALANCE_USDT || DEFAULT_TARGET_BALANCE,
   ).toDecimalPlaces(6);
@@ -48,10 +59,11 @@ async function main() {
       JSON.stringify(
         {
           dryRun: true,
-          username: USERNAME,
+          username,
           targetBalanceUSDT: targetBalance.toFixed(6),
           scopes: [...API_KEY_SCOPES],
           policy: {
+            internalTradingUser: true,
             maxOrderSize: process.env.MOBILE_DEV_MAX_ORDER_SIZE || DEFAULT_MAX_ORDER_SIZE,
             maxOrderNotional:
               process.env.MOBILE_DEV_MAX_ORDER_NOTIONAL || DEFAULT_MAX_ORDER_NOTIONAL,
@@ -75,15 +87,17 @@ async function main() {
   }
 
   const user = await prisma.user.upsert({
-    where: { username: USERNAME },
+    where: { username },
     update: {
-      email: `${USERNAME}@local.test`,
+      email: `${username}@local.test`,
       displayName: "Holiwyn Mobile Dev",
+      isAdmin: true,
     },
     create: {
-      username: USERNAME,
-      email: `${USERNAME}@local.test`,
+      username,
+      email: `${username}@local.test`,
       displayName: "Holiwyn Mobile Dev",
+      isAdmin: true,
     },
   });
 
@@ -91,7 +105,7 @@ async function main() {
 
   const created = await createApiCredential({
     userId: user.id,
-    name: `holiwyn-mobile-dev-${new Date().toISOString()}`,
+    name: `${username}-${new Date().toISOString()}`,
     scopes: [...API_KEY_SCOPES],
   });
 

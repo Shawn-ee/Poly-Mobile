@@ -13,7 +13,7 @@ const DEFAULT_PRICE = "0.50";
 const DEFAULT_SIZE = "500";
 const DEFAULT_REQUIRED_REMAINING = "250";
 const DEFAULT_MOBILE_HOLDINGS = "300";
-const MOBILE_USERNAME = "holiwyn-mobile-dev";
+const DEFAULT_MOBILE_USERNAME = "holiwyn-mobile-dev";
 
 const argValue = (name: string) => {
   const prefix = `--${name}=`;
@@ -25,6 +25,7 @@ const price = argValue("price") ?? DEFAULT_PRICE;
 const size = argValue("size") ?? DEFAULT_SIZE;
 const requiredRemaining = dec(argValue("requiredRemaining") ?? DEFAULT_REQUIRED_REMAINING);
 const mobileHoldings = dec(argValue("mobileHoldings") ?? DEFAULT_MOBILE_HOLDINGS);
+const mobileUsername = argValue("username") ?? process.env.MOBILE_DEV_USERNAME ?? DEFAULT_MOBILE_USERNAME;
 const summaryPath =
   argValue("summaryPath") ?? "docs/mobile/harness/cycle-current-mobile-server-sell-fill-liquidity.json";
 
@@ -48,9 +49,9 @@ async function createBuyMaker() {
 
 async function ensureMobileUser() {
   const user = await prisma.user.upsert({
-    where: { username: MOBILE_USERNAME },
-    update: { email: `${MOBILE_USERNAME}@local.test`, displayName: "Holiwyn Mobile Dev" },
-    create: { username: MOBILE_USERNAME, email: `${MOBILE_USERNAME}@local.test`, displayName: "Holiwyn Mobile Dev" },
+    where: { username: mobileUsername },
+    update: { email: `${mobileUsername}@local.test`, displayName: "Holiwyn Mobile Dev" },
+    create: { username: mobileUsername, email: `${mobileUsername}@local.test`, displayName: "Holiwyn Mobile Dev" },
   });
   await prisma.userBalance.upsert({
     where: { userId: user.id },

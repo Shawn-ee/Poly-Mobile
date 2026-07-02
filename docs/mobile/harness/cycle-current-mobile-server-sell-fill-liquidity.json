@@ -14,13 +14,13 @@
     "name": "YES"
   },
   "mobileUser": {
-    "id": "db9d8fa7-8b46-40b5-8f4b-4b77cbd9aeff",
-    "username": "holiwyn-mobile-dev",
-    "shares": "1602",
+    "id": "f3bbf2a4-9621-4ed2-b309-76f7a6b99b59",
+    "username": "holiwyn-mobile-proof-cycle-213b",
+    "shares": "300",
     "reservedShares": "0"
   },
   "makerOrder": {
-    "id": "3bcbbd6c-11e1-4e12-9229-b2877c1443d7",
+    "id": "afd1e547-edad-4b46-b5d2-10705a258df3",
     "status": "OPEN",
     "price": "0.50",
     "size": "500",
@@ -30,7 +30,7 @@
   "attempts": [
     {
       "attempt": 1,
-      "makerOrderId": "3bcbbd6c-11e1-4e12-9229-b2877c1443d7",
+      "makerOrderId": "afd1e547-edad-4b46-b5d2-10705a258df3",
       "status": "OPEN",
       "remaining": "500",
       "fillCount": 0

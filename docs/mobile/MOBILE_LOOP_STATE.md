@@ -9471,6 +9471,35 @@ Notes:
 Commit: b27de21
 Merge: ba3b67e
 
+### Cycle 213
+
+Date: 2026-07-02
+Branch: mobile/cycle-213
+Status: Verified; pending local merge.
+Objective: Isolate Samsung server sell-fill proofs onto cycle-specific mobile proof users so Portfolio state starts clean.
+Implemented:
+- Added `MOBILE_DEV_USERNAME`/`--username=` support to the mobile dev credential helper.
+- Added the same proof username support to the server sell-fill liquidity helper.
+- Made the dev credential helper refuse production execution and mark generated local proof users as internal trading users so guarded order routes accept them.
+- Recovered from the first isolated-user phone failure by directly probing `/api/orders`, identifying `TRADING_NOT_ALLOWLISTED`, and rerunning with the fixed helper.
+Verification:
+- `MOBILE_DEV_USERNAME=holiwyn-mobile-proof-cycle-213 npm.cmd run mobile:dev-credential:dry-run` emitted the isolated username and policy.
+- `npm.cmd run test:mobile-api` passed with 15 files and 65 tests.
+- `npm.cmd run typecheck` passed in `mobile/`.
+- Direct `/api/orders` SELL probe filled after the proof user gained internal trading access.
+- `MOBILE_DEV_USERNAME=holiwyn-mobile-proof-cycle-213b npm.cmd run mobile:server-sell-fill-liquidity` prepared a fresh proof user with 300 shares and 0 reserved shares.
+- `npm.cmd run smoke:samsung:server-sell-order-filled` passed on Samsung S23 through Expo Go using the `holiwyn-mobile-proof-cycle-213b` credential.
+Evidence:
+- `docs/mobile/harness/cycle-current-mobile-server-sell-fill-liquidity.json`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+Notes:
+- Default `holiwyn-mobile-dev` behavior remains available; isolated proof users are opt-in through environment or script argument.
+- The first isolated proof failure was a useful Recovery Harness pass, not a device failure.
+Commit: pending
+Merge: pending
+
 ### Heartbeat After Cycle 211
 
 Completed cycles: 209, 210, 211.
