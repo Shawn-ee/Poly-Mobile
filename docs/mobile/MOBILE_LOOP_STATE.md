@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-259-sell-open-order-proceeds
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Make open-order economics wording accurate for sell-side pending orders.
 Implemented:
 - Added a tested `openOrderEconomicsService` for remaining shares, order value, potential value, and buy/sell copy key selection.
@@ -10133,8 +10133,8 @@ Verification:
 - `npm.cmd run test:mobile-api` passed with 16 files and 70 tests.
 Evidence:
 - `mobile/src/__tests__/openOrderEconomicsService.test.ts`.
-Commit: pending
-Merge: pending
+Commit: 3266f1c
+Merge: c0beb4b
 
 ### Cycle 258
 
