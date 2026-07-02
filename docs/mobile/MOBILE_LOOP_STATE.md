@@ -9141,7 +9141,7 @@ Merge: a63102c
 
 Date: 2026-07-02
 Branch: mobile/cycle-201
-Status: Verified; pending local merge stamp.
+Status: Verified and locally merged.
 Objective: Prove a synced server-backed open order can be canceled from the Samsung Portfolio UI.
 Implemented:
 - Added `smoke:server-open-order-cancel` and `smoke:samsung:server-open-order-cancel`.
@@ -9161,8 +9161,8 @@ Evidence:
 Notes:
 - The local mobile dev account has multiple previous proof orders, so the cancel proof scrolls past remaining open orders before asserting the canceled receipt.
 - Backend order cancel accepted through the canonical `DELETE /api/orders/:id` route; docs do not store the secret mobile credential.
-Commit: PENDING
-Merge: PENDING
+Commit: ab6f971
+Merge: f8a9d4c
 
 ### Heartbeat After Cycle 142
 
