@@ -10077,7 +10077,7 @@ Merge: 1062d76
 
 Date: 2026-07-02
 Branch: mobile/cycle-237-account-open-order-value
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Add pending open-order value to the Account summary so users can see both count and notional exposure outside Portfolio.
 Implemented:
 - Added localized `openOrderValue` copy for English and Simplified Chinese.
@@ -10092,8 +10092,8 @@ Verification:
 Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-account-position-summary.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-account-position-summary.png`.
-Commit: pending
-Merge: pending
+Commit: e8725d5
+Merge: 15ea3ff
 
 ### Heartbeat After Cycle 235
 
