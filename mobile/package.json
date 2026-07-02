@@ -13,6 +13,8 @@
     "preflight:server-mode:strict": "powershell -ExecutionPolicy Bypass -File ./scripts/server-mode-preflight.ps1 -RequireBackend -RequireApiKey",
     "preflight:samsung:server-mode": "powershell -ExecutionPolicy Bypass -File ./scripts/samsung-server-mode-preflight.ps1",
     "preflight:samsung:server-mode:strict": "powershell -ExecutionPolicy Bypass -File ./scripts/samsung-server-mode-preflight.ps1 -RequireBackend -RequireApiKey",
+    "gate:server-success": "powershell -ExecutionPolicy Bypass -File ./scripts/server-success-gate.ps1",
+    "gate:server-success:expect-blocked": "powershell -ExecutionPolicy Bypass -File ./scripts/server-success-gate.ps1 -ExpectBlocked",
     "smoke": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1",
     "smoke:deep": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep",
     "smoke:order-failure": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -OrderFailure -Port 8083",

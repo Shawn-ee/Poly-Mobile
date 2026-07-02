@@ -80,6 +80,12 @@ Before a Samsung server-mode success proof, verify the phone launch variables wi
 npm run preflight:samsung:server-mode
 ```
 
+Before attempting a successful server-backed Samsung order proof, run:
+
+```powershell
+npm run gate:server-success
+```
+
 ## Device Strategy
 
 - Samsung S23: use for Polymarket reference and, later, explicit Holiwyn real-device QA.
