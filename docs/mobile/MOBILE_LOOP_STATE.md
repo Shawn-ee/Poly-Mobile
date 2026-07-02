@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-247-event-detail-buy-ticket-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Make the Event Detail Buy-ticket handoff a named Samsung proof paired with the Sell-ticket handoff proof.
 Implemented:
 - Added Samsung wrapper and package script `smoke:samsung:event-detail-buy-ticket`.
@@ -10137,8 +10137,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`.
-Commit: pending
-Merge: pending
+Commit: 030bc1b
+Merge: a164689
 
 ### Heartbeat After Cycle 247
 
