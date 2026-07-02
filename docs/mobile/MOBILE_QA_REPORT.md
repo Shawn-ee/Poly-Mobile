@@ -4187,3 +4187,26 @@ Bugs:
 - None in final run.
 Visual QA:
 - No Samsung visual run this cycle; successful server-backed close still depends on backend/device readiness.
+
+### Cycle 191
+
+Date: 2026-07-01
+Device: Mobile service unit harness
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+Result: Passed. Server Portfolio snapshots now reconcile local Portfolio state after server close acknowledgement.
+Harness evidence:
+- Mobile API/service suite passed with 12 files and 53 tests.
+- Mobile typecheck passed.
+Screenshot evidence:
+- None; mobile state reconciliation cycle.
+Structured findings:
+- Server snapshots are now authoritative for balance, positions, and open orders, including empty arrays.
+- Server history can refresh activity independently when snapshot reads are unavailable.
+- Initial server sync and post-close refresh share the same state-apply helper.
+- Server-mode close now refreshes Portfolio after the SELL order call instead of immediately doing local fake cash-out.
+Bugs:
+- Initial patch lacked an effect cancellation guard around the shared refresh helper; corrected before tests.
+Visual QA:
+- No Samsung visual run this cycle; successful server-backed close refresh still depends on backend/device readiness.

@@ -35,6 +35,7 @@ import {
 import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 import { appendUniqueActivity, cancelOpenOrderOnServer, openOrderCanceledActivity } from "./src/services/openOrderService";
 import { closePositionOnServer } from "./src/services/positionCloseService";
+import { applyServerPortfolioState } from "./src/services/portfolioStateApplyService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
 import {
@@ -497,32 +498,42 @@ export default function App() {
     };
   }, [api]);
 
+  const applyServerState = useCallback((serverState: Awaited<ReturnType<typeof loadServerPortfolioState>>) => {
+    setPortfolioSyncStatus(serverState.syncStatus);
+    setBalance((current) =>
+      applyServerPortfolioState({ balance: current, positions: [], openOrders: [], activities: [] }, serverState).balance,
+    );
+    setPositions((current) =>
+      applyServerPortfolioState({ balance: 0, positions: current, openOrders: [], activities: [] }, serverState).positions,
+    );
+    setOpenOrders((current) =>
+      applyServerPortfolioState({ balance: 0, positions: [], openOrders: current, activities: [] }, serverState).openOrders,
+    );
+    setActivities((current) =>
+      applyServerPortfolioState({ balance: 0, positions: [], openOrders: [], activities: current }, serverState).activities,
+    );
+  }, []);
+
+  const refreshServerPortfolio = useCallback(async () => {
+    setPortfolioSyncStatus("syncing");
+    const serverState = await loadServerPortfolioState(api);
+    if (!mounted.current) return;
+    applyServerState(serverState);
+  }, [api, applyServerState]);
+
   useEffect(() => {
     if (ORDER_MODE !== "server") return undefined;
     let cancelled = false;
     setPortfolioSyncStatus("syncing");
-    loadServerPortfolioState(api).then(
-      ({ syncStatus, snapshot, activities: serverActivities }) => {
-        if (cancelled) return;
-        setPortfolioSyncStatus(syncStatus);
-        if (snapshot) {
-          setBalance(snapshot.balance);
-          if (snapshot.positions.length > 0) {
-            setPositions((current) => (current.length > 0 ? current : snapshot.positions));
-          }
-          if (snapshot.openOrders.length > 0) {
-            setOpenOrders((current) => (current.length > 0 ? current : snapshot.openOrders));
-          }
-        }
-        if (serverActivities && serverActivities.length > 0) {
-          setActivities((current) => (current.length > 0 ? current : serverActivities));
-        }
-      },
-    );
+    loadServerPortfolioState(api).then((serverState) => {
+      if (!cancelled && mounted.current) applyServerState(serverState);
+    }).catch(() => {
+      if (!cancelled && mounted.current) setPortfolioSyncStatus("error");
+    });
     return () => {
       cancelled = true;
     };
-  }, [api]);
+  }, [api, applyServerState]);
 
   useEffect(() => {
     if (!selectedEvent) return undefined;
@@ -724,6 +735,12 @@ export default function App() {
       await closePositionOnServer({ mode: ORDER_MODE, api, position });
     } catch {
       if (mounted.current) setPortfolioSyncStatus("error");
+      return;
+    }
+    if (ORDER_MODE === "server") {
+      await refreshServerPortfolio().catch(() => {
+        if (mounted.current) setPortfolioSyncStatus("error");
+      });
       return;
     }
     const value = portfolioPositionValue(position);

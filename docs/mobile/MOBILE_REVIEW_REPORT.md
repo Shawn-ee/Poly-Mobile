@@ -2829,3 +2829,18 @@ Findings:
 - Mobile API/service tests and mobile typecheck passed.
 Decision: Approve Cycle 190 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 191
+
+Date: 2026-07-01
+Branch: mobile/cycle-191
+Reviewer: Lead/Reviewer pass
+Scope: Server Portfolio refresh reconciliation after close.
+Findings:
+- P1: Added a tested state-apply helper that treats server snapshots as authoritative, including empty positions and open orders.
+- P1: Initial server Portfolio sync now uses the same authoritative apply path instead of preserving stale local rows when server arrays are empty.
+- P1: Server-mode close-position now refreshes server Portfolio after the SELL order request and avoids local fake cash-out in server mode.
+- P2: The refresh still depends on backend availability; if the refresh fails, the app reports Portfolio sync error and keeps local state.
+- Mobile API/service tests and mobile typecheck passed.
+Decision: Approve Cycle 191 for local commit/merge after scoped diff review.
+Merge approved: Yes
