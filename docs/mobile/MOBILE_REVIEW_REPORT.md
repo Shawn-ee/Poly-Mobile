@@ -2998,3 +2998,18 @@ Findings:
 - Mobile API/service tests, mobile typecheck, and Samsung server-open-order-cancel smoke passed.
 Decision: Approve Cycle 201 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 202
+
+Date: 2026-07-02
+Branch: mobile/cycle-202
+Reviewer: Lead/Reviewer pass
+Scope: Canonical order cancel route coverage.
+Findings:
+- P0: Added focused backend route coverage for the canonical `DELETE /api/orders/:id` path that Samsung server-mode Portfolio uses.
+- P0: The test proves cancel is scoped to the current actor, guarded by `orders:write`, and passes API credential attribution to cancel/unlock.
+- P1: The response contract now has test coverage for mobile-safe metadata including `type`, original client order id, created key id, and canceling key id.
+- P1: The 404 path proves governance, cancel/unlock, and event emissions do not run when the actor does not own the order.
+- Focused backend route test, mobile API/service tests, and mobile typecheck passed.
+Decision: Approve Cycle 202 for local commit/merge after scoped diff review.
+Merge approved: Yes
