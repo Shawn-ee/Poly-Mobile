@@ -3108,3 +3108,23 @@ Bugs:
 - The phone needed longer than the old one-second wait for unavailable-backend order failure; fixed by waiting for the retry error text.
 Visual QA:
 - Samsung proof shows the forced World Cup winner ticket with clean balance and then keeps the ticket open with `Order failed. Try again.` and retry CTA after failed server submission.
+
+### Cycle 147
+
+Date: 2026-07-01
+Device: Samsung S23 ADB target (`adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`)
+Build/run command:
+- `npm run preflight:samsung:server-mode`
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The Samsung server-mode preflight now resolves the PC LAN API base URL for physical-device launches and verifies the Samsung ADB target before server-mode auth/backend checks.
+Preflight evidence:
+- Device API base URL resolved to `http://172.16.200.14:3000`.
+- Samsung ADB target was reachable.
+- Server auth config checks passed.
+- Backend health was unavailable at `http://127.0.0.1:3000`, so live server request proof remains pending.
+- `EXPO_PUBLIC_API_KEY` was missing, so authenticated account preflight remains pending.
+Bugs:
+- Initial preflight used `Get-NetIPConfiguration`, which failed in this environment with CIM access denied. Replaced it with the proven `ipconfig` parsing resolver used by the Samsung smoke wrapper.
+Visual QA:
+- No app screenshot cycle; this is a device/server launch preflight cycle.

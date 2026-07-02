@@ -2136,3 +2136,18 @@ Findings:
 - Samsung server-order-failure smoke, mobile typecheck, and mobile API/history tests passed.
 Decision: Approve Cycle 146 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 147
+
+Date: 2026-07-01
+Branch: mobile/cycle-147
+Reviewer: Lead/Reviewer pass
+Scope: Samsung server-mode preflight.
+Findings:
+- P1: `preflight:samsung:server-mode` now resolves a physical-device API base URL using the PC LAN address, avoiding emulator-only `10.0.2.2` launch variables for Samsung.
+- P1: The preflight verifies Samsung ADB reachability before running the shared server-mode auth/backend checks.
+- P1: The LAN resolver uses the same `ipconfig` parsing pattern as the proven Samsung smoke wrapper, after `Get-NetIPConfiguration` failed with access denied.
+- P2: Backend health and API key remain unavailable, so this proves device launch readiness but not successful server-backed order execution.
+- Samsung server-mode preflight, mobile typecheck, and mobile API/history tests passed.
+Decision: Approve Cycle 147 for local commit/merge after scoped diff review.
+Merge approved: Yes
