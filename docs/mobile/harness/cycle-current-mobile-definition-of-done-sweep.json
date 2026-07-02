@@ -1,0 +1,118 @@
+{
+  "ready": true,
+  "readyToDeclareDone": false,
+  "counts": {
+    "verified": 7,
+    "partial": 3,
+    "blocked": 0
+  },
+  "generatedAt": "2026-07-02T13:58:09.233Z",
+  "criteria": [
+    {
+      "id": "dod-android-runtime",
+      "criterion": "Android app runs reliably on emulator.",
+      "status": "partial",
+      "evidence": [
+        "docs/mobile/harness/cycle-current-android-dev-build-readiness.json",
+        "docs/mobile/harness/cycle-current-samsung-apk-smoke.json"
+      ],
+      "notes": "Samsung real-device QA is now the active path; emulator remains known slow/stale and should not be treated as fully reliable yet."
+    },
+    {
+      "id": "dod-ios-planned",
+      "criterion": "iOS support is planned but not required for first done state.",
+      "status": "verified",
+      "evidence": [
+        "docs/mobile/MOBILE_LOOP_STATE.md"
+      ],
+      "notes": "Android-first scope remains documented."
+    },
+    {
+      "id": "dod-world-cup-browse",
+      "criterion": "Home, World Cup games, futures, event detail, props, and live markets are browsable.",
+      "status": "verified",
+      "evidence": [
+        "docs/mobile/MOBILE_FEATURE_GAP_TRACKER.md",
+        "docs/mobile/MOBILE_LOOP_STATE.md"
+      ],
+      "notes": "Long-running tracker shows verified Home, Games, Futures, Event Detail, grouped props, Search, and Live coverage."
+    },
+    {
+      "id": "dod-trading",
+      "criterion": "Trade ticket supports Buy/Sell and orders/trades can be created against Holiwyn backend or documented local backend mode.",
+      "status": "verified",
+      "evidence": [
+        "docs/mobile/harness/cycle-current-mobile-samsung-backend-position-order-proof.json",
+        "docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-order-ticket.png"
+      ],
+      "notes": "Latest Samsung proof creates a quote-backed backend BUY order and confirms an OPEN order in Portfolio."
+    },
+    {
+      "id": "dod-portfolio",
+      "criterion": "Portfolio shows positions, open orders, activity/history, and fake/backend-derived USDT balance.",
+      "status": "verified",
+      "evidence": [
+        "docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-order-portfolio.png",
+        "docs/mobile/harness/cycle-current-mobile-samsung-backend-position-order-proof.json"
+      ],
+      "notes": "Portfolio proof includes backend position, open-order details, latest order card, and fake-token balance."
+    },
+    {
+      "id": "dod-account-search-localization",
+      "criterion": "Login shell, Search, and English/Simplified Chinese switching work.",
+      "status": "verified",
+      "evidence": [
+        "docs/mobile/MOBILE_FEATURE_GAP_TRACKER.md",
+        "docs/mobile/MOBILE_LOOP_STATE.md"
+      ],
+      "notes": "Feature tracker marks account shell, search, preference persistence, and bilingual switching as verified."
+    },
+    {
+      "id": "dod-brand-safety",
+      "criterion": "No copied Polymarket assets or branding.",
+      "status": "verified",
+      "evidence": [
+        "docs/mobile/MOBILE_LOOP_STATE.md",
+        "docs/mobile/MOBILE_REVIEW_REPORT.md"
+      ],
+      "notes": "Holiwyn branding is used; docs preserve the reference-only Polymarket guardrail."
+    },
+    {
+      "id": "dod-reports",
+      "criterion": "Screenshots, loop reports, technical debt, and branch merge status are up to date.",
+      "status": "verified",
+      "evidence": [
+        "docs/mobile/MOBILE_LOOP_STATE.md",
+        "docs/mobile/MOBILE_FEATURE_GAP_TRACKER.md",
+        "docs/mobile/harness/cycle-current-mobile-backend-position-order-cleanup-after.json"
+      ],
+      "notes": "Cycles 277-279 are documented and locally merged; latest cleanup and proof screenshots are recorded."
+    },
+    {
+      "id": "dod-final-cycle",
+      "criterion": "Final cycle includes passing required harnesses, final QA report, final review report, final feature gap tracker, screenshots, and no unresolved P0 debt.",
+      "status": "partial",
+      "evidence": [
+        "docs/mobile/MOBILE_QA_REPORT.md",
+        "docs/mobile/MOBILE_REVIEW_REPORT.md",
+        "docs/mobile/MOBILE_FEATURE_GAP_TRACKER.md"
+      ],
+      "notes": "This sweep is the final-cycle audit artifact, but a dedicated final QA/review signoff and P0 debt closeout still need one more review pass before declaring mission complete."
+    },
+    {
+      "id": "dod-apk-lane",
+      "criterion": "Samsung QA is moving off Expo Go toward dev build/APK.",
+      "status": "partial",
+      "evidence": [
+        "docs/mobile/harness/cycle-current-android-dev-build-readiness.json",
+        "docs/mobile/harness/cycle-current-samsung-apk-smoke.json"
+      ],
+      "notes": "APK install/launch harness exists and records apk_missing cleanly; actual APK generation remains the blocker."
+    }
+  ],
+  "nextActions": [
+    "Run a final QA/review signoff pass and close or explicitly downgrade remaining P0 debt.",
+    "Generate or provide dist/holiwyn-preview.apk, then run npm run smoke:samsung:apk.",
+    "Keep Samsung server-order proof as the main real-device trading regression until the APK lane exists."
+  ]
+}

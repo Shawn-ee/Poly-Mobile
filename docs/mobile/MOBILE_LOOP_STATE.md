@@ -4,11 +4,11 @@ Current mission: Build Holiwyn, a World Cup-first sports prediction and trading 
 
 Current phase: Autonomous mobile product development in verified cycles.
 
-Latest verified cycle: Cycle 279 passed Milestone C's dev-build/APK transition harness. The Samsung QA lane now has a local APK install/launch smoke with structured blocker evidence, while Expo Go remains the fallback until `dist/holiwyn-preview.apk` exists.
+Latest verified cycle: Cycle 280 completed Milestone D's Definition of Done parity sweep. Current result is 7 verified, 3 partial, and 0 blocked; Holiwyn is close, but not ready to declare final mission complete until the remaining partial items are resolved or explicitly downgraded.
 
 Next milestone path:
 
-- Milestone D: run a final parity sweep against the mobile Definition of Done.
+Milestone path status: A, B, C, and D have completed. The final sweep did not declare the mission done because emulator reliability, final QA/review signoff, and actual APK availability remain partial.
 
 Launch mode: Long-running autonomous execution toward final Definition of Done. Phase 0 is the first gate, not the stopping point.
 
@@ -45,6 +45,36 @@ When stuck, run the Recovery Harness. The Lead Agent should ask Audit Agent or R
 Every three completed cycles, add a heartbeat summary.
 
 ## Cycle Template
+
+### Cycle 280
+
+Date: 2026-07-02
+Branch: mobile/cycle-280-final-parity-sweep
+Goal: Run the final parity sweep against the mobile Definition of Done.
+Reference app screens observed: None during this sweep; used accumulated Samsung proof evidence and feature tracker state.
+Holiwyn screens changed: None.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `scripts/mobile_definition_of_done_sweep.ts`, `package.json`, `docs/mobile/`.
+Tests run:
+- `cmd /c npm.cmd run mobile:definition-of-done-sweep`.
+- `cmd /c npm.cmd run test:mobile-api`.
+- `cmd /c npm.cmd run typecheck` in `mobile/`.
+Screenshots captured: No new screenshots; sweep references current Samsung server-order proof screenshots.
+Bugs found: None in code. Sweep found partial Definition of Done items.
+Technical debt added:
+- TD-282: Final QA/review signoff and P0 debt closeout still need one more explicit review pass.
+Technical debt resolved:
+- Added machine-readable and markdown Definition of Done sweep reports.
+Result: Passed sweep harness, but did not declare mission complete. Result: 7 verified, 3 partial, 0 blocked.
+Commit: pending.
+Merged: pending.
+Next cycle: Close or explicitly downgrade the three partial DoD items: emulator reliability, final QA/review signoff, and actual APK availability.
+Harnesses run:
+- Definition of Done Sweep Harness
+- Mobile API Test Harness
+- Typecheck Harness
+Harness failures: None.
 
 ### Cycle 279
 
