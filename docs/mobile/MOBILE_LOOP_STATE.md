@@ -10118,6 +10118,26 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 249
+
+Date: 2026-07-02
+Branch: mobile/cycle-249-samsung-live-summary-proof
+Status: Verified; pending local merge.
+Objective: Make live market summary a named Samsung proof.
+Implemented:
+- Added Samsung wrapper switch for `LiveSummary`.
+- Added package script `smoke:samsung:live-summary`.
+- Reused existing live summary assertions for live counts and France/Argentina/Draw rows.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:live-summary` passed on Samsung S23 with Expo host `172.16.200.14` and port `8167`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-live-summary.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-live-summary.png`.
+Commit: pending
+Merge: pending
+
 ### Cycle 248
 
 Date: 2026-07-02
