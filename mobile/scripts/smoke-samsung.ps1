@@ -33,11 +33,13 @@ param(
   [switch]$ServerSellOrderFilled,
   [switch]$ServerOpenOrderCancel,
   [switch]$ServerFilledTradeHistory,
+  [switch]$ServerApiKeyDiagnostic,
   [switch]$ServerPortfolioFixture,
   [switch]$ServerCloseFixture,
   [switch]$ServerPositionTrade,
   [switch]$ServerPositionBuyTrade,
   [switch]$ServerPositionFallbackTrade,
+  [switch]$ServerPositionFallbackOrder,
   [switch]$ServerPositionDetails
 )
 
@@ -128,7 +130,7 @@ if ($FutureListOrder) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerUnavailable -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($ServerOrderFailure) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerOrderFailure -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
-} elseif ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory) {
+} elseif ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPositionFallbackOrder) {
   if (-not $env:EXPO_PUBLIC_API_KEY) {
     throw "EXPO_PUBLIC_API_KEY is required for Samsung server order/history smoke."
   }
@@ -145,6 +147,10 @@ if ($FutureListOrder) {
       & "$PSScriptRoot\smoke.ps1" -Deep -ServerSellOrderFilled -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
     } elseif ($ServerFilledTradeHistory) {
       & "$PSScriptRoot\smoke.ps1" -Deep -ServerFilledTradeHistory -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
+    } elseif ($ServerApiKeyDiagnostic) {
+      & "$PSScriptRoot\smoke.ps1" -Deep -ServerApiKeyDiagnostic -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
+    } elseif ($ServerPositionFallbackOrder) {
+      & "$PSScriptRoot\smoke.ps1" -Deep -ServerPositionFallbackOrder -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
     } else {
       & "$PSScriptRoot\smoke.ps1" -Deep -ServerOrderSuccess -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
     }

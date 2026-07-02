@@ -4,6 +4,14 @@ Current mission: Build Holiwyn, a World Cup-first sports prediction and trading 
 
 Current phase: Autonomous mobile product development in verified cycles.
 
+Latest verified cycle: Cycle 277 passed Milestone A on Samsung S23. The proof created a disposable backend World Cup position, rendered it in Holiwyn Portfolio through the runtime API key, opened a quote-backed Buy ticket, placed a real server BUY order, and verified the resulting OPEN order in Portfolio and backend order summary.
+
+Next milestone path:
+
+- Milestone B: add proof cleanup and isolated disposable markets.
+- Milestone C: move Samsung QA from Expo Go toward dev build/APK.
+- Milestone D: run a final parity sweep against the mobile Definition of Done.
+
 Launch mode: Long-running autonomous execution toward final Definition of Done. Phase 0 is the first gate, not the stopping point.
 
 ## Active Devices
@@ -39,6 +47,51 @@ When stuck, run the Recovery Harness. The Lead Agent should ask Audit Agent or R
 Every three completed cycles, add a heartbeat summary.
 
 ## Cycle Template
+
+### Cycle 277
+
+Date: 2026-07-02
+Branch: mobile/cycle-277-backend-only-position-order-proof
+Goal: Pass Milestone A: backend-only position -> Samsung Portfolio -> quoted ticket -> real server order -> Portfolio open order.
+Reference app screens observed: No new Polymarket reference capture; used Samsung S23 as Holiwyn QA target for the verified server path.
+Holiwyn screens changed: Portfolio runtime API-key launch path, hidden API-key diagnostic banner, Samsung proof path for backend-only position order placement.
+Backend/API changed: Added disposable backend proof setup and backend Portfolio route proof scripts; no product schema migration.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/scripts/smoke.ps1`, `mobile/scripts/smoke-samsung.ps1`, `mobile/package.json`, `package.json`, Cycle 277 proof scripts, `docs/mobile/`.
+Tests run:
+- `npm run typecheck` in `mobile/`.
+- `cmd /c npm.cmd run test:mobile-api`.
+- `cmd /c npm.cmd run mobile:backend-position-order-portfolio-proof`.
+- `cmd /c npm.cmd run mobile:samsung-api-key-diagnostic -- -Port 8188`.
+- `cmd /c npm.cmd run mobile:samsung-backend-position-order-proof -- -Port 8191`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-api-key-diagnostic.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-order-ready.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-order-ticket.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-order-portfolio.png`
+Bugs found:
+- The Samsung app received the launch API key and direct Portfolio fetch succeeded, but normal Portfolio state was not deterministically applying that runtime key during the proof launch.
+- The first proof gate asserted below-the-fold position text before scrolling.
+- The final post-order gate asserted the top sync banner after the proof had scrolled to open-order evidence.
+Technical debt added:
+- TD-277: Cycle 277 proof data is disposable but not yet automatically cleaned up after verification.
+- TD-278: The Samsung server proof still runs through Expo Go; dev build/APK lane remains the next stability milestone.
+Technical debt resolved:
+- Resolved the runtime API-key Portfolio application gap for hidden proof launches with a one-time forced server Portfolio refresh.
+- Hardened Samsung deep-link quoting so API keys survive launch URL handling.
+Result: Passed Milestone A. Samsung evidence and backend summary show an OPEN server BUY order for the proof market at 0.49 with 204.08 remaining shares.
+Commit: cycle branch HEAD (`Pass backend position server order proof`)
+Merged: pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Milestone B, create cleanup/disposable-market isolation for proof artifacts.
+Harnesses run:
+- Backend/API Harness
+- Samsung Runtime Harness
+- API-key Diagnostic Harness
+- Server Trading Harness
+- Screenshot Evidence Harness
+- Review/Recovery Harness
+Harness failures:
+- Two assertion-scope failures were found and fixed before final pass.
 
 ### Cycle 001
 

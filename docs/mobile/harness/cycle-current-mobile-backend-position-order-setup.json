@@ -1,0 +1,39 @@
+{
+  "ready": true,
+  "user": {
+    "id": "951d6167-aab3-4c52-9271-caf52ec7bff5",
+    "username": "holiwyn_mobile_backend_position_order_user_5a4e7ab9"
+  },
+  "credential": {
+    "keyId": "pk_live_6dcea0a830f0f76b",
+    "token": "pk_live_6dcea0a830f0f76b.DohCvjeq8pQvjfzuQ4ZGSCEzq8ld3APm"
+  },
+  "market": {
+    "id": "5f82f81a-a97a-40a5-a820-1f9f9dd326eb",
+    "title": "World Cup Backend Position Order Proof"
+  },
+  "outcome": {
+    "id": "4437a638-6397-49fa-8ca3-8ffdfae5e80d",
+    "name": "YES"
+  },
+  "seededDepth": {
+    "bestBid": 0.47,
+    "bestAsk": 0.5,
+    "bestBidSize": 1000,
+    "bestAskSize": 2500,
+    "expectedTicketProbability": 49
+  },
+  "position": {
+    "shares": 500,
+    "avgCost": 0.5,
+    "sourceOrderId": "5405b79a-01a9-4227-bd4c-7d9759607cff"
+  },
+  "bidOrder": {
+    "id": "1b126c3a-62c6-47b6-83ac-ddf4b89e99c7",
+    "status": "OPEN"
+  },
+  "askOrder": {
+    "id": "8a86d229-a59d-43f4-9a03-063d95b92e3c",
+    "status": "OPEN"
+  }
+}
