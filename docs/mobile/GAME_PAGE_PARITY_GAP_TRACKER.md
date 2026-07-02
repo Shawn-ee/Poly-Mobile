@@ -18,21 +18,21 @@ Status meanings:
 
 | ID | Current Holiwyn Status | State | Evidence Needed | Next Cycle |
 | --- | --- | --- | --- | --- |
-| GP-P0-01 | Header has a back button and Game/Chat style controls, but book/rules and share behavior need proof. | Partial | Samsung screenshot/XML and tap proof for back, Game/Chat, badge, book/rules, share. | Cycle C |
-| GP-P0-02 | Scoreboard is visually simplified and does not yet prove live score, live clock, compressed scroll state, and both team probabilities. | Partial | Top and scrolled Samsung proof with flags, abbreviations, score, live clock, and probabilities. | Cycle C |
-| GP-P0-03 | Chart was previously a prototype/static-looking visual and is below Polymarket's live dual-trace movement. | Open | Data proof plus Samsung screenshot showing two outcome traces and selected label/percent. | Cycle C |
-| GP-P0-04 | Chart filter and trade marker parity are missing or insufficient. | Open | Samsung screenshot/XML showing marker text plus `All`, `Game`, and `Live` selected states. | Cycle C |
-| GP-P0-05 | Social preview exists only as a shallow card if present; it needs the reference structure and realistic content. | Partial | Samsung proof with chatting count, avatar, username, trade badge, and message. | Cycle C |
+| GP-P0-01 | Header presence is now proven on Samsung with back, Game/Chat segmented control, badge, book/rules, and share icons. Tappable behavior for book/share remains tracked under GP-P0-18. | Verified | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png` and `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`. | Done |
+| GP-P0-02 | Live scoreboard is now proven on Samsung with flags, team abbreviations, `0 - 0`, `15'`, and both team probabilities. | Verified | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png` and XML. | Done |
+| GP-P0-03 | Chart now renders two independent outcome traces with selected label/percent. It is still local deterministic data, which remains GP-P1-01. | Verified | Samsung screenshot/XML show two traces and selected outcome label/percent. | Done |
+| GP-P0-04 | Chart now shows trade/value markers and `All / Game / Live` filter controls. | Verified | Samsung screenshot/XML show `+$9`, `+$39`, `+$479`, `All`, `Game`, and `Live`. | Done |
+| GP-P0-05 | Social preview card is now proven with chatting count, avatar, username, trade badge, and message. | Verified | Samsung screenshot/XML show `78914 chatting`, `gigglyeel0550`, `BTTS $36`, and `VAMOS`. | Done |
 | GP-P0-06 | Primary team buttons exist, but each side opening the correct Polymarket-style ticket needs proof. | Partial | Samsung smoke taps home and away primary buttons and captures correct ticket states. | Cycle C |
-| GP-P0-07 | Regulation Time Winner group is missing or not separated from generic winner market with required subtitle. | Open | Samsung proof showing title, subtitle, and expanded rows. | Cycle C |
-| GP-P0-08 | Three-row regulation-time winner with icon, label, mini-line, odds, and probability is missing. | Open | Samsung proof showing home, tie, away rows with odds/probability. | Cycle C |
+| GP-P0-07 | Regulation Time Winner group is now separated from the generic winner market and includes the required subtitle. | Verified | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-game-line-expanded.png` and XML. | Done |
+| GP-P0-08 | Three-row regulation-time winner is now proven with home, tie, away rows, icons, mini-lines, odds, and probability buttons. | Verified | Samsung focused smoke `smoke:samsung:event-detail-outcome-depth` passed. | Done |
 | GP-P0-09 | Spread group with dynamic sentence, line dropdown, time segments, and Yes/No rows is missing. | Open | Samsung proof showing Spread group and interactions. | Cycle D |
 | GP-P0-10 | Totals group with Over/Under style rows is missing or not complete. | Open | Samsung scroll proof showing Totals rows. | Cycle D |
 | GP-P0-11 | 1st Half Winner group with three rows is missing. | Open | Samsung scroll proof showing three first-half rows. | Cycle D |
 | GP-P0-12 | 2nd Half Winner group with three rows is missing. | Open | Samsung scroll proof showing three second-half rows. | Cycle D |
 | GP-P0-13 | Full Game Team Total Goals group is missing. | Open | Samsung scroll proof showing team total goals rows. | Cycle D |
 | GP-P0-14 | Player Props was previously treated as blank, but real Polymarket shows expanded player prop rows. | Open | Samsung proof showing Goals group, filter chips, player rows, stat dropdowns, odds, and probabilities. | Cycle E |
-| GP-P0-15 | Expand/collapse behavior needs deterministic proof and richer grouped markets. | Partial | Smoke taps a group and captures rows hiding/reappearing. | Cycle C |
+| GP-P0-15 | Expand/collapse behavior is proven for Regulation Time Winner; richer groups still need their own rows in later cycles. | Verified | Samsung focused smoke captures expanded and collapsed states. | Done |
 | GP-P0-16 | Ticket exists in prototype form but does not match Polymarket's numeric-entry sheet closely enough. | Partial | Samsung ticket screenshot/XML with close, event, selected side, Yes/No, quick amounts, keypad, odds/available, disabled prompt. | Cycle F |
 | GP-P0-17 | Chat tab is not yet proven as a real feed/input/reaction page state. | Partial | Samsung Chat proof with feed, typing indicator, input, reactions, emoji, sticky outcomes. | Cycle F |
 | GP-P0-18 | Save/book and share controls need tappable proof and non-breaking behavior. | Partial | Smoke taps controls and captures stable/dismissed state. | Cycle F |
@@ -68,3 +68,4 @@ Status meanings:
 
 - Cycle A produced the real Samsung Polymarket reference audit.
 - Cycle B produced criteria and this initial gap tracker. It intentionally marks the game page as not complete because the old prototype Definition of Done is not strict enough for Polymarket parity.
+- Cycle C upgraded the visible top game page and Regulation Time Winner rows. Verified on Samsung with `npm run smoke:samsung:event-detail-summary`, `npm run smoke:samsung:event-detail-outcome-depth`, and `npm run typecheck`. Remaining P0 work is still substantial: ticket parity, Spread/Totals/half markets/team totals, Player Props rows, Chat page, book/share behavior, rules, More Events, full-page scroll proof, and final independent audit.
