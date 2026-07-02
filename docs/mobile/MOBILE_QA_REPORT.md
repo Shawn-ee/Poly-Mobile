@@ -3703,3 +3703,28 @@ Bugs:
 - First Samsung smoke failed because the new row was below the first viewport; fixed by scrolling the Account Preferences smoke before asserting lower rows.
 Visual QA:
 - Samsung S23 screenshot captured after scrolling Account Preferences.
+
+### Cycle 172
+
+Date: 2026-07-01
+Device: Samsung S23 via Expo Go
+Build/run command:
+- `npm.cmd run smoke:samsung:account-profile-sync-error` in `mobile/`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The server-mode Account fallback screen now proves both the profile-sync failure state and `Trading mode: Server mode` on Samsung.
+Harness evidence:
+- `docs/mobile/harness/cycle-172-holiwyn-account-profile-sync-error.xml`
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-172-holiwyn-account-profile-sync-error.png`
+Structured findings:
+- Account shows `Profile sync unavailable`.
+- Account shows `Using local preferences on this device.`
+- Account shows `Trading mode: Server mode`.
+- Existing `Fake-token mode only` safety line remains visible.
+Unit evidence:
+- Mobile API/service suite: 9 files, 40 tests passed.
+Bugs:
+- None in final run.
+Visual QA:
+- Samsung S23 screenshot captured after scrolling Account server-mode fallback state.

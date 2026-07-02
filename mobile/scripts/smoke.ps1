@@ -589,9 +589,11 @@ try {
     }
 
     if ($AccountProfileSyncError) {
+      & $adb -s $Device shell input swipe 540 1700 540 950 450 | Out-Null
+      Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-account-profile-sync-error.png"
       $accountProfileSyncHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-profile-sync-error.xml"
-      Assert-HierarchyContains -Path $accountProfileSyncHierarchy -Expected @("Account", "Preferences", "Profile sync unavailable", "Using local preferences on this device.", "Language: English", "Saved markets: 0 saved")
+      Assert-HierarchyContains -Path $accountProfileSyncHierarchy -Expected @("Account", "Preferences", "Profile sync unavailable", "Using local preferences on this device.", "Language: English", "Saved markets: 0 saved", "Trading mode: Server mode", "Fake-token mode only")
       return
     }
 

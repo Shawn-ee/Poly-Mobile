@@ -2532,3 +2532,18 @@ Findings:
 - Samsung Account Preferences smoke, mobile typecheck, and mobile API/service tests passed.
 Decision: Approve Cycle 171 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 172
+
+Date: 2026-07-01
+Branch: mobile/cycle-172
+Reviewer: Lead/Reviewer pass
+Scope: Server-mode Account fallback trading-mode proof.
+Findings:
+- P1: The Samsung Account profile-sync fallback smoke now scrolls to lower Account Preferences rows before asserting server-mode status.
+- P1: Cycle evidence proves `Profile sync unavailable`, `Using local preferences on this device.`, `Trading mode: Server mode`, and `Fake-token mode only` appear together on the Samsung S23.
+- P1: This clarifies the distinction between mock-mode Account state and server-mode fallback state without enabling deposits, withdrawals, or live server trading.
+- P2: Server-mode profile sync remains unavailable until backend/API-key readiness improves; the screen correctly communicates fallback.
+- Samsung Account profile-sync fallback smoke, mobile typecheck, and mobile API/service tests passed.
+Decision: Approve Cycle 172 for local commit/merge after scoped diff review.
+Merge approved: Yes
