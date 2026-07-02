@@ -8980,8 +8980,8 @@ Technical debt added:
 Technical debt resolved:
 - Server-style Portfolio positions now show shares/current price in a clearer trading-app layout, with stable Samsung proof selectors.
 Result: Passed Cycle 197 QA. Mobile tests, typecheck, and Samsung server-position detail smoke pass.
-Commit: `PENDING_CYCLE_197_COMMIT` (`Add server position detail tiles`).
-Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `PENDING_CYCLE_197_MERGE`.
+Commit: `4372a34` (`Add server position detail tiles`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `16afc6b`.
 Next cycle: Retry backend/server readiness gates now that Docker is running and the latest Samsung smoke saw backend health `ok`.
 Harnesses run:
 - Mobile API/Service Harness
