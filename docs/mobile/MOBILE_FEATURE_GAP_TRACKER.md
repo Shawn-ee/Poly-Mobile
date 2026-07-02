@@ -197,3 +197,4 @@ Status:
 | GAP-175 | Harness | Server quote readiness report | P0 | No | Verified | Cycle 164 adds a quote-readiness harness that discovers World Cup event/market/quote availability and writes structured blocker evidence before server-mode device quote proof. |
 | GAP-176 | Harness | Samsung quote proof gate | P0 | No | Verified | Cycle 165 adds a Samsung quote-proof gate that combines device reachability with quote readiness before attempting server-mode quote proof. |
 | GAP-177 | Harness | Samsung quote proof preflight | P0 | No | Verified | Cycle 166 adds a one-command Samsung quote-proof preflight that refreshes quote readiness, runs the Samsung gate, and writes combined structured evidence. |
+| GAP-178 | Harness | Ready-only Samsung quote proof command | P0 | No | Verified | Cycle 167 adds a strict Samsung quote-proof command that consumes the preflight, records launch context, and blocks before device proof until server quote prerequisites are ready. |
