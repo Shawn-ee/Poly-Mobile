@@ -480,6 +480,7 @@ export default function App() {
           probability: 24,
         },
       ]);
+      setOpenOrders([SMOKE_OPEN_ORDER]);
       setMainTab("account");
     }
   }, []);
@@ -980,6 +981,7 @@ export default function App() {
                 profileSyncStatus={profilePreferencesSyncStatus}
                 savedMarketCount={savedEventIds.size}
                 openPositionCount={positions.length}
+                openOrderCount={openOrders.length}
                 portfolioValue={accountPortfolioValue}
                 tradingMode={ORDER_MODE}
               />

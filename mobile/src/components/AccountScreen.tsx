@@ -32,6 +32,7 @@ type AccountCopy = {
   savedMarketsPreference: string;
   savedMarketsCount: string;
   openPositions: string;
+  openOrders: string;
   portfolioValue: string;
   tradingMode: string;
   tradingModeMock: string;
@@ -57,6 +58,7 @@ export function AccountScreen({
   profileSyncStatus,
   savedMarketCount,
   openPositionCount,
+  openOrderCount,
   portfolioValue,
   tradingMode,
 }: {
@@ -70,6 +72,7 @@ export function AccountScreen({
   profileSyncStatus: ProfileSyncStatus;
   savedMarketCount: number;
   openPositionCount: number;
+  openOrderCount: number;
   portfolioValue: number;
   tradingMode: "mock" | "server";
 }) {
@@ -168,6 +171,12 @@ export function AccountScreen({
           <Ionicons name="podium-outline" size={20} color="#93c5fd" />
           <Text style={styles.rowText}>
             {t.openPositions}: {openPositionCount}
+          </Text>
+        </View>
+        <View accessibilityLabel="account-open-orders" testID="account-open-orders" style={styles.row}>
+          <Ionicons name="receipt-outline" size={20} color="#93c5fd" />
+          <Text style={styles.rowText}>
+            {t.openOrders}: {openOrderCount}
           </Text>
         </View>
         <View accessibilityLabel="account-ticket-defaults" testID="account-ticket-defaults" style={styles.row}>
