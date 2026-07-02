@@ -97,6 +97,7 @@ type PortfolioCopy = {
   orderValue: string;
   placed: string;
   size: string;
+  filled: string;
   shares: string;
   impliedOdds: string;
   filledShares: string;
@@ -121,6 +122,21 @@ const estimatedPnl = estimatedPositionPnl;
 const openOrderRemainingShares = (order: OpenOrder) => order.remainingShares ?? order.remaining;
 
 const openOrderValue = (order: OpenOrder) => order.orderValue ?? openOrderRemainingShares(order) * order.price;
+
+const openOrderFilledShares = (order: OpenOrder) =>
+  typeof order.originalShares === "number" ? Math.max(order.originalShares - openOrderRemainingShares(order), 0) : undefined;
+
+const openOrderFilledPercent = (order: OpenOrder) => {
+  if (typeof order.originalShares !== "number" || order.originalShares <= 0) return undefined;
+  return Math.round(((openOrderFilledShares(order) ?? 0) / order.originalShares) * 100);
+};
+
+const openOrderFilledText = (order: OpenOrder, t: PortfolioCopy) => {
+  const filledShares = openOrderFilledShares(order);
+  const filledPercent = openOrderFilledPercent(order);
+  if (typeof filledShares !== "number" || typeof filledPercent !== "number") return undefined;
+  return `${t.filled}: ${filledShares.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${t.shares} (${filledPercent}%)`;
+};
 
 const investedTotal = (positions: Position[]) => positions.reduce((total, position) => total + position.amount, 0);
 
@@ -234,6 +250,11 @@ export function Portfolio({
             {typeof order.originalShares === "number" && (
               <Text accessibilityLabel={`open-order-size-${order.id}`} style={styles.openOrderPlaced}>
                 {t.size}: {order.originalShares.toLocaleString(undefined, { maximumFractionDigits: 2 })} {t.shares}
+              </Text>
+            )}
+            {openOrderFilledText(order, t) && (
+              <Text accessibilityLabel={`open-order-filled-${order.id}`} style={styles.openOrderPlaced}>
+                {openOrderFilledText(order, t)}
               </Text>
             )}
             {order.placedAt && (

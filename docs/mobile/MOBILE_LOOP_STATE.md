@@ -9917,6 +9917,28 @@ Evidence:
 Commit: a371c5b
 Merge: 2459713
 
+### Cycle 230
+
+Date: 2026-07-02
+Branch: mobile/cycle-230-open-order-fill-progress
+Status: Verified; pending local merge.
+Objective: Show open-order fill progress on mobile Portfolio open-order cards.
+Implemented:
+- Derived filled shares from original order size minus remaining shares on mobile `OpenOrder` rows.
+- Rendered `Filled: <shares> (<percent>%)` between original size and placed time.
+- Added English and Simplified Chinese copy for the filled-progress label.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run mobile:samsung-open-order-cancel-proof -- -Username holiwyn-mobile-proof-cycle-230-open` passed on Samsung S23.
+- Captured hierarchy includes `Filled: 0 shares (0%)`, `Size: 100 shares`, and `Placed: Jul 2, 3:41 AM`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
+- `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
+Commit: pending
+Merge: pending
+
 ### Heartbeat After Cycle 229
 
 Completed cycles: 227, 228, 229.
