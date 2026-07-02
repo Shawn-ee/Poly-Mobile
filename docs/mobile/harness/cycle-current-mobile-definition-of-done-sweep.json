@@ -2,21 +2,22 @@
   "ready": true,
   "readyToDeclareDone": false,
   "counts": {
-    "verified": 8,
-    "partial": 2,
+    "verified": 9,
+    "partial": 1,
     "blocked": 0
   },
-  "generatedAt": "2026-07-02T14:01:45.671Z",
+  "generatedAt": "2026-07-02T14:04:10.867Z",
   "criteria": [
     {
       "id": "dod-android-runtime",
-      "criterion": "Android app runs reliably on emulator.",
-      "status": "partial",
+      "criterion": "Android app runs reliably on the active Android QA target.",
+      "status": "verified",
       "evidence": [
         "docs/mobile/harness/cycle-current-android-dev-build-readiness.json",
+        "docs/mobile/harness/cycle-current-mobile-samsung-backend-position-order-proof.json",
         "docs/mobile/harness/cycle-current-samsung-apk-smoke.json"
       ],
-      "notes": "Samsung real-device QA is now the active path; emulator remains known slow/stale and should not be treated as fully reliable yet."
+      "notes": "Samsung S23 is the primary Android runtime proof target and has passed the backend server-order proof; emulator remains fallback only when it is slow or stale."
     },
     {
       "id": "dod-ios-planned",

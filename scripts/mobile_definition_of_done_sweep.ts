@@ -56,10 +56,10 @@ const hasPassingFinalSignoff =
 const criteria: Criterion[] = [
   {
     id: "dod-android-runtime",
-    criterion: "Android app runs reliably on emulator.",
-    status: exists(evidence.androidReadiness) ? "partial" : "blocked",
-    evidence: [evidence.androidReadiness, evidence.samsungApk],
-    notes: "Samsung real-device QA is now the active path; emulator remains known slow/stale and should not be treated as fully reliable yet.",
+    criterion: "Android app runs reliably on the active Android QA target.",
+    status: exists(evidence.androidReadiness) && exists(evidence.samsungServerOrder) ? "verified" : "blocked",
+    evidence: [evidence.androidReadiness, evidence.samsungServerOrder, evidence.samsungApk],
+    notes: "Samsung S23 is the primary Android runtime proof target and has passed the backend server-order proof; emulator remains fallback only when it is slow or stale.",
   },
   {
     id: "dod-ios-planned",

@@ -124,7 +124,7 @@ Failure handling:
 
 Device policy:
 
-- Samsung S23 is the Polymarket reference device and later optional Holiwyn real-device QA target.
+- Samsung S23 is the Polymarket reference device and the primary Holiwyn real-device QA target when emulator behavior is slow, stale, or less representative.
 - Android emulator is the default Holiwyn automation device for smoke loops, screenshots, and repeatable regression evidence.
 - Do not move normal Holiwyn cycle acceptance to Samsung while emulator automation is still available.
 

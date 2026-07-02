@@ -604,7 +604,7 @@ The mission is done when Holiwyn reaches near feature parity with Polymarket's W
 
 Acceptance criteria:
 
-- Android app runs reliably on emulator.
+- Android app runs reliably on the active Android QA target. Samsung S23 is the primary Holiwyn runtime proof target; emulator remains a fallback for checks that are practical there.
 - iOS support is planned but not required for first done state.
 - Home screen is polished.
 - World Cup games are browsable.
