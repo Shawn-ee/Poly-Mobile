@@ -10118,6 +10118,28 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 254
+
+Date: 2026-07-02
+Branch: mobile/cycle-254-event-detail-prop-order-proof
+Status: Verified; pending local merge.
+Objective: Prove a prop-market Event Detail ticket can place a fake-token order and land in Portfolio.
+Implemented:
+- Added `EventDetailPropOrder` smoke path that opens the prop ticket, places the mock order, and verifies Portfolio state.
+- Added Samsung wrapper support for `EventDetailPropOrder`.
+- Added package script `smoke:samsung:event-detail-prop-order`.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:event-detail-prop-order` passed on Samsung S23 with Expo host `172.16.200.14` and port `8171`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-order-props.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-order-ticket.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-order-portfolio.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-prop-order-portfolio.png`.
+Commit: pending
+Merge: pending
+
 ### Cycle 253
 
 Date: 2026-07-02
