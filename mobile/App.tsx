@@ -33,6 +33,7 @@ import {
   worldCupFutures,
 } from "./src/mocks/worldCup";
 import { OrderMode, submitTicketOrder } from "./src/services/orderService";
+import { appendUniqueActivity, cancelOpenOrderOnServer, openOrderCanceledActivity } from "./src/services/openOrderService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
 
@@ -638,24 +639,11 @@ export default function App() {
 
   const cancelOpenOrder = (order: OpenOrder) => {
     setOpenOrders((current) => current.filter((item) => item.id !== order.id));
-    const canceledActivity: PortfolioActivity = {
-      id: `${order.id}-canceled`,
-      action: "canceled",
-      title: order.title,
-      outcome: order.outcome,
-      amount: order.remaining,
-      side: order.side,
-      probability: Math.round(order.price * 100),
-      timestamp: t.justNow,
-    };
-    setActivities((current) =>
-      current.some((activity) => activity.id === canceledActivity.id) ? current : [canceledActivity, ...current],
-    );
-    if (ORDER_MODE === "server") {
-      api.cancelOrder(order.id).catch(() => {
-        if (mounted.current) setPortfolioSyncStatus("error");
-      });
-    }
+    const canceledActivity = openOrderCanceledActivity(order, t.justNow);
+    setActivities((current) => appendUniqueActivity(current, canceledActivity));
+    cancelOpenOrderOnServer({ mode: ORDER_MODE, api, order }).catch(() => {
+      if (mounted.current) setPortfolioSyncStatus("error");
+    });
   };
 
   return (

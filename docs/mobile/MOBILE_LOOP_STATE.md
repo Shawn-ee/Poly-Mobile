@@ -7327,6 +7327,50 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 157
+
+Date: 2026-07-01
+Branch: mobile/cycle-157
+Goal: Add service-level coverage for server-mode open-order cancel behavior.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No visual behavior change. `App.tsx` now uses a tested open-order service boundary for cancel activity/server calls.
+Backend/API changed: No runtime API route change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/services/openOrderService.ts`, `mobile/src/__tests__/openOrderService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Unit evidence:
+- Mobile API/service suite passed 8 files and 24 tests.
+- New tests cover canceled activity mapping, duplicate activity prevention, mock-mode no-op backend behavior, and server-mode backend cancel calls.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Open-order cancellation now has a tested service seam instead of living entirely inside `App.tsx`.
+Result: Passed Cycle 157 QA. Mobile typecheck and mobile API/service tests pass.
+Commit: Pending.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 158 should continue server-backed cancel/order readiness, retry readiness if environment changes, or add Samsung proof around an adjacent server-mode recovery flow.
+Harnesses run:
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 157
+
+Completed cycles: 155, 156, 157.
+Verified progress: Samsung now proves Account profile-sync fallback on the S23, mobile credential readiness writes structured JSON for DB/API-key blockers, and open-order cancel behavior has a tested service seam for mock/server mode.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, local persistence, market group counts, outcome/ticket odds, potential profit, open-order economics, latest-order execution details, timestamped order history, backend-compatible resolved-history mapping, Samsung-proven core/live trading flows, Samsung-proven server-mode order failure recovery, Samsung-proven server Portfolio/account fallback, and unit-covered server order/Portfolio/cancel mapping.
+Current backend state: Mobile API/profile-preference/activity/history/order/open-order/portfolio snapshot/portfolio sync tests pass. Credential readiness shows Docker CLI available, Docker daemon unavailable, DB TCP unavailable, local compose DB URL aligned, and API key missing.
+Device strategy: Samsung S23 remains the primary Holiwyn visual QA and server-mode device-readiness target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane once the app is steadier.
+Open blockers: None for autonomous progress. Successful server-backed device order/Portfolio/cancel execution is blocked by Docker daemon/DB/API-key readiness, but graceful recovery and service seams are improving.
+Risks: Successful authenticated order execution, Portfolio hydration, and cancel execution are still unproven on device; Docker daemon/local DB are currently unavailable; Expo Go proof still depends on LAN reachability.
+Next three likely cycles: continue server-backed cancel/order readiness, improve credential/API-key handoff once DB is available, and add or refresh Samsung proofs for server-mode recovery flows.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.
