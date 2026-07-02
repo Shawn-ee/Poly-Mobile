@@ -220,7 +220,11 @@ export default function App() {
       .then((preferences) => {
         if (cancelled || !mounted.current) return;
         setLocale(preferences.locale);
-        setTicketDefaults((current) => ({ amount: preferences.ticketDefaultAmount, side: preferences.ticketDefaultSide, slippage: current.slippage }));
+        setTicketDefaults({
+          amount: preferences.ticketDefaultAmount,
+          side: preferences.ticketDefaultSide,
+          slippage: preferences.ticketDefaultSlippage,
+        });
         setSavedEventIds(new Set(preferences.savedEventIds));
         setProfilePreferencesSyncStatus("synced");
       })

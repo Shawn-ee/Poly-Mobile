@@ -2676,3 +2676,17 @@ Findings:
 - Mobile typecheck and mobile API/service tests passed.
 Decision: Approve Cycle 180 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 181
+
+Date: 2026-07-01
+Branch: mobile/cycle-181
+Reviewer: Lead/Reviewer pass
+Scope: Server-loaded profile slippage hydration.
+Findings:
+- P1: App profile-preference hydration now applies `ticketDefaultSlippage` to ticket defaults instead of preserving the prior local slippage.
+- P1: The fix completes the Cycle 180 mobile sync seam from API/service mapping through runtime app state hydration.
+- P2: Repository inspection did not find a real backend `/api/profile/preferences` route, so persistent server storage for this field remains a backend gap.
+- Mobile typecheck and mobile API/service tests passed.
+Decision: Approve Cycle 181 for local commit/merge after scoped diff review.
+Merge approved: Yes
