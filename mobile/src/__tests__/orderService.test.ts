@@ -37,7 +37,7 @@ describe("ticket order service", () => {
       outcomeId: "france",
       side: "BUY",
       price: "0.34",
-      size: "100.00",
+      size: "294.12",
     });
     expect(result).toMatchObject({
       id: "server-order-1",
@@ -68,7 +68,7 @@ describe("ticket order service", () => {
       outcomeId: "france",
       side: "SELL",
       price: "0.34",
-      size: "25.50",
+      size: "75.00",
     });
     expect(result.id).toBe("server-order-top-level");
     expect(result.mode).toBe("server");

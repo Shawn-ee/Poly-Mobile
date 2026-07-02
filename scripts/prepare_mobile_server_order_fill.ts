@@ -11,7 +11,7 @@ const dec = (value: Prisma.Decimal.Value) => new Prisma.Decimal(value);
 const DEFAULT_EVENT_SLUG = "fixture-2026-fifa-world-cup";
 const DEFAULT_PRICE = "0.50";
 const DEFAULT_SIZE = "500";
-const DEFAULT_REQUIRED_REMAINING = "120";
+const DEFAULT_REQUIRED_REMAINING = "250";
 
 const argValue = (name: string) => {
   const prefix = `--${name}=`;

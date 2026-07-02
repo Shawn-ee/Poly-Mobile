@@ -75,6 +75,11 @@ const filledSizeFromResponse = (response: ServerOrderResponse) => {
   return undefined;
 };
 
+const sharesFromAmount = (amount: number, probability: number) => {
+  const price = Math.max(probability, 1) / 100;
+  return amount / price;
+};
+
 export const submitTicketOrder = async (input: TicketOrderInput): Promise<TicketOrderResult> => {
   if (input.amount <= 0) {
     throw new Error("Order amount must be greater than zero.");
@@ -89,7 +94,7 @@ export const submitTicketOrder = async (input: TicketOrderInput): Promise<Ticket
     outcomeId: input.outcome.id,
     side: input.side.toUpperCase() as "BUY" | "SELL",
     price: (input.outcome.probability / 100).toFixed(2),
-    size: input.amount.toFixed(2),
+    size: sharesFromAmount(input.amount, input.outcome.probability).toFixed(2),
   });
   const response = payload && typeof payload === "object" ? (payload as ServerOrderResponse) : {};
   const size = numericField(response.order?.size ?? response.size);

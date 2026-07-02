@@ -14,17 +14,17 @@
     "name": "YES"
   },
   "makerOrder": {
-    "id": "92e29e30-7388-4515-a7cd-2d8387843a68",
+    "id": "65a2b088-0ef7-4e1c-ac1f-9315e388e90d",
     "status": "OPEN",
     "price": "0.50",
     "size": "500",
-    "requiredRemaining": "120",
+    "requiredRemaining": "250",
     "remaining": "500"
   },
   "attempts": [
     {
       "attempt": 1,
-      "makerOrderId": "92e29e30-7388-4515-a7cd-2d8387843a68",
+      "makerOrderId": "65a2b088-0ef7-4e1c-ac1f-9315e388e90d",
       "status": "OPEN",
       "remaining": "500",
       "fillCount": 0

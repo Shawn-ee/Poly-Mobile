@@ -9368,6 +9368,32 @@ Open blockers: None for autonomous progress.
 Risks: The current Samsung filled-order proof depends on seeded local dev backend state and LAN Expo reachability; accumulated dev-account trades mean assertions should avoid exact total-balance or exact count assumptions.
 Next three likely cycles: tighten server order cost/balance semantics, add richer filled-trade/order history drill-in behavior, and continue Polymarket-style World Cup market detail parity.
 
+### Cycle 209
+
+Date: 2026-07-02
+Branch: mobile/cycle-209
+Status: Verified and locally merged.
+Objective: Align server-mode ticket amount semantics with displayed USDT amount and estimated shares.
+Implemented:
+- Changed server-mode ticket submission to send backend order `size` as `amount / price` shares instead of the raw USDT amount.
+- Updated order-service tests to prove a 100 USDT ticket at 34% submits 294.12 shares.
+- Raised the server-order fill liquidity harness threshold to require at least 250 resting shares.
+- Updated the Samsung filled-order smoke to expect 200.00 filled shares for a 100 USDT ticket at 50%.
+Verification:
+- `npm.cmd run test:mobile-api` passed with 15 files and 65 tests.
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run mobile:server-order-fill-liquidity` passed with 500 resting maker shares and a 250-share readiness threshold.
+- `npm.cmd run smoke:samsung:server-order-filled` passed on Samsung S23 through Expo Go with backend health `ok`.
+Evidence:
+- `docs/mobile/harness/cycle-current-mobile-server-order-fill-liquidity.json`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+Notes:
+- This preserves the user-facing amount as USDT while making the backend order size match the ticket's own estimated shares row.
+Commit: pending
+Merge: pending
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.
