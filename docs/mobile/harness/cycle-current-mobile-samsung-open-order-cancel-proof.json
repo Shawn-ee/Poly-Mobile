@@ -1,0 +1,14 @@
+﻿{
+    "ready":  true,
+    "username":  "holiwyn-mobile-proof-cycle-220-open",
+    "userId":  "324eb07f-9939-4625-adce-e88b08376edf",
+    "keyId":  "pk_live_e5bd29fe9aa1fe01",
+    "port":  8156,
+    "summaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json",
+    "evidence":  {
+                     "portfolioXml":  "docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml",
+                     "canceledXml":  "docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml",
+                     "portfolioScreenshot":  "docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png",
+                     "canceledScreenshot":  "docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png"
+                 }
+}

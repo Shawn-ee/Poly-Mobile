@@ -9667,6 +9667,41 @@ Notes:
 Commit: e9ba082
 Merge: c26f886
 
+### Cycle 220
+
+Date: 2026-07-02
+Branch: mobile/cycle-220-open-order-cancel-proof-wrapper
+Status: Verified and locally merged.
+Objective: Add a reusable root proof wrapper for isolated Samsung server open-order cancellation.
+Implemented:
+- Added `scripts/mobile_samsung_open_order_cancel_proof.ps1` to seed local World Cup markets, create a cycle-specific mobile credential, run the Samsung server open-order cancel smoke, and write non-secret evidence metadata.
+- Added `npm run mobile:samsung-open-order-cancel-proof` at the repo root.
+- Preserved the deterministic low-price open-order path from Cycle 219 while making it one-command reusable for future cycles.
+Verification:
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run mobile:samsung-open-order-cancel-proof -- -Username holiwyn-mobile-proof-cycle-220-open` passed on Samsung S23.
+Evidence:
+- `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`.
+Notes:
+- The summary records user `holiwyn-mobile-proof-cycle-220-open` and the reusable evidence paths without storing the API token.
+Commit: TBD
+Merge: TBD
+
+### Heartbeat After Cycle 220
+
+Completed cycles: 218, 219, 220.
+Verified progress: Server ticket depth now includes best-level liquidity size, Portfolio open-order cards no longer confuse remaining shares with USDT value, backend canceled-order activity uses value math, and the Samsung server open-order cancel path is now reusable from a root command with isolated proof users.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung real-device QA, server quote/order/Portfolio sync, backend-derived filled/canceled activity, latest activity/order previews, BUY/SELL filled-order proof wrappers, and an open-order cancel proof wrapper.
+Current backend state: Local Docker/Postgres backend supports mobile API-key Portfolio/profile/order flows, canonical order create/cancel, matching, correct complete-set mint cost basis, recent-trade/canceled-order history, and repeatable World Cup seeding for mobile proofs.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: Repeated proof runs still mutate the local database and create proof users/orders; future work should move toward disposable per-cycle markets or database snapshots for cleaner long-run evidence.
+Next three likely cycles: add proof cleanup or disposable market isolation, improve order-history/open-order detail parity, and continue World Cup event detail/trading parity.
+
 ### Heartbeat After Cycle 217
 
 Completed cycles: 215, 216, 217.
