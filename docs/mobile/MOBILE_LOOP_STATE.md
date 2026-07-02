@@ -8495,8 +8495,8 @@ Technical debt added:
 Technical debt resolved:
 - Profile preference persistence/default behavior is no longer only route-tested; the service now has direct coverage for no-row defaults, legacy payload normalization, canonical save return shape, and invalid payload rejection.
 Result: Passed Cycle 185 QA. Focused backend service tests and mobile contract checks pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `8c62177` (`Test profile preference persistence service`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `50d5c65`.
 Next cycle: Continue toward final DoD with a profile-sync server-mode proof fixture or another backend-backed trading parity seam that can be verified without a live local backend.
 Harnesses run:
 - Backend Profile Preferences Service Harness
