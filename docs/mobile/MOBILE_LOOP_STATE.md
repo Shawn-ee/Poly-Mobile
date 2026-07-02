@@ -9114,7 +9114,7 @@ Next three likely cycles: fix authenticated Portfolio/profile sync on Samsung, p
 
 Date: 2026-07-02
 Branch: mobile/cycle-200
-Status: Verified on branch; pending local merge stamp.
+Status: Verified and locally merged.
 Objective: Make authenticated Portfolio/profile sync work for Samsung server-order proof.
 Implemented:
 - Added API-key actor support to legacy `/api/portfolio` and `/api/portfolio/history` while preserving session fallback.
@@ -9134,8 +9134,8 @@ Evidence:
 Notes:
 - The final S23 Portfolio screenshot shows `Server portfolio synced`, `Open orders`, `Buy - YES - OPEN`, `Remaining: 100 USDT`, and `Cancel`.
 - The local mobile dev account now has multiple OPEN proof orders, so fake balance is below 10,000 USDT because reserved notional is working.
-Commit: PENDING
-Merge: PENDING
+Commit: 750ae74
+Merge: a63102c
 
 ### Heartbeat After Cycle 142
 
