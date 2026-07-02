@@ -1209,7 +1209,7 @@ try {
     Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Mexico vs. Ecuador", "Volume", "Liquidity", "Traders", "Best bid", "Best ask", "Spread", "Markets", "Game lines", "Props")
 
     if ($EventDetailSummary) {
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("4 markets", "8 outcomes", "Game lines", "1 market", "Props", "3 markets", "Match winner")
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-market-summary", "4 markets", "8 outcomes", "Game lines", "1 market", "Props", "3 markets", "Match winner")
       return
     }
 

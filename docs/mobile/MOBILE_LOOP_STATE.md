@@ -10118,6 +10118,26 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 251
+
+Date: 2026-07-02
+Branch: mobile/cycle-251-event-detail-summary-label-proof
+Status: Verified; pending local merge.
+Objective: Make Event Detail market summary a named Samsung proof with a stable container assertion.
+Implemented:
+- Added Samsung wrapper support for `EventDetailSummary`.
+- Added package script `smoke:samsung:event-detail-summary`.
+- Required the Event Detail summary proof to assert `event-detail-market-summary` alongside grouped market counts.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:event-detail-summary` passed on Samsung S23 with Expo host `172.16.200.14` and port `8168`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
+Commit: pending
+Merge: pending
+
 ### Heartbeat After Cycle 250
 
 Completed cycles: 248, 249, 250.

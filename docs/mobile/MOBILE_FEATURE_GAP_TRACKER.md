@@ -283,3 +283,4 @@ Status:
 | GAP-261 | Live markets | Samsung live ticket proof command | P1 | Yes | Verified | Cycle 248 adds a named Samsung live-ticket proof command that opens France vs. Argentina live ticket and verifies live clock, depth, estimated cost, and buy CTA. |
 | GAP-262 | Live markets | Samsung live summary proof command | P1 | Yes | Verified | Cycle 249 adds a named Samsung live-summary proof command that verifies live market counts and France/Argentina/Draw rows on the S23. |
 | GAP-263 | Live markets | Live summary control proof | P1 | Yes | Verified | Cycle 250 tightens the Samsung live-summary proof to require the summary accessibility label plus live status and refresh controls. |
+| GAP-264 | Event detail | Samsung event detail summary proof command | P1 | Yes | Verified | Cycle 251 adds a named Samsung event-detail-summary proof and requires the market summary accessibility label with grouped market counts. |
