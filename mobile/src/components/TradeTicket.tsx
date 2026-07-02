@@ -192,6 +192,15 @@ export function TradeTicket({
     setSlippageState(nextSlippage);
     onPreferencesChange({ amount, side, slippage: nextSlippage });
   };
+  const applyKeypadInput = (key: string) => {
+    if (key === "backspace") {
+      setAmount(amount.length > 1 ? amount.slice(0, -1) : "0");
+      return;
+    }
+    if (key === "." && amount.includes(".")) return;
+    const nextAmount = amount === "0" && key !== "." ? key : `${amount}${key}`;
+    setAmount(nextAmount.replace(/^0+(\d)/, "$1"));
+  };
   const numericAmount = Number(amount) || 0;
   const averagePrice = ticket.outcome.probability / 100;
   const impliedOdds = ticket.outcome.probability > 0 ? 100 / ticket.outcome.probability : 0;
@@ -202,6 +211,7 @@ export function TradeTicket({
   const swipeLabel = side === "buy" ? t.swipeBuyOrder : t.swipeSellOrder;
   const costLabel = side === "buy" ? t.estimatedCost : t.estimatedProceeds;
   const amountPresets = [100, 500, 1000];
+  const keypadKeys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "backspace"];
   const slippageOptions = [
     { key: "half", value: "0.5%" },
     { key: "one", value: "1%" },
@@ -283,6 +293,23 @@ export function TradeTicket({
                   testID={`ticket-preset-${preset}`}
                 >
                   <Text style={styles.presetText}>{money(preset)}</Text>
+                </Pressable>
+              ))}
+            </View>
+            <View accessibilityLabel="ticket-amount-keypad" testID="ticket-amount-keypad" style={styles.keypadGrid}>
+              {keypadKeys.map((key) => (
+                <Pressable
+                  accessibilityLabel={`ticket-keypad-${key}`}
+                  key={key}
+                  onPress={() => applyKeypadInput(key)}
+                  style={styles.keypadButton}
+                  testID={`ticket-keypad-${key}`}
+                >
+                  {key === "backspace" ? (
+                    <Ionicons name="backspace-outline" color="#dbeafe" size={20} />
+                  ) : (
+                    <Text style={styles.keypadText}>{key}</Text>
+                  )}
                 </Pressable>
               ))}
             </View>
@@ -392,6 +419,9 @@ const styles = StyleSheet.create({
   presetRow: { flexDirection: "row", gap: 8, marginTop: 8 },
   presetButton: { flex: 1, minHeight: 36, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
   presetText: { color: "#dbeafe", fontWeight: "900" },
+  keypadGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 8 },
+  keypadButton: { width: "31.5%", minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
+  keypadText: { color: "#f8fafc", fontSize: 17, fontWeight: "900" },
   estimateGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 10 },
   estimateLineCompact: { width: "48%", padding: 9, borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
   estimateLine: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: "#263247" },
