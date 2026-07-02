@@ -9284,7 +9284,7 @@ Next three likely cycles: prove backend recent-trade history visually on Samsung
 
 Date: 2026-07-02
 Branch: mobile/cycle-206
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Prove backend filled-trade history appears visually on Samsung in server-mode Portfolio.
 Implemented:
 - Added `ServerFilledTradeHistory` to the Samsung smoke wrapper.
@@ -9302,8 +9302,8 @@ Evidence:
 Notes:
 - The first smoke attempt reached Portfolio but asserted the sync badge after it had scrolled away; the final proof asserts sync during launch and checks the deeper activity row text.
 - The proof used an in-process local mobile dev API key and did not write the secret to docs.
-Commit: PENDING
-Merge: PENDING
+Commit: de167c2
+Merge: 0f36834
 
 ### Heartbeat After Cycle 142
 
