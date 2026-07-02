@@ -7770,8 +7770,8 @@ Technical debt added:
 Technical debt resolved:
 - The loop now has current server-backed proof blocker evidence after adding the quote proof command.
 Result: Passed Cycle 168 QA. Backend/credential readiness refreshed, server-success gate blocked as expected, mobile typecheck passed, and mobile API/service tests pass.
-Commit: cycle branch HEAD (`Refresh server proof readiness evidence`).
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `a2e9bbb` (`Refresh server proof readiness evidence`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `3b8c45f`.
 Next cycle: Cycle 169 should continue server-backed trading proof preparation or add a stronger harness that combines quote proof and server-success blockers into one overnight decision report, then write the next heartbeat.
 Harnesses run:
 - Mobile Backend Readiness Harness
