@@ -8,8 +8,12 @@ const argValue = (name: string) => {
   return process.argv.find((arg) => arg.startsWith(prefix))?.slice(prefix.length);
 };
 
+const argFlag = (name: string) => process.argv.includes(`--${name}`);
+
 const summaryPath =
   argValue("summaryPath") ?? "docs/mobile/harness/cycle-current-mobile-proof-noise-report.json";
+const failOnOpenOrders = argFlag("failOnOpenOrders");
+const failOnLockedBalance = argFlag("failOnLockedBalance");
 
 const proofPrefixes = ["holiwyn-mobile-proof-", "holiwyn-mobile-open-cancel-"];
 
@@ -75,6 +79,7 @@ async function main() {
   const orderStatusCounts: Record<string, number> = {};
   const orderSideCounts: Record<string, number> = {};
   const openOrderCountsByUser: Record<string, number> = {};
+  const lockedBalanceUsers = users.filter((user) => user.balance && user.balance.lockedUSDC.gt(0));
 
   for (const user of users) {
     const prefix = proofPrefixes.find((candidate) => user.username.startsWith(candidate)) ?? "other";
@@ -134,6 +139,28 @@ async function main() {
       maker: makerFills.length,
     },
     openOrderCountsByUser,
+    harnessGate: {
+      enabled: failOnOpenOrders || failOnLockedBalance,
+      passed:
+        (!failOnOpenOrders || Object.keys(openOrderCountsByUser).length === 0) &&
+        (!failOnLockedBalance || lockedBalanceUsers.length === 0),
+      checks: {
+        openOrders: {
+          enabled: failOnOpenOrders,
+          passed: Object.keys(openOrderCountsByUser).length === 0,
+          affectedUsers: Object.keys(openOrderCountsByUser).length,
+        },
+        lockedBalance: {
+          enabled: failOnLockedBalance,
+          passed: lockedBalanceUsers.length === 0,
+          affectedUsers: lockedBalanceUsers.length,
+          users: lockedBalanceUsers.map((user) => ({
+            username: user.username,
+            lockedUSDC: user.balance?.lockedUSDC.toString() ?? "0",
+          })),
+        },
+      },
+    },
     latestUsers,
     latestOrders,
     cleanupGuidance: {
@@ -148,6 +175,11 @@ async function main() {
   await mkdir(dirname(summaryPath), { recursive: true });
   await writeFile(summaryPath, `${JSON.stringify(report, null, 2)}\n`, "utf8");
   console.log(JSON.stringify(report, null, 2));
+
+  if (report.harnessGate.enabled && !report.harnessGate.passed) {
+    console.error("Mobile proof noise gate failed.");
+    process.exitCode = 1;
+  }
 }
 
 main()
