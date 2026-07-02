@@ -1,19 +1,19 @@
 ﻿{
     "ready":  true,
-    "username":  "holiwyn-mobile-proof-cycle-222-open",
-    "userId":  "9435ee65-2c63-4267-bfcf-00a26d462437",
-    "keyId":  "pk_live_d1218653826793c6",
+    "username":  "holiwyn-mobile-proof-cycle-227-open",
+    "userId":  "69efec58-8ebc-4dc6-a986-5d8bd9d22f87",
+    "keyId":  "pk_live_8c5512b8562b69b1",
     "port":  8156,
     "summaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json",
     "orderSummary":  {
-                         "username":  "holiwyn-mobile-proof-cycle-222-open",
-                         "userId":  "9435ee65-2c63-4267-bfcf-00a26d462437",
+                         "username":  "holiwyn-mobile-proof-cycle-227-open",
+                         "userId":  "69efec58-8ebc-4dc6-a986-5d8bd9d22f87",
                          "orderCount":  1,
                          "statusCounts":  {
                                               "CANCELED":  1
                                           },
                          "latestOrder":  {
-                                             "id":  "966814e7-edc4-40dd-93fa-cf8a42bc6877",
+                                             "id":  "ba76bae5-de85-4075-a0dc-cd7f1adc7f68",
                                              "status":  "CANCELED",
                                              "side":  "BUY",
                                              "market":  {
@@ -30,13 +30,13 @@
                                              "reservedNotional":  "0",
                                              "notional":  "1",
                                              "remainingNotional":  "1",
-                                             "apiKeyId":  "pk_live_d1218653826793c6",
-                                             "canceledByApiKeyId":  "pk_live_d1218653826793c6",
-                                             "createdAt":  "2026-07-02T08:08:10.004Z",
-                                             "updatedAt":  "2026-07-02T08:08:13.032Z"
+                                             "apiKeyId":  "pk_live_8c5512b8562b69b1",
+                                             "canceledByApiKeyId":  "pk_live_8c5512b8562b69b1",
+                                             "createdAt":  "2026-07-02T08:26:59.367Z",
+                                             "updatedAt":  "2026-07-02T08:27:02.537Z"
                                          },
                          "latestCanceledOrder":  {
-                                                     "id":  "966814e7-edc4-40dd-93fa-cf8a42bc6877",
+                                                     "id":  "ba76bae5-de85-4075-a0dc-cd7f1adc7f68",
                                                      "status":  "CANCELED",
                                                      "side":  "BUY",
                                                      "market":  {
@@ -53,14 +53,14 @@
                                                      "reservedNotional":  "0",
                                                      "notional":  "1",
                                                      "remainingNotional":  "1",
-                                                     "apiKeyId":  "pk_live_d1218653826793c6",
-                                                     "canceledByApiKeyId":  "pk_live_d1218653826793c6",
-                                                     "createdAt":  "2026-07-02T08:08:10.004Z",
-                                                     "updatedAt":  "2026-07-02T08:08:13.032Z"
+                                                     "apiKeyId":  "pk_live_8c5512b8562b69b1",
+                                                     "canceledByApiKeyId":  "pk_live_8c5512b8562b69b1",
+                                                     "createdAt":  "2026-07-02T08:26:59.367Z",
+                                                     "updatedAt":  "2026-07-02T08:27:02.537Z"
                                                  },
                          "recentOrders":  [
                                               {
-                                                  "id":  "966814e7-edc4-40dd-93fa-cf8a42bc6877",
+                                                  "id":  "ba76bae5-de85-4075-a0dc-cd7f1adc7f68",
                                                   "status":  "CANCELED",
                                                   "side":  "BUY",
                                                   "market":  {
@@ -77,13 +77,55 @@
                                                   "reservedNotional":  "0",
                                                   "notional":  "1",
                                                   "remainingNotional":  "1",
-                                                  "apiKeyId":  "pk_live_d1218653826793c6",
-                                                  "canceledByApiKeyId":  "pk_live_d1218653826793c6",
-                                                  "createdAt":  "2026-07-02T08:08:10.004Z",
-                                                  "updatedAt":  "2026-07-02T08:08:13.032Z"
+                                                  "apiKeyId":  "pk_live_8c5512b8562b69b1",
+                                                  "canceledByApiKeyId":  "pk_live_8c5512b8562b69b1",
+                                                  "createdAt":  "2026-07-02T08:26:59.367Z",
+                                                  "updatedAt":  "2026-07-02T08:27:02.537Z"
                                               }
                                           ]
                      },
+    "proofNoiseGate":  {
+                           "pre":  {
+                                       "enabled":  true,
+                                       "passed":  true,
+                                       "checks":  {
+                                                      "openOrders":  {
+                                                                         "enabled":  true,
+                                                                         "passed":  true,
+                                                                         "affectedUsers":  0
+                                                                     },
+                                                      "lockedBalance":  {
+                                                                            "enabled":  true,
+                                                                            "passed":  true,
+                                                                            "affectedUsers":  0,
+                                                                            "users":  [
+
+                                                                                      ]
+                                                                        }
+                                                  }
+                                   },
+                           "post":  {
+                                        "enabled":  true,
+                                        "passed":  true,
+                                        "checks":  {
+                                                       "openOrders":  {
+                                                                          "enabled":  true,
+                                                                          "passed":  true,
+                                                                          "affectedUsers":  0
+                                                                      },
+                                                       "lockedBalance":  {
+                                                                             "enabled":  true,
+                                                                             "passed":  true,
+                                                                             "affectedUsers":  0,
+                                                                             "users":  [
+
+                                                                                       ]
+                                                                         }
+                                                   }
+                                    },
+                           "preSummaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof-noise-gate-pre.json",
+                           "postSummaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof-noise-gate.json"
+                       },
     "evidence":  {
                      "portfolioXml":  "docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml",
                      "canceledXml":  "docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml",

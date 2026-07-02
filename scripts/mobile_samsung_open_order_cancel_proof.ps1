@@ -37,6 +37,31 @@ function Invoke-CheckedNative {
   }
 }
 
+function Invoke-ProofNoiseGate {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$RepoRoot,
+    [Parameter(Mandatory = $true)]
+    [string]$Label,
+    [Parameter(Mandatory = $true)]
+    [string]$SummaryPath
+  )
+
+  Push-Location $RepoRoot
+  try {
+    Invoke-CheckedNative -Label $Label -Command {
+      cmd /c npx.cmd tsx scripts/mobile_proof_noise_report.ts --failOnOpenOrders --failOnLockedBalance --summaryPath=$SummaryPath
+    }
+    $resolvedGatePath = Join-Path $RepoRoot $SummaryPath
+    if (-not (Test-Path $resolvedGatePath)) {
+      throw "$Label did not write proof noise gate summary: $SummaryPath."
+    }
+    return Get-Content -Raw -Path $resolvedGatePath | ConvertFrom-Json
+  } finally {
+    Pop-Location
+  }
+}
+
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $stamp = Get-Date -Format "yyyyMMddHHmmss"
 $proofUsername = if ($Username) { $Username } else { "holiwyn-mobile-open-cancel-$stamp" }
@@ -50,6 +75,11 @@ try {
 
   Push-Location $repoRoot
   try {
+    $preProofNoiseGate = Invoke-ProofNoiseGate `
+      -RepoRoot $repoRoot `
+      -Label "Pre-proof noise gate" `
+      -SummaryPath "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof-noise-gate-pre.json"
+
     Invoke-CheckedNative -Label "World Cup proof seed" -Command { cmd /c npx.cmd tsx scripts/import_worldcup_today_markets.ts }
 
     $credentialRaw = cmd /c npm.cmd run mobile:dev-credential 2>&1 | Out-String
@@ -65,6 +95,11 @@ try {
       Pop-Location
     }
 
+    $postProofNoiseGate = Invoke-ProofNoiseGate `
+      -RepoRoot $repoRoot `
+      -Label "Post-proof noise gate" `
+      -SummaryPath "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof-noise-gate.json"
+
     $orderSummaryRaw = cmd /c npx.cmd tsx scripts/summarize_mobile_open_order_cancel_proof.ts --username=$proofUsername 2>&1 | Out-String
     $orderSummary = ConvertFrom-FirstJsonObject -Raw $orderSummaryRaw
 
@@ -76,6 +111,12 @@ try {
       port = $Port
       summaryPath = $SummaryPath
       orderSummary = $orderSummary
+      proofNoiseGate = [ordered]@{
+        pre = $preProofNoiseGate.harnessGate
+        post = $postProofNoiseGate.harnessGate
+        preSummaryPath = "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof-noise-gate-pre.json"
+        postSummaryPath = "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof-noise-gate.json"
+      }
       evidence = [ordered]@{
         portfolioXml = "docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml"
         canceledXml = "docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml"
