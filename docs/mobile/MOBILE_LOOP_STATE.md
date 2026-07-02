@@ -7288,6 +7288,45 @@ Harnesses run:
 Harness failures:
 - First Samsung run failed on a below-viewport assertion; fixed and reran successfully.
 
+### Cycle 156
+
+Date: 2026-07-01
+Branch: mobile/cycle-156
+Goal: Add structured mobile credential readiness reporting for server-backed Samsung proof.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; credential/readiness harness cycle.
+Backend/API changed: No runtime API route change. Added a read-only credential readiness harness.
+Database/schema changed: None.
+Files changed: `scripts/mobile_credential_readiness.ps1`, `package.json`, `docs/mobile/harness/cycle-156-mobile-credential-readiness.json`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run mobile:credential-readiness:summary`.
+- `npm.cmd run mobile:dev-credential:dry-run`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Harness evidence:
+- `docs/mobile/harness/cycle-156-mobile-credential-readiness.json`.
+- Report shows `readyToCreateCredential=false`, `readyForServerBackedSamsungProof=false`, Docker CLI available, Docker daemon unavailable, DB TCP unavailable, local compose DB URL aligned, and API key missing.
+Dry-run evidence:
+- Mobile dev credential dry-run still targets `holiwyn-mobile-dev`, 10,000 USDT fake-token balance, canonical scopes, configured policy limits, and server-mode env output.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- The loop now has structured credential readiness evidence instead of inferring API-key and DB blockers from separate command output.
+Result: Passed Cycle 156 QA. Credential readiness summary, credential dry-run, mobile typecheck, and mobile API/service tests pass.
+Commit: Pending.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 157 should continue backend-facing readiness or add another Samsung proof, then write the next heartbeat after completion.
+Harnesses run:
+- Mobile Credential Readiness Harness
+- Mobile Dev Credential Dry-Run Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Portfolio Snapshot/Portfolio Sync Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.

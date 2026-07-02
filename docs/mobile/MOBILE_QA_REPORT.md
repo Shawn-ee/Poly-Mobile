@@ -3305,3 +3305,31 @@ Bugs:
 - Initial Samsung smoke expected `Fake-token mode only`, which sits below the first viewport on the S23. Tightened the assertion to visible first-screen fallback and preference-row indicators, then reran successfully.
 Visual QA:
 - Samsung screenshot and UI hierarchy captured and copied to Cycle 155 evidence files.
+
+### Cycle 156
+
+Date: 2026-07-01
+Device: Credential readiness harness
+Build/run command:
+- `npm.cmd run mobile:credential-readiness:summary`
+- `npm.cmd run mobile:dev-credential:dry-run`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Mobile credential readiness now writes structured JSON evidence and the existing dev credential dry-run still produces the expected fake-token credential plan.
+Harness evidence:
+- `docs/mobile/harness/cycle-156-mobile-credential-readiness.json`
+Structured findings:
+- `readyToCreateCredential`: false
+- `readyForServerBackedSamsungProof`: false
+- `dockerCliAvailable`: true
+- `dockerDaemonReachable`: false
+- `databaseTcpReachable`: false
+- `usesDefaultLocalComposePort`: true
+- `apiKeyPresent`: false
+- `apiKeyLooksValid`: false
+Dry-run evidence:
+- Mobile dev credential dry-run targets `holiwyn-mobile-dev`, `10000.000000` USDT, canonical order/account/market scopes, and server-mode env output.
+Bugs:
+- None in final run.
+Visual QA:
+- No app screenshot cycle; this is a credential-readiness harness cycle.
