@@ -10118,6 +10118,26 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 241
+
+Date: 2026-07-02
+Branch: mobile/cycle-241-event-outcome-depth-fit
+Status: Verified; pending local merge.
+Objective: Keep Event Detail outcome-level bid/ask context readable on one line on Samsung S23.
+Implemented:
+- Enabled single-line fitting for the Event Detail outcome depth text.
+- Preserved the same verified bid/ask text and accessibility labels used by the Samsung Event Detail smoke.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:event-detail-outcome-depth` passed on Samsung S23 with Expo host `172.16.200.14` and port `8162`.
+- Visual screenshot confirms the Mexico outcome depth text stays on one line: `Best bid 0.61 USDT - Best ask 0.68 USDT`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
+Commit: pending
+Merge: pending
+
 ### Cycle 240
 
 Date: 2026-07-02

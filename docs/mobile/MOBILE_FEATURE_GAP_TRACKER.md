@@ -273,3 +273,4 @@ Status:
 | GAP-251 | Account | Total exposure summary | P1 | Yes | Verified | Cycle 238 adds `Total exposure` to Account as Portfolio value plus pending open-order value, hardens account summary proof overlay recovery, and verifies `10,398.75 USDT` on Samsung S23. |
 | GAP-252 | Event detail | Outcome-level bid/ask context | P1 | Yes | Verified | Cycle 239 adds per-outcome bid/ask context on Event Detail rows and verifies `Best bid 0.61 USDT - Best ask 0.68 USDT` on Samsung S23. |
 | GAP-253 | Event detail | Market depth price units | P1 | Yes | Verified | Cycle 240 adds USDT units to Event Detail market-level Best bid/Best ask cells and verifies `0.62 USDT`/`0.66 USDT` on Samsung S23. |
+| GAP-254 | Event detail | Outcome depth single-line fit | P1 | Yes | Verified | Cycle 241 keeps outcome-level bid/ask context on one readable line on Samsung S23 while preserving the verified depth text. |
