@@ -34,6 +34,7 @@ import {
 } from "./src/mocks/worldCup";
 import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 import { appendUniqueActivity, cancelOpenOrderOnServer, openOrderCanceledActivity } from "./src/services/openOrderService";
+import { closePositionOnServer } from "./src/services/positionCloseService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
 import {
@@ -718,7 +719,13 @@ export default function App() {
     setMainTab("portfolio");
   };
 
-  const closePosition = (position: Position) => {
+  const closePosition = async (position: Position) => {
+    try {
+      await closePositionOnServer({ mode: ORDER_MODE, api, position });
+    } catch {
+      if (mounted.current) setPortfolioSyncStatus("error");
+      return;
+    }
     const value = portfolioPositionValue(position);
     setBalance((current) => current + value);
     setPositions((current) => current.filter((item) => item.id !== position.id));
