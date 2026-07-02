@@ -10054,7 +10054,7 @@ Merge: 90130f7
 
 Date: 2026-07-02
 Branch: mobile/cycle-236-account-open-orders-summary
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Surface pending open-order count in the Account summary so Portfolio and Account communicate order exposure consistently.
 Implemented:
 - Added an `Open orders` row to `AccountScreen` preferences.
@@ -10070,8 +10070,8 @@ Verification:
 Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-account-position-summary.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-account-position-summary.png`.
-Commit: pending
-Merge: pending
+Commit: cefd3af
+Merge: 1062d76
 
 ### Heartbeat After Cycle 235
 
