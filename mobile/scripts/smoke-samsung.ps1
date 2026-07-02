@@ -15,7 +15,8 @@ param(
   [switch]$ServerOrderFailure,
   [switch]$ServerPortfolioFixture,
   [switch]$ServerCloseFixture,
-  [switch]$ServerPositionTrade
+  [switch]$ServerPositionTrade,
+  [switch]$ServerPositionBuyTrade
 )
 
 $ErrorActionPreference = "Stop"
@@ -81,6 +82,8 @@ if ($FutureListOrder) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerCloseFixture -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($ServerPositionTrade) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerPositionTrade -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
+} elseif ($ServerPositionBuyTrade) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -ServerPositionBuyTrade -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } else {
   & "$PSScriptRoot\smoke.ps1" -Deep -FutureListClose -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 }

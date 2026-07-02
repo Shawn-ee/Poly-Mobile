@@ -2904,3 +2904,17 @@ Findings:
 - Mobile API/service tests, mobile typecheck, and Samsung server-position trade smoke passed.
 Decision: Approve Cycle 195 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 196
+
+Date: 2026-07-02
+Branch: mobile/cycle-196
+Reviewer: Lead/Reviewer pass
+Scope: Samsung position Buy re-trade proof.
+Findings:
+- P1: Added Samsung/base smoke modes for the Buy side of Portfolio position re-trading.
+- P1: Samsung S23 proof verifies the synced server Portfolio row exposes Buy/Sell/Close and that tapping Buy opens a server-mode Buy ticket.
+- P2: This is proof coverage for the Cycle 195 re-trade behavior; live authenticated server order execution remains readiness-gated.
+- Mobile API/service tests, mobile typecheck, and Samsung server-position Buy trade smoke passed.
+Decision: Approve Cycle 196 for local commit/merge after scoped diff review.
+Merge approved: Yes
