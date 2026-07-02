@@ -8009,8 +8009,8 @@ Technical debt added:
 Technical debt resolved:
 - The autonomous loop now has machine-readable recovery guidance for each known server-backed Samsung proof blocker instead of relying on broad generic next actions.
 Result: Passed Cycle 174 QA. Combined decision harness blocked as expected with structured recovery plans, mobile typecheck passed, and mobile API/service tests pass.
-Commit: cycle branch HEAD (`Add server proof recovery plan`)
-Merged: Pending local merge after commit.
+Commit: `31f635b` (`Add server proof recovery plan`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `f066b30`.
 Next cycle: Cycle 175 should add another product-facing server-mode clarity proof or use the new recovery plan to retry/readiness-check infrastructure if the environment changes.
 Harnesses run:
 - Samsung Server Proof Decision Harness
