@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-251-event-detail-summary-label-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Make Event Detail market summary a named Samsung proof with a stable container assertion.
 Implemented:
 - Added Samsung wrapper support for `EventDetailSummary`.
@@ -10135,8 +10135,8 @@ Verification:
 Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
-Commit: pending
-Merge: pending
+Commit: 3530a3f
+Merge: e56a2be
 
 ### Heartbeat After Cycle 250
 
