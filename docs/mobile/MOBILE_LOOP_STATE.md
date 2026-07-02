@@ -10118,6 +10118,26 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 243
+
+Date: 2026-07-02
+Branch: mobile/cycle-243-event-outcome-buy-affordance
+Status: Verified; pending local merge.
+Objective: Make Event Detail outcome buttons communicate the trade action before users open a ticket.
+Implemented:
+- Added localized Buy copy beside the displayed odds on Event Detail outcome buttons.
+- Tightened the Samsung Event Detail smoke to require `Buy - 1.6x` on the Mexico outcome button.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:event-detail-outcome-depth` passed on Samsung S23 with Expo host `172.16.200.14` and port `8162`.
+- Visual screenshot confirms the Mexico outcome button shows `64%` plus `Buy - 1.6x` without crowding.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
+Commit: pending
+Merge: pending
+
 ### Cycle 242
 
 Date: 2026-07-02

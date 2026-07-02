@@ -275,3 +275,4 @@ Status:
 | GAP-253 | Event detail | Market depth price units | P1 | Yes | Verified | Cycle 240 adds USDT units to Event Detail market-level Best bid/Best ask cells and verifies `0.62 USDT`/`0.66 USDT` on Samsung S23. |
 | GAP-254 | Event detail | Outcome depth single-line fit | P1 | Yes | Verified | Cycle 241 keeps outcome-level bid/ask context on one readable line on Samsung S23 while preserving the verified depth text. |
 | GAP-255 | Event detail | Outcome-level liquidity size context | P1 | Yes | Verified | Cycle 242 adds a per-outcome liquidity-size row under Event Detail outcomes, prefers real best-level sizes, falls back to stable mock sizes, and verifies `Liquidity: Best bid 1.28k shares - Best ask 900 shares` on Samsung S23. |
+| GAP-256 | Event detail | Outcome button buy affordance | P1 | Yes | Verified | Cycle 243 adds explicit `Buy` action copy beside Event Detail outcome odds and verifies `Buy - 1.6x` on Samsung S23. |

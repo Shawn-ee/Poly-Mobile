@@ -16,6 +16,7 @@ type EventDetailCopy = {
   bestAsk: string;
   spread: string;
   shares: string;
+  buy: string;
 };
 
 const groupLabels: Record<Market["type"], { en: string; zh: string }> = {
@@ -260,7 +261,9 @@ export function EventDetail({
                     testID={`event-detail-outcome-${market.id}-${outcome.id}`}
                   >
                     <Text style={styles.probButtonText}>{outcome.probability}%</Text>
-                    <Text style={styles.probButtonSubtext}>{outcomeOdds(outcome)}x</Text>
+                    <Text style={styles.probButtonSubtext}>
+                      {t.buy} - {outcomeOdds(outcome)}x
+                    </Text>
                   </Pressable>
                 </View>
               ))}
