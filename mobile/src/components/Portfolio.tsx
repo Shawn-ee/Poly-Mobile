@@ -50,6 +50,7 @@ export type OpenOrder = {
   status: string;
   price: number;
   remaining: number;
+  originalShares?: number;
   remainingShares?: number;
   orderValue?: number;
   placedAt?: string;
@@ -95,6 +96,7 @@ type PortfolioCopy = {
   limitPrice: string;
   orderValue: string;
   placed: string;
+  size: string;
   shares: string;
   impliedOdds: string;
   filledShares: string;
@@ -229,6 +231,11 @@ export function Portfolio({
             <Text style={styles.openOrderRemaining}>
               {t.remaining}: {openOrderRemainingShares(order).toLocaleString(undefined, { maximumFractionDigits: 2 })} {t.shares}
             </Text>
+            {typeof order.originalShares === "number" && (
+              <Text accessibilityLabel={`open-order-size-${order.id}`} style={styles.openOrderPlaced}>
+                {t.size}: {order.originalShares.toLocaleString(undefined, { maximumFractionDigits: 2 })} {t.shares}
+              </Text>
+            )}
             {order.placedAt && (
               <Text accessibilityLabel={`open-order-placed-${order.id}`} style={styles.openOrderPlaced}>
                 {t.placed}: {order.placedAt}

@@ -1,26 +1,26 @@
 {
-  "generatedAt": "2026-07-02T08:30:45.183Z",
+  "generatedAt": "2026-07-02T08:35:20.269Z",
   "proofPrefixes": [
     "holiwyn-mobile-proof-",
     "holiwyn-mobile-open-cancel-"
   ],
   "totals": {
-    "users": 10,
-    "orders": 10,
+    "users": 11,
+    "orders": 11,
     "trades": 6,
     "takerFills": 6,
     "makerFills": 0,
-    "apiCredentials": 10
+    "apiCredentials": 11
   },
   "prefixCounts": {
-    "holiwyn-mobile-proof-": 10
+    "holiwyn-mobile-proof-": 11
   },
   "orderStatusCounts": {
-    "CANCELED": 5,
+    "CANCELED": 6,
     "FILLED": 5
   },
   "orderSideCounts": {
-    "BUY": 10
+    "BUY": 11
   },
   "fillRoleCounts": {
     "taker": 6,
@@ -45,6 +45,16 @@
     }
   },
   "latestUsers": [
+    {
+      "username": "holiwyn-mobile-proof-cycle-228-open",
+      "userId": "9ff4bb8f-a95d-4b65-ab0b-bb6afd36bcac",
+      "createdAt": "2026-07-02T08:30:52.307Z",
+      "availableUSDC": "10000",
+      "lockedUSDC": "0",
+      "orders": 1,
+      "trades": 0,
+      "apiCredentials": 1
+    },
     {
       "username": "holiwyn-mobile-proof-cycle-227-open",
       "userId": "69efec58-8ebc-4dc6-a986-5d8bd9d22f87",
@@ -147,6 +157,19 @@
     }
   ],
   "latestOrders": [
+    {
+      "id": "d507bb62-7764-44cd-9f39-dfaa30d57ac8",
+      "username": "holiwyn-mobile-proof-cycle-228-open",
+      "side": "BUY",
+      "status": "CANCELED",
+      "price": "0.01",
+      "size": "100",
+      "remaining": "100",
+      "notional": "1",
+      "remainingNotional": "1",
+      "createdAt": "2026-07-02T08:31:32.482Z",
+      "updatedAt": "2026-07-02T08:31:35.452Z"
+    },
     {
       "id": "ba76bae5-de85-4075-a0dc-cd7f1adc7f68",
       "username": "holiwyn-mobile-proof-cycle-227-open",
