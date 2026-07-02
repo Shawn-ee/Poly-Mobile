@@ -3085,3 +3085,26 @@ Bugs:
 - Initial Samsung run scrolled past the latest-order clock before asserting it. The harness now checks latest-order live clock before scrolling and checks position/activity clocks after scrolling.
 Visual QA:
 - Samsung proof shows live ticket opening, mock order placement, latest-order live clock, open-position live badge/clock, and Recent activity live badge/clock on the real phone.
+
+### Cycle 146
+
+Date: 2026-07-01
+Device: Samsung S23 through Expo Go (`adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`)
+Build/run command:
+- `npm run smoke:samsung:server-order-failure`
+- `npm.cmd run typecheck`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The Samsung wrapper now proves server-mode order failure recovery on the real phone when backend order submission is unavailable.
+Screenshots:
+- `docs/mobile/screenshots/cycle-146-samsung-server-order-failure-smoke.png`
+- `docs/mobile/screenshots/cycle-146-samsung-server-order-failure-ticket.png`
+- `docs/mobile/screenshots/cycle-146-samsung-server-order-failure-error.png`
+Harness evidence:
+- `docs/mobile/harness/cycle-146-samsung-server-order-failure-ticket.xml`
+- `docs/mobile/harness/cycle-146-samsung-server-order-failure-error.xml`
+Bugs:
+- Initial Samsung run inherited stale balance; fixed by launching `ServerOrderFailure` through the forced reset/ticket deep link.
+- The server-order-failure path still tried to tap the futures row after forced ticket launch; fixed by treating the launch hierarchy as the ticket.
+- The phone needed longer than the old one-second wait for unavailable-backend order failure; fixed by waiting for the retry error text.
+Visual QA:
+- Samsung proof shows the forced World Cup winner ticket with clean balance and then keeps the ticket open with `Order failed. Try again.` and retry CTA after failed server submission.

@@ -55,6 +55,7 @@
     "smoke:samsung:live-order": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -LiveOrder -Port 8143",
     "smoke:samsung:live-order-close": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -LiveOrderClose -Port 8144",
     "smoke:samsung:live-portfolio-badge-deep": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -LivePortfolioBadgeDeep -Port 8145",
+    "smoke:samsung:server-order-failure": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerOrderFailure -Port 8146",
     "smoke:portfolio-position-count": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -PortfolioPositionCount -Port 8109",
     "smoke:portfolio-activity-count": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -PortfolioActivityCount -Port 8110",
     "smoke:portfolio-closed-count": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -PortfolioClosedCount -Port 8111",
