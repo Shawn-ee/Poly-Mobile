@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-273-orderbook-quote-size-test
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Add source-level backend coverage for quote depth sizes used by mobile Portfolio position tickets.
 Implemented:
 - Added `src/__tests__/orderbook-pricing.quote-size.test.ts`.
@@ -10134,8 +10134,8 @@ Verification:
 Evidence:
 - The new quote-size test expects `bestBidSize: 1000`, `bestAskSize: 2500`, `mid: 0.485`, and fallback null sizes for missing outcomes.
 Result: Passed Cycle 273 QA. The backend quote source feeding mobile Portfolio position tickets now has direct regression coverage.
-Commit: pending.
-Merge: pending.
+Commit: 67390fc
+Merge: d092986
 
 ### Cycle 272
 
