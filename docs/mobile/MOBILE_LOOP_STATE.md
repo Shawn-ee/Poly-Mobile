@@ -8240,8 +8240,8 @@ Technical debt added:
 Technical debt resolved:
 - Persisted slippage now appears in Account ticket defaults, and Samsung future-order proof is stable across retained phone state.
 Result: Passed Cycle 179 QA. Samsung future-list order smoke completed ticket/order/Portfolio/activity flow, then Account verified `Ticket default: Buy 100 USDT - Slippage 2%`; mobile typecheck passed, and mobile API/service tests pass.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `b8fb489` (`Persist ticket slippage default`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `964aba2`.
 Next cycle: Cycle 180 should continue user-configurable ticket settings, add server/profile sync coverage for slippage, or retry backend readiness recovery if Docker/DB/API-key state changes.
 Harnesses run:
 - Samsung Future List Order Smoke Harness
