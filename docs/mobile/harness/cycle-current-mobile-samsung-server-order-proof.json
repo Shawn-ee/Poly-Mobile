@@ -1,9 +1,31 @@
 ﻿{
     "ready":  true,
-    "side":  "sell",
-    "username":  "holiwyn-mobile-proof-cycle-216-sellc",
-    "userId":  "17bc33d1-5ef4-4982-8d20-2f2763975201",
-    "keyId":  "pk_live_9c527be18ec97644",
-    "port":  8159,
+    "side":  "buy",
+    "username":  "holiwyn-mobile-proof-cycle-217-buy",
+    "userId":  "d32d66fb-abf4-4938-a336-ca7ead1b29e3",
+    "keyId":  "pk_live_b17e351bb4e25b93",
+    "port":  8158,
+    "event":  {
+                  "id":  "9f662a7d-5700-43e4-b4f1-50e99cef6ec9",
+                  "slug":  "world-cup-2026-paraguay-vs-australia-2026-06-25",
+                  "title":  "Paraguay vs Australia"
+              },
+    "market":  {
+                   "id":  "49a21c1b-893e-4139-ac54-6ad79d2ee204",
+                   "title":  "Paraguay vs Australia: Both teams to score"
+               },
+    "outcome":  {
+                    "id":  "67d221dd-6139-4643-82ee-2470944b692a",
+                    "name":  "Yes"
+                },
+    "makerOrder":  {
+                       "id":  "7f8a6daf-aa1e-4cfd-8ecc-523babf69b8e",
+                       "status":  "OPEN",
+                       "price":  "0.50",
+                       "size":  "500",
+                       "requiredRemaining":  "250",
+                       "remaining":  "500"
+                   },
+    "mobileUser":  null,
     "summaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof.json"
 }

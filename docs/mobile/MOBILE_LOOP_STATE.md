@@ -9591,6 +9591,42 @@ Notes:
 Commit: 30a5d2e
 Merge: 3727f81
 
+### Cycle 217
+
+Date: 2026-07-02
+Branch: mobile/cycle-217-proof-summary-target
+Status: Verified and ready for local merge.
+Objective: Make reusable Samsung server-order proof summaries self-diagnosing after seed resets.
+Implemented:
+- The Samsung server-order proof wrapper now idempotently seeds the local World Cup proof market set before liquidity preparation.
+- The wrapper now reads the generated liquidity summary and writes selected event, market, outcome, maker order, and mobile user metadata into `cycle-current-mobile-samsung-server-order-proof.json`.
+- The checked wrapper surfaced a DB-reset failure before seeding was added; after the recovery change the BUY proof reran cleanly.
+Verification:
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run mobile:samsung-server-order-proof -- -Side buy -Username holiwyn-mobile-proof-cycle-217-buy` passed on Samsung S23.
+- `npm.cmd run test:mobile-api` passed with 15 files and 65 tests.
+Evidence:
+- `docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof.json`.
+- `docs/mobile/harness/cycle-current-mobile-server-order-fill-liquidity.json`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
+Notes:
+- The latest summary records the BUY proof against Paraguay vs Australia: Both teams to score, outcome Yes, maker order `7f8a6daf-aa1e-4cfd-8ecc-523babf69b8e`.
+Commit: cycle branch HEAD
+Merge: pending
+
+### Heartbeat After Cycle 217
+
+Completed cycles: 215, 216, 217.
+Verified progress: Reusable isolated Samsung server-order proofs now exist, complete-set mint cost basis no longer inflates Portfolio invested/P&L totals, proof liquidity can recover after local DB resets, and summary JSON now records the exact event/market/outcome/maker target.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung real-device QA, server quote/order/Portfolio sync, backend-derived filled/canceled activity, latest activity/order previews, and BUY/SELL filled-order proof paths.
+Current backend state: Local Docker/Postgres backend supports mobile API-key Portfolio/profile/order flows, canonical order create/cancel, matching, correct complete-set mint cost basis, recent-trade/canceled-order history, and deterministic proof liquidity harnesses that can reseed local World Cup markets.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: Repeated proof runs still mutate the local database and create many proof users/orders; future harnesses should continue using isolated usernames and summary metadata, and eventually move to disposable per-cycle markets or database snapshots.
+Next three likely cycles: add richer open-order/orderbook depth parity, add proof cleanup or disposable market isolation, and continue World Cup event detail/trading parity.
+
 ### Heartbeat After Cycle 211
 
 Completed cycles: 209, 210, 211.

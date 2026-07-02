@@ -36,6 +36,27 @@ function Invoke-CheckedNative {
   }
 }
 
+function Read-LiquiditySummary {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$RepoRoot,
+    [Parameter(Mandatory = $true)]
+    [string]$Side
+  )
+
+  $relativePath = if ($Side -eq "sell") {
+    "docs/mobile/harness/cycle-current-mobile-server-sell-fill-liquidity.json"
+  } else {
+    "docs/mobile/harness/cycle-current-mobile-server-order-fill-liquidity.json"
+  }
+  $path = Join-Path $RepoRoot $relativePath
+  if (-not (Test-Path $path)) {
+    throw "Liquidity summary was not written: $relativePath."
+  }
+
+  Get-Content -Raw -Path $path | ConvertFrom-Json
+}
+
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $stamp = Get-Date -Format "yyyyMMddHHmmss"
 $proofUsername = if ($Username) { $Username } else { "holiwyn-mobile-proof-$Side-$stamp" }
@@ -49,11 +70,13 @@ try {
 
   Push-Location $repoRoot
   try {
+    Invoke-CheckedNative -Label "World Cup proof seed" -Command { cmd /c npx.cmd tsx scripts/import_worldcup_today_markets.ts }
     if ($Side -eq "sell") {
       Invoke-CheckedNative -Label "Sell liquidity preparation" -Command { cmd /c npm.cmd run mobile:server-sell-fill-liquidity }
     } else {
       Invoke-CheckedNative -Label "Buy liquidity preparation" -Command { cmd /c npm.cmd run mobile:server-order-fill-liquidity }
     }
+    $liquiditySummary = Read-LiquiditySummary -RepoRoot $repoRoot -Side $Side
 
     $credentialRaw = cmd /c npm.cmd run mobile:dev-credential 2>&1 | Out-String
     $credential = ConvertFrom-FirstJsonObject -Raw $credentialRaw
@@ -83,6 +106,11 @@ try {
       userId = $credential.userId
       keyId = $credential.keyId
       port = $resolvedPort
+      event = $liquiditySummary.event
+      market = $liquiditySummary.market
+      outcome = $liquiditySummary.outcome
+      makerOrder = $liquiditySummary.makerOrder
+      mobileUser = $liquiditySummary.mobileUser
       summaryPath = $SummaryPath
     }
     New-Item -ItemType Directory -Force -Path (Split-Path -Parent $resolvedSummaryPath) | Out-Null
