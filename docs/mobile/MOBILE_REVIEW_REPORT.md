@@ -2754,3 +2754,18 @@ Findings:
 - Focused Jest service/route tests, mobile API/service tests, and mobile typecheck passed.
 Decision: Approve Cycle 185 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 186
+
+Date: 2026-07-01
+Branch: mobile/cycle-186
+Reviewer: Lead/Reviewer pass
+Scope: Mobile profile-preference async service coverage.
+Findings:
+- P1: Added `loadProfilePreferences` coverage proving API responses hydrate local locale, side, slippage, and saved markets.
+- P1: Added `saveProfilePreferences` coverage proving local preferences are sent as canonical server payloads including `ticketDefaultSlippage`.
+- P1: Added legacy response fallback proof so missing server slippage still returns local `1%`.
+- P2: Tests use minimal API mocks cast to the helper parameter type, preserving strict production `PolyApi` signatures while avoiding broad fake API classes in unit tests.
+- Mobile API/service tests and mobile typecheck passed.
+Decision: Approve Cycle 186 for local commit/merge after scoped diff review.
+Merge approved: Yes

@@ -4071,3 +4071,25 @@ Bugs:
 - None in final run.
 Visual QA:
 - No visual change.
+
+### Cycle 186
+
+Date: 2026-07-01
+Device: Mobile service unit harness
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+Result: Passed. Mobile profile preference service coverage now proves the async load/save helpers used by the app, not only the pure mapper functions.
+Harness evidence:
+- Mobile API/service suite passed with 9 files and 43 tests.
+- Mobile typecheck passed.
+Screenshot evidence:
+- None; mobile service test cycle.
+Structured findings:
+- `loadProfilePreferences` calls the API client and maps server `SELL` plus slippage into local state.
+- `saveProfilePreferences` sends canonical server payloads with `ticketDefaultSlippage`.
+- Save responses from older payloads without slippage normalize back to `1%`.
+Bugs:
+- Initial typecheck found minimal API mocks did not satisfy the full `PolyApi` class type; fixed with explicit test-local casts while keeping production helper signatures strict.
+Visual QA:
+- No visual change.

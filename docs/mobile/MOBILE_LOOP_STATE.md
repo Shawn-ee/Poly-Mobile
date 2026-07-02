@@ -8507,6 +8507,41 @@ Harnesses run:
 Harness failures:
 - None.
 
+## Cycle 186
+
+Date: 2026-07-01
+Branch: mobile/cycle-186
+Goal: Prove the mobile profile-preference async service helpers call the API layer and normalize responses used by the app.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No direct UI change.
+Backend/API changed: No production API change; mobile service tests now cover load/save helper behavior.
+Database/schema changed: None.
+Files changed: `mobile/src/__tests__/profilePreferencesService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm.cmd run typecheck` in `mobile/`.
+Screenshots captured:
+- None; mobile service unit cycle.
+Harness evidence:
+- Mobile API/service suite passed with 9 files and 43 tests.
+- Mobile typecheck passed.
+Bugs found:
+- First typecheck run found minimal API mocks were not assignable to `PolyApi`; fixed with explicit test-local casts.
+Technical debt added:
+- None.
+Technical debt resolved:
+- The profile sync mobile service is no longer covered only by pure mappers and raw HTTP client tests; load/save helpers now have direct unit evidence.
+Result: Passed Cycle 186 QA. Mobile profile sync service tests and typecheck pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Continue toward final DoD with a profile-sync server-mode proof fixture or another backend-backed trading parity seam that can be verified without live backend readiness.
+Harnesses run:
+- Mobile API/Profile Preference Unit Harness
+- Mobile Typecheck Harness
+- Review Harness
+Harness failures:
+- Initial typecheck failure from narrow test mocks; fixed and rerun passed.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.
