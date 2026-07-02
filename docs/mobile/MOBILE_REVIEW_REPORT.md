@@ -3059,3 +3059,18 @@ Findings:
 - Filled-trade proof, focused backend route tests, mobile API/service tests, and mobile typecheck passed.
 Decision: Approve Cycle 205 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 206
+
+Date: 2026-07-02
+Branch: mobile/cycle-206
+Reviewer: Lead/Reviewer pass
+Scope: Samsung server filled-trade history proof.
+Findings:
+- P0: Added a Samsung server-mode smoke proving backend `recentTrades` sync into visible Portfolio Recent activity.
+- P0: The proof now covers the actual device UX for a filled fake-token World Cup trade: `Bought`, proof market title, `YES`, cost, filled shares, execution price, and implied odds.
+- P1: The wrapper keeps the mobile dev API key in process for the proof and does not write it to docs or source.
+- P1: The first proof attempt exposed a scroll/assertion mismatch; final smoke asserts sync on launch and checks the activity row after deeper scrolling.
+- Samsung server filled-trade history proof, mobile API/service tests, and mobile typecheck passed.
+Decision: Approve Cycle 206 for local commit/merge after scoped diff review.
+Merge approved: Yes
