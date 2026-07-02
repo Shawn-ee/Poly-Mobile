@@ -11,6 +11,12 @@ export type TicketQuote = {
   lastPrice: number | null;
 };
 
+type QuoteableOutcome = {
+  id: string;
+  label: string;
+  probability: number;
+};
+
 const toDecimal = (value: string | number | null): number | null => {
   if (value === null) return null;
   const parsed = typeof value === "number" ? value : Number(value);
@@ -42,4 +48,22 @@ export const quoteToTicketQuote = (quote: Quote): TicketQuote => {
 export const loadTicketQuotes = async (api: PolyApi, marketId: string, outcomeId?: string): Promise<TicketQuote[]> => {
   const payload = await api.getMarketQuote(marketId, outcomeId);
   return payload.quotes.map(quoteToTicketQuote);
+};
+
+export const applyTicketQuoteToOutcome = <TOutcome extends QuoteableOutcome>(
+  outcome: TOutcome,
+  quotes: TicketQuote[],
+): TOutcome => {
+  const normalizedLabel = outcome.label.trim().toLowerCase();
+  const quote = quotes.find(
+    (item) =>
+      item.outcomeId === outcome.id ||
+      item.outcomeName.trim().toLowerCase() === normalizedLabel,
+  );
+
+  if (!quote) return outcome;
+  return {
+    ...outcome,
+    probability: quote.probability,
+  };
 };

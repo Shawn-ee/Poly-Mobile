@@ -2324,3 +2324,19 @@ Findings:
 - Mobile typecheck and mobile API/service tests passed.
 Decision: Approve Cycle 158 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 159
+
+Date: 2026-07-01
+Branch: mobile/cycle-159
+Reviewer: Lead/Reviewer pass
+Scope: Server quote hydration for open trade tickets.
+Findings:
+- P1: `App.tsx` now attempts quote hydration for open tickets only in server mode, preserving mock-mode behavior for Samsung QA and local fake-token trading.
+- P1: The hydration path guards against stale async quote responses by checking the current market and outcome before updating ticket state.
+- P1: `applyTicketQuoteToOutcome` now covers canonical outcome id matching, label fallback, and no-match preservation.
+- P1: Failed quote requests are ignored so an unavailable backend does not close or corrupt the ticket.
+- P2: This updates the selected ticket outcome only; broader event-detail list quote refresh remains a later parity cycle.
+- Mobile typecheck and mobile API/service tests passed.
+Decision: Approve Cycle 159 for local commit/merge after scoped diff review.
+Merge approved: Yes

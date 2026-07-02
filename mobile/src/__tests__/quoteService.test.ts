@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
 import type { PolyApi } from "../api";
-import { loadTicketQuotes, quoteToTicketQuote } from "../services/quoteService";
+import { applyTicketQuoteToOutcome, loadTicketQuotes, quoteToTicketQuote } from "../services/quoteService";
 import type { Quote } from "../types";
 
 describe("quote service", () => {
@@ -111,5 +111,59 @@ describe("quote service", () => {
       },
     ]);
     expect(getMarketQuote).toHaveBeenCalledWith("winner", "usa");
+  });
+
+  test("applies a matching ticket quote to an outcome by id", () => {
+    const outcome = { id: "france", label: "France", zhLabel: "France", probability: 34, color: "#2563eb" };
+
+    expect(
+      applyTicketQuoteToOutcome(outcome, [
+        {
+          outcomeId: "france",
+          outcomeName: "France",
+          probability: 42,
+          bestBid: 41,
+          bestAsk: 43,
+          midPrice: 42,
+          lastPrice: null,
+        },
+      ]),
+    ).toEqual({ ...outcome, probability: 42 });
+  });
+
+  test("applies a matching ticket quote to an outcome by label fallback", () => {
+    const outcome = { id: "local-france", label: "France", zhLabel: "France", probability: 34, color: "#2563eb" };
+
+    expect(
+      applyTicketQuoteToOutcome(outcome, [
+        {
+          outcomeId: "server-france",
+          outcomeName: " france ",
+          probability: 47,
+          bestBid: 46,
+          bestAsk: 48,
+          midPrice: 47,
+          lastPrice: null,
+        },
+      ]).probability,
+    ).toBe(47);
+  });
+
+  test("keeps the original outcome when no matching quote is available", () => {
+    const outcome = { id: "spain", label: "Spain", zhLabel: "Spain", probability: 11, color: "#ef4444" };
+
+    expect(
+      applyTicketQuoteToOutcome(outcome, [
+        {
+          outcomeId: "france",
+          outcomeName: "France",
+          probability: 42,
+          bestBid: 41,
+          bestAsk: 43,
+          midPrice: 42,
+          lastPrice: null,
+        },
+      ]),
+    ).toBe(outcome);
   });
 });
