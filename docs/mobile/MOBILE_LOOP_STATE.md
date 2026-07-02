@@ -8860,8 +8860,8 @@ Technical debt added:
 Technical debt resolved:
 - Samsung can now prove the post-close server refresh UI state even while live backend readiness remains unavailable.
 Result: Passed Cycle 194 QA. Mobile tests, typecheck, and Samsung server close fixture smoke pass.
-Commit: `PENDING` (`PENDING`).
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `5072a07` (`Add Samsung server close fixture proof`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `32901b9`.
 Next cycle: Continue toward final DoD by improving authenticated server proof readiness recovery or extending Polymarket-like Portfolio/order detail parity.
 Harnesses run:
 - Mobile Portfolio Fixture Harness
