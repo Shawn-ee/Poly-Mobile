@@ -10118,6 +10118,39 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 247
+
+Date: 2026-07-02
+Branch: mobile/cycle-247-event-detail-buy-ticket-proof
+Status: Verified; pending local merge.
+Objective: Make the Event Detail Buy-ticket handoff a named Samsung proof paired with the Sell-ticket handoff proof.
+Implemented:
+- Added Samsung wrapper and package script `smoke:samsung:event-detail-buy-ticket`.
+- Tightened the Event Detail Buy ticket assertion to require `Estimated cost`.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:event-detail-buy-ticket` passed on Samsung S23 with Expo host `172.16.200.14` and port `8165`.
+- Visual screenshot confirms the Buy tab is selected and the ticket shows `Estimated cost` plus `Place buy order`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`.
+Commit: pending
+Merge: pending
+
+### Heartbeat After Cycle 247
+
+Completed cycles: 245, 246, 247.
+Verified progress: Event Detail action labels and ticket handoff are now proven in both directions on Samsung S23. The Sell-default proof exposed async default hydration reverting the action to Buy, then the sell-ticket proof exposed a separate handoff bug where a Sell-labeled outcome still opened a Buy ticket. Both were fixed and covered with named Samsung proofs. The Buy-ticket handoff is also now a named Samsung proof with economics assertions.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token and server-mode trading, Samsung real-device QA, server quote/order/Portfolio sync, backend-derived filled/canceled activity with side/share/price detail, open-order cards with notional/remaining value/original size/fill progress/placed time, Portfolio count tiles, Account exposure rows, latest activity/order previews, proof wrappers, Event Detail market/outcome depth, and proven Buy/Sell ticket handoff from Event Detail.
+Current backend state: Local Docker/Postgres backend supports mobile API-key Portfolio/profile/order flows, canonical order create/cancel, matching, complete-set mint cost basis, recent-trade/canceled-order history, repeatable World Cup seeding/liquidity for mobile proofs, and proof-noise reporting/gating.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go for proof flows. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: Expo Go remains LAN/runtime dependent; proof state remains noisy from repeated autonomous orders; Event Detail proof coverage is now strong but still mock-mode for this specific detail-ticket handoff.
+Next three likely cycles: add live Event Detail or live ticket handoff parity, continue server-backed ticket proof tightening, and improve market card depth/action consistency outside Event Detail.
+
 ### Cycle 246
 
 Date: 2026-07-02
