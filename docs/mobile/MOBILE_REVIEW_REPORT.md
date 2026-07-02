@@ -2738,3 +2738,19 @@ Findings:
 - Credential readiness, combined Samsung decision expected-blocked harness, mobile dev credential dry-run, mobile API/service tests, and mobile typecheck passed.
 Decision: Approve Cycle 184 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 185
+
+Date: 2026-07-01
+Branch: mobile/cycle-185
+Reviewer: Lead/Reviewer pass
+Scope: Backend profile-preference service coverage.
+Findings:
+- P1: Added focused service tests for default profile preferences when no row exists.
+- P1: Added legacy stored-payload normalization coverage, including defaulting missing slippage to `1%`.
+- P1: Added save/upsert return-shape coverage for canonical payloads with `ticketDefaultSlippage`.
+- P1: Added parser rejection coverage for incomplete preference payloads before storage.
+- P2: Tests mock Prisma query calls, so live database migration/application is still covered by schema validation and future backend readiness, not this unit cycle.
+- Focused Jest service/route tests, mobile API/service tests, and mobile typecheck passed.
+Decision: Approve Cycle 185 for local commit/merge after scoped diff review.
+Merge approved: Yes

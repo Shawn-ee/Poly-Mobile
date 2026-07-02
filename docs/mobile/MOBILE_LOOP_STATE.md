@@ -8468,6 +8468,45 @@ Open blockers: None for autonomous progress. Successful live server-backed Samsu
 Risks: Existing API keys created before `account:write` may need regeneration before profile preference writes work in server mode; the readiness harness now makes the current generator scope explicit but cannot prove arbitrary exported key scopes without database access.
 Next three likely cycles: add a backend profile-preferences service unit test for stored/default payloads, add a profile-sync server-mode proof fixture, or continue backend-backed order/history parity.
 
+## Cycle 185
+
+Date: 2026-07-01
+Branch: mobile/cycle-185
+Goal: Add focused backend service coverage for profile-preference defaults, legacy storage normalization, and save behavior.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No direct UI change.
+Backend/API changed: Added tests only; no route or service behavior change.
+Database/schema changed: None.
+Files changed: `src/server/services/__tests__/profilePreferences.test.ts`, `docs/mobile/`.
+Tests run:
+- `npx.cmd jest src/server/services/__tests__/profilePreferences.test.ts src/__tests__/profile.preferences.route.test.ts --runInBand`.
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm.cmd run typecheck` in `mobile/`.
+Screenshots captured:
+- None; backend service unit cycle.
+Harness evidence:
+- Backend profile-preference service/route tests passed with 2 files and 7 tests.
+- Mobile API/service suite passed with 9 files and 41 tests.
+- Mobile typecheck passed.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Profile preference persistence/default behavior is no longer only route-tested; the service now has direct coverage for no-row defaults, legacy payload normalization, canonical save return shape, and invalid payload rejection.
+Result: Passed Cycle 185 QA. Focused backend service tests and mobile contract checks pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Continue toward final DoD with a profile-sync server-mode proof fixture or another backend-backed trading parity seam that can be verified without a live local backend.
+Harnesses run:
+- Backend Profile Preferences Service Harness
+- Backend Profile Preferences Route Harness
+- Mobile API/Profile Preference Unit Harness
+- Mobile Typecheck Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.
