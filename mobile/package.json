@@ -74,6 +74,7 @@
     "smoke:samsung:account-profile-sync-error": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -AccountProfileSyncError -Port 8148",
     "smoke:samsung:server-order-failure": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerOrderFailure -Port 8146",
     "smoke:samsung:server-unavailable": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerUnavailable -Port 8147",
+    "smoke:samsung:server-portfolio-fixture": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerPortfolioFixture -Port 8150",
     "smoke:portfolio-position-count": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -PortfolioPositionCount -Port 8109",
     "smoke:portfolio-activity-count": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -PortfolioActivityCount -Port 8110",
     "smoke:portfolio-closed-count": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -PortfolioClosedCount -Port 8111",
@@ -86,7 +87,8 @@
     "smoke:search-query": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SearchQuery -Port 8086",
     "smoke:search-clear-query": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -SearchClearQuery -Port 8103",
     "smoke:server-unavailable": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerUnavailable -Port 8087",
-    "smoke:server-order-failure": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerOrderFailure -Port 8088"
+    "smoke:server-order-failure": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerOrderFailure -Port 8088",
+    "smoke:server-portfolio-fixture": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerPortfolioFixture -Port 8089"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",

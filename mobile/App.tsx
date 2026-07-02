@@ -271,6 +271,7 @@ export default function App() {
     if (!mounted.current || !url) return;
     const shouldForceWorldCupWinnerFranceTicket = url.includes("forceWorldCupWinnerFranceTicket=1");
     const shouldForceClosedWorldCupWinnerFrance = url.includes("forceClosedWorldCupWinnerFrance=1");
+    const shouldForceServerPortfolioFixture = url.includes("forceServerPortfolioFixture=1");
     const shouldForceLive = url.includes("forceLive=1");
     setForceOrderFailure(url.includes("forceOrderFailure=1"));
     if (url.includes("forceResetState=1")) {
@@ -293,7 +294,12 @@ export default function App() {
         setForceAccountSignedIn(false);
       };
       resetRuntimeState();
-      if (!shouldForceWorldCupWinnerFranceTicket && !shouldForceClosedWorldCupWinnerFrance && !shouldForceLive) {
+      if (
+        !shouldForceWorldCupWinnerFranceTicket &&
+        !shouldForceClosedWorldCupWinnerFrance &&
+        !shouldForceServerPortfolioFixture &&
+        !shouldForceLive
+      ) {
         setTimeout(resetRuntimeState, 750);
       }
       AsyncStorage.multiRemove([
@@ -341,7 +347,7 @@ export default function App() {
       };
       AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
     }
-    if (url.includes("forceServerPortfolioFixture=1")) {
+    if (shouldForceServerPortfolioFixture) {
       const fixture = serverHydratedPortfolioFixture();
       setBalance(fixture.balance);
       setPositions(fixture.positions);

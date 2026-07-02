@@ -74,6 +74,12 @@ To verify Samsung server-mode order failure recovery, run:
 npm run smoke:samsung:server-order-failure
 ```
 
+To verify the Samsung server-hydrated Portfolio fixture, run:
+
+```powershell
+npm run smoke:samsung:server-portfolio-fixture
+```
+
 Before a Samsung server-mode success proof, verify the phone launch variables with:
 
 ```powershell

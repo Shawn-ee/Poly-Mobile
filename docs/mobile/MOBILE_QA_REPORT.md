@@ -4232,3 +4232,29 @@ Bugs:
 - None in final run.
 Visual QA:
 - No Samsung visual run this cycle; next cycle can use this fixture for a Samsung Portfolio row proof.
+
+### Cycle 193
+
+Date: 2026-07-01
+Device: Samsung S23 via Expo Go plus mobile service unit harness
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run smoke:samsung:server-portfolio-fixture` in `mobile/`
+Result: Passed. Samsung now proves the deterministic server-hydrated Portfolio fixture.
+Harness evidence:
+- Mobile API/service suite passed with 13 files and 54 tests.
+- Mobile typecheck passed.
+- Samsung smoke passed on `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` through Expo host `172.16.200.14`, port `8150`.
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-portfolio-fixture.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-portfolio-fixture.xml`
+Structured findings:
+- The Samsung proof sees `Server portfolio synced`, one open position, the `SERVER - Buy - France - 42%` row, `+45 USDT` P/L, filled shares `500.00`, and current price `51%`.
+- The smoke wrapper now exposes `smoke:samsung:server-portfolio-fixture`.
+- The base smoke harness now exposes `smoke:server-portfolio-fixture` for emulator/fallback proof.
+Bugs:
+- First Samsung run exposed a forced-reset timing bug: `forceResetState=1` reseeded the fixture and then reset the app back to Home. The fixture flag is now exempt from the delayed reset path.
+- Second Samsung run proved the visible Portfolio fixture but failed on a below-fold activity timestamp assertion. The final smoke assertion is scoped to the visible server Portfolio proof.
+Visual QA:
+- Passed on Samsung S23 through Expo Go.
