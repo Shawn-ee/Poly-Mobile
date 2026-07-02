@@ -9,6 +9,7 @@ param(
   [switch]$Deep,
   [switch]$OrderFailure,
   [switch]$OpenOrderCancel,
+  [switch]$OpenSellOrderCancel,
   [switch]$EventDetailTrade,
   [switch]$EventDetailSummary,
   [switch]$EventDetailProps,
@@ -322,12 +323,12 @@ try {
     }
   }
   $expoArgs = @("expo", "start", "--port", "$Port", "--offline")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary) {
+  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
   Wait-ExpoReady -Port $Port
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://${ExpoHost}:$Port/--/?forceOrderFailure=1"
@@ -351,6 +352,8 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerPortfolioFixture=1"
   } elseif ($ServerPositionDetails) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerPortfolioFixture=1"
+  } elseif ($OpenSellOrderCancel) {
+    "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceOpenOrder=1,forceOpenOrderSide=sell"
   } elseif ($OpenOrderCancel) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceOpenOrder=1"
   } elseif ($EventDetailSellDefault -or $EventDetailSellDefaultTrade) {
@@ -409,7 +412,7 @@ try {
 
   $launchExpected = if ($ServerUnavailable) {
     @("Holiwyn", "Portfolio", "Server sync unavailable", "Showing local fake-token portfolio.")
-  } elseif ($OpenOrderCancel) {
+  } elseif ($OpenOrderCancel -or $OpenSellOrderCancel) {
     @("Holiwyn", "Portfolio", "Open orders", "Cancel")
   } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade) {
     @("Mexico vs. Ecuador", "4 markets", "8 outcomes")
@@ -1182,24 +1185,36 @@ try {
       return
     }
 
-    if ($OpenOrderCancel) {
-      Save-Screenshot -Name "cycle-current-holiwyn-open-order.png"
-      $openOrderHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-open-order.xml"
-      Assert-HierarchyContains -Path $openOrderHierarchy -Expected @("portfolio-open-order-count", "Open orders", "1", "Mexico vs. Ecuador winner", "Limit", "47%", "Implied odds", "2.1x", "Order value", "Remaining", "Potential payout", "250 USDT", "Cancel")
-      Invoke-TapHierarchyNode -Path $openOrderHierarchy -Identifier "cancel-open-order-smoke-open-order"
+    if ($OpenOrderCancel -or $OpenSellOrderCancel) {
+      $openOrderProofName = if ($OpenSellOrderCancel) { "cycle-current-holiwyn-open-sell-order" } else { "cycle-current-holiwyn-open-order" }
+      $openOrderCancelButton = if ($OpenSellOrderCancel) { "cancel-open-order-smoke-open-sell-order" } else { "cancel-open-order-smoke-open-order" }
+      $openOrderExpected = if ($OpenSellOrderCancel) {
+        @("portfolio-open-order-count", "Open orders", "1", "Mexico vs. Ecuador winner", "Sell - Mexico - OPEN", "Limit", "52%", "Implied odds", "1.9x", "Order value", "52 USDT", "Remaining", "Potential proceeds", "52 USDT", "Cancel")
+      } else {
+        @("portfolio-open-order-count", "Open orders", "1", "Mexico vs. Ecuador winner", "Limit", "47%", "Implied odds", "2.1x", "Order value", "Remaining", "Potential payout", "250 USDT", "Cancel")
+      }
+      $openOrderCanceledExpected = if ($OpenSellOrderCancel) {
+        @("portfolio-open-order-count", "Open orders", "0", "Recent activity", "Canceled", "Mexico vs. Ecuador winner", "52 USDT", "Sell - Canceled 100.00 shares - Limit 52%")
+      } else {
+        @("portfolio-open-order-count", "Open orders", "0", "Recent activity", "Canceled", "Mexico vs. Ecuador winner", "117.5 USDT", "Buy - Canceled 250.00 shares - Limit 47%")
+      }
+      Save-Screenshot -Name "$openOrderProofName.png"
+      $openOrderHierarchy = Save-UiHierarchy -Name "$openOrderProofName.xml"
+      Assert-HierarchyContains -Path $openOrderHierarchy -Expected $openOrderExpected
+      Invoke-TapHierarchyNode -Path $openOrderHierarchy -Identifier $openOrderCancelButton
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-current-holiwyn-open-order-canceled.png"
-      $openOrderCanceledHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-open-order-canceled.xml"
+      Save-Screenshot -Name "$openOrderProofName-canceled.png"
+      $openOrderCanceledHierarchy = Save-UiHierarchy -Name "$openOrderProofName-canceled.xml"
       try {
-        Assert-HierarchyContains -Path $openOrderCanceledHierarchy -Expected @("portfolio-open-order-count", "Open orders", "0", "Recent activity", "Canceled", "Mexico vs. Ecuador winner", "117.5 USDT", "Buy - Canceled 250.00 shares - Limit 47%")
+        Assert-HierarchyContains -Path $openOrderCanceledHierarchy -Expected $openOrderCanceledExpected
       } catch {
         $openOrderCanceledSnapshot = Get-Content -Raw -Path $openOrderCanceledHierarchy
-        if ($openOrderCanceledSnapshot -match [regex]::Escape("cancel-open-order-smoke-open-order")) {
-          Invoke-TapHierarchyNode -Path $openOrderCanceledHierarchy -Identifier "cancel-open-order-smoke-open-order"
+        if ($openOrderCanceledSnapshot -match [regex]::Escape($openOrderCancelButton)) {
+          Invoke-TapHierarchyNode -Path $openOrderCanceledHierarchy -Identifier $openOrderCancelButton
         }
         Start-Sleep -Seconds 2
-        $openOrderCanceledHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-open-order-canceled.xml"
-        Assert-HierarchyContains -Path $openOrderCanceledHierarchy -Expected @("portfolio-open-order-count", "Open orders", "0", "Recent activity", "Canceled", "Mexico vs. Ecuador winner", "117.5 USDT", "Buy - Canceled 250.00 shares - Limit 47%")
+        $openOrderCanceledHierarchy = Save-UiHierarchy -Name "$openOrderProofName-canceled.xml"
+        Assert-HierarchyContains -Path $openOrderCanceledHierarchy -Expected $openOrderCanceledExpected
       }
       return
     }
