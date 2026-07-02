@@ -10118,6 +10118,31 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 274
+
+Date: 2026-07-02
+Branch: mobile/cycle-274-live-portfolio-quote-depth-proof
+Status: Verified; pending local merge.
+Objective: Add a live backend Portfolio quote-depth proof using a real API-key-authenticated `/api/portfolio` route call.
+Implemented:
+- Added `scripts/prove_mobile_portfolio_quote_depth.ts`.
+- Added `npm run mobile:portfolio-quote-depth-proof`.
+- The proof creates a disposable World Cup orderbook market, proof user, API credential, 500-share position, and clean 47%/50% bid/ask depth with 1k/2.5k share sizes.
+- The proof calls the real `/api/portfolio` route with Bearer auth and asserts `bestBid`, `bestAsk`, `bestBidSize`, `bestAskSize`, and midpoint `currentPrice`.
+Recovery:
+- First attempt used a shared World Cup market and hit dirty collateral imbalance.
+- Second attempt created a disposable market but inserted the proof position before complete-set minting, which still imbalanced collateral.
+- Final proof creates the disposable market, seeds clean orderbook liquidity first, then inserts the proof position and verifies the route response.
+Verification:
+- `npm.cmd run mobile:portfolio-quote-depth-proof` passed and wrote a ready summary.
+- `npm.cmd run test:jest -- src/__tests__/orderbook-pricing.quote-size.test.ts src/__tests__/portfolio.open-orders.route.test.ts` passed with 2 suites and 6 tests.
+- `npm.cmd run test:mobile-api` passed with 16 files and 71 tests.
+Evidence:
+- `docs/mobile/harness/cycle-current-mobile-portfolio-quote-depth-proof.json` reports `bestBid: 0.47`, `bestAsk: 0.5`, `bestBidSize: 1000`, `bestAskSize: 2500`, `currentPrice: 0.485`, `valueTokens: 242.5`, and `pnlTokens: 32.5`.
+Result: Passed Cycle 274 QA. Backend Portfolio quote depth is now proven through a live route call with disposable proof state, not only mocked route tests.
+Commit: pending.
+Merge: pending.
+
 ### Cycle 273
 
 Date: 2026-07-02
