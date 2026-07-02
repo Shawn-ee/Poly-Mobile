@@ -8911,6 +8911,57 @@ Harnesses run:
 Harness failures:
 - First Samsung run failed because Sell ticket copy stayed in buy mode; fixed and rerun passed.
 
+## Cycle 196
+
+Date: 2026-07-02
+Branch: mobile/cycle-196
+Goal: Prove the Buy side of Portfolio position re-trading on the Samsung S23.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No product UI change beyond Cycle 195; this cycle adds the Buy-side proof lane.
+Backend/API changed: No backend route change.
+Database/schema changed: None.
+Files changed: `mobile/scripts/smoke.ps1`, `mobile/scripts/smoke-samsung.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run smoke:samsung:server-position-buy-trade` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-buy-trade-ready.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-buy-trade-ticket.png`
+Harness evidence:
+- Mobile API/service suite passed with 14 files and 58 tests.
+- Mobile typecheck passed.
+- Samsung smoke passed on `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` through Expo host `172.16.200.14`, port `8153`.
+- UI hierarchy evidence captured at `docs/mobile/harness/cycle-current-holiwyn-server-position-buy-trade-ready.xml` and `docs/mobile/harness/cycle-current-holiwyn-server-position-buy-trade-ticket.xml`.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Both Buy and Sell re-trade actions from Portfolio now have Samsung proof coverage.
+Result: Passed Cycle 196 QA. Mobile tests, typecheck, and Samsung server-position Buy trade smoke pass.
+Commit: `PENDING` (`PENDING`).
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Continue toward final DoD by adding richer position/order detail parity or improving authenticated server proof readiness recovery.
+Harnesses run:
+- Mobile API/Service Harness
+- Mobile Typecheck Harness
+- Samsung Server Position Buy Trade Smoke Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 196
+
+Completed cycles: 194, 195, 196.
+Verified progress: Samsung now proves server-close refresh UI, Portfolio position cards have Buy/Sell re-trade actions, and both Sell and Buy position re-trade paths open the correct server-mode tickets on the Samsung S23.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, adjustable/persisted ticket slippage, typed profile sync, server quote seams, latest-order server acknowledgement details, server-hydrated Portfolio economics, server-mode close-position SELL calls, server Portfolio refresh application, fixture-backed server Portfolio/close proofs, and Portfolio position Buy/Sell re-trade actions.
+Current backend state: Profile preferences have user-scoped persistence and scope-separated read/write routes. `/api/portfolio` returns position ids/economics and open-order data; mobile API/profile/order/portfolio/history/quote/close-position/fixture/position-target service tests are green.
+Device strategy: Samsung S23 remains the primary Holiwyn visual QA target through Expo Go and continues to be materially faster/more reliable than the emulator for interactive proof. Emulator remains fallback only.
+Open blockers: None for autonomous progress. Successful live server-backed Samsung trading/Portfolio proof remains gated by Docker daemon, local database TCP, API key, backend health, and quote readiness.
+Risks: Fixture-backed server proofs still do not prove authenticated order execution or fill settlement; Expo Go still depends on LAN reachability and occasional menu dismissal.
+Next three likely cycles: add richer position/order detail parity, improve authenticated server proof readiness recovery, or retry server-backed proof if backend prerequisites become available.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.

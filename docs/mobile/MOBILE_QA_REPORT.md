@@ -4312,3 +4312,29 @@ Bugs:
 - First Samsung run exposed that TradeTicket reset a Portfolio-opened Sell ticket back to default buy-mode math/copy. Fixed by making ticket-open side the source of truth while market opens still use saved defaults.
 Visual QA:
 - Passed on Samsung S23 through Expo Go after the ticket-side fix.
+
+### Cycle 196
+
+Date: 2026-07-02
+Device: Samsung S23 via Expo Go plus mobile service unit harness
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run smoke:samsung:server-position-buy-trade` in `mobile/`
+Result: Passed. Samsung now proves the Buy side of Portfolio position re-trading.
+Harness evidence:
+- Mobile API/service suite passed with 14 files and 58 tests.
+- Mobile typecheck passed.
+- Samsung smoke passed on `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` through Expo host `172.16.200.14`, port `8153`.
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-buy-trade-ready.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-buy-trade-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-position-buy-trade-ready.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-position-buy-trade-ticket.xml`
+Structured findings:
+- The Samsung proof starts from a synced server Portfolio position, taps Buy, and verifies the server-mode Buy ticket.
+- The Buy ticket shows `Estimated cost`, `Est. shares`, `Avg price`, and `Place buy order`.
+Bugs:
+- None in final run.
+Visual QA:
+- Passed on Samsung S23 through Expo Go.
