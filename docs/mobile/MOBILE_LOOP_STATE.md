@@ -10118,6 +10118,29 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 262
+
+Date: 2026-07-02
+Branch: mobile/cycle-262-scroll-safe-trade-ticket
+Status: Verified; pending local merge.
+Objective: Make the trade ticket sheet resilient when dense live-market economics exceed the initial viewport.
+Implemented:
+- Converted the trade ticket bottom sheet content into a scrollable container with a 94% max-height shell.
+- Updated the live-order Samsung harness to assert the initial ticket economics, scroll to the order button when needed, and capture a separate order-ready state.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 16 files and 70 tests.
+- `npm.cmd run smoke:samsung:live-order` passed on Samsung S23 with Expo host `172.16.200.14` and port `8143`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-live-ticket.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-live-ticket-order-ready.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-live-order-portfolio.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-live-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-live-ticket-order-ready.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-live-order-portfolio.png`.
+Commit: pending
+Merge: pending
+
 ### Cycle 261
 
 Date: 2026-07-02

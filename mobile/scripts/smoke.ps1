@@ -609,7 +609,7 @@ try {
         Assert-HierarchyContains -Path $liveTicketReadyHierarchy -Expected @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina")
       }
       $liveTicketHierarchy = ""
-      $liveTicketExpected = @("Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Live World Cup", "ticket-live-clock", "Live - 63'", "Prices may move before fill.", "Fake balance", "10,000 USDT", "Estimated cost", "Est. fee", "0 USDT", "ticket-slippage", "Slippage", "0.5%", "1%", "2%", "Est. shares", "Avg price", "Place buy order")
+      $liveTicketExpected = @("Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Live World Cup", "ticket-live-clock", "Live - 63'", "Prices may move before fill.", "Fake balance", "10,000 USDT", "Estimated cost", "Est. fee", "0 USDT", "ticket-slippage", "Slippage", "0.5%", "1%", "2%", "Est. shares", "Avg price")
       for ($liveTicketAttempt = 1; $liveTicketAttempt -le 3; $liveTicketAttempt++) {
         Invoke-TapHierarchyNode -Path $liveTicketReadyHierarchy -Identifier "event-outcome-france-argentina-final-france-argentina-live-france"
         Start-Sleep -Seconds 1
@@ -637,7 +637,16 @@ try {
         }
       }
       if ($LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
-        Invoke-TapHierarchyNode -Path $liveTicketHierarchy -Identifier "place-mock-order"
+        $liveTicketOrderHierarchy = $liveTicketHierarchy
+        $liveTicketOrderSnapshot = Get-Content -Raw -Path $liveTicketOrderHierarchy
+        if ($liveTicketOrderSnapshot -notmatch [regex]::Escape("place-mock-order")) {
+          & $adb -s $Device shell input swipe 540 1760 540 760 450 | Out-Null
+          Start-Sleep -Seconds 1
+          Save-Screenshot -Name "cycle-current-holiwyn-live-ticket-order-ready.png"
+          $liveTicketOrderHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-ticket-order-ready.xml"
+        }
+        Assert-HierarchyContains -Path $liveTicketOrderHierarchy -Expected @("place-mock-order", "Place buy order")
+        Invoke-TapHierarchyNode -Path $liveTicketOrderHierarchy -Identifier "place-mock-order"
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "cycle-current-holiwyn-live-order-portfolio.png"
         $liveOrderPortfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-order-portfolio.xml"

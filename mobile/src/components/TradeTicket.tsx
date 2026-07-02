@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import type { Locale, Event, Market, Outcome } from "../mocks/worldCup";
 import { label, money } from "../presentation/formatters";
 
@@ -137,7 +137,13 @@ export function TradeTicket({
   return (
     <Modal visible transparent animationType="slide">
       <View style={styles.modalShade}>
-        <View accessibilityLabel="trade-ticket" testID="trade-ticket" style={styles.ticket}>
+        <ScrollView
+          accessibilityLabel="trade-ticket"
+          contentContainerStyle={styles.ticketContent}
+          keyboardShouldPersistTaps="handled"
+          style={styles.ticket}
+          testID="trade-ticket"
+        >
           <View style={styles.ticketTop}>
             <View>
               <Text style={styles.ticketTitle}>{label(locale, ticket.outcome)}</Text>
@@ -263,7 +269,7 @@ export function TradeTicket({
           <Pressable accessibilityLabel="place-mock-order" testID="place-mock-order" style={styles.primaryButton} onPress={() => placeOrder(numericAmount, side)}>
             <Text style={styles.primaryText}>{primaryLabel}</Text>
           </Pressable>
-        </View>
+        </ScrollView>
       </View>
     </Modal>
   );
@@ -271,7 +277,8 @@ export function TradeTicket({
 
 const styles = StyleSheet.create({
   modalShade: { flex: 1, justifyContent: "flex-end", backgroundColor: "rgba(0,0,0,0.5)" },
-  ticket: { paddingHorizontal: 18, paddingTop: 12, paddingBottom: 14, borderTopLeftRadius: 20, borderTopRightRadius: 20, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  ticket: { maxHeight: "94%", borderTopLeftRadius: 20, borderTopRightRadius: 20, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  ticketContent: { paddingHorizontal: 18, paddingTop: 12, paddingBottom: 14 },
   ticketTop: { flexDirection: "row", justifyContent: "space-between", gap: 12 },
   ticketTitle: { color: "#f8fafc", fontSize: 24, fontWeight: "900" },
   ticketSub: { color: "#94a3b8", fontWeight: "800", marginTop: 4 },
