@@ -10118,6 +10118,32 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 263
+
+Date: 2026-07-02
+Branch: mobile/cycle-263-live-sell-order-proof
+Status: Verified; pending local merge.
+Objective: Add real-device proof that live markets support sell-side ticket submission and sold Portfolio activity.
+Implemented:
+- Added `LiveSellOrder` support to the core smoke harness.
+- Added `smoke:samsung:live-sell-order` on port `8174`.
+- Extended the live ticket proof to switch to Sell, assert sell-side proceeds, scroll to the sell order button, place the fake-token order, and verify sold Portfolio state.
+Recovery:
+- First Samsung run showed the sell order button was below the initial scroll position; moved that assertion to the scroll-to-submit stage.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 16 files and 70 tests.
+- `npm.cmd run smoke:samsung:live-sell-order` passed on Samsung S23 with Expo host `172.16.200.14` and port `8174`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-live-sell-ticket.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-live-sell-ticket-order-ready.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-live-sell-order-portfolio.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-live-sell-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-live-sell-ticket-order-ready.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-live-sell-order-portfolio.png`.
+Commit: pending
+Merge: pending
+
 ### Cycle 262
 
 Date: 2026-07-02

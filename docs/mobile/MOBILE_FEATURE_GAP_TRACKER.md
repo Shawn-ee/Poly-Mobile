@@ -20,6 +20,7 @@ Status:
 
 | ID | Area | Feature | Priority | Reference Observed | Holiwyn Status | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| GAP-276 | Live trading | Live sell-order device proof | P1 | No | Verified | Cycle 263 adds Samsung proof for switching a live ticket to Sell, scrolling to submit, and verifying sold Portfolio activity. |
 | GAP-275 | Trading ticket | Scroll-safe dense ticket sheet | P1 | No | Verified | Cycle 262 converts the trade ticket to a scroll-safe sheet and verifies live order placement after scrolling to the order button on Samsung. |
 | GAP-274 | Live trading | Live ticket price movement warning | P1 | No | Verified | Cycle 261 adds a localized live-price movement warning to live tickets and verifies it through Samsung live-order proof. |
 | GAP-273 | Harness | Sell-side open-order device proof | P1 | No | Verified | Cycle 260 adds a Samsung proof for pending sell orders showing potential proceeds and canceled sell activity. |
