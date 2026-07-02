@@ -4815,3 +4815,26 @@ Screenshot evidence:
 Bugs: None found after the detail-line implementation.
 Visual QA:
 - Passed on Samsung S23 through Expo Go.
+
+### Cycle 215
+
+Date: 2026-07-02
+Device: Samsung S23 via Expo Go, local Docker-backed backend, reusable isolated server-order proof runner, and mobile service unit harness
+Build/run command:
+- `npm.cmd run mobile:samsung-server-order-proof -- -Side buy -Username holiwyn-mobile-proof-cycle-215-buy`
+- `npm.cmd run mobile:samsung-server-order-proof -- -Side sell -Username holiwyn-mobile-proof-cycle-215-sell`
+- `npm.cmd run test:mobile-api`
+Result: Passed. A single root harness command can now run isolated Samsung server-order filled proofs for both BUY and SELL.
+Harness evidence:
+- First BUY wrapper attempt exposed a credential-output parser bug; the parser was fixed and the BUY proof passed.
+- SELL wrapper proof passed and wrote `cycle-current-mobile-samsung-server-order-proof.json`.
+- Existing Samsung ticket/Portfolio screenshots and hierarchy were refreshed by the wrapper.
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`
+- `docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof.json`
+Bugs:
+- Fixed wrapper credential parsing against mixed command output.
+Visual QA:
+- Passed on Samsung S23 through Expo Go for BUY and SELL wrapper paths.

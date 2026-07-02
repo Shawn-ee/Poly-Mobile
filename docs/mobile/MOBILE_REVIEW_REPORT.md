@@ -3190,3 +3190,18 @@ Findings:
 - Mobile API/service tests, mobile typecheck, and Samsung server-order-failure smoke passed.
 Decision: Approve Cycle 214 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 215
+
+Date: 2026-07-02
+Branch: mobile/cycle-215
+Reviewer: Lead/Reviewer pass
+Scope: Reusable isolated Samsung server-order proof harness.
+Findings:
+- P1: The new runner removes manual environment choreography for isolated Samsung BUY/SELL filled-order proofs.
+- P1: The runner preserves existing liquidity, credential, and Samsung smoke harnesses instead of duplicating order logic.
+- P1: BUY and SELL wrapper paths both passed on Samsung S23.
+- P2: The first wrapper failure was limited to output parsing and was recovered inside the cycle.
+- Mobile API/service tests passed after the wrapper proofs.
+Decision: Approve Cycle 215 for local commit/merge after scoped diff review.
+Merge approved: Yes

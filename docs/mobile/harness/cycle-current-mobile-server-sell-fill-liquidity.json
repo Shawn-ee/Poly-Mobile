@@ -14,26 +14,40 @@
     "name": "YES"
   },
   "mobileUser": {
-    "id": "f3bbf2a4-9621-4ed2-b309-76f7a6b99b59",
-    "username": "holiwyn-mobile-proof-cycle-213b",
+    "id": "f4d721a3-818a-4282-baab-675c06d737b5",
+    "username": "holiwyn-mobile-proof-cycle-215-sell",
     "shares": "300",
     "reservedShares": "0"
   },
   "makerOrder": {
-    "id": "afd1e547-edad-4b46-b5d2-10705a258df3",
-    "status": "OPEN",
+    "id": "128d3e24-1570-4bac-9d8c-252617509808",
+    "status": "PARTIAL",
     "price": "0.50",
     "size": "500",
     "requiredRemaining": "250",
-    "remaining": "500"
+    "remaining": "480"
   },
   "attempts": [
     {
       "attempt": 1,
-      "makerOrderId": "afd1e547-edad-4b46-b5d2-10705a258df3",
-      "status": "OPEN",
-      "remaining": "500",
-      "fillCount": 0
+      "makerOrderId": "d64a7795-000b-484d-b7a9-503ca4e4cae1",
+      "status": "FILLED",
+      "remaining": "0",
+      "fillCount": 2
+    },
+    {
+      "attempt": 2,
+      "makerOrderId": "38d50e4f-655c-42bb-ac20-58104eb0a3c1",
+      "status": "FILLED",
+      "remaining": "0",
+      "fillCount": 2
+    },
+    {
+      "attempt": 3,
+      "makerOrderId": "128d3e24-1570-4bac-9d8c-252617509808",
+      "status": "PARTIAL",
+      "remaining": "480",
+      "fillCount": 1
     }
   ]
 }
