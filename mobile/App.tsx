@@ -35,6 +35,7 @@ import {
 import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 import { appendUniqueActivity, cancelOpenOrderOnServer, openOrderCanceledActivity } from "./src/services/openOrderService";
 import { closePositionOnServer } from "./src/services/positionCloseService";
+import { serverHydratedPortfolioFixture } from "./src/services/portfolioFixtureService";
 import { applyServerPortfolioState } from "./src/services/portfolioStateApplyService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
@@ -337,6 +338,24 @@ export default function App() {
         latestOrder: null,
         openOrders: [SMOKE_OPEN_ORDER],
         activities: [],
+      };
+      AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
+    }
+    if (url.includes("forceServerPortfolioFixture=1")) {
+      const fixture = serverHydratedPortfolioFixture();
+      setBalance(fixture.balance);
+      setPositions(fixture.positions);
+      setLatestOrder(fixture.latestOrder);
+      setOpenOrders(fixture.openOrders);
+      setActivities(fixture.activities);
+      setPortfolioSyncStatus("synced");
+      setMainTab("portfolio");
+      const snapshot: StoredPortfolio = {
+        balance: fixture.balance,
+        positions: fixture.positions,
+        latestOrder: fixture.latestOrder,
+        openOrders: fixture.openOrders,
+        activities: fixture.activities,
       };
       AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
     }

@@ -4210,3 +4210,25 @@ Bugs:
 - Initial patch lacked an effect cancellation guard around the shared refresh helper; corrected before tests.
 Visual QA:
 - No Samsung visual run this cycle; successful server-backed close refresh still depends on backend/device readiness.
+
+### Cycle 192
+
+Date: 2026-07-01
+Device: Mobile service unit harness
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+Result: Passed. Holiwyn now has a deterministic server-hydrated Portfolio fixture for visual proof runs.
+Harness evidence:
+- Mobile API/service suite passed with 13 files and 54 tests.
+- Mobile typecheck passed.
+Screenshot evidence:
+- None; fixture-enablement cycle.
+Structured findings:
+- `forceServerPortfolioFixture=1` seeds a server-mode World Cup winner position.
+- Fixture state includes `marketId`, `outcomeId`, shares, current price, current value, P/L, synced status, and server-style activity.
+- Fixture is persisted to local Portfolio storage so restart-based proof runs stay deterministic.
+Bugs:
+- None in final run.
+Visual QA:
+- No Samsung visual run this cycle; next cycle can use this fixture for a Samsung Portfolio row proof.
