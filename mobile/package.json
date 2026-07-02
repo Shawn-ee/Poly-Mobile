@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit",
     "check:server-auth": "powershell -ExecutionPolicy Bypass -File ./scripts/check-server-auth-config.ps1",
     "check:android-dev-build": "powershell -ExecutionPolicy Bypass -File ./scripts/check-android-dev-build-readiness.ps1",
+    "check:android-apk-artifact": "powershell -ExecutionPolicy Bypass -File ./scripts/check-android-apk-artifact-readiness.ps1",
     "smoke:samsung:apk": "powershell -ExecutionPolicy Bypass -File ./scripts/samsung-apk-smoke.ps1",
     "smoke:samsung:apk:allow-missing": "powershell -ExecutionPolicy Bypass -File ./scripts/samsung-apk-smoke.ps1 -AllowMissing",
     "preflight:server-mode": "powershell -ExecutionPolicy Bypass -File ./scripts/server-mode-preflight.ps1",

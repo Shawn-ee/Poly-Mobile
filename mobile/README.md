@@ -146,10 +146,11 @@ Current build profiles live in `eas.json`:
 Samsung APK smoke lane:
 
 ```powershell
+npm run check:android-apk-artifact
 npm run smoke:samsung:apk:allow-missing
 ```
 
-This records a structured blocker when `dist/holiwyn-preview.apk` is not present. Once an APK is built, place it at that path or pass `-ApkPath` directly to `scripts/samsung-apk-smoke.ps1`, then run `npm run smoke:samsung:apk` to install and launch `com.holiwyn.mobile` on the Samsung.
+The artifact readiness check separates build configuration, local tool availability, native Android project availability, and the APK file itself. It records a structured blocker when `dist/holiwyn-preview.apk` is not present. Once an APK is built, place it at that path or pass `-ApkPath` directly to `scripts/samsung-apk-smoke.ps1`, then run `npm run smoke:samsung:apk` to install and launch `com.holiwyn.mobile` on the Samsung.
 
 ## Product Direction
 

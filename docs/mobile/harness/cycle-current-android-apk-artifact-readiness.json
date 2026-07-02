@@ -1,0 +1,89 @@
+﻿{
+    "checkedAt":  "2026-07-02T14:12:04.0897313Z",
+    "ready":  false,
+    "nextActions":  [
+                        "Build or provide mobile/dist/holiwyn-preview.apk, then run npm run smoke:samsung:apk.",
+                        "Install eas-cli or use an existing generated APK artifact.",
+                        "Use the managed preview-apk lane once EAS CLI is available, or explicitly generate mobile/android before local Gradle assembly."
+                    ],
+    "apkPath":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\mobile\\.\\dist\\holiwyn-preview.apk",
+    "warnings":  [
+                     "EAS CLI is unavailable; cloud/local EAS builds cannot be launched from this workspace yet.",
+                     "No native Android project exists; local Gradle builds require a prebuild step, while EAS can build from managed Expo config.",
+                     "No Gradle wrapper exists; local APK assembly is unavailable until mobile/android is generated.",
+                     "expo-dev-client is not installed; the immediate path is preview-apk rather than a dev-client APK."
+                 ],
+    "mobileRoot":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\mobile",
+    "buildCapabilities":  {
+                              "canAttemptCloudEasBuild":  false,
+                              "canAttemptLocalGradleBuild":  false,
+                              "canRunApkSmoke":  false
+                          },
+    "findings":  [
+                     {
+                         "id":  "apk-file",
+                         "ready":  false,
+                         "detail":  "APK is missing at C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\mobile\\.\\dist\\holiwyn-preview.apk."
+                     },
+                     {
+                         "id":  "expo-config",
+                         "ready":  true,
+                         "detail":  "mobile/app.json exists."
+                     },
+                     {
+                         "id":  "eas-config",
+                         "ready":  true,
+                         "detail":  "mobile/eas.json exists."
+                     },
+                     {
+                         "id":  "package-config",
+                         "ready":  true,
+                         "detail":  "mobile/package.json exists."
+                     },
+                     {
+                         "id":  "local-expo-cli",
+                         "ready":  true,
+                         "detail":  "Local Expo CLI shim exists."
+                     },
+                     {
+                         "id":  "eas-cli",
+                         "ready":  false,
+                         "detail":  "EAS CLI is not installed locally or globally."
+                     },
+                     {
+                         "id":  "android-sdk",
+                         "ready":  true,
+                         "detail":  "Android SDK exists at C:\\Users\\hecto\\AppData\\Local\\Android\\Sdk."
+                     },
+                     {
+                         "id":  "android-platform-tools",
+                         "ready":  true,
+                         "detail":  "Android platform-tools adb.exe exists."
+                     },
+                     {
+                         "id":  "java",
+                         "ready":  true,
+                         "detail":  "Java exists at C:\\Program Files\\Common Files\\Oracle\\Java\\javapath\\java.exe."
+                     },
+                     {
+                         "id":  "native-android-project",
+                         "ready":  false,
+                         "detail":  "mobile/android does not exist; managed Expo project has not been prebuilt locally."
+                     },
+                     {
+                         "id":  "gradle-wrapper",
+                         "ready":  false,
+                         "detail":  "Gradle wrapper is not available because mobile/android is not generated."
+                     },
+                     {
+                         "id":  "expo-dev-client",
+                         "ready":  false,
+                         "detail":  "expo-dev-client is not installed; preview APK is the current managed-build lane."
+                     }
+                 ],
+    "status":  "apk_artifact_missing",
+    "repoRoot":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly",
+    "blockers":  [
+                     "apk_missing"
+                 ]
+}
