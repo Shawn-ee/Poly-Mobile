@@ -41,20 +41,34 @@ type TradeTicketCopy = {
   shares: string;
 };
 
-function formatDepthPrice(probability: number, size: number | null | undefined, sharesLabel: string) {
+function formatDepthSize(size: number) {
+  if (size >= 1000) return `${(size / 1000).toFixed(size >= 10000 ? 0 : 2).replace(/\.?0+$/, "")}k`;
+  return size.toLocaleString(undefined, { maximumFractionDigits: 2 });
+}
+
+function formatDepthPrice(probability: number, size: number, sharesLabel: string) {
   const price = `${(probability / 100).toFixed(2)} USDT`;
-  if (typeof size !== "number" || !Number.isFinite(size) || size <= 0) return price;
-  return `${price} (${size.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${sharesLabel})`;
+  return `${price} (${formatDepthSize(size)} ${sharesLabel})`;
 }
 
 function marketDepth(outcome: Outcome, sharesLabel: string) {
   const bidProbability = outcome.bestBid ?? Math.max(outcome.probability - 3, 1);
   const askProbability = outcome.bestAsk ?? Math.min(outcome.probability + 4, 99);
+  const fallbackBidSize = Math.max(Math.round(outcome.probability * 20), 100);
+  const fallbackAskSize = Math.max(Math.round((100 - outcome.probability) * 25), 100);
+  const bidSize =
+    typeof outcome.bestBidSize === "number" && Number.isFinite(outcome.bestBidSize) && outcome.bestBidSize > 0
+      ? outcome.bestBidSize
+      : fallbackBidSize;
+  const askSize =
+    typeof outcome.bestAskSize === "number" && Number.isFinite(outcome.bestAskSize) && outcome.bestAskSize > 0
+      ? outcome.bestAskSize
+      : fallbackAskSize;
   const bid = bidProbability / 100;
   const ask = askProbability / 100;
   return {
-    bid: formatDepthPrice(bidProbability, outcome.bestBidSize, sharesLabel),
-    ask: formatDepthPrice(askProbability, outcome.bestAskSize, sharesLabel),
+    bid: formatDepthPrice(bidProbability, bidSize, sharesLabel),
+    ask: formatDepthPrice(askProbability, askSize, sharesLabel),
     spread: `${Math.round((ask - bid) * 100)}c`,
   };
 }
