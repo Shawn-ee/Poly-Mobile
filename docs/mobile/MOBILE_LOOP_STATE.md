@@ -10118,6 +10118,36 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 270
+
+Date: 2026-07-02
+Branch: mobile/cycle-270-server-position-depth-guard
+Status: Verified; pending local merge.
+Objective: Ensure server-backed position re-trade tickets use quoted depth instead of local fallback depth on both Buy and Sell.
+Implemented:
+- Added optional bid/ask quote depth fields to Portfolio positions and carried those fields into resolved position trade targets.
+- Seeded the server Portfolio fixture with quoted 47%/50% depth and 1k/2.5k share sizes.
+- Extended the Samsung server position Buy/Sell ticket proofs to assert quoted depth, reject crossed/fallback depth, and scroll to verify the submit button on dense phone layouts.
+Recovery:
+- First Samsung sell proof exposed a viewport issue where the launch gate expected detail text below the fold; relaxed the gate and added a second position-card scroll.
+- The stricter depth guard then exposed local fallback depth in position tickets; fixed the trade target to carry server position quote depth.
+- A final evidence pass exposed quote unit mismatch, so the fixture now stores mobile percentage-point values (`47`/`50`) rather than decimal fractions.
+Verification:
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 16 files and 71 tests.
+- `npm.cmd run smoke:samsung:server-position-trade` passed on Samsung S23 with Expo host `172.16.200.14` and port `8152`.
+- `npm.cmd run smoke:samsung:server-position-buy-trade` passed on Samsung S23 with Expo host `172.16.200.14` and port `8153`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-server-position-trade-ticket.xml` shows `Best bid 0.47 USDT (1k shares) - Best ask 0.50 USDT (2.5k shares) - Spread 3c`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-position-buy-trade-ticket.xml` shows `Best bid 0.47 USDT (1k shares) - Best ask 0.50 USDT (2.5k shares) - Spread 3c`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-position-trade-ticket-button.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-position-buy-trade-ticket-button.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-trade-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-buy-trade-ticket.png`.
+Result: Passed Cycle 270 QA. Server position re-trade tickets now preserve quote depth and are guarded against fallback or crossed spread regressions on both sides.
+Commit: pending.
+Merge: pending.
+
 ### Cycle 269
 
 Date: 2026-07-02
@@ -10982,6 +11012,17 @@ Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo G
 Open blockers: None for autonomous progress.
 Risks: Repeated proof runs still mutate the local database and create many proof users/orders; future harnesses should continue using isolated usernames and summary metadata, and eventually move to disposable per-cycle markets or database snapshots.
 Next three likely cycles: add richer open-order/orderbook depth parity, add proof cleanup or disposable market isolation, and continue World Cup event detail/trading parity.
+
+### Heartbeat After Cycle 270
+
+Completed cycles: 268, 269, 270.
+Verified progress: Open-order proofs now seed non-crossed backend liquidity, server ticket smokes fail on negative spread text, and server position Buy/Sell re-trade tickets carry quoted depth instead of local fallback depth.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung real-device QA, server quote/order/Portfolio sync, server open-order cancel, server position re-trade tickets, backend-derived canceled/filled activity, and scroll-safe dense ticket proofs.
+Current backend state: Local Docker/Postgres backend supports mobile API-key Portfolio/profile/order flows, canonical order create/cancel, matching, complete-set minting for dev proofs, canceled-order history, recent-trade history, deterministic fill/open-order liquidity harnesses, and clean open-order proof seeding.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: The server-position fixture still carries quote depth as fixture state for this specific proof; future live portfolio snapshots should eventually include bid/ask quote fields from the backend. Proof runs continue to mutate local database state, so isolated users/markets remain important.
+Next three likely cycles: propagate real backend quote depth into live Portfolio positions, add event-detail server quote parity proof, and continue disposable proof-market/account cleanup.
 
 ### Heartbeat After Cycle 211
 

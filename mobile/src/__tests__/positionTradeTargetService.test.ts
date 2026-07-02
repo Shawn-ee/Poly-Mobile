@@ -31,6 +31,29 @@ describe("position trade target service", () => {
     expect(target?.event).toBeUndefined();
   });
 
+  test("carries server position quote depth into the trade target", () => {
+    const target = resolvePositionTradeTarget({
+      position: {
+        ...futurePosition,
+        currentPrice: 0.51,
+        bestBid: 47,
+        bestAsk: 50,
+        bestBidSize: 1000,
+        bestAskSize: 2500,
+      },
+      futures: worldCupFutures,
+      events: worldCupEvents,
+    });
+
+    expect(target?.outcome).toMatchObject({
+      probability: 51,
+      bestBid: 47,
+      bestAsk: 50,
+      bestBidSize: 1000,
+      bestAskSize: 2500,
+    });
+  });
+
   test("resolves an event-market position by title and outcome label fallback", () => {
     const target = resolvePositionTradeTarget({
       position: {

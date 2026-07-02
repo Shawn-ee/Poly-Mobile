@@ -27,6 +27,10 @@ export type Position = {
   probability: number;
   shares?: number;
   currentPrice?: number;
+  bestBid?: number | null;
+  bestAsk?: number | null;
+  bestBidSize?: number | null;
+  bestAskSize?: number | null;
   currentValue?: number;
   pnl?: number;
   isLive?: boolean;
