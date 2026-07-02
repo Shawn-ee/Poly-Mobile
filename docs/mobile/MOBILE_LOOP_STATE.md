@@ -9620,7 +9620,7 @@ Merge: 489177d
 
 Date: 2026-07-02
 Branch: mobile/cycle-218-ticket-depth-liquidity
-Status: Verified and ready for local merge.
+Status: Verified and locally merged.
 Objective: Show best-level orderbook liquidity size in the server-mode trade ticket.
 Implemented:
 - Extended canonical market quotes with aggregate best bid/ask sizes from the public orderbook snapshot.
@@ -9639,8 +9639,8 @@ Evidence:
 Notes:
 - Samsung ticket screenshot shows `Best ask 0.50 USDT (800 shares)` in the server-mode depth pill.
 - Build passed with the existing Next.js workspace-root warning about multiple lockfiles.
-Commit: cycle branch HEAD
-Merge: pending
+Commit: 664d53e
+Merge: bea9d62
 
 ### Heartbeat After Cycle 217
 
