@@ -6931,8 +6931,8 @@ Technical debt added:
 Technical debt resolved:
 - Samsung real-device QA now covers server-mode unavailable-backend order failure and retry feedback.
 Result: Passed Cycle 146 QA. Samsung server-order-failure smoke, mobile typecheck, and mobile API/history tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `32f355e` (`Add Samsung server order failure smoke`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `e208682`.
 Next cycle: Cycle 147 should continue toward a reachable server-mode Samsung order proof or add backend readiness automation for a device-accessible local API.
 Harnesses run:
 - Samsung Server Order Failure Smoke Harness
