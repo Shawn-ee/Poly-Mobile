@@ -4018,3 +4018,31 @@ Bugs:
 - None in final run.
 Visual QA:
 - No visual change.
+
+### Cycle 184
+
+Date: 2026-07-01
+Device: Harness/service checks
+Build/run command:
+- `npm.cmd run mobile:credential-readiness:summary`
+- `npm.cmd run mobile:dev-credential:dry-run`
+- `npm.cmd run decision:samsung:server-proof:expect-blocked:summary` in `mobile/`
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+Result: Passed. Credential readiness now proves the mobile dev credential dry-run includes every required scope, including `account:write`, and the Samsung server-proof decision summary exposes that proof.
+Harness evidence:
+- `docs/mobile/harness/cycle-184-mobile-credential-readiness.json`
+- `docs/mobile/harness/cycle-184-samsung-server-proof-decision.json`
+- Mobile API/service suite passed with 9 files and 41 tests.
+- Mobile typecheck passed.
+Screenshot evidence:
+- None; harness cycle.
+Structured findings:
+- `requiredCredentialScopes` includes `orders:read`, `orders:write`, `fills:read`, `account:read`, `account:write`, and `markets:read`.
+- `dryRunIncludesRequiredScopes` is `true`.
+- The combined Samsung decision exposes `credentialDryRunIncludesRequiredScopes: true`.
+- Expected blockers remain Docker daemon, database TCP, missing API key, backend health, and quote readiness.
+Bugs:
+- First decision-harness run exposed that nested credential dry-run executed from `mobile/` and could not find the root npm script; fixed by running the dry-run from the repo root.
+Visual QA:
+- No visual change.

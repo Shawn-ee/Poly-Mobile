@@ -1,0 +1,128 @@
+﻿{
+    "ready":  false,
+    "expectedBlocked":  true,
+    "decision":  "do-not-run-server-backed-samsung-proof",
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "backendBaseUrl":  "http://127.0.0.1:3000",
+    "evidence":  {
+                     "backendReadinessPath":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\docs\\mobile\\harness\\cycle-current-mobile-backend-readiness.json",
+                     "credentialReadinessPath":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\docs\\mobile\\harness\\cycle-current-mobile-credential-readiness.json",
+                     "serverSuccessGatePath":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\docs\\mobile\\harness\\cycle-current-server-success-gate.json",
+                     "quoteProofPath":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\docs\\mobile\\harness\\cycle-current-samsung-quote-proof.json"
+                 },
+    "readiness":  {
+                      "dockerCliAvailable":  true,
+                      "dockerDaemonReachable":  false,
+                      "composeFileFound":  true,
+                      "databaseTcpReachable":  false,
+                      "apiKeyPresent":  false,
+                      "credentialDryRunIncludesRequiredScopes":  true,
+                      "readyForServerBackedSamsungProof":  false,
+                      "serverSuccessGateReady":  false,
+                      "quoteProofReady":  false,
+                      "quoteProofAttempted":  false,
+                      "samsungDeviceReachable":  true,
+                      "marketQuoteReachable":  false
+                  },
+    "blockerCategories":  [
+                              "docker-daemon",
+                              "database-tcp",
+                              "api-key",
+                              "backend-health",
+                              "quote-readiness"
+                          ],
+    "blockers":  [
+                     {
+                         "category":  "docker-daemon",
+                         "message":  "Docker daemon is not reachable.",
+                         "recovery":  {
+                                          "owner":  "Harness Engineer",
+                                          "action":  "Start Docker Desktop and wait until the Docker daemon accepts commands.",
+                                          "verifyCommand":  "docker ps",
+                                          "readySignal":  "Docker daemon reachable is true in mobile backend readiness."
+                                      }
+                     },
+                     {
+                         "category":  "database-tcp",
+                         "message":  "Database TCP is not reachable at localhost:5432.",
+                         "recovery":  {
+                                          "owner":  "Backend Agent",
+                                          "action":  "Start or repair the local Postgres service declared by the compose/database configuration.",
+                                          "verifyCommand":  "npm run mobile:backend-readiness:summary",
+                                          "readySignal":  "Database TCP reachable is true at the configured host and port."
+                                      }
+                     },
+                     {
+                         "category":  "api-key",
+                         "message":  "EXPO_PUBLIC_API_KEY is missing for server-backed Samsung proof.",
+                         "recovery":  {
+                                          "owner":  "Backend Agent",
+                                          "action":  "Create and export a mobile dev API credential after backend readiness passes.",
+                                          "verifyCommand":  "npm run mobile:credential-readiness:summary",
+                                          "readySignal":  "EXPO_PUBLIC_API_KEY is present and credential readiness allows server-backed Samsung proof."
+                                      }
+                     },
+                     {
+                         "category":  "backend-health",
+                         "message":  "Backend health unavailable at http://127.0.0.1:3000: The operation has timed out.",
+                         "recovery":  {
+                                          "owner":  "Backend Agent",
+                                          "action":  "Start the backend API and confirm the mobile device can reach the configured base URL.",
+                                          "verifyCommand":  "npm run preflight:samsung:server-mode:strict",
+                                          "readySignal":  "Backend health is reachable from the Samsung server-mode preflight."
+                                      }
+                     },
+                     {
+                         "category":  "quote-readiness",
+                         "message":  "Server quote readiness is blocked.",
+                         "recovery":  {
+                                          "owner":  "Market Data Agent",
+                                          "action":  "Restore World Cup event, market, and quote availability before attempting Samsung quote proof.",
+                                          "verifyCommand":  "npm run quote-readiness:expect-blocked:summary",
+                                          "readySignal":  "Quote readiness reports backend, event detail, market, and quote availability."
+                                      }
+                     }
+                 ],
+    "recoveryPlan":  [
+                         {
+                             "category":  "docker-daemon",
+                             "owner":  "Harness Engineer",
+                             "action":  "Start Docker Desktop and wait until the Docker daemon accepts commands.",
+                             "verifyCommand":  "docker ps",
+                             "readySignal":  "Docker daemon reachable is true in mobile backend readiness."
+                         },
+                         {
+                             "category":  "database-tcp",
+                             "owner":  "Backend Agent",
+                             "action":  "Start or repair the local Postgres service declared by the compose/database configuration.",
+                             "verifyCommand":  "npm run mobile:backend-readiness:summary",
+                             "readySignal":  "Database TCP reachable is true at the configured host and port."
+                         },
+                         {
+                             "category":  "api-key",
+                             "owner":  "Backend Agent",
+                             "action":  "Create and export a mobile dev API credential after backend readiness passes.",
+                             "verifyCommand":  "npm run mobile:credential-readiness:summary",
+                             "readySignal":  "EXPO_PUBLIC_API_KEY is present and credential readiness allows server-backed Samsung proof."
+                         },
+                         {
+                             "category":  "backend-health",
+                             "owner":  "Backend Agent",
+                             "action":  "Start the backend API and confirm the mobile device can reach the configured base URL.",
+                             "verifyCommand":  "npm run preflight:samsung:server-mode:strict",
+                             "readySignal":  "Backend health is reachable from the Samsung server-mode preflight."
+                         },
+                         {
+                             "category":  "quote-readiness",
+                             "owner":  "Market Data Agent",
+                             "action":  "Restore World Cup event, market, and quote availability before attempting Samsung quote proof.",
+                             "verifyCommand":  "npm run quote-readiness:expect-blocked:summary",
+                             "readySignal":  "Quote readiness reports backend, event detail, market, and quote availability."
+                         }
+                     ],
+    "nextActions":  [
+                        "Do not run the successful server-backed Samsung proof until ready is true.",
+                        "Follow recoveryPlan entries in category order and rerun this decision harness after each recovery attempt.",
+                        "When all blocker categories clear, run the successful server-backed Samsung proof on the Samsung S23."
+                    ]
+}

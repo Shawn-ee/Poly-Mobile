@@ -8415,6 +8415,59 @@ Harnesses run:
 Harness failures:
 - None.
 
+## Cycle 184
+
+Date: 2026-07-01
+Branch: mobile/cycle-184
+Goal: Harden server-proof credential readiness so it explicitly verifies mobile dev credentials include the profile-preference write scope.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No direct UI change.
+Backend/API changed: No route change; harness now treats the canonical mobile credential scope set as proof data.
+Database/schema changed: None.
+Files changed: `scripts/mobile_credential_readiness.ps1`, `mobile/scripts/samsung-server-proof-decision.ps1`, `docs/mobile/harness/cycle-184-mobile-credential-readiness.json`, `docs/mobile/harness/cycle-184-samsung-server-proof-decision.json`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run mobile:credential-readiness:summary`.
+- `npm.cmd run mobile:dev-credential:dry-run`.
+- `npm.cmd run decision:samsung:server-proof:expect-blocked:summary` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm.cmd run typecheck` in `mobile/`.
+Screenshots captured:
+- None; harness cycle.
+Harness evidence:
+- `docs/mobile/harness/cycle-184-mobile-credential-readiness.json` shows `dryRunIncludesRequiredScopes: true` and includes `account:write` in both required and dry-run scopes.
+- `docs/mobile/harness/cycle-184-samsung-server-proof-decision.json` exposes `credentialDryRunIncludesRequiredScopes: true`.
+- Combined decision remains blocked only by expected environment/server data blockers.
+Bugs found:
+- Initial combined decision run exposed the nested dry-run used the current `mobile/` working directory and missed the root npm script; fixed by running the dry-run from the repo root inside the readiness harness.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Credential readiness now proves the mobile dev credential generator matches the current canonical scope requirements before server-backed Samsung proof attempts.
+Result: Passed Cycle 184 QA. Credential scope readiness and combined Samsung decision harness pass in expected-blocked mode.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Continue toward final DoD by adding profile-sync server proof fixtures or continuing backend-backed trading parity that can be unit-tested without a live local backend.
+Harnesses run:
+- Mobile Credential Readiness Harness
+- Samsung Server-Proof Decision Harness
+- Mobile Dev Credential Dry-Run Harness
+- Mobile API/Profile Preference Unit Harness
+- Mobile Typecheck Harness
+- Review Harness
+Harness failures:
+- Initial false missing-script blocker in the decision harness; fixed and rerun passed.
+
+### Heartbeat After Cycle 184
+
+Completed cycles: 182, 183, 184.
+Verified progress: Backend profile preferences now have a real authenticated route/table, profile saves require explicit `account:write`, generated Holiwyn mobile dev credentials include that scope, and readiness/decision harnesses now prove the scope before server-backed Samsung proof attempts.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, adjustable/persisted ticket slippage, Account preference summaries, and typed profile sync for language, saved markets, ticket amount/side/slippage.
+Current backend state: Profile preferences have user-scoped JSONB persistence, canonical read/write scope separation, and focused route/auth coverage. Mobile API/profile/order/portfolio/history/quote unit tests remain green.
+Device strategy: Samsung S23 remains preferred for Holiwyn visual and server-mode QA through Expo Go; emulator remains fallback only.
+Open blockers: None for autonomous progress. Successful live server-backed Samsung proof remains gated by Docker daemon, local database TCP, API key, backend health, and quote readiness.
+Risks: Existing API keys created before `account:write` may need regeneration before profile preference writes work in server mode; the readiness harness now makes the current generator scope explicit but cannot prove arbitrary exported key scopes without database access.
+Next three likely cycles: add a backend profile-preferences service unit test for stored/default payloads, add a profile-sync server-mode proof fixture, or continue backend-backed order/history parity.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.
