@@ -9746,8 +9746,8 @@ Evidence:
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`.
 Notes:
 - The proof summary now records latest canceled order `966814e7-edc4-40dd-93fa-cf8a42bc6877`, status `CANCELED`, price `0.01`, size `100`, notional `1`, and market `Paraguay vs Australia: Both teams to score`.
-Commit: TBD
-Merge: TBD
+Commit: 815ab6a
+Merge: 1cf0e87
 
 ### Heartbeat After Cycle 217
 
