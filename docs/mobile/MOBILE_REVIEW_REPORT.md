@@ -3132,3 +3132,18 @@ Findings:
 - Mobile API/service tests, mobile typecheck, liquidity proof, and Samsung server filled-order smoke passed.
 Decision: Approve Cycle 210 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 211
+
+Date: 2026-07-02
+Branch: mobile/cycle-211
+Reviewer: Lead/Reviewer pass
+Scope: Server sell-order fill proof and server-authoritative Portfolio refresh.
+Findings:
+- P0: Samsung S23 now proves sell-side server ticket execution through the real backend orderbook: Sell ticket, resting BUY liquidity, FILLED receipt, 200.00 shares, 50% execution price, and 0.00 remaining.
+- P0: Server-mode placement now refreshes Portfolio from backend state instead of creating local optimistic positions and balance adjustments, reducing divergence after fills.
+- P1: The sell-fill prep harness seeds mobile-dev shares and retries through stale crossing sell orders until a usable resting BUY remains.
+- P1: The proof intentionally avoids exact aggregate Portfolio totals because the shared dev account has accumulated proof state.
+- Mobile API/service tests, mobile typecheck, sell liquidity proof, and Samsung server sell-fill smoke passed.
+Decision: Approve Cycle 211 for local commit/merge after scoped diff review.
+Merge approved: Yes

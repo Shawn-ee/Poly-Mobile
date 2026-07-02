@@ -15,6 +15,7 @@ param(
   [switch]$ServerOrderFailure,
   [switch]$ServerOrderSuccess,
   [switch]$ServerOrderFilled,
+  [switch]$ServerSellOrderFilled,
   [switch]$ServerOpenOrderCancel,
   [switch]$ServerFilledTradeHistory,
   [switch]$ServerPortfolioFixture,
@@ -81,7 +82,7 @@ if ($FutureListOrder) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerUnavailable -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($ServerOrderFailure) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerOrderFailure -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
-} elseif ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory) {
+} elseif ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory) {
   if (-not $env:EXPO_PUBLIC_API_KEY) {
     throw "EXPO_PUBLIC_API_KEY is required for Samsung server order/history smoke."
   }
@@ -94,6 +95,8 @@ if ($FutureListOrder) {
       & "$PSScriptRoot\smoke.ps1" -Deep -ServerOpenOrderCancel -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
     } elseif ($ServerOrderFilled) {
       & "$PSScriptRoot\smoke.ps1" -Deep -ServerOrderFilled -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
+    } elseif ($ServerSellOrderFilled) {
+      & "$PSScriptRoot\smoke.ps1" -Deep -ServerSellOrderFilled -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
     } elseif ($ServerFilledTradeHistory) {
       & "$PSScriptRoot\smoke.ps1" -Deep -ServerFilledTradeHistory -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
     } else {
