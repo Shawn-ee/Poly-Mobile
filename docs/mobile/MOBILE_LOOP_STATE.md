@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-260-sell-open-order-device-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Prove sell-side open-order proceeds wording and cancel activity on Samsung.
 Implemented:
 - Added a sell-side forced open-order fixture with `Sell - Mexico - OPEN`, 52% limit price, and 52 USDT order value.
@@ -10137,8 +10137,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-open-sell-order-canceled.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-open-sell-order.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-open-sell-order-canceled.png`.
-Commit: pending
-Merge: pending
+Commit: cf46eb8
+Merge: f02c15a
 
 ### Cycle 259
 
