@@ -4139,3 +4139,28 @@ Bugs:
 - None in final run.
 Visual QA:
 - No Samsung visual run this cycle; future fixture-backed Portfolio proof should assert the server shares/current-price row on-device.
+
+### Cycle 189
+
+Date: 2026-07-01
+Device: Backend/mobile service unit harness
+Build/run command:
+- `npx.cmd jest src/__tests__/portfolio.open-orders.route.test.ts --runInBand`
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+Result: Passed. Server Portfolio position identity now survives from backend response through the mobile position model.
+Harness evidence:
+- Backend Portfolio route test passed with 1 file and 4 tests.
+- Mobile API/service suite passed with 10 files and 47 tests.
+- Mobile typecheck passed.
+Screenshot evidence:
+- None; backend/mobile identity mapping cycle.
+Structured findings:
+- `/api/portfolio` position rows now include `outcomeId` alongside the existing outcome label.
+- Mobile `PortfolioPositionItem` accepts the backend `outcomeId`.
+- Mobile `Position` keeps `marketId` and `outcomeId` for server-hydrated positions.
+- Snapshot mapping tests prove the id pair is retained with position economics.
+Bugs:
+- None in final run.
+Visual QA:
+- No Samsung visual run this cycle; this is pre-work for real server close/sell behavior.

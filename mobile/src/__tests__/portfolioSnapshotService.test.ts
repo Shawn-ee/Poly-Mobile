@@ -22,6 +22,7 @@ const snapshot = (overrides: Partial<PortfolioSnapshot> = {}): PortfolioSnapshot
         resolveTime: null,
         createdAt: "2026-06-01T12:00:00.000Z",
       },
+      outcomeId: "france",
       outcome: "France",
       shares: 500,
       avgCost: 0.42,
@@ -88,6 +89,8 @@ describe("portfolio snapshot service", () => {
         {
           id: "server-world-cup-winner-France",
           mode: "server",
+          marketId: "world-cup-winner",
+          outcomeId: "france",
           title: "World Cup winner",
           outcome: "France",
           side: "buy",

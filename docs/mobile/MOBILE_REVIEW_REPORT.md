@@ -2799,3 +2799,18 @@ Findings:
 - Mobile API/service tests and mobile typecheck passed.
 Decision: Approve Cycle 188 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 189
+
+Date: 2026-07-01
+Branch: mobile/cycle-189
+Reviewer: Lead/Reviewer pass
+Scope: Server Portfolio position identifiers.
+Findings:
+- P1: Legacy `/api/portfolio` position rows now include `outcomeId` while preserving the existing human-readable `outcome` field.
+- P1: Mobile portfolio snapshot mapping carries backend `marketId` and `outcomeId` into server-hydrated `Position` rows.
+- P1: Focused backend route coverage proves position identifiers are returned without leaking private credential fields.
+- P2: This enables a future real close/sell order path, but `closePosition` still performs local optimistic cash-out until that server action is wired.
+- Backend Portfolio route tests, mobile API/service tests, and mobile typecheck passed.
+Decision: Approve Cycle 189 for local commit/merge after scoped diff review.
+Merge approved: Yes

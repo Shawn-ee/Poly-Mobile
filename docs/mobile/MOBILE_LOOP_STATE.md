@@ -8624,6 +8624,44 @@ Harnesses run:
 Harness failures:
 - None.
 
+## Cycle 189
+
+Date: 2026-07-01
+Branch: mobile/cycle-189
+Goal: Preserve server Portfolio market/outcome identifiers so hydrated positions can later submit real close/sell orders.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No direct visual change.
+Backend/API changed: `/api/portfolio` position rows now include `outcomeId` while keeping the existing `outcome` label.
+Database/schema changed: None.
+Files changed: `src/app/api/portfolio/route.ts`, `src/__tests__/portfolio.open-orders.route.test.ts`, `mobile/src/types.ts`, `mobile/src/components/Portfolio.tsx`, `mobile/src/services/portfolioSnapshotService.ts`, `mobile/src/__tests__/portfolioSnapshotService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npx.cmd jest src/__tests__/portfolio.open-orders.route.test.ts --runInBand`.
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm.cmd run typecheck` in `mobile/`.
+Screenshots captured:
+- None; backend/mobile identity mapping cycle.
+Harness evidence:
+- Backend Portfolio route test passed with 1 file and 4 tests.
+- Mobile API/service suite passed with 10 files and 47 tests.
+- Mobile typecheck passed.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Server-hydrated mobile positions now retain the market/outcome identity required for a canonical sell order.
+Result: Passed Cycle 189 QA. Backend route, mobile mapping, and typecheck harnesses pass.
+Commit: pending (`Preserve server portfolio position identifiers`).
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Continue toward final DoD by using these identifiers to route server-mode close-position into a canonical SELL order or by adding a fixture-backed Samsung proof of server-hydrated Portfolio rows.
+Harnesses run:
+- Backend Portfolio Route Harness
+- Mobile Portfolio Snapshot Harness
+- Mobile Typecheck Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.

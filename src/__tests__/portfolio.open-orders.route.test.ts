@@ -106,6 +106,56 @@ describe("GET /api/portfolio open order display data", () => {
     expect(JSON.stringify(body.openOrders)).not.toContain("createdApiCredential");
   });
 
+  test("returns position market and outcome identifiers needed for server-side close orders", async () => {
+    getUserId.mockResolvedValue("user-1");
+    getOutcomeMidPrices.mockResolvedValue(new Map([["outcome-france", 0.61]]));
+    prismaMock.position.findMany.mockResolvedValue([
+      {
+        marketId: "market-world-cup-winner",
+        outcomeId: "outcome-france",
+        shares: 25,
+        avgCost: 0.42,
+        market: {
+          id: "market-world-cup-winner",
+          title: "World Cup winner",
+          status: "LIVE",
+          mechanism: "ORDERBOOK",
+          resolveTime: null,
+          createdAt: new Date("2026-06-20T12:00:00Z"),
+        },
+        outcome: {
+          id: "outcome-france",
+          name: "France",
+        },
+        apiCredentialId: "private-position-credential",
+      },
+    ]);
+
+    const { GET } = await import("@/app/api/portfolio/route");
+    const response = await GET(new NextRequest("http://localhost/api/portfolio"));
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(getOutcomeMidPrices).toHaveBeenCalledWith("market-world-cup-winner", ["outcome-france"]);
+    expect(body.positions).toEqual([
+      expect.objectContaining({
+        market: expect.objectContaining({
+          id: "market-world-cup-winner",
+          title: "World Cup winner",
+        }),
+        outcomeId: "outcome-france",
+        outcome: "France",
+        shares: 25,
+        avgCost: 0.42,
+        currentPrice: 0.61,
+        valueTokens: 15.25,
+        costBasisTokens: 10.5,
+        pnlTokens: 4.75,
+      }),
+    ]);
+    expect(JSON.stringify(body.positions)).not.toContain("private-position-credential");
+  });
+
   test("returns sanitized current-user open combo orders", async () => {
     getUserId.mockResolvedValue("user-1");
     prismaMock.comboOrder.findMany.mockResolvedValue([

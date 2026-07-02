@@ -12,6 +12,8 @@ import type { OrderMode } from "../services/orderService";
 export type Position = {
   id: string;
   mode: OrderMode;
+  marketId?: string;
+  outcomeId?: string;
   title: string;
   outcome: string;
   side: "buy" | "sell";

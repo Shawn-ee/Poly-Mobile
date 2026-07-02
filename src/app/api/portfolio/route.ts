@@ -92,6 +92,7 @@ export async function GET(_request: NextRequest) {
         resolveTime: position.market.resolveTime,
         createdAt: position.market.createdAt,
       },
+      outcomeId: position.outcomeId,
       outcome: position.outcome.name,
       shares,
       avgCost,

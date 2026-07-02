@@ -83,6 +83,7 @@ export type PortfolioPositionItem = {
     resolveTime: string | null;
     createdAt: string;
   };
+  outcomeId?: string;
   outcome: string;
   shares: number;
   avgCost: number;
