@@ -10050,6 +10050,29 @@ Evidence:
 Commit: c0f5956
 Merge: 90130f7
 
+### Cycle 236
+
+Date: 2026-07-02
+Branch: mobile/cycle-236-account-open-orders-summary
+Status: Verified; pending local merge.
+Objective: Surface pending open-order count in the Account summary so Portfolio and Account communicate order exposure consistently.
+Implemented:
+- Added an `Open orders` row to `AccountScreen` preferences.
+- Passed `openOrders.length` from `App.tsx` into Account.
+- Seeded one mock open order in the account position summary fixture.
+- Added `smoke:samsung:account-position-summary` and a Samsung wrapper switch for phone-targeted proof.
+- Scrolled the account summary smoke before screenshot capture so the new row is visible in evidence.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:account-position-summary` passed on Samsung S23 with Expo host `172.16.200.14` and port `8161`.
+- Captured hierarchy includes `Open positions: 1`, `account-open-orders`, `Open orders: 1`, and `Ticket default: Buy 100 USDT`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-account-position-summary.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-account-position-summary.png`.
+Commit: pending
+Merge: pending
+
 ### Heartbeat After Cycle 235
 
 Completed cycles: 233, 234, 235.
