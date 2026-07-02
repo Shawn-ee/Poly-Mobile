@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-276-backend-only-position-device-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Prove the backend-only Portfolio position fallback opens a quoted server ticket on Samsung.
 Implemented:
 - Added `serverBackendOnlyPortfolioFixture` with a backend-only World Cup proof position carrying 47%/50% depth and 1k/2.5k share sizes.
@@ -10139,8 +10139,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-server-position-fallback-trade-ticket-button.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-trade-ticket.png`.
 Result: Passed Cycle 276 QA. Backend-only Portfolio positions are now device-proven to open quoted server trade tickets.
-Commit: pending.
-Merge: pending.
+Commit: aff0510
+Merge: 517aa35
 
 ### Cycle 275
 
