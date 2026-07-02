@@ -81,6 +81,9 @@ try {
       -SummaryPath "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof-noise-gate-pre.json"
 
     Invoke-CheckedNative -Label "World Cup proof seed" -Command { cmd /c npx.cmd tsx scripts/import_worldcup_today_markets.ts }
+    Invoke-CheckedNative -Label "Open-order quote liquidity preparation" -Command {
+      cmd /c npx.cmd tsx scripts/prepare_mobile_server_open_order_quote.ts
+    }
 
     $credentialRaw = cmd /c npm.cmd run mobile:dev-credential 2>&1 | Out-String
     $credential = ConvertFrom-FirstJsonObject -Raw $credentialRaw
@@ -117,6 +120,7 @@ try {
         preSummaryPath = "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof-noise-gate-pre.json"
         postSummaryPath = "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof-noise-gate.json"
       }
+      liquiditySummaryPath = "docs/mobile/harness/cycle-current-mobile-server-open-order-quote-liquidity.json"
       evidence = [ordered]@{
         portfolioXml = "docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml"
         canceledXml = "docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml"

@@ -1,0 +1,31 @@
+{
+  "ready": true,
+  "event": {
+    "id": "9f662a7d-5700-43e4-b4f1-50e99cef6ec9",
+    "slug": "world-cup-2026-paraguay-vs-australia-2026-06-25",
+    "title": "Paraguay vs Australia"
+  },
+  "market": {
+    "id": "49a21c1b-893e-4139-ac54-6ad79d2ee204",
+    "title": "Paraguay vs Australia: Both teams to score"
+  },
+  "outcome": {
+    "id": "67d221dd-6139-4643-82ee-2470944b692a",
+    "name": "Yes"
+  },
+  "canceledStaleOrders": 2,
+  "bidOrder": {
+    "id": "b0c543c3-7793-47e8-bd1e-d177da137413",
+    "status": "OPEN",
+    "price": "0.01",
+    "size": "500",
+    "remaining": "500"
+  },
+  "askOrder": {
+    "id": "d7f88a21-d8a2-4f2a-b756-6bb014992389",
+    "status": "OPEN",
+    "price": "0.05",
+    "size": "2500",
+    "remaining": "2500"
+  }
+}

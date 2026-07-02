@@ -1,19 +1,19 @@
 ﻿{
     "ready":  true,
-    "username":  "holiwyn-mobile-open-cancel-20260702070944",
-    "userId":  "06d6b830-1728-4fc3-966f-b1cf062c627c",
-    "keyId":  "pk_live_f7468e7a7a6e258d",
+    "username":  "holiwyn-mobile-open-cancel-20260702071545",
+    "userId":  "f9954334-363e-4778-81ce-46a86f1144f3",
+    "keyId":  "pk_live_0a7266c68e1300b2",
     "port":  8156,
     "summaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json",
     "orderSummary":  {
-                         "username":  "holiwyn-mobile-open-cancel-20260702070944",
-                         "userId":  "06d6b830-1728-4fc3-966f-b1cf062c627c",
+                         "username":  "holiwyn-mobile-open-cancel-20260702071545",
+                         "userId":  "f9954334-363e-4778-81ce-46a86f1144f3",
                          "orderCount":  1,
                          "statusCounts":  {
                                               "CANCELED":  1
                                           },
                          "latestOrder":  {
-                                             "id":  "696dfdde-6c89-4a11-8439-9eeffa8b109f",
+                                             "id":  "59ad72a7-c103-4d9c-a5d8-d4a1b1caa37d",
                                              "status":  "CANCELED",
                                              "side":  "BUY",
                                              "market":  {
@@ -30,13 +30,13 @@
                                              "reservedNotional":  "0",
                                              "notional":  "1",
                                              "remainingNotional":  "1",
-                                             "apiKeyId":  "pk_live_f7468e7a7a6e258d",
-                                             "canceledByApiKeyId":  "pk_live_f7468e7a7a6e258d",
-                                             "createdAt":  "2026-07-02T12:10:37.002Z",
-                                             "updatedAt":  "2026-07-02T12:10:40.211Z"
+                                             "apiKeyId":  "pk_live_0a7266c68e1300b2",
+                                             "canceledByApiKeyId":  "pk_live_0a7266c68e1300b2",
+                                             "createdAt":  "2026-07-02T12:16:42.436Z",
+                                             "updatedAt":  "2026-07-02T12:16:45.550Z"
                                          },
                          "latestCanceledOrder":  {
-                                                     "id":  "696dfdde-6c89-4a11-8439-9eeffa8b109f",
+                                                     "id":  "59ad72a7-c103-4d9c-a5d8-d4a1b1caa37d",
                                                      "status":  "CANCELED",
                                                      "side":  "BUY",
                                                      "market":  {
@@ -53,14 +53,14 @@
                                                      "reservedNotional":  "0",
                                                      "notional":  "1",
                                                      "remainingNotional":  "1",
-                                                     "apiKeyId":  "pk_live_f7468e7a7a6e258d",
-                                                     "canceledByApiKeyId":  "pk_live_f7468e7a7a6e258d",
-                                                     "createdAt":  "2026-07-02T12:10:37.002Z",
-                                                     "updatedAt":  "2026-07-02T12:10:40.211Z"
+                                                     "apiKeyId":  "pk_live_0a7266c68e1300b2",
+                                                     "canceledByApiKeyId":  "pk_live_0a7266c68e1300b2",
+                                                     "createdAt":  "2026-07-02T12:16:42.436Z",
+                                                     "updatedAt":  "2026-07-02T12:16:45.550Z"
                                                  },
                          "recentOrders":  [
                                               {
-                                                  "id":  "696dfdde-6c89-4a11-8439-9eeffa8b109f",
+                                                  "id":  "59ad72a7-c103-4d9c-a5d8-d4a1b1caa37d",
                                                   "status":  "CANCELED",
                                                   "side":  "BUY",
                                                   "market":  {
@@ -77,10 +77,10 @@
                                                   "reservedNotional":  "0",
                                                   "notional":  "1",
                                                   "remainingNotional":  "1",
-                                                  "apiKeyId":  "pk_live_f7468e7a7a6e258d",
-                                                  "canceledByApiKeyId":  "pk_live_f7468e7a7a6e258d",
-                                                  "createdAt":  "2026-07-02T12:10:37.002Z",
-                                                  "updatedAt":  "2026-07-02T12:10:40.211Z"
+                                                  "apiKeyId":  "pk_live_0a7266c68e1300b2",
+                                                  "canceledByApiKeyId":  "pk_live_0a7266c68e1300b2",
+                                                  "createdAt":  "2026-07-02T12:16:42.436Z",
+                                                  "updatedAt":  "2026-07-02T12:16:45.550Z"
                                               }
                                           ]
                      },
@@ -126,6 +126,7 @@
                            "preSummaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof-noise-gate-pre.json",
                            "postSummaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof-noise-gate.json"
                        },
+    "liquiditySummaryPath":  "docs/mobile/harness/cycle-current-mobile-server-open-order-quote-liquidity.json",
     "evidence":  {
                      "portfolioXml":  "docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml",
                      "canceledXml":  "docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml",
