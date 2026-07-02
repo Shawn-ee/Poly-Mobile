@@ -2982,3 +2982,19 @@ Findings:
 - Focused backend route tests, mobile API/service tests, mobile typecheck, and Samsung server-order success smoke passed.
 Decision: Approve Cycle 200 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 201
+
+Date: 2026-07-02
+Branch: mobile/cycle-201
+Reviewer: Lead/Reviewer pass
+Scope: Server open-order cancel from synced Portfolio receipt.
+Findings:
+- P0: Samsung S23 now proves the server-backed create-and-cancel flow: server-mode ticket, canonical order creation, synced Portfolio open order, real Cancel tap, backend cancel acceptance, and visible canceled activity receipt.
+- P0: Server-mode cancel now refreshes Portfolio from the backend after cancel success, so open-order state remains server-authoritative.
+- P1: The UI preserves the local canceled activity row after server refresh, covering the current backend gap where `/api/portfolio/history` is resolved-history focused and does not yet surface canceled order events.
+- P1: The Samsung server-order harness now force-stops Expo Go before deep-link launch, avoiding stale foreground app state.
+- P1: The cancel proof scrolls to Recent activity after cancellation so older open proof orders do not hide the canceled receipt.
+- Mobile API/service tests, mobile typecheck, and Samsung server-open-order-cancel smoke passed.
+Decision: Approve Cycle 201 for local commit/merge after scoped diff review.
+Merge approved: Yes
