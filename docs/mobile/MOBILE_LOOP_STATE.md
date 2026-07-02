@@ -10007,7 +10007,7 @@ Merge: 8e4bcab
 
 Date: 2026-07-02
 Branch: mobile/cycle-234-mock-cancel-side-label
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Make the mock open-order cancel proof use the same side-aware canceled activity standard as the server cancel proof, on Samsung S23.
 Implemented:
 - Tightened the mock `OpenOrderCancel` smoke assertion to require `Buy - Canceled 250.00 shares - Limit 47%`.
@@ -10023,8 +10023,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-open-order-canceled.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-open-order.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-open-order-canceled.png`.
-Commit: pending
-Merge: pending
+Commit: 4fc00e8
+Merge: 20fefc2
 
 ### Heartbeat After Cycle 232
 
