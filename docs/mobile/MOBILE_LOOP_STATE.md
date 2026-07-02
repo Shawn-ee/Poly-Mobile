@@ -9224,7 +9224,7 @@ Merge: 123f098
 
 Date: 2026-07-02
 Branch: mobile/cycle-204
-Status: Verified; pending local merge stamp.
+Status: Verified and locally integrated.
 Objective: Make backend filled trades visible in mobile Recent activity before market resolution.
 Implemented:
 - Extended `/api/portfolio/history` with a backward-compatible `recentTrades` array.
@@ -9242,8 +9242,8 @@ Evidence:
 - Live endpoint probe summary.
 Notes:
 - This cycle prepares the app/backend history surface for a filled-order/matching proof with prepared liquidity.
-Commit: PENDING
-Merge: PENDING
+Commit: 748e6e4
+Merge: 748e6e4
 
 ### Heartbeat After Cycle 142
 
