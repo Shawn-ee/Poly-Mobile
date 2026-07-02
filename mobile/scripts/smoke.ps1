@@ -447,7 +447,7 @@ try {
   } elseif ($ServerFilledTradeHistory) {
     @("Portfolio", "Server portfolio synced", "Recent activity")
   } elseif ($ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails) {
-    @("Portfolio", "Server portfolio synced", "World Cup winner", "SERVER - Buy - France - 42%", "Filled shares: 500.00")
+    @("Portfolio", "Server portfolio synced", "Open positions", "1", "World Cup winner", "SERVER - Buy - France - 42%")
   } elseif ($SearchQuery -or $SearchClearQuery) {
     @("Holiwyn", "Search World Cup markets", "zzzz", "0 results")
   } elseif ($HomeSearchQuery -or $HomeClearSearch) {
@@ -589,6 +589,7 @@ try {
     if ($ServerPositionTrade) {
       Save-Screenshot -Name "cycle-current-holiwyn-server-position-trade-ready.png"
       & $adb -s $Device shell input swipe 540 1750 540 850 450 | Out-Null
+      & $adb -s $Device shell input swipe 540 1750 540 850 450 | Out-Null
       Start-Sleep -Seconds 1
       $serverPositionTradeReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-trade-ready.xml"
       Assert-HierarchyContains -Path $serverPositionTradeReadyHierarchy -Expected @("World Cup winner", "SERVER - Buy - France - 42%", "Buy", "Sell", "Close position")
@@ -596,12 +597,18 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-server-position-trade-ticket.png"
       $serverPositionTradeTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-trade-ticket.xml"
-      Assert-HierarchyContains -Path $serverPositionTradeTicketHierarchy -Expected @("World Cup winner", "France", "Trading mode: Server mode", "Sell", "Estimated proceeds", "Est. shares", "Avg price", "Place sell order")
+      Assert-HierarchyContains -Path $serverPositionTradeTicketHierarchy -Expected @("World Cup winner", "France", "Trading mode: Server mode", "Sell", "Estimated proceeds", "Est. shares", "Avg price")
+      Assert-ServerTicketUsesQuotedDepthSizes -Path $serverPositionTradeTicketHierarchy
+      & $adb -s $Device shell input swipe 540 1850 540 950 450 | Out-Null
+      Start-Sleep -Seconds 1
+      $serverPositionTradeButtonHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-trade-ticket-button.xml"
+      Assert-HierarchyContains -Path $serverPositionTradeButtonHierarchy -Expected @("place-mock-order", "Place sell order")
       return
     }
 
     if ($ServerPositionBuyTrade) {
       Save-Screenshot -Name "cycle-current-holiwyn-server-position-buy-trade-ready.png"
+      & $adb -s $Device shell input swipe 540 1750 540 850 450 | Out-Null
       & $adb -s $Device shell input swipe 540 1750 540 850 450 | Out-Null
       Start-Sleep -Seconds 1
       $serverPositionBuyTradeReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-buy-trade-ready.xml"
@@ -610,7 +617,12 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-server-position-buy-trade-ticket.png"
       $serverPositionBuyTradeTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-buy-trade-ticket.xml"
-      Assert-HierarchyContains -Path $serverPositionBuyTradeTicketHierarchy -Expected @("World Cup winner", "France", "Trading mode: Server mode", "Buy", "Estimated cost", "Est. shares", "Avg price", "Place buy order")
+      Assert-HierarchyContains -Path $serverPositionBuyTradeTicketHierarchy -Expected @("World Cup winner", "France", "Trading mode: Server mode", "Buy", "Estimated cost", "Est. shares", "Avg price")
+      Assert-ServerTicketUsesQuotedDepthSizes -Path $serverPositionBuyTradeTicketHierarchy
+      & $adb -s $Device shell input swipe 540 1850 540 950 450 | Out-Null
+      Start-Sleep -Seconds 1
+      $serverPositionBuyTradeButtonHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-buy-trade-ticket-button.xml"
+      Assert-HierarchyContains -Path $serverPositionBuyTradeButtonHierarchy -Expected @("place-mock-order", "Place buy order")
       return
     }
 
