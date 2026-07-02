@@ -1,5 +1,6 @@
 param(
-  [string]$Device = "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp"
+  [string]$Device = "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+  [string]$SummaryPath = "..\docs\mobile\harness\cycle-current-android-dev-build-readiness.json"
 )
 
 $ErrorActionPreference = "Stop"
@@ -8,6 +9,8 @@ $MobileRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $AppJsonPath = Join-Path $MobileRoot "app.json"
 $EasJsonPath = Join-Path $MobileRoot "eas.json"
 $PackageJsonPath = Join-Path $MobileRoot "package.json"
+$ApkSmokePath = Join-Path $MobileRoot "scripts\samsung-apk-smoke.ps1"
+$ResolvedSummaryPath = Join-Path $MobileRoot $SummaryPath
 
 $failures = New-Object System.Collections.Generic.List[string]
 $warnings = New-Object System.Collections.Generic.List[string]
@@ -30,6 +33,9 @@ if (!(Test-Path $EasJsonPath)) {
 }
 if (!(Test-Path $PackageJsonPath)) {
   Add-Failure "Missing mobile/package.json."
+}
+if (!(Test-Path $ApkSmokePath)) {
+  Add-Failure "Missing Samsung APK smoke harness."
 }
 
 if (Test-Path $AppJsonPath) {
@@ -79,10 +85,29 @@ if ($null -eq $adb) {
   }
 }
 
+$summary = [ordered]@{
+  ready = $failures.Count -eq 0
+  device = $Device
+  checkedAt = (Get-Date).ToUniversalTime().ToString("o")
+  files = [ordered]@{
+    appJson = Test-Path $AppJsonPath
+    easJson = Test-Path $EasJsonPath
+    packageJson = Test-Path $PackageJsonPath
+    samsungApkSmoke = Test-Path $ApkSmokePath
+  }
+  warnings = @($warnings)
+  failures = @($failures)
+  nextLane = if ($failures.Count -eq 0) { "preview-apk-or-dev-client-apk" } else { "fix-readiness-failures" }
+}
+New-Item -ItemType Directory -Force -Path (Split-Path -Parent $ResolvedSummaryPath) | Out-Null
+$summary | ConvertTo-Json -Depth 6 | Set-Content -Path $ResolvedSummaryPath -Encoding utf8
+
 Write-Host "Android dev-build readiness:"
 Write-Host "- app.json: checked"
 Write-Host "- eas.json: checked"
 Write-Host "- package.json: checked"
+Write-Host "- Samsung APK smoke harness: checked"
+Write-Host "- summary: $ResolvedSummaryPath"
 
 if ($warnings.Count -gt 0) {
   Write-Host "Warnings:"

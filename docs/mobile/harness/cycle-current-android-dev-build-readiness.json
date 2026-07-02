@@ -1,0 +1,18 @@
+﻿{
+    "ready":  true,
+    "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "checkedAt":  "2026-07-02T13:55:36.4570162Z",
+    "files":  {
+                  "appJson":  true,
+                  "easJson":  true,
+                  "packageJson":  true,
+                  "samsungApkSmoke":  true
+              },
+    "warnings":  [
+                     "expo-dev-client is not installed yet; use preview-apk now, or install expo-dev-client before using the development profile."
+                 ],
+    "failures":  [
+
+                 ],
+    "nextLane":  "preview-apk-or-dev-client-apk"
+}
