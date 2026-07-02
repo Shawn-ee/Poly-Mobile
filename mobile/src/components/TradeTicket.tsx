@@ -19,6 +19,7 @@ type TradeTicketCopy = {
   balance: string;
   estimatedCost: string;
   estimatedProceeds: string;
+  estimatedFee: string;
   estimatedShares: string;
   averagePrice: string;
   impliedOdds: string;
@@ -178,6 +179,10 @@ export function TradeTicket({
           <View style={styles.estimateLine}>
             <Text style={styles.estimateLabel}>{costLabel}</Text>
             <Text style={styles.estimateValue}>{money(Math.min(numericAmount, balance))}</Text>
+          </View>
+          <View accessibilityLabel="ticket-estimated-fee" testID="ticket-estimated-fee" style={styles.estimateLine}>
+            <Text style={styles.estimateLabel}>{t.estimatedFee}</Text>
+            <Text style={styles.estimateValue}>{money(0)}</Text>
           </View>
           <View style={styles.estimateLine}>
             <Text style={styles.estimateLabel}>{t.estimatedShares}</Text>

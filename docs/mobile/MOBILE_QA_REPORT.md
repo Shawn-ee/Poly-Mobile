@@ -3805,3 +3805,31 @@ Bugs:
 - First Samsung attempt exposed a real visual-fit issue where the taller depth strip could clip the ticket header; fixed by compacting the depth pill and ticket vertical rhythm.
 Visual QA:
 - Samsung S23 screenshot captured for the corrected ticket layout and post-order Portfolio/activity states.
+
+### Cycle 176
+
+Date: 2026-07-01
+Device: Samsung S23 via Expo Go
+Build/run command:
+- `npm.cmd run smoke:samsung:future-list-order` in `mobile/`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The Trade Ticket now shows an explicit estimated fee row before order placement and the Samsung future-order proof verifies it alongside a successful mock order.
+Harness evidence:
+- `docs/mobile/harness/cycle-176-holiwyn-future-list-order-ticket.xml`
+- `docs/mobile/harness/cycle-176-holiwyn-future-list-order-portfolio.xml`
+- `docs/mobile/harness/cycle-176-holiwyn-future-list-order-activity.xml`
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-176-holiwyn-future-list-order-ticket.png`
+- `docs/mobile/screenshots/cycle-176-holiwyn-future-list-order-portfolio.png`
+- `docs/mobile/screenshots/cycle-176-holiwyn-future-list-order-activity.png`
+Structured findings:
+- Ticket shows `ticket-estimated-fee`.
+- Ticket shows `Est. fee` and `0 USDT` in the estimate block.
+- Ticket still shows the full market title, trading mode, market depth, quantity/cost/payout/fee estimates, and order button on Samsung.
+Unit evidence:
+- Mobile API/service suite: 9 files, 40 tests passed.
+Bugs:
+- None in final run.
+Visual QA:
+- Screenshot reviewed; the added fee row fits within the Samsung ticket layout without clipping the header or CTA.
