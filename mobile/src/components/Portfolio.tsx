@@ -29,7 +29,7 @@ export type Position = {
 
 export type PortfolioActivity = {
   id: string;
-  action: "opened" | "closed" | "canceled";
+  action: "opened" | "sold" | "closed" | "canceled";
   title: string;
   outcome: string;
   amount: number;
@@ -84,6 +84,7 @@ type PortfolioCopy = {
   closePosition: string;
   recentActivity: string;
   openedPosition: string;
+  soldPosition: string;
   closedPosition: string;
   canceledOrder: string;
   openOrders: string;
@@ -119,7 +120,13 @@ const pnlTotal = (positions: Position[]) =>
   positions.reduce((total, position) => total + estimatedPnl(position), 0);
 
 const activityActionLabel = (activity: PortfolioActivity, t: PortfolioCopy) =>
-  activity.action === "opened" ? t.openedPosition : activity.action === "canceled" ? t.canceledOrder : t.closedPosition;
+  activity.action === "opened"
+    ? t.openedPosition
+    : activity.action === "sold"
+      ? t.soldPosition
+      : activity.action === "canceled"
+        ? t.canceledOrder
+        : t.closedPosition;
 
 const activityExecutionText = (activity: PortfolioActivity, t: PortfolioCopy) =>
   activity.action === "closed"

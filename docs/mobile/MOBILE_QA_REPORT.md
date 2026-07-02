@@ -4743,3 +4743,27 @@ Bugs:
 - Fixed server-mode order placement adding local optimistic positions/balance changes instead of refreshing server-authoritative Portfolio state.
 Visual QA:
 - Passed on Samsung S23 through Expo Go.
+
+### Cycle 212
+
+Date: 2026-07-02
+Device: Samsung S23 via Expo Go, local Docker-backed backend, mobile service unit harness, and server sell-liquidity harness
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run mobile:server-sell-fill-liquidity`
+- `npm.cmd run smoke:samsung:server-sell-order-filled` in `mobile/`
+Result: Passed. Samsung now proves the sell-fill receipt and latest activity card both describe the trade as `Sold` with execution details, not as a resolved closed trade.
+Harness evidence:
+- Recent backend SELL trades map to a pre-resolution `sold` activity row.
+- Sell ticket proof still covers server mode, Sell side, estimated proceeds, zero fee, `Est. shares`, `200 shares`, average price, and sell CTA.
+- Portfolio proof covers `SERVER - Sell - YES - FILLED`, `Filled shares 200.00`, `Exec price 50%`, `Remaining 0.00`, and latest activity `Sold` with `Filled shares 200.00`, `Exec price 50%`, and `Implied odds 2.0x`.
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`
+- `docs/mobile/harness/cycle-current-mobile-server-sell-fill-liquidity.json`
+Bugs:
+- Fixed backend recent SELL trades being shown with resolved-history `Closed` economics.
+Visual QA:
+- Passed on Samsung S23 through Expo Go.
