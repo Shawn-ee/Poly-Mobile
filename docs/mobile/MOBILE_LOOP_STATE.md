@@ -9442,8 +9442,8 @@ Evidence:
 Notes:
 - The Samsung proof verifies `Place sell order`, `Estimated proceeds`, `200 shares`, and the Portfolio receipt `SERVER - Sell - YES - FILLED` with 200.00 filled shares, 50% execution price, and 0.00 remaining.
 - Aggregate Portfolio totals are noisy because the local dev account has accumulated proof positions; focused assertions intentionally avoid exact total invested/P&L.
-Commit: pending
-Merge: pending
+Commit: bf9e770
+Merge: eeb3666
 
 ### Heartbeat After Cycle 211
 
