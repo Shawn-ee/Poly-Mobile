@@ -25,7 +25,12 @@ const toDecimal = (value: string | number | null): number | null => {
   return parsed > 1 ? parsed / 100 : parsed;
 };
 
-const toProbability = (value: number | null) => (value === null ? null : Math.round(Math.max(0, Math.min(1, value)) * 100));
+const toProbability = (value: number | null) => {
+  if (value === null) return null;
+  const bounded = Math.max(0, Math.min(1, value));
+  if (bounded > 0 && bounded < 0.01) return 1;
+  return Math.round(bounded * 100);
+};
 
 export const quoteToTicketQuote = (quote: Quote): TicketQuote => {
   const bestBid = toDecimal(quote.bestBid);
@@ -33,7 +38,13 @@ export const quoteToTicketQuote = (quote: Quote): TicketQuote => {
   const midPrice = toDecimal(quote.midPrice);
   const lastPrice = toDecimal(quote.lastPrice);
   const fallbackMid = bestBid !== null && bestAsk !== null ? (bestBid + bestAsk) / 2 : null;
-  const probability = toProbability(midPrice ?? lastPrice ?? fallbackMid ?? bestAsk ?? bestBid) ?? 0;
+  const preferredPrice =
+    (midPrice && midPrice > 0 ? midPrice : null) ??
+    (lastPrice && lastPrice > 0 ? lastPrice : null) ??
+    fallbackMid ??
+    bestAsk ??
+    bestBid;
+  const probability = toProbability(preferredPrice) ?? 0;
   return {
     outcomeId: quote.outcomeId,
     outcomeName: quote.outcomeName,
@@ -84,6 +95,15 @@ export const applyTicketQuoteToOutcome = <TOutcome extends QuoteableOutcome>(
   );
 
   if (!quote) return outcome;
+  if (
+    quote.probability <= 0 &&
+    quote.bestBid === null &&
+    quote.bestAsk === null &&
+    quote.midPrice === null &&
+    quote.lastPrice === null
+  ) {
+    return outcome;
+  }
   return {
     ...outcome,
     probability: quote.probability,

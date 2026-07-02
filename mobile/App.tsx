@@ -116,6 +116,7 @@ export default function App() {
   const profilePreferencesReady = useRef(false);
   const skipPortfolioHydration = useRef(false);
   const forceServerCloseFixture = useRef(false);
+  const forceServerOrderProof = useRef(false);
   const shouldSyncProfilePreferences = ORDER_MODE === "server" && DEFAULT_API_KEY.length > 0;
   const accountPortfolioValue = useMemo(
     () => balance + positions.reduce((total, position) => total + portfolioPositionValue(position), 0),
@@ -274,6 +275,7 @@ export default function App() {
     const shouldForceWorldCupWinnerFranceTicket = url.includes("forceWorldCupWinnerFranceTicket=1");
     const shouldForceClosedWorldCupWinnerFrance = url.includes("forceClosedWorldCupWinnerFrance=1");
     const shouldForceServerPortfolioFixture = url.includes("forceServerPortfolioFixture=1");
+    forceServerOrderProof.current = url.includes("forceServerOrderProof=1");
     forceServerCloseFixture.current = url.includes("forceServerCloseFixture=1");
     const shouldForceLive = url.includes("forceLive=1");
     setForceOrderFailure(url.includes("forceOrderFailure=1"));
@@ -301,6 +303,7 @@ export default function App() {
         !shouldForceWorldCupWinnerFranceTicket &&
         !shouldForceClosedWorldCupWinnerFrance &&
         !shouldForceServerPortfolioFixture &&
+        !forceServerOrderProof.current &&
         !shouldForceLive
       ) {
         setTimeout(resetRuntimeState, 750);
@@ -470,6 +473,21 @@ export default function App() {
       setMainTab("account");
     }
   }, []);
+
+  useEffect(() => {
+    if (!forceServerOrderProof.current || ORDER_MODE !== "server") return;
+    const event = events.find(
+      (item) =>
+        !worldCupEvents.some((mockEvent) => mockEvent.id === item.id) &&
+        item.markets.some((market) => market.outcomes.length > 0),
+    );
+    const market = event?.markets.find((item) => item.outcomes.length > 0);
+    const outcome = market?.outcomes[0];
+    if (!event || !market || !outcome) return;
+    forceServerOrderProof.current = false;
+    setSelectedEvent(event);
+    setTicket({ event, market, outcome, side: "buy" });
+  }, [events]);
 
   useEffect(() => {
     Linking.getInitialURL().then(handleLaunchUrl);
@@ -755,6 +773,7 @@ export default function App() {
     ]);
     setTicket(null);
     setTicketOrderError(null);
+    setSelectedEvent(null);
     setMainTab("portfolio");
   };
 

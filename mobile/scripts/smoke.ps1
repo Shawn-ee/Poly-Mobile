@@ -16,6 +16,7 @@ param(
   [switch]$SearchClearQuery,
   [switch]$ServerUnavailable,
   [switch]$ServerOrderFailure,
+  [switch]$ServerOrderSuccess,
   [switch]$ServerPortfolioFixture,
   [switch]$ServerCloseFixture,
   [switch]$ServerPositionTrade,
@@ -301,18 +302,29 @@ try {
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
     $env:EXPO_PUBLIC_API_KEY = "pk_test_mobile_harness"
   }
+  if ($ServerOrderSuccess) {
+    if (-not $env:EXPO_PUBLIC_API_KEY) {
+      throw "EXPO_PUBLIC_API_KEY is required for ServerOrderSuccess smoke."
+    }
+    $env:EXPO_PUBLIC_ORDER_MODE = "server"
+    if (-not $env:EXPO_PUBLIC_API_BASE_URL) {
+      $env:EXPO_PUBLIC_API_BASE_URL = "http://${ExpoHost}:3000"
+    }
+  }
   $expoArgs = @("expo", "start", "--port", "$Port", "--offline")
-  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailMarketOutcomeCount -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary) {
+  if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailMarketOutcomeCount -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
   Wait-ExpoReady -Port $Port
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailMarketOutcomeCount -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailMarketOutcomeCount -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://${ExpoHost}:$Port/--/?forceOrderFailure=1"
   } elseif ($ServerUnavailable) {
     "exp://${ExpoHost}:$Port/--/?forceOpenOrder=1"
+  } elseif ($ServerOrderSuccess) {
+    "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerOrderProof=1"
   } elseif ($ServerPortfolioFixture) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerPortfolioFixture=1"
   } elseif ($ServerCloseFixture) {
@@ -383,6 +395,8 @@ try {
     @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina")
   } elseif ($ServerOrderFailure) {
     @("World Cup winner", "France", "Trading mode: Server mode", "Best bid", "Best ask", "Spread", "Fake balance", "Place buy order")
+  } elseif ($ServerOrderSuccess) {
+    @("Trading mode: Server mode", "Best bid", "Best ask", "Spread", "Fake balance", "Place buy order")
   } elseif ($ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails) {
     @("Portfolio", "Server portfolio synced", "World Cup winner", "SERVER - Buy - France - 42%", "Filled shares: 500.00")
   } elseif ($SearchQuery -or $SearchClearQuery) {
@@ -437,6 +451,17 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-error.png"
       $serverOrderErrorHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-order-error.xml"
       Assert-HierarchyContains -Path $serverOrderErrorHierarchy -Expected @("Order failed. Try again.", "ticket-order-error", "Place buy order")
+      return
+    }
+
+    if ($ServerOrderSuccess) {
+      Save-Screenshot -Name "cycle-current-holiwyn-server-order-success-ticket.png"
+      $serverOrderSuccessTicketHierarchy = $homeHierarchy
+      Assert-HierarchyContains -Path $serverOrderSuccessTicketHierarchy -Expected @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "Estimated cost", "Est. fee", "0 USDT", "Est. shares", "Avg price", "Place buy order")
+      Invoke-TapHierarchyNode -Path $serverOrderSuccessTicketHierarchy -Identifier "place-mock-order"
+      $serverOrderSuccessPortfolioHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-server-order-success-portfolio.xml" -Expected @("Portfolio", "Order placed", "SERVER - Buy", "World Cup", "Filled shares") -Attempts 14 -DelaySeconds 2
+      Save-Screenshot -Name "cycle-current-holiwyn-server-order-success-portfolio.png"
+      Assert-HierarchyContains -Path $serverOrderSuccessPortfolioHierarchy -Expected @("latest-order-card", "OPEN", "Remaining")
       return
     }
 

@@ -74,6 +74,12 @@ To verify Samsung server-mode order failure recovery, run:
 npm run smoke:samsung:server-order-failure
 ```
 
+To verify a successful Samsung server-backed fake-token order, export a local mobile API key and run:
+
+```powershell
+npm run smoke:samsung:server-order-success
+```
+
 To verify the Samsung server-hydrated Portfolio fixture, run:
 
 ```powershell

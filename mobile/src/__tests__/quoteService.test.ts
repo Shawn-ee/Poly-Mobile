@@ -33,6 +33,41 @@ describe("quote service", () => {
     });
   });
 
+  test("preserves a minimum one percent ticket probability for positive tiny quotes", () => {
+    const quote: Quote = {
+      outcomeId: "yes",
+      outcomeName: "YES",
+      bestBid: "0.001",
+      bestAsk: "0.004",
+      midPrice: null,
+      lastPrice: null,
+    };
+
+    expect(quoteToTicketQuote(quote)).toMatchObject({
+      probability: 1,
+      bestBid: 1,
+      bestAsk: 1,
+    });
+  });
+
+  test("falls back to positive bid ask midpoint when mid price is zero", () => {
+    const quote: Quote = {
+      outcomeId: "yes",
+      outcomeName: "YES",
+      bestBid: "0.01",
+      bestAsk: "0.04",
+      midPrice: "0",
+      lastPrice: null,
+    };
+
+    expect(quoteToTicketQuote(quote)).toMatchObject({
+      probability: 3,
+      bestBid: 1,
+      bestAsk: 4,
+      midPrice: 0,
+    });
+  });
+
   test("falls back to last price when mid price is unavailable", () => {
     const quote: Quote = {
       outcomeId: "brazil",
@@ -216,6 +251,24 @@ describe("quote service", () => {
           bestBid: 41,
           bestAsk: 43,
           midPrice: 42,
+          lastPrice: null,
+        },
+      ]),
+    ).toBe(outcome);
+  });
+
+  test("keeps the original outcome when the matching server quote has no prices", () => {
+    const outcome = { id: "yes", label: "YES", zhLabel: "YES", probability: 50, color: "#2563eb" };
+
+    expect(
+      applyTicketQuoteToOutcome(outcome, [
+        {
+          outcomeId: "yes",
+          outcomeName: "YES",
+          probability: 0,
+          bestBid: null,
+          bestAsk: null,
+          midPrice: null,
           lastPrice: null,
         },
       ]),
