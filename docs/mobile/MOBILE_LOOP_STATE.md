@@ -7135,6 +7135,39 @@ Open blockers: None for autonomous progress. Successful server-backed device ord
 Risks: Successful authenticated order execution and Portfolio hydration are still unproven on device; Docker daemon/local DB are currently unavailable; Expo Go proof still depends on LAN reachability.
 Next three likely cycles: add server-mode Portfolio hydration failure/recovery proof, improve credential-readiness reporting, and continue backend-facing service coverage that can be unit-tested without a running DB.
 
+### Cycle 152
+
+Date: 2026-07-01
+Branch: mobile/cycle-152
+Goal: Extract and test server Portfolio sync recovery decisions before live Samsung server hydration proof.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No visual behavior change; existing Portfolio sync card behavior is preserved.
+Backend/API changed: No runtime API route change. Extracted mobile server Portfolio sync resolution into a service.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/services/portfolioSyncService.ts`, `mobile/src/__tests__/portfolioSyncService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Unit evidence:
+- Mobile API/service suite passed 7 files and 20 tests.
+- New tests cover full success, snapshot-only success, history-only success, and full failure Portfolio sync results.
+Bugs found:
+- None in final run.
+Technical debt added:
+- This is service-level recovery coverage; successful server-backed Portfolio hydration on Samsung remains gated by backend/API readiness.
+Technical debt resolved:
+- The partial-success rule for server Portfolio data is no longer buried in `App.tsx` and now has direct regression coverage.
+Result: Passed Cycle 152 QA. Mobile typecheck and mobile API/service tests pass.
+Commit: Pending.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 153 should add a Samsung/server-mode Portfolio recovery smoke or continue credential-readiness gating if a visual proof is not yet practical.
+Harnesses run:
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Portfolio Snapshot/Portfolio Sync Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.

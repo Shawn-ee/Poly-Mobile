@@ -33,8 +33,7 @@ import {
   worldCupFutures,
 } from "./src/mocks/worldCup";
 import { OrderMode, submitTicketOrder } from "./src/services/orderService";
-import { loadPortfolioHistoryActivities } from "./src/services/portfolioHistoryService";
-import { loadPortfolioSnapshot } from "./src/services/portfolioSnapshotService";
+import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
 
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
@@ -462,21 +461,21 @@ export default function App() {
     if (ORDER_MODE !== "server") return undefined;
     let cancelled = false;
     setPortfolioSyncStatus("syncing");
-    Promise.allSettled([loadPortfolioSnapshot(api), loadPortfolioHistoryActivities(api)]).then(
-      ([snapshotResult, historyResult]) => {
+    loadServerPortfolioState(api).then(
+      ({ syncStatus, snapshot, activities: serverActivities }) => {
         if (cancelled) return;
-        setPortfolioSyncStatus(snapshotResult.status === "rejected" && historyResult.status === "rejected" ? "error" : "synced");
-        if (snapshotResult.status === "fulfilled") {
-          setBalance(snapshotResult.value.balance);
-          if (snapshotResult.value.positions.length > 0) {
-            setPositions((current) => (current.length > 0 ? current : snapshotResult.value.positions));
+        setPortfolioSyncStatus(syncStatus);
+        if (snapshot) {
+          setBalance(snapshot.balance);
+          if (snapshot.positions.length > 0) {
+            setPositions((current) => (current.length > 0 ? current : snapshot.positions));
           }
-          if (snapshotResult.value.openOrders.length > 0) {
-            setOpenOrders((current) => (current.length > 0 ? current : snapshotResult.value.openOrders));
+          if (snapshot.openOrders.length > 0) {
+            setOpenOrders((current) => (current.length > 0 ? current : snapshot.openOrders));
           }
         }
-        if (historyResult.status === "fulfilled" && historyResult.value.length > 0) {
-          setActivities((current) => (current.length > 0 ? current : historyResult.value));
+        if (serverActivities && serverActivities.length > 0) {
+          setActivities((current) => (current.length > 0 ? current : serverActivities));
         }
       },
     );
