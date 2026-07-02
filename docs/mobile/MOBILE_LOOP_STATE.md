@@ -9776,7 +9776,7 @@ Merge: fdc159d
 
 Date: 2026-07-02
 Branch: mobile/cycle-224-proof-noise-report
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Add read-only visibility into accumulated mobile proof database state before destructive cleanup work.
 Implemented:
 - Added `scripts/mobile_proof_noise_report.ts` to summarize Holiwyn mobile proof users, orders, fills, credentials, latest rows, and open-order leftovers.
@@ -9790,8 +9790,8 @@ Evidence:
 Notes:
 - Current proof-state baseline is 8 proof users, 8 proof orders, 4 filled orders, 4 canceled orders, 5 taker fills, 8 API credentials, and no open-order leftovers.
 - The cycle is intentionally non-destructive; cleanup remains a later explicit harness cycle.
-Commit: pending
-Merge: pending
+Commit: 9d3f86d
+Merge: 8e47401
 
 ### Heartbeat After Cycle 223
 
