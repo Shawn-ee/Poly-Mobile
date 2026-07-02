@@ -9982,6 +9982,27 @@ Evidence:
 Commit: 4e0082d
 Merge: b9a3cb9
 
+### Cycle 233
+
+Date: 2026-07-02
+Branch: mobile/cycle-233-canceled-side-assertion
+Status: Verified; pending local merge.
+Objective: Make the Samsung open-order cancel proof fail if canceled activity loses side-aware execution detail.
+Implemented:
+- Tightened the `ServerOpenOrderCancel` canceled-activity hierarchy expectation in `mobile/scripts/smoke.ps1`.
+- The proof now requires `Buy - Canceled 100.00 shares - Limit 1%` after cancel.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run mobile:samsung-open-order-cancel-proof -- -Username holiwyn-mobile-proof-cycle-233-cancel-side` passed on Samsung S23.
+- Captured canceled hierarchy includes `Buy - Canceled 100.00 shares - Limit 1%`; proof summary reports a canceled order and clean pre/post proof-noise gates.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`.
+- `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
+Commit: pending
+Merge: pending
+
 ### Heartbeat After Cycle 232
 
 Completed cycles: 230, 231, 232.

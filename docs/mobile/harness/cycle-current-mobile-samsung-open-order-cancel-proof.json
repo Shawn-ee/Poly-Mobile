@@ -1,19 +1,19 @@
 ﻿{
     "ready":  true,
-    "username":  "holiwyn-mobile-proof-cycle-232-open-assert",
-    "userId":  "0c94263a-3a25-4476-86a4-c27758aa630c",
-    "keyId":  "pk_live_6321d5a194639f77",
+    "username":  "holiwyn-mobile-proof-cycle-233-cancel-side",
+    "userId":  "b7b70b2c-f2a2-49ea-b304-f3c354556001",
+    "keyId":  "pk_live_ffb45057efd4f2b5",
     "port":  8156,
     "summaryPath":  "docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json",
     "orderSummary":  {
-                         "username":  "holiwyn-mobile-proof-cycle-232-open-assert",
-                         "userId":  "0c94263a-3a25-4476-86a4-c27758aa630c",
+                         "username":  "holiwyn-mobile-proof-cycle-233-cancel-side",
+                         "userId":  "b7b70b2c-f2a2-49ea-b304-f3c354556001",
                          "orderCount":  1,
                          "statusCounts":  {
                                               "CANCELED":  1
                                           },
                          "latestOrder":  {
-                                             "id":  "73780bb0-08fa-4de3-986a-3f854130d156",
+                                             "id":  "2b1bcdac-4cee-4119-a3c9-c4d17819c90b",
                                              "status":  "CANCELED",
                                              "side":  "BUY",
                                              "market":  {
@@ -30,13 +30,13 @@
                                              "reservedNotional":  "0",
                                              "notional":  "1",
                                              "remainingNotional":  "1",
-                                             "apiKeyId":  "pk_live_6321d5a194639f77",
-                                             "canceledByApiKeyId":  "pk_live_6321d5a194639f77",
-                                             "createdAt":  "2026-07-02T08:53:51.443Z",
-                                             "updatedAt":  "2026-07-02T08:53:54.675Z"
+                                             "apiKeyId":  "pk_live_ffb45057efd4f2b5",
+                                             "canceledByApiKeyId":  "pk_live_ffb45057efd4f2b5",
+                                             "createdAt":  "2026-07-02T08:57:58.327Z",
+                                             "updatedAt":  "2026-07-02T08:58:01.404Z"
                                          },
                          "latestCanceledOrder":  {
-                                                     "id":  "73780bb0-08fa-4de3-986a-3f854130d156",
+                                                     "id":  "2b1bcdac-4cee-4119-a3c9-c4d17819c90b",
                                                      "status":  "CANCELED",
                                                      "side":  "BUY",
                                                      "market":  {
@@ -53,14 +53,14 @@
                                                      "reservedNotional":  "0",
                                                      "notional":  "1",
                                                      "remainingNotional":  "1",
-                                                     "apiKeyId":  "pk_live_6321d5a194639f77",
-                                                     "canceledByApiKeyId":  "pk_live_6321d5a194639f77",
-                                                     "createdAt":  "2026-07-02T08:53:51.443Z",
-                                                     "updatedAt":  "2026-07-02T08:53:54.675Z"
+                                                     "apiKeyId":  "pk_live_ffb45057efd4f2b5",
+                                                     "canceledByApiKeyId":  "pk_live_ffb45057efd4f2b5",
+                                                     "createdAt":  "2026-07-02T08:57:58.327Z",
+                                                     "updatedAt":  "2026-07-02T08:58:01.404Z"
                                                  },
                          "recentOrders":  [
                                               {
-                                                  "id":  "73780bb0-08fa-4de3-986a-3f854130d156",
+                                                  "id":  "2b1bcdac-4cee-4119-a3c9-c4d17819c90b",
                                                   "status":  "CANCELED",
                                                   "side":  "BUY",
                                                   "market":  {
@@ -77,10 +77,10 @@
                                                   "reservedNotional":  "0",
                                                   "notional":  "1",
                                                   "remainingNotional":  "1",
-                                                  "apiKeyId":  "pk_live_6321d5a194639f77",
-                                                  "canceledByApiKeyId":  "pk_live_6321d5a194639f77",
-                                                  "createdAt":  "2026-07-02T08:53:51.443Z",
-                                                  "updatedAt":  "2026-07-02T08:53:54.675Z"
+                                                  "apiKeyId":  "pk_live_ffb45057efd4f2b5",
+                                                  "canceledByApiKeyId":  "pk_live_ffb45057efd4f2b5",
+                                                  "createdAt":  "2026-07-02T08:57:58.327Z",
+                                                  "updatedAt":  "2026-07-02T08:58:01.404Z"
                                               }
                                           ]
                      },
