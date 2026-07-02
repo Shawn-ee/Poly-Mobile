@@ -135,14 +135,17 @@ const activityActionLabel = (activity: PortfolioActivity, t: PortfolioCopy) =>
         ? t.canceledOrder
         : t.closedPosition;
 
+const activitySidePrefix = (activity: PortfolioActivity, t: PortfolioCopy) =>
+  activity.side ? `${activity.side === "sell" ? t.sell : t.buy} - ` : "";
+
 const activityExecutionText = (activity: PortfolioActivity, t: PortfolioCopy) =>
   activity.action === "closed"
     ? `${t.entry} ${typeof activity.probability === "number" ? `${activity.probability}%` : money(activity.entryAmount ?? activity.amount)} - ${t.currentValue} ${money(activity.amount)} - ${t.estimatedPnl} ${
         activityPnl(activity) >= 0 ? "+" : ""
       }${money(activityPnl(activity))}`
     : activity.action === "canceled"
-      ? `${t.canceledOrder} ${(activity.shares ?? activityShares(activity)).toFixed(2)} ${t.shares} - ${t.limitPrice} ${activity.probability ?? 0}%`
-    : `${t.filledShares} ${activityShares(activity).toFixed(2)} - ${t.executionPrice} ${activity.probability ?? 0}% - ${
+      ? `${activitySidePrefix(activity, t)}${t.canceledOrder} ${(activity.shares ?? activityShares(activity)).toFixed(2)} ${t.shares} - ${t.limitPrice} ${activity.probability ?? 0}%`
+    : `${activitySidePrefix(activity, t)}${t.filledShares} ${activityShares(activity).toFixed(2)} - ${t.executionPrice} ${activity.probability ?? 0}% - ${
         t.impliedOdds
       } ${decimalOdds((activity.probability ?? 0) / 100)}`;
 
