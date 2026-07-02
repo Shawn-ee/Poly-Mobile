@@ -70,6 +70,7 @@
     "mobile:credential-readiness": "powershell -ExecutionPolicy Bypass -File scripts/mobile_credential_readiness.ps1",
     "mobile:credential-readiness:summary": "powershell -ExecutionPolicy Bypass -File scripts/mobile_credential_readiness.ps1 -SummaryPath docs/mobile/harness/cycle-current-mobile-credential-readiness.json",
     "mobile:filled-trade-proof": "tsx scripts/prove_mobile_filled_trade.ts --summaryPath=docs/mobile/harness/cycle-current-mobile-filled-trade-proof.json",
+    "mobile:server-order-fill-liquidity": "tsx scripts/prepare_mobile_server_order_fill.ts --summaryPath=docs/mobile/harness/cycle-current-mobile-server-order-fill-liquidity.json",
     "bots:reset-state": "tsx scripts/reset_bot_state.ts",
     "bot:e2e:seed": "tsx tests/bot-e2e/seed.ts",
     "bot:e2e:run": "npm run bot:e2e:seed && node tests/bot-e2e/run.mjs",

@@ -3088,3 +3088,19 @@ Findings:
 - Mobile API/service tests, mobile typecheck, and Samsung server filled-trade history proof passed.
 Decision: Approve Cycle 207 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 208
+
+Date: 2026-07-02
+Branch: mobile/cycle-208
+Reviewer: Lead/Reviewer pass
+Scope: Samsung server filled-order proof and explicit activity share accounting.
+Findings:
+- P0: Samsung S23 now proves the direct server ticket flow can fill against prepared backend liquidity and land in Portfolio as `SERVER - Buy - YES - FILLED`.
+- P0: Latest order details show filled shares, execution price, and remaining size for the filled backend order.
+- P1: Portfolio activity now carries explicit executed shares when available, so backend fills display true share count instead of deriving shares from ticket amount/probability.
+- P1: Backend recent-trade mapping also preserves trade shares for future server-synced activity rows.
+- P1: The liquidity harness targets the same event/market/outcome selection path the app uses, reducing proof drift between backend prep and UI execution.
+- Mobile API/service tests, mobile typecheck, liquidity proof, and Samsung server filled-order smoke passed.
+Decision: Approve Cycle 208 for local commit/merge after scoped diff review.
+Merge approved: Yes

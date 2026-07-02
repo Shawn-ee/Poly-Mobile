@@ -9329,6 +9329,45 @@ Notes:
 Commit: 00278f3
 Merge: 161c65f
 
+### Cycle 208
+
+Date: 2026-07-02
+Branch: mobile/cycle-208
+Status: Verified and locally merged.
+Objective: Prove a real Samsung server-mode ticket order can fill against prepared liquidity and display correct execution details.
+Implemented:
+- Added `scripts/prepare_mobile_server_order_fill.ts` to prepare maker liquidity for the exact World Cup market/outcome selected by the app.
+- Added `npm run mobile:server-order-fill-liquidity`.
+- Added `npm run smoke:samsung:server-order-filled`.
+- Extended the Samsung server-order smoke to verify FILLED latest-order details and latest activity execution details.
+- Added explicit executed `shares` to Portfolio activity mapping so backend fill size is displayed instead of deriving shares from ticket amount.
+Verification:
+- `npm.cmd run mobile:server-order-fill-liquidity` passed and prepared a 500-share resting SELL at 50%.
+- `npm.cmd run smoke:samsung:server-order-filled` passed on Samsung S23 through Expo Go with backend health `ok`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 65 tests.
+- `npm.cmd run typecheck` passed in `mobile/`.
+Evidence:
+- `docs/mobile/harness/cycle-current-mobile-server-order-fill-liquidity.json`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+Notes:
+- The first Samsung filled-order proof exposed a real accounting mismatch: latest activity showed 200.00 shares for a 100-share fill at 50% because shares were inferred from amount/probability. The final app preserves explicit backend fill size and now shows `Filled shares 100.00`.
+- The liquidity script retries when stale opposing orders consume the maker order, making the cycle safer for long-running reruns.
+Commit: pending
+Merge: pending
+
+### Heartbeat After Cycle 208
+
+Completed cycles: 206, 207, 208.
+Verified progress: Samsung now proves both backend-filled trade history after sync and direct server-mode ticket execution against prepared liquidity. Portfolio also surfaces the latest backend activity near the top, and filled activity now displays backend execution shares correctly.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, server quote/order/Portfolio sync, server open-order cancel, backend-derived canceled activity, backend-derived filled-trade activity, latest activity preview, and Samsung-proven server order fill display.
+Current backend state: Local Docker/Postgres backend supports mobile API-key Portfolio/profile/order flows, canonical order create/cancel, matching, canceled-order history, recent-trade history, and deterministic liquidity/fill proof harnesses.
+Device strategy: Samsung S23 is the active Holiwyn real-device QA target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: The current Samsung filled-order proof depends on seeded local dev backend state and LAN Expo reachability; accumulated dev-account trades mean assertions should avoid exact total-balance or exact count assumptions.
+Next three likely cycles: tighten server order cost/balance semantics, add richer filled-trade/order history drill-in behavior, and continue Polymarket-style World Cup market detail parity.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

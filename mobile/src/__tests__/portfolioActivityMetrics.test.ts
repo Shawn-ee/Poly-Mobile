@@ -6,6 +6,10 @@ describe("portfolio activity metrics", () => {
     expect(activityShares({ amount: 100, probability: 34 }).toFixed(2)).toBe("294.12");
   });
 
+  it("prefers explicit executed shares when backend fill size is available", () => {
+    expect(activityShares({ amount: 100, probability: 50, shares: 100 }).toFixed(2)).toBe("100.00");
+  });
+
   it("calculates closed trade pnl from close value and entry amount", () => {
     expect(activityPnl({ amount: 108.82, entryAmount: 100 })).toBeCloseTo(8.82, 2);
   });

@@ -4644,3 +4644,32 @@ Bugs:
 - The deeper scroll assertion became unstable as the dev account accumulated positions; the updated proof checks the new top preview as the intended surface.
 Visual QA:
 - Passed on Samsung S23 through Expo Go.
+
+### Cycle 208
+
+Date: 2026-07-02
+Device: Samsung S23 via Expo Go, local Docker-backed backend, mobile service unit harness, and server liquidity harness
+Build/run command:
+- `npm.cmd run mobile:server-order-fill-liquidity`
+- `npm.cmd run smoke:samsung:server-order-filled` in `mobile/`
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+Result: Passed. Samsung now visually proves a server-mode World Cup ticket can fill against prepared backend liquidity and display correct execution details.
+Harness evidence:
+- The liquidity harness prepared a resting SELL order for the app-selected World Cup market/outcome.
+- The Samsung smoke launched server mode with a fresh in-process mobile dev API key and backend health `ok`.
+- Portfolio verifies `SERVER - Buy - YES - FILLED`, `Filled shares 100.00`, `Exec price 50%`, `Remaining 0.00`, and a top Recent activity preview with `Filled shares 100.00 - Exec price 50% - Implied odds 2.0x`.
+- Mobile service tests and mobile typecheck passed.
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`
+- `docs/mobile/harness/cycle-current-mobile-server-order-fill-liquidity.json`
+Structured findings:
+- Direct app ticket execution now covers the filled path, not only an OPEN order receipt.
+- The proof uncovered and fixed a visible share-calculation mismatch in activity rows.
+- The API key used for the device proof stayed in process and was not written to docs.
+Bugs:
+- Fixed Recent activity deriving filled shares from amount/probability when backend execution shares are available.
+Visual QA:
+- Passed on Samsung S23 through Expo Go.

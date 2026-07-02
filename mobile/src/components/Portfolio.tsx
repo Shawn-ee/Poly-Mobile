@@ -34,6 +34,7 @@ export type PortfolioActivity = {
   outcome: string;
   amount: number;
   entryAmount?: number;
+  shares?: number;
   side?: "buy" | "sell";
   probability?: number;
   isLive?: boolean;

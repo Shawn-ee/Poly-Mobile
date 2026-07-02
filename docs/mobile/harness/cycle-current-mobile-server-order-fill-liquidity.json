@@ -1,0 +1,33 @@
+{
+  "ready": true,
+  "event": {
+    "id": "f74fcd67-edb5-4437-ab41-c52966d86f40",
+    "slug": "fixture-2026-fifa-world-cup",
+    "title": "Fixture 2026 FIFA World Cup"
+  },
+  "market": {
+    "id": "1ad00821-d801-4d37-8b12-1ec9d415a8a0",
+    "title": "Will France win the 2026 FIFA World Cup?"
+  },
+  "outcome": {
+    "id": "af91e922-9856-4c0f-8d84-21d77a7a189d",
+    "name": "YES"
+  },
+  "makerOrder": {
+    "id": "92e29e30-7388-4515-a7cd-2d8387843a68",
+    "status": "OPEN",
+    "price": "0.50",
+    "size": "500",
+    "requiredRemaining": "120",
+    "remaining": "500"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "makerOrderId": "92e29e30-7388-4515-a7cd-2d8387843a68",
+      "status": "OPEN",
+      "remaining": "500",
+      "fillCount": 0
+    }
+  ]
+}
