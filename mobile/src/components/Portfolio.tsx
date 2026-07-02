@@ -93,6 +93,7 @@ type PortfolioCopy = {
   canceledOrder: string;
   openOrders: string;
   remaining: string;
+  remainingValue: string;
   limitPrice: string;
   orderValue: string;
   placed: string;
@@ -244,8 +245,8 @@ export function Portfolio({
                 <Text style={styles.openOrderMetricValue}>{money(openOrderValue(order))}</Text>
               </View>
             </View>
-            <Text style={styles.openOrderRemaining}>
-              {t.remaining}: {openOrderRemainingShares(order).toLocaleString(undefined, { maximumFractionDigits: 2 })} {t.shares}
+            <Text accessibilityLabel={`open-order-remaining-value-${order.id}`} style={styles.openOrderRemaining}>
+              {t.remaining}: {openOrderRemainingShares(order).toLocaleString(undefined, { maximumFractionDigits: 2 })} {t.shares} ({t.remainingValue}: {money(openOrderValue(order))})
             </Text>
             {typeof order.originalShares === "number" && (
               <Text accessibilityLabel={`open-order-size-${order.id}`} style={styles.openOrderPlaced}>
@@ -602,14 +603,14 @@ const styles = StyleSheet.create({
   confirmationDetailValue: { color: "#f8fafc", fontSize: 12, fontWeight: "900", marginTop: 5 },
   openOrdersBlock: { marginTop: 16, padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   openOrdersTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginBottom: 10 },
-  openOrderItem: { gap: 10, paddingVertical: 10, borderTopWidth: 1, borderTopColor: "#1f2937" },
+  openOrderItem: { gap: 8, paddingVertical: 8, borderTopWidth: 1, borderTopColor: "#1f2937" },
   openOrderHeader: { flexDirection: "row", alignItems: "flex-start", gap: 10 },
   openOrderMain: { flex: 1 },
   openOrderTitle: { color: "#f8fafc", fontWeight: "900" },
   openOrderMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
   openOrderPrice: { color: "#dbeafe", fontWeight: "900" },
-  openOrderMetricGrid: { flexDirection: "row", gap: 8 },
-  openOrderMetricBox: { flex: 1, minHeight: 54, padding: 8, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
+  openOrderMetricGrid: { flexDirection: "row", gap: 6 },
+  openOrderMetricBox: { flex: 1, minHeight: 50, padding: 8, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
   openOrderMetricLabel: { color: "#64748b", fontSize: 10, fontWeight: "900" },
   openOrderMetricValue: { color: "#dbeafe", fontSize: 11, fontWeight: "900", marginTop: 5 },
   openOrderRemaining: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },
