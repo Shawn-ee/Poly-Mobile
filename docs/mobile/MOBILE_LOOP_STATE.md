@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-261-live-ticket-price-movement-warning
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Add live-market price movement guidance to the trade ticket and prove live order placement still works.
 Implemented:
 - Added localized `Prices may move before fill.` copy for live tickets in English and Simplified Chinese.
@@ -10140,8 +10140,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-live-order-portfolio.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-live-ticket.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-live-order-portfolio.png`.
-Commit: pending
-Merge: pending
+Commit: 12f8066
+Merge: 3721d1d
 
 ### Heartbeat After Cycle 261
 
