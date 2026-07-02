@@ -80,8 +80,8 @@ Technical debt added:
 Technical debt resolved:
 - TD-282 resolved: final QA/review signoff passed with 54 P0 gaps verified and zero unresolved P0 gaps.
 Result: Passed final QA/review signoff. Updated DoD sweep result: 8 verified, 2 partial, 0 blocked.
-Commit: pending.
-Merged: pending.
+Commit: cycle branch HEAD (`Add final mobile QA review signoff`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Resolve the APK artifact partial or re-scope/re-prove Android runtime reliability with the Samsung/APK lane.
 Harnesses run:
 - Final QA/Review Signoff Harness
