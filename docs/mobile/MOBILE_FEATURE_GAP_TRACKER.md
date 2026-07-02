@@ -211,3 +211,4 @@ Status:
 | GAP-189 | Trading ticket | Adjustable ticket slippage selector | P1 | Yes | Verified | Cycle 178 turns the static slippage row into 0.5%/1%/2% controls and verifies selecting 2% on the Samsung S23 future-order flow. |
 | GAP-190 | Account/Profile | Persisted ticket slippage default | P1 | Yes | Verified | Cycle 179 persists selected ticket slippage locally, shows it in Account ticket defaults, hardens Samsung proof for persisted selector state, and fixes header brand wrapping. |
 | GAP-191 | Backend adapter | Profile slippage preference seam | P1 | No | Verified | Cycle 180 extends profile-preference payload mapping and API tests with `ticketDefaultSlippage`, while defaulting older server payloads to 1%. |
+| GAP-192 | Account/Profile | Server-loaded slippage hydration | P1 | No | Verified | Cycle 181 hydrates `ticketDefaultSlippage` from loaded profile preferences into app ticket defaults instead of keeping stale local slippage. |

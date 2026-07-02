@@ -3944,3 +3944,25 @@ Bugs:
 - None in final run.
 Visual QA:
 - No new device screenshot required; this cycle changes the service/API seam behind the Cycle 179 Samsung-proven Account display.
+
+### Cycle 181
+
+Date: 2026-07-01
+Device: Service/unit harness
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Loaded profile preferences now hydrate ticket slippage defaults along with amount and side, so a server-returned `ticketDefaultSlippage` can restore the Trade Ticket and Account preference state.
+Harness evidence:
+- Mobile typecheck passed.
+- Mobile API/service suite passed with 9 files and 41 tests.
+Screenshot evidence:
+- No new screenshot; this is a profile-preference hydration fix behind the Cycle 179 Samsung-proven slippage UI.
+Structured findings:
+- `loadProfilePreferences` already maps server `ticketDefaultSlippage`.
+- `App.tsx` now applies the loaded `ticketDefaultSlippage` to `ticketDefaults`.
+- Repository search found no concrete backend `/api/profile/preferences` route yet, so backend persistence remains a separate server task.
+Bugs:
+- Fixed a hydration mismatch where server-loaded amount and side replaced local defaults but slippage stayed stale.
+Visual QA:
+- No visual regression expected; visible slippage UI remains covered by Cycle 179 Samsung evidence.

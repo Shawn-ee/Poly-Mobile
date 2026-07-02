@@ -8287,6 +8287,52 @@ Harnesses run:
 Harness failures:
 - None.
 
+## Cycle 181
+
+Date: 2026-07-01
+Branch: mobile/cycle-181
+Goal: Complete the mobile profile-preference slippage path by hydrating server-loaded slippage into runtime ticket defaults.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No direct UI change; this fixes the state behind the existing Trade Ticket and Account slippage UI.
+Backend/API changed: No backend route/schema change. Repository inspection did not find a concrete backend `/api/profile/preferences` route to extend in this cycle.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- None; Cycle 179 Samsung evidence remains the current visible slippage-default proof.
+Harness evidence:
+- Mobile typecheck passed.
+- Mobile API/service suite passed with 9 files and 41 tests.
+Bugs found:
+- App hydration loaded profile amount and side from server preferences but kept stale local slippage; fixed by applying `preferences.ticketDefaultSlippage`.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Server-loaded profile preferences now hydrate all ticket defaults carried by the mobile profile-preference seam.
+Result: Passed Cycle 181 QA. Mobile typecheck and mobile API/service tests pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Continue toward the final DoD by either adding a real backend profile-preferences route/storage or moving to the next trading parity gap that can be verified without backend readiness.
+Harnesses run:
+- Mobile Typecheck Harness
+- Mobile API/Profile Preference Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 181
+
+Completed cycles: 179, 180, 181.
+Verified progress: Ticket slippage now persists locally, appears in Account preferences, moves through the typed profile-preferences API payload, defaults older payloads safely, and hydrates back into app ticket defaults when server preferences are loaded.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, adjustable ticket slippage, persisted ticket defaults, Account preference summaries, and typed profile preference sync seams for language, saved markets, amount, side, and slippage.
+Current backend state: Mobile API/profile-preference/order/portfolio/history/quote unit tests pass. A concrete backend `/api/profile/preferences` route was not found during Cycle 181 inspection, so true server persistence for these preferences remains a backend implementation gap.
+Device strategy: Samsung S23 remains the preferred Holiwyn QA device through Expo Go because it is materially faster and less stale than the emulator for interactive proof. Emulator remains fallback for repeatable checks only.
+Open blockers: None for autonomous progress. Successful server-backed trading and real profile-preference persistence remain gated by backend readiness, credentials, and missing/unfinished preference route support.
+Risks: Expo Go still depends on LAN stability; server profile preferences are currently mobile-client ready but not proven end-to-end against a real backend route.
+Next three likely cycles: add or verify backend profile-preferences storage, continue backend-backed order/history parity that can be unit-tested, and rerun Samsung proofs when a user-visible surface changes.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.
