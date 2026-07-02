@@ -2,11 +2,11 @@
     "ready":  true,
     "status":  "installed_and_launched",
     "blocker":  "",
-    "checkedAt":  "2026-07-02T14:38:10.3423890Z",
+    "checkedAt":  "2026-07-02T21:00:44.7761787Z",
     "device":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
     "apkPath":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\Poly\\mobile\\.\\dist\\holiwyn-preview.apk",
     "packageName":  "com.holiwyn.mobile",
     "launchUrl":  "holiwyn://qa?forcePortfolio=1",
-    "foreground":  "  mCurrentFocus=Window{116cae u0 com.holiwyn.mobile/com.holiwyn.mobile.MainActivity}\n  mFocusedApp=ActivityRecord{240872216 u0 com.holiwyn.mobile/.MainActivity t830}",
+    "foreground":  "  mCurrentFocus=Window{aed79b u0 com.holiwyn.mobile/com.holiwyn.mobile.MainActivity}\n  mFocusedApp=ActivityRecord{176186869 u0 com.holiwyn.mobile/.MainActivity t929}",
     "processState":  "running"
 }
