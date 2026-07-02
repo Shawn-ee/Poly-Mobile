@@ -9877,7 +9877,7 @@ Merge: 3d049bf
 
 Date: 2026-07-02
 Branch: mobile/cycle-228-open-order-time
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Add backend order placement time to mobile Portfolio open-order cards.
 Implemented:
 - Added optional `placedAt` to mobile `OpenOrder` models.
@@ -9892,8 +9892,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
 - `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
-Commit: pending
-Merge: pending
+Commit: 94132e7
+Merge: 9093b21
 
 ### Heartbeat After Cycle 223
 
