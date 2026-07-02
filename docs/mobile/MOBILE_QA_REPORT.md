@@ -3545,3 +3545,29 @@ Bugs:
 - None in final run.
 Visual QA:
 - No app screenshot cycle; this is a Samsung proof gate readiness cycle.
+
+### Cycle 166
+
+Date: 2026-07-01
+Device: Samsung quote proof preflight harness
+Build/run command:
+- `npm.cmd run preflight:samsung:quote-proof:expect-blocked:summary` in `mobile/`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The Samsung quote proof preflight now refreshes quote readiness, runs the Samsung gate, and writes combined readiness evidence.
+Harness evidence:
+- `docs/mobile/harness/cycle-166-samsung-quote-proof-preflight.json`
+Structured findings:
+- `ready`: false
+- `deviceReachable`: true
+- `quoteReadinessReady`: false
+- `gateReady`: false
+- `backendHealthReachable`: false
+- `marketQuoteReachable`: false
+- Failure: backend health timed out at `http://127.0.0.1:3000`; gate failure is server quote readiness blocked.
+Unit evidence:
+- Mobile API/service suite: 9 files, 40 tests passed.
+Bugs:
+- Initial wrapper passed child script arguments positionally; fixed by explicit child-script parameter calls and reran successfully.
+Visual QA:
+- No app screenshot cycle; this is a one-command Samsung quote proof preflight.
