@@ -8613,8 +8613,8 @@ Technical debt added:
 Technical debt resolved:
 - Server-hydrated Portfolio values are no longer recomputed from the local mock price-movement heuristic.
 Result: Passed Cycle 188 QA. Mobile snapshot/position metric tests and typecheck pass.
-Commit: pending (`Use server portfolio position economics`).
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `999e637` (`Use server portfolio position economics`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `57340cd`.
 Next cycle: Continue toward final DoD by proving the richer Portfolio position row on Samsung with a fixture or by extending authenticated close/sell behavior for server-hydrated positions.
 Harnesses run:
 - Mobile Portfolio Snapshot Harness
