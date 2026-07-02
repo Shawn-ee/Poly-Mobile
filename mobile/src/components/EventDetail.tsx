@@ -239,19 +239,19 @@ export function EventDetail({
                 <Ionicons name="share-outline" color="#cbd5e1" size={18} />
               </View>
               <View style={styles.positionStats}>
-                <View>
+                <View style={styles.positionStatBlock}>
                   <Text style={styles.positionLabel}>Cost {position.probability}%</Text>
-                  <Text style={styles.positionValue}>{money(position.amount)}</Text>
+                  <Text adjustsFontSizeToFit minimumFontScale={0.82} numberOfLines={1} style={styles.positionValue}>{money(position.amount)}</Text>
                 </View>
-                <View>
+                <View style={styles.positionStatBlock}>
                   <Text style={styles.positionLabel}>Current {positionCurrentProbability(position)}%</Text>
-                  <Text style={styles.positionValue}>
+                  <Text adjustsFontSizeToFit minimumFontScale={0.82} numberOfLines={1} style={styles.positionValue}>
                     {money(portfolioPositionValue(position))} <Text style={estimatedPositionPnl(position) >= 0 ? styles.pnlUp : styles.pnlDown}>{estimatedPositionPnl(position) >= 0 ? "+" : ""}{money(estimatedPositionPnl(position))}</Text>
                   </Text>
                 </View>
                 <View style={styles.toWinBlock}>
                   <Text style={styles.positionLabel}>To win</Text>
-                  <Text style={styles.positionValue}>{money(position.amount / Math.max(position.probability / 100, 0.01))}</Text>
+                  <Text adjustsFontSizeToFit minimumFontScale={0.82} numberOfLines={1} style={styles.positionValue}>{money(position.amount / Math.max(position.probability / 100, 0.01))}</Text>
                 </View>
               </View>
               <View style={styles.positionActions}>
@@ -338,7 +338,8 @@ export function EventDetail({
                   >
                     <View style={styles.marketTitleBlock}>
                       <Text style={styles.marketTitle}>{label(locale, market)}</Text>
-                      <Text style={styles.marketSubtitle}>90 Minutes Plus Stoppage Time</Text>
+                      <Text style={styles.marketSubtitle}>Regulation Time Winner</Text>
+                      <Text style={styles.marketSubcopy}>90 Minutes Plus Stoppage Time</Text>
                     </View>
                     <Ionicons name={isExpanded ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
                   </Pressable>
@@ -397,7 +398,7 @@ export function EventDetail({
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: "#060b14" },
-  topBar: { minHeight: 68, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
+  topBar: { minHeight: 62, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   iconButton: { width: 42, height: 42, alignItems: "center", justifyContent: "center" },
   topActions: { flexDirection: "row", alignItems: "center", gap: 4 },
   segmentedControl: { flexDirection: "row", alignItems: "center", padding: 4, borderRadius: 999, backgroundColor: "#171d2a" },
@@ -411,7 +412,7 @@ const styles = StyleSheet.create({
   scrollPad: { paddingBottom: 110 },
   legacySummary: { height: 1, overflow: "hidden", opacity: 0 },
   legacySummaryText: { color: "#060b14", fontSize: 1 },
-  matchHeader: { minHeight: 112, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 28, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
+  matchHeader: { minHeight: 96, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 28, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   teamSide: { width: 132, flexDirection: "row", alignItems: "center", gap: 6 },
   teamSideRight: { justifyContent: "flex-end" },
   flag: { fontSize: 34 },
@@ -420,14 +421,14 @@ const styles = StyleSheet.create({
   matchTime: { alignItems: "center", justifyContent: "center" },
   matchDate: { color: "#f8fafc", fontSize: 17, fontWeight: "800" },
   matchHour: { color: "#cbd5e1", fontSize: 15, fontWeight: "700", marginTop: 4 },
-  chartBlock: { minHeight: 190, paddingHorizontal: 0, paddingTop: 52, paddingBottom: 20 },
+  chartBlock: { minHeight: 150, paddingHorizontal: 0, paddingTop: 36, paddingBottom: 12 },
   chartLine: { width: "72%", height: 76, flexDirection: "row", alignItems: "flex-start", gap: 0 },
   chartSegment: { flex: 1, height: 5, borderRadius: 999 },
   chartDot: { width: 15, height: 15, borderRadius: 999, marginLeft: -4, marginTop: 34 },
-  chartLabel: { position: "absolute", right: 28, top: 52, alignItems: "flex-start" },
+  chartLabel: { position: "absolute", right: 28, top: 36, alignItems: "flex-start" },
   chartName: { fontSize: 17, fontWeight: "800" },
   chartPercent: { fontSize: 48, fontWeight: "500" },
-  chatPreview: { marginHorizontal: 24, marginTop: 12, padding: 16, borderRadius: 18, backgroundColor: "#181f2d" },
+  chatPreview: { marginHorizontal: 24, marginTop: 8, padding: 14, borderRadius: 18, backgroundColor: "#181f2d" },
   chatPreviewTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   chatCount: { color: "#f8fafc", fontSize: 16, fontWeight: "800" },
   chatPreviewLine: { flexDirection: "row", alignItems: "center", gap: 10, marginTop: 14 },
@@ -435,31 +436,32 @@ const styles = StyleSheet.create({
   chatUser: { color: "#e5e7eb", fontSize: 15, fontWeight: "800" },
   chatBetBadge: { overflow: "hidden", borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3, color: "#22c55e", backgroundColor: "#082f1a", fontSize: 12, fontWeight: "900" },
   chatMessage: { color: "#a6adbb", fontSize: 14, fontWeight: "800" },
-  positionSection: { marginTop: 28, paddingHorizontal: 24 },
-  positionHeading: { color: "#f8fafc", fontSize: 17, fontWeight: "800", marginBottom: 12 },
+  positionSection: { marginTop: 20, paddingHorizontal: 24 },
+  positionHeading: { color: "#f8fafc", fontSize: 17, fontWeight: "800", marginBottom: 10 },
   positionCard: { borderRadius: 18, borderWidth: 1, borderColor: "#263247", backgroundColor: "#080d16", overflow: "hidden" },
-  positionTopRow: { minHeight: 66, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
+  positionTopRow: { minHeight: 56, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   positionMarketRow: { flex: 1, flexDirection: "row", alignItems: "center", gap: 8 },
   positionSidePill: { overflow: "hidden", borderRadius: 7, paddingHorizontal: 8, paddingVertical: 4, color: "#22c55e", backgroundColor: "#052e1b", fontWeight: "900" },
   positionSideSell: { color: "#ef4444", backgroundColor: "#3a0f15" },
   positionTitle: { flex: 1, color: "#f8fafc", fontSize: 16, fontWeight: "800" },
-  positionStats: { flexDirection: "row", justifyContent: "space-between", padding: 16 },
+  positionStats: { flexDirection: "row", justifyContent: "space-between", gap: 8, padding: 14 },
+  positionStatBlock: { flex: 1, minWidth: 0 },
   positionLabel: { color: "#9ca3af", fontSize: 13, fontWeight: "800", marginBottom: 6 },
-  positionValue: { color: "#f8fafc", fontSize: 18, fontWeight: "800" },
-  pnlUp: { color: "#22c55e", fontSize: 15 },
-  pnlDown: { color: "#9ca3af", fontSize: 15 },
-  toWinBlock: { alignItems: "flex-end" },
-  positionActions: { flexDirection: "row", gap: 10, paddingHorizontal: 16, paddingBottom: 16 },
-  buyMoreButton: { flex: 1, minHeight: 56, alignItems: "center", justifyContent: "center", borderRadius: 13, backgroundColor: "#b8c0d1" },
+  positionValue: { color: "#f8fafc", fontSize: 16, fontWeight: "800" },
+  pnlUp: { color: "#22c55e", fontSize: 13 },
+  pnlDown: { color: "#9ca3af", fontSize: 13 },
+  toWinBlock: { flex: 1, minWidth: 0, alignItems: "flex-end" },
+  positionActions: { flexDirection: "row", gap: 10, paddingHorizontal: 14, paddingBottom: 14 },
+  buyMoreButton: { flex: 1, minHeight: 50, alignItems: "center", justifyContent: "center", borderRadius: 13, backgroundColor: "#b8c0d1" },
   buyMoreText: { color: "#101827", fontSize: 16, fontWeight: "800" },
-  cashOutButton: { flex: 1, minHeight: 56, alignItems: "center", justifyContent: "center", borderRadius: 13, borderWidth: 1, borderColor: "#293548", backgroundColor: "#070c14" },
+  cashOutButton: { flex: 1, minHeight: 50, alignItems: "center", justifyContent: "center", borderRadius: 13, borderWidth: 1, borderColor: "#293548", backgroundColor: "#070c14" },
   cashOutText: { color: "#f8fafc", fontSize: 16, fontWeight: "800" },
-  primaryOutcomeRow: { flexDirection: "row", gap: 14, paddingHorizontal: 24, marginTop: 34, paddingTop: 24, borderTopWidth: 1, borderTopColor: "#1f2937" },
-  primaryOutcomeButton: { flex: 1, minHeight: 72, alignItems: "center", justifyContent: "center", borderRadius: 16, shadowColor: "#000", shadowOpacity: 0.35, shadowRadius: 8, elevation: 3 },
+  primaryOutcomeRow: { flexDirection: "row", gap: 14, paddingHorizontal: 24, marginTop: 24, paddingTop: 18, borderTopWidth: 1, borderTopColor: "#1f2937" },
+  primaryOutcomeButton: { flex: 1, minHeight: 64, alignItems: "center", justifyContent: "center", borderRadius: 16, shadowColor: "#000", shadowOpacity: 0.35, shadowRadius: 8, elevation: 3 },
   primaryOutcomeText: { color: "rgba(255,255,255,0.72)", fontSize: 17, fontWeight: "900" },
   primaryOutcomePercent: { color: "#ffffff", fontSize: 20, fontWeight: "900" },
-  marketTabs: { flexDirection: "row", gap: 28, paddingHorizontal: 24, marginTop: 30, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
-  marketTab: { minHeight: 48, justifyContent: "center", borderBottomWidth: 3, borderBottomColor: "transparent" },
+  marketTabs: { flexDirection: "row", gap: 28, paddingHorizontal: 24, marginTop: 22, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
+  marketTab: { minHeight: 46, justifyContent: "center", borderBottomWidth: 3, borderBottomColor: "transparent" },
   marketTabActive: { borderBottomColor: "#f8fafc" },
   marketTabText: { color: "#6b7280", fontSize: 18, fontWeight: "800" },
   marketTabTextActive: { color: "#f8fafc" },
@@ -472,6 +474,7 @@ const styles = StyleSheet.create({
   marketTitleBlock: { flex: 1 },
   marketTitle: { color: "#d1d5db", fontSize: 18, fontWeight: "800" },
   marketSubtitle: { color: "#8b93a3", fontSize: 15, fontWeight: "700", marginTop: 4 },
+  marketSubcopy: { color: "#6b7280", fontSize: 14, fontWeight: "700", marginTop: 2 },
   depthRow: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 10, marginBottom: 6 },
   depthText: { color: "#8b93a3", fontSize: 11, fontWeight: "800" },
   detailOutcome: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12 },

@@ -78,6 +78,33 @@ const SMOKE_OPEN_SELL_ORDER: OpenOrder = {
   orderValue: 52,
 };
 
+const mexicoEcuadorGamePositionFixture = (): Position | undefined => {
+  const event = worldCupEvents.find((item) => item.id === "mexico-ecuador");
+  const market = event?.markets.find((item) => item.id === "mexico-ecuador-winner");
+  const outcome = market?.outcomes.find((item) => item.id === "mexico");
+  if (!market || !outcome) return undefined;
+
+  return {
+    id: "smoke-mexico-ecuador-game-position",
+    mode: "mock",
+    marketId: market.id,
+    outcomeId: outcome.id,
+    title: market.title,
+    outcome: outcome.label,
+    side: "buy",
+    amount: 50,
+    shares: 78.13,
+    probability: outcome.probability,
+    currentPrice: 0.68,
+    currentValue: 48.38,
+    pnl: -1.62,
+    bestBid: 0.66,
+    bestAsk: 0.69,
+    bestBidSize: 1280,
+    bestAskSize: 900,
+  };
+};
+
 const openOrderRemainingShares = (order: OpenOrder) => order.remainingShares ?? order.remaining;
 const openOrderValue = (order: OpenOrder) => order.orderValue ?? openOrderRemainingShares(order) * order.price;
 
@@ -304,6 +331,7 @@ export default function App() {
     const shouldForceClosedWorldCupWinnerFrance = url.includes("forceClosedWorldCupWinnerFrance=1");
     const shouldForceServerPortfolioFixture = url.includes("forceServerPortfolioFixture=1");
     const shouldForceServerPortfolioFallbackFixture = url.includes("forceServerPortfolioFallbackFixture=1");
+    const shouldForceMexicoEcuadorGamePosition = url.includes("forceMexicoEcuadorGamePosition=1");
     const shouldForcePortfolio = url.includes("forcePortfolio=1");
     const shouldForceOpenOrder = url.includes("forceOpenOrder=1");
     const forcedOpenOrder = url.includes("forceOpenOrderSide=sell") ? SMOKE_OPEN_SELL_ORDER : SMOKE_OPEN_ORDER;
@@ -356,7 +384,8 @@ export default function App() {
         !shouldForcePortfolio &&
         !shouldForceOpenOrder &&
         !forceServerOrderProof.current &&
-        !shouldForceLive
+        !shouldForceLive &&
+        !shouldForceMexicoEcuadorGamePosition
       ) {
         setTimeout(resetRuntimeState, 750);
       }
@@ -380,6 +409,18 @@ export default function App() {
     if (url.includes("forceMexicoEcuadorDetail=1")) {
       const event = worldCupEvents.find((item) => item.id === "mexico-ecuador");
       setEventDetailForcedSide(null);
+      if (event) setSelectedEvent(event);
+    }
+    if (shouldForceMexicoEcuadorGamePosition) {
+      const event = worldCupEvents.find((item) => item.id === "mexico-ecuador");
+      const position = mexicoEcuadorGamePositionFixture();
+      setBalance(10000);
+      setPositions(position ? [position] : []);
+      setLatestOrder(null);
+      setOpenOrders([]);
+      setActivities([]);
+      setTicket(null);
+      setEventDetailForcedSide("buy");
       if (event) setSelectedEvent(event);
     }
     if (url.includes("forceMexicoEcuadorDetailSellDefault=1")) {
