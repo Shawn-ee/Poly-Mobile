@@ -9899,7 +9899,7 @@ Merge: 9093b21
 
 Date: 2026-07-02
 Branch: mobile/cycle-229-open-order-size
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Show original order size on mobile Portfolio open-order cards.
 Implemented:
 - Added optional `originalShares` to mobile `OpenOrder` models.
@@ -9914,8 +9914,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
 - `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
-Commit: pending
-Merge: pending
+Commit: a371c5b
+Merge: 2459713
 
 ### Heartbeat After Cycle 229
 
