@@ -9354,8 +9354,8 @@ Evidence:
 Notes:
 - The first Samsung filled-order proof exposed a real accounting mismatch: latest activity showed 200.00 shares for a 100-share fill at 50% because shares were inferred from amount/probability. The final app preserves explicit backend fill size and now shows `Filled shares 100.00`.
 - The liquidity script retries when stale opposing orders consume the maker order, making the cycle safer for long-running reruns.
-Commit: pending
-Merge: pending
+Commit: b3a7734
+Merge: f4bfd1f
 
 ### Heartbeat After Cycle 208
 
