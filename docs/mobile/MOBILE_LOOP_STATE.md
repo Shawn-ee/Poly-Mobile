@@ -10142,8 +10142,8 @@ Evidence:
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`.
 Result: Passed Cycle 267 QA. The server open-order/cancel path is proven on Samsung after the scroll-safe ticket changes, and backend quote sizes remain visible on the ticket.
-Commit: pending.
-Merge: pending.
+Commit: 276c8b7
+Merge: c0486c0
 
 ### Heartbeat After Cycle 267
 
