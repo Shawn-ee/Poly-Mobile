@@ -4285,3 +4285,30 @@ Bugs:
 - None in final run.
 Visual QA:
 - Passed on Samsung S23 through Expo Go.
+
+### Cycle 195
+
+Date: 2026-07-02
+Device: Samsung S23 via Expo Go plus mobile service unit harness
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run smoke:samsung:server-position-trade` in `mobile/`
+Result: Passed. Portfolio positions now expose direct Buy/Sell re-trade actions.
+Harness evidence:
+- Mobile API/service suite passed with 14 files and 58 tests.
+- Mobile typecheck passed.
+- Samsung smoke passed on `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` through Expo host `172.16.200.14`, port `8152`.
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-trade-ready.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-trade-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-position-trade-ready.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-position-trade-ticket.xml`
+Structured findings:
+- Position cards now show Buy, Sell, and Close position actions.
+- The app resolves a position back to the matching World Cup futures/event market and outcome before opening a ticket.
+- Samsung proof taps Sell from the server Portfolio fixture and verifies the server-mode Sell ticket with estimated proceeds, shares, average price, and sell CTA.
+Bugs:
+- First Samsung run exposed that TradeTicket reset a Portfolio-opened Sell ticket back to default buy-mode math/copy. Fixed by making ticket-open side the source of truth while market opens still use saved defaults.
+Visual QA:
+- Passed on Samsung S23 through Expo Go after the ticket-side fix.

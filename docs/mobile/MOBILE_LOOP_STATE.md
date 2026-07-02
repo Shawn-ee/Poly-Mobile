@@ -8871,6 +8871,46 @@ Harnesses run:
 Harness failures:
 - None.
 
+## Cycle 195
+
+Date: 2026-07-02
+Branch: mobile/cycle-195
+Goal: Add Portfolio position re-trade actions so users can open Buy/Sell tickets directly from an existing position.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: Portfolio position cards now show Buy, Sell, and Close position actions.
+Backend/API changed: No backend route change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/components/Portfolio.tsx`, `mobile/src/components/TradeTicket.tsx`, `mobile/src/services/positionTradeTargetService.ts`, `mobile/src/__tests__/positionTradeTargetService.test.ts`, `mobile/scripts/smoke.ps1`, `mobile/scripts/smoke-samsung.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run smoke:samsung:server-position-trade` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-trade-ready.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-trade-ticket.png`
+Harness evidence:
+- Mobile API/service suite passed with 14 files and 58 tests.
+- Mobile typecheck passed.
+- Samsung smoke passed on `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` through Expo host `172.16.200.14`, port `8152`.
+- UI hierarchy evidence captured at `docs/mobile/harness/cycle-current-holiwyn-server-position-trade-ready.xml` and `docs/mobile/harness/cycle-current-holiwyn-server-position-trade-ticket.xml`.
+Bugs found:
+- First Samsung proof found Portfolio Sell opened a ticket whose side tab was Sell, but the ticket math/copy reset to buy mode. Fixed by honoring the ticket's explicit side on open while keeping saved defaults for normal market opens.
+Technical debt added:
+- Position re-trade depends on matching position market/outcome ids or labels to loaded World Cup markets; missing backend identity still falls back to Portfolio sync error.
+Technical debt resolved:
+- Portfolio is now a trading surface, not only a passive position/history screen.
+Result: Passed Cycle 195 QA. Mobile tests, typecheck, and Samsung server-position trade smoke pass.
+Commit: `PENDING` (`PENDING`).
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Continue toward final DoD by adding richer position/order detail parity or improving authenticated server proof readiness recovery.
+Harnesses run:
+- Mobile Position Trade Target Harness
+- Mobile Typecheck Harness
+- Samsung Server Position Trade Smoke Harness
+- Review Harness
+Harness failures:
+- First Samsung run failed because Sell ticket copy stayed in buy mode; fixed and rerun passed.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.

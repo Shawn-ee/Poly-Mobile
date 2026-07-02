@@ -2889,3 +2889,18 @@ Findings:
 - Mobile API/service tests, mobile typecheck, and Samsung server close fixture smoke passed.
 Decision: Approve Cycle 194 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 195
+
+Date: 2026-07-02
+Branch: mobile/cycle-195
+Reviewer: Lead/Reviewer pass
+Scope: Portfolio position re-trade actions.
+Findings:
+- P1: Position cards now expose Buy and Sell actions alongside Close, enabling users to adjust a position directly from Portfolio.
+- P1: Added a tested position trade target resolver for futures and event-market positions, with id-first and label fallback matching.
+- P1: Fixed TradeTicket side initialization so Portfolio-opened Sell tickets keep sell-mode math/copy while ordinary market opens still respect saved defaults.
+- P1: Samsung S23 proof verifies tapping Sell from a server Portfolio position opens the correct server-mode Sell ticket.
+- Mobile API/service tests, mobile typecheck, and Samsung server-position trade smoke passed.
+Decision: Approve Cycle 195 for local commit/merge after scoped diff review.
+Merge approved: Yes
