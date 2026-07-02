@@ -8117,6 +8117,46 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 177
+
+Date: 2026-07-01
+Branch: mobile/cycle-177
+Goal: Add explicit slippage setting visibility to the Trade Ticket and verify the order flow on Samsung.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: Trade Ticket now shows a `Slippage` row with `1%` in the estimate block before order placement.
+Backend/API changed: No runtime API route change.
+Database/schema changed: None.
+Files changed: `mobile/src/components/TradeTicket.tsx`, `mobile/src/localization/appCopy.ts`, `mobile/scripts/smoke.ps1`, `docs/mobile/harness/cycle-177-holiwyn-future-list-order-ticket.xml`, `docs/mobile/harness/cycle-177-holiwyn-future-list-order-portfolio.xml`, `docs/mobile/harness/cycle-177-holiwyn-future-list-order-activity.xml`, `docs/mobile/screenshots/cycle-177-holiwyn-future-list-order-ticket.png`, `docs/mobile/screenshots/cycle-177-holiwyn-future-list-order-portfolio.png`, `docs/mobile/screenshots/cycle-177-holiwyn-future-list-order-activity.png`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run smoke:samsung:future-list-order` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-177-holiwyn-future-list-order-ticket.png`.
+- `docs/mobile/screenshots/cycle-177-holiwyn-future-list-order-portfolio.png`.
+- `docs/mobile/screenshots/cycle-177-holiwyn-future-list-order-activity.png`.
+Harness evidence:
+- `docs/mobile/harness/cycle-177-holiwyn-future-list-order-ticket.xml`.
+- `docs/mobile/harness/cycle-177-holiwyn-future-list-order-portfolio.xml`.
+- `docs/mobile/harness/cycle-177-holiwyn-future-list-order-activity.xml`.
+Bugs found:
+- None in final run.
+Technical debt added:
+- Slippage is display-only/static at 1% until user-configurable settings and server-side execution semantics are ready.
+Technical debt resolved:
+- None.
+Result: Passed Cycle 177 QA. Samsung future-list order smoke passed with the slippage row visible, mobile typecheck passed, and mobile API/service tests pass.
+Commit: Pending cycle branch commit.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 178 should continue ticket/order parity, user-configurable ticket settings, or backend readiness recovery if Docker/DB/API-key state changes.
+Harnesses run:
+- Samsung Future List Order Smoke Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync/Quote Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.

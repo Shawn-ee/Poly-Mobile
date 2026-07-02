@@ -207,3 +207,4 @@ Status:
 | GAP-185 | Harness | Server proof recovery plan | P0 | No | Verified | Cycle 174 adds category-specific recovery owners, actions, verification commands, and ready signals to the combined Samsung server-proof decision report. |
 | GAP-186 | Trading ticket | Ticket market depth strip | P1 | Yes | Verified | Cycle 175 adds a compact Best bid/Best ask/Spread strip to the Trade Ticket and verifies it on the Samsung S23 future-order flow. |
 | GAP-187 | Trading ticket | Ticket estimated fee row | P1 | Yes | Verified | Cycle 176 adds a visible `Est. fee` row with a 0 USDT fake-token estimate and verifies it on the Samsung S23 future-order flow. |
+| GAP-188 | Trading ticket | Ticket slippage setting | P1 | Yes | Verified | Cycle 177 adds a visible `Slippage` row with a 1% setting and verifies it on the Samsung S23 future-order flow. |

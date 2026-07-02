@@ -20,6 +20,7 @@ type TradeTicketCopy = {
   estimatedCost: string;
   estimatedProceeds: string;
   estimatedFee: string;
+  slippage: string;
   estimatedShares: string;
   averagePrice: string;
   impliedOdds: string;
@@ -184,6 +185,10 @@ export function TradeTicket({
             <Text style={styles.estimateLabel}>{t.estimatedFee}</Text>
             <Text style={styles.estimateValue}>{money(0)}</Text>
           </View>
+          <View accessibilityLabel="ticket-slippage" testID="ticket-slippage" style={styles.estimateLine}>
+            <Text style={styles.estimateLabel}>{t.slippage}</Text>
+            <Text style={styles.estimateValue}>1%</Text>
+          </View>
           <View style={styles.estimateLine}>
             <Text style={styles.estimateLabel}>{t.estimatedShares}</Text>
             <Text style={styles.estimateValue}>{estimatedShares.toLocaleString(undefined, { maximumFractionDigits: 2 })} shares</Text>
@@ -245,7 +250,7 @@ const styles = StyleSheet.create({
   presetRow: { flexDirection: "row", gap: 8, marginTop: 8 },
   presetButton: { flex: 1, minHeight: 36, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
   presetText: { color: "#dbeafe", fontWeight: "900" },
-  estimateLine: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: "#263247" },
+  estimateLine: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: "#263247" },
   estimateLabel: { color: "#94a3b8", fontWeight: "800" },
   estimateValue: { color: "#f8fafc", fontWeight: "900" },
   errorCard: { flexDirection: "row", alignItems: "center", gap: 8, padding: 10, borderRadius: 10, backgroundColor: "#1f1a0b", borderWidth: 1, borderColor: "#854d0e", marginTop: 12 },

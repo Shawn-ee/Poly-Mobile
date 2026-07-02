@@ -2611,3 +2611,19 @@ Findings:
 - Samsung future-list order smoke, mobile typecheck, and mobile API/service tests passed.
 Decision: Approve Cycle 176 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 177
+
+Date: 2026-07-01
+Branch: mobile/cycle-177
+Reviewer: Lead/Reviewer pass
+Scope: Trade Ticket slippage setting visibility and Samsung proof.
+Findings:
+- P1: Trade Ticket now shows a `Slippage` row with a visible 1% setting, adding another expected order-ticket control before a fake-token trade.
+- P1: The Samsung future-list order smoke asserts `ticket-slippage`, `Slippage`, and `1%` in the ticket UI.
+- P1: The estimate row vertical rhythm was tightened slightly so the added slippage row preserves visible title, trading mode, depth, fee, estimates, and CTA on Samsung.
+- P1: The mock World Cup winner order still lands in Portfolio and Recent activity after the ticket setting change.
+- P2: Slippage is display-only/static until server-side order execution and user-configurable ticket settings are ready.
+- Samsung future-list order smoke, mobile typecheck, and mobile API/service tests passed.
+Decision: Approve Cycle 177 for local commit/merge after scoped diff review.
+Merge approved: Yes
