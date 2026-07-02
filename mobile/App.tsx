@@ -36,7 +36,7 @@ import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 import { appendUniqueActivity, cancelOpenOrderOnServer, openOrderCanceledActivity } from "./src/services/openOrderService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
-import { applyTicketQuoteToOutcome, loadTicketQuotes } from "./src/services/quoteService";
+import { applyTicketQuoteToOutcome, applyTicketQuotesToMarket, loadTicketQuotes } from "./src/services/quoteService";
 
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
 const DEFAULT_API_KEY = process.env.EXPO_PUBLIC_API_KEY || "";
@@ -561,6 +561,42 @@ export default function App() {
       cancelled = true;
     };
   }, [api, ticket?.market.id, ticket?.outcome.id]);
+
+  useEffect(() => {
+    if (ORDER_MODE !== "server" || !selectedEvent) return undefined;
+    let cancelled = false;
+    const eventId = selectedEvent.id;
+    const marketIds = selectedEvent.markets.map((market) => market.id);
+    Promise.all(
+      marketIds.map(async (marketId) => ({
+        marketId,
+        quotes: await loadTicketQuotes(api, marketId),
+      })),
+    )
+      .then((results) => {
+        if (cancelled || !mounted.current) return;
+        setSelectedEvent((current) => {
+          if (!current || current.id !== eventId) return current;
+          let changed = false;
+          const markets = current.markets.map((market) => {
+            const result = results.find((item) => item.marketId === market.id);
+            if (!result) return market;
+            const quotedMarket = applyTicketQuotesToMarket(market, result.quotes);
+            if (quotedMarket !== market) changed = true;
+            return quotedMarket;
+          });
+          if (!changed) return current;
+          return {
+            ...current,
+            markets,
+          };
+        });
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [api, selectedEvent?.id]);
 
   const toggleSavedEvent = (event: Event) => {
     setSavedEventIds((current) => {

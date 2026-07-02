@@ -3401,3 +3401,26 @@ Bugs:
 - None in final run.
 Visual QA:
 - No app screenshot cycle; this is server-mode ticket hydration plumbing with existing UI preserved.
+
+### Cycle 160
+
+Date: 2026-07-01
+Device: Mobile event-detail quote refresh unit/typecheck harness
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Open event-detail market rows can now refresh outcome probabilities from normalized server quotes in server mode.
+Unit evidence:
+- `mobile/src/services/quoteService.ts`
+- `mobile/src/__tests__/quoteService.test.ts`
+- `mobile/App.tsx`
+- Mobile API/service suite: 9 files, 34 tests passed.
+Covered behavior:
+- Matching quotes update all matching outcomes in a market.
+- Markets with no matching quotes preserve their original object and local odds.
+- App wiring requests quotes for the currently open event-detail markets only in server order mode.
+- Stale quote replies are ignored if the selected event changes or closes.
+Bugs:
+- None in final run.
+Visual QA:
+- No app screenshot cycle; this is server-mode event-detail quote refresh plumbing with existing UI preserved.

@@ -7437,6 +7437,50 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 160
+
+Date: 2026-07-01
+Branch: mobile/cycle-160
+Goal: Wire normalized backend quotes into open event-detail market rows in server mode.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No visual layout change. Server-mode event details can now refresh market outcome probabilities from backend quotes.
+Backend/API changed: No runtime API route change. Mobile now calls `PolyApi.getMarketQuote` for each market in the currently open event detail when in server order mode.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/services/quoteService.ts`, `mobile/src/__tests__/quoteService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Unit evidence:
+- Mobile API/service suite passed 9 files and 34 tests.
+- New tests cover applying quotes across market outcomes and preserving markets when no outcome quotes match.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Event-detail market buttons can now receive server-refreshed probabilities instead of relying only on the initial event payload.
+Result: Passed Cycle 160 QA. Mobile typecheck and mobile API/service tests pass.
+Commit: Pending.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 161 should extend quote freshness toward home/live/futures lists or add a server-mode quote-refresh smoke once a reachable test backend is available.
+Harnesses run:
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync/Quote Unit Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 160
+
+Completed cycles: 158, 159, 160.
+Verified progress: Backend quote normalization now exists, server-mode trade tickets can hydrate their selected outcome from normalized quotes, and open event-detail market rows can refresh outcome probabilities from server quotes.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, local persistence, market group counts, outcome/ticket odds, potential profit, open-order economics, latest-order execution details, timestamped order history, backend-compatible resolved-history mapping, Samsung-proven core/live trading flows, Samsung-proven server Portfolio/account fallback, and unit-covered server order/Portfolio/cancel/quote mapping.
+Current backend state: Mobile API/profile-preference/activity/history/order/open-order/portfolio snapshot/portfolio sync/quote tests pass. Successful server-backed device execution remains gated by Docker daemon, DB TCP, and API-key readiness.
+Device strategy: Samsung S23 remains the primary Holiwyn visual QA and server-mode device-readiness target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane once the app is steadier.
+Open blockers: None for autonomous progress. Successful live server-backed quote/order proof on device still depends on reachable backend credentials and database services.
+Risks: Event-list quote freshness is not yet refreshed after initial payload hydration; successful authenticated order execution, Portfolio hydration, and cancel execution are still unproven on device; Expo Go proof still depends on LAN reachability.
+Next three likely cycles: extend quote freshness to home/live/futures lists, improve server-mode quote/order proof harnessing, and retry readiness gates if Docker/DB/API-key state changes.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.

@@ -2340,3 +2340,19 @@ Findings:
 - Mobile typecheck and mobile API/service tests passed.
 Decision: Approve Cycle 159 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 160
+
+Date: 2026-07-01
+Branch: mobile/cycle-160
+Reviewer: Lead/Reviewer pass
+Scope: Server quote refresh for open event-detail markets.
+Findings:
+- P1: `applyTicketQuotesToMarket` now updates all matching market outcomes from normalized ticket quotes while preserving the original market when nothing matches.
+- P1: `App.tsx` now requests quote refresh for the currently open event detail only in server mode, keeping mock-mode Samsung flows unchanged.
+- P1: The selected-event updater checks the current event id before applying quotes, preventing stale responses from overwriting a newer detail screen.
+- P1: Failed event-detail quote refresh requests are ignored, so backend unavailability does not break local market browsing.
+- P2: This refreshes the open event detail only; home/live/futures lists still rely on their current local/backend event payload probabilities until a later cycle.
+- Mobile typecheck and mobile API/service tests passed.
+Decision: Approve Cycle 160 for local commit/merge after scoped diff review.
+Merge approved: Yes
