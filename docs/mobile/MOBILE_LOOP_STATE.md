@@ -10143,8 +10143,8 @@ Evidence:
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`.
 Result: Passed Cycle 268 QA. The open-order/cancel proof now starts from clean non-crossed backend liquidity while preserving the pending 1 USDT order and clean cancel behavior.
-Commit: pending.
-Merge: pending.
+Commit: 7895e2a
+Merge: c2c9f46
 
 ### Cycle 267
 
