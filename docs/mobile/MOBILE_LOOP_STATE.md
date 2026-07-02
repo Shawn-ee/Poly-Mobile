@@ -7783,6 +7783,56 @@ Harnesses run:
 Harness failures:
 - Server-backed proof prerequisites are blocked as expected because Docker daemon, DB TCP, and API key readiness are missing.
 
+### Cycle 169
+
+Date: 2026-07-01
+Branch: mobile/cycle-169
+Goal: Add a combined Samsung server-proof decision harness for overnight go/no-go recovery.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; harness/decision cycle.
+Backend/API changed: No runtime API route change. Added a read-only decision harness that refreshes existing readiness gates.
+Database/schema changed: None.
+Files changed: `mobile/scripts/samsung-server-proof-decision.ps1`, `mobile/package.json`, `docs/mobile/harness/cycle-169-samsung-server-proof-decision.json`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run decision:samsung:server-proof:expect-blocked:summary` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Harness evidence:
+- `docs/mobile/harness/cycle-169-samsung-server-proof-decision.json`.
+- Report shows `ready=false`, decision `do-not-run-server-backed-samsung-proof`, Samsung reachable, Docker daemon unreachable, DB TCP unavailable, missing API key, server-success gate not ready, quote proof not ready, and quote proof not attempted.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- The loop now has one combined go/no-go report for server-backed Samsung proof instead of relying on separate blocker interpretation.
+Result: Passed Cycle 169 QA. Combined decision harness blocked as expected, mobile typecheck passed, and mobile API/service tests pass.
+Commit: cycle branch HEAD (`Add Samsung server proof decision harness`).
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 170 should continue server-backed trading proof preparation by improving the decision report or by adding product-facing proof that does not require live backend readiness.
+Harnesses run:
+- Samsung Server Proof Decision Harness
+- Mobile Backend Readiness Harness
+- Mobile Credential Readiness Harness
+- Server Success Gate Harness
+- Samsung Quote Proof Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Open-Order/Portfolio Snapshot/Portfolio Sync/Quote Unit Harness
+- Review Harness
+Harness failures:
+- Server-backed Samsung proof is blocked as expected because Docker daemon, DB TCP, API key, backend health, and quote readiness are missing.
+
+### Heartbeat After Cycle 169
+
+Completed cycles: 167, 168, 169.
+Verified progress: Samsung server quote proof now has a strict proof command, the backend/credential/server-success readiness snapshots were refreshed, and a combined Samsung server-proof decision harness now produces one go/no-go report for overnight recovery.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, market quote refresh seams, server order/Portfolio/cancel/quote service coverage, and strict server-proof decision harnessing.
+Current backend state: Mobile API/profile-preference/activity/history/order/open-order/portfolio snapshot/portfolio sync/quote tests pass. Readiness evidence shows Docker CLI and compose are available, but Docker daemon, local DB TCP, API key, backend health, and quote readiness are unavailable.
+Device strategy: Samsung S23 remains the primary Holiwyn visual QA and server-mode proof target through Expo Go. The latest decision report confirms Samsung ADB reachability is true.
+Open blockers: None for autonomous progress. Successful server-backed Samsung proof remains gated by Docker daemon, DB TCP, API key, backend health, World Cup event/detail availability, and market quote availability.
+Risks: Successful authenticated order execution, Portfolio hydration, cancel execution, and quote refresh are still unproven on device; Expo Go proof still depends on LAN reachability.
+Next three likely cycles: improve the combined decision report, add product-facing proof that does not need live backend readiness, or retry readiness after environment changes.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.
