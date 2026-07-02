@@ -4719,3 +4719,27 @@ Screenshot evidence:
 Bugs: None found.
 Visual QA:
 - Passed on Samsung S23 through Expo Go.
+
+### Cycle 211
+
+Date: 2026-07-02
+Device: Samsung S23 via Expo Go, local Docker-backed backend, mobile service unit harness, and server sell-liquidity harness
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run mobile:server-sell-fill-liquidity`
+- `npm.cmd run smoke:samsung:server-sell-order-filled` in `mobile/`
+Result: Passed. Samsung now proves a server-mode Sell ticket can fill against a real resting BUY order.
+Harness evidence:
+- Sell liquidity prep minted complete-set shares for `holiwyn-mobile-dev`, cleared old crossing sells through retries, and left a 500-share resting BUY at 50%.
+- Ticket proof covers server mode, Sell side, estimated proceeds, zero fee, `Est. shares`, `200 shares`, average price, and sell CTA.
+- Portfolio proof covers `SERVER - Sell - YES - FILLED`, `Filled shares 200.00`, `Exec price 50%`, `Remaining 0.00`, and server portfolio sync after backend refresh.
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`
+- `docs/mobile/harness/cycle-current-mobile-server-sell-fill-liquidity.json`
+Bugs:
+- Fixed server-mode order placement adding local optimistic positions/balance changes instead of refreshing server-authoritative Portfolio state.
+Visual QA:
+- Passed on Samsung S23 through Expo Go.

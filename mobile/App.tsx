@@ -117,6 +117,7 @@ export default function App() {
   const skipPortfolioHydration = useRef(false);
   const forceServerCloseFixture = useRef(false);
   const forceServerOrderProof = useRef(false);
+  const forceServerOrderSide = useRef<"buy" | "sell">("buy");
   const shouldSyncProfilePreferences = ORDER_MODE === "server" && DEFAULT_API_KEY.length > 0;
   const accountPortfolioValue = useMemo(
     () => balance + positions.reduce((total, position) => total + portfolioPositionValue(position), 0),
@@ -276,6 +277,7 @@ export default function App() {
     const shouldForceClosedWorldCupWinnerFrance = url.includes("forceClosedWorldCupWinnerFrance=1");
     const shouldForceServerPortfolioFixture = url.includes("forceServerPortfolioFixture=1");
     forceServerOrderProof.current = url.includes("forceServerOrderProof=1");
+    forceServerOrderSide.current = url.includes("forceServerOrderSide=sell") ? "sell" : "buy";
     forceServerCloseFixture.current = url.includes("forceServerCloseFixture=1");
     const shouldForceLive = url.includes("forceLive=1");
     setForceOrderFailure(url.includes("forceOrderFailure=1"));
@@ -486,7 +488,7 @@ export default function App() {
     if (!event || !market || !outcome) return;
     forceServerOrderProof.current = false;
     setSelectedEvent(event);
-    setTicket({ event, market, outcome, side: "buy" });
+    setTicket({ event, market, outcome, side: forceServerOrderSide.current });
   }, [events]);
 
   useEffect(() => {
@@ -726,22 +728,24 @@ export default function App() {
     const liveClock = isLiveOrder
       ? ticket.event?.startsAt.replace(/[^\x00-\x7F]+/g, "-").replace(/\s+-\s+/g, " - ")
       : undefined;
-    setBalance((current) => current - cost);
-    setPositions((current) => [
-      {
-        id: result.id,
-        mode: result.mode,
-        title: result.title,
-        outcome: result.outcome,
-        side: result.side,
-        amount: result.amount,
-        probability: result.probability,
-        isLive: isLiveOrder,
-        liveClock,
-        timestamp: t.justNow,
-      },
-      ...current,
-    ]);
+    if (ORDER_MODE !== "server") {
+      setBalance((current) => current - cost);
+      setPositions((current) => [
+        {
+          id: result.id,
+          mode: result.mode,
+          title: result.title,
+          outcome: result.outcome,
+          side: result.side,
+          amount: result.amount,
+          probability: result.probability,
+          isLive: isLiveOrder,
+          liveClock,
+          timestamp: t.justNow,
+        },
+        ...current,
+      ]);
+    }
     setLatestOrder({
       id: result.id,
       mode: result.mode,
@@ -776,6 +780,11 @@ export default function App() {
     setTicketOrderError(null);
     setSelectedEvent(null);
     setMainTab("portfolio");
+    if (ORDER_MODE === "server") {
+      refreshServerPortfolio().catch(() => {
+        if (mounted.current) setPortfolioSyncStatus("error");
+      });
+    }
   };
 
   const closePosition = async (position: Position) => {

@@ -1,0 +1,60 @@
+{
+  "ready": true,
+  "event": {
+    "id": "f74fcd67-edb5-4437-ab41-c52966d86f40",
+    "slug": "fixture-2026-fifa-world-cup",
+    "title": "Fixture 2026 FIFA World Cup"
+  },
+  "market": {
+    "id": "1ad00821-d801-4d37-8b12-1ec9d415a8a0",
+    "title": "Will France win the 2026 FIFA World Cup?"
+  },
+  "outcome": {
+    "id": "af91e922-9856-4c0f-8d84-21d77a7a189d",
+    "name": "YES"
+  },
+  "mobileUser": {
+    "id": "db9d8fa7-8b46-40b5-8f4b-4b77cbd9aeff",
+    "username": "holiwyn-mobile-dev",
+    "shares": "1502",
+    "reservedShares": "0"
+  },
+  "makerOrder": {
+    "id": "7201a435-1968-434f-b68f-af96c58331eb",
+    "status": "OPEN",
+    "price": "0.50",
+    "size": "500",
+    "requiredRemaining": "250",
+    "remaining": "500"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "makerOrderId": "ad4ae449-0df6-4b6a-8fd4-de6353032543",
+      "status": "FILLED",
+      "remaining": "0",
+      "fillCount": 2
+    },
+    {
+      "attempt": 2,
+      "makerOrderId": "913c9a62-1b0e-42c5-9f58-ed2a23e0c075",
+      "status": "FILLED",
+      "remaining": "0",
+      "fillCount": 2
+    },
+    {
+      "attempt": 3,
+      "makerOrderId": "6ebedc12-8df5-4630-bf2b-4f54a55ff9d5",
+      "status": "PARTIAL",
+      "remaining": "80",
+      "fillCount": 1
+    },
+    {
+      "attempt": 4,
+      "makerOrderId": "7201a435-1968-434f-b68f-af96c58331eb",
+      "status": "OPEN",
+      "remaining": "500",
+      "fillCount": 0
+    }
+  ]
+}

@@ -75,6 +75,7 @@
     "smoke:samsung:server-order-failure": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerOrderFailure -Port 8146",
     "smoke:samsung:server-order-success": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerOrderSuccess -Port 8155",
     "smoke:samsung:server-order-filled": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerOrderFilled -Port 8158",
+    "smoke:samsung:server-sell-order-filled": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerSellOrderFilled -Port 8159",
     "smoke:samsung:server-open-order-cancel": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerOpenOrderCancel -Port 8156",
     "smoke:samsung:server-filled-trade-history": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerFilledTradeHistory -Port 8157",
     "smoke:samsung:server-unavailable": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerUnavailable -Port 8147",
