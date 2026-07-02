@@ -7047,8 +7047,8 @@ Technical debt added:
 Technical debt resolved:
 - Successful server-backed Samsung proof now has an explicit prerequisite gate driven by structured readiness evidence.
 Result: Passed Cycle 149 QA. Expected-blocked gate, mobile typecheck, and mobile API/history tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `960d39d` (`Add server success readiness gate`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `9d57b91`.
 Next cycle: Cycle 150 should continue backend/API readiness or add server-backed order/history parity that can be verified with unit tests while DB remains unavailable.
 Harnesses run:
 - Server Success Gate Harness
