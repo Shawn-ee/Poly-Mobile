@@ -24,6 +24,8 @@
     "preflight:samsung:quote-proof:expect-blocked:summary": "powershell -ExecutionPolicy Bypass -File ./scripts/samsung-quote-proof-preflight.ps1 -ExpectBlocked -SummaryPath ../docs/mobile/harness/cycle-current-samsung-quote-proof-preflight.json",
     "proof:samsung:quote": "powershell -ExecutionPolicy Bypass -File ./scripts/samsung-quote-proof.ps1",
     "proof:samsung:quote:expect-blocked:summary": "powershell -ExecutionPolicy Bypass -File ./scripts/samsung-quote-proof.ps1 -ExpectBlocked -SummaryPath ../docs/mobile/harness/cycle-current-samsung-quote-proof.json",
+    "decision:samsung:server-proof": "powershell -ExecutionPolicy Bypass -File ./scripts/samsung-server-proof-decision.ps1",
+    "decision:samsung:server-proof:expect-blocked:summary": "powershell -ExecutionPolicy Bypass -File ./scripts/samsung-server-proof-decision.ps1 -ExpectBlocked -SummaryPath ../docs/mobile/harness/cycle-current-samsung-server-proof-decision.json",
     "smoke": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1",
     "smoke:deep": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep",
     "smoke:order-failure": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -OrderFailure -Port 8083",

@@ -2484,3 +2484,19 @@ Findings:
 - Backend readiness, credential readiness, server-success gate, mobile typecheck, and mobile API/service tests passed.
 Decision: Approve Cycle 168 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 169
+
+Date: 2026-07-01
+Branch: mobile/cycle-169
+Reviewer: Lead/Reviewer pass
+Scope: Combined Samsung server proof decision report.
+Findings:
+- P1: `samsung-server-proof-decision.ps1` refreshes backend readiness, credential readiness, server-success gate evidence, and Samsung quote-proof evidence before making a single proof decision.
+- P1: The decision report records both blocker evidence and a clear `do-not-run-server-backed-samsung-proof` decision when prerequisites are missing.
+- P1: Cycle evidence confirms Samsung remains reachable while Docker daemon, DB TCP, API key, backend health, and quote readiness are not ready.
+- P1: The expected-blocked decision command exits successfully, giving the overnight loop a stable recovery checkpoint instead of multiple scattered blocker files.
+- P2: This is still a no-go decision report; it does not prove successful server-backed device trading.
+- Combined decision harness, mobile typecheck, and mobile API/service tests passed.
+Decision: Approve Cycle 169 for local commit/merge after scoped diff review.
+Merge approved: Yes
