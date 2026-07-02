@@ -4338,3 +4338,29 @@ Bugs:
 - None in final run.
 Visual QA:
 - Passed on Samsung S23 through Expo Go.
+
+### Cycle 197
+
+Date: 2026-07-02
+Device: Samsung S23 via Expo Go plus mobile service unit harness
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run smoke:samsung:server-position-details` in `mobile/`
+Result: Passed. Server-hydrated Portfolio positions now show scannable server detail tiles on Samsung.
+Harness evidence:
+- Mobile API/service suite passed with 14 files and 58 tests.
+- Mobile typecheck passed.
+- Samsung smoke passed on `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` through Expo host `172.16.200.14`, port `8154`.
+- The final Samsung rerun reported backend health `ok`, so the next cycle should retry backend/server readiness gates.
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-details-ready.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-position-details-ready.xml`
+Structured findings:
+- The server-style Portfolio position keeps the existing summary sentence while adding separate `Filled shares` and `Current price` tiles.
+- The Samsung proof verifies `500.00`, `51%`, stable detail accessibility labels, and the Buy/Sell/Close action row.
+- The screenshot is captured after scrolling so the new detail tiles are visible in the evidence image.
+Bugs:
+- Initial proof captured the screenshot before the scroll; harness was corrected and rerun successfully.
+Visual QA:
+- Passed on Samsung S23 through Expo Go.

@@ -2918,3 +2918,18 @@ Findings:
 - Mobile API/service tests, mobile typecheck, and Samsung server-position Buy trade smoke passed.
 Decision: Approve Cycle 196 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 197
+
+Date: 2026-07-02
+Branch: mobile/cycle-197
+Reviewer: Lead/Reviewer pass
+Scope: Server position detail tiles and Samsung proof.
+Findings:
+- P1: Server-hydrated Portfolio positions now expose filled shares and current price as separate scannable tiles while keeping the existing compact summary copy.
+- P1: Stable accessibility/test identifiers were added for the server detail tiles, giving the Samsung harness precise proof points for future regressions.
+- P1: Added base and Samsung smoke commands for server-position detail proof, with the screenshot captured after the scroll so the detail tiles are visible.
+- P2: This remains fixture-backed; the next cycle should use the newly available Docker/backend health signal to retry server-backed readiness gates.
+- Mobile API/service tests, mobile typecheck, and Samsung server-position details smoke passed.
+Decision: Approve Cycle 197 for local commit/merge after scoped diff review.
+Merge approved: Yes

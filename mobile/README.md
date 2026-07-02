@@ -98,6 +98,12 @@ To verify opening a server-mode Buy ticket from a Portfolio position, run:
 npm run smoke:samsung:server-position-buy-trade
 ```
 
+To verify Samsung server-position detail tiles, run:
+
+```powershell
+npm run smoke:samsung:server-position-details
+```
+
 Before a Samsung server-mode success proof, verify the phone launch variables with:
 
 ```powershell

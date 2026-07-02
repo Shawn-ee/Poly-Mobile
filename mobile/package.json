@@ -78,6 +78,7 @@
     "smoke:samsung:server-close-fixture": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerCloseFixture -Port 8151",
     "smoke:samsung:server-position-trade": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerPositionTrade -Port 8152",
     "smoke:samsung:server-position-buy-trade": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerPositionBuyTrade -Port 8153",
+    "smoke:samsung:server-position-details": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -ServerPositionDetails -Port 8154",
     "smoke:portfolio-position-count": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -PortfolioPositionCount -Port 8109",
     "smoke:portfolio-activity-count": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -PortfolioActivityCount -Port 8110",
     "smoke:portfolio-closed-count": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -PortfolioClosedCount -Port 8111",
@@ -94,7 +95,8 @@
     "smoke:server-portfolio-fixture": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerPortfolioFixture -Port 8089",
     "smoke:server-close-fixture": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerCloseFixture -Port 8090",
     "smoke:server-position-trade": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerPositionTrade -Port 8091",
-    "smoke:server-position-buy-trade": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerPositionBuyTrade -Port 8092"
+    "smoke:server-position-buy-trade": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerPositionBuyTrade -Port 8092",
+    "smoke:server-position-details": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -ServerPositionDetails -Port 8093"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
