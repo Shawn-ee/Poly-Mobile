@@ -7168,6 +7168,41 @@ Harnesses run:
 Harness failures:
 - None.
 
+### Cycle 153
+
+Date: 2026-07-01
+Branch: mobile/cycle-153
+Goal: Make the server-success readiness gate produce structured JSON evidence for autonomous recovery.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: None; harness/reporting cycle.
+Backend/API changed: No runtime API route change. The mobile server-success gate now supports a JSON summary output.
+Database/schema changed: None.
+Files changed: `mobile/scripts/server-success-gate.ps1`, `mobile/package.json`, `docs/mobile/harness/cycle-153-server-success-gate.json`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run gate:server-success:expect-blocked:summary` in `mobile/`.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run test:mobile-api` from repo root.
+Harness evidence:
+- `docs/mobile/harness/cycle-153-server-success-gate.json`.
+- Gate report shows `ready=false`, Docker CLI available, Docker daemon unavailable, DB TCP unavailable, local compose DB URL aligned, and API key missing.
+Bugs found:
+- First gate summary used an unresolved `mobile\..` readiness path; fixed by resolving the readiness path before writing JSON.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Server-success gating now leaves structured evidence for the next cycle instead of requiring agents to infer blockers from console text.
+Result: Passed Cycle 153 QA. Gate expected-blocked summary, mobile typecheck, and mobile API/service tests pass.
+Commit: Pending.
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Cycle 154 should use the structured gate report to decide between another readiness recovery harness and a server-mode Portfolio visual fallback proof.
+Harnesses run:
+- Server Success Gate Summary Harness
+- Mobile Typecheck Harness
+- Mobile API/Profile/Activity/History/Order/Portfolio Snapshot/Portfolio Sync Unit Harness
+- Review Harness
+Harness failures:
+- None in final run.
+
 ### Heartbeat After Cycle 148
 
 Completed cycles: 146, 147, 148.

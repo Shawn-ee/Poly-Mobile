@@ -2228,3 +2228,19 @@ Findings:
 - Mobile typecheck and mobile API/service tests passed.
 Decision: Approve Cycle 152 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 153
+
+Date: 2026-07-01
+Branch: mobile/cycle-153
+Reviewer: Lead/Reviewer pass
+Scope: Server success gate JSON reporting.
+Findings:
+- P1: `server-success-gate.ps1` now accepts `-SummaryPath` and writes machine-readable readiness output for autonomous recovery decisions.
+- P1: The summary includes readiness booleans, API-key presence/shape, blocker messages, and next actions.
+- P1: `gate:server-success:expect-blocked:summary` gives the loop a one-command way to verify current blockers and preserve evidence.
+- P1: Cycle evidence confirms the current blockers remain Docker daemon unavailable, DB TCP unavailable, and missing `EXPO_PUBLIC_API_KEY`.
+- P2: This improves decision evidence only; it does not start Docker, create credentials, or prove successful server-backed Samsung execution.
+- Expected-blocked gate summary, mobile typecheck, and mobile API/service tests passed.
+Decision: Approve Cycle 153 for local commit/merge after scoped diff review.
+Merge approved: Yes
