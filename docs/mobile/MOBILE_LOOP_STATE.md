@@ -8532,8 +8532,8 @@ Technical debt added:
 Technical debt resolved:
 - The profile sync mobile service is no longer covered only by pure mappers and raw HTTP client tests; load/save helpers now have direct unit evidence.
 Result: Passed Cycle 186 QA. Mobile profile sync service tests and typecheck pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `518b0a0` (`Test mobile profile sync service calls`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `5eccc9b`.
 Next cycle: Continue toward final DoD with a profile-sync server-mode proof fixture or another backend-backed trading parity seam that can be verified without live backend readiness.
 Harnesses run:
 - Mobile API/Profile Preference Unit Harness
