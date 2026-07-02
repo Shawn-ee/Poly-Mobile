@@ -71,6 +71,77 @@ function Get-BlockerCategory {
   return "other"
 }
 
+function Get-RecoveryPlan {
+  param([string]$Category)
+
+  switch ($Category) {
+    "docker-daemon" {
+      return [ordered]@{
+        owner = "Harness Engineer"
+        action = "Start Docker Desktop and wait until the Docker daemon accepts commands."
+        verifyCommand = "docker ps"
+        readySignal = "Docker daemon reachable is true in mobile backend readiness."
+      }
+    }
+    "database-tcp" {
+      return [ordered]@{
+        owner = "Backend Agent"
+        action = "Start or repair the local Postgres service declared by the compose/database configuration."
+        verifyCommand = "npm run mobile:backend-readiness:summary"
+        readySignal = "Database TCP reachable is true at the configured host and port."
+      }
+    }
+    "api-key" {
+      return [ordered]@{
+        owner = "Backend Agent"
+        action = "Create and export a mobile dev API credential after backend readiness passes."
+        verifyCommand = "npm run mobile:credential-readiness:summary"
+        readySignal = "EXPO_PUBLIC_API_KEY is present and credential readiness allows server-backed Samsung proof."
+      }
+    }
+    "backend-health" {
+      return [ordered]@{
+        owner = "Backend Agent"
+        action = "Start the backend API and confirm the mobile device can reach the configured base URL."
+        verifyCommand = "npm run preflight:samsung:server-mode:strict"
+        readySignal = "Backend health is reachable from the Samsung server-mode preflight."
+      }
+    }
+    "quote-readiness" {
+      return [ordered]@{
+        owner = "Market Data Agent"
+        action = "Restore World Cup event, market, and quote availability before attempting Samsung quote proof."
+        verifyCommand = "npm run quote-readiness:expect-blocked:summary"
+        readySignal = "Quote readiness reports backend, event detail, market, and quote availability."
+      }
+    }
+    "docker-cli" {
+      return [ordered]@{
+        owner = "Harness Engineer"
+        action = "Install or expose Docker CLI on PATH for backend readiness checks."
+        verifyCommand = "docker --version"
+        readySignal = "Docker CLI available is true in mobile backend readiness."
+      }
+    }
+    "compose" {
+      return [ordered]@{
+        owner = "Backend Agent"
+        action = "Restore the local compose file or database service configuration expected by the backend harness."
+        verifyCommand = "npm run mobile:backend-readiness:summary"
+        readySignal = "Compose file found is true in mobile backend readiness."
+      }
+    }
+    default {
+      return [ordered]@{
+        owner = "Lead Agent"
+        action = "Inspect the blocker message, ask Reviewer Agent for the smallest safe recovery, and rerun this decision harness."
+        verifyCommand = "npm run decision:samsung:server-proof:expect-blocked:summary"
+        readySignal = "The blocker no longer appears in the decision summary."
+      }
+    }
+  }
+}
+
 $blockerMap = [ordered]@{}
 foreach ($blocker in @($blockers | Where-Object { $_ })) {
   $category = Get-BlockerCategory $blocker
@@ -78,10 +149,20 @@ foreach ($blocker in @($blockers | Where-Object { $_ })) {
     $blockerMap[$category] = [ordered]@{
       category = $category
       message = $blocker
+      recovery = Get-RecoveryPlan $category
     }
   }
 }
 $normalizedBlockers = @($blockerMap.Values)
+$recoveryPlan = @($normalizedBlockers | ForEach-Object {
+  [ordered]@{
+    category = $_.category
+    owner = $_.recovery.owner
+    action = $_.recovery.action
+    verifyCommand = $_.recovery.verifyCommand
+    readySignal = $_.recovery.readySignal
+  }
+})
 
 $summary = [ordered]@{
   ready = [bool]$ready
@@ -110,11 +191,11 @@ $summary = [ordered]@{
   }
   blockerCategories = @($normalizedBlockers | ForEach-Object { $_.category })
   blockers = @($normalizedBlockers)
+  recoveryPlan = @($recoveryPlan)
   nextActions = @(
     "Do not run the successful server-backed Samsung proof until ready is true.",
-    "If Docker daemon or DB TCP are blockers, start Docker Desktop and local Postgres, then rerun this decision harness.",
-    "If API key is a blocker, create/export a mobile dev credential after backend readiness passes.",
-    "If quote readiness is a blocker, restore backend health and World Cup market quote availability before Samsung quote proof."
+    "Follow recoveryPlan entries in category order and rerun this decision harness after each recovery attempt.",
+    "When all blocker categories clear, run the successful server-backed Samsung proof on the Samsung S23."
   )
 }
 
@@ -136,6 +217,8 @@ if (-not $ready) {
   Write-Host "BLOCKED Server-backed Samsung proof decision: do not run proof yet."
   foreach ($blocker in $normalizedBlockers) {
     Write-Host "- [$($blocker.category)] $($blocker.message)"
+    Write-Host "  recovery: $($blocker.recovery.action)"
+    Write-Host "  verify: $($blocker.recovery.verifyCommand)"
   }
   if ($ExpectBlocked) {
     Write-Host "PASS Server-backed Samsung proof decision blocked as expected."
