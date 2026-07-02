@@ -1,11 +1,20 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getUserId } from "@/lib/auth";
+import { requireCanonicalActor } from "@/lib/canonicalAuth";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
-  const userId = await getUserId();
+async function getPortfolioHistoryUserId(request: NextRequest) {
+  if (request.headers.get("Authorization")) {
+    const actor = await requireCanonicalActor(request, ["account:read"]);
+    return actor.userId;
+  }
+  return getUserId();
+}
+
+export async function GET(request: NextRequest) {
+  const userId = await getPortfolioHistoryUserId(request);
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

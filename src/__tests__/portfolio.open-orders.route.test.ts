@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 
 const getUserId = jest.fn();
 const getOutcomeMidPrices = jest.fn();
+const requireCanonicalActor = jest.fn();
 
 const prismaMock = {
   position: {
@@ -23,6 +24,10 @@ jest.mock("@/lib/auth", () => ({
   getUserId: () => getUserId(),
 }));
 
+jest.mock("@/lib/canonicalAuth", () => ({
+  requireCanonicalActor: (...args: unknown[]) => requireCanonicalActor(...args),
+}));
+
 jest.mock("@/lib/db", () => ({
   prisma: prismaMock,
 }));
@@ -34,6 +39,7 @@ jest.mock("@/lib/orderbookPricing", () => ({
 describe("GET /api/portfolio open order display data", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    requireCanonicalActor.mockResolvedValue({ userId: "api-user-1" });
     getOutcomeMidPrices.mockResolvedValue(new Map());
     prismaMock.position.findMany.mockResolvedValue([]);
     prismaMock.position.aggregate.mockResolvedValue({ _sum: { realizedPnl: 0 } });
@@ -104,6 +110,30 @@ describe("GET /api/portfolio open order display data", () => {
     ]);
     expect(JSON.stringify(body.openOrders)).not.toContain("cred-private");
     expect(JSON.stringify(body.openOrders)).not.toContain("createdApiCredential");
+  });
+
+  test("uses canonical API-key actor for mobile portfolio reads", async () => {
+    getUserId.mockResolvedValue("session-user-should-not-be-used");
+    requireCanonicalActor.mockResolvedValue({ userId: "api-user-1" });
+
+    const { GET } = await import("@/app/api/portfolio/route");
+    const response = await GET(
+      new NextRequest("http://localhost/api/portfolio", {
+        headers: { Authorization: "Bearer pk_live_test.secret" },
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(requireCanonicalActor).toHaveBeenCalledWith(expect.any(NextRequest), ["account:read"]);
+    expect(prismaMock.order.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          userId: "api-user-1",
+          status: { in: ["OPEN", "PARTIAL"] },
+        },
+      }),
+    );
+    expect(getUserId).not.toHaveBeenCalled();
   });
 
   test("returns position market and outcome identifiers needed for server-side close orders", async () => {

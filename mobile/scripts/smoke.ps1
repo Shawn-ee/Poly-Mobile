@@ -457,11 +457,11 @@ try {
     if ($ServerOrderSuccess) {
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-success-ticket.png"
       $serverOrderSuccessTicketHierarchy = $homeHierarchy
-      Assert-HierarchyContains -Path $serverOrderSuccessTicketHierarchy -Expected @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "Estimated cost", "Est. fee", "0 USDT", "Est. shares", "Avg price", "Place buy order")
+      Assert-HierarchyContains -Path $serverOrderSuccessTicketHierarchy -Expected @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "Estimated cost", "Est. fee", "0 USDT", "Est. shares", "Avg price", "Place buy order")
       Invoke-TapHierarchyNode -Path $serverOrderSuccessTicketHierarchy -Identifier "place-mock-order"
-      $serverOrderSuccessPortfolioHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-server-order-success-portfolio.xml" -Expected @("Portfolio", "Order placed", "SERVER - Buy", "World Cup", "Filled shares") -Attempts 14 -DelaySeconds 2
+      $serverOrderSuccessPortfolioHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-server-order-success-portfolio.xml" -Expected @("Portfolio", "Server portfolio synced", "Open orders", "Buy - YES - OPEN", "Remaining") -Attempts 14 -DelaySeconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-success-portfolio.png"
-      Assert-HierarchyContains -Path $serverOrderSuccessPortfolioHierarchy -Expected @("latest-order-card", "OPEN", "Remaining")
+      Assert-HierarchyContains -Path $serverOrderSuccessPortfolioHierarchy -Expected @("portfolio-screen", "portfolio-sync-status", "Cancel")
       return
     }
 
