@@ -8362,8 +8362,8 @@ Technical debt added:
 Technical debt resolved:
 - Profile preferences are no longer mobile-client-only; backend route/table support exists for language, saved markets, ticket default amount/side, and ticket default slippage.
 Result: Passed Cycle 182 QA. Backend profile-preference persistence and mobile contract checks pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `1d475aa` (`Add profile preferences backend route`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `e13a4d0`.
 Next cycle: Continue toward final DoD by wiring a server-mode device proof for profile preference sync when backend/API-key readiness is available, or continue backend-backed trading parity that can be tested offline.
 Harnesses run:
 - Prisma Schema Harness
