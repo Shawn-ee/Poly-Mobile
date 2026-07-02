@@ -105,8 +105,8 @@ Technical debt resolved:
 - TD-286 resolved: `mobile/dist/holiwyn-preview.apk` exists locally.
 - TD-287 resolved for local build: `mobile/android` and Gradle wrapper exist, and local Gradle release assembly succeeds.
 Result: Passed. Updated DoD sweep result: 10 verified, 0 partial, 0 blocked; ready to declare the documented mobile Definition of Done complete.
-Commit: cycle branch HEAD (`Build and prove Samsung APK artifact`)
-Merged: Pending local merge after commit.
+Commit: c975e5c (`Build and prove Samsung APK artifact`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Optional post-DoD hardening: production signing, CI/EAS build path, and new-architecture re-enable investigation.
 Harnesses run:
 - Local APK Build Harness
