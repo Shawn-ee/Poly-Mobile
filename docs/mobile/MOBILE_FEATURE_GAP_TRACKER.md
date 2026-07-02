@@ -205,3 +205,4 @@ Status:
 | GAP-183 | Account/Profile | Server-mode account fallback clarity | P1 | No | Verified | Cycle 172 verifies Account server-mode profile-sync fallback also shows `Trading mode: Server mode` on the Samsung S23. |
 | GAP-184 | Trading ticket | Visible ticket trading mode | P1 | Yes | Verified | Cycle 173 adds a trading-mode pill to the Trade Ticket and verifies `Trading mode: Fake-token mock` on the Samsung S23 future-order flow. |
 | GAP-185 | Harness | Server proof recovery plan | P0 | No | Verified | Cycle 174 adds category-specific recovery owners, actions, verification commands, and ready signals to the combined Samsung server-proof decision report. |
+| GAP-186 | Trading ticket | Ticket market depth strip | P1 | Yes | Verified | Cycle 175 adds a compact Best bid/Best ask/Spread strip to the Trade Ticket and verifies it on the Samsung S23 future-order flow. |
