@@ -8277,8 +8277,8 @@ Technical debt added:
 Technical debt resolved:
 - Slippage default now has a typed mobile profile sync seam instead of remaining local-only.
 Result: Passed Cycle 180 QA. Mobile typecheck passed, and mobile API/service suite passes with 9 files and 41 tests.
-Commit: Pending cycle branch commit.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `6ce25f3` (`Sync ticket slippage preference`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `c8ab6c0`.
 Next cycle: Cycle 181 should inspect/add backend profile-preference persistence for `ticketDefaultSlippage` or continue order-ticket parity if backend readiness remains gated.
 Harnesses run:
 - Mobile Typecheck Harness
