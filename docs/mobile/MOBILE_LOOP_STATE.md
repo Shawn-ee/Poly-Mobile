@@ -10118,6 +10118,25 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 273
+
+Date: 2026-07-02
+Branch: mobile/cycle-273-orderbook-quote-size-test
+Status: Verified; pending local merge.
+Objective: Add source-level backend coverage for quote depth sizes used by mobile Portfolio position tickets.
+Implemented:
+- Added `src/__tests__/orderbook-pricing.quote-size.test.ts`.
+- Mocked `buildPublicOrderbookSnapshot` to prove `getOutcomeQuotes` maps best bid/ask, top-level depth sizes, midpoint, and spread.
+- Covered the no-depth fallback for an outcome absent from the public snapshot.
+Verification:
+- `npm.cmd run test:jest -- src/__tests__/orderbook-pricing.quote-size.test.ts src/__tests__/portfolio.open-orders.route.test.ts` passed with 2 suites and 6 tests.
+- `npm.cmd run test:mobile-api` passed with 16 files and 71 tests.
+Evidence:
+- The new quote-size test expects `bestBidSize: 1000`, `bestAskSize: 2500`, `mid: 0.485`, and fallback null sizes for missing outcomes.
+Result: Passed Cycle 273 QA. The backend quote source feeding mobile Portfolio position tickets now has direct regression coverage.
+Commit: pending.
+Merge: pending.
+
 ### Cycle 272
 
 Date: 2026-07-02
@@ -11055,6 +11074,17 @@ Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo G
 Open blockers: None for autonomous progress.
 Risks: Repeated proof runs still mutate the local database and create many proof users/orders; future harnesses should continue using isolated usernames and summary metadata, and eventually move to disposable per-cycle markets or database snapshots.
 Next three likely cycles: add richer open-order/orderbook depth parity, add proof cleanup or disposable market isolation, and continue World Cup event detail/trading parity.
+
+### Heartbeat After Cycle 273
+
+Completed cycles: 271, 272, 273.
+Verified progress: Mobile Portfolio snapshots now preserve optional quote depth, backend `/api/portfolio` now emits best bid/ask and top-level depth sizes for positions, and the orderbook quote helper has direct regression coverage for price/size mapping.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung real-device QA, server quote/order/Portfolio sync, server open-order cancel, server position re-trade tickets, and backend-backed quote depth flowing toward those tickets.
+Current backend state: Local Docker/Postgres backend supports mobile API-key Portfolio/profile/order flows, canonical order create/cancel, matching, complete-set minting for dev proofs, canceled-order history, recent-trade history, deterministic fill/open-order liquidity harnesses, and Portfolio position quote depth from public orderbook snapshots.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: Backend Portfolio quote depth is now emitted, but a full live-device proof against a non-fixture Portfolio snapshot should still be added. Proof runs continue to mutate local database state.
+Next three likely cycles: add a live backend Portfolio quote-depth proof, wire a cleaner disposable proof account/market path, and broaden Event Detail server quote parity.
 
 ### Heartbeat After Cycle 270
 
