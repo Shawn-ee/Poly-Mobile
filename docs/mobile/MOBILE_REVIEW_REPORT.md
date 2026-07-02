@@ -3044,3 +3044,18 @@ Findings:
 - Focused backend route tests, mobile API/service tests, mobile typecheck, and live endpoint probe passed.
 Decision: Approve Cycle 204 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 205
+
+Date: 2026-07-02
+Branch: mobile/cycle-205
+Reviewer: Lead/Reviewer pass
+Scope: Mobile filled-trade proof fixture.
+Findings:
+- P0: Added a repeatable backend harness that creates a dev-only World Cup orderbook market, prepares maker liquidity, and proves a filled BUY trade for `holiwyn-mobile-dev`.
+- P0: The proof writes a non-secret JSON summary with market/order/trade ids, fill count, recent-trade count, and whether a mobile dev API credential was used.
+- P1: The first harness attempt reused a mutable seeded World Cup market and left the taker BUY open; the final version creates an isolated proof market to keep autonomous runs deterministic.
+- P1: The proof directly exercises the real matching service and leaves backend trade history available for the mobile Recent activity adapter introduced in Cycle 204.
+- Filled-trade proof, focused backend route tests, mobile API/service tests, and mobile typecheck passed.
+Decision: Approve Cycle 205 for local commit/merge after scoped diff review.
+Merge approved: Yes
