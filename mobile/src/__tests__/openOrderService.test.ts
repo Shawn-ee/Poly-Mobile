@@ -23,6 +23,7 @@ describe("open order service", () => {
       title: "World Cup winner",
       outcome: "France",
       amount: 42.5,
+      shares: 125,
       side: "buy",
       probability: 34,
       timestamp: "Just now",

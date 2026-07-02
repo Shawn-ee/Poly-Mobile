@@ -140,9 +140,16 @@ const activityExecutionText = (activity: PortfolioActivity, t: PortfolioCopy) =>
     ? `${t.entry} ${typeof activity.probability === "number" ? `${activity.probability}%` : money(activity.entryAmount ?? activity.amount)} - ${t.currentValue} ${money(activity.amount)} - ${t.estimatedPnl} ${
         activityPnl(activity) >= 0 ? "+" : ""
       }${money(activityPnl(activity))}`
+    : activity.action === "canceled"
+      ? `${t.canceledOrder} ${(activity.shares ?? activityShares(activity)).toFixed(2)} ${t.shares} - ${t.limitPrice} ${activity.probability ?? 0}%`
     : `${t.filledShares} ${activityShares(activity).toFixed(2)} - ${t.executionPrice} ${activity.probability ?? 0}% - ${
         t.impliedOdds
       } ${decimalOdds((activity.probability ?? 0) / 100)}`;
+
+const hasActivityExecutionDetails = (activity: PortfolioActivity) =>
+  typeof activity.probability === "number" ||
+  (activity.action === "closed" && typeof activity.entryAmount === "number") ||
+  (activity.action === "canceled" && typeof activity.shares === "number");
 
 export function Portfolio({
   t,
@@ -270,9 +277,7 @@ export function Portfolio({
           <Text style={styles.latestActivityMeta}>
             {latestActivity.title} - {latestActivity.outcome}
           </Text>
-          {(typeof latestActivity.probability === "number" ||
-            (latestActivity.action === "closed" && typeof latestActivity.entryAmount === "number")) &&
-            latestActivity.action !== "canceled" && (
+          {hasActivityExecutionDetails(latestActivity) && (
               <Text accessibilityLabel={`latest-activity-execution-${latestActivity.id}`} style={styles.activityExecution}>
                 {activityExecutionText(latestActivity, t)}
               </Text>
@@ -482,8 +487,7 @@ export function Portfolio({
                 <Text style={styles.activityMeta}>
                   {activity.title} - {activity.outcome}
                 </Text>
-                {(typeof activity.probability === "number" || (activity.action === "closed" && typeof activity.entryAmount === "number")) &&
-                  activity.action !== "canceled" && (
+                {hasActivityExecutionDetails(activity) && (
                   <Text accessibilityLabel={`activity-execution-${activity.id}`} style={styles.activityExecution}>
                     {activityExecutionText(activity, t)}
                   </Text>

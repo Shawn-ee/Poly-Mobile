@@ -9702,6 +9702,29 @@ Open blockers: None for autonomous progress.
 Risks: Repeated proof runs still mutate the local database and create proof users/orders; future work should move toward disposable per-cycle markets or database snapshots for cleaner long-run evidence.
 Next three likely cycles: add proof cleanup or disposable market isolation, improve order-history/open-order detail parity, and continue World Cup event detail/trading parity.
 
+### Cycle 221
+
+Date: 2026-07-02
+Branch: mobile/cycle-221-canceled-activity-details
+Status: Verified and locally merged.
+Objective: Show share quantity and limit price on canceled order activity rows.
+Implemented:
+- Added canceled-order execution detail text to latest activity and Recent activity rows.
+- Preserved canceled share count in local open-order cancel receipts so immediate UI feedback and backend-synced history display the same kind of detail.
+- Updated open-order cancel smoke assertions for corrected value math and canceled share/limit detail.
+Verification:
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run mobile:samsung-open-order-cancel-proof -- -Username holiwyn-mobile-proof-cycle-221-open` passed on Samsung S23.
+Evidence:
+- `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`.
+Notes:
+- The S23 canceled activity row shows `Canceled 100.00 shares - Limit 1%` alongside `1 USDT`.
+Commit: TBD
+Merge: TBD
+
 ### Heartbeat After Cycle 217
 
 Completed cycles: 215, 216, 217.
