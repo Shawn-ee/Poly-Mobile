@@ -1,0 +1,47 @@
+{
+  "ready": true,
+  "market": {
+    "id": "dfd89e7e-85a3-4ecd-906c-3f8bea407f9d",
+    "title": "World Cup Mobile Portfolio Quote Depth Proof d0b594de"
+  },
+  "outcome": {
+    "id": "f42853fd-f000-4e92-a1c9-d3c02fa9a514",
+    "name": "YES"
+  },
+  "proofUser": {
+    "id": "a751bb51-3908-477c-b7cf-5a3b8230d6bc",
+    "username": "holiwyn_mobile_portfolio_quote_depth_user_d9558a9c",
+    "apiKeyId": "pk_live_35fb47bec848c739"
+  },
+  "seededDepth": {
+    "bestBid": 0.47,
+    "bestAsk": 0.5,
+    "bestBidSize": 1000,
+    "bestAskSize": 2500,
+    "currentPrice": 0.485
+  },
+  "responsePosition": {
+    "marketId": "dfd89e7e-85a3-4ecd-906c-3f8bea407f9d",
+    "outcomeId": "f42853fd-f000-4e92-a1c9-d3c02fa9a514",
+    "outcome": "YES",
+    "shares": 500,
+    "avgCost": 0.42,
+    "currentPrice": 0.485,
+    "bestBid": 0.47,
+    "bestAsk": 0.5,
+    "bestBidSize": 1000,
+    "bestAskSize": 2500,
+    "valueTokens": 242.5,
+    "pnlTokens": 32.5
+  },
+  "bidOrder": {
+    "id": "7ad3d5ff-c19f-487a-8845-665c465e2332",
+    "status": "OPEN",
+    "remaining": "1000"
+  },
+  "askOrder": {
+    "id": "f4b603a8-039d-4fb0-8434-448dc83fb06a",
+    "status": "OPEN",
+    "remaining": "2500"
+  }
+}
