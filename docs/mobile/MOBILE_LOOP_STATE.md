@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-241-event-outcome-depth-fit
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Keep Event Detail outcome-level bid/ask context readable on one line on Samsung S23.
 Implemented:
 - Enabled single-line fitting for the Event Detail outcome depth text.
@@ -10135,8 +10135,19 @@ Verification:
 Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
-Commit: pending
-Merge: pending
+Commit: 4a0f058
+Merge: de065c0
+
+### Heartbeat After Cycle 241
+
+Completed cycles: 239, 240, 241.
+Verified progress: Event Detail now gives users clearer pre-ticket trading context: each outcome row shows bid/ask context, market-level depth cells show explicit USDT units, and the Samsung S23 proof confirms the Mexico row keeps its bid/ask context on one readable line.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token and server-mode trading, Samsung real-device QA, server quote/order/Portfolio sync, backend-derived filled/canceled activity with side/share/price detail, open-order cards with notional/remaining value/original size/fill progress/placed time, Portfolio count tiles, Account exposure rows, latest activity/order previews, BUY/SELL filled-order proof wrappers, gated open-order cancel proof wrappers, and clearer World Cup Event Detail depth context.
+Current backend state: Local Docker/Postgres backend supports mobile API-key Portfolio/profile/order flows, canonical order create/cancel, matching, complete-set mint cost basis, recent-trade/canceled-order history, repeatable World Cup seeding/liquidity for mobile proofs, and proof-noise reporting/gating.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go for proof flows. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: Expo Go can still surface the developer menu during long-scroll proofs; proof state remains noisy from repeated autonomous orders; production app packaging still needs a dev-client/APK lane.
+Next three likely cycles: continue Event Detail trading parity, add richer market/outcome liquidity-size context where data exists, and keep tightening Samsung proof assertions around visible trading information.
 
 ### Cycle 240
 
