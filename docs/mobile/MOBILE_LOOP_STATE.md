@@ -94,8 +94,8 @@ Technical debt added:
 Technical debt resolved:
 - TD-285 clarified: the APK blocker is now a precise artifact/build-lane diagnosis rather than a generic missing APK note.
 Result: Passed harness cycle. Updated DoD sweep result: 9 verified, 1 partial, 0 blocked.
-Commit: cycle branch HEAD (`Add Android APK artifact readiness harness`)
-Merged: Pending local merge after commit.
+Commit: 9130b8f (`Add Android APK artifact readiness harness`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Install/use EAS CLI or generate `mobile/android` for local Gradle assembly, produce `mobile/dist/holiwyn-preview.apk`, then rerun Samsung APK smoke without allow-missing.
 Harnesses run:
 - APK Artifact Readiness Harness
