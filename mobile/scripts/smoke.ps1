@@ -471,14 +471,14 @@ try {
       Assert-HierarchyContains -Path $serverOrderSuccessTicketHierarchy -Expected @("Trading mode: Server mode", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "Estimated cost", "Est. fee", "0 USDT", "Est. shares", "Avg price", "Place buy order")
       Invoke-TapHierarchyNode -Path $serverOrderSuccessTicketHierarchy -Identifier "place-mock-order"
       $serverOrderSuccessExpected = if ($ServerOrderFilled) {
-        @("Portfolio", "Server portfolio synced", "Order placed", "SERVER - Buy - YES - FILLED", "Filled shares", "100.00", "Remaining", "0.00")
+        @("Portfolio", "Server portfolio synced", "Order placed", "SERVER - Buy - YES - FILLED", "Filled shares", "200.00", "Remaining", "0.00")
       } else {
         @("Portfolio", "Server portfolio synced", "Open orders", "Buy - YES - OPEN", "Remaining")
       }
       $serverOrderSuccessPortfolioHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-server-order-success-portfolio.xml" -Expected $serverOrderSuccessExpected -Attempts 14 -DelaySeconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-success-portfolio.png"
       if ($ServerOrderFilled) {
-        Assert-HierarchyContains -Path $serverOrderSuccessPortfolioHierarchy -Expected @("portfolio-screen", "portfolio-sync-status", "latest-activity-card", "Bought", "Filled shares 100.00", "Exec price 50%", "Implied odds 2.0x")
+        Assert-HierarchyContains -Path $serverOrderSuccessPortfolioHierarchy -Expected @("portfolio-screen", "portfolio-sync-status", "latest-activity-card", "Bought", "Filled shares 200.00", "Exec price 50%", "Implied odds 2.0x")
       } else {
         Assert-HierarchyContains -Path $serverOrderSuccessPortfolioHierarchy -Expected @("portfolio-screen", "portfolio-sync-status", "Cancel")
       }

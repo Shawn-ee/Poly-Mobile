@@ -3104,3 +3104,18 @@ Findings:
 - Mobile API/service tests, mobile typecheck, liquidity proof, and Samsung server filled-order smoke passed.
 Decision: Approve Cycle 208 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 209
+
+Date: 2026-07-02
+Branch: mobile/cycle-209
+Reviewer: Lead/Reviewer pass
+Scope: Server-mode ticket USDT-to-shares semantics.
+Findings:
+- P0: Server-mode ticket submission now matches the UI's amount semantics: amount remains USDT cost/proceeds, while backend order `size` is computed as shares at the selected probability.
+- P0: Samsung S23 proves a 100 USDT ticket at 50% fills 200.00 shares and displays that execution size in Portfolio.
+- P1: The liquidity harness threshold now guarantees enough maker shares for the corrected order size.
+- P1: Unit tests cover server order size conversion for buy and sell submissions.
+- Mobile API/service tests, mobile typecheck, liquidity proof, and Samsung server filled-order smoke passed.
+Decision: Approve Cycle 209 for local commit/merge after scoped diff review.
+Merge approved: Yes
