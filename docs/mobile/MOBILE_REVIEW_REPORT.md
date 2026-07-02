@@ -2722,3 +2722,19 @@ Findings:
 - Focused Jest route/auth tests, mobile dev credential dry-run, mobile API/service tests, and mobile typecheck passed.
 Decision: Approve Cycle 183 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 184
+
+Date: 2026-07-01
+Branch: mobile/cycle-184
+Reviewer: Lead/Reviewer pass
+Scope: Mobile credential readiness scope proof.
+Findings:
+- P1: `mobile_credential_readiness.ps1` now records required credential scopes and verifies the mobile dev credential dry-run includes them.
+- P1: The required scope set includes `account:write`, preventing future server-proof attempts from relying on stale read-only mobile credentials.
+- P1: The Samsung server-proof decision summary now exposes `credentialDryRunIncludesRequiredScopes`.
+- P1: The readiness script now runs the nested credential dry-run from the repo root, so it works both from root npm scripts and from mobile decision harnesses.
+- P2: Existing live proof blockers remain environment-level: Docker daemon, database TCP, API key, backend health, and quote readiness.
+- Credential readiness, combined Samsung decision expected-blocked harness, mobile dev credential dry-run, mobile API/service tests, and mobile typecheck passed.
+Decision: Approve Cycle 184 for local commit/merge after scoped diff review.
+Merge approved: Yes

@@ -19,6 +19,41 @@ if (-not (Test-Path $resolvedReadinessPath)) {
 $resolvedReadinessPath = (Resolve-Path $resolvedReadinessPath).Path
 $readiness = Get-Content -Raw $resolvedReadinessPath | ConvertFrom-Json
 
+$requiredCredentialScopes = @(
+  "orders:read",
+  "orders:write",
+  "fills:read",
+  "account:read",
+  "account:write",
+  "markets:read"
+)
+$dryRunScopes = @()
+$dryRunIncludesRequiredScopes = $false
+$dryRunError = ""
+try {
+  Push-Location $RepoRoot
+  try {
+    $dryRunOutput = & cmd /c npm.cmd run mobile:dev-credential:dry-run 2>&1
+  } finally {
+    Pop-Location
+  }
+  $dryRunText = ($dryRunOutput | Out-String)
+  $jsonStart = $dryRunText.IndexOf("{$([Environment]::NewLine)  `"dryRun`"")
+  if ($jsonStart -lt 0) {
+    $jsonStart = $dryRunText.IndexOf("{`n  `"dryRun`"")
+  }
+  if ($jsonStart -ge 0) {
+    $dryRunSummary = $dryRunText.Substring($jsonStart) | ConvertFrom-Json
+    $dryRunScopes = @($dryRunSummary.scopes)
+    $missingDryRunScopes = @($requiredCredentialScopes | Where-Object { $dryRunScopes -notcontains $_ })
+    $dryRunIncludesRequiredScopes = $missingDryRunScopes.Count -eq 0
+  } else {
+    $dryRunError = "Credential dry-run did not emit JSON."
+  }
+} catch {
+  $dryRunError = $_.Exception.Message
+}
+
 $trimmedApiKey = if ($null -eq $ApiKey) { "" } else { $ApiKey.Trim() }
 $apiKeyLooksValid = $trimmedApiKey -match "^pk_live_[^.]+\..+"
 $canCreateCredential = [bool](
@@ -28,7 +63,7 @@ $canCreateCredential = [bool](
   $readiness.databaseTcpReachable -and
   $readiness.usesDefaultLocalComposePort
 )
-$canRunServerProof = $canCreateCredential -and $apiKeyLooksValid
+$canRunServerProof = $canCreateCredential -and $apiKeyLooksValid -and $dryRunIncludesRequiredScopes
 
 $blockers = New-Object System.Collections.Generic.List[string]
 if (-not $readiness.dockerCliAvailable) {
@@ -51,6 +86,13 @@ if (-not $trimmedApiKey) {
 } elseif (-not $apiKeyLooksValid) {
   $blockers.Add("EXPO_PUBLIC_API_KEY must look like pk_live_<id>.<secret>.")
 }
+if (-not $dryRunIncludesRequiredScopes) {
+  if ($dryRunError) {
+    $blockers.Add("Mobile dev credential dry-run scope check failed: $dryRunError")
+  } else {
+    $blockers.Add("Mobile dev credential dry-run is missing required scopes: $(@($requiredCredentialScopes | Where-Object { $dryRunScopes -notcontains $_ }) -join ', ').")
+  }
+}
 
 $summary = [ordered]@{
   readyToCreateCredential = [bool]$canCreateCredential
@@ -65,6 +107,10 @@ $summary = [ordered]@{
   databasePort = $readiness.databasePort
   apiKeyPresent = [bool]$trimmedApiKey
   apiKeyLooksValid = [bool]$apiKeyLooksValid
+  requiredCredentialScopes = @($requiredCredentialScopes)
+  dryRunScopes = @($dryRunScopes)
+  dryRunIncludesRequiredScopes = [bool]$dryRunIncludesRequiredScopes
+  dryRunError = $dryRunError
   dryRunCommand = "npm run mobile:dev-credential:dry-run"
   createCredentialCommand = "npm run mobile:dev-credential"
   serverModeEnv = [ordered]@{
@@ -75,6 +121,7 @@ $summary = [ordered]@{
   nextActions = @(
     "Run npm run mobile:backend-readiness:summary.",
     "Start Docker Desktop and local Postgres if Docker daemon or DB TCP are unavailable.",
+    "Confirm npm run mobile:dev-credential:dry-run includes account:write before creating new mobile credentials.",
     "Run npm run mobile:dev-credential after database readiness passes.",
     "Export the generated EXPO_PUBLIC_API_KEY before successful Samsung server proof."
   )

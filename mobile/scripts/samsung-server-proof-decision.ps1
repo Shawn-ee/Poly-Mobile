@@ -182,6 +182,7 @@ $summary = [ordered]@{
     composeFileFound = [bool]$backendReadiness.composeFileFound
     databaseTcpReachable = [bool]$backendReadiness.databaseTcpReachable
     apiKeyPresent = [bool]$credentialReadiness.apiKeyPresent
+    credentialDryRunIncludesRequiredScopes = [bool]$credentialReadiness.dryRunIncludesRequiredScopes
     readyForServerBackedSamsungProof = [bool]$credentialReadiness.readyForServerBackedSamsungProof
     serverSuccessGateReady = [bool]$serverSuccessGate.ready
     quoteProofReady = [bool]$quoteProof.ready
