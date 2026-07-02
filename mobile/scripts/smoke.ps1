@@ -588,7 +588,7 @@ try {
     if ($LiveSummary) {
       Save-Screenshot -Name "cycle-current-holiwyn-live-summary.png"
       $liveSummaryHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-summary.xml"
-      Assert-HierarchyContains -Path $liveSummaryHierarchy -Expected @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina", "France", "Argentina", "Draw")
+      Assert-HierarchyContains -Path $liveSummaryHierarchy -Expected @("Live World Cup", "Updated just now", "Refresh", "live-market-summary", "2 markets", "6 outcomes", "France vs. Argentina", "France", "Argentina", "Draw")
       return
     }
 
