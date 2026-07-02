@@ -228,3 +228,4 @@ Status:
 | GAP-206 | Portfolio | Position re-trade actions | P1 | Yes | Verified | Cycle 195 adds Buy/Sell actions to position cards, resolves positions back to World Cup markets/outcomes, and verifies a Samsung server-position Sell ticket opens correctly. |
 | GAP-207 | Harness | Samsung position Buy re-trade proof | P1 | Yes | Verified | Cycle 196 adds a Samsung/base smoke for Buy from a server-style Portfolio position and verifies the server-mode Buy ticket opens correctly. |
 | GAP-208 | Portfolio | Server position detail tiles | P1 | Yes | Verified | Cycle 197 adds scannable Filled shares and Current price tiles to server-hydrated Portfolio positions and verifies them on the Samsung S23. |
+| GAP-209 | Harness | Server-backed Samsung proof readiness recovery | P0 | No | Verified | Cycle 198 hardens Docker readiness probing, creates a local mobile dev credential, and verifies the combined Samsung server-proof decision is ready. |
