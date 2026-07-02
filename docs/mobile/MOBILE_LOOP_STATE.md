@@ -10118,6 +10118,28 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 239
+
+Date: 2026-07-02
+Branch: mobile/cycle-239-event-outcome-depth
+Status: Verified; pending local merge.
+Objective: Improve World Cup Event Detail trading parity by showing outcome-level bid/ask context before users open a ticket.
+Implemented:
+- Added outcome-level depth text under each Event Detail outcome row.
+- Reused ticket-style fallback bid/ask math from outcome probability when explicit bid/ask values are unavailable.
+- Tightened `EventDetailMarketOutcomeCount` smoke assertions to require the Mexico outcome depth row.
+- Added `smoke:samsung:event-detail-outcome-depth` and a Samsung wrapper switch for phone-targeted proof.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:event-detail-outcome-depth` passed on Samsung S23 with Expo host `172.16.200.14` and port `8162`.
+- Captured hierarchy includes `Match winner`, `Best bid 0.61 USDT - Best ask 0.68 USDT`, `event-detail-outcome-depth-mexico-ecuador-winner-mexico`, `64%`, and `1.6x`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
+Commit: pending
+Merge: pending
+
 ### Heartbeat After Cycle 238
 
 Completed cycles: 236, 237, 238.
