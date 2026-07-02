@@ -266,3 +266,4 @@ Status:
 | GAP-244 | Portfolio | Open-order remaining value context | P1 | Yes | Verified | Cycle 231 folds remaining USDT value into the open-order remaining-shares line and verifies `Remaining: 100 shares (Remaining value: 1 USDT)` on Samsung S23. |
 | GAP-245 | Harness | Open-order detail regression assertions | P1 | No | Verified | Cycle 232 tightens the Samsung server open-order cancel smoke so it fails unless remaining value, original size, and fill progress are visible before cancel. |
 | GAP-246 | Harness | Canceled activity side assertion | P1 | No | Verified | Cycle 233 tightens the Samsung server open-order cancel smoke so canceled activity must show side-aware execution text such as `Buy - Canceled 100.00 shares - Limit 1%`. |
+| GAP-247 | Harness | Samsung mock open-order cancel wrapper | P1 | No | Verified | Cycle 234 adds a Samsung-targeted mock open-order cancel command and tightens that smoke to require `Buy - Canceled 250.00 shares - Limit 47%`. |

@@ -1173,11 +1173,15 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-open-order-canceled.png"
       $openOrderCanceledHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-open-order-canceled.xml"
       try {
-        Assert-HierarchyContains -Path $openOrderCanceledHierarchy -Expected @("Recent activity", "Canceled", "Mexico vs. Ecuador winner", "117.5 USDT", "Canceled 250.00 shares - Limit 47%")
+        Assert-HierarchyContains -Path $openOrderCanceledHierarchy -Expected @("Recent activity", "Canceled", "Mexico vs. Ecuador winner", "117.5 USDT", "Buy - Canceled 250.00 shares - Limit 47%")
       } catch {
+        $openOrderCanceledSnapshot = Get-Content -Raw -Path $openOrderCanceledHierarchy
+        if ($openOrderCanceledSnapshot -match [regex]::Escape("cancel-open-order-smoke-open-order")) {
+          Invoke-TapHierarchyNode -Path $openOrderCanceledHierarchy -Identifier "cancel-open-order-smoke-open-order"
+        }
         Start-Sleep -Seconds 2
         $openOrderCanceledHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-open-order-canceled.xml"
-        Assert-HierarchyContains -Path $openOrderCanceledHierarchy -Expected @("Recent activity", "Canceled", "Mexico vs. Ecuador winner", "117.5 USDT", "Canceled 250.00 shares - Limit 47%")
+        Assert-HierarchyContains -Path $openOrderCanceledHierarchy -Expected @("Recent activity", "Canceled", "Mexico vs. Ecuador winner", "117.5 USDT", "Buy - Canceled 250.00 shares - Limit 47%")
       }
       return
     }
