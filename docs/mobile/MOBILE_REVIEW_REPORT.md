@@ -3147,3 +3147,17 @@ Findings:
 - Mobile API/service tests, mobile typecheck, sell liquidity proof, and Samsung server sell-fill smoke passed.
 Decision: Approve Cycle 211 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 212
+
+Date: 2026-07-02
+Branch: mobile/cycle-212
+Reviewer: Lead/Reviewer pass
+Scope: Sell activity labeling and Samsung sell-fill activity proof.
+Findings:
+- P1: Backend recent SELL trades now render as `Sold` execution activity, preserving `Closed` for resolved market history only.
+- P1: The activity execution row for sold trades shows filled shares, execution price, and implied odds, matching buy-trade activity semantics.
+- P1: Immediate local sell activity uses the same action, avoiding divergent behavior between local and refreshed server state.
+- Mobile API/service tests, mobile typecheck, sell liquidity proof, and Samsung server sell-fill smoke passed.
+Decision: Approve Cycle 212 for local commit/merge after scoped diff review.
+Merge approved: Yes

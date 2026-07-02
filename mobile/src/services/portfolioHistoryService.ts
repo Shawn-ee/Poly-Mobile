@@ -46,7 +46,7 @@ export const recentTradesToActivity = (trades: PortfolioRecentTradeItem[] = []):
     const executionPrice = trade.shares > 0 ? trade.cost / trade.shares : 0;
     return {
       id: `trade-${trade.id}`,
-      action: trade.side === "SELL" ? "closed" : "opened",
+      action: trade.side === "SELL" ? "sold" : "opened",
       title: trade.market.title,
       outcome: trade.outcome.name,
       amount: trade.cost,

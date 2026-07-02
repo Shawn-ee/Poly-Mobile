@@ -764,7 +764,7 @@ export default function App() {
     setActivities((current) => [
       {
         id: `${result.id}-opened`,
-        action: "opened",
+        action: result.side === "sell" ? "sold" : "opened",
         title: result.title,
         outcome: result.outcome,
         amount: result.amount,

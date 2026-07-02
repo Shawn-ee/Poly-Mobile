@@ -153,7 +153,7 @@ describe("portfolio history activity mapping", () => {
       }),
       expect.objectContaining({
         id: "trade-trade-2",
-        action: "closed",
+        action: "sold",
         amount: 30,
         shares: 50,
         side: "sell",

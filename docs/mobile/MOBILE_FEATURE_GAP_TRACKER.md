@@ -244,3 +244,4 @@ Status:
 | GAP-222 | Harness | Filled-order ticket estimate assertion | P1 | Yes | Verified | Cycle 210 hardens the Samsung filled-order smoke to assert the pre-submit ticket shows `200 shares` before verifying the filled 200-share Portfolio result. |
 | GAP-223 | Trading | Server sell-order filled proof | P0 | Yes | Verified | Cycle 211 seeds sellable mobile-dev shares, prepares backend BUY liquidity, and verifies on Samsung that a 100 USDT Sell ticket fills 200 shares at 50%. |
 | GAP-224 | Portfolio | Server-authoritative post-order refresh | P0 | Yes | Verified | Cycle 211 refreshes Portfolio from backend state after server order submission instead of adding local optimistic positions/balance changes. |
+| GAP-225 | Portfolio | Sold activity execution details | P1 | Yes | Verified | Cycle 212 maps recent backend SELL trades to `Sold` activity with filled shares, execution price, and implied odds, while keeping resolved market history as `Closed`. |

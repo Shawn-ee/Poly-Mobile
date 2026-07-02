@@ -9445,6 +9445,32 @@ Notes:
 Commit: bf9e770
 Merge: eeb3666
 
+### Cycle 212
+
+Date: 2026-07-02
+Branch: mobile/cycle-212
+Status: Verified; pending local merge.
+Objective: Make backend SELL trade activity read as a pre-resolution sell execution instead of a resolved closed trade.
+Implemented:
+- Added a distinct Portfolio activity action for sold trades with English and Simplified Chinese copy.
+- Mapped backend recent SELL trades to `Sold` activity rows while keeping resolved market history as `Closed`.
+- Updated immediate local sell activity to use the same sold activity action.
+- Hardened the Samsung sell-fill smoke to assert the latest activity card shows `Sold`, filled shares, execution price, and implied odds.
+Verification:
+- `npm.cmd run test:mobile-api` passed with 15 files and 65 tests.
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run mobile:server-sell-fill-liquidity` passed with 500 resting BUY shares at 50%.
+- `npm.cmd run smoke:samsung:server-sell-order-filled` passed on Samsung S23 through Expo Go with backend health `ok`.
+Evidence:
+- `docs/mobile/harness/cycle-current-mobile-server-sell-fill-liquidity.json`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+Notes:
+- This separates ordinary sell executions from resolved/closed market history, so the latest activity feed now matches the trade receipt economics.
+Commit: pending
+Merge: pending
+
 ### Heartbeat After Cycle 211
 
 Completed cycles: 209, 210, 211.
