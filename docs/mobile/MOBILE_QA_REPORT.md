@@ -4164,3 +4164,26 @@ Bugs:
 - None in final run.
 Visual QA:
 - No Samsung visual run this cycle; this is pre-work for real server close/sell behavior.
+
+### Cycle 190
+
+Date: 2026-07-01
+Device: Mobile service unit harness
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+Result: Passed. Server-mode close-position now attempts a canonical SELL order before local removal/activity updates.
+Harness evidence:
+- Mobile API/service suite passed with 11 files and 51 tests.
+- Mobile typecheck passed.
+Screenshot evidence:
+- None; mobile service/control-flow cycle.
+Structured findings:
+- Mock close-position remains backend no-op.
+- Server close-position submits `SELL` limit orders using hydrated `marketId`, `outcomeId`, `shares`, and `currentPrice`.
+- Missing server position identity blocks the backend call before any local close state changes.
+- App surfaces Portfolio sync error and keeps the position when the server close call fails.
+Bugs:
+- None in final run.
+Visual QA:
+- No Samsung visual run this cycle; successful server-backed close still depends on backend/device readiness.

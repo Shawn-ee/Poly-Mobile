@@ -2814,3 +2814,18 @@ Findings:
 - Backend Portfolio route tests, mobile API/service tests, and mobile typecheck passed.
 Decision: Approve Cycle 189 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 190
+
+Date: 2026-07-01
+Branch: mobile/cycle-190
+Reviewer: Lead/Reviewer pass
+Scope: Server-mode close-position SELL order path.
+Findings:
+- P1: Added `closePositionOnServer`, which leaves mock mode unchanged and submits canonical SELL limit orders in server mode.
+- P1: Server close uses hydrated `marketId`, `outcomeId`, `shares`, and `currentPrice`, with entry-probability fallback only when current price is missing.
+- P1: `App.tsx` now waits for the server close request before removing a server position locally and reports sync error on failure.
+- P2: The flow submits the close order but still relies on later Portfolio hydration for authoritative fill/position settlement.
+- Mobile API/service tests and mobile typecheck passed.
+Decision: Approve Cycle 190 for local commit/merge after scoped diff review.
+Merge approved: Yes

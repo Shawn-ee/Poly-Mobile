@@ -8662,6 +8662,52 @@ Harnesses run:
 Harness failures:
 - None.
 
+## Cycle 190
+
+Date: 2026-07-01
+Branch: mobile/cycle-190
+Goal: Route server-mode close-position through a canonical SELL order while preserving mock close behavior.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No direct visual change.
+Backend/API changed: No backend route change; mobile now calls the existing canonical order endpoint for server-mode position closes.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/services/positionCloseService.ts`, `mobile/src/__tests__/positionCloseService.test.ts`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm.cmd run typecheck` in `mobile/`.
+Screenshots captured:
+- None; mobile service/control-flow cycle.
+Harness evidence:
+- Mobile API/service suite passed with 11 files and 51 tests.
+- Mobile typecheck passed.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Server-mode close-position no longer performs only a local fake cash-out; it now attempts a canonical SELL order before local state removal.
+Result: Passed Cycle 190 QA. Mobile close service tests and typecheck pass.
+Commit: pending (`Submit server position closes as sell orders`).
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Continue toward final DoD by proving server close behavior with a fixture/Samsung path or by refreshing Portfolio after server close acknowledgement.
+Harnesses run:
+- Mobile Position Close Service Harness
+- Mobile Typecheck Harness
+- Review Harness
+Harness failures:
+- None.
+
+### Heartbeat After Cycle 190
+
+Completed cycles: 188, 189, 190.
+Verified progress: Server-hydrated Portfolio positions now keep backend economics, retain market/outcome identity, and can submit canonical SELL orders from the close-position path in server mode.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung visual QA, adjustable/persisted ticket slippage, typed profile sync, server quote seams, latest-order server acknowledgement details, server-hydrated Portfolio economics, and a server-mode close-position SELL order path.
+Current backend state: Profile preferences have user-scoped persistence and scope-separated read/write routes. `/api/portfolio` returns position ids/economics and open-order data; mobile API/profile/order/portfolio/history/quote/close-position service tests are green.
+Device strategy: Samsung S23 remains preferred for Holiwyn visual and server-mode QA through Expo Go; emulator remains fallback only.
+Open blockers: None for autonomous progress. Successful live server-backed Samsung proof remains gated by Docker daemon, local database TCP, API key, backend health, and quote readiness.
+Risks: Server close now submits a SELL order, but successful authenticated execution, fill settlement, and refreshed Portfolio proof are still not proven on Samsung.
+Next three likely cycles: add Portfolio refresh after server close acknowledgement, add a fixture-backed Samsung proof for server-hydrated Portfolio rows, or retry server-proof readiness if local services become available.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.
