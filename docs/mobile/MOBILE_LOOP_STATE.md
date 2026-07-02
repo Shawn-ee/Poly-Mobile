@@ -10141,8 +10141,8 @@ Evidence:
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket-ready.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
 Result: Passed Cycle 266 QA. Server-mode Sell now has real-device proof for backend quote-size display, proceeds wording, scroll-to-submit, and filled backend order state.
-Commit: pending.
-Merge: pending.
+Commit: 7d9f857
+Merge: ced821c
 
 ### Cycle 265
 
