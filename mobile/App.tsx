@@ -692,6 +692,10 @@ export default function App() {
       side: result.side,
       amount: result.amount,
       probability: result.probability,
+      status: result.status,
+      size: result.size,
+      filledSize: result.filledSize,
+      remainingSize: result.remainingSize,
       isLive: isLiveOrder,
       liveClock,
     });

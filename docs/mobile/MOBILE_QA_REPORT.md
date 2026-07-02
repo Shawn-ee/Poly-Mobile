@@ -4093,3 +4093,26 @@ Bugs:
 - Initial typecheck found minimal API mocks did not satisfy the full `PolyApi` class type; fixed with explicit test-local casts while keeping production helper signatures strict.
 Visual QA:
 - No visual change.
+
+### Cycle 187
+
+Date: 2026-07-01
+Device: Mobile service unit harness
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+Result: Passed. Server-mode ticket order acknowledgements now preserve backend status and fill/remaining details for the latest-order receipt.
+Harness evidence:
+- Mobile API/service suite passed with 9 files and 45 tests.
+- Mobile typecheck passed.
+Screenshot evidence:
+- None; receipt wiring was unit/type verified without a Samsung UI pass.
+Structured findings:
+- Canonical order responses with `fills` now map to `filledSize`.
+- Canonical order responses with `size` and `remaining` now map to `size`, `remainingSize`, and derived `filledSize`.
+- Latest-order confirmation metadata now includes backend order status when available.
+- Latest-order execution details prefer backend filled and remaining size over local mock-derived shares.
+Bugs:
+- Initial UI patch changed the detail label before the value; corrected so remaining orders show remaining size instead of odds under a remaining label.
+Visual QA:
+- No Samsung visual run this cycle; next visual receipt proof should use the Samsung S23 once a server-backed or fixture-backed order state is available.
