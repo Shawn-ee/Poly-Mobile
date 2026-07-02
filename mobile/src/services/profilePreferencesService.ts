@@ -6,6 +6,7 @@ export type LocalProfilePreferences = {
   locale: Locale;
   ticketDefaultAmount: string;
   ticketDefaultSide: "buy" | "sell";
+  ticketDefaultSlippage: string;
   savedEventIds: string[];
 };
 
@@ -13,6 +14,7 @@ export const toProfilePreferencesPayload = (preferences: LocalProfilePreferences
   locale: preferences.locale,
   ticketDefaultAmount: preferences.ticketDefaultAmount,
   ticketDefaultSide: preferences.ticketDefaultSide === "sell" ? "SELL" : "BUY",
+  ticketDefaultSlippage: preferences.ticketDefaultSlippage,
   savedEventIds: [...preferences.savedEventIds],
 });
 
@@ -20,6 +22,7 @@ export const fromProfilePreferencesPayload = (preferences: ProfilePreferences): 
   locale: preferences.locale,
   ticketDefaultAmount: preferences.ticketDefaultAmount,
   ticketDefaultSide: preferences.ticketDefaultSide === "SELL" ? "sell" : "buy",
+  ticketDefaultSlippage: preferences.ticketDefaultSlippage ?? "1%",
   savedEventIds: [...preferences.savedEventIds],
 });
 

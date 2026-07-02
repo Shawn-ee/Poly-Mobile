@@ -11,12 +11,14 @@ describe("Holiwyn profile preferences service", () => {
         locale: "zh",
         ticketDefaultAmount: "500",
         ticketDefaultSide: "sell",
+        ticketDefaultSlippage: "2%",
         savedEventIds: ["mexico-ecuador"],
       }),
     ).toEqual({
       locale: "zh",
       ticketDefaultAmount: "500",
       ticketDefaultSide: "SELL",
+      ticketDefaultSlippage: "2%",
       savedEventIds: ["mexico-ecuador"],
     });
   });
@@ -27,13 +29,32 @@ describe("Holiwyn profile preferences service", () => {
         locale: "en",
         ticketDefaultAmount: "100",
         ticketDefaultSide: "BUY",
+        ticketDefaultSlippage: "0.5%",
         savedEventIds: ["world-cup-winner"],
       }),
     ).toEqual({
       locale: "en",
       ticketDefaultAmount: "100",
       ticketDefaultSide: "buy",
+      ticketDefaultSlippage: "0.5%",
       savedEventIds: ["world-cup-winner"],
+    });
+  });
+
+  test("defaults missing server slippage to 1 percent for older profile payloads", () => {
+    expect(
+      fromProfilePreferencesPayload({
+        locale: "en",
+        ticketDefaultAmount: "100",
+        ticketDefaultSide: "BUY",
+        savedEventIds: [],
+      }),
+    ).toEqual({
+      locale: "en",
+      ticketDefaultAmount: "100",
+      ticketDefaultSide: "buy",
+      ticketDefaultSlippage: "1%",
+      savedEventIds: [],
     });
   });
 });

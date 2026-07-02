@@ -132,6 +132,7 @@ export type ProfilePreferences = {
   locale: "en" | "zh";
   ticketDefaultAmount: string;
   ticketDefaultSide: "BUY" | "SELL";
+  ticketDefaultSlippage?: string;
   savedEventIds: string[];
   updatedAt?: string;
 };

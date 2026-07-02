@@ -2660,3 +2660,19 @@ Findings:
 - Samsung future-list order smoke, mobile typecheck, and mobile API/service tests passed.
 Decision: Approve Cycle 179 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 180
+
+Date: 2026-07-01
+Branch: mobile/cycle-180
+Reviewer: Lead/Reviewer pass
+Scope: Profile preference slippage sync seam and compatibility tests.
+Findings:
+- P1: Local profile preferences now include `ticketDefaultSlippage`, matching the persisted ticket default introduced in Cycle 179.
+- P1: Canonical profile preference payloads now include `ticketDefaultSlippage` so server sync can carry the selected slippage when backend support is available.
+- P1: Older server payloads without slippage default locally to `1%`, preserving backward compatibility.
+- P1: Mobile API client tests assert `ticketDefaultSlippage` is sent to `/api/profile/preferences`.
+- P2: Backend route/schema support for storing the slippage field is not proven in this cycle; this is the mobile adapter/client seam.
+- Mobile typecheck and mobile API/service tests passed.
+Decision: Approve Cycle 180 for local commit/merge after scoped diff review.
+Merge approved: Yes

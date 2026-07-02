@@ -3920,3 +3920,27 @@ Bugs:
 - Account screenshot exposed header brand wrapping; fixed with single-line fitted header text.
 Visual QA:
 - Screenshot reviewed; Account shows persisted slippage default and corrected single-line Holiwyn header.
+
+### Cycle 180
+
+Date: 2026-07-01
+Device: Service/unit harness
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Profile preference mapping and the mobile API client now carry `ticketDefaultSlippage` while older server payloads still default to `1%` locally.
+Harness evidence:
+- Mobile profile preference mapper tests cover local-to-server slippage payloads, server-to-local slippage hydration, and missing-slippage fallback.
+- Mobile API client test covers saving `ticketDefaultSlippage` in `/api/profile/preferences`.
+Screenshot evidence:
+- Reused Cycle 179 Samsung evidence for the UI surface: `docs/mobile/screenshots/cycle-179-holiwyn-future-list-order-account.png`.
+Structured findings:
+- `toProfilePreferencesPayload` emits `ticketDefaultSlippage`.
+- `fromProfilePreferencesPayload` maps server slippage and defaults missing values to `1%`.
+- `saveProfilePreferences` sends `ticketDefaultSlippage` through the typed API client.
+Unit evidence:
+- Mobile API/service suite: 9 files, 41 tests passed.
+Bugs:
+- None in final run.
+Visual QA:
+- No new device screenshot required; this cycle changes the service/API seam behind the Cycle 179 Samsung-proven Account display.
