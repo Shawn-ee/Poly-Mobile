@@ -7010,8 +7010,8 @@ Technical debt added:
 Technical debt resolved:
 - Backend readiness is now machine-readable for harness/audit recovery decisions.
 Result: Passed Cycle 148 QA. Backend readiness summary, mobile typecheck, and mobile API/history tests pass.
-Commit: Pending.
-Merged: Pending.
+Commit: `38abd15` (`Add structured mobile backend readiness summary`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `d6a8ba6`.
 Next cycle: Cycle 149 should continue backend/API readiness or add a strict decision gate that refuses successful server-order proof attempts until Docker, DB TCP, and API key are ready.
 Harnesses run:
 - Backend Readiness Summary Harness
