@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-258-open-order-payout-parity
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Improve pending open-order economics parity by showing potential payout beside remaining value.
 Implemented:
 - Added localized `Potential payout` / `\u6f5c\u5728\u8d54\u4ed8` copy for Portfolio open orders.
@@ -10137,8 +10137,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-open-order-canceled.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-open-order.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-open-order-canceled.png`.
-Commit: pending
-Merge: pending
+Commit: 276275f
+Merge: 112d621
 
 ### Heartbeat After Cycle 258
 
