@@ -3,6 +3,7 @@ import { CanonicalApiError } from "@/lib/canonicalApi";
 
 const getProfilePreferences = jest.fn();
 const saveProfilePreferences = jest.fn();
+const observedRouteScopes: Record<string, string[]> = {};
 
 jest.mock("@/server/services/profilePreferences", () => ({
   getProfilePreferences: (...args: unknown[]) => getProfilePreferences(...args),
@@ -17,6 +18,7 @@ jest.mock("@/lib/canonicalRoute", () => ({
     routeId: string;
     handler: (actor: { userId: string }) => Promise<unknown>;
   }) => {
+    observedRouteScopes[params.request.method] = params.scopes;
     try {
       const body = await params.handler({ userId: "user-1" });
       return NextResponse.json(body);
@@ -34,6 +36,7 @@ import { GET, PUT } from "@/app/api/profile/preferences/route";
 describe("profile preferences route", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    for (const key of Object.keys(observedRouteScopes)) delete observedRouteScopes[key];
     getProfilePreferences.mockResolvedValue({
       preferences: {
         locale: "en",
@@ -50,6 +53,7 @@ describe("profile preferences route", () => {
     const response = await GET(new NextRequest("http://localhost/api/profile/preferences"));
 
     expect(response.status).toBe(200);
+    expect(observedRouteScopes.GET).toEqual(["account:read"]);
     expect(getProfilePreferences).toHaveBeenCalledWith({ userId: "user-1" });
   });
 
@@ -68,6 +72,7 @@ describe("profile preferences route", () => {
     );
 
     expect(response.status).toBe(200);
+    expect(observedRouteScopes.PUT).toEqual(["account:write"]);
     expect(saveProfilePreferences).toHaveBeenCalledWith({
       userId: "user-1",
       preferences: {

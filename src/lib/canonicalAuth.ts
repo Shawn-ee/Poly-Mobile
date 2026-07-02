@@ -15,6 +15,7 @@ export const API_KEY_SCOPES = [
   "orders:write",
   "fills:read",
   "account:read",
+  "account:write",
   "markets:read",
 ] as const;
 

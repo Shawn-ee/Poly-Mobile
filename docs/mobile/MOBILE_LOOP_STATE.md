@@ -8374,6 +8374,47 @@ Harnesses run:
 Harness failures:
 - None.
 
+## Cycle 183
+
+Date: 2026-07-01
+Branch: mobile/cycle-183
+Goal: Split profile-preference read/write authorization so saving mobile profile preferences requires explicit account write scope.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No direct UI change.
+Backend/API changed: Added canonical `account:write` scope, changed `PUT /api/profile/preferences` to require it, documented the new scope, and verified Holiwyn mobile dev credentials include it.
+Database/schema changed: None.
+Files changed: `src/lib/canonicalAuth.ts`, `src/app/api/profile/preferences/route.ts`, `src/__tests__/profile.preferences.route.test.ts`, `src/server/services/__tests__/canonical_route_auth.phase5.test.ts`, `docs/AGENT_API.md`, `docs/AGENT_API_V2.md`, `docs/mobile/`.
+Tests run:
+- `npx.cmd jest src/__tests__/profile.preferences.route.test.ts src/server/services/__tests__/canonical_route_auth.phase5.test.ts --runInBand`.
+- `npm.cmd run mobile:dev-credential:dry-run`.
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm.cmd run typecheck` in `mobile/`.
+Screenshots captured:
+- None; backend/API authorization cycle.
+Harness evidence:
+- Focused route/auth tests passed with 2 files and 6 tests.
+- Mobile dev credential dry-run includes `account:write`.
+- Mobile API/service suite passed with 9 files and 41 tests.
+- Mobile typecheck passed.
+Bugs found:
+- None in final run.
+Technical debt added:
+- None.
+Technical debt resolved:
+- Cycle 182's read-scope write permission debt is resolved; preference writes now have explicit account mutation scope.
+Result: Passed Cycle 183 QA. Profile-preference write authorization and mobile dev credential scope checks pass.
+Commit: Pending.
+Merged: Pending.
+Next cycle: Continue toward final DoD by adding server-mode profile sync readiness/proof harnessing, or continue backend-backed trading parity that can be tested without a live local backend.
+Harnesses run:
+- Backend Route/Auth Unit Harness
+- Mobile Credential Readiness Harness
+- Mobile API/Profile Preference Unit Harness
+- Mobile Typecheck Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.
