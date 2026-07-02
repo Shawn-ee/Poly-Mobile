@@ -53,8 +53,8 @@ const marketDepth = (market: Market) => {
   const ask = Math.min(midpoint + 0.02, 0.99);
 
   return {
-    bid: bid.toFixed(2),
-    ask: ask.toFixed(2),
+    bid: `${bid.toFixed(2)} USDT`,
+    ask: `${ask.toFixed(2)} USDT`,
     spread: `${Math.round((ask - bid) * 100)}c`,
   };
 };
