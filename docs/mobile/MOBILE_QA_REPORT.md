@@ -3992,3 +3992,29 @@ Bugs:
 - None in final run.
 Visual QA:
 - No visual change.
+
+### Cycle 183
+
+Date: 2026-07-01
+Device: Backend/service harness
+Build/run command:
+- `npx.cmd jest src/__tests__/profile.preferences.route.test.ts src/server/services/__tests__/canonical_route_auth.phase5.test.ts --runInBand`
+- `npm.cmd run mobile:dev-credential:dry-run`
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+Result: Passed. Profile preference saves now require `account:write`, while reads still require `account:read`, and Holiwyn mobile dev credentials include the new write scope.
+Harness evidence:
+- Focused route/auth tests passed with 2 files and 6 tests.
+- Mobile dev credential dry-run includes `account:write` alongside order/read/account/market scopes.
+- Mobile API/service suite passed with 9 files and 41 tests.
+- Mobile typecheck passed.
+Screenshot evidence:
+- None; backend/API authorization cycle.
+Structured findings:
+- `PUT /api/profile/preferences` now uses `account:write`.
+- `GET /api/profile/preferences` remains `account:read`.
+- Canonical auth rejects a bearer key with only `account:read` when saving preferences.
+Bugs:
+- None in final run.
+Visual QA:
+- No visual change.

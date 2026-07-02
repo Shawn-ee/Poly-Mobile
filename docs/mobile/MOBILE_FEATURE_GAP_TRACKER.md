@@ -213,3 +213,4 @@ Status:
 | GAP-191 | Backend adapter | Profile slippage preference seam | P1 | No | Verified | Cycle 180 extends profile-preference payload mapping and API tests with `ticketDefaultSlippage`, while defaulting older server payloads to 1%. |
 | GAP-192 | Account/Profile | Server-loaded slippage hydration | P1 | No | Verified | Cycle 181 hydrates `ticketDefaultSlippage` from loaded profile preferences into app ticket defaults instead of keeping stale local slippage. |
 | GAP-193 | Backend adapter | Profile preferences backend route | P1 | No | Verified | Cycle 182 adds authenticated GET/PUT `/api/profile/preferences`, a `UserProfilePreference` JSONB table, validation, and route tests covering slippage persistence. |
+| GAP-194 | Backend adapter | Profile preferences write scope | P1 | No | Verified | Cycle 183 adds `account:write`, requires it for `PUT /api/profile/preferences`, and verifies Holiwyn mobile dev credentials include the new scope. |

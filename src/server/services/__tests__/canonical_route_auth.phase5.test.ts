@@ -119,4 +119,35 @@ describe("Phase 5 canonical route auth and scope enforcement", () => {
     });
     expect(getCanonicalAccountBalance).not.toHaveBeenCalled();
   });
+
+  test("profile preference save rejects API keys without account:write scope", async () => {
+    const credential = makeCredential(["account:read"]);
+    prismaMock.apiCredential.findUnique.mockResolvedValue(credential.row);
+    prismaMock.apiCredential.update.mockResolvedValue(undefined);
+    getExistingUserId.mockResolvedValue(null);
+
+    const { PUT } = await import("@/app/api/profile/preferences/route");
+    const request = new NextRequest("http://localhost/api/profile/preferences", {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${credential.token}`,
+      },
+      body: JSON.stringify({
+        locale: "en",
+        ticketDefaultAmount: "100",
+        ticketDefaultSide: "BUY",
+        ticketDefaultSlippage: "1%",
+        savedEventIds: [],
+      }),
+    });
+
+    const response = await PUT(request);
+    expect(response.status).toBe(403);
+    expect(await response.json()).toEqual({
+      error: {
+        code: "INSUFFICIENT_SCOPE",
+        message: "API key does not include required scope: account:write.",
+      },
+    });
+  });
 });

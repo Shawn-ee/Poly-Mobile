@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   return runCanonicalRoute({
     request,
-    scopes: ["account:read"],
+    scopes: ["account:write"],
     routeId: "account:preferences",
     fallbackMessage: "Failed to save profile preferences.",
     handler: async (actor) => {

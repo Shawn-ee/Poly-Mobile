@@ -2706,3 +2706,19 @@ Findings:
 - Prisma validation, focused Jest route tests, mobile API/service tests, and mobile typecheck passed.
 Decision: Approve Cycle 182 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 183
+
+Date: 2026-07-01
+Branch: mobile/cycle-183
+Reviewer: Lead/Reviewer pass
+Scope: Profile-preference write authorization.
+Findings:
+- P1: Canonical API scopes now include `account:write` for non-financial account/profile mutations.
+- P1: `PUT /api/profile/preferences` now requires `account:write`, while GET remains on `account:read`.
+- P1: Focused route tests assert the exact read/write scopes used by the profile-preferences route.
+- P1: Canonical auth tests prove an API key with only `account:read` is rejected when saving preferences.
+- P1: `mobile:dev-credential:dry-run` proves generated Holiwyn mobile dev credentials include `account:write`.
+- Focused Jest route/auth tests, mobile dev credential dry-run, mobile API/service tests, and mobile typecheck passed.
+Decision: Approve Cycle 183 for local commit/merge after scoped diff review.
+Merge approved: Yes
