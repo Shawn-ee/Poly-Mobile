@@ -10118,6 +10118,26 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 257
+
+Date: 2026-07-02
+Branch: mobile/cycle-257-prop-close-title-proof
+Status: Verified; pending local merge.
+Objective: Verify prop close flow preserves the prop market title in Portfolio and closed activity.
+Implemented:
+- Reused the strengthened `smoke:samsung:event-detail-prop-close` proof after Cycle 256 title changes.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 68 tests.
+- `npm.cmd run smoke:samsung:event-detail-prop-close` passed on Samsung S23 with Expo host `172.16.200.14` and port `8172`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-close-portfolio.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-close-ready.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-close-closed.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-prop-close-closed.png`.
+Commit: pending
+Merge: pending
+
 ### Cycle 256
 
 Date: 2026-07-02
