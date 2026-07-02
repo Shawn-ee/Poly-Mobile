@@ -4697,3 +4697,25 @@ Bugs:
 - Fixed server ticket order size using raw USDT amount instead of estimated share quantity.
 Visual QA:
 - Passed on Samsung S23 through Expo Go.
+
+### Cycle 210
+
+Date: 2026-07-02
+Device: Samsung S23 via Expo Go, local Docker-backed backend, mobile service unit harness, and server liquidity harness
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run mobile:server-order-fill-liquidity`
+- `npm.cmd run smoke:samsung:server-order-filled` in `mobile/`
+Result: Passed. The server filled-order proof now verifies the pre-submit ticket estimate shows `200 shares` before placing the order.
+Harness evidence:
+- Ticket proof covers server mode, market depth, estimated cost, zero fee, `Est. shares`, `200 shares`, average price, and buy CTA.
+- Portfolio proof still covers `SERVER - Buy - YES - FILLED`, `Filled shares 200.00`, `Exec price 50%`, `Remaining 0.00`, and latest activity execution details.
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`
+- `docs/mobile/harness/cycle-current-mobile-server-order-fill-liquidity.json`
+Bugs: None found.
+Visual QA:
+- Passed on Samsung S23 through Expo Go.
