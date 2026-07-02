@@ -20,6 +20,7 @@ Status:
 
 | ID | Area | Feature | Priority | Reference Observed | Holiwyn Status | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| GAP-279 | Trading ticket | Server sell ticket depth-size proof | P1 | No | Verified | Cycle 266 verifies the server-mode Sell ticket on Samsung with quote-snapshot bid/ask sizes, proceeds wording, scroll-to-submit behavior, and a filled backend SELL order. |
 | GAP-278 | Trading ticket | Server-backed ticket depth-size proof | P1 | No | Verified | Cycle 265 strengthens the Samsung server-order proof so the ticket must show quote-snapshot bid/ask sizes and reject local fallback sizes before placing a filled backend order. |
 | GAP-277 | Trading ticket | Ticket depth-size parity | P1 | No | Verified | Cycle 264 adds fallback bid/ask share sizes to ticket market depth and verifies prop-ticket depth on Samsung. |
 | GAP-276 | Live trading | Live sell-order device proof | P1 | No | Verified | Cycle 263 adds Samsung proof for switching a live ticket to Sell, scrolling to submit, and verifying sold Portfolio activity. |

@@ -10118,6 +10118,32 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 266
+
+Date: 2026-07-02
+Branch: mobile/cycle-266-server-sell-depth-proof
+Status: Verified and locally merged.
+Objective: Verify the server-mode Sell ticket path uses backend quote-snapshot depth sizes and can submit a filled SELL order from Samsung.
+Implemented:
+- Reused the Cycle 265 quoted-depth assertion and scroll-aware server ticket submit flow for the sell-side proof.
+- Captured refreshed Samsung evidence for a server-mode Sell ticket showing proceeds wording and backend bid/ask depth sizes.
+Verification:
+- `npm.cmd run mobile:samsung-server-order-proof -- -Side sell` passed on Samsung S23 with Expo host `172.16.200.14` and port `8159`.
+- The proof seeded `Paraguay vs Australia: Both teams to score`, minted sell-side shares for the temporary mobile user, prepared maker liquidity, placed a backend SELL order, and verified the order reached `FILLED`.
+- Pre- and post-proof noise gates passed with zero affected open-order or locked-balance users.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-home.xml` shows `Best bid 0.50 USDT (700 shares) - Best ask 0.54 USDT (1.25k shares) - Spread 4c`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-ticket-ready.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+- `docs/mobile/harness/cycle-current-mobile-server-sell-fill-liquidity.json`.
+- `docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof.json`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-ticket-ready.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
+Result: Passed Cycle 266 QA. Server-mode Sell now has real-device proof for backend quote-size display, proceeds wording, scroll-to-submit, and filled backend order state.
+Commit: pending.
+Merge: pending.
+
 ### Cycle 265
 
 Date: 2026-07-02
