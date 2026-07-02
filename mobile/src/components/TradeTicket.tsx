@@ -37,14 +37,23 @@ type TradeTicketCopy = {
   bestBid: string;
   bestAsk: string;
   spread: string;
+  shares: string;
 };
 
-function marketDepth(probability: number) {
-  const bid = Math.max(probability - 3, 1) / 100;
-  const ask = Math.min(probability + 4, 99) / 100;
+function formatDepthPrice(probability: number, size: number | null | undefined, sharesLabel: string) {
+  const price = `${(probability / 100).toFixed(2)} USDT`;
+  if (typeof size !== "number" || !Number.isFinite(size) || size <= 0) return price;
+  return `${price} (${size.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${sharesLabel})`;
+}
+
+function marketDepth(outcome: Outcome, sharesLabel: string) {
+  const bidProbability = outcome.bestBid ?? Math.max(outcome.probability - 3, 1);
+  const askProbability = outcome.bestAsk ?? Math.min(outcome.probability + 4, 99);
+  const bid = bidProbability / 100;
+  const ask = askProbability / 100;
   return {
-    bid: `${bid.toFixed(2)} USDT`,
-    ask: `${ask.toFixed(2)} USDT`,
+    bid: formatDepthPrice(bidProbability, outcome.bestBidSize, sharesLabel),
+    ask: formatDepthPrice(askProbability, outcome.bestAskSize, sharesLabel),
     spread: `${Math.round((ask - bid) * 100)}c`,
   };
 }
@@ -118,7 +127,7 @@ export function TradeTicket({
   ];
   const isLiveTicket = ticket.event?.status === "live";
   const tradingModeValue = tradingMode === "server" ? t.tradingModeServer : t.tradingModeMock;
-  const depth = marketDepth(ticket.outcome.probability);
+  const depth = marketDepth(ticket.outcome, t.shares);
   const liveClock = isLiveTicket
     ? ticket.event?.startsAt.replace(/[^\x00-\x7F]+/g, "-").replace(/\s+-\s+/g, " - ")
     : null;

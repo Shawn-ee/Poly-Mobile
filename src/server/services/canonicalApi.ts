@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { MarketGuardError } from "@/lib/marketGuards";
 import { assertMarketVisibleToUser } from "@/lib/marketAccess";
 import { getCustodyBalance } from "@/lib/wallet";
+import { buildPublicOrderbookSnapshot } from "@/server/services/orderbookSnapshot";
 
 const ZERO = new Prisma.Decimal(0);
 const ONE = new Prisma.Decimal(1);
@@ -378,31 +379,16 @@ export const getCanonicalMarketQuote = async (params: {
     throw new MarketGuardError("Outcome not found.", 404);
   }
 
+  const snapshot = await buildPublicOrderbookSnapshot({
+    marketId: market.id,
+    outcomeId: params.outcomeId,
+  });
+
   const quotes = await Promise.all(
     market.outcomes.map(async (outcome) => {
-      const [bestBid, bestAsk, lastFill] = await Promise.all([
-        prisma.order.findFirst({
-          where: {
-            marketId: market.id,
-            outcomeId: outcome.id,
-            side: "BUY",
-            status: { in: ["OPEN", "PARTIAL"] },
-            remaining: { gt: ZERO },
-          },
-          orderBy: [{ price: "desc" }, { createdAt: "asc" }],
-          select: { price: true },
-        }),
-        prisma.order.findFirst({
-          where: {
-            marketId: market.id,
-            outcomeId: outcome.id,
-            side: "SELL",
-            status: { in: ["OPEN", "PARTIAL"] },
-            remaining: { gt: ZERO },
-          },
-          orderBy: [{ price: "asc" }, { createdAt: "asc" }],
-          select: { price: true },
-        }),
+      const bestBid = snapshot.bids.find((level) => level.outcomeId === outcome.id) ?? null;
+      const bestAsk = snapshot.asks.find((level) => level.outcomeId === outcome.id) ?? null;
+      const [lastFill] = await Promise.all([
         prisma.fill.findFirst({
           where: {
             marketId: market.id,
@@ -413,8 +399,8 @@ export const getCanonicalMarketQuote = async (params: {
         }),
       ]);
 
-      const bid = bestBid?.price ?? null;
-      const ask = bestAsk?.price ?? null;
+      const bid = bestBid ? new Prisma.Decimal(bestBid.price) : null;
+      const ask = bestAsk ? new Prisma.Decimal(bestAsk.price) : null;
       const mid =
         bid && ask ? bid.add(ask).div(2) : bid ?? ask ?? null;
 
@@ -423,6 +409,8 @@ export const getCanonicalMarketQuote = async (params: {
         outcomeName: outcome.name,
         bestBid: bid,
         bestAsk: ask,
+        bestBidSize: bestBid?.size ?? null,
+        bestAskSize: bestAsk?.size ?? null,
         midPrice: mid,
         lastPrice: lastFill?.price ?? null,
         lastTradeAt: lastFill?.createdAt ?? null,

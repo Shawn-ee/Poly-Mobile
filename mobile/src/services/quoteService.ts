@@ -7,6 +7,8 @@ export type TicketQuote = {
   probability: number;
   bestBid: number | null;
   bestAsk: number | null;
+  bestBidSize?: number;
+  bestAskSize?: number;
   midPrice: number | null;
   lastPrice: number | null;
 };
@@ -15,6 +17,10 @@ type QuoteableOutcome = {
   id: string;
   label: string;
   probability: number;
+  bestBid?: number | null;
+  bestAsk?: number | null;
+  bestBidSize?: number | null;
+  bestAskSize?: number | null;
 };
 
 const toDecimal = (value: string | number | null): number | null => {
@@ -32,9 +38,18 @@ const toProbability = (value: number | null) => {
   return Math.round(bounded * 100);
 };
 
+const toSize = (value: string | number | null | undefined): number | null => {
+  if (value === null || typeof value === "undefined") return null;
+  const parsed = typeof value === "number" ? value : Number(value);
+  if (!Number.isFinite(parsed) || parsed <= 0) return null;
+  return parsed;
+};
+
 export const quoteToTicketQuote = (quote: Quote): TicketQuote => {
   const bestBid = toDecimal(quote.bestBid);
   const bestAsk = toDecimal(quote.bestAsk);
+  const bestBidSize = toSize(quote.bestBidSize);
+  const bestAskSize = toSize(quote.bestAskSize);
   const midPrice = toDecimal(quote.midPrice);
   const lastPrice = toDecimal(quote.lastPrice);
   const fallbackMid = bestBid !== null && bestAsk !== null ? (bestBid + bestAsk) / 2 : null;
@@ -51,6 +66,8 @@ export const quoteToTicketQuote = (quote: Quote): TicketQuote => {
     probability,
     bestBid: toProbability(bestBid),
     bestAsk: toProbability(bestAsk),
+    ...(bestBidSize !== null ? { bestBidSize } : {}),
+    ...(bestAskSize !== null ? { bestAskSize } : {}),
     midPrice: toProbability(midPrice),
     lastPrice: toProbability(lastPrice),
   };
@@ -107,6 +124,10 @@ export const applyTicketQuoteToOutcome = <TOutcome extends QuoteableOutcome>(
   return {
     ...outcome,
     probability: quote.probability,
+    bestBid: quote.bestBid,
+    bestAsk: quote.bestAsk,
+    bestBidSize: quote.bestBidSize ?? null,
+    bestAskSize: quote.bestAskSize ?? null,
   };
 };
 
