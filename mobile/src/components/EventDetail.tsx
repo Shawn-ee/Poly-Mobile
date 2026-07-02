@@ -17,6 +17,7 @@ type EventDetailCopy = {
   spread: string;
   shares: string;
   buy: string;
+  sell: string;
 };
 
 const groupLabels: Record<Market["type"], { en: string; zh: string }> = {
@@ -92,6 +93,7 @@ export function EventDetail({
   locale,
   t,
   openTicket,
+  defaultSide,
   goBack,
   isSaved,
   toggleSavedEvent,
@@ -100,6 +102,7 @@ export function EventDetail({
   locale: Locale;
   t: EventDetailCopy;
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
+  defaultSide: "buy" | "sell";
   goBack: () => void;
   isSaved: boolean;
   toggleSavedEvent: (event: Event) => void;
@@ -121,6 +124,7 @@ export function EventDetail({
   const scrollToGroup = (type: Market["type"]) => {
     scrollRef.current?.scrollTo({ y: Math.max(groupOffsets.current[type] - 8, 0), animated: false });
   };
+  const outcomeActionLabel = defaultSide === "buy" ? t.buy : t.sell;
 
   return (
     <View style={styles.content}>
@@ -262,7 +266,7 @@ export function EventDetail({
                   >
                     <Text style={styles.probButtonText}>{outcome.probability}%</Text>
                     <Text style={styles.probButtonSubtext}>
-                      {t.buy} - {outcomeOdds(outcome)}x
+                      {outcomeActionLabel} - {outcomeOdds(outcome)}x
                     </Text>
                   </Pressable>
                 </View>
