@@ -511,7 +511,7 @@ try {
         Start-Sleep -Seconds 1
         $serverOrderCancelHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-open-order-canceled.xml"
         Save-Screenshot -Name "cycle-current-holiwyn-server-open-order-canceled.png"
-        Assert-HierarchyContains -Path $serverOrderCancelHierarchy -Expected @("portfolio-screen", "Canceled", "YES", "1 USDT", "Canceled 100.00 shares - Limit 1%")
+        Assert-HierarchyContains -Path $serverOrderCancelHierarchy -Expected @("portfolio-screen", "Canceled", "YES", "1 USDT", "Buy - Canceled 100.00 shares - Limit 1%")
       }
       return
     }
