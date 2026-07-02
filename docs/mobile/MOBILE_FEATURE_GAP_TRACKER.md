@@ -20,6 +20,7 @@ Status:
 
 | ID | Area | Feature | Priority | Reference Observed | Holiwyn Status | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| GAP-288 | Portfolio | Backend-only position trade target fallback | P1 | No | Verified | Cycle 275 lets server Portfolio positions open Buy/Sell tickets even when their backend market is not loaded in local Home/Event lists, preserving quote depth. |
 | GAP-287 | Backend harness | Live Portfolio quote-depth proof | P1 | No | Verified | Cycle 274 adds a live `/api/portfolio` proof that creates a disposable World Cup orderbook market, seeds 47/50 quote depth, authenticates with an API key, and verifies response position quote fields. |
 | GAP-286 | Harness | Orderbook quote-size source coverage | P1 | No | Verified | Cycle 273 adds direct Jest coverage proving orderbook quote helpers preserve best bid/ask prices and depth sizes from public orderbook snapshots. |
 | GAP-285 | Backend adapter | Portfolio position quote depth source | P1 | No | Verified | Cycle 272 adds backend `/api/portfolio` best bid/ask and depth-size fields for positions using public orderbook snapshots, with focused route coverage. |

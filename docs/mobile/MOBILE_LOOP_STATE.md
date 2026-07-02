@@ -10118,6 +10118,29 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 275
+
+Date: 2026-07-02
+Branch: mobile/cycle-275-portfolio-position-fallback-ticket
+Status: Verified; pending local merge.
+Objective: Let backend-only Portfolio positions open server trade tickets even when their market is not present in local World Cup lists.
+Implemented:
+- Added a fallback position trade target builder in `positionTradeTargetService`.
+- The fallback builds a minimal market/outcome from `marketId`, `outcomeId`, title, outcome label, side, live flag, and quote depth carried on the server position.
+- Added unit coverage proving a backend-only proof position opens a ticket target with 47%/50% depth and 1k/2.5k sizes.
+Verification:
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 16 files and 72 tests.
+- `npm.cmd run smoke:samsung:server-position-buy-trade` passed on Samsung S23 with Expo host `172.16.200.14` and port `8153`.
+Evidence:
+- `mobile/src/__tests__/positionTradeTargetService.test.ts` now covers backend-only fallback target creation.
+- `docs/mobile/harness/cycle-current-holiwyn-server-position-buy-trade-ticket.xml` shows `Best bid 0.47 USDT (1k shares) - Best ask 0.50 USDT (2.5k shares) - Spread 3c`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-position-buy-trade-ticket-button.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-buy-trade-ticket.png`.
+Result: Passed Cycle 275 QA. Server Portfolio positions can now remain tradable from Portfolio even when the backend market is not currently loaded into the local market lists.
+Commit: pending.
+Merge: pending.
+
 ### Cycle 274
 
 Date: 2026-07-02
