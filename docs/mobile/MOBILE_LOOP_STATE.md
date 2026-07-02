@@ -9749,6 +9749,40 @@ Notes:
 Commit: 815ab6a
 Merge: 1cf0e87
 
+### Cycle 223
+
+Date: 2026-07-02
+Branch: mobile/cycle-223-filled-proof-order-metadata
+Status: Verified and locally merged.
+Objective: Add authoritative order metadata to the reusable Samsung filled-order proof.
+Implemented:
+- Reused the DB-backed order summarizer in `scripts/mobile_samsung_server_order_proof.ps1` after the Samsung BUY/SELL phone proof completes.
+- Embedded `orderSummary` into `cycle-current-mobile-samsung-server-order-proof.json` so filled proofs record actual backend order status, size, remaining, notional, market/outcome, and API-key attribution.
+Verification:
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run mobile:samsung-server-order-proof -- -Side buy -Username holiwyn-mobile-proof-cycle-223-buy` passed on Samsung S23.
+Evidence:
+- `docs/mobile/harness/cycle-current-mobile-samsung-server-order-proof.json`.
+- `docs/mobile/harness/cycle-current-mobile-server-order-fill-liquidity.json`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
+Notes:
+- The proof summary records latest order `1d50554d-9787-40c4-a86f-caa7c0136f6c`, status `FILLED`, price `0.5`, size `200`, notional `100`, and remaining `0`.
+Commit: TBD
+Merge: TBD
+
+### Heartbeat After Cycle 223
+
+Completed cycles: 221, 222, 223.
+Verified progress: Canceled order activity now shows share quantity and limit price, open-order cancel proofs now embed authoritative backend canceled-order metadata, and filled-order proofs now embed authoritative backend filled-order metadata.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung real-device QA, server quote/order/Portfolio sync, backend-derived filled/canceled activity with execution detail, latest activity/order previews, BUY/SELL filled-order proof wrappers, and open-order cancel proof wrappers with DB-backed summaries.
+Current backend state: Local Docker/Postgres backend supports mobile API-key Portfolio/profile/order flows, canonical order create/cancel, matching, correct complete-set mint cost basis, recent-trade/canceled-order history, and repeatable World Cup seeding/liquidity for mobile proofs.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: Proof runs still mutate local database state; DB-backed summaries make the noise easier to inspect, but disposable per-cycle markets or database snapshots remain desirable for long overnight runs.
+Next three likely cycles: add proof cleanup or disposable market isolation, improve order-history/open-order detail parity, and continue World Cup event detail/trading parity.
+
 ### Heartbeat After Cycle 217
 
 Completed cycles: 215, 216, 217.
