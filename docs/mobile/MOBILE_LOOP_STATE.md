@@ -9504,7 +9504,7 @@ Merge: a2d1d46
 
 Date: 2026-07-02
 Branch: mobile/cycle-214
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Surface backend/server order failure detail in the mobile trade ticket for faster QA recovery.
 Implemented:
 - Added a second-line ticket error detail field with stable `ticket-order-error-detail` accessibility/test id.
@@ -9521,8 +9521,8 @@ Evidence:
 - `docs/mobile/screenshots/cycle-current-holiwyn-smoke.png`.
 Notes:
 - The Samsung proof showed localized `Order failed. Try again.` plus detail text `Aborted` from the unreachable server request.
-Commit: pending
-Merge: pending
+Commit: 336e118
+Merge: 683e3f5
 
 ### Heartbeat After Cycle 214
 
