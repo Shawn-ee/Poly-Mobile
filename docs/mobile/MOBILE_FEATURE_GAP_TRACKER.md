@@ -203,3 +203,4 @@ Status:
 | GAP-181 | Harness | Normalized server proof blocker categories | P0 | No | Verified | Cycle 170 normalizes combined decision blockers into canonical categories so automated recovery can reason about blockers without duplicate text variants. |
 | GAP-182 | Account/Profile | Visible trading mode summary | P1 | Yes | Verified | Cycle 171 adds an Account Preferences trading-mode row, localizes it, and verifies `Trading mode: Fake-token mock` on the Samsung S23. |
 | GAP-183 | Account/Profile | Server-mode account fallback clarity | P1 | No | Verified | Cycle 172 verifies Account server-mode profile-sync fallback also shows `Trading mode: Server mode` on the Samsung S23. |
+| GAP-184 | Trading ticket | Visible ticket trading mode | P1 | Yes | Verified | Cycle 173 adds a trading-mode pill to the Trade Ticket and verifies `Trading mode: Fake-token mock` on the Samsung S23 future-order flow. |

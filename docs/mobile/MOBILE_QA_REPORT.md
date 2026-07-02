@@ -3728,3 +3728,29 @@ Bugs:
 - None in final run.
 Visual QA:
 - Samsung S23 screenshot captured after scrolling Account server-mode fallback state.
+
+### Cycle 173
+
+Date: 2026-07-01
+Device: Samsung S23 via Expo Go
+Build/run command:
+- `npm.cmd run smoke:samsung:future-list-order` in `mobile/`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. The Trade Ticket now shows the current trading mode before order placement and the Samsung future-order proof verifies fake-token mode is visible.
+Harness evidence:
+- `docs/mobile/harness/cycle-173-holiwyn-future-list-order-ticket.xml`
+- `docs/mobile/harness/cycle-173-holiwyn-future-list-order-portfolio.xml`
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-173-holiwyn-future-list-order-ticket.png`
+- `docs/mobile/screenshots/cycle-173-holiwyn-future-list-order-portfolio.png`
+Structured findings:
+- Ticket shows `Trading mode: Fake-token mock` with stable `ticket-trading-mode` evidence.
+- Mock World Cup winner order still lands in Portfolio with position, latest-order, and activity details.
+- Backend health remains unavailable during the Samsung smoke, so this proof uses mock fallback.
+Unit evidence:
+- Mobile API/service suite: 9 files, 40 tests passed.
+Bugs:
+- None in final run.
+Visual QA:
+- Samsung S23 screenshots captured for the ticket and post-order Portfolio state.

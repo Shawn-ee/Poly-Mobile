@@ -2547,3 +2547,19 @@ Findings:
 - Samsung Account profile-sync fallback smoke, mobile typecheck, and mobile API/service tests passed.
 Decision: Approve Cycle 172 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 173
+
+Date: 2026-07-01
+Branch: mobile/cycle-173
+Reviewer: Lead/Reviewer pass
+Scope: Trade Ticket trading-mode visibility and Samsung proof.
+Findings:
+- P1: Trade Ticket now receives the existing order mode and surfaces it as a visible `Trading mode` pill near the ticket title.
+- P1: The new pill reuses localized Account mode copy, showing `Fake-token mock` in mock mode and `Server mode` in server mode.
+- P1: The Samsung future-list order smoke now asserts `ticket-trading-mode` plus `Trading mode: Fake-token mock` before placing the order.
+- P1: Server-order-failure and live-ticket smoke assertions were also tightened so ticket-mode regressions are caught in both mock and server fallback lanes.
+- P2: This is a product-facing clarity improvement; live server-backed order execution remains gated by backend/API-key readiness.
+- Samsung future-list order smoke, mobile typecheck, and mobile API/service tests passed.
+Decision: Approve Cycle 173 for local commit/merge after scoped diff review.
+Merge approved: Yes
