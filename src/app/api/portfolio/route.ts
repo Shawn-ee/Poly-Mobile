@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getUserId } from "@/lib/auth";
 import { requireCanonicalActor } from "@/lib/canonicalAuth";
-import { getOutcomeMidPrices } from "@/lib/orderbookPricing";
+import { getOutcomeQuotes } from "@/lib/orderbookPricing";
 
 export const dynamic = "force-dynamic";
 
@@ -76,18 +76,19 @@ export async function GET(request: NextRequest) {
     marketOutcomeMap.set(p.marketId, existing);
   }
 
-  const marketOutcomeMids = new Map<string, Map<string, number>>();
+  const marketOutcomeQuotes = new Map<string, Awaited<ReturnType<typeof getOutcomeQuotes>>>();
   for (const [marketId, outcomeIds] of marketOutcomeMap.entries()) {
-    const mids = await getOutcomeMidPrices(marketId, outcomeIds);
-    marketOutcomeMids.set(marketId, mids);
+    const quotes = await getOutcomeQuotes(marketId, outcomeIds);
+    marketOutcomeQuotes.set(marketId, quotes);
   }
 
   const items = positions.map((position) => {
     const shares = Number(position.shares);
     const avgCost = Number(position.avgCost);
-    const mids = marketOutcomeMids.get(position.marketId);
+    const quotes = marketOutcomeQuotes.get(position.marketId);
+    const quote = quotes?.get(position.outcomeId) ?? null;
     const currentPrice =
-      position.market.mechanism === "POOL" ? 0.5 : mids?.get(position.outcomeId) ?? 0.5;
+      position.market.mechanism === "POOL" ? 0.5 : quote?.mid ?? 0.5;
 
     const valueTokens = shares * currentPrice;
     const costBasisTokens = shares * avgCost;
@@ -106,6 +107,10 @@ export async function GET(request: NextRequest) {
       shares,
       avgCost,
       currentPrice,
+      bestBid: quote?.bestBid ?? null,
+      bestAsk: quote?.bestAsk ?? null,
+      bestBidSize: quote?.bestBidSize ?? null,
+      bestAskSize: quote?.bestAskSize ?? null,
       valueTokens,
       costBasisTokens,
       totalCostBasisTokens: costBasisTokens,

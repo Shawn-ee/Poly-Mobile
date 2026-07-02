@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+import { buildPublicOrderbookSnapshot } from "@/server/services/orderbookSnapshot";
 
 const midFromBest = (bestBid: number | null, bestAsk: number | null) => {
   if (bestBid !== null && bestAsk !== null) return (bestBid + bestAsk) / 2;
@@ -10,6 +10,8 @@ const midFromBest = (bestBid: number | null, bestAsk: number | null) => {
 export type OutcomeQuote = {
   bestBid: number | null;
   bestAsk: number | null;
+  bestBidSize: number | null;
+  bestAskSize: number | null;
   mid: number;
   spread: number | null;
 };
@@ -22,43 +24,21 @@ export const getOutcomeMidPrices = async (marketId: string, outcomeIds: string[]
 export const getOutcomeQuotes = async (marketId: string, outcomeIds: string[]) => {
   if (!outcomeIds.length) return new Map<string, OutcomeQuote>();
 
-  const [buyRows, sellRows] = await Promise.all([
-    prisma.order.groupBy({
-      by: ["outcomeId"],
-      where: {
-        marketId,
-        outcomeId: { in: outcomeIds },
-        side: "BUY",
-        status: { in: ["OPEN", "PARTIAL"] },
-      },
-      _max: { price: true },
-    }),
-    prisma.order.groupBy({
-      by: ["outcomeId"],
-      where: {
-        marketId,
-        outcomeId: { in: outcomeIds },
-        side: "SELL",
-        status: { in: ["OPEN", "PARTIAL"] },
-      },
-      _min: { price: true },
-    }),
-  ]);
-
-  const buyByOutcome = new Map(
-    buyRows.map((row) => [row.outcomeId, row._max.price ? Number(row._max.price) : null]),
-  );
-  const sellByOutcome = new Map(
-    sellRows.map((row) => [row.outcomeId, row._min.price ? Number(row._min.price) : null]),
-  );
+  const snapshot = await buildPublicOrderbookSnapshot({ marketId });
+  const buyByOutcome = new Map(snapshot.bids.map((level) => [level.outcomeId, level]));
+  const sellByOutcome = new Map(snapshot.asks.map((level) => [level.outcomeId, level]));
 
   const result = new Map<string, OutcomeQuote>();
   for (const outcomeId of outcomeIds) {
-    const bestBid = buyByOutcome.get(outcomeId) ?? null;
-    const bestAsk = sellByOutcome.get(outcomeId) ?? null;
+    const bestBidLevel = buyByOutcome.get(outcomeId) ?? null;
+    const bestAskLevel = sellByOutcome.get(outcomeId) ?? null;
+    const bestBid = bestBidLevel?.price ?? null;
+    const bestAsk = bestAskLevel?.price ?? null;
     result.set(outcomeId, {
       bestBid,
       bestAsk,
+      bestBidSize: bestBidLevel?.size ?? null,
+      bestAskSize: bestAskLevel?.size ?? null,
       mid: midFromBest(bestBid, bestAsk),
       spread: bestBid !== null && bestAsk !== null ? bestAsk - bestBid : null,
     });

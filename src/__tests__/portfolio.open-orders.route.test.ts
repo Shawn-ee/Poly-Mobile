@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 
 const getUserId = jest.fn();
-const getOutcomeMidPrices = jest.fn();
+const getOutcomeQuotes = jest.fn();
 const requireCanonicalActor = jest.fn();
 
 const prismaMock = {
@@ -33,14 +33,14 @@ jest.mock("@/lib/db", () => ({
 }));
 
 jest.mock("@/lib/orderbookPricing", () => ({
-  getOutcomeMidPrices: (...args: unknown[]) => getOutcomeMidPrices(...args),
+  getOutcomeQuotes: (...args: unknown[]) => getOutcomeQuotes(...args),
 }));
 
 describe("GET /api/portfolio open order display data", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     requireCanonicalActor.mockResolvedValue({ userId: "api-user-1" });
-    getOutcomeMidPrices.mockResolvedValue(new Map());
+    getOutcomeQuotes.mockResolvedValue(new Map());
     prismaMock.position.findMany.mockResolvedValue([]);
     prismaMock.position.aggregate.mockResolvedValue({ _sum: { realizedPnl: 0 } });
     prismaMock.userBalance.findUnique.mockResolvedValue({
@@ -138,7 +138,14 @@ describe("GET /api/portfolio open order display data", () => {
 
   test("returns position market and outcome identifiers needed for server-side close orders", async () => {
     getUserId.mockResolvedValue("user-1");
-    getOutcomeMidPrices.mockResolvedValue(new Map([["outcome-france", 0.61]]));
+    getOutcomeQuotes.mockResolvedValue(
+      new Map([
+        [
+          "outcome-france",
+          { bestBid: 0.59, bestAsk: 0.63, bestBidSize: 750, bestAskSize: 1250, mid: 0.61, spread: 0.04 },
+        ],
+      ]),
+    );
     prismaMock.position.findMany.mockResolvedValue([
       {
         marketId: "market-world-cup-winner",
@@ -166,7 +173,7 @@ describe("GET /api/portfolio open order display data", () => {
     const body = await response.json();
 
     expect(response.status).toBe(200);
-    expect(getOutcomeMidPrices).toHaveBeenCalledWith("market-world-cup-winner", ["outcome-france"]);
+    expect(getOutcomeQuotes).toHaveBeenCalledWith("market-world-cup-winner", ["outcome-france"]);
     expect(body.positions).toEqual([
       expect.objectContaining({
         market: expect.objectContaining({
@@ -178,6 +185,10 @@ describe("GET /api/portfolio open order display data", () => {
         shares: 25,
         avgCost: 0.42,
         currentPrice: 0.61,
+        bestBid: 0.59,
+        bestAsk: 0.63,
+        bestBidSize: 750,
+        bestAskSize: 1250,
         valueTokens: 15.25,
         costBasisTokens: 10.5,
         pnlTokens: 4.75,

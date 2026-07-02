@@ -10118,6 +10118,27 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 272
+
+Date: 2026-07-02
+Branch: mobile/cycle-272-backend-portfolio-quote-depth
+Status: Verified; pending local merge.
+Objective: Make backend Portfolio snapshots provide quote depth fields for mobile position re-trade tickets.
+Implemented:
+- Extended `getOutcomeQuotes` to use the public orderbook snapshot so it returns best bid/ask plus top-level bid/ask sizes.
+- Switched `/api/portfolio` position pricing from mid-only lookup to quote lookup.
+- Added `bestBid`, `bestAsk`, `bestBidSize`, and `bestAskSize` to backend Portfolio position rows.
+- Updated the focused Portfolio route test to verify quote fields and preserve private credential sanitization.
+Verification:
+- `npm.cmd run test:mobile-api` passed with 16 files and 71 tests.
+- `npm.cmd run test:jest -- src/__tests__/portfolio.open-orders.route.test.ts` passed with 5 tests.
+Evidence:
+- `src/__tests__/portfolio.open-orders.route.test.ts` now expects `bestBid: 0.59`, `bestAsk: 0.63`, `bestBidSize: 750`, and `bestAskSize: 1250`.
+- `mobile/src/__tests__/portfolioSnapshotService.test.ts` remains green against the mobile adapter consuming those fields.
+Result: Passed Cycle 272 QA. The backend now supplies Portfolio quote depth that mobile can carry into server position re-trade tickets.
+Commit: pending.
+Merge: pending.
+
 ### Cycle 271
 
 Date: 2026-07-02
