@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-248-samsung-live-ticket-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Make live ticket readiness a named Samsung proof without placing an order.
 Implemented:
 - Added Samsung wrapper switch for `LiveTicket`.
@@ -10139,8 +10139,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-live-ticket.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-live-ticket-ready.png`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-live-ticket.png`.
-Commit: pending
-Merge: pending
+Commit: 08dd318
+Merge: 1c842f2
 
 ### Cycle 247
 
