@@ -278,9 +278,14 @@ export function TradeTicket({
             </View>
             <View style={styles.amountHeader}>
               <Text style={styles.inputLabel}>{t.amount}</Text>
-              <Pressable accessibilityLabel="ticket-max-amount" testID="ticket-max-amount" onPress={() => setAmount(String(Math.floor(balance)))}>
-                <Text style={styles.maxText}>{t.max}</Text>
-              </Pressable>
+              <View style={styles.amountMeta}>
+                <Text accessibilityLabel="ticket-balance-inline" testID="ticket-balance-inline" style={styles.balanceText}>
+                  {t.balance} {money(balance)}
+                </Text>
+                <Pressable accessibilityLabel="ticket-max-amount" testID="ticket-max-amount" onPress={() => setAmount(String(Math.floor(balance)))}>
+                  <Text style={styles.maxText}>{t.max}</Text>
+                </Pressable>
+              </View>
             </View>
             <TextInput value={amount} onChangeText={setAmount} keyboardType="decimal-pad" style={styles.amountInput} />
             <View style={styles.presetRow}>
@@ -295,6 +300,22 @@ export function TradeTicket({
                   <Text style={styles.presetText}>{money(preset)}</Text>
                 </Pressable>
               ))}
+            </View>
+            <View accessibilityLabel="ticket-slippage" testID="ticket-slippage" style={styles.slippageSection}>
+              <Text style={styles.estimateLabel}>{t.slippage}</Text>
+              <View style={styles.slippageControls}>
+                {slippageOptions.map((option) => (
+                  <Pressable
+                    accessibilityLabel={`ticket-slippage-${option.key}${slippage === option.value ? "-selected" : ""}`}
+                    key={option.key}
+                    onPress={() => setSlippage(option.value)}
+                    style={[styles.slippageButton, slippage === option.value && styles.slippageButtonActive]}
+                    testID={`ticket-slippage-${option.key}${slippage === option.value ? "-selected" : ""}`}
+                  >
+                    <Text style={[styles.slippageText, slippage === option.value && styles.slippageTextActive]}>{option.value}</Text>
+                  </Pressable>
+                ))}
+              </View>
             </View>
             <View accessibilityLabel="ticket-amount-keypad" testID="ticket-amount-keypad" style={styles.keypadGrid}>
               {keypadKeys.map((key) => (
@@ -319,48 +340,28 @@ export function TradeTicket({
                 <Text style={styles.estimateValue}>{money(Math.min(numericAmount, balance))}</Text>
               </View>
               <View style={styles.estimateLineCompact}>
-                <Text style={styles.estimateLabel}>{t.estimatedPayout}</Text>
-                <Text style={styles.estimateValue}>{money(estimatedPayout)}</Text>
-              </View>
-              <View style={styles.estimateLineCompact}>
                 <Text style={styles.estimateLabel}>{t.estimatedShares}</Text>
                 <Text style={styles.estimateValue}>{estimatedShares.toLocaleString(undefined, { maximumFractionDigits: 2 })}</Text>
               </View>
               <View style={styles.estimateLineCompact}>
-                <Text style={styles.estimateLabel}>{t.balance}</Text>
-                <Text style={styles.estimateValue}>{money(balance)}</Text>
+                <Text style={styles.estimateLabel}>{t.averagePrice}</Text>
+                <Text style={styles.estimateValue}>{averagePrice.toFixed(2)} USDT</Text>
               </View>
-            </View>
-            <View style={styles.estimateLine}>
-              <Text style={styles.estimateLabel}>{t.averagePrice}</Text>
-              <Text style={styles.estimateValue}>{averagePrice.toFixed(2)} USDT</Text>
-            </View>
-            <View style={styles.estimateLine}>
-              <Text style={styles.estimateLabel}>{t.impliedOdds}</Text>
-              <Text style={styles.estimateValue}>{impliedOdds.toFixed(1)}x</Text>
-            </View>
-            <View style={styles.estimateLine}>
-              <Text style={styles.estimateLabel}>{t.potentialProfit}</Text>
-              <Text style={styles.estimateValue}>{money(potentialProfit)}</Text>
-            </View>
-            <View accessibilityLabel="ticket-estimated-fee" testID="ticket-estimated-fee" style={styles.estimateLine}>
-              <Text style={styles.estimateLabel}>{t.estimatedFee}</Text>
-              <Text style={styles.estimateValue}>{money(0)}</Text>
-            </View>
-            <View accessibilityLabel="ticket-slippage" testID="ticket-slippage" style={styles.slippageSection}>
-              <Text style={styles.estimateLabel}>{t.slippage}</Text>
-              <View style={styles.slippageControls}>
-                {slippageOptions.map((option) => (
-                  <Pressable
-                    accessibilityLabel={`ticket-slippage-${option.key}${slippage === option.value ? "-selected" : ""}`}
-                    key={option.key}
-                    onPress={() => setSlippage(option.value)}
-                    style={[styles.slippageButton, slippage === option.value && styles.slippageButtonActive]}
-                    testID={`ticket-slippage-${option.key}${slippage === option.value ? "-selected" : ""}`}
-                  >
-                    <Text style={[styles.slippageText, slippage === option.value && styles.slippageTextActive]}>{option.value}</Text>
-                  </Pressable>
-                ))}
+              <View accessibilityLabel="ticket-estimated-fee" testID="ticket-estimated-fee" style={styles.estimateLineCompact}>
+                <Text style={styles.estimateLabel}>{t.estimatedFee}</Text>
+                <Text style={styles.estimateValue}>{money(0)}</Text>
+              </View>
+              <View style={styles.estimateLineCompact}>
+                <Text style={styles.estimateLabel}>{t.impliedOdds}</Text>
+                <Text style={styles.estimateValue}>{impliedOdds.toFixed(1)}x</Text>
+              </View>
+              <View style={styles.estimateLineCompact}>
+                <Text style={styles.estimateLabel}>{t.estimatedPayout}</Text>
+                <Text style={styles.estimateValue}>{money(estimatedPayout)}</Text>
+              </View>
+              <View style={styles.estimateLineCompact}>
+                <Text style={styles.estimateLabel}>{t.potentialProfit}</Text>
+                <Text style={styles.estimateValue}>{money(potentialProfit)}</Text>
               </View>
             </View>
             {orderError && (
@@ -394,42 +395,44 @@ export function TradeTicket({
 const styles = StyleSheet.create({
   modalShade: { flex: 1, justifyContent: "flex-end", backgroundColor: "rgba(0,0,0,0.5)" },
   ticket: { maxHeight: "92%", borderTopLeftRadius: 20, borderTopRightRadius: 20, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", overflow: "hidden" },
-  ticketContent: { paddingHorizontal: 18, paddingTop: 12, paddingBottom: 10 },
+  ticketContent: { paddingHorizontal: 16, paddingTop: 10, paddingBottom: 8 },
   ticketTop: { flexDirection: "row", justifyContent: "space-between", gap: 12 },
   ticketHeading: { flex: 1 },
-  ticketTitle: { color: "#f8fafc", fontSize: 21, fontWeight: "900" },
-  ticketSub: { color: "#94a3b8", fontWeight: "800", marginTop: 4 },
-  modePill: { alignSelf: "flex-start", marginTop: 8, paddingHorizontal: 9, paddingVertical: 5, borderRadius: 8, backgroundColor: "#172033", borderWidth: 1, borderColor: "#2d3a50" },
+  ticketTitle: { color: "#f8fafc", fontSize: 19, fontWeight: "900" },
+  ticketSub: { color: "#94a3b8", fontSize: 12, fontWeight: "800", marginTop: 2 },
+  modePill: { alignSelf: "flex-start", marginTop: 6, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8, backgroundColor: "#172033", borderWidth: 1, borderColor: "#2d3a50" },
   modePillText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
-  depthPill: { alignSelf: "flex-start", maxWidth: "100%", marginTop: 6, paddingHorizontal: 9, paddingVertical: 5, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
+  depthPill: { alignSelf: "flex-start", maxWidth: "100%", marginTop: 4, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
   depthPillText: { color: "#e0f2fe", fontSize: 11, fontWeight: "900" },
-  liveBadge: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, marginTop: 8, paddingHorizontal: 9, paddingVertical: 5, borderRadius: 999, backgroundColor: "#451a1a", borderWidth: 1, borderColor: "#7f1d1d" },
+  liveBadge: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, marginTop: 6, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 999, backgroundColor: "#451a1a", borderWidth: 1, borderColor: "#7f1d1d" },
   liveBadgeText: { color: "#fecaca", fontSize: 11, fontWeight: "900", textTransform: "uppercase" },
-  liveClock: { marginTop: 6, color: "#fca5a5", fontSize: 13, fontWeight: "900" },
-  closeButton: { width: 42, height: 42, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937" },
-  ticketSideRow: { flexDirection: "row", gap: 10, marginTop: 18 },
-  sideButton: { flex: 1, alignItems: "center", paddingVertical: 10, borderRadius: 12, backgroundColor: "#1f2937" },
+  liveClock: { marginTop: 4, color: "#fca5a5", fontSize: 12, fontWeight: "900" },
+  closeButton: { width: 38, height: 38, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937" },
+  ticketSideRow: { flexDirection: "row", gap: 8, marginTop: 12 },
+  sideButton: { flex: 1, alignItems: "center", paddingVertical: 8, borderRadius: 12, backgroundColor: "#1f2937" },
   sideButtonActive: { backgroundColor: "#1d6dff" },
   sideText: { color: "#94a3b8", fontWeight: "900" },
   sideTextActive: { color: "#ffffff" },
-  amountHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 12, marginBottom: 6 },
+  amountHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8, marginTop: 10, marginBottom: 5 },
+  amountMeta: { flexDirection: "row", alignItems: "center", gap: 8, flexShrink: 1 },
   inputLabel: { color: "#94a3b8", fontWeight: "800" },
+  balanceText: { color: "#cbd5e1", fontSize: 12, fontWeight: "900", flexShrink: 1 },
   maxText: { color: "#93c5fd", fontWeight: "900" },
-  amountInput: { height: 48, borderRadius: 12, paddingHorizontal: 14, backgroundColor: "#070c14", borderWidth: 1, borderColor: "#263247", color: "#f8fafc", fontSize: 22, fontWeight: "900" },
-  presetRow: { flexDirection: "row", gap: 8, marginTop: 8 },
-  presetButton: { flex: 1, minHeight: 36, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
-  presetText: { color: "#dbeafe", fontWeight: "900" },
-  keypadGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 8 },
-  keypadButton: { width: "31.5%", minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
-  keypadText: { color: "#f8fafc", fontSize: 17, fontWeight: "900" },
-  estimateGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 10 },
-  estimateLineCompact: { width: "48%", padding: 9, borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
-  estimateLine: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: "#263247" },
-  estimateLabel: { color: "#94a3b8", fontWeight: "800" },
-  estimateValue: { color: "#f8fafc", fontWeight: "900" },
-  slippageSection: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingTop: 8 },
+  amountInput: { height: 42, borderRadius: 12, paddingHorizontal: 12, backgroundColor: "#070c14", borderWidth: 1, borderColor: "#263247", color: "#f8fafc", fontSize: 21, fontWeight: "900" },
+  presetRow: { flexDirection: "row", gap: 7, marginTop: 7 },
+  presetButton: { flex: 1, minHeight: 32, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
+  presetText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
+  keypadGrid: { flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 7 },
+  keypadButton: { width: "32%", minHeight: 30, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
+  keypadText: { color: "#f8fafc", fontSize: 16, fontWeight: "900" },
+  estimateGrid: { flexDirection: "row", flexWrap: "wrap", gap: 7, marginTop: 8 },
+  estimateLineCompact: { width: "31.8%", minHeight: 45, paddingHorizontal: 6, paddingVertical: 5, borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
+  estimateLine: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 5, borderBottomWidth: 1, borderBottomColor: "#263247" },
+  estimateLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },
+  estimateValue: { color: "#f8fafc", fontSize: 12, fontWeight: "900" },
+  slippageSection: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingTop: 6 },
   slippageControls: { flexDirection: "row", gap: 6 },
-  slippageButton: { minWidth: 54, minHeight: 32, alignItems: "center", justifyContent: "center", borderRadius: 8, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
+  slippageButton: { minWidth: 52, minHeight: 30, alignItems: "center", justifyContent: "center", borderRadius: 8, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
   slippageButtonActive: { backgroundColor: "#1d6dff", borderColor: "#60a5fa" },
   slippageText: { color: "#cbd5e1", fontSize: 12, fontWeight: "900" },
   slippageTextActive: { color: "#ffffff" },
@@ -437,8 +440,8 @@ const styles = StyleSheet.create({
   errorTextBlock: { flex: 1, gap: 3 },
   errorText: { color: "#fde68a", fontWeight: "800" },
   errorDetailText: { color: "#fcd34d", fontSize: 12, fontWeight: "700" },
-  ticketFooter: { paddingHorizontal: 18, paddingTop: 10, paddingBottom: 28, backgroundColor: "#101827", borderTopWidth: 1, borderTopColor: "#263247" },
-  swipeSubmit: { minHeight: 62, flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 12, borderRadius: 16, backgroundColor: "#1d6dff" },
+  ticketFooter: { paddingHorizontal: 16, paddingTop: 8, paddingBottom: 24, backgroundColor: "#101827", borderTopWidth: 1, borderTopColor: "#263247" },
+  swipeSubmit: { minHeight: 58, flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 12, borderRadius: 16, backgroundColor: "#1d6dff" },
   swipeSubmitArmed: { backgroundColor: "#16a34a" },
   swipeSubmitDisabled: { opacity: 0.55 },
   swipeIcon: { width: 42, height: 42, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.18)" },
