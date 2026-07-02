@@ -43,6 +43,22 @@ Verification:
 
 Remaining: portfolio row/action polish, custom keypad/completion animation, and final parity sweep.
 
+### Cycle 287 - Portfolio affordances
+
+Status: verified on Samsung S23.
+
+- Added explicit detail toggles for open positions, open orders, and activity rows.
+- Added expanded detail panels with current value, estimated P/L, current price, remaining shares, and potential payout/proceeds where relevant.
+- Preserved existing Buy/Sell/Close and cancel controls while making the portfolio rows visibly actionable.
+
+Verification:
+
+- `npm run typecheck`
+- `npm run smoke:samsung:future-list-order`
+- Direct Samsung UI proof that `position-detail-toggle-*` opens `position-detail-*`.
+
+Remaining: custom ticket keypad/completion animation and final parity sweep.
+
 ## Critical Fixes
 
 | Priority | Area | Finding | Evidence | Recommendation |
@@ -89,6 +105,7 @@ Holiwyn should use these as interaction references only. Do not copy Polymarket 
 - Amount entry is still a normal text field with preset buttons, not a trading keypad.
 - Search keyboard coverage was improved in Cycle 286 with dismiss controls and keyboard-aware padding; final manual keyboard QA remains useful.
 - Header action feedback was repaired in Cycle 286 for `Get 50` and notifications.
+- Portfolio rows were made visibly actionable in Cycle 287 with detail toggles and expanded panels.
 - Bottom nav has five tabs while Polymarket uses four; Account may be better as a profile entry or portfolio sub-area later.
 - Some icons render as generic/emoji-like symbols rather than a polished icon system.
 - Accessibility/UIAutomator text is usable after fresh dumps, but earlier captures showed encoding noise; keep an eye on Chinese accessibility labels during automated testing.
