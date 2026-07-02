@@ -74,8 +74,8 @@ Technical debt added:
 Technical debt resolved:
 - Resolved stale failed proof artifact buildup by deleting 15 old proof markets, 45 proof users, 15 credentials, and related proof orders/positions/fills/ledger rows with scoped selectors.
 Result: Passed Milestone B. After cleanup, only recent proof rows remained, and the Samsung server-order proof still passed with a fresh disposable market and OPEN order.
-Commit: pending.
-Merged: pending.
+Commit: cycle branch HEAD (`Add backend proof cleanup harness`)
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Milestone C, start moving Samsung QA from Expo Go toward dev build/APK.
 Harnesses run:
 - Backend Cleanup Harness
