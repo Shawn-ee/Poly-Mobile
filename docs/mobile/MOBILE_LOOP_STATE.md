@@ -10118,6 +10118,31 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 246
+
+Date: 2026-07-02
+Branch: mobile/cycle-246-event-detail-sell-ticket-proof
+Status: Verified; pending local merge.
+Objective: Prove a Sell-labeled Event Detail outcome opens a Sell ticket.
+Implemented:
+- Added `EventDetailSellDefaultTrade` smoke flow that launches Sell-default Event Detail, taps Mexico, and verifies the ticket.
+- Added Samsung wrapper and package script `smoke:samsung:event-detail-sell-ticket`.
+- Captures dedicated sell-ticket hierarchy and screenshot evidence.
+Verification:
+- First `npm.cmd run smoke:samsung:event-detail-sell-ticket` run failed because the Sell-labeled Event Detail button opened a Buy ticket.
+- Fixed Event Detail to pass the displayed default side into `openTicket`.
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:event-detail-sell-ticket` passed on Samsung S23 with Expo host `172.16.200.14` and port `8164`.
+- Visual screenshot confirms the Sell tab is selected and the ticket shows `Estimated proceeds` plus `Place sell order`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-sell-ticket.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-sell-ticket.png`.
+Commit: pending
+Merge: pending
+
 ### Cycle 245
 
 Date: 2026-07-02
