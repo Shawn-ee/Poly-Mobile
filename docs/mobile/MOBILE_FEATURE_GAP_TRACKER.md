@@ -189,3 +189,4 @@ Status:
 | GAP-167 | Harness | Mobile credential readiness report | P0 | No | Verified | Cycle 156 adds `mobile:credential-readiness:summary`, writing JSON evidence for whether a mobile dev API credential can be created and whether server-backed Samsung proof can run. |
 | GAP-168 | Backend adapter | Server open-order cancel service tests | P1 | No | Verified | Cycle 157 extracts open-order cancel activity/server-call behavior into a tested service covering mock mode, server mode, and duplicate activity prevention. |
 | GAP-169 | Backend adapter | Server quote normalization service | P1 | No | Verified | Cycle 158 adds a tested quote service that normalizes backend bid/ask/mid/last prices into mobile ticket-ready probabilities. |
+| GAP-170 | Trading ticket | Server quote hydration seam | P1 | No | Verified | Cycle 159 wires normalized server quotes into open tickets in server mode while preserving local ticket odds when quotes fail or do not match. |

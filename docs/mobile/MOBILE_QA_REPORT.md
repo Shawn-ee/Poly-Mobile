@@ -3378,3 +3378,26 @@ Bugs:
 - None in final run.
 Visual QA:
 - No app screenshot cycle; this is backend-facing service coverage.
+
+### Cycle 159
+
+Date: 2026-07-01
+Device: Mobile quote hydration unit/typecheck harness
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Open trade tickets can now hydrate their selected outcome probability from normalized server quotes in server mode without breaking mock-mode ticket behavior.
+Unit evidence:
+- `mobile/src/services/quoteService.ts`
+- `mobile/src/__tests__/quoteService.test.ts`
+- `mobile/App.tsx`
+- Mobile API/service suite: 9 files, 32 tests passed.
+Covered behavior:
+- Matching quotes update ticket outcomes by canonical outcome id.
+- Label fallback supports server/local outcome-id mismatches when outcome names still match.
+- No-match quotes keep the original local outcome object.
+- App wiring only requests quote hydration in server order mode and ignores failed quote requests.
+Bugs:
+- None in final run.
+Visual QA:
+- No app screenshot cycle; this is server-mode ticket hydration plumbing with existing UI preserved.

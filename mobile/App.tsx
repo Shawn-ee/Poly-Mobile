@@ -36,6 +36,7 @@ import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 import { appendUniqueActivity, cancelOpenOrderOnServer, openOrderCanceledActivity } from "./src/services/openOrderService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
+import { applyTicketQuoteToOutcome, loadTicketQuotes } from "./src/services/quoteService";
 
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
 const DEFAULT_API_KEY = process.env.EXPO_PUBLIC_API_KEY || "";
@@ -530,6 +531,36 @@ export default function App() {
     setTicketOrderError(null);
     setTicket({ market, outcome, event, side: "buy" });
   };
+
+  useEffect(() => {
+    if (ORDER_MODE !== "server" || !ticket) return undefined;
+    let cancelled = false;
+    const marketId = ticket.market.id;
+    const outcomeId = ticket.outcome.id;
+    loadTicketQuotes(api, marketId, outcomeId)
+      .then((quotes) => {
+        if (cancelled || !mounted.current) return;
+        setTicket((current) => {
+          if (!current || current.market.id !== marketId || current.outcome.id !== outcomeId) return current;
+          const quotedOutcome = applyTicketQuoteToOutcome(current.outcome, quotes);
+          if (quotedOutcome === current.outcome) return current;
+          return {
+            ...current,
+            outcome: quotedOutcome,
+            market: {
+              ...current.market,
+              outcomes: current.market.outcomes.map((outcome) =>
+                outcome.id === quotedOutcome.id ? quotedOutcome : outcome,
+              ),
+            },
+          };
+        });
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [api, ticket?.market.id, ticket?.outcome.id]);
 
   const toggleSavedEvent = (event: Event) => {
     setSavedEventIds((current) => {
