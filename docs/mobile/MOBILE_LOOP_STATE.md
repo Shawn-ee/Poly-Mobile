@@ -10095,6 +10095,40 @@ Evidence:
 Commit: e8725d5
 Merge: 15ea3ff
 
+### Cycle 238
+
+Date: 2026-07-02
+Branch: mobile/cycle-238-account-total-exposure
+Status: Verified; pending local merge.
+Objective: Add a combined total exposure summary to Account so users can see Portfolio value plus pending open-order value in one place.
+Implemented:
+- Added localized `totalExposure` copy for English and Simplified Chinese.
+- Added a `Total exposure` row to `AccountScreen`.
+- Passed `portfolioValue + openOrderValue` from `App.tsx` into Account.
+- Hardened the account-position Samsung proof to recover if the Expo developer menu appears after the scroll.
+- Tightened the account summary smoke to require `Total exposure: 10,398.75 USDT`.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:account-position-summary` passed on Samsung S23 with Expo host `172.16.200.14` and port `8161`.
+- Captured hierarchy includes `Open positions: 1`, `Open orders: 1`, `Open order value: 117.5 USDT`, `account-total-exposure`, `Total exposure: 10,398.75 USDT`, and `Ticket default: Buy 100 USDT`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-account-position-summary.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-account-position-summary.png`.
+Commit: pending
+Merge: pending
+
+### Heartbeat After Cycle 238
+
+Completed cycles: 236, 237, 238.
+Verified progress: Account now mirrors key order-exposure summaries from Portfolio: open-order count, pending open-order value, and total exposure. The Samsung account summary wrapper proves the rows on the S23 and now recovers if the Expo developer menu appears during the scroll/capture step.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token and server-mode trading, Samsung real-device QA, server quote/order/Portfolio sync, backend-derived filled/canceled activity with side/share/price detail, open-order cards with notional/remaining value/original size/fill progress/placed time, Portfolio count tiles for positions/open orders/activity/closed trades, Account exposure rows for positions/open orders/open-order value/total exposure, latest activity/order previews, BUY/SELL filled-order proof wrappers, and gated open-order cancel proof wrappers with DB-backed summaries.
+Current backend state: Local Docker/Postgres backend supports mobile API-key Portfolio/profile/order flows, canonical order create/cancel, matching, correct complete-set mint cost basis, recent-trade/canceled-order history, repeatable World Cup seeding/liquidity for mobile proofs, and proof-noise reporting/gating.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go for server-backed and mock proof flows. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: Expo Go can still surface the developer menu during long-scroll proofs; Cycle 238 hardened the Account summary path, and other long-scroll flows should use the same recovery pattern when touched.
+Next three likely cycles: improve World Cup event-detail/trading parity, continue proof cleanup or disposable market isolation, and extend Account/Portfolio exposure summaries into server-backed proof fixtures where useful.
+
 ### Heartbeat After Cycle 235
 
 Completed cycles: 233, 234, 235.

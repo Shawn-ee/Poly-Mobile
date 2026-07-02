@@ -35,6 +35,7 @@ type AccountCopy = {
   openOrders: string;
   portfolioValue: string;
   openOrderValue: string;
+  totalExposure: string;
   tradingMode: string;
   tradingModeMock: string;
   tradingModeServer: string;
@@ -61,6 +62,7 @@ export function AccountScreen({
   openPositionCount,
   openOrderCount,
   openOrderValue,
+  totalExposure,
   portfolioValue,
   tradingMode,
 }: {
@@ -76,6 +78,7 @@ export function AccountScreen({
   openPositionCount: number;
   openOrderCount: number;
   openOrderValue: number;
+  totalExposure: number;
   portfolioValue: number;
   tradingMode: "mock" | "server";
 }) {
@@ -186,6 +189,12 @@ export function AccountScreen({
           <Ionicons name="cash-outline" size={20} color="#93c5fd" />
           <Text style={styles.rowText}>
             {t.openOrderValue}: {money(openOrderValue)}
+          </Text>
+        </View>
+        <View accessibilityLabel="account-total-exposure" testID="account-total-exposure" style={styles.row}>
+          <Ionicons name="speedometer-outline" size={20} color="#93c5fd" />
+          <Text style={styles.rowText}>
+            {t.totalExposure}: {money(totalExposure)}
           </Text>
         </View>
         <View accessibilityLabel="account-ticket-defaults" testID="account-ticket-defaults" style={styles.row}>

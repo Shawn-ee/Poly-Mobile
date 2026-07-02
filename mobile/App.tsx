@@ -990,6 +990,7 @@ export default function App() {
                 openPositionCount={positions.length}
                 openOrderCount={openOrders.length}
                 openOrderValue={accountOpenOrderValue}
+                totalExposure={accountPortfolioValue + accountOpenOrderValue}
                 portfolioValue={accountPortfolioValue}
                 tradingMode={ORDER_MODE}
               />
