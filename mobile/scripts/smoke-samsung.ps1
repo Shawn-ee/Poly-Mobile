@@ -20,6 +20,7 @@ param(
   [switch]$LiveSummary,
   [switch]$LiveTicket,
   [switch]$LiveOrder,
+  [switch]$LiveSellOrder,
   [switch]$LiveOrderClose,
   [switch]$LivePortfolioBadgeDeep,
   [switch]$AccountPreferences,
@@ -110,6 +111,8 @@ if ($FutureListOrder) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LiveTicket -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($LiveOrder) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LiveOrder -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
+} elseif ($LiveSellOrder) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -LiveSellOrder -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($LiveOrderClose) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LiveOrderClose -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -SkipPackageClear
 } elseif ($LivePortfolioBadgeDeep) {

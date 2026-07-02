@@ -69,6 +69,7 @@ param(
   [switch]$LiveSummary,
   [switch]$LiveTicket,
   [switch]$LiveOrder,
+  [switch]$LiveSellOrder,
   [switch]$LiveOrderClose,
   [switch]$LivePortfolioBadge,
   [switch]$LivePortfolioBadgeDeep
@@ -328,7 +329,7 @@ try {
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
   Wait-ExpoReady -Port $Port
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://${ExpoHost}:$Port/--/?forceOrderFailure=1"
@@ -360,8 +361,8 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceMexicoEcuadorDetailSellDefault=1"
   } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount) {
     "exp://${ExpoHost}:$Port/--/?forceMexicoEcuadorDetail=1"
-  } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
-    $liveReset = if ($LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { ",forceResetState=1" } else { "" }
+  } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
+    $liveReset = if ($LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { ",forceResetState=1" } else { "" }
     "exp://${ExpoHost}:$Port/--/?forceLive=1$liveReset"
   } elseif ($SearchQuery -or $SearchClearQuery) {
     "exp://${ExpoHost}:$Port/--/?forceSearchQuery=zzzz"
@@ -416,7 +417,7 @@ try {
     @("Holiwyn", "Portfolio", "Open orders", "Cancel")
   } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade) {
     @("Mexico vs. Ecuador", "4 markets", "8 outcomes")
-  } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
+  } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
     @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina")
   } elseif ($ServerOrderFailure) {
     @("World Cup winner", "France", "Trading mode: Server mode", "Best bid", "Best ask", "Spread", "Fake balance", "Place buy order")
@@ -459,7 +460,7 @@ try {
   } else {
     @("Holiwyn", "World Cup", "Games", "Futures")
   }
-  $launchAttempts = if ($LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 14 } else { 8 }
+  $launchAttempts = if ($LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 14 } else { 8 }
   $homeHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-home.xml" -Expected $launchExpected -RestartUrl $launchUrl -Attempts $launchAttempts
   Save-Screenshot -Name "cycle-current-holiwyn-smoke.png"
 
@@ -599,7 +600,7 @@ try {
       return
     }
 
-    if ($LiveTicket -or $LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
+    if ($LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
       Save-Screenshot -Name "cycle-current-holiwyn-live-ticket-ready.png"
       $liveTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-ticket-ready.xml"
       Assert-HierarchyContains -Path $liveTicketReadyHierarchy -Expected @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina")
@@ -636,21 +637,36 @@ try {
           $liveTicketReadyHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-live-ticket-ready.xml" -Expected @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina") -RestartUrl $launchUrl -Attempts 4 -DelaySeconds 2
         }
       }
-      if ($LiveOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
+      if ($LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
+        if ($LiveSellOrder) {
+          Invoke-TapHierarchyNode -Path $liveTicketHierarchy -Identifier "ticket-side-sell"
+          Start-Sleep -Seconds 1
+          Save-Screenshot -Name "cycle-current-holiwyn-live-sell-ticket.png"
+          $liveTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-sell-ticket.xml"
+          Assert-HierarchyContains -Path $liveTicketHierarchy -Expected @("ticket-side-sell", "Estimated proceeds", "Fake balance", "Avg price")
+        }
         $liveTicketOrderHierarchy = $liveTicketHierarchy
         $liveTicketOrderSnapshot = Get-Content -Raw -Path $liveTicketOrderHierarchy
         if ($liveTicketOrderSnapshot -notmatch [regex]::Escape("place-mock-order")) {
           & $adb -s $Device shell input swipe 540 1760 540 760 450 | Out-Null
           Start-Sleep -Seconds 1
-          Save-Screenshot -Name "cycle-current-holiwyn-live-ticket-order-ready.png"
-          $liveTicketOrderHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-ticket-order-ready.xml"
+          $liveOrderReadyName = if ($LiveSellOrder) { "cycle-current-holiwyn-live-sell-ticket-order-ready" } else { "cycle-current-holiwyn-live-ticket-order-ready" }
+          Save-Screenshot -Name "$liveOrderReadyName.png"
+          $liveTicketOrderHierarchy = Save-UiHierarchy -Name "$liveOrderReadyName.xml"
         }
-        Assert-HierarchyContains -Path $liveTicketOrderHierarchy -Expected @("place-mock-order", "Place buy order")
+        $liveOrderButtonLabel = if ($LiveSellOrder) { "Place sell order" } else { "Place buy order" }
+        Assert-HierarchyContains -Path $liveTicketOrderHierarchy -Expected @("place-mock-order", $liveOrderButtonLabel)
         Invoke-TapHierarchyNode -Path $liveTicketOrderHierarchy -Identifier "place-mock-order"
         Start-Sleep -Seconds 1
-        Save-Screenshot -Name "cycle-current-holiwyn-live-order-portfolio.png"
-        $liveOrderPortfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-order-portfolio.xml"
-        Assert-HierarchyContains -Path $liveOrderPortfolioHierarchy -Expected @("Portfolio", "Fake balance", "9,900 USDT", "Open positions", "Recent activity", "1", "Live match winner", "MOCK - Buy - France", "Order placed", "Exec price", "41%")
+        $liveOrderPortfolioName = if ($LiveSellOrder) { "cycle-current-holiwyn-live-sell-order-portfolio" } else { "cycle-current-holiwyn-live-order-portfolio" }
+        Save-Screenshot -Name "$liveOrderPortfolioName.png"
+        $liveOrderPortfolioHierarchy = Save-UiHierarchy -Name "$liveOrderPortfolioName.xml"
+        $liveOrderPortfolioExpected = if ($LiveSellOrder) {
+          @("Portfolio", "Fake balance", "9,900 USDT", "Open positions", "Recent activity", "1", "Live match winner", "MOCK - Sell - France", "Order placed", "Exec price", "41%", "Sold")
+        } else {
+          @("Portfolio", "Fake balance", "9,900 USDT", "Open positions", "Recent activity", "1", "Live match winner", "MOCK - Buy - France", "Order placed", "Exec price", "41%")
+        }
+        Assert-HierarchyContains -Path $liveOrderPortfolioHierarchy -Expected $liveOrderPortfolioExpected
         if ($LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
           Assert-HierarchyContains -Path $liveOrderPortfolioHierarchy -Expected @("LIVE WORLD CUP", "portfolio-position-live-badge")
         }
