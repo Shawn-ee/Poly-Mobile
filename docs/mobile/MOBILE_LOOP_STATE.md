@@ -10118,6 +10118,26 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 240
+
+Date: 2026-07-02
+Branch: mobile/cycle-240-event-market-depth-units
+Status: Verified; pending local merge.
+Objective: Make Event Detail market-level depth cells show explicit price units like the ticket and outcome depth rows.
+Implemented:
+- Added `USDT` units to Event Detail market-level Best bid and Best ask values.
+- Tightened the Samsung Event Detail outcome-count smoke to require `0.62 USDT` and `0.66 USDT` in the market depth cells.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 15 files and 67 tests.
+- `npm.cmd run smoke:samsung:event-detail-outcome-depth` passed on Samsung S23 with Expo host `172.16.200.14` and port `8162`.
+- Captured hierarchy includes `Match winner`, `0.62 USDT`, `0.66 USDT`, `Best bid 0.61 USDT - Best ask 0.68 USDT`, `64%`, and `1.6x`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`.
+Commit: pending
+Merge: pending
+
 ### Cycle 239
 
 Date: 2026-07-02
