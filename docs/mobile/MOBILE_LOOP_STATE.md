@@ -7192,8 +7192,8 @@ Technical debt added:
 Technical debt resolved:
 - Server-success gating now leaves structured evidence for the next cycle instead of requiring agents to infer blockers from console text.
 Result: Passed Cycle 153 QA. Gate expected-blocked summary, mobile typecheck, and mobile API/service tests pass.
-Commit: Pending.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `3b14383` (`Add server success gate summary`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `d131dea`.
 Next cycle: Cycle 154 should use the structured gate report to decide between another readiness recovery harness and a server-mode Portfolio visual fallback proof.
 Harnesses run:
 - Server Success Gate Summary Harness
