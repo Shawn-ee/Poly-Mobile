@@ -9965,7 +9965,7 @@ Merge: 226c7d1
 
 Date: 2026-07-02
 Branch: mobile/cycle-232-open-order-detail-assertions
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Make the Samsung open-order cancel proof fail if rich open-order detail regresses.
 Implemented:
 - Tightened the server open-order success hierarchy expectations in `mobile/scripts/smoke.ps1`.
@@ -9979,8 +9979,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-server-order-success-portfolio.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
 - `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
-Commit: pending
-Merge: pending
+Commit: 4e0082d
+Merge: b9a3cb9
 
 ### Heartbeat After Cycle 232
 
