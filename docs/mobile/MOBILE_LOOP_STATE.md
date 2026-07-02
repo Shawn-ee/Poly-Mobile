@@ -9986,7 +9986,7 @@ Merge: b9a3cb9
 
 Date: 2026-07-02
 Branch: mobile/cycle-233-canceled-side-assertion
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Make the Samsung open-order cancel proof fail if canceled activity loses side-aware execution detail.
 Implemented:
 - Tightened the `ServerOpenOrderCancel` canceled-activity hierarchy expectation in `mobile/scripts/smoke.ps1`.
@@ -10000,8 +10000,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-server-open-order-canceled.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-open-order-canceled.png`.
 - `docs/mobile/harness/cycle-current-mobile-samsung-open-order-cancel-proof.json`.
-Commit: pending
-Merge: pending
+Commit: c43c50f
+Merge: 8e4bcab
 
 ### Heartbeat After Cycle 232
 
