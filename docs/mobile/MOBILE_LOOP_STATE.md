@@ -81,7 +81,7 @@ Technical debt resolved:
 - Hardened Samsung deep-link quoting so API keys survive launch URL handling.
 Result: Passed Milestone A. Samsung evidence and backend summary show an OPEN server BUY order for the proof market at 0.49 with 204.08 remaining shares.
 Commit: cycle branch HEAD (`Pass backend position server order proof`)
-Merged: pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit`.
 Next cycle: Milestone B, create cleanup/disposable-market isolation for proof artifacts.
 Harnesses run:
 - Backend/API Harness
