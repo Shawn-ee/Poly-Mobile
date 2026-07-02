@@ -7974,8 +7974,8 @@ Technical debt added:
 Technical debt resolved:
 - Users and QA no longer need to infer ticket order mode from Account status or build environment while placing a trade.
 Result: Passed Cycle 173 QA. Samsung future-list order smoke passed, mobile typecheck passed, and mobile API/service tests pass.
-Commit: cycle branch HEAD (`Show ticket trading mode`)
-Merged: Pending local merge after commit.
+Commit: `df98759` (`Show ticket trading mode`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `bc1e2d4`.
 Next cycle: Cycle 174 should continue product-facing server-mode clarity or improve decision recovery instructions while backend readiness remains gated.
 Harnesses run:
 - Samsung Future List Order Smoke Harness
