@@ -10118,6 +10118,24 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 259
+
+Date: 2026-07-02
+Branch: mobile/cycle-259-sell-open-order-proceeds
+Status: Verified; pending local merge.
+Objective: Make open-order economics wording accurate for sell-side pending orders.
+Implemented:
+- Added a tested `openOrderEconomicsService` for remaining shares, order value, potential value, and buy/sell copy key selection.
+- Updated Portfolio open orders to show `Potential payout` for buy orders and `Potential proceeds` for sell orders.
+- Added localized English and Simplified Chinese copy for sell-side potential proceeds.
+Verification:
+- `npm run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 16 files and 70 tests.
+Evidence:
+- `mobile/src/__tests__/openOrderEconomicsService.test.ts`.
+Commit: pending
+Merge: pending
+
 ### Cycle 258
 
 Date: 2026-07-02
