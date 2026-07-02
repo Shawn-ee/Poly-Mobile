@@ -9769,8 +9769,8 @@ Evidence:
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-order-success-portfolio.png`.
 Notes:
 - The proof summary records latest order `1d50554d-9787-40c4-a86f-caa7c0136f6c`, status `FILLED`, price `0.5`, size `200`, notional `100`, and remaining `0`.
-Commit: TBD
-Merge: TBD
+Commit: ab5ed73
+Merge: fdc159d
 
 ### Heartbeat After Cycle 223
 
