@@ -7158,8 +7158,8 @@ Technical debt added:
 Technical debt resolved:
 - The partial-success rule for server Portfolio data is no longer buried in `App.tsx` and now has direct regression coverage.
 Result: Passed Cycle 152 QA. Mobile typecheck and mobile API/service tests pass.
-Commit: Pending.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `01fbbf4` (`Extract mobile portfolio sync service`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `22468ae`.
 Next cycle: Cycle 153 should add a Samsung/server-mode Portfolio recovery smoke or continue credential-readiness gating if a visual proof is not yet practical.
 Harnesses run:
 - Mobile Typecheck Harness
