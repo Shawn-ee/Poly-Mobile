@@ -3470,3 +3470,26 @@ Bugs:
 - None in final run.
 Visual QA:
 - No app screenshot cycle; this is server-mode futures quote refresh plumbing with existing UI preserved.
+
+### Cycle 163
+
+Date: 2026-07-01
+Device: Mobile shared quote loader unit/typecheck harness
+Build/run command:
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run test:mobile-api`
+Result: Passed. Server-mode quote refresh now uses one tested loader for market-id deduplication and partial-success handling.
+Unit evidence:
+- `mobile/src/services/quoteService.ts`
+- `mobile/src/__tests__/quoteService.test.ts`
+- `mobile/App.tsx`
+- Mobile API/service suite: 9 files, 40 tests passed.
+Covered behavior:
+- Duplicate market ids are fetched once.
+- Failed market quote calls are skipped while successful market quotes remain usable.
+- Backend event-list, event-detail, and futures quote refresh paths share the same loader.
+- Ticket-specific outcome quote loading remains unchanged.
+Bugs:
+- None in final run.
+Visual QA:
+- No app screenshot cycle; this is server-mode quote refresh hardening with existing UI preserved.

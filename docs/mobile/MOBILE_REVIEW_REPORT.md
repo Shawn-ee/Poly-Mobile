@@ -2388,3 +2388,19 @@ Findings:
 - Mobile typecheck and mobile API/service tests passed.
 Decision: Approve Cycle 162 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 163
+
+Date: 2026-07-01
+Branch: mobile/cycle-163
+Reviewer: Lead/Reviewer pass
+Scope: Shared market quote loading helper.
+Findings:
+- P1: `loadMarketQuotesById` centralizes market quote fetches, deduplicates market ids, and returns a success-only map for partial failure recovery.
+- P1: Unit coverage proves duplicate market ids are fetched once.
+- P1: Unit coverage proves failed quote calls are skipped while successful quote payloads remain available.
+- P1: `App.tsx` now uses the shared loader for backend event-list enrichment, event-detail refresh, and futures refresh.
+- P2: This is infrastructure hardening; live backend/device proof still depends on reachable server credentials and database services.
+- Mobile typecheck and mobile API/service tests passed.
+Decision: Approve Cycle 163 for local commit/merge after scoped diff review.
+Merge approved: Yes
