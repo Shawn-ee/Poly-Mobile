@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-271-portfolio-snapshot-quote-depth
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Preserve backend Portfolio position quote depth so live server snapshots can feed position re-trade tickets.
 Implemented:
 - Added optional `bestBid`, `bestAsk`, `bestBidSize`, and `bestAskSize` fields to mobile Portfolio position snapshot types.
@@ -10137,8 +10137,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-server-position-buy-trade-ticket-button.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-position-buy-trade-ticket.png`.
 Result: Passed Cycle 271 QA. Backend Portfolio snapshots can now carry quote depth forward into position re-trade tickets when the server provides those fields.
-Commit: pending.
-Merge: pending.
+Commit: bdef604
+Merge: 8aef723
 
 ### Cycle 270
 
