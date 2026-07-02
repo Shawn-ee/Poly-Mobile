@@ -1,11 +1,30 @@
 param(
-  [switch]$StartDb
+  [switch]$StartDb,
+  [string]$SummaryPath = ""
 )
 
 $ErrorActionPreference = "Stop"
 
 $RepoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $ComposeFile = Join-Path $RepoRoot "docker-compose.yml"
+$summary = [ordered]@{
+  dockerCliAvailable = $false
+  dockerDaemonReachable = $false
+  composeFileFound = $false
+  databaseUrlSource = ""
+  databaseHost = ""
+  databasePort = $null
+  databaseName = ""
+  databaseUser = ""
+  databaseTcpReachable = $false
+  usesDefaultLocalComposePort = $false
+  canStartLocalDb = $false
+  nextSteps = @(
+    "Run npm run mobile:backend-readiness:start if local Postgres should be started.",
+    "Run npm run db:push or npm run db:migrate when schema setup is needed.",
+    "Run npm run mobile:dev-credential after database readiness passes."
+  )
+}
 
 function Read-EnvDatabaseUrl {
   if ($env:DATABASE_URL) {
@@ -76,11 +95,13 @@ try {
   $dockerAvailable = $LASTEXITCODE -eq 0
   if ($dockerAvailable) {
     Write-Host "PASS Docker CLI available: $dockerVersion"
+    $summary.dockerCliAvailable = $true
     try {
       docker info --format "{{.ServerVersion}}" *> $null
       $dockerDaemonAvailable = $LASTEXITCODE -eq 0
       if ($dockerDaemonAvailable) {
         Write-Host "PASS Docker daemon is reachable."
+        $summary.dockerDaemonReachable = $true
       } else {
         Write-Host "WARN Docker daemon is not reachable. Start Docker Desktop before starting local Postgres."
       }
@@ -96,6 +117,8 @@ if (-not (Test-Path $ComposeFile)) {
   throw "docker-compose.yml was not found at $ComposeFile"
 }
 Write-Host "PASS Compose file found."
+$summary.composeFileFound = $true
+$summary.canStartLocalDb = $dockerAvailable -and $dockerDaemonAvailable
 
 if ($StartDb) {
   if (-not $dockerAvailable -or -not $dockerDaemonAvailable) {
@@ -124,16 +147,23 @@ if (-not $parsed) {
 Write-Host "DATABASE_URL source: $($databaseUrl.Source)"
 Write-Host "DATABASE_URL target: $($parsed.Masked)"
 Write-Host "DATABASE target parts: user=$($parsed.User) host=$($parsed.Host) port=$($parsed.Port) database=$($parsed.Database)"
+$summary.databaseUrlSource = $databaseUrl.Source
+$summary.databaseHost = $parsed.Host
+$summary.databasePort = [int]$parsed.Port
+$summary.databaseName = $parsed.Database
+$summary.databaseUser = $parsed.User
 
 $portOpen = Test-TcpPort $parsed.Host $parsed.Port
 if ($portOpen) {
   Write-Host "PASS Database TCP port is reachable."
+  $summary.databaseTcpReachable = $true
 } else {
   Write-Host "WARN Database TCP port is not reachable at $($parsed.Host):$($parsed.Port)."
 }
 
 if ($parsed.Host -in @("localhost", "127.0.0.1") -and [int]$parsed.Port -eq 5432) {
   Write-Host "PASS DATABASE_URL points at the local docker-compose port."
+  $summary.usesDefaultLocalComposePort = $true
 } else {
   Write-Host "WARN DATABASE_URL does not point at the default local docker-compose port."
 }
@@ -142,3 +172,17 @@ Write-Host "NEXT STEPS"
 Write-Host "1. Run npm run mobile:backend-readiness:start if local Postgres should be started."
 Write-Host "2. Run npm run db:push or npm run db:migrate when schema setup is needed."
 Write-Host "3. Run npm run mobile:dev-credential after database readiness passes."
+
+if ($SummaryPath.Trim()) {
+  $resolvedSummaryPath = if ([System.IO.Path]::IsPathRooted($SummaryPath)) {
+    $SummaryPath
+  } else {
+    Join-Path $RepoRoot $SummaryPath
+  }
+  $summaryDirectory = Split-Path -Parent $resolvedSummaryPath
+  if ($summaryDirectory -and -not (Test-Path $summaryDirectory)) {
+    New-Item -ItemType Directory -Path $summaryDirectory -Force | Out-Null
+  }
+  $summary | ConvertTo-Json -Depth 4 | Set-Content -Path $resolvedSummaryPath -Encoding UTF8
+  Write-Host "SUMMARY written to $resolvedSummaryPath"
+}
