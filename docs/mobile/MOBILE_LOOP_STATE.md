@@ -10122,7 +10122,7 @@ Merge: 8623cde
 
 Date: 2026-07-02
 Branch: mobile/cycle-274-live-portfolio-quote-depth-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Add a live backend Portfolio quote-depth proof using a real API-key-authenticated `/api/portfolio` route call.
 Implemented:
 - Added `scripts/prove_mobile_portfolio_quote_depth.ts`.
@@ -10140,8 +10140,8 @@ Verification:
 Evidence:
 - `docs/mobile/harness/cycle-current-mobile-portfolio-quote-depth-proof.json` reports `bestBid: 0.47`, `bestAsk: 0.5`, `bestBidSize: 1000`, `bestAskSize: 2500`, `currentPrice: 0.485`, `valueTokens: 242.5`, and `pnlTokens: 32.5`.
 Result: Passed Cycle 274 QA. Backend Portfolio quote depth is now proven through a live route call with disposable proof state, not only mocked route tests.
-Commit: pending.
-Merge: pending.
+Commit: c789630
+Merge: c43d251
 
 ### Cycle 273
 
