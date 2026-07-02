@@ -10118,11 +10118,22 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Heartbeat After Cycle 255
+
+Completed cycles: 253, 254, 255.
+Verified progress: Event Detail props now have Samsung real-device proof for opening a prop ticket, placing a fake-token prop order, and closing the resulting prop position from Portfolio with closed-activity verification.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung real-device QA, server quote/order/Portfolio sync paths, named live proofs, and stronger Event Detail prop betting coverage.
+Current backend state: Local backend/mobile API tests pass with 15 files and 67 tests. The latest cycles focused on mock-token device behavior and did not change backend schema.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go. Emulator remains fallback only due slow/stale behavior. Proper dev build/APK remains a later stabilization lane.
+Open blockers: None for autonomous progress.
+Risks: Event Detail prop orders currently record Portfolio title at the event level (`Mexico vs. Ecuador`) rather than the specific prop market title; this matches existing service behavior but is less descriptive than Polymarket-style position naming.
+Next three likely cycles: improve prop position naming to include market title, add Samsung proof for prop order Portfolio title detail after that change, and continue orderbook/open-order depth parity.
+
 ### Cycle 255
 
 Date: 2026-07-02
 Branch: mobile/cycle-255-event-detail-prop-close-proof
-Status: Verified; pending local merge.
+Status: Verified and locally merged.
 Objective: Prove a prop-market fake-token position can be closed from Portfolio.
 Implemented:
 - Added `EventDetailPropClose` smoke path that opens a prop order, scrolls to the position action, closes it, and verifies closed activity.
@@ -10139,8 +10150,8 @@ Evidence:
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-close-ready.xml`.
 - `docs/mobile/harness/cycle-current-holiwyn-event-detail-prop-close-closed.xml`.
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-prop-close-closed.png`.
-Commit: pending
-Merge: pending
+Commit: 1cf27c3
+Merge: 3b62184
 
 ### Cycle 254
 
