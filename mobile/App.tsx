@@ -1006,12 +1006,14 @@ export default function App() {
     <SafeAreaView style={styles.safe}>
       <StatusBar style="light" />
       <View style={styles.shell}>
-        <Header
-          locale={locale}
-          promo={t.promo}
-          language={t.language}
-          toggleLanguage={() => setLocale((current) => (current === "en" ? "zh" : "en"))}
-        />
+        {!selectedEvent && (
+          <Header
+            locale={locale}
+            promo={t.promo}
+            language={t.language}
+            toggleLanguage={() => setLocale((current) => (current === "en" ? "zh" : "en"))}
+          />
+        )}
         {selectedEvent ? (
           <EventDetail
             event={selectedEvent}
@@ -1025,6 +1027,9 @@ export default function App() {
             }}
             isSaved={savedEventIds.has(selectedEvent.id)}
             toggleSavedEvent={toggleSavedEvent}
+            positions={positions}
+            closePosition={closePosition}
+            openPositionTrade={openPositionTrade}
           />
         ) : (
           <>
