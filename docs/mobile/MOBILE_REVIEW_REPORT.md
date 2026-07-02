@@ -2874,3 +2874,18 @@ Findings:
 - Mobile API/service tests, mobile typecheck, and Samsung server Portfolio fixture smoke passed.
 Decision: Approve Cycle 193 for local commit/merge after scoped diff review.
 Merge approved: Yes
+
+### Cycle 194
+
+Date: 2026-07-02
+Branch: mobile/cycle-194
+Reviewer: Lead/Reviewer pass
+Scope: Samsung server close refresh fixture proof.
+Findings:
+- P1: Added a deterministic server-closed Portfolio fixture that represents the authoritative post-close refresh shape.
+- P1: Added smoke-only app handling for `forceServerCloseFixture=1` so Samsung can prove the close-refresh UI while backend readiness remains unavailable.
+- P1: Added Samsung/base smoke commands that launch a synced server row, tap Close, and verify synced no-position closed-history state.
+- P2: This remains fixture-backed; successful authenticated order execution and settlement still require backend readiness.
+- Mobile API/service tests, mobile typecheck, and Samsung server close fixture smoke passed.
+Decision: Approve Cycle 194 for local commit/merge after scoped diff review.
+Merge approved: Yes

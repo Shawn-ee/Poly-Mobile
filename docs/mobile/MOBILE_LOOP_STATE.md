@@ -8831,6 +8831,46 @@ Open blockers: None for autonomous progress. Successful live server-backed Samsu
 Risks: Fixture proof does not prove authenticated server fill settlement; Expo Go still depends on LAN reachability and occasional menu dismissal.
 Next three likely cycles: add fixture-backed server close refresh proof, improve authenticated server proof readiness recovery, or continue Polymarket-like Portfolio/order detail parity.
 
+## Cycle 194
+
+Date: 2026-07-02
+Branch: mobile/cycle-194
+Goal: Prove server close refresh UI on the Samsung S23 through a deterministic fixture-backed close flow.
+Reference app screens observed: No new Polymarket reference screens.
+Holiwyn screens changed: No normal user-flow visual change; proof launches can now tap a server-style close action and land in a synced closed Portfolio state.
+Backend/API changed: No backend route change.
+Database/schema changed: None.
+Files changed: `mobile/App.tsx`, `mobile/src/services/portfolioFixtureService.ts`, `mobile/src/__tests__/portfolioFixtureService.test.ts`, `mobile/scripts/smoke.ps1`, `mobile/scripts/smoke-samsung.ps1`, `mobile/package.json`, `mobile/README.md`, `docs/mobile/`.
+Tests run:
+- `npm.cmd run test:mobile-api` from repo root.
+- `npm.cmd run typecheck` in `mobile/`.
+- `npm.cmd run smoke:samsung:server-close-fixture` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-close-fixture-ready.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-close-fixture-closed.png`
+Harness evidence:
+- Mobile API/service suite passed with 13 files and 55 tests.
+- Mobile typecheck passed.
+- Samsung smoke passed on `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` through Expo host `172.16.200.14`, port `8151`.
+- UI hierarchy evidence captured at `docs/mobile/harness/cycle-current-holiwyn-server-close-fixture-ready.xml` and `docs/mobile/harness/cycle-current-holiwyn-server-close-fixture-closed.xml`.
+Bugs found:
+- None in final run.
+Technical debt added:
+- Fixture close proof still does not replace successful authenticated server execution/settlement.
+Technical debt resolved:
+- Samsung can now prove the post-close server refresh UI state even while live backend readiness remains unavailable.
+Result: Passed Cycle 194 QA. Mobile tests, typecheck, and Samsung server close fixture smoke pass.
+Commit: `PENDING` (`PENDING`).
+Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Next cycle: Continue toward final DoD by improving authenticated server proof readiness recovery or extending Polymarket-like Portfolio/order detail parity.
+Harnesses run:
+- Mobile Portfolio Fixture Harness
+- Mobile Typecheck Harness
+- Samsung Server Close Fixture Smoke Harness
+- Review Harness
+Harness failures:
+- None.
+
 ### Heartbeat After Cycle 172
 
 Completed cycles: 170, 171, 172.

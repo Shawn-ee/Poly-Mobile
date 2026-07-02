@@ -35,7 +35,7 @@ import {
 import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 import { appendUniqueActivity, cancelOpenOrderOnServer, openOrderCanceledActivity } from "./src/services/openOrderService";
 import { closePositionOnServer } from "./src/services/positionCloseService";
-import { serverHydratedPortfolioFixture } from "./src/services/portfolioFixtureService";
+import { serverClosedPortfolioFixture, serverHydratedPortfolioFixture } from "./src/services/portfolioFixtureService";
 import { applyServerPortfolioState } from "./src/services/portfolioStateApplyService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
@@ -114,6 +114,7 @@ export default function App() {
   const mounted = useRef(true);
   const profilePreferencesReady = useRef(false);
   const skipPortfolioHydration = useRef(false);
+  const forceServerCloseFixture = useRef(false);
   const shouldSyncProfilePreferences = ORDER_MODE === "server" && DEFAULT_API_KEY.length > 0;
   const accountPortfolioValue = useMemo(
     () => balance + positions.reduce((total, position) => total + portfolioPositionValue(position), 0),
@@ -272,6 +273,7 @@ export default function App() {
     const shouldForceWorldCupWinnerFranceTicket = url.includes("forceWorldCupWinnerFranceTicket=1");
     const shouldForceClosedWorldCupWinnerFrance = url.includes("forceClosedWorldCupWinnerFrance=1");
     const shouldForceServerPortfolioFixture = url.includes("forceServerPortfolioFixture=1");
+    forceServerCloseFixture.current = url.includes("forceServerCloseFixture=1");
     const shouldForceLive = url.includes("forceLive=1");
     setForceOrderFailure(url.includes("forceOrderFailure=1"));
     if (url.includes("forceResetState=1")) {
@@ -756,6 +758,24 @@ export default function App() {
   };
 
   const closePosition = async (position: Position) => {
+    if (ORDER_MODE === "server" && forceServerCloseFixture.current) {
+      const fixture = serverClosedPortfolioFixture(position);
+      setBalance(fixture.balance);
+      setPositions(fixture.positions);
+      setLatestOrder(fixture.latestOrder);
+      setOpenOrders(fixture.openOrders);
+      setActivities(fixture.activities);
+      setPortfolioSyncStatus("synced");
+      const snapshot: StoredPortfolio = {
+        balance: fixture.balance,
+        positions: fixture.positions,
+        latestOrder: fixture.latestOrder,
+        openOrders: fixture.openOrders,
+        activities: fixture.activities,
+      };
+      AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
+      return;
+    }
     try {
       await closePositionOnServer({ mode: ORDER_MODE, api, position });
     } catch {
