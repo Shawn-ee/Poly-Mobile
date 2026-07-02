@@ -80,6 +80,12 @@ To verify the Samsung server-hydrated Portfolio fixture, run:
 npm run smoke:samsung:server-portfolio-fixture
 ```
 
+To verify Samsung server-close refresh behavior through a deterministic fixture, run:
+
+```powershell
+npm run smoke:samsung:server-close-fixture
+```
+
 Before a Samsung server-mode success proof, verify the phone launch variables with:
 
 ```powershell

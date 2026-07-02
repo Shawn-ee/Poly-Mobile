@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { serverHydratedPortfolioFixture } from "../services/portfolioFixtureService";
+import { serverClosedPortfolioFixture, serverHydratedPortfolioFixture } from "../services/portfolioFixtureService";
 
 describe("portfolio fixture service", () => {
   test("builds a deterministic server-hydrated Portfolio proof state", () => {
@@ -26,6 +26,29 @@ describe("portfolio fixture service", () => {
           id: "server-world-cup-winner-France-opened",
           action: "opened",
           timestamp: "Server synced",
+        },
+      ],
+    });
+  });
+
+  test("builds a deterministic server-closed Portfolio proof state", () => {
+    const [position] = serverHydratedPortfolioFixture().positions;
+
+    expect(serverClosedPortfolioFixture(position)).toMatchObject({
+      balance: 10255,
+      latestOrder: null,
+      openOrders: [],
+      positions: [],
+      activities: [
+        {
+          id: "server-world-cup-winner-France-server-closed",
+          action: "closed",
+          title: "World Cup winner",
+          outcome: "France",
+          amount: 255,
+          entryAmount: 210,
+          probability: 42,
+          timestamp: "Server close synced",
         },
       ],
     });

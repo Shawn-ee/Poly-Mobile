@@ -1,4 +1,4 @@
-import type { OrderConfirmation, PortfolioActivity } from "../components/Portfolio";
+import type { OrderConfirmation, PortfolioActivity, Position } from "../components/Portfolio";
 import type { LocalPortfolioState } from "./portfolioStateApplyService";
 
 export type PortfolioFixtureState = LocalPortfolioState & {
@@ -35,6 +35,26 @@ export const serverHydratedPortfolioFixture = (): PortfolioFixtureState => ({
       side: "buy",
       probability: 42,
       timestamp: "Server synced",
+    } satisfies PortfolioActivity,
+  ],
+  latestOrder: null,
+});
+
+export const serverClosedPortfolioFixture = (position: Position): PortfolioFixtureState => ({
+  balance: 10255,
+  positions: [],
+  openOrders: [],
+  activities: [
+    {
+      id: `${position.id}-server-closed`,
+      action: "closed",
+      title: position.title,
+      outcome: position.outcome,
+      amount: position.currentValue ?? position.amount,
+      entryAmount: position.amount,
+      side: position.side,
+      probability: position.probability,
+      timestamp: "Server close synced",
     } satisfies PortfolioActivity,
   ],
   latestOrder: null,

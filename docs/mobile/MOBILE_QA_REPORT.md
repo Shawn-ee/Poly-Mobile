@@ -4258,3 +4258,30 @@ Bugs:
 - Second Samsung run proved the visible Portfolio fixture but failed on a below-fold activity timestamp assertion. The final smoke assertion is scoped to the visible server Portfolio proof.
 Visual QA:
 - Passed on Samsung S23 through Expo Go.
+
+### Cycle 194
+
+Date: 2026-07-02
+Device: Samsung S23 via Expo Go plus mobile service unit harness
+Build/run command:
+- `npm.cmd run test:mobile-api`
+- `npm.cmd run typecheck` in `mobile/`
+- `npm.cmd run smoke:samsung:server-close-fixture` in `mobile/`
+Result: Passed. Samsung now proves fixture-backed server close refresh UI.
+Harness evidence:
+- Mobile API/service suite passed with 13 files and 55 tests.
+- Mobile typecheck passed.
+- Samsung smoke passed on `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` through Expo host `172.16.200.14`, port `8151`.
+Screenshot evidence:
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-close-fixture-ready.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-close-fixture-closed.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-close-fixture-ready.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-close-fixture-closed.xml`
+Structured findings:
+- The Samsung proof starts from a synced server Portfolio row, scrolls to `Close position`, taps it, and verifies the authoritative closed state.
+- Closed state shows `Server portfolio synced`, `Open positions` 0, `Closed trades` 1, `No positions yet`, and a closed history row with `Server close synced`.
+- The base and Samsung smoke wrappers now expose `server-close-fixture` commands.
+Bugs:
+- None in final run.
+Visual QA:
+- Passed on Samsung S23 through Expo Go.
