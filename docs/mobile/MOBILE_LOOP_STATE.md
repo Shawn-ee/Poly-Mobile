@@ -7315,8 +7315,8 @@ Technical debt added:
 Technical debt resolved:
 - The loop now has structured credential readiness evidence instead of inferring API-key and DB blockers from separate command output.
 Result: Passed Cycle 156 QA. Credential readiness summary, credential dry-run, mobile typecheck, and mobile API/service tests pass.
-Commit: Pending.
-Merged: Pending local merge into `agent/wc-disc-001-discovery-api-audit`.
+Commit: `2b27ee7` (`Add mobile credential readiness report`).
+Merged: Yes, locally merged into `agent/wc-disc-001-discovery-api-audit` at `c878f6e`.
 Next cycle: Cycle 157 should continue backend-facing readiness or add another Samsung proof, then write the next heartbeat after completion.
 Harnesses run:
 - Mobile Credential Readiness Harness
