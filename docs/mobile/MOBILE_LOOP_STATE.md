@@ -4,11 +4,11 @@ Current mission: Build Holiwyn, a World Cup-first sports prediction and trading 
 
 Current phase: Autonomous mobile product development in verified cycles.
 
-Latest verified cycle: Cycle 283 added APK artifact build-lane diagnosis. Current Definition of Done sweep result is 9 verified, 1 partial, and 0 blocked; Holiwyn is close, but not ready to declare final mission complete until an actual APK is available for the Samsung APK lane.
+Latest verified cycle: Cycle 284 produced and proved a Samsung-installable APK. Current Definition of Done sweep result is 10 verified, 0 partial, and 0 blocked; Holiwyn is ready to declare the documented mobile Definition of Done complete.
 
 Next milestone path:
 
-Milestone path status: A, B, C, and D have completed. Final QA/review signoff has passed. Samsung S23 is now the documented active Android runtime proof target. The APK lane now has explicit artifact-readiness evidence; the final sweep does not declare the mission done because actual APK availability remains partial.
+Milestone path status: A, B, C, and D have completed. Final QA/review signoff has passed. Samsung S23 is now the documented active Android runtime proof target. The APK lane now builds locally, installs on Samsung, launches Holiwyn, verifies foreground focus, and fails on crash dialogs.
 
 ## Heartbeat: Cycles 281-283
 
@@ -67,6 +67,56 @@ When stuck, run the Recovery Harness. The Lead Agent should ask Audit Agent or R
 Every three completed cycles, add a heartbeat summary.
 
 ## Cycle Template
+
+### Cycle 284
+
+Date: 2026-07-02
+Branch: mobile/cycle-284-local-apk-build-attempt
+Goal: Close the final APK Definition of Done partial by producing a local Android APK, installing it on Samsung, and proving the APK launches without a crash dialog.
+Reference app screens observed: None; this was a Holiwyn APK build/proof cycle.
+Holiwyn screens changed: None.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/android/`, `mobile/package.json`, `mobile/package-lock.json`, `mobile/scripts/samsung-apk-smoke.ps1`, `scripts/mobile_definition_of_done_sweep.ts`, `scripts/mobile_final_qa_review_signoff.ts`, `docs/mobile/`.
+Build artifact: `mobile/dist/holiwyn-preview.apk` was produced locally and is intentionally ignored by git.
+Tests run:
+- `cmd /c npx.cmd expo prebuild --platform android --no-install` in `mobile/`.
+- `cmd /c gradlew.bat assembleRelease` in `mobile/android/` failed first on Windows native codegen path length with new architecture enabled.
+- `cmd /c gradlew.bat clean assembleRelease` in `mobile/android/` passed after disabling new architecture and pinning `expo-font` to `~14.0.12`.
+- `cmd /c npm.cmd run smoke:samsung:apk` in `mobile/`.
+- `cmd /c npm.cmd run mobile:android-apk-artifact-readiness`.
+- `cmd /c npm.cmd run mobile:definition-of-done-sweep`.
+- `cmd /c npm.cmd run mobile:final-qa-review-signoff`.
+- `cmd /c npm.cmd run test:mobile-api`.
+- `cmd /c npm.cmd run typecheck` in `mobile/`.
+Screenshots captured:
+- `docs/mobile/screenshots/cycle-current-holiwyn-apk-running.png`.
+Harness evidence:
+- `docs/mobile/harness/cycle-current-samsung-apk-smoke.json`.
+- `docs/mobile/harness/cycle-current-android-apk-artifact-readiness.json`.
+- `docs/mobile/harness/cycle-current-holiwyn-apk-running.xml`.
+Bugs found:
+- The first APK launched into an Android "Holiwyn keeps stopping" dialog because root `expo-font` resolved to `57.0.0` while Expo SDK 54 uses `expo-modules-core@3.0.30`; pinning `expo-font` to `~14.0.12` fixed the launch crash.
+- The old APK smoke harness marked launch as passed before checking for Android crash dialogs; the harness now verifies foreground focus and fails on `Application Error`/`mCrashing=true`.
+Technical debt added:
+- TD-288: The local release APK uses `newArchEnabled=false` as the first stable baseline; a later hardening pass can re-enable new architecture from a shorter path or CI environment.
+- TD-289: The release APK is locally built and unsigned for store distribution; production signing/release-channel setup remains separate from the current Definition of Done.
+Technical debt resolved:
+- TD-286 resolved: `mobile/dist/holiwyn-preview.apk` exists locally.
+- TD-287 resolved for local build: `mobile/android` and Gradle wrapper exist, and local Gradle release assembly succeeds.
+Result: Passed. Updated DoD sweep result: 10 verified, 0 partial, 0 blocked; ready to declare the documented mobile Definition of Done complete.
+Commit: cycle branch HEAD (`Build and prove Samsung APK artifact`)
+Merged: Pending local merge after commit.
+Next cycle: Optional post-DoD hardening: production signing, CI/EAS build path, and new-architecture re-enable investigation.
+Harnesses run:
+- Local APK Build Harness
+- APK Artifact Readiness Harness
+- Samsung APK Smoke Harness
+- Final QA/Review Signoff Harness
+- Definition of Done Sweep Harness
+- Mobile API Test Harness
+- Typecheck Harness
+Harness failures: First release build hit Windows path length with new architecture; first APK smoke exposed `expo-font` crash. Both were fixed and rerun successfully.
 
 ### Cycle 283
 

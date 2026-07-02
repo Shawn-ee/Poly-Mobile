@@ -69,7 +69,7 @@ const summary = {
   reviewSignoff: unresolvedP0Gaps.length === 0 ? "pass" : "fail",
   evidence,
   residualRisks: [
-    "Samsung APK smoke is ready but blocked until dist/holiwyn-preview.apk exists.",
+    "Samsung APK smoke now installs and launches dist/holiwyn-preview.apk; future production signing/release-channel hardening remains separate.",
     "Emulator reliability remains partial in this workstation environment; Samsung is the stronger QA target.",
     "Deposit, withdraw, and EBPay remain intentionally out of scope.",
   ],
@@ -93,7 +93,7 @@ Required evidence reviewed:
 - Feature gap tracker: ${evidence.gapTracker}
 - Samsung backend server-order proof: ${evidence.samsungServerOrder}
 - Android dev-build readiness: ${evidence.androidReadiness}
-- Samsung APK smoke blocker evidence: ${evidence.samsungApkSmoke}
+- Samsung APK smoke install/launch evidence: ${evidence.samsungApkSmoke}
 - Mobile API regression: ${evidence.mobileApiTests}
 - Mobile TypeScript check: ${evidence.mobileTypecheck}
 
@@ -112,7 +112,7 @@ Review conclusion:
 
 - No unresolved P0 feature gaps were found in ${gapTrackerPath}.
 - The latest Samsung server-order proof verifies the core backend trading path: backend position, quote-backed ticket, real server BUY order, and Portfolio open order.
-- The APK lane is prepared but cannot install until an APK artifact exists.
+- The APK lane installs and launches on Samsung with foreground/crash-dialog verification.
 - The app must not be declared production-ready for real-money payments; EBPay, deposit, and withdraw remain intentionally deferred.
 
 Unresolved P0 gaps:

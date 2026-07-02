@@ -20,6 +20,8 @@ Status:
 
 | ID | Area | Feature | Priority | Reference Observed | Holiwyn Status | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| GAP-298 | Android APK | Samsung APK install/launch proof | P1 | No | Verified | Cycle 284 builds `mobile/dist/holiwyn-preview.apk`, installs it on Samsung S23, launches `com.holiwyn.mobile`, verifies foreground focus, and hardens the smoke harness to fail on Android crash dialogs. |
+| GAP-297 | Android APK | Local native Android build lane | P1 | No | Verified | Cycle 284 generates `mobile/android`, disables new architecture for the baseline release APK to avoid Windows native codegen path failures, pins `expo-font` to the SDK-compatible 14.0.12 version, and produces a local release APK. |
 | GAP-296 | Harness | APK artifact build-lane diagnosis | P1 | No | Verified | Cycle 283 adds an APK artifact readiness harness that proves app/build config, Android SDK, platform-tools, Java, APK file presence, EAS CLI availability, native Android project presence, and Gradle wrapper availability; current blocker remains `apk_missing` plus unavailable EAS/native build lane. |
 | GAP-295 | Harness | Android runtime DoD reconciliation | P1 | No | Verified | Cycle 282 reconciles the DoD with the user-approved Samsung-first QA strategy, treating Samsung S23 as the active Android runtime proof target; the DoD sweep is now 9 verified, 1 partial, 0 blocked. |
 | GAP-294 | Harness | Final QA/review signoff | P1 | No | Verified | Cycle 281 adds final QA/review signoff artifacts, audits 54 P0 gaps as verified with zero unresolved P0 gaps, and updates the Definition of Done sweep to 8 verified, 2 partial, 0 blocked. |

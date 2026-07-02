@@ -40,19 +40,24 @@ const evidence = {
 
 const readJson = <T,>(file: string): T | null => {
   try {
-    return JSON.parse(fs.readFileSync(path.resolve(file), "utf8")) as T;
+    return JSON.parse(fs.readFileSync(path.resolve(file), "utf8").replace(/^\uFEFF/, "")) as T;
   } catch {
     return null;
   }
 };
 
 const finalSignoff = readJson<{ qaSignoff?: string; reviewSignoff?: string; unresolvedP0GapCount?: number }>(evidence.finalSignoff);
+const samsungApkSmoke = readJson<{ ready?: boolean; status?: string; blocker?: string }>(evidence.samsungApk);
 const hasPassingFinalSignoff =
   finalSignoff?.qaSignoff === "pass" &&
   finalSignoff.reviewSignoff === "pass" &&
   finalSignoff.unresolvedP0GapCount === 0 &&
   exists(evidence.finalQaSignoff) &&
   exists(evidence.finalReviewSignoff);
+const hasPassingSamsungApkSmoke =
+  samsungApkSmoke?.ready === true &&
+  samsungApkSmoke.status === "installed_and_launched" &&
+  !samsungApkSmoke.blocker;
 
 const criteria: Criterion[] = [
   {
@@ -123,9 +128,11 @@ const criteria: Criterion[] = [
   {
     id: "dod-apk-lane",
     criterion: "Samsung QA is moving off Expo Go toward dev build/APK.",
-    status: exists(evidence.samsungApk) ? "partial" : "blocked",
+    status: hasPassingSamsungApkSmoke ? "verified" : exists(evidence.samsungApk) ? "partial" : "blocked",
     evidence: [evidence.androidReadiness, evidence.androidApkArtifactReadiness, evidence.samsungApk],
-    notes: "APK install/launch harness exists and artifact-readiness evidence identifies the remaining apk_missing build artifact blocker.",
+    notes: hasPassingSamsungApkSmoke
+      ? "APK artifact exists and the Samsung APK smoke installed, launched, verified foreground focus, and found no crash dialog."
+      : "APK install/launch harness exists and artifact-readiness evidence identifies the remaining apk_missing build artifact blocker.",
   },
 ];
 
@@ -148,7 +155,7 @@ const summary = {
     ? ["Declare mobile Definition of Done complete."]
     : [
         ...(hasPassingFinalSignoff ? [] : ["Run a final QA/review signoff pass and close or explicitly downgrade remaining P0 debt."]),
-        "Generate or provide dist/holiwyn-preview.apk, then run npm run smoke:samsung:apk.",
+        ...(hasPassingSamsungApkSmoke ? [] : ["Generate or provide dist/holiwyn-preview.apk, then run npm run smoke:samsung:apk."]),
         "Keep Samsung server-order proof as the main real-device trading regression until the APK lane exists.",
       ],
 };
