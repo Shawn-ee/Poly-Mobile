@@ -32,6 +32,7 @@ param(
   [switch]$ServerCloseFixture,
   [switch]$ServerPositionTrade,
   [switch]$ServerPositionBuyTrade,
+  [switch]$ServerPositionFallbackTrade,
   [switch]$ServerPositionDetails,
   [switch]$SellTicket,
   [switch]$Account,
@@ -328,7 +329,7 @@ try {
   $previousApiBaseUrl = $env:EXPO_PUBLIC_API_BASE_URL
   $previousApiKey = $env:EXPO_PUBLIC_API_KEY
   $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT = "1"
-  if ($ServerUnavailable -or $ServerOrderFailure -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails -or $AccountProfileSyncError) {
+  if ($ServerUnavailable -or $ServerOrderFailure -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionDetails -or $AccountProfileSyncError) {
     $env:EXPO_PUBLIC_ORDER_MODE = "server"
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
     $env:EXPO_PUBLIC_API_KEY = "pk_test_mobile_harness"
@@ -343,12 +344,12 @@ try {
     }
   }
   $expoArgs = @("expo", "start", "--port", "$Port", "--offline")
-  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary) {
+  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
   Wait-ExpoReady -Port $Port
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://${ExpoHost}:$Port/--/?forceOrderFailure=1"
@@ -370,6 +371,8 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerPortfolioFixture=1"
   } elseif ($ServerPositionBuyTrade) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerPortfolioFixture=1"
+  } elseif ($ServerPositionFallbackTrade) {
+    "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerPortfolioFallbackFixture=1"
   } elseif ($ServerPositionDetails) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerPortfolioFixture=1"
   } elseif ($OpenSellOrderCancel) {
@@ -446,6 +449,8 @@ try {
     @("Trading mode: Server mode", "Best bid", "Best ask", "Spread", "Fake balance")
   } elseif ($ServerFilledTradeHistory) {
     @("Portfolio", "Server portfolio synced", "Recent activity")
+  } elseif ($ServerPositionFallbackTrade) {
+    @("Portfolio", "Server portfolio synced", "Open positions", "1", "World Cup backend proof", "SERVER - Buy - YES - 42%")
   } elseif ($ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionDetails) {
     @("Portfolio", "Server portfolio synced", "Open positions", "1", "World Cup winner", "SERVER - Buy - France - 42%")
   } elseif ($SearchQuery -or $SearchClearQuery) {
@@ -623,6 +628,26 @@ try {
       Start-Sleep -Seconds 1
       $serverPositionBuyTradeButtonHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-buy-trade-ticket-button.xml"
       Assert-HierarchyContains -Path $serverPositionBuyTradeButtonHierarchy -Expected @("place-mock-order", "Place buy order")
+      return
+    }
+
+    if ($ServerPositionFallbackTrade) {
+      Save-Screenshot -Name "cycle-current-holiwyn-server-position-fallback-trade-ready.png"
+      & $adb -s $Device shell input swipe 540 1750 540 850 450 | Out-Null
+      & $adb -s $Device shell input swipe 540 1750 540 850 450 | Out-Null
+      Start-Sleep -Seconds 1
+      $serverPositionFallbackTradeReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-fallback-trade-ready.xml"
+      Assert-HierarchyContains -Path $serverPositionFallbackTradeReadyHierarchy -Expected @("World Cup backend proof", "SERVER - Buy - YES - 42%", "Buy", "Sell", "Close position")
+      Invoke-TapHierarchyNode -Path $serverPositionFallbackTradeReadyHierarchy -Identifier "position-trade-buy-" -StartsWith
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-server-position-fallback-trade-ticket.png"
+      $serverPositionFallbackTradeTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-fallback-trade-ticket.xml"
+      Assert-HierarchyContains -Path $serverPositionFallbackTradeTicketHierarchy -Expected @("World Cup backend proof", "YES", "Trading mode: Server mode", "Buy", "Estimated cost", "Est. shares", "Avg price")
+      Assert-ServerTicketUsesQuotedDepthSizes -Path $serverPositionFallbackTradeTicketHierarchy
+      & $adb -s $Device shell input swipe 540 1850 540 950 450 | Out-Null
+      Start-Sleep -Seconds 1
+      $serverPositionFallbackTradeButtonHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-fallback-trade-ticket-button.xml"
+      Assert-HierarchyContains -Path $serverPositionFallbackTradeButtonHierarchy -Expected @("place-mock-order", "Place buy order")
       return
     }
 

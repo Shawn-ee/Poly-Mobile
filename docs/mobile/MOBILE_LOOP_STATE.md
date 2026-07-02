@@ -10118,6 +10118,30 @@ Evidence:
 Commit: 341ad7f
 Merge: 8623cde
 
+### Cycle 276
+
+Date: 2026-07-02
+Branch: mobile/cycle-276-backend-only-position-device-proof
+Status: Verified; pending local merge.
+Objective: Prove the backend-only Portfolio position fallback opens a quoted server ticket on Samsung.
+Implemented:
+- Added `serverBackendOnlyPortfolioFixture` with a backend-only World Cup proof position carrying 47%/50% depth and 1k/2.5k share sizes.
+- Added `forceServerPortfolioFallbackFixture=1` launch handling.
+- Added `ServerPositionFallbackTrade` support to smoke harnesses and a `smoke:samsung:server-position-fallback-trade` command.
+- The Samsung proof opens Portfolio, scrolls to the backend-only position, taps Buy, asserts quoted ticket depth, scrolls the ticket, and verifies the buy order button.
+Verification:
+- `npm.cmd run typecheck` passed in `mobile/`.
+- `npm.cmd run test:mobile-api` passed with 16 files and 72 tests.
+- `npm.cmd run smoke:samsung:server-position-fallback-trade` passed on Samsung S23 with Expo host `172.16.200.14` and port `8174`.
+Evidence:
+- `docs/mobile/harness/cycle-current-holiwyn-server-position-fallback-trade-ready.xml`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-position-fallback-trade-ticket.xml` shows `Best bid 0.47 USDT (1k shares) - Best ask 0.50 USDT (2.5k shares) - Spread 3c`.
+- `docs/mobile/harness/cycle-current-holiwyn-server-position-fallback-trade-ticket-button.xml`.
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-position-fallback-trade-ticket.png`.
+Result: Passed Cycle 276 QA. Backend-only Portfolio positions are now device-proven to open quoted server trade tickets.
+Commit: pending.
+Merge: pending.
+
 ### Cycle 275
 
 Date: 2026-07-02
@@ -11122,6 +11146,17 @@ Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo G
 Open blockers: None for autonomous progress.
 Risks: Repeated proof runs still mutate the local database and create many proof users/orders; future harnesses should continue using isolated usernames and summary metadata, and eventually move to disposable per-cycle markets or database snapshots.
 Next three likely cycles: add richer open-order/orderbook depth parity, add proof cleanup or disposable market isolation, and continue World Cup event detail/trading parity.
+
+### Heartbeat After Cycle 276
+
+Completed cycles: 274, 275, 276.
+Verified progress: Backend Portfolio quote depth now has a live API-key-authenticated proof, mobile Portfolio positions can build fallback trade tickets for backend-only markets, and Samsung verifies that backend-only positions open quoted server tickets with preserved depth.
+Current app state: Android-first Expo prototype with World Cup home/live/detail/ticket/Portfolio/search/account/localization flows, fake-token trading, Samsung real-device QA, server quote/order/Portfolio sync, server open-order cancel, server position re-trade tickets, backend-backed quote depth, and backend-only Portfolio ticket fallback.
+Current backend state: Local Docker/Postgres backend supports mobile API-key Portfolio/profile/order flows, canonical order create/cancel, matching, complete-set minting for disposable dev proofs, canceled-order history, recent-trade history, deterministic fill/open-order liquidity harnesses, and live Portfolio quote-depth proof state.
+Device strategy: Samsung S23 remains the active Holiwyn QA target through Expo Go. Emulator remains fallback only. Preview APK/dev-client remains the longer-term stable lane.
+Open blockers: None for autonomous progress.
+Risks: Backend-only fallback tickets can open from Portfolio, but placing live orders from that fallback proof path still needs a dedicated server order submission proof. Proof runs continue to create disposable users/markets and should later get cleanup tooling.
+Next three likely cycles: add fallback-ticket order submission proof, add disposable proof cleanup, and broaden Event Detail server quote parity.
 
 ### Heartbeat After Cycle 273
 

@@ -44,6 +44,45 @@ export const serverHydratedPortfolioFixture = (): PortfolioFixtureState => ({
   latestOrder: null,
 });
 
+export const serverBackendOnlyPortfolioFixture = (): PortfolioFixtureState => ({
+  balance: 10000,
+  positions: [
+    {
+      id: "server-backend-proof-YES",
+      mode: "server",
+      marketId: "backend-proof-market",
+      outcomeId: "backend-proof-yes",
+      title: "World Cup backend proof",
+      outcome: "YES",
+      side: "buy",
+      amount: 210,
+      probability: 42,
+      shares: 500,
+      currentPrice: 0.485,
+      bestBid: 47,
+      bestAsk: 50,
+      bestBidSize: 1000,
+      bestAskSize: 2500,
+      currentValue: 242.5,
+      pnl: 32.5,
+    },
+  ],
+  openOrders: [],
+  activities: [
+    {
+      id: "server-backend-proof-YES-opened",
+      action: "opened",
+      title: "World Cup backend proof",
+      outcome: "YES",
+      amount: 210,
+      side: "buy",
+      probability: 42,
+      timestamp: "Server synced",
+    } satisfies PortfolioActivity,
+  ],
+  latestOrder: null,
+});
+
 export const serverClosedPortfolioFixture = (position: Position): PortfolioFixtureState => ({
   balance: 10255,
   positions: [],
