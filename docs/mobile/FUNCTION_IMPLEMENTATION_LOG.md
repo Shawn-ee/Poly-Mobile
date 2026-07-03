@@ -322,3 +322,43 @@ Known limitations:
 - Polymarket signed-in Portfolio could not be referenced because native and web were gated.
 - Server-mode Portfolio proof should receive its own same-cycle audit gate later.
 - Deeper position Buy/Sell/Close ticket transitions remain a later focused cycle.
+
+## Cycle AB - Search/Explore
+
+Feature/page worked on:
+
+- Focused Search/Explore discovery, filter, sort, typed-query retention, and result navigation.
+
+Frontend components touched:
+
+- `mobile/src/components/SearchScreen.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+Important functions/services touched:
+
+- `SearchScreen()` now renders an Explore-style Search page with category chips, dense result rows, a floating Filter pill, and an in-page filter panel.
+- `SearchSort` smoke now proves Explore layout, Filter panel open/close, live-first sort, and result-row navigation.
+- `smoke-tablet.ps1` now exposes `-SearchSort` for Samsung tablet proof.
+
+User interactions supported:
+
+- Tap bottom Search tab.
+- View dense World Cup market rows with sport/category, title, volume/today/liquidity, chat/end metadata, right-side probability/outcome, save control, and chevron.
+- Open a floating Filter panel and change status/sort criteria.
+- Sort live markets first.
+- Tap a result row and open the correct game page.
+- Use existing typed query and clear behavior.
+
+State transitions:
+
+- `mainTab: home -> search`.
+- `isFilterSheetOpen: false -> true -> false`.
+- `sort: popular -> live`.
+- `selectedEvent: null -> france-argentina-final` after tapping a result row.
+
+Known limitations:
+
+- Polymarket native Search could not be referenced because the S23 native app is location-gated.
+- Polymarket global categories are broader than Holiwyn's World Cup-only scope.
+- Holiwyn filter facets are baseline Status/Sort controls; richer discovered facets remain later P1 work.

@@ -15,7 +15,8 @@ param(
   [switch]$WholeAppNavDiscovery,
   [switch]$FutureCardStats,
   [switch]$FutureChartRange,
-  [switch]$FutureListTrade
+  [switch]$FutureListTrade,
+  [switch]$SearchSort
 )
 
 $ErrorActionPreference = "Stop"
@@ -83,6 +84,8 @@ if ($EventDetailTrade) {
   & "$PSScriptRoot\smoke.ps1" -Deep -FutureChartRange -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($FutureListTrade) {
   & "$PSScriptRoot\smoke.ps1" -Deep -FutureListTrade -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
+} elseif ($SearchSort) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -SearchSort -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } else {
   & "$PSScriptRoot\smoke.ps1" -Deep -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 }

@@ -11802,6 +11802,24 @@ Open blockers: None for autonomous progress.
 Risks: Remaining P0 gaps are still significant: Player Props rows, Polymarket-style ticket overlay, real Chat tab, book/share behavior, lower Market Rules/More Events, full-page scroll proof, and final independent audit.
 Next three likely cycles: add Player Props and lower rules/events, upgrade ticket parity, then build the real Chat tab and final full-page Samsung audit.
 
+### Cycle AB - Search/Explore
+
+Goal: Apply the Polymarket-reference audit gate to focused Search/Explore discovery.
+
+Lead Agent target: make Holiwyn Search materially closer to Polymarket mobile Search/Explore with dense rows, category chips, active Filter, sorting, query support, and result navigation.
+
+Reference audit: Samsung S23 native Polymarket app remained location-gated, so same-cycle reference used Polymarket mobile web Search/Explore on the S23. Evidence saved under `docs/mobile/reference/screenshots/cycle-AB-polymarket-*`.
+
+Holiwyn screens changed: Search now renders an Explore-style World Cup prediction page with horizontal categories, typed search field, dense market rows, right-side probability/outcome, floating Filter pill, filter panel, and live-first sort.
+
+Backend/API changed: No backend route changed. Documentation now records that production Search should likely become a ranked discovery/search endpoint with server-provided facets, row metrics, localized aliases, and pagination.
+
+Verification: `npm run typecheck` passed; `powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -SearchSort -Port 8203` passed on Samsung tablet, including filter panel, sorting, and result navigation into `France vs. Argentina`.
+
+Audit Gate: Pass for focused Search/Explore P0 baseline, with 0 unresolved P0 gaps. P1 gaps remain for native Polymarket Search recapture after location gate, richer global facets/categories, and phone-portrait dev-build proof.
+
+Next likely cycle: Account/settings/profile parity, unless Lead Agent prioritizes chart behavior or market-page depth next.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
