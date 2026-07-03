@@ -42,6 +42,7 @@ These apply to every page, feature, button, and interaction:
 | Event page top shell | `docs/mobile/audits/event-page-top-shell.md` | Verified for Cycle U focused P0 | P1/P2 deferred in focused audit | Pass |
 | Futures market rows | `docs/mobile/audits/futures-market-rows.md` | Verified for Cycle V focused P0 | P1/P2 deferred in focused audit | Pass |
 | Futures chart range | `docs/mobile/audits/futures-chart-range.md` | Verified for Cycle W focused P0 | P1/P2 deferred in focused audit | Pass |
+| Match market tabs/cards | `docs/mobile/audits/match-market-tabs-cards.md` | Verified for Cycle X focused P0 | P1/P2 deferred in focused audit | Pass |
 | Navigation | `docs/mobile/audits/navigation.md` | Verified for Cycle T P0 | P1/P2 deferred in focused audit | Pass |
 
 ## Required Special Coverage

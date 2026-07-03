@@ -72,6 +72,62 @@ Decision:
 - Remaining P1/P2 gaps: native share parity, World Cup-specific reference recapture, density/animation polish.
 - Next cycle required: yes, continue full Market/Event page parity; do not claim full event page complete from this focused pass.
 
+## Feature: Match Market Tabs And Cards
+
+Cycle: X
+
+Lead Agent target: match-specific market tabs and first cards.
+
+Reference Audit Agent: same-cycle Samsung S23 Polymarket mobile web audit.
+
+Implementation Agent: Holiwyn EventDetail market tabs/cards.
+
+Audit Gate Agent: Samsung tablet Holiwyn proof against criteria.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket mobile web.
+
+Reference route/URL: `https://polymarket.com/event/fifwc-usa-bel-2026-07-06-first-to-score`.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-X-polymarket-bel-usa-*`
+- `docs/mobile/audits/match-market-tabs-cards.md`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-game-lines.png`
+- `docs/mobile/harness/cycle-current-holiwyn-market-tabs-game-lines.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-market-tabs-graph.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-exact-score.png`
+- `docs/mobile/harness/cycle-current-holiwyn-market-tabs-exact-score.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-halves.png`
+- `docs/mobile/harness/cycle-current-holiwyn-market-tabs-halves.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| MMTC-P0-01 | P0 | Pass | `cycle-current-holiwyn-market-tabs-game-lines.xml` | None |
+| MMTC-P0-02 | P0 | Pass | `cycle-current-holiwyn-market-tabs-game-lines.xml` | None |
+| MMTC-P0-03 | P0 | Pass | `cycle-current-holiwyn-market-tabs-game-lines.xml` | None |
+| MMTC-P0-04 | P0 | Pass | `cycle-current-holiwyn-market-tabs-game-lines.xml` | None |
+| MMTC-P0-05 | P0 | Pass | `cycle-current-holiwyn-market-tabs-graph.xml` | None |
+| MMTC-P0-06 | P0 | Pass | `cycle-current-holiwyn-market-tabs-exact-score.xml` | None |
+| MMTC-P0-07 | P0 | Pass | `cycle-current-holiwyn-market-tabs-halves.xml` | None |
+
+Decision:
+
+- Pass/fail: Pass for focused match market tabs/cards.
+- Unresolved P0 gaps: 0 for this focused scope.
+- Remaining P1/P2 gaps: Live Stats tab, backend-backed market groups/depth/history, exact visual polish.
+- Next cycle required: yes. Continue full game-page parity; do not mark whole game page complete from this focused pass.
+
 ## Gate Report Template
 
 Use this template for every feature gate:

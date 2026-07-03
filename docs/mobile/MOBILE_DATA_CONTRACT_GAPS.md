@@ -131,3 +131,42 @@ Temporary mock/static data:
 Future migration concern:
 
 - Once real history is available, local chart geometry should be replaced by adapter-driven series rendering and tested with empty/no-history and suspended-market states.
+
+## Cycle X - Match Market Tabs And Cards
+
+Fields Holiwyn needs but backend does not provide yet:
+
+- Explicit event market tab metadata, including tab id, label, order, enabled/empty state, and market group ids.
+- Card-level market group type, for example `team_to_advance`, `moneyline_reg_time`, `exact_score`, and `halves`.
+- Card-level volume distinct from event-level volume.
+- Outcome button display price in cents and, where applicable, separate yes/no sides.
+- Market-depth rows with price, shares, and total for each card/outcome.
+- Card-level historical graph series for `Order Book`/`Graph` detail views.
+- Exact-score outcome catalog and ordering.
+- Half-market grouping and display ordering.
+- Match-level `Live stats` payload.
+
+Fields backend provides but mobile ignores:
+
+- Unknown for this cycle; the focused proof used local/fallback event data.
+
+Schema mismatch:
+
+- Mobile currently derives Team to Advance from the primary event outcomes rather than a backend-declared market card.
+- Mobile renders exact score and halves from local/fallback structures rather than a general market-group schema.
+- Inline Order Book and Graph are UI states without a backend depth/history payload.
+
+Route mismatch:
+
+- `/api/events/:slug` is the likely home for grouped market discovery, but it needs richer nested market/card metadata.
+- Future depth/history may need dedicated routes such as `/api/markets/:id/book` and `/api/markets/:id/history?range=1D`, or nested depth/history snapshots in the event detail response.
+
+Temporary mock/static data:
+
+- Team to Advance card volume is static display copy.
+- Inline order-book rows and inline graph content are deterministic local values.
+- Exact-score rows are local examples.
+
+Future migration concern:
+
+- Once backend market groups exist, EventDetail should render tab/card sections from server-provided group metadata instead of hardcoded local sections.

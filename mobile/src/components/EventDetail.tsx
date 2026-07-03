@@ -164,7 +164,8 @@ export function EventDetail({
   closePosition?: (position: Position) => void;
   openPositionTrade?: (position: Position, side: "buy" | "sell") => void;
 }) {
-  const [activeTab, setActiveTab] = useState<"game-lines" | "player-props">("game-lines");
+  const [activeTab, setActiveTab] = useState<"game-lines" | "exact-score" | "halves" | "player-props">("game-lines");
+  const [activeLineDetailTab, setActiveLineDetailTab] = useState<"order-book" | "graph" | "about">("order-book");
   const [activeHeaderTab, setActiveHeaderTab] = useState<"game" | "chat">("game");
   const [chartFilter, setChartFilter] = useState<ChartFilter>("Game");
   const [spreadPeriod, setSpreadPeriod] = useState<LinePeriod>("Reg. Time");
@@ -370,6 +371,124 @@ export function EventDetail({
   const toggleGroup = (id: string) => {
     setExpandedMarketIds((current) => ({ ...current, [id]: !current[id] }));
   };
+
+  const renderMarketTabs = () => (
+    <View accessibilityLabel="event-detail-market-tabs" style={styles.marketTabs} testID="event-detail-market-tabs">
+      {[
+        { id: "game-lines", label: "Game Lines" },
+        { id: "exact-score", label: "Exact Score" },
+        { id: "halves", label: "Halves" },
+        { id: "player-props", label: "Player Props" },
+      ].map((tab) => (
+        <Pressable
+          accessibilityLabel={`event-detail-${tab.id}-tab`}
+          key={tab.id}
+          onPress={() => setActiveTab(tab.id as typeof activeTab)}
+          style={[styles.marketTab, activeTab === tab.id && styles.marketTabActive]}
+          testID={`event-detail-${tab.id}-tab`}
+        >
+          <Text style={[styles.marketTabText, activeTab === tab.id && styles.marketTabTextActive]}>{tab.label}</Text>
+        </Pressable>
+      ))}
+    </View>
+  );
+
+  const renderTeamToAdvanceCard = () => {
+    if (!primaryMarket) return null;
+    return (
+      <View accessibilityLabel="event-detail-team-to-advance-card" style={styles.polymarketLineCard} testID="event-detail-team-to-advance-card">
+        <View style={styles.marketTitleBlock}>
+          <View style={styles.lineCardTitleRow}>
+            <Text style={styles.marketTitle}>Team to Advance</Text>
+            <Ionicons name="information-circle-outline" color="#64748b" size={19} />
+          </View>
+          <Text style={styles.marketSubcopy}>$60.9K Vol.</Text>
+        </View>
+        <View style={styles.lineOutcomeButtonRow}>
+          {primaryOutcomes.map((outcome, index) => (
+            <Pressable
+              accessibilityLabel={`event-detail-team-advance-${outcome.id}`}
+              key={outcome.id}
+              onPress={() => openTicket(primaryMarket, outcome, event, defaultSide, { marketType: "winner", displayLabel: "Team to Advance" })}
+              style={styles.lineOutcomeButton}
+              testID={`event-detail-team-advance-${outcome.id}`}
+            >
+              <Text style={styles.lineOutcomeButtonText}>{teamCode(outcome.label)} {index === 0 ? "52¢" : "49¢"}</Text>
+            </Pressable>
+          ))}
+        </View>
+        <View accessibilityLabel="event-detail-line-detail-tabs" style={styles.lineDetailTabs} testID="event-detail-line-detail-tabs">
+          {[
+            { id: "order-book", label: "Order Book" },
+            { id: "graph", label: "Graph" },
+            { id: "about", label: "About" },
+          ].map((tab) => (
+            <Pressable
+              accessibilityLabel={`event-detail-line-detail-${tab.id}`}
+              key={tab.id}
+              onPress={() => setActiveLineDetailTab(tab.id as typeof activeLineDetailTab)}
+              style={styles.lineDetailTab}
+              testID={`event-detail-line-detail-${tab.id}`}
+            >
+              <Text style={[styles.lineDetailTabText, activeLineDetailTab === tab.id && styles.lineDetailTabTextActive]}>{tab.label}</Text>
+            </Pressable>
+          ))}
+          <Ionicons name="cash-outline" color="#fbbf24" size={22} />
+          <Ionicons name="gift-outline" color="#94a3b8" size={22} />
+          <Ionicons name="swap-horizontal-outline" color="#94a3b8" size={22} />
+          <Ionicons name="refresh-outline" color="#94a3b8" size={22} />
+        </View>
+        {activeLineDetailTab === "order-book" ? (
+          <View accessibilityLabel="event-detail-inline-order-book" style={styles.inlineOrderBook} testID="event-detail-inline-order-book">
+            <View style={styles.inlineOrderBookHeader}>
+              <Text style={styles.inlineBookHeaderText}>PRICE</Text>
+              <Text style={styles.inlineBookHeaderText}>SHARES</Text>
+              <Text style={styles.inlineBookHeaderText}>TOTAL</Text>
+            </View>
+            {[55, 54].map((price, index) => (
+              <View key={price} style={styles.inlineBookRow}>
+                <Text style={styles.inlineBookPrice}>{price}¢</Text>
+                <Text style={styles.inlineBookText}>{index === 0 ? "8,070.50" : "246,972.30"}</Text>
+                <Text style={styles.inlineBookText}>{index === 0 ? "$293,440.88" : "$289,002.10"}</Text>
+              </View>
+            ))}
+          </View>
+        ) : activeLineDetailTab === "graph" ? (
+          <View accessibilityLabel="event-detail-inline-graph" style={styles.inlineGraph} testID="event-detail-inline-graph">
+            <View style={styles.inlineGraphLine} />
+            <Text style={styles.inlineGraphText}>Line movement for Team to Advance</Text>
+          </View>
+        ) : (
+          <View accessibilityLabel="event-detail-inline-about" style={styles.inlineAbout} testID="event-detail-inline-about">
+            <Text style={styles.inlineAboutText}>This market resolves to the team that advances from this World Cup matchup.</Text>
+          </View>
+        )}
+      </View>
+    );
+  };
+
+  const renderExactScore = () => (
+    <View accessibilityLabel="event-detail-exact-score" testID="event-detail-exact-score">
+      <View style={styles.polymarketLineCard}>
+        <Text style={styles.marketTitle}>Exact Score</Text>
+        <Text style={styles.marketSubcopy}>Correct score at full time</Text>
+        {["0-0", "1-0", "0-1", "1-1"].map((score, index) => (
+          <View key={score} style={styles.exactScoreRow}>
+            <Text style={styles.exactScoreText}>{score}</Text>
+            <Pressable accessibilityLabel={`event-detail-exact-score-${score}`} style={styles.exactScoreButton} testID={`event-detail-exact-score-${score}`}>
+              <Text style={styles.exactScoreButtonText}>{[11, 14, 13, 16][index]}¢</Text>
+            </Pressable>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+
+  const renderHalves = () => (
+    <View accessibilityLabel="event-detail-halves" testID="event-detail-halves">
+      {gameLineGroups.filter((group) => group.id === "first-half-winner" || group.id === "second-half-winner").map((group) => renderGroup(group))}
+    </View>
+  );
 
   const renderOrderBook = () => {
     if (!primaryMarket) return null;
@@ -861,24 +980,7 @@ export function EventDetail({
           ))}
         </View>
 
-        <View style={styles.marketTabs}>
-          <Pressable
-            accessibilityLabel="event-detail-game-lines-tab"
-            onPress={() => setActiveTab("game-lines")}
-            style={[styles.marketTab, activeTab === "game-lines" && styles.marketTabActive]}
-            testID="event-detail-game-lines-tab"
-          >
-            <Text style={[styles.marketTabText, activeTab === "game-lines" && styles.marketTabTextActive]}>Game Lines</Text>
-          </Pressable>
-          <Pressable
-            accessibilityLabel="event-detail-player-props-tab"
-            onPress={() => setActiveTab("player-props")}
-            style={[styles.marketTab, activeTab === "player-props" && styles.marketTabActive]}
-            testID="event-detail-player-props-tab"
-          >
-            <Text style={[styles.marketTabText, activeTab === "player-props" && styles.marketTabTextActive]}>Player Props</Text>
-          </Pressable>
-        </View>
+        {renderMarketTabs()}
 
         {activeTab === "player-props" ? (
           <View accessibilityLabel="event-detail-player-props" testID="event-detail-player-props">
@@ -943,6 +1045,10 @@ export function EventDetail({
               </View>
             ))}
           </View>
+        ) : activeTab === "exact-score" ? (
+          renderExactScore()
+        ) : activeTab === "halves" ? (
+          renderHalves()
         ) : (
           <View accessibilityLabel="event-detail-game-lines" testID="event-detail-game-lines">
             <View accessibilityLabel="event-detail-stats" style={styles.hiddenStats} testID="event-detail-stats">
@@ -955,6 +1061,7 @@ export function EventDetail({
               <Text style={styles.hiddenStatsText}>{stats.outcomeCount} {t.outcomeCount}</Text>
               {primaryMarket && <Text style={styles.hiddenStatsText}>{label(locale, primaryMarket)}</Text>}
             </View>
+            {renderTeamToAdvanceCard()}
             {primaryMarket && (
               <View style={styles.marketBlock}>
                 <Pressable
@@ -964,8 +1071,8 @@ export function EventDetail({
                   testID={`event-detail-market-toggle-${primaryMarket.id}`}
                 >
                   <View style={styles.marketTitleBlock}>
-                    <Text style={styles.marketTitle}>Regulation Time Winner</Text>
-                    <Text style={styles.marketSubcopy}>90 Minutes Plus Stoppage Time</Text>
+                    <Text style={styles.marketTitle}>Moneyline</Text>
+                    <Text style={styles.marketSubcopy}>Regulation Time Winner · 90 Minutes Plus Stoppage Time</Text>
                   </View>
                   <Ionicons name={expandedMarketIds["regulation-time-winner"] ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
                 </Pressable>
@@ -1190,7 +1297,7 @@ const styles = StyleSheet.create({
   primaryOutcomeButton: { flex: 1, minHeight: 64, alignItems: "center", justifyContent: "center", borderRadius: 16, shadowColor: "#000", shadowOpacity: 0.35, shadowRadius: 8, elevation: 3 },
   primaryOutcomeText: { color: "rgba(255,255,255,0.72)", fontSize: 17, fontWeight: "900" },
   primaryOutcomePercent: { color: "#ffffff", fontSize: 20, fontWeight: "900" },
-  marketTabs: { flexDirection: "row", gap: 28, paddingHorizontal: 24, marginTop: 22, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
+  marketTabs: { flexDirection: "row", gap: 24, paddingHorizontal: 24, marginTop: 22, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   marketTab: { minHeight: 46, justifyContent: "center", borderBottomWidth: 3, borderBottomColor: "transparent" },
   marketTabActive: { borderBottomColor: "#f8fafc" },
   marketTabText: { color: "#6b7280", fontSize: 18, fontWeight: "800" },
@@ -1205,6 +1312,30 @@ const styles = StyleSheet.create({
   marketTitle: { color: "#d1d5db", fontSize: 18, fontWeight: "800" },
   marketSubtitle: { color: "#8b93a3", fontSize: 15, fontWeight: "700", marginTop: 4 },
   marketSubcopy: { color: "#6b7280", fontSize: 14, fontWeight: "700", marginTop: 2 },
+  polymarketLineCard: { marginHorizontal: 24, marginTop: 16, padding: 16, borderRadius: 18, backgroundColor: "#10171f", borderWidth: 1, borderColor: "#26313f" },
+  lineCardTitleRow: { flexDirection: "row", alignItems: "center", gap: 6 },
+  lineOutcomeButtonRow: { flexDirection: "row", gap: 12, marginTop: 16 },
+  lineOutcomeButton: { flex: 1, minHeight: 62, alignItems: "center", justifyContent: "center", borderRadius: 13, backgroundColor: "#25303a", borderBottomWidth: 5, borderBottomColor: "#1c2630" },
+  lineOutcomeButtonText: { color: "#d1d5db", fontSize: 18, fontWeight: "900" },
+  lineDetailTabs: { flexDirection: "row", alignItems: "center", gap: 14, marginTop: 20, paddingTop: 16, borderTopWidth: 1, borderTopColor: "#26313f" },
+  lineDetailTab: { minHeight: 34, justifyContent: "center" },
+  lineDetailTabText: { color: "#7b8494", fontSize: 16, fontWeight: "900" },
+  lineDetailTabTextActive: { color: "#f8fafc" },
+  inlineOrderBook: { marginTop: 10, borderTopWidth: 1, borderTopColor: "#26313f" },
+  inlineOrderBookHeader: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 12 },
+  inlineBookHeaderText: { width: "30%", color: "#7b8494", fontSize: 12, fontWeight: "900", textAlign: "right" },
+  inlineBookRow: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 9, borderTopWidth: 1, borderTopColor: "#172033" },
+  inlineBookPrice: { width: "30%", color: "#ef4444", fontSize: 18, fontWeight: "900", textAlign: "right" },
+  inlineBookText: { width: "30%", color: "#d1d5db", fontSize: 15, fontWeight: "800", textAlign: "right" },
+  inlineGraph: { minHeight: 86, justifyContent: "center", marginTop: 12, borderTopWidth: 1, borderTopColor: "#26313f" },
+  inlineGraphLine: { height: 5, borderRadius: 999, backgroundColor: "#38bdf8", marginHorizontal: 10 },
+  inlineGraphText: { color: "#94a3b8", fontSize: 13, fontWeight: "800", marginTop: 10, textAlign: "center" },
+  inlineAbout: { marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: "#26313f" },
+  inlineAboutText: { color: "#cbd5e1", fontSize: 14, fontWeight: "700", lineHeight: 20 },
+  exactScoreRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", minHeight: 54, borderTopWidth: 1, borderTopColor: "#26313f" },
+  exactScoreText: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
+  exactScoreButton: { minWidth: 116, minHeight: 40, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#25303a" },
+  exactScoreButtonText: { color: "#d1d5db", fontSize: 17, fontWeight: "900" },
   headerRightCluster: { flexDirection: "row", alignItems: "center", gap: 10 },
   lineValuePill: { minWidth: 58, minHeight: 32, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 2, borderRadius: 999, backgroundColor: "#052e1b", paddingHorizontal: 10 },
   lineValueText: { color: "#86efac", fontSize: 14, fontWeight: "900" },
