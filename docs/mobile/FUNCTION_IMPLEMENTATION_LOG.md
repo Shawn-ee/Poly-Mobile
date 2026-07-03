@@ -2,6 +2,54 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle AO - Live Event Detail Backend Contract
+
+Feature/page worked on:
+
+- World Cup live event detail backend/mobile data contract.
+- Live market group, line, outcome-side, depth, chart-history, and live-stat payload wiring.
+
+Frontend components touched:
+
+- `mobile/src/types.ts`
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/__tests__/worldCupAdapter.test.ts`
+
+Backend components touched:
+
+- `src/server/services/marketReadModel.ts`
+- `src/server/services/eventReadModel.ts`
+- `src/__tests__/sports.event-market-model.test.ts`
+
+Important functions/services touched:
+
+- `serializeMarketReadModel()` now emits `marketGroupId`, compact `orderbookDepth`, `liquidity`, and outcome bid/ask sizes from existing orderbook quote data.
+- `serializeEventSummary()` now passes through optional `liveStats` and `chartHistory` arrays from event metadata or `metadata.mobileLiveDetail`.
+- `normalizeMarket()` now preserves backend-shaped live market identity fields: group id, market type, period, line, liquidity, depth, outcome side, and quote sizes.
+- `normalizeEventSummary()` now preserves event-level live stats and chart history for the game page chart/stat panels.
+
+User interactions supported:
+
+- Server-hydrated live game pages can now render grouped live markets and selected line/outcome identity from backend data instead of relying only on local fixture structures.
+- The selected live market/outcome identity can flow from `/api/events/:slug` into the mobile event detail model used by ticket opening.
+
+State transitions:
+
+- No navigation state changed.
+- Data transition improved: backend route payload -> mobile API types -> World Cup adapter -> `EventDetail` render model now keeps live line identity and compact depth.
+
+Known limitations:
+
+- This cycle does not create real provider ingestion for live football stats or chart history.
+- This cycle does not prove live line-market order submission through portfolio/history; that remains PM-GAP-068.
+- Embedded `orderbookDepth` is compact top depth derived from current open orders, not a full Polymarket-style ladder.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/sports.event-market-model.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/worldCupAdapter.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+
 ## Cycle AN - Live Event Detail Structural Parity
 
 Feature/page worked on:

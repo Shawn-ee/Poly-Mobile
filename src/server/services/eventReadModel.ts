@@ -4,6 +4,14 @@ type EventCounts = {
   markets?: number | { markets?: number };
 };
 
+const metadataObject = (value: unknown): Record<string, unknown> =>
+  value && typeof value === "object" && !Array.isArray(value) ? (value as Record<string, unknown>) : {};
+
+const arrayFromMetadata = (metadata: Record<string, unknown>, key: string) => {
+  const value = metadata[key];
+  return Array.isArray(value) ? value : [];
+};
+
 export const serializeEventSummary = (
   event: Pick<
     Event,
@@ -48,10 +56,14 @@ export const serializeEventSummary = (
         ? event._count.markets.markets ?? markets.length
         : markets.length;
   const activeMarketCount = markets.filter((market) => market.status === "LIVE").length;
-  const metadata =
-    event.metadata && typeof event.metadata === "object" && !Array.isArray(event.metadata)
-      ? (event.metadata as Record<string, unknown>)
-      : {};
+  const metadata = metadataObject(event.metadata);
+  const mobileLiveDetail = metadataObject(metadata.mobileLiveDetail);
+  const liveStats = arrayFromMetadata(metadata, "liveStats").length
+    ? arrayFromMetadata(metadata, "liveStats")
+    : arrayFromMetadata(mobileLiveDetail, "liveStats");
+  const chartHistory = arrayFromMetadata(metadata, "chartHistory").length
+    ? arrayFromMetadata(metadata, "chartHistory")
+    : arrayFromMetadata(mobileLiveDetail, "chartHistory");
 
   return {
     id: event.id,
@@ -82,6 +94,8 @@ export const serializeEventSummary = (
     marketCount,
     activeMarketCount,
     hasGroupedMarkets: Boolean(metadata.referenceGroup),
+    liveStats,
+    chartHistory,
     metadata: event.metadata,
     createdAt: event.createdAt,
     updatedAt: event.updatedAt,

@@ -10,6 +10,13 @@ const baseMarket: Market = {
   event: null,
   rulesText: null,
   marketGroupTitle: "World Cup futures",
+  marketGroupKey: null,
+  marketGroupId: null,
+  marketType: null,
+  period: null,
+  line: null,
+  liquidity: null,
+  orderbookDepth: [],
   propCategory: "future",
   outcomes: [],
 };
@@ -23,9 +30,12 @@ describe("world cup adapter", () => {
           id: "yes",
           name: "YES",
           label: "YES",
+          side: "yes",
           price: 0,
           bestBid: "0.01",
           bestAsk: "0.04",
+          bestBidSize: "120",
+          bestAskSize: "90",
           isTradable: true,
         },
       ],
@@ -35,6 +45,48 @@ describe("world cup adapter", () => {
       id: "yes",
       label: "YES",
       probability: 3,
+      side: "yes",
+      bestBid: 0.01,
+      bestAsk: 0.04,
+      bestBidSize: 120,
+      bestAskSize: 90,
+    });
+  });
+
+  test("preserves backend-shaped live market contract fields", () => {
+    const normalized = normalizeMarket({
+      ...baseMarket,
+      title: "Australia +0.5",
+      marketGroupKey: "aus-egy-live-game-lines",
+      marketGroupId: "aus-egy-live-game-lines",
+      marketGroupTitle: "Game Lines",
+      marketType: "spread",
+      period: "regulation",
+      line: "+0.5",
+      liquidity: "4500",
+      orderbookDepth: [{ outcomeId: "aus", side: "bid", price: 0.58, shares: 100, total: 58 }],
+      outcomes: [
+        {
+          id: "aus",
+          name: "Australia +0.5",
+          label: "Australia +0.5",
+          side: "home",
+          price: 0.6,
+          bestBid: 0.58,
+          bestAsk: 0.62,
+          isTradable: true,
+        },
+      ],
+    });
+
+    expect(normalized).toMatchObject({
+      marketGroupId: "aus-egy-live-game-lines",
+      marketType: "spread",
+      period: "regulation",
+      line: "+0.5",
+      liquidity: 4500,
+      orderbookDepth: [{ side: "bid", price: 0.58, shares: 100, total: 58 }],
+      outcomes: [{ id: "aus", side: "home", bestBid: 0.58, bestAsk: 0.62 }],
     });
   });
 });

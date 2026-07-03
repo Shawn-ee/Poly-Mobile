@@ -107,8 +107,25 @@ describe("sports event market model", () => {
   });
 
   test("GET /api/events/[slug] returns event detail with markets and outcomes", async () => {
+    jest.mocked(getOutcomeQuotes).mockResolvedValue(
+      new Map([
+        [
+          "home",
+          { bestBid: 0.46, bestAsk: 0.5, bestBidSize: 120, bestAskSize: 90, mid: 0.48, spread: 0.04 },
+        ],
+      ]),
+    );
     mockPrisma.event.findUnique.mockResolvedValue({
       ...baseEvent,
+      liveStatus: "LIVE",
+      period: "first_half",
+      clock: "24:12",
+      homeScore: 0,
+      awayScore: 1,
+      metadata: {
+        liveStats: [{ statId: "possession", label: "Possession", home: "47", away: "53" }],
+        chartHistory: [{ outcomeId: "home", timestamp: "2026-06-15T12:00:00.000Z", probability: 48 }],
+      },
       _count: { markets: 1 },
       markets: [
         {
@@ -116,12 +133,24 @@ describe("sports event market model", () => {
           title: "Match Winner",
           description: "Who will win?",
           status: "LIVE",
+          marketGroupKey: "game-lines",
+          marketGroupTitle: "Game Lines",
+          displayOrder: 0,
+          line: null,
+          unit: null,
+          period: "regulation",
+          participantType: null,
+          participantName: null,
+          participantId: null,
+          propCategory: null,
           resolveTime: null,
+          rulesText: null,
+          sourceUpdatedAt: now,
           createdAt: now,
           outcomes: [
-            { id: "home", name: "France", code: "HOME", displayOrder: 0, status: "active", isTradable: true, referenceTokenId: null, referenceOutcomeLabel: null, metadata: {} },
-            { id: "draw", name: "Draw", code: "DRAW", displayOrder: 1, status: "active", isTradable: true, referenceTokenId: null, referenceOutcomeLabel: null, metadata: {} },
-            { id: "away", name: "Argentina", code: "AWAY", displayOrder: 2, status: "active", isTradable: true, referenceTokenId: null, referenceOutcomeLabel: null, metadata: {} },
+            { id: "home", name: "France", code: "HOME", side: "home", displayOrder: 0, status: "active", isTradable: true, referenceTokenId: null, referenceOutcomeLabel: null, metadata: {} },
+            { id: "draw", name: "Draw", code: "DRAW", side: "draw", displayOrder: 1, status: "active", isTradable: true, referenceTokenId: null, referenceOutcomeLabel: null, metadata: {} },
+            { id: "away", name: "Argentina", code: "AWAY", side: "away", displayOrder: 2, status: "active", isTradable: true, referenceTokenId: null, referenceOutcomeLabel: null, metadata: {} },
           ],
           event: baseEvent,
           category: null,
@@ -150,11 +179,21 @@ describe("sports event market model", () => {
       slug: "france-vs-argentina",
       sportKey: "soccer",
       marketCount: 1,
+      liveStats: [{ statId: "possession", label: "Possession", home: "47", away: "53" }],
+      chartHistory: [{ outcomeId: "home", timestamp: "2026-06-15T12:00:00.000Z", probability: 48 }],
     });
     expect(body.markets[0]).toMatchObject({
+      marketGroupId: "game-lines",
+      marketGroupKey: "game-lines",
+      marketGroupTitle: "Game Lines",
       marketType: "match_winner_1x2",
+      period: "regulation",
+      orderbookDepth: [
+        { outcomeId: "home", side: "bid", price: 0.46, shares: 120, total: 55.2 },
+        { outcomeId: "home", side: "ask", price: 0.5, shares: 90, total: 45 },
+      ],
       outcomes: [
-        { name: "France", code: "HOME" },
+        { name: "France", code: "HOME", side: "home", bestBid: 0.46, bestAsk: 0.5 },
         { name: "Draw", code: "DRAW" },
         { name: "Argentina", code: "AWAY" },
       ],
