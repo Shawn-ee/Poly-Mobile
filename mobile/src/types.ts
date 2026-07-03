@@ -53,6 +53,24 @@ export type OrderbookDepthLevel = {
   total: number;
 };
 
+export type OrderbookBookLevel = {
+  outcomeId: string;
+  side: "bid" | "ask";
+  price: number;
+  shares: number;
+  total: number;
+};
+
+export type OrderbookBook = {
+  marketId: string;
+  outcomeId: string | null;
+  generatedAt: string;
+  emptyState: "no-depth" | null;
+  levels: OrderbookBookLevel[];
+  bids: Array<{ outcomeId: string; price: number; size: number }>;
+  asks: Array<{ outcomeId: string; price: number; size: number }>;
+};
+
 export type EventSummary = {
   id: string;
   slug: string;

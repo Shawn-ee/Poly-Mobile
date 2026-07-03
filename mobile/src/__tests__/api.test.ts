@@ -100,6 +100,29 @@ describe("Holiwyn mobile API client", () => {
     });
   });
 
+  test("loads mobile orderbook depth contract", async () => {
+    const fetchImpl = vi.fn(async () =>
+      jsonResponse({
+        marketId: "market-1",
+        outcomeId: null,
+        generatedAt: "2026-06-15T12:00:00.000Z",
+        emptyState: null,
+        levels: [{ outcomeId: "yes", side: "bid", price: 0.57, shares: 120, total: 68.4 }],
+        bids: [{ outcomeId: "yes", price: 0.57, size: 120 }],
+        asks: [],
+      }),
+    );
+    vi.stubGlobal("fetch", fetchImpl);
+
+    const book = await new PolyApi("https://api.example.test", "pk_live_test.secret").getOrderbook("market/1", { maxLevels: 12 });
+
+    const [url, init] = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
+    const headers = init.headers as Headers;
+    expect(url).toBe("https://api.example.test/api/orderbook/market%2F1/book?maxLevels=12");
+    expect(headers.get("Authorization")).toBe("Bearer pk_live_test.secret");
+    expect(book.levels[0]).toEqual({ outcomeId: "yes", side: "bid", price: 0.57, shares: 120, total: 68.4 });
+  });
+
   test("saves authenticated profile preferences with canonical local settings", async () => {
     const fetchImpl = vi.fn(async () =>
       jsonResponse({

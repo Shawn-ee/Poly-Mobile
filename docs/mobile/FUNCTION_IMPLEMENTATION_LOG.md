@@ -1155,3 +1155,52 @@ Known limitations:
 
 - Backend-supported Player Props are deferred.
 - The logged-in Polymarket reference did not reveal props content from this scrolled state, so a future dedicated Player Props cycle should recapture if Polymarket exposes real soccer props for a different match/state.
+
+## Cycle AV - Live Orderbook Depth Contract
+
+Feature/page worked on:
+
+- Live event detail orderbook/depth behavior for the primary live soccer market.
+- Backend-shaped orderbook ladder contract consumed by the mobile game page.
+
+Frontend components touched:
+
+- `mobile/App.tsx`
+- `mobile/src/api.ts`
+- `mobile/src/types.ts`
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/services/marketDepthService.ts`
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/scripts/smoke.ps1`
+
+Backend/API components touched:
+
+- `src/app/api/orderbook/[marketId]/book/route.ts`
+- `src/__tests__/public.orderbook-book.no-leak.test.ts`
+
+Important functions/services touched:
+
+- `PolyApi.getOrderbook(marketId, { outcomeId, maxLevels })` calls the public orderbook route.
+- `loadMarketDepthState()` fetches the route-backed depth contract for the selected live market.
+- `applyDepthLoadingToEvent()`, `applyDepthStateToEvent()`, and `applyDepthErrorToEvent()` preserve route loading, ready, empty, and error states on the selected event.
+- `EventDetail.renderOrderBook()` now exposes `orderbook-source-*`, `orderbook-status-*`, and `event-detail-order-book-depth-state` labels for Audit Gate proof.
+
+User interactions supported:
+
+- Open a live game detail page.
+- Open the orderbook/depth overlay from the market row.
+- See whether the displayed ladder is fallback, loading, route-backed, empty, or unavailable.
+- Tap Buy in the orderbook overlay and preserve selected market/outcome identity into the trade ticket.
+
+State transitions:
+
+- In server mode, selected event depth state moves from `idle -> loading -> ready`, `empty`, or `error`.
+- On a route-backed response, the matching market's `orderbookDepth` is replaced by backend-shaped `levels[]`.
+- In fallback mode, the existing embedded depth still renders, but the overlay is labeled as fallback so it cannot be mistaken for server-backed parity.
+
+Known limitations:
+
+- Tablet proof ran while backend health was unavailable, so visible device proof shows `orderbook-source-fallback orderbook-status-idle`.
+- Real route-backed device proof remains open until local services are healthy and seeded with orderbook depth.
+- The route currently derives `levels[]` from the existing public snapshot; richer venue-style depth, stale/delayed states, and provider ingestion remain active structural parity work.

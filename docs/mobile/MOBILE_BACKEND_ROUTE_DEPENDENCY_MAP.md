@@ -368,3 +368,17 @@ Cycle AM implementation notes:
 
 - No backend route was created or changed.
 - Mobile intentionally avoids local fake player-prop rows until backend-supported Player Props data exists.
+
+## Cycle AV - Live Orderbook Depth Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live event orderbook overlay | `/api/orderbook/:marketId/book?outcomeId=<optional>&maxLevels=<optional>` | GET | Public viewing | None | `marketId`, `outcomeId`, `generatedAt`, `emptyState`, `levels[]`, legacy `bids[]`, legacy `asks[]` | Markets, outcomes, orders/orderbook snapshots | Embedded `market.orderbookDepth[]` remains visible and labeled as fallback when route data is unavailable | Real provider/orderbook ingestion, server-hydrated device proof, stale/delayed route states, and richer depth aggregation remain open. |
+| Route-backed market depth hydration | `PolyApi.getOrderbook()` consuming `/api/orderbook/:marketId/book` | GET | Public viewing | None | `levels[].outcomeId`, `levels[].side`, `levels[].price`, `levels[].shares`, `levels[].total`, `emptyState`, `generatedAt` | Market/outcome identity, orderbook depth rows | `marketDepthService` only applies route-shaped data when the route returns levels; otherwise it preserves fallback rows and records `empty`/`error` state | Backend must guarantee that `marketId`/`outcomeId` match ticket/order/portfolio identity for selected line markets. |
+
+Cycle AV implementation notes:
+
+- The existing public orderbook route now returns a mobile-ready `levels[]` ladder while preserving legacy `bids[]` and `asks[]`.
+- `maxLevels` is accepted and clamped server-side to avoid unbounded mobile responses.
+- Mobile is wired to consume the route in server mode and exposes source/status labels so fallback proof cannot be confused with route-backed parity.
+- Tablet proof was fallback-mode because backend health was unavailable; the backend route contract is covered by route/API tests.

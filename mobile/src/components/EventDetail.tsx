@@ -205,6 +205,7 @@ export function EventDetail({
   const homeChartSeries = event.chartHistory?.filter((point) => point.outcomeId === leftOutcome?.id).map((point) => point.probability) ?? homeChartPoints;
   const awayChartSeries = event.chartHistory?.filter((point) => point.outcomeId === rightOutcome?.id).map((point) => point.probability) ?? awayChartPoints;
   const chartRouteStatus = event.chartHistoryStatus ?? (event.chartHistorySource === "market-chart-route" ? "ready" : "idle");
+  const depthRouteStatus = event.orderbookDepthStatus ?? (event.orderbookDepthSource === "orderbook-route" ? "ready" : "idle");
   const chartStateText =
     chartRouteStatus === "loading"
       ? "Updating chart"
@@ -217,6 +218,16 @@ export function EventDetail({
             : event.chartHistorySource === "market-chart-route"
               ? "Route chart"
               : "Fallback chart";
+  const depthStateText =
+    depthRouteStatus === "loading"
+      ? "Loading depth"
+      : depthRouteStatus === "empty"
+        ? "No depth"
+        : depthRouteStatus === "error"
+          ? "Depth unavailable"
+          : event.orderbookDepthSource === "orderbook-route"
+            ? "Route depth"
+            : "Fallback depth";
   const liveStatRows = event.liveStats ?? [
     { label: "Possession", home: "54%", away: "46%" },
     { label: "Shots", home: "8", away: "5" },
@@ -542,7 +553,7 @@ export function EventDetail({
   const renderOrderBook = () => {
     if (!primaryMarket) return null;
     return (
-      <View accessibilityLabel="event-detail-order-book-screen" style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
+      <View accessibilityLabel={`event-detail-order-book-screen orderbook-source-${event.orderbookDepthSource ?? "fallback"} orderbook-status-${depthRouteStatus} orderbook-empty-${event.orderbookDepthEmptyState ?? "none"}`} style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
         <View style={styles.orderBookHeader}>
           <View>
             <Text style={styles.orderBookTitle}>Order Book</Text>
@@ -556,6 +567,14 @@ export function EventDetail({
           <Text style={styles.orderBookSummaryText}>{t.bestBid} {marketDepth(primaryMarket).bid}</Text>
           <Text style={styles.orderBookSummaryText}>{t.bestAsk} {marketDepth(primaryMarket).ask}</Text>
           <Text style={styles.orderBookSummaryText}>{t.spread} {marketDepth(primaryMarket).spread}</Text>
+        </View>
+        <View accessibilityLabel={`event-detail-order-book-depth-state orderbook-status-${depthRouteStatus} ${depthStateText}`} style={[styles.orderBookStatePill, depthRouteStatus === "error" && styles.orderBookStatePillError, depthRouteStatus === "empty" && styles.orderBookStatePillEmpty]} testID="event-detail-order-book-depth-state">
+          <Ionicons
+            name={depthRouteStatus === "error" ? "warning-outline" : depthRouteStatus === "loading" ? "sync-outline" : depthRouteStatus === "empty" ? "layers-outline" : "server-outline"}
+            color={depthRouteStatus === "error" ? "#f87171" : depthRouteStatus === "empty" ? "#fbbf24" : "#7dd3fc"}
+            size={14}
+          />
+          <Text style={[styles.orderBookStateText, depthRouteStatus === "error" && styles.orderBookStateTextError, depthRouteStatus === "empty" && styles.orderBookStateTextEmpty]}>{depthStateText}</Text>
         </View>
         <ScrollView style={styles.orderBookScroll} contentContainerStyle={styles.orderBookPad}>
           {primaryMarket.outcomes.map((outcome) => {
@@ -1572,6 +1591,12 @@ const styles = StyleSheet.create({
   orderBookClose: { width: 40, height: 40, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247" },
   orderBookSummary: { flexDirection: "row", gap: 8, paddingHorizontal: 16, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "#172033" },
   orderBookSummaryText: { flex: 1, color: "#cbd5e1", fontSize: 11, fontWeight: "900" },
+  orderBookStatePill: { minHeight: 32, marginHorizontal: 16, marginTop: 10, alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 10, borderRadius: 999, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#243244" },
+  orderBookStatePillEmpty: { borderColor: "rgba(251, 191, 36, 0.35)", backgroundColor: "rgba(53, 43, 20, 0.82)" },
+  orderBookStatePillError: { borderColor: "rgba(248, 113, 113, 0.38)", backgroundColor: "rgba(58, 24, 31, 0.82)" },
+  orderBookStateText: { color: "#bfdbfe", fontSize: 11, fontWeight: "900" },
+  orderBookStateTextEmpty: { color: "#fde68a" },
+  orderBookStateTextError: { color: "#fecaca" },
   orderBookScroll: { flex: 1 },
   orderBookPad: { paddingHorizontal: 16, paddingVertical: 12, paddingBottom: 28 },
   orderBookOutcome: { paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "#172033" },

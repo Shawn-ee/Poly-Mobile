@@ -41,6 +41,7 @@ import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { resolvePositionTradeTarget } from "./src/services/positionTradeTargetService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
 import { applyChartErrorToEvent, applyChartLoadingToEvent, applyChartStateToEvent, loadMarketChartState } from "./src/services/marketChartService";
+import { applyDepthErrorToEvent, applyDepthLoadingToEvent, applyDepthStateToEvent, loadMarketDepthState } from "./src/services/marketDepthService";
 import {
   applyTicketQuoteToOutcome,
   applyTicketQuotesToEvent,
@@ -940,6 +941,34 @@ export default function App() {
         });
       })
       .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [api, selectedEvent?.id]);
+
+  useEffect(() => {
+    if (ORDER_MODE !== "server" || !selectedEvent) return undefined;
+    let cancelled = false;
+    const eventId = selectedEvent.id;
+    setSelectedEvent((current) => {
+      if (!current || current.id !== eventId) return current;
+      return applyDepthLoadingToEvent(current);
+    });
+    loadMarketDepthState(api, selectedEvent)
+      .then((depthState) => {
+        if (cancelled || !mounted.current) return;
+        setSelectedEvent((current) => {
+          if (!current || current.id !== eventId) return current;
+          return applyDepthStateToEvent(current, depthState);
+        });
+      })
+      .catch(() => {
+        if (cancelled || !mounted.current) return;
+        setSelectedEvent((current) => {
+          if (!current || current.id !== eventId) return current;
+          return applyDepthErrorToEvent(current);
+        });
+      });
     return () => {
       cancelled = true;
     };

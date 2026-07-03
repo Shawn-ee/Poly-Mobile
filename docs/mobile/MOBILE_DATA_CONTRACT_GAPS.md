@@ -931,3 +931,35 @@ Temporary mock/static data:
 Future migration concern:
 
 - When Player Props are built, ticket opening, line selection, portfolio identity, and order payloads must preserve player/stat/line identifiers from backend data.
+
+## Cycle AV - Live Orderbook Depth Contract
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Route-backed live orderbook depth for every selectable soccer market/line/outcome.
+- Provider freshness/staleness fields such as delayed, suspended, stale, or last provider update.
+- Depth aggregation metadata for multiple price levels, including side, price, shares, and total per level.
+- Guaranteed selected market/line/outcome identity that can flow from orderbook to ticket, order, portfolio, and history.
+
+Fields backend provides but mobile ignores:
+
+- Legacy `bids[]` and `asks[]` remain available for compatibility. Mobile now prefers `levels[]` when present.
+
+Schema mismatch:
+
+- The current route derives `levels[]` from the existing public snapshot rather than a first-class mobile depth model.
+- Real live-football depth still depends on seeded/provider-backed orderbook data being present.
+
+Route mismatch:
+
+- `/api/orderbook/:marketId/book` now has a mobile-ready contract, but the live event detail proof could not show route-backed data because backend health was unavailable.
+- No dedicated route yet summarizes depth availability across all grouped markets on an event detail response.
+
+Temporary mock/static data:
+
+- Fallback `market.orderbookDepth[]` remains in mobile fixtures and is now explicitly labeled as fallback.
+- New fixture shape mirrors the intended backend `levels[]` rows: `outcomeId`, `side`, `price`, `shares`, `total`.
+
+Future migration concern:
+
+- Do not mark orderbook/depth parity complete until a server-hydrated device proof shows `orderbook-source-orderbook-route` and `orderbook-status-ready` for a real or seeded live soccer market.
