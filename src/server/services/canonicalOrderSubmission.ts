@@ -138,6 +138,26 @@ const parsePriceString = (value: unknown) => {
 const buildFingerprint = (body: Record<string, unknown>) =>
   createHash("sha256").update(JSON.stringify(body)).digest("hex");
 
+const sanitizeOptionalStringField = (value: unknown) =>
+  typeof value === "string" && value.trim().length > 0 ? value.trim() : null;
+
+const sanitizeTicketSelection = (value: unknown) => {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  const input = value as Record<string, unknown>;
+  const selection = {
+    marketId: sanitizeOptionalStringField(input.marketId),
+    outcomeId: sanitizeOptionalStringField(input.outcomeId),
+    marketGroupId: sanitizeOptionalStringField(input.marketGroupId),
+    marketType: sanitizeOptionalStringField(input.marketType),
+    line: sanitizeOptionalStringField(input.line),
+    period: sanitizeOptionalStringField(input.period),
+    side: sanitizeOptionalStringField(input.side),
+    displayLabel: sanitizeOptionalStringField(input.displayLabel),
+    contractSide: sanitizeOptionalStringField(input.contractSide),
+  };
+  return Object.fromEntries(Object.entries(selection).filter(([, field]) => field !== null));
+};
+
 const parseOptionalPositiveDecimalString = (
   value: unknown,
   fieldName: string,
@@ -196,6 +216,11 @@ const normalizeOrderRequest = (params: {
     typeof body.clientOrderId === "string" && body.clientOrderId.trim().length > 0
       ? body.clientOrderId.trim()
       : null;
+  const contractSide =
+    body.contractSide === "YES" || body.contractSide === "NO"
+      ? body.contractSide
+      : null;
+  const selection = sanitizeTicketSelection(body.selection);
   const headerKey = params.idempotencyKeyHeader?.trim() || null;
   const idempotencyKey = headerKey ?? clientOrderId;
 
@@ -242,6 +267,8 @@ const normalizeOrderRequest = (params: {
       size,
       maxSpend,
       clientOrderId,
+      contractSide,
+      selection,
     },
     fingerprint: buildFingerprint({
       marketId,
@@ -252,6 +279,8 @@ const normalizeOrderRequest = (params: {
       size,
       maxSpend,
       clientOrderId,
+      contractSide,
+      selection,
     }),
     maxSpend,
   };

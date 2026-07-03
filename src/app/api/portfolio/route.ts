@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { getUserId } from "@/lib/auth";
 import { requireCanonicalActor } from "@/lib/canonicalAuth";
 import { getOutcomeQuotes } from "@/lib/orderbookPricing";
+import { buildTicketSelectionMetadata } from "@/server/services/ticketSelectionMetadata";
 
 export const dynamic = "force-dynamic";
 
@@ -44,10 +45,23 @@ export async function GET(request: NextRequest) {
     take: 25,
     include: {
       outcome: {
-        select: { id: true, name: true },
+        select: { id: true, name: true, label: true, side: true },
       },
       market: {
-        select: { id: true, title: true, status: true },
+        select: {
+          id: true,
+          title: true,
+          status: true,
+          marketGroupKey: true,
+          marketType: true,
+          line: true,
+          period: true,
+        },
+      },
+      apiOrderRequest: {
+        select: {
+          requestBody: true,
+        },
       },
     },
   });
@@ -104,6 +118,10 @@ export async function GET(request: NextRequest) {
       },
       outcomeId: position.outcomeId,
       outcome: position.outcome.name,
+      selection: buildTicketSelectionMetadata({
+        market: position.market,
+        outcome: position.outcome,
+      }),
       shares,
       avgCost,
       currentPrice,
@@ -149,6 +167,11 @@ export async function GET(request: NextRequest) {
         id: order.outcome.id,
         name: order.outcome.name,
       },
+      selection: buildTicketSelectionMetadata({
+        requestBody: order.apiOrderRequest?.requestBody,
+        market: order.market,
+        outcome: order.outcome,
+      }),
       side: order.side,
       status: order.status,
       price: Number(order.price),

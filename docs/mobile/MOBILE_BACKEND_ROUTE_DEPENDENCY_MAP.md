@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle AP - Live Line Order Identity
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live/line ticket submit | `/api/orders` through `PolyApi.placeLimitOrder()` | POST | Required in server mode; fake-token mock can run locally | `marketId`, `outcomeId`, `side`, `contractSide`, `price`, `size`, `selection.marketId`, `selection.outcomeId`, `selection.marketGroupId`, `selection.marketType`, `selection.line`, `selection.period`, `selection.side`, `selection.displayLabel` | order id/status/size/remaining/fills and preserved request metadata | `ApiOrderRequest.requestBody`, `Order`, `Market`, `Outcome` | Mock orders now also carry full `selection` identity | First-class `Order.selection`/`Trade.selection` columns do not exist yet; request-body reconstruction is the current bridge. |
+| Portfolio open orders and positions | `/api/portfolio` | GET | Required for server portfolio; session fallback exists for web | `Authorization` bearer only | `positions[].selection` and `openOrders[].selection` with market/outcome/group/type/line/period/side/display label/contract side | `Position`, `Order`, `ApiOrderRequest`, `Market`, `Outcome`, `UserBalance` | Local Portfolio state uses the same `TicketSelection` shape | Filled position selection is inferred from market/outcome fields; exact submitted request metadata is only available for open orders. |
+| Portfolio history/activity | `/api/portfolio/history` | GET | Required for server history; session fallback exists for web | `Authorization` bearer only | `canceledOrders[].selection`, `recentTrades[].selection` | `Order`, `ApiOrderRequest`, `Trade`, `Market`, `Outcome`, `LedgerEntry` | Local activity uses the same `TicketSelection` shape | Recent trades still infer selection from market/outcome schema because `Trade` has no direct order/request relation. |
+
+Cycle AP implementation notes:
+
+- This cycle closes the live line-order identity bridge for request, open order, canceled order, recent trade, position, and mobile Portfolio mapping.
+- It intentionally avoids a schema migration by using existing `ApiOrderRequest.requestBody` and market/outcome line fields.
+- A future backend cleanup can promote `selection` to first-class `Order`/`Trade` fields once the live market schema stabilizes.
+
 ## Cycle AO - Live Event Detail Backend Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

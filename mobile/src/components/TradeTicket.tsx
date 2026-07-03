@@ -17,8 +17,12 @@ export type BinaryContractSide = "yes" | "no";
 
 export type TicketSelection = {
   marketType: "spread" | "totals" | "team-total" | "winner" | "prop" | "future" | "live";
+  marketId?: string;
+  outcomeId?: string;
+  marketGroupId?: string;
   line?: string;
   period?: string;
+  side?: string;
   displayLabel: string;
   contractSide?: BinaryContractSide;
 };

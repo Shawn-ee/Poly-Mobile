@@ -62,12 +62,40 @@ const contractProbability = (input: TicketOrderInput) => {
   return contractSideForOrder(input) === "no" ? 100 - probability : probability;
 };
 
+const ticketMarketType = (input: TicketOrderInput): TicketSelection["marketType"] => {
+  if (input.selection?.marketType) return input.selection.marketType;
+  if (input.market.type === "live") return "live";
+  if (input.market.marketType === "spread") return "spread";
+  if (input.market.marketType === "totals") return "totals";
+  if (input.market.marketType === "team-total") return "team-total";
+  if (input.market.marketType === "future" || input.market.type === "future") return "future";
+  if (input.market.marketType === "moneyline" || input.market.type === "game-line") return "winner";
+  return "prop";
+};
+
+const selectionForOrder = (input: TicketOrderInput): TicketSelection => {
+  const selection = {
+    marketType: ticketMarketType(input),
+    marketId: input.market.id,
+    outcomeId: input.outcome.id,
+    marketGroupId: input.selection?.marketGroupId ?? input.market.marketGroupId,
+    line: input.selection?.line ?? input.market.line ?? undefined,
+    period: input.selection?.period ?? input.market.period,
+    side: input.selection?.side ?? input.outcome.side,
+    displayLabel: input.selection?.displayLabel ?? label(input.outcome),
+    contractSide: contractSideForOrder(input),
+  };
+  return Object.fromEntries(
+    Object.entries(selection).filter(([, value]) => value !== undefined),
+  ) as TicketSelection;
+};
+
 const mockOrder = (input: TicketOrderInput): TicketOrderResult => ({
   id: `mock-${input.market.id}-${input.outcome.id}-${Date.now()}`,
   mode: "mock",
   title: orderTitle(input),
   outcome: label(input.outcome),
-  selection: input.selection,
+  selection: selectionForOrder(input),
   contractSide: contractSideForOrder(input),
   side: input.side,
   amount: input.amount,
@@ -116,7 +144,7 @@ export const submitTicketOrder = async (input: TicketOrderInput): Promise<Ticket
     contractSide: contractSideForOrder(input).toUpperCase() as "YES" | "NO",
     price: (contractProbability(input) / 100).toFixed(2),
     size: sharesFromAmount(input.amount, contractProbability(input)).toFixed(2),
-    ...(input.selection ? { selection: input.selection } : {}),
+    selection: selectionForOrder(input),
   };
   const payload = await input.api.placeLimitOrder(orderInput);
   const response = payload && typeof payload === "object" ? (payload as ServerOrderResponse) : {};
