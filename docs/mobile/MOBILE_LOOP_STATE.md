@@ -11655,6 +11655,20 @@ Open blockers: none for continuing the loop. True Buy No semantics require a fut
 
 Next likely cycle: continue Market/Event page parity with chart time ranges or adjustable line markets, depending on the next reachable Polymarket reference page.
 
+### Cycle W - Futures Chart Range
+
+Status: verified and ready for local merge after commit.
+
+Verified progress: Polymarket mobile web World Cup Winner chart/time-range reference was refreshed on Samsung S23. Holiwyn futures now include a chart section with top outcome legend, volume, and `1H / 1D / 1W / 1M / MAX` range controls. Tablet proof taps `1D` and `1W` and verifies selected range state while futures rows remain available.
+
+Device evidence: reference evidence is under `docs/mobile/reference/screenshots/cycle-W-polymarket-world-cup-winner-chart-*`; Holiwyn evidence is under `docs/mobile/screenshots/cycle-current-holiwyn-future-chart-1w.png`, `docs/mobile/harness/cycle-current-holiwyn-future-chart-ready.xml`, `docs/mobile/harness/cycle-current-holiwyn-future-chart-1d.xml`, and `docs/mobile/harness/cycle-current-holiwyn-future-chart-1w.xml`.
+
+Verification: `npm run typecheck` passed; `powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -FutureChartRange -Port 8194` passed on the Samsung tablet.
+
+Open blockers: none for continuing the loop. Real historical chart series require a future backend/mobile route.
+
+Next likely cycle: audit a reachable match-specific page for adjustable line markets, or add backend chart-history contracts if match lines remain hard to reference.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

@@ -136,3 +136,37 @@ Known limitations:
 - Buy No is represented through the existing sell/no-side ticket path until the backend/mobile contract supports separate binary NO positions.
 - Outcome-level volume is local deterministic display data.
 - Local fallback futures list still lacks some captured reference outcomes such as England.
+
+## Cycle W - Futures Chart Range
+
+Feature/page worked on:
+
+- World Cup futures chart/time-range section.
+
+Frontend components touched:
+
+- `mobile/src/components/MarketLists.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+Important functions/services touched:
+
+- `FutureList()` now stores local `selectedRange`.
+- `futureChartRanges` defines `1H`, `1D`, `1W`, `1M`, and `MAX`.
+- `FutureChartRange` smoke taps `1D` and `1W`.
+
+User interactions supported:
+
+- View futures chart legend and chart panel.
+- Tap `1D` and `1W` range controls.
+- Keep futures outcome rows visible after range changes.
+
+State transitions:
+
+- `selectedRange: "MAX" -> "1D" -> "1W"`.
+
+Known limitations:
+
+- Chart lines are local/deterministic and not backend-backed.
+- Settings gear behavior is not implemented in this focused cycle.
+- Press/hold tooltip remains P2.

@@ -46,3 +46,14 @@ Cycle V implementation notes:
 
 - This cycle does not create or modify backend routes.
 - The mobile UI now expects outcome-level futures data that the backend should eventually own.
+
+## Cycle W - Futures Chart Range
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Futures chart/ranges | No dedicated route in this cycle; rendered from local future market/outcome data | N/A | N/A | N/A | outcome label, probability, color, market-level volume | Market history, outcome price history, time buckets | Local deterministic chart lines and local `selectedRange` state | Backend should expose market/outcome history series by range, for example `/api/markets/:id/history?range=1D`. |
+
+Cycle W implementation notes:
+
+- No backend route was created or changed.
+- The future API should return timestamped probability/price points per outcome, volume per range, and unavailable/empty states.

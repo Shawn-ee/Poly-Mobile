@@ -65,6 +65,7 @@ param(
   [switch]$HomeClearSearch,
   [switch]$HomeCardStats,
   [switch]$FutureCardStats,
+  [switch]$FutureChartRange,
   [switch]$FutureListTrade,
   [switch]$FutureListOrder,
   [switch]$FutureListSell,
@@ -1228,6 +1229,25 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-future-card-stats.png"
       $futureCardStatsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-card-stats.xml"
       Assert-HierarchyContains -Path $futureCardStatsHierarchy -Expected @("World Cup winner", "Volume", "Liquidity", "USDT", "France", "Argentina", "Spain", "Buy Yes", "Buy No")
+      return
+    }
+
+    if ($FutureChartRange) {
+      Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "world-cup-futures-tab"
+      Start-Sleep -Seconds 1
+      & $adb -s $Device shell input swipe 540 1480 540 1040 300 | Out-Null
+      Start-Sleep -Seconds 1
+      $futureChartReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-chart-ready.xml"
+      Assert-HierarchyContains -Path $futureChartReadyHierarchy -Expected @("future-market-chart", "1H", "1D", "1W", "1M", "MAX", "France 34%", "Argentina 19%")
+      Invoke-TapHierarchyNode -Path $futureChartReadyHierarchy -Identifier "future-chart-range-1d"
+      Start-Sleep -Seconds 1
+      $futureChart1dHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-chart-1d.xml"
+      Assert-HierarchyContains -Path $futureChart1dHierarchy -Expected @("future-market-chart 1D", "1D")
+      Invoke-TapHierarchyNode -Path $futureChart1dHierarchy -Identifier "future-chart-range-1w"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-future-chart-1w.png"
+      $futureChart1wHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-chart-1w.xml"
+      Assert-HierarchyContains -Path $futureChart1wHierarchy -Expected @("future-market-chart 1W", "1W", "Buy Yes", "Buy No")
       return
     }
 
