@@ -88,6 +88,12 @@ export type PortfolioCanceledOrderItem = {
     id: string;
     name: string;
   };
+  selection?: {
+    marketType?: string;
+    line?: string;
+    period?: string;
+    displayLabel?: string;
+  } | null;
   side: "BUY" | "SELL";
   status: string;
   price: number;
@@ -107,6 +113,12 @@ export type PortfolioRecentTradeItem = {
     id: string;
     name: string;
   };
+  selection?: {
+    marketType?: string;
+    line?: string;
+    period?: string;
+    displayLabel?: string;
+  } | null;
   side: "BUY" | "SELL";
   shares: number;
   cost: number;
@@ -124,6 +136,12 @@ export type PortfolioPositionItem = {
   };
   outcomeId?: string;
   outcome: string;
+  selection?: {
+    marketType?: string;
+    line?: string;
+    period?: string;
+    displayLabel?: string;
+  } | null;
   shares: number;
   avgCost: number;
   currentPrice: number;
@@ -148,6 +166,12 @@ export type PortfolioOpenOrderItem = {
     id: string;
     name: string;
   };
+  selection?: {
+    marketType?: string;
+    line?: string;
+    period?: string;
+    displayLabel?: string;
+  } | null;
   side: "BUY" | "SELL";
   status: string;
   price: number;

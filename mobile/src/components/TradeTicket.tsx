@@ -185,7 +185,7 @@ export function TradeTicket({
     setAmountState(ticket.event ? "0" : defaultAmount);
     setSideState(ticket.side);
     setSlippageState(defaultSlippage);
-  }, [defaultAmount, defaultSlippage, ticket]);
+  }, [ticket?.market.id, ticket?.outcome.id, ticket?.side]);
 
   if (!ticket) return null;
   const setAmount = (nextAmount: string) => {

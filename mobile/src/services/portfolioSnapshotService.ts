@@ -1,5 +1,6 @@
 import type { PolyApi } from "../api";
 import type { OpenOrder, Position } from "../components/Portfolio";
+import type { TicketSelection } from "../components/TradeTicket";
 
 export type PortfolioSnapshotResult = {
   balance: number;
@@ -33,6 +34,28 @@ const toDepthSize = (value: number | string | null | undefined) => {
   return parsed;
 };
 
+const knownMarketTypes: TicketSelection["marketType"][] = ["spread", "totals", "team-total", "winner", "prop", "future", "live"];
+
+const selectionFromBackend = (
+  selection?: {
+    marketType?: string;
+    line?: string;
+    period?: string;
+    displayLabel?: string;
+  } | null,
+): TicketSelection | undefined => {
+  if (!selection?.displayLabel) return undefined;
+  const marketType = knownMarketTypes.includes(selection.marketType as TicketSelection["marketType"])
+    ? (selection.marketType as TicketSelection["marketType"])
+    : "prop";
+  return {
+    marketType,
+    line: selection.line,
+    period: selection.period,
+    displayLabel: selection.displayLabel,
+  };
+};
+
 export const loadPortfolioSnapshot = async (api: PolyApi): Promise<PortfolioSnapshotResult> => {
   const snapshot = await api.getPortfolio();
   return {
@@ -44,6 +67,7 @@ export const loadPortfolioSnapshot = async (api: PolyApi): Promise<PortfolioSnap
       outcomeId: position.outcomeId,
       title: position.market.title,
       outcome: position.outcome,
+      selection: selectionFromBackend(position.selection),
       side: "buy",
       amount: position.costBasisTokens,
       probability: Math.round(position.avgCost * 100),
@@ -60,6 +84,7 @@ export const loadPortfolioSnapshot = async (api: PolyApi): Promise<PortfolioSnap
       id: order.id,
       title: order.market.title,
       outcome: order.outcome.name,
+      selection: selectionFromBackend(order.selection),
       side: order.side === "SELL" ? "sell" : "buy",
       status: order.status,
       price: order.price,

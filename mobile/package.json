@@ -77,6 +77,7 @@
     "smoke:tablet:event-detail-chat": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailChat -Port 8183",
     "smoke:tablet:event-detail-actions": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailActions -Port 8184",
     "smoke:tablet:event-detail-line-adjustment": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailLineAdjustment -Port 8185",
+    "smoke:tablet:event-detail-line-portfolio": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailLinePortfolio -Port 8186",
     "smoke:samsung:event-detail-summary": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -EventDetailSummary -Port 8168",
     "smoke:samsung:event-detail-position": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -EventDetailPosition -Port 8175",
     "smoke:samsung:event-detail-props": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -EventDetailProps -Port 8169",

@@ -77,6 +77,25 @@ const SMOKE_OPEN_SELL_ORDER: OpenOrder = {
   remaining: 100,
   orderValue: 52,
 };
+const SMOKE_LINE_OPEN_ORDER: OpenOrder = {
+  id: "smoke-line-open-order",
+  title: "Mexico vs. Ecuador",
+  outcome: "YES",
+  selection: {
+    marketType: "spread",
+    line: "2.5",
+    period: "1st Half",
+    displayLabel: "MEX -2.5 1H",
+  },
+  side: "buy",
+  status: "OPEN",
+  price: 0.03,
+  remaining: 833.33,
+  originalShares: 833.33,
+  remainingShares: 833.33,
+  orderValue: 25,
+  placedAt: "Just now",
+};
 
 const mexicoEcuadorGamePositionFixture = (): Position | undefined => {
   const event = worldCupEvents.find((item) => item.id === "mexico-ecuador");
@@ -334,6 +353,7 @@ export default function App() {
     const shouldForceMexicoEcuadorGamePosition = url.includes("forceMexicoEcuadorGamePosition=1");
     const shouldForcePortfolio = url.includes("forcePortfolio=1");
     const shouldForceOpenOrder = url.includes("forceOpenOrder=1");
+    const shouldForceLineOpenOrder = url.includes("forceLineOpenOrder=1");
     const forcedOpenOrder = url.includes("forceOpenOrderSide=sell") ? SMOKE_OPEN_SELL_ORDER : SMOKE_OPEN_ORDER;
     const apiKeyMatch = url.match(/[?&,]apiKey=([^&,]+)/);
     const shouldForceRuntimePortfolioSync =
@@ -383,6 +403,7 @@ export default function App() {
         !shouldForceServerPortfolioFallbackFixture &&
         !shouldForcePortfolio &&
         !shouldForceOpenOrder &&
+        !shouldForceLineOpenOrder &&
         !forceServerOrderProof.current &&
         !shouldForceLive &&
         !shouldForceMexicoEcuadorGamePosition
@@ -451,6 +472,22 @@ export default function App() {
         positions: [],
         latestOrder: null,
         openOrders: [forcedOpenOrder],
+        activities: [],
+      };
+      AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
+    }
+    if (shouldForceLineOpenOrder) {
+      setBalance(10000);
+      setPositions([]);
+      setLatestOrder(null);
+      setOpenOrders([SMOKE_LINE_OPEN_ORDER]);
+      setActivities([]);
+      setMainTab("portfolio");
+      const snapshot: StoredPortfolio = {
+        balance: 10000,
+        positions: [],
+        latestOrder: null,
+        openOrders: [SMOKE_LINE_OPEN_ORDER],
         activities: [],
       };
       AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
@@ -909,6 +946,7 @@ export default function App() {
           mode: result.mode,
           title: result.title,
           outcome: result.outcome,
+          selection: result.selection,
           side: result.side,
           amount: result.amount,
           probability: result.probability,
@@ -924,6 +962,7 @@ export default function App() {
       mode: result.mode,
       title: result.title,
       outcome: result.outcome,
+      selection: result.selection,
       side: result.side,
       amount: result.amount,
       probability: result.probability,
@@ -940,6 +979,7 @@ export default function App() {
         action: result.side === "sell" ? "sold" : "opened",
         title: result.title,
         outcome: result.outcome,
+        selection: result.selection,
         amount: result.amount,
         shares: result.filledSize ?? result.size,
         side: result.side,

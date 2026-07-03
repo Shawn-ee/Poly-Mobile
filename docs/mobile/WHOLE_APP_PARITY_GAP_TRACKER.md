@@ -15,11 +15,11 @@ Line criteria: `docs/mobile/HOLIWYN_LINE_ADJUSTMENT_CRITERIA.md`
 | WA-P0-01 | Bottom nav exists and tablet captures prove Home, Portfolio, Search. Live and Account need fresh tablet captures in this whole-app evidence set. | Partial | Tablet smoke visits Home, Live, Portfolio, Search, Account. | Cycle K |
 | WA-P0-02 | Home/World Cup discovery exists with games, futures, live/today/saved filters, cards, stars, and probabilities. | Partial | Audit against Polymarket category density and card behavior; open-card smoke. | Cycle K |
 | WA-P0-03 | Search exists with filters, sort chips, result cards. | Partial | Search query, filter, clear, and open-card tablet smoke. | Cycle K |
-| WA-P0-04 | Portfolio empty fake-balance state exists. Need seeded position/open-order/activity proof under the whole-app tracker. | Partial | Create disposable/seeded order and prove portfolio rows. | Cycle L |
+| WA-P0-04 | Portfolio fake-balance, seeded line open-order, filled position, latest order, and recent activity proof exists on tablet. | Verified | `cycle-current-holiwyn-line-portfolio-after-order.*`, `cycle-current-holiwyn-line-portfolio-open-order.*`. | Done |
 | WA-P0-05 | Game page has previous P0 implementation and fresh tablet top-page proof. Needs full tablet scroll, chat, ticket, and lower-section recapture. | Partial | Tablet full-page game proof. | Cycle K |
-| WA-P0-06 | Spread and Totals line/period controls now update visible market values and are proven on the tablet. Portfolio persistence remains tracked under WA-P0-08 / LA-P0-08. | Partial | LA-P0-08 portfolio/open-order/activity proof. | Cycle L |
+| WA-P0-06 | Spread and Totals line/period controls update visible market values and selected Spread line identity persists into Portfolio surfaces. | Verified | Cycle K line adjustment proof plus Cycle L line portfolio proof. | Done |
 | WA-P0-07 | Ticket now carries selected Spread and Totals line/period into `ticket-selection-line`, proven on tablet. | Verified | `cycle-current-holiwyn-line-adjustment-spread-ticket.*`, `cycle-current-holiwyn-line-adjustment-totals-ticket.*`. | Done |
-| WA-P0-08 | Order payload now includes selected line metadata by unit test. Portfolio/open order/activity preservation is not yet proven end to end. | Partial | Portfolio/open order/activity with line/period. | Cycle L |
+| WA-P0-08 | Selected line metadata persists through ticket order creation, latest order, filled position/activity rows, backend mapping, and disposable open-order UI proof. | Verified | `npm run smoke:tablet:event-detail-line-portfolio`; focused mobile API tests. | Done |
 | WA-P0-09 | Polymarket order book is a full screen. Holiwyn book control does not yet prove equivalent market depth. | Open | Add or prove order book/depth screen. | Cycle M |
 | WA-P0-10 | Some empty states exist; loading/API failure/error states need whole-app proof. | Open | Fixture/smoke for page error/loading states. | Cycle M |
 
@@ -34,7 +34,7 @@ Line criteria: `docs/mobile/HOLIWYN_LINE_ADJUSTMENT_CRITERIA.md`
 | LA-P0-05 | Totals line/period changes update visible odds/probabilities. | Verified | `cycle-current-holiwyn-line-adjustment-totals-35-2h.png` / `.xml` show `Over 3.5`, `4.5x`, `22%`, `Under 3.5`, `78%`. |
 | LA-P0-06 | Ticket selected-line propagation is proven on tablet for Spread and Totals. | Verified | `cycle-current-holiwyn-line-adjustment-spread-ticket.*`, `cycle-current-holiwyn-line-adjustment-totals-ticket.*`. |
 | LA-P0-07 | Order payload includes line/period selection metadata. | Verified | `npm run test:mobile-api -- mobile/src/__tests__/orderService.test.ts`. |
-| LA-P0-08 | Portfolio/open order/activity do not yet preserve line/period. | Open | Tablet and backend proof. |
+| LA-P0-08 | Portfolio latest order, filled position/activity, and open order preserve selected line/period labels. | Verified | `cycle-current-holiwyn-line-portfolio-after-order.*`, `cycle-current-holiwyn-line-portfolio-open-order.*`, portfolio snapshot/history tests. |
 
 ## P1 Gaps
 
@@ -84,4 +84,20 @@ Verified by:
 - `npm run smoke:tablet:event-detail-line-adjustment`
 - `npm run test:mobile-api -- mobile/src/__tests__/orderService.test.ts`
 
-Remaining Cycle L P0: preserve selected line/period in portfolio, open orders, and recent activity after order creation.
+Cycle L P0 is now verified: selected line/period survives ticket amount entry, order creation, Portfolio latest order, filled position/activity rows, backend snapshot/history mapping, and disposable open-order rendering.
+
+## Cycle L Notes
+
+Cycle L implemented and verified line identity persistence:
+
+- Portfolio models now accept `selection` metadata and render `selection.displayLabel` in latest order, positions, activities, and open orders.
+- Mock order creation carries `selection` into local Portfolio state.
+- Backend portfolio snapshot/history mapping preserves backend selection labels when present.
+- Ticket amount entry no longer resets event tickets back to `$0` after keypad/default changes.
+- Tablet proof enters `25` through the ticket keypad, submits `MEX -2.5 1H`, verifies Portfolio rows, then opens a disposable line open-order fixture.
+
+Verification:
+
+- `npm run typecheck`
+- `npm run test:mobile-api -- mobile/src/__tests__/orderService.test.ts mobile/src/__tests__/portfolioSnapshotService.test.ts mobile/src/__tests__/portfolioHistoryService.test.ts`
+- `npm run smoke:tablet:event-detail-line-portfolio`

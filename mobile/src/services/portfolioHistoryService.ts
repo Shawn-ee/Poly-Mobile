@@ -1,5 +1,6 @@
 import type { PolyApi } from "../api";
 import type { PortfolioActivity } from "../components/Portfolio";
+import type { TicketSelection } from "../components/TradeTicket";
 import type { PortfolioCanceledOrderItem, PortfolioRecentTradeItem } from "../types";
 
 const formatHistoryTimestamp = (value: string | null) => {
@@ -13,6 +14,28 @@ const formatHistoryTimestamp = (value: string | null) => {
     minute: "2-digit",
     timeZone: "America/Chicago",
   }).format(parsed);
+};
+
+const knownMarketTypes: TicketSelection["marketType"][] = ["spread", "totals", "team-total", "winner", "prop", "future", "live"];
+
+const selectionFromBackend = (
+  selection?: {
+    marketType?: string;
+    line?: string;
+    period?: string;
+    displayLabel?: string;
+  } | null,
+): TicketSelection | undefined => {
+  if (!selection?.displayLabel) return undefined;
+  const marketType = knownMarketTypes.includes(selection.marketType as TicketSelection["marketType"])
+    ? (selection.marketType as TicketSelection["marketType"])
+    : "prop";
+  return {
+    marketType,
+    line: selection.line,
+    period: selection.period,
+    displayLabel: selection.displayLabel,
+  };
 };
 
 export const portfolioHistoryToActivity = (history: Awaited<ReturnType<PolyApi["getPortfolioHistory"]>>["history"]): PortfolioActivity[] =>
@@ -35,6 +58,7 @@ export const canceledOrdersToActivity = (orders: PortfolioCanceledOrderItem[] = 
     action: "canceled",
     title: order.market.title,
     outcome: order.outcome.name,
+    selection: selectionFromBackend(order.selection),
     amount: order.remaining * order.price,
     shares: order.remaining,
     side: order.side === "SELL" ? "sell" : "buy",
@@ -50,6 +74,7 @@ export const recentTradesToActivity = (trades: PortfolioRecentTradeItem[] = []):
       action: trade.side === "SELL" ? "sold" : "opened",
       title: trade.market.title,
       outcome: trade.outcome.name,
+      selection: selectionFromBackend(trade.selection),
       amount: trade.cost,
       shares: trade.shares,
       side: trade.side === "SELL" ? "sell" : "buy",
