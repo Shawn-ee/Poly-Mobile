@@ -24,6 +24,7 @@ const snapshot = (overrides: Partial<PortfolioSnapshot> = {}): PortfolioSnapshot
       },
       outcomeId: "france",
       outcome: "France",
+      selection: null,
       shares: 500,
       avgCost: 0.42,
       currentPrice: 0.51,
@@ -49,6 +50,7 @@ const snapshot = (overrides: Partial<PortfolioSnapshot> = {}): PortfolioSnapshot
         id: "argentina-brazil",
         name: "Argentina vs Brazil",
       },
+      selection: null,
       side: "BUY",
       status: "OPEN",
       price: 0.28,
@@ -69,6 +71,7 @@ const snapshot = (overrides: Partial<PortfolioSnapshot> = {}): PortfolioSnapshot
         id: "mexico",
         name: "Mexico",
       },
+      selection: null,
       side: "SELL",
       status: "OPEN",
       price: 0.47,
@@ -97,6 +100,7 @@ describe("portfolio snapshot service", () => {
           outcomeId: "france",
           title: "World Cup winner",
           outcome: "France",
+          selection: undefined,
           side: "buy",
           amount: 210,
           probability: 42,
@@ -115,6 +119,7 @@ describe("portfolio snapshot service", () => {
           id: "buy-order-1",
           title: "World Cup final exact matchup",
           outcome: "Argentina vs Brazil",
+          selection: undefined,
           side: "buy",
           status: "OPEN",
           price: 0.28,
@@ -128,6 +133,7 @@ describe("portfolio snapshot service", () => {
           id: "sell-order-1",
           title: "Group A winner",
           outcome: "Mexico",
+          selection: undefined,
           side: "sell",
           status: "OPEN",
           price: 0.47,
@@ -150,6 +156,95 @@ describe("portfolio snapshot service", () => {
       balance: 10000,
       positions: [],
       openOrders: [],
+    });
+  });
+
+  test("preserves backend line selection labels for positions and open orders", async () => {
+    const getPortfolio = vi.fn(async () =>
+      snapshot({
+        positions: [
+          {
+            market: {
+              id: "mexico-ecuador-spread",
+              title: "Mexico vs. Ecuador",
+              status: "ACTIVE",
+              resolveTime: null,
+              createdAt: "2026-06-01T12:00:00.000Z",
+            },
+            outcomeId: "spread-yes",
+            outcome: "YES",
+            selection: {
+              marketType: "spread",
+              line: "2.5",
+              period: "1st Half",
+              displayLabel: "MEX -2.5 1H",
+            },
+            shares: 1000,
+            avgCost: 0.03,
+            currentPrice: 0.03,
+            valueTokens: 30,
+            costBasisTokens: 30,
+            totalCostBasisTokens: 30,
+            pnlTokens: 0,
+          },
+        ],
+        openOrders: [
+          {
+            id: "line-open-order",
+            market: {
+              id: "mexico-ecuador-total",
+              title: "Mexico vs. Ecuador",
+              status: "ACTIVE",
+            },
+            outcome: {
+              id: "over",
+              name: "YES",
+            },
+            selection: {
+              marketType: "totals",
+              line: "3.5",
+              period: "2nd Half",
+              displayLabel: "Over 3.5 2H",
+            },
+            side: "BUY",
+            status: "OPEN",
+            price: 0.22,
+            size: 100,
+            remaining: 100,
+            reservedNotional: 22,
+            createdAt: "2026-06-05T14:00:00.000Z",
+            updatedAt: "2026-06-05T14:00:00.000Z",
+          },
+        ],
+      }),
+    );
+    const api = { getPortfolio } as unknown as PolyApi;
+
+    await expect(loadPortfolioSnapshot(api)).resolves.toMatchObject({
+      positions: [
+        {
+          title: "Mexico vs. Ecuador",
+          outcome: "YES",
+          selection: {
+            marketType: "spread",
+            line: "2.5",
+            period: "1st Half",
+            displayLabel: "MEX -2.5 1H",
+          },
+        },
+      ],
+      openOrders: [
+        {
+          title: "Mexico vs. Ecuador",
+          outcome: "YES",
+          selection: {
+            marketType: "totals",
+            line: "3.5",
+            period: "2nd Half",
+            displayLabel: "Over 3.5 2H",
+          },
+        },
+      ],
     });
   });
 });

@@ -163,4 +163,85 @@ describe("portfolio history activity mapping", () => {
       }),
     ]);
   });
+
+  test("preserves line selection labels in backend order activity", () => {
+    expect(
+      recentTradesToActivity([
+        {
+          id: "line-trade-1",
+          market: {
+            id: "mexico-ecuador-spread",
+            title: "Mexico vs. Ecuador",
+            status: "ACTIVE",
+          },
+          outcome: {
+            id: "spread-yes",
+            name: "YES",
+          },
+          selection: {
+            marketType: "spread",
+            line: "2.5",
+            period: "1st Half",
+            displayLabel: "MEX -2.5 1H",
+          },
+          side: "BUY",
+          shares: 1000,
+          cost: 30,
+          fee: 0,
+          createdAt: "2026-07-02T06:10:00.000Z",
+        },
+      ]),
+    ).toEqual([
+      expect.objectContaining({
+        title: "Mexico vs. Ecuador",
+        outcome: "YES",
+        selection: {
+          marketType: "spread",
+          line: "2.5",
+          period: "1st Half",
+          displayLabel: "MEX -2.5 1H",
+        },
+      }),
+    ]);
+
+    expect(
+      canceledOrdersToActivity([
+        {
+          id: "line-order-canceled",
+          market: {
+            id: "mexico-ecuador-total",
+            title: "Mexico vs. Ecuador",
+            status: "ACTIVE",
+          },
+          outcome: {
+            id: "over",
+            name: "YES",
+          },
+          selection: {
+            marketType: "totals",
+            line: "3.5",
+            period: "2nd Half",
+            displayLabel: "Over 3.5 2H",
+          },
+          side: "BUY",
+          status: "CANCELED",
+          price: 0.22,
+          size: 100,
+          remaining: 100,
+          canceledAt: "2026-07-02T05:55:00.000Z",
+        },
+      ]),
+    ).toEqual([
+      expect.objectContaining({
+        title: "Mexico vs. Ecuador",
+        outcome: "YES",
+        selection: {
+          marketType: "totals",
+          line: "3.5",
+          period: "2nd Half",
+          displayLabel: "Over 3.5 2H",
+        },
+      }),
+    ]);
+  });
 });

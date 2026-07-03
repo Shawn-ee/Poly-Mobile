@@ -15,6 +15,7 @@ import {
   openOrderValue,
 } from "../services/openOrderEconomicsService";
 import type { OrderMode } from "../services/orderService";
+import type { TicketSelection } from "./TradeTicket";
 
 export type Position = {
   id: string;
@@ -23,6 +24,7 @@ export type Position = {
   outcomeId?: string;
   title: string;
   outcome: string;
+  selection?: TicketSelection;
   side: "buy" | "sell";
   amount: number;
   probability: number;
@@ -43,6 +45,7 @@ export type PortfolioActivity = {
   action: "opened" | "sold" | "closed" | "canceled";
   title: string;
   outcome: string;
+  selection?: TicketSelection;
   amount: number;
   entryAmount?: number;
   shares?: number;
@@ -57,6 +60,7 @@ export type OpenOrder = {
   id: string;
   title: string;
   outcome: string;
+  selection?: TicketSelection;
   side: "buy" | "sell";
   status: string;
   price: number;
@@ -72,6 +76,7 @@ export type OrderConfirmation = {
   mode: OrderMode;
   title: string;
   outcome: string;
+  selection?: TicketSelection;
   side: "buy" | "sell";
   amount: number;
   probability?: number;
@@ -132,6 +137,9 @@ type PortfolioCopy = {
 export { portfolioPositionValue };
 
 const estimatedPnl = estimatedPositionPnl;
+
+const displayOutcome = (item: { outcome: string; selection?: TicketSelection }) =>
+  item.selection?.displayLabel ?? item.outcome;
 
 const portfolioDetailCopy = {
   en: {
@@ -252,7 +260,7 @@ export function Portfolio({
               <View style={styles.openOrderMain}>
                 <Text style={styles.openOrderTitle}>{order.title}</Text>
                 <Text style={styles.openOrderMeta}>
-                  {order.side === "buy" ? t.buy : t.sell} - {order.outcome} - {order.status}
+                  {order.side === "buy" ? t.buy : t.sell} - {displayOutcome(order)} - {order.status}
                 </Text>
               </View>
               <Pressable
@@ -365,7 +373,7 @@ export function Portfolio({
             </Text>
           )}
           <Text style={styles.latestActivityMeta}>
-            {latestActivity.title} - {latestActivity.outcome}
+            {latestActivity.title} - {displayOutcome(latestActivity)}
           </Text>
           {hasActivityExecutionDetails(latestActivity) && (
               <Text accessibilityLabel={`latest-activity-execution-${latestActivity.id}`} style={styles.activityExecution}>
@@ -393,7 +401,7 @@ export function Portfolio({
             <Text style={styles.confirmationAmount}>{money(latestOrder.amount)}</Text>
           </View>
           <Text style={styles.confirmationMeta}>
-            {latestOrder.mode.toUpperCase()} - {latestOrder.side === "buy" ? t.buy : t.sell} - {latestOrder.outcome}
+            {latestOrder.mode.toUpperCase()} - {latestOrder.side === "buy" ? t.buy : t.sell} - {displayOutcome(latestOrder)}
             {latestOrder.status ? ` - ${latestOrder.status}` : ""}
           </Text>
           <Text style={styles.confirmationMarket}>{latestOrder.title}</Text>
@@ -463,7 +471,7 @@ export function Portfolio({
               )}
               <Text style={styles.positionTitle}>{position.title}</Text>
               <Text style={styles.positionMeta}>
-                {position.mode.toUpperCase()} - {position.side === "buy" ? t.buy : t.sell} - {position.outcome} - {position.probability}%
+                {position.mode.toUpperCase()} - {position.side === "buy" ? t.buy : t.sell} - {displayOutcome(position)} - {position.probability}%
               </Text>
               <Pressable
                 accessibilityLabel={`position-detail-toggle-${position.id}`}
@@ -598,7 +606,7 @@ export function Portfolio({
                   </Text>
                 )}
                 <Text style={styles.activityMeta}>
-                  {activity.title} - {activity.outcome}
+                  {activity.title} - {displayOutcome(activity)}
                 </Text>
                 {hasActivityExecutionDetails(activity) && (
                   <Text accessibilityLabel={`activity-execution-${activity.id}`} style={styles.activityExecution}>
@@ -610,7 +618,7 @@ export function Portfolio({
               {expandedActivityId === activity.id && (
                 <View accessibilityLabel={`activity-detail-${activity.id}`} testID={`activity-detail-${activity.id}`} style={styles.activityDetailPanel}>
                   <Text style={styles.detailPanelTitle}>{detailCopy.details}</Text>
-                  <Text style={styles.detailPanelText}>{activity.title} - {activity.outcome}</Text>
+                  <Text style={styles.detailPanelText}>{activity.title} - {displayOutcome(activity)}</Text>
                   <Text style={styles.detailPanelText}>{activityExecutionText(activity, t)}</Text>
                 </View>
               )}
