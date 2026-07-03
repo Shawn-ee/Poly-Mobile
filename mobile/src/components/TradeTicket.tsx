@@ -251,7 +251,7 @@ export function TradeTicket({
   const selectionLabel = ticket.selection?.displayLabel ?? outcomeLabel;
   const marketLabel = ticket.selection?.displayLabel ?? label(locale, ticket.market);
   const amountDisplay = numericAmount > 0 ? compactCash(numericAmount) : "$0";
-  const submitLabel = numericAmount <= 0 ? "Choose an amount" : "Trade";
+  const submitLabel = numericAmount <= 0 ? "Choose an amount" : swipeLabel;
   const priceDisplay = `${contractProbability}c`;
 
   return (
@@ -477,8 +477,8 @@ export function TradeTicket({
 
 const styles = StyleSheet.create({
   modalShade: { flex: 1, justifyContent: "flex-end", backgroundColor: "rgba(0,0,0,0.5)" },
-  ticket: { maxHeight: "94%", borderTopLeftRadius: 22, borderTopRightRadius: 22, backgroundColor: "#080d16", borderWidth: 1, borderColor: "#263247", overflow: "hidden" },
-  ticketContent: { paddingHorizontal: 18, paddingTop: 10, paddingBottom: 8 },
+  ticket: { height: "88%", maxHeight: "94%", borderTopLeftRadius: 22, borderTopRightRadius: 22, backgroundColor: "#080d16", borderWidth: 1, borderColor: "#263247", overflow: "hidden" },
+  ticketContent: { flexGrow: 1, paddingHorizontal: 18, paddingTop: 10, paddingBottom: 18 },
   dragHandle: { alignSelf: "center", width: 92, height: 7, borderRadius: 999, backgroundColor: "#1f2937", marginBottom: 8 },
   ticketTop: { minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   ticketHeading: { flex: 1, alignItems: "center" },
@@ -501,8 +501,8 @@ const styles = StyleSheet.create({
   selectionSummary: { flexDirection: "row", alignItems: "center", gap: 14, marginTop: 20, minHeight: 82 },
   outcomeFlag: { width: 72, height: 72, borderRadius: 14, borderWidth: 1, borderColor: "#263247" },
   selectionTextBlock: { flex: 1 },
-  amountDisplayBlock: { minHeight: 120, alignItems: "center", justifyContent: "center", marginTop: 14 },
-  amountDisplayText: { color: "#f8fafc", fontSize: 58, fontWeight: "900" },
+  amountDisplayBlock: { minHeight: 154, alignItems: "center", justifyContent: "center", marginTop: 14 },
+  amountDisplayText: { color: "#f8fafc", fontSize: 64, fontWeight: "900" },
   ticketOutcomeRow: { alignSelf: "center", flexDirection: "row", alignItems: "center", gap: 4, minHeight: 54, padding: 5, borderRadius: 999, backgroundColor: "#111827" },
   outcomeChoiceMuted: { minWidth: 112, textAlign: "center", color: "#64748b", fontSize: 17, fontWeight: "900", paddingHorizontal: 14 },
   outcomeChoiceActive: { minWidth: 112, textAlign: "center", overflow: "hidden", color: "#f8fafc", fontSize: 17, fontWeight: "900", paddingHorizontal: 14, paddingVertical: 12, borderRadius: 999, backgroundColor: "#273244" },
@@ -544,12 +544,12 @@ const styles = StyleSheet.create({
   errorTextBlock: { flex: 1, gap: 3 },
   errorText: { color: "#fde68a", fontWeight: "800" },
   errorDetailText: { color: "#fcd34d", fontSize: 12, fontWeight: "700" },
-  ticketFooter: { paddingHorizontal: 18, paddingTop: 8, paddingBottom: 24, backgroundColor: "#080d16", borderTopWidth: 1, borderTopColor: "#263247" },
-  swipeSubmit: { minHeight: 58, flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 12, borderRadius: 16, backgroundColor: "#1d6dff" },
+  ticketFooter: { paddingHorizontal: 18, paddingTop: 12, paddingBottom: 24, backgroundColor: "#080d16", borderTopWidth: 1, borderTopColor: "#263247" },
+  swipeSubmit: { minHeight: 74, flexDirection: "row", alignItems: "center", gap: 14, paddingHorizontal: 14, borderRadius: 20, backgroundColor: "#1d6dff" },
   swipeSubmitArmed: { backgroundColor: "#16a34a" },
   swipeSubmitDisabled: { opacity: 0.55 },
-  swipeIcon: { width: 42, height: 42, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.18)" },
+  swipeIcon: { width: 52, height: 52, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.18)" },
   swipeTextBlock: { flex: 1 },
-  swipeLabel: { color: "#ffffff", fontSize: 17, fontWeight: "900" },
+  swipeLabel: { color: "#ffffff", fontSize: 20, fontWeight: "900" },
   swipeHelper: { color: "#dbeafe", fontSize: 12, fontWeight: "800", marginTop: 2 },
 });

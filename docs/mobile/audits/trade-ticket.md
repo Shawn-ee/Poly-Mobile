@@ -90,6 +90,72 @@ Recommended next cycle:
 
 - Continue to Portfolio/open-order/activity parity or a dedicated binary Buy/Sell/No-share contract cycle.
 
+## Cycle AI - Logged-In Ticket Surface
+
+Reference device:
+
+- Samsung S23.
+
+Polymarket app/browser:
+
+- Logged-in Polymarket Android app.
+
+Reference route or URL:
+
+- Native app World Cup tab, Futures, World Cup Winner detail page.
+
+Reference behavior:
+
+| Action | Polymarket result | State/data change | Evidence |
+| --- | --- | --- | --- |
+| Open logged-in World Cup tab on Home | Shows Polymarket header, Deposit, notification control, sports category rail, World Cup tab, Games/Futures switch, World Cup Winner card, outcome rows, bottom nav, and Portfolio balance. | User is logged in; World Cup Futures rows are visible. | `docs/mobile/reference/screenshots/cycle-AI-polymarket-logged-in-start.png`; `docs/mobile/reference/screenshots/cycle-AI-polymarket-logged-in-start.xml` |
+| Tap France outcome from Futures list | Opens the World Cup Winner market page with Market/Chat segmented control, rules/book/share actions, date, title, image, multi-outcome chart, range controls `All`, `1H`, `1D`, `1W`, chat card, search, and outcome rows. | Selected market context changes from list to detail page. | `docs/mobile/reference/screenshots/cycle-AI-polymarket-logged-in-france-ticket.png`; `docs/mobile/reference/screenshots/cycle-AI-polymarket-logged-in-france-ticket.xml` |
+| Scroll outcome row higher and tap France probability | Dims the full page and opens a tall bottom sheet. On this S23 session the sheet is a production `Location verification failed` state with one large `Contact support` action. | No trade is placed; production eligibility blocks order entry before confirmation. | `docs/mobile/reference/screenshots/cycle-AI-polymarket-after-france-row-tap.png`; `docs/mobile/reference/screenshots/cycle-AI-polymarket-after-france-row-tap.xml` |
+
+Cycle AI acceptance criteria:
+
+| ID | Priority | Criterion | Audit method | Result |
+| --- | --- | --- | --- | --- |
+| TT-AI-P0-01 | P0 | Holiwyn ticket opens over a dimmed game page as a tall sheet instead of the old compact bottom sheet. | Samsung tablet screenshot | Pass |
+| TT-AI-P0-02 | P0 | After amount entry, the primary action keeps Polymarket's swipe-confirm mental model by showing `Swipe up to buy`/`Swipe up to sell`, not a plain `Trade` button. | Samsung tablet XML | Pass |
+| TT-AI-P0-03 | P0 | Ticket still preserves selected market/outcome/contract identity and amount-to-win state after becoming taller. | Samsung tablet smoke | Pass |
+| TT-AI-P0-04 | P0 | Futures `Buy No` remains a Buy action for the selected No contract after the ticket-surface change. | Samsung tablet smoke | Pass |
+| TT-AI-P0-05 | P0 | Logged-in Polymarket production eligibility/location behavior is documented without implementing real-money production gates in fake-token Holiwyn mode. | Reference audit and docs | Pass |
+| TT-AI-P1-01 | P1 | Production location/login/trading eligibility states should be implemented when real-money scope starts. | Future auth/wallet cycle | Deferred |
+| TT-AI-P2-01 | P2 | Native drag physics and transition animation should be polished closer to Polymarket. | Visual QA | Deferred |
+
+Holiwyn implementation:
+
+- `mobile/src/components/TradeTicket.tsx` now gives the ticket surface a fixed tall sheet height, larger amount area, larger fixed swipe rail, and submit copy that remains `Swipe up to buy` or `Swipe up to sell` after amount entry.
+- `mobile/scripts/smoke.ps1` now checks the updated swipe-ready label in focused ticket proofs.
+
+Holiwyn proof:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket-amount.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket-amount.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-future-list-buy-no-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-future-list-buy-no-ticket.xml`
+
+Verification:
+
+- `npm run typecheck`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/orderService.test.ts`
+- `cmd /c npm.cmd run smoke:tablet:event-detail-trade`
+- `cmd /c npm.cmd run smoke:tablet:future-list-buy-no`
+
+Audit Gate:
+
+Result: Pass for focused logged-in/tall ticket-surface parity.
+
+Unresolved P0 gaps: 0 for this focused scope.
+
+Remaining P1/P2 gaps:
+
+- Polymarket's real production eligibility/location sheet is documented but not implemented in fake-token Holiwyn mode.
+- Native sheet drag physics and transition polish remain below Polymarket.
+
 ## Cycle AG - Ticket Visual Density And Advanced Details
 
 Reference device:

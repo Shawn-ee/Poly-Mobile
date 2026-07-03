@@ -1285,7 +1285,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-buy-no-ticket.png"
       $futureListBuyNoTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-buy-no-ticket.xml"
-      Assert-HierarchyContains -Path $futureListBuyNoTicketHierarchy -Expected @("trade-ticket", "World Cup winner", "No - France", "Buy", "ticket-price-line", "66c", "Trade", "Final cost may vary.")
+      Assert-HierarchyContains -Path $futureListBuyNoTicketHierarchy -Expected @("trade-ticket", "World Cup winner", "No - France", "Buy", "ticket-price-line", "66c", "Swipe up to buy", "Final cost may vary.")
       Invoke-TapHierarchyNode -Path $futureListBuyNoTicketHierarchy -Identifier "place-mock-order"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-buy-no-portfolio.png"
@@ -2118,7 +2118,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-ticket-amount.png"
       $eventDetailTicketAmountHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-ticket-amount.xml"
-      Assert-HierarchyContains -Path $eventDetailTicketAmountHierarchy -Expected @("$10", "ticket-to-win-line", "To win", "ticket-price-line", "64c", "Trade", "Final cost may vary.")
+      Assert-HierarchyContains -Path $eventDetailTicketAmountHierarchy -Expected @("$10", "ticket-to-win-line", "To win", "ticket-price-line", "64c", "Swipe up to buy", "Final cost may vary.")
       Invoke-TapHierarchyNode -Path $eventDetailTicketAmountHierarchy -Identifier "ticket-settings"
       Start-Sleep -Seconds 1
       $eventDetailTicketDetailsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-ticket-details.xml"
