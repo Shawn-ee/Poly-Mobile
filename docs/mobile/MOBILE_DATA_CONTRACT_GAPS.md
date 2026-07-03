@@ -473,3 +473,34 @@ Temporary mock/static data:
 Future migration concern:
 
 - Before production trading, ticket submit must be server-authoritative for price, side semantics, balance/allowance, eligibility, idempotency, order status, and portfolio/activity effects.
+
+## Cycle AH - Binary Side Ticket
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Explicit `contractSide` for every binary order, position, open order, canceled order, and activity/history row.
+- Optional separate YES/NO contract ids or token ids for each displayed outcome.
+- Executable YES and NO prices, not only display probability.
+
+Fields backend provides but mobile ignores:
+
+- Unknown in this focused cycle; server mode order response is still treated generically.
+
+Schema mismatch:
+
+- Transaction action (`BUY`/`SELL`) and binary contract side (`YES`/`NO`) must be modeled as separate fields.
+- Current mobile can pass `contractSide` to `/api/orders`, but backend/schema support must be verified in a future server contract cycle.
+
+Route mismatch:
+
+- `/api/orders` should accept and persist `contractSide`.
+- `/api/portfolio` and `/api/portfolio/history` should return `contractSide` for positions, open orders, fills, canceled orders, and recent trades.
+
+Temporary mock/static data:
+
+- Holiwyn computes No price locally as `100 - probability`.
+- Fake-token Portfolio stores `contractSide` locally after mock submission.
+
+Future migration concern:
+
+- Once backend-backed YES/NO contracts exist, close/sell/retrade flows must preserve whether the user owns YES shares or NO shares, and should not infer contract ownership from transaction side alone.

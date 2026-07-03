@@ -7,6 +7,8 @@ export const openOrderCanceledActivity = (order: OpenOrder, timestamp: string): 
   action: "canceled",
   title: order.title,
   outcome: order.outcome,
+  selection: order.selection,
+  contractSide: order.contractSide,
   amount: order.orderValue ?? (order.remainingShares ?? order.remaining) * order.price,
   shares: order.remainingShares ?? order.remaining,
   side: order.side,

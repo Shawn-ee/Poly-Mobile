@@ -130,7 +130,7 @@ export function FutureList({
 }: {
   locale: Locale;
   futures: Market[];
-  openTicket: (market: Market, outcome: Outcome, event?: Event, side?: "buy" | "sell") => void;
+  openTicket: (market: Market, outcome: Outcome, event?: Event, side?: "buy" | "sell", selection?: { marketType: "future"; displayLabel: string; contractSide: "yes" | "no" }) => void;
   statsCopy?: MarketStatsCopy;
 }) {
   const [selectedRange, setSelectedRange] = useState<FutureChartRange>("MAX");
@@ -213,7 +213,7 @@ export function FutureList({
                   accessibilityLabel={`future-outcome-${market.id}-${outcome.id}`}
                     style={styles.futureYesButton}
                   testID={`future-outcome-${market.id}-${outcome.id}`}
-                    onPress={() => openTicket(market, outcome, undefined, "buy")}
+                    onPress={() => openTicket(market, outcome, undefined, "buy", { marketType: "future", displayLabel: label(locale, outcome), contractSide: "yes" })}
                 >
                     <Text style={styles.futureYesText}>Buy Yes {cents(outcome.probability)}</Text>
                 </Pressable>
@@ -221,7 +221,7 @@ export function FutureList({
                     accessibilityLabel={`future-outcome-no-${market.id}-${outcome.id}`}
                     style={styles.futureNoButton}
                     testID={`future-outcome-no-${market.id}-${outcome.id}`}
-                    onPress={() => openTicket(market, outcome, undefined, "sell")}
+                    onPress={() => openTicket(market, outcome, undefined, "buy", { marketType: "future", displayLabel: label(locale, outcome), contractSide: "no" })}
                   >
                     <Text style={styles.futureNoText}>Buy No {cents(100 - outcome.probability)}</Text>
                   </Pressable>

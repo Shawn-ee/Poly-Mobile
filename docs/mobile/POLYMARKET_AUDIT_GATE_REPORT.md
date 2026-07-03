@@ -587,6 +587,55 @@ Decision:
 - Remaining P1/P2 gaps: binary NO/share contract semantics and future production auth/location/trading eligibility gates.
 - Next cycle required: yes. Continue Portfolio/open orders/activity parity or the next highest-priority whole-app parity item.
 
+## Cycle AH - Binary Side Ticket
+
+Feature: Futures Buy No contract-side parity.
+
+Cycle: AH.
+
+Lead Agent target: close PM-GAP-060 for focused World Cup futures `Buy No`.
+
+Reference Audit Agent: Samsung S23 Polymarket Android app and mobile web.
+
+Implementation Agent: Holiwyn mobile app.
+
+Audit Gate Agent: Tablet device proof plus focused order-service contract test.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket Android app and Chrome/mobile web.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AH-polymarket-futures-list.png`
+- `docs/mobile/reference/screenshots/cycle-AH-polymarket-web-futures-forced.png`
+- `docs/mobile/reference/screenshots/cycle-AH-polymarket-live-start-real.png`
+- `docs/mobile/reference/screenshots/cycle-AH-polymarket-live-outcome-ticket.png`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-future-list-buy-no-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-future-list-buy-no-ticket.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-future-list-buy-no-portfolio.png`
+- `docs/mobile/harness/cycle-current-holiwyn-future-list-buy-no-portfolio.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| BS-AH-P0-01 | P0 | Pass | `cycle-current-holiwyn-future-list-buy-no-ticket.xml` | None |
+| BS-AH-P0-02 | P0 | Pass | `No - France`; `66c`; `MOCK - Buy - No - France` proof | None |
+| BS-AH-P0-03 | P0 | Pass | `smoke:tablet:future-list-buy-no`; order-service test | None |
+| BS-AH-P0-04 | P0 | Pass | `contractSide: "NO"` order-service test | None |
+| BS-AH-P1-01 | P1 | Deferred | S23 native tall-sheet evidence | Future ticket-surface cycle |
+
+Decision:
+
+- Pass/fail: Pass for focused `Buy No` binary-side contract scope.
+- Unresolved P0 gaps: 0 for focused scope.
+- Remaining P1/P2 gaps: native full-page/swipe confirmation surface and future production eligibility gates.
+- Next cycle required: yes. Recommended next cycle is trade-ticket surface parity: move Holiwyn toward Polymarket's taller full-page/native swipe-up confirmation UI.
+
 ## Gate Report Template
 
 Use this template for every feature gate:

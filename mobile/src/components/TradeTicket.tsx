@@ -9,14 +9,18 @@ export type Ticket = {
   market: Market;
   outcome: Outcome;
   side: "buy" | "sell";
+  contractSide?: BinaryContractSide;
   selection?: TicketSelection;
 };
+
+export type BinaryContractSide = "yes" | "no";
 
 export type TicketSelection = {
   marketType: "spread" | "totals" | "team-total" | "winner" | "prop" | "future" | "live";
   line?: string;
   period?: string;
   displayLabel: string;
+  contractSide?: BinaryContractSide;
 };
 
 type TradeTicketCopy = {
@@ -178,10 +182,11 @@ export function TradeTicket({
   defaultSlippage: string;
   onPreferencesChange: (next: { amount: string; side: "buy" | "sell"; slippage: string }) => void;
   close: () => void;
-  placeOrder: (amount: number, side: "buy" | "sell") => void | Promise<void>;
+  placeOrder: (amount: number, side: "buy" | "sell", contractSide?: BinaryContractSide) => void | Promise<void>;
 }) {
   const [amount, setAmountState] = useState(defaultAmount);
   const [side, setSideState] = useState<"buy" | "sell">(defaultSide);
+  const [activeContractSide, setActiveContractSide] = useState<BinaryContractSide>("yes");
   const [slippage, setSlippageState] = useState(defaultSlippage);
   const [showDetails, setShowDetails] = useState(false);
 
@@ -189,9 +194,10 @@ export function TradeTicket({
     if (!ticket) return;
     setAmountState(ticket.event ? "0" : defaultAmount);
     setSideState(ticket.side);
+    setActiveContractSide(ticket.contractSide ?? ticket.selection?.contractSide ?? "yes");
     setSlippageState(defaultSlippage);
     setShowDetails(false);
-  }, [ticket?.market.id, ticket?.outcome.id, ticket?.side]);
+  }, [ticket?.market.id, ticket?.outcome.id, ticket?.side, ticket?.contractSide, ticket?.selection?.contractSide]);
 
   if (!ticket) return null;
   const setAmount = (nextAmount: string) => {
@@ -216,10 +222,12 @@ export function TradeTicket({
     setAmount(nextAmount.replace(/^0+(\d)/, "$1"));
   };
   const numericAmount = Number(amount) || 0;
-  const averagePrice = ticket.outcome.probability / 100;
-  const impliedOdds = ticket.outcome.probability > 0 ? 100 / ticket.outcome.probability : 0;
+  const contractSide = activeContractSide;
+  const contractProbability = contractSide === "no" ? 100 - ticket.outcome.probability : ticket.outcome.probability;
+  const averagePrice = contractProbability / 100;
+  const impliedOdds = contractProbability > 0 ? 100 / contractProbability : 0;
   const estimatedShares = averagePrice > 0 ? numericAmount / averagePrice : 0;
-  const estimatedPayout = ticket.outcome.probability > 0 ? numericAmount * (100 / ticket.outcome.probability) : 0;
+  const estimatedPayout = contractProbability > 0 ? numericAmount * (100 / contractProbability) : 0;
   const potentialProfit = Math.max(estimatedPayout - Math.min(numericAmount, balance), 0);
   const swipeLabel = side === "buy" ? t.swipeBuyOrder : t.swipeSellOrder;
   const costLabel = side === "buy" ? t.estimatedCost : t.estimatedProceeds;
@@ -239,12 +247,12 @@ export function TradeTicket({
   const liveClockText = liveClock ? `${liveClock} - ${t.livePriceMovement}` : null;
   const eventLabel = label(locale, ticket.event ?? ticket.market);
   const outcomeLabel = label(locale, ticket.outcome);
-  const sideLabel = side === "buy" ? "Yes" : "No";
+  const sideLabel = contractSide === "yes" ? "Yes" : "No";
   const selectionLabel = ticket.selection?.displayLabel ?? outcomeLabel;
   const marketLabel = ticket.selection?.displayLabel ?? label(locale, ticket.market);
   const amountDisplay = numericAmount > 0 ? compactCash(numericAmount) : "$0";
   const submitLabel = numericAmount <= 0 ? "Choose an amount" : "Trade";
-  const priceDisplay = `${ticket.outcome.probability}c`;
+  const priceDisplay = `${contractProbability}c`;
 
   return (
     <Modal visible transparent animationType="slide">
@@ -310,7 +318,7 @@ export function TradeTicket({
             <View accessibilityLabel="ticket-amount-display" testID="ticket-amount-display" style={styles.amountDisplayBlock}>
               <Text style={styles.amountDisplayText}>{amountDisplay}</Text>
             </View>
-            <View style={styles.ticketOutcomeRow}>
+            <View accessibilityLabel={`${sideLabel} - ${outcomeLabel}`} testID="ticket-contract-outcome-row" style={styles.ticketOutcomeRow}>
               <Text style={styles.outcomeChoiceMuted}>{outcomeLabel === selectionLabel ? sideLabel : selectionLabel}</Text>
               <Text accessibilityLabel="ticket-selected-outcome-choice" testID="ticket-selected-outcome-choice" style={styles.outcomeChoiceActive}>
                 {outcomeLabel}
@@ -323,17 +331,28 @@ export function TradeTicket({
               </View>
             )}
             <View style={styles.ticketSideRow}>
-              {(["buy", "sell"] as const).map((option) => (
-                <Pressable
-                  accessibilityLabel={`ticket-side-${option}`}
-                  key={option}
-                  style={[styles.sideButton, side === option && styles.sideButtonActive]}
-                  onPress={() => setSide(option)}
-                  testID={`ticket-side-${option}`}
-                >
-                  <Text style={[styles.sideText, side === option && styles.sideTextActive]}>{option === "buy" ? "Yes" : "No"}</Text>
-                </Pressable>
-              ))}
+              {(["buy", "sell"] as const).map((option) => {
+                const isContractActive = contractSide === "no" ? option === "sell" : side === option;
+                return (
+                  <Pressable
+                    accessibilityLabel={`ticket-side-${option}`}
+                    key={option}
+                    style={[styles.sideButton, isContractActive && styles.sideButtonActive]}
+                    onPress={() => {
+                      if (ticket.selection?.marketType === "future") {
+                        setActiveContractSide(option === "sell" ? "no" : "yes");
+                        setSide("buy");
+                        return;
+                      }
+                      setActiveContractSide(option === "sell" ? "no" : "yes");
+                      setSide(option);
+                    }}
+                    testID={`ticket-side-${option}`}
+                  >
+                    <Text style={[styles.sideText, isContractActive && styles.sideTextActive]}>{option === "buy" ? "Yes" : "No"}</Text>
+                  </Pressable>
+                );
+              })}
             </View>
             <View style={styles.presetRow}>
               {amountPresets.map((preset) => (
@@ -351,7 +370,7 @@ export function TradeTicket({
             {showDetails && (
               <>
                 <View accessibilityLabel="ticket-odds-available" testID="ticket-odds-available" style={styles.oddsAvailableLine}>
-                  <Text style={styles.oddsAvailableText}>Odds {ticket.outcome.probability}% | {money(balance)} available</Text>
+                  <Text style={styles.oddsAvailableText}>Odds {contractProbability}% | {money(balance)} available</Text>
                 </View>
                 <View style={styles.amountHeader}>
                   <Text accessibilityLabel="ticket-balance-inline" testID="ticket-balance-inline" style={styles.balanceText}>
@@ -447,7 +466,7 @@ export function TradeTicket({
               disabled={numericAmount <= 0}
               helper={t.finalCostMayVary}
               label={submitLabel}
-              onSubmit={() => placeOrder(numericAmount, side)}
+              onSubmit={() => placeOrder(numericAmount, side, contractSide)}
             />
           </View>
         </View>

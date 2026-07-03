@@ -870,7 +870,7 @@ export default function App() {
   const openTicket = (market: Market, outcome: Outcome, event?: Event, side?: "buy" | "sell", selection?: TicketSelection) => {
     setTicketOrderError(null);
     setTicketOrderErrorDetail(null);
-    setTicket({ market, outcome, event, side: side ?? ticketDefaults.side, selection });
+    setTicket({ market, outcome, event, side: side ?? ticketDefaults.side, contractSide: selection?.contractSide, selection });
   };
 
   useEffect(() => {
@@ -947,7 +947,7 @@ export default function App() {
     });
   };
 
-  const placeOrder = async (amount: number, side: "buy" | "sell") => {
+  const placeOrder = async (amount: number, side: "buy" | "sell", contractSide?: Ticket["contractSide"]) => {
     if (!ticket || amount <= 0) return;
     const cost = Math.min(amount, balance);
     setTicketOrderError(null);
@@ -964,6 +964,7 @@ export default function App() {
         market: ticket.market,
         outcome: ticket.outcome,
         selection: ticket.selection,
+        contractSide: contractSide ?? ticket.contractSide,
         side,
         amount: cost,
       });
@@ -986,6 +987,7 @@ export default function App() {
           title: result.title,
           outcome: result.outcome,
           selection: result.selection,
+          contractSide: result.contractSide,
           side: result.side,
           amount: result.amount,
           probability: result.probability,
@@ -1002,6 +1004,7 @@ export default function App() {
       title: result.title,
       outcome: result.outcome,
       selection: result.selection,
+      contractSide: result.contractSide,
       side: result.side,
       amount: result.amount,
       probability: result.probability,
@@ -1019,6 +1022,7 @@ export default function App() {
         title: result.title,
         outcome: result.outcome,
         selection: result.selection,
+        contractSide: result.contractSide,
         amount: result.amount,
         shares: result.filledSize ?? result.size,
         side: result.side,

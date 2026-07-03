@@ -189,3 +189,16 @@ Cycle AG implementation notes:
 
 - No backend route was created or changed.
 - Mobile first-view ticket now expects market/outcome identity, quote/price, payout, and advanced depth/estimate data to be available in a ticket-ready shape.
+
+## Cycle AH - Binary Side Ticket
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Futures Buy No ticket | Existing futures data from local/server event hydration | GET for market context | Optional for viewing | None | market id/title/type, outcome id/label/probability/color | Markets, outcomes, binary contracts | Local `worldCupFutures` rows | Backend should expose YES and NO contract ids/prices separately for each binary outcome. |
+| Submit Buy No order | `/api/orders` through `PolyApi.placeLimitOrder()` in server mode | POST | Required in server mode | `marketId`, `outcomeId`, transaction `side`, `contractSide`, `price`, `size`, optional `selection`, `type`, `clientOrderId` | order id/status/size/remaining/fills | Fake-token mock order in local mode | Backend must accept and persist `contractSide` as separate from transaction side. |
+| Portfolio display for No contracts | `/api/portfolio` and `/api/portfolio/history` in server mode | GET | Required in server mode | None | positions/orders/history need selected outcome plus `contractSide` | Positions, orders, fills, activity/history | Local Portfolio state stores `contractSide` | Backend snapshot/history routes should return `contractSide` for positions, orders, canceled orders, and recent trades. |
+
+Cycle AH implementation notes:
+
+- Mobile now sends `contractSide: "YES" | "NO"` with server-mode order payloads.
+- No backend route was changed in this cycle; this is a forward-compatible mobile contract update.

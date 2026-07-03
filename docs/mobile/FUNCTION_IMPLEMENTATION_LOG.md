@@ -547,3 +547,44 @@ Known limitations:
 - True binary NO-share semantics remain approximate until the mobile/backend contract supports explicit binary side ownership.
 - Production auth/location/trading eligibility gates remain out of scope for fake-token trading.
 - Ticket prices and payout math still use current local outcome probability unless backend quote data is available.
+
+## Cycle AH - Binary Side Ticket
+
+Feature/page worked on:
+
+- Futures `Buy No` ticket/order contract identity.
+- S23 native World Cup match ticket-surface reference follow-up.
+
+Frontend components touched:
+
+- `mobile/src/components/MarketLists.tsx`
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/App.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/package.json`
+
+Important functions/services touched:
+
+- `openTicket()` now carries `selection.contractSide` into the active ticket.
+- `TradeTicket()` now prices and labels explicit `No` contracts separately from Buy/Sell transaction action.
+- `submitTicketOrder()` now derives contract probability and sends `contractSide` to the API payload.
+- `Portfolio` display helpers now render explicit `No - <outcome>` identity for latest order, positions, activity, and open orders.
+
+User interactions supported:
+
+- Tap futures `Buy No` for France.
+- See a Buy ticket with visible `No - France` contract identity and `66c` inverse price.
+- Submit a fake-token order and see `MOCK - Buy - No - France` in Portfolio.
+
+State transitions:
+
+- Futures row `Buy No`: `ticket=null -> ticket(side=buy, contractSide=no)`.
+- Ticket amount defaults to `$10` in this focused proof and renders inverse payout from 66%.
+- Submit: ticket closes, Portfolio opens, latest order/activity retain `contractSide=no`.
+
+Known limitations:
+
+- The S23 native Polymarket outcome tap is location-gated, so the live production order body was not visible in this cycle.
+- The S23 reference still proves the native app uses a taller sheet/page surface over the game page; Holiwyn's compact ticket sheet remains a P1 surface-parity gap.

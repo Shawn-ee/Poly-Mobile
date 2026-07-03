@@ -11918,6 +11918,22 @@ Audit Gate: Pass for focused Trade ticket P0 baseline, with 0 unresolved P0 gaps
 
 Next likely cycle: Portfolio/open orders/activity parity refresh, or another highest-priority whole-app parity item selected by the Lead Agent.
 
+### Cycle AH - Binary Side Ticket
+
+Goal: Close the focused binary `Buy No` contract-side gap without starting Portfolio login work.
+
+Reference audit: Samsung S23 Polymarket native World Cup futures and match pages were inspected. Native match outcome tap is location-gated, but the reference still shows a tall native sheet over the full game page. This confirms the next ticket-surface target should be a fuller page/tall-sheet swipe-up confirmation, not a compact Holiwyn-only sheet.
+
+Holiwyn screens changed: Futures `Buy No` now opens a Buy ticket with explicit `No - France` contract identity and inverse `66c` price. Portfolio latest order/activity now preserve `MOCK - Buy - No - France`.
+
+Backend/API changed: Mobile order payload now includes `contractSide: "YES" | "NO"` separately from transaction `side: "BUY" | "SELL"`. No backend route was changed.
+
+Verification: `npm run typecheck`, `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/orderService.test.ts`, and `cmd /c npm.cmd run smoke:tablet:future-list-buy-no` passed.
+
+Audit Gate: Pass for focused Buy No contract-side scope, with 0 unresolved P0 gaps. P1 gap remains for native full-page/swipe-up trade confirmation surface parity.
+
+Next likely cycle: Trade-ticket surface parity. Move Holiwyn toward Polymarket's full/tall native confirmation flow and swipe-up submit model while keeping Holiwyn branding and fake-token mode.
+
 ### Heartbeat After Cycle AG
 
 Completed recent cycles: AD, AE, AF, AG.
