@@ -19,11 +19,13 @@ export function Header({
   promo,
   language,
   toggleLanguage,
+  openAccount,
 }: {
   locale: Locale;
   promo: string;
   language: string;
   toggleLanguage: () => void;
+  openAccount: () => void;
 }) {
   const [feedback, setFeedback] = useState<"claimed" | "notifications" | null>(null);
   const feedbackText = feedback ? headerFeedbackCopy[locale][feedback] : null;
@@ -46,6 +48,9 @@ export function Header({
         </Pressable>
         <Pressable accessibilityLabel="notifications" testID="header-notifications-action" style={styles.bell} onPress={() => setFeedback("notifications")}>
           <Ionicons name="notifications-outline" color="#f8fafc" size={20} />
+        </Pressable>
+        <Pressable accessibilityLabel="account" testID="header-account-action" style={styles.accountButton} onPress={openAccount}>
+          <Ionicons name="person-circle-outline" color="#f8fafc" size={22} />
         </Pressable>
       </View>
       {feedbackText && (
@@ -73,6 +78,7 @@ const styles = StyleSheet.create({
   promoButton: { paddingHorizontal: 12, paddingVertical: 10, borderRadius: 10, backgroundColor: "#1d6dff" },
   promoText: { color: "#ffffff", fontWeight: "900" },
   bell: { width: 42, height: 42, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  accountButton: { width: 42, height: 42, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   feedbackBar: { marginHorizontal: 16, marginBottom: 10, minHeight: 42, flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 12, borderRadius: 10, backgroundColor: "#13233a", borderWidth: 1, borderColor: "#29476d" },
   feedbackText: { flex: 1, color: "#dbeafe", fontWeight: "900" },
   feedbackDismiss: { width: 28, height: 28, alignItems: "center", justifyContent: "center", borderRadius: 8, backgroundColor: "#1f2937" },

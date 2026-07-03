@@ -185,7 +185,7 @@ try {
     @{ Name = "live"; Id = "holiwyn-live-tab"; Expected = @("Live World Cup", "2 markets", "6 outcomes", "France vs. Argentina", "holiwyn-live-tab") },
     @{ Name = "portfolio"; Id = "holiwyn-portfolio-tab"; Expected = @("Portfolio", "Fake balance", "Open positions", "Recent activity", "holiwyn-portfolio-tab") },
     @{ Name = "search"; Id = "holiwyn-search-tab"; Expected = @("Search World Cup markets", "Top results", "Mexico vs. Ecuador", "holiwyn-search-tab") },
-    @{ Name = "account"; Id = "holiwyn-account-tab"; Expected = @("Account", "Demo balance", "Preferences", "holiwyn-account-tab") }
+    @{ Name = "account"; Id = "header-account-action"; Expected = @("Account", "Demo balance", "Preferences", "header-account-action") }
   )
 
   $currentPath = $homePath
