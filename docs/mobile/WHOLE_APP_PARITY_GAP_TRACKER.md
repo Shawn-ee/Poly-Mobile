@@ -20,7 +20,7 @@ Line criteria: `docs/mobile/HOLIWYN_LINE_ADJUSTMENT_CRITERIA.md`
 | WA-P0-06 | Spread and Totals line/period controls update visible market values and selected Spread line identity persists into Portfolio surfaces. | Verified | Cycle K line adjustment proof plus Cycle L line portfolio proof. | Done |
 | WA-P0-07 | Ticket now carries selected Spread and Totals line/period into `ticket-selection-line`, proven on tablet. | Verified | `cycle-current-holiwyn-line-adjustment-spread-ticket.*`, `cycle-current-holiwyn-line-adjustment-totals-ticket.*`. | Done |
 | WA-P0-08 | Selected line metadata persists through ticket order creation, latest order, filled position/activity rows, backend mapping, and disposable open-order UI proof. | Verified | `npm run smoke:tablet:event-detail-line-portfolio`; focused mobile API tests. | Done |
-| WA-P0-09 | Polymarket order book is a full screen. Holiwyn book control does not yet prove equivalent market depth. | Open | Add or prove order book/depth screen. | Cycle M |
+| WA-P0-09 | Full-screen game-page order book/depth panel exists with outcome bid/ask, size bars, Buy/Sell actions, and ticket handoff proof. | Verified | `cycle-current-holiwyn-order-book.*`, `cycle-current-holiwyn-order-book-ticket.*`. | Done |
 | WA-P0-10 | Some empty states exist; loading/API failure/error states need whole-app proof. | Open | Fixture/smoke for page error/loading states. | Cycle M |
 
 ## Line Adjustment P0 Gaps
@@ -101,3 +101,16 @@ Verification:
 - `npm run typecheck`
 - `npm run test:mobile-api -- mobile/src/__tests__/orderService.test.ts mobile/src/__tests__/portfolioSnapshotService.test.ts mobile/src/__tests__/portfolioHistoryService.test.ts`
 - `npm run smoke:tablet:event-detail-line-portfolio`
+
+## Cycle M Notes
+
+Cycle M implemented and verified the game-page order book/depth baseline:
+
+- Regulation Time Winner now exposes a `Book` control beside the compact bid/ask/spread row.
+- The order-book screen shows per-outcome bid/ask prices, share sizes, relative depth bars, odds, and Buy/Sell actions.
+- Buy from the book opens the existing ticket for the selected outcome, then returns to the order book after closing.
+
+Verification:
+
+- `npm run typecheck`
+- `npm run smoke:tablet:event-detail-order-book`
