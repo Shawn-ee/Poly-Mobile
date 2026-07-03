@@ -11886,6 +11886,22 @@ Audit Gate: Pass for focused market-page P0 baseline, with 0 unresolved P0 gaps 
 
 Next likely cycle: watchlist/saved/share/chat/notification parity or market-page visual-density polish.
 
+### Cycle AF - Reference Device Preflight Harness
+
+Goal: Add a harness guard that checks Polymarket reference-device availability before starting a new product parity feature cycle.
+
+Reference audit: Not a product audit. The harness inspected ADB devices/mdns state and attempted the known Samsung S23 wireless debugging endpoints.
+
+Holiwyn screens changed: None.
+
+Backend/API changed: No route changed. Docs now record that this is device/harness infrastructure with no backend dependency.
+
+Verification: `npm run typecheck` passed; `cmd /c npm.cmd run preflight:polymarket-reference-device:expect-blocked` passed and wrote `docs/mobile/harness/cycle-current-polymarket-reference-device-preflight.json`.
+
+Audit Gate: Expected blocked for product parity work. The Samsung tablet remains available for Holiwyn proof, but the S23 reference device is missing from ADB/mdns, so the loop must not start or complete a new product feature audit until reference access returns.
+
+Next likely cycle: rerun reference-device preflight. If S23 or another approved reference Android device is available, continue with the next priority feature under the Polymarket audit gate.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

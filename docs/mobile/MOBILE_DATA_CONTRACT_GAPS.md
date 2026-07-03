@@ -412,3 +412,29 @@ Temporary mock/static data:
 Future migration concern:
 
 - Once live stats are backend-backed, the Live Stats panel should reflect real event status and should show a clear empty/pregame state when stats are unavailable.
+
+## Cycle AF - Reference Device Preflight Harness
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- None. This cycle is device/harness infrastructure.
+
+Fields backend provides but mobile ignores:
+
+- None.
+
+Schema mismatch:
+
+- None.
+
+Route mismatch:
+
+- None.
+
+Temporary mock/static data:
+
+- Known S23 wireless debugging endpoints are listed as reconnect attempts in the harness.
+
+Future migration concern:
+
+- None for backend. Future device farms or CI can replace the local ADB endpoint list with managed device metadata.

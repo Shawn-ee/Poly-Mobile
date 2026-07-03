@@ -164,3 +164,14 @@ Cycle AE implementation notes:
 
 - No backend route was created or changed.
 - Mobile now expects a future live-stats data contract in addition to grouped market metadata, line-market identity, market depth, and chart history.
+
+## Cycle AF - Reference Device Preflight Harness
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Reference device preflight | None | N/A | N/A | N/A | N/A | N/A | N/A | None; this is an ADB/device harness. |
+
+Cycle AF implementation notes:
+
+- No backend route was created or changed.
+- The harness only inspects ADB device state and writes `docs/mobile/harness/cycle-current-polymarket-reference-device-preflight.json`.
