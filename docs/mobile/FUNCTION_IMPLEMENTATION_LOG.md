@@ -246,3 +246,43 @@ Known limitations:
 - This cycle verifies focused Spreads/Totals only.
 - Team totals, halves-specific line cards, corners, and other discovered line markets still require separate same-cycle audits.
 - Line prices/probabilities are local deterministic values until backend contracts provide market line quotes.
+
+## Cycle Z - Trade Ticket
+
+Feature/page worked on:
+
+- Focused game-page trade ticket.
+
+Frontend components touched:
+
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+Important functions/services touched:
+
+- `TradeTicket()` quick amount preset list changed to `1`, `5`, `10`, and `100`.
+- `EventDetailTrade` smoke now proves amount chip parity and swipe-submit readiness.
+- `smoke-tablet.ps1` now exposes `-EventDetailTrade`.
+
+User interactions supported:
+
+- Open ticket from a game-page outcome.
+- See selected market/outcome and Buy/Sell controls.
+- Use Polymarket-style quick amount chips.
+- Tap `+$10` and see amount/estimate updates.
+- See `Swipe up to buy` readiness after amount entry.
+- Close and reopen ticket for the opposite outcome without stale selection.
+
+State transitions:
+
+- `ticket: null -> selected outcome ticket`.
+- `amount: "0" -> "10"` after tapping `ticket-preset-10`.
+- `submitLabel: "Choose an amount" -> "Swipe up to buy"`.
+- `ticket: selected home outcome -> null -> selected away outcome`.
+
+Known limitations:
+
+- Ticket visual density remains heavier than Polymarket's first ticket view.
+- The US view-only/download/login gate is documented but not implemented for fake-token mode.
+- Full post-submit portfolio/open-order parity remains in the Portfolio cycle.

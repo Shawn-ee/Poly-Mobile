@@ -185,6 +185,60 @@ Decision:
 - Remaining P1/P2 gaps: team totals, halves-specific line cards, corners/discovered markets, backend-provided line pricing/depth/history.
 - Next cycle required: yes. Continue full adjustable-line and trade-ticket parity; do not mark all line markets complete from this focused pass.
 
+## Feature: Trade Ticket
+
+Cycle: Z
+
+Lead Agent target: focused game-page trade ticket parity.
+
+Reference Audit Agent: same-cycle Samsung S23 Polymarket mobile web audit.
+
+Implementation Agent: Holiwyn quick amount chip update plus tablet ticket harness.
+
+Audit Gate Agent: Samsung tablet Holiwyn proof against criteria.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket mobile web.
+
+Reference route/URL: `https://polymarket.com/event/fifwc-usa-bel-2026-07-06-first-to-score`.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-Z-polymarket-ticket-open.png`
+- `docs/mobile/reference/screenshots/cycle-Z-polymarket-ticket-amount.png`
+- `docs/mobile/reference/screenshots/cycle-Z-polymarket-ticket-trade.png`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket-amount.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket-amount.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-away-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-away-ticket.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| TT-P0-01 | P0 | Pass | `cycle-current-holiwyn-event-detail-ticket.xml` | None |
+| TT-P0-02 | P0 | Pass | `cycle-current-holiwyn-event-detail-ticket.xml` | None |
+| TT-P0-03 | P0 | Pass | `cycle-current-holiwyn-event-detail-ticket-amount.xml` | None |
+| TT-P0-04 | P0 | Pass | `cycle-current-holiwyn-event-detail-ticket-amount.xml` | None |
+| TT-P0-05 | P0 | Pass | `cycle-current-holiwyn-event-detail-away-ticket.xml` | None |
+
+Decision:
+
+- Pass/fail: Pass for focused game-page trade ticket scope.
+- Unresolved P0 gaps: 0 for focused scope.
+- Remaining P1/P2 gaps: visual density, US view-only gate, selected-team selector parity, full post-submit portfolio parity.
+- Next cycle required: yes. Continue full portfolio/open-order/activity parity or ticket visual-density parity.
+
 ## Gate Report Template
 
 Use this template for every feature gate:

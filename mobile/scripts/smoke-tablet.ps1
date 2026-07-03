@@ -3,6 +3,7 @@ param(
   [int]$Port = 8181,
   [string]$ExpoHost = "",
   [switch]$EventDetailSummary,
+  [switch]$EventDetailTrade,
   [switch]$EventDetailChat,
   [switch]$EventDetailActions,
   [switch]$EventDetailMarketTabs,
@@ -54,7 +55,9 @@ Write-Host "Tablet smoke target: $Device"
 Write-Host "Expo host: $resolvedExpoHost"
 Write-Host "Expo port: $Port"
 
-if ($EventDetailSummary) {
+if ($EventDetailTrade) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailTrade -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
+} elseif ($EventDetailSummary) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailSummary -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($EventDetailChat) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailChat -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
