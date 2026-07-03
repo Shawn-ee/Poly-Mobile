@@ -8,6 +8,8 @@ Whole-app criteria: `docs/mobile/HOLIWYN_WHOLE_APP_PARITY_CRITERIA.md`
 
 Line criteria: `docs/mobile/HOLIWYN_LINE_ADJUSTMENT_CRITERIA.md`
 
+Final audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md`
+
 ## P0 Gaps
 
 | ID | Current Holiwyn status | State | Required next evidence | Next cycle |
