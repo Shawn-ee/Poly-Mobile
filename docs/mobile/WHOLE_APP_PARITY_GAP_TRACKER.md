@@ -17,9 +17,9 @@ Line criteria: `docs/mobile/HOLIWYN_LINE_ADJUSTMENT_CRITERIA.md`
 | WA-P0-03 | Search exists with filters, sort chips, result cards. | Partial | Search query, filter, clear, and open-card tablet smoke. | Cycle K |
 | WA-P0-04 | Portfolio empty fake-balance state exists. Need seeded position/open-order/activity proof under the whole-app tracker. | Partial | Create disposable/seeded order and prove portfolio rows. | Cycle L |
 | WA-P0-05 | Game page has previous P0 implementation and fresh tablet top-page proof. Needs full tablet scroll, chat, ticket, and lower-section recapture. | Partial | Tablet full-page game proof. | Cycle K |
-| WA-P0-06 | Line controls are visible for Spread/Totals, but selected line/period behavior is not proven and likely incomplete. | Open | LA-P0-01 through LA-P0-08. | Cycle K first priority |
-| WA-P0-07 | Ticket UI exists from prior proof. Selected line/period propagation needs fresh tablet evidence. | Open | Ticket after changed Spread/Totals line. | Cycle K |
-| WA-P0-08 | Order/trade flow exists from prior server cycles, but selected line identity is not proven end to end. | Open | Order payload and portfolio/open order with line/period. | Cycle L |
+| WA-P0-06 | Spread and Totals line/period controls now update visible market values and are proven on the tablet. Portfolio persistence remains tracked under WA-P0-08 / LA-P0-08. | Partial | LA-P0-08 portfolio/open-order/activity proof. | Cycle L |
+| WA-P0-07 | Ticket now carries selected Spread and Totals line/period into `ticket-selection-line`, proven on tablet. | Verified | `cycle-current-holiwyn-line-adjustment-spread-ticket.*`, `cycle-current-holiwyn-line-adjustment-totals-ticket.*`. | Done |
+| WA-P0-08 | Order payload now includes selected line metadata by unit test. Portfolio/open order/activity preservation is not yet proven end to end. | Partial | Portfolio/open order/activity with line/period. | Cycle L |
 | WA-P0-09 | Polymarket order book is a full screen. Holiwyn book control does not yet prove equivalent market depth. | Open | Add or prove order book/depth screen. | Cycle M |
 | WA-P0-10 | Some empty states exist; loading/API failure/error states need whole-app proof. | Open | Fixture/smoke for page error/loading states. | Cycle M |
 
@@ -27,13 +27,13 @@ Line criteria: `docs/mobile/HOLIWYN_LINE_ADJUSTMENT_CRITERIA.md`
 
 | ID | Current Holiwyn status | State | Required next evidence |
 | --- | --- | --- | --- |
-| LA-P0-01 | Spread line value and period controls are visible. | Partial | Tablet before-state screenshot/XML already exists; keep as baseline. |
-| LA-P0-02 | Spread period controls are visible but data-changing behavior is not proven. | Open | Tap period chips and prove odds/probability updates. |
-| LA-P0-03 | Spread line value pill is visible but selector/rail behavior is not proven. | Open | Choose another line and prove sentence/odds/probability update. |
-| LA-P0-04 | Totals selected value and rows are visible. | Partial | Tablet baseline exists. |
-| LA-P0-05 | Totals line/period data-changing behavior is not proven. | Open | Tap/change and prove updated odds/probability. |
-| LA-P0-06 | Ticket selected-line propagation is not proven on tablet. | Open | Open ticket after changed line/period. |
-| LA-P0-07 | Order payload does not yet prove line/period fields. | Open | Unit/API or smoke summary. |
+| LA-P0-01 | Spread line value and period controls are visible and proven in the Cycle K tablet baseline. | Verified | `docs/mobile/screenshots/cycle-current-holiwyn-line-adjustment-baseline.png` and XML. |
+| LA-P0-02 | Spread period changes update odds/probabilities and selected state. | Verified | `cycle-current-holiwyn-line-adjustment-spread-25-1h.png` / `.xml` show `MEX -2.5 1H`, `33.3x`, `3%`, `97%`. |
+| LA-P0-03 | Spread line changes update sentence, odds/probabilities, and selected state. | Verified | `cycle-current-holiwyn-line-adjustment-spread-25.xml`, `cycle-current-holiwyn-line-adjustment-spread-25-1h.*`. |
+| LA-P0-04 | Totals selected value, period controls, rows, odds, and probability buttons are visible. | Verified | `cycle-current-holiwyn-line-adjustment-baseline.*`. |
+| LA-P0-05 | Totals line/period changes update visible odds/probabilities. | Verified | `cycle-current-holiwyn-line-adjustment-totals-35-2h.png` / `.xml` show `Over 3.5`, `4.5x`, `22%`, `Under 3.5`, `78%`. |
+| LA-P0-06 | Ticket selected-line propagation is proven on tablet for Spread and Totals. | Verified | `cycle-current-holiwyn-line-adjustment-spread-ticket.*`, `cycle-current-holiwyn-line-adjustment-totals-ticket.*`. |
+| LA-P0-07 | Order payload includes line/period selection metadata. | Verified | `npm run test:mobile-api -- mobile/src/__tests__/orderService.test.ts`. |
 | LA-P0-08 | Portfolio/open order/activity do not yet preserve line/period. | Open | Tablet and backend proof. |
 
 ## P1 Gaps
@@ -66,3 +66,22 @@ Cycle K should implement and verify the line-adjustment P0 path first:
 Cycle L should connect the selected line identity through order creation, open orders, portfolio, and activity.
 
 Cycle M should add or prove order book/depth and whole-app empty/error/loading states.
+
+## Cycle K Notes
+
+Cycle K implemented and verified the first line-adjustment parity slice:
+
+- Spread line rail supports `0.5`, `1.5`, `2.5`.
+- Spread period chips update probabilities and odds.
+- Totals line rail supports `1.5`, `2.5`, `3.5`.
+- Totals period chips update probabilities and odds.
+- Tickets display selected line and period, for example `Yes - MEX -2.5 1H` and `Yes - Over 3.5 2H`.
+- Server order payloads can carry `selection` metadata with `marketType`, `line`, `period`, and `displayLabel`.
+
+Verified by:
+
+- `npm run typecheck`
+- `npm run smoke:tablet:event-detail-line-adjustment`
+- `npm run test:mobile-api -- mobile/src/__tests__/orderService.test.ts`
+
+Remaining Cycle L P0: preserve selected line/period in portfolio, open orders, and recent activity after order creation.

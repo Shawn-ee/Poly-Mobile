@@ -1,4 +1,5 @@
 import { PolyApi } from "../api";
+import type { TicketSelection } from "../components/TradeTicket";
 import type { Event, Market, Outcome } from "../mocks/worldCup";
 
 export type OrderMode = "mock" | "server";
@@ -9,6 +10,7 @@ export type TicketOrderInput = {
   event?: Event;
   market: Market;
   outcome: Outcome;
+  selection?: TicketSelection;
   side: "buy" | "sell";
   amount: number;
 };
@@ -18,6 +20,7 @@ export type TicketOrderResult = {
   mode: OrderMode;
   title: string;
   outcome: string;
+  selection?: TicketSelection;
   side: "buy" | "sell";
   amount: number;
   probability: number;
@@ -54,6 +57,7 @@ const mockOrder = (input: TicketOrderInput): TicketOrderResult => ({
   mode: "mock",
   title: orderTitle(input),
   outcome: label(input.outcome),
+  selection: input.selection,
   side: input.side,
   amount: input.amount,
   probability: input.outcome.probability,
@@ -94,13 +98,15 @@ export const submitTicketOrder = async (input: TicketOrderInput): Promise<Ticket
     return mockOrder(input);
   }
 
-  const payload = await input.api.placeLimitOrder({
+  const orderInput = {
     marketId: input.market.id,
     outcomeId: input.outcome.id,
     side: input.side.toUpperCase() as "BUY" | "SELL",
     price: (input.outcome.probability / 100).toFixed(2),
     size: sharesFromAmount(input.amount, input.outcome.probability).toFixed(2),
-  });
+    ...(input.selection ? { selection: input.selection } : {}),
+  };
+  const payload = await input.api.placeLimitOrder(orderInput);
   const response = payload && typeof payload === "object" ? (payload as ServerOrderResponse) : {};
   const size = numericField(response.order?.size ?? response.size);
   const remainingSize = numericField(response.order?.remaining ?? response.remaining);

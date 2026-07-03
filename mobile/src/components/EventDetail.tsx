@@ -8,6 +8,7 @@ import {
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { label, money } from "../presentation/formatters";
 import type { Position } from "./Portfolio";
+import type { TicketSelection } from "./TradeTicket";
 
 type EventDetailCopy = {
   worldCup: string;
@@ -99,6 +100,8 @@ type DisplayOutcome = {
   odds?: string;
   icon?: string;
   miniLine?: number;
+  ticketOutcome?: Outcome;
+  ticketSelection?: TicketSelection;
 };
 
 type GameLineGroup = {
@@ -106,7 +109,25 @@ type GameLineGroup = {
   title: string;
   subtitle?: string;
   rows: DisplayOutcome[];
+  lineValue?: string;
+  lineOptions?: string[];
+  selectedPeriod?: LinePeriod;
+  onSelectPeriod?: (period: LinePeriod) => void;
+  onSelectLine?: (line: string) => void;
 };
+
+type LinePeriod = "Reg. Time" | "1st Half" | "2nd Half";
+
+const linePeriods: LinePeriod[] = ["Reg. Time", "1st Half", "2nd Half"];
+
+const linePeriodCode = (period: LinePeriod) => period === "Reg. Time" ? "RT" : period === "1st Half" ? "1H" : "2H";
+
+const boundedProbability = (value: number) => Math.max(1, Math.min(99, Math.round(value)));
+
+const withLineOutcome = (base: Omit<Outcome, "zhLabel"> & Partial<Pick<Outcome, "zhLabel">>): Outcome => ({
+  ...base,
+  zhLabel: base.zhLabel ?? base.label,
+});
 
 const makeTieOutcome = (): DisplayOutcome => ({
   id: "tie-reg-time",
@@ -134,7 +155,7 @@ export function EventDetail({
   event: Event;
   locale: Locale;
   t: EventDetailCopy;
-  openTicket: (market: Market, outcome: Outcome, event?: Event, side?: "buy" | "sell") => void;
+  openTicket: (market: Market, outcome: Outcome, event?: Event, side?: "buy" | "sell", selection?: TicketSelection) => void;
   defaultSide: "buy" | "sell";
   goBack: () => void;
   isSaved: boolean;
@@ -146,7 +167,10 @@ export function EventDetail({
   const [activeTab, setActiveTab] = useState<"game-lines" | "player-props">("game-lines");
   const [activeHeaderTab, setActiveHeaderTab] = useState<"game" | "chat">("game");
   const [chartFilter, setChartFilter] = useState<ChartFilter>("Game");
-  const [spreadPeriod, setSpreadPeriod] = useState<"Reg. Time" | "1st Half" | "2nd Half">("Reg. Time");
+  const [spreadPeriod, setSpreadPeriod] = useState<LinePeriod>("Reg. Time");
+  const [spreadLine, setSpreadLine] = useState("1.5");
+  const [totalsPeriod, setTotalsPeriod] = useState<LinePeriod>("Reg. Time");
+  const [totalsLine, setTotalsLine] = useState("2.5");
   const [savedNoticeVisible, setSavedNoticeVisible] = useState(false);
   const [shareSheetVisible, setShareSheetVisible] = useState(false);
   const [expandedPropIds, setExpandedPropIds] = useState<Record<string, boolean>>({ "goals-reg-time": true });
@@ -197,18 +221,119 @@ export function EventDetail({
       miniLine: Math.max(18, rightOutcome.probability),
     }] : []),
   ];
+  const spreadLineOptions = ["0.5", "1.5", "2.5"];
+  const totalsLineOptions = ["1.5", "2.5", "3.5"];
+  const homeCode = teamCode(teamA?.name ?? "Home");
+  const spreadProbability = boundedProbability(
+    34
+    - (spreadLine === "0.5" ? -14 : spreadLine === "2.5" ? 18 : 0)
+    - (spreadPeriod === "1st Half" ? 13 : spreadPeriod === "2nd Half" ? 5 : 0),
+  );
+  const totalsOverProbability = boundedProbability(
+    52
+    + (totalsLine === "1.5" ? 18 : totalsLine === "3.5" ? -17 : 0)
+    + (totalsPeriod === "1st Half" ? -20 : totalsPeriod === "2nd Half" ? -13 : 0),
+  );
+  const makeLineMarket = (id: string, title: string, outcomes: Outcome[]): Market => ({
+    id,
+    title,
+    zhTitle: title,
+    type: "game-line",
+    outcomes,
+  });
+  const spreadMarket = makeLineMarket(`${event.id}-spread-${spreadLine}-${linePeriodCode(spreadPeriod)}`, `Spread ${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`, []);
+  const spreadYesOutcome = withLineOutcome({
+    id: `${spreadMarket.id}-yes`,
+    label: `${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`,
+    probability: spreadProbability,
+    bestBid: Math.max(spreadProbability - 3, 1),
+    bestAsk: Math.min(spreadProbability + 4, 99),
+    color: leftOutcome?.color ?? "#22c55e",
+  });
+  const spreadNoOutcome = withLineOutcome({
+    id: `${spreadMarket.id}-no`,
+    label: `No ${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`,
+    probability: boundedProbability(100 - spreadProbability),
+    bestBid: Math.max(100 - spreadProbability - 3, 1),
+    bestAsk: Math.min(100 - spreadProbability + 4, 99),
+    color: "#64748b",
+  });
+  spreadMarket.outcomes = [spreadYesOutcome, spreadNoOutcome];
   const spreadRows: DisplayOutcome[] = [
-    { id: "spread-yes", label: `Yes, ${teamCode(teamA?.name ?? "Home")} -1.5`, color: leftOutcome?.color ?? "#22c55e", probability: spreadPeriod === "Reg. Time" ? 34 : spreadPeriod === "1st Half" ? 21 : 29, odds: spreadPeriod === "Reg. Time" ? "2.9x" : "4.8x", icon: "Y", miniLine: 42 },
-    { id: "spread-no", label: "No", color: "#64748b", probability: spreadPeriod === "Reg. Time" ? 66 : spreadPeriod === "1st Half" ? 79 : 71, odds: spreadPeriod === "Reg. Time" ? "1.5x" : "1.3x", icon: "N", miniLine: 66 },
+    {
+      id: "spread-yes",
+      label: `Yes, ${homeCode} -${spreadLine}`,
+      color: leftOutcome?.color ?? "#22c55e",
+      probability: spreadYesOutcome.probability,
+      odds: `${outcomeOdds(spreadYesOutcome)}x`,
+      icon: "Y",
+      miniLine: spreadYesOutcome.probability,
+      ticketOutcome: spreadYesOutcome,
+      ticketSelection: { marketType: "spread", line: spreadLine, period: spreadPeriod, displayLabel: `${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}` },
+    },
+    {
+      id: "spread-no",
+      label: "No",
+      color: "#64748b",
+      probability: spreadNoOutcome.probability,
+      odds: `${outcomeOdds(spreadNoOutcome)}x`,
+      icon: "N",
+      miniLine: spreadNoOutcome.probability,
+      ticketOutcome: spreadNoOutcome,
+      ticketSelection: { marketType: "spread", line: spreadLine, period: spreadPeriod, displayLabel: `No ${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}` },
+    },
   ];
+  const totalsMarket = makeLineMarket(`${event.id}-totals-${totalsLine}-${linePeriodCode(totalsPeriod)}`, `Totals ${totalsLine} ${linePeriodCode(totalsPeriod)}`, []);
+  const totalsOverOutcome = withLineOutcome({
+    id: `${totalsMarket.id}-over`,
+    label: `Over ${totalsLine} ${linePeriodCode(totalsPeriod)}`,
+    probability: totalsOverProbability,
+    bestBid: Math.max(totalsOverProbability - 3, 1),
+    bestAsk: Math.min(totalsOverProbability + 4, 99),
+    color: "#22c55e",
+  });
+  const totalsUnderOutcome = withLineOutcome({
+    id: `${totalsMarket.id}-under`,
+    label: `Under ${totalsLine} ${linePeriodCode(totalsPeriod)}`,
+    probability: boundedProbability(100 - totalsOverProbability),
+    bestBid: Math.max(100 - totalsOverProbability - 3, 1),
+    bestAsk: Math.min(100 - totalsOverProbability + 4, 99),
+    color: "#64748b",
+  });
+  totalsMarket.outcomes = [totalsOverOutcome, totalsUnderOutcome];
   const gameLineGroups: GameLineGroup[] = [
     {
       id: "totals",
       title: "Totals",
-      subtitle: "Total goals over 2.5",
+      subtitle: `Total goals over ${totalsLine}`,
+      lineValue: totalsLine,
+      lineOptions: totalsLineOptions,
+      selectedPeriod: totalsPeriod,
+      onSelectPeriod: setTotalsPeriod,
+      onSelectLine: setTotalsLine,
       rows: [
-        { id: "totals-over", label: "Over 2.5", color: "#22c55e", probability: 52, odds: "1.9x", icon: "O", miniLine: 52 },
-        { id: "totals-under", label: "Under 2.5", color: "#64748b", probability: 49, odds: "2.0x", icon: "U", miniLine: 49 },
+        {
+          id: "totals-over",
+          label: `Over ${totalsLine}`,
+          color: "#22c55e",
+          probability: totalsOverOutcome.probability,
+          odds: `${outcomeOdds(totalsOverOutcome)}x`,
+          icon: "O",
+          miniLine: totalsOverOutcome.probability,
+          ticketOutcome: totalsOverOutcome,
+          ticketSelection: { marketType: "totals", line: totalsLine, period: totalsPeriod, displayLabel: `Over ${totalsLine} ${linePeriodCode(totalsPeriod)}` },
+        },
+        {
+          id: "totals-under",
+          label: `Under ${totalsLine}`,
+          color: "#64748b",
+          probability: totalsUnderOutcome.probability,
+          odds: `${outcomeOdds(totalsUnderOutcome)}x`,
+          icon: "U",
+          miniLine: totalsUnderOutcome.probability,
+          ticketOutcome: totalsUnderOutcome,
+          ticketSelection: { marketType: "totals", line: totalsLine, period: totalsPeriod, displayLabel: `Under ${totalsLine} ${linePeriodCode(totalsPeriod)}` },
+        },
       ],
     },
     {
@@ -261,7 +386,12 @@ export function EventDetail({
       <Text style={styles.oddsMultiplier}>{outcome.odds}</Text>
       <Pressable
         accessibilityLabel={`event-detail-outcome-${marketId}-${outcome.id}`}
-        onPress={() => matchingOutcome && primaryMarket && openTicket(primaryMarket, matchingOutcome, event, defaultSide)}
+        onPress={() => {
+          const ticketOutcome = outcome.ticketOutcome ?? matchingOutcome;
+          if (!ticketOutcome) return;
+          const ticketMarket = outcome.ticketSelection?.marketType === "spread" ? spreadMarket : outcome.ticketSelection?.marketType === "totals" ? totalsMarket : primaryMarket;
+          if (ticketMarket) openTicket(ticketMarket, ticketOutcome, event, defaultSide, outcome.ticketSelection);
+        }}
         style={[styles.parityProbButton, { backgroundColor: outcome.color }]}
         testID={`event-detail-outcome-${marketId}-${outcome.id}`}
       >
@@ -281,9 +411,51 @@ export function EventDetail({
           <Text style={styles.marketTitle}>{group.title}</Text>
           {group.subtitle && <Text style={styles.marketSubcopy}>{group.subtitle}</Text>}
         </View>
-        <Ionicons name={expandedMarketIds[group.id] ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
+        <View style={styles.headerRightCluster}>
+          {group.lineValue && (
+            <View style={styles.lineValuePill}>
+              <Text style={styles.lineValueText}>{group.lineValue}</Text>
+              <Ionicons name="chevron-down" color="#86efac" size={16} />
+            </View>
+          )}
+          <Ionicons name={expandedMarketIds[group.id] ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
+        </View>
       </Pressable>
-      {expandedMarketIds[group.id] && group.rows.map((outcome) => renderParityOutcomeRow(outcome, group.id))}
+      {expandedMarketIds[group.id] && (
+        <>
+          {group.selectedPeriod && group.onSelectPeriod && (
+            <View style={styles.subSegmentRow}>
+              {linePeriods.map((period) => (
+                <Pressable
+                  accessibilityLabel={`event-detail-${group.id}-period-${period}`}
+                  key={period}
+                  onPress={() => group.onSelectPeriod?.(period)}
+                  style={[styles.subSegment, group.selectedPeriod === period && styles.subSegmentActive]}
+                  testID={`event-detail-${group.id}-period-${period.replace(/[^A-Za-z0-9]/g, "-").toLowerCase()}`}
+                >
+                  <Text style={[styles.subSegmentText, group.selectedPeriod === period && styles.subSegmentTextActive]}>{period}</Text>
+                </Pressable>
+              ))}
+            </View>
+          )}
+          {group.lineOptions && group.onSelectLine && (
+            <View style={styles.lineRailRow}>
+              {group.lineOptions.map((line) => (
+                <Pressable
+                  accessibilityLabel={`event-detail-${group.id}-line-${line}`}
+                  key={line}
+                  onPress={() => group.onSelectLine?.(line)}
+                  style={[styles.lineRailOption, group.lineValue === line && styles.lineRailOptionActive]}
+                  testID={`event-detail-${group.id}-line-${line.replace(".", "-")}`}
+                >
+                  <Text style={[styles.lineRailText, group.lineValue === line && styles.lineRailTextActive]}>{line}</Text>
+                </Pressable>
+              ))}
+            </View>
+          )}
+          {group.rows.map((outcome) => renderParityOutcomeRow(outcome, group.id))}
+        </>
+      )}
     </View>
   );
   const playerRows = [
@@ -745,18 +917,18 @@ export function EventDetail({
             )}
             <View style={styles.marketBlock}>
               <Pressable
-                accessibilityLabel={`event-detail-market-toggle-spread Spread ${teamCode(teamA?.name ?? "Home")} to win by over 1.5 goals 1.5`}
+                accessibilityLabel={`event-detail-market-toggle-spread Spread ${homeCode} to win by over ${spreadLine} goals ${spreadLine}`}
                 onPress={() => toggleGroup("spread")}
                 style={styles.marketHeaderRow}
                 testID="event-detail-market-toggle-spread"
               >
                 <View style={styles.marketTitleBlock}>
                   <Text style={styles.marketTitle}>Spread</Text>
-                  <Text style={styles.marketSubcopy}>{teamCode(teamA?.name ?? "Home")} to win by over 1.5 goals</Text>
+                  <Text style={styles.marketSubcopy}>{homeCode} to win by over {spreadLine} goals</Text>
                 </View>
                 <View style={styles.headerRightCluster}>
                   <View style={styles.lineValuePill}>
-                    <Text style={styles.lineValueText}>1.5</Text>
+                    <Text style={styles.lineValueText}>{spreadLine}</Text>
                     <Ionicons name="chevron-down" color="#86efac" size={16} />
                   </View>
                   <Ionicons name={expandedMarketIds.spread ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
@@ -765,7 +937,7 @@ export function EventDetail({
               {expandedMarketIds.spread && (
                 <>
                   <View style={styles.subSegmentRow}>
-                    {(["Reg. Time", "1st Half", "2nd Half"] as const).map((period) => (
+                    {linePeriods.map((period) => (
                       <Pressable
                         accessibilityLabel={`event-detail-spread-period-${period}`}
                         key={period}
@@ -774,6 +946,19 @@ export function EventDetail({
                         testID={`event-detail-spread-period-${period.replace(/[^A-Za-z0-9]/g, "-").toLowerCase()}`}
                       >
                         <Text style={[styles.subSegmentText, spreadPeriod === period && styles.subSegmentTextActive]}>{period}</Text>
+                      </Pressable>
+                    ))}
+                  </View>
+                  <View style={styles.lineRailRow}>
+                    {spreadLineOptions.map((line) => (
+                      <Pressable
+                        accessibilityLabel={`event-detail-spread-line-${line}`}
+                        key={line}
+                        onPress={() => setSpreadLine(line)}
+                        style={[styles.lineRailOption, spreadLine === line && styles.lineRailOptionActive]}
+                        testID={`event-detail-spread-line-${line.replace(".", "-")}`}
+                      >
+                        <Text style={[styles.lineRailText, spreadLine === line && styles.lineRailTextActive]}>{line}</Text>
                       </Pressable>
                     ))}
                   </View>
@@ -955,6 +1140,11 @@ const styles = StyleSheet.create({
   subSegmentActive: { backgroundColor: "#273244" },
   subSegmentText: { color: "#8b93a3", fontSize: 12, fontWeight: "900" },
   subSegmentTextActive: { color: "#f8fafc" },
+  lineRailRow: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 12, marginTop: 10, marginBottom: 6 },
+  lineRailOption: { minWidth: 62, minHeight: 42, alignItems: "center", justifyContent: "center", borderRadius: 12, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937" },
+  lineRailOptionActive: { backgroundColor: "#052e1b", borderColor: "#0a8f61" },
+  lineRailText: { color: "#8b93a3", fontSize: 16, fontWeight: "900" },
+  lineRailTextActive: { color: "#86efac" },
   depthRow: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 10, marginBottom: 6 },
   depthText: { color: "#8b93a3", fontSize: 11, fontWeight: "800" },
   parityOutcomeRow: { minHeight: 60, flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 9 },

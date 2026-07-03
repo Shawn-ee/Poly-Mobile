@@ -4,7 +4,8 @@ param(
   [string]$ExpoHost = "",
   [switch]$EventDetailSummary,
   [switch]$EventDetailChat,
-  [switch]$EventDetailActions
+  [switch]$EventDetailActions,
+  [switch]$EventDetailLineAdjustment
 )
 
 $ErrorActionPreference = "Stop"
@@ -50,6 +51,8 @@ if ($EventDetailSummary) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailChat -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($EventDetailActions) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailActions -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
+} elseif ($EventDetailLineAdjustment) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailLineAdjustment -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } else {
   & "$PSScriptRoot\smoke.ps1" -Deep -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 }

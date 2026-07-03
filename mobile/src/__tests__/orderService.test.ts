@@ -98,6 +98,53 @@ describe("ticket order service", () => {
     });
   });
 
+  test("includes selected line metadata in server-mode line market orders", async () => {
+    const placeLimitOrder = vi.fn(async () => ({ order: { id: "server-line-order-1" } }));
+    const api = { placeLimitOrder } as unknown as PolyApi;
+
+    const lineMarket = {
+      id: "mexico-ecuador-spread-2.5-1H",
+      title: "Spread MEX -2.5 1H",
+      zhTitle: "Spread MEX -2.5 1H",
+      type: "game-line" as const,
+      outcomes: [],
+    };
+    const lineOutcome = {
+      id: "mexico-ecuador-spread-2.5-1H-yes",
+      label: "MEX -2.5 1H",
+      zhLabel: "MEX -2.5 1H",
+      probability: 3,
+      color: "#0a8f61",
+    };
+    const selection = {
+      marketType: "spread" as const,
+      line: "2.5",
+      period: "1st Half",
+      displayLabel: "MEX -2.5 1H",
+    };
+
+    const result = await submitTicketOrder({
+      mode: "server",
+      api,
+      event,
+      market: lineMarket,
+      outcome: lineOutcome,
+      selection,
+      side: "buy",
+      amount: 30,
+    });
+
+    expect(placeLimitOrder).toHaveBeenCalledWith({
+      marketId: "mexico-ecuador-spread-2.5-1H",
+      outcomeId: "mexico-ecuador-spread-2.5-1H-yes",
+      side: "BUY",
+      price: "0.03",
+      size: "1000.00",
+      selection,
+    });
+    expect(result.selection).toEqual(selection);
+  });
+
   test("uses top-level server order id fallback when canonical response omits nested order id", async () => {
     const placeLimitOrder = vi.fn(async () => ({ id: "server-order-top-level" }));
     const api = { placeLimitOrder } as unknown as PolyApi;

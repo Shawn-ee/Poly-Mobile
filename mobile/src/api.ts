@@ -91,6 +91,7 @@ export class PolyApi {
     side: "BUY" | "SELL";
     price: string;
     size: string;
+    selection?: unknown;
   }) {
     const clientOrderId = `mobile-${Date.now()}`;
     return this.request(`/api/orders`, {
