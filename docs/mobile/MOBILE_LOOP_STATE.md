@@ -11820,6 +11820,40 @@ Audit Gate: Pass for focused Search/Explore P0 baseline, with 0 unresolved P0 ga
 
 Next likely cycle: Account/settings/profile parity, unless Lead Agent prioritizes chart behavior or market-page depth next.
 
+### Cycle AC - Account/settings
+
+Goal: Apply the Polymarket-reference audit gate to focused signed-out account/settings behavior.
+
+Reference audit: Samsung S23 Polymarket mobile web More drawer captured settings/help rows, language/theme/social controls, and Log In / Sign Up actions. Native app remains location-gated.
+
+Holiwyn screens changed: Account now has a More-style settings menu, language/theme rows, fake-token balance safety copy, and Polymarket-like Log In / Sign Up actions.
+
+Backend/API changed: No route changed. Docs now record future account/session/profile/wallet capability contracts needed before production auth or EBPay/deposit/withdraw work.
+
+Verification: `npm run typecheck` passed; direct tablet `smoke.ps1 -Deep -AccountLogin -Port 8209` passed, including menu proof, mock login, and logout.
+
+Audit Gate: Pass for focused Account/settings P0 baseline, with 0 unresolved P0 gaps. P1 gaps remain for native account recapture and real destination pages for menu rows.
+
+Next likely cycle: Chart behavior or deeper market-page functionality.
+
+### Heartbeat After Cycle AC
+
+Completed cycles: AA, AB, AC.
+
+Verified progress: Portfolio fake-token positions/open orders/activity/cancel passed focused parity; Search/Explore now has dense Polymarket-style rows, active Filter, sort, and result navigation; Account/settings now has a More-style menu, language/theme rows, fake-token balance safety, and mock Log In / Sign Up proof.
+
+Current app state: Android-first Expo prototype with audit-gated progress across Portfolio, Search/Explore, Account/settings, event page top shell, futures rows/chart, match market tabs/cards, line adjustment, and trade ticket.
+
+Current backend state: No backend routes changed in AA-AC. Documentation now maps Portfolio, Search, and Account data-contract needs for future server-authoritative wallet, discovery, and session/profile work.
+
+Device strategy: Samsung S23 remains Polymarket reference; Samsung tablet remains Holiwyn proof device; emulator remains fallback only.
+
+Open blockers: None for autonomous progress. Native Polymarket reference remains location-gated, so mobile web is used when native surfaces are unavailable.
+
+Risks: Some Holiwyn account/menu rows are visible affordances without destination pages; Search facets are baseline only; Portfolio signed-in Polymarket reference still needs recapture.
+
+Next three likely cycles: chart behavior, deeper market-page functionality, and richer account/settings destinations or notification behavior.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

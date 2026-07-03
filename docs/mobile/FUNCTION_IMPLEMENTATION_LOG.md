@@ -362,3 +362,38 @@ Known limitations:
 - Polymarket native Search could not be referenced because the S23 native app is location-gated.
 - Polymarket global categories are broader than Holiwyn's World Cup-only scope.
 - Holiwyn filter facets are baseline Status/Sort controls; richer discovered facets remain later P1 work.
+
+## Cycle AC - Account/settings
+
+Feature/page worked on:
+
+- Focused signed-out Account/settings shell, More-style menu rows, language/theme rows, safe fake-token balance, and mock login/logout.
+
+Frontend components touched:
+
+- `mobile/src/components/AccountScreen.tsx`
+- `mobile/scripts/smoke.ps1`
+
+Important functions/services touched:
+
+- `AccountScreen()` now renders a Polymarket-like More menu section with Leaderboard, Rewards, APIs, Accuracy, Status, Documentation, Help Center, Terms of Use, Language, and Theme rows.
+- Signed-out actions now use `Log In` and `Sign Up` buttons while still using local mock sign-in only.
+- `AccountLogin` smoke now resets local state, scrolls to the auth actions, proves mock login, and proves logout.
+
+User interactions supported:
+
+- Open Account from the header.
+- Inspect More/settings menu rows.
+- See fake-token balance and disabled real-money helper copy.
+- Scroll to Log In / Sign Up actions.
+- Mock sign in and sign out without touching real auth or wallet actions.
+
+State transitions:
+
+- `signedIn: false -> true -> false`.
+- Account session storage is cleared before the focused proof.
+
+Known limitations:
+
+- Native Polymarket account/settings remains location-gated.
+- Holiwyn menu rows are visible affordances; deeper destination pages remain later P1 work.

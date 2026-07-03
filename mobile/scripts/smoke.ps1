@@ -465,7 +465,7 @@ try {
   } else {
     "exp://${ExpoHost}:$Port"
   }
-  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailFullPage -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $FutureListClose -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
+  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailFullPage -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $FutureListClose -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
     & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
     Start-Sleep -Seconds 2
   }
@@ -619,7 +619,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-whole-app-nav-account.png"
       $wholeAppAccountHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-nav-account.xml"
-      Assert-HierarchyContains -Path $wholeAppAccountHierarchy -Expected @("Account", "Signed out", "Demo balance", "Continue with phone", "Preferences")
+      Assert-HierarchyContains -Path $wholeAppAccountHierarchy -Expected @("Account", "Signed out", "Demo balance", "Leaderboard", "Rewards", "APIs", "Preferences")
       Assert-HierarchyDoesNotContain -Path $wholeAppAccountHierarchy -Unexpected @("holiwyn-account-tab")
 
       Invoke-TapHierarchyNode -Path $wholeAppAccountHierarchy -Identifier "holiwyn-home-tab"
@@ -1039,18 +1039,23 @@ try {
         Assert-HierarchyContains -Path $accountPersistenceRestoredHierarchy -Expected @("Signed in", "Holiwyn Demo", "Demo", "Mock login active.", "Sign out")
         return
       }
-      Assert-HierarchyContains -Path $accountHierarchy -Expected @("Account", "Signed out", "Demo balance", "10,000 USDT", "Continue with phone", "Continue with email", "Mock login ready.", "Preferences")
+      Assert-HierarchyContains -Path $accountHierarchy -Expected @("Account", "Signed out", "Demo balance", "10,000 USDT", "Leaderboard", "Rewards", "APIs", "Language", "Theme", "Preferences")
       if ($AccountLogin) {
-        Invoke-TapHierarchyNode -Path $accountHierarchy -Identifier "account-login-phone"
+        & $adb -s $Device shell input swipe 640 1750 640 850 450 | Out-Null
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "cycle-current-holiwyn-account-actions.png"
+        $accountActionsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-actions.xml"
+        Assert-HierarchyContains -Path $accountActionsHierarchy -Expected @("Log In", "Sign Up", "Mock login ready.")
+        Invoke-TapHierarchyNode -Path $accountActionsHierarchy -Identifier "account-login-phone"
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "cycle-current-holiwyn-account-signed-in.png"
         $signedInHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-signed-in.xml"
-        Assert-HierarchyContains -Path $signedInHierarchy -Expected @("Signed in", "Holiwyn Demo", "Demo", "Mock login active.", "Sign out")
+        Assert-HierarchyContains -Path $signedInHierarchy -Expected @("Mock login active.", "Sign out", "Preferences")
         Invoke-TapHierarchyNode -Path $signedInHierarchy -Identifier "account-sign-out"
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "cycle-current-holiwyn-account-signed-out.png"
         $signedOutHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-account-signed-out.xml"
-        Assert-HierarchyContains -Path $signedOutHierarchy -Expected @("Signed out", "Continue with phone", "Continue with email", "Mock login ready.")
+        Assert-HierarchyContains -Path $signedOutHierarchy -Expected @("Log In", "Sign Up", "Mock login ready.")
       }
       return
     }
