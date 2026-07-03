@@ -218,7 +218,7 @@ export function TradeTicket({
   const primaryLabel = side === "buy" ? t.placeBuyOrder : t.placeSellOrder;
   const swipeLabel = side === "buy" ? t.swipeBuyOrder : t.swipeSellOrder;
   const costLabel = side === "buy" ? t.estimatedCost : t.estimatedProceeds;
-  const amountPresets = [5, 10, 25];
+  const amountPresets = [1, 5, 10, 100];
   const keypadKeys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "backspace"];
   const slippageOptions = [
     { key: "half", value: "0.5%" },

@@ -11708,6 +11708,20 @@ Open blockers: none for continuing the loop. Remaining line-market gaps are team
 
 Next likely cycle: trade-ticket parity from the game page, especially Polymarket's swipe-up confirmation behavior and selected line carry-through.
 
+### Cycle Z - Trade Ticket
+
+Status: verified and ready for local merge after commit.
+
+Verified progress: Samsung S23 Polymarket mobile web reference captured the trade ticket opened from a selected `United States -2.5` spread, the `+$10` amount update with `To win $138.87`, and the US view-only/download/login gate after pressing `Trade`. Holiwyn now matches the visible quick amount chip set (`+$1`, `+$5`, `+$10`, `+$100`) and tablet proof verifies ticket open, amount update, estimates, and `Swipe up to buy` readiness.
+
+Device evidence: reference evidence is under `docs/mobile/reference/screenshots/cycle-Z-polymarket-ticket-*`; Holiwyn evidence is under `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket*.png` and `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket*.xml`.
+
+Verification: `npm run typecheck` passed; `powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailTrade -Port 8199` passed on the Samsung tablet.
+
+Open blockers: none for continuing the loop. Remaining ticket gaps are visual density, view-only/auth gating, and full post-submit portfolio/open-order parity.
+
+Next likely cycle: Portfolio/open orders/activity parity or ticket visual-density polish.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

@@ -205,3 +205,37 @@ Temporary mock/static data:
 Future migration concern:
 
 - Once backend line markets exist, ticket/order payloads should submit the backend line-market id instead of relying on display label parsing.
+
+## Cycle Z - Trade Ticket
+
+Fields Holiwyn needs but backend does not provide yet:
+
+- Live quote preview for selected market/outcome/side/amount.
+- Fee estimate, slippage impact, estimated shares, average price, and payout/proceeds returned from backend.
+- Stable ticket selection payload for line markets, including market type, line, period, and backend market id.
+- Auth/restriction state for view-only/download/login gates.
+- Submit response fields that support immediate portfolio/open-order/activity updates.
+
+Fields backend provides but mobile ignores:
+
+- Unknown for this focused cycle; proof used fake-token mode.
+
+Schema mismatch:
+
+- Mobile computes ticket estimates locally from probability rather than backend quote data.
+- Fake-token mode uses local order state rather than server order status/fill state.
+
+Route mismatch:
+
+- A future quote route is needed, for example `/api/mobile/quote` or `/api/markets/:id/quote`, before production-style ticket estimates can be trusted.
+- Auth/restriction state should be exposed through profile/session config rather than hardcoded UI state.
+
+Temporary mock/static data:
+
+- 10,000 USDT fake balance.
+- Client-side shares/payout/profit math.
+- Fake-token mock order submission.
+
+Future migration concern:
+
+- When real-money trading is enabled, ticket submit should depend on server quote/order contracts and not on client-only probability math.

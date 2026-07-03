@@ -85,3 +85,16 @@ Cycle Y implementation notes:
 
 - No backend route was created or changed.
 - Future backend work should treat line markets as first-class markets, not display-only modifiers.
+
+## Cycle Z - Trade Ticket
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Ticket open from event outcome | Loaded event data from `/api/events/:slug` when server mode is active | GET | Optional for viewing | None | event title, market id/title, outcome id/label/probability, selection metadata | Events, markets, outcomes | Local `worldCupEvents` fallback data | Backend should provide canonical market/outcome ids and line selection metadata for every ticket entry point. |
+| Ticket amount and estimate | No dedicated route in this cycle; computed client-side | N/A | N/A | N/A | outcome probability, balance, side, amount | Quotes, order book, wallet balance | Local fake-token balance and deterministic estimates | Backend quote route should return live price, fees, estimated shares, payout/proceeds, and slippage impact. |
+| Ticket submit readiness | Existing fake-token order path; server order routes when enabled | POST on existing order route when server mode submits | Required for real server order | market id, outcome id, side, amount, selection metadata | order id/status, filled shares, execution price, portfolio updates | Orders, fills, wallets, positions, open orders | Mock order state in fake-token mode | Server orders must preserve selected line/period/outcome and return enough data for portfolio/open-order/activity parity. |
+
+Cycle Z implementation notes:
+
+- No backend route was created or changed.
+- Mobile now expects the same quick amount presets observed in Polymarket, but estimates still need backend quote support for production parity.
