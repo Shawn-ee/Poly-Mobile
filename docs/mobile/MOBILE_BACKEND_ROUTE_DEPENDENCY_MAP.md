@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle AT - Live Chart Snapshot Seeding Harness
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Server-hydrated live chart proof data | Seed script writes `MarketOutcomeSnapshot`; mobile reads via `/api/markets/:marketId/chart?range=1D` and `/api/events/:slug` | Script plus GET routes | Script uses local backend database access; GET routes remain public-visible guarded | Script args: optional `eventSlug`, `baseTime`, `summaryPath`, `--apply` | Route consumers use `history[].outcomeId`, `history[].timestamp`, `history[].probability`, and `emptyState` | `Event`, `Market`, `Outcome`, `MarketOutcomeSnapshot` | Existing EventDetail fallback remains active when backend is unavailable or no snapshots exist | Real provider ingestion is still missing; Cycle AT only adds deterministic local/proof snapshot seeding. |
+
+Cycle AT implementation notes:
+
+- The seeding harness uses the same `MarketOutcomeSnapshot` table already consumed by event detail and chart routes.
+- Fixture/dummy data is now future-backend-shaped because it is literally written as backend chart snapshot rows when the script can run.
+- Backend/Docker was unavailable during proof, so the next active PM-GAP-067 cycle should run `npm run mobile:live-chart-snapshot-seed` and capture server-hydrated chart-source device XML once services are available.
+
 ## Cycle AS - Event Detail Chart Route Hydration
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

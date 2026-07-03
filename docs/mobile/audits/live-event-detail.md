@@ -1,6 +1,6 @@
 # Live Event Detail Audit
 
-Status: Cycle AS backend/chart hydration in progress. Cycle AN passed structural live event detail UI with backend-shaped fixture data and tablet proof; Cycle AO added the real `/api/events/:slug` contract for market identity, line identity, compact depth, and optional chart/live-stat arrays. Cycle AQ sources embedded chart history from `MarketOutcomeSnapshot` rows when available and preserves depth outcome identity in mobile. Cycle AR adds the dedicated `/api/markets/:marketId/chart?range=...` route/client contract. Cycle AS wires EventDetail to consume that chart route in server mode. This is still not full backend parity because provider ingestion, server-hydrated device proof, loading/error chart states, and full depth routes remain open.
+Status: Cycle AT backend/chart hydration in progress. Cycle AN passed structural live event detail UI with backend-shaped fixture data and tablet proof; Cycle AO added the real `/api/events/:slug` contract for market identity, line identity, compact depth, and optional chart/live-stat arrays. Cycle AQ sources embedded chart history from `MarketOutcomeSnapshot` rows when available and preserves depth outcome identity in mobile. Cycle AR adds the dedicated `/api/markets/:marketId/chart?range=...` route/client contract. Cycle AS wires EventDetail to consume that chart route in server mode. Cycle AT adds deterministic `MarketOutcomeSnapshot` seeding for local/server proof. This is still not full backend parity because real provider ingestion, server-hydrated device proof, loading/error chart states, and full depth routes remain open.
 
 ## Scope
 
@@ -35,7 +35,7 @@ Reference evidence:
 | LED-P0-03 | P0 | Live market groups include more than one bare winner market and expose live winner, spreads, totals, halves, and team-total structure. | Tablet scrolled screenshot/XML | Pass |
 | LED-P0-04 | P0 | Tapping a live outcome opens a ticket that preserves event, market, and outcome identity. | Tablet ticket screenshot/XML | Pass |
 | LED-P0-05 | P0 | Fixture data used for frontend parity is backend-shaped with stable ids and contract fields, not display-only random data. | Code review | Pass |
-| LED-P1-01 | P1 | Backend routes should provide live market groups, line options, chart history, orderbook depth, live stats, and selected identity. | Route/schema audit | Partial: `/api/events/:slug` now provides market/line/outcome identity, compact depth, snapshot-backed chart history when `MarketOutcomeSnapshot` rows exist, and optional live-stat arrays; `/api/markets/:marketId/chart?range=...` now provides a dedicated range-aware chart contract; EventDetail consumes that route in server mode; real provider ingestion, server-hydrated device proof, loading/error chart states, and full depth routes remain open. |
+| LED-P1-01 | P1 | Backend routes should provide live market groups, line options, chart history, orderbook depth, live stats, and selected identity. | Route/schema audit | Partial: `/api/events/:slug` now provides market/line/outcome identity, compact depth, snapshot-backed chart history when `MarketOutcomeSnapshot` rows exist, and optional live-stat arrays; `/api/markets/:marketId/chart?range=...` now provides a dedicated range-aware chart contract; EventDetail consumes that route in server mode; deterministic local snapshot seeding exists; real provider ingestion, server-hydrated device proof, loading/error chart states, and full depth routes remain open. |
 | LED-P1-02 | P1 | Portfolio/open-order/activity should preserve live selected market/line/outcome identity after live orders. | API/mobile service tests | Pass for structural backend/mobile contract in Cycle AP; repeat live-device server proof after provider data is wired. |
 | LED-P2-01 | P2 | Visual density and animation should be tightened against a cleaner unblocked Polymarket game-detail reference. | Future side-by-side audit | Open |
 
@@ -206,6 +206,35 @@ Remaining P1 gaps:
 - Loading, empty, delayed, suspended, and route-error states remain open.
 - Full orderbook/depth ladder support remains open.
 
+## Cycle AT Live Chart Snapshot Seeding Audit
+
+Result: Partial pass for PM-GAP-067 provider-shaped chart data harness.
+
+What became materially closer to Polymarket:
+
+- Polymarket live charts require backend probability history, not frontend-only local arrays. Holiwyn now has a deterministic local/proof harness that writes real `MarketOutcomeSnapshot` rows for live World Cup outcomes, which are the same rows consumed by `/api/events/:slug` and `/api/markets/:marketId/chart`.
+- This moves the repeated provider/snapshot gap from "unknown future data" to a concrete backend data path that can be run when local services are available.
+
+Evidence:
+
+- `src/server/services/mobileLiveChartSnapshotSeeding.ts`
+- `scripts/seed_mobile_live_chart_snapshots.ts`
+- `src/__tests__/mobile-live-chart-snapshot-seeding.test.ts`
+- `package.json` script `mobile:live-chart-snapshot-seed`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-chart-snapshot-seeding.test.ts src/__tests__/public.market-chart.no-leak.test.ts src/__tests__/sports.event-market-model.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/marketChartService.test.ts mobile/src/__tests__/api.test.ts`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run smoke:tablet:live-detail`
+
+Unresolved P0 gaps: 0 for the seeding-harness increment.
+
+Remaining P1 gaps:
+
+- Local API and Docker were unavailable, so this cycle did not apply the seed script to the database and did not capture server-hydrated chart-source device XML.
+- Real external provider ingestion is still missing.
+- Chart loading/empty/error states and full orderbook depth remain open.
+
 ## Next Structural Work
 
-The next cycle should continue PM-GAP-067 with provider-shaped live data seeding/ingestion, a server-hydrated chart proof, chart loading/error states, or a fuller orderbook ladder route before opening a new feature area.
+The next cycle should continue PM-GAP-067 by running the new snapshot seed against an available backend and capturing server-hydrated chart proof, or by adding chart loading/error states or a fuller orderbook ladder route before opening a new feature area.

@@ -2,6 +2,37 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle AT - Live Chart Snapshot Seeding Harness
+
+Fields now provided or wired:
+
+- A deterministic local/proof harness can generate `MarketOutcomeSnapshot` rows for every active outcome in a selected live World Cup market.
+- The generated rows use canonical backend fields: `marketId`, `outcomeId`, `ts`, and decimal `price`.
+- The harness writes a summary with selected event/market identity, generated time range, deleted snapshot count, created snapshot count, and preview probabilities.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real external football provider ingestion that continuously writes live probability snapshots.
+- Server-hydrated tablet proof showing `chart-source-market-chart-route` in EventDetail XML.
+- Chart loading/empty/delayed/suspended/error states.
+
+Schema mismatch:
+
+- `MarketOutcomeSnapshot` still has no provider source id, live/delayed flag, aggregation bucket, or availability reason. Cycle AT does not change schema.
+
+Route mismatch:
+
+- No route mismatch for basic chart history: `/api/events/:slug` and `/api/markets/:marketId/chart` both read `MarketOutcomeSnapshot`.
+- Backend/Docker was unavailable during this cycle, so the seed script could not be applied and verified through live HTTP routes.
+
+Temporary mock/static data:
+
+- Cycle AT reduces reliance on ad hoc local chart fixtures by adding a route-compatible database seeding harness.
+
+Future migration concern:
+
+- Replace the deterministic proof harness with real provider ingestion or a scheduled/import worker before production.
+
 ## Cycle AS - Event Detail Chart Route Hydration
 
 Fields now provided or wired:

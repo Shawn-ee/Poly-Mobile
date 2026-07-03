@@ -2,6 +2,52 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle AT - Live Chart Snapshot Seeding Harness
+
+Feature/page worked on:
+
+- PM-GAP-067 provider-shaped live chart snapshot data for live event detail.
+- Deterministic local/proof seeding for `MarketOutcomeSnapshot` rows that can drive `/api/events/:slug` and `/api/markets/:marketId/chart`.
+
+Frontend components touched:
+
+- No visible frontend component changed in this cycle.
+
+Backend components touched:
+
+- `src/server/services/mobileLiveChartSnapshotSeeding.ts`
+- `scripts/seed_mobile_live_chart_snapshots.ts`
+- `src/__tests__/mobile-live-chart-snapshot-seeding.test.ts`
+- `package.json`
+
+Important functions/services touched:
+
+- `buildMobileLiveChartSnapshotRows(outcomes, baseTime)` creates backend-shaped timestamped probability rows for every active outcome in a live market.
+- `scripts/seed_mobile_live_chart_snapshots.ts` selects a live public World Cup orderbook market, deletes the same generated time window, writes deterministic `MarketOutcomeSnapshot` rows, and records a proof summary.
+- `npm run mobile:live-chart-snapshot-seed` runs the seeding proof with output at `docs/mobile/harness/cycle-current-mobile-live-chart-snapshot-seed.json`.
+
+User interactions supported:
+
+- Once local backend/Docker is available, opening the live game page in server mode can receive real route-backed chart movement instead of relying only on fixture chart arrays.
+
+State transitions:
+
+- Live World Cup event/market -> active outcomes -> deterministic probability path -> `MarketOutcomeSnapshot` rows -> `/api/markets/:marketId/chart` history -> EventDetail chart hydration from Cycle AS.
+
+Known limitations:
+
+- Local API and Docker were unavailable during Cycle AT proof, so the seed script could not be applied to the database and no server-hydrated tablet chart proof was captured.
+- This is a deterministic proof harness, not a real external football provider ingestion worker.
+- Loading/empty/error chart states and full orderbook depth remain open PM-GAP-067 items.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-chart-snapshot-seeding.test.ts src/__tests__/public.market-chart.no-leak.test.ts src/__tests__/sports.event-market-model.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/marketChartService.test.ts mobile/src/__tests__/api.test.ts`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run smoke:tablet:live-detail`
+
 ## Cycle AS - Event Detail Chart Route Hydration
 
 Feature/page worked on:
