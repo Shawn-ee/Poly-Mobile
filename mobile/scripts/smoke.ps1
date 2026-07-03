@@ -1707,7 +1707,17 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-game-page-full-markets.png"
       $gamePageMarketsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-game-page-full-markets.xml"
-      Assert-HierarchyContains -Path $gamePageMarketsHierarchy -Expected @("event-detail-compact-game-header", "MEX 64%", "ECU 36%", "Spread", "MEX to win by over 1.5 goals", "Totals", "Total goals", "1st Half Winner", "2nd Half Winner")
+      Assert-HierarchyContains -Path $gamePageMarketsHierarchy -Expected @("event-detail-compact-game-header", "event-detail-sticky-market-tabs", "Game Lines", "Player Props", "MEX 64%", "ECU 36%", "Spread", "MEX to win by over 1.5 goals", "Totals", "Total goals", "1st Half Winner")
+      & $adb -s $Device shell input swipe 540 1840 540 1250 350 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-game-page-full-markets-lower.png"
+      $gamePageMarketsLowerHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-game-page-full-markets-lower.xml"
+      Assert-HierarchyContains -Path $gamePageMarketsLowerHierarchy -Expected @("event-detail-sticky-market-tabs", "2nd Half Winner")
+      Invoke-TapHierarchyNode -Path $gamePageMarketsLowerHierarchy -Identifier "event-detail-sticky-player-props-tab"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-game-page-full-sticky-props.png"
+      $gamePageStickyPropsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-game-page-full-sticky-props.xml"
+      Assert-HierarchyContains -Path $gamePageStickyPropsHierarchy -Expected @("event-detail-sticky-market-tabs", "Player Props", "Goals (Reg. Time)", "Santiago Gimenez")
 
       Start-DeepLink -Url $gamePageResetUrl
       Start-Sleep -Seconds 4

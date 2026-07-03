@@ -385,26 +385,40 @@ export function EventDetail({
     setExpandedMarketIds((current) => ({ ...current, [id]: !current[id] }));
   };
 
-  const renderMarketTabs = () => (
-    <View accessibilityLabel="event-detail-market-tabs" style={styles.marketTabs} testID="event-detail-market-tabs">
-      {[
-        { id: "game-lines", label: "Game Lines" },
-        { id: "exact-score", label: "Exact Score" },
-        { id: "halves", label: "Halves" },
-        { id: "player-props", label: "Player Props" },
-      ].map((tab) => (
-        <Pressable
-          accessibilityLabel={`event-detail-${tab.id}-tab`}
-          key={tab.id}
-          onPress={() => setActiveTab(tab.id as typeof activeTab)}
-          style={[styles.marketTab, activeTab === tab.id && styles.marketTabActive]}
-          testID={`event-detail-${tab.id}-tab`}
-        >
-          <Text style={[styles.marketTabText, activeTab === tab.id && styles.marketTabTextActive]}>{tab.label}</Text>
-        </Pressable>
-      ))}
-    </View>
-  );
+  const renderMarketTabs = (mode: "inline" | "sticky" = "inline") => {
+    const tabs =
+      mode === "sticky"
+        ? [
+            { id: "game-lines", label: "Game Lines" },
+            { id: "player-props", label: "Player Props" },
+          ]
+        : [
+            { id: "game-lines", label: "Game Lines" },
+            { id: "exact-score", label: "Exact Score" },
+            { id: "halves", label: "Halves" },
+            { id: "player-props", label: "Player Props" },
+          ];
+
+    return (
+      <View
+        accessibilityLabel={mode === "sticky" ? "event-detail-sticky-market-tabs Game Lines Player Props" : "event-detail-market-tabs"}
+        style={[styles.marketTabs, mode === "sticky" && styles.stickyMarketTabs]}
+        testID={mode === "sticky" ? "event-detail-sticky-market-tabs" : "event-detail-market-tabs"}
+      >
+        {tabs.map((tab) => (
+          <Pressable
+            accessibilityLabel={`event-detail-${tab.id}-tab`}
+            key={tab.id}
+            onPress={() => setActiveTab(tab.id as typeof activeTab)}
+            style={[styles.marketTab, activeTab === tab.id && styles.marketTabActive]}
+            testID={mode === "sticky" ? `event-detail-sticky-${tab.id}-tab` : `event-detail-${tab.id}-tab`}
+          >
+            <Text style={[styles.marketTabText, activeTab === tab.id && styles.marketTabTextActive]}>{tab.label}</Text>
+          </Pressable>
+        ))}
+      </View>
+    );
+  };
 
   const renderTeamToAdvanceCard = () => {
     if (!primaryMarket) return null;
@@ -749,29 +763,32 @@ export function EventDetail({
       )}
       {orderBookVisible && renderOrderBook()}
       {compactHeaderVisible && activeHeaderTab === "game" && (
-        <View
-          accessibilityLabel={`event-detail-compact-game-header ${teamA ? teamCode(teamA.name) : ""} ${leftOutcome?.probability ?? 0}% ${event.startsAt} ${teamB ? teamCode(teamB.name) : ""} ${rightOutcome?.probability ?? 0}% Game Lines Player Props`}
-          style={styles.compactGameHeader}
-          testID="event-detail-compact-game-header"
-        >
-          <View style={styles.compactTeamSide}>
-            <Text style={styles.compactFlag}>{teamA?.flag ?? ""}</Text>
-            <View>
-              <Text style={styles.compactTeamCode}>{teamA ? teamCode(teamA.name) : ""}</Text>
-              <Text style={[styles.compactProbability, { color: leftOutcome?.color ?? "#22c55e" }]}>{leftOutcome?.probability ?? 0}%</Text>
+        <View accessibilityLabel="event-detail-sticky-market-shell" style={styles.stickyMarketShell} testID="event-detail-sticky-market-shell">
+          <View
+            accessibilityLabel={`event-detail-compact-game-header ${teamA ? teamCode(teamA.name) : ""} ${leftOutcome?.probability ?? 0}% ${event.startsAt} ${teamB ? teamCode(teamB.name) : ""} ${rightOutcome?.probability ?? 0}% Game Lines Player Props`}
+            style={styles.compactGameHeader}
+            testID="event-detail-compact-game-header"
+          >
+            <View style={styles.compactTeamSide}>
+              <Text style={styles.compactFlag}>{teamA?.flag ?? ""}</Text>
+              <View>
+                <Text style={styles.compactTeamCode}>{teamA ? teamCode(teamA.name) : ""}</Text>
+                <Text style={[styles.compactProbability, { color: leftOutcome?.color ?? "#22c55e" }]}>{leftOutcome?.probability ?? 0}%</Text>
+              </View>
+            </View>
+            <View style={styles.compactMatchCenter}>
+              <Text style={styles.compactDate}>{event.startsAt.split(" ")[0] === "Today" ? "Today" : event.startsAt}</Text>
+              <Text style={styles.compactTime}>{event.status === "live" ? liveClock : event.startsAt.replace(/^Today\s*/, "")}</Text>
+            </View>
+            <View style={[styles.compactTeamSide, styles.compactTeamRight]}>
+              <View style={styles.compactRightText}>
+                <Text style={styles.compactTeamCode}>{teamB ? teamCode(teamB.name) : ""}</Text>
+                <Text style={[styles.compactProbability, { color: rightOutcome?.color ?? "#ef4444" }]}>{rightOutcome?.probability ?? 0}%</Text>
+              </View>
+              <Text style={styles.compactFlag}>{teamB?.flag ?? ""}</Text>
             </View>
           </View>
-          <View style={styles.compactMatchCenter}>
-            <Text style={styles.compactDate}>{event.startsAt.split(" ")[0] === "Today" ? "Today" : event.startsAt}</Text>
-            <Text style={styles.compactTime}>{event.status === "live" ? liveClock : event.startsAt.replace(/^Today\s*/, "")}</Text>
-          </View>
-          <View style={[styles.compactTeamSide, styles.compactTeamRight]}>
-            <View style={styles.compactRightText}>
-              <Text style={styles.compactTeamCode}>{teamB ? teamCode(teamB.name) : ""}</Text>
-              <Text style={[styles.compactProbability, { color: rightOutcome?.color ?? "#ef4444" }]}>{rightOutcome?.probability ?? 0}%</Text>
-            </View>
-            <Text style={styles.compactFlag}>{teamB?.flag ?? ""}</Text>
-          </View>
+          {renderMarketTabs("sticky")}
         </View>
       )}
 
@@ -1327,6 +1344,7 @@ const styles = StyleSheet.create({
   shareActionsRow: { flexDirection: "row", gap: 8, marginTop: 12 },
   shareActionButton: { flex: 1, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#172033", borderWidth: 1, borderColor: "#293548" },
   shareActionText: { color: "#e5e7eb", fontSize: 12, fontWeight: "900" },
+  stickyMarketShell: { backgroundColor: "#060b14", borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   compactGameHeader: { minHeight: 78, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, backgroundColor: "#060b14", borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   compactTeamSide: { width: 132, flexDirection: "row", alignItems: "center", gap: 8 },
   compactTeamRight: { justifyContent: "flex-end" },
@@ -1459,6 +1477,7 @@ const styles = StyleSheet.create({
   primaryOutcomeText: { color: "rgba(255,255,255,0.72)", fontSize: 17, fontWeight: "900" },
   primaryOutcomePercent: { color: "#ffffff", fontSize: 20, fontWeight: "900" },
   marketTabs: { flexDirection: "row", gap: 24, paddingHorizontal: 24, marginTop: 22, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
+  stickyMarketTabs: { marginTop: 0, paddingHorizontal: 20, borderBottomWidth: 0, backgroundColor: "#060b14" },
   marketTab: { minHeight: 46, justifyContent: "center", borderBottomWidth: 3, borderBottomColor: "transparent" },
   marketTabActive: { borderBottomColor: "#f8fafc" },
   marketTabText: { color: "#6b7280", fontSize: 18, fontWeight: "800" },

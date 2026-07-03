@@ -601,3 +601,33 @@ Temporary mock/static data:
 Future migration concern:
 
 - When backend market data becomes authoritative, compact header probabilities and market rows must update together so scrolling never shows stale team odds.
+
+## Cycle AL - Game Page Sticky Market Tabs
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Ordered market-tab metadata for `Game Lines`, `Player Props`, and any event-specific tabs.
+- Explicit availability state for Player Props: available, empty, loading, not offered, or blocked.
+- Group ordering metadata so sticky tabs and scrolled rows stay synchronized with backend market sections.
+
+Fields backend provides but mobile ignores:
+
+- Unknown in this focused cycle; proof used local/fallback event data.
+
+Schema mismatch:
+
+- Holiwyn currently owns the market tab list in the component; backend should eventually own which tabs appear for each match.
+- Player Props rows are local fallback data and are not tied to backend player/market ids.
+
+Route mismatch:
+
+- Existing event detail can hydrate enough display context, but a future mobile event-detail route should include tab availability, grouped section anchors, and empty states.
+
+Temporary mock/static data:
+
+- Sticky tabs use local tab definitions.
+- Player Props rows use local static rows.
+
+Future migration concern:
+
+- When backend market tabs become authoritative, scroll anchors, sticky tab selection, ticket carry-through, and empty states must all use the same backend group identifiers.

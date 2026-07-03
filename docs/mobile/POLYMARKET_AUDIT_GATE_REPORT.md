@@ -639,6 +639,55 @@ Decision:
 - Remaining P1/P2 gaps: native full-page/swipe confirmation surface and future production eligibility gates.
 - Next cycle required: yes. Recommended next cycle is trade-ticket surface parity: move Holiwyn toward Polymarket's taller full-page/native swipe-up confirmation UI.
 
+## Cycle AL - Game Page Sticky Market Tabs
+
+Feature: Game page sticky Game Lines / Player Props rail.
+
+Cycle: AL.
+
+Lead Agent target: close the focused game-page sticky-tab density gap discovered from the logged-in Polymarket game page.
+
+Reference Audit Agent: Samsung S23 logged-in Polymarket Android app.
+
+Implementation Agent: Holiwyn mobile app.
+
+Audit Gate Agent: Samsung tablet device proof and focused full game-page smoke.
+
+Reference device: Samsung S23.
+
+Reference app/browser: logged-in Polymarket Android app.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AL-polymarket-game-top.png`
+- `docs/mobile/reference/screenshots/cycle-AL-polymarket-game-top.xml`
+- `docs/mobile/reference/screenshots/cycle-AL-polymarket-game-sticky-tabs.png`
+- `docs/mobile/reference/screenshots/cycle-AL-polymarket-game-sticky-tabs.xml`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-markets.png`
+- `docs/mobile/harness/cycle-current-holiwyn-game-page-full-markets.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-markets-lower.png`
+- `docs/mobile/harness/cycle-current-holiwyn-game-page-full-markets-lower.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-sticky-props.png`
+- `docs/mobile/harness/cycle-current-holiwyn-game-page-full-sticky-props.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| GP-AL-P1-01 | P1 | Pass | `event-detail-sticky-market-tabs` visible in markets and lower-market proof | None |
+| GP-AL-P1-02 | P1 | Pass | Sticky `Player Props` tab opens props rows from scrolled market state | None |
+| GP-AL-P1-03 | P1 | Pass | `npm run typecheck`; `cmd /c npm.cmd run smoke:tablet:event-detail-full-page` | None |
+
+Decision:
+
+- Pass/fail: Pass for focused sticky market-tab scope.
+- Unresolved P0 gaps: 0.
+- Remaining P1/P2 gaps: phone-density spacing, native transition polish, Player Props direct reference/product decision, backend-backed market groups/history/live stats.
+- Next cycle required: yes. Continue the next highest-priority game-page or whole-app parity gap.
+
 ## Gate Report Template
 
 Use this template for every feature gate:

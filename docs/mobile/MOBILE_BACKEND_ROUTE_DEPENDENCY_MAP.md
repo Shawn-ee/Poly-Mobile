@@ -240,3 +240,15 @@ Cycle AJ implementation notes:
 
 - No backend route was created or changed.
 - This is a presentation-layer parity cycle; future backend work should make compact header and market rows server-authoritative.
+
+## Cycle AL - Game Page Sticky Market Tabs
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Sticky market tab rail | `/api/events/:slug` when server event detail is active | GET | Optional for viewing | None | event title/status/start time, teams, primary outcome probabilities, market tab/group availability | Events, teams, markets, market groups | Local event/team/outcome data and local tab list | Backend should expose ordered market tabs/groups and whether Player Props is available or empty for a given match. |
+| Sticky Player Props switch | `/api/events/:slug` when server event detail is active | GET | Optional for viewing | None | player props group rows, player names, stat type, prices, probabilities | Markets, player props, players, outcomes | Local Player Props rows | Backend should provide soccer player-prop availability and empty/loading states rather than relying on local fallback props. |
+
+Cycle AL implementation notes:
+
+- No backend route was created or changed.
+- This is a presentation-layer parity cycle; future backend work should return market-tab metadata and grouped rows in the same order the mobile page displays them.

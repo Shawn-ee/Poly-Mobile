@@ -698,3 +698,38 @@ Known limitations:
 - Polymarket's native sticky tab polish and phone-density spacing are still tighter.
 - Player Props remains Holiwyn-local product scope and needs a focused reference decision.
 - Market data, chart history, and live stats are still local/deterministic unless server hydration is available.
+
+## Cycle AL - Game Page Sticky Market Tabs
+
+Feature/page worked on:
+
+- Logged-in World Cup game page scrolled market state.
+- Sticky `Game Lines` / `Player Props` tab rail under compact match context.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+
+Important functions/services touched:
+
+- `renderMarketTabs(mode)` now supports separate inline and sticky tab rails while sharing the same `activeTab` state.
+- `EventDetail()` now wraps the compact match header and sticky market tabs in `event-detail-sticky-market-shell`.
+- `smoke.ps1` full game-page proof now asserts sticky tabs through market scroll and proves sticky Player Props switching.
+
+User interactions supported:
+
+- Scroll from the game-page hero into Game Lines and keep market tabs visible beneath the compact match header.
+- Continue scrolling into lower Game Lines rows while the sticky tab rail remains visible.
+- Tap sticky `Player Props` from the scrolled market state and switch into props content.
+
+State transitions:
+
+- `activeTab: "game-lines" -> "player-props"` can now happen from either the inline tab rail or the sticky tab rail.
+- `compactHeaderVisible: true` now shows compact match context plus sticky tabs instead of compact match context alone.
+
+Known limitations:
+
+- Sticky rail animation and exact native phone spacing remain P1/P2 polish.
+- Player Props content remains Holiwyn-local and still needs a dedicated reference/product-scope cycle.
+- Market groups remain local/fallback unless backend event-detail data provides richer grouped markets.
