@@ -11669,6 +11669,31 @@ Open blockers: none for continuing the loop. Real historical chart series requir
 
 Next likely cycle: audit a reachable match-specific page for adjustable line markets, or add backend chart-history contracts if match lines remain hard to reference.
 
+### Cycle X - Match Market Tabs And Cards
+
+Status: verified and ready for local merge after commit.
+
+Verified progress: Samsung S23 Polymarket mobile web reference captured a reachable World Cup match page with `Game Lines`, `Exact Score`, and `Halves`, plus card-level `Team to Advance`, `Moneyline REG TIME`, and inline `Order Book` / `Graph` / `About` behavior. Holiwyn now exposes `Game Lines`, `Exact Score`, `Halves`, and `Player Props`, renders a `Team to Advance` card with inline detail controls, and switches Exact Score/Halves sections on the tablet.
+
+Device evidence: reference evidence is under `docs/mobile/reference/screenshots/cycle-X-polymarket-bel-usa-*`; Holiwyn evidence is under `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-*.png` and `docs/mobile/harness/cycle-current-holiwyn-market-tabs-*.xml`.
+
+Verification: `npm run typecheck` passed; `powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailMarketTabs -Port 8195` passed on the Samsung tablet.
+
+Open blockers: none for continuing the loop. Remaining P1/P2 gaps for this focused feature are backend-driven market groups/depth/history, a true match `Live stats` tab, and visual density polish.
+
+Next likely cycle: continue market/event page parity by auditing and implementing the next highest P0 gap, likely adjustable line behavior or trade-ticket behavior from the match page.
+
+### Heartbeat After Cycle X
+
+Completed cycles: V, W, X.
+Verified progress: Futures rows, futures chart ranges, and match-specific market tabs/cards have each passed same-cycle Polymarket reference audit, written criteria, Samsung tablet proof, and Audit Gate. The game page is materially closer to Polymarket with richer card/tab structure, but full game-page parity is still not claimed.
+Current app state: Android-first Expo app with Polymarket-audited bottom navigation, event top actions, futures rows, futures chart controls, and match market tabs/cards. Trade ticket, adjustable line depth, portfolio, search, account/settings, saved/share/chat, error/loading states, and full-page visual polish still need the new audit-gated treatment.
+Current backend state: No backend route was changed in these three cycles. Documentation now records that mobile needs explicit market tabs/groups, outcome-level futures data, market depth, and market history routes.
+Device strategy: Samsung S23 remains the Polymarket reference device. Samsung tablet remains the Holiwyn proof device. Emulator remains fallback only.
+Open blockers: None for autonomous progress.
+Risks: Expo Go device proof depends on LAN/dev-server stability; many market details remain local deterministic UI states until backend contracts are expanded.
+Next three likely cycles: adjustable line markets, trade-ticket behavior, then portfolio/open-order parity.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

@@ -170,3 +170,44 @@ Known limitations:
 - Chart lines are local/deterministic and not backend-backed.
 - Settings gear behavior is not implemented in this focused cycle.
 - Press/hold tooltip remains P2.
+
+## Cycle X - Match Market Tabs And Cards
+
+Feature/page worked on:
+
+- Match-specific market tabs and first market cards on the Event Detail game page.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+Important functions/services touched:
+
+- `EventDetail()` now tracks `activeTab` across `game-lines`, `exact-score`, `halves`, and `player-props`.
+- `EventDetail()` now tracks `activeLineDetailTab` across `order-book`, `graph`, and `about`.
+- `renderMarketTabs()` renders the Polymarket-style market tab row.
+- `renderTeamToAdvanceCard()` renders the first match-specific card with inline detail controls.
+- `renderExactScore()` renders exact-score rows.
+- `renderHalves()` renders half-market rows from existing market groups.
+- `EventDetailMarketTabs` smoke proves tablet tab/card interactions.
+
+User interactions supported:
+
+- View `Game Lines`, `Exact Score`, `Halves`, and `Player Props` tabs.
+- View a `Team to Advance` card with volume and outcome price buttons.
+- Switch the Team to Advance inline detail from `Order Book` to `Graph`.
+- Switch from Game Lines to Exact Score.
+- Switch from Exact Score to Halves.
+
+State transitions:
+
+- `activeTab: "game-lines" -> "exact-score" -> "halves"`.
+- `activeLineDetailTab: "order-book" -> "graph"`.
+
+Known limitations:
+
+- Exact Score and Halves rows are local/fallback market content rather than backend-discovered market groups.
+- Team to Advance card depth and graph are local deterministic UI states.
+- The match-level `Live stats` tab remains a P1 gap.
