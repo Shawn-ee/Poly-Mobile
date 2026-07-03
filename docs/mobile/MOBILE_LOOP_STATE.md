@@ -11694,6 +11694,20 @@ Open blockers: None for autonomous progress.
 Risks: Expo Go device proof depends on LAN/dev-server stability; many market details remain local deterministic UI states until backend contracts are expanded.
 Next three likely cycles: adjustable line markets, trade-ticket behavior, then portfolio/open-order parity.
 
+### Cycle Y - Line Adjustment
+
+Status: verified and ready for local merge after commit.
+
+Verified progress: Samsung S23 Polymarket mobile web reference captured Spreads and Totals adjustable line rails on a World Cup match page. Polymarket Spread changed from `USA -1.5 17c` / `BEL +1.5 84c` to `USA -2.5 7c` / `BEL +2.5 94c`. Polymarket Totals changed from `O 2.5 55c` / `U 2.5 46c` to `O 3.5 34c` / `U 3.5 67c`. Holiwyn tablet proof passed for Spread/Totals line selection, row update, and ticket carry-through.
+
+Device evidence: reference evidence is under `docs/mobile/reference/screenshots/cycle-Y-polymarket-*`; Holiwyn evidence is under `docs/mobile/screenshots/cycle-current-holiwyn-line-adjustment-*` and `docs/mobile/harness/cycle-current-holiwyn-line-adjustment-*`.
+
+Verification: `powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailLineAdjustment -Port 8196` passed on the Samsung tablet.
+
+Open blockers: none for continuing the loop. Remaining line-market gaps are team totals, halves-specific adjustable lines, corners/discovered lines, and backend-owned line market ids/prices/depth/history.
+
+Next likely cycle: trade-ticket parity from the game page, especially Polymarket's swipe-up confirmation behavior and selected line carry-through.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

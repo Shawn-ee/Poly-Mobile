@@ -170,3 +170,38 @@ Temporary mock/static data:
 Future migration concern:
 
 - Once backend market groups exist, EventDetail should render tab/card sections from server-provided group metadata instead of hardcoded local sections.
+
+## Cycle Y - Line Adjustment
+
+Fields Holiwyn needs but backend does not provide yet:
+
+- Line market group id and market type, for example `spread` and `totals`.
+- Period id/label/order, for example regulation time, first half, and second half.
+- Line option list per market group and period.
+- Stable market id per line/period/outcome combination.
+- Outcome labels and quote prices/probabilities per selected line.
+- Line-market depth/book rows.
+- Line-market history/chart rows.
+- Order/position/history fields that preserve line, period, market type, and selected outcome.
+
+Fields backend provides but mobile ignores:
+
+- Unknown for this focused cycle; proof used local/fallback event data.
+
+Schema mismatch:
+
+- Mobile currently derives spread/totals line prices locally rather than consuming quote rows.
+- Ticket line identity is carried as display metadata instead of a backend-owned line market id.
+
+Route mismatch:
+
+- `/api/events/:slug` should include grouped line markets, but a future quote/depth route may also be needed, for example `/api/markets/:id/quote` or `/api/markets/:id/book`.
+
+Temporary mock/static data:
+
+- Spread and totals line options are local arrays.
+- Line probabilities and odds are deterministic local calculations.
+
+Future migration concern:
+
+- Once backend line markets exist, ticket/order payloads should submit the backend line-market id instead of relying on display label parsing.
