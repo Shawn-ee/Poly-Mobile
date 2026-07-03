@@ -21,7 +21,7 @@ Line criteria: `docs/mobile/HOLIWYN_LINE_ADJUSTMENT_CRITERIA.md`
 | WA-P0-07 | Ticket now carries selected Spread and Totals line/period into `ticket-selection-line`, proven on tablet. | Verified | `cycle-current-holiwyn-line-adjustment-spread-ticket.*`, `cycle-current-holiwyn-line-adjustment-totals-ticket.*`. | Done |
 | WA-P0-08 | Selected line metadata persists through ticket order creation, latest order, filled position/activity rows, backend mapping, and disposable open-order UI proof. | Verified | `npm run smoke:tablet:event-detail-line-portfolio`; focused mobile API tests. | Done |
 | WA-P0-09 | Full-screen game-page order book/depth panel exists with outcome bid/ask, size bars, Buy/Sell actions, and ticket handoff proof. | Verified | `cycle-current-holiwyn-order-book.*`, `cycle-current-holiwyn-order-book-ticket.*`. | Done |
-| WA-P0-10 | Some empty states exist; loading/API failure/error states need whole-app proof. | Open | Fixture/smoke for page error/loading states. | Cycle M |
+| WA-P0-10 | Whole-app loading, empty, and error states have deterministic tablet proof for Portfolio syncing, Live empty, Home saved empty, Search saved empty, Account profile sync error, and Portfolio server sync error. | Verified | `cycle-current-holiwyn-empty-error-loading-*.*`; `npm run smoke:tablet:empty-error-loading`. | Done |
 
 ## Line Adjustment P0 Gaps
 
@@ -114,3 +114,18 @@ Verification:
 
 - `npm run typecheck`
 - `npm run smoke:tablet:event-detail-order-book`
+
+## Cycle N Notes
+
+Cycle N implemented and verified deterministic whole-app empty/error/loading proof:
+
+- Portfolio can be launched into a server-sync loading state.
+- Portfolio can be launched into a server-sync error state.
+- Account can be launched into a profile-preferences sync error state.
+- Live, Home saved, and Search saved empty states are proven on the tablet.
+- The tablet harness captures each state as separate XML and screenshot evidence.
+
+Verification:
+
+- `npm run typecheck`
+- `npm run smoke:tablet:empty-error-loading`

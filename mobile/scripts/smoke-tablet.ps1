@@ -7,7 +7,8 @@ param(
   [switch]$EventDetailActions,
   [switch]$EventDetailLineAdjustment,
   [switch]$EventDetailLinePortfolio,
-  [switch]$EventDetailOrderBook
+  [switch]$EventDetailOrderBook,
+  [switch]$EmptyErrorLoading
 )
 
 $ErrorActionPreference = "Stop"
@@ -59,6 +60,8 @@ if ($EventDetailSummary) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailLinePortfolio -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($EventDetailOrderBook) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailOrderBook -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
+} elseif ($EmptyErrorLoading) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -EmptyErrorLoading -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } else {
   & "$PSScriptRoot\smoke.ps1" -Deep -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 }
