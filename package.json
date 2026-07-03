@@ -79,6 +79,7 @@
     "mobile:samsung-api-key-diagnostic": "powershell -ExecutionPolicy Bypass -File scripts/mobile_samsung_api_key_diagnostic.ps1",
     "mobile:backend-position-order-cleanup": "tsx scripts/cleanup_mobile_backend_position_order_proofs.ts",
     "mobile:backend-position-order-cleanup:stale": "tsx scripts/cleanup_mobile_backend_position_order_proofs.ts --apply --maxAgeMinutes=60",
+    "mobile:live-chart-snapshot-seed": "tsx scripts/seed_mobile_live_chart_snapshots.ts --apply --summaryPath=docs/mobile/harness/cycle-current-mobile-live-chart-snapshot-seed.json",
     "mobile:definition-of-done-sweep": "tsx scripts/mobile_definition_of_done_sweep.ts",
     "mobile:final-qa-review-signoff": "tsx scripts/mobile_final_qa_review_signoff.ts",
     "mobile:android-apk-artifact-readiness": "powershell -ExecutionPolicy Bypass -File mobile/scripts/check-android-apk-artifact-readiness.ps1",
