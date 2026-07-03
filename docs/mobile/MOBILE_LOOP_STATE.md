@@ -4,6 +4,19 @@ Current mission: Build Holiwyn, a World Cup-first sports prediction and trading 
 
 Current phase: Autonomous mobile product development in verified cycles.
 
+## Heartbeat: Game Page Parity Cycles K-M
+
+Date: 2026-07-03
+Summary: Reopened Polymarket game-page parity work completed three verified tablet cycles: Cycle K added Spread/Totals line adjustment proof, Cycle L preserved selected line identity through tickets/orders/Portfolio surfaces, and Cycle M added a full-screen game-page order book/depth panel.
+Verification:
+- `npm run smoke:tablet:event-detail-line-adjustment`
+- `npm run smoke:tablet:event-detail-line-portfolio`
+- `npm run smoke:tablet:event-detail-order-book`
+- `npm run typecheck`
+- Focused mobile API tests for order, portfolio snapshot, and portfolio history mapping.
+Current gap state: WA-P0-06, WA-P0-07, WA-P0-08, and WA-P0-09 are verified in `WHOLE_APP_PARITY_GAP_TRACKER.md`; WA-P0-10 remains open for whole-app empty/error/loading proof.
+Next focus: Cycle N should add or prove the empty/error/loading states called out by WA-P0-10, then continue the whole-app parity sweep.
+
 Latest verified cycle: Cycle 284 produced and proved a Samsung-installable APK. Current Definition of Done sweep result is 10 verified, 0 partial, and 0 blocked; Holiwyn is ready to declare the documented mobile Definition of Done complete.
 
 Next milestone path:
