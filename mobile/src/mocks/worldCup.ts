@@ -39,6 +39,7 @@ export type Event = {
   teams: Array<{ name: string; zhName: string; flag: string }>;
   liveStats?: Array<{ statId: string; label: string; home: string; away: string }>;
   chartHistory?: Array<{ outcomeId: string; timestamp: string; probability: number }>;
+  chartHistorySource?: "embedded" | "market-chart-route";
   markets: Market[];
 };
 

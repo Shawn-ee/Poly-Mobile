@@ -170,6 +170,7 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
     ],
     liveStats: event.liveStats,
     chartHistory: event.chartHistory,
+    chartHistorySource: event.chartHistory?.length ? "embedded" : undefined,
     markets: normalizedMarkets,
   };
 };
