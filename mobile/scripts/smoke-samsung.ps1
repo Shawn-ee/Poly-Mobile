@@ -7,6 +7,7 @@ param(
   [switch]$FutureListSell,
   [switch]$EventDetailTrade,
   [switch]$EventDetailSummary,
+  [switch]$EventDetailChat,
   [switch]$EventDetailPosition,
   [switch]$EventDetailProps,
   [switch]$EventDetailPropTicket,
@@ -89,6 +90,8 @@ if ($FutureListOrder) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailTrade -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($EventDetailSummary) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailSummary -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
+} elseif ($EventDetailChat) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailChat -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($EventDetailPosition) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailPosition -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($EventDetailProps) {
