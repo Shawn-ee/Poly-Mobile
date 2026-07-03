@@ -178,6 +178,7 @@ export function EventDetail({
   const [shareSheetVisible, setShareSheetVisible] = useState(false);
   const [orderBookVisible, setOrderBookVisible] = useState(false);
   const [compactHeaderVisible, setCompactHeaderVisible] = useState(false);
+  const isLiveEvent = event.status === "live";
   const gameLineMarkets = useMemo(() => event.markets.filter((market) => market.type !== "prop" && market.type !== "future"), [event.markets]);
   const propMarkets = useMemo(() => event.markets.filter((market) => market.type === "prop"), [event.markets]);
   const primaryMarket = gameLineMarkets[0] ?? event.markets[0];
@@ -198,9 +199,18 @@ export function EventDetail({
   const teamB = event.teams[1];
   const leftOutcome = primaryOutcomes[0];
   const rightOutcome = primaryOutcomes[1];
-  const selectedChartOutcome = chartFilter === "Live" ? rightOutcome ?? leftOutcome : leftOutcome ?? rightOutcome;
+  const selectedChartOutcome = isLiveEvent || chartFilter === "Live" ? rightOutcome ?? leftOutcome : leftOutcome ?? rightOutcome;
   const selectedChartColor = selectedChartOutcome?.color ?? "#22c55e";
   const selectedChartProbability = selectedChartOutcome?.probability ?? 0;
+  const homeChartSeries = event.chartHistory?.filter((point) => point.outcomeId === leftOutcome?.id).map((point) => point.probability) ?? homeChartPoints;
+  const awayChartSeries = event.chartHistory?.filter((point) => point.outcomeId === rightOutcome?.id).map((point) => point.probability) ?? awayChartPoints;
+  const liveStatRows = event.liveStats ?? [
+    { label: "Possession", home: "54%", away: "46%" },
+    { label: "Shots", home: "8", away: "5" },
+    { label: "Shots on target", home: "3", away: "2" },
+    { label: "Corners", home: "4", away: "3" },
+    { label: "Expected goals", home: "1.12", away: "0.84" },
+  ];
   const chartPointMeta = selectedChartPoint === "target"
     ? { label: "Target", value: `${Math.max(1, selectedChartProbability + 4)}%`, time: "Target line" }
     : selectedChartPoint === "mid"
@@ -209,7 +219,7 @@ export function EventDetail({
   const liveClock = event.status === "live"
     ? event.startsAt.replace("Live", "").replace("·", "").trim()
     : "15'";
-  const scoreboard = event.status === "live" ? "0 - 0" : "0 - 0";
+  const scoreboard = event.status === "live" ? "0 - 1" : "0 - 0";
   const handleScroll = (eventScroll: NativeSyntheticEvent<NativeScrollEvent>) => {
     const shouldShow = eventScroll.nativeEvent.contentOffset.y > 500;
     setCompactHeaderVisible((visible) => visible === shouldShow ? visible : shouldShow);
@@ -425,21 +435,21 @@ export function EventDetail({
       <View accessibilityLabel="event-detail-team-to-advance-card" style={styles.polymarketLineCard} testID="event-detail-team-to-advance-card">
         <View style={styles.marketTitleBlock}>
           <View style={styles.lineCardTitleRow}>
-            <Text style={styles.marketTitle}>Team to Advance</Text>
+            <Text style={styles.marketTitle}>{isLiveEvent ? "Live Winner" : "Team to Advance"}</Text>
             <Ionicons name="information-circle-outline" color="#64748b" size={19} />
           </View>
-          <Text style={styles.marketSubcopy}>$60.9K Vol.</Text>
+          <Text style={styles.marketSubcopy}>{isLiveEvent ? "Live World Cup - prices moving" : "$60.9K Vol."}</Text>
         </View>
         <View style={styles.lineOutcomeButtonRow}>
           {primaryOutcomes.map((outcome, index) => (
             <Pressable
               accessibilityLabel={`event-detail-team-advance-${outcome.id}`}
               key={outcome.id}
-              onPress={() => openTicket(primaryMarket, outcome, event, defaultSide, { marketType: "winner", displayLabel: "Team to Advance" })}
+              onPress={() => openTicket(primaryMarket, outcome, event, defaultSide, { marketType: isLiveEvent ? "live" : "winner", displayLabel: isLiveEvent ? "Live Winner" : "Team to Advance" })}
               style={styles.lineOutcomeButton}
               testID={`event-detail-team-advance-${outcome.id}`}
             >
-              <Text style={styles.lineOutcomeButtonText}>{teamCode(outcome.label)} {index === 0 ? "52¢" : "49¢"}</Text>
+              <Text style={styles.lineOutcomeButtonText}>{teamCode(outcome.label)} {isLiveEvent ? `${outcome.probability}%` : index === 0 ? "52¢" : "49¢"}</Text>
             </Pressable>
           ))}
         </View>
@@ -482,11 +492,11 @@ export function EventDetail({
         ) : activeLineDetailTab === "graph" ? (
           <View accessibilityLabel="event-detail-inline-graph" style={styles.inlineGraph} testID="event-detail-inline-graph">
             <View style={styles.inlineGraphLine} />
-            <Text style={styles.inlineGraphText}>Line movement for Team to Advance</Text>
+            <Text style={styles.inlineGraphText}>Line movement for {isLiveEvent ? "Live Winner" : "Team to Advance"}</Text>
           </View>
         ) : (
           <View accessibilityLabel="event-detail-inline-about" style={styles.inlineAbout} testID="event-detail-inline-about">
-            <Text style={styles.inlineAboutText}>This market resolves to the team that advances from this World Cup matchup.</Text>
+            <Text style={styles.inlineAboutText}>{isLiveEvent ? "This live market resolves from the selected World Cup in-game contract at settlement." : "This market resolves to the team that advances from this World Cup matchup."}</Text>
           </View>
         )}
       </View>
@@ -888,7 +898,7 @@ export function EventDetail({
         <View accessibilityLabel="event-detail-body-switch" style={styles.bodySwitchSection} testID="event-detail-body-switch">
           <View style={styles.bodySwitchMeta}>
             <Text style={styles.bodySwitchVolume}>{stats.volume} Vol.</Text>
-            <Text style={styles.bodySwitchSource}>Holiwyn</Text>
+            <Text style={styles.bodySwitchSource}>{isLiveEvent ? "Live World Cup" : "Holiwyn"}</Text>
           </View>
           <View style={styles.bodySwitchTabs}>
             <Pressable
@@ -918,13 +928,7 @@ export function EventDetail({
               <Text style={styles.liveStatsTitle}>Live stats</Text>
               <Text style={styles.liveStatsStatus}>{event.status === "live" ? liveClock : "Pregame preview"}</Text>
             </View>
-            {[
-              { label: "Possession", home: "54%", away: "46%" },
-              { label: "Shots", home: "8", away: "5" },
-              { label: "Shots on target", home: "3", away: "2" },
-              { label: "Corners", home: "4", away: "3" },
-              { label: "Expected goals", home: "1.12", away: "0.84" },
-            ].map((row) => (
+            {liveStatRows.map((row) => (
               <View accessibilityLabel={`event-detail-live-stat-${row.label}`} key={row.label} style={styles.liveStatRow} testID={`event-detail-live-stat-${row.label.replace(/[^A-Za-z0-9]/g, "-").toLowerCase()}`}>
                 <Text style={styles.liveStatValue}>{row.home}</Text>
                 <View style={styles.liveStatMiddle}>
@@ -945,10 +949,25 @@ export function EventDetail({
           </View>
         ) : (
           <>
+        {isLiveEvent && (
+          <View accessibilityLabel="event-detail-live-match-strip" style={styles.liveMatchStrip} testID="event-detail-live-match-strip">
+            <View>
+              <Text style={styles.liveStripLabel}>LIVE WORLD CUP</Text>
+              <Text style={styles.liveStripScore}>{scoreboard} · {liveClock}</Text>
+            </View>
+            <View style={styles.liveStripPriceRow}>
+              {primaryOutcomes.map((outcome) => (
+                <Text key={outcome.id} style={[styles.liveStripPrice, { color: outcome.color }]}>
+                  {teamCode(outcome.label)} {outcome.probability}%
+                </Text>
+              ))}
+            </View>
+          </View>
+        )}
         <Pressable
           accessibilityLabel={`event-detail-price-chart two outcome traces ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartProbability}% ${chartPointMeta.label} ${chartPointMeta.value} +$9 +$39 +$479 All Game Live`}
           onPress={() => setSelectedChartPoint((current) => current === "latest" ? "mid" : current === "mid" ? "target" : "latest")}
-          style={styles.chartBlock}
+          style={[styles.chartBlock, isLiveEvent && styles.liveChartBlock]}
           testID="event-detail-price-chart"
         >
           <View style={styles.chartMarkers}>
@@ -961,7 +980,7 @@ export function EventDetail({
           </View>
           <View style={styles.dualChart}>
             <View style={styles.chartTrace}>
-              {homeChartPoints.map((point, index) => (
+              {homeChartSeries.map((point, index) => (
                 <View
                   key={`home-${point}-${index}`}
                   style={[
@@ -976,7 +995,7 @@ export function EventDetail({
               ))}
             </View>
             <View style={[styles.chartTrace, styles.chartTraceOverlay]}>
-              {awayChartPoints.map((point, index) => (
+              {awayChartSeries.map((point, index) => (
                 <View
                   key={`away-${point}-${index}`}
                   style={[
@@ -1139,8 +1158,8 @@ export function EventDetail({
                   testID={`event-detail-market-toggle-${primaryMarket.id}`}
                 >
                   <View style={styles.marketTitleBlock}>
-                    <Text style={styles.marketTitle}>Moneyline</Text>
-                    <Text style={styles.marketSubcopy}>Regulation Time Winner · 90 Minutes Plus Stoppage Time</Text>
+                    <Text style={styles.marketTitle}>{isLiveEvent ? "Live Winner" : "Moneyline"}</Text>
+                    <Text style={styles.marketSubcopy}>{isLiveEvent ? `${scoreboard} · ${liveClock} · In-game winner` : "Regulation Time Winner · 90 Minutes Plus Stoppage Time"}</Text>
                   </View>
                   <Ionicons name={expandedMarketIds["regulation-time-winner"] ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
                 </Pressable>
@@ -1327,6 +1346,12 @@ const styles = StyleSheet.create({
   liveStatsTimelineTitle: { color: "#f8fafc", fontSize: 15, fontWeight: "900", marginBottom: 8 },
   liveStatsTimelineText: { color: "#94a3b8", fontSize: 13, fontWeight: "800", marginTop: 4 },
   chartBlock: { minHeight: 190, paddingHorizontal: 0, paddingTop: 32, paddingBottom: 12 },
+  liveChartBlock: { minHeight: 300, paddingTop: 48 },
+  liveMatchStrip: { minHeight: 64, marginHorizontal: 24, marginTop: 10, padding: 12, borderRadius: 14, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
+  liveStripLabel: { color: "#ef4444", fontSize: 11, fontWeight: "900" },
+  liveStripScore: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginTop: 2 },
+  liveStripPriceRow: { alignItems: "flex-end", gap: 3 },
+  liveStripPrice: { fontSize: 14, fontWeight: "900" },
   chartMarkers: { position: "absolute", left: 14, top: 34, gap: 20 },
   chartMarkerText: { color: "#546071", fontSize: 11, fontWeight: "900" },
   chartReferenceLine: { position: "absolute", left: 0, right: 42, top: 63, borderTopWidth: 1, borderStyle: "dashed", borderColor: "#64748b", opacity: 0.65 },

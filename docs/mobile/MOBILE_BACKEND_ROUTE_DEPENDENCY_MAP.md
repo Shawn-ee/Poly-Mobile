@@ -2,6 +2,22 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle AN - Live Event Detail Structural Parity
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live World Cup event detail | Intended `/api/events/:slug` live-detail payload or `/api/mobile/events/:slug/live-detail`; current cycle uses local fallback only | GET | Optional for viewing; authenticated order routes later | None | `event.id`, `title`, `status`, `startsAt`, `teams[]`, `markets[]`, `marketGroupId`, `marketId`, `marketType`, `period`, `line`, `outcomeId`, `side`, `probability`, `bestBid`, `bestAsk`, `liquidity`, `chartHistory`, `orderbookDepth`, `liveStats` | Events, teams, markets, market groups, line markets, outcomes, live score/state, quote snapshots, orderbook depth, market history, live stats | `worldCupEvents` live fixture now uses backend-shaped fields for Australia vs Egypt | Real backend route/schema does not yet provide grouped live game detail, live score, line markets, chart history, orderbook depth, or live stats. |
+| Live ticket open | Client state from selected live market/outcome; existing order submit routes only after amount/order | Client state, then POST order when submitting | Mock mode no auth; server order mode requires API key | Future submit must include `marketId`, `outcomeId`, `marketGroupId`, `marketType`, `period`, `line`, `side`, amount, order side | selected event/market/outcome identity, live clock, quote/probability, line metadata | Orders, positions, fills, open orders, activity/history with live line identity | Tablet proof opens a live Australia ticket and preserves event/market/outcome in the ticket | Live order-to-portfolio/history identity is not yet re-proven with backend-shaped line fields. |
+| Live chart/history | Intended `/api/markets/:marketId/history?range=live` or embedded event detail `chartHistory` | GET | Optional for viewing | None | timestamped `outcomeId`, probability/price points, range, lastUpdated | Market history, outcome price snapshots | Event `chartHistory` fixture feeds the chart series | No real chart-history route/schema currently backs mobile event detail. |
+| Live orderbook/depth | Intended `/api/markets/:marketId/book` or embedded `orderbookDepth` | GET | Optional for viewing; authenticated for user-specific order actions | None | bid/ask levels with price, shares, total, spread, liquidity, lastUpdated | Order book, orders, liquidity/depth snapshots | Primary live market includes `orderbookDepth` fixture fields | Existing UI still partly uses local display rows; backend depth contract is not wired end to end. |
+| Live stats | Intended `/api/events/:slug/live-stats` or embedded event detail `liveStats` | GET | Optional | None | stat id, label, home value, away value, timeline events, lastUpdated | Live match stats provider/cache | Event `liveStats` fixture feeds the Live stats panel | No real route/provider/schema for live football stats yet. |
+
+Cycle AN implementation notes:
+
+- This cycle intentionally does not mark backend parity complete.
+- Frontend dummy data is now shaped like the intended backend contract, so future route integration can replace the fixture without changing the UI model.
+- The next structural milestone should inspect Prisma/API support and implement or stub the real route/schema before more visual-only live-detail passes.
+
 ## Cycle T - Whole-App Navigation And Page Map
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

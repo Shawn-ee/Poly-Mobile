@@ -2,6 +2,46 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle AN - Live Event Detail Structural Parity
+
+Fields Holiwyn needs but backend does not provide yet:
+
+- Live event detail payload with `marketGroupId`, `marketId`, `outcomeId`, `marketType`, `period`, `line`, `side`, `probability`, `bestBid`, `bestAsk`, and `liquidity`.
+- Line-market groups for live spreads, totals, team totals, halves, next-goal markets, and moneyline/live winner.
+- Timestamped `chartHistory` by outcome/market, including range and last-updated metadata.
+- `orderbookDepth` by market with bid/ask levels, shares, total, spread, and liquidity.
+- `liveStats` by event with stable stat ids, home/away values, clock, score, timeline, and provider timestamp.
+- Portfolio/order/activity fields that preserve live selected market, line, side, period, and outcome identity after submission.
+
+Fields backend provides but mobile ignores:
+
+- Not re-audited in this cycle. The cycle used fallback data because live-detail backend support is not yet confirmed.
+
+Schema mismatch:
+
+- Mobile can now model live market detail with contract-shaped fixture fields, but the backend schema has not been verified to support market groups, line values, live score/state, chart history, orderbook snapshots, or live stats as first-class records.
+- Existing ticket/order identity supports selected event/market/outcome in mock mode, but line market identity still needs backend-backed preservation through orders, positions, open orders, and history.
+
+Route mismatch:
+
+- Current mobile event detail falls back to `worldCupEvents`.
+- Future route options:
+  - enrich `/api/events/:slug`
+  - add `/api/mobile/events/:slug/live-detail`
+  - add `/api/markets/:marketId/book`
+  - add `/api/markets/:marketId/history`
+  - add `/api/events/:slug/live-stats`
+
+Temporary mock/static data:
+
+- Australia vs Egypt live fixture in `mobile/src/mocks/worldCup.ts` includes backend-shaped fields: `marketGroupId`, `marketType`, `period`, `line`, `side`, `liquidity`, `orderbookDepth`, `chartHistory`, and `liveStats`.
+- The fixture is allowed only as frontend parity scaffolding and must be replaced by backend routes before backend parity can be claimed.
+
+Future migration concern:
+
+- Do not add more live UI-only local rows until the route/schema direction is implemented or explicitly stubbed.
+- The next cycle should address PM-GAP-067 or PM-GAP-068 before opening another new feature area.
+
 ## Cycle T - Whole-App Navigation And Page Map
 
 Fields Holiwyn needs but backend does not provide yet:

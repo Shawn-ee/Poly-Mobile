@@ -379,6 +379,7 @@ export default function App() {
     }
     setLaunchUrlVersion((value) => value + 1);
     const shouldForceLive = url.includes("forceLive=1");
+    const shouldForceLiveDetail = url.includes("forceLiveDetail=1");
     setForceOrderFailure(url.includes("forceOrderFailure=1"));
     if (url.includes("forceResetState=1")) {
       skipPortfolioHydration.current = true;
@@ -418,6 +419,7 @@ export default function App() {
         !shouldForceMexicoEcuadorDetail &&
         !forceServerOrderProof.current &&
         !shouldForceLive &&
+        !shouldForceLiveDetail &&
         !shouldForceMexicoEcuadorGamePosition
       ) {
         setTimeout(resetRuntimeState, 750);
@@ -432,6 +434,13 @@ export default function App() {
       setMainTab("portfolio");
     }
     if (shouldForceLive) {
+      setMainTab("live");
+    }
+    if (shouldForceLiveDetail) {
+      const liveEvent = worldCupEvents.find((item) => item.status === "live");
+      if (liveEvent) {
+        setSelectedEvent(liveEvent);
+      }
       setMainTab("live");
     }
     if (shouldForceNoLive) {

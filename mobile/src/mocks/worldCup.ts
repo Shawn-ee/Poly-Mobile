@@ -5,6 +5,7 @@ export type Outcome = {
   label: string;
   zhLabel: string;
   probability: number;
+  side?: "yes" | "no" | "over" | "under" | "home" | "away" | "draw";
   bestBid?: number | null;
   bestAsk?: number | null;
   bestBidSize?: number | null;
@@ -14,9 +15,15 @@ export type Outcome = {
 
 export type Market = {
   id: string;
+  marketGroupId?: string;
+  marketType?: "moneyline" | "spread" | "totals" | "team-total" | "next-goal" | "prop" | "future";
+  period?: "full-game" | "regulation" | "first-half" | "second-half";
+  line?: string | null;
   title: string;
   zhTitle: string;
   type: "game-line" | "prop" | "future" | "live";
+  liquidity?: number;
+  orderbookDepth?: Array<{ side: "bid" | "ask"; price: number; shares: number; total: number }>;
   outcomes: Outcome[];
 };
 
@@ -30,6 +37,8 @@ export type Event = {
   tag: string;
   zhTag: string;
   teams: Array<{ name: string; zhName: string; flag: string }>;
+  liveStats?: Array<{ statId: string; label: string; home: string; away: string }>;
+  chartHistory?: Array<{ outcomeId: string; timestamp: string; probability: number }>;
   markets: Market[];
 };
 
@@ -128,40 +137,117 @@ export const worldCupEvents: Event[] = [
   },
   {
     id: "france-argentina-final",
-    title: "France vs. Argentina",
-    zhTitle: "法国 vs 阿根廷",
+    title: "Australia vs. Egypt",
+    zhTitle: "澳大利亚 vs 埃及",
     league: "World Cup",
     startsAt: "Live · 63'",
     status: "live",
     tag: "Live",
     zhTag: "滚球",
     teams: [
-      { name: "France", zhName: "法国", flag: "🇫🇷" },
-      { name: "Argentina", zhName: "阿根廷", flag: "🇦🇷" },
+      { name: "Australia", zhName: "澳大利亚", flag: "🇦🇺" },
+      { name: "Egypt", zhName: "埃及", flag: "🇪🇬" },
     ],
     markets: [
       {
         id: "france-argentina-live",
-        title: "Live match winner",
+        marketGroupId: "aus-egy-live-game-lines",
+        marketType: "moneyline",
+        period: "regulation",
+        line: null,
+        title: "Live winner",
         zhTitle: "滚球获胜方",
         type: "live",
+        liquidity: 60800,
+        orderbookDepth: [
+          { side: "bid", price: 0.59, shares: 8070.5, total: 293440.88 },
+          { side: "ask", price: 0.63, shares: 246972.3, total: 289002.1 },
+        ],
         outcomes: [
-          { id: "france", label: "France", zhLabel: "法国", probability: 41, color: "#2563eb" },
-          { id: "argentina", label: "Argentina", zhLabel: "阿根廷", probability: 39, color: "#60a5fa" },
-          { id: "draw", label: "Draw", zhLabel: "平局", probability: 20, color: "#94a3b8" },
+          { id: "australia", label: "Australia", zhLabel: "澳大利亚", side: "home", probability: 40, color: "#2563eb" },
+          { id: "egypt", label: "Egypt", zhLabel: "埃及", side: "away", probability: 61, color: "#ef233c" },
         ],
       },
       {
         id: "france-argentina-next-goal",
+        marketGroupId: "aus-egy-live-game-lines",
+        marketType: "next-goal",
+        period: "regulation",
+        line: null,
         title: "Next goal",
         zhTitle: "下一球",
         type: "live",
+        liquidity: 27400,
         outcomes: [
-          { id: "france", label: "France", zhLabel: "法国", probability: 44, color: "#2563eb" },
-          { id: "argentina", label: "Argentina", zhLabel: "阿根廷", probability: 38, color: "#60a5fa" },
-          { id: "none", label: "No goal", zhLabel: "无进球", probability: 18, color: "#94a3b8" },
+          { id: "australia", label: "Australia", zhLabel: "澳大利亚", side: "home", probability: 28, color: "#2563eb" },
+          { id: "egypt", label: "Egypt", zhLabel: "埃及", side: "away", probability: 44, color: "#ef233c" },
+          { id: "none", label: "No goal", zhLabel: "无进球", side: "no", probability: 18, color: "#94a3b8" },
         ],
       },
+      {
+        id: "australia-egypt-live-total",
+        marketGroupId: "aus-egy-live-game-lines",
+        marketType: "totals",
+        period: "regulation",
+        line: "2.5",
+        title: "Live total goals over 2.5",
+        zhTitle: "滚球总进球大于 2.5",
+        type: "live",
+        liquidity: 22300,
+        outcomes: [
+          { id: "over", label: "Over", zhLabel: "大于", side: "over", probability: 58, color: "#22c55e" },
+          { id: "under", label: "Under", zhLabel: "小于", side: "under", probability: 42, color: "#64748b" },
+        ],
+      },
+      {
+        id: "australia-egypt-live-spread",
+        marketGroupId: "aus-egy-live-game-lines",
+        marketType: "spread",
+        period: "regulation",
+        line: "-0.5",
+        title: "Egypt -0.5 live spread",
+        zhTitle: "埃及 -0.5 滚球让球",
+        type: "live",
+        liquidity: 19800,
+        outcomes: [
+          { id: "yes", label: "Yes", zhLabel: "是", side: "yes", probability: 53, color: "#ef233c" },
+          { id: "no", label: "No", zhLabel: "否", side: "no", probability: 47, color: "#64748b" },
+        ],
+      },
+      {
+        id: "australia-egypt-live-team-total",
+        marketGroupId: "aus-egy-live-game-lines",
+        marketType: "team-total",
+        period: "regulation",
+        line: "1.5",
+        title: "Egypt team total over 1.5",
+        zhTitle: "埃及进球大于 1.5",
+        type: "live",
+        liquidity: 17100,
+        outcomes: [
+          { id: "over", label: "Over", zhLabel: "大于", side: "over", probability: 49, color: "#ef233c" },
+          { id: "under", label: "Under", zhLabel: "小于", side: "under", probability: 51, color: "#64748b" },
+        ],
+      },
+    ],
+    liveStats: [
+      { statId: "possession", label: "Possession", home: "46%", away: "54%" },
+      { statId: "shots", label: "Shots", home: "7", away: "10" },
+      { statId: "shots-on-target", label: "Shots on target", home: "2", away: "5" },
+      { statId: "corners", label: "Corners", home: "3", away: "6" },
+      { statId: "expected-goals", label: "Expected goals", home: "0.84", away: "1.42" },
+    ],
+    chartHistory: [
+      { outcomeId: "australia", timestamp: "55'", probability: 51 },
+      { outcomeId: "australia", timestamp: "57'", probability: 49 },
+      { outcomeId: "australia", timestamp: "59'", probability: 46 },
+      { outcomeId: "australia", timestamp: "61'", probability: 43 },
+      { outcomeId: "australia", timestamp: "63'", probability: 40 },
+      { outcomeId: "egypt", timestamp: "55'", probability: 50 },
+      { outcomeId: "egypt", timestamp: "57'", probability: 52 },
+      { outcomeId: "egypt", timestamp: "59'", probability: 55 },
+      { outcomeId: "egypt", timestamp: "61'", probability: 58 },
+      { outcomeId: "egypt", timestamp: "63'", probability: 61 },
     ],
   },
 ];

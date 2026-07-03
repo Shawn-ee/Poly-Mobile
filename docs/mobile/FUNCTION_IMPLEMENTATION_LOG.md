@@ -2,6 +2,51 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle AN - Live Event Detail Structural Parity
+
+Feature/page worked on:
+
+- World Cup live football event detail.
+- Live market group fixture contract.
+- Live detail tablet proof route.
+
+Frontend components touched:
+
+- `mobile/App.tsx`
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/scripts/smoke-samsung-tabs.ps1`
+- `mobile/package.json`
+
+Important functions/services touched:
+
+- `App()` deep-link handling now supports `forceLiveDetail=1` for direct live game-page proof.
+- `EventDetail()` now branches live event presentation with live score/clock, live match strip, live labels, live chart scale, and live stats from event data.
+- `worldCupEvents` live fixture now models Australia vs Egypt with backend-shaped fields: market group, market type, period, line, side, liquidity, orderbook depth, chart history, and live stats.
+- `smoke.ps1` adds `LiveDetail` proof for top, scrolled markets, and ticket carry-through.
+
+User interactions supported:
+
+- Open live football game detail directly.
+- View live score/clock/team probabilities.
+- Scroll into sticky Game Lines / Player Props rail.
+- Inspect live winner, spread, totals, halves, and team-total-style market groups.
+- Tap a live outcome and open the bottom-sheet ticket with the selected event/market/outcome preserved.
+
+State transitions:
+
+- Deep link `forceLiveDetail=1,forceResetState=1` resets state, selects the live event, and sets `mainTab` to `live`.
+- Live detail scroll sets `compactHeaderVisible`.
+- Live outcome tap opens `TradeTicket` with selected live market/outcome context.
+
+Known limitations:
+
+- Backend parity is not complete. Real routes/schema for live market groups, chart history, orderbook depth, live stats, and live line-order identity remain open.
+- Location verification seen in Polymarket is intentionally excluded from Holiwyn fake-token scope.
+- The branch name still says saved/watchlist, but the cycle is documented and committed as live event detail after user steering changed.
+
 ## Cycle T - Whole-App Navigation And Page Map
 
 Feature/page worked on:
