@@ -4,6 +4,22 @@
 
 Build the Holiwyn mobile app for World Cup prediction markets. Holiwyn is a user-facing sports prediction and trading app, starting with World Cup markets and expanding later. The app should reach feature and interaction parity with the World Cup/sports experience in Polymarket while using Holiwyn's own name, design system, copy, logo, assets, and backend implementation.
 
+## Structural Parity Steering
+
+The loop must not keep creating tiny focused passes unless the cycle closes a meaningful Polymarket product behavior gap. A useful cycle must do at least one of these:
+
+- Implement a meaningful Polymarket-matched user behavior.
+- Close a repeated P0/P1 parity gap.
+- Define a missing backend/API/schema contract needed by the mobile UI.
+- Convert ad hoc mock data into future-backend-shaped fixture data.
+- Add Android device proof for a real interaction that was previously unproven.
+
+When a cycle ends with more deferred parity debt than completed behavior, the next cycle must address one deferred item instead of opening a new feature area.
+
+Repeated backend/live-data deferrals must be promoted into active milestone work. The current priority is structural Polymarket parity for live event detail and backend-shaped market data: live market groups, adjustable lines, orderbook depth, chart history, live stats, and selected market/line/outcome identity through ticket, order, portfolio, and history.
+
+Dummy data is allowed only for frontend parity when it matches the proposed backend contract shape, including fields such as `marketGroupId`, `marketId`, `outcomeId`, `marketType`, `period`, `line`, `side`, `probability`, `bestBid`, `bestAsk`, `liquidity`, `chartHistory`, `orderbookDepth`, `liveStats`, and portfolio/order identity fields. Do not mark backend parity complete until the real route/schema exists.
+
 Brand:
 
 - English app name: Holiwyn
