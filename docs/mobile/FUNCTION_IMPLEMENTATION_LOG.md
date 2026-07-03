@@ -2,6 +2,55 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle AS - Event Detail Chart Route Hydration
+
+Feature/page worked on:
+
+- PM-GAP-067 visible live event detail chart hydration path.
+- Live game page chart history now consumes the dedicated market chart route when server mode is active.
+
+Frontend components touched:
+
+- `mobile/App.tsx`
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/services/marketChartService.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/__tests__/marketChartService.test.ts`
+
+Backend components touched:
+
+- No backend route code changed in this cycle. It consumes the Cycle AR `/api/markets/:marketId/chart?range=...` contract.
+
+Important functions/services touched:
+
+- `loadMarketChartHistory(api, event)` chooses the primary non-prop/non-future market, requests `1D` for live events and `1W` for non-live events, and converts the route payload into EventDetail chart points.
+- `applyChartHistoryToEvent(event, chartHistory)` replaces the visible event chart history and marks `chartHistorySource: "market-chart-route"`.
+- `App.tsx` now hydrates the selected event chart from `PolyApi.getMarketChart()` in server order mode.
+- `EventDetail` exposes chart source in its chart accessibility label so device XML can distinguish route hydration from fallback data.
+
+User interactions supported:
+
+- Opening a server-mode live game page can now replace embedded/local chart points with backend chart-route history for the selected primary market.
+- The visible game chart remains usable with fixture or embedded fallback data when the backend is unavailable.
+
+State transitions:
+
+- Selected event -> primary market -> `GET /api/markets/:marketId/chart?range=1D|1W` -> `MarketChart.history[]` -> `event.chartHistory[]` -> EventDetail chart rendering.
+
+Known limitations:
+
+- Backend health was unavailable during Cycle AS tablet proof, so the device proof is a regression proof using fallback/embedded chart data, not a server-hydrated chart-source proof.
+- Real provider ingestion still must populate `MarketOutcomeSnapshot` for live football markets before this produces real Polymarket-like chart movement.
+- Loading, empty, delayed, suspended, and chart route error states are still P1 work.
+
+Verification:
+
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/marketChartService.test.ts mobile/src/__tests__/worldCupAdapter.test.ts mobile/src/__tests__/api.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:live-detail`
+
 ## Cycle AR - Range-Aware Market Chart Contract
 
 Feature/page worked on:

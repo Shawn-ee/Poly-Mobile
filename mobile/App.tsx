@@ -40,6 +40,7 @@ import { applyServerPortfolioState } from "./src/services/portfolioStateApplySer
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { resolvePositionTradeTarget } from "./src/services/positionTradeTargetService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
+import { applyChartHistoryToEvent, loadMarketChartHistory } from "./src/services/marketChartService";
 import {
   applyTicketQuoteToOutcome,
   applyTicketQuotesToEvent,
@@ -936,6 +937,24 @@ export default function App() {
             ...current,
             markets,
           };
+        });
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [api, selectedEvent?.id]);
+
+  useEffect(() => {
+    if (ORDER_MODE !== "server" || !selectedEvent) return undefined;
+    let cancelled = false;
+    const eventId = selectedEvent.id;
+    loadMarketChartHistory(api, selectedEvent)
+      .then((chartHistory) => {
+        if (cancelled || !mounted.current || chartHistory.length === 0) return;
+        setSelectedEvent((current) => {
+          if (!current || current.id !== eventId) return current;
+          return applyChartHistoryToEvent(current, chartHistory);
         });
       })
       .catch(() => undefined);

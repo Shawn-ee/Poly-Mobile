@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle AS - Event Detail Chart Route Hydration
+
+Fields now provided or wired:
+
+- EventDetail server mode now calls `PolyApi.getMarketChart()` for the selected event primary market.
+- Mobile converts `MarketChart.history[]` into `event.chartHistory[]` with stable `outcomeId`, `timestamp`, and `probability`.
+- `event.chartHistorySource` distinguishes route-hydrated chart data from embedded/fallback chart data for XML/device audit.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real live World Cup provider ingestion that writes enough `MarketOutcomeSnapshot` rows to make the game chart move like Polymarket.
+- Chart loading, empty, delayed, suspended, and route-error states that are visible to the user.
+- Range selection UI and tooltip metadata backed by the chart route.
+
+Schema mismatch:
+
+- `MarketOutcomeSnapshot` still has no provider source id, live/delayed flag, aggregation bucket, or availability reason.
+
+Route mismatch:
+
+- The route exists and the game page consumes it, but Cycle AS could not prove live server hydration on device because backend health was unavailable during proof.
+
+Temporary mock/static data:
+
+- Embedded and local fixture chart data remains fallback only and matches the proposed backend point shape.
+
+Future migration concern:
+
+- PM-GAP-067 should continue with provider-shaped live snapshot seeding/ingestion or a dedicated no-history/loading state pass before returning to visual micro-polish.
+
 ## Cycle AR - Range-Aware Market Chart Contract
 
 Fields now provided or wired:

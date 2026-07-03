@@ -965,7 +965,7 @@ export function EventDetail({
           </View>
         )}
         <Pressable
-          accessibilityLabel={`event-detail-price-chart two outcome traces ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartProbability}% ${chartPointMeta.label} ${chartPointMeta.value} +$9 +$39 +$479 All Game Live`}
+          accessibilityLabel={`event-detail-price-chart chart-source-${event.chartHistorySource ?? "fallback"} two outcome traces ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartProbability}% ${chartPointMeta.label} ${chartPointMeta.value} +$9 +$39 +$479 All Game Live`}
           onPress={() => setSelectedChartPoint((current) => current === "latest" ? "mid" : current === "mid" ? "target" : "latest")}
           style={[styles.chartBlock, isLiveEvent && styles.liveChartBlock]}
           testID="event-detail-price-chart"
