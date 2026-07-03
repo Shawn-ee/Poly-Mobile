@@ -135,7 +135,48 @@ Known limitations:
 
 - Buy No is represented through the existing sell/no-side ticket path until the backend/mobile contract supports separate binary NO positions.
 - Outcome-level volume is local deterministic display data.
-- Local fallback futures list still lacks some captured reference outcomes such as England.
+- Backend-owned futures catalog/live pricing is still missing; Cycle AK expands the local fallback catalog but does not replace it with server data.
+
+## Cycle AK - Futures Catalog Expansion
+
+Feature/page worked on:
+
+- Home / World Cup / Futures / World Cup Winner catalog expansion.
+- Expanded-row ticket carry-through.
+
+Frontend components touched:
+
+- `mobile/src/components/MarketLists.tsx`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/package.json`
+
+Important functions/services touched:
+
+- `FutureList()` now tracks `expandedMarketIds` by market id.
+- `FutureList()` now renders `visibleOutcomes` as the first three outcomes when collapsed and all outcomes when expanded.
+- `futureOutcomeFlags` now includes the expanded World Cup Winner country set.
+- `worldCupFutures` fallback data now includes 21 World Cup Winner outcomes.
+- `FutureCatalogExpand` smoke flow opens Futures, taps `18 more`, and opens the England ticket.
+
+User interactions supported:
+
+- View collapsed World Cup Winner futures card with France, Argentina, Spain, and `18 more`.
+- Tap `18 more` to expand the same market in place.
+- Tap Buy Yes for England from the expanded catalog and open the trade ticket.
+
+State transitions:
+
+- `worldCupTab: "games" -> "futures"` from `world-cup-futures-tab`.
+- `expandedMarketIds["world-cup-winner"]: false -> true` from `future-more-world-cup-winner`.
+- `ticket: null -> selected England World Cup Winner buy ticket` from `future-outcome-world-cup-winner-england`.
+
+Known limitations:
+
+- The 21-outcome catalog is still fallback/mobile-owned data.
+- Outcome ordering, volume, yes/no prices, and icon/flag metadata should come from backend/mobile discovery once the server contract supports it.
+- Visual density is closer but still not pixel-identical to logged-in Polymarket.
 
 ## Cycle W - Futures Chart Range
 

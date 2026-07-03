@@ -23,9 +23,26 @@ const futureCardStats = (market: Market) => ({
 
 const futureOutcomeFlags: Record<string, string> = {
   argentina: "🇦🇷",
+  australia: "🇦🇺",
+  belgium: "🇧🇪",
+  brazil: "🇧🇷",
+  colombia: "🇨🇴",
+  croatia: "🇭🇷",
+  denmark: "🇩🇰",
   england: "🏴",
   france: "🇫🇷",
+  germany: "🇩🇪",
+  italy: "🇮🇹",
+  japan: "🇯🇵",
+  mexico: "🇲🇽",
+  morocco: "🇲🇦",
+  netherlands: "🇳🇱",
+  portugal: "🇵🇹",
+  senegal: "🇸🇳",
   spain: "🇪🇸",
+  switzerland: "🇨🇭",
+  uruguay: "🇺🇾",
+  usa: "🇺🇸",
 };
 
 const futureOutcomeVolume = (market: Market, outcome: Outcome) => {
@@ -134,10 +151,14 @@ export function FutureList({
   statsCopy?: MarketStatsCopy;
 }) {
   const [selectedRange, setSelectedRange] = useState<FutureChartRange>("MAX");
+  const [expandedMarketIds, setExpandedMarketIds] = useState<Record<string, boolean>>({});
   return (
     <View style={styles.eventList}>
       {futures.map((market) => {
         const stats = futureCardStats(market);
+        const isExpanded = expandedMarketIds[market.id] ?? false;
+        const hiddenOutcomeCount = Math.max(0, market.outcomes.length - 3);
+        const visibleOutcomes = isExpanded ? market.outcomes : market.outcomes.slice(0, 3);
         return (
           <View key={market.id} style={styles.futureMarketCard}>
             <View style={styles.futureMarketHeader}>
@@ -196,7 +217,7 @@ export function FutureList({
                 </View>
               </View>
             </View>
-            {market.outcomes.map((outcome) => (
+            {visibleOutcomes.map((outcome) => (
               <View accessibilityLabel={`future-row-${market.id}-${outcome.id}`} key={outcome.id} style={styles.futureOutcomeRow} testID={`future-row-${market.id}-${outcome.id}`}>
                 <View style={styles.futureOutcomeTop}>
                   <View style={styles.futureOutcomeIdentity}>
@@ -228,6 +249,16 @@ export function FutureList({
                 </View>
               </View>
             ))}
+            {hiddenOutcomeCount > 0 && (
+              <Pressable
+                accessibilityLabel={`future-more-${market.id}`}
+                onPress={() => setExpandedMarketIds((current) => ({ ...current, [market.id]: !isExpanded }))}
+                style={styles.futureMoreRow}
+                testID={`future-more-${market.id}`}
+              >
+                <Text style={styles.futureMoreText}>{isExpanded ? "Show less" : `${hiddenOutcomeCount} more`}</Text>
+              </Pressable>
+            )}
           </View>
         );
       })}
@@ -284,5 +315,7 @@ const styles = StyleSheet.create({
   futureNoButton: { flex: 1, minHeight: 56, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "rgba(239, 68, 68, 0.18)" },
   futureYesText: { color: "#4ade80", fontSize: 18, fontWeight: "900" },
   futureNoText: { color: "#ef4444", fontSize: 18, fontWeight: "900" },
+  futureMoreRow: { minHeight: 56, paddingHorizontal: 14, borderTopWidth: 1, borderTopColor: "#263247", alignItems: "center", justifyContent: "center" },
+  futureMoreText: { color: "#94a3b8", fontSize: 17, fontWeight: "900" },
   empty: { color: "#94a3b8", textAlign: "center", marginTop: 30, fontWeight: "800" },
 });
