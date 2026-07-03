@@ -4,6 +4,16 @@ type EventCounts = {
   markets?: number | { markets?: number };
 };
 
+type EventMarket = {
+  status: string;
+  referenceMetadata?: unknown;
+  outcomeSnapshots?: Array<{
+    outcomeId: string;
+    ts: Date | string;
+    price: { toString(): string } | string | number;
+  }>;
+};
+
 const metadataObject = (value: unknown): Record<string, unknown> =>
   value && typeof value === "object" && !Array.isArray(value) ? (value as Record<string, unknown>) : {};
 
@@ -11,6 +21,25 @@ const arrayFromMetadata = (metadata: Record<string, unknown>, key: string) => {
   const value = metadata[key];
   return Array.isArray(value) ? value : [];
 };
+
+const probabilityFromPrice = (value: { toString(): string } | string | number) => {
+  const parsed = typeof value === "number" ? value : Number(value.toString());
+  if (!Number.isFinite(parsed)) return null;
+  if (parsed > 1) return Math.max(1, Math.min(99, Math.round(parsed)));
+  return Math.max(1, Math.min(99, Math.round(parsed * 100)));
+};
+
+const chartHistoryFromSnapshots = (markets: EventMarket[]) =>
+  markets.flatMap((market) =>
+    (market.outcomeSnapshots ?? []).flatMap((snapshot) => {
+      const probability = probabilityFromPrice(snapshot.price);
+      if (probability == null) return [];
+      const timestamp = snapshot.ts instanceof Date ? snapshot.ts : new Date(snapshot.ts);
+      if (Number.isNaN(timestamp.getTime())) return [];
+      const ts = timestamp.toISOString();
+      return [{ outcomeId: snapshot.outcomeId, timestamp: ts, probability }];
+    }),
+  ).sort((left, right) => left.timestamp.localeCompare(right.timestamp));
 
 export const serializeEventSummary = (
   event: Pick<
@@ -45,7 +74,7 @@ export const serializeEventSummary = (
     | "updatedAt"
   > & {
     _count?: EventCounts;
-    markets?: Array<{ status: string; referenceMetadata?: unknown }>;
+    markets?: EventMarket[];
   },
 ) => {
   const markets = event.markets ?? [];
@@ -61,7 +90,10 @@ export const serializeEventSummary = (
   const liveStats = arrayFromMetadata(metadata, "liveStats").length
     ? arrayFromMetadata(metadata, "liveStats")
     : arrayFromMetadata(mobileLiveDetail, "liveStats");
-  const chartHistory = arrayFromMetadata(metadata, "chartHistory").length
+  const snapshotChartHistory = chartHistoryFromSnapshots(markets);
+  const chartHistory = snapshotChartHistory.length
+    ? snapshotChartHistory
+    : arrayFromMetadata(metadata, "chartHistory").length
     ? arrayFromMetadata(metadata, "chartHistory")
     : arrayFromMetadata(mobileLiveDetail, "chartHistory");
 

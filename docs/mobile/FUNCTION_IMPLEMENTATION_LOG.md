@@ -2,6 +2,55 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle AQ - Live Chart History And Depth Identity Contract
+
+Feature/page worked on:
+
+- World Cup live event detail backend data contract.
+- PM-GAP-067 chart-history and orderbook-depth identity sub-gap.
+
+Frontend components touched:
+
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/src/__tests__/worldCupAdapter.test.ts`
+
+Backend components touched:
+
+- `src/server/services/marketReadModel.ts`
+- `src/server/services/eventReadModel.ts`
+- `src/__tests__/sports.event-market-model.test.ts`
+
+Important functions/services touched:
+
+- `marketReadInclude` now includes recent `MarketOutcomeSnapshot` rows so `/api/events/:slug` can hydrate event chart history from first-class backend history records.
+- `serializeEventSummary()` now prefers snapshot-derived `event.chartHistory` over static metadata and falls back to metadata only when snapshots are absent.
+- `normalizeMarket()` now preserves `orderbookDepth[].outcomeId` instead of dropping the depth-to-outcome identity.
+
+User interactions supported:
+
+- Live event charts can now be backed by server outcome-history rows when the backend has snapshots, rather than only local or metadata-shaped chart arrays.
+- Future orderbook/depth UI work can address bid/ask levels by outcome id after mobile normalization.
+
+State transitions:
+
+- Server detail request -> event markets with snapshots -> `event.chartHistory[]` -> mobile event detail chart series.
+- Server market depth -> adapter-preserved `orderbookDepth[].outcomeId` -> future per-outcome depth displays and ticket/depth cross-checks.
+
+Known limitations:
+
+- This does not implement provider ingestion for live football stats or chart ticks.
+- This does not add a dedicated `/api/markets/:marketId/history` route or full depth-ladder route.
+- Device proof remains page-level because the visible UI already consumed `chartHistory`; the material change is the backend source and contract preservation.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/sports.event-market-model.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/worldCupAdapter.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:live-detail`
+
 ## Cycle AP - Live Line Order Identity
 
 Feature/page worked on:

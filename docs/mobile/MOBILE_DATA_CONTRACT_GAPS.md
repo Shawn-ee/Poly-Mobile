@@ -2,6 +2,40 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle AQ - Live Chart History And Depth Identity Contract
+
+Fields now provided or wired:
+
+- `/api/events/:slug` can now emit `event.chartHistory[]` from `MarketOutcomeSnapshot` rows instead of relying only on `Event.metadata.chartHistory`.
+- Snapshot-derived chart points use stable `outcomeId`, ISO `timestamp`, and integer `probability`.
+- Mobile preserves `orderbookDepth[].outcomeId` through `normalizeMarket()` and the local event model.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Provider ingestion that writes real live football probability snapshots into `MarketOutcomeSnapshot`.
+- Range-aware chart metadata such as available ranges, selected range, last-updated, loading, empty, delayed, and suspended states.
+- Full orderbook ladder route with multiple price levels per outcome, timestamps, spread, and liquidity state.
+- Match-flow/live-stats provider rows beyond the existing metadata fallback.
+
+Schema mismatch:
+
+- `MarketOutcomeSnapshot` is sufficient for basic chart series, but it has no range labels, provider source id, delayed/live flag, or chart availability metadata.
+- Embedded `orderbookDepth` is compact top-of-book data, not a full historical depth snapshot model.
+
+Route mismatch:
+
+- `/api/events/:slug` now covers embedded live-detail chart history when snapshots exist.
+- Future richer routes are still needed: `/api/markets/:marketId/history?range=...` and `/api/markets/:marketId/book`.
+
+Temporary mock/static data:
+
+- Metadata and local fixture chart histories are still allowed as fallback only when they match the backend `outcomeId`/`timestamp`/`probability` shape.
+
+Future migration concern:
+
+- When provider ingestion lands, ensure chart snapshots, orderbook depth, selected ticket outcome, portfolio identity, and history all use the same canonical `marketId`/`outcomeId` values.
+- PM-GAP-067 remains in progress but narrower: snapshot-backed chart history and depth identity are wired; provider ingestion, full depth, and dedicated history routes remain active work.
+
 ## Cycle AP - Live Line Order Identity
 
 Fields now provided or wired:

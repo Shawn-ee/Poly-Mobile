@@ -8,6 +8,10 @@ export const marketReadInclude = Prisma.validator<Prisma.MarketInclude>()({
     where: { isActive: true },
     orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
   },
+  outcomeSnapshots: {
+    orderBy: { ts: "desc" },
+    take: 240,
+  },
   event: true,
   category: true,
   tags: { include: { tag: true } },

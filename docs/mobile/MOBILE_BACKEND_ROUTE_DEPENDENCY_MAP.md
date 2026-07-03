@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle AQ - Live Chart History And Depth Identity Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live event chart history | `/api/events/:slug` | GET | Optional for viewing | None | `event.chartHistory[].outcomeId`, `timestamp`, `probability`; mobile filters by selected outcome id | `MarketOutcomeSnapshot`, `Market`, `Outcome`, `Event` | Event metadata `chartHistory` and local fixture chart arrays remain fallback when no snapshots exist | Real football provider ingestion and a range-aware dedicated history endpoint are still missing. |
+| Live orderbook/depth identity | Embedded in `/api/events/:slug` market objects | GET | Optional for viewing | None | `orderbookDepth[].outcomeId`, `side`, `price`, `shares`, `total` plus outcome best bid/ask fields | Open `Order` rows through existing quote/orderbook aggregation; `Market`, `Outcome` | Fixture `orderbookDepth` uses the same outcome-addressable shape | Full depth ladder, timestamps, suspended/no-liquidity state, and per-market book range controls remain missing. |
+
+Cycle AQ implementation notes:
+
+- This cycle converts chart history from a metadata-only optional shape into a route-backed read model sourced from existing `MarketOutcomeSnapshot` rows.
+- The route still falls back to metadata when snapshots are absent, which keeps fixture/server compatibility during provider rollout.
+- Backend parity remains incomplete until live provider ingestion and dedicated/range-aware chart and depth routes exist.
+
 ## Cycle AP - Live Line Order Identity
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
