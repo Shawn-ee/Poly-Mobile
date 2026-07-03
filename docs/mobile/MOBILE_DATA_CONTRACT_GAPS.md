@@ -536,3 +536,34 @@ Temporary mock/static data:
 Future migration concern:
 
 - Before real-money trading, swipe confirmation must be armed only after a fresh server quote and eligibility check, and the server response must drive disabled/error states.
+
+## Cycle AJ - Game Page Compact Scrolled Header
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Stable short team codes and localized short names for compact headers.
+- Current team probabilities for the selected primary market.
+- Event start state formatted for pregame/live/finished compact headers.
+- Market group ordering and sticky-section metadata for Game Lines vs Player Props.
+
+Fields backend provides but mobile ignores:
+
+- Unknown in this focused cycle; proof used local/fallback event data.
+
+Schema mismatch:
+
+- Compact header values are derived from the current primary market rather than a server-designated hero market.
+- Game-line ordering and line values remain partly local.
+
+Route mismatch:
+
+- Existing event detail can hydrate enough display context, but a future mobile event-detail route should return hero market, compact header, chart, stats, and grouped market sections explicitly.
+
+Temporary mock/static data:
+
+- Compact header uses local team codes from team names.
+- Market line groups and live stats use local deterministic values in mock fallback.
+
+Future migration concern:
+
+- When backend market data becomes authoritative, compact header probabilities and market rows must update together so scrolling never shows stale team odds.

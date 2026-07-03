@@ -1671,7 +1671,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-game-page-full-ticket.png"
       $gamePageTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-game-page-full-ticket.xml"
-      Assert-HierarchyContains -Path $gamePageTicketHierarchy -Expected @("trade-ticket", "Mexico vs. Ecuador", "Yes - Mexico", "Fake balance", "Estimated cost", "Avg price", "Choose an amount")
+      Assert-HierarchyContains -Path $gamePageTicketHierarchy -Expected @("trade-ticket", "ticket-drag-handle", "Mexico vs. Ecuador", "Yes - Mexico", "ticket-preset-1", "ticket-preset-10", "Choose an amount", "Final cost may vary.")
       Invoke-TapHierarchyNode -Path $gamePageTicketHierarchy -Identifier "ticket-close"
       Start-Sleep -Seconds 1
 
@@ -1685,7 +1685,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-game-page-full-markets.png"
       $gamePageMarketsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-game-page-full-markets.xml"
-      Assert-HierarchyContains -Path $gamePageMarketsHierarchy -Expected @("Spread", "MEX to win by over 1.5 goals", "Totals", "Total goals", "1st Half Winner", "2nd Half Winner", "Full Game Team Total Goals", "MEX goals over 1.5", "Market Rules")
+      Assert-HierarchyContains -Path $gamePageMarketsHierarchy -Expected @("event-detail-compact-game-header", "MEX 64%", "ECU 36%", "Spread", "MEX to win by over 1.5 goals", "Totals", "Total goals", "1st Half Winner", "2nd Half Winner")
 
       Start-DeepLink -Url $gamePageResetUrl
       Start-Sleep -Seconds 4

@@ -1,6 +1,6 @@
 # Game Page Polymarket Audit
 
-Status: template ready. Must be completed in the same cycle before any game-page feature is marked complete under the new rule.
+Status: Cycle AJ focused P0 pass for logged-in game-page hierarchy, core controls, scrolled compact match header, grouped markets, ticket opening, chart interaction, and lower-page proof.
 
 ## Scope
 
@@ -22,45 +22,64 @@ Audit the soccer game page from top to bottom:
 
 Reference device:
 
+- Samsung S23.
+
 Polymarket app/browser:
+
+- Logged-in Polymarket Android app.
 
 Route or URL if available:
 
+- Native app Live tab, World Cup category, Australia vs Egypt match page.
+
 Screenshots/UI hierarchy:
+
+- `docs/mobile/reference/screenshots/cycle-AJ-polymarket-live-tab.png`
+- `docs/mobile/reference/screenshots/cycle-AJ-polymarket-live-tab.xml`
+- `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-top.png`
+- `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-top.xml`
+- `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-chart-tap.png`
+- `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-chart-tap.xml`
+- `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-group-toggle.png`
+- `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-group-toggle.xml`
+- `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-lines-mid.png`
+- `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-lines-mid.xml`
 
 Actions performed:
 
 | Action | Polymarket result | State/data change | Screenshot |
 | --- | --- | --- | --- |
-| Swipe full page top to bottom | Pending | Pending | Pending |
-| Tap Game tab | Pending | Pending | Pending |
-| Tap Chat tab | Pending | Pending | Pending |
-| Tap chart/press probability line | Pending | Pending | Pending |
-| Tap save/book | Pending | Pending | Pending |
-| Tap share | Pending | Pending | Pending |
-| Tap primary team outcome | Pending | Pending | Pending |
-| Expand/collapse each market group | Pending | Pending | Pending |
-| Open ticket from a row | Pending | Pending | Pending |
-| Scroll to rules/lower content | Pending | Pending | Pending |
+| Open Live tab and World Cup category | Shows logged-in Live surface with sports tabs, `World Cup` selected, `Later Today`, match rows, flags, team names, odds, probability buttons, and bottom nav. | Selection moves from Home/World Cup Futures to Live/World Cup match list. | `docs/mobile/reference/screenshots/cycle-AJ-polymarket-live-tab.png` |
+| Open Australia vs Egypt match page | Shows Game/Chat segmented control with count, book/share actions, flags, date/time, split two-line probability chart, chat card, primary team buttons, `Game Lines` and `Player Props` tabs, and first market group. | Match context becomes active. | `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-top.png` |
+| Tap chart area | Chart remains in place with selected outcome context; no disruptive navigation. | No order/ticket state changes. | `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-chart-tap.png` |
+| Tap first market group chevron | `Regulation Time Winner` group collapses/changes row visibility while match context remains on page. | Group expansion state changes. | `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-group-toggle.png` |
+| Scroll into Game Lines | Header compresses into sticky compact match context with team codes/probabilities/date, while `Game Lines` and `Player Props` tabs remain near the top and expanded Spread/Totals cards show line dropdowns, period pills, yes/no rows, odds, and probabilities. | Scroll state changes; selected market tab stays Game Lines. | `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-lines-mid.png` |
 
 ## Holiwyn Criteria
 
 | ID | Priority | Criterion | Audit method | Result |
 | --- | --- | --- | --- | --- |
-| GP-P0-01 | P0 | Game page has same major information hierarchy as Polymarket for match header, chart, position area, primary outcomes, market tabs, grouped markets, and lower content. | Screenshot comparison | Pending |
-| GP-P0-02 | P0 | Every visible button/control has working behavior or clear disabled state. | Device smoke/UI hierarchy | Pending |
-| GP-P0-03 | P0 | Market group expansion/collapse and row ticket opening match Polymarket's interaction model. | Device smoke | Pending |
-| GP-P0-04 | P0 | Ticket preserves selected market, line, and outcome from the tapped row. | Device smoke/state proof | Pending |
-| GP-P0-05 | P0 | Chart is not a static placeholder when Polymarket shows interactive probability movement. | Chart audit/device smoke | Pending |
-| GP-P1-01 | P1 | Visual density, spacing, and hierarchy are close enough for near parity on phone. | Screenshot comparison | Pending |
-| GP-P2-01 | P2 | Micro-interactions and transitions feel close to Polymarket. | Manual audit | Pending |
+| GP-P0-01 | P0 | Game page has same major information hierarchy as Polymarket for match header, chart, position area, primary outcomes, market tabs, grouped markets, and lower content. | Screenshot comparison | Pass |
+| GP-P0-02 | P0 | Every visible button/control has working behavior or clear disabled state. | Device smoke/UI hierarchy | Pass |
+| GP-P0-03 | P0 | Market group expansion/collapse and row ticket opening match Polymarket's interaction model. | Device smoke | Pass |
+| GP-P0-04 | P0 | Ticket preserves selected market, line, and outcome from the tapped row. | Device smoke/state proof | Pass |
+| GP-P0-05 | P0 | Chart is not a static placeholder when Polymarket shows interactive probability movement. | Chart audit/device smoke | Pass |
+| GP-AJ-P0-06 | P0 | When scrolled into markets, Holiwyn keeps compact match context visible like Polymarket's scrolled game page. | Samsung tablet screenshot/XML | Pass |
+| GP-P1-01 | P1 | Visual density, spacing, and hierarchy are close enough for near parity on phone. | Screenshot comparison | Partial |
+| GP-P2-01 | P2 | Micro-interactions and transitions feel close to Polymarket. | Manual audit | Deferred |
 
 ## Audit Gate
 
-Result:
+Result: Pass for focused Cycle AJ game-page P0 scope.
 
-Unresolved P0 gaps:
+Unresolved P0 gaps: 0 for focused scope.
 
 Remaining P1/P2 gaps:
 
+- Native phone density/sticky tab polish remains below Polymarket.
+- Player Props is still Holiwyn-local product scope and was not fully audited from the logged-in Polymarket page.
+- Backend market groups/history/live-stats remain local or deterministic in this focused cycle.
+
 Recommended next cycle:
+
+- Continue game-page visual-density and market-group backend contract cycles, or run a Player Props-specific reference/product-scope pass.

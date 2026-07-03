@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useMemo, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View, type NativeScrollEvent, type NativeSyntheticEvent } from "react-native";
 import {
   estimatedPositionPnl,
   portfolioPositionValue,
@@ -177,6 +177,7 @@ export function EventDetail({
   const [savedNoticeVisible, setSavedNoticeVisible] = useState(false);
   const [shareSheetVisible, setShareSheetVisible] = useState(false);
   const [orderBookVisible, setOrderBookVisible] = useState(false);
+  const [compactHeaderVisible, setCompactHeaderVisible] = useState(false);
   const [expandedPropIds, setExpandedPropIds] = useState<Record<string, boolean>>({ "goals-reg-time": true });
   const gameLineMarkets = useMemo(() => event.markets.filter((market) => market.type !== "prop" && market.type !== "future"), [event.markets]);
   const propMarkets = useMemo(() => event.markets.filter((market) => market.type === "prop"), [event.markets]);
@@ -210,6 +211,10 @@ export function EventDetail({
     ? event.startsAt.replace("Live", "").replace("·", "").trim()
     : "15'";
   const scoreboard = event.status === "live" ? "0 - 0" : "0 - 0";
+  const handleScroll = (eventScroll: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const shouldShow = eventScroll.nativeEvent.contentOffset.y > 500;
+    setCompactHeaderVisible((visible) => visible === shouldShow ? visible : shouldShow);
+  };
   const regulationWinnerRows: DisplayOutcome[] = [
     ...(leftOutcome ? [{
       id: leftOutcome.id,
@@ -743,8 +748,39 @@ export function EventDetail({
         </View>
       )}
       {orderBookVisible && renderOrderBook()}
+      {compactHeaderVisible && activeHeaderTab === "game" && (
+        <View
+          accessibilityLabel={`event-detail-compact-game-header ${teamA ? teamCode(teamA.name) : ""} ${leftOutcome?.probability ?? 0}% ${event.startsAt} ${teamB ? teamCode(teamB.name) : ""} ${rightOutcome?.probability ?? 0}% Game Lines Player Props`}
+          style={styles.compactGameHeader}
+          testID="event-detail-compact-game-header"
+        >
+          <View style={styles.compactTeamSide}>
+            <Text style={styles.compactFlag}>{teamA?.flag ?? ""}</Text>
+            <View>
+              <Text style={styles.compactTeamCode}>{teamA ? teamCode(teamA.name) : ""}</Text>
+              <Text style={[styles.compactProbability, { color: leftOutcome?.color ?? "#22c55e" }]}>{leftOutcome?.probability ?? 0}%</Text>
+            </View>
+          </View>
+          <View style={styles.compactMatchCenter}>
+            <Text style={styles.compactDate}>{event.startsAt.split(" ")[0] === "Today" ? "Today" : event.startsAt}</Text>
+            <Text style={styles.compactTime}>{event.status === "live" ? liveClock : event.startsAt.replace(/^Today\s*/, "")}</Text>
+          </View>
+          <View style={[styles.compactTeamSide, styles.compactTeamRight]}>
+            <View style={styles.compactRightText}>
+              <Text style={styles.compactTeamCode}>{teamB ? teamCode(teamB.name) : ""}</Text>
+              <Text style={[styles.compactProbability, { color: rightOutcome?.color ?? "#ef4444" }]}>{rightOutcome?.probability ?? 0}%</Text>
+            </View>
+            <Text style={styles.compactFlag}>{teamB?.flag ?? ""}</Text>
+          </View>
+        </View>
+      )}
 
-      <ScrollView style={styles.scroller} contentContainerStyle={styles.scrollPad}>
+      <ScrollView
+        onScroll={handleScroll}
+        scrollEventThrottle={80}
+        style={styles.scroller}
+        contentContainerStyle={styles.scrollPad}
+      >
         <View accessibilityLabel="event-detail-legacy-summary" style={styles.legacySummary} testID="event-detail-legacy-summary">
           <Text style={styles.legacySummaryText}>{label(locale, event)}</Text>
           <Text style={styles.legacySummaryText}>{stats.marketCount} {t.marketCount}</Text>
@@ -1291,6 +1327,16 @@ const styles = StyleSheet.create({
   shareActionsRow: { flexDirection: "row", gap: 8, marginTop: 12 },
   shareActionButton: { flex: 1, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#172033", borderWidth: 1, borderColor: "#293548" },
   shareActionText: { color: "#e5e7eb", fontSize: 12, fontWeight: "900" },
+  compactGameHeader: { minHeight: 78, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, backgroundColor: "#060b14", borderBottomWidth: 1, borderBottomColor: "#1f2937" },
+  compactTeamSide: { width: 132, flexDirection: "row", alignItems: "center", gap: 8 },
+  compactTeamRight: { justifyContent: "flex-end" },
+  compactFlag: { fontSize: 31 },
+  compactTeamCode: { color: "#9ca3af", fontSize: 17, fontWeight: "900" },
+  compactProbability: { fontSize: 20, fontWeight: "900", marginTop: 2 },
+  compactMatchCenter: { flex: 1, alignItems: "center", justifyContent: "center" },
+  compactDate: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
+  compactTime: { color: "#cbd5e1", fontSize: 15, fontWeight: "800", marginTop: 3 },
+  compactRightText: { alignItems: "flex-end" },
   scroller: { flex: 1 },
   scrollPad: { paddingBottom: 110 },
   legacySummary: { height: 1, overflow: "hidden", opacity: 0 },
