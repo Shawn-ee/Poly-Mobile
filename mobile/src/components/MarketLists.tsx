@@ -20,6 +20,20 @@ const futureCardStats = (market: Market) => ({
   liquidity: 7600 + market.outcomes.length * 1350,
 });
 
+const futureOutcomeFlags: Record<string, string> = {
+  argentina: "🇦🇷",
+  england: "🏴",
+  france: "🇫🇷",
+  spain: "🇪🇸",
+};
+
+const futureOutcomeVolume = (market: Market, outcome: Outcome) => {
+  const rank = market.outcomes.findIndex((candidate) => candidate.id === outcome.id);
+  return Math.round(72000000 + outcome.probability * 520000 + Math.max(0, 4 - rank) * 3600000);
+};
+
+const cents = (probability: number) => `${probability.toFixed(1)}¢`;
+
 export function MarketList({
   locale,
   events,
@@ -113,7 +127,7 @@ export function FutureList({
 }: {
   locale: Locale;
   futures: Market[];
-  openTicket: (market: Market, outcome: Outcome) => void;
+  openTicket: (market: Market, outcome: Outcome, event?: Event, side?: "buy" | "sell") => void;
   statsCopy?: MarketStatsCopy;
 }) {
   return (
@@ -121,8 +135,11 @@ export function FutureList({
       {futures.map((market) => {
         const stats = futureCardStats(market);
         return (
-          <View key={market.id} style={styles.eventCard}>
-            <Text style={styles.eventTitle}>{label(locale, market)}</Text>
+          <View key={market.id} style={styles.futureMarketCard}>
+            <View style={styles.futureMarketHeader}>
+              <Text style={styles.eventTitle}>{label(locale, market)}</Text>
+              <Text style={styles.futureBookmark}>☆</Text>
+            </View>
             {statsCopy && (
               <View style={styles.statsRow}>
                 <Text style={styles.statsText}>
@@ -134,17 +151,35 @@ export function FutureList({
               </View>
             )}
             {market.outcomes.map((outcome) => (
-              <View key={outcome.id} style={styles.teamRow}>
-                <Text style={styles.teamName}>{label(locale, outcome)}</Text>
-                <Text style={styles.oddsText}>{(100 / outcome.probability).toFixed(1)}x</Text>
+              <View accessibilityLabel={`future-row-${market.id}-${outcome.id}`} key={outcome.id} style={styles.futureOutcomeRow} testID={`future-row-${market.id}-${outcome.id}`}>
+                <View style={styles.futureOutcomeTop}>
+                  <View style={styles.futureOutcomeIdentity}>
+                    <Text style={styles.futureFlag}>{futureOutcomeFlags[outcome.id] ?? "🏆"}</Text>
+                    <View style={styles.futureOutcomeText}>
+                      <Text style={styles.futureOutcomeName}>{label(locale, outcome)}</Text>
+                      <Text style={styles.futureOutcomeVolume}>{money(futureOutcomeVolume(market, outcome))} Vol.</Text>
+                    </View>
+                  </View>
+                  <Text style={styles.futureOutcomeProbability}>{outcome.probability}%</Text>
+                </View>
+                <View style={styles.futureTradeRow}>
                 <Pressable
                   accessibilityLabel={`future-outcome-${market.id}-${outcome.id}`}
-                  style={[styles.probButton, { backgroundColor: outcome.color }]}
+                    style={styles.futureYesButton}
                   testID={`future-outcome-${market.id}-${outcome.id}`}
-                  onPress={() => openTicket(market, outcome)}
+                    onPress={() => openTicket(market, outcome, undefined, "buy")}
                 >
-                  <Text style={styles.probButtonText}>{outcome.probability}%</Text>
+                    <Text style={styles.futureYesText}>Buy Yes {cents(outcome.probability)}</Text>
                 </Pressable>
+                  <Pressable
+                    accessibilityLabel={`future-outcome-no-${market.id}-${outcome.id}`}
+                    style={styles.futureNoButton}
+                    testID={`future-outcome-no-${market.id}-${outcome.id}`}
+                    onPress={() => openTicket(market, outcome, undefined, "sell")}
+                  >
+                    <Text style={styles.futureNoText}>Buy No {cents(100 - outcome.probability)}</Text>
+                  </Pressable>
+                </View>
               </View>
             ))}
           </View>
@@ -157,6 +192,9 @@ export function FutureList({
 const styles = StyleSheet.create({
   eventList: { gap: 12 },
   eventCard: { padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  futureMarketCard: { padding: 0, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", overflow: "hidden" },
+  futureMarketHeader: { padding: 14, paddingBottom: 8, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  futureBookmark: { color: "#94a3b8", fontSize: 24, fontWeight: "900" },
   eventMetaRow: { flexDirection: "row", justifyContent: "space-between", marginBottom: 10 },
   eventMetaRight: { flexDirection: "row", alignItems: "center", gap: 8 },
   timeText: { color: "#94a3b8", fontWeight: "800" },
@@ -174,5 +212,18 @@ const styles = StyleSheet.create({
   oddsText: { color: "#a7b1c2", width: 48, textAlign: "right", fontSize: 17, fontWeight: "800" },
   probButton: { minWidth: 86, alignItems: "center", paddingVertical: 12, paddingHorizontal: 14, borderRadius: 12 },
   probButtonText: { color: "#ffffff", fontSize: 18, fontWeight: "900" },
+  futureOutcomeRow: { paddingHorizontal: 14, paddingVertical: 14, borderTopWidth: 1, borderTopColor: "#263247" },
+  futureOutcomeTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
+  futureOutcomeIdentity: { flex: 1, flexDirection: "row", alignItems: "center", gap: 12 },
+  futureFlag: { width: 52, height: 52, borderRadius: 14, overflow: "hidden", textAlign: "center", textAlignVertical: "center", fontSize: 34, backgroundColor: "#1f2937" },
+  futureOutcomeText: { flex: 1, minWidth: 0 },
+  futureOutcomeName: { color: "#f8fafc", fontSize: 24, fontWeight: "900" },
+  futureOutcomeVolume: { color: "#94a3b8", fontSize: 15, fontWeight: "800", marginTop: 3 },
+  futureOutcomeProbability: { color: "#f8fafc", fontSize: 34, fontWeight: "900" },
+  futureTradeRow: { flexDirection: "row", gap: 10, marginTop: 14 },
+  futureYesButton: { flex: 1, minHeight: 56, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "rgba(34, 197, 94, 0.18)" },
+  futureNoButton: { flex: 1, minHeight: 56, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "rgba(239, 68, 68, 0.18)" },
+  futureYesText: { color: "#4ade80", fontSize: 18, fontWeight: "900" },
+  futureNoText: { color: "#ef4444", fontSize: 18, fontWeight: "900" },
   empty: { color: "#94a3b8", textAlign: "center", marginTop: 30, fontWeight: "800" },
 });
