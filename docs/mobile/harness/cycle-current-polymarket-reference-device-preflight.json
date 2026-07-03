@@ -1,0 +1,50 @@
+﻿{
+    "status":  "expected_blocked",
+    "referenceModel":  "SM_S911U1",
+    "holiwynModel":  "SM_X526C",
+    "referenceDevice":  {
+
+                        },
+    "holiwynDevice":  {
+                          "Serial":  "adb-R5GYA13X7NJ-4O0ADU._adb-tls-connect._tcp",
+                          "Model":  "SM_X526C",
+                          "Line":  "adb-R5GYA13X7NJ-4O0ADU._adb-tls-connect._tcp device product:gts10fezc model:SM_X526C device:gts10fe transport_id:1"
+                      },
+    "devicesBefore":  [
+                          {
+                              "Serial":  "adb-R5GYA13X7NJ-4O0ADU._adb-tls-connect._tcp",
+                              "Model":  "SM_X526C",
+                              "Line":  "adb-R5GYA13X7NJ-4O0ADU._adb-tls-connect._tcp device product:gts10fezc model:SM_X526C device:gts10fe transport_id:1"
+                          }
+                      ],
+    "devicesAfterConnect":  [
+                                {
+                                    "Serial":  "adb-R5GYA13X7NJ-4O0ADU._adb-tls-connect._tcp",
+                                    "Model":  "SM_X526C",
+                                    "Line":  "adb-R5GYA13X7NJ-4O0ADU._adb-tls-connect._tcp device product:gts10fezc model:SM_X526C device:gts10fe transport_id:1"
+                                }
+                            ],
+    "mdnsBefore":  [
+                       "adb-R5GYA13X7NJ-4O0ADU\t_adb-tls-connect._tcp\t172.16.200.30:41299"
+                   ],
+    "knownReferenceEndpoints":  [
+                                    "172.16.200.27:39897",
+                                    "172.16.200.27:38797"
+                                ],
+    "connectAttempts":  [
+                            {
+                                "Endpoint":  "172.16.200.27:39897",
+                                "ExitCode":  0,
+                                "Output":  "cannot connect to 172.16.200.27:39897: No connection could be made because the target machine actively refused it. (10061)",
+                                "Connected":  false
+                            },
+                            {
+                                "Endpoint":  "172.16.200.27:38797",
+                                "ExitCode":  0,
+                                "Output":  "cannot connect to 172.16.200.27:38797: No connection could be made because the target machine actively refused it. (10061)",
+                                "Connected":  false
+                            }
+                        ],
+    "blockingReason":  "Reference Android device model SM_S911U1 is not connected or discoverable through adb/mdns.",
+    "generatedAt":  "2026-07-03T14:05:40.1690930-05:00"
+}

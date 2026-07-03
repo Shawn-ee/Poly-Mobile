@@ -25,6 +25,7 @@ The Lead Agent chooses which harnesses apply to a cycle. For every UI, UX, marke
 | Harness | Purpose | Required For |
 | --- | --- | --- |
 | Polymarket Reference Audit Harness | Study the exact Polymarket feature on the reference Android device | Every UI/UX parity cycle |
+| Polymarket Reference Device Preflight Harness | Verify the reference and Holiwyn Android devices are connected before a parity cycle starts | Before every UI/UX parity cycle when device state is uncertain |
 | Acceptance Criteria Harness | Convert reference behavior into P0/P1/P2 pass/fail criteria | Every UI/UX parity cycle |
 | Holiwyn Android Device Harness | Launch and test Holiwyn on the primary Holiwyn Android device | Every mobile UI/UX cycle |
 | Emulator Fallback Harness | Launch Holiwyn on Android emulator when a real device is unavailable or supplemental deterministic proof is useful | Fallback/supplemental checks only |
@@ -84,6 +85,47 @@ Failure handling:
 - If phone access fails, try reconnecting once.
 - If Polymarket requires credentials or sensitive account screens, avoid that path and document the gap.
 - If same-cycle reference evidence cannot be captured, the feature cannot be marked complete.
+
+## 4A. Polymarket Reference Device Preflight Harness
+
+Purpose:
+
+- Prove that the reference Android device and Holiwyn proof device are visible before starting an audit-gated UI cycle.
+- Prevent the loop from claiming a same-cycle Polymarket audit when the reference device is not connected.
+
+When to run:
+
+- Before any UI/UX parity cycle when the reference-device state is uncertain.
+- After an ADB transport reset or wireless debugging disconnect.
+
+Inputs:
+
+- Expected reference model, default `SM_S911U1`.
+- Expected Holiwyn proof model, default `SM_X526C`.
+- Known reference endpoints when available.
+
+Actions:
+
+1. Run `adb devices -l`.
+2. Run `adb mdns services`.
+3. If the reference device is missing, try known reference endpoints once.
+4. Write a JSON summary to `docs/mobile/harness/cycle-current-polymarket-reference-device-preflight.json`.
+
+Outputs:
+
+- `docs/mobile/harness/cycle-current-polymarket-reference-device-preflight.json`.
+- Console status: `pass`, `blocked`, or `expected_blocked`.
+
+Pass criteria:
+
+- Reference Android device is connected.
+- Holiwyn Android proof device is connected.
+
+Failure handling:
+
+- If reference device is missing, do not start or complete a Polymarket-referenced product feature cycle.
+- Use `npm run preflight:polymarket-reference-device:expect-blocked` when documenting the outage itself as a recovery/harness cycle.
+- Continue only with non-feature loop infrastructure work until reference access returns, unless the user explicitly provides a replacement reference device.
 
 ## 5. Acceptance Criteria Harness
 

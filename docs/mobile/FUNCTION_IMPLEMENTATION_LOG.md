@@ -475,3 +475,33 @@ Known limitations:
 - Live Stats values are local deterministic values until backend live-match stats exist.
 - Current Polymarket reference event showed Game Lines, Exact Score, and Halves; Holiwyn still retains Player Props from product direction and earlier parity work.
 - Tablet smoke captured the focused evidence before wireless ADB reset; the transport issue remains harness reliability risk, not a product behavior gap.
+
+## Cycle AF - Reference Device Preflight Harness
+
+Feature/page worked on:
+
+- Autonomous loop device preflight and recovery guard.
+
+Frontend components touched:
+
+- None.
+
+Important functions/services touched:
+
+- Added `mobile/scripts/polymarket-reference-device-preflight.ps1`.
+- Added `preflight:polymarket-reference-device` and `preflight:polymarket-reference-device:expect-blocked` npm scripts.
+- Updated `MOBILE_HARNESS_SPEC.md` with the new preflight harness.
+
+User interactions supported:
+
+- None; this is a harness/infrastructure cycle.
+
+State transitions:
+
+- Preflight status can be `pass`, `blocked`, or `expected_blocked`.
+- Current proof records `expected_blocked` because the S23 reference model is missing while the Samsung tablet remains connected.
+
+Known limitations:
+
+- This does not complete a product feature.
+- It intentionally prevents new UI feature completion claims while same-cycle Polymarket reference access is missing.
