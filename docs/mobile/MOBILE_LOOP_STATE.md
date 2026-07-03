@@ -37,6 +37,25 @@ Screenshots captured:
 Result: Pass for focused game-page compact scrolled header P0 scope.
 Next focus: Continue game-page polish around sticky tabs/phone density, Player Props scope, and backend-backed market groups.
 
+## Cycle AK
+
+Date: 2026-07-03
+Branch: mobile/cycle-AK-futures-catalog-parity
+Goal: Close the logged-in Polymarket futures catalog expansion gap for the World Cup Winner card.
+Reference app screens observed: Logged-in Polymarket Home / World Cup / Futures with World Cup Winner collapsed rows showing France, Argentina, Spain, and `18 more`.
+Holiwyn screens changed: Home / World Cup / Futures / World Cup Winner collapsed and expanded catalog states.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/src/components/MarketLists.tsx`, `mobile/src/mocks/worldCup.ts`, `mobile/scripts/smoke.ps1`, `mobile/scripts/smoke-tablet.ps1`, `mobile/package.json`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck`
+- `cmd /c npm.cmd run smoke:tablet:future-catalog-expand`
+Screenshots captured:
+- Reference: `docs/mobile/reference/screenshots/cycle-AK-polymarket-home-state.png`
+- Holiwyn: `docs/mobile/screenshots/cycle-current-holiwyn-future-catalog-collapsed.png`, `docs/mobile/screenshots/cycle-current-holiwyn-future-catalog-expanded.png`, `docs/mobile/screenshots/cycle-current-holiwyn-future-catalog-england-ticket.png`
+Result: Pass for focused futures catalog expansion P0/P1 scope; PM-GAP-012 verified.
+Next focus: Continue futures/backend parity by replacing local fallback catalog, volume, and prices with backend-owned futures outcome contracts when that milestone is selected.
+
 ## Heartbeat: Game Page Parity Cycles N-P
 
 Date: 2026-07-03

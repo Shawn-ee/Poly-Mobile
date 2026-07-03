@@ -134,3 +134,94 @@ Remaining P1/P2 gaps:
 Recommended next cycle:
 
 - Continue Market/Event page parity with either chart time-range behavior or true adjustable line markets, depending on the next reachable Polymarket reference page.
+
+## Cycle AK Logged-In Catalog Audit
+
+Status: Pass for focused futures catalog expansion parity. This resolves the earlier P1 gap where the World Cup Winner catalog was capped at three local fallback outcomes.
+
+Reference device:
+
+- Samsung S23.
+
+Polymarket app/browser:
+
+- Logged-in Polymarket Android experience on the Home / World Cup / Futures surface.
+
+Screenshots/UI hierarchy:
+
+- `docs/mobile/reference/screenshots/cycle-AK-polymarket-home-state.png`
+- `docs/mobile/reference/screenshots/cycle-AK-polymarket-home-state.xml`
+
+Reference behavior:
+
+| Action | Polymarket result | State/data change | Evidence |
+| --- | --- | --- | --- |
+| Open logged-in Home and select World Cup / Futures | World Cup Winner card is visible with France, Argentina, Spain, and an `18 more` affordance. | Futures tab state is active; top outcomes remain collapsed to the first three. | `cycle-AK-polymarket-home-state.png` |
+| Inspect top rows | France is 34%, Argentina is 20%, Spain is 13%; each row has country identity, probability, and odds-like value. | No trade state changes until a row/control is tapped. | `cycle-AK-polymarket-home-state.xml` |
+| Look below World Cup Winner | Golden Boot Winner appears below the collapsed winner card. | Collapsed futures catalog keeps the feed scannable. | `cycle-AK-polymarket-home-state.png` |
+
+Cycle AK Holiwyn criteria:
+
+| ID | Priority | Criterion | Audit method | Result |
+| --- | --- | --- | --- | --- |
+| FMR-AK-P0-01 | P0 | World Cup Winner collapsed catalog shows France, Argentina, Spain, and an `18 more` affordance. | Tablet screenshot/XML. | Pass |
+| FMR-AK-P0-02 | P0 | Tapping `18 more` expands the same market in place and reveals additional countries without leaving the Futures surface. | Tablet smoke proof. | Pass |
+| FMR-AK-P0-03 | P0 | Expanded rows remain tradable and preserve selected future outcome in the ticket. | Tablet smoke proof opening England ticket. | Pass |
+| FMR-AK-P1-01 | P1 | The complete fallback catalog contains 21 World Cup Winner outcomes so `18 more` is truthful. | Code/data review plus tablet XML. | Pass |
+| FMR-AK-P2-01 | P2 | Pixel-level compactness and exact odds copy match Polymarket. | Future visual audit. | Deferred |
+
+Cycle AK Holiwyn implementation:
+
+Frontend components touched:
+
+- `mobile/src/components/MarketLists.tsx`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/package.json`
+
+Important functions/services touched:
+
+- `FutureList()` now keeps per-market expansion state.
+- `FutureList()` renders the first three outcomes when collapsed and all outcomes when expanded.
+- `futureOutcomeFlags` now covers the expanded World Cup Winner fallback catalog.
+- `worldCupFutures` now includes 21 World Cup Winner fallback outcomes.
+- `FutureCatalogExpand` tablet smoke proves collapsed, expanded, and ticket-open states.
+
+State transitions:
+
+- `worldCupTab: "games" -> "futures"` when tapping `world-cup-futures-tab`.
+- `expandedMarketIds["world-cup-winner"]: false -> true` when tapping `future-more-world-cup-winner`.
+- `ticket: null -> { market: world-cup-winner, outcome: england, side: "buy", contractSide: "yes" }` when tapping England Buy Yes.
+
+Backend/API involvement:
+
+- No backend route was changed.
+- This cycle still uses local fallback futures data when server hydration is unavailable.
+- Future backend work should make the 21-outcome catalog server-owned with outcome-level volume, ordering, yes/no price, and country/icon metadata.
+
+Cycle AK Holiwyn proof:
+
+Holiwyn device:
+
+- Samsung tablet running Holiwyn through Expo Go.
+
+Proof commands:
+
+- `npm run typecheck`
+- `cmd /c npm.cmd run smoke:tablet:future-catalog-expand`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-future-catalog-collapsed.png`
+- `docs/mobile/harness/cycle-current-holiwyn-future-catalog-collapsed.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-future-catalog-expanded.png`
+- `docs/mobile/harness/cycle-current-holiwyn-future-catalog-expanded.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-future-catalog-england-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-future-catalog-england-ticket.xml`
+
+Audit Gate:
+
+- Pass for Cycle AK focused futures catalog expansion.
+- Unresolved P0 gaps: 0 for this focused scope.
+- Remaining P1/P2 gaps: backend-owned catalog/live pricing, exact compact visual density, and production eligibility gates remain tracked outside this cycle.

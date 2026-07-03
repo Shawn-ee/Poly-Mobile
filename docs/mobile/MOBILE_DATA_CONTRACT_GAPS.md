@@ -100,6 +100,40 @@ Future migration concern:
 
 - Once backend provides real futures outcome volume and yes/no prices, the local display helpers should be replaced by adapter-mapped fields to avoid fake liquidity signals.
 
+## Cycle AK - Futures Catalog Expansion
+
+Fields Holiwyn needs but backend does not provide yet:
+
+- Complete World Cup Winner futures outcome catalog, not only top outcomes.
+- Backend-owned outcome ordering and collapsed count, for example first three visible plus `18 more`.
+- Outcome-level yes price, no price, implied odds, volume, and liquidity/depth.
+- Outcome visual metadata such as country code, flag/icon, or image key.
+- Market availability state for expanded outcomes: active, suspended, hidden, or settled.
+
+Fields backend provides but mobile ignores:
+
+- Unknown for this cycle; proof used local fallback futures data.
+
+Schema mismatch:
+
+- Mobile now has a 21-outcome fallback catalog, but the server contract is still event-list oriented and does not guarantee a full futures catalog shape.
+- Expansion state is client-local. Backend does not yet provide display grouping, rank, or pagination hints.
+
+Route mismatch:
+
+- Current discovery uses `/api/events` style hydration.
+- A future route may need `/api/mobile/world-cup/futures` or `/api/markets/:id/outcomes` with ranking, prices, and expansion metadata.
+
+Temporary mock/static data:
+
+- `worldCupFutures` contains static World Cup Winner outcomes for France through Australia.
+- `futureOutcomeVolume()` still derives display volume locally.
+- `futureOutcomeFlags` stores local flag metadata.
+
+Future migration concern:
+
+- When backend futures catalog data arrives, preserve the UI's collapse/expand behavior while replacing local outcomes, volumes, flags, and prices with adapter-mapped server fields.
+
 ## Cycle W - Futures Chart Range
 
 Fields Holiwyn needs but backend does not provide yet:

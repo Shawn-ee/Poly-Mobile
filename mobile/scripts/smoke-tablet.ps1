@@ -16,6 +16,7 @@ param(
   [switch]$WholeAppNavDiscovery,
   [switch]$FutureCardStats,
   [switch]$FutureChartRange,
+  [switch]$FutureCatalogExpand,
   [switch]$FutureListTrade,
   [switch]$FutureListBuyNo,
   [switch]$SearchSort
@@ -86,6 +87,8 @@ if ($EventDetailTrade) {
   & "$PSScriptRoot\smoke.ps1" -Deep -FutureCardStats -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($FutureChartRange) {
   & "$PSScriptRoot\smoke.ps1" -Deep -FutureChartRange -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
+} elseif ($FutureCatalogExpand) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -FutureCatalogExpand -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($FutureListTrade) {
   & "$PSScriptRoot\smoke.ps1" -Deep -FutureListTrade -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($FutureListBuyNo) {

@@ -47,6 +47,19 @@ Cycle V implementation notes:
 - This cycle does not create or modify backend routes.
 - The mobile UI now expects outcome-level futures data that the backend should eventually own.
 
+## Cycle AK - Futures Catalog Expansion
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Collapsed World Cup Winner futures catalog | `/api/events?category=sports&sportKey=soccer&leagueKey=world_cup` when server discovery is active | GET | Optional; bearer token sent if runtime API key exists | None | future market id/title/type, ordered outcomes, probability/price, outcome display label, volume/liquidity when available | Events, markets, outcomes, sports/league taxonomy | `worldCupFutures` now provides 21 local World Cup Winner outcomes and collapses to the first three plus `18 more` | Backend should own full futures catalogs, ordering, and the collapsed row count. |
+| Expanded futures catalog | Same discovery/detail payload when available | GET | Optional | None | all outcomes for a futures market, stable outcome ids, yes/no price, outcome volume, visual metadata | Futures markets, outcomes, quote snapshots, market stats | Expanded local fallback list renders all 21 outcomes | Backend should return full outcome catalogs and pagination/expansion hints for large markets. |
+| Expanded-row ticket open | Existing ticket/order state after local selection | Client state; existing order routes when submitting | Auth required for server submit; fake-token mock can run without auth | Ticket submit uses selected market/outcome/side/amount through existing order services | market id, outcome id, contract side, probability/price | Orders, positions, fills, wallets | England expanded-row Buy Yes opens fake-token ticket locally | Backend order/quote routes should accept canonical outcome ids from expanded futures catalogs. |
+
+Cycle AK implementation notes:
+
+- No backend route was created or changed.
+- The mobile fallback catalog now mirrors the logged-in Polymarket collapse/expand structure, but backend discovery should eventually replace the static catalog and provide live ranking, prices, volume, and availability states.
+
 ## Cycle W - Futures Chart Range
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
