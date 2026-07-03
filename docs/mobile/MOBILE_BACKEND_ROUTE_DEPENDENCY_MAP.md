@@ -175,3 +175,17 @@ Cycle AF implementation notes:
 
 - No backend route was created or changed.
 - The harness only inspects ADB device state and writes `docs/mobile/harness/cycle-current-polymarket-reference-device-preflight.json`.
+
+## Cycle AG - Trade Ticket
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Ticket open from event outcome | `/api/events/:slug` when server event detail is active | GET | Optional for viewing | None | event id/slug/title/status, market id/title/type, outcome id/label/probability/color, quote/depth fields when present | Events, markets, outcomes, order books | Local `worldCupEvents` event/outcome objects | Backend should provide ticket-ready market title, display period, selected outcome, opposite outcome, binary side semantics, and price/quote metadata. |
+| Ticket amount and payout calculation | No dedicated route in this cycle; computed client-side from selected outcome probability | N/A | N/A | N/A | selected outcome probability, balance | Quotes, market depth, wallet balance | Local probability math and fake balance | Backend quote route should return executable price, payout, fees, min/max order size, and slippage bounds. |
+| Advanced ticket details | Existing quote/orderbook fields when available through event/outcome hydration | GET for source event/quote context | Optional for viewing | None | best bid/ask, sizes, spread, trading mode | Order books, quote snapshots | Local fallback depth sizes and fake-token mode | Add a dedicated ticket quote/depth endpoint if event hydration is too coarse. |
+| Submit fake-token order | Existing ticket order flow through `submitTicketOrder()`; server mode uses order API when enabled | POST in server mode | Required for server mode | market id, outcome id, side, amount, price/selection metadata | order id/status/fill/open-order/position metadata | Orders, fills, positions, activity | Mock order placement in fake-token mode | Binary NO/share side and production trading eligibility gates are not fully modeled. |
+
+Cycle AG implementation notes:
+
+- No backend route was created or changed.
+- Mobile first-view ticket now expects market/outcome identity, quote/price, payout, and advanced depth/estimate data to be available in a ticket-ready shape.

@@ -11902,6 +11902,40 @@ Audit Gate: Expected blocked for product parity work. The Samsung tablet remains
 
 Next likely cycle: rerun reference-device preflight. If S23 or another approved reference Android device is available, continue with the next priority feature under the Polymarket audit gate.
 
+### Cycle AG - Trade Ticket
+
+Goal: Apply the Polymarket-reference audit gate to focused trade-ticket first-view density, amount state, settings/details behavior, and safe blocked-submit documentation.
+
+Reference audit: Samsung S23 Polymarket native app showed a location verification failure when attempting native trading. Samsung S23 Polymarket mobile web showed the usable reference ticket: drag handle, Buy pill, settings icon, market/outcome identity, large `$0`, selected-team pill, quick chips, `To win` after amount entry, and web view-only/login/download gate after tapping Trade.
+
+Holiwyn screens changed: Trade ticket first view is now sparse and Polymarket-like. The settings icon now opens advanced depth, keypad, slippage, and estimate details instead of acting as a dead control.
+
+Backend/API changed: No route changed. Docs now record the need for ticket-ready quote, payout, fee, eligibility, and binary side semantics from future backend routes.
+
+Verification: `npm run typecheck` passed; `cmd /c npm.cmd run smoke:tablet:event-detail-trade` passed on the Samsung tablet.
+
+Audit Gate: Pass for focused Trade ticket P0 baseline, with 0 unresolved P0 gaps. P1 gaps remain for true binary NO/share semantics and future production auth/location/trading eligibility gates.
+
+Next likely cycle: Portfolio/open orders/activity parity refresh, or another highest-priority whole-app parity item selected by the Lead Agent.
+
+### Heartbeat After Cycle AG
+
+Completed recent cycles: AD, AE, AF, AG.
+
+Verified progress: Chart behavior is no longer static; market page has a working Market/Live stats body switch; reference-device preflight now prevents false same-cycle audit claims; trade ticket first view now matches Polymarket much more closely and exposes advanced controls through a working settings toggle.
+
+Current app state: Android-first Holiwyn Expo app with audit-gated progress across navigation, event shell, market page, chart, line adjustment, ticket, portfolio, search, and account surfaces.
+
+Current backend state: No backend route changed in AD-AG. Documentation now identifies future needs for chart history, live stats, ticket quote/depth/fee/eligibility, binary side semantics, and production trading authority.
+
+Device strategy: Samsung S23 is connected again for Polymarket reference; Samsung tablet remains the Holiwyn proof device; emulator remains fallback only.
+
+Open blockers: None for continued audit-gated progress while both devices remain connected.
+
+Risks: Native Polymarket trading remains location-gated, so mobile web remains necessary for detailed ticket reference. Holiwyn fake-token trading still intentionally bypasses production eligibility gates.
+
+Next three likely cycles: Portfolio/open orders/activity refresh, binary side/NO-share contract audit, and watchlist/share/chat/notification parity.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

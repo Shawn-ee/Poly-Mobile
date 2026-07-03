@@ -28,6 +28,7 @@ Fail the feature when:
 | Chart behavior | Cycle AD | Pass | 0 | P1 backend history series; P1 direct World Cup chart recapture; P2 animation/touch polish | `docs/mobile/reference/screenshots/cycle-AD-polymarket-chart-*`; `docs/mobile/audits/chart-behavior.md` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-chart-pressed.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-chart-pressed.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-chart-live.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-chart-live.xml` | Focused pass only. Event chart is no longer a static placeholder and supports chart-point tap/tooltip behavior. |
 | Market page | Cycle AE | Pass | 0 | P1 backend live stats; P1 Player Props recapture/scope; P2 sticky/visual density polish | `docs/mobile/reference/screenshots/cycle-AE-polymarket-market-*`; `docs/mobile/audits/market-page.md` | `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-live-stats.png`; `docs/mobile/harness/cycle-current-holiwyn-market-tabs-live-stats.xml`; `docs/mobile/harness/cycle-current-holiwyn-market-tabs-market-return.xml`; existing market-tabs card proof | Focused pass only. Body `Market` / `Live stats` switch now works and existing grouped market tabs remain reachable. |
 | Reference device preflight | Cycle AF | Expected blocked | N/A | Reference S23 is missing from ADB/mdns | `docs/mobile/harness/cycle-current-polymarket-reference-device-preflight.json` | Samsung tablet remained connected in the same preflight summary | Harness-only cycle. Prevents starting or completing a product parity cycle without same-cycle Polymarket reference access. |
+| Trade ticket | Cycle AG | Pass | 0 | P1 binary NO/share contract semantics; P1 production auth/location eligibility gates | `docs/mobile/reference/screenshots/cycle-AG-polymarket-ticket-open.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-open.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-amount.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-trade.png` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket-amount.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket-details.xml`; `cmd /c npm.cmd run smoke:tablet:event-detail-trade` | Focused pass only. First view is now sparse and settings opens advanced controls. |
 
 ## Cycle U - Event Page Top Shell/Action Controls
 
@@ -521,6 +522,70 @@ Decision:
 - Unresolved P0 gaps: 0 for focused scope.
 - Remaining P1/P2 gaps: backend live stats, Player Props recapture/scope, sticky/visual density polish.
 - Next cycle required: yes. Continue watchlist/saved/share/chat/notification parity or visual-density polish.
+
+## Feature: Trade Ticket
+
+Cycle: AG
+Lead Agent target: focused trade-ticket first-view density, amount state, settings/details behavior, and safe blocked-submit documentation.
+Reference Audit Agent: same-cycle Samsung S23 Polymarket native app and mobile web audit.
+Implementation Agent: Holiwyn TradeTicket first-view and smoke harness update.
+Audit Gate Agent: post-implementation comparison against `docs/mobile/audits/trade-ticket.md`.
+
+Reference device:
+
+- Samsung S23.
+
+Reference app/browser:
+
+- Polymarket Android app.
+- Polymarket mobile web in Chrome.
+
+Reference route/URL:
+
+- Native Australia vs Egypt World Cup event from Home.
+- `https://polymarket.com/event/fifwc-aus-egy-2026-07-03`.
+
+Holiwyn device:
+
+- Samsung tablet.
+
+Holiwyn app mode:
+
+- Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AG-polymarket-ticket-open.png`
+- `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-rows.png`
+- `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-open.png`
+- `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-amount.png`
+- `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-trade.png`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket-amount.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket-amount.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket-details.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-away-ticket.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| TT-AG-P0-01 | P0 | Pass | `cycle-current-holiwyn-event-detail-ticket.png`; `cycle-current-holiwyn-event-detail-ticket.xml` | None |
+| TT-AG-P0-02 | P0 | Pass | `cycle-current-holiwyn-event-detail-ticket-amount.png`; `cycle-current-holiwyn-event-detail-ticket-amount.xml` | None |
+| TT-AG-P0-03 | P0 | Pass | `cycle-current-holiwyn-event-detail-ticket-details.xml` | None |
+| TT-AG-P0-04 | P0 | Pass | `cycle-current-holiwyn-event-detail-away-ticket.xml` | None |
+| TT-AG-P0-05 | P0 | Pass | `cycle-AG-polymarket-ticket-open.png`; `cycle-AG-polymarket-web-ticket-trade.png`; `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md` | None |
+
+Decision:
+
+- Pass/fail: Pass for focused trade-ticket P0 baseline.
+- Unresolved P0 gaps: 0 for focused scope.
+- Remaining P1/P2 gaps: binary NO/share contract semantics and future production auth/location/trading eligibility gates.
+- Next cycle required: yes. Continue Portfolio/open orders/activity parity or the next highest-priority whole-app parity item.
 
 ## Gate Report Template
 
