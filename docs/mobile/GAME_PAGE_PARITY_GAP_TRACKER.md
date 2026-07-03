@@ -31,13 +31,13 @@ Status meanings:
 | GP-P0-11 | 1st Half Winner now shows three rows. | Verified | Samsung scroll proof shows `1st Half Winner`, `Mexico 1H`, `Tie 1H`, and `Ecuador 1H`. | Done |
 | GP-P0-12 | 2nd Half Winner now shows three rows. | Verified | Samsung scroll proof shows `2nd Half Winner`, `Mexico 2H`, `Tie 2H`, and `Ecuador 2H`. | Done |
 | GP-P0-13 | Full Game Team Total Goals now shows Over/Under rows. | Verified | Samsung scroll proof shows `Full Game Team Total Goals (Reg. Time)`, `MEX Over 1.5`, and `MEX Under 1.5`. | Done |
-| GP-P0-14 | Player Props was previously treated as blank, but real Polymarket shows expanded player prop rows. | Open | Samsung proof showing Goals group, filter chips, player rows, stat dropdowns, odds, and probabilities. | Cycle E |
+| GP-P0-14 | Player Props now shows `Goals (Reg. Time)`, team filter chips, player rows, stat-line dropdowns, odds multipliers, probability buttons, `Show all`, and additional collapsed prop groups. | Verified | Samsung props proof captures header, rows, and lower prop groups. | Done |
 | GP-P0-15 | Expand/collapse behavior is proven for Regulation Time Winner; richer groups still need their own rows in later cycles. | Verified | Samsung focused smoke captures expanded and collapsed states. | Done |
 | GP-P0-16 | Ticket exists in prototype form but does not match Polymarket's numeric-entry sheet closely enough. | Partial | Samsung ticket screenshot/XML with close, event, selected side, Yes/No, quick amounts, keypad, odds/available, disabled prompt. | Cycle F |
 | GP-P0-17 | Chat tab is not yet proven as a real feed/input/reaction page state. | Partial | Samsung Chat proof with feed, typing indicator, input, reactions, emoji, sticky outcomes. | Cycle F |
 | GP-P0-18 | Save/book and share controls need tappable proof and non-breaking behavior. | Partial | Smoke taps controls and captures stable/dismissed state. | Cycle F |
-| GP-P0-19 | Market Rules and More Events are missing from the lower page. | Open | Samsung scroll proof showing rules and more events. | Cycle E |
-| GP-P0-20 | Full-page Holiwyn scroll proof through top, markets, props, rules, and bottom does not exist yet. | Open | Samsung evidence set covering the full page. | Final Audit |
+| GP-P0-19 | Market Rules and More Events now appear after market/prop groups. | Verified | Samsung proof `cycle-current-holiwyn-event-detail-props-rules-more.png` / XML shows rules, `View Full Rules`, `More Events`, and event rows. | Done |
+| GP-P0-20 | Full-page Holiwyn scroll proof now exists across top, Game Lines, Player Props, rules, and More Events. | Verified | Combined Samsung evidence from Cycle C, Cycle D, and Cycle E. | Done |
 | GP-P0-21 | Final independent audit has not happened and P0 gaps remain unresolved. | Open | Final audit maps every P0 to evidence and leaves zero P0 gaps. | Final Audit |
 
 ## P1 Gaps
@@ -70,3 +70,4 @@ Status meanings:
 - Cycle B produced criteria and this initial gap tracker. It intentionally marks the game page as not complete because the old prototype Definition of Done is not strict enough for Polymarket parity.
 - Cycle C upgraded the visible top game page and Regulation Time Winner rows. Verified on Samsung with `npm run smoke:samsung:event-detail-summary`, `npm run smoke:samsung:event-detail-outcome-depth`, and `npm run typecheck`. Remaining P0 work is still substantial: ticket parity, Spread/Totals/half markets/team totals, Player Props rows, Chat page, book/share behavior, rules, More Events, full-page scroll proof, and final independent audit.
 - Cycle D added the remaining P0 Game Lines market groups: Spread, Totals, 1st Half Winner, 2nd Half Winner, and Full Game Team Total Goals. Verified on Samsung with `npm run smoke:samsung:event-detail-outcome-depth` and `npm run typecheck`. Remaining P0 work: Player Props rows, ticket parity, Chat page, book/share behavior, lower Market Rules/More Events, full-page proof, and final audit.
+- Cycle E added Player Props rows, collapsed prop groups, Market Rules, and More Events. Verified on Samsung with `npm run smoke:samsung:event-detail-props` and `npm run typecheck`. Remaining P0 work: ticket parity, Chat tab page, book/share behavior, and final independent audit.

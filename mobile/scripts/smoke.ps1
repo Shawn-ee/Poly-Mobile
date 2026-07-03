@@ -1449,15 +1449,26 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-props.png"
       $eventDetailPropsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-props.xml"
-      Assert-HierarchyContains -Path $eventDetailPropsHierarchy -Expected @("Player Props", "event-detail-player-props-empty")
+      Assert-HierarchyContains -Path $eventDetailPropsHierarchy -Expected @("Player Props", "event-detail-player-props", "Goals (Reg. Time)", "All", "ECU", "MEX")
       $eventDetailPropsSnapshot = Get-Content -Raw -Path $eventDetailPropsHierarchy
-      if (
-        $eventDetailPropsSnapshot -match [regex]::Escape("Both teams to score") -or
-        $eventDetailPropsSnapshot -match [regex]::Escape("First goal scorer team") -or
-        $eventDetailPropsSnapshot -match [regex]::Escape("event-detail-outcome-mexico-ecuador-both-score-yes")
-      ) {
-        throw "Player Props tab should stay blank for the game-page-only goal."
+      if ($eventDetailPropsSnapshot -match [regex]::Escape("event-detail-player-props-empty")) {
+        throw "Player Props tab should not be blank under the Polymarket parity gate."
       }
+      & $adb -s $Device shell input swipe 540 1800 540 1220 350 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-props-rows.png"
+      $eventDetailPropsRowsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-props-rows.xml"
+      Assert-HierarchyContains -Path $eventDetailPropsRowsHierarchy -Expected @("Santiago Gimenez", "Hirving Lozano", "Enner Valencia", "0+", "2.564x", "39%")
+      & $adb -s $Device shell input swipe 540 1800 540 600 500 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-props-lower.png"
+      $eventDetailPropsLowerHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-props-lower.xml"
+      Assert-HierarchyContains -Path $eventDetailPropsLowerHierarchy -Expected @("Assists (Reg. Time)", "Goals + Assists (Reg. Time)", "Shots (Reg. Time)", "Shots on Target (Reg. Time)", "Goalkeeper Saves (Reg. Time)")
+      & $adb -s $Device shell input swipe 540 1800 540 750 450 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-props-rules-more.png"
+      $eventDetailPropsRulesMoreHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-props-rules-more.xml"
+      Assert-HierarchyContains -Path $eventDetailPropsRulesMoreHierarchy -Expected @("Market Rules", "MEX to advance", "View Full Rules", "More Events", "Portugal vs. Croatia", "England vs. Congo DR")
       return
     }
 
