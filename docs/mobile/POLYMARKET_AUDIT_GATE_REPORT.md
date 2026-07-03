@@ -351,6 +351,61 @@ Decision:
 - Remaining P1/P2 gaps: native Search recapture after location gate, richer global categories/facets, phone-portrait dev-build proof.
 - Next cycle required: yes. Continue Account/settings/profile or chart/market depth based on priority order.
 
+## Feature: Account/settings
+
+Cycle: AC
+
+Lead Agent target: focused signed-out account/settings More drawer, login shell, language/theme rows, and fake-token wallet safety.
+
+Reference Audit Agent: Samsung S23 Polymarket mobile web audit.
+
+Implementation Agent: Holiwyn Account screen and focused tablet AccountLogin smoke.
+
+Audit Gate Agent: Samsung tablet Holiwyn proof against written Account criteria.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket mobile web in Chrome.
+
+Reference route/URL: `https://polymarket.com`, bottom `More` drawer.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AC-polymarket-web-more-menu.png`
+- `docs/mobile/reference/screenshots/cycle-AC-polymarket-web-more-menu.xml`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-account.png`
+- `docs/mobile/harness/cycle-current-holiwyn-account.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-account-actions.png`
+- `docs/mobile/harness/cycle-current-holiwyn-account-actions.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-account-signed-in.png`
+- `docs/mobile/harness/cycle-current-holiwyn-account-signed-in.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-account-signed-out.png`
+- `docs/mobile/harness/cycle-current-holiwyn-account-signed-out.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| AC-P0-01 | P0 | Pass | `cycle-current-holiwyn-account.xml` | None |
+| AC-P0-02 | P0 | Pass | `cycle-current-holiwyn-account-actions.xml`; `cycle-current-holiwyn-account-signed-in.xml`; `cycle-current-holiwyn-account-signed-out.xml` | None |
+| AC-P0-03 | P0 | Pass | `cycle-current-holiwyn-account.xml` | None |
+| AC-P0-04 | P0 | Pass | `cycle-current-holiwyn-account.xml` | None |
+| AC-P0-05 | P0 | Pass | `cycle-current-holiwyn-account.xml` | None |
+
+Decision:
+
+- Pass/fail: Pass for focused Account/settings P0 parity baseline.
+- Unresolved P0 gaps: 0 for focused signed-out account/settings scope.
+- Remaining P1/P2 gaps: native Polymarket account recapture and real destination pages for menu rows.
+- Next cycle required: yes. Continue chart behavior or deeper market-page functionality.
+
 ## Gate Report Template
 
 Use this template for every feature gate:

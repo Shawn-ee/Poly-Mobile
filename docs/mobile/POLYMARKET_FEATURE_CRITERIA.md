@@ -36,7 +36,7 @@ These apply to every page, feature, button, and interaction:
 | Line adjustment | `docs/mobile/audits/line-adjustment.md` | Verified for Cycle Y focused Spreads/Totals P0 | P1/P2 deferred in focused audit | Pass |
 | Portfolio | `docs/mobile/audits/portfolio.md` | Verified for Cycle AA focused fake-token P0 | P1/P2 deferred in focused audit | Pass |
 | Search | `docs/mobile/audits/search.md` | Verified for Cycle AB focused Search/Explore P0 | P1/P2 deferred in focused audit | Pass |
-| Account/settings | `docs/mobile/audits/account.md` | Pending new-rule audit | Pending | Not run |
+| Account/settings | `docs/mobile/audits/account.md` | Verified for Cycle AC focused account/settings P0 | P1/P2 deferred in focused audit | Pass |
 | Chart behavior | `docs/mobile/audits/chart-behavior.md` | Pending new-rule audit | Pending | Not run |
 | Market page | `docs/mobile/audits/market-page.md` | Pending new-rule audit | Pending | Not run |
 | Event page top shell | `docs/mobile/audits/event-page-top-shell.md` | Verified for Cycle U focused P0 | P1/P2 deferred in focused audit | Pass |

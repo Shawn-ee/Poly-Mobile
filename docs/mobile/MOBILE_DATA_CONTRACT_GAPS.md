@@ -308,3 +308,36 @@ Temporary mock/static data:
 Future migration concern:
 
 - Backend should become authoritative for ranked discovery, search aliases, localized matching, facets, and pagination before production-scale World Cup market catalogs are used.
+
+## Cycle AC - Account/settings
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Auth/session state for signed-out, signed-in, restricted, and fake-token modes.
+- Account/settings menu availability and destination metadata.
+- Profile identity fields for display name, account id, tier, notification state, and language.
+- Safe wallet capability flags for deposit, withdraw, and future EBPay availability.
+
+Fields backend provides but mobile ignores:
+
+- Unknown for this focused cycle; the proof used local mock account state.
+
+Schema mismatch:
+
+- Account sign-in is currently a local AsyncStorage mock flag.
+- Language/ticket defaults can sync through profile preferences, but the account/settings shell is not yet server-authoritative.
+
+Route mismatch:
+
+- Production auth/session routes are not wired.
+- Wallet capability/config route is missing by design until the wallet milestone.
+
+Temporary mock/static data:
+
+- Local mock sign-in and sign-out.
+- Static More/settings menu rows.
+- 10,000 USDT fake-token balance display.
+
+Future migration concern:
+
+- Real-money wallet, EBPay, deposit, and withdrawal controls must remain disabled until a dedicated auth/wallet/compliance milestone defines backend contracts.

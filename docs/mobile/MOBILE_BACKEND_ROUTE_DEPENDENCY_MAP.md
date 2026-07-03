@@ -125,3 +125,16 @@ Cycle AB implementation notes:
 
 - No backend route was created or changed.
 - Mobile now presents Search as an Explore-style page, so future backend work should treat Search as a ranked discovery endpoint with facets and row metrics.
+
+## Cycle AC - Account/settings
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Account/settings shell | `/api/profile/preferences` when profile sync is enabled | GET | Required when server profile sync is active | None | locale, saved event ids, ticket defaults, profile sync status | Users, profile preferences | Local AsyncStorage and app state | Backend should provide full account/settings menu state and auth/session state. |
+| Mock login/logout | Local AsyncStorage only in this cycle | N/A | N/A | N/A | signed-in boolean | User session | Local mock session flag | Production auth route is intentionally deferred. |
+| Fake-token balance safety | Portfolio/account state; `/api/portfolio` when server mode is active | GET | Required for server mode | None | wallet balance, open positions/orders, total exposure | Wallets, positions, orders | Local 10,000 USDT fake balance | Real deposit/withdraw/EBPay routes are intentionally not implemented. |
+
+Cycle AC implementation notes:
+
+- No backend route was created or changed.
+- Account documentation now requires a future session/profile contract before production auth or real-money wallet actions.

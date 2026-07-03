@@ -113,6 +113,16 @@ export function AccountScreen({
         : profileSyncStatus === "error"
           ? t.profileSyncError
           : "";
+  const accountMenuItems = [
+    ["trophy-outline", "Leaderboard", "#fbbf24"],
+    ["gift-outline", "Rewards", "#22c55e"],
+    ["code-slash-outline", "APIs", "#ec4899"],
+    ["analytics-outline", "Accuracy", "#93c5fd"],
+    ["pulse-outline", "Status", "#93c5fd"],
+    ["document-text-outline", "Documentation", "#93c5fd"],
+    ["help-circle-outline", "Help Center", "#93c5fd"],
+    ["reader-outline", "Terms of Use", "#93c5fd"],
+  ] as const;
 
   return (
     <ScrollView accessibilityLabel="account-screen" testID="account-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
@@ -136,6 +146,26 @@ export function AccountScreen({
           <Text style={styles.tier}>{t.accountTier}</Text>
         </View>
       )}
+
+      <View accessibilityLabel="account-more-menu" testID="account-more-menu" style={styles.moreMenu}>
+        {accountMenuItems.map(([icon, text, color]) => (
+          <Pressable accessibilityLabel={`account-menu-${text.toLowerCase().replaceAll(" ", "-")}`} key={text} style={styles.menuRow} testID={`account-menu-${text.toLowerCase().replaceAll(" ", "-")}`}>
+            <Ionicons name={icon} size={23} color={color} />
+            <Text style={styles.menuText}>{text}</Text>
+            <Ionicons name="chevron-forward" size={18} color="#64748b" />
+          </Pressable>
+        ))}
+        <View accessibilityLabel="account-language-row" testID="account-language-row" style={styles.menuRow}>
+          <Ionicons name="language-outline" size={23} color="#fbbf24" />
+          <Text style={styles.menuText}>{t.languagePreference}</Text>
+          <Text style={styles.menuValue}>{languagePreferenceValue}</Text>
+        </View>
+        <View accessibilityLabel="account-theme-row" testID="account-theme-row" style={styles.menuRow}>
+          <Ionicons name="sunny-outline" size={23} color="#f8fafc" />
+          <Text style={styles.menuText}>Theme</Text>
+          <Text style={styles.menuValue}>Dark</Text>
+        </View>
+      </View>
 
       <View style={styles.balanceCard}>
         <View>
@@ -227,13 +257,13 @@ export function AccountScreen({
           </Pressable>
         ) : (
           <>
-            <Pressable accessibilityLabel="account-login-phone" testID="account-login-phone" style={styles.primaryButton} onPress={() => updateSignedIn(true)}>
-              <Ionicons name="phone-portrait-outline" size={20} color="#ffffff" />
-              <Text style={styles.primaryText}>{t.loginMethodPhone}</Text>
+            <Pressable accessibilityLabel="account-login-phone" testID="account-login-phone" style={styles.secondaryButton} onPress={() => updateSignedIn(true)}>
+              <Ionicons name="log-in-outline" size={20} color="#dbeafe" />
+              <Text style={styles.secondaryText}>Log In</Text>
             </Pressable>
-            <Pressable accessibilityLabel="account-login-email" testID="account-login-email" style={styles.secondaryButton} onPress={() => updateSignedIn(true)}>
-              <Ionicons name="mail-outline" size={20} color="#dbeafe" />
-              <Text style={styles.secondaryText}>{t.loginMethodEmail}</Text>
+            <Pressable accessibilityLabel="account-login-email" testID="account-login-email" style={styles.primaryButton} onPress={() => updateSignedIn(true)}>
+              <Ionicons name="person-add-outline" size={20} color="#ffffff" />
+              <Text style={styles.primaryText}>Sign Up</Text>
             </Pressable>
           </>
         )}
@@ -257,6 +287,10 @@ const styles = StyleSheet.create({
   profileCard: { marginTop: 14, padding: 16, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   profileName: { color: "#f8fafc", fontSize: 22, fontWeight: "900", marginTop: 5 },
   tier: { color: "#22c55e", fontWeight: "900" },
+  moreMenu: { marginTop: 14, paddingVertical: 6, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  menuRow: { minHeight: 54, paddingHorizontal: 14, flexDirection: "row", alignItems: "center", gap: 12 },
+  menuText: { flex: 1, color: "#e5e7eb", fontSize: 17, fontWeight: "900" },
+  menuValue: { color: "#94a3b8", fontSize: 15, fontWeight: "900" },
   balanceCard: { marginTop: 14, padding: 16, borderRadius: 14, backgroundColor: "#0f1f35", borderWidth: 1, borderColor: "#28456b", flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   cardLabel: { color: "#93c5fd", fontWeight: "900" },
   balanceValue: { color: "#f8fafc", fontSize: 30, fontWeight: "900", marginTop: 5 },
