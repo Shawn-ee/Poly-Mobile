@@ -14,3 +14,7 @@ Review conclusion:
 Unresolved P0 gaps:
 
 - None.
+
+## 2026-07-03 Completion Addendum
+
+Independent final review remains PASS after the later whole-app parity audit. The current source of truth is `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md`, with the full Definition of Done evidence map in `docs/mobile/MOBILE_FINAL_COMPLETION_AUDIT_2026-07-03.md`.

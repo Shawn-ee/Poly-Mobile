@@ -25,3 +25,7 @@ Residual risks:
 - Samsung APK smoke now installs and launches dist/holiwyn-preview.apk; future production signing/release-channel hardening remains separate.
 - Emulator reliability remains partial in this workstation environment; Samsung is the stronger QA target.
 - Deposit, withdraw, and EBPay remain intentionally out of scope.
+
+## 2026-07-03 Completion Addendum
+
+The newer whole-app parity gate passed with 0 unresolved P0 gaps after the final game-page, discovery, Portfolio, order book, and empty/error/loading proof cycles. Current completion evidence is mapped in `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` and `docs/mobile/MOBILE_FINAL_COMPLETION_AUDIT_2026-07-03.md`.
