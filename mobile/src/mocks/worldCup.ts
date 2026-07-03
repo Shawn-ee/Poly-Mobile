@@ -23,7 +23,7 @@ export type Market = {
   zhTitle: string;
   type: "game-line" | "prop" | "future" | "live";
   liquidity?: number;
-  orderbookDepth?: Array<{ side: "bid" | "ask"; price: number; shares: number; total: number }>;
+  orderbookDepth?: Array<{ outcomeId?: string; side: "bid" | "ask"; price: number; shares: number; total: number }>;
   outcomes: Outcome[];
 };
 

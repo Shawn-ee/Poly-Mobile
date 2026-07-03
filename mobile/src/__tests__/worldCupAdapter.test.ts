@@ -85,7 +85,7 @@ describe("world cup adapter", () => {
       period: "regulation",
       line: "+0.5",
       liquidity: 4500,
-      orderbookDepth: [{ side: "bid", price: 0.58, shares: 100, total: 58 }],
+      orderbookDepth: [{ outcomeId: "aus", side: "bid", price: 0.58, shares: 100, total: 58 }],
       outcomes: [{ id: "aus", side: "home", bestBid: 0.58, bestAsk: 0.62 }],
     });
   });

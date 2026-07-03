@@ -124,7 +124,7 @@ describe("sports event market model", () => {
       awayScore: 1,
       metadata: {
         liveStats: [{ statId: "possession", label: "Possession", home: "47", away: "53" }],
-        chartHistory: [{ outcomeId: "home", timestamp: "2026-06-15T12:00:00.000Z", probability: 48 }],
+        chartHistory: [{ outcomeId: "home", timestamp: "2026-06-15T12:00:00.000Z", probability: 12 }],
       },
       _count: { markets: 1 },
       markets: [
@@ -147,6 +147,10 @@ describe("sports event market model", () => {
           rulesText: null,
           sourceUpdatedAt: now,
           createdAt: now,
+          outcomeSnapshots: [
+            { outcomeId: "home", ts: new Date("2026-06-15T12:05:00.000Z"), price: "0.48" },
+            { outcomeId: "away", ts: new Date("2026-06-15T12:05:00.000Z"), price: "0.52" },
+          ],
           outcomes: [
             { id: "home", name: "France", code: "HOME", side: "home", displayOrder: 0, status: "active", isTradable: true, referenceTokenId: null, referenceOutcomeLabel: null, metadata: {} },
             { id: "draw", name: "Draw", code: "DRAW", side: "draw", displayOrder: 1, status: "active", isTradable: true, referenceTokenId: null, referenceOutcomeLabel: null, metadata: {} },
@@ -180,7 +184,10 @@ describe("sports event market model", () => {
       sportKey: "soccer",
       marketCount: 1,
       liveStats: [{ statId: "possession", label: "Possession", home: "47", away: "53" }],
-      chartHistory: [{ outcomeId: "home", timestamp: "2026-06-15T12:00:00.000Z", probability: 48 }],
+      chartHistory: [
+        { outcomeId: "home", timestamp: "2026-06-15T12:05:00.000Z", probability: 48 },
+        { outcomeId: "away", timestamp: "2026-06-15T12:05:00.000Z", probability: 52 },
+      ],
     });
     expect(body.markets[0]).toMatchObject({
       marketGroupId: "game-lines",

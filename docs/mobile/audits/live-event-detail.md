@@ -1,6 +1,6 @@
 # Live Event Detail Audit
 
-Status: Cycle AO backend contract in progress. Cycle AN passed structural live event detail UI with backend-shaped fixture data and tablet proof; Cycle AO adds the real `/api/events/:slug` contract for market identity, line identity, compact depth, and optional chart/live-stat arrays. This is still not full backend parity because provider ingestion and full history/depth routes remain open.
+Status: Cycle AQ backend contract in progress. Cycle AN passed structural live event detail UI with backend-shaped fixture data and tablet proof; Cycle AO added the real `/api/events/:slug` contract for market identity, line identity, compact depth, and optional chart/live-stat arrays. Cycle AQ now sources chart history from `MarketOutcomeSnapshot` rows when available and preserves depth outcome identity in mobile. This is still not full backend parity because provider ingestion and full history/depth routes remain open.
 
 ## Scope
 
@@ -35,7 +35,7 @@ Reference evidence:
 | LED-P0-03 | P0 | Live market groups include more than one bare winner market and expose live winner, spreads, totals, halves, and team-total structure. | Tablet scrolled screenshot/XML | Pass |
 | LED-P0-04 | P0 | Tapping a live outcome opens a ticket that preserves event, market, and outcome identity. | Tablet ticket screenshot/XML | Pass |
 | LED-P0-05 | P0 | Fixture data used for frontend parity is backend-shaped with stable ids and contract fields, not display-only random data. | Code review | Pass |
-| LED-P1-01 | P1 | Backend routes should provide live market groups, line options, chart history, orderbook depth, live stats, and selected identity. | Route/schema audit | Partial: `/api/events/:slug` now provides market/line/outcome identity, compact depth, and optional chart/live-stat arrays; real provider/history/depth data remains open. |
+| LED-P1-01 | P1 | Backend routes should provide live market groups, line options, chart history, orderbook depth, live stats, and selected identity. | Route/schema audit | Partial: `/api/events/:slug` now provides market/line/outcome identity, compact depth, snapshot-backed chart history when `MarketOutcomeSnapshot` rows exist, and optional live-stat arrays; real provider ingestion and full depth/history routes remain open. |
 | LED-P1-02 | P1 | Portfolio/open-order/activity should preserve live selected market/line/outcome identity after live orders. | API/mobile service tests | Pass for structural backend/mobile contract in Cycle AP; repeat live-device server proof after provider data is wired. |
 | LED-P2-01 | P2 | Visual density and animation should be tightened against a cleaner unblocked Polymarket game-detail reference. | Future side-by-side audit | Open |
 
@@ -119,6 +119,35 @@ Remaining P1/P2 gaps:
 - Device proof should be repeated with server-hydrated live line markets after PM-GAP-067 real provider/depth work.
 - First-class `Order.selection` and `Trade.selection` columns may be needed before production if request-body reconstruction is not durable enough.
 
+## Cycle AQ Chart/Depth Contract Audit
+
+Result: Partial pass for the PM-GAP-067 chart-history/depth-identity backend contract.
+
+What became materially closer to Polymarket:
+
+- Polymarket live charts are historical probability surfaces, not static local drawings. Holiwyn can now hydrate `event.chartHistory` from first-class `MarketOutcomeSnapshot` rows on `/api/events/:slug`.
+- Embedded orderbook depth remains tied to `outcomeId` after mobile normalization, so later depth UI can point each bid/ask level at the selected outcome instead of using anonymous display rows.
+
+Evidence:
+
+- `src/server/services/marketReadModel.ts`
+- `src/server/services/eventReadModel.ts`
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/sports.event-market-model.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/worldCupAdapter.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:live-detail`
+
+Unresolved P0 gaps: 0 for this backend contract increment.
+
+Remaining P1 gaps:
+
+- Real live-football provider ingestion must write snapshot rows and live stats.
+- Dedicated range-aware history and full orderbook ladder routes are still missing.
+- Samsung/tablet proof should be repeated with server-hydrated live event data once provider/fixture seeding creates snapshot rows for a live game.
+
 ## Next Structural Work
 
-The next cycle should address the remaining PM-GAP-067 provider/history/depth sub-gaps before opening a new feature area.
+The next cycle should continue PM-GAP-067 with provider-shaped live data seeding/ingestion, a dedicated history route, or a fuller orderbook ladder route before opening a new feature area.

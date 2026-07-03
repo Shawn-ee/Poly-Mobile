@@ -139,6 +139,7 @@ export const normalizeMarket = (market: BackendMarket): Market => ({
   type: marketType(market),
   liquidity: asNumberOrNull(market.liquidity) ?? undefined,
   orderbookDepth: market.orderbookDepth?.map((level) => ({
+    outcomeId: level.outcomeId,
     side: level.side,
     price: level.price,
     shares: level.shares,
