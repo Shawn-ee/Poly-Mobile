@@ -252,3 +252,14 @@ Cycle AL implementation notes:
 
 - No backend route was created or changed.
 - This is a presentation-layer parity cycle; future backend work should return market-tab metadata and grouped rows in the same order the mobile page displays them.
+
+## Cycle AM - Player Props Unavailable State
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Player Props unavailable state | `/api/events/:slug` when server event detail is active | GET | Optional for viewing | None | event id/slug/title and eventual Player Props availability flag | Events, markets, players, player props | Local unavailable state | Backend should eventually provide `playerPropsAvailability` and prop rows only when supported. |
+
+Cycle AM implementation notes:
+
+- No backend route was created or changed.
+- Mobile intentionally avoids local fake player-prop rows until backend-supported Player Props data exists.

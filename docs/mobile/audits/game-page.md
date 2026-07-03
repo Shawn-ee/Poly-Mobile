@@ -1,6 +1,6 @@
 # Game Page Polymarket Audit
 
-Status: Cycle AL focused pass for logged-in game-page hierarchy, core controls, scrolled compact match header, sticky market tabs, grouped markets, ticket opening, chart interaction, and lower-page proof.
+Status: Cycle AM focused pass for logged-in game-page hierarchy, core controls, scrolled compact match header, sticky market tabs, Player Props unavailable state, grouped markets, ticket opening, chart interaction, and lower-page proof.
 
 ## Scope
 
@@ -55,6 +55,7 @@ Actions performed:
 | Tap first market group chevron | `Regulation Time Winner` group collapses/changes row visibility while match context remains on page. | Group expansion state changes. | `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-group-toggle.png` |
 | Scroll into Game Lines | Header compresses into sticky compact match context with team codes/probabilities/date, while `Game Lines` and `Player Props` tabs remain near the top and expanded Spread/Totals cards show line dropdowns, period pills, yes/no rows, odds, and probabilities. | Scroll state changes; selected market tab stays Game Lines. | `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-lines-mid.png` |
 | Cycle AL: open logged-in Australia vs Egypt game page and scroll below the chart into markets | The top Game/Chat segmented control remains; compact match context stays visible; `Game Lines` / `Player Props` tab strip is pinned under the compact header while Regulation Time Winner, Spread, and Totals scroll beneath it. | Scroll state changes; active market tab remains Game Lines and remains tappable while market rows move. | `docs/mobile/reference/screenshots/cycle-AL-polymarket-game-sticky-tabs.png` |
+| Cycle AM: tap logged-in scrolled Player Props label twice | The visible `Player Props` label remains grey/inactive and the page stays on Game Lines in this reference state. | No observed tab/content change. This aligns with Holiwyn product direction to leave Player Props blank for now rather than fabricate unsupported props. | `docs/mobile/reference/screenshots/cycle-AM-polymarket-player-props.png`; `docs/mobile/reference/screenshots/cycle-AM-polymarket-player-props-second.png` |
 
 ## Holiwyn Criteria
 
@@ -67,19 +68,20 @@ Actions performed:
 | GP-P0-05 | P0 | Chart is not a static placeholder when Polymarket shows interactive probability movement. | Chart audit/device smoke | Pass |
 | GP-AJ-P0-06 | P0 | When scrolled into markets, Holiwyn keeps compact match context visible like Polymarket's scrolled game page. | Samsung tablet screenshot/XML | Pass |
 | GP-AL-P1-01 | P1 | When scrolled deeper into Game Lines, Holiwyn keeps a sticky `Game Lines` / `Player Props` tab rail under the compact match header, and the sticky tabs remain usable to switch into Player Props. | Samsung tablet screenshot/XML | Pass |
+| GP-AM-P1-01 | P1 | Until backend-supported Player Props are in scope, Holiwyn must not show fabricated player-prop rows; the Player Props tab should resolve to a clear unavailable/empty state. | Samsung tablet screenshot/XML | Pass |
 | GP-P1-01 | P1 | Visual density, spacing, and hierarchy are close enough for near parity on phone. | Screenshot comparison | Partial |
 | GP-P2-01 | P2 | Micro-interactions and transitions feel close to Polymarket. | Manual audit | Deferred |
 
 ## Audit Gate
 
-Result: Pass for focused Cycle AL sticky market-tab scope and previous Cycle AJ game-page P0 scope.
+Result: Pass for focused Cycle AM Player Props unavailable-state scope, Cycle AL sticky market-tab scope, and previous Cycle AJ game-page P0 scope.
 
 Unresolved P0 gaps: 0 for focused scope.
 
 Remaining P1/P2 gaps:
 
 - Native phone density and animation polish remain below Polymarket, although the sticky market tabs now pass the focused AL criterion.
-- Player Props is still Holiwyn-local product scope and was not fully audited from the logged-in Polymarket page.
+- Backend-supported Player Props remain deferred; Holiwyn now shows an unavailable state instead of local fake prop rows.
 - Backend market groups/history/live-stats remain local or deterministic in this focused cycle.
 
 Recommended next cycle:

@@ -11952,6 +11952,22 @@ Audit Gate: Pass for the focused sticky market-tab scope, with 0 unresolved P0 g
 
 Next likely cycle: continue game-page visual-density polish, Player Props scope audit, or the next highest-priority whole-app parity gap.
 
+### Cycle AM - Player Props Unavailable State
+
+Goal: Remove unsupported local Player Props rows from the game page and replace them with a clear unavailable state until backend-supported soccer props are in scope.
+
+Reference audit: Samsung S23 logged-in Polymarket Android app on the scrolled Australia vs Egypt game page. The `Player Props` label was visible but grey/inactive; two taps did not reveal Player Props content in this reference state.
+
+Holiwyn screens changed: Player Props now shows `Player Props unavailable for this match` instead of fabricated local player rows such as Santiago Gimenez/Hirving Lozano.
+
+Backend/API changed: No route changed. Docs now record the need for backend-owned Player Props availability and row contracts before re-enabling prop markets.
+
+Verification: `npm run typecheck` passed; `cmd /c npm.cmd run smoke:tablet:event-detail-full-page` passed on the Samsung tablet after one unrelated Home-route flake retry.
+
+Audit Gate: Pass for focused Player Props unavailable-state scope, with 0 unresolved P0 gaps.
+
+Next likely cycle: game-page phone-density/animation polish or watchlist/saved/share/chat/notification parity.
+
 ### Cycle AF - Reference Device Preflight Harness
 
 Goal: Add a harness guard that checks Polymarket reference-device availability before starting a new product parity feature cycle.

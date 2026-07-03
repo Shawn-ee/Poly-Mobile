@@ -733,3 +733,37 @@ Known limitations:
 - Sticky rail animation and exact native phone spacing remain P1/P2 polish.
 - Player Props content remains Holiwyn-local and still needs a dedicated reference/product-scope cycle.
 - Market groups remain local/fallback unless backend event-detail data provides richer grouped markets.
+
+## Cycle AM - Player Props Unavailable State
+
+Feature/page worked on:
+
+- Game page `Player Props` tab.
+- Logged-in S23 reference check of scrolled Player Props label.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+
+Important functions/services touched:
+
+- `EventDetail()` no longer renders local fabricated player-prop rows under `activeTab === "player-props"`.
+- The Player Props tab now renders `event-detail-player-props-empty` with `Player Props unavailable for this match`.
+- `smoke.ps1` now asserts the empty/unavailable state in full game-page and Player Props smoke paths.
+
+User interactions supported:
+
+- Tap Player Props from the inline tab rail or from the scrolled/sticky rail.
+- See a clear unavailable state rather than unsupported local rows.
+- Continue scrolling to Market Rules and More Events after the unavailable state.
+
+State transitions:
+
+- `activeTab: "game-lines" -> "player-props"` now shows an empty Player Props state.
+- No ticket can be opened from Player Props until backend-supported prop markets are deliberately added.
+
+Known limitations:
+
+- Backend-supported Player Props are deferred.
+- The logged-in Polymarket reference did not reveal props content from this scrolled state, so a future dedicated Player Props cycle should recapture if Polymarket exposes real soccer props for a different match/state.

@@ -631,3 +631,32 @@ Temporary mock/static data:
 Future migration concern:
 
 - When backend market tabs become authoritative, scroll anchors, sticky tab selection, ticket carry-through, and empty states must all use the same backend group identifiers.
+
+## Cycle AM - Player Props Unavailable State
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- `playerPropsAvailability`: available, empty, loading, not offered, or blocked.
+- Player prop market rows with stable player id, market id, stat family, line value, odds/probability, and ticket-ready outcome ids.
+- Empty-state copy/state from backend or a product-owned mobile contract.
+
+Fields backend provides but mobile ignores:
+
+- Unknown in this focused cycle; proof uses local unavailable state.
+
+Schema mismatch:
+
+- The previous mobile UI fabricated player names and prices locally. That has been removed.
+- Future Player Props must come from backend-owned market/player data, not static mobile rows.
+
+Route mismatch:
+
+- Existing event detail does not provide a reliable Player Props availability contract.
+
+Temporary mock/static data:
+
+- Player Props always shows a local unavailable state for this scope.
+
+Future migration concern:
+
+- When Player Props are built, ticket opening, line selection, portfolio identity, and order payloads must preserve player/stat/line identifiers from backend data.
