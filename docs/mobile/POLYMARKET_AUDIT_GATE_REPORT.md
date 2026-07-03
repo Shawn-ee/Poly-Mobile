@@ -239,6 +239,61 @@ Decision:
 - Remaining P1/P2 gaps: visual density, US view-only gate, selected-team selector parity, full post-submit portfolio parity.
 - Next cycle required: yes. Continue full portfolio/open-order/activity parity or ticket visual-density parity.
 
+## Feature: Portfolio
+
+Cycle: AA
+
+Lead Agent target: focused fake-token Portfolio positions/open-orders/activity/cancel parity.
+
+Reference Audit Agent: Samsung S23 Polymarket native app and mobile web audit.
+
+Implementation Agent: Holiwyn Portfolio verification plus harness expectation alignment.
+
+Audit Gate Agent: Samsung tablet Holiwyn proof against criteria.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket Android app and Polymarket mobile web.
+
+Reference route/URL: `com.polymarket.android`; `https://polymarket.com/portfolio`.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AA-polymarket-app-entry.png`
+- `docs/mobile/reference/screenshots/cycle-AA-polymarket-web-portfolio.png`
+- `docs/mobile/reference/screenshots/cycle-AA-polymarket-web-portfolio-viewonly.png`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-line-portfolio-after-order.png`
+- `docs/mobile/harness/cycle-current-holiwyn-line-portfolio-after-order.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-line-portfolio-open-order.png`
+- `docs/mobile/harness/cycle-current-holiwyn-line-portfolio-open-order.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-open-order.png`
+- `docs/mobile/harness/cycle-current-holiwyn-open-order.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-open-order-canceled.png`
+- `docs/mobile/harness/cycle-current-holiwyn-open-order-canceled.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| PF-P0-01 | P0 | Pass | `cycle-current-holiwyn-line-portfolio-after-order.xml` | None |
+| PF-P0-02 | P0 | Pass | `cycle-current-holiwyn-open-order-canceled.xml` | None |
+| PF-P0-03 | P0 | Pass for visible Buy/Sell/Close entry points | `cycle-current-holiwyn-line-portfolio-after-order.xml` | Deeper re-trade ticket proof remains P1 |
+| PF-P0-04 | P0 | Pass | `cycle-current-holiwyn-line-portfolio-after-order.xml`; `cycle-current-holiwyn-line-portfolio-open-order.xml` | None |
+
+Decision:
+
+- Pass/fail: Pass for focused Holiwyn fake-token Portfolio scope.
+- Unresolved P0 gaps: 0 for focused fake-token scope.
+- Remaining P1/P2 gaps: signed-in Polymarket Portfolio recapture, visual density/account IA, deeper re-trade ticket proof, server-mode same-cycle Portfolio proof.
+- Next cycle required: yes. Continue Search/discovery or deeper Portfolio re-trade parity.
+
 ## Gate Report Template
 
 Use this template for every feature gate:

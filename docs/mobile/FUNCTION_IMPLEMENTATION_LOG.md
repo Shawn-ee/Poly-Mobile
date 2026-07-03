@@ -286,3 +286,39 @@ Known limitations:
 - Ticket visual density remains heavier than Polymarket's first ticket view.
 - The US view-only/download/login gate is documented but not implemented for fake-token mode.
 - Full post-submit portfolio/open-order parity remains in the Portfolio cycle.
+
+## Cycle AA - Portfolio
+
+Feature/page worked on:
+
+- Focused fake-token Portfolio positions, open orders, activity, and cancel behavior.
+
+Frontend components touched:
+
+- `mobile/scripts/smoke.ps1`
+
+Important functions/services touched:
+
+- No runtime Portfolio component code changed.
+- `EventDetailLinePortfolio` harness expectation now accepts current ticket amount copy `25 USDT`.
+- Direct tablet `OpenOrderCancel` proof was rerun for cancel behavior.
+
+User interactions supported:
+
+- Place a mock line-market order from the game page.
+- Land in Portfolio with updated fake balance, latest order, position, activity, and line identity.
+- View a disposable open order with cancel control.
+- Cancel an open order and see canceled state/activity.
+
+State transitions:
+
+- `amount: "0" -> "25"` in ticket.
+- Portfolio fake balance `10000 -> 9975`.
+- Portfolio counts update for positions/activity after order.
+- Open-order fixture `OPEN -> canceled activity` in cancel proof.
+
+Known limitations:
+
+- Polymarket signed-in Portfolio could not be referenced because native and web were gated.
+- Server-mode Portfolio proof should receive its own same-cycle audit gate later.
+- Deeper position Buy/Sell/Close ticket transitions remain a later focused cycle.

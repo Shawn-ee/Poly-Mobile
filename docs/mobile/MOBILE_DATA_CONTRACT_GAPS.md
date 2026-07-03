@@ -239,3 +239,36 @@ Temporary mock/static data:
 Future migration concern:
 
 - When real-money trading is enabled, ticket submit should depend on server quote/order contracts and not on client-only probability math.
+
+## Cycle AA - Portfolio
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Canonical selected market identity for every portfolio item, including line market id, line value, period, market type, and outcome id.
+- Open-order cancel response that includes canceled activity metadata and remaining/fill economics.
+- Position re-trade/close quote fields matching ticket quote requirements.
+- Activity rows with execution price, filled shares, implied odds, timestamp, side, and selected line metadata.
+- Auth/restriction state to decide whether Portfolio should show fake-token mode, sign-in gate, or production wallet state.
+
+Fields backend provides but mobile ignores:
+
+- Unknown for this focused cycle; proof used fake-token mode and local fixtures.
+
+Schema mismatch:
+
+- Fake-token Portfolio stores selected line metadata locally; production backend needs a canonical schema for the same identity.
+- Canceled orders can be represented as activity locally, but server history must expose canceled order activity consistently.
+
+Route mismatch:
+
+- Portfolio uses `/api/portfolio` and history routes when server mode is active, but fake-token proof remains local.
+- Cancel uses `DELETE /api/orders/:id` in server mode; same-cycle server proof is deferred.
+
+Temporary mock/static data:
+
+- Fake balance and local positions/orders/activity.
+- Disposable open-order fixture for cancel proof.
+
+Future migration concern:
+
+- Production Portfolio should be server-authoritative after every order/cancel/close, with local optimistic UI reconciled from backend snapshots.

@@ -98,3 +98,16 @@ Cycle Z implementation notes:
 
 - No backend route was created or changed.
 - Mobile now expects the same quick amount presets observed in Polymarket, but estimates still need backend quote support for production parity.
+
+## Cycle AA - Portfolio
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Fake-token Portfolio after mock order | Local mock state; `/api/portfolio` when server mode is active | GET in server mode | Required for server user data; not required for fake-token mock mode | None | balance, positions, open orders, recent activity, closed trades | Users, wallets, positions, orders, fills, activities | Local fake balance, local positions/activity after mock order | Server Portfolio must preserve selected line market ids and fill economics. |
+| Open-order cancel | Local mock cancel path; `DELETE /api/orders/:id` in server mode | DELETE in server mode | Required for server cancel | order id | canceled order id/status, remaining/fill state, canceled activity metadata | Orders, order status, activity/history | Local open-order fixture and local canceled receipt | Server same-cycle Portfolio cancel proof should be rerun when backend parity is next prioritized. |
+| Position re-trade/close entry points | Existing ticket open and close handlers | Client state; server order routes when submitting | Required for server trading | selected position, side, amount when ticket submits | position market/outcome/selection metadata | Positions, orders, fills | Local fake-token position actions | Backend should return canonical close/retrade quote and order status for each position. |
+
+Cycle AA implementation notes:
+
+- No backend route was created or changed.
+- Portfolio docs now explicitly require server contracts to preserve selected line-market identity across positions, open orders, and activity.
