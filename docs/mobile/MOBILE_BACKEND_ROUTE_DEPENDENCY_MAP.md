@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle AO - Live Event Detail Backend Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live World Cup event detail | `/api/events/:slug` | GET | Optional for viewing; authenticated order routes later | None | `event.liveStats`, `event.chartHistory`, `market.id`, `marketGroupId`, `marketGroupKey`, `marketGroupTitle`, `marketType`, `period`, `line`, `liquidity`, `orderbookDepth[]`, `outcome.id`, `outcome.side`, `price`, `bestBid`, `bestAsk`, `bestBidSize`, `bestAskSize` | `Event.metadata` for optional provider-shaped `liveStats` and `chartHistory`; `Market.marketGroupKey`, `marketGroupTitle`, `marketType`, `period`, `line`; `Outcome.side`; `Order` depth through orderbook snapshot aggregation | Mobile local fixture remains fallback, but the mobile adapter now consumes the same route-shaped fields when server mode hydrates event detail | Real external live-football provider ingestion is still missing; event metadata must be populated before chart/live-stat panels show real values. |
+| Live orderbook/depth | Embedded in `/api/events/:slug` market objects for top-level depth; existing dedicated book routes can still be used later for full depth | GET | Optional for viewing | None | `orderbookDepth[].outcomeId`, `side`, `price`, `shares`, `total`, plus outcome-level best bid/ask sizes | `Order` grouped open/partial orders through `buildPublicOrderbookSnapshot()` and `getOutcomeQuotes()` | Fixture `orderbookDepth` shape matches the embedded contract | Full depth by price ladder/range, depth timestamps, and no-liquidity/suspended states still need a dedicated route or richer embedded object. |
+| Live ticket identity source | Event detail payload feeding existing ticket state | Client state, then existing order routes when submitting | Mock mode no auth; server submit requires API key | Future submit must preserve `marketId`, `outcomeId`, `marketGroupId`, `marketType`, `period`, `line`, `side`, amount, order side | selected event/market/outcome/line identity now survives backend route -> mobile adapter -> `EventDetail` model | Orders, positions, fills, open orders, activity/history | Existing fake-token ticket can open from backend-shaped live markets | Order submission/portfolio/history proof for live line markets is still PM-GAP-068 and not completed by this contract cycle. |
+
+Cycle AO implementation notes:
+
+- This cycle closes the repeated unknown-contract part of PM-GAP-067 for market groups, line identity, outcome side, top depth, and optional chart/live-stat payload shape.
+- Backend parity is still not complete because real live-football provider ingestion, full chart history, and full depth routes are not implemented.
+- The mobile adapter no longer drops backend market line identity, so future Samsung proof can test real route hydration instead of relying only on local fixture state.
+
 ## Cycle AN - Live Event Detail Structural Parity
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

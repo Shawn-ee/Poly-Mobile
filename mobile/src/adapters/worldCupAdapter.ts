@@ -43,6 +43,39 @@ const asTitleCase = (value: string | null | undefined, fallback: string) => {
   return clean.replace(/\w\S*/g, (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
 };
 
+const asNumberOrNull = (value: string | number | null | undefined) => {
+  const parsed = typeof value === "number" ? value : Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
+const asOutcomeSide = (value: string | null | undefined): Outcome["side"] | undefined => {
+  const normalized = `${value ?? ""}`.trim().toLowerCase();
+  if (["yes", "no", "over", "under", "home", "away", "draw"].includes(normalized)) {
+    return normalized as Outcome["side"];
+  }
+  return undefined;
+};
+
+const asMarketContractType = (value: string | null | undefined): Market["marketType"] | undefined => {
+  const normalized = `${value ?? ""}`.trim().toLowerCase();
+  if (["moneyline", "match_winner", "match_winner_1x2", "winner"].includes(normalized)) return "moneyline";
+  if (["spread", "handicap", "asian_handicap"].includes(normalized)) return "spread";
+  if (["totals", "total", "total_goals"].includes(normalized)) return "totals";
+  if (["team-total", "team_total", "team_totals"].includes(normalized)) return "team-total";
+  if (["next-goal", "next_goal"].includes(normalized)) return "next-goal";
+  if (["future", "outright"].includes(normalized)) return "future";
+  if (normalized) return "prop";
+  return undefined;
+};
+
+const asPeriod = (value: string | null | undefined): Market["period"] | undefined => {
+  const normalized = `${value ?? ""}`.trim().toLowerCase().replace(/_/g, "-");
+  if (["full-game", "regulation", "first-half", "second-half"].includes(normalized)) {
+    return normalized as Market["period"];
+  }
+  return undefined;
+};
+
 const eventStatus = (event: BackendEventSummary): Event["status"] => {
   const status = `${event.liveStatus ?? event.status ?? ""}`.toLowerCase();
   if (status.includes("live") || status === "in_progress") return "live";
@@ -79,11 +112,16 @@ const normalizeOutcome = (outcome: BackendOutcome, index: number, total: number)
   label: outcome.label || outcome.name || `Outcome ${index + 1}`,
   zhLabel: zhPassthrough(outcome.label || outcome.name || `选项 ${index + 1}`),
   probability: asProbability(outcomeProbabilityPrice(outcome), index, total),
+  side: asOutcomeSide(outcome.side),
+  bestBid: asNumberOrNull(outcome.bestBid),
+  bestAsk: asNumberOrNull(outcome.bestAsk),
+  bestBidSize: asNumberOrNull(outcome.bestBidSize),
+  bestAskSize: asNumberOrNull(outcome.bestAskSize),
   color: COLORS[index % COLORS.length],
 });
 
 const marketType = (market: BackendMarket): Market["type"] => {
-  const key = `${market.marketGroupTitle ?? ""} ${market.propCategory ?? ""} ${market.title}`.toLowerCase();
+  const key = `${market.marketType ?? ""} ${market.marketGroupTitle ?? ""} ${market.propCategory ?? ""} ${market.title}`.toLowerCase();
   if (key.includes("winner") || key.includes("moneyline") || key.includes("match")) return "game-line";
   if (key.includes("live")) return "live";
   if (key.includes("future") || key.includes("cup")) return "future";
@@ -92,9 +130,20 @@ const marketType = (market: BackendMarket): Market["type"] => {
 
 export const normalizeMarket = (market: BackendMarket): Market => ({
   id: market.id,
+  marketGroupId: market.marketGroupId ?? market.marketGroupKey ?? undefined,
+  marketType: asMarketContractType(market.marketType),
+  period: asPeriod(market.period),
+  line: market.line ?? null,
   title: market.marketGroupTitle || market.title,
   zhTitle: zhPassthrough(market.marketGroupTitle || market.title),
   type: marketType(market),
+  liquidity: asNumberOrNull(market.liquidity) ?? undefined,
+  orderbookDepth: market.orderbookDepth?.map((level) => ({
+    side: level.side,
+    price: level.price,
+    shares: level.shares,
+    total: level.total,
+  })),
   outcomes: market.outcomes.map((outcome, index) => normalizeOutcome(outcome, index, market.outcomes.length)),
 });
 
@@ -118,6 +167,8 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
       { name: home, zhName: zhPassthrough(home), flag: "•" },
       { name: away, zhName: zhPassthrough(away), flag: "•" },
     ],
+    liveStats: event.liveStats,
+    chartHistory: event.chartHistory,
     markets: normalizedMarkets,
   };
 };

@@ -2,6 +2,45 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle AO - Live Event Detail Backend Contract
+
+Fields now provided or wired:
+
+- `/api/events/:slug` market objects now expose `marketGroupId` as the mobile alias for `marketGroupKey`.
+- Market payloads now carry existing schema fields needed by live line markets: `marketType`, `period`, `line`, `marketGroupTitle`, and `propCategory`.
+- Outcome payloads now carry `side`, `bestBidSize`, and `bestAskSize`, in addition to existing `price`, `bestBid`, and `bestAsk`.
+- Market payloads now include top-level `orderbookDepth` derived from live open/partial orders, with `outcomeId`, `side`, `price`, `shares`, and `total`.
+- Event summary payloads now expose optional `liveStats` and `chartHistory` arrays from provider-shaped event metadata.
+- The mobile API types and World Cup adapter now preserve these fields into the Holiwyn event-detail model.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider ingestion for `liveStats` and `chartHistory`; Cycle AO only defines and passes through the contract when metadata exists.
+- Full historical chart route by market/outcome/range, including last-updated metadata.
+- Full orderbook ladder route with multiple levels, timestamps, spread, suspended/no-liquidity state, and market-wide liquidity metadata.
+- End-to-end order/portfolio/history identity proof for live line markets.
+
+Schema mismatch:
+
+- Existing `Event.metadata` can carry `liveStats`/`chartHistory`, but this is not yet a first-class provider/cache model.
+- Existing `MarketOutcomeSnapshot` can support future chart history, but `/api/events/:slug` does not query it in this cycle.
+- Existing orders support orderbook depth, but mobile still receives only compact top levels embedded in event detail.
+
+Route mismatch:
+
+- `/api/events/:slug` is now the primary live-detail contract for event/market/outcome identity and compact depth.
+- Future richer routes are still recommended: `/api/markets/:marketId/history`, `/api/markets/:marketId/book`, and `/api/events/:slug/live-stats`.
+
+Temporary mock/static data:
+
+- The Australia vs Egypt fixture remains valid fallback because it matches the same backend-shaped fields.
+- Do not add more ad hoc live UI data outside this contract shape.
+
+Future migration concern:
+
+- PM-GAP-067 should remain open but narrowed: the unknown contract is reduced, while provider ingestion and richer routes remain active structural work.
+- The next structural cycle should address PM-GAP-068 or the remaining PM-GAP-067 provider/history/depth sub-gaps before opening another feature area.
+
 ## Cycle AN - Live Event Detail Structural Parity
 
 Fields Holiwyn needs but backend does not provide yet:

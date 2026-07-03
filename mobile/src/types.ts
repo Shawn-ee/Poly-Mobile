@@ -2,10 +2,34 @@ export type Outcome = {
   id: string;
   name: string;
   label: string;
+  side?: string | null;
   price: number | string | null;
   bestBid: number | string | null;
   bestAsk: number | string | null;
+  bestBidSize?: number | string | null;
+  bestAskSize?: number | string | null;
   isTradable: boolean;
+};
+
+export type EventLiveStat = {
+  statId: string;
+  label: string;
+  home: string;
+  away: string;
+};
+
+export type EventChartPoint = {
+  outcomeId: string;
+  timestamp: string;
+  probability: number;
+};
+
+export type OrderbookDepthLevel = {
+  outcomeId?: string;
+  side: "bid" | "ask";
+  price: number;
+  shares: number;
+  total: number;
 };
 
 export type EventSummary = {
@@ -28,6 +52,8 @@ export type EventSummary = {
   imageUrl?: string | null;
   marketCount: number;
   activeMarketCount: number;
+  liveStats?: EventLiveStat[];
+  chartHistory?: EventChartPoint[];
   topOutcomes?: string[];
 };
 
@@ -39,7 +65,14 @@ export type Market = {
   outcomes: Outcome[];
   event: EventSummary | null;
   rulesText: string | null;
+  marketGroupKey?: string | null;
+  marketGroupId?: string | null;
   marketGroupTitle: string | null;
+  marketType?: string | null;
+  period?: string | null;
+  line?: string | null;
+  liquidity?: number | string | null;
+  orderbookDepth?: OrderbookDepthLevel[];
   propCategory: string | null;
 };
 

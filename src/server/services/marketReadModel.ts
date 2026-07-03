@@ -48,7 +48,7 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
       : new Map(
           market.outcomes.map((outcome) => [
             outcome.id,
-            { bestBid: null, bestAsk: null, mid: 0.5, spread: null },
+            { bestBid: null, bestAsk: null, bestBidSize: null, bestAskSize: null, mid: 0.5, spread: null },
           ]),
         );
 
@@ -57,6 +57,39 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
   );
   const legacyPrices = buildLegacyBinaryPrices(market.outcomes, pricesByOutcome);
   const referenceSummary = await getReferenceSummaryForMarket(market.id);
+  const orderbookDepth = market.outcomes.flatMap((outcome) => {
+    const quote = outcomeQuotes.get(outcome.id);
+    const levels: Array<{
+      outcomeId: string;
+      side: "bid" | "ask";
+      price: number;
+      shares: number;
+      total: number;
+    }> = [];
+    if (quote?.bestBid != null && quote.bestBidSize != null && quote.bestBidSize > 0) {
+      levels.push({
+        outcomeId: outcome.id,
+        side: "bid",
+        price: quote.bestBid,
+        shares: quote.bestBidSize,
+        total: quote.bestBid * quote.bestBidSize,
+      });
+    }
+    if (quote?.bestAsk != null && quote.bestAskSize != null && quote.bestAskSize > 0) {
+      levels.push({
+        outcomeId: outcome.id,
+        side: "ask",
+        price: quote.bestAsk,
+        shares: quote.bestAskSize,
+        total: quote.bestAsk * quote.bestAskSize,
+      });
+    }
+    return levels;
+  });
+  const liquidity =
+    orderbookDepth.length > 0
+      ? orderbookDepth.reduce((sum, level) => sum + level.total, 0)
+      : null;
 
   return {
     id: market.id,
@@ -64,6 +97,7 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
     description: market.description,
     status: market.status,
     marketGroupKey: market.marketGroupKey,
+    marketGroupId: market.marketGroupKey,
     marketGroupTitle: market.marketGroupTitle,
     displayOrder: market.displayOrder,
     line: market.line?.toString() ?? null,
@@ -73,6 +107,8 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
     participantName: market.participantName,
     participantId: market.participantId,
     propCategory: market.propCategory,
+    liquidity,
+    orderbookDepth,
     rulesText: market.rulesText,
     sourceUpdatedAt: market.sourceUpdatedAt,
     resolveTime: market.resolveTime,
@@ -81,6 +117,8 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
       const quote = outcomeQuotes.get(outcome.id) ?? {
         bestBid: null,
         bestAsk: null,
+        bestBidSize: null,
+        bestAskSize: null,
         mid: 0.5,
         spread: null,
       };
@@ -100,6 +138,8 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
         price: quote.mid,
         bestBid: quote.bestBid,
         bestAsk: quote.bestAsk,
+        bestBidSize: quote.bestBidSize,
+        bestAskSize: quote.bestAskSize,
         spread: quote.spread,
       };
     }),
