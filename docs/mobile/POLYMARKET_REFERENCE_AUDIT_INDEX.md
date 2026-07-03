@@ -1,0 +1,66 @@
+# Polymarket Reference Audit Index
+
+Purpose: track every Polymarket reference audit required before Holiwyn can mark a feature, page, button, market behavior, chart, ticket flow, navigation behavior, empty state, or error state complete.
+
+Rule: no same-cycle Polymarket audit means no parity completion claim.
+
+## Device Standard
+
+Reference device:
+
+- Samsung S23 or another Android device running the real Polymarket mobile app/web experience.
+
+Holiwyn proof device:
+
+- Android device running Holiwyn through Expo Go, development build, or APK.
+- Emulator is fallback only and must be labeled as fallback evidence.
+
+Brand boundary:
+
+- Match Polymarket's interaction model, information architecture, market behavior, trading flow, and UX quality.
+- Keep Holiwyn branding, copy, icons, colors, data, backend, and assets original.
+- Do not copy Polymarket logos, trademarks, protected text, proprietary assets, or private API behavior.
+
+## Required Audit Fields
+
+Every focused audit must record:
+
+- Feature/page/function name.
+- Cycle ID or branch.
+- Reference device.
+- Polymarket app/browser and route or URL if available.
+- Holiwyn proof device.
+- Screenshots and UI hierarchy paths when available.
+- User actions: taps, swipes, expansions, collapses, tab switches, chart presses, line changes, ticket opens, amount changes, and settings changes.
+- Resulting UI behavior.
+- Visible data fields.
+- Loading, empty, disabled, and error behavior.
+- Animation or transition behavior if relevant.
+- Market, line, ticket, portfolio, and history changes.
+- All buttons and their effects.
+- Gap priority: P0, P1, or P2.
+- Recommended implementation changes.
+
+## Audit Register
+
+| Feature | Focused audit file | Status | Last reference device | Last Holiwyn device | Latest gate result | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| Game page | `docs/mobile/audits/game-page.md` | Template ready | Pending next cycle | Pending next cycle | Not run under new rule | Must cover full page, chart, tabs, market groups, ticket, chat, save/share, rules, and lower content. |
+| Trade ticket | `docs/mobile/audits/trade-ticket.md` | Template ready | Pending next cycle | Pending next cycle | Not run under new rule | Must cover Buy/Sell, amount entry, odds/probability, payout/cost, line carry-through, submit/confirmation/error states. |
+| Line adjustment | `docs/mobile/audits/line-adjustment.md` | Template ready | Pending next cycle | Pending next cycle | Not run under new rule | Must cover spreads, totals, team totals, corners, halves, and discovered line markets. |
+| Portfolio | `docs/mobile/audits/portfolio.md` | Template ready | Pending next cycle | Pending next cycle | Not run under new rule | Must cover positions, open orders, cancel, activity/history, sell/close/retrade. |
+| Search | `docs/mobile/audits/search.md` | Template ready | Pending next cycle | Pending next cycle | Not run under new rule | Must cover query entry, results, empty/error, market navigation, keyboard/back behavior. |
+| Account/settings | `docs/mobile/audits/account.md` | Template ready | Pending next cycle | Pending next cycle | Not run under new rule | Must cover account shell, settings, language, notifications, login entry, disabled production money features. |
+| Chart behavior | `docs/mobile/audits/chart-behavior.md` | Template ready | Pending next cycle | Pending next cycle | Not run under new rule | Must cover probability movement, selected outcome state, time ranges, press/tooltip behavior, loading/empty states. |
+| Market page | `docs/mobile/audits/market-page.md` | Template ready | Pending next cycle | Pending next cycle | Not run under new rule | Must cover tabs, grouped markets, expand/collapse, nested options, line selectors, liquidity/depth. |
+| Navigation | `docs/mobile/audits/navigation.md` | Template ready | Pending next cycle | Pending next cycle | Not run under new rule | Must cover back behavior, tab persistence, scroll position, deep links where applicable. |
+
+## Existing Historical Reference Files
+
+These files remain useful background, but future completion claims must use the new same-cycle audit gate:
+
+- `docs/mobile/POLYMARKET_GAME_PAGE_REFERENCE_AUDIT.md`
+- `docs/mobile/POLYMARKET_LINE_ADJUSTMENT_REFERENCE_AUDIT.md`
+- `docs/mobile/POLYMARKET_WHOLE_APP_REFERENCE_AUDIT.md`
+- `docs/mobile/MOBILE_ANDROID_UX_PARITY_AUDIT_2026-07-02.md`
+- `docs/mobile/MOBILE_UI_FEATURE_SMOKE_AUDIT_2026-07-02.md`

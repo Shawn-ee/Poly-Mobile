@@ -71,6 +71,32 @@ Implementation rule:
 - Keep Holiwyn visually distinct.
 - Use original components, icons, colors, data, copy, and backend code.
 
+## 3.1 Mandatory Polymarket Parity Audit Gate
+
+No Holiwyn page, feature, button, market section, chart, ticket behavior, navigation behavior, empty state, or error state may be marked complete until it passes a same-cycle Polymarket-reference audit.
+
+This rule supersedes older prototype Definition of Done language. Existing prototype completion evidence is useful history, but it is not enough to mark future work complete unless the feature also has current Polymarket reference evidence, written criteria, Holiwyn Android proof, and an Audit Gate pass.
+
+Required completion evidence for every completed feature:
+
+- Polymarket reference audit on the reference Android device.
+- Written pass/fail Holiwyn acceptance criteria derived from that audit.
+- Holiwyn implementation against those criteria.
+- Holiwyn Android device proof with screenshots and, when useful, UI hierarchy.
+- Audit Gate report comparing Holiwyn against Polymarket for the same feature.
+- Gap tracker update showing 0 unresolved P0 gaps for that feature.
+
+Hard fail rules:
+
+- If Holiwyn has a button that does nothing while Polymarket's equivalent works, fail the feature.
+- If Holiwyn has a static placeholder where Polymarket has live or interactive behavior, fail the feature.
+- If Holiwyn only implements one market option where Polymarket exposes a selectable line set, fail the feature.
+- If Holiwyn's ticket does not preserve selected market, line, and outcome correctly, fail the feature.
+- If visual hierarchy is clearly worse or confusing compared with Polymarket, fail the feature.
+- If the feature was not checked against Polymarket in the same cycle, fail the feature.
+- If no screenshot or device evidence exists, fail the feature.
+- If the Lead Agent claims ready before Audit Gate pass, fail the cycle.
+
 ## 4. Device Roles
 
 ### Samsung S23
@@ -81,32 +107,44 @@ Purpose:
 - Observe World Cup/sports flows.
 - Capture reference screenshots.
 - Compare UX behavior.
-- Later-stage real-device QA target for Holiwyn once emulator automation is stable.
-- Optional Holiwyn real-device QA target only after emulator checks pass or when the Lead Agent explicitly needs physical-device confirmation.
+- Primary reference device for Polymarket parity audits.
+- Optional Holiwyn QA device only when another Android device is not available for Holiwyn.
 
 Rules:
 
 - Use only for observation and harmless navigation.
 - Avoid private account, wallet, deposit, withdraw, and final trade confirmation actions.
 - If a screen exposes sensitive data, navigate away or record only a text summary without screenshots.
-- Do not use Samsung S23 as the default Holiwyn automation device during normal cycles; reserve it for reference and explicit real-device QA.
-- Never let Holiwyn QA on Samsung replace repeatable emulator evidence for cycle acceptance.
+- Prefer keeping Samsung S23 on Polymarket while the second Android device runs Holiwyn.
+- When Samsung S23 must run Holiwyn for QA, record the device switch in `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md`.
+
+### Second Android Device / Samsung Tablet
+
+Purpose:
+
+- Primary Holiwyn runtime proof device.
+- Run Expo Go, development build, or APK for Holiwyn.
+- Capture Holiwyn screenshots and UI hierarchy.
+- Run smoke proof for implemented features.
+- Compare Holiwyn behavior side-by-side with the Polymarket reference device.
+
+Rules:
+
+- Use this device for Holiwyn cycle acceptance whenever connected and stable.
+- Record device ID, app mode, feature under test, evidence paths, and result in `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md`.
+- If this device is unavailable, Samsung S23 may temporarily switch from reference to Holiwyn QA, but the cycle must still include Polymarket reference evidence from the same cycle or explicitly fail the Audit Gate.
 
 ### Android Emulator
 
 Purpose:
 
-- Development and QA device for Holiwyn.
-- Run Expo/React Native app.
-- Capture Holiwyn screenshots.
-- Test app behavior after each cycle.
-- Run automated smoke loops, screenshots, hierarchy dumps, and regression checks.
+- Fallback Holiwyn QA device only.
+- Run automated smoke loops, screenshots, hierarchy dumps, and regression checks when real Android devices are unavailable, slow to switch, or unsuitable for a specific deterministic check.
 
 Rules:
 
-- All Holiwyn development verification runs on the emulator unless a real-device test is specifically needed.
-- Keep emulator and Samsung roles separate: Samsung is reference, emulator is product under development.
-- Prefer repeatable emulator screenshots and harness output for cycle acceptance.
+- Do not treat emulator-only evidence as enough for a UI parity pass when a real Android Holiwyn device is available.
+- Emulator can supplement real-device proof, but it does not replace the mandatory Polymarket reference audit.
 - When Holiwyn becomes stable enough, add a proper Android development build/APK harness so QA is no longer dependent on Expo Go for app-feel validation.
 
 ### Android Development Build/APK Milestone
@@ -179,7 +217,7 @@ Default launch mode:
 - Break the final goal into small verified cycles.
 - Continue cycle after cycle until the final goal is reached or a hard stop rule is hit.
 - Do not ask the user during normal progress.
-- Use harnesses, Audit Agent, and Reviewer Agent to resolve uncertainty.
+- Use harnesses, Reference Audit Agent, Audit Gate Agent, and Reviewer Agent to resolve uncertainty.
 - If a cycle fails, recover through the Recovery Harness and continue when safe.
 
 The autonomous loop may decide:
@@ -200,12 +238,12 @@ The autonomous loop may decide:
 - Emulator/server restarts.
 - Local commits and merges.
 
-If the lead agent wants advice, it should ask an Audit Agent or Reviewer Agent first, not the user.
+If the lead agent wants advice, it should ask the Reference Audit Agent, Audit Gate Agent, or Reviewer Agent first, not the user.
 
 If the lead agent cannot decide between safe engineering options, it must:
 
 1. Run the relevant harness again or inspect its output.
-2. Ask Audit Agent for a recommendation.
+2. Ask Audit Gate Agent for a recommendation when parity or UX evidence is unclear.
 3. Ask Reviewer Agent when code quality, UX safety, or merge safety is involved.
 4. Choose the best documented option.
 5. Continue without user input unless a stop rule is hit.
@@ -232,40 +270,50 @@ Responsibilities:
 
 - Own the complete loop.
 - Select the next cycle goal.
+- Select exactly one focused page, section, button, market type, ticket interaction, navigation flow, chart behavior, portfolio behavior, account/settings behavior, empty state, or error state for each parity cycle.
 - Keep scope small.
 - Coordinate sub-agents.
 - Merge verified local cycle branches.
 - Maintain loop state.
 - Ensure no unfinished work piles up.
+- Must not mark a feature ready until the Audit Gate Agent has passed it.
+- If the Audit Gate Agent fails the feature, convert the audit findings into the next implementation tasks.
 
-### Explorer Agent
+### Reference Audit Agent
 
 Responsibilities:
 
-- Observe Polymarket on Samsung S23.
-- Capture reference screenshots.
-- Map navigation and screen structure.
-- Record UX behavior.
+- Open the same feature, page, or function in Polymarket on the reference Android device.
+- Click, tap, swipe, expand, collapse, switch tabs, open tickets, change settings, change line values, and record behavior like a real user.
+- Capture screenshots and UI hierarchy when possible.
+- Record device, app/browser, route or URL when available, user actions, resulting UI behavior, visible fields, loading/empty/error behavior, animations/transitions, market/ticket changes, and all buttons and their effects.
+- Write exact expected behavior and visual/interaction criteria.
+- Never rely on memory or assumptions.
+- Do not submit real Polymarket trades or trigger wallet/deposit/withdraw actions.
 
 Outputs:
 
-- `docs/mobile/reference/POLYMARKET_SCREEN_MAP.md`
-- screenshots under `docs/mobile/reference/screenshots/`
+- `docs/mobile/POLYMARKET_REFERENCE_AUDIT_INDEX.md`
+- Focused files under `docs/mobile/audits/`
+- Reference screenshots under `docs/mobile/reference/screenshots/`
+- Device proof entries in `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md`
 
-### Product Agent
+### Criteria Agent
 
 Responsibilities:
 
-- Convert observations into Holiwyn requirements.
-- Decide MVP priority.
-- Maintain feature gap tracker.
+- Convert Polymarket reference audits into pass/fail Holiwyn acceptance criteria.
+- Separate criteria into P0, P1, and P2.
+- Ensure every P0 can be audited by screenshot, UI hierarchy, device smoke, unit test, route test, or backend/API proof.
+- Maintain parity criteria and gap trackers.
 - Preserve World Cup-first focus.
 
-Output:
+Outputs:
 
-- `docs/mobile/MOBILE_FEATURE_GAP_TRACKER.md`
+- `docs/mobile/POLYMARKET_FEATURE_CRITERIA.md`
+- `docs/mobile/POLYMARKET_PARITY_GAP_TRACKER.md`
 
-### Builder Agent
+### Implementation Agent
 
 Responsibilities:
 
@@ -274,6 +322,10 @@ Responsibilities:
 - Implement mock data and API hooks.
 - Integrate backend when appropriate.
 - Keep TypeScript clean.
+- Implement Holiwyn behavior against the written Polymarket criteria.
+- Must not simplify behavior unless the gap tracker explicitly classifies the gap as P1 or P2.
+- Preserve Holiwyn branding and avoid copied Polymarket assets, trademarks, protected text, or proprietary material.
+- Update tests and harnesses for implemented behavior.
 
 Outputs:
 
@@ -282,18 +334,22 @@ Outputs:
 - API integration code.
 - Migration notes when backend/schema changes.
 
-### QA Agent
+### Holiwyn Device QA Agent
 
 Responsibilities:
 
-- Run Holiwyn on Android emulator.
+- Run Holiwyn on the primary Holiwyn Android device.
 - Test navigation and trading flows.
 - Capture screenshots.
+- Capture UI hierarchy when useful.
 - Record bugs.
+- Use emulator only as fallback or supplemental evidence.
 
-Output:
+Outputs:
 
 - `docs/mobile/MOBILE_QA_REPORT.md`
+- `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md`
+- screenshots under `docs/mobile/screenshots/`
 
 ### Reviewer Agent
 
@@ -309,18 +365,22 @@ Output:
 
 - `docs/mobile/MOBILE_REVIEW_REPORT.md`
 
-### Audit Agent
+### Audit Gate Agent
 
 Responsibilities:
 
-- Answer lead-agent uncertainty without stopping the project.
-- Evaluate risky choices.
-- Recommend next action.
-- Escalate only when stop rules require it.
+- After implementation, re-check the same feature in Polymarket on the reference Android device.
+- Compare Holiwyn on the Holiwyn Android device against each written criterion.
+- Fail the feature if interaction, visual hierarchy, market behavior, chart behavior, ticket behavior, navigation, empty/error state handling, or data carry-through is meaningfully worse than Polymarket.
+- Produce concrete fix recommendations.
+- Only this agent can mark a page, feature, button, or interaction as parity-pass.
+- Escalate only when hard stop rules require it.
 
 Output:
 
-- Notes in `docs/mobile/MOBILE_LOOP_STATE.md` or relevant report.
+- `docs/mobile/POLYMARKET_AUDIT_GATE_REPORT.md`
+- `docs/mobile/POLYMARKET_PARITY_GAP_TRACKER.md`
+- Notes in `docs/mobile/MOBILE_LOOP_STATE.md`
 
 ## 9. Branch And Commit Policy
 
@@ -354,26 +414,26 @@ Use `docs/mobile/MOBILE_HARNESS_SPEC.md` as the execution harness for each cycle
 
 The loop is long-running by design. It should proceed through Phase 0, MVP, backend integration, trading behavior, localization, portfolio, live markets, QA hardening, and polish until the Definition of Done is satisfied.
 
-Cycle steps:
+Mandatory parity cycle steps:
 
-1. Observe reference app.
-2. Document observation.
-3. Compare against Holiwyn.
-4. Identify one or a few focused gaps.
-5. Implement improvement.
-6. Run Holiwyn locally.
-7. Test on emulator.
-8. Capture screenshots.
-9. Review code and UX.
-10. Update loop reports.
-11. Commit and locally merge verified changes.
+1. Feature Selection: Lead Agent chooses one specific page, section, button, market type, ticket interaction, navigation flow, chart behavior, portfolio behavior, account/settings behavior, empty state, or error state.
+2. Polymarket Reference Audit: Reference Audit Agent inspects the matching Polymarket feature first on the reference Android device and records device, app/browser, route/URL when available, screenshots, actions, resulting behavior, visible fields, state changes, loading/empty/error behavior, animations/transitions, market/ticket changes, and all buttons and effects.
+3. Acceptance Criteria: Criteria Agent converts the reference audit into testable P0/P1/P2 Holiwyn criteria.
+4. Implementation: Implementation Agent implements only the selected criteria, updates tests/harnesses, and preserves Holiwyn branding.
+5. Holiwyn Device Proof: Holiwyn Device QA Agent runs the feature on the Holiwyn Android device, captures screenshots/UI hierarchy, and runs relevant typecheck, smoke, route, API, or unit tests.
+6. Audit Gate: Audit Gate Agent re-checks Polymarket, compares Holiwyn against every criterion, and records pass/fail, evidence, missing gaps, fix recommendations, and whether another cycle is required.
+7. Completion Rule: If any P0 criterion fails, the feature is not complete and the next cycle must address the failed P0 items. P1/P2 gaps may remain only when explicitly tracked.
+8. Review code, UX, brand safety, and worktree scope.
+9. Update loop reports, proof logs, criteria, and gap tracker.
+10. Commit and locally merge verified changes only after Audit Gate pass or as a clearly labeled observation/documentation cycle.
 
 Each cycle must produce:
 
 - Code changes, unless it is a documentation-only or observation-only cycle.
-- Screenshot evidence when UI changes are involved.
+- Polymarket reference evidence when UI/UX behavior is involved.
+- Holiwyn Android device screenshot evidence when UI changes are involved.
 - Updated loop state.
-- Updated gap tracker or QA/review report when relevant.
+- Updated criteria, gap tracker, audit gate report, proof log, or QA/review report when relevant.
 - Clear next cycle recommendation.
 
 Every three completed cycles, the Lead Agent must add a progress heartbeat to `docs/mobile/MOBILE_LOOP_STATE.md` summarizing:
@@ -604,7 +664,7 @@ The mission is done when Holiwyn reaches near feature parity with Polymarket's W
 
 Acceptance criteria:
 
-- Android app runs reliably on the active Android QA target. Samsung S23 is the primary Holiwyn runtime proof target; emulator remains a fallback for checks that are practical there.
+- Android app runs reliably on the active Holiwyn Android QA target. Samsung S23 or another Android device is the primary Polymarket reference target; the Holiwyn Android device is the primary Holiwyn proof target; emulator remains fallback only.
 - iOS support is planned but not required for first done state.
 - Home screen is polished.
 - World Cup games are browsable.
@@ -621,6 +681,12 @@ Acceptance criteria:
 - Search works.
 - English and Simplified Chinese switching works.
 - No copied Polymarket assets or branding.
+- Every completed page, feature, button, market section, chart, ticket behavior, navigation behavior, empty state, and error state has a Polymarket reference audit.
+- Every completed feature has written P0/P1/P2 acceptance criteria.
+- Every completed feature has Holiwyn Android device proof.
+- Every completed feature has an Audit Gate pass.
+- No unresolved P0 Polymarket parity gaps remain for any completed feature.
+- Remaining P1/P2 parity gaps are explicit and tracked.
 - Screenshots and loop reports are up to date.
 - Technical debt is documented.
 - Cycle branches have been locally merged after verification.
@@ -631,6 +697,9 @@ The Lead Agent may declare the mission complete only when the Definition of Done
 - Final QA report.
 - Final review report.
 - Final feature gap tracker state.
+- Final Polymarket parity gap tracker state.
+- Final Audit Gate report.
+- Final device proof log.
 - Screenshots for the main World Cup flows.
 - No unresolved P0 technical debt.
 
@@ -645,10 +714,11 @@ Verify:
 1. Samsung phone screen access.
 2. Polymarket app observation access.
 3. Reference screenshot workflow.
-4. Android emulator availability.
-5. Holiwyn Expo app can launch on emulator.
+4. Holiwyn Android device access.
+5. Holiwyn Expo/dev build/APK can launch on the Holiwyn Android device.
 6. Holiwyn screenshot workflow.
-7. Initial loop docs are present.
+7. Android emulator availability as fallback.
+8. Initial loop docs are present.
 
 Then update:
 
@@ -656,5 +726,10 @@ Then update:
 - `docs/mobile/MOBILE_QA_REPORT.md`
 - `docs/mobile/reference/POLYMARKET_SCREEN_MAP.md`
 - `docs/mobile/MOBILE_FEATURE_GAP_TRACKER.md`
+- `docs/mobile/POLYMARKET_REFERENCE_AUDIT_INDEX.md`
+- `docs/mobile/POLYMARKET_FEATURE_CRITERIA.md`
+- `docs/mobile/POLYMARKET_PARITY_GAP_TRACKER.md`
+- `docs/mobile/POLYMARKET_AUDIT_GATE_REPORT.md`
+- `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md`
 
 After that, continue cycling until Definition of Done is reached or a hard blocker is documented.
