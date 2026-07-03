@@ -354,6 +354,10 @@ export default function App() {
     const shouldForcePortfolio = url.includes("forcePortfolio=1");
     const shouldForceOpenOrder = url.includes("forceOpenOrder=1");
     const shouldForceLineOpenOrder = url.includes("forceLineOpenOrder=1");
+    const shouldForceNoLive = url.includes("forceNoLive=1");
+    const shouldForcePortfolioSyncing = url.includes("forcePortfolioSyncing=1");
+    const shouldForcePortfolioSyncError = url.includes("forcePortfolioSyncError=1");
+    const shouldForceAccountProfileSyncError = url.includes("forceAccountProfileSyncError=1");
     const forcedOpenOrder = url.includes("forceOpenOrderSide=sell") ? SMOKE_OPEN_SELL_ORDER : SMOKE_OPEN_ORDER;
     const apiKeyMatch = url.match(/[?&,]apiKey=([^&,]+)/);
     const shouldForceRuntimePortfolioSync =
@@ -394,6 +398,8 @@ export default function App() {
         setTicketDefaults({ amount: "100", side: "buy", slippage: "1%" });
         setSavedEventIds(new Set());
         setForceAccountSignedIn(false);
+        setPortfolioSyncStatus(ORDER_MODE === "server" ? "syncing" : "hidden");
+        setProfilePreferencesSyncStatus(ORDER_MODE === "server" ? "syncing" : "hidden");
       };
       resetRuntimeState();
       if (
@@ -404,6 +410,10 @@ export default function App() {
         !shouldForcePortfolio &&
         !shouldForceOpenOrder &&
         !shouldForceLineOpenOrder &&
+        !shouldForceNoLive &&
+        !shouldForcePortfolioSyncing &&
+        !shouldForcePortfolioSyncError &&
+        !shouldForceAccountProfileSyncError &&
         !forceServerOrderProof.current &&
         !shouldForceLive &&
         !shouldForceMexicoEcuadorGamePosition
@@ -421,6 +431,28 @@ export default function App() {
     }
     if (shouldForceLive) {
       setMainTab("live");
+    }
+    if (shouldForceNoLive) {
+      setEvents(worldCupEvents.filter((item) => item.status !== "live"));
+      setMainTab("live");
+    }
+    if (shouldForcePortfolioSyncing) {
+      setBalance(10000);
+      setPositions([]);
+      setLatestOrder(null);
+      setOpenOrders([]);
+      setActivities([]);
+      setPortfolioSyncStatus("syncing");
+      setMainTab("portfolio");
+    }
+    if (shouldForcePortfolioSyncError) {
+      setBalance(10000);
+      setPositions([]);
+      setLatestOrder(null);
+      setOpenOrders([]);
+      setActivities([]);
+      setPortfolioSyncStatus("error");
+      setMainTab("portfolio");
     }
     if (shouldForceWorldCupWinnerFranceTicket) {
       const market = worldCupFutures[0];
@@ -576,6 +608,11 @@ export default function App() {
       setMainTab("home");
     }
     if (url.includes("forceAccount=1")) {
+      setMainTab("account");
+    }
+    if (shouldForceAccountProfileSyncError) {
+      setForceAccountSignedIn(false);
+      setProfilePreferencesSyncStatus("error");
       setMainTab("account");
     }
     if (url.includes("forceAccountPreferences=1")) {
