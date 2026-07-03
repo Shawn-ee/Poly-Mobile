@@ -15,7 +15,7 @@ import {
   openOrderValue,
 } from "../services/openOrderEconomicsService";
 import type { OrderMode } from "../services/orderService";
-import type { TicketSelection } from "./TradeTicket";
+import type { BinaryContractSide, TicketSelection } from "./TradeTicket";
 
 export type Position = {
   id: string;
@@ -25,6 +25,7 @@ export type Position = {
   title: string;
   outcome: string;
   selection?: TicketSelection;
+  contractSide?: BinaryContractSide;
   side: "buy" | "sell";
   amount: number;
   probability: number;
@@ -46,6 +47,7 @@ export type PortfolioActivity = {
   title: string;
   outcome: string;
   selection?: TicketSelection;
+  contractSide?: BinaryContractSide;
   amount: number;
   entryAmount?: number;
   shares?: number;
@@ -61,6 +63,7 @@ export type OpenOrder = {
   title: string;
   outcome: string;
   selection?: TicketSelection;
+  contractSide?: BinaryContractSide;
   side: "buy" | "sell";
   status: string;
   price: number;
@@ -77,6 +80,7 @@ export type OrderConfirmation = {
   title: string;
   outcome: string;
   selection?: TicketSelection;
+  contractSide?: BinaryContractSide;
   side: "buy" | "sell";
   amount: number;
   probability?: number;
@@ -138,8 +142,11 @@ export { portfolioPositionValue };
 
 const estimatedPnl = estimatedPositionPnl;
 
-const displayOutcome = (item: { outcome: string; selection?: TicketSelection }) =>
-  item.selection?.displayLabel ?? item.outcome;
+const displayOutcome = (item: { outcome: string; selection?: TicketSelection; contractSide?: BinaryContractSide }) => {
+  const contractSide = item.contractSide ?? item.selection?.contractSide;
+  const display = item.selection?.displayLabel ?? item.outcome;
+  return contractSide === "no" ? `No - ${display}` : display;
+};
 
 const portfolioDetailCopy = {
   en: {

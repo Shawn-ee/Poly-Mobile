@@ -1,5 +1,5 @@
 import { PolyApi } from "../api";
-import type { TicketSelection } from "../components/TradeTicket";
+import type { BinaryContractSide, TicketSelection } from "../components/TradeTicket";
 import type { Event, Market, Outcome } from "../mocks/worldCup";
 
 export type OrderMode = "mock" | "server";
@@ -11,6 +11,7 @@ export type TicketOrderInput = {
   market: Market;
   outcome: Outcome;
   selection?: TicketSelection;
+  contractSide?: BinaryContractSide;
   side: "buy" | "sell";
   amount: number;
 };
@@ -21,6 +22,7 @@ export type TicketOrderResult = {
   title: string;
   outcome: string;
   selection?: TicketSelection;
+  contractSide?: BinaryContractSide;
   side: "buy" | "sell";
   amount: number;
   probability: number;
@@ -52,15 +54,24 @@ const orderTitle = (input: TicketOrderInput) => {
   return label(input.market);
 };
 
+const contractSideForOrder = (input: TicketOrderInput): BinaryContractSide =>
+  input.contractSide ?? input.selection?.contractSide ?? "yes";
+
+const contractProbability = (input: TicketOrderInput) => {
+  const probability = input.outcome.probability;
+  return contractSideForOrder(input) === "no" ? 100 - probability : probability;
+};
+
 const mockOrder = (input: TicketOrderInput): TicketOrderResult => ({
   id: `mock-${input.market.id}-${input.outcome.id}-${Date.now()}`,
   mode: "mock",
   title: orderTitle(input),
   outcome: label(input.outcome),
   selection: input.selection,
+  contractSide: contractSideForOrder(input),
   side: input.side,
   amount: input.amount,
-  probability: input.outcome.probability,
+  probability: contractProbability(input),
 });
 
 const numericField = (value: string | number | null | undefined) => {
@@ -102,8 +113,9 @@ export const submitTicketOrder = async (input: TicketOrderInput): Promise<Ticket
     marketId: input.market.id,
     outcomeId: input.outcome.id,
     side: input.side.toUpperCase() as "BUY" | "SELL",
-    price: (input.outcome.probability / 100).toFixed(2),
-    size: sharesFromAmount(input.amount, input.outcome.probability).toFixed(2),
+    contractSide: contractSideForOrder(input).toUpperCase() as "YES" | "NO",
+    price: (contractProbability(input) / 100).toFixed(2),
+    size: sharesFromAmount(input.amount, contractProbability(input)).toFixed(2),
     ...(input.selection ? { selection: input.selection } : {}),
   };
   const payload = await input.api.placeLimitOrder(orderInput);

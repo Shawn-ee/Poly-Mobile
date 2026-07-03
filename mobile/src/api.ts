@@ -89,6 +89,7 @@ export class PolyApi {
     marketId: string;
     outcomeId: string;
     side: "BUY" | "SELL";
+    contractSide?: "YES" | "NO";
     price: string;
     size: string;
     selection?: unknown;

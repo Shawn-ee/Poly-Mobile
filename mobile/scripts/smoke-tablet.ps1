@@ -17,6 +17,7 @@ param(
   [switch]$FutureCardStats,
   [switch]$FutureChartRange,
   [switch]$FutureListTrade,
+  [switch]$FutureListBuyNo,
   [switch]$SearchSort
 )
 
@@ -87,6 +88,8 @@ if ($EventDetailTrade) {
   & "$PSScriptRoot\smoke.ps1" -Deep -FutureChartRange -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($FutureListTrade) {
   & "$PSScriptRoot\smoke.ps1" -Deep -FutureListTrade -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
+} elseif ($FutureListBuyNo) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -FutureListBuyNo -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($SearchSort) {
   & "$PSScriptRoot\smoke.ps1" -Deep -SearchSort -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } else {

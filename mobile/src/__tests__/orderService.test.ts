@@ -84,6 +84,7 @@ describe("ticket order service", () => {
       marketId: "world-cup-winner",
       outcomeId: "france",
       side: "BUY",
+      contractSide: "YES",
       price: "0.34",
       size: "294.12",
     });
@@ -95,6 +96,39 @@ describe("ticket order service", () => {
       side: "buy",
       amount: 100,
       probability: 34,
+      contractSide: "yes",
+    });
+  });
+
+  test("submits Buy No as a buy order with explicit NO contract side and inverse price", async () => {
+    const placeLimitOrder = vi.fn(async () => ({ order: { id: "server-no-order-1" } }));
+    const api = { placeLimitOrder } as unknown as PolyApi;
+
+    const result = await submitTicketOrder({
+      mode: "server",
+      api,
+      market,
+      outcome,
+      selection: { marketType: "future", displayLabel: "France", contractSide: "no" },
+      contractSide: "no",
+      side: "buy",
+      amount: 100,
+    });
+
+    expect(placeLimitOrder).toHaveBeenCalledWith({
+      marketId: "world-cup-winner",
+      outcomeId: "france",
+      side: "BUY",
+      contractSide: "NO",
+      price: "0.66",
+      size: "151.52",
+      selection: { marketType: "future", displayLabel: "France", contractSide: "no" },
+    });
+    expect(result).toMatchObject({
+      id: "server-no-order-1",
+      side: "buy",
+      contractSide: "no",
+      probability: 66,
     });
   });
 
@@ -138,6 +172,7 @@ describe("ticket order service", () => {
       marketId: "mexico-ecuador-spread-2.5-1H",
       outcomeId: "mexico-ecuador-spread-2.5-1H-yes",
       side: "BUY",
+      contractSide: "YES",
       price: "0.03",
       size: "1000.00",
       selection,
@@ -162,6 +197,7 @@ describe("ticket order service", () => {
       marketId: "world-cup-winner",
       outcomeId: "france",
       side: "SELL",
+      contractSide: "YES",
       price: "0.34",
       size: "75.00",
     });
