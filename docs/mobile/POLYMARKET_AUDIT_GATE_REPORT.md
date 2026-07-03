@@ -25,6 +25,7 @@ Fail the feature when:
 | Event page top shell/action controls | Cycle U | Pass | 0 | P1 native share parity; P1 World Cup-specific reference recapture; P2 density/animation polish | `docs/mobile/reference/screenshots/cycle-U-polymarket-event-*`; `docs/mobile/audits/event-page-top-shell.md` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-top-order-book.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-top-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-share-sheet.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-share-sheet.xml`; `npm run smoke:tablet:event-detail-actions` | Focused pass only. Top book now opens Order Book and share remains dismissible. Full Market/Event page remains open. |
 | Futures market rows | Cycle V | Pass | 0 | P1 true binary Buy No contract; P1 fuller futures outcome catalog; P2 sticky/chart polish | `docs/mobile/reference/screenshots/cycle-V-polymarket-web-world-cup-winner-*`; `docs/mobile/audits/futures-market-rows.md` | `docs/mobile/screenshots/cycle-current-holiwyn-future-card-stats.png`; `docs/mobile/harness/cycle-current-holiwyn-future-card-stats.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-future-list-ticket.png`; `docs/mobile/harness/cycle-current-holiwyn-future-list-ticket.xml` | Focused pass only. Futures rows now match the audited outcome-row structure and Buy Yes ticket carry-through. |
 | Futures chart range | Cycle W | Pass | 0 | P1 backend historical chart data; P1 settings gear; P2 tooltip/animation geometry | `docs/mobile/reference/screenshots/cycle-W-polymarket-world-cup-winner-chart-*`; `docs/mobile/audits/futures-chart-range.md` | `docs/mobile/screenshots/cycle-current-holiwyn-future-chart-1w.png`; `docs/mobile/harness/cycle-current-holiwyn-future-chart-ready.xml`; `docs/mobile/harness/cycle-current-holiwyn-future-chart-1d.xml`; `docs/mobile/harness/cycle-current-holiwyn-future-chart-1w.xml` | Focused pass only. Baseline chart section and range switching now exist for futures. |
+| Chart behavior | Cycle AD | Pass | 0 | P1 backend history series; P1 direct World Cup chart recapture; P2 animation/touch polish | `docs/mobile/reference/screenshots/cycle-AD-polymarket-chart-*`; `docs/mobile/audits/chart-behavior.md` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-chart-pressed.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-chart-pressed.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-chart-live.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-chart-live.xml` | Focused pass only. Event chart is no longer a static placeholder and supports chart-point tap/tooltip behavior. |
 
 ## Cycle U - Event Page Top Shell/Action Controls
 
@@ -405,6 +406,61 @@ Decision:
 - Unresolved P0 gaps: 0 for focused signed-out account/settings scope.
 - Remaining P1/P2 gaps: native Polymarket account recapture and real destination pages for menu rows.
 - Next cycle required: yes. Continue chart behavior or deeper market-page functionality.
+
+## Feature: Chart Behavior
+
+Cycle: AD
+
+Lead Agent target: focused event-detail chart behavior.
+
+Reference Audit Agent: Samsung S23 Polymarket mobile web chart audit.
+
+Implementation Agent: Holiwyn EventDetail chart interaction and focused tablet harness.
+
+Audit Gate Agent: Samsung tablet Holiwyn proof against written Chart criteria.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket mobile web in Chrome.
+
+Reference route/URL: `https://polymarket.com`.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AD-polymarket-chart-default.png`
+- `docs/mobile/reference/screenshots/cycle-AD-polymarket-chart-default.xml`
+- `docs/mobile/reference/screenshots/cycle-AD-polymarket-chart-press.png`
+- `docs/mobile/reference/screenshots/cycle-AD-polymarket-chart-press.xml`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-chart-pressed.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-chart-pressed.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-chart-live.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail-chart-live.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| CH-P0-01 | P0 | Pass | `cycle-current-holiwyn-event-detail.xml` | None |
+| CH-P0-02 | P0 | Pass | `cycle-current-holiwyn-event-detail.xml` | None |
+| CH-P0-03 | P0 | Pass | `cycle-current-holiwyn-event-detail-chart-pressed.xml` | None |
+| CH-P0-04 | P0 | Pass | `cycle-current-holiwyn-event-detail-chart-live.xml` | None |
+| CH-P0-05 | P0 | Pass | `docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md`; `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md` | None |
+
+Decision:
+
+- Pass/fail: Pass for focused chart behavior P0 baseline.
+- Unresolved P0 gaps: 0 for focused scope.
+- Remaining P1/P2 gaps: backend history series, direct World Cup chart recapture, animation/touch polish.
+- Next cycle required: yes. Continue deeper market-page functionality or backend-backed chart-history preparation.
 
 ## Gate Report Template
 

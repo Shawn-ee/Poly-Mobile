@@ -341,3 +341,39 @@ Temporary mock/static data:
 Future migration concern:
 
 - Real-money wallet, EBPay, deposit, and withdrawal controls must remain disabled until a dedicated auth/wallet/compliance milestone defines backend contracts.
+
+## Cycle AD - Chart Behavior
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Timestamped market/outcome chart series by selected market id, outcome id, and range.
+- Current point metadata: timestamp, probability, price, volume, and whether the point is live/delayed.
+- Target/reference line metadata when the chart needs a beat/threshold/reference value.
+- Range/filter metadata matching Polymarket-style chart controls.
+- Empty/loading/suspended/no-history chart states.
+- Optional nearest-point payload for press/tooltip behavior.
+
+Fields backend provides but mobile ignores:
+
+- Unknown for this focused cycle; mobile used local event probability and local chart point math.
+
+Schema mismatch:
+
+- Mobile currently derives chart points from current event/outcome probability instead of consuming backend series rows.
+- Tooltip state is local UI state, not a backend-provided nearest historical point.
+- The event detail payload does not identify chart-specific range availability or empty/no-history state.
+
+Route mismatch:
+
+- Existing `/api/events/:slug` can hydrate event context but is not enough for historical chart parity.
+- A future route is needed, for example `/api/markets/:id/history?range=1D&outcomeId=<id>` or `/api/mobile/events/:slug/chart`.
+
+Temporary mock/static data:
+
+- `selectedChartPoint` cycles through local `latest`, `mid`, and `target` states.
+- Tooltip values are deterministic calculations from current probability.
+- Chart target/reference line is a local visual baseline.
+
+Future migration concern:
+
+- Once backend history exists, EventDetail should render the chart from server series and use a loading/empty/suspended chart state rather than synthetic local points.

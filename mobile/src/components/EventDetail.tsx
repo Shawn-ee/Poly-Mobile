@@ -168,6 +168,7 @@ export function EventDetail({
   const [activeLineDetailTab, setActiveLineDetailTab] = useState<"order-book" | "graph" | "about">("order-book");
   const [activeHeaderTab, setActiveHeaderTab] = useState<"game" | "chat">("game");
   const [chartFilter, setChartFilter] = useState<ChartFilter>("Game");
+  const [selectedChartPoint, setSelectedChartPoint] = useState<"latest" | "mid" | "target">("latest");
   const [spreadPeriod, setSpreadPeriod] = useState<LinePeriod>("Reg. Time");
   const [spreadLine, setSpreadLine] = useState("1.5");
   const [totalsPeriod, setTotalsPeriod] = useState<LinePeriod>("Reg. Time");
@@ -198,6 +199,12 @@ export function EventDetail({
   const rightOutcome = primaryOutcomes[1];
   const selectedChartOutcome = chartFilter === "Live" ? rightOutcome ?? leftOutcome : leftOutcome ?? rightOutcome;
   const selectedChartColor = selectedChartOutcome?.color ?? "#22c55e";
+  const selectedChartProbability = selectedChartOutcome?.probability ?? 0;
+  const chartPointMeta = selectedChartPoint === "target"
+    ? { label: "Target", value: `${Math.max(1, selectedChartProbability + 4)}%`, time: "Target line" }
+    : selectedChartPoint === "mid"
+      ? { label: "2H", value: `${Math.max(1, selectedChartProbability - 2)}%`, time: "Mid chart" }
+      : { label: "Current", value: `${selectedChartProbability}%`, time: event.status === "live" ? "Live now" : event.startsAt };
   const liveClock = event.status === "live"
     ? event.startsAt.replace("Live", "").replace("·", "").trim()
     : "15'";
@@ -837,8 +844,9 @@ export function EventDetail({
           </View>
         ) : (
           <>
-        <View
-          accessibilityLabel={`event-detail-price-chart two outcome traces ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartOutcome?.probability ?? 0}% +$9 +$39 +$479 All Game Live`}
+        <Pressable
+          accessibilityLabel={`event-detail-price-chart two outcome traces ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartProbability}% ${chartPointMeta.label} ${chartPointMeta.value} +$9 +$39 +$479 All Game Live`}
+          onPress={() => setSelectedChartPoint((current) => current === "latest" ? "mid" : current === "mid" ? "target" : "latest")}
           style={styles.chartBlock}
           testID="event-detail-price-chart"
         >
@@ -846,6 +854,9 @@ export function EventDetail({
             <Text style={styles.chartMarkerText}>+$9</Text>
             <Text style={styles.chartMarkerText}>+$39</Text>
             <Text style={styles.chartMarkerText}>+$479</Text>
+          </View>
+          <View style={styles.chartReferenceLine}>
+            <Text style={styles.chartReferenceText}>Target</Text>
           </View>
           <View style={styles.dualChart}>
             <View style={styles.chartTrace}>
@@ -879,10 +890,20 @@ export function EventDetail({
               ))}
             </View>
             <View style={[styles.chartDot, { backgroundColor: selectedChartColor }]} />
+            <View
+              accessibilityLabel={`event-detail-chart-selected-point-${selectedChartPoint}`}
+              style={[styles.chartSelectedPoint, selectedChartPoint === "mid" && styles.chartSelectedPointMid, selectedChartPoint === "target" && styles.chartSelectedPointTarget, { borderColor: selectedChartColor }]}
+              testID={`event-detail-chart-selected-point-${selectedChartPoint}`}
+            />
           </View>
           <View style={styles.chartLabel}>
             <Text style={[styles.chartName, { color: selectedChartColor }]}>{selectedChartOutcome ? label(locale, selectedChartOutcome) : label(locale, event)}</Text>
             <Text style={[styles.chartPercent, { color: selectedChartColor }]}>{selectedChartOutcome?.probability ?? 0}%</Text>
+          </View>
+          <View accessibilityLabel={`event-detail-chart-tooltip ${chartPointMeta.label} ${chartPointMeta.value} ${chartPointMeta.time}`} style={styles.chartTooltip} testID="event-detail-chart-tooltip">
+            <Text style={styles.chartTooltipLabel}>{chartPointMeta.label}</Text>
+            <Text style={[styles.chartTooltipValue, { color: selectedChartColor }]}>{chartPointMeta.value}</Text>
+            <Text style={styles.chartTooltipTime}>{chartPointMeta.time}</Text>
           </View>
           <View style={styles.chartFilterRow}>
             {chartFilters.map((filter) => (
@@ -897,7 +918,7 @@ export function EventDetail({
               </Pressable>
             ))}
           </View>
-        </View>
+        </Pressable>
 
         <Pressable accessibilityLabel="event-detail-chat-preview" style={styles.chatPreview} testID="event-detail-chat-preview">
           <View style={styles.chatPreviewTop}>
@@ -1226,14 +1247,23 @@ const styles = StyleSheet.create({
   chartBlock: { minHeight: 190, paddingHorizontal: 0, paddingTop: 32, paddingBottom: 12 },
   chartMarkers: { position: "absolute", left: 14, top: 34, gap: 20 },
   chartMarkerText: { color: "#546071", fontSize: 11, fontWeight: "900" },
+  chartReferenceLine: { position: "absolute", left: 0, right: 42, top: 63, borderTopWidth: 1, borderStyle: "dashed", borderColor: "#64748b", opacity: 0.65 },
+  chartReferenceText: { position: "absolute", right: -2, top: -15, overflow: "hidden", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 4, color: "#dbeafe", backgroundColor: "#475569", fontSize: 12, fontWeight: "900" },
   dualChart: { width: "70%", height: 92, marginLeft: 0 },
   chartTrace: { position: "absolute", left: 0, right: 0, top: 0, height: 86, flexDirection: "row", alignItems: "flex-start" },
   chartTraceOverlay: { top: 28 },
   chartStep: { flex: 1, height: 5, borderRadius: 999, marginRight: -1 },
   chartDot: { position: "absolute", right: -8, top: 47, width: 15, height: 15, borderRadius: 999 },
+  chartSelectedPoint: { position: "absolute", right: 20, top: 43, width: 22, height: 22, borderRadius: 999, borderWidth: 3, backgroundColor: "#0b1019" },
+  chartSelectedPointMid: { right: "42%", top: 31 },
+  chartSelectedPointTarget: { right: "18%", top: 12 },
   chartLabel: { position: "absolute", right: 28, top: 36, alignItems: "flex-start" },
   chartName: { fontSize: 17, fontWeight: "800" },
   chartPercent: { fontSize: 48, fontWeight: "500" },
+  chartTooltip: { position: "absolute", left: "38%", top: 8, minWidth: 92, paddingHorizontal: 10, paddingVertical: 7, borderRadius: 10, backgroundColor: "#101827", borderWidth: 1, borderColor: "#334155" },
+  chartTooltipLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "900" },
+  chartTooltipValue: { fontSize: 17, fontWeight: "900", marginTop: 1 },
+  chartTooltipTime: { color: "#cbd5e1", fontSize: 11, fontWeight: "800", marginTop: 1 },
   chartFilterRow: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 18 },
   chartFilterPill: { minWidth: 62, minHeight: 32, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#111827" },
   chartFilterPillActive: { backgroundColor: "#273244" },

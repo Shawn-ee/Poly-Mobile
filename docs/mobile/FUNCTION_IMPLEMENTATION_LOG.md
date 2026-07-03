@@ -397,3 +397,43 @@ Known limitations:
 
 - Native Polymarket account/settings remains location-gated.
 - Holiwyn menu rows are visible affordances; deeper destination pages remain later P1 work.
+
+## Cycle AD - Chart Behavior
+
+Feature/page worked on:
+
+- Focused event-detail chart behavior.
+- Chart selected point and tooltip equivalent.
+- Tablet smoke proof for chart tap/filter behavior.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+Important functions/services touched:
+
+- `EventDetail()` now tracks `selectedChartPoint` across `latest`, `mid`, and `target`.
+- `selectedChartProbability` and `chartPointMeta` derive the visible chart tooltip state from the current selected event/outcome context.
+- `event-detail-price-chart` is now pressable and cycles the selected chart point.
+- `EventDetailChart` smoke launches the forced Mexico/Ecuador detail route, taps the chart, verifies the selected-point marker, switches to the Live chart filter, and records tablet proof.
+
+User interactions supported:
+
+- View the event chart with current probability context.
+- Tap the chart to change selected point state.
+- See a tooltip/nearest-point equivalent after chart interaction.
+- Switch chart filter state while retaining event context.
+
+State transitions:
+
+- `selectedChartPoint: "latest" -> "mid" -> "target" -> "latest"` on chart taps.
+- Chart tooltip label/value/time updates from `Current` to `2H`/`Mid chart` and `Target` states.
+- Existing chart filter state remains available through the `event-detail-chart-filter-live` control.
+
+Known limitations:
+
+- Chart points still use deterministic local math instead of backend timestamped history.
+- Same-cycle Polymarket reference was mobile web chart behavior because direct native/World Cup chart access was location-gated.
+- Exact Polymarket chart animation and touch geometry remain P2 polish.
