@@ -358,6 +358,7 @@ export default function App() {
     const shouldForcePortfolioSyncing = url.includes("forcePortfolioSyncing=1");
     const shouldForcePortfolioSyncError = url.includes("forcePortfolioSyncError=1");
     const shouldForceAccountProfileSyncError = url.includes("forceAccountProfileSyncError=1");
+    const shouldForceMexicoEcuadorDetail = url.includes("forceMexicoEcuadorDetail=1");
     const forcedOpenOrder = url.includes("forceOpenOrderSide=sell") ? SMOKE_OPEN_SELL_ORDER : SMOKE_OPEN_ORDER;
     const apiKeyMatch = url.match(/[?&,]apiKey=([^&,]+)/);
     const shouldForceRuntimePortfolioSync =
@@ -414,6 +415,7 @@ export default function App() {
         !shouldForcePortfolioSyncing &&
         !shouldForcePortfolioSyncError &&
         !shouldForceAccountProfileSyncError &&
+        !shouldForceMexicoEcuadorDetail &&
         !forceServerOrderProof.current &&
         !shouldForceLive &&
         !shouldForceMexicoEcuadorGamePosition
@@ -459,7 +461,7 @@ export default function App() {
       const outcome = market.outcomes[0];
       setTicket({ market, outcome, side: "buy" });
     }
-    if (url.includes("forceMexicoEcuadorDetail=1")) {
+    if (shouldForceMexicoEcuadorDetail) {
       const event = worldCupEvents.find((item) => item.id === "mexico-ecuador");
       setEventDetailForcedSide(null);
       if (event) setSelectedEvent(event);

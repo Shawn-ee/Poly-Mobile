@@ -8,6 +8,7 @@ param(
   [switch]$EventDetailLineAdjustment,
   [switch]$EventDetailLinePortfolio,
   [switch]$EventDetailOrderBook,
+  [switch]$EventDetailFullPage,
   [switch]$EmptyErrorLoading,
   [switch]$WholeAppNavDiscovery
 )
@@ -61,6 +62,8 @@ if ($EventDetailSummary) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailLinePortfolio -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($EventDetailOrderBook) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailOrderBook -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
+} elseif ($EventDetailFullPage) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailFullPage -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($EmptyErrorLoading) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EmptyErrorLoading -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($WholeAppNavDiscovery) {
