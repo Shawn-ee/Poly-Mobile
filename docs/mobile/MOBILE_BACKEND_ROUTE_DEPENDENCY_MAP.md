@@ -215,3 +215,15 @@ Cycle AI implementation notes:
 
 - No backend route was created or changed.
 - This cycle changes the mobile ticket surface only; server-mode order submission continues to use the existing order path.
+
+## Cycle AJ - Game Page Compact Scrolled Header
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Compact scrolled match header | `/api/events/:slug` when server event detail is active | GET | Optional for viewing | None | event title/status/start time, teams, primary outcome probabilities/colors | Events, teams, markets, outcomes | Local event/team/outcome data | Backend should provide stable team codes, localized short names, and current probabilities for compact game headers. |
+| Scrolled market rows proof | `/api/events/:slug` when server event detail is active | GET | Optional for viewing | None | market groups, line values, periods, outcome probabilities | Market groups, line markets, outcomes | Local deterministic game-line groups and probabilities | Backend should provide Polymarket-style ordered market groups, line selectors, and per-period prices. |
+
+Cycle AJ implementation notes:
+
+- No backend route was created or changed.
+- This is a presentation-layer parity cycle; future backend work should make compact header and market rows server-authoritative.

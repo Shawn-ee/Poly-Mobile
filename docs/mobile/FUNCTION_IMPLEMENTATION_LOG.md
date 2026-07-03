@@ -623,3 +623,37 @@ Known limitations:
 - Logged-in Polymarket on the S23 still shows a location verification gate before production order entry.
 - Holiwyn fake-token mode intentionally does not implement the production location/login/trading eligibility gate yet.
 - Native drag physics and transition animation remain future polish.
+
+## Cycle AJ - Game Page Compact Scrolled Header
+
+Feature/page worked on:
+
+- Logged-in World Cup game page.
+- Scrolled Game Lines compact match context.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+
+Important functions/services touched:
+
+- `EventDetail()` now tracks scroll position and shows `event-detail-compact-game-header` after the user scrolls into the market section.
+- The compact header uses current event teams, team codes, probabilities, date/time, and active game context.
+- `smoke.ps1` full game-page proof now asserts the compact header in the scrolled markets screenshot.
+
+User interactions supported:
+
+- Scroll from the game-page hero/chart into Game Lines while preserving match context at the top of the screen.
+- Continue using market rows, line selectors, ticket opening, chat, share, order book, props, rules, and lower-page content.
+
+State transitions:
+
+- `compactHeaderVisible: false -> true` when scroll offset passes the market-section threshold.
+- The compact header hides again when returning to the top.
+
+Known limitations:
+
+- Polymarket's native sticky tab polish and phone-density spacing are still tighter.
+- Player Props remains Holiwyn-local product scope and needs a focused reference decision.
+- Market data, chart history, and live stats are still local/deterministic unless server hydration is available.

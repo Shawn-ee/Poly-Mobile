@@ -18,6 +18,25 @@ Verification:
 Current gap state: trade-ticket P0 remains 0 unresolved; PM-GAP-062 is verified for focused tall fake-token ticket surface, while production eligibility/location gates remain tracked as deferred real-money work.
 Next focus: continue game-page parity around market detail depth, chart/row interactions, and ticket behavior without treating fake-token mode as production trading.
 
+## Cycle AJ
+
+Date: 2026-07-03
+Branch: mobile/cycle-AJ-game-page-audit
+Goal: Apply the logged-in Polymarket audit gate to the World Cup game page and close the scrolled compact-header parity gap.
+Reference app screens observed: Logged-in Polymarket Live tab World Cup list; Australia vs Egypt game top; chart tap; market group toggle; scrolled Game Lines with compact header.
+Holiwyn screens changed: Game page scrolled markets state.
+Backend/API changed: None.
+Database/schema changed: None.
+Files changed: `mobile/src/components/EventDetail.tsx`, `mobile/scripts/smoke.ps1`, `docs/mobile/`.
+Tests run:
+- `npm run typecheck`
+- `cmd /c npm.cmd run smoke:tablet:event-detail-full-page`
+Screenshots captured:
+- Reference: `docs/mobile/reference/screenshots/cycle-AJ-polymarket-live-tab.png`, `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-top.png`, `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-lines-mid.png`
+- Holiwyn: `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-markets.png`
+Result: Pass for focused game-page compact scrolled header P0 scope.
+Next focus: Continue game-page polish around sticky tabs/phone density, Player Props scope, and backend-backed market groups.
+
 ## Heartbeat: Game Page Parity Cycles N-P
 
 Date: 2026-07-03
