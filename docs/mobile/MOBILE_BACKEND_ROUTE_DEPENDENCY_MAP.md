@@ -202,3 +202,16 @@ Cycle AH implementation notes:
 
 - Mobile now sends `contractSide: "YES" | "NO"` with server-mode order payloads.
 - No backend route was changed in this cycle; this is a forward-compatible mobile contract update.
+
+## Cycle AI - Trade Ticket Surface
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Tall ticket open from game outcome | `/api/events/:slug` when server detail is active | GET | Optional for viewing | None | event title/status, market title/type, outcome label/probability/color, selection metadata | Events, markets, outcomes | Local event/outcome data | Backend should return ticket-ready display metadata and eligibility state with event detail or a ticket quote route. |
+| Swipe-ready amount state | No dedicated route in this cycle; calculated client-side | N/A | N/A | N/A | amount, selected side, selected contract side, probability | Quotes, wallet, eligibility | Local fake-token balance and probability math | A future ticket quote route should return executable price, payout/proceeds, fee, max/min, and whether swipe confirmation is allowed. |
+| Production eligibility/location state | Not implemented in Holiwyn fake-token mode | N/A | Required for real-money mode later | N/A | eligibility status, block reason, support action, login/location state | Users, sessions, geo/eligibility checks | Fake-token mode always allows mock submit when amount is valid | Add server-authoritative `tradingEligibility` before real-money trading. |
+
+Cycle AI implementation notes:
+
+- No backend route was created or changed.
+- This cycle changes the mobile ticket surface only; server-mode order submission continues to use the existing order path.

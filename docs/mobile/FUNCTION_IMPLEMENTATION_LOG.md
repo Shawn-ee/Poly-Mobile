@@ -588,3 +588,38 @@ Known limitations:
 
 - The S23 native Polymarket outcome tap is location-gated, so the live production order body was not visible in this cycle.
 - The S23 reference still proves the native app uses a taller sheet/page surface over the game page; Holiwyn's compact ticket sheet remains a P1 surface-parity gap.
+
+## Cycle AI - Trade Ticket Surface
+
+Feature/page worked on:
+
+- Logged-in Polymarket World Cup ticket-surface parity.
+- Holiwyn tall fake-token ticket surface and swipe-ready submit rail.
+
+Frontend components touched:
+
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/scripts/smoke.ps1`
+
+Important functions/services touched:
+
+- `TradeTicket()` now keeps the submit label aligned with the swipe interaction after amount entry.
+- `TradeTicket()` now renders a taller sheet surface with a larger amount area and larger fixed swipe rail.
+- `smoke.ps1` now asserts `Swipe up to buy` in ticket amount and futures Buy No proofs.
+
+User interactions supported:
+
+- Open ticket from a game-page outcome over a dimmed game page.
+- Tap quick amount chip and keep a swipe-up submit affordance visible.
+- Open futures `Buy No` and keep `No - France` plus inverse price visible with the same swipe-ready surface.
+
+State transitions:
+
+- `amount: "0" -> "10"` changes primary copy from `Choose an amount` to `Swipe up to buy`.
+- Existing `buy/sell` and `yes/no` contract-side state is preserved through the taller surface.
+
+Known limitations:
+
+- Logged-in Polymarket on the S23 still shows a location verification gate before production order entry.
+- Holiwyn fake-token mode intentionally does not implement the production location/login/trading eligibility gate yet.
+- Native drag physics and transition animation remain future polish.

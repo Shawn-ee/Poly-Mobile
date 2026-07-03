@@ -504,3 +504,35 @@ Temporary mock/static data:
 Future migration concern:
 
 - Once backend-backed YES/NO contracts exist, close/sell/retrade flows must preserve whether the user owns YES shares or NO shares, and should not infer contract ownership from transaction side alone.
+
+## Cycle AI - Trade Ticket Surface
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- `tradingEligibility` for ticket submit readiness: allowed, location blocked, login required, wallet required, server unavailable, or view-only.
+- User-facing block reason and next action for production gates.
+- Server-authoritative quote fields for the swipe-ready state: executable price, payout/proceeds, fee, min/max, and slippage impact.
+- Ticket surface metadata that distinguishes display probability from executable quote and selected contract side.
+
+Fields backend provides but mobile ignores:
+
+- Unknown in this focused cycle; proofs used local/fallback ticket state.
+
+Schema mismatch:
+
+- Holiwyn fake-token mode has no production eligibility state, while logged-in Polymarket can block the ticket with a location-verification sheet.
+- The swipe-ready UI currently becomes available from local amount validation rather than a server quote/eligibility response.
+
+Route mismatch:
+
+- Add a future route such as `/api/mobile/ticket-quote` or `/api/markets/:id/ticket-quote` with eligibility and quote data.
+- Existing event detail routes hydrate display context but do not answer whether a user can submit a trade.
+
+Temporary mock/static data:
+
+- Fake-token balance, quote math, and submit readiness are local.
+- Location/login/trading gates are documented from Polymarket but not implemented in fake-token mode.
+
+Future migration concern:
+
+- Before real-money trading, swipe confirmation must be armed only after a fresh server quote and eligibility check, and the server response must drive disabled/error states.
