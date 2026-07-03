@@ -53,6 +53,7 @@ Every focused audit must record:
 | Account/settings | `docs/mobile/audits/account.md` | Template ready | Pending next cycle | Pending next cycle | Not run under new rule | Must cover account shell, settings, language, notifications, login entry, disabled production money features. |
 | Chart behavior | `docs/mobile/audits/chart-behavior.md` | Template ready | Pending next cycle | Pending next cycle | Not run under new rule | Must cover probability movement, selected outcome state, time ranges, press/tooltip behavior, loading/empty states. |
 | Market page | `docs/mobile/audits/market-page.md` | Template ready | Pending next cycle | Pending next cycle | Not run under new rule | Must cover tabs, grouped markets, expand/collapse, nested options, line selectors, liquidity/depth. |
+| Event page top shell | `docs/mobile/audits/event-page-top-shell.md` | Cycle U P0 pass for focused scope | Samsung S23 / Polymarket Android app | Samsung tablet / Holiwyn Expo Go | Pass | Focused top action cluster only: Game/Chat tabs, order-book action, share action, overlay dismiss/return. Full market page remains open. |
 | Navigation | `docs/mobile/audits/navigation.md` | Cycle T P0 pass | Samsung S23 / Polymarket Android app | Samsung tablet / Holiwyn Expo Go | Pass | Reference shows four bottom tabs: Home, Live, Portfolio, Search; Holiwyn now matches primary bottom nav and keeps Account reachable through a header control. |
 
 ## Existing Historical Reference Files

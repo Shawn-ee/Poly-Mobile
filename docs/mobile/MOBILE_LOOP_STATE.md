@@ -11613,6 +11613,20 @@ Next cycle:
 
 - Priority 2: Market/event page, starting with a same-cycle Polymarket reference audit on the Samsung S23.
 
+### Cycle U - Event Page Top Shell/Action Controls
+
+Status: verified and ready for local merge after commit.
+
+Verified progress: same-cycle Polymarket reference audit captured a generic event-page top shell on Samsung S23; Holiwyn tablet proof now passes for the focused top action cluster. The event top book icon opens Order Book instead of a watchlist notice, Order Book closes back to the same event page, and the share panel opens/dismisses without losing event context.
+
+Device evidence: reference evidence is under `docs/mobile/reference/screenshots/cycle-U-polymarket-event-*`; Holiwyn evidence is under `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-top-order-book.png`, `docs/mobile/harness/cycle-current-holiwyn-event-detail-top-order-book.xml`, `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-share-sheet.png`, and matching XML.
+
+Verification: `npm run typecheck` passed; `npm run smoke:tablet:event-detail-actions` passed on the Samsung tablet.
+
+Open blockers: none for continuing the loop. World Cup-specific Polymarket recapture is deferred because the reference app hit location verification during retry.
+
+Next likely cycle: continue Priority 2 Market/Event page with grouped market rows, adjustable line markets, and deeper ticket carry-through under the same audit-gated workflow.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

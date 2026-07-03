@@ -34,3 +34,35 @@ Temporary mock/static data:
 Future migration concern:
 
 - If the backend later owns app navigation categories, the mobile `SportNav`, `WorldCupSegmented`, and `BottomTabs` contracts should be split into static app shell navigation and backend-driven sports/category discovery.
+
+## Cycle U - Event Page Top Shell/Action Controls
+
+Fields Holiwyn needs but backend does not provide yet:
+
+- Canonical `primaryMarketId` for each event detail payload.
+- Order-book/depth fields per market/outcome: bid levels, ask levels, sizes, spread, last updated timestamp, and suspended/no-liquidity state.
+- Canonical share URL/deep link per event/market.
+- Localized share copy fields for English and Chinese.
+
+Fields backend provides but mobile ignores:
+
+- Unknown for this cycle; the proof used the existing event adapter and did not inspect a fresh live backend payload.
+
+Schema mismatch:
+
+- Mobile can render an Order Book overlay from event/outcome fields, but the backend contract does not yet define a Polymarket-style order-book/depth object.
+- Share behavior currently derives from local event title/slug rather than a backend-owned canonical route.
+
+Route mismatch:
+
+- Event details use `/api/events/:slug`; a future depth route likely needs `/api/markets/:id/book` or equivalent included `market.depth` data.
+- Share/deep-link generation may need `/api/mobile/share/event/:slug` or app config route metadata if server-generated links are required.
+
+Temporary mock/static data:
+
+- Order Book rows fall back to local market/outcome values.
+- Share sheet uses local app copy and does not invoke a native or backend-generated share link in this focused pass.
+
+Future migration concern:
+
+- The mobile UI now expects top-shell Order Book behavior. If backend depth is unavailable in server mode, the app may show stale or synthetic depth unless the backend adds real market-depth support.

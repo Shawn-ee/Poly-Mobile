@@ -51,3 +51,48 @@ Known limitations:
 - Back-stack behavior is still simple React state, not a full native navigation stack.
 - Scroll restoration across tabs is not yet Polymarket-level and remains P1.
 - Deep link route restoration is smoke-oriented and remains P2.
+
+## Cycle U - Event Page Top Shell/Action Controls
+
+Feature/page worked on:
+
+- Event page top shell/action controls.
+- Top book/order-book action.
+- Share sheet action.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+
+Important functions/services touched:
+
+- `EventDetail()` top action row.
+- `setOrderBookVisible(true)` now runs from `event-detail-top-order-book`.
+- Existing `event-detail-order-book-close` closes the Order Book overlay.
+- Existing `event-detail-share` opens the share sheet.
+- Existing `event-detail-share-dismiss` closes the share sheet.
+- `EventDetailActions` smoke proof now waits for Order Book visibility instead of using a brittle fixed delay.
+
+User interactions supported:
+
+- Tap top book icon on the event page.
+- View Order Book for the selected event's primary market.
+- Close the Order Book and return to the same event page.
+- Tap the share icon.
+- Dismiss the share sheet and preserve event context.
+
+State transitions:
+
+- `orderBookVisible: false -> true` from top book tap.
+- `orderBookVisible: true -> false` from close tap.
+- `shareSheetVisible: false -> true` from share tap.
+- `shareSheetVisible: true -> false` from dismiss tap.
+- `selectedEvent` and selected event detail tab remain unchanged through both overlays.
+
+Known limitations:
+
+- This focused pass does not complete the full Market/Event page.
+- Native OS share parity is deferred.
+- World Cup-specific Polymarket top-shell reference needs recapture once the reference app clears location verification.
+- Order Book content is still derived from loaded event market data rather than a dedicated live depth route.
