@@ -11854,6 +11854,22 @@ Risks: Some Holiwyn account/menu rows are visible affordances without destinatio
 
 Next three likely cycles: chart behavior, deeper market-page functionality, and richer account/settings destinations or notification behavior.
 
+### Cycle AD - Chart Behavior
+
+Goal: Apply the Polymarket-reference audit gate to focused event-detail chart behavior.
+
+Reference audit: Samsung S23 Polymarket mobile web chart reference captured live/variable chart context and touch behavior evidence under `docs/mobile/reference/screenshots/cycle-AD-polymarket-chart-*`. Direct native/World Cup chart recapture remains P1 because the reference state was location-gated.
+
+Holiwyn screens changed: Event detail chart now exposes a selected chart point, target/reference marker, and tap-to-tooltip equivalent instead of remaining a static placeholder.
+
+Backend/API changed: No route changed. Docs now record the future need for backend market/outcome history series, range/filter metadata, nearest-point tooltip data, and empty/loading chart states.
+
+Verification: `npm run typecheck` passed; `powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailChart -Port 8211` passed on the Samsung tablet.
+
+Audit Gate: Pass for focused chart behavior P0 baseline, with 0 unresolved P0 gaps. P1/P2 gaps remain for backend history, direct World Cup chart recapture, and animation/touch polish.
+
+Next likely cycle: deeper market-page behavior, especially grouped market page completeness and non-chart section parity.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003

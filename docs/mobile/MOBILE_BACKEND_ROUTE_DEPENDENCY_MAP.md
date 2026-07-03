@@ -138,3 +138,16 @@ Cycle AC implementation notes:
 
 - No backend route was created or changed.
 - Account documentation now requires a future session/profile contract before production auth or real-money wallet actions.
+
+## Cycle AD - Chart Behavior
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event detail chart display | `/api/events/:slug` through the existing event detail hydration path when server mode is active | GET | Optional for public viewing | None | event id/slug/title/status, primary market/outcome probability, selected outcome label, current event status | Events, markets, outcomes | Local `worldCupEvents` event detail data and deterministic chart point math | Event detail does not provide timestamped chart/history series, target/reference line metadata, or per-outcome historical probabilities. |
+| Chart press/tooltip state | No dedicated route in this cycle; computed client-side from selected point | N/A | N/A | N/A | selected chart point label/value/time derived locally | Market history, outcome history, time buckets | Local `latest`/`mid`/`target` point states | Backend should expose nearest-point chart data so tooltip values reflect real historical ticks. |
+| Chart filter state | No dedicated route in this cycle | N/A | N/A | N/A | local chart filter labels such as All/Game/Live | Market history ranges, period filters, live tick history | Local filter state and event status | Backend should support range/filter query params for market chart series. |
+
+Cycle AD implementation notes:
+
+- No backend route was created or changed.
+- A future route such as `/api/markets/:id/history?range=1D&outcomeId=<id>` or `/api/mobile/events/:slug/chart` should return timestamped probability/price points, selected outcome metadata, target/reference lines when applicable, loading/empty states, and range/filter support.

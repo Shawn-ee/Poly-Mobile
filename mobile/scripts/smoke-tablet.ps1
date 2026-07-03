@@ -11,6 +11,7 @@ param(
   [switch]$EventDetailLinePortfolio,
   [switch]$EventDetailOrderBook,
   [switch]$EventDetailFullPage,
+  [switch]$EventDetailChart,
   [switch]$EmptyErrorLoading,
   [switch]$WholeAppNavDiscovery,
   [switch]$FutureCardStats,
@@ -74,6 +75,8 @@ if ($EventDetailTrade) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailOrderBook -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($EventDetailFullPage) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailFullPage -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
+} elseif ($EventDetailChart) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailChart -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($EmptyErrorLoading) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EmptyErrorLoading -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($WholeAppNavDiscovery) {
