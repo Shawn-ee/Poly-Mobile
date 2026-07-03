@@ -147,6 +147,8 @@ export function EventDetail({
   const [activeHeaderTab, setActiveHeaderTab] = useState<"game" | "chat">("game");
   const [chartFilter, setChartFilter] = useState<ChartFilter>("Game");
   const [spreadPeriod, setSpreadPeriod] = useState<"Reg. Time" | "1st Half" | "2nd Half">("Reg. Time");
+  const [savedNoticeVisible, setSavedNoticeVisible] = useState(false);
+  const [shareSheetVisible, setShareSheetVisible] = useState(false);
   const [expandedPropIds, setExpandedPropIds] = useState<Record<string, boolean>>({ "goals-reg-time": true });
   const gameLineMarkets = useMemo(() => event.markets.filter((market) => market.type !== "prop" && market.type !== "future"), [event.markets]);
   const propMarkets = useMemo(() => event.markets.filter((market) => market.type === "prop"), [event.markets]);
@@ -323,17 +325,56 @@ export function EventDetail({
         <View style={styles.topActions}>
           <Pressable
             accessibilityLabel={`event-detail-save-${event.id}`}
-            onPress={() => toggleSavedEvent(event)}
+            onPress={() => {
+              toggleSavedEvent(event);
+              setSavedNoticeVisible(true);
+              setShareSheetVisible(false);
+            }}
             style={styles.iconButton}
             testID={`event-detail-save-${event.id}`}
           >
             <Ionicons name={isSaved ? "book" : "book-outline"} size={22} color="#f8fafc" />
           </Pressable>
-          <Pressable accessibilityLabel="event-detail-share" style={styles.iconButton} testID="event-detail-share">
+          <Pressable
+            accessibilityLabel="event-detail-share"
+            onPress={() => {
+              setShareSheetVisible(true);
+              setSavedNoticeVisible(false);
+            }}
+            style={styles.iconButton}
+            testID="event-detail-share"
+          >
             <Ionicons name="share-outline" size={23} color="#f8fafc" />
           </Pressable>
         </View>
       </View>
+      {savedNoticeVisible && (
+        <Pressable accessibilityLabel="event-detail-save-notice" onPress={() => setSavedNoticeVisible(false)} style={styles.actionNotice} testID="event-detail-save-notice">
+          <Ionicons name={isSaved ? "book" : "book-outline"} size={18} color="#bfdbfe" />
+          <Text style={styles.actionNoticeText}>{isSaved ? "Saved to watchlist" : "Removed from watchlist"}</Text>
+          <Text style={styles.actionNoticeDismiss}>Dismiss</Text>
+        </Pressable>
+      )}
+      {shareSheetVisible && (
+        <View accessibilityLabel="event-detail-share-sheet" style={styles.shareSheet} testID="event-detail-share-sheet">
+          <View style={styles.shareSheetHeader}>
+            <View>
+              <Text style={styles.shareSheetTitle}>Share this market</Text>
+              <Text style={styles.shareSheetSub}>{label(locale, event)}</Text>
+            </View>
+            <Pressable accessibilityLabel="event-detail-share-dismiss" onPress={() => setShareSheetVisible(false)} style={styles.shareDismissButton} testID="event-detail-share-dismiss">
+              <Ionicons name="close" size={20} color="#f8fafc" />
+            </Pressable>
+          </View>
+          <View style={styles.shareActionsRow}>
+            {["Copy link", "Share to chat", "Invite"].map((item) => (
+              <Pressable accessibilityLabel={`event-detail-share-action-${item}`} key={item} style={styles.shareActionButton} testID={`event-detail-share-action-${item.replace(/\s+/g, "-").toLowerCase()}`}>
+                <Text style={styles.shareActionText}>{item}</Text>
+              </Pressable>
+            ))}
+          </View>
+        </View>
+      )}
 
       <ScrollView style={styles.scroller} contentContainerStyle={styles.scrollPad}>
         <View accessibilityLabel="event-detail-legacy-summary" style={styles.legacySummary} testID="event-detail-legacy-summary">
@@ -790,6 +831,17 @@ const styles = StyleSheet.create({
   segmentTextActive: { color: "#ffffff" },
   chatBadge: { minWidth: 34, height: 26, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#ef233c" },
   chatBadgeText: { color: "#ffffff", fontSize: 14, fontWeight: "900" },
+  actionNotice: { minHeight: 48, flexDirection: "row", alignItems: "center", gap: 10, paddingHorizontal: 18, backgroundColor: "#0f1b2e", borderBottomWidth: 1, borderBottomColor: "#263247" },
+  actionNoticeText: { flex: 1, color: "#f8fafc", fontSize: 14, fontWeight: "900" },
+  actionNoticeDismiss: { color: "#93c5fd", fontSize: 13, fontWeight: "900" },
+  shareSheet: { padding: 16, backgroundColor: "#0b1220", borderBottomWidth: 1, borderBottomColor: "#263247" },
+  shareSheetHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
+  shareSheetTitle: { color: "#f8fafc", fontSize: 17, fontWeight: "900" },
+  shareSheetSub: { color: "#94a3b8", fontSize: 12, fontWeight: "800", marginTop: 3 },
+  shareDismissButton: { width: 38, height: 38, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#111827" },
+  shareActionsRow: { flexDirection: "row", gap: 8, marginTop: 12 },
+  shareActionButton: { flex: 1, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#172033", borderWidth: 1, borderColor: "#293548" },
+  shareActionText: { color: "#e5e7eb", fontSize: 12, fontWeight: "900" },
   scroller: { flex: 1 },
   scrollPad: { paddingBottom: 110 },
   legacySummary: { height: 1, overflow: "hidden", opacity: 0 },
