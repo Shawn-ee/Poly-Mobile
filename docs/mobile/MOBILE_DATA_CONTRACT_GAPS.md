@@ -377,3 +377,38 @@ Temporary mock/static data:
 Future migration concern:
 
 - Once backend history exists, EventDetail should render the chart from server series and use a loading/empty/suspended chart state rather than synthetic local points.
+
+## Cycle AE - Market Page
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Live stats availability for each event.
+- Home/away stat rows: possession, shots, shots on target, corners, expected goals, fouls/cards, and other sport-specific fields.
+- Match-flow timeline events with clock, team, type, and display text.
+- Live stats loading, empty, delayed, suspended, and pregame-preview states.
+- Market tab metadata that can declare Game Lines, Exact Score, Halves, Player Props, and unavailable tabs by event.
+- Grouped market ordering and per-card volume/depth summaries.
+
+Fields backend provides but mobile ignores:
+
+- Unknown for this focused cycle; proof used local event data and local stats rows.
+
+Schema mismatch:
+
+- Mobile currently renders Live Stats from static local rows rather than backend data.
+- Player Props visibility is local/product-driven, while the current reference event exposed only Game Lines, Exact Score, and Halves.
+- Event detail grouping is still partly hardcoded in the UI.
+
+Route mismatch:
+
+- Existing `/api/events/:slug` can hydrate market context but does not provide live stats.
+- A route such as `/api/events/:slug/live-stats` or `/api/mobile/events/:slug/stats` is needed.
+
+Temporary mock/static data:
+
+- Possession, shots, shots on target, corners, expected goals, and match-flow rows are local deterministic values.
+- Market/Live stats tab state is local UI state.
+
+Future migration concern:
+
+- Once live stats are backend-backed, the Live Stats panel should reflect real event status and should show a clear empty/pregame state when stats are unavailable.

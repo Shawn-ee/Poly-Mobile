@@ -167,6 +167,7 @@ export function EventDetail({
   const [activeTab, setActiveTab] = useState<"game-lines" | "exact-score" | "halves" | "player-props">("game-lines");
   const [activeLineDetailTab, setActiveLineDetailTab] = useState<"order-book" | "graph" | "about">("order-book");
   const [activeHeaderTab, setActiveHeaderTab] = useState<"game" | "chat">("game");
+  const [activeBodyTab, setActiveBodyTab] = useState<"market" | "live-stats">("market");
   const [chartFilter, setChartFilter] = useState<ChartFilter>("Game");
   const [selectedChartPoint, setSelectedChartPoint] = useState<"latest" | "mid" | "target">("latest");
   const [spreadPeriod, setSpreadPeriod] = useState<LinePeriod>("Reg. Time");
@@ -844,6 +845,66 @@ export function EventDetail({
           </View>
         ) : (
           <>
+        <View accessibilityLabel="event-detail-body-switch" style={styles.bodySwitchSection} testID="event-detail-body-switch">
+          <View style={styles.bodySwitchMeta}>
+            <Text style={styles.bodySwitchVolume}>{stats.volume} Vol.</Text>
+            <Text style={styles.bodySwitchSource}>Holiwyn</Text>
+          </View>
+          <View style={styles.bodySwitchTabs}>
+            <Pressable
+              accessibilityLabel="event-detail-body-tab-market"
+              onPress={() => setActiveBodyTab("market")}
+              style={[styles.bodySwitchTab, activeBodyTab === "market" && styles.bodySwitchTabActive]}
+              testID="event-detail-body-tab-market"
+            >
+              <Ionicons name="analytics-outline" color={activeBodyTab === "market" ? "#38bdf8" : "#8b93a3"} size={18} />
+              <Text style={[styles.bodySwitchTabText, activeBodyTab === "market" && styles.bodySwitchTabTextActive]}>Market</Text>
+            </Pressable>
+            <Pressable
+              accessibilityLabel="event-detail-body-tab-live-stats"
+              onPress={() => setActiveBodyTab("live-stats")}
+              style={[styles.bodySwitchTab, activeBodyTab === "live-stats" && styles.bodySwitchTabActive]}
+              testID="event-detail-body-tab-live-stats"
+            >
+              <Ionicons name="bar-chart-outline" color={activeBodyTab === "live-stats" ? "#38bdf8" : "#8b93a3"} size={18} />
+              <Text style={[styles.bodySwitchTabText, activeBodyTab === "live-stats" && styles.bodySwitchTabTextActive]}>Live stats</Text>
+            </Pressable>
+          </View>
+        </View>
+
+        {activeBodyTab === "live-stats" ? (
+          <View accessibilityLabel="event-detail-live-stats-panel" style={styles.liveStatsPanel} testID="event-detail-live-stats-panel">
+            <View style={styles.liveStatsHeader}>
+              <Text style={styles.liveStatsTitle}>Live stats</Text>
+              <Text style={styles.liveStatsStatus}>{event.status === "live" ? liveClock : "Pregame preview"}</Text>
+            </View>
+            {[
+              { label: "Possession", home: "54%", away: "46%" },
+              { label: "Shots", home: "8", away: "5" },
+              { label: "Shots on target", home: "3", away: "2" },
+              { label: "Corners", home: "4", away: "3" },
+              { label: "Expected goals", home: "1.12", away: "0.84" },
+            ].map((row) => (
+              <View accessibilityLabel={`event-detail-live-stat-${row.label}`} key={row.label} style={styles.liveStatRow} testID={`event-detail-live-stat-${row.label.replace(/[^A-Za-z0-9]/g, "-").toLowerCase()}`}>
+                <Text style={styles.liveStatValue}>{row.home}</Text>
+                <View style={styles.liveStatMiddle}>
+                  <Text style={styles.liveStatLabel}>{row.label}</Text>
+                  <View style={styles.liveStatTrack}>
+                    <View style={styles.liveStatFill} />
+                  </View>
+                </View>
+                <Text style={styles.liveStatValue}>{row.away}</Text>
+              </View>
+            ))}
+            <View accessibilityLabel="event-detail-live-stats-timeline" style={styles.liveStatsTimeline} testID="event-detail-live-stats-timeline">
+              <Text style={styles.liveStatsTimelineTitle}>Match flow</Text>
+              {["12' USA pressure", "28' Belgium counter", "41' Corner USA"].map((item) => (
+                <Text key={item} style={styles.liveStatsTimelineText}>{item}</Text>
+              ))}
+            </View>
+          </View>
+        ) : (
+          <>
         <Pressable
           accessibilityLabel={`event-detail-price-chart two outcome traces ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartProbability}% ${chartPointMeta.label} ${chartPointMeta.value} +$9 +$39 +$479 All Game Live`}
           onPress={() => setSelectedChartPoint((current) => current === "latest" ? "mid" : current === "mid" ? "target" : "latest")}
@@ -1200,6 +1261,8 @@ export function EventDetail({
         </View>
           </>
         )}
+          </>
+        )}
       </ScrollView>
     </View>
   );
@@ -1244,6 +1307,28 @@ const styles = StyleSheet.create({
   scoreText: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginTop: 4 },
   liveClock: { color: "#ef4444", fontSize: 14, fontWeight: "900", marginTop: 3 },
   rightTeamText: { alignItems: "flex-end" },
+  bodySwitchSection: { paddingHorizontal: 24, paddingTop: 18, paddingBottom: 8 },
+  bodySwitchMeta: { minHeight: 28, flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 },
+  bodySwitchVolume: { color: "#8b93a3", fontSize: 15, fontWeight: "800" },
+  bodySwitchSource: { color: "#64748b", fontSize: 15, fontWeight: "900" },
+  bodySwitchTabs: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 12 },
+  bodySwitchTab: { minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 7, borderRadius: 12, paddingHorizontal: 16, backgroundColor: "transparent" },
+  bodySwitchTabActive: { backgroundColor: "#082f49" },
+  bodySwitchTabText: { color: "#8b93a3", fontSize: 17, fontWeight: "900" },
+  bodySwitchTabTextActive: { color: "#38bdf8" },
+  liveStatsPanel: { marginHorizontal: 24, marginTop: 16, marginBottom: 24, padding: 16, borderRadius: 18, backgroundColor: "#10171f", borderWidth: 1, borderColor: "#26313f" },
+  liveStatsHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 12 },
+  liveStatsTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "900" },
+  liveStatsStatus: { overflow: "hidden", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 5, color: "#93c5fd", backgroundColor: "#0b2440", fontSize: 12, fontWeight: "900" },
+  liveStatRow: { minHeight: 54, flexDirection: "row", alignItems: "center", gap: 12, borderTopWidth: 1, borderTopColor: "#1f2937" },
+  liveStatValue: { width: 52, color: "#f8fafc", fontSize: 17, fontWeight: "900", textAlign: "center" },
+  liveStatMiddle: { flex: 1, minWidth: 0 },
+  liveStatLabel: { color: "#cbd5e1", fontSize: 13, fontWeight: "900", textAlign: "center", marginBottom: 6 },
+  liveStatTrack: { height: 5, borderRadius: 999, backgroundColor: "#26313f", overflow: "hidden" },
+  liveStatFill: { width: "58%", height: 5, borderRadius: 999, backgroundColor: "#38bdf8" },
+  liveStatsTimeline: { marginTop: 14, paddingTop: 12, borderTopWidth: 1, borderTopColor: "#26313f" },
+  liveStatsTimelineTitle: { color: "#f8fafc", fontSize: 15, fontWeight: "900", marginBottom: 8 },
+  liveStatsTimelineText: { color: "#94a3b8", fontSize: 13, fontWeight: "800", marginTop: 4 },
   chartBlock: { minHeight: 190, paddingHorizontal: 0, paddingTop: 32, paddingBottom: 12 },
   chartMarkers: { position: "absolute", left: 14, top: 34, gap: 20 },
   chartMarkerText: { color: "#546071", fontSize: 11, fontWeight: "900" },

@@ -11870,6 +11870,22 @@ Audit Gate: Pass for focused chart behavior P0 baseline, with 0 unresolved P0 ga
 
 Next likely cycle: deeper market-page behavior, especially grouped market page completeness and non-chart section parity.
 
+### Cycle AE - Market Page
+
+Goal: Apply the Polymarket-reference audit gate to focused market-page body switch and grouped market behavior.
+
+Reference audit: Samsung S23 Polymarket mobile web reference captured the United States vs Belgium World Cup event, body `Market` / `Live stats` switch, Game Lines cards, Spread/Totals rails, Exact Score rows, Halves rows, and a row-origin ticket. Evidence is under `docs/mobile/reference/screenshots/cycle-AE-polymarket-market-*`.
+
+Holiwyn screens changed: Event detail now has a body-level `Market` / `Live stats` switch above the chart/market area. Live Stats opens a match-stat panel and Market returns to chart plus grouped tabs.
+
+Backend/API changed: No route changed. Docs now record the need for backend live stats, match-flow events, market-tab availability, and richer grouped market metadata.
+
+Verification: `npm run typecheck` passed. Samsung tablet evidence exists for the body switch, Live Stats panel, and return-to-market state. The long tablet smoke command hit a wireless ADB reset after the focused evidence was captured; this is recorded as harness reliability risk.
+
+Audit Gate: Pass for focused market-page P0 baseline, with 0 unresolved P0 gaps for the implemented scope. P1/P2 gaps remain for backend live stats, Player Props recapture/scope, and sticky/visual density polish.
+
+Next likely cycle: watchlist/saved/share/chat/notification parity or market-page visual-density polish.
+
 ## Heartbeat Template
 
 ### Heartbeat After Cycle 003
