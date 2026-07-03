@@ -18,15 +18,18 @@ Every harness must define:
 - Pass criteria.
 - Failure handling.
 
-The Lead Agent chooses which harnesses apply to a cycle. For UI cycles, the Reference Observation Harness and Emulator QA Harness are usually required. For backend cycles, the Backend Harness is required. For every verified cycle, the Review Harness and Git Harness are required.
+The Lead Agent chooses which harnesses apply to a cycle. For every UI, UX, market, ticket, navigation, portfolio, account, empty-state, or error-state cycle, the Polymarket Reference Audit Harness, Acceptance Criteria Harness, Holiwyn Android Device Harness, Screenshot Evidence Harness, and Audit Gate Harness are required. For backend cycles, the Backend Harness is required. For every verified cycle, the Review Harness and Git Harness are required.
 
 ## 3. Harness Index
 
 | Harness | Purpose | Required For |
 | --- | --- | --- |
-| Reference Observation Harness | Study Polymarket on Samsung S23 | UX/reference cycles |
-| Emulator Runtime Harness | Launch Holiwyn on Android emulator | All mobile UI cycles |
+| Polymarket Reference Audit Harness | Study the exact Polymarket feature on the reference Android device | Every UI/UX parity cycle |
+| Acceptance Criteria Harness | Convert reference behavior into P0/P1/P2 pass/fail criteria | Every UI/UX parity cycle |
+| Holiwyn Android Device Harness | Launch and test Holiwyn on the primary Holiwyn Android device | Every mobile UI/UX cycle |
+| Emulator Fallback Harness | Launch Holiwyn on Android emulator when a real device is unavailable or supplemental deterministic proof is useful | Fallback/supplemental checks only |
 | Screenshot Evidence Harness | Capture comparable screenshots | UI cycles |
+| Audit Gate Harness | Compare Holiwyn against Polymarket criteria and pass/fail the feature | Every UI/UX parity cycle |
 | Backend/API Harness | Start/test Poly backend APIs | API/trading/backend cycles |
 | Data/Schema Harness | Validate schema/data changes | Database cycles |
 | Trading Simulation Harness | Verify fake-token order/trade behavior | Trading cycles |
@@ -35,60 +38,150 @@ The Lead Agent chooses which harnesses apply to a cycle. For UI cycles, the Refe
 | Review Harness | Review code, UX, safety, and debt | Every cycle before merge |
 | Git Cycle Harness | Branch, commit, and local merge | Every verified cycle |
 | Recovery Harness | Continue after non-hard blockers | Any failed harness |
-| Development Build/APK Harness | Validate Holiwyn outside Expo Go | Later stable mobile QA cycles |
+| Development Build/APK Harness | Validate Holiwyn outside Expo Go | Stable mobile QA cycles |
 
-## 4. Reference Observation Harness
+## 4. Polymarket Reference Audit Harness
 
 Purpose:
 
-- Observe the real Polymarket app on Samsung S23.
-- Capture World Cup/sports UX patterns for Holiwyn.
+- Observe the real Polymarket feature on the reference Android device before implementation.
+- Capture exact World Cup/sports UX patterns, market behavior, ticket behavior, state changes, buttons, and visual hierarchy for Holiwyn criteria.
 
 When to run:
 
-- At the start of cycles that implement or refine UX behavior.
-- Whenever the feature gap tracker lacks enough reference detail.
+- At the start of every cycle that implements, refines, or claims completion for UI, UX, market, chart, ticket, navigation, portfolio, account, empty-state, or error-state behavior.
 
 Inputs:
 
-- Samsung S23 connected through ADB/wireless debugging.
+- Samsung S23 or second Android reference device connected through ADB/wireless debugging.
 - Polymarket app open or launchable.
-- Cycle goal.
+- One focused target selected by the Lead Agent.
 
 Actions:
 
 1. Open or focus Polymarket.
 2. Navigate only through allowed public/reference screens.
-3. Capture screenshots for relevant screens.
-4. Record screen structure, navigation behavior, labels, controls, and interaction patterns.
-5. Avoid private account data and final trade submission.
+3. Tap, swipe, expand, collapse, switch tabs, open tickets, change settings, change line values, and press chart areas where relevant.
+4. Capture screenshots and UI hierarchy when possible.
+5. Record device, app/browser, route or URL if available, user actions, resulting UI behavior, visible fields, state changes, loading/empty/error behavior, animation/transition behavior, market/ticket changes, and all buttons and effects.
+6. Avoid private account data, wallet/deposit/withdraw actions, and final trade submission.
 
 Outputs:
 
-- Updated `docs/mobile/reference/POLYMARKET_SCREEN_MAP.md`.
+- Updated `docs/mobile/POLYMARKET_REFERENCE_AUDIT_INDEX.md`.
+- Focused audit under `docs/mobile/audits/`.
 - Screenshots in `docs/mobile/reference/screenshots/`.
-- Gap notes in `docs/mobile/MOBILE_FEATURE_GAP_TRACKER.md`.
+- Device proof entry in `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md`.
 
 Pass criteria:
 
-- The cycle has enough reference information to build or compare one focused Holiwyn improvement.
-- Screenshots are named and recorded.
+- The exact target has same-cycle Polymarket evidence.
+- All relevant buttons, state changes, ticket/market effects, and empty/error/loading behaviors are recorded.
+- Screenshots or hierarchy files are named and recorded.
 
 Failure handling:
 
 - If phone access fails, try reconnecting once.
 - If Polymarket requires credentials or sensitive account screens, avoid that path and document the gap.
-- If reference observation is unavailable but not essential, continue using existing documentation and mark the observation as deferred.
+- If same-cycle reference evidence cannot be captured, the feature cannot be marked complete.
 
-## 5. Emulator Runtime Harness
+## 5. Acceptance Criteria Harness
 
 Purpose:
 
-- Run Holiwyn on the Android emulator.
+- Convert the Polymarket reference audit into testable Holiwyn criteria.
+
+When to run:
+
+- After the Polymarket Reference Audit Harness and before implementation.
+
+Inputs:
+
+- Focused reference audit.
+- Screenshots/hierarchy evidence.
+- Current Holiwyn behavior when known.
+
+Actions:
+
+1. Write pass/fail criteria for the selected target.
+2. Prioritize each criterion as P0, P1, or P2.
+3. Ensure every P0 can be audited by screenshot, UI hierarchy, device smoke, unit test, route test, or backend/API proof.
+4. Record whether a gap is in scope for the current cycle or explicitly deferred as P1/P2.
+
+Outputs:
+
+- `docs/mobile/POLYMARKET_FEATURE_CRITERIA.md`.
+- `docs/mobile/POLYMARKET_PARITY_GAP_TRACKER.md`.
+
+Pass criteria:
+
+- The implementation agent has objective criteria and no need to guess from memory.
+- P0 completion criteria are precise enough to fail bad work.
+
+Failure handling:
+
+- If criteria are vague, return to the reference audit and gather more evidence before implementation.
+
+## 6. Holiwyn Android Device Harness
+
+Purpose:
+
+- Run Holiwyn on the primary Holiwyn Android device.
 
 When to run:
 
 - Every mobile UI or navigation cycle.
+
+Inputs:
+
+- Primary Holiwyn Android device connected through ADB/wireless debugging.
+- Holiwyn mobile app code.
+- Required backend/mock data mode.
+
+Actions:
+
+1. Start required app services.
+2. Launch the Expo/React Native app, development build, or APK on the Holiwyn Android device.
+3. Confirm the app opens.
+4. Confirm the changed screen is reachable.
+5. Exercise the selected feature with the same action sequence captured from Polymarket where safe.
+6. Capture screenshots and UI hierarchy when useful.
+
+Outputs:
+
+- Runtime result in `docs/mobile/MOBILE_QA_REPORT.md`.
+- Device proof entry in `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md`.
+- Screenshot evidence under `docs/mobile/screenshots/`.
+
+Pass criteria:
+
+- App launches without crash.
+- Changed screen is reachable.
+- Selected feature can be exercised on a real Android Holiwyn device.
+- No obvious blocking runtime errors.
+
+Failure handling:
+
+- Restart app/device connection once.
+- Clear stale app state only if safe and documented.
+- If failure persists, run Recovery Harness.
+- If Expo Go becomes the bottleneck, prefer harness fixes first; add a proper Android development build/APK harness as a stabilization milestone when the app flow is mature enough.
+
+Device policy:
+
+- Samsung S23 or another Android device is the Polymarket reference device.
+- A second Android device is the primary Holiwyn proof device.
+- Emulator is fallback only for UI parity acceptance, and supplemental for deterministic automation.
+
+## 7. Emulator Fallback Harness
+
+Purpose:
+
+- Run Holiwyn on the Android emulator when a real Android Holiwyn device is unavailable or when supplemental deterministic automation is useful.
+
+When to run:
+
+- Only as fallback or supplement unless a cycle is explicitly non-UI and emulator evidence is enough.
 
 Inputs:
 
@@ -100,35 +193,26 @@ Actions:
 
 1. Start required app services.
 2. Launch the Expo/React Native app on emulator.
-3. Confirm the app opens.
-4. Confirm the changed screen is reachable.
-5. Keep Samsung S23 out of default Holiwyn automation; use it only for Polymarket reference or explicit later-stage real-device QA.
+3. Confirm the app opens and the changed screen is reachable.
+4. Capture screenshots/hierarchy if useful.
 
 Outputs:
 
 - Runtime result in `docs/mobile/MOBILE_QA_REPORT.md`.
-- Screenshot evidence when UI changed.
+- Supplemental evidence in `docs/mobile/screenshots/` or `docs/mobile/harness/`.
 
 Pass criteria:
 
 - App launches without crash.
-- Changed screen is reachable.
-- No obvious blocking runtime errors.
+- The changed screen is reachable.
+- Evidence is clearly labeled as emulator fallback or supplemental, not final Polymarket parity proof when real-device proof is required.
 
 Failure handling:
 
 - Restart app/emulator once.
-- Clear stale app state only if safe and documented.
-- If failure persists, run Recovery Harness.
-- If Expo Go becomes the bottleneck, prefer harness fixes first; add a proper Android development build/APK harness as a stabilization milestone when the app flow is mature enough.
+- If failure persists and a real Android device is available, use the Holiwyn Android Device Harness.
 
-Device policy:
-
-- Samsung S23 is the Polymarket reference device and the primary Holiwyn real-device QA target when emulator behavior is slow, stale, or less representative.
-- Android emulator is the default Holiwyn automation device for smoke loops, screenshots, and repeatable regression evidence.
-- Do not move normal Holiwyn cycle acceptance to Samsung while emulator automation is still available.
-
-## 6. Screenshot Evidence Harness
+## 8. Screenshot Evidence Harness
 
 Purpose:
 
@@ -147,10 +231,11 @@ Inputs:
 
 Actions:
 
-1. Capture screenshot from Samsung for reference screens.
-2. Capture screenshot from emulator for Holiwyn screens.
+1. Capture screenshot from the reference Android device for Polymarket screens.
+2. Capture screenshot from the Holiwyn Android device for Holiwyn screens.
 3. Use stable filenames.
-4. Record paths in loop state and QA/report files.
+4. Capture UI hierarchy when useful for buttons, rows, tickets, and state assertions.
+5. Record paths in loop state, proof log, audit report, and QA/report files.
 
 Outputs:
 
@@ -160,7 +245,7 @@ Outputs:
 
 Pass criteria:
 
-- Screenshots exist and show the expected screen.
+- Screenshots exist and show the expected Polymarket and Holiwyn screens.
 - Files are named with cycle and screen context.
 
 Failure handling:
@@ -168,7 +253,51 @@ Failure handling:
 - Retry screenshot once.
 - If screenshot capture fails but manual verification succeeds, document the reason.
 
-## 7. Backend/API Harness
+## 9. Audit Gate Harness
+
+Purpose:
+
+- Prevent completion claims until Holiwyn has been compared against same-cycle Polymarket criteria.
+
+When to run:
+
+- After implementation and Holiwyn Android device proof for every UI/UX parity cycle.
+
+Inputs:
+
+- Focused Polymarket audit.
+- P0/P1/P2 criteria.
+- Holiwyn Android screenshots/hierarchy.
+- Relevant test/smoke output.
+
+Actions:
+
+1. Re-check the same Polymarket feature on the reference Android device if the cycle changed interaction details or if the reference evidence is stale.
+2. Compare Holiwyn against every criterion.
+3. Mark each criterion Pass, Fail, Partial, or Deferred.
+4. Fail the feature if any P0 criterion fails or if no same-cycle Polymarket evidence exists.
+5. Record concrete fix recommendations for each failure.
+6. Update the gap tracker and device proof log.
+
+Outputs:
+
+- `docs/mobile/POLYMARKET_AUDIT_GATE_REPORT.md`.
+- `docs/mobile/POLYMARKET_PARITY_GAP_TRACKER.md`.
+- `docs/mobile/POLYMARKET_DEVICE_PROOF_LOG.md`.
+
+Pass criteria:
+
+- Every P0 criterion passes.
+- Screenshots/device evidence exists for Polymarket and Holiwyn.
+- Remaining P1/P2 gaps are explicit and tracked.
+- Audit Gate Agent, not Implementation Agent, marks the feature parity-pass.
+
+Failure handling:
+
+- Convert failed P0 items into the next implementation cycle.
+- Do not mark the feature complete.
+
+## 10. Backend/API Harness
 
 Purpose:
 
@@ -210,7 +339,7 @@ Failure handling:
 - If backend is unavailable but UI can continue with mock data, continue and document deferred integration.
 - If backend is required for the cycle and unavailable after recovery, mark hard blocker.
 
-## 7A. Development Build/APK Harness
+## 11. Development Build/APK Harness
 
 Purpose:
 
@@ -258,7 +387,7 @@ Failure handling:
 - Use Recovery Harness and Reviewer Agent before changing native configuration broadly.
 - Do not use production payment, deposit, or withdraw features in this harness.
 
-## 8. Data/Schema Harness
+## 12. Data/Schema Harness
 
 Purpose:
 
@@ -297,7 +426,7 @@ Failure handling:
 - Rework schema/API contract when possible.
 - If migration cannot be safely applied, document blocker and do not merge.
 
-## 9. Trading Simulation Harness
+## 13. Trading Simulation Harness
 
 Purpose:
 
@@ -338,7 +467,7 @@ Failure handling:
 - If trading action fails, fix app/API contract.
 - If portfolio integration is not yet built, document expected follow-up gap.
 
-## 10. Localization Harness
+## 14. Localization Harness
 
 Purpose:
 
@@ -376,7 +505,7 @@ Failure handling:
 - Add missing strings.
 - If copy is temporary, document as technical debt.
 
-## 11. QA Smoke Harness
+## 15. QA Smoke Harness
 
 Purpose:
 
@@ -422,7 +551,7 @@ Failure handling:
 - Fix P0 regressions before merge.
 - Document non-blocking gaps.
 
-## 12. Review Harness
+## 16. Review Harness
 
 Purpose:
 
@@ -461,10 +590,10 @@ Pass criteria:
 
 Failure handling:
 
-- Return to Builder Agent for fix.
-- If unclear, invoke Audit Agent.
+- Return to Implementation Agent for fix.
+- If unclear, invoke Audit Gate Agent or Reviewer Agent.
 
-## 13. Git Cycle Harness
+## 17. Git Cycle Harness
 
 Purpose:
 
@@ -506,7 +635,7 @@ Failure handling:
 - Do not merge broken branch.
 - Document blocker or continue fixing on cycle branch.
 
-## 14. Recovery Harness
+## 18. Recovery Harness
 
 Purpose:
 
@@ -524,7 +653,7 @@ Actions:
 1. Identify failure type.
 2. Run or inspect the most relevant harness output.
 3. Try one or two reasonable fixes.
-4. Ask Audit Agent for a recommendation if the next action is uncertain.
+4. Ask Audit Gate Agent for a recommendation if the next action is uncertain.
 5. Ask Reviewer Agent when code quality, UX safety, or merge safety is involved.
 6. Choose the best documented option.
 7. Continue if safe.
@@ -537,7 +666,7 @@ Continue without user if:
 - It is a package/config issue.
 - It is a backend/mobile contract issue.
 - It can be solved by a reasonable engineering choice.
-- Audit Agent or Reviewer Agent recommends a safe path.
+- Audit Gate Agent or Reviewer Agent recommends a safe path.
 
 Stop only if:
 
@@ -560,33 +689,39 @@ Pass criteria:
 - The decision is documented.
 - Work continues without user input unless a hard stop rule is hit.
 
-## 15. Cycle Harness Checklist
+## 19. Cycle Harness Checklist
 
 At cycle start:
 
 - Confirm cycle goal.
 - Create cycle branch.
 - Select required harnesses.
-- Confirm whether reference observation is needed.
+- Select one focused feature/page/button/interaction target.
+- Confirm Polymarket reference audit device and Holiwyn Android proof device.
 
 Before commit:
 
-- Required harnesses passed or documented.
-- Screenshots captured for UI changes.
+- Polymarket Reference Audit Harness passed for UI/UX parity work.
+- Acceptance Criteria Harness produced P0/P1/P2 pass/fail criteria.
+- Holiwyn Android Device Harness passed, or emulator fallback is explicitly labeled as non-final parity evidence.
+- Audit Gate Harness passed, or the cycle is clearly marked as observation/documentation only.
+- Screenshots captured for Polymarket reference and Holiwyn UI changes.
+- Device proof log updated.
+- Audit gate report updated.
 - QA report updated.
 - Review report updated.
-- Feature gap tracker updated.
+- Polymarket criteria and gap trackers updated.
 - Tech debt updated.
 - Loop state updated.
 
 Before local merge:
 
-- No P0 failures.
+- No unresolved P0 failures for any feature claimed complete.
 - Diff is scoped.
 - Commit created.
 - Merge result recorded.
 
-## 16. Long-Running Execution Harness
+## 20. Long-Running Execution Harness
 
 Purpose:
 
@@ -630,6 +765,6 @@ Pass criteria:
 Failure handling:
 
 - Run Recovery Harness.
-- Ask Audit Agent or Reviewer Agent.
+- Ask Audit Gate Agent or Reviewer Agent.
 - Continue if safe.
 - Stop only for hard stop rules.

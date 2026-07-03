@@ -11550,6 +11550,30 @@ Current app state: Android-first Holiwyn mobile app has verified P0 coverage for
 Open blockers: None for the first done state.
 Remaining work: P1/P2 polish and production hardening remain tracked separately, including richer phone visual polish, deeper chart/chat/share interactions, long-tail props, timed updates, production payments, EBPay, deposit/withdraw, release signing, and compliance.
 
+### Cycle S - Mandatory Polymarket Audit Gate Workflow
+
+Goal: update the autonomous development loop so every future completed page, feature, button, market section, chart, ticket behavior, navigation behavior, empty state, and error state requires a same-cycle Polymarket reference audit before completion.
+
+Changes:
+
+- Added the mandatory Polymarket parity audit gate to `docs/mobile/MOBILE_APP_AUTONOMOUS_DEVELOPMENT_LOOP.md`.
+- Updated device policy so Polymarket reference runs on Samsung S23 or another reference Android device, Holiwyn proof runs on a Holiwyn Android device, and emulator is fallback only.
+- Replaced the loose observe/build/review flow with a required Feature Selection, Reference Audit, Acceptance Criteria, Implementation, Holiwyn Device Proof, Audit Gate, and Completion Rule sequence.
+- Added required roles: Lead Agent, Reference Audit Agent, Criteria Agent, Implementation Agent, Holiwyn Device QA Agent, Reviewer Agent, and Audit Gate Agent.
+- Updated `docs/mobile/MOBILE_HARNESS_SPEC.md` with Polymarket Reference Audit, Acceptance Criteria, Holiwyn Android Device, Emulator Fallback, Screenshot Evidence, and Audit Gate harness requirements.
+- Added new required workflow documents: `POLYMARKET_REFERENCE_AUDIT_INDEX.md`, `POLYMARKET_FEATURE_CRITERIA.md`, `POLYMARKET_PARITY_GAP_TRACKER.md`, `POLYMARKET_AUDIT_GATE_REPORT.md`, and `POLYMARKET_DEVICE_PROOF_LOG.md`.
+- Added focused audit templates under `docs/mobile/audits/` for game page, trade ticket, line adjustment, portfolio, search, account/settings, chart behavior, market page, and navigation.
+
+Verification:
+
+- Documentation-only cycle; no app deployment and no app runtime change.
+- New rule explicitly states that existing prototype Definition of Done is not enough for future completion claims.
+- New gap tracker starts with the workflow update verified and all feature-level audits pending same-cycle reference evidence.
+
+Next cycle:
+
+- Select the next highest-value target, run Polymarket reference audit on Samsung S23, write criteria, implement or compare Holiwyn on the Holiwyn Android device, and pass the Audit Gate before claiming completion.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.
