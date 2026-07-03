@@ -173,6 +173,7 @@ export function EventDetail({
   const [totalsLine, setTotalsLine] = useState("2.5");
   const [savedNoticeVisible, setSavedNoticeVisible] = useState(false);
   const [shareSheetVisible, setShareSheetVisible] = useState(false);
+  const [orderBookVisible, setOrderBookVisible] = useState(false);
   const [expandedPropIds, setExpandedPropIds] = useState<Record<string, boolean>>({ "goals-reg-time": true });
   const gameLineMarkets = useMemo(() => event.markets.filter((market) => market.type !== "prop" && market.type !== "future"), [event.markets]);
   const propMarkets = useMemo(() => event.markets.filter((market) => market.type === "prop"), [event.markets]);
@@ -369,6 +370,74 @@ export function EventDetail({
   const toggleGroup = (id: string) => {
     setExpandedMarketIds((current) => ({ ...current, [id]: !current[id] }));
   };
+
+  const renderOrderBook = () => {
+    if (!primaryMarket) return null;
+    return (
+      <View accessibilityLabel="event-detail-order-book-screen" style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
+        <View style={styles.orderBookHeader}>
+          <View>
+            <Text style={styles.orderBookTitle}>Order Book</Text>
+            <Text style={styles.orderBookSubtitle}>{label(locale, event)} - {label(locale, primaryMarket)}</Text>
+          </View>
+          <Pressable accessibilityLabel="event-detail-order-book-close" onPress={() => setOrderBookVisible(false)} style={styles.orderBookClose} testID="event-detail-order-book-close">
+            <Ionicons name="close" color="#f8fafc" size={22} />
+          </Pressable>
+        </View>
+        <View style={styles.orderBookSummary}>
+          <Text style={styles.orderBookSummaryText}>{t.bestBid} {marketDepth(primaryMarket).bid}</Text>
+          <Text style={styles.orderBookSummaryText}>{t.bestAsk} {marketDepth(primaryMarket).ask}</Text>
+          <Text style={styles.orderBookSummaryText}>{t.spread} {marketDepth(primaryMarket).spread}</Text>
+        </View>
+        <ScrollView style={styles.orderBookScroll} contentContainerStyle={styles.orderBookPad}>
+          {primaryMarket.outcomes.map((outcome) => {
+            const depth = outcomeDepth(outcome);
+            const fallbackBidSize = Math.max(Math.round(outcome.probability * 20), 100);
+            const fallbackAskSize = Math.max(Math.round((100 - outcome.probability) * 25), 100);
+            const bidSize = outcome.bestBidSize ?? fallbackBidSize;
+            const askSize = outcome.bestAskSize ?? fallbackAskSize;
+            const largest = Math.max(bidSize, askSize, 1);
+            return (
+              <View accessibilityLabel={`order-book-outcome-${outcome.id}`} key={outcome.id} style={styles.orderBookOutcome} testID={`order-book-outcome-${outcome.id}`}>
+                <View style={styles.orderBookOutcomeTop}>
+                  <View>
+                    <Text style={styles.orderBookOutcomeTitle}>{label(locale, outcome)}</Text>
+                    <Text style={styles.orderBookOutcomeMeta}>{outcome.probability}% - {outcomeOdds(outcome)}x</Text>
+                  </View>
+                  <View style={styles.orderBookActionRow}>
+                    <Pressable accessibilityLabel={`order-book-buy-${outcome.id}`} onPress={() => openTicket(primaryMarket, outcome, event, "buy")} style={[styles.orderBookTradeButton, { backgroundColor: outcome.color }]} testID={`order-book-buy-${outcome.id}`}>
+                      <Text style={styles.orderBookTradeText}>{t.buy}</Text>
+                    </Pressable>
+                    <Pressable accessibilityLabel={`order-book-sell-${outcome.id}`} onPress={() => openTicket(primaryMarket, outcome, event, "sell")} style={styles.orderBookSellButton} testID={`order-book-sell-${outcome.id}`}>
+                      <Text style={styles.orderBookSellText}>{t.sell}</Text>
+                    </Pressable>
+                  </View>
+                </View>
+                <View style={styles.orderBookColumns}>
+                  <View style={styles.orderBookColumn}>
+                    <Text style={styles.orderBookColumnLabel}>{t.bestBid}</Text>
+                    <Text style={styles.orderBookPrice}>{depth.bid}</Text>
+                    <View style={styles.depthBarTrack}>
+                      <View style={[styles.depthBidBar, { width: `${Math.max(12, (bidSize / largest) * 100)}%` }]} />
+                    </View>
+                    <Text style={styles.orderBookSize}>{formatSize(bidSize)} {t.shares}</Text>
+                  </View>
+                  <View style={styles.orderBookColumn}>
+                    <Text style={styles.orderBookColumnLabel}>{t.bestAsk}</Text>
+                    <Text style={styles.orderBookPrice}>{depth.ask}</Text>
+                    <View style={styles.depthBarTrack}>
+                      <View style={[styles.depthAskBar, { width: `${Math.max(12, (askSize / largest) * 100)}%` }]} />
+                    </View>
+                    <Text style={styles.orderBookSize}>{formatSize(askSize)} {t.shares}</Text>
+                  </View>
+                </View>
+              </View>
+            );
+          })}
+        </ScrollView>
+      </View>
+    );
+  };
   const togglePropGroup = (id: string) => {
     setExpandedPropIds((current) => ({ ...current, [id]: !current[id] }));
   };
@@ -547,6 +616,7 @@ export function EventDetail({
           </View>
         </View>
       )}
+      {orderBookVisible && renderOrderBook()}
 
       <ScrollView style={styles.scroller} contentContainerStyle={styles.scrollPad}>
         <View accessibilityLabel="event-detail-legacy-summary" style={styles.legacySummary} testID="event-detail-legacy-summary">
@@ -906,6 +976,10 @@ export function EventDetail({
                       <Text style={styles.depthText}>{t.bestBid} {marketDepth(primaryMarket).bid}</Text>
                       <Text style={styles.depthText}>{t.bestAsk} {marketDepth(primaryMarket).ask}</Text>
                       <Text style={styles.depthText}>{t.spread} {marketDepth(primaryMarket).spread}</Text>
+                      <Pressable accessibilityLabel="event-detail-open-order-book" onPress={() => setOrderBookVisible(true)} style={styles.depthBookButton} testID="event-detail-open-order-book">
+                        <Ionicons name="book-outline" color="#dbeafe" size={14} />
+                        <Text style={styles.depthBookText}>Book</Text>
+                      </Pressable>
                     </View>
                     {regulationWinnerRows.map((outcome) => {
                       const matchingOutcome = primaryMarket.outcomes.find((item) => item.id === outcome.id);
@@ -1185,7 +1259,35 @@ const styles = StyleSheet.create({
   teamName: { color: "#f8fafc", fontSize: 17, fontWeight: "800" },
   outcomeSizeText: { color: "#94a3b8", fontSize: 10, fontWeight: "800", marginTop: 4 },
   outcomeDepthText: { color: "#6b7280", fontSize: 11, fontWeight: "800", marginTop: 3 },
+  depthBookButton: { minHeight: 30, flexDirection: "row", alignItems: "center", gap: 4, paddingHorizontal: 9, borderRadius: 8, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247" },
+  depthBookText: { color: "#dbeafe", fontSize: 11, fontWeight: "900" },
   probButton: { width: 92, minHeight: 62, alignItems: "center", justifyContent: "center", borderRadius: 13 },
   probButtonText: { color: "#ffffff", fontSize: 18, fontWeight: "900" },
   probButtonSubtext: { color: "rgba(255,255,255,0.82)", fontSize: 10, fontWeight: "900", marginTop: 2 },
+  orderBookOverlay: { position: "absolute", top: 0, right: 0, bottom: 0, left: 0, zIndex: 30, backgroundColor: "#070c14", paddingTop: 16 },
+  orderBookHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12, paddingHorizontal: 16, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: "#172033" },
+  orderBookTitle: { color: "#f8fafc", fontSize: 22, fontWeight: "900" },
+  orderBookSubtitle: { color: "#94a3b8", fontSize: 12, fontWeight: "800", marginTop: 4 },
+  orderBookClose: { width: 40, height: 40, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247" },
+  orderBookSummary: { flexDirection: "row", gap: 8, paddingHorizontal: 16, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "#172033" },
+  orderBookSummaryText: { flex: 1, color: "#cbd5e1", fontSize: 11, fontWeight: "900" },
+  orderBookScroll: { flex: 1 },
+  orderBookPad: { paddingHorizontal: 16, paddingVertical: 12, paddingBottom: 28 },
+  orderBookOutcome: { paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "#172033" },
+  orderBookOutcomeTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10 },
+  orderBookOutcomeTitle: { color: "#f8fafc", fontSize: 17, fontWeight: "900" },
+  orderBookOutcomeMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "800", marginTop: 3 },
+  orderBookActionRow: { flexDirection: "row", gap: 8 },
+  orderBookTradeButton: { minWidth: 74, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 10 },
+  orderBookTradeText: { color: "#ffffff", fontSize: 13, fontWeight: "900" },
+  orderBookSellButton: { minWidth: 74, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
+  orderBookSellText: { color: "#dbeafe", fontSize: 13, fontWeight: "900" },
+  orderBookColumns: { flexDirection: "row", gap: 10, marginTop: 12 },
+  orderBookColumn: { flex: 1, gap: 5, padding: 10, borderRadius: 9, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937" },
+  orderBookColumnLabel: { color: "#64748b", fontSize: 10, fontWeight: "900" },
+  orderBookPrice: { color: "#f8fafc", fontSize: 14, fontWeight: "900" },
+  orderBookSize: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },
+  depthBarTrack: { height: 6, overflow: "hidden", borderRadius: 999, backgroundColor: "#111827" },
+  depthBidBar: { height: 6, borderRadius: 999, backgroundColor: "#0a8f61" },
+  depthAskBar: { height: 6, borderRadius: 999, backgroundColor: "#ef4444" },
 });
