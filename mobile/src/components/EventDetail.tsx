@@ -368,6 +368,74 @@ export function EventDetail({
           </View>
         </View>
 
+        {activeHeaderTab === "chat" ? (
+          <View accessibilityLabel="event-detail-chat-page" style={styles.chatPage} testID="event-detail-chat-page">
+            <View style={styles.chatContextCard}>
+              <Text style={styles.chatContextTitle}>{label(locale, event)}</Text>
+              <Text style={styles.chatContextMeta}>
+                {teamA ? teamCode(teamA.name) : ""} {leftOutcome?.probability ?? 0}% - {teamB ? teamCode(teamB.name) : ""} {rightOutcome?.probability ?? 0}% - {scoreboard} - {liveClock}
+              </Text>
+            </View>
+            <View accessibilityLabel="event-detail-chat-feed" style={styles.chatFeed} testID="event-detail-chat-feed">
+              {[
+                { user: "gigglyeel0550", badge: "BTTS $36", text: "VAMOS", color: "#be18ff" },
+                { user: "mktmaker21", badge: `${teamCode(teamA?.name ?? "MEX")} ${leftOutcome?.probability ?? 0}%`, text: "Pressure is all on the left side.", color: "#22c55e" },
+                { user: "linewatcher", badge: "O2.5 $18", text: "Totals moving after that last attack.", color: "#38bdf8" },
+                { user: "goalrush", badge: `${teamCode(teamB?.name ?? "ECU")} ${rightOutcome?.probability ?? 0}%`, text: "Counter still looks live.", color: "#f59e0b" },
+              ].map((message) => (
+                <View accessibilityLabel={`event-detail-chat-message-${message.user}`} key={message.user} style={styles.chatMessageRow} testID={`event-detail-chat-message-${message.user}`}>
+                  <View style={[styles.chatAvatar, { backgroundColor: message.color }]} />
+                  <View style={styles.chatMessageBubble}>
+                    <View style={styles.chatMessageMetaRow}>
+                      <Text style={styles.chatMessageUser}>{message.user}</Text>
+                      <Text style={styles.chatMessageBadge}>{message.badge}</Text>
+                    </View>
+                    <Text style={styles.chatMessageText}>{message.text}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+            <View accessibilityLabel="event-detail-chat-typing" style={styles.typingRow} testID="event-detail-chat-typing">
+              <View style={styles.typingDots}>
+                <View style={styles.typingDot} />
+                <View style={styles.typingDot} />
+                <View style={styles.typingDot} />
+              </View>
+              <Text style={styles.typingText}>3 traders typing</Text>
+            </View>
+            <View accessibilityLabel="event-detail-chat-reactions" style={styles.reactionRow} testID="event-detail-chat-reactions">
+              {["Vamos", "Goal", "Hold", "Cash out"].map((reaction) => (
+                <Pressable accessibilityLabel={`event-detail-chat-reaction-${reaction}`} key={reaction} style={styles.reactionChip} testID={`event-detail-chat-reaction-${reaction.replace(/\s+/g, "-").toLowerCase()}`}>
+                  <Text style={styles.reactionText}>{reaction}</Text>
+                </Pressable>
+              ))}
+            </View>
+            <View accessibilityLabel="event-detail-chat-input" style={styles.chatInputRow} testID="event-detail-chat-input">
+              <Ionicons name="happy-outline" color="#cbd5e1" size={22} />
+              <Text style={styles.chatInputPlaceholder}>Message this market</Text>
+              <Ionicons name="send-outline" color="#94a3b8" size={20} />
+            </View>
+            <View accessibilityLabel="event-detail-chat-emoji-picker" style={styles.emojiPicker} testID="event-detail-chat-emoji-picker">
+              {["+", "%", "!", "?"].map((item) => (
+                <Text key={item} style={styles.emojiText}>{item}</Text>
+              ))}
+            </View>
+            <View accessibilityLabel="event-detail-chat-sticky-outcomes" style={styles.chatStickyOutcomes} testID="event-detail-chat-sticky-outcomes">
+              {primaryOutcomes.map((outcome) => (
+                <Pressable
+                  accessibilityLabel={`event-detail-chat-sticky-outcome-${primaryMarket.id}-${outcome.id}`}
+                  key={outcome.id}
+                  onPress={() => openTicket(primaryMarket, outcome, event, defaultSide)}
+                  style={[styles.chatStickyButton, { backgroundColor: outcome.color }]}
+                  testID={`event-detail-chat-sticky-outcome-${primaryMarket.id}-${outcome.id}`}
+                >
+                  <Text style={styles.chatStickyButtonText}>{teamCode(outcome.label)} {outcome.probability}%</Text>
+                </Pressable>
+              ))}
+            </View>
+          </View>
+        ) : (
+          <>
         <View
           accessibilityLabel={`event-detail-price-chart two outcome traces ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartOutcome?.probability ?? 0}% +$9 +$39 +$479 All Game Live`}
           style={styles.chartBlock}
@@ -703,6 +771,8 @@ export function EventDetail({
             </View>
           ))}
         </View>
+          </>
+        )}
       </ScrollView>
     </View>
   );
@@ -760,6 +830,32 @@ const styles = StyleSheet.create({
   chatUser: { color: "#e5e7eb", fontSize: 15, fontWeight: "800" },
   chatBetBadge: { overflow: "hidden", borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3, color: "#22c55e", backgroundColor: "#082f1a", fontSize: 12, fontWeight: "900" },
   chatMessage: { color: "#a6adbb", fontSize: 14, fontWeight: "800" },
+  chatPage: { paddingHorizontal: 18, paddingTop: 16, gap: 12 },
+  chatContextCard: { padding: 14, borderRadius: 16, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247" },
+  chatContextTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
+  chatContextMeta: { color: "#9ca3af", fontSize: 13, fontWeight: "800", marginTop: 6 },
+  chatFeed: { gap: 10 },
+  chatMessageRow: { flexDirection: "row", alignItems: "flex-start", gap: 10 },
+  chatAvatar: { width: 34, height: 34, borderRadius: 999, marginTop: 3 },
+  chatMessageBubble: { flex: 1, minWidth: 0, padding: 12, borderRadius: 14, backgroundColor: "#111827", borderWidth: 1, borderColor: "#1f2937" },
+  chatMessageMetaRow: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 5 },
+  chatMessageUser: { color: "#f8fafc", fontSize: 13, fontWeight: "900" },
+  chatMessageBadge: { overflow: "hidden", borderRadius: 6, paddingHorizontal: 7, paddingVertical: 3, color: "#22c55e", backgroundColor: "#052e1b", fontSize: 11, fontWeight: "900" },
+  chatMessageText: { color: "#cbd5e1", fontSize: 14, fontWeight: "800", lineHeight: 19 },
+  typingRow: { minHeight: 34, flexDirection: "row", alignItems: "center", gap: 9, paddingHorizontal: 4 },
+  typingDots: { flexDirection: "row", alignItems: "center", gap: 4 },
+  typingDot: { width: 7, height: 7, borderRadius: 999, backgroundColor: "#64748b" },
+  typingText: { color: "#94a3b8", fontSize: 13, fontWeight: "800" },
+  reactionRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
+  reactionChip: { minHeight: 36, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#172033", borderWidth: 1, borderColor: "#293548", paddingHorizontal: 14 },
+  reactionText: { color: "#e5e7eb", fontSize: 13, fontWeight: "900" },
+  chatInputRow: { minHeight: 52, flexDirection: "row", alignItems: "center", gap: 10, borderRadius: 999, backgroundColor: "#111827", borderWidth: 1, borderColor: "#293548", paddingHorizontal: 14 },
+  chatInputPlaceholder: { flex: 1, color: "#94a3b8", fontSize: 15, fontWeight: "800" },
+  emojiPicker: { minHeight: 46, flexDirection: "row", alignItems: "center", justifyContent: "space-around", borderRadius: 14, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937" },
+  emojiText: { color: "#f8fafc", fontSize: 21, fontWeight: "900" },
+  chatStickyOutcomes: { flexDirection: "row", gap: 12, marginTop: 4 },
+  chatStickyButton: { flex: 1, minHeight: 52, alignItems: "center", justifyContent: "center", borderRadius: 15 },
+  chatStickyButtonText: { color: "#ffffff", fontSize: 16, fontWeight: "900" },
   positionSection: { marginTop: 20, paddingHorizontal: 24 },
   positionHeading: { color: "#f8fafc", fontSize: 17, fontWeight: "800", marginBottom: 10 },
   positionCard: { borderRadius: 18, borderWidth: 1, borderColor: "#263247", backgroundColor: "#080d16", overflow: "hidden" },
