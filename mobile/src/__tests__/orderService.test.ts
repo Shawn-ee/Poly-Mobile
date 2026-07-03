@@ -87,6 +87,13 @@ describe("ticket order service", () => {
       contractSide: "YES",
       price: "0.34",
       size: "294.12",
+      selection: {
+        marketType: "future",
+        marketId: "world-cup-winner",
+        outcomeId: "france",
+        displayLabel: "France",
+        contractSide: "yes",
+      },
     });
     expect(result).toMatchObject({
       id: "server-order-1",
@@ -122,7 +129,13 @@ describe("ticket order service", () => {
       contractSide: "NO",
       price: "0.66",
       size: "151.52",
-      selection: { marketType: "future", displayLabel: "France", contractSide: "no" },
+      selection: {
+        marketType: "future",
+        marketId: "world-cup-winner",
+        outcomeId: "france",
+        displayLabel: "France",
+        contractSide: "no",
+      },
     });
     expect(result).toMatchObject({
       id: "server-no-order-1",
@@ -175,9 +188,19 @@ describe("ticket order service", () => {
       contractSide: "YES",
       price: "0.03",
       size: "1000.00",
-      selection,
+      selection: {
+        ...selection,
+        marketId: "mexico-ecuador-spread-2.5-1H",
+        outcomeId: "mexico-ecuador-spread-2.5-1H-yes",
+        contractSide: "yes",
+      },
     });
-    expect(result.selection).toEqual(selection);
+    expect(result.selection).toEqual({
+      ...selection,
+      marketId: "mexico-ecuador-spread-2.5-1H",
+      outcomeId: "mexico-ecuador-spread-2.5-1H-yes",
+      contractSide: "yes",
+    });
   });
 
   test("uses top-level server order id fallback when canonical response omits nested order id", async () => {
@@ -200,6 +223,13 @@ describe("ticket order service", () => {
       contractSide: "YES",
       price: "0.34",
       size: "75.00",
+      selection: {
+        marketType: "future",
+        marketId: "world-cup-winner",
+        outcomeId: "france",
+        displayLabel: "France",
+        contractSide: "yes",
+      },
     });
     expect(result.id).toBe("server-order-top-level");
     expect(result.mode).toBe("server");

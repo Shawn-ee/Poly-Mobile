@@ -2,6 +2,40 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle AP - Live Line Order Identity
+
+Fields now provided or wired:
+
+- Server ticket orders now carry a canonical `selection` payload with `marketId`, `outcomeId`, `marketGroupId`, `marketType`, `line`, `period`, `side`, `displayLabel`, and `contractSide`.
+- `/api/orders` preserves sanitized `selection` and `contractSide` in `ApiOrderRequest.requestBody`.
+- `/api/portfolio` returns `selection` for open orders and positions.
+- `/api/portfolio/history` returns `selection` for canceled orders and recent trades.
+- Mobile Portfolio snapshot/history mapping preserves all selection identity fields.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- First-class `Order.selection` and `Trade.selection` schema fields, if we decide request-body reconstruction is not durable enough for production.
+- A direct relation from filled trades back to the submitted order/request, so history can show exact submitted line metadata instead of inferring from market/outcome.
+- Server-hydrated live-device proof against a real live line market remains desirable after PM-GAP-067 provider/depth work.
+
+Schema mismatch:
+
+- `ApiOrderRequest.requestBody` is the source of exact submitted selection for open/canceled orders.
+- `Position` and `Trade` do not own selection fields; Cycle AP derives identity from `Market` and `Outcome`.
+
+Route mismatch:
+
+- No new route is needed for this increment.
+- `/api/portfolio` and `/api/portfolio/history` are now the mobile-facing identity routes for portfolio surfaces.
+
+Temporary mock/static data:
+
+- Mock-mode ticket orders now use the same `TicketSelection` identity shape as server orders.
+
+Future migration concern:
+
+- If live line markets later support multiple provider ids per line/outcome, add provider-specific ids to the selection contract before production trading.
+
 ## Cycle AO - Live Event Detail Backend Contract
 
 Fields now provided or wired:
@@ -18,7 +52,7 @@ Fields Holiwyn still needs but backend does not fully provide:
 - Real provider ingestion for `liveStats` and `chartHistory`; Cycle AO only defines and passes through the contract when metadata exists.
 - Full historical chart route by market/outcome/range, including last-updated metadata.
 - Full orderbook ladder route with multiple levels, timestamps, spread, suspended/no-liquidity state, and market-wide liquidity metadata.
-- End-to-end order/portfolio/history identity proof for live line markets.
+- End-to-end order/portfolio/history identity proof for live line markets is now structurally covered by Cycle AP, but server-hydrated live-device proof should be repeated after live provider/depth data is wired.
 
 Schema mismatch:
 

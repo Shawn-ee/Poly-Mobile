@@ -36,7 +36,7 @@ Reference evidence:
 | LED-P0-04 | P0 | Tapping a live outcome opens a ticket that preserves event, market, and outcome identity. | Tablet ticket screenshot/XML | Pass |
 | LED-P0-05 | P0 | Fixture data used for frontend parity is backend-shaped with stable ids and contract fields, not display-only random data. | Code review | Pass |
 | LED-P1-01 | P1 | Backend routes should provide live market groups, line options, chart history, orderbook depth, live stats, and selected identity. | Route/schema audit | Partial: `/api/events/:slug` now provides market/line/outcome identity, compact depth, and optional chart/live-stat arrays; real provider/history/depth data remains open. |
-| LED-P1-02 | P1 | Portfolio/open-order/activity should preserve live selected market/line/outcome identity after live orders. | Future device proof | Open |
+| LED-P1-02 | P1 | Portfolio/open-order/activity should preserve live selected market/line/outcome identity after live orders. | API/mobile service tests | Pass for structural backend/mobile contract in Cycle AP; repeat live-device server proof after provider data is wired. |
 | LED-P2-01 | P2 | Visual density and animation should be tightened against a cleaner unblocked Polymarket game-detail reference. | Future side-by-side audit | Open |
 
 ## Holiwyn Evidence
@@ -86,8 +86,39 @@ Remaining P1 gaps:
 
 - Real provider ingestion for live stats/chart history is not implemented.
 - Full market history and depth ladder routes are still missing.
-- PM-GAP-068 live order-to-portfolio/history identity remains unproven.
+- PM-GAP-068 live order-to-portfolio/history identity is structurally verified by Cycle AP route/service tests; live-device server proof should be repeated after real live data is wired.
+
+## Cycle AP Order Identity Audit
+
+Result: Pass for the PM-GAP-068 backend/mobile identity contract.
+
+What became materially closer to Polymarket:
+
+- Ticket submission now preserves selected market, line, period, side, outcome, and contract side through the server order request.
+- Portfolio open orders, positions, canceled orders, and recent-trade activity now expose the same selection identity to mobile instead of collapsing to plain market/outcome text.
+
+Evidence:
+
+- `src/server/services/ticketSelectionMetadata.ts`
+- `src/server/services/canonicalOrderSubmission.ts`
+- `src/app/api/portfolio/route.ts`
+- `src/app/api/portfolio/history/route.ts`
+- `mobile/src/services/orderService.ts`
+- `mobile/src/services/portfolioSnapshotService.ts`
+- `mobile/src/services/portfolioHistoryService.ts`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/portfolio.open-orders.route.test.ts src/__tests__/portfolio.history.route.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/orderService.test.ts mobile/src/__tests__/portfolioSnapshotService.test.ts mobile/src/__tests__/portfolioHistoryService.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:event-detail-line-portfolio`
+
+Unresolved P0 gaps: 0 for the PM-GAP-068 structural contract.
+
+Remaining P1/P2 gaps:
+
+- Device proof should be repeated with server-hydrated live line markets after PM-GAP-067 real provider/depth work.
+- First-class `Order.selection` and `Trade.selection` columns may be needed before production if request-body reconstruction is not durable enough.
 
 ## Next Structural Work
 
-The next cycle should address PM-GAP-068 or the remaining PM-GAP-067 provider/history/depth sub-gaps before opening a new feature area.
+The next cycle should address the remaining PM-GAP-067 provider/history/depth sub-gaps before opening a new feature area.

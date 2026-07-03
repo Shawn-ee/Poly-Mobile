@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getUserId } from "@/lib/auth";
 import { requireCanonicalActor } from "@/lib/canonicalAuth";
+import { buildTicketSelectionMetadata } from "@/server/services/ticketSelectionMetadata";
 
 export const dynamic = "force-dynamic";
 
@@ -41,12 +42,23 @@ export async function GET(request: NextRequest) {
           id: true,
           title: true,
           status: true,
+          marketGroupKey: true,
+          marketType: true,
+          line: true,
+          period: true,
         },
       },
       outcome: {
         select: {
           id: true,
           name: true,
+          label: true,
+          side: true,
+        },
+      },
+      apiOrderRequest: {
+        select: {
+          requestBody: true,
         },
       },
     },
@@ -64,12 +76,18 @@ export async function GET(request: NextRequest) {
           id: true,
           title: true,
           status: true,
+          marketGroupKey: true,
+          marketType: true,
+          line: true,
+          period: true,
         },
       },
       outcome: {
         select: {
           id: true,
           name: true,
+          label: true,
+          side: true,
         },
       },
     },
@@ -184,6 +202,11 @@ export async function GET(request: NextRequest) {
       id: order.id,
       market: order.market,
       outcome: order.outcome,
+      selection: buildTicketSelectionMetadata({
+        requestBody: order.apiOrderRequest?.requestBody,
+        market: order.market,
+        outcome: order.outcome,
+      }),
       side: order.side,
       status: order.status,
       price: Number(order.price),
@@ -195,6 +218,10 @@ export async function GET(request: NextRequest) {
       id: trade.id,
       market: trade.market,
       outcome: trade.outcome,
+      selection: buildTicketSelectionMetadata({
+        market: trade.market,
+        outcome: trade.outcome,
+      }),
       side: trade.side,
       shares: Number(trade.shares),
       cost: Number(trade.cost),

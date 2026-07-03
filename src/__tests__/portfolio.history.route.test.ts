@@ -46,10 +46,16 @@ describe("GET /api/portfolio/history canceled orders", () => {
             id: "market-world-cup-winner",
             title: "Will France win the 2026 FIFA World Cup?",
             status: "LIVE",
+            marketGroupKey: "live-game-lines",
+            marketType: "match_winner_1x2",
+            line: null,
+            period: "regulation",
           },
           outcome: {
             id: "yes",
             name: "YES",
+            label: "France",
+            side: "home",
           },
         },
       ]);
@@ -67,10 +73,27 @@ describe("GET /api/portfolio/history canceled orders", () => {
           id: "market-world-cup-winner",
           title: "Will France win the 2026 FIFA World Cup?",
           status: "LIVE",
+          marketGroupKey: "live-game-lines",
+          marketType: "spread",
+          line: { toString: () => "+0.5" },
+          period: "regulation",
         },
         outcome: {
           id: "yes",
           name: "YES",
+          label: "France +0.5",
+          side: "home",
+        },
+        apiOrderRequest: {
+          requestBody: {
+            selection: {
+              marketType: "spread",
+              line: "+0.5",
+              period: "regulation",
+              displayLabel: "France +0.5",
+            },
+            contractSide: "YES",
+          },
         },
       },
     ]);
@@ -110,14 +133,25 @@ describe("GET /api/portfolio/history canceled orders", () => {
       canceledOrders: [
         {
           id: "order-canceled-1",
-          market: {
+          market: expect.objectContaining({
             id: "market-world-cup-winner",
             title: "Will France win the 2026 FIFA World Cup?",
             status: "LIVE",
-          },
-          outcome: {
+          }),
+          outcome: expect.objectContaining({
             id: "yes",
             name: "YES",
+          }),
+          selection: {
+            marketId: "market-world-cup-winner",
+            outcomeId: "yes",
+            marketGroupId: "live-game-lines",
+            marketType: "spread",
+            line: "+0.5",
+            period: "regulation",
+            side: "home",
+            displayLabel: "France +0.5",
+            contractSide: "yes",
           },
           side: "BUY",
           status: "CANCELED",
@@ -130,14 +164,23 @@ describe("GET /api/portfolio/history canceled orders", () => {
       recentTrades: [
         {
           id: "trade-1",
-          market: {
+          market: expect.objectContaining({
             id: "market-world-cup-winner",
             title: "Will France win the 2026 FIFA World Cup?",
             status: "LIVE",
-          },
-          outcome: {
+          }),
+          outcome: expect.objectContaining({
             id: "yes",
             name: "YES",
+          }),
+          selection: {
+            marketId: "market-world-cup-winner",
+            outcomeId: "yes",
+            marketGroupId: "live-game-lines",
+            marketType: "match_winner_1x2",
+            period: "regulation",
+            side: "home",
+            displayLabel: "France regulation",
           },
           side: "BUY",
           shares: 200,

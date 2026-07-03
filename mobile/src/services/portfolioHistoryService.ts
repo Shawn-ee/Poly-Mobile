@@ -20,10 +20,15 @@ const knownMarketTypes: TicketSelection["marketType"][] = ["spread", "totals", "
 
 const selectionFromBackend = (
   selection?: {
+    marketId?: string;
+    outcomeId?: string;
+    marketGroupId?: string;
     marketType?: string;
     line?: string;
     period?: string;
+    side?: string;
     displayLabel?: string;
+    contractSide?: "yes" | "no";
   } | null,
 ): TicketSelection | undefined => {
   if (!selection?.displayLabel) return undefined;
@@ -32,9 +37,14 @@ const selectionFromBackend = (
     : "prop";
   return {
     marketType,
+    marketId: selection.marketId,
+    outcomeId: selection.outcomeId,
+    marketGroupId: selection.marketGroupId,
     line: selection.line,
     period: selection.period,
+    side: selection.side,
     displayLabel: selection.displayLabel,
+    contractSide: selection.contractSide,
   };
 };
 

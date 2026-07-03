@@ -1955,7 +1955,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-line-adjustment-spread-ticket.png"
       $spreadTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-line-adjustment-spread-ticket.xml"
-      Assert-HierarchyContains -Path $spreadTicketHierarchy -Expected @("trade-ticket", "Mexico vs. Ecuador", "Yes - MEX -2.5 1H", "Odds 3%", "ticket-amount-keypad", "Choose an amount")
+      Assert-HierarchyContains -Path $spreadTicketHierarchy -Expected @("trade-ticket", "Mexico vs. Ecuador", "ticket-selection-line", "Yes - MEX -2.5 1H", "ticket-selected-outcome-choice", "Choose an amount")
       Invoke-TapHierarchyNode -Path $spreadTicketHierarchy -Identifier "ticket-close"
       Start-Sleep -Seconds 1
 
@@ -2005,14 +2005,17 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-line-portfolio-ticket.png"
       $linePortfolioTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-line-portfolio-ticket.xml"
-      Assert-HierarchyContains -Path $linePortfolioTicketHierarchy -Expected @("trade-ticket", "Mexico vs. Ecuador", "Yes - MEX -2.5 1H", "Odds 3%", "ticket-keypad-2", "ticket-keypad-5", "Choose an amount")
-      Invoke-TapHierarchyNode -Path $linePortfolioTicketHierarchy -Identifier "ticket-keypad-2"
+      Assert-HierarchyContains -Path $linePortfolioTicketHierarchy -Expected @("trade-ticket", "Mexico vs. Ecuador", "ticket-selection-line", "Yes - MEX -2.5 1H", "ticket-selected-outcome-choice", "ticket-preset-5", "Choose an amount")
+      Invoke-TapHierarchyNode -Path $linePortfolioTicketHierarchy -Identifier "ticket-preset-10"
       Start-Sleep -Milliseconds 500
       $linePortfolioTicketAmount2Hierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-line-portfolio-ticket-amount-2.xml"
-      Invoke-TapHierarchyNode -Path $linePortfolioTicketAmount2Hierarchy -Identifier "ticket-keypad-5"
+      Invoke-TapHierarchyNode -Path $linePortfolioTicketAmount2Hierarchy -Identifier "ticket-preset-10"
+      Start-Sleep -Milliseconds 500
+      $linePortfolioTicketAmount20Hierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-line-portfolio-ticket-amount-20.xml"
+      Invoke-TapHierarchyNode -Path $linePortfolioTicketAmount20Hierarchy -Identifier "ticket-preset-5"
       Start-Sleep -Seconds 1
       $linePortfolioTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-line-portfolio-ticket-ready.xml"
-      Assert-HierarchyContains -Path $linePortfolioTicketReadyHierarchy -Expected @("25 USDT", "Swipe up to buy", "Estimated cost")
+      Assert-HierarchyContains -Path $linePortfolioTicketReadyHierarchy -Expected @('$25', 'To win $833.33', "ticket-price-line", "Swipe up to buy")
       Invoke-TapHierarchyNode -Path $linePortfolioTicketReadyHierarchy -Identifier "place-mock-order"
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-line-portfolio-after-order.png"

@@ -2,6 +2,65 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle AP - Live Line Order Identity
+
+Feature/page worked on:
+
+- Live/event line-market ticket identity through order payload, portfolio snapshot, and portfolio history/activity.
+- PM-GAP-068 backend/mobile data contract.
+
+Frontend components touched:
+
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/src/services/orderService.ts`
+- `mobile/src/services/portfolioSnapshotService.ts`
+- `mobile/src/services/portfolioHistoryService.ts`
+- `mobile/src/types.ts`
+- `mobile/src/__tests__/orderService.test.ts`
+- `mobile/src/__tests__/portfolioSnapshotService.test.ts`
+- `mobile/src/__tests__/portfolioHistoryService.test.ts`
+
+Backend components touched:
+
+- `src/server/services/canonicalOrderSubmission.ts`
+- `src/server/services/ticketSelectionMetadata.ts`
+- `src/app/api/portfolio/route.ts`
+- `src/app/api/portfolio/history/route.ts`
+- `src/__tests__/portfolio.open-orders.route.test.ts`
+- `src/__tests__/portfolio.history.route.test.ts`
+
+Important functions/services touched:
+
+- `submitTicketOrder()` now sends canonical `selection` metadata on every server ticket order, including `marketId`, `outcomeId`, optional `marketGroupId`, `marketType`, `line`, `period`, `side`, `displayLabel`, and `contractSide`.
+- `normalizeOrderRequest()` now preserves sanitized `selection` and `contractSide` inside `ApiOrderRequest.requestBody` for later portfolio reconstruction.
+- `buildTicketSelectionMetadata()` reconstructs safe ticket selection identity from request body plus market/outcome schema fields.
+- `/api/portfolio` now includes `selection` for positions and open orders.
+- `/api/portfolio/history` now includes `selection` for canceled orders and recent trades.
+- Mobile portfolio snapshot/history mappers now preserve the full selection identity instead of display-label-only metadata.
+
+User interactions supported:
+
+- A user can open a line/live market ticket, submit it in server mode, and have the selected line/outcome identity survive into portfolio open-order and activity data.
+- Portfolio surfaces can now display the same selected line label while retaining backend ids needed for future close/retrade/history flows.
+
+State transitions:
+
+- Ticket selection -> canonical order request body -> `ApiOrderRequest` -> portfolio snapshot/history response -> mobile Portfolio state now preserves market/outcome/line identity.
+
+Known limitations:
+
+- `Order` and `Trade` tables still do not have first-class `selection` columns; Cycle AP uses existing `ApiOrderRequest.requestBody` plus market/outcome schema fields to avoid a migration.
+- Filled trade identity is inferred from market/outcome fields when no order request relation is available.
+- Real live provider data and full orderbook/history routes remain part of PM-GAP-067, not this cycle.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/portfolio.open-orders.route.test.ts src/__tests__/portfolio.history.route.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/orderService.test.ts mobile/src/__tests__/portfolioSnapshotService.test.ts mobile/src/__tests__/portfolioHistoryService.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:event-detail-line-portfolio`
+
 ## Cycle AO - Live Event Detail Backend Contract
 
 Feature/page worked on:

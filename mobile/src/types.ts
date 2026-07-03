@@ -122,9 +122,13 @@ export type PortfolioCanceledOrderItem = {
     name: string;
   };
   selection?: {
+    marketId?: string;
+    outcomeId?: string;
+    marketGroupId?: string;
     marketType?: string;
     line?: string;
     period?: string;
+    side?: string;
     displayLabel?: string;
   } | null;
   side: "BUY" | "SELL";
@@ -147,9 +151,13 @@ export type PortfolioRecentTradeItem = {
     name: string;
   };
   selection?: {
+    marketId?: string;
+    outcomeId?: string;
+    marketGroupId?: string;
     marketType?: string;
     line?: string;
     period?: string;
+    side?: string;
     displayLabel?: string;
   } | null;
   side: "BUY" | "SELL";
@@ -170,9 +178,13 @@ export type PortfolioPositionItem = {
   outcomeId?: string;
   outcome: string;
   selection?: {
+    marketId?: string;
+    outcomeId?: string;
+    marketGroupId?: string;
     marketType?: string;
     line?: string;
     period?: string;
+    side?: string;
     displayLabel?: string;
   } | null;
   shares: number;
@@ -200,9 +212,13 @@ export type PortfolioOpenOrderItem = {
     name: string;
   };
   selection?: {
+    marketId?: string;
+    outcomeId?: string;
+    marketGroupId?: string;
     marketType?: string;
     line?: string;
     period?: string;
+    side?: string;
     displayLabel?: string;
   } | null;
   side: "BUY" | "SELL";
