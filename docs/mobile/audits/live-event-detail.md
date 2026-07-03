@@ -264,6 +264,53 @@ Remaining P1 gaps:
 - Real external provider ingestion is still missing.
 - Richer delayed/suspended/stale route states and full orderbook depth remain open.
 
+## Cycle AV Live Orderbook Depth Contract Audit
+
+Result: Partial pass for PM-GAP-067 orderbook/depth route contract and mobile EventDetail integration.
+
+What became materially closer to Polymarket:
+
+- Polymarket live game pages treat market depth as data-backed market infrastructure, not arbitrary local display rows. Holiwyn now has a public `/api/orderbook/:marketId/book` mobile contract with `levels[]`, `generatedAt`, `emptyState`, and compatibility `bids[]`/`asks[]`.
+- EventDetail now attempts route-backed depth hydration in server mode and labels the orderbook overlay with `orderbook-source-*`, `orderbook-status-*`, and `orderbook-empty-*`, making future Audit Gate proof capable of distinguishing true backend depth from fixture fallback.
+- The orderbook overlay still preserves selected outcome identity into the ticket from the Buy action.
+
+Acceptance criteria:
+
+| Criterion ID | Priority | Status | Verification |
+| --- | --- | --- | --- |
+| LD-AV-P1-01 | P1 | Pass | Public route test proves mobile `levels[]`, `generatedAt`, `emptyState`, `maxLevels` clamping, and no protected-field leak. |
+| LD-AV-P1-02 | P1 | Pass | Mobile API/service tests prove `getOrderbook()` and `marketDepthService` apply ready, empty, loading, and error states. |
+| LD-AV-P1-03 | P1 | Pass | Tablet orderbook smoke proves overlay source/status labels and Buy-ticket carry-through. |
+| LD-AV-P1-04 | P1 | Partial | Backend health unavailable, so tablet XML captured fallback depth rather than route-backed `ready` data. |
+
+Evidence:
+
+- `src/app/api/orderbook/[marketId]/book/route.ts`
+- `src/__tests__/public.orderbook-book.no-leak.test.ts`
+- `mobile/src/services/marketDepthService.ts`
+- `mobile/src/__tests__/marketDepthService.test.ts`
+- `mobile/src/api.ts`
+- `mobile/src/types.ts`
+- `mobile/App.tsx`
+- `mobile/src/components/EventDetail.tsx`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/public.orderbook-book.no-leak.test.ts src/__tests__/sports.event-market-model.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/marketDepthService.test.ts mobile/src/__tests__/marketChartService.test.ts mobile/src/__tests__/worldCupAdapter.test.ts mobile/src/__tests__/api.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:live-detail`
+- `cmd /c npm.cmd run smoke:tablet:event-detail-order-book`
+- `docs/mobile/harness/cycle-current-holiwyn-order-book.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-order-book-ticket.xml`
+
+Unresolved P0 gaps: 0 for this backend/mobile contract increment.
+
+Remaining P1 gaps:
+
+- Capture server-hydrated device proof showing `orderbook-source-orderbook-route` and `orderbook-status-ready`.
+- Populate real or seeded orderbook depth for live soccer markets.
+- Add richer delayed/stale/suspended depth states if the provider route cannot supply fresh data.
+- Ensure route-backed depth identity flows through ticket, order, portfolio, and history in a full server proof.
+
 ## Next Structural Work
 
-The next cycle should continue PM-GAP-067 by running the snapshot seed against an available backend and capturing server-hydrated chart proof, or by adding richer delayed/suspended chart states or a fuller orderbook ladder route before opening a new feature area.
+The next cycle should continue PM-GAP-067 by running the snapshot/depth seed against an available backend and capturing server-hydrated chart or orderbook proof, or by adding richer delayed/suspended/stale live-data states before opening a new feature area.

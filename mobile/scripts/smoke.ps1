@@ -1878,12 +1878,12 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-order-book.png"
       $orderBookHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-order-book.xml"
-      Assert-HierarchyContains -Path $orderBookHierarchy -Expected @("event-detail-order-book-screen", "Order Book", "Mexico vs. Ecuador - Match winner", "Best bid", "Best ask", "Spread", "order-book-outcome-mexico", "Mexico", "64%", "1.6x", "0.61 USDT", "0.68 USDT", "1.28k shares", "900 shares", "Buy", "Sell")
+      Assert-HierarchyContains -Path $orderBookHierarchy -Expected @("event-detail-order-book-screen", "orderbook-source", "orderbook-status", "event-detail-order-book-depth-state", "Order Book", "Mexico vs. Ecuador - Match winner", "Best bid", "Best ask", "Spread", "order-book-outcome-mexico", "Mexico", "64%", "1.6x", "0.61 USDT", "0.68 USDT", "1.28k shares", "900 shares", "Buy", "Sell")
       Invoke-TapHierarchyNode -Path $orderBookHierarchy -Identifier "order-book-buy-mexico"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-order-book-ticket.png"
       $orderBookTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-order-book-ticket.xml"
-      Assert-HierarchyContains -Path $orderBookTicketHierarchy -Expected @("trade-ticket", "Mexico vs. Ecuador", "Yes - Mexico", "Odds 64%", "Avg price", "0.64 USDT", "Implied odds", "1.6x", "Choose an amount")
+      Assert-HierarchyContains -Path $orderBookTicketHierarchy -Expected @("trade-ticket", "ticket-selection-summary", "Match winner", "Mexico vs. Ecuador", "ticket-selection-line", "Mexico", "Yes - Mexico", "ticket-side-buy", "ticket-side-sell", "Choose an amount")
       Invoke-TapHierarchyNode -Path $orderBookTicketHierarchy -Identifier "ticket-close"
       Start-Sleep -Seconds 1
       $orderBookAfterTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-order-book-after-ticket.xml"

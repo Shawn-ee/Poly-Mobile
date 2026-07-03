@@ -1,4 +1,4 @@
-import type { EventDetail, EventSummary, Market, MarketChart, MarketChartRange, PortfolioCanceledOrderItem, PortfolioHistoryItem, PortfolioRecentTradeItem, PortfolioSnapshot, ProfilePreferences, Quote } from "./types";
+import type { EventDetail, EventSummary, Market, MarketChart, MarketChartRange, OrderbookBook, PortfolioCanceledOrderItem, PortfolioHistoryItem, PortfolioRecentTradeItem, PortfolioSnapshot, ProfilePreferences, Quote } from "./types";
 
 const trimSlash = (value: string) => value.replace(/\/+$/, "");
 const REQUEST_TIMEOUT_MS = 3500;
@@ -78,6 +78,14 @@ export class PolyApi {
     return this.request<MarketChart>(
       `/api/markets/${encodeURIComponent(marketId)}/chart?${params.toString()}`,
     );
+  }
+
+  getOrderbook(marketId: string, input: { outcomeId?: string; maxLevels?: number } = {}) {
+    const params = new URLSearchParams();
+    if (input.outcomeId) params.set("outcomeId", input.outcomeId);
+    if (input.maxLevels) params.set("maxLevels", String(input.maxLevels));
+    const suffix = params.toString() ? `?${params.toString()}` : "";
+    return this.request<OrderbookBook>(`/api/orderbook/${encodeURIComponent(marketId)}/book${suffix}`);
   }
 
   getPortfolioHistory() {

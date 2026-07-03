@@ -172,6 +172,8 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
     chartHistory: event.chartHistory,
     chartHistorySource: event.chartHistory?.length ? "embedded" : undefined,
     chartHistoryStatus: event.chartHistory?.length ? "ready" : undefined,
+    orderbookDepthSource: normalizedMarkets.some((market) => (market.orderbookDepth?.length ?? 0) > 0) ? "embedded" : undefined,
+    orderbookDepthStatus: normalizedMarkets.some((market) => (market.orderbookDepth?.length ?? 0) > 0) ? "ready" : undefined,
     markets: normalizedMarkets,
   };
 };

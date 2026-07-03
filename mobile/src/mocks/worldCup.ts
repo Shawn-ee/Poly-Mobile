@@ -44,6 +44,10 @@ export type Event = {
   chartHistoryRange?: "1D" | "1W" | "1M" | "MAX";
   chartHistoryLastUpdated?: string | null;
   chartHistoryEmptyState?: "no-history" | null;
+  orderbookDepthSource?: "embedded" | "orderbook-route";
+  orderbookDepthStatus?: "idle" | "loading" | "ready" | "empty" | "error";
+  orderbookDepthLastUpdated?: string | null;
+  orderbookDepthEmptyState?: "no-depth" | null;
   markets: Market[];
 };
 

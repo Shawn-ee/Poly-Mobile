@@ -743,6 +743,62 @@ Decision:
 - Remaining P1/P2 gaps: phone-density spacing, native transition polish, and backend-backed market groups/history/live stats.
 - Next cycle required: yes. Continue the next highest-priority game-page or whole-app parity gap.
 
+## Cycle AV - Live Orderbook Depth Contract
+
+Feature: Live event detail orderbook/depth contract.
+
+Cycle: AV.
+
+Lead Agent target: close a structural Polymarket parity gap by adding a backend-shaped orderbook/depth route contract and wiring EventDetail to expose route/fallback state.
+
+Reference Audit Agent: Prior Cycle AN/AO Polymarket live event detail reference, where market depth and ticket actions are data-backed rather than arbitrary local rows.
+
+Implementation Agent: Holiwyn mobile app and public orderbook route.
+
+Audit Gate Agent: Route tests, mobile service tests, tablet orderbook smoke proof, and documentation review.
+
+Reference device: Samsung S23.
+
+Reference app/browser: logged-in Polymarket Android/mobile experience from existing live-detail audit evidence.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go, fallback data mode because backend health was unavailable.
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-order-book.png`
+- `docs/mobile/harness/cycle-current-holiwyn-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-order-book-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-order-book-ticket.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-order-book-after-ticket.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-order-book-closed.xml`
+
+Tests/checks:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/public.orderbook-book.no-leak.test.ts src/__tests__/sports.event-market-model.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/marketDepthService.test.ts mobile/src/__tests__/marketChartService.test.ts mobile/src/__tests__/worldCupAdapter.test.ts mobile/src/__tests__/api.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:live-detail`
+- `cmd /c npm.cmd run smoke:tablet:event-detail-order-book`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LD-AV-P1-01 | P1 | Pass | `/api/orderbook/:marketId/book` returns `marketId`, `outcomeId`, `generatedAt`, `emptyState`, `levels[]`, `bids[]`, and `asks[]` without leaking protected fields | None |
+| LD-AV-P1-02 | P1 | Pass | `PolyApi.getOrderbook()` and `marketDepthService` consume route-shaped depth and apply loading/ready/empty/error event states | None |
+| LD-AV-P1-03 | P1 | Pass | Tablet proof shows orderbook overlay labels for source/status/empty-state and Buy carries `Mexico` / `Yes - Mexico` into the ticket | None |
+| LD-AV-P1-04 | P1 | Partial | Backend health unavailable during tablet proof, so visible XML shows `orderbook-source-fallback orderbook-status-idle` rather than route-backed ready data | Re-run with backend healthy and seeded orderbook depth; require `orderbook-source-orderbook-route orderbook-status-ready` proof. |
+
+Decision:
+
+- Pass/fail: Partial pass for the structural contract increment; not final orderbook parity.
+- Unresolved P0 gaps: 0 for this contract cycle.
+- Remaining P1/P2 gaps: route-backed device proof, real provider/orderbook ingestion, richer delayed/stale/suspended depth states, and final visual-density parity.
+- Next cycle required: yes. Continue PM-GAP-067 by proving route-backed depth with a healthy backend or by filling another repeated backend/live-data gap.
+
 ## Gate Report Template
 
 Use this template for every feature gate:
