@@ -211,3 +211,38 @@ Known limitations:
 - Exact Score and Halves rows are local/fallback market content rather than backend-discovered market groups.
 - Team to Advance card depth and graph are local deterministic UI states.
 - The match-level `Live stats` tab remains a P1 gap.
+
+## Cycle Y - Line Adjustment
+
+Feature/page worked on:
+
+- Focused Spreads/Totals adjustable-line behavior on the Event Detail game page.
+
+Frontend components touched:
+
+- No frontend code changes in this cycle; existing EventDetail line selector behavior passed the new Polymarket audit gate.
+
+Important functions/services touched:
+
+- No runtime functions changed.
+- `EventDetailLineAdjustment` smoke was rerun on Samsung tablet as the Audit Gate proof.
+
+User interactions supported:
+
+- View Spread and Totals line rails.
+- Change Spread line and period.
+- Open a Spread ticket that preserves the selected line/period/outcome.
+- Change Totals line and period.
+- Open a Totals ticket that preserves the selected line/period/outcome.
+
+State transitions:
+
+- Spread line/period selection changes before ticket open.
+- Totals line/period selection changes before ticket open.
+- Ticket state preserves `marketType`, `line`, `period`, and `displayLabel`.
+
+Known limitations:
+
+- This cycle verifies focused Spreads/Totals only.
+- Team totals, halves-specific line cards, corners, and other discovered line markets still require separate same-cycle audits.
+- Line prices/probabilities are local deterministic values until backend contracts provide market line quotes.

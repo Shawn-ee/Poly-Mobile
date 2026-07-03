@@ -128,6 +128,63 @@ Decision:
 - Remaining P1/P2 gaps: Live Stats tab, backend-backed market groups/depth/history, exact visual polish.
 - Next cycle required: yes. Continue full game-page parity; do not mark whole game page complete from this focused pass.
 
+## Feature: Line Adjustment
+
+Cycle: Y
+
+Lead Agent target: focused Spreads/Totals adjustable-line parity.
+
+Reference Audit Agent: same-cycle Samsung S23 Polymarket mobile web audit.
+
+Implementation Agent: existing Holiwyn EventDetail line selector implementation; no code change required for focused P0 because existing behavior passed the new gate.
+
+Audit Gate Agent: Samsung tablet Holiwyn proof against criteria.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket mobile web.
+
+Reference route/URL: `https://polymarket.com/event/fifwc-usa-bel-2026-07-06-first-to-score`.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-Y-polymarket-lines-market-list.png`
+- `docs/mobile/reference/screenshots/cycle-Y-polymarket-spread-line-25.png`
+- `docs/mobile/reference/screenshots/cycle-Y-polymarket-totals-line-35.png`
+- `docs/mobile/reference/screenshots/cycle-Y-polymarket-*.xml`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-line-adjustment-baseline.png`
+- `docs/mobile/harness/cycle-current-holiwyn-line-adjustment-baseline.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-line-adjustment-spread-25-1h.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-line-adjustment-spread-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-line-adjustment-spread-ticket.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-line-adjustment-totals-35-2h.png`
+- `docs/mobile/harness/cycle-current-holiwyn-line-adjustment-totals-35-2h.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-line-adjustment-totals-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-line-adjustment-totals-ticket.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LA-P0-01 | P0 | Pass | `docs/mobile/audits/line-adjustment.md` | None |
+| LA-P0-02 | P0 | Pass | `cycle-current-holiwyn-line-adjustment-baseline.xml` | None |
+| LA-P0-03 | P0 | Pass | `cycle-current-holiwyn-line-adjustment-spread-25-1h.xml`; `cycle-current-holiwyn-line-adjustment-totals-35-2h.xml` | None |
+| LA-P0-04 | P0 | Pass | `cycle-current-holiwyn-line-adjustment-spread-ticket.xml`; `cycle-current-holiwyn-line-adjustment-totals-ticket.xml` | None |
+
+Decision:
+
+- Pass/fail: Pass for focused Spreads/Totals line-adjustment parity.
+- Unresolved P0 gaps: 0 for focused Spreads/Totals scope.
+- Remaining P1/P2 gaps: team totals, halves-specific line cards, corners/discovered markets, backend-provided line pricing/depth/history.
+- Next cycle required: yes. Continue full adjustable-line and trade-ticket parity; do not mark all line markets complete from this focused pass.
+
 ## Gate Report Template
 
 Use this template for every feature gate:
