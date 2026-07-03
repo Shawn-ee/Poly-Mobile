@@ -1204,3 +1204,38 @@ Known limitations:
 - Tablet proof ran while backend health was unavailable, so visible device proof shows `orderbook-source-fallback orderbook-status-idle`.
 - Real route-backed device proof remains open until local services are healthy and seeded with orderbook depth.
 - The route currently derives `levels[]` from the existing public snapshot; richer venue-style depth, stale/delayed states, and provider ingestion remain active structural parity work.
+
+## Cycle AW - Route-Backed Live Depth Seed Harness
+
+Feature/page worked on:
+
+- Live event detail backend data readiness for orderbook/depth proof.
+- PM-GAP-067 seeded live World Cup orderbook depth.
+
+Backend/API components touched:
+
+- `src/server/services/mobileLiveOrderbookDepthSeeding.ts`
+- `scripts/seed_mobile_live_orderbook_depth.ts`
+- `src/__tests__/mobile-live-orderbook-depth-seeding.test.ts`
+- `package.json`
+
+Important functions/services touched:
+
+- `buildMobileLiveOrderbookDepthRows()` creates backend-shaped bid/ask rows for each active outcome.
+- `mobile:live-orderbook-depth-seed` finds the first live public World Cup orderbook market, upserts stable proof users, clears only those users' existing open proof orders for the market, and creates open BUY/SELL orders consumed by `/api/orderbook/:marketId/book`.
+
+User interactions supported:
+
+- No new UI interaction was added in this cycle.
+- Existing tablet orderbook overlay and Buy-ticket carry-through were re-smoked after backend health returned OK.
+
+State transitions:
+
+- Backend proof data moves from no seeded open orders to route-readable open BUY/SELL depth for the selected live World Cup market.
+- The public orderbook route returns `emptyState: null` and 12 seeded `levels[]` rows for the seeded market.
+
+Known limitations:
+
+- Holiwyn tablet proof still captured `orderbook-source-fallback orderbook-status-idle`; route-backed mobile UI proof remains open.
+- `/api/events/:slug` can return a very large 37-market payload, and `/api/markets/:id/chart?range=1D` timed out during this cycle's route probe. The next structural cycle should add or use a mobile-optimized live detail/depth/chart proof path.
+- Seeded orderbook depth is deterministic proof data, not real provider ingestion.

@@ -382,3 +382,16 @@ Cycle AV implementation notes:
 - `maxLevels` is accepted and clamped server-side to avoid unbounded mobile responses.
 - Mobile is wired to consume the route in server mode and exposes source/status labels so fallback proof cannot be confused with route-backed parity.
 - Tablet proof was fallback-mode because backend health was unavailable; the backend route contract is covered by route/API tests.
+
+## Cycle AW - Route-Backed Live Depth Seed Harness
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live event orderbook proof data | `/api/orderbook/:marketId/book?maxLevels=24` after `mobile:live-orderbook-depth-seed` | GET | Public viewing | None | `emptyState: null`, `levels[].outcomeId`, `levels[].side`, `levels[].price`, `levels[].shares`, `levels[].total` | `User`, `Order`, `Market`, `Outcome` | Existing fixture depth still drives tablet UI in mock mode | Mobile server-mode proof still needs an event/detail payload path that can hydrate the seeded market quickly and select the same market. |
+| Live depth seeding harness | `mobile:live-orderbook-depth-seed` script | Local script | Local development only | Optional `--eventSlug`; default first live public World Cup orderbook event | Summary artifact with event id/slug/title, market id/title/type/group, proof users, deleted/created order counts, and preview rows | `User`, `Order`, `Market`, `Outcome` | N/A | Real provider/liquidity ingestion remains missing; this is deterministic proof data only. |
+
+Cycle AW implementation notes:
+
+- The depth seed harness created 12 open proof orders for `world-cup-2026-curacao-vs-cote-divoire-2026-06-25` / `aca976d2-2bad-416c-b010-c874c0ee493f`.
+- A direct orderbook route probe returned seeded `levels[]` with `emptyState: null`.
+- `/api/events/:slug` returned a very large event-detail payload, while `/api/markets/:id/chart?range=1D` timed out during a 20-second probe. This promotes a mobile-optimized live detail/chart/depth payload to active structural work.

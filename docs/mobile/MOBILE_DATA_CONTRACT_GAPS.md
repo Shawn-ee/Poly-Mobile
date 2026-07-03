@@ -963,3 +963,33 @@ Temporary mock/static data:
 Future migration concern:
 
 - Do not mark orderbook/depth parity complete until a server-hydrated device proof shows `orderbook-source-orderbook-route` and `orderbook-status-ready` for a real or seeded live soccer market.
+
+## Cycle AW - Route-Backed Live Depth Seed Harness
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- A compact mobile live event detail payload that can hydrate the selected event, chart status, orderbook depth status, grouped markets, and ticket-ready identities without returning every market in a heavy desktop/API shape.
+- A fast chart route or mobile chart summary route that returns seeded `MarketOutcomeSnapshot` history within the device smoke timeout.
+- A route-backed mapping between the live list item the user taps and the seeded backend market id used for depth.
+
+Fields backend provides but mobile ignores:
+
+- Seeded orderbook `levels[]` are available from `/api/orderbook/:marketId/book`, but the tablet proof is still running the fallback/mock event surface.
+
+Schema mismatch:
+
+- Deterministic proof users and open orders are adequate for harness proof but are not a production liquidity/provider model.
+
+Route mismatch:
+
+- The public orderbook route is fast for the seeded market when the dev server is responsive.
+- The event-detail route returned a very large 37-market payload, and the chart route timed out in this cycle's direct probe. This prevents reliable server-mode tablet proof even though backend depth now exists.
+
+Temporary mock/static data:
+
+- Tablet orderbook UI still displays the Mexico vs. Ecuador fixture ladder and labels it as fallback.
+- Seeded depth rows are backend-shaped and can replace the fixture once mobile event hydration selects the seeded market.
+
+Future migration concern:
+
+- The next PM-GAP-067 cycle should add a mobile-optimized live detail/depth/chart endpoint or proof harness so the tablet can capture `orderbook-source-orderbook-route orderbook-status-ready` without waiting on a full event payload.
