@@ -31,7 +31,7 @@ These apply to every page, feature, button, and interaction:
 
 | Feature | Criteria owner file | P0 status | P1/P2 status | Latest gate |
 | --- | --- | --- | --- | --- |
-| Game page | `docs/mobile/audits/game-page.md` | Verified for Cycle AJ focused logged-in game-page P0 | P1/P2 visual density, Player Props reference, and backend-backed market data remain tracked | Pass |
+| Game page | `docs/mobile/audits/game-page.md` | Verified for Cycle AJ focused logged-in game-page P0; Cycle AL sticky market-tab criterion passed | P1/P2 phone density, Player Props reference, and backend-backed market data remain tracked | Pass |
 | Trade ticket | `docs/mobile/audits/trade-ticket.md` | Verified for Cycle AI focused logged-in/tall ticket-surface P0 | P1/P2 deferred in focused audit; production eligibility/location gates remain deferred for fake-token mode | Pass |
 | Binary side ticket | `docs/mobile/audits/binary-side.md` | Verified for Cycle AH focused Buy No contract-side P0 | P1 full-page/native swipe confirmation deferred | Pass |
 | Line adjustment | `docs/mobile/audits/line-adjustment.md` | Verified for Cycle Y focused Spreads/Totals P0 | P1/P2 deferred in focused audit | Pass |

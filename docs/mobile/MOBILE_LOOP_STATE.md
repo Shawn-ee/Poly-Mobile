@@ -11936,6 +11936,22 @@ Audit Gate: Pass for focused market-page P0 baseline, with 0 unresolved P0 gaps 
 
 Next likely cycle: watchlist/saved/share/chat/notification parity or market-page visual-density polish.
 
+### Cycle AL - Game Page Sticky Market Tabs
+
+Goal: Match the logged-in Polymarket game-page behavior where `Game Lines` and `Player Props` remain pinned under the compact match header while market rows scroll beneath them.
+
+Reference audit: Samsung S23 logged-in Polymarket Android app on Australia vs Egypt. The scrolled game page keeps Game/Chat at the top, shows compact team probabilities/date, and pins the `Game Lines` / `Player Props` rail above Regulation Time Winner, Spread, and Totals rows.
+
+Holiwyn screens changed: Event detail now renders a sticky market-tab rail under the compact match header. The sticky rail shares state with the inline tabs and can switch to Player Props from the scrolled market position.
+
+Backend/API changed: No route changed. Docs now record the future need for backend-owned market-tab metadata, Player Props availability, grouped section ordering, and backend-backed props rows.
+
+Verification: `npm run typecheck` passed; `cmd /c npm.cmd run smoke:tablet:event-detail-full-page` passed on the Samsung tablet with sticky Game Lines, lower-market, and sticky Player Props evidence.
+
+Audit Gate: Pass for the focused sticky market-tab scope, with 0 unresolved P0 gaps. Remaining P1/P2 gaps are phone-density polish, native transitions, Player Props direct reference/product scope, and backend-backed market groups/history/live stats.
+
+Next likely cycle: continue game-page visual-density polish, Player Props scope audit, or the next highest-priority whole-app parity gap.
+
 ### Cycle AF - Reference Device Preflight Harness
 
 Goal: Add a harness guard that checks Polymarket reference-device availability before starting a new product parity feature cycle.
