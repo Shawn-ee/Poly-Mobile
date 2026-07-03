@@ -129,12 +129,21 @@ describe("public market chart API no-leak checks", () => {
     );
 
     const body = await response.json();
-    expectOnlyKeys(body, ["marketId", "outcomes", "series"]);
+    expectOnlyKeys(body, ["emptyState", "generatedAt", "history", "lastUpdated", "marketId", "outcomes", "range", "ranges", "series"]);
     expect(body).toMatchObject({
       marketId: "market-1",
+      range: "1W",
+      ranges: ["1D", "1W", "1M", "MAX"],
+      generatedAt: expect.any(String),
+      lastUpdated: now.toISOString(),
+      emptyState: null,
       outcomes: [
         { id: "yes", name: "Yes" },
         { id: "no", name: "No" },
+      ],
+      history: [
+        { outcomeId: "yes", timestamp: now.toISOString(), price: 0.57, probability: 57 },
+        { outcomeId: "no", timestamp: now.toISOString(), price: 0.43, probability: 43 },
       ],
       series: {
         yes: [{ ts: now.toISOString(), price: 0.57 }],
@@ -162,13 +171,19 @@ describe("public market chart API no-leak checks", () => {
     );
 
     const body = await response.json();
-    expectOnlyKeys(body, ["marketId", "outcomes", "series"]);
+    expectOnlyKeys(body, ["emptyState", "generatedAt", "history", "lastUpdated", "marketId", "outcomes", "range", "ranges", "series"]);
     expect(body).toEqual({
       marketId: "market-1",
+      range: "1M",
+      ranges: ["1D", "1W", "1M", "MAX"],
+      generatedAt: expect.any(String),
+      lastUpdated: null,
+      emptyState: "no-history",
       outcomes: [
         { id: "yes", name: "Yes" },
         { id: "no", name: "No" },
       ],
+      history: [],
       series: {},
     });
     expectNoForbiddenKeys(body);

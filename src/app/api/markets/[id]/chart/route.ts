@@ -4,6 +4,21 @@ import { getUserId } from "@/lib/auth";
 import { assertMarketVisibleToUser } from "@/lib/marketAccess";
 import { toGuardResponse } from "@/lib/marketGuards";
 
+const CHART_RANGES = ["1D", "1W", "1M", "MAX"] as const;
+
+type ChartRange = (typeof CHART_RANGES)[number];
+
+const chartRange = (value: string | null): ChartRange => {
+  const normalized = (value ?? "1W").trim().toUpperCase();
+  return CHART_RANGES.includes(normalized as ChartRange) ? normalized as ChartRange : "1W";
+};
+
+const probabilityFromPrice = (price: number) => {
+  if (!Number.isFinite(price)) return null;
+  if (price > 1) return Math.max(1, Math.min(99, Math.round(price)));
+  return Math.max(1, Math.min(99, Math.round(price * 100)));
+};
+
 export async function GET(
   request: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -11,7 +26,7 @@ export async function GET(
   const { id } = await context.params;
   const userId = await getUserId();
   const url = new URL(request.url);
-  const range = (url.searchParams.get("range") ?? "1W").toUpperCase();
+  const range = chartRange(url.searchParams.get("range"));
 
   const now = Date.now();
   const cutoff = (() => {
@@ -54,17 +69,30 @@ export async function GET(
       : snapshots;
 
   const series: Record<string, { ts: string; price: number }[]> = {};
+  const history: Array<{ outcomeId: string; timestamp: string; price: number; probability: number }> = [];
   for (const snap of capped) {
+    const price = Number(snap.price);
+    const probability = probabilityFromPrice(price);
+    if (probability == null) continue;
+    const timestamp = snap.ts.toISOString();
     if (!series[snap.outcomeId]) series[snap.outcomeId] = [];
     series[snap.outcomeId].push({
-      ts: snap.ts.toISOString(),
-      price: Number(snap.price),
+      ts: timestamp,
+      price,
     });
+    history.push({ outcomeId: snap.outcomeId, timestamp, price, probability });
   }
+  const lastUpdated = history.at(-1)?.timestamp ?? null;
 
   return NextResponse.json({
     marketId: id,
+    range,
+    ranges: CHART_RANGES,
+    generatedAt: new Date(now).toISOString(),
+    lastUpdated,
+    emptyState: history.length === 0 ? "no-history" : null,
     outcomes: market.outcomes.map((o) => ({ id: o.id, name: o.name })),
+    history,
     series,
   });
 }

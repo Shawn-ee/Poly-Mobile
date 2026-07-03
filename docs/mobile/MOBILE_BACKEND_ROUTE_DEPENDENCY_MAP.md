@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle AR - Range-Aware Market Chart Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Selected market chart/history | `/api/markets/:marketId/chart?range=<1D\|1W\|1M\|MAX>` through `PolyApi.getMarketChart()` | GET | Optional for public markets; visibility guard still applies | None | `marketId`, `range`, `ranges[]`, `generatedAt`, `lastUpdated`, `emptyState`, `outcomes[]`, `history[].outcomeId`, `history[].timestamp`, `history[].price`, `history[].probability`, compatibility `series` | `Market`, `Outcome`, `MarketOutcomeSnapshot`, market visibility/owner guard | Existing embedded `event.chartHistory` and local fixture arrays remain fallback until EventDetail consumes the route | Provider ingestion must write live snapshots; EventDetail still needs a UI integration cycle to replace local chart arrays with route data. |
+
+Cycle AR implementation notes:
+
+- This cycle closes the route/client-contract portion of the repeated chart-history gap.
+- The endpoint remains public-safe and keeps the existing `series` field for web compatibility while adding mobile-ready `history[]`.
+- Backend parity is still incomplete until real World Cup live market snapshots are ingested and device proof uses server-hydrated chart data.
+
 ## Cycle AQ - Live Chart History And Depth Identity Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

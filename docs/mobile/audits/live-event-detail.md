@@ -1,6 +1,6 @@
 # Live Event Detail Audit
 
-Status: Cycle AQ backend contract in progress. Cycle AN passed structural live event detail UI with backend-shaped fixture data and tablet proof; Cycle AO added the real `/api/events/:slug` contract for market identity, line identity, compact depth, and optional chart/live-stat arrays. Cycle AQ now sources chart history from `MarketOutcomeSnapshot` rows when available and preserves depth outcome identity in mobile. This is still not full backend parity because provider ingestion and full history/depth routes remain open.
+Status: Cycle AR backend contract in progress. Cycle AN passed structural live event detail UI with backend-shaped fixture data and tablet proof; Cycle AO added the real `/api/events/:slug` contract for market identity, line identity, compact depth, and optional chart/live-stat arrays. Cycle AQ sources embedded chart history from `MarketOutcomeSnapshot` rows when available and preserves depth outcome identity in mobile. Cycle AR adds the dedicated `/api/markets/:marketId/chart?range=...` route/client contract. This is still not full backend parity because provider ingestion, visible chart-route hydration, and full depth routes remain open.
 
 ## Scope
 
@@ -35,7 +35,7 @@ Reference evidence:
 | LED-P0-03 | P0 | Live market groups include more than one bare winner market and expose live winner, spreads, totals, halves, and team-total structure. | Tablet scrolled screenshot/XML | Pass |
 | LED-P0-04 | P0 | Tapping a live outcome opens a ticket that preserves event, market, and outcome identity. | Tablet ticket screenshot/XML | Pass |
 | LED-P0-05 | P0 | Fixture data used for frontend parity is backend-shaped with stable ids and contract fields, not display-only random data. | Code review | Pass |
-| LED-P1-01 | P1 | Backend routes should provide live market groups, line options, chart history, orderbook depth, live stats, and selected identity. | Route/schema audit | Partial: `/api/events/:slug` now provides market/line/outcome identity, compact depth, snapshot-backed chart history when `MarketOutcomeSnapshot` rows exist, and optional live-stat arrays; real provider ingestion and full depth/history routes remain open. |
+| LED-P1-01 | P1 | Backend routes should provide live market groups, line options, chart history, orderbook depth, live stats, and selected identity. | Route/schema audit | Partial: `/api/events/:slug` now provides market/line/outcome identity, compact depth, snapshot-backed chart history when `MarketOutcomeSnapshot` rows exist, and optional live-stat arrays; `/api/markets/:marketId/chart?range=...` now provides a dedicated range-aware chart contract; real provider ingestion, EventDetail chart-route hydration, and full depth routes remain open. |
 | LED-P1-02 | P1 | Portfolio/open-order/activity should preserve live selected market/line/outcome identity after live orders. | API/mobile service tests | Pass for structural backend/mobile contract in Cycle AP; repeat live-device server proof after provider data is wired. |
 | LED-P2-01 | P2 | Visual density and animation should be tightened against a cleaner unblocked Polymarket game-detail reference. | Future side-by-side audit | Open |
 
@@ -148,6 +148,35 @@ Remaining P1 gaps:
 - Dedicated range-aware history and full orderbook ladder routes are still missing.
 - Samsung/tablet proof should be repeated with server-hydrated live event data once provider/fixture seeding creates snapshot rows for a live game.
 
+## Cycle AR Market Chart Route Audit
+
+Result: Partial pass for the PM-GAP-067 dedicated chart-history route/client contract.
+
+What became materially closer to Polymarket:
+
+- Polymarket live chart behavior is range-aware and history-backed. Holiwyn now has a dedicated `/api/markets/:marketId/chart?range=1D|1W|1M|MAX` contract with generated time, last-updated, empty state, outcome ids, and mobile-ready probability history points.
+- Mobile now has `PolyApi.getMarketChart()` and typed `MarketChart` models, so the visible EventDetail chart can move from embedded/mock history to server route hydration in the next UI integration cycle.
+
+Evidence:
+
+- `src/app/api/markets/[id]/chart/route.ts`
+- `src/__tests__/public.market-chart.no-leak.test.ts`
+- `mobile/src/api.ts`
+- `mobile/src/types.ts`
+- `mobile/src/__tests__/api.test.ts`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/public.market-chart.no-leak.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/api.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+
+Unresolved P0 gaps: 0 for this backend/client contract increment.
+
+Remaining P1 gaps:
+
+- EventDetail does not yet call the dedicated chart route.
+- Real provider ingestion must populate `MarketOutcomeSnapshot` rows for live World Cup markets.
+- Device proof still needs a server-hydrated chart-data run once backend health/live snapshot seeding is available.
+
 ## Next Structural Work
 
-The next cycle should continue PM-GAP-067 with provider-shaped live data seeding/ingestion, a dedicated history route, or a fuller orderbook ladder route before opening a new feature area.
+The next cycle should continue PM-GAP-067 with EventDetail chart-route hydration, provider-shaped live data seeding/ingestion, or a fuller orderbook ladder route before opening a new feature area.

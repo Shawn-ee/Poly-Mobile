@@ -24,6 +24,27 @@ export type EventChartPoint = {
   probability: number;
 };
 
+export type MarketChartRange = "1D" | "1W" | "1M" | "MAX";
+
+export type MarketChartHistoryPoint = {
+  outcomeId: string;
+  timestamp: string;
+  price: number;
+  probability: number;
+};
+
+export type MarketChart = {
+  marketId: string;
+  range: MarketChartRange;
+  ranges: MarketChartRange[];
+  generatedAt: string;
+  lastUpdated: string | null;
+  emptyState: "no-history" | null;
+  outcomes: Array<{ id: string; name: string }>;
+  history: MarketChartHistoryPoint[];
+  series: Record<string, Array<{ ts: string; price: number }>>;
+};
+
 export type OrderbookDepthLevel = {
   outcomeId?: string;
   side: "bid" | "ask";
