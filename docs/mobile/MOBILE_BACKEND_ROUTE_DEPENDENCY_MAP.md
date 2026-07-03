@@ -151,3 +151,16 @@ Cycle AD implementation notes:
 
 - No backend route was created or changed.
 - A future route such as `/api/markets/:id/history?range=1D&outcomeId=<id>` or `/api/mobile/events/:slug/chart` should return timestamped probability/price points, selected outcome metadata, target/reference lines when applicable, loading/empty states, and range/filter support.
+
+## Cycle AE - Market Page
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Market/Live stats body switch | No dedicated route in this cycle; event context comes from `/api/events/:slug` when server mode is active | GET for event context | Optional for public viewing | None | event id/slug/title/status, teams, volume, current market probabilities | Events, teams, match state | Local `activeBodyTab` state | Backend should identify whether live stats are available and expose a stats route/state. |
+| Live Stats panel | No backend route in this cycle | N/A | N/A | N/A | possession, shots, shots on target, corners, expected goals, match-flow events | Match stats, live feeds, timeline events | Local deterministic stats rows | Add route such as `/api/events/:slug/live-stats` with home/away stats, timestamps, availability, and empty/error states. |
+| Grouped market tabs/cards | `/api/events/:slug` when server detail is active | GET | Optional for viewing | None | market groups/tabs, outcomes, probabilities, line metadata | Events, markets, market groups, line markets | Existing local/fallback event groups | Backend still needs richer group metadata for exact Polymarket-style ordering and Player Props scoping. |
+
+Cycle AE implementation notes:
+
+- No backend route was created or changed.
+- Mobile now expects a future live-stats data contract in addition to grouped market metadata, line-market identity, market depth, and chart history.

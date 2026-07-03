@@ -437,3 +437,41 @@ Known limitations:
 - Chart points still use deterministic local math instead of backend timestamped history.
 - Same-cycle Polymarket reference was mobile web chart behavior because direct native/World Cup chart access was location-gated.
 - Exact Polymarket chart animation and touch geometry remain P2 polish.
+
+## Cycle AE - Market Page
+
+Feature/page worked on:
+
+- Focused market-page body `Market` / `Live stats` switch.
+- Live Stats panel.
+- Market-page tablet proof harness.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+
+Important functions/services touched:
+
+- `EventDetail()` now tracks `activeBodyTab` across `market` and `live-stats`.
+- `event-detail-body-tab-market` restores chart and grouped market tabs.
+- `event-detail-body-tab-live-stats` opens the new Live Stats panel.
+- `EventDetailMarketTabs` smoke now asserts body switch, Live Stats panel, and return-to-market behavior before continuing existing tab/card proof.
+
+User interactions supported:
+
+- View event volume and Holiwyn source label near the body switch.
+- Tap `Live stats` from the market page.
+- Inspect possession, shots, shots on target, corners, expected goals, and match-flow rows.
+- Tap `Market` to return to the chart and grouped market tabs.
+
+State transitions:
+
+- `activeBodyTab: "market" -> "live-stats" -> "market"`.
+- Market content remains unchanged when returning from Live Stats.
+
+Known limitations:
+
+- Live Stats values are local deterministic values until backend live-match stats exist.
+- Current Polymarket reference event showed Game Lines, Exact Score, and Halves; Holiwyn still retains Player Props from product direction and earlier parity work.
+- Tablet smoke captured the focused evidence before wireless ADB reset; the transport issue remains harness reliability risk, not a product behavior gap.

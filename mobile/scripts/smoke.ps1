@@ -1823,7 +1823,16 @@ try {
     if ($EventDetailMarketTabs) {
       Save-Screenshot -Name "cycle-current-holiwyn-market-tabs-game-lines.png"
       $marketTabsGameHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-market-tabs-game-lines.xml"
-      Assert-HierarchyContains -Path $marketTabsGameHierarchy -Expected @("Game Lines", "Exact Score", "Halves", "Player Props", "event-detail-team-to-advance-card", "Team to Advance", "52", "49", "Order Book", "Graph", "About", "PRICE", "SHARES", "TOTAL", "Moneyline", "Regulation Time Winner")
+      Assert-HierarchyContains -Path $marketTabsGameHierarchy -Expected @("event-detail-body-switch", "event-detail-body-tab-market", "event-detail-body-tab-live-stats", "Market", "Live stats", "Game Lines", "Exact Score", "Halves", "Player Props", "event-detail-team-to-advance-card", "Team to Advance", "52", "49", "Order Book", "Graph", "About", "PRICE", "SHARES", "TOTAL", "Moneyline", "Regulation Time Winner")
+      Invoke-TapHierarchyNode -Path $marketTabsGameHierarchy -Identifier "event-detail-body-tab-live-stats"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-market-tabs-live-stats.png"
+      $marketTabsLiveStatsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-market-tabs-live-stats.xml"
+      Assert-HierarchyContains -Path $marketTabsLiveStatsHierarchy -Expected @("event-detail-live-stats-panel", "Live stats", "Possession", "Shots on target", "Corners", "Expected goals", "Match flow")
+      Invoke-TapHierarchyNode -Path $marketTabsLiveStatsHierarchy -Identifier "event-detail-body-tab-market"
+      Start-Sleep -Seconds 1
+      $marketTabsMarketReturnHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-market-tabs-market-return.xml"
+      Assert-HierarchyContains -Path $marketTabsMarketReturnHierarchy -Expected @("event-detail-price-chart", "event-detail-market-tabs", "Game Lines", "Team to Advance")
       Invoke-TapHierarchyNode -Path $marketTabsGameHierarchy -Identifier "event-detail-line-detail-graph"
       Start-Sleep -Seconds 1
       $marketTabsGraphHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-market-tabs-graph.xml"

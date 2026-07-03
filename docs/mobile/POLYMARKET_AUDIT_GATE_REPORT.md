@@ -26,6 +26,7 @@ Fail the feature when:
 | Futures market rows | Cycle V | Pass | 0 | P1 true binary Buy No contract; P1 fuller futures outcome catalog; P2 sticky/chart polish | `docs/mobile/reference/screenshots/cycle-V-polymarket-web-world-cup-winner-*`; `docs/mobile/audits/futures-market-rows.md` | `docs/mobile/screenshots/cycle-current-holiwyn-future-card-stats.png`; `docs/mobile/harness/cycle-current-holiwyn-future-card-stats.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-future-list-ticket.png`; `docs/mobile/harness/cycle-current-holiwyn-future-list-ticket.xml` | Focused pass only. Futures rows now match the audited outcome-row structure and Buy Yes ticket carry-through. |
 | Futures chart range | Cycle W | Pass | 0 | P1 backend historical chart data; P1 settings gear; P2 tooltip/animation geometry | `docs/mobile/reference/screenshots/cycle-W-polymarket-world-cup-winner-chart-*`; `docs/mobile/audits/futures-chart-range.md` | `docs/mobile/screenshots/cycle-current-holiwyn-future-chart-1w.png`; `docs/mobile/harness/cycle-current-holiwyn-future-chart-ready.xml`; `docs/mobile/harness/cycle-current-holiwyn-future-chart-1d.xml`; `docs/mobile/harness/cycle-current-holiwyn-future-chart-1w.xml` | Focused pass only. Baseline chart section and range switching now exist for futures. |
 | Chart behavior | Cycle AD | Pass | 0 | P1 backend history series; P1 direct World Cup chart recapture; P2 animation/touch polish | `docs/mobile/reference/screenshots/cycle-AD-polymarket-chart-*`; `docs/mobile/audits/chart-behavior.md` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-chart-pressed.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-chart-pressed.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-chart-live.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-chart-live.xml` | Focused pass only. Event chart is no longer a static placeholder and supports chart-point tap/tooltip behavior. |
+| Market page | Cycle AE | Pass | 0 | P1 backend live stats; P1 Player Props recapture/scope; P2 sticky/visual density polish | `docs/mobile/reference/screenshots/cycle-AE-polymarket-market-*`; `docs/mobile/audits/market-page.md` | `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-live-stats.png`; `docs/mobile/harness/cycle-current-holiwyn-market-tabs-live-stats.xml`; `docs/mobile/harness/cycle-current-holiwyn-market-tabs-market-return.xml`; existing market-tabs card proof | Focused pass only. Body `Market` / `Live stats` switch now works and existing grouped market tabs remain reachable. |
 
 ## Cycle U - Event Page Top Shell/Action Controls
 
@@ -461,6 +462,64 @@ Decision:
 - Unresolved P0 gaps: 0 for focused scope.
 - Remaining P1/P2 gaps: backend history series, direct World Cup chart recapture, animation/touch polish.
 - Next cycle required: yes. Continue deeper market-page functionality or backend-backed chart-history preparation.
+
+## Feature: Market Page
+
+Cycle: AE
+
+Lead Agent target: focused market-page body switch and grouped market behavior.
+
+Reference Audit Agent: Samsung S23 Polymarket mobile web market-page audit.
+
+Implementation Agent: Holiwyn EventDetail body switch and Live Stats panel.
+
+Audit Gate Agent: Samsung tablet Holiwyn proof against written Market Page criteria.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket mobile web in Chrome.
+
+Reference route/URL: `https://polymarket.com/event/fifwc-usa-bel-2026-07-06-first-to-score`.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AE-polymarket-market-top.png`
+- `docs/mobile/reference/screenshots/cycle-AE-polymarket-market-game-lines.png`
+- `docs/mobile/reference/screenshots/cycle-AE-polymarket-market-spreads.png`
+- `docs/mobile/reference/screenshots/cycle-AE-polymarket-market-exact-score-rows.png`
+- `docs/mobile/reference/screenshots/cycle-AE-polymarket-market-halves.png`
+- `docs/mobile/reference/screenshots/cycle-AE-polymarket-market-row-ticket.png`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-game-lines.png`
+- `docs/mobile/harness/cycle-current-holiwyn-market-tabs-game-lines.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-live-stats.png`
+- `docs/mobile/harness/cycle-current-holiwyn-market-tabs-live-stats.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-market-tabs-market-return.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-exact-score.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-market-tabs-halves.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| MP-P0-01 | P0 | Pass | `cycle-current-holiwyn-market-tabs-game-lines.xml` | None |
+| MP-P0-02 | P0 | Pass | `cycle-current-holiwyn-market-tabs-live-stats.xml`; `cycle-current-holiwyn-market-tabs-live-stats.png` | None |
+| MP-P0-03 | P0 | Pass | `cycle-current-holiwyn-market-tabs-market-return.xml` | None |
+| MP-P0-04 | P0 | Pass | `cycle-current-holiwyn-market-tabs-exact-score.xml`; `cycle-current-holiwyn-market-tabs-halves.xml` | None |
+| MP-P0-05 | P0 | Pass | Cycle AE reference plus existing Cycle X/Y/Z tablet proof | None |
+
+Decision:
+
+- Pass/fail: Pass for focused market-page P0 baseline.
+- Unresolved P0 gaps: 0 for focused scope.
+- Remaining P1/P2 gaps: backend live stats, Player Props recapture/scope, sticky/visual density polish.
+- Next cycle required: yes. Continue watchlist/saved/share/chat/notification parity or visual-density polish.
 
 ## Gate Report Template
 
