@@ -2,6 +2,38 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle AR - Range-Aware Market Chart Contract
+
+Fields now provided or wired:
+
+- `/api/markets/:marketId/chart` now provides a mobile-ready range contract: `range`, `ranges`, `generatedAt`, `lastUpdated`, and `emptyState`.
+- Chart response now includes flat `history[]` points with `outcomeId`, `timestamp`, `price`, and integer `probability`.
+- Mobile API types include `MarketChartRange`, `MarketChartHistoryPoint`, and `MarketChart`.
+- `PolyApi.getMarketChart(marketId, range)` is available for server-mode chart hydration.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Provider ingestion for live World Cup markets that continuously writes `MarketOutcomeSnapshot` rows.
+- EventDetail UI integration that calls `getMarketChart()` for the selected market/range and handles loading/empty/error/suspended states.
+- Chart tooltip metadata such as nearest point by touch position and range-specific aggregation buckets.
+
+Schema mismatch:
+
+- `MarketOutcomeSnapshot` stores price and timestamp, but no provider source id, delayed/live flag, range bucket, or availability reason.
+
+Route mismatch:
+
+- The dedicated chart route now exists and has a mobile-ready payload.
+- Full Polymarket parity may still need an event-level chart route for multi-market/hero chart context if selected market and displayed chart diverge.
+
+Temporary mock/static data:
+
+- Local and embedded chart arrays remain fallback until the visible EventDetail chart consumes the dedicated route.
+
+Future migration concern:
+
+- The next PM-GAP-067 cycle should either hydrate EventDetail from `getMarketChart()` or seed/import real live snapshots so device proof can use server data instead of mock fallback.
+
 ## Cycle AQ - Live Chart History And Depth Identity Contract
 
 Fields now provided or wired:

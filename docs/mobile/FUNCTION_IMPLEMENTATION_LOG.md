@@ -2,6 +2,50 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle AR - Range-Aware Market Chart Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 dedicated market chart/history route contract for live event detail.
+- Mobile API access to real market chart history.
+
+Frontend components touched:
+
+- `mobile/src/api.ts`
+- `mobile/src/types.ts`
+- `mobile/src/__tests__/api.test.ts`
+
+Backend components touched:
+
+- `src/app/api/markets/[id]/chart/route.ts`
+- `src/__tests__/public.market-chart.no-leak.test.ts`
+
+Important functions/services touched:
+
+- `GET /api/markets/:id/chart` now returns a range-aware mobile contract with `range`, `ranges`, `generatedAt`, `lastUpdated`, `emptyState`, `history[]`, and the existing compatibility `series`.
+- `PolyApi.getMarketChart()` gives the mobile app a typed backend call for market chart history.
+
+User interactions supported:
+
+- Future live-detail chart UI can fetch backend history for the selected market/range instead of relying only on embedded event detail or local fallback chart arrays.
+
+State transitions:
+
+- Selected event market -> `PolyApi.getMarketChart(marketId, range)` -> backend market visibility guard -> `MarketOutcomeSnapshot` rows -> mobile-ready `history[]` points.
+
+Known limitations:
+
+- The visible EventDetail chart does not yet call `getMarketChart()`; this cycle closes the route/client contract first.
+- Provider ingestion still must populate `MarketOutcomeSnapshot` for real live football markets.
+- Full chart tooltip/range UI replacement and no-history/loading/suspended states remain future UI work.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/public.market-chart.no-leak.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/api.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+
 ## Cycle AQ - Live Chart History And Depth Identity Contract
 
 Feature/page worked on:
