@@ -178,7 +178,6 @@ export function EventDetail({
   const [shareSheetVisible, setShareSheetVisible] = useState(false);
   const [orderBookVisible, setOrderBookVisible] = useState(false);
   const [compactHeaderVisible, setCompactHeaderVisible] = useState(false);
-  const [expandedPropIds, setExpandedPropIds] = useState<Record<string, boolean>>({ "goals-reg-time": true });
   const gameLineMarkets = useMemo(() => event.markets.filter((market) => market.type !== "prop" && market.type !== "future"), [event.markets]);
   const propMarkets = useMemo(() => event.markets.filter((market) => market.type === "prop"), [event.markets]);
   const primaryMarket = gameLineMarkets[0] ?? event.markets[0];
@@ -584,9 +583,6 @@ export function EventDetail({
       </View>
     );
   };
-  const togglePropGroup = (id: string) => {
-    setExpandedPropIds((current) => ({ ...current, [id]: !current[id] }));
-  };
   const renderParityOutcomeRow = (outcome: DisplayOutcome, marketId: string, matchingOutcome?: Outcome) => (
     <View key={outcome.id} style={styles.parityOutcomeRow}>
       <View style={styles.parityOutcomeIcon}>
@@ -673,15 +669,6 @@ export function EventDetail({
       )}
     </View>
   );
-  const playerRows = [
-    { id: "santiago-gimenez", name: "Santiago Gimenez", team: teamCode(teamA?.name ?? "MEX"), stat: "0+", odds: "2.564x", probability: 39, color: leftOutcome?.color ?? "#22c55e" },
-    { id: "hirving-lozano", name: "Hirving Lozano", team: teamCode(teamA?.name ?? "MEX"), stat: "0+", odds: "10.00x", probability: 10, color: leftOutcome?.color ?? "#22c55e" },
-    { id: "enner-valencia", name: "Enner Valencia", team: teamCode(teamB?.name ?? "ECU"), stat: "0+", odds: "7.1x", probability: 14, color: rightOutcome?.color ?? "#ef4444" },
-    { id: "moises-caicedo", name: "Moises Caicedo", team: teamCode(teamB?.name ?? "ECU"), stat: "0+", odds: "33.33x", probability: 3, color: rightOutcome?.color ?? "#ef4444" },
-    { id: "orbelin-pineda", name: "Orbelin Pineda", team: teamCode(teamA?.name ?? "MEX"), stat: "0+", odds: "14.29x", probability: 7, color: leftOutcome?.color ?? "#22c55e" },
-  ];
-  const collapsedPropGroups = ["Assists (Reg. Time)", "Goals + Assists (Reg. Time)", "Shots (Reg. Time)", "Shots on Target (Reg. Time)", "Goalkeeper Saves (Reg. Time)"];
-
   return (
     <View style={styles.screen}>
       <View style={styles.topBar}>
@@ -1118,67 +1105,13 @@ export function EventDetail({
         {renderMarketTabs()}
 
         {activeTab === "player-props" ? (
-          <View accessibilityLabel="event-detail-player-props" testID="event-detail-player-props">
-            <View style={styles.marketBlock}>
-              <Pressable
-                accessibilityLabel="event-detail-prop-toggle-goals-reg-time Goals (Reg. Time)"
-                onPress={() => togglePropGroup("goals-reg-time")}
-                style={styles.marketHeaderRow}
-                testID="event-detail-prop-toggle-goals-reg-time"
-              >
-                <View style={styles.marketTitleBlock}>
-                  <Text style={styles.marketTitle}>Goals (Reg. Time)</Text>
-                </View>
-                <Ionicons name={expandedPropIds["goals-reg-time"] ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
-              </Pressable>
-              {expandedPropIds["goals-reg-time"] && (
-                <>
-                  <View style={styles.propToolsRow}>
-                    <Ionicons name="search-outline" color="#cbd5e1" size={19} />
-                    {["All", teamCode(teamB?.name ?? "ECU"), teamCode(teamA?.name ?? "MEX")].map((chip, index) => (
-                      <View key={chip} style={[styles.propFilterChip, index === 0 && styles.propFilterChipActive]}>
-                        <Text style={[styles.propFilterText, index === 0 && styles.propFilterTextActive]}>{chip}</Text>
-                      </View>
-                    ))}
-                  </View>
-                  {playerRows.map((player) => (
-                    <View key={player.id} style={styles.playerPropRow}>
-                      <View style={styles.jerseyIcon}>
-                        <Ionicons name="shirt-outline" color="#cbd5e1" size={20} />
-                      </View>
-                      <View style={styles.playerTextBlock}>
-                        <Text style={styles.teamName}>{player.name}</Text>
-                        <Text style={styles.playerTeamText}>{player.team}</Text>
-                      </View>
-                      <View style={styles.statPill}>
-                        <Text style={styles.statPillText}>{player.stat}</Text>
-                        <Ionicons name="chevron-down" color="#cbd5e1" size={14} />
-                      </View>
-                      <Text style={styles.oddsMultiplier}>{player.odds}</Text>
-                      <Pressable
-                        accessibilityLabel={`event-detail-player-prop-${player.id}`}
-                        style={[styles.parityProbButton, { backgroundColor: player.color }]}
-                        testID={`event-detail-player-prop-${player.id}`}
-                      >
-                        <Text style={styles.parityProbText}>{player.probability}%</Text>
-                      </Pressable>
-                    </View>
-                  ))}
-                  <Pressable accessibilityLabel="event-detail-player-props-show-all" style={styles.showAllRow} testID="event-detail-player-props-show-all">
-                    <Text style={styles.showAllText}>Show all</Text>
-                    <Ionicons name="chevron-forward" color="#cbd5e1" size={17} />
-                  </Pressable>
-                </>
-              )}
-            </View>
-            {collapsedPropGroups.map((title) => (
-              <View key={title} style={styles.marketBlock}>
-                <Pressable accessibilityLabel={`event-detail-prop-toggle-${title}`} style={styles.marketHeaderRow} testID={`event-detail-prop-toggle-${title.replace(/[^A-Za-z0-9]/g, "-").toLowerCase()}`}>
-                  <Text style={styles.marketTitle}>{title}</Text>
-                  <Ionicons name="chevron-down" color="#9ca3af" size={26} />
-                </Pressable>
-              </View>
-            ))}
+          <View
+            accessibilityLabel="event-detail-player-props event-detail-player-props-empty Player Props unavailable for this match"
+            style={styles.emptyProps}
+            testID="event-detail-player-props"
+          >
+            <Ionicons name="shirt-outline" color="#4b5563" size={34} />
+            <Text style={styles.emptyPropsText}>Player Props unavailable for this match</Text>
           </View>
         ) : activeTab === "exact-score" ? (
           renderExactScore()

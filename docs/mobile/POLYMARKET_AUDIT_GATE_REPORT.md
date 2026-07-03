@@ -688,6 +688,54 @@ Decision:
 - Remaining P1/P2 gaps: phone-density spacing, native transition polish, Player Props direct reference/product decision, backend-backed market groups/history/live stats.
 - Next cycle required: yes. Continue the next highest-priority game-page or whole-app parity gap.
 
+## Cycle AM - Player Props Unavailable State
+
+Feature: Game page Player Props tab scope.
+
+Cycle: AM.
+
+Lead Agent target: remove unsupported local Player Props rows and align Holiwyn with the current product scope: leave Player Props blank/unavailable until backend-supported props are intentionally built.
+
+Reference Audit Agent: Samsung S23 logged-in Polymarket Android app.
+
+Implementation Agent: Holiwyn mobile app.
+
+Audit Gate Agent: Samsung tablet device proof and focused full game-page smoke.
+
+Reference device: Samsung S23.
+
+Reference app/browser: logged-in Polymarket Android app.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AM-polymarket-current.png`
+- `docs/mobile/reference/screenshots/cycle-AM-polymarket-player-props.png`
+- `docs/mobile/reference/screenshots/cycle-AM-polymarket-player-props-second.png`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-sticky-props.png`
+- `docs/mobile/harness/cycle-current-holiwyn-game-page-full-sticky-props.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-props.png`
+- `docs/mobile/harness/cycle-current-holiwyn-game-page-full-props.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-props-lower.png`
+- `docs/mobile/harness/cycle-current-holiwyn-game-page-full-props-lower.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| GP-AM-P1-01 | P1 | Pass | `event-detail-player-props-empty` and `Player Props unavailable for this match` are present | None |
+| GP-AM-P1-02 | P1 | Pass | Fake local player rows are removed from the Player Props tab proof | None |
+| GP-AM-P1-03 | P1 | Pass | `cmd /c npm.cmd run smoke:tablet:event-detail-full-page` passed after one unrelated Home-route flake retry | None |
+
+Decision:
+
+- Pass/fail: Pass for focused Player Props unavailable-state scope.
+- Unresolved P0 gaps: 0.
+- Remaining P1/P2 gaps: phone-density spacing, native transition polish, and backend-backed market groups/history/live stats.
+- Next cycle required: yes. Continue the next highest-priority game-page or whole-app parity gap.
+
 ## Gate Report Template
 
 Use this template for every feature gate:
