@@ -10,7 +10,9 @@ param(
   [switch]$EventDetailOrderBook,
   [switch]$EventDetailFullPage,
   [switch]$EmptyErrorLoading,
-  [switch]$WholeAppNavDiscovery
+  [switch]$WholeAppNavDiscovery,
+  [switch]$FutureCardStats,
+  [switch]$FutureListTrade
 )
 
 $ErrorActionPreference = "Stop"
@@ -68,6 +70,10 @@ if ($EventDetailSummary) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EmptyErrorLoading -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($WholeAppNavDiscovery) {
   & "$PSScriptRoot\smoke.ps1" -Deep -WholeAppNavDiscovery -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
+} elseif ($FutureCardStats) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -FutureCardStats -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
+} elseif ($FutureListTrade) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -FutureListTrade -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } else {
   & "$PSScriptRoot\smoke.ps1" -Deep -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 }

@@ -1227,7 +1227,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-future-card-stats.png"
       $futureCardStatsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-card-stats.xml"
-      Assert-HierarchyContains -Path $futureCardStatsHierarchy -Expected @("World Cup winner", "Volume", "Liquidity", "USDT", "France", "Argentina", "Spain")
+      Assert-HierarchyContains -Path $futureCardStatsHierarchy -Expected @("World Cup winner", "Volume", "Liquidity", "USDT", "France", "Argentina", "Spain", "Buy Yes", "Buy No")
       return
     }
 
@@ -1242,7 +1242,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-ticket.png"
       $futureListTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-ticket.xml"
-      Assert-HierarchyContains -Path $futureListTicketHierarchy -Expected @("World Cup winner", "France", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "Fake balance", "10,000 USDT", "ticket-amount-keypad", "Swipe up to buy")
+      Assert-HierarchyContains -Path $futureListTicketHierarchy -Expected @("World Cup winner", "Yes - France", "Odds 34%", "Fake balance", "10,000 USDT", "ticket-amount-keypad", "Swipe up to buy")
       return
     }
 

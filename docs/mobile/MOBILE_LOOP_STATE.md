@@ -11627,6 +11627,34 @@ Open blockers: none for continuing the loop. World Cup-specific Polymarket recap
 
 Next likely cycle: continue Priority 2 Market/Event page with grouped market rows, adjustable line markets, and deeper ticket carry-through under the same audit-gated workflow.
 
+### Heartbeat After Cycle U
+
+Completed cycles: Cycle S workflow update, Cycle T whole-app navigation/page map, Cycle U event-page top shell/action controls.
+
+Verified progress: the new audit-gated workflow is active; Holiwyn bottom navigation now matches the four-tab Polymarket mobile model; Account moved to the header; and event-page top book/share controls now pass a focused Polymarket reference gate with Samsung/tablet evidence.
+
+Current app state: Android-first Expo app with audit-gated Polymarket reference workflow, Samsung S23 reference capture, Samsung tablet Holiwyn proof, improved navigation, and event top book opening Order Book.
+
+Current backend state: no backend migration was required in these cycles. Documentation now records route dependencies and data-contract gaps for every completed cycle.
+
+Open blockers: Polymarket Android app on the S23 can hit location verification failure. Recovery path is Polymarket mobile web on the same reference device when available.
+
+Next three likely cycles: futures market row parity, chart/time-range behavior, and true adjustable line market behavior.
+
+### Cycle V - Futures Market Rows
+
+Status: verified and ready for local merge after commit.
+
+Verified progress: Polymarket mobile web World Cup Winner reference was captured on Samsung S23 after the installed app hit location verification failure. Holiwyn futures rows now show flag/visual marker, outcome name, outcome-level volume, large probability, Buy Yes, and Buy No. Buy Yes opens the selected futures ticket on the Samsung tablet.
+
+Device evidence: reference evidence is under `docs/mobile/reference/screenshots/cycle-V-polymarket-web-world-cup-winner-*`; Holiwyn evidence is under `docs/mobile/screenshots/cycle-current-holiwyn-future-card-stats.png`, `docs/mobile/harness/cycle-current-holiwyn-future-card-stats.xml`, `docs/mobile/screenshots/cycle-current-holiwyn-future-list-ticket.png`, and `docs/mobile/harness/cycle-current-holiwyn-future-list-ticket.xml`.
+
+Verification: `npm run typecheck` passed; direct tablet `FutureCardStats` and `FutureListTrade` smokes passed.
+
+Open blockers: none for continuing the loop. True Buy No semantics require a future backend/mobile binary outcome contract.
+
+Next likely cycle: continue Market/Event page parity with chart time ranges or adjustable line markets, depending on the next reachable Polymarket reference page.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

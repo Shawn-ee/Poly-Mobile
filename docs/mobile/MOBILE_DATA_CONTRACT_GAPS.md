@@ -66,3 +66,36 @@ Temporary mock/static data:
 Future migration concern:
 
 - The mobile UI now expects top-shell Order Book behavior. If backend depth is unavailable in server mode, the app may show stale or synthetic depth unless the backend adds real market-depth support.
+
+## Cycle V - Futures Market Rows
+
+Fields Holiwyn needs but backend does not provide yet:
+
+- Outcome-level futures volume, separate from market-level volume.
+- Complete World Cup futures outcome catalog and ranking/order.
+- Binary YES price and NO price per outcome.
+- Explicit trade contract side: `YES` / `NO` separate from order action `BUY` / `SELL`.
+- Outcome visual metadata such as flag/icon/image.
+
+Fields backend provides but mobile ignores:
+
+- Unknown for this cycle; proof used local fallback futures data.
+
+Schema mismatch:
+
+- Mobile can show `Buy No`, but the current ticket/order shape treats this as a sell/no-side approximation. Polymarket futures rows behave like binary YES/NO controls per outcome.
+- Mobile derives outcome volume locally rather than consuming backend outcome-level volume.
+
+Route mismatch:
+
+- Futures discovery is folded into `/api/events`; future mobile routes may need dedicated `/api/mobile/world-cup/futures` or richer filters for sports/futures ranking.
+- Binary NO pricing may need quote routes to return both yes and no sides per outcome.
+
+Temporary mock/static data:
+
+- `futureOutcomeVolume()` computes deterministic display volume from probability and rank.
+- `futureOutcomeFlags` maps known fallback outcome ids to local flag markers.
+
+Future migration concern:
+
+- Once backend provides real futures outcome volume and yes/no prices, the local display helpers should be replaced by adapter-mapped fields to avoid fake liquidity signals.

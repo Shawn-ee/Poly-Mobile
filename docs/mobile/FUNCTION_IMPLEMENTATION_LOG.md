@@ -96,3 +96,43 @@ Known limitations:
 - Native OS share parity is deferred.
 - World Cup-specific Polymarket top-shell reference needs recapture once the reference app clears location verification.
 - Order Book content is still derived from loaded event market data rather than a dedicated live depth route.
+
+## Cycle V - Futures Market Rows
+
+Feature/page worked on:
+
+- World Cup futures outcome rows on the Home/Futures surface.
+- Buy Yes/Buy No controls for futures outcomes.
+- Futures ticket carry-through from Buy Yes.
+
+Frontend components touched:
+
+- `mobile/src/components/MarketLists.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+Important functions/services touched:
+
+- `FutureList()` renders Polymarket-style futures rows.
+- `futureOutcomeVolume()` derives outcome-level display volume until backend provides it.
+- `futureOutcomeFlags` adds local country visual markers.
+- `openTicket(market, outcome, undefined, "buy")` is used by Buy Yes.
+- `openTicket(market, outcome, undefined, "sell")` is used as the current Buy No approximation.
+
+User interactions supported:
+
+- View World Cup futures rows with flag, volume, probability, Buy Yes, and Buy No.
+- Tap Buy Yes for France and open the trade ticket with the selected future outcome preserved.
+- Use tablet wrapper flags for futures card and ticket smoke proof.
+
+State transitions:
+
+- Home `worldCupTab: "games" -> "futures"` when tapping `world-cup-futures-tab`.
+- `ticket: null -> { market: world-cup-winner, outcome: france, side: "buy" }` when tapping the France Buy Yes row.
+- `ticket: null -> { market: world-cup-winner, outcome: france, side: "sell" }` when tapping the France Buy No row.
+
+Known limitations:
+
+- Buy No is represented through the existing sell/no-side ticket path until the backend/mobile contract supports separate binary NO positions.
+- Outcome-level volume is local deterministic display data.
+- Local fallback futures list still lacks some captured reference outcomes such as England.
