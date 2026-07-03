@@ -311,6 +311,47 @@ Remaining P1 gaps:
 - Add richer delayed/stale/suspended depth states if the provider route cannot supply fresh data.
 - Ensure route-backed depth identity flows through ticket, order, portfolio, and history in a full server proof.
 
+## Cycle AW Route-Backed Live Depth Seed Harness Audit
+
+Result: Partial pass for PM-GAP-067 seeded live orderbook depth readiness.
+
+What became materially closer to Polymarket:
+
+- Polymarket live event depth is backed by real market liquidity. Holiwyn now has deterministic backend proof liquidity in the same `Order` table read by the public orderbook route, instead of relying only on mobile fixture rows.
+- The seeded World Cup match orderbook route now returns bid/ask `levels[]` with stable market/outcome IDs, so the UI has a backend-shaped source it can hydrate from once the mobile event-detail payload path is optimized.
+
+Acceptance criteria:
+
+| Criterion ID | Priority | Status | Verification |
+| --- | --- | --- | --- |
+| LD-AW-P1-01 | P1 | Pass | `mobile:live-orderbook-depth-seed` created 12 open proof orders for `aca976d2-2bad-416c-b010-c874c0ee493f`. |
+| LD-AW-P1-02 | P1 | Pass | Direct public orderbook route probe returned `emptyState: null` and 12 route-shaped `levels[]` rows. |
+| LD-AW-P1-03 | P1 | Pass | Tablet orderbook regression proof passed with backend health OK. |
+| LD-AW-P1-04 | P1 | Partial | Tablet proof still shows fallback depth; chart route timed out during direct probe. |
+
+Evidence:
+
+- `src/server/services/mobileLiveOrderbookDepthSeeding.ts`
+- `scripts/seed_mobile_live_orderbook_depth.ts`
+- `src/__tests__/mobile-live-orderbook-depth-seeding.test.ts`
+- `docs/mobile/harness/cycle-current-mobile-live-chart-snapshot-seed.json`
+- `docs/mobile/harness/cycle-current-mobile-live-orderbook-depth-seed.json`
+- `docs/mobile/harness/cycle-current-holiwyn-order-book.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-order-book-ticket.xml`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-orderbook-depth-seeding.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts src/__tests__/mobile-live-chart-snapshot-seeding.test.ts`
+- `cmd /c npm.cmd run mobile:live-chart-snapshot-seed`
+- `cmd /c npm.cmd run mobile:live-orderbook-depth-seed`
+- `cmd /c npm.cmd run smoke:tablet:event-detail-order-book`
+
+Unresolved P0 gaps: 0 for this seed harness cycle.
+
+Remaining P1 gaps:
+
+- Mobile server-mode proof must show `orderbook-source-orderbook-route` and `orderbook-status-ready`.
+- Add or use a compact mobile live detail endpoint so the tablet does not rely on a huge 37-market event payload.
+- Fix or replace the chart route proof path that timed out during this cycle.
+- Replace deterministic seeded orders with real provider/liquidity ingestion before production parity.
+
 ## Next Structural Work
 
-The next cycle should continue PM-GAP-067 by running the snapshot/depth seed against an available backend and capturing server-hydrated chart or orderbook proof, or by adding richer delayed/suspended/stale live-data states before opening a new feature area.
+The next cycle should continue PM-GAP-067 by adding a compact mobile live detail/depth/chart endpoint or proof harness that lets the Samsung tablet capture route-backed chart/depth status without waiting on the full 37-market event payload.
