@@ -294,6 +294,63 @@ Decision:
 - Remaining P1/P2 gaps: signed-in Polymarket Portfolio recapture, visual density/account IA, deeper re-trade ticket proof, server-mode same-cycle Portfolio proof.
 - Next cycle required: yes. Continue Search/discovery or deeper Portfolio re-trade parity.
 
+## Feature: Search
+
+Cycle: AB
+
+Lead Agent target: focused Search/Explore discovery, filter, sort, typed query retention, and result navigation parity.
+
+Reference Audit Agent: Samsung S23 Polymarket native app and mobile web audit.
+
+Implementation Agent: Holiwyn Search screen and focused tablet Search smoke.
+
+Audit Gate Agent: Samsung tablet Holiwyn proof against written Search criteria.
+
+Reference device: Samsung S23.
+
+Reference app/browser: Polymarket Android app and Polymarket mobile web in Chrome.
+
+Reference route/URL: `com.polymarket.android`; `https://polymarket.com`; `https://polymarket.com/search` / `/predictions`.
+
+Holiwyn device: Samsung tablet.
+
+Holiwyn app mode: Expo Go.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-AB-polymarket-search-home.png`
+- `docs/mobile/reference/screenshots/cycle-AB-polymarket-web-home.png`
+- `docs/mobile/reference/screenshots/cycle-AB-polymarket-web-search-route.png`
+- `docs/mobile/reference/screenshots/cycle-AB-polymarket-web-search-secondtap.png`
+- `docs/mobile/reference/screenshots/cycle-AB-polymarket-web-search-filter.png`
+
+Holiwyn evidence:
+
+- `docs/mobile/screenshots/cycle-current-holiwyn-search-filter-panel.png`
+- `docs/mobile/harness/cycle-current-holiwyn-search-filter-panel.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-search-sort-live.png`
+- `docs/mobile/harness/cycle-current-holiwyn-search-sort-live.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-search-open-result.png`
+- `docs/mobile/harness/cycle-current-holiwyn-search-open-result.xml`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| SE-P0-01 | P0 | Pass | `cycle-current-holiwyn-search-sort-live.xml` | None |
+| SE-P0-02 | P0 | Pass | `cycle-current-holiwyn-search-sort-live.png` | None |
+| SE-P0-03 | P0 | Pass | `cycle-current-holiwyn-search-filter-panel.xml` | None |
+| SE-P0-04 | P0 | Pass | `cycle-current-holiwyn-search-sort-live.xml` | None |
+| SE-P0-05 | P0 | Pass | `cycle-current-holiwyn-search-open-result.xml` | None |
+| SE-P0-06 | P0 | Pass | Existing `SearchQuery`/`SearchClearQuery` harness plus unchanged query controls | None |
+
+Decision:
+
+- Pass/fail: Pass for focused Search/Explore P0 parity baseline.
+- Unresolved P0 gaps: 0 for focused Search/Explore scope.
+- Remaining P1/P2 gaps: native Search recapture after location gate, richer global categories/facets, phone-portrait dev-build proof.
+- Next cycle required: yes. Continue Account/settings/profile or chart/market depth based on priority order.
+
 ## Gate Report Template
 
 Use this template for every feature gate:

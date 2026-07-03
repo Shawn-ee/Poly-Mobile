@@ -272,3 +272,39 @@ Temporary mock/static data:
 Future migration concern:
 
 - Production Portfolio should be server-authoritative after every order/cancel/close, with local optimistic UI reconciled from backend snapshots.
+
+## Cycle AB - Search/Explore
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Search/Explore row rank and category/facet metadata.
+- Canonical sport/category labels such as `Sports · Soccer`.
+- Row-level volume, today volume, liquidity, comment/chat count, and end-time display strings.
+- Result probability/outcome summary chosen by backend rank.
+- Facet counts for status, category, saved, live, and other discovered Polymarket-style filters.
+- Cursor/pagination metadata for long discovery lists.
+
+Fields backend provides but mobile ignores:
+
+- Unknown for this focused cycle; mobile currently consumes existing event/market/outcome data and local fallback rows.
+
+Schema mismatch:
+
+- Holiwyn currently computes Search row metrics locally from event/market shape.
+- Saved state is local/profile-preference driven, not integrated into a ranked server Search endpoint.
+- Polymarket global Search categories exceed Holiwyn's current World Cup-only product scope.
+
+Route mismatch:
+
+- Existing `/api/events` can hydrate event lists, but a production Search/Explore experience should likely use a dedicated route such as `/api/mobile/search` or `/api/discovery`.
+- Search filters and sort are client-side over loaded events in this cycle.
+
+Temporary mock/static data:
+
+- Local row volume/today/liquidity/chat metrics.
+- Local category chips limited to All, Sports, World Cup, and Live.
+- Local status/sort filter panel.
+
+Future migration concern:
+
+- Backend should become authoritative for ranked discovery, search aliases, localized matching, facets, and pagination before production-scale World Cup market catalogs are used.

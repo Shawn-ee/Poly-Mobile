@@ -111,3 +111,17 @@ Cycle AA implementation notes:
 
 - No backend route was created or changed.
 - Portfolio docs now explicitly require server contracts to preserve selected line-market identity across positions, open orders, and activity.
+
+## Cycle AB - Search/Explore
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Search/Explore default list | `/api/events` through existing event hydration path when server mode is active | GET | Optional for public discovery | Query params currently handled by existing event list behavior | event id/title/status/tag/teams/markets/outcomes/probabilities | Events, markets, outcomes, market stats | Local `worldCupEvents` sorted by market/outcome depth | Backend should expose Search/Explore-ranked rows, not only raw event lists. |
+| Typed World Cup query | `/api/events?search=<query>` when server mode is active | GET | Optional | Search query in URL params | matching events, teams, markets, outcomes | Event search index, team aliases, market text index | Client filters local events/teams/markets/outcomes | Backend should support ranked search across event, team, market, outcome, and localized names. |
+| Search filter/sort | No dedicated route in this cycle; state is client-side over loaded events | N/A | N/A | status filter and sort mode | filtered/sorted rows | Search facets, status aggregates, market category counts | Local status filter and popular/live-first sort | Backend should provide category/facet counts, server-side rank, and cursor pagination. |
+| Search result navigation | Existing event detail path after selecting an event | GET `/api/events/:slug` when server detail is active | Optional for viewing | event slug/id | full event detail markets and outcomes | Events, market groups, outcomes, order books | Local selected event opens detail | Backend route should preserve selected search result id/slug and hydrate detail consistently. |
+
+Cycle AB implementation notes:
+
+- No backend route was created or changed.
+- Mobile now presents Search as an Explore-style page, so future backend work should treat Search as a ranked discovery endpoint with facets and row metrics.
