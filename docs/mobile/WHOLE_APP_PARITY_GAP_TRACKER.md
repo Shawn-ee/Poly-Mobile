@@ -16,7 +16,7 @@ Line criteria: `docs/mobile/HOLIWYN_LINE_ADJUSTMENT_CRITERIA.md`
 | WA-P0-02 | Home/World Cup discovery is verified on tablet with games, futures, live/today/saved filters, save control, market stats, probability rows, and event-card open. | Verified | `cycle-current-holiwyn-whole-app-home-*.*`; `npm run smoke:tablet:whole-app-nav-discovery`. | Done |
 | WA-P0-03 | Search discovery is verified on tablet with filters, sort chips, result cards, live sorting, and event-card open. | Verified | `cycle-current-holiwyn-whole-app-search-*.*`; `npm run smoke:tablet:whole-app-nav-discovery`. | Done |
 | WA-P0-04 | Portfolio fake-balance, seeded line open-order, filled position, latest order, and recent activity proof exists on tablet. | Verified | `cycle-current-holiwyn-line-portfolio-after-order.*`, `cycle-current-holiwyn-line-portfolio-open-order.*`. | Done |
-| WA-P0-05 | Game page has previous P0 implementation and fresh tablet top-page proof. Needs full tablet scroll, chat, ticket, and lower-section recapture. | Partial | Tablet full-page game proof. | Cycle K |
+| WA-P0-05 | Game page P0 baseline is verified on tablet with top chart/actions, chat, ticket opening, game-line scroll, player props, Market Rules, and More Events proof. | Verified | `cycle-current-holiwyn-game-page-full-*.*`; `npm run smoke:tablet:event-detail-full-page`. | Done |
 | WA-P0-06 | Spread and Totals line/period controls update visible market values and selected Spread line identity persists into Portfolio surfaces. | Verified | Cycle K line adjustment proof plus Cycle L line portfolio proof. | Done |
 | WA-P0-07 | Ticket now carries selected Spread and Totals line/period into `ticket-selection-line`, proven on tablet. | Verified | `cycle-current-holiwyn-line-adjustment-spread-ticket.*`, `cycle-current-holiwyn-line-adjustment-totals-ticket.*`. | Done |
 | WA-P0-08 | Selected line metadata persists through ticket order creation, latest order, filled position/activity rows, backend mapping, and disposable open-order UI proof. | Verified | `npm run smoke:tablet:event-detail-line-portfolio`; focused mobile API tests. | Done |
@@ -142,3 +142,18 @@ Verification:
 
 - `npm run typecheck`
 - `npm run smoke:tablet:whole-app-nav-discovery`
+
+## Cycle P Notes
+
+Cycle P implemented and verified the full game-page tablet proof:
+
+- Top game page captures chart, Game/Chat tabs, save/share actions, primary outcomes, and market summary.
+- Chat tab proof captures feed, input, reactions, and sticky outcomes.
+- Ticket proof opens the primary Mexico outcome ticket from the game page.
+- Game-line scroll proof captures Spread, Totals, half markets, team totals, and Market Rules.
+- Player Props proof captures prop rows, lower prop groups, Market Rules, and More Events.
+
+Verification:
+
+- `npm run typecheck`
+- `npm run smoke:tablet:event-detail-full-page`
