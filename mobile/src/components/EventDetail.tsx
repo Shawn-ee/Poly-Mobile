@@ -565,16 +565,15 @@ export function EventDetail({
         </View>
         <View style={styles.topActions}>
           <Pressable
-            accessibilityLabel={`event-detail-save-${event.id}`}
+            accessibilityLabel="event-detail-top-order-book"
             onPress={() => {
-              toggleSavedEvent(event);
-              setSavedNoticeVisible(true);
+              setOrderBookVisible(true);
               setShareSheetVisible(false);
             }}
             style={styles.iconButton}
-            testID={`event-detail-save-${event.id}`}
+            testID="event-detail-top-order-book"
           >
-            <Ionicons name={isSaved ? "book" : "book-outline"} size={22} color="#f8fafc" />
+            <Ionicons name="book-outline" size={22} color="#f8fafc" />
           </Pressable>
           <Pressable
             accessibilityLabel="event-detail-share"

@@ -1468,19 +1468,11 @@ try {
     }
 
     if ($EventDetailSave) {
-      Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "event-card-mexico-ecuador"
+      Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "save-event-mexico-ecuador"
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-save-detail.png"
-      $eventDetailSaveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-save-detail.xml"
-      Assert-HierarchyContains -Path $eventDetailSaveHierarchy -Expected @("Mexico vs. Ecuador", "Volume", "Liquidity", "☆")
-      Invoke-TapHierarchyNode -Path $eventDetailSaveHierarchy -Identifier "event-detail-save-mexico-ecuador"
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-save-star.png"
-      $eventDetailSavedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-save-star.xml"
-      Assert-HierarchyContains -Path $eventDetailSavedHierarchy -Expected @("Mexico vs. Ecuador", "★")
-      Invoke-TapHierarchyNode -Path $eventDetailSavedHierarchy -Identifier "event-detail-back"
-      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-save-home-star.png"
       $eventDetailSaveHomeHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-save-home.xml"
+      Assert-HierarchyContains -Path $eventDetailSaveHomeHierarchy -Expected @("Mexico vs. Ecuador", "Saved")
       Invoke-TapHierarchyNode -Path $eventDetailSaveHomeHierarchy -Identifier "holiwyn-search-tab"
       Start-Sleep -Seconds 1
       $eventDetailSaveSearchHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-save-search.xml"
@@ -1488,7 +1480,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-save-search-saved.png"
       $eventDetailSaveSearchSavedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-save-search-saved.xml"
-      Assert-HierarchyContains -Path $eventDetailSaveSearchSavedHierarchy -Expected @("Saved", "Mexico vs. Ecuador", "1 result", "★")
+      Assert-HierarchyContains -Path $eventDetailSaveSearchSavedHierarchy -Expected @("Saved", "Mexico vs. Ecuador", "1 result")
       return
     }
 
@@ -1555,7 +1547,7 @@ try {
     if ($EventDetailFullPage) {
       $gamePageResetUrl = "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceMexicoEcuadorDetail=1"
       Save-Screenshot -Name "cycle-current-holiwyn-game-page-full-top.png"
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-price-chart", "event-detail-chat-preview", "event-detail-primary-outcomes", "MEX", "ECU", "Game Lines", "Player Props", "event-detail-save-mexico-ecuador", "event-detail-share")
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-price-chart", "event-detail-chat-preview", "event-detail-primary-outcomes", "MEX", "ECU", "Game Lines", "Player Props", "event-detail-top-order-book", "event-detail-share")
 
       Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-chart-filter-game"
       Start-Sleep -Seconds 1
@@ -1563,15 +1555,15 @@ try {
       $gamePageChartHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-game-page-full-chart-game.xml"
       Assert-HierarchyContains -Path $gamePageChartHierarchy -Expected @("event-detail-price-chart", "Game", "Mexico vs. Ecuador")
 
-      Invoke-TapHierarchyNode -Path $gamePageChartHierarchy -Identifier "event-detail-save-mexico-ecuador"
+      Invoke-TapHierarchyNode -Path $gamePageChartHierarchy -Identifier "event-detail-top-order-book"
+      Start-Sleep -Seconds 2
+      Save-Screenshot -Name "cycle-current-holiwyn-game-page-full-top-order-book.png"
+      $gamePageTopOrderBookHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-game-page-full-top-order-book.xml"
+      Assert-HierarchyContains -Path $gamePageTopOrderBookHierarchy -Expected @("event-detail-order-book-screen", "Order Book", "event-detail-order-book-close")
+      Invoke-TapHierarchyNode -Path $gamePageTopOrderBookHierarchy -Identifier "event-detail-order-book-close"
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-current-holiwyn-game-page-full-save-notice.png"
-      $gamePageSaveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-game-page-full-save-notice.xml"
-      Assert-HierarchyContains -Path $gamePageSaveHierarchy -Expected @("event-detail-save-notice", "Saved to watchlist", "Dismiss")
-      Invoke-TapHierarchyNode -Path $gamePageSaveHierarchy -Identifier "event-detail-save-notice"
-      Start-Sleep -Seconds 1
-      $gamePageAfterSaveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-game-page-full-after-save.xml"
-      Invoke-TapHierarchyNode -Path $gamePageAfterSaveHierarchy -Identifier "event-detail-share"
+      $gamePageAfterOrderBookHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-game-page-full-after-top-order-book.xml"
+      Invoke-TapHierarchyNode -Path $gamePageAfterOrderBookHierarchy -Identifier "event-detail-share"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-game-page-full-share-sheet.png"
       $gamePageShareHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-game-page-full-share-sheet.xml"
@@ -1654,17 +1646,17 @@ try {
     }
 
     if ($EventDetailActions) {
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-save-mexico-ecuador", "event-detail-share", "Mexico vs. Ecuador", "Game Lines")
-      Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-save-mexico-ecuador"
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-top-order-book", "event-detail-share", "Mexico vs. Ecuador", "Game Lines")
+      Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-top-order-book"
+      Wait-HierarchyContains -Name "cycle-current-holiwyn-event-detail-top-order-book.xml" -Expected @("event-detail-order-book-screen", "Order Book", "Mexico vs. Ecuador - Match winner", "event-detail-order-book-close") -Attempts 5 -DelaySeconds 1 | Out-Null
+      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-top-order-book.png"
+      $eventDetailTopOrderBookHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-top-order-book.xml"
+      Assert-HierarchyContains -Path $eventDetailTopOrderBookHierarchy -Expected @("event-detail-order-book-screen", "Order Book", "Mexico vs. Ecuador - Match winner", "event-detail-order-book-close")
+      Invoke-TapHierarchyNode -Path $eventDetailTopOrderBookHierarchy -Identifier "event-detail-order-book-close"
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-save-notice.png"
-      $eventDetailSaveNoticeHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-save-notice.xml"
-      Assert-HierarchyContains -Path $eventDetailSaveNoticeHierarchy -Expected @("event-detail-save-notice", "Saved to watchlist", "Dismiss", "Mexico vs. Ecuador")
-      Invoke-TapHierarchyNode -Path $eventDetailSaveNoticeHierarchy -Identifier "event-detail-save-notice"
-      Start-Sleep -Seconds 1
-      $eventDetailAfterSaveDismissHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-save-dismissed.xml"
-      Assert-HierarchyContains -Path $eventDetailAfterSaveDismissHierarchy -Expected @("Mexico vs. Ecuador", "Game Lines", "event-detail-share")
-      Invoke-TapHierarchyNode -Path $eventDetailAfterSaveDismissHierarchy -Identifier "event-detail-share"
+      $eventDetailAfterOrderBookDismissHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-top-order-book-dismissed.xml"
+      Assert-HierarchyContains -Path $eventDetailAfterOrderBookDismissHierarchy -Expected @("Mexico vs. Ecuador", "Game Lines", "event-detail-share")
+      Invoke-TapHierarchyNode -Path $eventDetailAfterOrderBookDismissHierarchy -Identifier "event-detail-share"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-share-sheet.png"
       $eventDetailShareHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-share-sheet.xml"
@@ -1673,7 +1665,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-share-dismissed.png"
       $eventDetailShareDismissedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-share-dismissed.xml"
-      Assert-HierarchyContains -Path $eventDetailShareDismissedHierarchy -Expected @("Mexico vs. Ecuador", "Game Lines", "event-detail-save-mexico-ecuador", "event-detail-share")
+      Assert-HierarchyContains -Path $eventDetailShareDismissedHierarchy -Expected @("Mexico vs. Ecuador", "Game Lines", "event-detail-top-order-book", "event-detail-share")
       return
     }
 

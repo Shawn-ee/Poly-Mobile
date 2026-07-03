@@ -5,6 +5,7 @@ Status: template ready. Must be completed before market-page behavior is marked 
 ## Scope
 
 - Tabs.
+- Top shell/action controls. Focused Cycle U evidence lives in `docs/mobile/audits/event-page-top-shell.md`.
 - Grouped markets.
 - Expanded/collapsed rows.
 - Nested market options.
@@ -41,6 +42,7 @@ Screenshots/UI hierarchy:
 | MP-P0-03 | P0 | Line selectors update rows and ticket identity. | Device smoke/state test | Pending |
 | MP-P0-04 | P0 | Liquidity/depth information appears where Polymarket exposes it or a documented Holiwyn equivalent exists. | Screenshot/API test | Pending |
 | MP-P1-01 | P1 | Market density and grouping approach Polymarket. | Screenshot comparison | Pending |
+| MP-P1-02 | P1 | Event page top-shell native share behavior is audited beyond the focused branded share panel. | Device proof | Deferred to follow-up; see `event-page-top-shell.md` |
 
 ## Audit Gate
 
