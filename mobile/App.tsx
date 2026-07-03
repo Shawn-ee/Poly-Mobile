@@ -21,7 +21,7 @@ import {
   Position,
 } from "./src/components/Portfolio";
 import { SearchScreen } from "./src/components/SearchScreen";
-import { Ticket, TradeTicket } from "./src/components/TradeTicket";
+import { Ticket, TicketSelection, TradeTicket } from "./src/components/TradeTicket";
 import { WorldCupTab } from "./src/components/WorldCupSegmented";
 import { appCopy } from "./src/localization/appCopy";
 import {
@@ -791,10 +791,10 @@ export default function App() {
     );
   }, [events, query]);
 
-  const openTicket = (market: Market, outcome: Outcome, event?: Event, side?: "buy" | "sell") => {
+  const openTicket = (market: Market, outcome: Outcome, event?: Event, side?: "buy" | "sell", selection?: TicketSelection) => {
     setTicketOrderError(null);
     setTicketOrderErrorDetail(null);
-    setTicket({ market, outcome, event, side: side ?? ticketDefaults.side });
+    setTicket({ market, outcome, event, side: side ?? ticketDefaults.side, selection });
   };
 
   useEffect(() => {
@@ -887,6 +887,7 @@ export default function App() {
         event: ticket.event,
         market: ticket.market,
         outcome: ticket.outcome,
+        selection: ticket.selection,
         side,
         amount: cost,
       });

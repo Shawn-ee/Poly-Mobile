@@ -9,6 +9,14 @@ export type Ticket = {
   market: Market;
   outcome: Outcome;
   side: "buy" | "sell";
+  selection?: TicketSelection;
+};
+
+export type TicketSelection = {
+  marketType: "spread" | "totals" | "team-total" | "winner" | "prop" | "future" | "live";
+  line?: string;
+  period?: string;
+  displayLabel: string;
 };
 
 type TradeTicketCopy = {
@@ -227,6 +235,7 @@ export function TradeTicket({
   const eventLabel = label(locale, ticket.event ?? ticket.market);
   const outcomeLabel = label(locale, ticket.outcome);
   const sideLabel = side === "buy" ? "Yes" : "No";
+  const selectionLabel = ticket.selection?.displayLabel ?? outcomeLabel;
   const amountDisplay = numericAmount > 0 ? money(numericAmount) : "$0";
   const submitLabel = numericAmount <= 0 ? "Choose an amount" : swipeLabel || primaryLabel;
 
@@ -247,7 +256,7 @@ export function TradeTicket({
               <View style={styles.ticketHeading}>
                 <Text style={styles.ticketTitle}>{eventLabel}</Text>
                 <Text accessibilityLabel="ticket-selection-line" testID="ticket-selection-line" style={styles.ticketSub}>
-                  {sideLabel} - {outcomeLabel}
+                  {sideLabel} - {selectionLabel}
                 </Text>
               </View>
               <Pressable accessibilityLabel="ticket-settings" style={styles.settingsButton} testID="ticket-settings">
