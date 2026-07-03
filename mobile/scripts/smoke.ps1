@@ -1573,18 +1573,26 @@ try {
     }
 
     if ($EventDetailTrade) {
-      Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-outcome-mexico-ecuador-winner-mexico"
+      Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-primary-outcome-mexico-ecuador-winner-mexico"
       Start-Sleep -Seconds 1
       $eventDetailTicketCandidate = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-ticket.xml"
       if ((Dismiss-ExpoDeveloperMenuIfPresent -Path $eventDetailTicketCandidate)) {
         Start-Sleep -Seconds 2
         $eventDetailHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail.xml"
-        Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-outcome-mexico-ecuador-winner-mexico"
+        Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-primary-outcome-mexico-ecuador-winner-mexico"
       }
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-ticket.png"
       $eventDetailTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-ticket.xml"
-      Assert-HierarchyContains -Path $eventDetailTicketHierarchy -Expected @("Mexico", "Mexico vs. Ecuador", "Fake balance", "10,000 USDT", "Estimated cost", "Est. shares", "Avg price", "Implied odds", "1.6x", "Estimated payout", "Potential profit", "56.25 USDT", "Swipe up to buy")
+      Assert-HierarchyContains -Path $eventDetailTicketHierarchy -Expected @("trade-ticket", "ticket-close", "ticket-settings", "Mexico vs. Ecuador", "Yes - Mexico", "ticket-amount-display", "$0", "ticket-side-buy", "ticket-side-sell", "Yes", "No", "ticket-odds-available", "Odds 64%", "10,000 USDT available", "ticket-preset-5", "+$5", "ticket-preset-10", "+$10", "ticket-preset-25", "+$25", "ticket-amount-keypad", "ticket-keypad-1", "ticket-keypad-backspace", "Choose an amount")
+      Invoke-TapHierarchyNode -Path $eventDetailTicketHierarchy -Identifier "ticket-close"
+      Start-Sleep -Seconds 1
+      $eventDetailAfterCloseHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-ticket-closed.xml"
+      Invoke-TapHierarchyNode -Path $eventDetailAfterCloseHierarchy -Identifier "event-detail-primary-outcome-mexico-ecuador-winner-ecuador"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-event-detail-away-ticket.png"
+      $eventDetailAwayTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-away-ticket.xml"
+      Assert-HierarchyContains -Path $eventDetailAwayTicketHierarchy -Expected @("trade-ticket", "Mexico vs. Ecuador", "Yes - Ecuador", "Odds 36%", "ticket-amount-display", "$0", "ticket-preset-5", "ticket-amount-keypad", "Choose an amount")
       return
     }
 
