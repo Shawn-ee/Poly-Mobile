@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { label, money } from "../presentation/formatters";
 
@@ -33,6 +34,8 @@ const futureOutcomeVolume = (market: Market, outcome: Outcome) => {
 };
 
 const cents = (probability: number) => `${probability.toFixed(1)}¢`;
+const futureChartRanges = ["1H", "1D", "1W", "1M", "MAX"] as const;
+type FutureChartRange = typeof futureChartRanges[number];
 
 export function MarketList({
   locale,
@@ -130,6 +133,7 @@ export function FutureList({
   openTicket: (market: Market, outcome: Outcome, event?: Event, side?: "buy" | "sell") => void;
   statsCopy?: MarketStatsCopy;
 }) {
+  const [selectedRange, setSelectedRange] = useState<FutureChartRange>("MAX");
   return (
     <View style={styles.eventList}>
       {futures.map((market) => {
@@ -150,6 +154,48 @@ export function FutureList({
                 </Text>
               </View>
             )}
+            <View accessibilityLabel={`future-market-chart ${selectedRange}`} style={styles.futureChart} testID="future-market-chart">
+              <View style={styles.futureLegend}>
+                {market.outcomes.slice(0, 4).map((outcome) => (
+                  <Text key={outcome.id} style={styles.futureLegendText}>
+                    <Text style={{ color: outcome.color }}>●</Text> {label(locale, outcome)} {outcome.probability}%
+                  </Text>
+                ))}
+              </View>
+              <View style={styles.futureChartCanvas}>
+                {market.outcomes.slice(0, 4).map((outcome, index) => (
+                  <View
+                    key={outcome.id}
+                    style={[
+                      styles.futureChartLine,
+                      {
+                        backgroundColor: outcome.color,
+                        left: `${8 + index * 6}%`,
+                        right: `${10 + (3 - index) * 5}%`,
+                        top: `${22 + index * 16}%`,
+                      },
+                    ]}
+                  />
+                ))}
+                <Text style={styles.futureChartWatermark}>Holiwyn</Text>
+              </View>
+              <View style={styles.futureChartMeta}>
+                <Text style={styles.futureChartVolume}>🏆 {money(stats.volume)} Vol.</Text>
+                <View style={styles.futureRangeRow}>
+                  {futureChartRanges.map((range) => (
+                    <Pressable
+                      accessibilityLabel={`future-chart-range-${range.toLowerCase()}`}
+                      key={range}
+                      onPress={() => setSelectedRange(range)}
+                      style={[styles.futureRangeButton, selectedRange === range && styles.futureRangeButtonActive]}
+                      testID={`future-chart-range-${range.toLowerCase()}`}
+                    >
+                      <Text style={[styles.futureRangeText, selectedRange === range && styles.futureRangeTextActive]}>{range}</Text>
+                    </Pressable>
+                  ))}
+                </View>
+              </View>
+            </View>
             {market.outcomes.map((outcome) => (
               <View accessibilityLabel={`future-row-${market.id}-${outcome.id}`} key={outcome.id} style={styles.futureOutcomeRow} testID={`future-row-${market.id}-${outcome.id}`}>
                 <View style={styles.futureOutcomeTop}>
@@ -195,6 +241,19 @@ const styles = StyleSheet.create({
   futureMarketCard: { padding: 0, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", overflow: "hidden" },
   futureMarketHeader: { padding: 14, paddingBottom: 8, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   futureBookmark: { color: "#94a3b8", fontSize: 24, fontWeight: "900" },
+  futureChart: { paddingHorizontal: 14, paddingTop: 8, paddingBottom: 12 },
+  futureLegend: { flexDirection: "row", flexWrap: "wrap", gap: 10, marginBottom: 8 },
+  futureLegendText: { color: "#94a3b8", fontSize: 12, fontWeight: "900" },
+  futureChartCanvas: { height: 136, borderRadius: 10, backgroundColor: "#0b1220", overflow: "hidden", borderWidth: 1, borderColor: "#1f2937" },
+  futureChartLine: { position: "absolute", height: 4, borderRadius: 4, opacity: 0.9 },
+  futureChartWatermark: { position: "absolute", right: 16, top: 50, color: "rgba(148, 163, 184, 0.14)", fontSize: 28, fontWeight: "900" },
+  futureChartMeta: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10, marginTop: 10 },
+  futureChartVolume: { flex: 1, color: "#cbd5e1", fontSize: 13, fontWeight: "900" },
+  futureRangeRow: { flexDirection: "row", alignItems: "center", gap: 4 },
+  futureRangeButton: { minWidth: 34, minHeight: 32, alignItems: "center", justifyContent: "center", borderRadius: 8 },
+  futureRangeButtonActive: { backgroundColor: "#1f2937" },
+  futureRangeText: { color: "#94a3b8", fontSize: 14, fontWeight: "900" },
+  futureRangeTextActive: { color: "#f8fafc" },
   eventMetaRow: { flexDirection: "row", justifyContent: "space-between", marginBottom: 10 },
   eventMetaRight: { flexDirection: "row", alignItems: "center", gap: 8 },
   timeText: { color: "#94a3b8", fontWeight: "800" },

@@ -55,6 +55,7 @@ Every focused audit must record:
 | Market page | `docs/mobile/audits/market-page.md` | Template ready | Pending next cycle | Pending next cycle | Not run under new rule | Must cover tabs, grouped markets, expand/collapse, nested options, line selectors, liquidity/depth. |
 | Event page top shell | `docs/mobile/audits/event-page-top-shell.md` | Cycle U P0 pass for focused scope | Samsung S23 / Polymarket Android app | Samsung tablet / Holiwyn Expo Go | Pass | Focused top action cluster only: Game/Chat tabs, order-book action, share action, overlay dismiss/return. Full market page remains open. |
 | Futures market rows | `docs/mobile/audits/futures-market-rows.md` | Cycle V P0 pass for focused scope | Samsung S23 / Polymarket mobile web | Samsung tablet / Holiwyn Expo Go | Pass | Focused World Cup Winner futures outcome rows: flag/name/volume/probability/Buy Yes/Buy No and Buy Yes ticket carry-through. |
+| Futures chart range | `docs/mobile/audits/futures-chart-range.md` | Cycle W P0 pass for focused scope | Samsung S23 / Polymarket mobile web | Samsung tablet / Holiwyn Expo Go | Pass | Focused World Cup Winner chart legend, range controls, and range state taps. |
 | Navigation | `docs/mobile/audits/navigation.md` | Cycle T P0 pass | Samsung S23 / Polymarket Android app | Samsung tablet / Holiwyn Expo Go | Pass | Reference shows four bottom tabs: Home, Live, Portfolio, Search; Holiwyn now matches primary bottom nav and keeps Account reachable through a header control. |
 
 ## Existing Historical Reference Files

@@ -99,3 +99,35 @@ Temporary mock/static data:
 Future migration concern:
 
 - Once backend provides real futures outcome volume and yes/no prices, the local display helpers should be replaced by adapter-mapped fields to avoid fake liquidity signals.
+
+## Cycle W - Futures Chart Range
+
+Fields Holiwyn needs but backend does not provide yet:
+
+- Market history series by market id and range.
+- Per-outcome timestamped probability/price points.
+- Range metadata for `1H`, `1D`, `1W`, `1M`, and `MAX`.
+- Chart unavailable/loading/empty state metadata.
+- Optional chart display settings/defaults.
+
+Fields backend provides but mobile ignores:
+
+- Unknown for this cycle; no backend history payload was inspected.
+
+Schema mismatch:
+
+- Mobile currently represents chart ranges as local UI state only.
+- Polymarket reference implies live historical series per range; Holiwyn does not yet have a server contract for those points.
+
+Route mismatch:
+
+- A future route such as `/api/markets/:id/history?range=1D` or `/api/mobile/markets/:id/chart?range=1D` is needed.
+
+Temporary mock/static data:
+
+- Chart lines are deterministic local visual bands.
+- Volume uses the futures card display helper instead of range-specific historical volume.
+
+Future migration concern:
+
+- Once real history is available, local chart geometry should be replaced by adapter-driven series rendering and tested with empty/no-history and suspended-market states.
