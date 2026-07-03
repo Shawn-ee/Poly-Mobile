@@ -39,7 +39,7 @@ These apply to every page, feature, button, and interaction:
 | Account/settings | `docs/mobile/audits/account.md` | Pending new-rule audit | Pending | Not run |
 | Chart behavior | `docs/mobile/audits/chart-behavior.md` | Pending new-rule audit | Pending | Not run |
 | Market page | `docs/mobile/audits/market-page.md` | Pending new-rule audit | Pending | Not run |
-| Navigation | `docs/mobile/audits/navigation.md` | Pending new-rule audit | Pending | Not run |
+| Navigation | `docs/mobile/audits/navigation.md` | Verified for Cycle T P0 | P1/P2 deferred in focused audit | Pass |
 
 ## Required Special Coverage
 

@@ -11574,6 +11574,45 @@ Next cycle:
 
 - Select the next highest-value target, run Polymarket reference audit on Samsung S23, write criteria, implement or compare Holiwyn on the Holiwyn Android device, and pass the Audit Gate before claiming completion.
 
+### Cycle T - Whole-App Navigation And Page Map
+
+Goal: apply the new audit-gated workflow to Priority 1, whole-app navigation and page map.
+
+Polymarket reference audit:
+
+- Device: Samsung S23 running the real Polymarket Android app.
+- Evidence: `docs/mobile/reference/screenshots/cycle-T-polymarket-nav-*`.
+- Finding: Polymarket primary bottom navigation has four tabs: Home, Live, Portfolio, Search. Account/settings access appears outside the primary bottom nav.
+
+Implementation:
+
+- Updated `mobile/src/components/BottomTabs.tsx` so the primary bottom nav renders only Home, Live, Portfolio, and Search.
+- Updated `mobile/src/components/Header.tsx` to add `header-account-action`.
+- Updated `mobile/App.tsx` to route the header account action to the existing Account screen.
+- Updated `mobile/scripts/smoke.ps1` so the whole-app navigation proof verifies the four-tab bottom nav, the absence of `holiwyn-account-tab`, and Account access through the header.
+
+Required backend/function documentation:
+
+- Added `docs/mobile/FUNCTION_IMPLEMENTATION_LOG.md`.
+- Added `docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md`.
+- Added `docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md`.
+
+Verification:
+
+- `npm run typecheck` passed.
+- `npm run smoke:tablet:whole-app-nav-discovery` passed on Samsung tablet through Expo Go.
+- Audit Gate passed with 0 unresolved P0 gaps for Navigation.
+
+Remaining gaps:
+
+- P1: deeper back/scroll restoration parity.
+- P1: account/settings header affordance polish on phone.
+- P2: production deep-link/route restoration beyond smoke deep links.
+
+Next cycle:
+
+- Priority 2: Market/event page, starting with a same-cycle Polymarket reference audit on the Samsung S23.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

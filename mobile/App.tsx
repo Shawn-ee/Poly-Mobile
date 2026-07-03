@@ -1133,6 +1133,7 @@ export default function App() {
             promo={t.promo}
             language={t.language}
             toggleLanguage={() => setLocale((current) => (current === "en" ? "zh" : "en"))}
+            openAccount={() => setMainTab("account")}
           />
         )}
         {selectedEvent ? (

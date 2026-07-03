@@ -1,7 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-export type MainTab = "home" | "live" | "portfolio" | "search" | "account";
+export type PrimaryTab = "home" | "live" | "portfolio" | "search";
+export type MainTab = PrimaryTab | "account";
 
 type BottomTabCopy = {
   home: string;
@@ -20,12 +21,11 @@ export function BottomTabs({
   setTab: (tab: MainTab) => void;
   t: BottomTabCopy;
 }) {
-  const items: Array<[MainTab, keyof typeof Ionicons.glyphMap, string]> = [
+  const items: Array<[PrimaryTab, keyof typeof Ionicons.glyphMap, string]> = [
     ["home", "compass", t.home],
     ["live", "radio", t.live],
     ["portfolio", "person-circle-outline", t.portfolio],
     ["search", "search", t.search],
-    ["account", "person", t.account],
   ];
 
   return (

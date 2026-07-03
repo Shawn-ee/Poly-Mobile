@@ -21,6 +21,7 @@ Fail the feature when:
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
 | Workflow update | Cycle S | Pass | 0 | None for workflow docs | User-provided workflow requirements | Updated loop/harness docs | The autonomous loop now requires same-cycle Polymarket audit, criteria, Holiwyn device proof, and Audit Gate pass. |
+| Whole-app navigation and page map | Cycle T | Pass | 0 | P1 back/scroll polish; P1 account affordance polish; P2 production deep-link restoration | `docs/mobile/reference/screenshots/cycle-T-polymarket-nav-*`; `docs/mobile/audits/navigation.md` | `docs/mobile/screenshots/cycle-current-holiwyn-whole-app-nav-*`; `docs/mobile/harness/cycle-current-holiwyn-whole-app-nav-*`; `npm run smoke:tablet:whole-app-nav-discovery` | Polymarket four-tab bottom nav was matched. Account moved from bottom tab to header action. |
 
 ## Gate Report Template
 

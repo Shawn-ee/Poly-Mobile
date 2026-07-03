@@ -132,6 +132,19 @@ function Assert-HierarchyContains {
   }
 }
 
+function Assert-HierarchyDoesNotContain {
+  param(
+    [string]$Path,
+    [string[]]$Unexpected
+  )
+  $hierarchy = Get-Content -Raw -Path $Path
+  foreach ($value in $Unexpected) {
+    if ($hierarchy -match [regex]::Escape($value)) {
+      throw "UI hierarchy contains unexpected text or label: $value"
+    }
+  }
+}
+
 function Assert-HierarchyContainsAny {
   param(
     [string]$Path,
@@ -579,7 +592,8 @@ try {
     if ($WholeAppNavDiscovery) {
       Save-Screenshot -Name "cycle-current-holiwyn-whole-app-nav-home.png"
       $wholeAppHomeHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-nav-home.xml"
-      Assert-HierarchyContains -Path $wholeAppHomeHierarchy -Expected @("Holiwyn", "World Cup", "Games", "Futures", "Mexico vs. Ecuador", "Volume", "Liquidity", "home-filter-live", "home-filter-today", "home-filter-saved")
+      Assert-HierarchyContains -Path $wholeAppHomeHierarchy -Expected @("Holiwyn", "World Cup", "Games", "Futures", "Mexico vs. Ecuador", "Volume", "Liquidity", "home-filter-live", "home-filter-today", "home-filter-saved", "holiwyn-home-tab", "holiwyn-live-tab", "holiwyn-portfolio-tab", "holiwyn-search-tab", "header-account-action")
+      Assert-HierarchyDoesNotContain -Path $wholeAppHomeHierarchy -Unexpected @("holiwyn-account-tab")
 
       Invoke-TapHierarchyNode -Path $wholeAppHomeHierarchy -Identifier "holiwyn-live-tab"
       Start-Sleep -Seconds 1
@@ -599,11 +613,12 @@ try {
       $wholeAppSearchHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-nav-search.xml"
       Assert-HierarchyContains -Path $wholeAppSearchHierarchy -Expected @("Search World Cup markets", "Top results", "All", "Upcoming", "Popular", "Live first")
 
-      Invoke-TapHierarchyNode -Path $wholeAppSearchHierarchy -Identifier "holiwyn-account-tab"
+      Invoke-TapHierarchyNode -Path $wholeAppSearchHierarchy -Identifier "header-account-action"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-whole-app-nav-account.png"
       $wholeAppAccountHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-nav-account.xml"
       Assert-HierarchyContains -Path $wholeAppAccountHierarchy -Expected @("Account", "Signed out", "Demo balance", "Continue with phone", "Preferences")
+      Assert-HierarchyDoesNotContain -Path $wholeAppAccountHierarchy -Unexpected @("holiwyn-account-tab")
 
       Invoke-TapHierarchyNode -Path $wholeAppAccountHierarchy -Identifier "holiwyn-home-tab"
       Start-Sleep -Seconds 1
@@ -1250,7 +1265,7 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-order-activity.png"
       $futureListOrderActivityHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-order-activity.xml"
       Assert-HierarchyContains -Path $futureListOrderActivityHierarchy -Expected @("Recent activity", "Bought", "World Cup winner", "France", "Filled shares 294.12", "Exec price 34%", "Implied odds 2.9x")
-      Invoke-TapHierarchyNode -Path $futureListOrderActivityHierarchy -Identifier "holiwyn-account-tab"
+      Invoke-TapHierarchyNode -Path $futureListOrderActivityHierarchy -Identifier "header-account-action"
       Start-Sleep -Seconds 1
       & $adb -s $Device shell input swipe 540 1680 540 780 450 | Out-Null
       Start-Sleep -Seconds 1
