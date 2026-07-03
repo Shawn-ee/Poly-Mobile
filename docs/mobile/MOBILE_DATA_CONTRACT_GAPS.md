@@ -2,6 +2,37 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle AU - Live Chart Route States
+
+Fields now provided or wired:
+
+- Mobile now preserves chart route lifecycle state: `loading`, `ready`, `empty`, and `error`.
+- EventDetail chart audit labels include route source, status, range, and empty-state reason.
+- `MarketChart.emptyState`, `range`, and `lastUpdated` are consumed by the selected event model instead of being discarded.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real live World Cup provider snapshots so the chart reaches `ready` with server data during device proof.
+- Richer delayed/suspended/market-paused reasons beyond `emptyState: "no-history"`.
+- Full depth ladder state and availability reasons.
+
+Schema mismatch:
+
+- `MarketOutcomeSnapshot` still has no provider source id, live/delayed flag, aggregation bucket, or availability reason.
+
+Route mismatch:
+
+- The basic chart lifecycle route contract exists and is now consumed.
+- The backend still cannot be proven live on device while local API/Docker are unavailable.
+
+Temporary mock/static data:
+
+- Fallback chart data remains visible, but it is now explicitly labeled as fallback/empty/error instead of being mistaken for route-backed parity.
+
+Future migration concern:
+
+- Add richer backend status values if provider ingestion distinguishes delayed, suspended, stale, or closed live markets.
+
 ## Cycle AT - Live Chart Snapshot Seeding Harness
 
 Fields now provided or wired:

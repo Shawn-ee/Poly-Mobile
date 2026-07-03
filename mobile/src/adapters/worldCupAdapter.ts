@@ -171,6 +171,7 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
     liveStats: event.liveStats,
     chartHistory: event.chartHistory,
     chartHistorySource: event.chartHistory?.length ? "embedded" : undefined,
+    chartHistoryStatus: event.chartHistory?.length ? "ready" : undefined,
     markets: normalizedMarkets,
   };
 };

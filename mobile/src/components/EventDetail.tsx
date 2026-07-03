@@ -204,6 +204,19 @@ export function EventDetail({
   const selectedChartProbability = selectedChartOutcome?.probability ?? 0;
   const homeChartSeries = event.chartHistory?.filter((point) => point.outcomeId === leftOutcome?.id).map((point) => point.probability) ?? homeChartPoints;
   const awayChartSeries = event.chartHistory?.filter((point) => point.outcomeId === rightOutcome?.id).map((point) => point.probability) ?? awayChartPoints;
+  const chartRouteStatus = event.chartHistoryStatus ?? (event.chartHistorySource === "market-chart-route" ? "ready" : "idle");
+  const chartStateText =
+    chartRouteStatus === "loading"
+      ? "Updating chart"
+      : chartRouteStatus === "empty"
+        ? "No chart history"
+        : chartRouteStatus === "error"
+          ? "Chart unavailable"
+          : event.chartHistoryLastUpdated
+            ? `Updated ${event.chartHistoryRange ?? "1D"}`
+            : event.chartHistorySource === "market-chart-route"
+              ? "Route chart"
+              : "Fallback chart";
   const liveStatRows = event.liveStats ?? [
     { label: "Possession", home: "54%", away: "46%" },
     { label: "Shots", home: "8", away: "5" },
@@ -965,11 +978,25 @@ export function EventDetail({
           </View>
         )}
         <Pressable
-          accessibilityLabel={`event-detail-price-chart chart-source-${event.chartHistorySource ?? "fallback"} two outcome traces ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartProbability}% ${chartPointMeta.label} ${chartPointMeta.value} +$9 +$39 +$479 All Game Live`}
+          accessibilityLabel={`event-detail-price-chart chart-source-${event.chartHistorySource ?? "fallback"} chart-status-${chartRouteStatus} chart-range-${event.chartHistoryRange ?? "none"} chart-empty-${event.chartHistoryEmptyState ?? "none"} two outcome traces ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartProbability}% ${chartPointMeta.label} ${chartPointMeta.value} +$9 +$39 +$479 All Game Live`}
           onPress={() => setSelectedChartPoint((current) => current === "latest" ? "mid" : current === "mid" ? "target" : "latest")}
           style={[styles.chartBlock, isLiveEvent && styles.liveChartBlock]}
           testID="event-detail-price-chart"
         >
+          <View
+            accessibilityLabel={`event-detail-chart-route-state chart-status-${chartRouteStatus} ${chartStateText}`}
+            style={[styles.chartRouteState, chartRouteStatus === "error" && styles.chartRouteStateError, chartRouteStatus === "empty" && styles.chartRouteStateEmpty]}
+            testID="event-detail-chart-route-state"
+          >
+            <Ionicons
+              name={chartRouteStatus === "error" ? "warning-outline" : chartRouteStatus === "loading" ? "sync-outline" : chartRouteStatus === "empty" ? "time-outline" : "pulse-outline"}
+              color={chartRouteStatus === "error" ? "#f87171" : chartRouteStatus === "empty" ? "#fbbf24" : "#7dd3fc"}
+              size={14}
+            />
+            <Text style={[styles.chartRouteStateText, chartRouteStatus === "error" && styles.chartRouteStateTextError, chartRouteStatus === "empty" && styles.chartRouteStateTextEmpty]}>
+              {chartStateText}
+            </Text>
+          </View>
           <View style={styles.chartMarkers}>
             <Text style={styles.chartMarkerText}>+$9</Text>
             <Text style={styles.chartMarkerText}>+$39</Text>
@@ -1354,6 +1381,12 @@ const styles = StyleSheet.create({
   liveStripPrice: { fontSize: 14, fontWeight: "900" },
   chartMarkers: { position: "absolute", left: 14, top: 34, gap: 20 },
   chartMarkerText: { color: "#546071", fontSize: 11, fontWeight: "900" },
+  chartRouteState: { position: "absolute", left: 82, top: 12, minWidth: 132, height: 28, paddingHorizontal: 9, borderRadius: 999, backgroundColor: "rgba(15, 23, 42, 0.88)", borderWidth: 1, borderColor: "#243244", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5 },
+  chartRouteStateEmpty: { borderColor: "rgba(251, 191, 36, 0.35)", backgroundColor: "rgba(53, 43, 20, 0.82)" },
+  chartRouteStateError: { borderColor: "rgba(248, 113, 113, 0.38)", backgroundColor: "rgba(58, 24, 31, 0.82)" },
+  chartRouteStateText: { color: "#bfdbfe", fontSize: 11, fontWeight: "900" },
+  chartRouteStateTextEmpty: { color: "#fde68a" },
+  chartRouteStateTextError: { color: "#fecaca" },
   chartReferenceLine: { position: "absolute", left: 0, right: 42, top: 63, borderTopWidth: 1, borderStyle: "dashed", borderColor: "#64748b", opacity: 0.65 },
   chartReferenceText: { position: "absolute", right: -2, top: -15, overflow: "hidden", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 4, color: "#dbeafe", backgroundColor: "#475569", fontSize: 12, fontWeight: "900" },
   dualChart: { width: "70%", height: 92, marginLeft: 0 },
