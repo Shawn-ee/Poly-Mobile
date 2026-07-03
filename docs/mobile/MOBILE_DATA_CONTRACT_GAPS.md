@@ -438,3 +438,38 @@ Temporary mock/static data:
 Future migration concern:
 
 - None for backend. Future device farms or CI can replace the local ADB endpoint list with managed device metadata.
+
+## Cycle AG - Trade Ticket
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Ticket-ready market display title separate from full market title.
+- Opposite outcome/team label for a Polymarket-like selected-outcome switch.
+- Explicit binary side semantics: Buy Yes, Buy No, Sell Yes, Sell No, and whether each creates/closes shares.
+- Executable quote price distinct from display probability.
+- Payout, max payout, fee, slippage, min/max order size, and eligibility values from the server.
+- Trading eligibility state: fake-token allowed, production blocked, location blocked, login required, or server unavailable.
+
+Fields backend provides but mobile ignores:
+
+- Unknown in this focused cycle; ticket proof used local event/outcome data and fallback depth where server mode was not active.
+
+Schema mismatch:
+
+- Mobile currently treats `side` as `buy` or `sell` and outcome label as the contract identity; Polymarket-style binary markets need explicit selected side and binary outcome ownership.
+- Ticket payout is computed from current probability instead of an executable server quote.
+- Advanced depth is attached to the outcome when present; a ticket-specific quote snapshot would be cleaner.
+
+Route mismatch:
+
+- Existing event detail can hydrate market/outcome context, but a route such as `/api/mobile/ticket-quote` or `/api/markets/:id/ticket-quote` should return ticket-specific price, depth, payout, fee, and eligibility metadata.
+
+Temporary mock/static data:
+
+- Fake-token balance remains local or portfolio-derived.
+- Payout, shares, average price, and fee use local calculations in mock mode.
+- Trading eligibility gates are documented from Polymarket reference but not implemented for fake-token trading.
+
+Future migration concern:
+
+- Before production trading, ticket submit must be server-authoritative for price, side semantics, balance/allowance, eligibility, idempotency, order status, and portfolio/activity effects.

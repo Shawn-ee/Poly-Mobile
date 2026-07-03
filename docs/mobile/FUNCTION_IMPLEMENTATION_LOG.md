@@ -505,3 +505,45 @@ Known limitations:
 
 - This does not complete a product feature.
 - It intentionally prevents new UI feature completion claims while same-cycle Polymarket reference access is missing.
+
+## Cycle AG - Trade Ticket
+
+Feature/page worked on:
+
+- Focused trade-ticket first-view density and advanced-details behavior.
+- Ticket amount-to-win state.
+- Tablet trade-ticket proof harness.
+
+Frontend components touched:
+
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/package.json`
+
+Important functions/services touched:
+
+- `TradeTicket()` now tracks `showDetails` and resets it whenever the selected ticket changes.
+- `ticket-settings` now toggles advanced details instead of being a dead icon.
+- `compactCash()` formats first-view ticket amount and payout as Polymarket-like dollar values.
+- `smoke:tablet:event-detail-trade` runs the focused tablet proof through npm.
+
+User interactions supported:
+
+- Open a sparse ticket bottom sheet from a game-page outcome.
+- See drag handle, Buy/Sell pill, market/outcome identity, large amount, quick amount chips, and one primary Trade control.
+- Tap `+$10` to update amount, `To win`, price, and submit readiness.
+- Tap settings to reveal trading mode, depth, keypad, slippage, and detailed estimates.
+- Close and reopen ticket for another outcome without stale selected outcome data.
+
+State transitions:
+
+- `ticket -> showDetails=false` whenever market/outcome/side changes.
+- `showDetails: false -> true` when `ticket-settings` is tapped.
+- `amount: "0" -> "10"` when `ticket-preset-10` is tapped.
+- Selected outcome changes from Mexico to Ecuador after close/reopen proof.
+
+Known limitations:
+
+- True binary NO-share semantics remain approximate until the mobile/backend contract supports explicit binary side ownership.
+- Production auth/location/trading eligibility gates remain out of scope for fake-token trading.
+- Ticket prices and payout math still use current local outcome probability unless backend quote data is available.

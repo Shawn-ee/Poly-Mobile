@@ -32,7 +32,7 @@ These apply to every page, feature, button, and interaction:
 | Feature | Criteria owner file | P0 status | P1/P2 status | Latest gate |
 | --- | --- | --- | --- | --- |
 | Game page | `docs/mobile/audits/game-page.md` | Pending new-rule audit | Pending | Not run |
-| Trade ticket | `docs/mobile/audits/trade-ticket.md` | Verified for Cycle Z focused game-page ticket P0 | P1/P2 deferred in focused audit | Pass |
+| Trade ticket | `docs/mobile/audits/trade-ticket.md` | Verified for Cycle AG focused first-view density and advanced-details P0 | P1/P2 deferred in focused audit | Pass |
 | Line adjustment | `docs/mobile/audits/line-adjustment.md` | Verified for Cycle Y focused Spreads/Totals P0 | P1/P2 deferred in focused audit | Pass |
 | Portfolio | `docs/mobile/audits/portfolio.md` | Verified for Cycle AA focused fake-token P0 | P1/P2 deferred in focused audit | Pass |
 | Search | `docs/mobile/audits/search.md` | Verified for Cycle AB focused Search/Explore P0 | P1/P2 deferred in focused audit | Pass |

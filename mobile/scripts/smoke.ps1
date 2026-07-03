@@ -2092,20 +2092,24 @@ try {
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-ticket.png"
       $eventDetailTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-ticket.xml"
-      Assert-HierarchyContains -Path $eventDetailTicketHierarchy -Expected @("trade-ticket", "ticket-close", "ticket-settings", "Mexico vs. Ecuador", "Yes - Mexico", "ticket-amount-display", "$0", "ticket-side-buy", "ticket-side-sell", "Yes", "No", "ticket-odds-available", "Odds 64%", "10,000 USDT available", "ticket-preset-1", "+$1", "ticket-preset-5", "+$5", "ticket-preset-10", "+$10", "ticket-preset-100", "+$100", "ticket-amount-keypad", "ticket-keypad-1", "ticket-keypad-backspace", "Choose an amount")
+      Assert-HierarchyContains -Path $eventDetailTicketHierarchy -Expected @("trade-ticket", "ticket-drag-handle", "ticket-close", "ticket-settings", "ticket-side-pill", "Buy", "ticket-selection-summary", "Match winner", "Mexico", "Mexico vs. Ecuador", "ticket-amount-display", "$0", "ticket-selected-outcome-choice", "ticket-side-buy", "ticket-side-sell", "ticket-preset-1", "+$1", "ticket-preset-5", "+$5", "ticket-preset-10", "+$10", "ticket-preset-100", "+$100", "Choose an amount")
       Invoke-TapHierarchyNode -Path $eventDetailTicketHierarchy -Identifier "ticket-preset-10"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-ticket-amount.png"
       $eventDetailTicketAmountHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-ticket-amount.xml"
-      Assert-HierarchyContains -Path $eventDetailTicketAmountHierarchy -Expected @("$10", "Estimated cost", "Est. shares", "Avg price", "Estimated payout", "Potential profit", "Swipe up to buy")
-      Invoke-TapHierarchyNode -Path $eventDetailTicketHierarchy -Identifier "ticket-close"
+      Assert-HierarchyContains -Path $eventDetailTicketAmountHierarchy -Expected @("$10", "ticket-to-win-line", "To win", "ticket-price-line", "64c", "Trade", "Final cost may vary.")
+      Invoke-TapHierarchyNode -Path $eventDetailTicketAmountHierarchy -Identifier "ticket-settings"
+      Start-Sleep -Seconds 1
+      $eventDetailTicketDetailsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-ticket-details.xml"
+      Assert-HierarchyContains -Path $eventDetailTicketDetailsHierarchy -Expected @("ticket-advanced-details", "Trading mode: Fake-token mock", "ticket-market-depth", "ticket-amount-keypad", "ticket-keypad-1", "ticket-keypad-backspace", "ticket-estimate-details", "Estimated cost", "Est. shares", "Avg price", "Estimated payout", "Potential profit")
+      Invoke-TapHierarchyNode -Path $eventDetailTicketDetailsHierarchy -Identifier "ticket-close"
       Start-Sleep -Seconds 1
       $eventDetailAfterCloseHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-ticket-closed.xml"
       Invoke-TapHierarchyNode -Path $eventDetailAfterCloseHierarchy -Identifier "event-detail-primary-outcome-mexico-ecuador-winner-ecuador"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-away-ticket.png"
       $eventDetailAwayTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-away-ticket.xml"
-      Assert-HierarchyContains -Path $eventDetailAwayTicketHierarchy -Expected @("trade-ticket", "Mexico vs. Ecuador", "Yes - Ecuador", "Odds 36%", "ticket-amount-display", "$0", "ticket-preset-5", "ticket-amount-keypad", "Choose an amount")
+      Assert-HierarchyContains -Path $eventDetailAwayTicketHierarchy -Expected @("trade-ticket", "Mexico vs. Ecuador", "Match winner", "Ecuador", "ticket-amount-display", "$0", "ticket-preset-5", "Choose an amount")
       return
     }
 
