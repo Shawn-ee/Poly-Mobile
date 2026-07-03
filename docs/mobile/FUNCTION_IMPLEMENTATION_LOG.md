@@ -2,6 +2,54 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle AU - Live Chart Route States
+
+Feature/page worked on:
+
+- PM-GAP-067 chart loading/empty/error state handling for live event detail.
+- Visible game-page chart now preserves backend chart route status instead of silently falling back.
+
+Frontend components touched:
+
+- `mobile/App.tsx`
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/services/marketChartService.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/__tests__/marketChartService.test.ts`
+
+Backend components touched:
+
+- No backend route code changed. This cycle consumes the existing `/api/markets/:marketId/chart` `emptyState`, `range`, and `lastUpdated` contract.
+
+Important functions/services touched:
+
+- `loadMarketChartState(api, event)` returns `ready` or `empty` status plus `range`, `lastUpdated`, `emptyState`, and route history.
+- `applyChartLoadingToEvent()`, `applyChartStateToEvent()`, and `applyChartErrorToEvent()` preserve chart route lifecycle state on the selected event.
+- `EventDetail` exposes `event-detail-chart-route-state` and chart accessibility labels for `chart-status-*`, `chart-range-*`, and `chart-empty-*`.
+
+User interactions supported:
+
+- When the live game page chart route is loading, empty, or unavailable, the chart surface shows an auditable market-data badge instead of silently masking the route state.
+- Tapping the chart tooltip and chart filters remains unchanged.
+
+State transitions:
+
+- Selected event -> `loading` route state -> `/api/markets/:marketId/chart` -> `ready` with route history, `empty` with `no-history`, or `error` if the route fails.
+
+Known limitations:
+
+- Backend/Docker was unavailable during Cycle AU tablet proof, so the visible proof captures fallback/embedded chart state rather than server-hydrated `ready` state.
+- Real provider ingestion and server-hydrated chart-source proof remain open.
+- Full depth ladder remains open.
+
+Verification:
+
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/marketChartService.test.ts mobile/src/__tests__/worldCupAdapter.test.ts mobile/src/__tests__/api.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:live-detail`
+
 ## Cycle AT - Live Chart Snapshot Seeding Harness
 
 Feature/page worked on:

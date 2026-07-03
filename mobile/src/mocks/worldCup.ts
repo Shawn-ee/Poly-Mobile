@@ -40,6 +40,10 @@ export type Event = {
   liveStats?: Array<{ statId: string; label: string; home: string; away: string }>;
   chartHistory?: Array<{ outcomeId: string; timestamp: string; probability: number }>;
   chartHistorySource?: "embedded" | "market-chart-route";
+  chartHistoryStatus?: "idle" | "loading" | "ready" | "empty" | "error";
+  chartHistoryRange?: "1D" | "1W" | "1M" | "MAX";
+  chartHistoryLastUpdated?: string | null;
+  chartHistoryEmptyState?: "no-history" | null;
   markets: Market[];
 };
 

@@ -40,7 +40,7 @@ import { applyServerPortfolioState } from "./src/services/portfolioStateApplySer
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { resolvePositionTradeTarget } from "./src/services/positionTradeTargetService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
-import { applyChartHistoryToEvent, loadMarketChartHistory } from "./src/services/marketChartService";
+import { applyChartErrorToEvent, applyChartLoadingToEvent, applyChartStateToEvent, loadMarketChartState } from "./src/services/marketChartService";
 import {
   applyTicketQuoteToOutcome,
   applyTicketQuotesToEvent,
@@ -949,15 +949,25 @@ export default function App() {
     if (ORDER_MODE !== "server" || !selectedEvent) return undefined;
     let cancelled = false;
     const eventId = selectedEvent.id;
-    loadMarketChartHistory(api, selectedEvent)
-      .then((chartHistory) => {
-        if (cancelled || !mounted.current || chartHistory.length === 0) return;
+    setSelectedEvent((current) => {
+      if (!current || current.id !== eventId) return current;
+      return applyChartLoadingToEvent(current);
+    });
+    loadMarketChartState(api, selectedEvent)
+      .then((chartState) => {
+        if (cancelled || !mounted.current) return;
         setSelectedEvent((current) => {
           if (!current || current.id !== eventId) return current;
-          return applyChartHistoryToEvent(current, chartHistory);
+          return applyChartStateToEvent(current, chartState);
         });
       })
-      .catch(() => undefined);
+      .catch(() => {
+        if (cancelled || !mounted.current) return;
+        setSelectedEvent((current) => {
+          if (!current || current.id !== eventId) return current;
+          return applyChartErrorToEvent(current);
+        });
+      });
     return () => {
       cancelled = true;
     };

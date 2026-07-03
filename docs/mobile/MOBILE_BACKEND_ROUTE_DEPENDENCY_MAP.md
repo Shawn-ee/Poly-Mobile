@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle AU - Live Chart Route States
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live game chart lifecycle state | `/api/markets/:marketId/chart?range=<1D\|1W>` through `PolyApi.getMarketChart()` | GET | Optional for public markets; bearer token may be sent by runtime client | None | `range`, `lastUpdated`, `emptyState`, `history[].outcomeId`, `history[].timestamp`, `history[].probability` | `Market`, `Outcome`, `MarketOutcomeSnapshot`, market visibility guard | Embedded/local chart history remains visible, but route status is now explicit as `loading`, `empty`, or `error` | Real provider ingestion and a live server-hydrated device proof are still missing. |
+
+Cycle AU implementation notes:
+
+- This cycle closes the silent-fallback part of the chart route gap: empty/error/loading route states are now user-visible and XML-auditable.
+- No new schema or route is required for the basic lifecycle contract because `/api/markets/:marketId/chart` already exposes `emptyState`, `range`, and `lastUpdated`.
+- Server proof still needs the Cycle AT seed harness or real provider snapshots when backend services are available.
+
 ## Cycle AT - Live Chart Snapshot Seeding Harness
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
