@@ -147,6 +147,7 @@ export function EventDetail({
   const [activeHeaderTab, setActiveHeaderTab] = useState<"game" | "chat">("game");
   const [chartFilter, setChartFilter] = useState<ChartFilter>("Game");
   const [spreadPeriod, setSpreadPeriod] = useState<"Reg. Time" | "1st Half" | "2nd Half">("Reg. Time");
+  const [expandedPropIds, setExpandedPropIds] = useState<Record<string, boolean>>({ "goals-reg-time": true });
   const gameLineMarkets = useMemo(() => event.markets.filter((market) => market.type !== "prop" && market.type !== "future"), [event.markets]);
   const propMarkets = useMemo(() => event.markets.filter((market) => market.type === "prop"), [event.markets]);
   const primaryMarket = gameLineMarkets[0] ?? event.markets[0];
@@ -241,6 +242,9 @@ export function EventDetail({
   const toggleGroup = (id: string) => {
     setExpandedMarketIds((current) => ({ ...current, [id]: !current[id] }));
   };
+  const togglePropGroup = (id: string) => {
+    setExpandedPropIds((current) => ({ ...current, [id]: !current[id] }));
+  };
   const renderParityOutcomeRow = (outcome: DisplayOutcome, marketId: string, matchingOutcome?: Outcome) => (
     <View key={outcome.id} style={styles.parityOutcomeRow}>
       <View style={styles.parityOutcomeIcon}>
@@ -280,6 +284,14 @@ export function EventDetail({
       {expandedMarketIds[group.id] && group.rows.map((outcome) => renderParityOutcomeRow(outcome, group.id))}
     </View>
   );
+  const playerRows = [
+    { id: "santiago-gimenez", name: "Santiago Gimenez", team: teamCode(teamA?.name ?? "MEX"), stat: "0+", odds: "2.564x", probability: 39, color: leftOutcome?.color ?? "#22c55e" },
+    { id: "hirving-lozano", name: "Hirving Lozano", team: teamCode(teamA?.name ?? "MEX"), stat: "0+", odds: "10.00x", probability: 10, color: leftOutcome?.color ?? "#22c55e" },
+    { id: "enner-valencia", name: "Enner Valencia", team: teamCode(teamB?.name ?? "ECU"), stat: "0+", odds: "7.1x", probability: 14, color: rightOutcome?.color ?? "#ef4444" },
+    { id: "moises-caicedo", name: "Moises Caicedo", team: teamCode(teamB?.name ?? "ECU"), stat: "0+", odds: "33.33x", probability: 3, color: rightOutcome?.color ?? "#ef4444" },
+    { id: "orbelin-pineda", name: "Orbelin Pineda", team: teamCode(teamA?.name ?? "MEX"), stat: "0+", odds: "14.29x", probability: 7, color: leftOutcome?.color ?? "#22c55e" },
+  ];
+  const collapsedPropGroups = ["Assists (Reg. Time)", "Goals + Assists (Reg. Time)", "Shots (Reg. Time)", "Shots on Target (Reg. Time)", "Goalkeeper Saves (Reg. Time)"];
 
   return (
     <View style={styles.screen}>
@@ -519,8 +531,67 @@ export function EventDetail({
         </View>
 
         {activeTab === "player-props" ? (
-          <View accessibilityLabel="event-detail-player-props-empty" style={styles.emptyProps} testID="event-detail-player-props-empty">
-            <Text style={styles.emptyPropsText}>Player Props</Text>
+          <View accessibilityLabel="event-detail-player-props" testID="event-detail-player-props">
+            <View style={styles.marketBlock}>
+              <Pressable
+                accessibilityLabel="event-detail-prop-toggle-goals-reg-time Goals (Reg. Time)"
+                onPress={() => togglePropGroup("goals-reg-time")}
+                style={styles.marketHeaderRow}
+                testID="event-detail-prop-toggle-goals-reg-time"
+              >
+                <View style={styles.marketTitleBlock}>
+                  <Text style={styles.marketTitle}>Goals (Reg. Time)</Text>
+                </View>
+                <Ionicons name={expandedPropIds["goals-reg-time"] ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
+              </Pressable>
+              {expandedPropIds["goals-reg-time"] && (
+                <>
+                  <View style={styles.propToolsRow}>
+                    <Ionicons name="search-outline" color="#cbd5e1" size={19} />
+                    {["All", teamCode(teamB?.name ?? "ECU"), teamCode(teamA?.name ?? "MEX")].map((chip, index) => (
+                      <View key={chip} style={[styles.propFilterChip, index === 0 && styles.propFilterChipActive]}>
+                        <Text style={[styles.propFilterText, index === 0 && styles.propFilterTextActive]}>{chip}</Text>
+                      </View>
+                    ))}
+                  </View>
+                  {playerRows.map((player) => (
+                    <View key={player.id} style={styles.playerPropRow}>
+                      <View style={styles.jerseyIcon}>
+                        <Ionicons name="shirt-outline" color="#cbd5e1" size={20} />
+                      </View>
+                      <View style={styles.playerTextBlock}>
+                        <Text style={styles.teamName}>{player.name}</Text>
+                        <Text style={styles.playerTeamText}>{player.team}</Text>
+                      </View>
+                      <View style={styles.statPill}>
+                        <Text style={styles.statPillText}>{player.stat}</Text>
+                        <Ionicons name="chevron-down" color="#cbd5e1" size={14} />
+                      </View>
+                      <Text style={styles.oddsMultiplier}>{player.odds}</Text>
+                      <Pressable
+                        accessibilityLabel={`event-detail-player-prop-${player.id}`}
+                        style={[styles.parityProbButton, { backgroundColor: player.color }]}
+                        testID={`event-detail-player-prop-${player.id}`}
+                      >
+                        <Text style={styles.parityProbText}>{player.probability}%</Text>
+                      </Pressable>
+                    </View>
+                  ))}
+                  <Pressable accessibilityLabel="event-detail-player-props-show-all" style={styles.showAllRow} testID="event-detail-player-props-show-all">
+                    <Text style={styles.showAllText}>Show all</Text>
+                    <Ionicons name="chevron-forward" color="#cbd5e1" size={17} />
+                  </Pressable>
+                </>
+              )}
+            </View>
+            {collapsedPropGroups.map((title) => (
+              <View key={title} style={styles.marketBlock}>
+                <Pressable accessibilityLabel={`event-detail-prop-toggle-${title}`} style={styles.marketHeaderRow} testID={`event-detail-prop-toggle-${title.replace(/[^A-Za-z0-9]/g, "-").toLowerCase()}`}>
+                  <Text style={styles.marketTitle}>{title}</Text>
+                  <Ionicons name="chevron-down" color="#9ca3af" size={26} />
+                </Pressable>
+              </View>
+            ))}
           </View>
         ) : (
           <View accessibilityLabel="event-detail-game-lines" testID="event-detail-game-lines">
@@ -604,6 +675,34 @@ export function EventDetail({
             {gameLineGroups.map((group) => renderGroup(group))}
           </View>
         )}
+        <View accessibilityLabel="event-detail-market-rules" style={styles.rulesSection} testID="event-detail-market-rules">
+          <View style={styles.marketHeaderRow}>
+            <Text style={styles.marketTitle}>Market Rules</Text>
+            <Ionicons name="chevron-up" color="#9ca3af" size={26} />
+          </View>
+          <View style={styles.ruleSelector}>
+            <Text style={styles.ruleSelectorText}>{teamCode(teamA?.name ?? "MEX")} to advance</Text>
+            <Ionicons name="chevron-down" color="#cbd5e1" size={16} />
+          </View>
+          <Text style={styles.ruleText}>This market settles based on the official match result and regulation-time market rules for the selected World Cup game.</Text>
+          <Text style={styles.fullRulesText}>View Full Rules</Text>
+        </View>
+        <View accessibilityLabel="event-detail-more-events" style={styles.moreEventsSection} testID="event-detail-more-events">
+          <Text style={styles.marketTitle}>More Events</Text>
+          {[
+            { time: "Today 10:00 PM", title: "Portugal vs. Croatia", home: "POR 72%", away: "CRO 29%" },
+            { time: "Tomorrow 11:00 AM", title: "England vs. Congo DR", home: "ENG 88%", away: "COD 12%" },
+          ].map((item) => (
+            <View key={item.title} style={styles.moreEventRow}>
+              <View style={styles.moreEventTextBlock}>
+                <Text style={styles.moreEventTime}>{item.time}</Text>
+                <Text style={styles.moreEventTitle}>{item.title}</Text>
+              </View>
+              <Text style={styles.moreEventPrice}>{item.home}</Text>
+              <Text style={styles.moreEventPrice}>{item.away}</Text>
+            </View>
+          ))}
+        </View>
       </ScrollView>
     </View>
   );
@@ -719,6 +818,30 @@ const styles = StyleSheet.create({
   oddsMultiplier: { width: 54, color: "#cbd5e1", fontSize: 14, fontWeight: "900", textAlign: "right" },
   parityProbButton: { width: 64, minHeight: 42, alignItems: "center", justifyContent: "center", borderRadius: 12 },
   parityProbText: { color: "#ffffff", fontSize: 16, fontWeight: "900" },
+  propToolsRow: { minHeight: 42, flexDirection: "row", alignItems: "center", gap: 8, marginTop: 8, marginBottom: 6 },
+  propFilterChip: { minHeight: 32, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#111827", paddingHorizontal: 14 },
+  propFilterChipActive: { backgroundColor: "#273244" },
+  propFilterText: { color: "#8b93a3", fontSize: 12, fontWeight: "900" },
+  propFilterTextActive: { color: "#f8fafc" },
+  playerPropRow: { minHeight: 70, flexDirection: "row", alignItems: "center", gap: 9, paddingVertical: 10 },
+  jerseyIcon: { width: 34, height: 34, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#111827" },
+  playerTextBlock: { flex: 1, minWidth: 0 },
+  playerTeamText: { color: "#6b7280", fontSize: 11, fontWeight: "900", marginTop: 3 },
+  statPill: { minWidth: 48, minHeight: 32, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 2, borderRadius: 999, backgroundColor: "#111827" },
+  statPillText: { color: "#f8fafc", fontSize: 13, fontWeight: "900" },
+  showAllRow: { minHeight: 42, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5, marginTop: 4 },
+  showAllText: { color: "#cbd5e1", fontSize: 14, fontWeight: "900" },
+  rulesSection: { borderTopWidth: 1, borderTopColor: "#172033", paddingHorizontal: 24, paddingVertical: 16 },
+  ruleSelector: { alignSelf: "flex-start", minHeight: 36, flexDirection: "row", alignItems: "center", gap: 6, borderRadius: 10, backgroundColor: "#111827", paddingHorizontal: 12, marginTop: 10 },
+  ruleSelectorText: { color: "#f8fafc", fontSize: 13, fontWeight: "900" },
+  ruleText: { color: "#9ca3af", fontSize: 13, fontWeight: "700", lineHeight: 19, marginTop: 12 },
+  fullRulesText: { color: "#e5e7eb", fontSize: 14, fontWeight: "900", marginTop: 12 },
+  moreEventsSection: { borderTopWidth: 1, borderTopColor: "#172033", paddingHorizontal: 24, paddingVertical: 16 },
+  moreEventRow: { minHeight: 58, flexDirection: "row", alignItems: "center", gap: 10, borderBottomWidth: 1, borderBottomColor: "#111827" },
+  moreEventTextBlock: { flex: 1, minWidth: 0 },
+  moreEventTime: { color: "#6b7280", fontSize: 11, fontWeight: "900" },
+  moreEventTitle: { color: "#f8fafc", fontSize: 14, fontWeight: "900", marginTop: 3 },
+  moreEventPrice: { color: "#cbd5e1", fontSize: 12, fontWeight: "900" },
   detailOutcome: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12 },
   outcomeTextBlock: { flex: 1 },
   teamName: { color: "#f8fafc", fontSize: 17, fontWeight: "800" },
