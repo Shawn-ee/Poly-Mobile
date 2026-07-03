@@ -18,6 +18,7 @@ param(
   [switch]$EventDetailLinePortfolio,
   [switch]$EventDetailOrderBook,
   [switch]$EmptyErrorLoading,
+  [switch]$WholeAppNavDiscovery,
   [switch]$EventDetailPosition,
   [switch]$EventDetailProps,
   [switch]$EventDetailPropTicket,
@@ -359,12 +360,12 @@ try {
     }
   }
   $expoArgs = @("expo", "start", "--port", "$Port", "--offline")
-  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EmptyErrorLoading -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary) {
+  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary) {
     $expoArgs += "--clear"
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
   Wait-ExpoReady -Port $Port
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EmptyErrorLoading -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureListTrade -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
 
   $launchUrl = if ($OrderFailure) {
     "exp://${ExpoHost}:$Port/--/?forceOrderFailure=1"
@@ -408,6 +409,8 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceMexicoEcuadorDetail=1"
   } elseif ($EmptyErrorLoading) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forcePortfolioSyncing=1"
+  } elseif ($WholeAppNavDiscovery) {
+    "exp://${ExpoHost}:$Port/--/?forceResetState=1"
   } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
     $liveReset = if ($LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { ",forceResetState=1" } else { "" }
     "exp://${ExpoHost}:$Port/--/?forceLive=1$liveReset"
@@ -446,7 +449,7 @@ try {
   } else {
     "exp://${ExpoHost}:$Port"
   }
-  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $EventDetailChat -or $EventDetailActions -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EmptyErrorLoading -or $EventDetailPosition -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $FutureListClose -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
+  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $EventDetailChat -or $EventDetailActions -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $FutureListClose -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
     & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
     Start-Sleep -Seconds 2
   }
@@ -464,6 +467,8 @@ try {
     @("Holiwyn", "Portfolio", "Open orders", "Cancel")
   } elseif ($EmptyErrorLoading) {
     @("Portfolio", "Syncing server portfolio", "No positions yet")
+  } elseif ($WholeAppNavDiscovery) {
+    @("Holiwyn", "World Cup", "Games", "Futures", "Mexico vs. Ecuador")
   } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade) {
     @("Mexico vs. Ecuador", "4 markets", "8 outcomes")
   } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
@@ -567,6 +572,102 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-empty-error-loading-server-error.png"
       $serverErrorHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-empty-error-loading-server-error.xml"
       Assert-HierarchyContains -Path $serverErrorHierarchy -Expected @("Portfolio", "Server sync unavailable", "Showing local fake-token portfolio.", "No positions yet")
+      return
+    }
+
+    if ($WholeAppNavDiscovery) {
+      Save-Screenshot -Name "cycle-current-holiwyn-whole-app-nav-home.png"
+      $wholeAppHomeHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-nav-home.xml"
+      Assert-HierarchyContains -Path $wholeAppHomeHierarchy -Expected @("Holiwyn", "World Cup", "Games", "Futures", "Mexico vs. Ecuador", "Volume", "Liquidity", "home-filter-live", "home-filter-today", "home-filter-saved")
+
+      Invoke-TapHierarchyNode -Path $wholeAppHomeHierarchy -Identifier "holiwyn-live-tab"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-whole-app-nav-live.png"
+      $wholeAppLiveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-nav-live.xml"
+      Assert-HierarchyContains -Path $wholeAppLiveHierarchy -Expected @("Live World Cup", "Updated just now", "Refresh", "live-market-summary")
+
+      Invoke-TapHierarchyNode -Path $wholeAppLiveHierarchy -Identifier "holiwyn-portfolio-tab"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-whole-app-nav-portfolio.png"
+      $wholeAppPortfolioHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-nav-portfolio.xml"
+      Assert-HierarchyContains -Path $wholeAppPortfolioHierarchy -Expected @("Portfolio", "Fake balance", "10,000 USDT", "Open positions", "Open orders", "No positions yet")
+
+      Invoke-TapHierarchyNode -Path $wholeAppPortfolioHierarchy -Identifier "holiwyn-search-tab"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-whole-app-nav-search.png"
+      $wholeAppSearchHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-nav-search.xml"
+      Assert-HierarchyContains -Path $wholeAppSearchHierarchy -Expected @("Search World Cup markets", "Top results", "All", "Upcoming", "Popular", "Live first")
+
+      Invoke-TapHierarchyNode -Path $wholeAppSearchHierarchy -Identifier "holiwyn-account-tab"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-whole-app-nav-account.png"
+      $wholeAppAccountHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-nav-account.xml"
+      Assert-HierarchyContains -Path $wholeAppAccountHierarchy -Expected @("Account", "Signed out", "Demo balance", "Continue with phone", "Preferences")
+
+      Invoke-TapHierarchyNode -Path $wholeAppAccountHierarchy -Identifier "holiwyn-home-tab"
+      Start-Sleep -Seconds 1
+      $wholeAppHomeReturnHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-home-return.xml"
+      Assert-HierarchyContains -Path $wholeAppHomeReturnHierarchy -Expected @("Holiwyn", "World Cup", "Mexico vs. Ecuador")
+
+      Invoke-TapHierarchyNode -Path $wholeAppHomeReturnHierarchy -Identifier "home-filter-live"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-whole-app-home-live-filter.png"
+      $wholeAppHomeLiveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-home-live-filter.xml"
+      Assert-HierarchyContains -Path $wholeAppHomeLiveHierarchy -Expected @("Live", "France vs. Argentina", "Volume", "Liquidity")
+
+      Invoke-TapHierarchyNode -Path $wholeAppHomeLiveHierarchy -Identifier "home-filter-today"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-whole-app-home-today-filter.png"
+      $wholeAppHomeTodayHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-home-today-filter.xml"
+      Assert-HierarchyContains -Path $wholeAppHomeTodayHierarchy -Expected @("Today", "Mexico vs. Ecuador", "Volume", "Liquidity")
+
+      Invoke-TapHierarchyNode -Path $wholeAppHomeTodayHierarchy -Identifier "save-event-mexico-ecuador"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-whole-app-home-saved-star.png"
+      $wholeAppHomeSavedStarHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-home-saved-star.xml"
+      Assert-HierarchyContains -Path $wholeAppHomeSavedStarHierarchy -Expected @("Mexico vs. Ecuador", "Saved")
+
+      Invoke-TapHierarchyNode -Path $wholeAppHomeSavedStarHierarchy -Identifier "home-filter-saved"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-whole-app-home-saved-filter.png"
+      $wholeAppHomeSavedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-home-saved-filter.xml"
+      Assert-HierarchyContains -Path $wholeAppHomeSavedHierarchy -Expected @("Saved", "Mexico vs. Ecuador", "Volume", "Liquidity")
+
+      Invoke-TapHierarchyNode -Path $wholeAppHomeSavedHierarchy -Identifier "event-card-mexico-ecuador"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-whole-app-home-open-card.png"
+      $wholeAppHomeOpenCardHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-home-open-card.xml"
+      Assert-HierarchyContains -Path $wholeAppHomeOpenCardHierarchy -Expected @("Mexico vs. Ecuador", "Game Lines", "Player Props", "Markets")
+
+      Invoke-TapHierarchyNode -Path $wholeAppHomeOpenCardHierarchy -Identifier "event-detail-back"
+      Start-Sleep -Seconds 1
+      $wholeAppSearchStartHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-search-start.xml"
+      Invoke-TapHierarchyNode -Path $wholeAppSearchStartHierarchy -Identifier "holiwyn-search-tab"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-whole-app-search-all.png"
+      $wholeAppSearchAllHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-search-all.xml"
+      Assert-HierarchyContains -Path $wholeAppSearchAllHierarchy -Expected @("Top results", "All", "Saved", "Mexico vs. Ecuador", "Popular", "Live first")
+
+      Invoke-TapHierarchyNode -Path $wholeAppSearchAllHierarchy -Identifier "search-filter-live"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-whole-app-search-live-filter.png"
+      $wholeAppSearchLiveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-search-live-filter.xml"
+      Assert-HierarchyContains -Path $wholeAppSearchLiveHierarchy -Expected @("Live", "France vs. Argentina", "Volume", "Liquidity")
+
+      Invoke-TapHierarchyNode -Path $wholeAppSearchLiveHierarchy -Identifier "search-filter-all"
+      Start-Sleep -Seconds 1
+      $wholeAppSearchAllAgainHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-search-all-again.xml"
+      Invoke-TapHierarchyNode -Path $wholeAppSearchAllAgainHierarchy -Identifier "search-sort-live"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-whole-app-search-live-sort.png"
+      $wholeAppSearchSortHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-search-live-sort.xml"
+      Assert-HierarchyContains -Path $wholeAppSearchSortHierarchy -Expected @("Live first", "France vs. Argentina", "Live", "Volume", "Liquidity")
+
+      Invoke-TapHierarchyNode -Path $wholeAppSearchSortHierarchy -Identifier "event-card-france-argentina-final"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-whole-app-search-open-card.png"
+      $wholeAppSearchOpenCardHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-whole-app-search-open-card.xml"
+      Assert-HierarchyContains -Path $wholeAppSearchOpenCardHierarchy -Expected @("France vs. Argentina", "Game Lines", "Player Props", "Markets")
       return
     }
 

@@ -12,9 +12,9 @@ Line criteria: `docs/mobile/HOLIWYN_LINE_ADJUSTMENT_CRITERIA.md`
 
 | ID | Current Holiwyn status | State | Required next evidence | Next cycle |
 | --- | --- | --- | --- | --- |
-| WA-P0-01 | Bottom nav exists and tablet captures prove Home, Portfolio, Search. Live and Account need fresh tablet captures in this whole-app evidence set. | Partial | Tablet smoke visits Home, Live, Portfolio, Search, Account. | Cycle K |
-| WA-P0-02 | Home/World Cup discovery exists with games, futures, live/today/saved filters, cards, stars, and probabilities. | Partial | Audit against Polymarket category density and card behavior; open-card smoke. | Cycle K |
-| WA-P0-03 | Search exists with filters, sort chips, result cards. | Partial | Search query, filter, clear, and open-card tablet smoke. | Cycle K |
+| WA-P0-01 | Bottom nav is verified on tablet across Home, Live, Portfolio, Search, and Account without broken states. | Verified | `cycle-current-holiwyn-whole-app-nav-*.*`; `npm run smoke:tablet:whole-app-nav-discovery`. | Done |
+| WA-P0-02 | Home/World Cup discovery is verified on tablet with games, futures, live/today/saved filters, save control, market stats, probability rows, and event-card open. | Verified | `cycle-current-holiwyn-whole-app-home-*.*`; `npm run smoke:tablet:whole-app-nav-discovery`. | Done |
+| WA-P0-03 | Search discovery is verified on tablet with filters, sort chips, result cards, live sorting, and event-card open. | Verified | `cycle-current-holiwyn-whole-app-search-*.*`; `npm run smoke:tablet:whole-app-nav-discovery`. | Done |
 | WA-P0-04 | Portfolio fake-balance, seeded line open-order, filled position, latest order, and recent activity proof exists on tablet. | Verified | `cycle-current-holiwyn-line-portfolio-after-order.*`, `cycle-current-holiwyn-line-portfolio-open-order.*`. | Done |
 | WA-P0-05 | Game page has previous P0 implementation and fresh tablet top-page proof. Needs full tablet scroll, chat, ticket, and lower-section recapture. | Partial | Tablet full-page game proof. | Cycle K |
 | WA-P0-06 | Spread and Totals line/period controls update visible market values and selected Spread line identity persists into Portfolio surfaces. | Verified | Cycle K line adjustment proof plus Cycle L line portfolio proof. | Done |
@@ -129,3 +129,16 @@ Verification:
 
 - `npm run typecheck`
 - `npm run smoke:tablet:empty-error-loading`
+
+## Cycle O Notes
+
+Cycle O implemented and verified a consolidated tablet navigation/discovery proof:
+
+- Bottom navigation captures Home, Live, Portfolio, Search, and Account.
+- Home discovery proves World Cup cards, market stats, live/today/saved filters, save state, and card-open navigation.
+- Search discovery proves filters, live-first sort, result card stats, and card-open navigation.
+
+Verification:
+
+- `npm run typecheck`
+- `npm run smoke:tablet:whole-app-nav-discovery`

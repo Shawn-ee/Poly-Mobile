@@ -80,6 +80,7 @@
     "smoke:tablet:event-detail-line-portfolio": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailLinePortfolio -Port 8186",
     "smoke:tablet:event-detail-order-book": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailOrderBook -Port 8187",
     "smoke:tablet:empty-error-loading": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EmptyErrorLoading -Port 8188",
+    "smoke:tablet:whole-app-nav-discovery": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -WholeAppNavDiscovery -Port 8189",
     "smoke:samsung:event-detail-summary": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -EventDetailSummary -Port 8168",
     "smoke:samsung:event-detail-position": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -EventDetailPosition -Port 8175",
     "smoke:samsung:event-detail-props": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-samsung.ps1 -EventDetailProps -Port 8169",
