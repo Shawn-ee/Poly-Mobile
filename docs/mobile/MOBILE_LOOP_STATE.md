@@ -11722,6 +11722,20 @@ Open blockers: none for continuing the loop. Remaining ticket gaps are visual de
 
 Next likely cycle: Portfolio/open orders/activity parity or ticket visual-density polish.
 
+### Cycle AA - Portfolio
+
+Status: verified and ready for local merge after commit.
+
+Verified progress: Samsung S23 reference showed Polymarket native app blocked by location verification and mobile web Portfolio blocked by the US view-only/download/login gate. Holiwyn tablet proof passed for fake-token Portfolio order-to-position/activity identity, visible Buy/Sell/Close entry points, open-order display, and open-order cancel.
+
+Device evidence: reference evidence is under `docs/mobile/reference/screenshots/cycle-AA-polymarket-*`; Holiwyn evidence is under `docs/mobile/screenshots/cycle-current-holiwyn-line-portfolio-*`, `docs/mobile/harness/cycle-current-holiwyn-line-portfolio-*`, `docs/mobile/screenshots/cycle-current-holiwyn-open-order*`, and `docs/mobile/harness/cycle-current-holiwyn-open-order*`.
+
+Verification: `powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailLinePortfolio -Port 8200` passed; `powershell -ExecutionPolicy Bypass -File ./scripts/smoke.ps1 -Deep -OpenOrderCancel -Port 8201 -Device adb-R5GYA13X7NJ-4O0ADU._adb-tls-connect._tcp -ExpoHost 172.16.200.14` passed.
+
+Open blockers: none for continuing the loop. A richer Polymarket signed-in Portfolio audit is blocked by the current reference app/web availability state and remains a deferred gap, not a loop blocker.
+
+Next likely cycle: Search/discovery parity, unless continuing deeper Portfolio re-trade visual parity.
+
 ### Heartbeat After Cycle 142
 
 Completed cycles: 140, 141, 142.

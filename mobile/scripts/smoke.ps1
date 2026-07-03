@@ -1894,7 +1894,7 @@ try {
       Invoke-TapHierarchyNode -Path $linePortfolioTicketAmount2Hierarchy -Identifier "ticket-keypad-5"
       Start-Sleep -Seconds 1
       $linePortfolioTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-line-portfolio-ticket-ready.xml"
-      Assert-HierarchyContains -Path $linePortfolioTicketReadyHierarchy -Expected @("`$25", "Swipe up to buy", "Estimated cost")
+      Assert-HierarchyContains -Path $linePortfolioTicketReadyHierarchy -Expected @("25 USDT", "Swipe up to buy", "Estimated cost")
       Invoke-TapHierarchyNode -Path $linePortfolioTicketReadyHierarchy -Identifier "place-mock-order"
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-line-portfolio-after-order.png"
