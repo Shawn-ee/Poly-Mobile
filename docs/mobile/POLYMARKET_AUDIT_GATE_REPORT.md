@@ -20,7 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
-| Current live event detail visible provider lifecycle/status parity | Cycle EH-C | Fail until integrated Android-visible proof; PM-GAP-084 remains open | 11 P0 status/lifecycle proof areas remain | P1 fresh S23 recapture, broader real provider-backed family status matrix, actual stale -> refreshing/loading -> ready transition; P2 status visual polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence; gate: `docs/mobile/audits/cycle-eh-c-provider-status-gate.md` | No EH Holiwyn Android proof collected by Agent C; required future paths: `docs/mobile/screenshots/cycle-EH-integrated-provider-status/`, `docs/mobile/harness/cycle-EH-integrated-provider-status/`, backend support `docs/mobile/harness/cycle-EH-A-provider-status-lifecycle.json` | EH narrows the remaining PM-GAP-084 blocker. Pass requires Android-visible ready, stale/refresh-due, refreshing/loading, and unavailable/not-ready states tied to the selected market identity through chart, Book/orderbook, and ticket. Backend-only lifecycle proof and generic fallback/mock-ready evidence fail. |
+| Current live event detail visible provider lifecycle/status parity | Cycle EH integrated | Partial; PM-GAP-084 remains open for route-backed tablet status rendering | 2 P0 integration proof areas remain | P1 fresh S23 recapture, broader real provider-backed family status matrix, actual stale -> refreshing/loading -> ready transition; P2 status visual polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence; gate: `docs/mobile/audits/cycle-eh-c-provider-status-gate.md` | Backend status proof: `docs/mobile/harness/cycle-EH-A-provider-status-surface.json`; Samsung tablet visible proof: `docs/mobile/harness/cycle-EH-integrated-provider-status/cycle-EH-integrated-provider-status-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EH-integrated-provider-status/` and `docs/mobile/harness/cycle-EH-integrated-provider-status/` | EH proves Android-visible ready, refresh-due, refreshing, and not-ready status badges through live page, chart, Book/orderbook, and ticket handoff, while backend route proof separately proves status fields. It remains partial because the tablet launch still used deterministic contract-shaped fixture status UI instead of live backend route data. |
 | Current live event detail visible provider behavior and structural parity | Cycle EG integrated | Partial; PM-GAP-084 remains open | 4 P0 status/provider-lifecycle proof areas remain | P1 fresh S23 recapture, broader real provider-backed family breadth, visible provider refresh lifecycle; P2 density/chart/orderbook/status polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence; gate: `docs/mobile/audits/cycle-eg-c-live-event-visible-provider-gate.md` | Backend refresh lifecycle proof: `docs/mobile/harness/cycle-EG-A-provider-refresh-lifecycle.json`; Samsung tablet visible proof: `docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-visible-live-parity-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EG-B-visible-live-parity/` and `docs/mobile/harness/cycle-EG-B-visible-live-parity/` | EG materially closes chart, line-selector, Book ladder, and ticket carry-through gaps for the selected Mexico/Ecuador Spread path. It remains partial because the Android run used contract-shaped fallback data and did not visibly prove ready/stale/refreshing/unavailable provider lifecycle states tied to the backend route in one run. |
 | Current live game page Book-origin snapshot durability after metadata drift | Cycle EF integrated | Pass for selected EF proof; PM-GAP-083 verified for selected path | 0 for selected EF gate | P1 repeat across real provider-backed line families, provider-refresh drift regression, official production history recapture; P2 Portfolio/history visual clarity | Reused EE/ED checked-in proof and DQ-C Polymarket reference; gate: `docs/mobile/audits/cycle-ef-c-snapshot-durability-gate.md` | Backend proof: `docs/mobile/harness/cycle-EF-A-snapshot-durability.json`; Samsung tablet proof: `docs/mobile/harness/cycle-EF-integrated-snapshot-durability/cycle-EF-snapshot-durability-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EF-integrated-snapshot-durability/` and `docs/mobile/harness/cycle-EF-integrated-snapshot-durability/` | Integrated proof mutates current market/outcome/provider metadata after order/fill creation, then proves backend and Android Portfolio/activity still render order-time/fill-time selected Book identity with no fallback/default reconstruction and explicit fake-token labels. |
 | Current live game page Book-origin open/cancel/fill status and selection snapshots | Cycle EE integrated | Pass for selected PM-GAP-082 gate | 0 for selected EE gate | P1 real provider-backed line-family status matrix, official production confirmation/cancel/fill recapture, durability checks after metadata changes; P2 Portfolio/history visual status polish | Reused DQ-C Samsung S23 official Polymarket Book/orderbook and location-gated ticket reference; ED/DX/DO/Portfolio checked-in lifecycle baselines; gate: `docs/mobile/audits/cycle-ee-c-book-order-status-gate.md` | Samsung tablet proof: `docs/mobile/harness/cycle-EE-integrated-book-order-status/cycle-EE-book-order-status-proof.json`; backend snapshot proof: `docs/mobile/harness/cycle-EE-A-book-order-status-snapshots.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EE-integrated-book-order-status/` and `docs/mobile/harness/cycle-EE-integrated-book-order-status/` | EE integrated proof shows the same Book-origin selected identity through open order, cancel/canceled status, filled position, recent activity/history, guarded backend selection snapshots, visible fake-token status labels, and no-fallback assertions. |
@@ -2095,7 +2095,7 @@ Decision:
 
 ## Cycle EH-C Provider Status Audit Gate
 
-Result: Fail until integrated Android-visible proof. PM-GAP-084 remains open.
+Result: Partial after EH integrated Android-visible proof. PM-GAP-084 remains open for route-backed tablet status rendering.
 
 Lead Agent target:
 
@@ -2106,7 +2106,7 @@ Lead Agent target:
 
 Reference Audit Agent: Agent C.
 
-Implementation Agent: not applicable in EH-C docs-only lane.
+Implementation Agent: Agent A provided backend status fields and Agent B provided Android-visible status UI/proof after the EH-C docs gate.
 
 Audit Gate Agent: Agent C.
 
@@ -2117,8 +2117,8 @@ Reference device:
 
 Holiwyn device:
 
-- No EH-C Holiwyn device proof collected by Agent C.
-- Required future proof device: Samsung tablet or assigned Holiwyn Android device.
+- Samsung tablet / Holiwyn Expo Go proof against local Expo port 8317, device `172.16.200.30:41299`.
+- The tablet proof used deterministic backend-contract-shaped fixture status UI because backend health was unavailable from the tablet launch context.
 
 Reference evidence:
 
@@ -2133,35 +2133,36 @@ Reference evidence:
 - Matching XML under `docs/mobile/harness/cycle-DQ-C-polymarket-reference/`
 - EG progress baseline: `docs/mobile/audits/cycle-eg-c-live-event-visible-provider-gate.md`
 
-Holiwyn evidence required before pass:
+Holiwyn evidence:
 
 - `docs/mobile/screenshots/cycle-EH-integrated-provider-status/`
 - `docs/mobile/harness/cycle-EH-integrated-provider-status/`
-- `docs/mobile/harness/cycle-EH-A-provider-status-lifecycle.json`
+- `docs/mobile/harness/cycle-EH-integrated-provider-status/cycle-EH-integrated-provider-status-proof.json`
+- `docs/mobile/harness/cycle-EH-A-provider-status-surface.json`
 
 Criteria results:
 
 | Criterion ID | Priority | Result | Evidence | Fix if failed |
 | --- | --- | --- | --- | --- |
-| EH-STATUS-P0-01 | P0 | Fail until proof | No EH Android-visible provider lifecycle/status proof exists. | Capture same-cycle screenshots/XML/proof JSON for the exact live event detail feature. |
-| EH-STATUS-P0-02 | P0 | Fail until proof | Ready state is not proven Android-visible and selected-market-bound through chart, Book/orderbook, and ticket in EH. | Show ready provider/source/status plus selected event, family/type, line, period, side/outcome, market id or selector key, and visible labels on all required surfaces. |
-| EH-STATUS-P0-03 | P0 | Fail until proof | Stale or refresh-due state is not proven Android-visible and selected-market-bound in EH. | Capture stale/refresh-due status without silently converting it to ready or losing selected identity. |
-| EH-STATUS-P0-04 | P0 | Fail until proof | Refreshing or loading state is not proven Android-visible and selected-market-bound in EH. | Capture refresh/loading status while chart, Book/orderbook, and ticket preserve identity or show explicit disabled/loading behavior. |
-| EH-STATUS-P0-05 | P0 | Fail until proof | Unavailable, empty, or not-ready state is not proven Android-visible and selected-market-bound in EH. | Capture unavailable/not-ready messaging without defaulting to moneyline, first row, event-only labels, or mock-ready rows. |
-| EH-STATUS-P0-06 | P0 | Fail until proof | Backend lifecycle proof exists from EG but is not paired to EH Android-visible status markers. | Pair backend route/provider fields to matching visible Android markers in the same selected flow. |
-| EH-STATUS-P0-07 | P0 | Fail until proof | No EH no-fallback status guard exists. | Add visible and proof-level rejection of generic fixture rows, fallback/default reconstruction, mock-ready data, stale-as-ready labels, moneyline fallback, first-row fallback, and event-only labels. |
-| EH-STATUS-P0-08 | P0 | Fail until proof | Chart status is not proven tied to selected market/outcome in EH. | Capture chart touch/context proof with selected identity, provider/source/status, and no unintended side effects. |
-| EH-STATUS-P0-09 | P0 | Fail until proof | Book/orderbook status is not proven tied to selected market identity for every required state. | Capture Book/orderbook status markers, ready depth only when ready, explicit loading/unavailable states otherwise, side labels, spread when available, and selected market id or selector key. |
-| EH-STATUS-P0-10 | P0 | Fail until proof | Ticket status handoff is not proven from the selected row/line/orderbook action. | Open or block ticket according to status while preserving event, family/type, line, period, side/outcome, provider/source, market id or selector key, and visible odds/price or disabled/loading state. |
-| EH-STATUS-P0-11 | P0 | Fail until proof | Prior EC/ED/EE/EF/EG proof bundles cannot substitute for EH. | Collect same-build EH proof plus prior-gate regression references or rerun markers. |
+| EH-STATUS-P0-01 | P0 | Pass for selected proof | EH Android-visible provider lifecycle/status proof exists. | Keep proof as regression coverage. |
+| EH-STATUS-P0-02 | P0 | Pass for selected proof | Ready state is Android-visible and selected-market-bound in EH fixture-status proof. | Next: prove the same state from live backend route data. |
+| EH-STATUS-P0-03 | P0 | Pass for selected proof | Refresh-due state is Android-visible and selected-market-bound in EH fixture-status proof. | Next: prove the same state from live backend route data. |
+| EH-STATUS-P0-04 | P0 | Pass for selected proof | Refreshing/loading state is Android-visible and selected-market-bound in EH fixture-status proof. | Next: prove the same state from live backend route data. |
+| EH-STATUS-P0-05 | P0 | Pass for selected proof | Not-ready state is Android-visible and selected-market-bound in EH fixture-status proof. | Next: prove the same state from live backend route data. |
+| EH-STATUS-P0-06 | P0 | Partial | Backend status route proof exists, and Android visible proof exists, but tablet proof did not consume the live backend route. | Pair backend route/provider fields to matching visible Android markers in the same selected flow. |
+| EH-STATUS-P0-07 | P0 | Partial | EH visible proof rejects mock-ready/default-ready and wrong-market fallback markers, but deterministic contract fixture status UI was used. | Rerun with route-backed status data and keep no-fallback assertions. |
+| EH-STATUS-P0-08 | P0 | Pass for selected proof | Chart status is tied to selected market/outcome in EH visible proof. | Keep proof as regression coverage. |
+| EH-STATUS-P0-09 | P0 | Pass for selected proof | Book/orderbook status is tied to selected market identity in EH visible proof. | Keep proof as regression coverage. |
+| EH-STATUS-P0-10 | P0 | Pass for selected proof | Ticket status handoff preserves selected identity/status context in EH visible proof. | Keep proof as regression coverage. |
+| EH-STATUS-P0-11 | P0 | Partial | EH integrated proof exists, but prior EC/ED/EE/EF/EG markers were referenced rather than rerun in the same tablet proof. | Add same-build regression references or rerun markers when closing the route-backed status gate. |
 | EH-STATUS-P0-12 | P0 | Pass for docs gate | EH audit explicitly labels reused DQ-C/S23 evidence as stale/reference-only. | Keep this limitation visible until fresh reference proof exists. |
 
 Decision:
 
-- Pass/fail: Fail until integrated Android-visible proof.
-- Unresolved P0 gaps: 11 open proof areas; only stale-reference limitation disclosure is satisfied in docs.
+- Pass/fail: Partial after EH integrated Android-visible proof.
+- Unresolved P0 gaps: 2 route-backed integration areas remain plus same-build regression breadth.
 - Remaining P1/P2 gaps: fresh official S23 recapture, broader real provider-backed line-family status matrix, actual stale -> refreshing/loading -> ready transition proof, and status visual polish.
-- Next cycle required: yes. Lead must collect Android-visible EH proof before Audit Gate can pass PM-GAP-084.
+- Next cycle required: yes. Lead must make the tablet consume live backend route status data before Audit Gate can fully pass PM-GAP-084.
 
 Use this template for every feature gate:
 

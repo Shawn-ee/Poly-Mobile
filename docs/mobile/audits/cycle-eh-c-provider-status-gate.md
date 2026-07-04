@@ -1,6 +1,6 @@
 # Cycle EH-C Provider Status Gate
 
-Status: fail until integrated Android-visible proof. PM-GAP-084 remains open for visible provider lifecycle/status parity.
+Status: partial after EH integrated proof. PM-GAP-084 remains open for route-backed tablet provider lifecycle/status rendering.
 
 Audit Gate Agent: Agent C.
 
@@ -38,17 +38,17 @@ All P0 rows must pass before PM-GAP-084 can be verified.
 
 | ID | Priority | Criterion | Required proof | Current EH status |
 | --- | --- | --- | --- | --- |
-| EH-STATUS-P0-01 | P0 | Same-cycle Holiwyn Android visible proof must exist for provider lifecycle/status on the exact live event detail feature. | Committed EH screenshots, XML, and proof JSON from one integrated Android run. | Fail until proof |
-| EH-STATUS-P0-02 | P0 | Ready state must be Android-visible and tied to the selected market identity. | Live page, chart, Book/orderbook, and ticket proof showing ready provider/source/status plus the same event, family/type, line, period, side/outcome, market id or selector key, and visible labels. | Fail until proof |
-| EH-STATUS-P0-03 | P0 | Stale or refresh-due state must be Android-visible and tied to the same selected market identity. | Android proof showing stale or refresh-due status on the selected market path, with no silent conversion to ready and no loss of chart, Book/orderbook, or ticket identity. | Fail until proof |
-| EH-STATUS-P0-04 | P0 | Refreshing or loading state must be Android-visible and tied to the same selected market identity. | Android proof showing refresh in progress or loading status for the selected market path while chart, Book/orderbook, and ticket either preserve identity or show an explicit disabled/loading state. | Fail until proof |
-| EH-STATUS-P0-05 | P0 | Unavailable, empty, or not-ready state must be Android-visible and tied to the selected market identity. | Android proof showing unavailable/not-ready status for the selected market path, with explicit messaging and without defaulting to a moneyline, first row, event-only label, or mock-ready ladder. | Fail until proof |
-| EH-STATUS-P0-06 | P0 | Backend-only lifecycle proof is insufficient. | Backend route/provider fields may support the gate only when paired with matching Android-visible status markers and selected market identity in the same proof bundle. | Fail until proof |
-| EH-STATUS-P0-07 | P0 | Generic fallback, fixture rows, mock-ready data, or default reconstructed status must fail. | Proof-level assertions and visible UI labels reject fallback/default reconstruction, including moneyline fallback, first-row fallback, event-only labels, stale labels counted as ready, and mock-ready provider rows. | Fail until proof |
-| EH-STATUS-P0-08 | P0 | Chart status must be tied to the selected market/outcome, not a generic chart placeholder. | Chart touch/context proof showing selected outcome or market context, provider/source/status, and no unintended navigation or ticket/Book side effect. | Fail until proof |
-| EH-STATUS-P0-09 | P0 | Book/orderbook status must be tied to the selected market identity when ready, stale, refreshing/loading, or unavailable/not-ready. | Book/orderbook proof showing selected market id or selector key, provider/status markers, Price/Shares/Value rows only when ready, explicit loading/unavailable states otherwise, side labels, spread when available, and no fallback rows counted as ready. | Fail until proof |
-| EH-STATUS-P0-10 | P0 | Ticket status handoff must preserve selected identity and status context from the selected row/line/orderbook action. | Ticket proof showing matching event, family/type, line, period, side/outcome, provider/source, market id or selector key, visible odds/price when ready, disabled/loading/unavailable behavior when not ready, and fake-token/test labeling if applicable. | Fail until proof |
-| EH-STATUS-P0-11 | P0 | The EH proof must be integrated, same-build, and cannot be replaced by prior EC/ED/EE/EF/EG proof bundles. | Same-build proof matrix for the selected EH identity plus prior-gate regression references or rerun markers. | Fail until proof |
+| EH-STATUS-P0-01 | P0 | Same-cycle Holiwyn Android visible proof must exist for provider lifecycle/status on the exact live event detail feature. | Committed EH screenshots, XML, and proof JSON from one integrated Android run. | Pass for selected EH integrated proof |
+| EH-STATUS-P0-02 | P0 | Ready state must be Android-visible and tied to the selected market identity. | Live page, chart, Book/orderbook, and ticket proof showing ready provider/source/status plus the same event, family/type, line, period, side/outcome, market id or selector key, and visible labels. | Pass for selected visible status proof |
+| EH-STATUS-P0-03 | P0 | Stale or refresh-due state must be Android-visible and tied to the same selected market identity. | Android proof showing stale or refresh-due status on the selected market path, with no silent conversion to ready and no loss of chart, Book/orderbook, or ticket identity. | Pass for selected visible status proof |
+| EH-STATUS-P0-04 | P0 | Refreshing or loading state must be Android-visible and tied to the same selected market identity. | Android proof showing refresh in progress or loading status for the selected market path while chart, Book/orderbook, and ticket either preserve identity or show an explicit disabled/loading state. | Pass for selected visible status proof |
+| EH-STATUS-P0-05 | P0 | Unavailable, empty, or not-ready state must be Android-visible and tied to the selected market identity. | Android proof showing unavailable/not-ready status for the selected market path, with explicit messaging and without defaulting to a moneyline, first row, event-only label, or mock-ready ladder. | Pass for selected visible status proof |
+| EH-STATUS-P0-06 | P0 | Backend-only lifecycle proof is insufficient. | Backend route/provider fields may support the gate only when paired with matching Android-visible status markers and selected market identity in the same proof bundle. | Partial: backend proof and visible proof both exist, but tablet did not consume the live backend route |
+| EH-STATUS-P0-07 | P0 | Generic fallback, fixture rows, mock-ready data, or default reconstructed status must fail. | Proof-level assertions and visible UI labels reject fallback/default reconstruction, including moneyline fallback, first-row fallback, event-only labels, stale labels counted as ready, and mock-ready provider rows. | Partial: negative assertions pass, but deterministic contract fixture status UI was used |
+| EH-STATUS-P0-08 | P0 | Chart status must be tied to the selected market/outcome, not a generic chart placeholder. | Chart touch/context proof showing selected outcome or market context, provider/source/status, and no unintended navigation or ticket/Book side effect. | Pass for selected visible status proof |
+| EH-STATUS-P0-09 | P0 | Book/orderbook status must be tied to the selected market identity when ready, stale, refreshing/loading, or unavailable/not-ready. | Book/orderbook proof showing selected market id or selector key, provider/status markers, Price/Shares/Value rows only when ready, explicit loading/unavailable states otherwise, side labels, spread when available, and no fallback rows counted as ready. | Pass for selected visible status proof |
+| EH-STATUS-P0-10 | P0 | Ticket status handoff must preserve selected identity and status context from the selected row/line/orderbook action. | Ticket proof showing matching event, family/type, line, period, side/outcome, provider/source, market id or selector key, visible odds/price when ready, disabled/loading/unavailable behavior when not ready, and fake-token/test labeling if applicable. | Pass for selected visible status proof |
+| EH-STATUS-P0-11 | P0 | The EH proof must be integrated, same-build, and cannot be replaced by prior EC/ED/EE/EF/EG proof bundles. | Same-build proof matrix for the selected EH identity plus prior-gate regression references or rerun markers. | Partial: EH integrated proof exists, prior gates are referenced but not rerun |
 | EH-STATUS-P0-12 | P0 | Reused DQ-C/S23 evidence must stay labeled stale/reference-only. | Audit notes and proof log name the reference limitation and do not describe it as fresh Cycle EH evidence. | Pass for docs gate |
 
 ## P1 Criteria
@@ -79,7 +79,7 @@ Preferred future paths:
 
 - Android screenshots: `docs/mobile/screenshots/cycle-EH-integrated-provider-status/`
 - Android XML/proof JSON: `docs/mobile/harness/cycle-EH-integrated-provider-status/`
-- Backend support proof: `docs/mobile/harness/cycle-EH-A-provider-status-lifecycle.json`
+- Backend support proof: `docs/mobile/harness/cycle-EH-A-provider-status-surface.json`
 
 ## Blocking Rules
 
@@ -96,10 +96,10 @@ Block EH pass if any of these occur:
 
 ## Audit Gate Decision
 
-Current result: fail until integrated proof.
+Current result: partial after EH integrated proof.
 
-Unresolved EH P0 gaps: EH-STATUS-P0-01 through EH-STATUS-P0-11 remain failed. EH-STATUS-P0-12 passes for docs disclosure only.
+Unresolved EH P0 gaps: EH-STATUS-P0-06 and EH-STATUS-P0-07 remain partial until the tablet consumes route-backed backend status data without deterministic fixture status UI. EH-STATUS-P0-11 remains partial for same-build regression breadth. EH-STATUS-P0-01 through EH-STATUS-P0-05, EH-STATUS-P0-08 through EH-STATUS-P0-10, and EH-STATUS-P0-12 pass for the selected proof.
 
-Tracked gap: PM-GAP-084 remains open for visible provider lifecycle/status parity tied to selected market identity across chart, Book/orderbook, and ticket.
+Tracked gap: PM-GAP-084 remains open for route-backed tablet provider lifecycle/status parity tied to selected market identity across chart, Book/orderbook, and ticket.
 
 PM-GAP-080, PM-GAP-081, PM-GAP-082, PM-GAP-083, and the selected EG structural proof remain useful regressions, but none can substitute for EH Android-visible provider lifecycle/status proof.
