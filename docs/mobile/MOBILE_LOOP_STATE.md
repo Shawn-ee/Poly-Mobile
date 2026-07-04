@@ -6,6 +6,38 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Heartbeat: Route-Backed Live Detail Cycles EL-EN
+
+Date: 2026-07-04
+Completed cycles: EL integrated, EM integrated, EN integrated.
+Lead branch: `agent/wc-disc-001-discovery-api-audit`.
+
+What materially improved:
+- EL proved route-backed provider Book depth can stage Buy/Sell tickets without reverting the ticket price to a midpoint/default probability.
+- EM proved selected Book-staged limit identity survives the visible fake-token ticket/order/Portfolio/activity lifecycle.
+- EN closed the next structural gap by rerunning the route-backed provider-depth lifecycle on Samsung tablet from the integrated branch: provider-backed Spread `1.5` ask `55c` -> ticket -> open order -> opened/canceled Portfolio activity, preserving market/outcome/provider/token/limit identity.
+
+Evidence:
+- `docs/mobile/harness/cycle-EL-integrated-live-depth/`
+- `docs/mobile/harness/cycle-EM-integrated-limit-lifecycle/`
+- `docs/mobile/harness/cycle-EN-integrated-route-limit-lifecycle/`
+- `docs/mobile/screenshots/cycle-EN-integrated-route-limit-lifecycle/`
+
+Validation:
+- Mobile typecheck passed in EM and EN.
+- Focused mobile order/open-order/portfolio/history tests passed.
+- Backend route/selection tests passed for EN.
+- EN integrated tablet proof passed with backend health required at `http://127.0.0.1:3002`.
+
+Remaining structural debt:
+- Route-backed breadth is still single selected ask-side Spread path.
+- Need repeat proof across bid side and another market family.
+- Production HTTP `POST /api/orders` route proof and first-class immutable backend selection snapshots remain P1/backend hardening.
+- Fresh S23 production ticket/order/Portfolio recapture remains reference debt.
+
+Next focus:
+- Cycle EO should close route-backed lifecycle breadth: bid-side Sell and/or another provider-backed market family, with the same audit-gated backend plus Android proof discipline.
+
 ## Cycle DJ
 
 Date: 2026-07-04
