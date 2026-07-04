@@ -1,0 +1,29 @@
+{
+    "cycle":  "EF-B",
+    "scope":  "Visible mobile Portfolio snapshot durability after deterministic metadata drift",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -BookSnapshotDurability -Port 8310 -OutputDir docs/mobile/screenshots/cycle-EF-B-book-snapshot-durability -HierarchyOutputDir docs/mobile/harness/cycle-EF-B-book-snapshot-durability",
+    "eventIdentity":  "Mexico vs. Ecuador",
+    "result":  "pass",
+    "driftScenario":  {
+                          "source":  "backend-shaped local Portfolio state with order-time selection snapshots",
+                          "metadataRefresh":  "Current Mexico/Ecuador spread market label, line, provider market, condition, token, and reference outcome are deterministically drifted before Portfolio opens.",
+                          "expectedIdentity":  "Portfolio rows must keep Mexico -1.5 spread, line 1.5, period regulation, provider market gamma-mexico-ecuador-spread-15, condition condition-mexico-ecuador-spread-15, and token token-spread-yes-15."
+                      },
+    "assertions":  {
+                       "openOrder":  "open-order-row-cycle-ef-b-book-open-order exposes snapshot-source-order-time plus original Book-selected spread identity after drift.",
+                       "canceledActivity":  "latest-activity-card and activity-row-cycle-ef-b-book-canceled-activity expose activity-canceled/status-canceled with the original Book identity.",
+                       "filledPosition":  "position-card-cycle-ef-b-book-filled-position exposes the original Book identity and snapshot-source-order-time marker.",
+                       "filledActivity":  "activity-row-cycle-ef-b-book-filled-activity exposes activity-opened/status-filled with the same original Book identity.",
+                       "fallbackGuard":  "Drifted labels/provider ids and portfolio-line-2.5 are absent from the captured Portfolio hierarchies."
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-EF-B-book-snapshot-durability/cycle-EF-B-book-snapshot-durability-portfolio-top.png",
+                      "docs/mobile/harness/cycle-EF-B-book-snapshot-durability/cycle-EF-B-book-snapshot-durability-portfolio-top.xml",
+                      "docs/mobile/screenshots/cycle-EF-B-book-snapshot-durability/cycle-EF-B-book-snapshot-durability-activity.png",
+                      "docs/mobile/harness/cycle-EF-B-book-snapshot-durability/cycle-EF-B-book-snapshot-durability-activity.xml"
+                  ],
+    "remainingGaps":  [
+                          "This is deterministic fake-token mobile proof, not production wallet signing or settlement.",
+                          "Real provider-backed metadata drift remains a later provider/backend integration proof."
+                      ]
+}

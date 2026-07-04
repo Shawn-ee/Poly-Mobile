@@ -99,6 +99,143 @@ const SMOKE_LINE_OPEN_ORDER: OpenOrder = {
   placedAt: "Just now",
 };
 
+const bookSnapshotDurabilitySelection: TicketSelection = {
+  marketType: "spread",
+  marketId: "mexico-ecuador-spread",
+  outcomeId: "yes",
+  marketGroupId: "mexico-ecuador-game-lines",
+  line: "1.5",
+  period: "regulation",
+  side: "yes",
+  displayLabel: "Mexico -1.5 spread",
+  contractSide: "yes",
+  referenceSource: "polymarket-fixture",
+  externalSlug: "world-cup-2026-mexico-vs-ecuador-spread-15",
+  externalMarketId: "gamma-mexico-ecuador-spread-15",
+  conditionId: "condition-mexico-ecuador-spread-15",
+  referenceTokenId: "token-spread-yes-15",
+  referenceOutcomeLabel: "Yes",
+};
+
+const metadataDriftedWorldCupEvents = (): Event[] =>
+  worldCupEvents.map((event) =>
+    event.id !== "mexico-ecuador"
+      ? event
+      : {
+          ...event,
+          markets: event.markets.map((market) =>
+            market.id !== "mexico-ecuador-spread"
+              ? market
+              : {
+                  ...market,
+                  title: "Metadata drifted spread label",
+                  zhTitle: "Metadata drifted spread label",
+                  line: "2.5",
+                  externalSlug: "world-cup-2026-mexico-vs-ecuador-spread-drifted",
+                  externalMarketId: "gamma-drifted-mexico-ecuador-spread",
+                  conditionId: "condition-drifted-mexico-ecuador-spread",
+                  outcomes: market.outcomes.map((outcome) =>
+                    outcome.id !== "yes"
+                      ? outcome
+                      : {
+                          ...outcome,
+                          label: "Metadata drifted Yes",
+                          zhLabel: "Metadata drifted Yes",
+                          referenceTokenId: "token-drifted-spread-yes",
+                          referenceOutcomeLabel: "Drifted Yes",
+                        },
+                  ),
+                },
+          ),
+        },
+  );
+
+const bookSnapshotDurabilityPortfolio = (timestamp: string): StoredPortfolio => {
+  const openOrder: OpenOrder = {
+    id: "cycle-ef-b-book-open-order",
+    title: "Mexico vs. Ecuador",
+    outcome: "Yes",
+    selection: bookSnapshotDurabilitySelection,
+    contractSide: "yes",
+    side: "buy",
+    status: "OPEN",
+    price: 0.36,
+    remaining: 69.44,
+    originalShares: 69.44,
+    remainingShares: 69.44,
+    orderValue: 25,
+    placedAt: timestamp,
+  };
+  const position: Position = {
+    id: "cycle-ef-b-book-filled-position",
+    mode: "mock",
+    marketId: "mexico-ecuador-spread",
+    outcomeId: "yes",
+    title: "Mexico vs. Ecuador",
+    outcome: "Yes",
+    selection: bookSnapshotDurabilitySelection,
+    contractSide: "yes",
+    side: "buy",
+    amount: 25,
+    probability: 36,
+    shares: 69.44,
+    currentPrice: 0.38,
+    currentValue: 26.39,
+    pnl: 1.39,
+  };
+  const latestOrder: OrderConfirmation = {
+    id: "cycle-ef-b-book-latest-order",
+    mode: "mock",
+    title: "Mexico vs. Ecuador",
+    outcome: "Yes",
+    selection: bookSnapshotDurabilitySelection,
+    contractSide: "yes",
+    side: "buy",
+    amount: 25,
+    probability: 36,
+    status: "OPEN",
+    size: 69.44,
+    filledSize: 0,
+    remainingSize: 69.44,
+  };
+  const activities: PortfolioActivity[] = [
+    {
+      id: "cycle-ef-b-book-canceled-activity",
+      action: "canceled",
+      title: "Mexico vs. Ecuador",
+      outcome: "Yes",
+      selection: bookSnapshotDurabilitySelection,
+      contractSide: "yes",
+      amount: 25,
+      shares: 69.44,
+      side: "buy",
+      probability: 36,
+      timestamp,
+    },
+    {
+      id: "cycle-ef-b-book-filled-activity",
+      action: "opened",
+      title: "Mexico vs. Ecuador",
+      outcome: "Yes",
+      selection: bookSnapshotDurabilitySelection,
+      contractSide: "yes",
+      amount: 25,
+      shares: 69.44,
+      side: "buy",
+      probability: 36,
+      timestamp,
+    },
+  ];
+
+  return {
+    balance: 9975,
+    positions: [position],
+    latestOrder,
+    openOrders: [openOrder],
+    activities,
+  };
+};
+
 const isBookSpreadLifecycleSelection = (selection?: TicketSelection) =>
   selection?.marketType === "spread" &&
   selection.marketId === "mexico-ecuador-spread" &&
@@ -364,6 +501,7 @@ export default function App() {
     const shouldForcePortfolio = url.includes("forcePortfolio=1");
     const shouldForceOpenOrder = url.includes("forceOpenOrder=1");
     const shouldForceLineOpenOrder = url.includes("forceLineOpenOrder=1");
+    const shouldForceBookSnapshotDriftPortfolio = url.includes("forceBookSnapshotDriftPortfolio=1");
     const shouldForceNoLive = url.includes("forceNoLive=1");
     const shouldForcePortfolioSyncing = url.includes("forcePortfolioSyncing=1");
     const shouldForcePortfolioSyncError = url.includes("forcePortfolioSyncError=1");
@@ -424,6 +562,7 @@ export default function App() {
         !shouldForcePortfolio &&
         !shouldForceOpenOrder &&
         !shouldForceLineOpenOrder &&
+        !shouldForceBookSnapshotDriftPortfolio &&
         !shouldForceNoLive &&
         !shouldForcePortfolioSyncing &&
         !shouldForcePortfolioSyncError &&
@@ -557,6 +696,18 @@ export default function App() {
         openOrders: [SMOKE_LINE_OPEN_ORDER],
         activities: [],
       };
+      AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
+    }
+    if (shouldForceBookSnapshotDriftPortfolio) {
+      const snapshot = bookSnapshotDurabilityPortfolio(t.justNow);
+      setEvents(metadataDriftedWorldCupEvents());
+      setBalance(snapshot.balance ?? 10000);
+      setPositions(snapshot.positions ?? []);
+      setLatestOrder(snapshot.latestOrder ?? null);
+      setOpenOrders(snapshot.openOrders ?? []);
+      setActivities(snapshot.activities ?? []);
+      setPortfolioSyncStatus("hidden");
+      setMainTab("portfolio");
       AsyncStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(snapshot)).catch(() => undefined);
     }
     if (shouldForceServerPortfolioFixture) {
