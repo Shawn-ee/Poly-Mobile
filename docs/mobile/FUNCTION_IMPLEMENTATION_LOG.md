@@ -47,6 +47,55 @@ Known limitations:
 - Real provider-backed chart parity for line markets still depends on mapped Polymarket/CLOB token IDs and refresh coverage for those markets.
 - No visible mobile UI was changed in this backend/provider lane.
 
+## Cycle EA-B - Visible Primary Ticket Entry Recovery
+
+Feature/page worked on:
+
+- PM-GAP-073 live World Cup game detail visible parity increment.
+- Added a Polymarket-like selected outcome trade rail so the live page preserves the selected primary market/outcome and exposes a stable ticket entry after primary odds selection.
+
+Frontend/components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+
+Important functions/interactions touched:
+
+- Added `selectedPrimaryOutcomeId` state for the live detail page.
+- Added `openPrimaryOutcomeTicket()` to normalize all primary live winner entry points through one ticket handoff.
+- Primary top odds, the in-card Team to Advance/Live Winner buttons, and chat sticky odds now select the same outcome and pass backend-shaped ticket identity fields through to `openTicket()`.
+- Added `event-detail-selected-outcome-trade-rail` and `event-detail-selected-outcome-open-ticket` as visible, stable Android proof targets.
+
+User interactions supported:
+
+- Tap either primary outcome and see the selected contract highlighted.
+- Use the pinned trade rail to open the ticket for the same selected market/outcome.
+- Keep the existing direct odds-to-ticket behavior while adding a second stable continuation target for mobile proof and user recovery.
+
+State transitions:
+
+- `selectedPrimaryOutcomeId=null` keeps the selected trade rail hidden.
+- Tapping a primary outcome updates `selectedPrimaryOutcomeId`, reveals the selected trade rail, hides share/orderbook overlays, and calls `openTicket()` with market id, outcome id, market group, period, side, contract side, and provider identity fields when available.
+- The selected trade rail exposes `selected-market-*`, `selected-outcome-*`, `selected-probability-*`, and `ticket-entry-stable` markers for Audit Gate proof.
+
+Verified:
+
+- `npm --prefix mobile ci --no-audit --no-fund` in the isolated Agent B worktree to restore mobile dependencies.
+- `npm --prefix mobile run typecheck`
+
+Validation limitations:
+
+- `npx vitest --config vitest.mobile.config.mts run mobile/src/__tests__/eventDetailLineTicketService.test.ts mobile/src/__tests__/marketDepthService.test.ts` could not start in this isolated worktree because the root `vitest` package was not installed in the worktree root.
+- Physical Android proof remains for Lead integration because device/Expo state is coordinated outside Agent B.
+
+Lead proof needed:
+
+- From the integrated checkout, run the DY/EA game page structure smoke on the Samsung Holiwyn device.
+- Expected proof targets: `event-detail-primary-outcome-*`, `event-detail-selected-outcome-trade-rail`, `event-detail-selected-outcome-open-ticket`, then `trade-ticket` with the same selected market/outcome identity.
+
+Known limitations:
+
+- PM-GAP-073 should remain open until Lead Android proof confirms the ticket opens from the selected outcome rail and the Audit Gate compares it against the Polymarket reference.
+
 ## Cycle DU-B - Visible Book Settings And Selector Carry-Through
 
 Feature/page worked on:
