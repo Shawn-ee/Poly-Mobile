@@ -1,6 +1,6 @@
 # Cycle DT-C Orderbook Re-gate - PM-GAP-075
 
-Status: fail until integrated proof. PM-GAP-075 does not pass in the DT re-gate because the DS integrated evidence does not yet prove every remaining P0 area from the DQ-C Polymarket reference.
+Status: partial after integrated DT proof. PM-GAP-075 still does not pass, but the DT integrated evidence closes several of the DS re-gate failures.
 
 ## Inputs Inspected
 
@@ -14,24 +14,27 @@ Status: fail until integrated proof. PM-GAP-075 does not pass in the DT re-gate 
   - `docs/mobile/harness/cycle-DQ-C-polymarket-reference/pm-dq-c-13-orderbook-market-selector.xml`
   - `docs/mobile/harness/cycle-DQ-C-polymarket-reference/pm-dq-c-14-orderbook-settings.xml`
   - `docs/mobile/harness/cycle-DQ-C-polymarket-reference/pm-dq-c-15-orderbook-depth-scroll.xml`
+- DT integrated backend proof: `docs/mobile/harness/cycle-DT-integrated-ready-orderbook-depth-proof.json`
+- DT tablet interaction proof: `docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-proof.json`
+- DT tablet screenshots/XML: `docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/`, `docs/mobile/harness/cycle-DT-B-orderbook-interactions/`
 
 ## Re-gate Decision
 
-Result: Fail until proof.
+Result: Partial; fail until remaining proof.
 
-Reason: DS integrated proof closes several Book surface criteria, but its own proof JSON lists unresolved areas: no before/after Yes/No tab switch, no selector carry-through from Moneyline to Spreads, no Decimalize/equivalent setting proof, no rerun with provider-backed ready depth, and no side-labelled bid/ask row proof strong enough to satisfy DQ-C parity.
+Reason: DT integrated proof closes the before/after Yes/No tab switch, proves a contract-shaped Totals selector/ticket carry-through path, adds side-labelled ladder metadata, and proves the backend Book route can return provider-backed ready depth. It still does not prove provider-backed ready depth in the same visible UI run, still does not prove Spread/period/line selector carry-through, and still does not implement or prove the Decimalize/equivalent Book setting.
 
-PM-GAP-075 can only pass after one integrated DT/DS Android evidence set proves all remaining P0 items below against the DQ-C reference.
+PM-GAP-075 can only pass after an integrated Android evidence set proves all remaining items below against the DQ-C reference.
 
 ## Exact Pass/Fail Checklist
 
 | Re-gate item | Required integrated proof | Current DT re-gate result |
 | --- | --- | --- |
-| Tab switching | Before/after Android XML or proof JSON showing `Yes` then `No` tab state for the same event and selected market, with side/outcome changed and market identity preserved. | Fail: DS proof shows tabs visible only; switching was not captured. |
-| Selector carry-through | Open selector proof showing grouped family choices, then after-selection proof showing selected family, period, line, side/outcome, selector key or market id, and ticket/ladder identity all match the selected row. | Fail: DS proof shows grouped labels, but not Moneyline-to-Spreads or family/period/line carry-through into ladder/ticket. |
+| Tab switching | Before/after Android XML or proof JSON showing `Yes` then `No` tab state for the same event and selected market, with side/outcome changed and market identity preserved. | Pass for DT: `cycle-DT-B-holiwyn-orderbook-proof.json` records `selected-market-mexico-ecuador-winner`, `selected-outcome-mexico selected-side-yes`, then `selected-outcome-ecuador selected-side-no`. |
+| Selector carry-through | Open selector proof showing grouped family choices, then after-selection proof showing selected family, period, line, side/outcome, selector key or market id, and ticket/ladder identity all match the selected row. | Partial: DT proves a contract-shaped Totals selection carrying to ticket summary and line text. Spread/period/line carry-through remains unproven because this fixture still reports `selected-line-none selected-period-none`. |
 | Decimalize/equivalent setting | Settings screenshot/XML showing `Decimalize book` or a documented Holiwyn-equivalent display toggle, plus before/after proof that toggling it does not reset selected market or side. | Fail: not implemented/proven in DS integrated evidence. |
-| Provider-backed ready depth | Integrated Android XML/proof JSON from the Book UI showing provider-backed ready depth, not fallback/unavailable-only state; expected fields include source/status, visible levels, Price/Shares/Value, spread, and ready availability. | Fail: DS captured fallback/unavailable labels; provider-backed ready depth was not rerun on this UI. |
-| Bid/ask side-labelled proof | Screenshot plus XML/proof JSON identifying ask rows above the spread and bid rows below it, with row side metadata or labels and representative price/share/value rows. | Fail: DS screenshot has a visible ladder, but side-labelled bid/ask metadata is not strong enough. |
+| Provider-backed ready depth | Integrated Android XML/proof JSON from the Book UI showing provider-backed ready depth, not fallback/unavailable-only state; expected fields include source/status, visible levels, Price/Shares/Value, spread, and ready availability. | Partial: backend integrated proof passes with `depthSource=provider-orderbook-depth`, `availability.status=ready`, `providerOrderbookDepth.status=ready`, and 12 rows. Visible tablet proof still uses fixture/non-ready states, so UI-ready provider depth remains open. |
+| Bid/ask side-labelled proof | Screenshot plus XML/proof JSON identifying ask rows above the spread and bid rows below it, with row side metadata or labels and representative price/share/value rows. | Pass for DT: tablet proof records ask markers above spread and bid markers below spread, with Price/Shares/Value columns visible. |
 
 ## Already Proven By DS Integrated Evidence
 

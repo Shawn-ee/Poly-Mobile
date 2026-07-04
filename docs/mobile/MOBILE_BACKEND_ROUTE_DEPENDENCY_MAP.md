@@ -1029,3 +1029,16 @@ Cycle DO implementation notes:
 
 - `scripts/prove_mobile_filled_trade.ts` now creates provider-shaped market/outcome identity and submits the taker order through canonical order submission so the original ticket selection is preserved in `ApiOrderRequest`.
 - Samsung tablet proof uses the existing Portfolio history smoke and asserts the provider-filled proof trade is visible.
+
+## Super Round DT Integrated - Orderbook Interaction And Ready Depth
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Book surface selected market/depth | `/api/orderbook/:marketId/book?maxLevels=24` | GET | Public viewing | Market id and max levels | `marketId`, `depthSource`, `availability.status`, `marketIdentity.selectorKey`, `marketIdentity.marketFamily`, `marketIdentity.marketType`, `marketIdentity.marketGroupKey`, `marketIdentity.period`, `marketIdentity.line`, `marketIdentity.outcomes[]`, `levels[].outcomeId`, `levels[].side`, `levels[].price`, `levels[].shares`, `levels[].total`, `providerOrderbookDepth.status` | `Market`, `Outcome`, `ReferenceOrderbookDepthSnapshot`, open `Order` rows when non-provider depth is used | DT-B tablet proof uses deterministic contract-shaped mobile fixtures for interaction proof when provider route data is not active in the Expo session | Same visible UI run still needs provider-backed ready depth; sibling selector route may be needed for all family/period/line choices. |
+| Book tab/selector/ticket interaction | Mobile client state plus existing ticket/order services | Client state -> eventual order route | Fake-token trading only for this milestone | `TicketSelection` includes selected market, outcome, side, family, line, period, odds/probability when present | Existing order routes consume selected market/outcome IDs; portfolio/history later depend on the same identity | Fixture markets carry backend-shaped IDs, market type, line/period fields, and outcome IDs | Spread/period/line identity must be proven with a live backend-shaped route payload, not only fixture `line-none`/`period-none`. |
+
+DT integrated implementation notes:
+
+- Backend proof `docs/mobile/harness/cycle-DT-integrated-ready-orderbook-depth-proof.json` shows `provider-orderbook-depth`, `availability.status=ready`, `providerOrderbookDepth.status=ready`, and 12 Price/Shares/Value rows.
+- Tablet proof `docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-proof.json` shows Yes/No side switching, selector carry-through into ticket, and side-labelled bid/ask ladder markers.
+- The backend contract is ahead of the visible UI proof. Do not mark PM-GAP-075 complete until the same tablet UI run consumes provider-backed ready depth and proves Spread/period/line carry-through.

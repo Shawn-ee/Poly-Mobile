@@ -3393,3 +3393,51 @@ Known limitations:
 - This is a backend route/data-contract improvement only; no mobile UI files were edited.
 - Broader real provider mapping coverage for live Spread/Totals markets remains P1 outside this route contract.
 - If mobile later needs one request for all sibling Book selector options, add an event-level sibling selector endpoint or extend live-detail rather than overloading a single-market book route.
+
+## Super Round DT Integrated - Orderbook Interaction Proof
+
+Feature/page worked on:
+
+- PM-GAP-075 visible Book/orderbook interaction parity and backend ready-depth proof.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/package.json`
+
+Backend/proof components touched:
+
+- `scripts/prove_mobile_dt_ready_orderbook_depth.ts`
+- `src/app/api/orderbook/[marketId]/book/route.ts` route contract via existing implementation
+- `src/__tests__/public.orderbook-book.no-leak.test.ts`
+
+Important functions/services touched:
+
+- EventDetail Book overlay selected side/outcome state.
+- EventDetail grouped selector state and selected market carry-through.
+- EventDetail Book-to-ticket selection construction.
+- Tablet smoke path for Book tab switch, selector, and ticket proof.
+- Backend proof harness for provider-backed ready orderbook depth.
+
+User interactions supported:
+
+- Tap Yes/No tabs in the Book surface and preserve the selected market while changing side/outcome.
+- Select a contract-shaped Totals market from the Book selector and carry that selection into ladder context and ticket summary.
+- Open a Book ticket from the selected orderbook context.
+- View side-labelled ask rows above the spread and bid rows below the spread.
+
+State transitions:
+
+- Book surface opens with selected market identity from game detail.
+- `selectedBookSide` changes from `yes` to `no` without resetting the selected market.
+- Selector choice updates selected market family/outcome and passes that identity into the ticket selection object.
+- Backend ready-depth proof seeds provider orderbook rows, reads `/api/orderbook/:marketId/book?maxLevels=24`, and returns `provider-orderbook-depth` with `providerOrderbookDepth.status=ready`.
+
+Known limitations:
+
+- PM-GAP-075 remains open.
+- Provider-backed ready depth has route proof but not the same visible tablet UI proof.
+- Spread/period/line selector carry-through is still incomplete; DT proves a Totals fixture with `line-none`/`period-none`.
+- Decimalize/equivalent Book setting is not implemented or proven.

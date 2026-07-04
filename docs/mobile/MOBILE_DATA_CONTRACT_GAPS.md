@@ -2430,3 +2430,31 @@ Temporary mock/static data:
 Future migration concern:
 
 - Real-money launch should store immutable provider selection snapshots on orders/trades so later provider metadata changes cannot alter historical activity identity.
+
+## Super Round DT Integrated - Orderbook Interaction And Ready Depth
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- A compact sibling Book selector contract that returns all related markets for the current event/family/period/line, not only the currently selected market's identity.
+- A server-backed visible UI payload that can prove provider-backed ready depth in the same tablet run as Book interactions.
+- Decimalize/equivalent display preference state for the Book surface.
+
+Fields backend provides but mobile ignores:
+
+- The backend Book route now exposes `marketIdentity` and `providerOrderbookDepth` fields. Mobile interaction proof currently uses fixture-shaped data for selector/ticket proof and therefore does not prove these fields in the same visible UI session.
+
+Schema mismatch:
+
+- Provider depth is normalized in `ReferenceOrderbookDepthSnapshot`, while visible selector state is still client-owned inside EventDetail. This is acceptable for DT interaction proof but needs a backend-owned selector/options payload before parity pass.
+
+Route mismatch:
+
+- `/api/orderbook/:marketId/book` proves selected-market depth. Polymarket's Book selector behaves like a market-family browser, so Holiwyn may need an event-level selector route or live-detail extension to avoid local-only sibling discovery.
+
+Temporary mock/static data:
+
+- DT-B fixtures are deterministic and backend-shaped, but they are still UI proof fixtures. They must not be treated as provider-ready route proof.
+
+Future migration concern:
+
+- Book selection identity must stay stable through selector -> ladder -> ticket -> order -> portfolio -> history, including provider token/outcome IDs when provider depth is active.
