@@ -16,7 +16,7 @@ import {
   openOrderValue,
 } from "../services/openOrderEconomicsService";
 import type { OrderMode } from "../services/orderService";
-import type { PortfolioValueHistory, PortfolioValueHistoryRange } from "../types";
+import type { PortfolioValueHistory, PortfolioValueHistoryPoint, PortfolioValueHistoryRange } from "../types";
 import type { BinaryContractSide, TicketSelection } from "./TradeTicket";
 
 export type Position = {
@@ -275,34 +275,61 @@ function PortfolioSparkline({
   range,
   source,
   status,
-  pointCount,
+  points,
 }: {
   range: PortfolioValueHistoryRange;
   source: string;
   status: string;
-  pointCount: number;
+  points: PortfolioValueHistoryPoint[];
 }) {
-  const rangeStyle =
-    range === "1W"
-      ? styles.chartRangeWeek
-      : range === "1M"
-        ? styles.chartRangeMonth
-        : range === "All"
-          ? styles.chartRangeAll
-          : null;
+  const values = points.map((point) => point.value);
+  const min = Math.min(...values, 0);
+  const max = Math.max(...values, 1);
+  const spread = Math.max(max - min, 1);
+  const plotted = points.map((point, index) => ({
+    key: `${point.timestamp}-${index}`,
+    left: points.length <= 1 ? 0 : (index / (points.length - 1)) * 100,
+    top: 34 + (1 - (point.value - min) / spread) * 122,
+    value: point.value,
+  }));
+  const trend = points.length >= 2 && points[points.length - 1].value >= points[0].value ? "up" : "down";
+  const pointCount = points.length;
+
   return (
     <View
-      accessibilityLabel={`portfolio-performance-chart portfolio-performance-chart-range-${range} portfolio-chart-source-${source} portfolio-chart-status-${status} portfolio-chart-point-count-${pointCount}`}
+      accessibilityLabel={`portfolio-performance-chart portfolio-chart-data-driven portfolio-performance-chart-range-${range} portfolio-chart-source-${source} portfolio-chart-status-${status} portfolio-chart-point-count-${pointCount} portfolio-chart-trend-${trend}`}
       testID="portfolio-performance-chart"
       style={styles.chartArea}
     >
-      <View style={[styles.chartSegment, styles.chartSegmentOne]} />
-      <View style={[styles.chartSegment, styles.chartSegmentTwo]} />
-      <View style={[styles.chartSegment, styles.chartSegmentThree]} />
-      <View style={[styles.chartSegment, styles.chartSegmentFour, rangeStyle]} />
-      <View style={[styles.chartSegment, styles.chartSegmentFive]} />
-      <View style={[styles.chartSegment, styles.chartSegmentSix]} />
-      <View style={styles.chartDot} />
+      {plotted.slice(0, -1).map((point, index) => {
+        const next = plotted[index + 1];
+        return (
+          <View
+            key={`segment-${point.key}`}
+            style={[
+              styles.chartSegment,
+              {
+                left: `${point.left}%`,
+                top: (point.top + next.top) / 2,
+                width: `${Math.max(next.left - point.left, 4)}%`,
+              },
+            ]}
+          />
+        );
+      })}
+      {plotted.map((point, index) => (
+        <View
+          key={`point-${point.key}`}
+          style={[
+            styles.chartPoint,
+            {
+              left: `${point.left}%`,
+              top: point.top - 5,
+              opacity: index === plotted.length - 1 ? 1 : 0.55,
+            },
+          ]}
+        />
+      ))}
     </View>
   );
 }
@@ -496,7 +523,7 @@ export function Portfolio({
         </Text>
       </View>
       <PortfolioSparkline
-        pointCount={displayedValueHistory.points.length}
+        points={displayedValueHistory.points}
         range={displayedValueHistory.range}
         source={displayedValueHistory.source}
         status={displayedValueHistory.status}
@@ -930,6 +957,7 @@ const styles = StyleSheet.create({
   chartSegmentFive: { left: "82%", top: 96, width: "11%", transform: [{ rotate: "-30deg" }] },
   chartSegmentSix: { left: "91%", top: 78, width: "9%", transform: [{ rotate: "-10deg" }] },
   chartDot: { position: "absolute", right: 2, top: 70, width: 14, height: 14, borderRadius: 999, backgroundColor: "#22c55e", shadowColor: "#22c55e", shadowOpacity: 0.45, shadowRadius: 8 },
+  chartPoint: { position: "absolute", width: 13, height: 13, marginLeft: -6, borderRadius: 999, backgroundColor: "#22c55e", shadowColor: "#22c55e", shadowOpacity: 0.45, shadowRadius: 8 },
   rangeRow: { alignSelf: "flex-start", flexDirection: "row", marginLeft: 24, marginTop: 6, padding: 4, borderRadius: 999, backgroundColor: "#202633" },
   rangePill: { minWidth: 58, minHeight: 44, alignItems: "center", justifyContent: "center", borderRadius: 999 },
   rangePillActive: { backgroundColor: "#0c111d" },

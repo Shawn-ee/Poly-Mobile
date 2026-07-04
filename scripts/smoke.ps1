@@ -1237,6 +1237,7 @@ try {
           "Portfolio",
           "Server portfolio synced",
           "position-card-",
+          "portfolio-chart-data-driven",
           "portfolio-chart-source-portfolio-value-history-route",
           "portfolio-chart-status-ready",
           "Filled shares",
@@ -1256,6 +1257,7 @@ try {
           "latest-order-card",
           "portfolio-open-order-count",
           "open-order-row-",
+          "portfolio-chart-data-driven",
           "portfolio-chart-source-portfolio-value-history-route",
           "portfolio-chart-status-ready",
           "portfolio-market-type-live",
@@ -1272,6 +1274,7 @@ try {
           "latest-order-card",
           "portfolio-open-order-count",
           "open-order-row-",
+          "portfolio-chart-data-driven",
           "portfolio-chart-source-portfolio-value-history-route",
           "portfolio-chart-status-ready",
           "portfolio-market-type-spread",
@@ -1283,6 +1286,19 @@ try {
       }
       Assert-HierarchyContains -Path $homeRouteServerPortfolioHierarchy -Expected $homeRouteServerPortfolioExpected
       Assert-HierarchyDoesNotContain -Path $homeRouteServerPortfolioHierarchy -Unexpected @("event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth")
+
+      Invoke-TapHierarchyNode -Path $homeRouteServerPortfolioHierarchy -Identifier "portfolio-range-1w"
+      Start-Sleep -Seconds 2
+      Save-Screenshot -Name "$homeRouteServerArtifact-portfolio-range-1w.png"
+      $homeRouteServerPortfolioRangeHierarchy = Save-UiHierarchy -Name "$homeRouteServerArtifact-portfolio-range-1w.xml"
+      Assert-HierarchyContains -Path $homeRouteServerPortfolioRangeHierarchy -Expected @(
+        "portfolio-range-1W portfolio-range-selected",
+        "portfolio-performance-chart-range-1W",
+        "portfolio-chart-data-driven",
+        "portfolio-chart-source-portfolio-value-history-route",
+        "portfolio-chart-status-ready",
+        "portfolio-chart-point-count-7"
+      )
 
       $homeRouteServerCanceledHierarchy = $null
       if ($LocalMvpHomeRouteServerCancelFlow) {
