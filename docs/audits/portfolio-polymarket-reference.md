@@ -66,3 +66,25 @@ User-provided Polymarket screenshots on July 4, 2026 show the Portfolio page sti
 - Backend/API impact: none. The cycle only changes mobile presentation and preserves existing Portfolio data contracts.
 - Android proof: passed on Samsung tablet with `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -LocalMvpTradeFlow -Port 8236`.
 - Audit status: P0 pass for Portfolio visual density in the local MVP buy-flow proof. Remaining P2 gaps are exact native gradient/chart physics and final pixel polish.
+
+## Cycle GE Reference Refresh
+
+User-provided Polymarket Portfolio screenshots on July 4, 2026 show the MVP Portfolio should stay focused on account value, tabs, positions, open orders, and history. Holiwyn should not expose funding controls in the current local MVP because deposits/withdrawals are explicitly out of scope.
+
+## Cycle GE Acceptance Criteria
+
+| Criteria | Priority | Verification |
+| --- | --- | --- |
+| Portfolio keeps the Polymarket-like profile/value/chart/range/tabs structure. | P0 | Android screenshot/XML. |
+| Deposit and Withdraw controls are hidden from the default MVP Portfolio surface. | P0 | Android hierarchy absence check. |
+| Internal sync/proof state is not part of the visible Portfolio layout. | P0 | Android screenshot/XML. |
+| Position rows show an event-derived score line instead of a hard-coded match label. | P0 | Android hierarchy expects `MEX 0 - ECU 0` after the local MVP trade proof. |
+| Positions, Orders, and History tabs remain tappable and keep Polymarket-style content density. | P0 | Android tab proof. |
+| Exact portfolio chart curve/drag physics and fully native avatar gradient remain polish. | P2 | Deferred. |
+
+## Cycle GE Result
+
+- Implementation: `Portfolio` now hides funding controls for the Local MVP, keeps sync status in a non-visible proof node, and derives the position score line from the traded event title instead of hard-coding `PAR 0 - FRA 0`.
+- Backend/API impact: none. Portfolio still consumes the existing balance, position, order, activity, and value-history props.
+- Android proof: passed on Samsung tablet with `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -LocalMvpTradeFlow -Port 8244 -OutputDir docs/mobile/screenshots/cycle-GE-portfolio-retail-tightening -HierarchyOutputDir docs/mobile/harness/cycle-GE-portfolio-retail-tightening`.
+- Audit status: P0 pass for the Local MVP Portfolio retail surface. Remaining P2 gaps are exact native chart curve/drag physics and final pixel polish.

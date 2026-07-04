@@ -162,3 +162,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Route-backed Live discovery needed the same World Cup games focus because this proof path lands on Live. | P0 | Passed | `LiveScreen` now renders `live-world-cup-games-focus`; Samsung tablet proof passed. |
 | Discovery proof should fail if non-MVP sport/futures promo surfaces reappear before game discovery. | P0 | Passed | `LocalMvpHomeRouteTicketFlow` asserts `MLB`, `Tennis`, `featured-future-*`, and `future-market-chart` are absent. |
 | Route-backed discovery card must still open Event Detail and a simple spread ticket. | P0 | Passed | Samsung tablet proof opened Event Detail and a provider-backed spread ticket from the route-backed card. |
+
+## Cycle GE - Portfolio Retail MVP Tightening
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio still exposed Deposit/Withdraw controls even though funding is out of scope for the Local MVP. | P0 | Passed | Funding controls are hidden in `Portfolio`; Android absence proof passed on Samsung tablet. |
+| Position rows used a hard-coded `PAR 0 - FRA 0` score line regardless of the traded event. | P0 | Passed | Score line now derives from the event title; Android proof verified `MEX 0 - ECU 0`. |
+| Portfolio needed another audit pass against the user-provided July 4 Portfolio screenshots. | P0 | Passed | Audit doc updated and tablet proof passed for Positions, Orders, and History. |
