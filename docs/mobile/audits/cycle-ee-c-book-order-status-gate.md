@@ -1,6 +1,6 @@
 # Cycle EE-C Book-Origin Status Breadth And Snapshot Gate
 
-Status: fail until integrated proof. This docs-only gate promotes the next meaningful deferred debt after ED: Book-origin open/cancel/fill status breadth and selection snapshot hardening.
+Status: passed for the selected EE integrated gate. This certifies Book-origin fake-token open/cancel/fill status breadth and guarded selection snapshot hardening for the selected proof path.
 
 Audit Gate Agent: Agent C.
 
@@ -64,16 +64,16 @@ All P0 rows must pass before EE can mark PM-GAP-082 complete.
 
 | ID | Priority | Criterion | Required proof | Current EE status |
 | --- | --- | --- | --- | --- |
-| EE-ST-P0-01 | P0 | The proof must start from a live game page Book-selected market and identify the selected event, family/type, market id or selector key, line, period, side/outcome, provider/source, and row action context before order submit. | Android screenshot/XML/proof JSON plus backend live-detail/Book route proof for the same selected identity. | Fail until integrated proof |
-| EE-ST-P0-02 | P0 | Open-order status must preserve the Book-origin selected identity in Android Portfolio/open orders and backend order/portfolio routes. | Android Portfolio/open-order screenshot/XML and backend route proof showing matching order id, market/outcome, family/type, line, period, side/outcome, amount, status, and provider/source fields. | Fail until integrated proof |
-| EE-ST-P0-03 | P0 | Cancel request and canceled status must preserve the same selected identity and status transition. | Android cancel action/result/activity proof plus backend cancel/order/history proof tying the same order id and selected snapshot to `open -> canceled` or equivalent status transition. | Fail until integrated proof |
-| EE-ST-P0-04 | P0 | Filled position and recent activity/history must preserve the same selected identity and fill linkage. | Android filled position/recent activity/history screenshot/XML plus backend fill/position/history route proof with matching order/fill id, market/outcome, line, period, side/outcome, amount, status, and provider/source fields. | Fail until integrated proof |
-| EE-ST-P0-05 | P0 | Open, canceled, filled, and recent activity/history branches must be proven for the same Book-origin selected identity family without fallback to moneyline, event-only labels, first rendered row, or stale selector state. | One status matrix proof mapping each branch to the same selected Book identity fields and explaining any deterministic test split between open/cancel/fill orders. | Fail until integrated proof |
-| EE-ST-P0-06 | P0 | Selection snapshots must be hardened across order, cancel, fill, Portfolio, and history surfaces. | Backend route/data proof showing order-time and fill-time selected snapshot fields are present and reused by downstream rows, paired with Android proof rendering those fields after status changes. | Fail until integrated proof |
-| EE-ST-P0-07 | P0 | The proof must include a no-fallback guard for every status branch. | Proof assertions or route fields showing no fallback/default market, missing provider state, event-only row, stale fixture row, or reconstructed current selector state is used as pass evidence. | Fail until integrated proof |
-| EE-ST-P0-08 | P0 | Android-visible proof and backend route/data proof are both mandatory for the same status matrix. | Committed Android screenshots/XML/proof JSON plus backend route/data proof from the same build/run or explicitly paired run for the same selected identity. | Fail until integrated proof |
-| EE-ST-P0-09 | P0 | ED, EC, DX, DO, and Portfolio regression markers must remain intact but cannot substitute for EE status breadth. | EE proof bundle references or reruns critical ED/EC lifecycle markers and separately proves the new open/cancel/fill/snapshot matrix. | Fail until integrated proof |
-| EE-ST-P0-10 | P0 | Fake-token/test flow labeling must be explicit throughout the proof. | Proof JSON, audit notes, and visible/backend evidence label mock/fake-token status and avoid production signing claims. | Fail until integrated proof |
+| EE-ST-P0-01 | P0 | The proof must start from a live game page Book-selected market and identify the selected event, family/type, market id or selector key, line, period, side/outcome, provider/source, and row action context before order submit. | Android screenshot/XML/proof JSON plus backend live-detail/Book route proof for the same selected identity. | Pass for selected EE proof |
+| EE-ST-P0-02 | P0 | Open-order status must preserve the Book-origin selected identity in Android Portfolio/open orders and backend order/portfolio routes. | Android Portfolio/open-order screenshot/XML and backend route proof showing matching order id, market/outcome, family/type, line, period, side/outcome, amount, status, and provider/source fields. | Pass for selected EE proof |
+| EE-ST-P0-03 | P0 | Cancel request and canceled status must preserve the same selected identity and status transition. | Android cancel action/result/activity proof plus backend cancel/order/history proof tying the same order id and selected snapshot to `open -> canceled` or equivalent status transition. | Pass for selected EE proof |
+| EE-ST-P0-04 | P0 | Filled position and recent activity/history must preserve the same selected identity and fill linkage. | Android filled position/recent activity/history screenshot/XML plus backend fill/position/history route proof with matching order/fill id, market/outcome, line, period, side/outcome, amount, status, and provider/source fields. | Pass for selected EE proof |
+| EE-ST-P0-05 | P0 | Open, canceled, filled, and recent activity/history branches must be proven for the same Book-origin selected identity family without fallback to moneyline, event-only labels, first rendered row, or stale selector state. | One status matrix proof mapping each branch to the same selected Book identity fields and explaining any deterministic test split between open/cancel/fill orders. | Pass for selected EE proof |
+| EE-ST-P0-06 | P0 | Selection snapshots must be hardened across order, cancel, fill, Portfolio, and history surfaces. | Backend route/data proof showing order-time and fill-time selected snapshot fields are present and reused by downstream rows, paired with Android proof rendering those fields after status changes. | Pass for selected EE proof |
+| EE-ST-P0-07 | P0 | The proof must include a no-fallback guard for every status branch. | Proof assertions or route fields showing no fallback/default market, missing provider state, event-only row, stale fixture row, or reconstructed current selector state is used as pass evidence. | Pass for selected EE proof |
+| EE-ST-P0-08 | P0 | Android-visible proof and backend route/data proof are both mandatory for the same status matrix. | Committed Android screenshots/XML/proof JSON plus backend route/data proof from the same build/run or explicitly paired run for the same selected identity. | Pass for selected EE proof |
+| EE-ST-P0-09 | P0 | ED, EC, DX, DO, and Portfolio regression markers must remain intact but cannot substitute for EE status breadth. | EE proof bundle references or reruns critical ED/EC lifecycle markers and separately proves the new open/cancel/fill/snapshot matrix. | Pass for selected EE proof |
+| EE-ST-P0-10 | P0 | Fake-token/test flow labeling must be explicit throughout the proof. | Proof JSON, audit notes, and visible/backend evidence label mock/fake-token status and avoid production signing claims. | Pass for selected EE proof |
 
 ## P1 Criteria
 
@@ -127,14 +127,21 @@ Block EE pass if any of these occur:
 
 ## Audit Gate Decision
 
-Current result: fail until integrated proof.
+Current result: pass for the selected EE integrated gate.
 
-Unresolved EE P0 gaps: all EE P0 criteria are open.
+Unresolved EE P0 gaps: 0 for the selected Book-origin fake-token open/cancel/fill status and snapshot path.
 
-Tracked gap: PM-GAP-082 is open for Book-origin open/cancel/fill status breadth and selection snapshot hardening. PM-GAP-081 remains verified for the selected ED lifecycle only.
+Tracked gap: PM-GAP-082 is verified for the selected EE lifecycle. PM-GAP-081 remains verified for the selected ED lifecycle.
 
 Next required work:
 
-1. Agent A should provide backend route/data proof for Book-origin order, cancel, fill, Portfolio, history, and selection snapshots.
-2. Agent B should provide Android-visible proof for the same Book-origin selected identity across open order, canceled status/activity, filled position, and recent activity/history.
-3. Lead must combine A/B evidence into one integrated EE proof bundle before Audit Gate can pass PM-GAP-082.
+1. Keep the EE integrated proof as regression coverage for future Portfolio/order status changes.
+2. Promote remaining P1/P2 debt into later cycles when broader real provider-backed line-family status breadth, production confirmation/cancel/fill recapture, metadata-change durability, or Portfolio/history visual polish becomes the selected scope.
+
+Integrated evidence:
+
+- Proof JSON: `docs/mobile/harness/cycle-EE-integrated-book-order-status/cycle-EE-book-order-status-proof.json`
+- Screenshots: `docs/mobile/screenshots/cycle-EE-integrated-book-order-status/`
+- XML: `docs/mobile/harness/cycle-EE-integrated-book-order-status/`
+- Backend route/data proof: `docs/mobile/harness/cycle-EE-A-book-order-status-snapshots.json`
+- Command: `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBookLifecycle -Port 8310 -Device 172.16.200.30:41299 -OutputDir docs/mobile/screenshots/cycle-EE-integrated-book-order-status -HierarchyOutputDir docs/mobile/harness/cycle-EE-integrated-book-order-status`
