@@ -239,6 +239,7 @@ const activityStatusLabel = (activity: PortfolioActivity) =>
   activity.action === "canceled" ? "Canceled" : activity.action === "opened" || activity.action === "sold" ? "Filled" : "Closed";
 
 type PortfolioTab = "positions" | "orders" | "history";
+type PortfolioRange = "1D" | "1W" | "1M" | "All";
 
 const portfolioPageCopy = {
   en: {
@@ -269,13 +270,25 @@ const portfolioPageCopy = {
   },
 };
 
-function PortfolioSparkline() {
+function PortfolioSparkline({ range }: { range: PortfolioRange }) {
+  const rangeStyle =
+    range === "1W"
+      ? styles.chartRangeWeek
+      : range === "1M"
+        ? styles.chartRangeMonth
+        : range === "All"
+          ? styles.chartRangeAll
+          : null;
   return (
-    <View accessibilityLabel="portfolio-performance-chart" testID="portfolio-performance-chart" style={styles.chartArea}>
+    <View
+      accessibilityLabel={`portfolio-performance-chart portfolio-performance-chart-range-${range}`}
+      testID="portfolio-performance-chart"
+      style={styles.chartArea}
+    >
       <View style={[styles.chartSegment, styles.chartSegmentOne]} />
       <View style={[styles.chartSegment, styles.chartSegmentTwo]} />
       <View style={[styles.chartSegment, styles.chartSegmentThree]} />
-      <View style={[styles.chartSegment, styles.chartSegmentFour]} />
+      <View style={[styles.chartSegment, styles.chartSegmentFour, rangeStyle]} />
       <View style={[styles.chartSegment, styles.chartSegmentFive]} />
       <View style={[styles.chartSegment, styles.chartSegmentSix]} />
       <View style={styles.chartDot} />
@@ -312,6 +325,7 @@ export function Portfolio({
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const [expandedActivityId, setExpandedActivityId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<PortfolioTab>("positions");
+  const [activeRange, setActiveRange] = useState<PortfolioRange>("1D");
   const closedActivityCount = activities.filter((activity) => activity.action === "closed").length;
   const latestActivity = activities[0];
   const detailCopy = portfolioDetailCopy[locale];
@@ -439,12 +453,19 @@ export function Portfolio({
           {money(portfolioPnl)} ({portfolioPnlPercent >= 0 ? "+" : ""}{portfolioPnlPercent.toFixed(1)}%) <Text style={styles.cashText}>{money(balance)} {pageCopy.cash}</Text>
         </Text>
       </View>
-      <PortfolioSparkline />
+      <PortfolioSparkline range={activeRange} />
       <View accessibilityLabel="portfolio-range-selector" testID="portfolio-range-selector" style={styles.rangeRow}>
-        {["1D", "1W", "1M", "All"].map((range, index) => (
-          <View key={range} style={[styles.rangePill, index === 0 && styles.rangePillActive]}>
-            <Text style={[styles.rangeText, index === 0 && styles.rangeTextActive]}>{range}</Text>
-          </View>
+        {(["1D", "1W", "1M", "All"] as const).map((range) => (
+          <Pressable
+            accessibilityLabel={`portfolio-range-${range} ${activeRange === range ? "portfolio-range-selected" : "portfolio-range-inactive"}`}
+            accessibilityState={{ selected: activeRange === range }}
+            key={range}
+            onPress={() => setActiveRange(range)}
+            style={[styles.rangePill, activeRange === range && styles.rangePillActive]}
+            testID={`portfolio-range-${range.toLowerCase()}`}
+          >
+            <Text style={[styles.rangeText, activeRange === range && styles.rangeTextActive]}>{range}</Text>
+          </Pressable>
         ))}
       </View>
       <View style={styles.walletActionRow}>
@@ -856,6 +877,9 @@ const styles = StyleSheet.create({
   chartSegmentTwo: { left: "16%", top: 84, width: "15%", transform: [{ rotate: "7deg" }] },
   chartSegmentThree: { left: "29%", top: 92, width: "7%", transform: [{ rotate: "70deg" }] },
   chartSegmentFour: { left: "35%", top: 122, width: "48%" },
+  chartRangeWeek: { top: 104, transform: [{ rotate: "-2deg" }] },
+  chartRangeMonth: { top: 136, transform: [{ rotate: "1deg" }] },
+  chartRangeAll: { top: 92, transform: [{ rotate: "-4deg" }] },
   chartSegmentFive: { left: "82%", top: 96, width: "11%", transform: [{ rotate: "-30deg" }] },
   chartSegmentSix: { left: "91%", top: 78, width: "9%", transform: [{ rotate: "-10deg" }] },
   chartDot: { position: "absolute", right: 2, top: 70, width: 14, height: 14, borderRadius: 999, backgroundColor: "#22c55e", shadowColor: "#22c55e", shadowOpacity: 0.45, shadowRadius: 8 },

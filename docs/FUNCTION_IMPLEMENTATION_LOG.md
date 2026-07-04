@@ -53,3 +53,12 @@
 - User interactions supported: Portfolio now opens as a full-screen account/value page without the global Holiwyn promo/header above it, while preserving bottom tab navigation and Portfolio's own settings control.
 - State transitions: unchanged. The render condition for the shared `Header` now excludes `mainTab === "portfolio"`.
 - Known limitations: Home/Live/Search/Account still use the shared header; this cycle intentionally scopes only the Portfolio reference mismatch.
+
+## Cycle FS - Portfolio Range Selector Interaction
+
+- Feature/page: Portfolio performance chart range selector.
+- Frontend components touched: `src/components/Portfolio.tsx`.
+- Important functions/services touched: no backend/provider service changes.
+- User interactions supported: `1D`, `1W`, `1M`, and `All` are now tappable controls with selected state, and the performance chart exposes the active range in its proof label.
+- State transitions: added local `activeRange` state. Tapping a range updates `activeRange` and the deterministic chart variant.
+- Known limitations: range selection does not yet fetch real portfolio history. A backend time-series route remains needed for true chart data.

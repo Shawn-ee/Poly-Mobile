@@ -5673,6 +5673,11 @@ try {
       $mvpPortfolioHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio.xml"
       Assert-HierarchyContains -Path $mvpPortfolioHierarchy -Expected (@("Portfolio", "portfolio-profile-header", "portfolio-performance-chart", "portfolio-range-selector", "portfolio-deposit-placeholder", "portfolio-withdraw-placeholder", "portfolio-section-tabs", "Positions", "Orders", "History", "position-card-", "portfolio-display-label-MEX -2.5 1H", "Cost 25 USDT", "Cash out", "97% chance") + $mvpPortfolioExpected)
       Assert-HierarchyDoesNotContain -Path $mvpPortfolioHierarchy -Unexpected @("event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth", "header-promo-action", "header-notifications-action", "header-account-action", "WORLD CUP MARKETS", "Get 50")
+      Invoke-TapHierarchyNode -Path $mvpPortfolioHierarchy -Identifier "portfolio-range-1w"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-range-1w.png"
+      $mvpPortfolioRangeHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-range-1w.xml"
+      Assert-HierarchyContains -Path $mvpPortfolioRangeHierarchy -Expected @("portfolio-range-1W portfolio-range-selected", "portfolio-performance-chart-range-1W")
       Invoke-TapHierarchyNode -Path $mvpPortfolioHierarchy -Identifier "portfolio-tab-orders"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-orders.png"
@@ -5705,6 +5710,8 @@ try {
           "docs/mobile/harness/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-ticket-ready.xml",
           "docs/mobile/screenshots/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio.png",
           "docs/mobile/harness/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio.xml",
+          "docs/mobile/screenshots/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-range-1w.png",
+          "docs/mobile/harness/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-range-1w.xml",
           "docs/mobile/screenshots/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-orders.png",
           "docs/mobile/harness/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-orders.xml",
           "docs/mobile/screenshots/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-history.png",
