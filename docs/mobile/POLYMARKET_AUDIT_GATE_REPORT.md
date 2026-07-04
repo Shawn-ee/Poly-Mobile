@@ -2692,3 +2692,44 @@ Decision:
 - Unresolved P0 gaps: 0 for selected feature.
 - Remaining P1/P2 gaps: totals/team-total server-order breadth, production active-event provider breadth, fresh S23 retail ticket proof, and route-backed history/activity beyond open order.
 - Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Route-Backed Retail Server Cancel And Activity Flow
+
+Cycle: EW
+
+Lead Agent target: Prove the route-backed server-order Local MVP path can be canceled from the Android Portfolio UI and appear as canceled activity/history with selected provider identity.
+
+Reference Audit Agent: Product steering audit from current Local MVP policy.
+
+Implementation Agent: Tablet harness plus local wrapper for disposable backend event, mobile dev credential, server order mode, server cancel, and tablet proof.
+
+Audit Gate Agent: Same-cycle tablet proof.
+
+Reference device: Not refreshed in EW; this is a Holiwyn contract/user-flow gate based on existing Polymarket retail interaction direction and the latest Local MVP orderbook policy.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8264`.
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-local-mvp-route-server-cancel-flow-proof.json`
+- `docs/mobile/harness/cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-route-backed-retail-event.json`
+- `docs/mobile/screenshots/cycle-EW-local-mvp-route-server-cancel-flow/`
+- Tablet proof slug: `mobile-el-a-provider-breadth-35441a1a`.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EW-CANCEL-P0-01 | P0 | Pass | Route-backed spread order reaches Android Portfolio as an open order. | N/A |
+| EW-CANCEL-P0-02 | P0 | Pass | Android taps `cancel-open-order-*` and server Portfolio refreshes. | N/A |
+| EW-CANCEL-P0-03 | P0 | Pass | Portfolio shows `latest-activity-card`, `activity-canceled`, `status-canceled`, and `Recent activity` count. | N/A |
+| EW-CANCEL-P0-04 | P0 | Pass | Canceled activity preserves spread line, period, provider source, and provider token. | N/A |
+| EW-CANCEL-P0-05 | P0 | Pass | Orderbook markers remain absent from default UI proof. | N/A |
+| EW-CANCEL-P1-01 | P1 | Open | Filled trade history is not covered. | Add route-backed fill/history proof later. |
+
+Decision:
+
+- Pass/fail: Pass for selected EW route-backed spread cancel/activity Local MVP flow.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: filled trade history, totals/team-total lifecycle breadth, production active-event provider breadth, and fresh S23 retail lifecycle proof.
+- Next cycle required: yes, continue Local MVP user-flow breadth.

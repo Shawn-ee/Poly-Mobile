@@ -117,7 +117,8 @@ param(
   [switch]$LocalMvpStatusFlow,
   [switch]$LocalMvpLineFamilyBreadth,
   [switch]$LocalMvpRouteTicketFlow,
-  [switch]$LocalMvpRouteServerOrderFlow
+  [switch]$LocalMvpRouteServerOrderFlow,
+  [switch]$LocalMvpRouteServerCancelFlow
 )
 
 $ErrorActionPreference = "Stop"
@@ -126,10 +127,10 @@ $ServerLiveDetailHalvesOrderBook = $ServerLiveDetailFirstHalfOrderBook -or $Serv
 $EventDetailProviderRouteStatusProof = $EventDetailProviderStatus -or $EventDetailVisibleStatusBreadth -or $EventDetailVisibleStatusTransition
 $EventDetailVisibleLiveDepthBackendProof = $EventDetailVisibleLiveDepth -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25"
 $EventDetailVisibleLimitLifecycleBackendProof = ($EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth) -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25"
-$ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook -or $ServerLiveProviderRefreshProof -or $EventDetailProviderRouteStatusProof -or $EventDetailVisibleLiveDepthBackendProof -or $EventDetailVisibleLimitLifecycleBackendProof -or $LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow
+$ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook -or $ServerLiveProviderRefreshProof -or $EventDetailProviderRouteStatusProof -or $EventDetailVisibleLiveDepthBackendProof -or $EventDetailVisibleLimitLifecycleBackendProof -or $LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow
 $OrderBookDebugProof = $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $EventDetailMarketTabs -or $EventDetailChart -or $EventDetailProviderRouteStatusProof -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $ServerLiveDetailBackendProof
-$OrderBookDebugProof = $OrderBookDebugProof -and -not ($LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow)
-$LocalMvpSimpleTradeFlow = $LocalMvpTradeFlow -or $LocalMvpSellFlow -or $LocalMvpStatusFlow -or $LocalMvpLineFamilyBreadth -or $LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow
+$OrderBookDebugProof = $OrderBookDebugProof -and -not ($LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow)
+$LocalMvpSimpleTradeFlow = $LocalMvpTradeFlow -or $LocalMvpSellFlow -or $LocalMvpStatusFlow -or $LocalMvpLineFamilyBreadth -or $LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow
 
 $MobileRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $RepoRoot = Resolve-Path (Join-Path $MobileRoot "..")
@@ -493,7 +494,7 @@ try {
       $env:EXPO_PUBLIC_API_KEY = "pk_test_mobile_harness"
     }
   }
-  if ($LocalMvpRouteServerOrderFlow) {
+  if ($LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow) {
     $env:EXPO_PUBLIC_API_BASE_URL = $BackendBaseUrl
     $env:EXPO_PUBLIC_MARKET_DATA_MODE = "server"
     $env:EXPO_PUBLIC_ORDER_MODE = "server"
@@ -501,7 +502,7 @@ try {
       throw "Local MVP route server order proof requires EXPO_PUBLIC_API_KEY. Use mobile/scripts/local-mvp-route-server-order-proof.ps1 to create an in-process mobile dev credential."
     }
   }
-  if ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPositionFallbackOrder -or ($ServerLiveDetailBackendProof -and -not $EventDetailVisibleLimitLifecycleBackendProof -and -not $LocalMvpRouteTicketFlow -and -not $LocalMvpRouteServerOrderFlow)) {
+  if ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPositionFallbackOrder -or ($ServerLiveDetailBackendProof -and -not $EventDetailVisibleLimitLifecycleBackendProof -and -not $LocalMvpRouteTicketFlow -and -not $LocalMvpRouteServerOrderFlow -and -not $LocalMvpRouteServerCancelFlow)) {
     if (-not $env:EXPO_PUBLIC_API_KEY) {
       $env:EXPO_PUBLIC_API_KEY = "pk_test_mobile_harness"
     }
@@ -570,7 +571,7 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerPortfolioFixture=1"
   } elseif ($ServerLiveDetailBackendProof) {
     $encodedSlug = [uri]::EscapeDataString($ServerEventSlug)
-    if ($LocalMvpRouteServerOrderFlow) {
+    if ($LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow) {
       $encodedApiKey = [uri]::EscapeDataString($env:EXPO_PUBLIC_API_KEY)
       "exp://${ExpoHost}:$Port/--/?forceResetState=1&forceBackendEventSlug=$encodedSlug&apiKey=$encodedApiKey"
     } else {
@@ -665,7 +666,7 @@ try {
     @("Game Lines", "Player Props", "Best bid", "Best ask", "Spread")
   } elseif ($EventDetailProviderRouteStatusProof) {
     @("Game Lines", "Player Props", "event-detail-live-data-inline", "live-data-source-polymarket-gamma")
-  } elseif ($LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow) {
+  } elseif ($LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow) {
     @("EL-A Provider Breadth World Cup Live", "event-detail-live-data-inline", "live-data-source-polymarket-gamma")
   } elseif ($EventDetailVisibleLimitLifecycleBackendProof) {
     @("EL-A Provider Breadth World Cup Live", "Game Lines", "Best bid", "Best ask")
@@ -4385,7 +4386,20 @@ try {
     }
 
     if ($LocalMvpSimpleTradeFlow) {
-      if ($LocalMvpRouteServerOrderFlow) {
+      if ($LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow) {
+        $mvpRouteServerCycle = if ($LocalMvpRouteServerCancelFlow) { "EW" } else { "EV" }
+        $mvpRouteServerScenario = if ($LocalMvpRouteServerCancelFlow) {
+          "Local MVP Android route-backed server fake-token order cancel/history flow with orderbook hidden by default"
+        } else {
+          "Local MVP Android route-backed server fake-token order flow with orderbook hidden by default"
+        }
+        $mvpRouteServerScript = if ($LocalMvpRouteServerCancelFlow) { "local-mvp-route-server-cancel-proof.ps1" } else { "local-mvp-route-server-order-proof.ps1" }
+        $mvpRouteServerProofName = if ($LocalMvpRouteServerCancelFlow) {
+          "cycle-EW-local-mvp-route-server-cancel-flow-proof.json"
+        } else {
+          "cycle-EV-local-mvp-route-server-order-flow-proof.json"
+        }
+        $mvpRouteServerPrefix = "cycle-$mvpRouteServerCycle-holiwyn-route-server-mvp"
         $mvpHiddenOrderBookExpected = @(
           "event-detail-top-order-book",
           "event-detail-chart-open-book",
@@ -4396,8 +4410,8 @@ try {
           "Route depth"
         )
 
-        Save-Screenshot -Name "cycle-EV-holiwyn-route-server-mvp-top.png"
-        $mvpRouteTopHierarchy = Save-UiHierarchy -Name "cycle-EV-holiwyn-route-server-mvp-top.xml"
+        Save-Screenshot -Name "$mvpRouteServerPrefix-top.png"
+        $mvpRouteTopHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-top.xml"
         Assert-HierarchyContains -Path $mvpRouteTopHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "event-detail-chart-route-state", "live-data-source-polymarket-gamma")
         Assert-HierarchyDoesNotContain -Path $mvpRouteTopHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
@@ -4421,7 +4435,7 @@ try {
           $swipe = $mvpRouteLineSwipes[$attempt]
           & $adb -s $Device shell input swipe $swipe.x1 $swipe.y1 $swipe.x2 $swipe.y2 $swipe.ms | Out-Null
           Start-Sleep -Seconds 1
-          $attemptHierarchy = Save-UiHierarchy -Name "cycle-EV-holiwyn-route-server-mvp-line-markets-attempt-$($attempt + 1).xml"
+          $attemptHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-line-markets-attempt-$($attempt + 1).xml"
           $attemptXml = Get-Content -Raw -Path $attemptHierarchy
           $attemptPassed = $true
           foreach ($expectedValue in $mvpRouteLineExpected) {
@@ -4436,37 +4450,37 @@ try {
           }
         }
         if (-not $mvpRouteLineHierarchy) {
-          Save-Screenshot -Name "cycle-EV-holiwyn-route-server-mvp-line-markets.png"
-          $mvpRouteLineHierarchy = Save-UiHierarchy -Name "cycle-EV-holiwyn-route-server-mvp-line-markets.xml"
+          Save-Screenshot -Name "$mvpRouteServerPrefix-line-markets.png"
+          $mvpRouteLineHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-line-markets.xml"
         } else {
-          Save-Screenshot -Name "cycle-EV-holiwyn-route-server-mvp-line-markets.png"
-          $mvpRouteLineHierarchy = Save-UiHierarchy -Name "cycle-EV-holiwyn-route-server-mvp-line-markets.xml"
+          Save-Screenshot -Name "$mvpRouteServerPrefix-line-markets.png"
+          $mvpRouteLineHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-line-markets.xml"
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
         Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
         Invoke-TapHierarchyNode -Path $mvpRouteLineHierarchy -Identifier "event-detail-outcome-spread-spread-yes"
         Start-Sleep -Seconds 1
-        Save-Screenshot -Name "cycle-EV-holiwyn-route-server-mvp-spread-ticket.png"
-        $mvpRouteSpreadTicketHierarchy = Save-UiHierarchy -Name "cycle-EV-holiwyn-route-server-mvp-spread-ticket.xml"
+        Save-Screenshot -Name "$mvpRouteServerPrefix-spread-ticket.png"
+        $mvpRouteSpreadTicketHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-spread-ticket.xml"
         Assert-HierarchyContains -Path $mvpRouteSpreadTicketHierarchy -Expected @("trade-ticket", "ticket-market-type-spread", "ticket-line-1.5", "ticket-period-Reg. Time", "provider-source-polymarket", "provider-token-token-el-a-spread-home", "Choose an amount")
         Assert-HierarchyDoesNotContain -Path $mvpRouteSpreadTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
         Invoke-TapHierarchyNode -Path $mvpRouteSpreadTicketHierarchy -Identifier "ticket-preset-10"
         Start-Sleep -Milliseconds 500
-        $mvpRouteSpreadAmount10Hierarchy = Save-UiHierarchy -Name "cycle-EV-holiwyn-route-server-mvp-spread-ticket-amount-10.xml"
+        $mvpRouteSpreadAmount10Hierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-spread-ticket-amount-10.xml"
         Invoke-TapHierarchyNode -Path $mvpRouteSpreadAmount10Hierarchy -Identifier "ticket-preset-10"
         Start-Sleep -Milliseconds 500
-        $mvpRouteSpreadAmount20Hierarchy = Save-UiHierarchy -Name "cycle-EV-holiwyn-route-server-mvp-spread-ticket-amount-20.xml"
+        $mvpRouteSpreadAmount20Hierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-spread-ticket-amount-20.xml"
         Invoke-TapHierarchyNode -Path $mvpRouteSpreadAmount20Hierarchy -Identifier "ticket-preset-5"
         Start-Sleep -Seconds 1
-        Save-Screenshot -Name "cycle-EV-holiwyn-route-server-mvp-spread-ticket-ready.png"
-        $mvpRouteSpreadReadyHierarchy = Save-UiHierarchy -Name "cycle-EV-holiwyn-route-server-mvp-spread-ticket-ready.xml"
+        Save-Screenshot -Name "$mvpRouteServerPrefix-spread-ticket-ready.png"
+        $mvpRouteSpreadReadyHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-spread-ticket-ready.xml"
         Assert-HierarchyContains -Path $mvpRouteSpreadReadyHierarchy -Expected @('$25', "Swipe up to buy", "place-mock-order", "ticket-market-type-spread", "ticket-line-1.5", "provider-source-polymarket")
         Assert-HierarchyDoesNotContain -Path $mvpRouteSpreadReadyHierarchy -Unexpected $mvpHiddenOrderBookExpected
         Invoke-TapHierarchyNode -Path $mvpRouteSpreadReadyHierarchy -Identifier "place-mock-order"
         Start-Sleep -Seconds 5
-        Save-Screenshot -Name "cycle-EV-holiwyn-route-server-mvp-portfolio.png"
-        $mvpRoutePortfolioHierarchy = Save-UiHierarchy -Name "cycle-EV-holiwyn-route-server-mvp-portfolio.xml"
+        Save-Screenshot -Name "$mvpRouteServerPrefix-portfolio.png"
+        $mvpRoutePortfolioHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-portfolio.xml"
         Assert-HierarchyContains -Path $mvpRoutePortfolioHierarchy -Expected @(
           "Portfolio",
           "Server portfolio synced",
@@ -4483,10 +4497,20 @@ try {
         )
         Assert-HierarchyDoesNotContain -Path $mvpRoutePortfolioHierarchy -Unexpected @("event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth")
 
+        $mvpRouteCanceledHierarchy = $null
+        if ($LocalMvpRouteServerCancelFlow) {
+          Assert-HierarchyContains -Path $mvpRoutePortfolioHierarchy -Expected @("Cancel", "cancel-open-order-")
+          Invoke-TapHierarchyNode -Path $mvpRoutePortfolioHierarchy -Identifier "cancel-open-order-" -StartsWith
+          Wait-HierarchyContains -Name "$mvpRouteServerPrefix-portfolio-canceled.xml" -Expected @("Portfolio", "Server portfolio synced", "Recent activity", "1", "Canceled", "latest-activity-card", "activity-canceled", "status-canceled", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-period-Reg. Time", "portfolio-provider-source-polymarket", "portfolio-provider-token-token-el-a-spread-home") -Attempts 14 -DelaySeconds 2 | Out-Null
+          Save-Screenshot -Name "$mvpRouteServerPrefix-portfolio-canceled.png"
+          $mvpRouteCanceledHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-portfolio-canceled.xml"
+          Assert-HierarchyDoesNotContain -Path $mvpRouteCanceledHierarchy -Unexpected @("event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth")
+        }
+
         $proof = [ordered]@{
-          cycle = "EV"
-          scenario = "Local MVP Android route-backed server fake-token order flow with orderbook hidden by default"
-          command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/local-mvp-route-server-order-proof.ps1 -Port $Port -BackendBaseUrl $BackendBaseUrl -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir"
+          cycle = $mvpRouteServerCycle
+          scenario = $mvpRouteServerScenario
+          command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/$mvpRouteServerScript -Port $Port -BackendBaseUrl $BackendBaseUrl -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir"
           backendBaseUrl = $BackendBaseUrl
           serverEventSlug = $ServerEventSlug
           orderbookDebug = if ($env:EXPO_PUBLIC_SHOW_ORDERBOOK) { $env:EXPO_PUBLIC_SHOW_ORDERBOOK } else { "unset" }
@@ -4499,17 +4523,24 @@ try {
             retailRows = @("spread row uses ticket-source-backend-line-market", "provider-source-polymarket visible", "no default Book/orderbook entry points")
             ticket = @("simple ticket opens from route-backed spread", "provider token/source visible", "server fake-token buy uses swipe-style submit")
             serverPortfolio = @("POST /api/orders succeeds through mobile", "Portfolio sync returns server open order", "selected line/provider identity preserved")
+            serverHistory = if ($LocalMvpRouteServerCancelFlow) { @("DELETE /api/orders/:id succeeds through mobile", "Portfolio sync returns canceled activity", "activity/history preserves selected line/provider identity") } else { @("not in scope") }
           }
           artifacts = @(
-            "docs/mobile/screenshots/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-holiwyn-route-server-mvp-line-markets.png",
-            "docs/mobile/harness/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-holiwyn-route-server-mvp-line-markets.xml",
-            "docs/mobile/screenshots/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-holiwyn-route-server-mvp-spread-ticket-ready.png",
-            "docs/mobile/harness/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-holiwyn-route-server-mvp-spread-ticket-ready.xml",
-            "docs/mobile/screenshots/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-holiwyn-route-server-mvp-portfolio.png",
-            "docs/mobile/harness/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-holiwyn-route-server-mvp-portfolio.xml"
+            "$OutputDir/$mvpRouteServerPrefix-line-markets.png",
+            "$HierarchyOutputDir/$mvpRouteServerPrefix-line-markets.xml",
+            "$OutputDir/$mvpRouteServerPrefix-spread-ticket-ready.png",
+            "$HierarchyOutputDir/$mvpRouteServerPrefix-spread-ticket-ready.xml",
+            "$OutputDir/$mvpRouteServerPrefix-portfolio.png",
+            "$HierarchyOutputDir/$mvpRouteServerPrefix-portfolio.xml"
           )
         }
-        $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-EV-local-mvp-route-server-order-flow-proof.json"
+        if ($LocalMvpRouteServerCancelFlow) {
+          $proof.artifacts += @(
+            "$OutputDir/$mvpRouteServerPrefix-portfolio-canceled.png",
+            "$HierarchyOutputDir/$mvpRouteServerPrefix-portfolio-canceled.xml"
+          )
+        }
+        $proofPath = Join-Path $ResolvedHierarchyOutputDir $mvpRouteServerProofName
         $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
         Write-Host "Proof summary: $proofPath"
         return

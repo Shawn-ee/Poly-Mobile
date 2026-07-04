@@ -3253,6 +3253,37 @@ Future migration concern:
 
 - Before production-like trading, persist immutable normalized selection snapshots on order/fill/trade lifecycle rows instead of relying only on request JSON plus current market/outcome metadata.
 
+## Cycle EW - Route-Backed Server Cancel And Activity Flow
+
+Closed or narrowed:
+
+- Server cancel is now proven from the Android Portfolio UI for the selected route-backed spread order.
+- `/api/portfolio/history` canceled-order data maps into Android-visible Portfolio activity with selected spread line, period, provider source, and token identity.
+- The Local MVP user journey now covers open order and canceled activity, not only order submission.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Filled trade/recent trade lifecycle for route-backed retail tickets.
+- Totals/team-total cancel/history breadth.
+- Production active-event provider mappings that avoid disposable proof fixtures.
+
+Schema mismatch:
+
+- No schema migration was required for EW. Existing order request JSON and portfolio/history selection serialization carry the selected spread identity.
+
+Route mismatch:
+
+- `/api/orders/:id`, `/api/portfolio`, and `/api/portfolio/history` are enough for the selected cancel/activity path.
+
+Temporary mock/static data:
+
+- No arbitrary frontend data was added.
+- The disposable backend event is proof data shaped like the intended route contract, not UI-only local state.
+
+Future migration concern:
+
+- Filled trade history should use immutable normalized selection snapshots before production-like trading depends on route-backed line lifecycle reconstruction.
+
 ## Cycle EB-A - Live Detail Selected-Market Selector Contract
 
 Closed or narrowed:

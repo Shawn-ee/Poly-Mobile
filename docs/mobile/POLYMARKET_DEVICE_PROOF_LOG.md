@@ -181,3 +181,32 @@ Pass for selected route-backed spread server-order flow with orderbook hidden by
 
 Remaining gaps:
 Totals/team-total server-order breadth, production active-event provider breadth, fresh S23 retail ticket recapture, and history/activity proof beyond open order.
+
+### 2026-07-04 - Cycle EW - Route-backed server cancel/activity Local MVP flow
+
+Reference device:
+Product steering plus existing Polymarket sports audits. Fresh S23 proof was not required for this local cancel/activity contract gate.
+
+Holiwyn device:
+Samsung tablet / Holiwyn Expo Go / local Expo port `8264`.
+
+Holiwyn app mode:
+`EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE=server`, API key created by mobile dev credential helper, backend `http://172.16.200.14:3002`.
+
+Holiwyn actions:
+Opened disposable route-backed live event, selected spread line, submitted `$25` server-mode fake-token buy, opened Portfolio, tapped Cancel, and verified canceled activity/history.
+
+Holiwyn evidence:
+- `docs/mobile/harness/cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-local-mvp-route-server-cancel-flow-proof.json`
+- `docs/mobile/harness/cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-route-backed-retail-event.json`
+- `docs/mobile/screenshots/cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-holiwyn-route-server-mvp-portfolio.png`
+- `docs/mobile/screenshots/cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-holiwyn-route-server-mvp-portfolio-canceled.png`
+
+Smoke/tests:
+PowerShell parser checks and tablet proof wrapper passed.
+
+Result:
+Pass for selected route-backed spread server cancel/activity flow with orderbook hidden by default.
+
+Remaining gaps:
+Filled trade history, totals/team-total lifecycle breadth, production active-event provider breadth, and fresh S23 retail lifecycle recapture.

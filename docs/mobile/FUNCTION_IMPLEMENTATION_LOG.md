@@ -4744,3 +4744,48 @@ Known limitations:
 
 - EV proves one route-backed provider spread server order. Totals and team-total server-order breadth remain follow-up work.
 - The local backend must run with internal trading beta enabled and kill switch disabled for this proof path.
+
+## Cycle EW - Route-Backed Server Cancel And Activity Flow
+
+Feature/page worked on:
+
+- Mobile Portfolio Local MVP server cancel and activity/history proof for a route-backed spread ticket.
+
+Frontend/harness files touched:
+
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/scripts/local-mvp-route-server-cancel-proof.ps1`
+
+Important functions/services touched:
+
+- Existing mobile cancel/order/history services were not changed. EW proves the current mobile `cancel-open-order-*` control calls server cancel in `EXPO_PUBLIC_ORDER_MODE=server` and then refreshes Portfolio/history.
+- `smoke.ps1` route-backed server proof now supports EV order-only and EW cancel/history variants.
+
+User interactions supported/proven:
+
+- Open backend live-detail event on Samsung tablet through `forceBackendEventSlug`.
+- Open a provider-backed spread ticket and submit a `$25` server fake-token buy.
+- See the server open order in Portfolio.
+- Tap Cancel on the server open order.
+- See `latest-activity-card`, canceled status, activity count, and selected spread/provider identity after server history sync.
+- Default Book/orderbook UI stays hidden.
+
+Validation:
+
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+- PowerShell parser check for `mobile/scripts/local-mvp-route-server-cancel-proof.ps1`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/local-mvp-route-server-cancel-proof.ps1 -Port 8264 -BackendBaseUrl http://172.16.200.14:3002`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-route-backed-retail-event.json`
+- `docs/mobile/harness/cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-local-mvp-route-server-cancel-flow-proof.json`
+- `docs/mobile/harness/cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-holiwyn-route-server-mvp-*.xml`
+- `docs/mobile/screenshots/cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-holiwyn-route-server-mvp-*.png`
+
+Known limitations:
+
+- EW proves canceled activity/history, not a filled trade history path.
+- The local backend must run with internal trading beta enabled and kill switch disabled for this proof path.

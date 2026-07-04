@@ -390,3 +390,11 @@ For every UI element or interaction, answer:
 - Samsung tablet proof passes for route-backed event load, provider-backed spread row, simple spread ticket, server-mode fake-token buy through `/api/orders`, and `/api/portfolio` server sync showing the open order.
 - Default Book/orderbook UI remains hidden and is not a blocker for Local MVP completion.
 - Remaining P1: totals/team-total server-order breadth, active production Polymarket provider breadth, route-backed history/activity beyond open order, and fresh S23 retail ticket recapture when gates allow.
+
+## Cycle EW Gap Tracker Update
+
+- PM-GAP-092 is opened and verified for the selected Local MVP route-backed server cancel/activity flow.
+- EW closes the P0 gap left by EV where the server-order path showed an open order but did not prove Android-visible activity/history after a lifecycle action.
+- Samsung tablet proof passes for route-backed server order, visible Cancel control, server cancel through `/api/orders/:id`, Portfolio/history refresh, and canceled activity preserving spread/provider identity.
+- Default Book/orderbook UI remains hidden and is not a blocker for Local MVP completion.
+- Remaining P1: filled trade history, totals/team-total lifecycle breadth, active production Polymarket provider breadth, and fresh S23 retail lifecycle recapture when gates allow.

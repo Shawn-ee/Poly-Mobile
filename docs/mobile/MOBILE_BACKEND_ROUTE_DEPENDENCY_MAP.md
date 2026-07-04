@@ -1449,3 +1449,17 @@ Cycle EV implementation notes:
 - Tablet proof slug: `mobile-el-a-provider-breadth-5f9e2d3f`.
 - Mobile launched against `EXPO_PUBLIC_MARKET_DATA_MODE=server` and `EXPO_PUBLIC_ORDER_MODE=server`, proving server market data plus server fake-token order placement.
 - The proof uses LAN backend URL `http://172.16.200.14:3002` because wireless tablet ADB reverse/localhost is unreliable for this device.
+
+## Cycle EW - Route-Backed Server Cancel And Activity Flow
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Route-backed server order cancel | `/api/orders/:id` | DELETE | Mobile dev API key with order cancel scope; backend local flags `INTERNAL_TRADING_BETA_ENABLED=true` and `TRADING_KILL_SWITCH=false` | Order id from server open order row | Cancel response status; mobile then refreshes Portfolio state | `Order`, `ApiOrderRequest`, `Market`, `Outcome`, user balance/locked funds | None. EW runs with `EXPO_PUBLIC_ORDER_MODE=server`. | Filled lifecycle for this retail path remains follow-up. |
+| Server Portfolio/history sync after cancel | `/api/portfolio`, `/api/portfolio/history` | GET | Same mobile dev API key with account read scope | None | `openOrders[]` count drops, `canceledOrders[]` maps into mobile activity with selected spread/provider identity | `Order`, `ApiOrderRequest`, `Market`, `Outcome` | None. EW requires `Server portfolio synced` and Android-visible canceled activity. | Recent filled trade history is not covered in EW. |
+
+Cycle EW implementation notes:
+
+- The backend route event was created by `scripts/prove_mobile_el_a_provider_breadth.ts` into `docs/mobile/harness/cycle-EW-local-mvp-route-server-cancel-flow/cycle-EW-route-backed-retail-event.json`.
+- Tablet proof slug: `mobile-el-a-provider-breadth-35441a1a`.
+- Mobile launched against `EXPO_PUBLIC_MARKET_DATA_MODE=server` and `EXPO_PUBLIC_ORDER_MODE=server`, then used the visible Portfolio Cancel control to hit server cancel.
+- The proof uses LAN backend URL `http://172.16.200.14:3002`.
