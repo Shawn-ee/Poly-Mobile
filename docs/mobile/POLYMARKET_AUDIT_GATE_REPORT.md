@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Live football / World Cup game detail DQ-C reference audit | Cycle DQ-C | Reference criteria complete; Holiwyn parity not passed | Not evaluated against Holiwyn by Agent C | P1 ticket amount/swipe confirmation recapture; P1 Book selector proof across families; P2 visual/motion polish | `docs/mobile/audits/live-football-world-cup-dq-c.md`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-03-world-cup-game-top.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-12-top-book-action.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-17-share-sheet.png` | Not run by Agent C in this docs/reference worktree | Fresh S23 official app audit captured Canada vs Morocco World Cup detail, chart press, Chat tab, line selector, spread/totals/halves, orderbook/depth, market selector, location-gated ticket, share sheet, and scroll behavior. |
 | Live event detail DN super-round criteria | Cycle DN audit over Cycle DM evidence | Criteria pass for current evidence; final implementation still needs Agent A/B device proof | 0 documented | P1 exact line-family provider parity; P1 active filled-order/history lifecycle; P1 scheduled refresh; P2 visual density/motion | `docs/mobile/audits/live-event-detail-super-round-dm.md`; `docs/mobile/reference/screenshots/cycle-CW-polymarket-s23-window.xml`; `docs/mobile/harness/cycle-current-mobile-polymarket-first-provider-path.json`; `docs/mobile/harness/cycle-current-mobile-polymarket-chart-history.json`; `docs/mobile/harness/cycle-current-mobile-provider-token-lifecycle.json` | `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book-ticket.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book-ticket.png` | Agent C did not run fresh device control. The audit converts existing Cycle DK-DM proof into explicit DN pass/fail criteria for chart, line selectors, orderbook/depth, Buy/Sell ticket, stale/unavailable states, and provider identity carry-through. |
 | OpticOdds line ingestion contract | Cycle DH | Pass for optional backend enrichment contract; partial for live line-market provider parity | 0 | P1 reviewed per-line provider identity; P1 provider depth/orderbook for lines; optional `OPTIC_ODDS_API_KEY` if external enrichment is desired | Cycle CW/CX/CY/DG Colombia vs Ghana Polymarket reference, exact Gamma fixture metadata, and official OpticOdds `/fixtures/odds` docs | Backend: `docs/mobile/harness/cycle-current-mobile-optic-odds-line-ingestion-contract.json`; Holiwyn regression: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: provider refresh has an optional `optic_odds` enrichment lane, and the normalizer maps official-response-shaped spread/total/team-total odds into `ReferenceQuoteSnapshot` rows. Polymarket Gamma/CLOB remains the default parity source. |
 | Provider fixture metadata contract | Cycle DG | Pass for provider fixture identity/data contract; partial for actual line-market provider parity | 0 | P1 real OpticOdds/API ingestion for spreads/totals/team totals/halves/corners/correct-score; P1 importer persistence for every fixture | Cycle CW/CX/CY Colombia vs Ghana Polymarket reference plus exact Gamma event `fifwc-col-gha-2026-07-03` with `eventMetadata` fixture IDs | Backend: `docs/mobile/harness/cycle-current-mobile-provider-fixture-metadata-contract.json`; Holiwyn regression: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: Holiwyn now exposes real provider fixture/team identity in readiness, including `opticOddsFixtureId`, `opticOddsGameId`, team provider IDs, and a line-market source contract. This stops the loop from treating line-market discovery as broad search, without claiming line odds are ingested. |
@@ -1293,6 +1294,54 @@ Remaining P1/P2 gaps:
 
 - Repeat filled lifecycle proof against a currently active real Polymarket-backed market when available.
 - Normalize immutable provider selection snapshots on order/trade records before production.
+
+## Cycle DQ-C Live Football / World Cup Reference Audit
+
+Result: Reference criteria complete; Holiwyn parity not passed or marked complete.
+
+Reference device:
+
+- Samsung S23, official Polymarket Android app.
+
+Reference event:
+
+- Canada vs Morocco World Cup game page, share URL observed as `https://polymarket.us/events/fwc-can-mar-2026-07-04`.
+
+Reference evidence:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-03-world-cup-game-top.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-04-chart-press.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-05-chat-tab.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-11-ticket-sheet-settled.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-12-top-book-action.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-13-orderbook-market-selector.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-16-markets-scroll-2.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-17-share-sheet.png`
+- Matching XML files in `docs/mobile/harness/cycle-DQ-C-polymarket-reference/`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LD-DQ-C-P0-01 | P0 | Pass for reference | Fresh S23 screenshots/XML captured under cycle-DQ-C folders. | None |
+| LD-DQ-C-P0-02 | P0 | Criteria added; Holiwyn not evaluated | Game top and scroll captures show full page hierarchy and pinned compact context. | Agent A/B must run Holiwyn proof before parity claim. |
+| LD-DQ-C-P0-03 | P0 | Criteria added | Chart long press preserved page context and did not show a visible tooltip. | Holiwyn chart must be interactive/context-preserving, not static. |
+| LD-DQ-C-P0-04 | P0 | Criteria added | Spread selector changed `1.5` to `2.5`, changed subject to CAN, and changed prices. | Couple team/subject, line, period, side, odds, Book, and ticket state. |
+| LD-DQ-C-P0-05 | P0 | Criteria added | Order Book showed Yes/No tabs, Price/Shares/Value, asks, bids, spread, selector, and setting. | Prove full ladder and selector parity in Holiwyn. |
+| LD-DQ-C-P0-06 | P0 | Criteria added | Chat, Book, Share, line selector, period pills, and row taps were exercised. | Every equivalent Holiwyn control must work or be explicitly gated. |
+| LD-DQ-C-P0-07 | P0 | Criteria added | Scroll captures show compact match context persists while groups scroll. | Prove scroll state and selected line state persistence. |
+| LD-DQ-C-P1-01 | P1 | Open | Ticket path reaches location gate only. | Recapture unblocked amount/swipe confirmation later. |
+| LD-DQ-C-P1-02 | P1 | Open | Book selector exposes Moneyline and Spreads entries. | Prove Holiwyn selector across visible families/periods. |
+| LD-DQ-C-P2-01 | P2 | Open | Native density/motion documented in reference screenshots. | Run visual/motion QA after structural parity. |
+
+Decision:
+
+- Pass/fail: Pass for reference criteria capture only.
+- Unresolved P0 gaps: new Holiwyn-facing P0 proof gaps are tracked in `POLYMARKET_PARITY_GAP_TRACKER.md`; Agent C did not evaluate the implementation.
+- Remaining P1/P2 gaps: ticket amount/swipe recapture after location gate, Book selector coverage, visual/motion polish.
+- Next cycle required: yes, implementation/device agents must run Holiwyn proof against DQ-C criteria before any parity-complete claim.
 
 Use this template for every feature gate:
 
