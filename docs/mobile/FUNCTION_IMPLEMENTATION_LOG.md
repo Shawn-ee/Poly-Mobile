@@ -2,6 +2,60 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle AX - Compact Live Detail Route And Route-Backed Depth Proof
+
+Feature/page worked on:
+
+- PM-GAP-067 compact mobile live event detail contract for the live game page.
+- Route-backed Samsung tablet proof for the live game order book and selected-outcome ticket carry-through.
+
+Frontend components touched:
+
+- `mobile/App.tsx`
+- `mobile/src/api.ts`
+- `mobile/src/__tests__/api.test.ts`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/package.json`
+
+Backend components touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/app/api/mobile/events/[slug]/live-detail/route.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+
+Important functions/services touched:
+
+- `selectCompactLiveMarkets()` chooses a compact, mobile-ready market set instead of returning the full event payload.
+- `serializeMobileLiveEventDetail()` emits event summary, live stats, snapshot-backed chart history, compact market groups, primary-market orderbook depth, and a `contract` proof block.
+- `PolyApi.getEvent()` now tries `/api/mobile/events/:slug/live-detail` first and falls back to `/api/events/:slug`.
+- `handleLaunchUrl()` now supports `forceBackendEventSlug` without being cleared by the generic reset timer.
+
+User interactions supported:
+
+- Tablet proof opens a backend live World Cup game page directly from a launch URL.
+- The game page shows route-backed depth badges (`orderbook-source-orderbook-route`, `orderbook-status-ready`).
+- Tapping the order book Buy action opens a ticket that preserves the backend market and selected outcome.
+
+State transitions:
+
+- Launch URL -> `api.getEvent(slug)` -> compact mobile route -> `normalizeEventDetail()` -> selected live event -> order book overlay -> ticket state.
+- Backend route -> primary orderbook snapshot -> embedded market `orderbookDepth[]` -> EventDetail depth summary and order book rows.
+
+Known limitations:
+
+- Real external football provider ingestion remains missing.
+- Live stats are still optional event metadata, not a provider-owned route/schema.
+- The compact route currently embeds route-backed orderbook depth only for the selected primary market to keep the mobile payload fast.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-event-detail.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/api.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:server-live-order-book`
+
 ## Cycle AU - Live Chart Route States
 
 Feature/page worked on:

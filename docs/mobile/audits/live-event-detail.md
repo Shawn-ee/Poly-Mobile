@@ -1,6 +1,6 @@
 # Live Event Detail Audit
 
-Status: Cycle AU backend/chart hydration in progress. Cycle AN passed structural live event detail UI with backend-shaped fixture data and tablet proof; Cycle AO added the real `/api/events/:slug` contract for market identity, line identity, compact depth, and optional chart/live-stat arrays. Cycle AQ sources embedded chart history from `MarketOutcomeSnapshot` rows when available and preserves depth outcome identity in mobile. Cycle AR adds the dedicated `/api/markets/:marketId/chart?range=...` route/client contract. Cycle AS wires EventDetail to consume that chart route in server mode. Cycle AT adds deterministic `MarketOutcomeSnapshot` seeding for local/server proof. Cycle AU exposes chart loading/empty/error route states in the game chart. This is still not full backend parity because real provider ingestion, server-hydrated device proof, richer delayed/suspended states, and full depth routes remain open.
+Status: Cycle AX passed the compact mobile live-detail route and route-backed orderbook-depth tablet proof. Cycle AN passed structural live event detail UI with backend-shaped fixture data and tablet proof; Cycle AO added the real `/api/events/:slug` contract for market identity, line identity, compact depth, and optional chart/live-stat arrays. Cycle AQ sources embedded chart history from `MarketOutcomeSnapshot` rows when available and preserves depth outcome identity in mobile. Cycle AR adds the dedicated `/api/markets/:marketId/chart?range=...` route/client contract. Cycle AS wires EventDetail to consume that chart route in server mode. Cycle AT adds deterministic `MarketOutcomeSnapshot` seeding for local/server proof. Cycle AU exposes chart loading/empty/error route states in the game chart. Cycle AW seeded route-readable orderbook depth. This is still not full backend parity because real provider ingestion, richer delayed/suspended states, full event-wide depth hydration, and provider-owned live stats remain open.
 
 ## Scope
 
@@ -9,6 +9,46 @@ Status: Cycle AU backend/chart hydration in progress. Cycle AN passed structural
 - Holiwyn proof device: Samsung tablet running Holiwyn through Expo Go.
 - Cycle branch name: `mobile/cycle-AN-saved-watchlist-parity`, re-scoped honestly to live event detail after product steering changed.
 - Out of scope: deposit, location verification, notifications, non-football live markets, World Cup informational ad/detail pages.
+
+## Cycle AX Compact Route Audit
+
+Result: Pass for PM-GAP-067 compact mobile live-detail route and route-backed primary orderbook proof.
+
+What became materially closer to Polymarket:
+
+- The live football game page no longer depends on a heavy full-event payload or fallback-only depth for proof.
+- Holiwyn now has a compact mobile route that delivers live game context, market groups, chart snapshots, and route-backed primary orderbook depth in the shape the app consumes.
+- Samsung tablet proof opens the backend live game, opens the route-backed order book, taps Buy, and proves the ticket carries the selected backend outcome.
+
+Acceptance criteria:
+
+| ID | Priority | Criterion | Audit method | Result |
+| --- | --- | --- | --- | --- |
+| LED-AX-P0-01 | P0 | `/api/mobile/events/:slug/live-detail` returns a mobile-sized payload with stable event, market, outcome, line, chart, depth, and contract fields. | HTTP route proof and backend unit test | Pass |
+| LED-AX-P0-02 | P0 | Mobile `getEvent()` uses the compact route first and preserves legacy fallback. | Mobile API unit test | Pass |
+| LED-AX-P0-03 | P0 | Tablet can deep-link into a backend live event without being reset back to Home. | Tablet smoke XML/screenshot | Pass |
+| LED-AX-P0-04 | P0 | EventDetail order book displays route-backed depth state and primary best bid/ask/depth rows. | Tablet smoke XML/screenshot | Pass |
+| LED-AX-P0-05 | P0 | Tapping Buy from the route-backed order book opens a ticket preserving market and selected outcome identity. | Tablet smoke XML/screenshot | Pass |
+| LED-AX-P1-01 | P1 | Real provider live stats, stale/suspended states, and event-wide depth are backed by durable provider routes/schema. | Backend contract audit | Open |
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-current-mobile-live-detail-compact-route.json`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book-ticket.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book-ticket.xml`
+- Proof command: `cmd /c npm.cmd run smoke:tablet:server-live-order-book`
+
+Unresolved P0 gaps: 0 for this compact route/depth proof scope.
+
+Remaining P1/P2 gaps:
+
+- Real provider ingestion for live football stats and chart snapshots.
+- Event-wide or on-demand route-backed depth for every compact market group.
+- Richer delayed, suspended, stale, and unavailable market states.
 
 ## Reference Audit
 

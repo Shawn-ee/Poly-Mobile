@@ -2,6 +2,39 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle AX - Compact Live Detail Route And Route-Backed Depth Proof
+
+Fields now provided or wired:
+
+- `/api/mobile/events/:slug/live-detail` provides a compact mobile live-detail payload with backend-style market/outcome ids, market group fields, line/period fields, primary orderbook depth, chart history, live stats, and contract metadata.
+- `PolyApi.getEvent()` uses the compact route first and preserves legacy route fallback.
+- Samsung tablet proof confirms `orderbook-source-orderbook-route`, `orderbook-status-ready`, depth rows, and ticket carry-through from a route-backed backend event.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real external live-football provider ingestion for live stats and chart snapshots.
+- Provider/source metadata for stale, delayed, suspended, or unavailable markets.
+- Event-wide or on-demand depth hydration for every market group and line market, not only the primary market embedded in the compact route.
+
+Schema mismatch:
+
+- `MarketOutcomeSnapshot` still lacks provider source id, live/delayed flag, aggregation bucket, and availability reason.
+- Live stats are still stored/serialized as optional event metadata instead of normalized provider-owned rows.
+
+Route mismatch:
+
+- The compact route now exists and is proven on device, but it is read-only and optimized for the first game-page view.
+- Deep orderbook views can still use `/api/orderbook/:marketId/book`; future UI should fetch additional market depth on demand when the selected market changes.
+
+Temporary mock/static data:
+
+- Local fallback fixtures remain, but this cycle's proven game page path uses the compact backend route and seeded backend orderbook depth.
+
+Future migration concern:
+
+- When moving from Expo Go to dev build/APK, replace smoke-only launch flags with production-safe route restoration and explicit event-detail navigation.
+- Promote live stats and provider availability states into durable backend models before production real-money trading.
+
 ## Cycle AU - Live Chart Route States
 
 Fields now provided or wired:

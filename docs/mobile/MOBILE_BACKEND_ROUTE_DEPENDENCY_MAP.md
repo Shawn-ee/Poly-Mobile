@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle AX - Compact Live Detail Route And Route-Backed Depth Proof
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Compact live game detail | `/api/mobile/events/:slug/live-detail` through `PolyApi.getEvent()` compact-first fallback | GET | Optional for public viewing; bearer token may be sent by runtime client | None | `event.id`, `event.slug`, `event.title`, `event.status`, `event.startsAt`, `event.teams[]`, `event.liveStats`, `event.chartHistory[]`, `markets[]`, `marketGroupId`, `marketType`, `period`, `line`, `outcomes[]`, outcome `id`/`side`/`probability`/`bestBid`/`bestAsk`, primary-market `orderbookDepth[]`, and `contract` metadata | `Event`, `Market`, `Outcome`, `MarketOutcomeSnapshot`, open `Order` rows through `buildPublicOrderbookSnapshot()` | Falls back to legacy `/api/events/:slug` if compact route fails; local fixtures remain last-resort app fallback | Real provider ingestion, provider-owned live stats, event-wide depth hydration, and richer suspended/stale states remain missing. |
+| Live orderbook depth in game page | Embedded primary market `orderbookDepth[]` from the compact route | GET | Optional for viewing | None | `orderbookDepth[].outcomeId`, `side`, `price`, `shares`, `total`; EventDetail derives best bid/ask/spread and orderbook rows | `Order`, `Market`, `Outcome` | Existing fixture depth uses the same outcome-addressable shape | Full per-market depth on every compact market is intentionally not embedded yet; dedicated book route remains available for deeper views. |
+| Backend event launch proof | Expo deep link `forceBackendEventSlug=<slug>` then `PolyApi.getEvent(slug)` | Client launch -> GET | Optional viewing; server mode uses API base URL | None | Compact route result normalized into selected event/ticket state | Same as compact live detail route | If compact route fails, `PolyApi.getEvent()` falls back to legacy route | Production/native route restoration should be revisited when Holiwyn moves from Expo Go to dev build/APK. |
+
+Cycle AX implementation notes:
+
+- This cycle closes the repeated mobile payload/depth proof gap for PM-GAP-067: the tablet now proves route-backed live orderbook depth on the actual game page instead of only backend route tests.
+- The compact route avoids heavy quote fan-out by hydrating depth for the selected primary market and capping the market list to a mobile-sized subset.
+- Backend parity is still not complete until real live-football provider data populates live stats, chart history, and market availability states continuously.
+
 ## Cycle AU - Live Chart Route States
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
