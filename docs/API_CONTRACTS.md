@@ -50,6 +50,8 @@ Cycle FO changes only the ticket presentation. It does not change the order requ
 
 Cycle FP changes only the ticket modal presentation from bottom sheet to full-screen order surface. It does not change the order request body, Portfolio handoff, or backend route expectations.
 
+Cycle FQ changes only Portfolio presentation. The screen still consumes the same Portfolio state from local fake-token mode or server mode. A future real portfolio performance chart should add a route that returns time-series account value points for `1D`, `1W`, `1M`, and `All`; the current MVP chart is deterministic UI-only proof and does not change existing route contracts.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

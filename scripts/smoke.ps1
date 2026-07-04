@@ -5671,12 +5671,22 @@ try {
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio.png"
       $mvpPortfolioHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio.xml"
-      Assert-HierarchyContains -Path $mvpPortfolioHierarchy -Expected (@("Portfolio", "Open positions", "Recent activity", "1", "Order placed", "latest-order-card", "latest-activity-card", "position-card-", $mvpOrderLabel, "Mexico vs. Ecuador", "$mvpSideLabel - Filled shares", $mvpPastTense) + $mvpPortfolioExpected)
+      Assert-HierarchyContains -Path $mvpPortfolioHierarchy -Expected (@("Portfolio", "portfolio-profile-header", "portfolio-performance-chart", "portfolio-range-selector", "portfolio-deposit-placeholder", "portfolio-withdraw-placeholder", "portfolio-section-tabs", "Positions", "Orders", "History", "position-card-", "portfolio-display-label-MEX -2.5 1H", "Cost 25 USDT", "Cash out", "97% chance") + $mvpPortfolioExpected)
       Assert-HierarchyDoesNotContain -Path $mvpPortfolioHierarchy -Unexpected @("event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth")
+      Invoke-TapHierarchyNode -Path $mvpPortfolioHierarchy -Identifier "portfolio-tab-orders"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-orders.png"
+      $mvpPortfolioOrdersHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-orders.xml"
+      Assert-HierarchyContains -Path $mvpPortfolioOrdersHierarchy -Expected @("portfolio-no-open-orders", "No open orders", "portfolio-tab-orders")
+      Invoke-TapHierarchyNode -Path $mvpPortfolioOrdersHierarchy -Identifier "portfolio-tab-history"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-history.png"
+      $mvpPortfolioHistoryHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-history.xml"
+      Assert-HierarchyContains -Path $mvpPortfolioHistoryHierarchy -Expected (@("portfolio-tab-history", "activity-row-", "Mexico vs. Ecuador", $mvpPastTense) + $mvpPortfolioExpected)
 
       $proof = [ordered]@{
         cycle = $mvpCycle
-        scenario = "Local MVP Android $mvpSideLabel trade flow with orderbook hidden by default"
+        scenario = "Local MVP Android $mvpSideLabel trade flow with Polymarket-like Portfolio tabs"
         command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 $(if ($LocalMvpSellFlow) { '-LocalMvpSellFlow' } else { '-LocalMvpTradeFlow' }) -Port $Port -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir"
         orderbookDebug = if ($env:EXPO_PUBLIC_SHOW_ORDERBOOK) { $env:EXPO_PUBLIC_SHOW_ORDERBOOK } else { "unset" }
         result = "pass"
@@ -5684,7 +5694,7 @@ try {
           defaultEventDetail = @("chart", "contract rail", "game lines", "spread/totals selectors", "no visible Book/orderbook entry points")
           selectedLine = @("spread 2.5", "1st Half", "market/outcome identity preserved")
           simpleTicket = @("fake-token $($mvpSideLabel.ToLowerInvariant())", "visible order review", "line/period/shares/payout", "current probability price", $mvpSubmitText, "no visible Book/orderbook entry points")
-          portfolio = @("Order placed", "latest order", "latest activity", "position card", "line identity preserved")
+          portfolio = @("profile/value/chart header", "Positions tab position row", "Orders empty state", "History activity row", "line identity preserved")
         }
         artifacts = @(
           "docs/mobile/screenshots/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-market-lines.png",
@@ -5694,7 +5704,11 @@ try {
           "docs/mobile/screenshots/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-ticket-ready.png",
           "docs/mobile/harness/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-ticket-ready.xml",
           "docs/mobile/screenshots/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio.png",
-          "docs/mobile/harness/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio.xml"
+          "docs/mobile/harness/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio.xml",
+          "docs/mobile/screenshots/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-orders.png",
+          "docs/mobile/harness/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-orders.xml",
+          "docs/mobile/screenshots/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-history.png",
+          "docs/mobile/harness/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-history.xml"
         )
       }
       $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-$mvpCycle-local-mvp-trade-flow-proof.json"

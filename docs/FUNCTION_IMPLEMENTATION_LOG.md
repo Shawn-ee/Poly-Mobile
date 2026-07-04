@@ -35,3 +35,12 @@
 - User interactions supported: the order ticket now presents as a full-screen mobile order surface with no Event Detail content peeking behind it, while preserving close/settings, event/outcome header, amount keypad, Yes/No selector, presets, odds/balance line, and swipe-up submit.
 - State transitions: unchanged from Cycle FO. The modal presentation changed from bottom-sheet height to full-screen; `amount`, `side`, `activeContractSide`, details expansion, order error, and submit behavior remain local ticket state.
 - Known limitations: exact Polymarket blur/gradient transition polish remains P2; this cycle closes the P0 issue that the order page still looked like a partial sheet instead of a dedicated place-order page.
+
+## Cycle FQ - Portfolio Reference Layout
+
+- Feature/page: Portfolio.
+- Frontend components touched: `src/components/Portfolio.tsx`.
+- Important functions/services touched: no backend/provider service changes. Portfolio still consumes the existing balance, positions, open orders, latest order, and activity props populated by local fake-token state or server sync.
+- User interactions supported: profile/value header, performance chart, range selector, visual Deposit/Withdraw placeholders, Positions/Orders/History tabs, compact position rows, Cash out, plus/buy-more action, no-open-orders empty state, and simplified history rows.
+- State transitions: added local `activeTab` state for `positions`, `orders`, and `history`. Existing expanded row state and close/trade/cancel callbacks are preserved.
+- Known limitations: chart is a deterministic visual sparkline, not yet real portfolio history from backend. Deposit/Withdraw are visual placeholders only for MVP.
