@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Current game page chart touch and line selector | Cycle EB-C | Fail until proof; PM-GAP-079 opened while PM-GAP-073 EA pass remains intact | All EB sub-scope P0 criteria are unproven because this is a docs-only audit gate | P1 real provider-backed line families, chart selected-market switching, line lifecycle through Portfolio/history; P2 gesture/visual polish | Reused DQ-C S23 official Polymarket reference plus focused AD chart and Y line-selector references; gate: `docs/mobile/audits/cycle-eb-c-chart-line-selector-gate.md` | No new Holiwyn Android proof in EB-C. Required future path: `docs/mobile/harness/cycle-EB-integrated-chart-line-selector/cycle-EB-chart-line-selector-proof.json` plus screenshots/XML folders. | EB-C defines pass/fail criteria for chart before/after touch, no navigation/ticket side effects, inline Spread/Totals selector open/change, coupled line/period/subject/odds state, changed-line ticket carry-through, and changed-line Book target or explicit unavailable state. |
 | Live football / World Cup game page structure | Cycle DY/DZ reviewed by EA-C | Fail/partial; PM-GAP-073 remains open | 1 failed P0 plus open P0 same-run proof items | P1 ticket amount/swipe confirmation recapture remains location-gated; P2 visual/motion polish remains after P0 | Reused DQ-C S23 reference: `docs/mobile/audits/live-football-world-cup-dq-c.md`; gate: `docs/mobile/audits/cycle-dy-c-game-page-structure-gate.md` | DY-A partial tablet proof: `docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-partial-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-DY-A-game-page-structure/` and `docs/mobile/harness/cycle-DY-A-game-page-structure/` | DY-A proves material shell behavior: launch, header actions, Game/Chat controls, top area, chart context, chat preview, primary outcomes, top Book, Share, and Chat feed/input/reactions. It fails because the primary outcome tap did not open `trade-ticket`; backend JSON, focused Book/line proofs, or compile checks cannot pass full game-page parity. |
 | Orderbook family/depth selector | Cycle DU integrated | Partial; PM-GAP-075 remains open | 3 remaining gate areas | P1 richer full Polymarket settings sheet, row-level ladder price carry-through polish, and phone-density visual polish remain after P0 pass | Reused DQ-C S23 reference: `docs/mobile/audits/live-football-world-cup-dq-c.md`; DU-C gate: `docs/mobile/audits/cycle-du-c-orderbook-final-gate.md` | Backend provider line proof: `docs/mobile/harness/cycle-DU-integrated-provider-line-orderbook-depth-proof.json`; tablet UI proof: `docs/mobile/harness/cycle-DU-B-orderbook-settings/cycle-DU-B-holiwyn-orderbook-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-DU-B-orderbook-settings/` and `docs/mobile/harness/cycle-DU-B-orderbook-settings/` | DU integrated closes major visible gaps: Cents/Decimal Book setting is visible and state-preserving, Spread `1.5` regulation and Totals `2.5` regulation carry through selector/ladder/ticket in backend-shaped fixture data, Yes/No switching still passes, side-labelled ladder proof remains, and backend route proof now returns provider-ready first-half Spread depth with `selectorKey=spreads:first-half:1.5`. Not a pass because the provider-ready backend market is not yet rendered in the same Android UI run, so backend JSON and app-visible market id/selector key are still separate evidence bundles. |
 | Orderbook family/depth selector | Cycle DU-C final gate | Fail until Agent A/B integrated proof; PM-GAP-075 remains open | 5 remaining gate areas | P1 row-to-ticket polish and P2 phone-density/visual polish remain after P0 pass | Reused DQ-C S23 reference: `docs/mobile/audits/live-football-world-cup-dq-c.md`; focused DU-C gate: `docs/mobile/audits/cycle-du-c-orderbook-final-gate.md`; DS/DT gates: `docs/mobile/audits/cycle-ds-c-orderbook-audit-gate.md`, `docs/mobile/audits/cycle-dt-c-orderbook-regate.md` | Reused DT progress only: backend ready-depth JSON `docs/mobile/harness/cycle-DT-integrated-ready-orderbook-depth-proof.json`; tablet interaction proof `docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-proof.json`; no fresh DU-C Android proof | DU-C prepares the final audit gate and does not certify parity. PM-GAP-075 remains blocked until one integrated Android run shows provider-backed `ready` depth visible in the Book UI with the same backend market id/selector key, proves Spread/period/line carry-through, proves Decimalize/equivalent settings, and preserves ticket/identity from selected ladder/market into the ticket. |
@@ -1759,6 +1760,69 @@ Decision:
 - Unresolved P0 gaps for this focused gate: 0.
 - Remaining P1/P2 gaps: current-page chart-touch recapture, richer in-page line selector changes, more real provider-backed line families, ticket amount/swipe recapture when Polymarket reference is not location-gated, and final visual density/motion polish.
 - Next cycle required: yes for broader parity, but not to re-prove the fixed DY/DZ primary ticket failure unless regression appears.
+
+## Cycle EB-C Chart Touch And Line Selector Audit Gate
+
+Result: Fail until proof. This is a docs-only gate and does not certify implementation.
+
+Lead Agent target:
+
+- Define the next audit bar for remaining current live game page chart-touch and full-page line-selector parity.
+- Preserve PM-GAP-073 EA integrated structure/ticket pass while opening a stricter PM-GAP-079 gate for chart/line-selector behavior.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: not applicable in EB-C docs-only lane.
+
+Audit Gate Agent: Agent C.
+
+Reference device:
+
+- Samsung S23, official Polymarket Android app, reused from DQ-C.
+- Focused supporting references from AD chart behavior and Y line adjustment.
+
+Holiwyn device:
+
+- No EB-C Holiwyn device proof collected by Agent C.
+- Required future proof device: Samsung tablet or assigned Holiwyn Android device.
+
+Reference evidence:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-04-chart-press.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-08-spread-line-dropdown.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-16-markets-scroll-2.png`
+- `docs/mobile/audits/chart-behavior.md`
+- `docs/mobile/audits/line-adjustment.md`
+
+Holiwyn evidence required before pass:
+
+- `docs/mobile/screenshots/cycle-EB-integrated-chart-line-selector/`
+- `docs/mobile/harness/cycle-EB-integrated-chart-line-selector/`
+- `docs/mobile/harness/cycle-EB-integrated-chart-line-selector/cycle-EB-chart-line-selector-proof.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EB-CH-P0-01 | P0 | Fail until proof | No EB Android before/after chart-touch proof exists. | Capture current live game page chart before touch and after touch. |
+| EB-CH-P0-02 | P0 | Fail until proof | No EB assertion proves chart touch avoids ticket/book/share/chat/navigation side effects. | Add proof assertions for same event identity and absence of unintended surfaces. |
+| EB-CH-P0-03 | P0 | Fail until proof | No EB current-page chart source/status proof exists. | Show provider-backed chart status or explicit stale/unavailable state. |
+| EB-LS-P0-01 | P0 | Fail until proof | No EB full-page Spread selector open/change proof exists. | Capture Spread baseline, selector-open, and changed-line state in the full page. |
+| EB-LS-P0-02 | P0 | Fail until proof | No EB full-page Totals selector open/change proof exists. | Capture Totals baseline, selector-open, and changed-line state or explicit unavailable contract state. |
+| EB-LS-P0-03 | P0 | Fail until proof | Coupled market family/line/period/subject/odds/probability state has not been proven in the EB full-page run. | Assert stable market/outcome IDs plus visible labels/prices after each line change. |
+| EB-LS-P0-04 | P0 | Fail until proof | Changed-line ticket carry-through is not proven in the EB current-page flow. | Open ticket after changed line and assert family/line/period/outcome identity. |
+| EB-LS-P0-05 | P0 | Fail until proof | Changed-line Book/orderbook target is not proven or explicitly unavailable in EB. | Open Book after changed line or show unavailable state tied to provider/contract status. |
+| EB-LS-P0-06 | P0 | Fail until proof | EB has no committed Android proof bundle. | Commit screenshots, XML, and proof JSON under the EB proof paths. |
+| EB-LS-P0-07 | P0 | Fail until proof | EB has not proven EA structure/ticket markers remain non-regressed in the same build. | Include or reference preserved EA markers from the EB app build. |
+
+Decision:
+
+- Pass/fail: Fail until proof.
+- Unresolved P0 gaps: all EB P0 criteria are open for this selected sub-scope.
+- Remaining P1/P2 gaps: real provider-backed line families, chart selected-market switching, selected-line lifecycle through Portfolio/history, gesture feel, and visual density.
+- Next cycle required: yes. Agent B should implement/prove visible current-page chart touch and in-page line selector behavior; Agent A should support any required chart/line/Book data contract; Lead must run Android proof before Audit Gate can pass.
 
 Use this template for every feature gate:
 
