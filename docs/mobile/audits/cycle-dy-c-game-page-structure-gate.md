@@ -1,6 +1,6 @@
 # Cycle DY-C Game Page Structure Audit Gate
 
-Status: provisional pending DY-A Holiwyn tablet proof. This document is an audit/reference gate for PM-GAP-073 live football / World Cup game page structure. It does not mark Holiwyn parity complete.
+Status: audit failed after DY/DZ partial Holiwyn tablet proof. This document is an audit/reference gate for PM-GAP-073 live football / World Cup game page structure. It does not mark Holiwyn parity complete.
 
 Audit Gate Agent: Agent C.
 
@@ -63,6 +63,19 @@ Supporting files:
 - `docs/mobile/harness/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-proof.json`
 - `docs/mobile/harness/cycle-DX-A-line-order-portfolio-history.json`
 - `docs/mobile/harness/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-proof.json`
+
+## DY/DZ Holiwyn Evidence Reviewed By EA-C
+
+EA-C did not collect new S23 reference evidence or run a new Holiwyn device proof. This update only reviews checked-in DY/DZ artifacts.
+
+DY-A partial Holiwyn tablet proof exists and is useful, but it is not a parity pass:
+
+- Proof JSON: `docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-partial-proof.json`
+- Screenshots/XML folder: `docs/mobile/screenshots/cycle-DY-A-game-page-structure/`; `docs/mobile/harness/cycle-DY-A-game-page-structure/`
+- Passed before failure: live detail launch, header actions, Game/Chat controls, team/time/probability top area, chart context, chat preview, primary outcomes, top Book/orderbook, Android share sheet, and Chat tab feed/input/reactions.
+- Failed P0: tapping the visible AUS primary outcome did not open `trade-ticket`; the screen remained on the game page and manual ADB tap also failed to open the ticket.
+
+DZ tightened the game-page ticket proof harness, but the checked-in evidence still does not show a complete passing full-page ticket interaction. PM-GAP-073 must stay open until an integrated Android run proves the full page and the selected outcome ticket in the same run.
 
 ## DY-A Required Evidence
 
@@ -139,8 +152,21 @@ Block PM-GAP-073 completion if any of these occur:
 - Backend JSON, provider route tests, or compile checks are used as the only evidence for visible parity.
 - The gate claims production ticket confirmation parity despite the DQ-C location gate.
 
-## Provisional Gate Decision
+## EA-C Gate Decision After DY/DZ
 
-Current result: pending DY-A evidence.
+Current result: fail/partial. PM-GAP-073 remains open.
 
-PM-GAP-073 remains open until Lead integrates DY-A tablet proof and checks every P0 criterion above. If DY-A proof satisfies all P0 rows, Lead may mark PM-GAP-073 verified for full live game page structure while keeping the listed P1/P2 gaps open. If any P0 row lacks visible Android evidence, the next cycle must address that gap before opening a new feature area.
+P0 status after reviewing DY/DZ artifacts:
+
+- Passed with DY-A partial proof: page launch, header actions, Game/Chat controls, team/time/probability top area, chart context visibility, chat preview, primary outcomes visibility, Book action, Share action, and Chat tab behavior.
+- Still open: full scroll/lower-market completeness, chart press/touch behavior as an interaction, line selector behavior inside the full game page, Player Props blank/unavailable state in this DY proof bundle, and lower/rules content.
+- Failed: primary outcome ticket open from the full game page. The ticket must open with the selected event, market, outcome, side, and any line/period identity preserved.
+
+Backend JSON, provider route tests, focused Book evidence, focused line lifecycle evidence, or compile checks cannot close PM-GAP-073 without visible Android screenshots/XML/proof JSON for the full page and ticket interaction together.
+
+Next required implementation cycle:
+
+1. Fix the full live game page primary outcome tap path so it opens `trade-ticket`.
+2. Rerun the full Samsung tablet game-page proof after clearing stale Expo/session state.
+3. Capture top, chart interaction, Book, Share, Chat, returned Game, scroll/lower markets, Player Props blank state, and ticket-open evidence in one integrated proof bundle.
+4. Re-run this Audit Gate. Do not mark PM-GAP-073 complete unless every P0 row has visible Android evidence and the ticket criterion passes.
