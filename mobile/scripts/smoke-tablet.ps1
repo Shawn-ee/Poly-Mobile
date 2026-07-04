@@ -13,6 +13,7 @@ param(
   [switch]$EventDetailLinePortfolio,
   [switch]$EventDetailOrderBook,
   [switch]$EventDetailOrderBookLifecycle,
+  [switch]$BookSnapshotDurability,
   [switch]$EventDetailOrderBookInteractions,
   [switch]$EventDetailOrderBookSelector,
   [switch]$EventDetailFullPage,
@@ -91,6 +92,8 @@ if ($EventDetailTrade) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailOrderBook -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EventDetailOrderBookLifecycle) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailOrderBookLifecycle -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($BookSnapshotDurability) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -BookSnapshotDurability -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EventDetailOrderBookInteractions) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailOrderBookInteractions -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EventDetailOrderBookSelector) {

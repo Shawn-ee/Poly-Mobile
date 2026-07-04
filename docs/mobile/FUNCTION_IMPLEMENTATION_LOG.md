@@ -3976,3 +3976,36 @@ Proof artifacts:
 - `docs/mobile/harness/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-proof.json`
 - `docs/mobile/harness/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-*.xml`
 - `docs/mobile/screenshots/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-*.png`
+
+## Cycle EF-B - Visible Portfolio Snapshot Durability After Metadata Drift
+
+Feature/page worked on:
+
+- Mobile Portfolio visible proof for Book-selected order-time snapshot durability after deterministic metadata label/provider drift.
+
+Frontend components touched:
+
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/App.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+User interactions supported/proven:
+
+- A forced fake-token Portfolio state uses backend-shaped open order, filled position, canceled activity, and filled activity rows for the original Mexico/Ecuador Book-selected Spread.
+- The current in-memory Mexico/Ecuador spread metadata is drifted before Portfolio opens, including label, line, provider market, condition, token, and reference outcome.
+- Portfolio rows render the original selected Book identity from the order-time snapshot and expose `snapshot-source-order-time`/`portfolio-snapshot-source-order-time` markers.
+
+Validation:
+
+- `npm run typecheck` from `mobile/`
+- PowerShell parser check for `mobile/scripts/smoke.ps1` and `mobile/scripts/smoke-tablet.ps1`
+
+Proof command:
+
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -BookSnapshotDurability -Port 8310 -OutputDir docs/mobile/screenshots/cycle-EF-B-book-snapshot-durability -HierarchyOutputDir docs/mobile/harness/cycle-EF-B-book-snapshot-durability`
+
+Known limitations:
+
+- EF-B is deterministic fake-token mobile proof, not production wallet signing or settlement.
+- Real provider-backed metadata drift remains a later provider/backend integration proof.

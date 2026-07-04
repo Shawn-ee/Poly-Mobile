@@ -20,6 +20,7 @@ param(
   [switch]$EventDetailLinePortfolio,
   [switch]$EventDetailOrderBook,
   [switch]$EventDetailOrderBookLifecycle,
+  [switch]$BookSnapshotDurability,
   [switch]$EventDetailOrderBookInteractions,
   [switch]$EventDetailOrderBookSelector,
   [switch]$EventDetailFullPage,
@@ -413,7 +414,7 @@ try {
     }
   }
   $expoArgs = @("expo", "start", "--port", "$Port", "--offline")
-  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail) {
+  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail) {
     $expoArgs += "--clear"
   }
   if ($ServerLiveDetailTotalsOrderBook) {
@@ -433,7 +434,7 @@ try {
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
   Wait-ExpoReady -Port $Port
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
   if ($ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook) {
     Start-Sleep -Seconds 10
   }
@@ -475,6 +476,8 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceOpenOrder=1,forceOpenOrderSide=sell"
   } elseif ($OpenOrderCancel) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceOpenOrder=1"
+  } elseif ($BookSnapshotDurability) {
+    "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceBookSnapshotDriftPortfolio=1"
   } elseif ($EventDetailSellDefault -or $EventDetailSellDefaultTrade) {
     "exp://${ExpoHost}:$Port/--/?forceMexicoEcuadorDetailSellDefault=1"
   } elseif ($EventDetailPosition) {
@@ -525,7 +528,7 @@ try {
   } else {
     "exp://${ExpoHost}:$Port"
   }
-  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $FutureListClose -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
+  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $FutureListClose -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
     & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
     Start-Sleep -Seconds 2
   }
@@ -541,6 +544,8 @@ try {
     @("Holiwyn", "Portfolio", "Server sync unavailable", "Showing local fake-token portfolio.")
   } elseif ($OpenOrderCancel -or $OpenSellOrderCancel) {
     @("Holiwyn", "Portfolio", "Open orders", "Cancel")
+  } elseif ($BookSnapshotDurability) {
+    @("Portfolio", "Open positions", "Open orders", "Recent activity", "Mexico -1.5 spread", "Order-time snapshot")
   } elseif ($EmptyErrorLoading) {
     @("Portfolio", "Syncing server portfolio", "No positions yet")
   } elseif ($WholeAppNavDiscovery) {
@@ -604,7 +609,7 @@ try {
   } else {
     @("Holiwyn", "World Cup", "Games", "Futures")
   }
-  $launchAttempts = if ($LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector) { 14 } else { 8 }
+  $launchAttempts = if ($LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector) { 14 } else { 8 }
   $homeHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-home.xml" -Expected $launchExpected -RestartUrl $launchUrl -Attempts $launchAttempts
   if ((Dismiss-ExpoDeveloperMenuIfPresent -Path $homeHierarchy)) {
     $homeHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-home.xml" -Expected $launchExpected -RestartUrl $launchUrl -Attempts 4 -DelaySeconds 2
@@ -612,6 +617,111 @@ try {
   Save-Screenshot -Name "cycle-current-holiwyn-smoke.png"
 
   if ($Deep) {
+    if ($BookSnapshotDurability) {
+      $portfolioSnapshotExpected = @(
+        "portfolio-snapshot-source-order-time",
+        "snapshot-source-order-time",
+        "snapshot-provider-market-gamma-mexico-ecuador-spread-15",
+        "snapshot-provider-token-token-spread-yes-15",
+        "snapshot-market-id-mexico-ecuador-spread",
+        "snapshot-outcome-id-yes",
+        "portfolio-market-family-spread",
+        "portfolio-market-type-spread",
+        "portfolio-market-id-mexico-ecuador-spread",
+        "portfolio-outcome-id-yes",
+        "portfolio-line-1.5",
+        "portfolio-period-regulation",
+        "portfolio-display-label-Mexico -1.5 spread",
+        "portfolio-provider-source-polymarket-fixture",
+        "portfolio-provider-market-gamma-mexico-ecuador-spread-15",
+        "portfolio-provider-condition-condition-mexico-ecuador-spread-15",
+        "portfolio-provider-token-token-spread-yes-15",
+        "portfolio-provider-outcome-Yes"
+      )
+      $driftedMetadataUnexpected = @(
+        "Metadata drifted spread label",
+        "Metadata drifted Yes",
+        "gamma-drifted-mexico-ecuador-spread",
+        "condition-drifted-mexico-ecuador-spread",
+        "token-drifted-spread-yes",
+        "Drifted Yes",
+        "portfolio-line-2.5"
+      )
+
+      Save-Screenshot -Name "cycle-EF-B-book-snapshot-durability-portfolio-top.png"
+      $snapshotTopHierarchy = Save-UiHierarchy -Name "cycle-EF-B-book-snapshot-durability-portfolio-top.xml"
+      Assert-HierarchyContains -Path $snapshotTopHierarchy -Expected (@(
+        "Portfolio",
+        "Open positions",
+        "Open orders",
+        "Recent activity",
+        "latest-activity-card",
+        "activity-canceled",
+        "status-canceled",
+        "latest-order-card",
+        "order-status-open",
+        "open-order-row-cycle-ef-b-book-open-order",
+        "open-order-status-cycle-ef-b-book-open-order",
+        "position-card-cycle-ef-b-book-filled-position",
+        "Order-time snapshot",
+        "Mexico -1.5 spread",
+        "fake-token-test"
+      ) + $portfolioSnapshotExpected)
+      Assert-HierarchyDoesNotContain -Path $snapshotTopHierarchy -Unexpected $driftedMetadataUnexpected
+
+      & $adb -s $Device shell input swipe 540 1760 540 700 450 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-EF-B-book-snapshot-durability-activity.png"
+      $snapshotActivityHierarchy = Save-UiHierarchy -Name "cycle-EF-B-book-snapshot-durability-activity.xml"
+      Assert-HierarchyContains -Path $snapshotActivityHierarchy -Expected (@(
+        "activity-row-cycle-ef-b-book-canceled-activity",
+        "activity-row-cycle-ef-b-book-filled-activity",
+        "activity-canceled",
+        "activity-opened",
+        "status-canceled",
+        "status-filled",
+        "Buy - Canceled",
+        "Buy - Filled shares",
+        "Order-time snapshot",
+        "Mexico -1.5 spread"
+      ) + $portfolioSnapshotExpected)
+      Assert-HierarchyDoesNotContain -Path $snapshotActivityHierarchy -Unexpected $driftedMetadataUnexpected
+
+      $proof = [ordered]@{
+        cycle = "EF-B"
+        scope = "Visible mobile Portfolio snapshot durability after deterministic metadata drift"
+        command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -BookSnapshotDurability -Port 8310 -OutputDir docs/mobile/screenshots/cycle-EF-B-book-snapshot-durability -HierarchyOutputDir docs/mobile/harness/cycle-EF-B-book-snapshot-durability"
+        eventIdentity = "Mexico vs. Ecuador"
+        result = "pass"
+        driftScenario = [ordered]@{
+          source = "backend-shaped local Portfolio state with order-time selection snapshots"
+          metadataRefresh = "Current Mexico/Ecuador spread market label, line, provider market, condition, token, and reference outcome are deterministically drifted before Portfolio opens."
+          expectedIdentity = "Portfolio rows must keep Mexico -1.5 spread, line 1.5, period regulation, provider market gamma-mexico-ecuador-spread-15, condition condition-mexico-ecuador-spread-15, and token token-spread-yes-15."
+        }
+        assertions = [ordered]@{
+          openOrder = "open-order-row-cycle-ef-b-book-open-order exposes snapshot-source-order-time plus original Book-selected spread identity after drift."
+          canceledActivity = "latest-activity-card and activity-row-cycle-ef-b-book-canceled-activity expose activity-canceled/status-canceled with the original Book identity."
+          filledPosition = "position-card-cycle-ef-b-book-filled-position exposes the original Book identity and snapshot-source-order-time marker."
+          filledActivity = "activity-row-cycle-ef-b-book-filled-activity exposes activity-opened/status-filled with the same original Book identity."
+          fallbackGuard = "Drifted labels/provider ids and portfolio-line-2.5 are absent from the captured Portfolio hierarchies."
+        }
+        artifacts = @(
+          "docs/mobile/screenshots/cycle-EF-B-book-snapshot-durability/cycle-EF-B-book-snapshot-durability-portfolio-top.png",
+          "docs/mobile/harness/cycle-EF-B-book-snapshot-durability/cycle-EF-B-book-snapshot-durability-portfolio-top.xml",
+          "docs/mobile/screenshots/cycle-EF-B-book-snapshot-durability/cycle-EF-B-book-snapshot-durability-activity.png",
+          "docs/mobile/harness/cycle-EF-B-book-snapshot-durability/cycle-EF-B-book-snapshot-durability-activity.xml"
+        )
+        remainingGaps = @(
+          "This is deterministic fake-token mobile proof, not production wallet signing or settlement.",
+          "Real provider-backed metadata drift remains a later provider/backend integration proof."
+        )
+      }
+      $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-EF-B-book-snapshot-durability-proof.json"
+      $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
+      Write-Host "Proof summary: $proofPath"
+      return
+    }
+
     if ($EmptyErrorLoading) {
       Save-Screenshot -Name "cycle-current-holiwyn-empty-error-loading-portfolio-syncing.png"
       $portfolioSyncingHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-empty-error-loading-portfolio-syncing.xml"

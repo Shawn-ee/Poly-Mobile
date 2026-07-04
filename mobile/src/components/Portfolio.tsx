@@ -152,9 +152,14 @@ const selectionIdentityLabel = (item: { outcome: string; side?: "buy" | "sell"; 
   const selection = item.selection;
   const contractSide = item.contractSide ?? selection?.contractSide ?? "yes";
   return selection
-    ? `portfolio-market-family-${selection.marketType} portfolio-market-type-${selection.marketType} portfolio-market-id-${selection.marketId ?? "none"} portfolio-outcome-id-${selection.outcomeId ?? "none"} portfolio-market-group-${selection.marketGroupId ?? "none"} portfolio-line-${selection.line ?? "none"} portfolio-period-${selection.period ?? "none"} portfolio-side-${item.side ?? selection.side ?? "none"} portfolio-outcome-${displayOutcome(item)} portfolio-display-label-${selection.displayLabel} portfolio-contract-side-${contractSide} portfolio-provider-source-${selection.referenceSource ?? "none"} portfolio-provider-market-${selection.externalMarketId ?? "none"} portfolio-provider-condition-${selection.conditionId ?? "none"} portfolio-provider-token-${selection.referenceTokenId ?? "none"} portfolio-provider-outcome-${selection.referenceOutcomeLabel ?? "none"}`
+    ? `portfolio-snapshot-source-order-time portfolio-market-family-${selection.marketType} portfolio-market-type-${selection.marketType} portfolio-market-id-${selection.marketId ?? "none"} portfolio-outcome-id-${selection.outcomeId ?? "none"} portfolio-market-group-${selection.marketGroupId ?? "none"} portfolio-line-${selection.line ?? "none"} portfolio-period-${selection.period ?? "none"} portfolio-side-${item.side ?? selection.side ?? "none"} portfolio-outcome-${displayOutcome(item)} portfolio-display-label-${selection.displayLabel} portfolio-contract-side-${contractSide} portfolio-provider-source-${selection.referenceSource ?? "none"} portfolio-provider-market-${selection.externalMarketId ?? "none"} portfolio-provider-condition-${selection.conditionId ?? "none"} portfolio-provider-token-${selection.referenceTokenId ?? "none"} portfolio-provider-outcome-${selection.referenceOutcomeLabel ?? "none"}`
     : `portfolio-market-family-none portfolio-line-none portfolio-period-none portfolio-side-${item.side ?? "none"} portfolio-outcome-${displayOutcome(item)} portfolio-contract-side-${contractSide}`;
 };
+
+const snapshotSourceLabel = (id: string, selection?: TicketSelection) =>
+  selection
+    ? `snapshot-source-order-time snapshot-display-label-${selection.displayLabel} snapshot-provider-market-${selection.externalMarketId ?? "none"} snapshot-provider-token-${selection.referenceTokenId ?? "none"} snapshot-market-id-${selection.marketId ?? "none"} snapshot-outcome-id-${selection.outcomeId ?? "none"}`
+    : `snapshot-source-current-state snapshot-row-${id}`;
 
 const portfolioDetailCopy = {
   en: {
@@ -289,6 +294,7 @@ export function Portfolio({
                 >
                   <Text style={styles.statusPill}>Fake-token test</Text>
                   <Text style={styles.statusPill}>{lifecycleStatusLabel(order.status)}</Text>
+                  {order.selection && <Text accessibilityLabel={`open-order-snapshot-${order.id} ${snapshotSourceLabel(order.id, order.selection)}`} style={styles.statusPill}>Order-time snapshot</Text>}
                 </View>
               </View>
               <Pressable
@@ -402,6 +408,7 @@ export function Portfolio({
           >
             <Text style={styles.statusPill}>Fake-token test</Text>
             <Text style={styles.statusPill}>{activityStatusLabel(latestActivity)}</Text>
+            {latestActivity.selection && <Text accessibilityLabel={`latest-activity-snapshot-${latestActivity.id} ${snapshotSourceLabel(latestActivity.id, latestActivity.selection)}`} style={styles.statusPill}>Order-time snapshot</Text>}
           </View>
           {latestActivity.timestamp && (
             <Text accessibilityLabel={`latest-activity-time-${latestActivity.id}`} style={styles.activityTime}>
@@ -447,6 +454,7 @@ export function Portfolio({
           >
             <Text style={styles.statusPill}>Fake-token test</Text>
             <Text style={styles.statusPill}>{lifecycleStatusLabel(latestOrder.status)}</Text>
+            {latestOrder.selection && <Text accessibilityLabel={`latest-order-snapshot ${snapshotSourceLabel(latestOrder.id, latestOrder.selection)}`} style={styles.statusPill}>Order-time snapshot</Text>}
           </View>
           <Text style={styles.confirmationMarket}>{latestOrder.title}</Text>
           {typeof latestOrder.probability === "number" && (
@@ -517,6 +525,11 @@ export function Portfolio({
               <Text style={styles.positionMeta}>
                 {position.mode.toUpperCase()} - {position.side === "buy" ? t.buy : t.sell} - {displayOutcome(position)} - {position.probability}%
               </Text>
+              {position.selection && (
+                <Text accessibilityLabel={`position-snapshot-${position.id} ${snapshotSourceLabel(position.id, position.selection)}`} style={styles.snapshotText}>
+                  Order-time snapshot
+                </Text>
+              )}
               <Pressable
                 accessibilityLabel={`position-detail-toggle-${position.id}`}
                 onPress={() => setExpandedPositionId((current) => (current === position.id ? null : position.id))}
@@ -641,6 +654,7 @@ export function Portfolio({
                 >
                   <Text style={styles.statusPill}>Fake-token test</Text>
                   <Text style={styles.statusPill}>{activityStatusLabel(activity)}</Text>
+                  {activity.selection && <Text accessibilityLabel={`activity-snapshot-${activity.id} ${snapshotSourceLabel(activity.id, activity.selection)}`} style={styles.statusPill}>Order-time snapshot</Text>}
                 </View>
                 {activity.timestamp && (
                   <Text accessibilityLabel={`activity-time-${activity.id}`} style={styles.activityTime}>
@@ -759,6 +773,7 @@ const styles = StyleSheet.create({
   openOrderMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
   statusPillRow: { flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 6 },
   statusPill: { alignSelf: "flex-start", paddingHorizontal: 7, paddingVertical: 3, borderRadius: 999, overflow: "hidden", backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#29476d", color: "#bfdbfe", fontSize: 10, fontWeight: "900" },
+  snapshotText: { alignSelf: "flex-start", marginTop: 6, paddingHorizontal: 7, paddingVertical: 3, borderRadius: 999, overflow: "hidden", backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#29476d", color: "#bfdbfe", fontSize: 10, fontWeight: "900" },
   openOrderPrice: { color: "#dbeafe", fontWeight: "900" },
   openOrderMetricGrid: { flexDirection: "row", gap: 6 },
   openOrderMetricBox: { flex: 1, minHeight: 50, padding: 8, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
