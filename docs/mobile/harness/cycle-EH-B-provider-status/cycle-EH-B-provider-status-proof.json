@@ -1,0 +1,28 @@
+{
+    "cycle":  "EH-B",
+    "scope":  "Visible provider lifecycle/status badges on live detail, chart, Book/orderbook, and ticket handoff",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailProviderStatus -Port 8316 -OutputDir docs/mobile/screenshots/cycle-EH-B-provider-status -HierarchyOutputDir docs/mobile/harness/cycle-EH-B-provider-status",
+    "eventIdentity":  "Australia vs. Egypt",
+    "result":  "pass",
+    "assertions":  {
+                       "liveRefreshDue":  "Live detail exposes provider-lifecycle-refresh-due with visible Live refresh due text when backend liveDataStatus is absent.",
+                       "chartReady":  "Chart context exposes provider-lifecycle-ready with visible Chart provider ready text from deterministic embedded history.",
+                       "bookRefreshing":  "Opening Book produces a visible provider-lifecycle-refreshing Book depth refreshing state before the resolved depth state.",
+                       "bookNotReady":  "Book availability and Book ticket handoff expose provider-lifecycle-not-ready rather than silently becoming provider-ready.",
+                       "fallbackGuard":  "Ticket handoff avoids mock-ready/default-ready and Mexico moneyline fallback markers."
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-EH-B-provider-status/cycle-EH-B-provider-status-live-top.png",
+                      "docs/mobile/harness/cycle-EH-B-provider-status/cycle-EH-B-provider-status-live-top.xml",
+                      "docs/mobile/screenshots/cycle-EH-B-provider-status/cycle-EH-B-provider-status-book-refreshing.png",
+                      "docs/mobile/harness/cycle-EH-B-provider-status/cycle-EH-B-provider-status-book-refreshing.xml",
+                      "docs/mobile/screenshots/cycle-EH-B-provider-status/cycle-EH-B-provider-status-book-resolved.png",
+                      "docs/mobile/harness/cycle-EH-B-provider-status/cycle-EH-B-provider-status-book-resolved.xml",
+                      "docs/mobile/screenshots/cycle-EH-B-provider-status/cycle-EH-B-provider-status-ticket-handoff.png",
+                      "docs/mobile/harness/cycle-EH-B-provider-status/cycle-EH-B-provider-status-ticket-handoff.xml"
+                  ],
+    "remainingGaps":  [
+                          "Live mock status is deterministic backend-contract-shaped fixture UI because backend liveDataStatus is absent in this branch.",
+                          "Real provider status freshness remains dependent on backend/provider contract fields."
+                      ]
+}
