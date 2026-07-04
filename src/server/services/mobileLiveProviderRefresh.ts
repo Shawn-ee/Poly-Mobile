@@ -152,6 +152,10 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
   const postRefresh = await summarizeCompactProviderSnapshots(compactMarketIds);
   const postRefreshDepth = await summarizeCompactDepthSnapshots(compactMarketIds);
   const postRefreshHistory = await summarizeCompactChartHistory(compactMarketIds);
+  const lineFamilyCoverage = await summarizeLineFamilyProviderCoverage({
+    compactMarkets,
+    mappingReadiness,
+  });
   const aggregateStatus = aggregateLifecycleStatus([
     postRefresh.lifecycle.status,
     postRefreshDepth.lifecycle.status,
@@ -242,11 +246,118 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
     providerDepth: providerDepthReport,
     providerHistory: providerHistoryReport,
     lineProvider: lineProviderReport,
+    lineFamilyCoverage,
     contractProofFallback,
     providerLifecycle,
     postRefresh,
     postRefreshDepth,
     postRefreshHistory,
+  };
+}
+
+async function summarizeLineFamilyProviderCoverage(params: {
+  compactMarkets: Awaited<ReturnType<typeof loadCompactLiveMarkets>>;
+  mappingReadiness: ReturnType<typeof assessMobileLiveProviderMappingReadiness>;
+}) {
+  const compactMarketIds = params.compactMarkets.map((market) => market.id);
+  const [quoteSnapshots, depthSnapshots, chartSnapshots] = await Promise.all([
+    compactMarketIds.length
+      ? prisma.referenceQuoteSnapshot.findMany({
+          where: { marketId: { in: compactMarketIds } },
+          select: { marketId: true, source: true, fetchedAt: true },
+        })
+      : Promise.resolve([]),
+    compactMarketIds.length
+      ? prisma.referenceOrderbookDepthSnapshot.findMany({
+          where: { marketId: { in: compactMarketIds } },
+          select: { marketId: true, source: true, fetchedAt: true },
+        })
+      : Promise.resolve([]),
+    compactMarketIds.length
+      ? prisma.marketOutcomeSnapshot.findMany({
+          where: { marketId: { in: compactMarketIds } },
+          select: { marketId: true, outcomeId: true, ts: true },
+        })
+      : Promise.resolve([]),
+  ]);
+
+  const quoteByMarket = groupSnapshotsByMarket(quoteSnapshots);
+  const depthByMarket = groupSnapshotsByMarket(depthSnapshots);
+  const chartByMarket = groupChartSnapshotsByMarket(chartSnapshots);
+  const readinessByMarket = new Map(params.mappingReadiness.markets.map((market) => [market.marketId, market]));
+
+  const markets = params.compactMarkets.map((market) => {
+    const readiness = readinessByMarket.get(market.id);
+    const quote = lifecycleFromGroupedSnapshots({
+      snapshots: quoteByMarket.get(market.id) ?? [],
+      fallbackSource: "reference-quote-snapshot",
+      unavailableReason: "No provider quote snapshot is available for this compact market.",
+    });
+    const orderbookDepth = lifecycleFromGroupedSnapshots({
+      snapshots: depthByMarket.get(market.id) ?? [],
+      fallbackSource: "reference-orderbook-depth-snapshot",
+      unavailableReason: "No provider orderbook depth snapshot is available for this compact market.",
+    });
+    const chartHistory = lifecycleFromGroupedSnapshots({
+      snapshots: chartByMarket.get(market.id) ?? [],
+      fallbackSource: market.referenceSource === "polymarket"
+        ? "polymarket-clob-prices-history"
+        : "market-outcome-snapshot",
+      unavailableReason: "No provider chart history snapshot is available for this compact market.",
+    });
+    const surfaces = [quote, orderbookDepth, chartHistory];
+    const status = aggregateLifecycleStatus(surfaces.map((surface) => surface.status));
+    return {
+      marketId: market.id,
+      title: market.title,
+      selectorKey: compactSelectorKeyForMarket(market),
+      marketFamily: marketFamilyForMarket(market),
+      marketGroupKey: market.marketGroupKey,
+      marketType: market.marketType,
+      period: market.period ?? "full-game",
+      line: market.line?.toString() ?? null,
+      lineValue: marketLineValue(market),
+      referenceSource: market.referenceSource ?? null,
+      externalSlug: market.externalSlug ?? null,
+      externalMarketId: market.externalMarketId ?? null,
+      conditionId: market.conditionId ?? null,
+      providerRefreshable: readiness?.providerRefreshable === true,
+      missingFields: readiness?.missingFields ?? [],
+      status,
+      ready: surfaces.every((surface) => surface.ready),
+      notReady: surfaces.some((surface) => surface.notReady),
+      quote,
+      orderbookDepth,
+      chartHistory,
+    };
+  });
+
+  const families = Array.from(groupBy(markets, (market) => market.marketFamily).entries()).map(([family, familyMarkets]) => ({
+    family,
+    marketCount: familyMarkets.length,
+    providerRefreshableMarketCount: familyMarkets.filter((market) => market.providerRefreshable).length,
+    readyMarketCount: familyMarkets.filter((market) => market.ready).length,
+    notReadyMarketCount: familyMarkets.filter((market) => market.notReady).length,
+    statuses: Array.from(new Set(familyMarkets.map((market) => market.status))).sort(),
+    marketIds: familyMarkets.map((market) => market.marketId),
+    selectorKeys: familyMarkets.map((market) => market.selectorKey),
+  }));
+  const providerMappedMarkets = markets.filter((market) => market.providerRefreshable);
+  const readyProviderMappedMarkets = providerMappedMarkets.filter((market) => market.ready);
+
+  return {
+    source: "mobile-live-provider-refresh-line-family-coverage",
+    generatedAt: new Date().toISOString(),
+    compactMarketCount: markets.length,
+    familyCount: families.length,
+    providerRefreshableFamilyCount: families.filter((family) => family.providerRefreshableMarketCount > 0).length,
+    providerRefreshableMarketCount: providerMappedMarkets.length,
+    readyProviderRefreshableMarketCount: readyProviderMappedMarkets.length,
+    hasProviderMappedBreadth: new Set(providerMappedMarkets.map((market) => market.marketFamily)).size >= 2,
+    hasReadyProviderMappedBreadth: new Set(readyProviderMappedMarkets.map((market) => market.marketFamily)).size >= 2,
+    optionalLineProviderBlocking: false,
+    families,
+    markets,
   };
 }
 
@@ -466,6 +577,81 @@ function lifecycleSummary(params: {
   };
 }
 
+function lifecycleFromGroupedSnapshots(params: {
+  snapshots: Array<{ source: string; at: Date }>;
+  fallbackSource: string;
+  unavailableReason: string;
+}) {
+  const sorted = params.snapshots.map((snapshot) => snapshot.at.getTime()).sort((a, b) => a - b);
+  const latest = sorted[sorted.length - 1] != null ? new Date(sorted[sorted.length - 1]).toISOString() : null;
+  return lifecycleSummary({
+    source: params.snapshots.length > 0
+      ? firstNonEmpty(params.snapshots.map((snapshot) => snapshot.source)) ?? params.fallbackSource
+      : params.fallbackSource,
+    latestAt: latest,
+    count: params.snapshots.length,
+    unavailableReason: params.unavailableReason,
+  });
+}
+
+function groupSnapshotsByMarket<T extends { marketId: string; source: string; fetchedAt: Date }>(snapshots: T[]) {
+  const grouped = new Map<string, Array<{ source: string; at: Date }>>();
+  for (const snapshot of snapshots) {
+    const existing = grouped.get(snapshot.marketId) ?? [];
+    existing.push({ source: snapshot.source, at: snapshot.fetchedAt });
+    grouped.set(snapshot.marketId, existing);
+  }
+  return grouped;
+}
+
+function groupChartSnapshotsByMarket<T extends { marketId: string | null; ts: Date }>(snapshots: T[]) {
+  const grouped = new Map<string, Array<{ source: string; at: Date }>>();
+  for (const snapshot of snapshots) {
+    if (!snapshot.marketId) continue;
+    const existing = grouped.get(snapshot.marketId) ?? [];
+    existing.push({ source: "polymarket-clob-prices-history", at: snapshot.ts });
+    grouped.set(snapshot.marketId, existing);
+  }
+  return grouped;
+}
+
+function groupBy<T>(items: T[], keyForItem: (item: T) => string) {
+  const grouped = new Map<string, T[]>();
+  for (const item of items) {
+    const key = keyForItem(item);
+    const existing = grouped.get(key) ?? [];
+    existing.push(item);
+    grouped.set(key, existing);
+  }
+  return grouped;
+}
+
+function marketFamilyForMarket(market: Awaited<ReturnType<typeof loadCompactLiveMarkets>>[number]) {
+  const key = `${market.marketGroupKey ?? ""} ${market.marketType ?? ""} ${market.marketGroupTitle ?? ""}`.toLowerCase();
+  if (key.includes("spread") || key.includes("handicap")) return "spread";
+  if (key.includes("team") && key.includes("total")) return "team_total";
+  if (key.includes("total")) return "total";
+  if (key.includes("half")) return "half";
+  if (key.includes("correct")) return "correct_score";
+  if (key.includes("prop")) return "prop";
+  if (key.includes("winner") || key.includes("moneyline") || key.includes("main")) return "moneyline";
+  return market.marketType;
+}
+
+function marketLineValue(market: Awaited<ReturnType<typeof loadCompactLiveMarkets>>[number]) {
+  if (!market.line) return null;
+  const value = Number(market.line.toString());
+  return Number.isFinite(value) ? value : null;
+}
+
+function compactSelectorKeyForMarket(market: Awaited<ReturnType<typeof loadCompactLiveMarkets>>[number]) {
+  return [
+    market.marketGroupKey ?? marketFamilyForMarket(market),
+    market.period ?? "full-game",
+    market.line?.toString() ?? "default",
+  ].join(":");
+}
+
 function earliestIso(values: Array<string | null>) {
   return values
     .filter((value): value is string => typeof value === "string")
@@ -477,6 +663,10 @@ function latestIso(values: Array<string | null>) {
     .filter((value): value is string => typeof value === "string")
     .sort();
   return sorted[sorted.length - 1] ?? null;
+}
+
+function firstNonEmpty(values: Array<string | null>) {
+  return values.find((value): value is string => typeof value === "string" && value.trim().length > 0) ?? null;
 }
 
 function aggregateLifecycleStatus(statuses: string[]) {

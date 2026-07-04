@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle EL-A - Provider Line-Family Breadth Route Proof
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live-detail/provider-refresh line-family breadth | `/api/mobile/events/:slug/live-detail` before and after `/api/mobile/events/:slug/provider-refresh` | GET / POST / GET | Live-detail is public/mobile. Provider-refresh remains protected by internal/admin auth in production; the proof calls the shared route execution helper used by the protected POST. | Provider-refresh body uses `allowContractProofFallback=false`. | Refresh now returns `refresh.lineFamilyCoverage.source/generatedAt/compactMarketCount/familyCount/providerRefreshableFamilyCount/providerRefreshableMarketCount/readyProviderRefreshableMarketCount/hasProviderMappedBreadth/hasReadyProviderMappedBreadth/optionalLineProviderBlocking`, `families[]`, and per-market `markets[].selectorKey/marketFamily/period/line/providerRefreshable/status/ready/quote/orderbookDepth/chartHistory`. Live-detail after refresh continues to expose each compact market's `providerLifecycle.quote/orderbookDepth/chartHistory`, `orderbookIdentity`, `chartHistoryStatus`, and `orderbookDepthStatus`. | Creates disposable `Event`, `Market`, and `Outcome` rows. Refresh writes/reads `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot` through the existing Polymarket Gamma/CLOB services. | Contract-proof fallback is disabled and asserted null. Provider fetches are deterministic Polymarket Gamma/CLOB-shaped responses scoped to disposable proof slugs/tokens. Missing `OPTIC_ODDS_API_KEY` remains optional and non-blocking. | Production breadth still depends on live Polymarket mappings for actual World Cup events. Android-visible proof remains outside Agent A ownership. |
+| Focused EL-A proof harness | `scripts/prove_mobile_el_a_provider_breadth.ts` | Local script calling route modules | Local development database only | Optional `--output` / `--summaryPath` | JSON artifact records before unavailable compact markets, provider refresh completion, Gamma quote/CLOB depth/CLOB chart refresh counts for three mapped families, line-family coverage, cache invalidation for all family routes, after-refresh live-detail readiness, and optional/non-blocking line-provider state | Same backend provider tables as live-detail/provider-refresh; no schema migration | No frontend fallback. The proof uses route/service calls and fails unless moneyline, spread, and totals all become provider-ready without contract fallback. | Requires local database and dependency runtime. It is backend/provider route proof only. |
+
+Cycle EL-A implementation notes:
+
+- Proof artifact: `docs/mobile/harness/cycle-EL-A-provider-breadth/cycle-EL-A-provider-breadth.json`.
+- `refresh.lineFamilyCoverage` is backend-owned route proof metadata; mobile can use it for diagnostics or readiness gating without deriving provider breadth from UI state.
+- The proof shows three compact market families ready after refresh: moneyline, spread, and totals. Each preserves Polymarket quote, CLOB orderbook depth, CLOB chart history, selected market identity, selector key, line/period, and cache invalidation paths.
+- No visible mobile UI, shared audit gate docs, Prisma schema, or migration files were changed.
+
 ## Cycle EK Integrated - Visible Provider Transition Proof
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
