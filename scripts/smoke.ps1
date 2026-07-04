@@ -5039,7 +5039,15 @@ try {
           "event-detail-line-detail-order-book",
           "event-detail-inline-order-book",
           "orderbook-source-",
-          "Route depth"
+          "Route depth",
+          "event-detail-tab-chat",
+          "event-detail-chat-preview",
+          "event-detail-chat-page",
+          "event-detail-share",
+          "event-detail-share-sheet",
+          "Share this market",
+          "event-detail-body-tab-live-stats",
+          "event-detail-live-stats-panel"
         )
 
         Save-Screenshot -Name "cycle-FA-holiwyn-route-status-top.png"
@@ -5588,16 +5596,16 @@ try {
         Assert-HierarchyDoesNotContain -Path $mvpStatusSelectedHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
         $proof = [ordered]@{
-          cycle = "GB"
-          scenario = "Local MVP Android Event Detail chart ticket handoff proof with orderbook hidden by default"
+          cycle = "GC"
+          scenario = "Local MVP Android Event Detail prediction-only proof with social/live-stats/orderbook hidden by default"
           command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpStatusFlow -Port $Port -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir"
           orderbookDebug = if ($env:EXPO_PUBLIC_SHOW_ORDERBOOK) { $env:EXPO_PUBLIC_SHOW_ORDERBOOK } else { "unset" }
           result = "pass"
           assertions = [ordered]@{
-            defaultEventDetail = @("chart route state", "ticket handoff status", "no visible Book/orderbook entry points")
+            defaultEventDetail = @("chart route state", "ticket handoff status", "no visible Book/orderbook/social/live-stats entry points")
             chartHandoff = @("target chart point updates visible readout", "chart Trade opens full-screen simple ticket")
-            marketLines = @("spread and totals selectors remain reachable without Book")
-            selectedLine = @("spread 2.5", "contract-shaped ticket source", "no visible Book/orderbook entry points")
+            marketLines = @("spread and totals selectors remain reachable without Book/chat/share/live-stats")
+            selectedLine = @("spread 2.5", "contract-shaped ticket source", "no visible Book/orderbook/social/live-stats entry points")
           }
           artifacts = @(
             "$OutputDir/cycle-ER-holiwyn-local-mvp-status-top.png",
@@ -5612,7 +5620,7 @@ try {
             "$HierarchyOutputDir/cycle-ER-holiwyn-local-mvp-status-selected-line.xml"
           )
         }
-        $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-GB-event-detail-chart-ticket-handoff-proof.json"
+        $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-GC-event-detail-prediction-only-proof.json"
         $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
         Write-Host "Proof summary: $proofPath"
         return

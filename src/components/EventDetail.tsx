@@ -1511,26 +1511,14 @@ export function EventDetail({
         <Pressable accessibilityLabel="event-detail-back" onPress={goBack} style={styles.iconButton} testID="event-detail-back">
           <Ionicons name="chevron-back" size={26} color="#f8fafc" />
         </Pressable>
-        <View style={styles.segmentedControl}>
-          <Pressable
-            accessibilityLabel="event-detail-tab-game"
-            onPress={() => setActiveHeaderTab("game")}
-            style={[styles.segment, activeHeaderTab === "game" && styles.segmentActive]}
+        <View accessibilityLabel="event-detail-prediction-mode" style={styles.segmentedControl} testID="event-detail-prediction-mode">
+          <View
+            accessibilityLabel="event-detail-tab-game prediction-only"
+            style={[styles.segment, styles.segmentActive]}
             testID="event-detail-tab-game"
           >
-            <Text style={[styles.segmentText, activeHeaderTab === "game" && styles.segmentTextActive]}>Game</Text>
-          </Pressable>
-          <Pressable
-            accessibilityLabel="event-detail-tab-chat"
-            onPress={() => setActiveHeaderTab("chat")}
-            style={[styles.segment, activeHeaderTab === "chat" && styles.segmentActive]}
-            testID="event-detail-tab-chat"
-          >
-            <Text style={[styles.segmentText, activeHeaderTab === "chat" && styles.segmentTextActive]}>Chat</Text>
-            <View style={styles.chatBadge}>
-              <Text style={styles.chatBadgeText}>380</Text>
-            </View>
-          </Pressable>
+            <Text style={[styles.segmentText, styles.segmentTextActive]}>Game</Text>
+          </View>
         </View>
         <View style={styles.topActions}>
           {showOrderBookDebug && (
@@ -1546,17 +1534,6 @@ export function EventDetail({
               <Ionicons name="book-outline" size={22} color="#f8fafc" />
             </Pressable>
           )}
-          <Pressable
-            accessibilityLabel="event-detail-share"
-            onPress={() => {
-              setShareSheetVisible(true);
-              setSavedNoticeVisible(false);
-            }}
-            style={styles.iconButton}
-            testID="event-detail-share"
-          >
-            <Ionicons name="share-outline" size={23} color="#f8fafc" />
-          </Pressable>
         </View>
       </View>
       {savedNoticeVisible && (
@@ -1655,7 +1632,7 @@ export function EventDetail({
           </View>
         </View>
 
-        {activeHeaderTab === "chat" ? (
+        {false ? (
           <View accessibilityLabel="event-detail-chat-page" style={styles.chatPage} testID="event-detail-chat-page">
             <View style={styles.chatContextCard}>
               <Text style={styles.chatContextTitle}>{label(locale, event)}</Text>
@@ -1746,15 +1723,6 @@ export function EventDetail({
             >
               <Ionicons name="analytics-outline" color={activeBodyTab === "market" ? "#38bdf8" : "#8b93a3"} size={18} />
               <Text style={[styles.bodySwitchTabText, activeBodyTab === "market" && styles.bodySwitchTabTextActive]}>Market</Text>
-            </Pressable>
-            <Pressable
-              accessibilityLabel="event-detail-body-tab-live-stats"
-              onPress={() => setActiveBodyTab("live-stats")}
-              style={[styles.bodySwitchTab, activeBodyTab === "live-stats" && styles.bodySwitchTabActive]}
-              testID="event-detail-body-tab-live-stats"
-            >
-              <Ionicons name="bar-chart-outline" color={activeBodyTab === "live-stats" ? "#38bdf8" : "#8b93a3"} size={18} />
-              <Text style={[styles.bodySwitchTabText, activeBodyTab === "live-stats" && styles.bodySwitchTabTextActive]}>Live stats</Text>
             </Pressable>
           </View>
         </View>
@@ -1986,19 +1954,6 @@ export function EventDetail({
             </View>
           </View>
         </View>
-
-        <Pressable accessibilityLabel="event-detail-chat-preview" style={styles.chatPreview} testID="event-detail-chat-preview">
-          <View style={styles.chatPreviewTop}>
-            <Text style={styles.chatCount}>78914 chatting</Text>
-            <Ionicons name="chatbubbles-outline" color="#cbd5e1" size={20} />
-          </View>
-          <View style={styles.chatPreviewLine}>
-            <View style={styles.userDot} />
-            <Text style={styles.chatUser}>gigglyeel0550</Text>
-            <Text style={styles.chatBetBadge}>BTTS $36</Text>
-            <Text style={styles.chatMessage}>VAMOS</Text>
-          </View>
-        </Pressable>
 
         {position && (
           <View accessibilityLabel="event-detail-position-card" style={styles.positionSection} testID="event-detail-position-card">
