@@ -2650,3 +2650,45 @@ Decision:
 - Unresolved P0 gaps: 0 for selected feature.
 - Remaining P1/P2 gaps: provider-backed team-total, real production line-family breadth, fresh S23 retail ticket proof.
 - Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Route-Backed Retail Server Order Flow
+
+Cycle: EV
+
+Lead Agent target: Prove the Local MVP retail path can submit a route-backed spread ticket through the real local server order API and sync Portfolio, with default orderbook hidden.
+
+Reference Audit Agent: Product steering audit from current Local MVP policy.
+
+Implementation Agent: Tablet harness plus local wrapper for disposable backend event, mobile dev credential, server order mode, and tablet proof.
+
+Audit Gate Agent: Same-cycle tablet proof.
+
+Reference device: Not refreshed in EV; this is a Holiwyn contract/user-flow gate based on existing Polymarket retail interaction direction and the latest Local MVP orderbook policy.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8263`.
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-local-mvp-route-server-order-flow-proof.json`
+- `docs/mobile/harness/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-route-backed-retail-event.json`
+- `docs/mobile/screenshots/cycle-EV-local-mvp-route-server-order-flow/`
+- Tablet proof slug: `mobile-el-a-provider-breadth-5f9e2d3f`.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EV-SERVER-P0-01 | P0 | Pass | Backend event loaded from `/api/mobile/events/:slug/live-detail` with `live-data-source-polymarket-gamma`. | N/A |
+| EV-SERVER-P0-02 | P0 | Pass | Spread row uses `ticket-source-backend-line-market` and `provider-source-polymarket`. | N/A |
+| EV-SERVER-P0-03 | P0 | Pass | Ticket preserves spread line `1.5`, `Reg. Time`, provider source, and provider token. | N/A |
+| EV-SERVER-P0-04 | P0 | Pass | Ticket submits with `EXPO_PUBLIC_ORDER_MODE=server`; proof records `orderMode=server`. | N/A |
+| EV-SERVER-P0-05 | P0 | Pass | Portfolio shows `Server portfolio synced`, `SERVER - Buy`, open order row, and selected spread/provider identity. | N/A |
+| EV-SERVER-P0-06 | P0 | Pass | Orderbook markers remain absent from default UI proof. | N/A |
+| EV-SERVER-P1-01 | P1 | Open | Only one provider-backed spread server order is covered. | Add totals/team-total and history breadth later. |
+
+Decision:
+
+- Pass/fail: Pass for selected EV route-backed spread server-order Local MVP flow.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: totals/team-total server-order breadth, production active-event provider breadth, fresh S23 retail ticket proof, and route-backed history/activity beyond open order.
+- Next cycle required: yes, continue Local MVP user-flow breadth.

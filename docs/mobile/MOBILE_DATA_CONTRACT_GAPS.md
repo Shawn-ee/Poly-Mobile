@@ -3220,6 +3220,39 @@ Future migration concern:
 
 - When fake-token server orders are promoted for Local MVP, persist the route-backed ticket selection snapshot through order, portfolio, and history instead of relying only on client local state.
 
+## Cycle EV - Route-Backed Server Order Flow
+
+Closed or narrowed:
+
+- Server fake-token order mode is now proven for the selected route-backed spread retail path.
+- The mobile ticket sends the selected route-backed spread market/outcome/provider identity through `/api/orders`.
+- `/api/portfolio` returns a server-synced open order carrying the selected spread line, period, provider source, and provider token identity.
+- Missing `OPTIC_ODDS_API_KEY` is not a blocker for this Local MVP path.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Route-backed totals/team-total server-order breadth for the same Local MVP retail path.
+- Production active-event provider mappings that guarantee real Polymarket spread/totals/team-total availability without disposable proof fixtures.
+- Longer activity/history lifecycle for route-backed retail server orders after fill/cancel.
+
+Schema mismatch:
+
+- No schema migration was required for EV. Existing order request JSON and portfolio selection serialization carry the selected spread identity.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/live-detail`, `/api/orders`, and `/api/portfolio` are enough for the selected open-order Local MVP journey.
+- `/api/portfolio/history` was not part of EV and remains required for a later history/activity milestone.
+
+Temporary mock/static data:
+
+- No arbitrary frontend data was added.
+- The disposable backend event is proof data shaped like the intended route contract, not UI-only local state.
+
+Future migration concern:
+
+- Before production-like trading, persist immutable normalized selection snapshots on order/fill/trade lifecycle rows instead of relying only on request JSON plus current market/outcome metadata.
+
 ## Cycle EB-A - Live Detail Selected-Market Selector Contract
 
 Closed or narrowed:

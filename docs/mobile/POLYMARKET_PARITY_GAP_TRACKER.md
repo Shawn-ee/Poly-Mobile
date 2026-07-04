@@ -382,3 +382,11 @@ For every UI element or interaction, answer:
 - Samsung tablet proof passes for route-backed event load, spread/totals `ticket-source-backend-line-market`, provider source/token identity in tickets, fake-token spread buy, and Portfolio/latest order/activity/position identity preservation.
 - Default Book/orderbook UI remains hidden and is not a milestone blocker.
 - Remaining P1: route-backed team-total provider rows, real active Polymarket line-family source breadth, and fresh S23 retail ticket recapture when gates allow.
+
+## Cycle EV Gap Tracker Update
+
+- PM-GAP-091 is opened and verified for the selected Local MVP route-backed server-order spread flow.
+- EV closes the P0 gap left by EU where route-backed market data could only be proven through mobile mock order mode.
+- Samsung tablet proof passes for route-backed event load, provider-backed spread row, simple spread ticket, server-mode fake-token buy through `/api/orders`, and `/api/portfolio` server sync showing the open order.
+- Default Book/orderbook UI remains hidden and is not a blocker for Local MVP completion.
+- Remaining P1: totals/team-total server-order breadth, active production Polymarket provider breadth, route-backed history/activity beyond open order, and fresh S23 retail ticket recapture when gates allow.

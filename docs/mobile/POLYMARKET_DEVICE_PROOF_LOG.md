@@ -151,3 +151,33 @@ Smoke/tests:
 Result:
 Remaining gaps:
 ```
+
+### 2026-07-04 - Cycle EV - Route-backed server-order Local MVP flow
+
+Reference device:
+Product steering plus existing Polymarket sports audits. Fresh S23 proof was not required for this local server-order contract gate.
+
+Holiwyn device:
+Samsung tablet / Holiwyn Expo Go / local Expo port `8263`.
+
+Holiwyn app mode:
+`EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE=server`, API key created by mobile dev credential helper, backend `http://172.16.200.14:3002`.
+
+Holiwyn actions:
+Opened disposable route-backed live event, scrolled to the spread line, opened simple ticket, entered `$25`, submitted server-mode fake-token buy, and verified Portfolio server sync.
+
+Holiwyn evidence:
+- `docs/mobile/harness/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-local-mvp-route-server-order-flow-proof.json`
+- `docs/mobile/harness/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-route-backed-retail-event.json`
+- `docs/mobile/screenshots/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-holiwyn-route-server-mvp-line-markets.png`
+- `docs/mobile/screenshots/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-holiwyn-route-server-mvp-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-holiwyn-route-server-mvp-portfolio.png`
+
+Smoke/tests:
+PowerShell parser checks, mobile order/portfolio service tests, mobile typecheck, and tablet proof wrapper passed.
+
+Result:
+Pass for selected route-backed spread server-order flow with orderbook hidden by default.
+
+Remaining gaps:
+Totals/team-total server-order breadth, production active-event provider breadth, fresh S23 retail ticket recapture, and history/activity proof beyond open order.

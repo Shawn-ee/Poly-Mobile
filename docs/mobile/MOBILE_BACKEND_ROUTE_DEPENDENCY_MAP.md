@@ -1434,3 +1434,18 @@ Cycle EU implementation notes:
 - Backend proof artifact slug: `mobile-el-a-provider-breadth-4f35da22`; tablet proof slug: `mobile-el-a-provider-breadth-b917234c`.
 - Mobile launched against `EXPO_PUBLIC_MARKET_DATA_MODE=server` and `EXPO_PUBLIC_ORDER_MODE` unset, proving server market data plus mock fake-token trading.
 - `full-game` backend line periods are treated as retail `Reg. Time`; `first-half` and `second-half` remain distinct and period-safe.
+
+## Cycle EV - Route-Backed Server Order Flow
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Backend event open for Local MVP server-order ticket | `/api/mobile/events/:slug/live-detail` | GET | Public viewing | Event slug from deep link `forceBackendEventSlug` | `event.title`, `event.liveDataStatus.source`, `markets[].id`, `marketType`, `period`, `line`, `referenceSource`, `externalMarketId`, `conditionId`, `outcomes[].id`, `outcomes[].referenceTokenId`, `outcomes[].price/bestBid/bestAsk` | `Event`, `Market`, active `Outcome`, provider quote/depth/history snapshots for proof event | None for the selected spread proof. If a backend line is absent, deterministic fixtures are not accepted as EV P0 evidence. | Production active-event provider line-family breadth remains incomplete. |
+| Local MVP fake-token order from route-backed ticket | `/api/orders` via mobile order service | POST | Mobile dev API key with order write scope; backend local flags `INTERNAL_TRADING_BETA_ENABLED=true` and `TRADING_KILL_SWITCH=false` | `marketId`, `outcomeId`, `side`, `type`, `price`, `size`, `contractSide`, and `selection` with `marketType=spread`, line `1.5`, period `Reg. Time`, provider source/market/condition/token identity | Order response success plus order identity; mobile transitions to Portfolio after submit | `ApiKey`, `ApiOrderRequest`, `Order`, `Market`, `Outcome` | None. EV runs with `EXPO_PUBLIC_ORDER_MODE=server`. | Filled lifecycle/history for this exact route-backed retail path remains follow-up. |
+| Server Portfolio sync after route-backed order | `/api/portfolio` | GET | Same mobile dev API key with account read scope | None | `openOrders[]`, `openOrders[].selection`, open order count, side, label, provider source/token, line, period | `Order`, `ApiOrderRequest`, `Market`, `Outcome`, optional `Position` if filled later | None. EV requires `Server portfolio synced`. | Longer activity/history proof beyond open order is not covered in EV. |
+
+Cycle EV implementation notes:
+
+- The backend route event was created by `scripts/prove_mobile_el_a_provider_breadth.ts` into `docs/mobile/harness/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-route-backed-retail-event.json`.
+- Tablet proof slug: `mobile-el-a-provider-breadth-5f9e2d3f`.
+- Mobile launched against `EXPO_PUBLIC_MARKET_DATA_MODE=server` and `EXPO_PUBLIC_ORDER_MODE=server`, proving server market data plus server fake-token order placement.
+- The proof uses LAN backend URL `http://172.16.200.14:3002` because wireless tablet ADB reverse/localhost is unreliable for this device.

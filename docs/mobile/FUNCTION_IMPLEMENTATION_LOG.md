@@ -4696,3 +4696,51 @@ Known limitations:
 
 - The disposable backend proof covers moneyline, spread, and totals. Team-total remains contract-shaped fixture UI until provider/source-approved backend rows exist.
 - The mobile proof uses mock order mode by design for the Local MVP fake-token flow while market data uses server mode.
+
+## Cycle EV - Route-Backed Server Order Flow
+
+Feature/page worked on:
+
+- Mobile EventDetail Local MVP retail line ticket through real local server order placement and server Portfolio sync.
+
+Frontend/harness files touched:
+
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/scripts/local-mvp-route-server-order-proof.ps1`
+
+Important functions/services touched:
+
+- Existing mobile order/portfolio services were not changed. EV wires the proof to `EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE=server`, and a generated mobile dev API key.
+- `smoke.ps1` now has a bounded line-market scroll search for the route-backed server-order proof so sticky header clipping does not fail a valid provider-backed spread row.
+- `local-mvp-route-server-order-proof.ps1` creates the disposable provider-backed event, creates a scoped mobile dev credential, launches the tablet proof, and redacts the API key in its summary.
+
+User interactions supported/proven:
+
+- Open backend live-detail event on Samsung tablet through `forceBackendEventSlug`.
+- See spread row use `ticket-source-backend-line-market` with `provider-source-polymarket`.
+- Open simple spread ticket with selected line, period, provider source, and provider token identity.
+- Submit a `$25` fake-token buy through the real local server `/api/orders` path.
+- See Portfolio sync from `/api/portfolio` with `Server portfolio synced`, `SERVER - Buy`, open order count, and selected spread/provider identity.
+- Default Book/orderbook UI stays hidden.
+
+Validation:
+
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+- PowerShell parser check for `mobile/scripts/local-mvp-route-server-order-proof.ps1`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/orderService.test.ts mobile/src/__tests__/portfolioSnapshotService.test.ts mobile/src/__tests__/portfolioSyncService.test.ts`
+- `cmd /c npm.cmd run typecheck -- --pretty false` from `mobile/`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/local-mvp-route-server-order-proof.ps1 -Port 8263 -BackendBaseUrl http://172.16.200.14:3002`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-route-backed-retail-event.json`
+- `docs/mobile/harness/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-local-mvp-route-server-order-flow-proof.json`
+- `docs/mobile/harness/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-holiwyn-route-server-mvp-*.xml`
+- `docs/mobile/screenshots/cycle-EV-local-mvp-route-server-order-flow/cycle-EV-holiwyn-route-server-mvp-*.png`
+
+Known limitations:
+
+- EV proves one route-backed provider spread server order. Totals and team-total server-order breadth remain follow-up work.
+- The local backend must run with internal trading beta enabled and kill switch disabled for this proof path.

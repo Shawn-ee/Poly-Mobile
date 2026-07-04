@@ -48,7 +48,8 @@ param(
   [switch]$LocalMvpSellFlow,
   [switch]$LocalMvpStatusFlow,
   [switch]$LocalMvpLineFamilyBreadth,
-  [switch]$LocalMvpRouteTicketFlow
+  [switch]$LocalMvpRouteTicketFlow,
+  [switch]$LocalMvpRouteServerOrderFlow
 )
 
 $ErrorActionPreference = "Stop"
@@ -90,6 +91,8 @@ Write-Host "Expo port: $Port"
 
 if ($LocalMvpRouteTicketFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteTicketFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($LocalMvpRouteServerOrderFlow) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerOrderFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpLineFamilyBreadth) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpLineFamilyBreadth -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpStatusFlow) {
