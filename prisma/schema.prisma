@@ -322,6 +322,7 @@ model Market {
   updatedAt               DateTime                 @updatedAt
   outcomes                Outcome[]
   referenceQuoteSnapshots ReferenceQuoteSnapshot[]
+  referenceDepthSnapshots ReferenceOrderbookDepthSnapshot[]
   outcomeSnapshots        MarketOutcomeSnapshot[]
   positions               Position[]
   trades                  Trade[]
@@ -406,6 +407,7 @@ model Outcome {
   comboOrderLegs          ComboOrderLeg[]
   poolBets                PoolBet[]
   referenceQuoteSnapshots ReferenceQuoteSnapshot[]
+  referenceDepthSnapshots ReferenceOrderbookDepthSnapshot[]
 
   @@unique([marketId, code])
   @@index([marketId, side])
@@ -446,6 +448,30 @@ model ReferenceQuoteSnapshot {
   @@index([marketId, updatedAt])
   @@index([outcomeId, updatedAt])
   @@index([source, updatedAt])
+}
+
+model ReferenceOrderbookDepthSnapshot {
+  id               String   @id @default(uuid())
+  marketId         String
+  outcomeId        String
+  source           String
+  externalSlug     String?
+  externalMarketId String?
+  conditionId      String?
+  tokenId          String?
+  side             String
+  price            Decimal  @db.Decimal(20, 8)
+  size             Decimal  @db.Decimal(36, 6)
+  levelIndex       Int
+  fetchedAt        DateTime
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  market           Market   @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  outcome          Outcome  @relation(fields: [outcomeId], references: [id], onDelete: Cascade)
+
+  @@unique([marketId, outcomeId, source, side, price])
+  @@index([marketId, source, fetchedAt])
+  @@index([outcomeId, source, fetchedAt])
 }
 
 model Position {

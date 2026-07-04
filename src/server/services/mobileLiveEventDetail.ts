@@ -126,7 +126,23 @@ const emptyOrderbookSnapshot: Awaited<ReturnType<typeof buildPublicOrderbookSnap
   bids: [],
   asks: [],
   depthSource: "empty",
-  depthReason: "No local depth or provider top-of-book depth is available.",
+  depthReason: "No local depth, provider orderbook ladder depth, or provider top-of-book depth is available.",
+  providerOrderbookDepth: {
+    source: "reference-orderbook-depth-snapshot",
+    status: "unavailable",
+    levelCount: 0,
+    snapshotCount: 0,
+    latestFetchedAt: null,
+    latestUpdatedAt: null,
+    stalenessSeconds: null,
+    staleAfterSeconds: STALE_AFTER_SECONDS,
+    refreshTtlSeconds: 60,
+    nextRefreshAt: null,
+    shouldRefresh: true,
+    isStale: false,
+    sources: [],
+    reason: "No provider orderbook depth snapshot is available.",
+  },
   providerQuoteDepth: {
     source: "reference-quote-snapshot",
     levelCount: 0,
@@ -280,6 +296,11 @@ export async function serializeMobileLiveEventDetail(input: {
     .map((snapshot) => snapshot.nextRefreshAt)
     .filter((value): value is string => typeof value === "string")
     .sort()[0] ?? null;
+  const providerDepthSnapshots = Array.from(depthByMarketId.values()).map((entry) => entry.snapshot.providerOrderbookDepth);
+  const batchedProviderOrderbookDepthMarketCount = providerDepthSnapshots.filter((snapshot) => snapshot.status !== "unavailable").length;
+  const batchedProviderOrderbookDepthReadyCount = providerDepthSnapshots.filter((snapshot) => snapshot.status === "ready").length;
+  const batchedProviderOrderbookDepthStaleCount = providerDepthSnapshots.filter((snapshot) => snapshot.status === "stale").length;
+  const batchedProviderOrderbookDepthRefreshDueCount = providerDepthSnapshots.filter((snapshot) => snapshot.shouldRefresh).length;
 
   const serializedMarkets = await Promise.all(
     markets.map(async (market) => {
@@ -303,6 +324,8 @@ export async function serializeMobileLiveEventDetail(input: {
         availability: availabilityForMarket(market),
         liquidity: depth.levels.length ? depth.levels.reduce((sum, level) => sum + level.total, 0) : null,
         orderbookDepth: depth.levels,
+        orderbookDepthSource: depth.snapshot.depthSource,
+        providerOrderbookDepth: depth.snapshot.providerOrderbookDepth,
         providerQuoteSnapshot: depth.snapshot.providerQuoteSnapshot,
         rulesText: market.rulesText,
         event: null,
@@ -414,6 +437,11 @@ export async function serializeMobileLiveEventDetail(input: {
       batchedOrderbookDepthRequestedMarketIds: markets.map((market) => market.id),
       batchedOrderbookDepthMaxLevels: MAX_DEPTH_LEVELS,
       batchedOrderbookDepthCacheTtlSeconds: DEPTH_BATCH_CACHE_TTL_SECONDS,
+      batchedProviderOrderbookDepthSource: batchedProviderOrderbookDepthMarketCount ? "reference-orderbook-depth-snapshot" : "empty",
+      batchedProviderOrderbookDepthMarketCount,
+      batchedProviderOrderbookDepthReadyCount,
+      batchedProviderOrderbookDepthStaleCount,
+      batchedProviderOrderbookDepthRefreshDueCount,
       batchedProviderQuoteSnapshotSource: batchedProviderQuoteSnapshotMarketCount ? "reference-quote-snapshot" : "empty",
       batchedProviderQuoteSnapshotMarketCount,
       batchedProviderQuoteSnapshotReadyCount,

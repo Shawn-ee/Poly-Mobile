@@ -2,6 +2,25 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CT - Provider Orderbook Depth Snapshot Contract
+
+Closed or narrowed:
+
+- Added durable `ReferenceOrderbookDepthSnapshot` model for provider CLOB/orderbook ladder rows.
+- Added writer service `upsertReferenceOrderbookDepthSnapshots()` with market/outcome/source/side/price identity.
+- `/api/orderbook/:marketId/book` can now return `depthSource=provider-orderbook-depth` and real ladder levels before falling back to top-quote estimates.
+- `/api/mobile/events/:slug/live-detail` now exposes batched provider ladder counts and per-market `providerOrderbookDepth` metadata.
+
+Still missing:
+
+- Real provider CLOB/depth fetcher that populates `ReferenceOrderbookDepthSnapshot` from Polymarket or the production sports provider.
+- Real World Cup compact soccer provider mappings for every live market.
+- Cleanup/retention policy for old provider ladder rows after a real fetcher is added.
+
+Future migration concern:
+
+- The local proof database has migration-history drift, so Cycle CT proof applied the table SQL directly. The committed migration remains the source of truth for clean environments.
+
 ## Cycle CS - Provider Quote Top-Of-Book Depth Bridge
 
 Fields now provided or wired:
