@@ -2,6 +2,37 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle EJ-B - Visible Route-Backed Status Breadth
+
+Feature/page worked on:
+
+- Holiwyn tablet-visible live event route-backed status breadth after EI.
+- Extends the existing backend-required provider status smoke with a separate EJ-B switch/artifact set for live detail, chart/ticket handoff labels, Book/orderbook route depth/availability, Book display settings, and ticket settings.
+
+Frontend/harness components touched:
+
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+Important functions/interactions/state transitions touched:
+
+- Added `-EventDetailVisibleStatusBreadth`, which shares the route-backed `forceBackendEventSlug` launch path and backend-health requirement with EI instead of using fixture/default-ready status.
+- EJ-B proof names write to `cycle-EJ-B-visible-status-breadth` and keep the fallback guard against `deterministic-status-fixture`, `mock-ready`, `default-ready`, `fixture-ready`, Mexico/Ecuador fallback, and generic Team to Advance fallback markers.
+- The pass path now asserts live data ready/source labels, chart `chart-status-ready`, Book refreshing then route-depth ready state, Book availability/selected provider labels, Book settings cents-to-decimal persistence, ticket provider identity labels, and ticket settings `Trading mode: Server mode`.
+
+Verified:
+
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+- `npm run typecheck` from `mobile/`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleStatusBreadth -Port 8324 -BackendBaseUrl "http://127.0.0.1:3002" -OutputDir docs/mobile/screenshots/cycle-EJ-B-visible-status-breadth -HierarchyOutputDir docs/mobile/harness/cycle-EJ-B-visible-status-breadth`
+
+Known limitations:
+
+- Android/tablet proof blocked before Expo launch because backend health was unavailable at `http://127.0.0.1:3002/api/health`; the generated proof records `result=blocked` and `routeBackedStatusConsumed=false`.
+- No screenshots/XML were produced in this run because the route-backed proof aborts before fallback UI launch when the backend is unavailable.
+- Broader real provider-backed line-family stale/unavailable transition proof remains outside this visible harness increment.
+
 ## Cycle EI Integrated - Route-Backed Tablet Provider Status
 
 Feature/page worked on:

@@ -28,6 +28,7 @@ param(
   [switch]$EventDetailChart,
   [switch]$EventDetailVisibleLiveParity,
   [switch]$EventDetailProviderStatus,
+  [switch]$EventDetailVisibleStatusBreadth,
   [switch]$EmptyErrorLoading,
   [switch]$WholeAppNavDiscovery,
   [switch]$EventDetailPosition,
@@ -112,7 +113,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 $ServerLiveDetailHalvesOrderBook = $ServerLiveDetailFirstHalfOrderBook -or $ServerLiveDetailSecondHalfOrderBook
-$EventDetailProviderRouteStatusProof = $EventDetailProviderStatus
+$EventDetailProviderRouteStatusProof = $EventDetailProviderStatus -or $EventDetailVisibleStatusBreadth
 $ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook -or $ServerLiveProviderRefreshProof -or $EventDetailProviderRouteStatusProof
 
 $MobileRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
@@ -121,6 +122,15 @@ $ResolvedOutputDir = Join-Path $RepoRoot $OutputDir
 $ResolvedHierarchyOutputDir = Join-Path $RepoRoot $HierarchyOutputDir
 New-Item -ItemType Directory -Force -Path $ResolvedOutputDir | Out-Null
 New-Item -ItemType Directory -Force -Path $ResolvedHierarchyOutputDir | Out-Null
+
+$ProviderStatusCycle = if ($EventDetailVisibleStatusBreadth) { "EJ-B" } else { "EI-B" }
+$ProviderStatusArtifactPrefix = if ($EventDetailVisibleStatusBreadth) { "cycle-EJ-B-visible-status-breadth" } else { "cycle-EI-B-route-backed-status" }
+$ProviderStatusScope = if ($EventDetailVisibleStatusBreadth) {
+  "Route-backed visible Android status breadth across live detail, chart, Book/orderbook settings, and ticket settings"
+} else {
+  "Route-backed provider lifecycle/status badges on live detail, chart, Book/orderbook, and ticket handoff"
+}
+$ProviderStatusSwitch = if ($EventDetailVisibleStatusBreadth) { "-EventDetailVisibleStatusBreadth" } else { "-EventDetailProviderStatus" }
 
 function Save-Screenshot {
   param(
@@ -389,11 +399,11 @@ try {
     Write-Host "Backend health: $($health.status)"
   } catch {
     if ($ServerLiveDetailBackendProof) {
-      if ($EventDetailProviderStatus) {
+      if ($EventDetailProviderRouteStatusProof) {
         $blockedProof = [ordered]@{
-          cycle = "EI-B"
-          scope = "Route-backed provider lifecycle/status badges on live detail, chart, Book/orderbook, and ticket handoff"
-          command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailProviderStatus -Port $Port -BackendBaseUrl $BackendBaseUrl -OutputDir docs/mobile/screenshots/cycle-EI-B-route-backed-status -HierarchyOutputDir docs/mobile/harness/cycle-EI-B-route-backed-status"
+          cycle = $ProviderStatusCycle
+          scope = $ProviderStatusScope
+          command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 $ProviderStatusSwitch -Port $Port -BackendBaseUrl $BackendBaseUrl -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir"
           backendBaseUrl = $BackendBaseUrl
           serverMode = "server"
           apiBaseUrl = $BackendBaseUrl
@@ -404,7 +414,7 @@ try {
           blockedReason = "Backend health unavailable at $BackendBaseUrl/api/health after ADB reverse tcp:3002."
           fallbackGuard = "Proof aborts before Expo launch instead of using fixture, mock-ready, or default-ready status."
         }
-        $blockedProofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-EI-B-route-backed-status-proof.json"
+        $blockedProofPath = Join-Path $ResolvedHierarchyOutputDir "$ProviderStatusArtifactPrefix-proof.json"
         $blockedProof | ConvertTo-Json -Depth 6 | Set-Content -Path $blockedProofPath
         Write-Host "Blocked proof summary: $blockedProofPath"
       }
@@ -438,7 +448,7 @@ try {
     }
   }
   $expoArgs = @("expo", "start", "--port", "$Port", "--offline")
-  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailProviderStatus -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail) {
+  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailProviderRouteStatusProof -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail) {
     $expoArgs += "--clear"
   }
   if ($ServerLiveDetailTotalsOrderBook) {
@@ -458,7 +468,7 @@ try {
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
   Wait-ExpoReady -Port $Port
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailProviderStatus -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailProviderRouteStatusProof -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
   if ($ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook) {
     Start-Sleep -Seconds 10
   }
@@ -512,7 +522,7 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forcePortfolioSyncing=1"
   } elseif ($WholeAppNavDiscovery) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1"
-  } elseif ($DyAGamePageStructure -or $LiveDetail -or $EventDetailProviderStatus) {
+  } elseif ($DyAGamePageStructure -or $LiveDetail -or $EventDetailProviderRouteStatusProof) {
     "exp://${ExpoHost}:$Port/--/?forceLiveDetail=1,forceResetState=1"
   } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
     $liveReset = if ($LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { ",forceResetState=1" } else { "" }
@@ -552,7 +562,7 @@ try {
   } else {
     "exp://${ExpoHost}:$Port"
   }
-  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailProviderStatus -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $FutureListClose -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
+  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailProviderRouteStatusProof -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $FutureListClose -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
     & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
     Start-Sleep -Seconds 2
   }
@@ -580,11 +590,11 @@ try {
     @("Japan vs Morocco", "Game Lines", "Spread", "event-detail-open-order-book")
   } elseif ($ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook) {
     @("Game Lines", "Player Props", "Best bid", "Best ask", "Spread")
-  } elseif ($EventDetailProviderStatus) {
-    @("EI-A Route Backed Status", "Game Lines", "Player Props", "event-detail-live-data-inline", "live-data-source-polymarket-gamma")
+  } elseif ($EventDetailProviderRouteStatusProof) {
+    @("Game Lines", "Player Props", "event-detail-live-data-inline", "live-data-source-polymarket-gamma")
   } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade) {
     @("Mexico vs. Ecuador", "5 markets", "10 outcomes")
-  } elseif ($DyAGamePageStructure -or $LiveDetail -or $EventDetailProviderStatus) {
+  } elseif ($DyAGamePageStructure -or $LiveDetail -or $EventDetailProviderRouteStatusProof) {
     @("Australia vs. Egypt", "Live Winner", "LIVE WORLD CUP", "Game Lines", "Player Props")
   } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
     @("Live World Cup", "5 markets", "11 outcomes", "Australia vs. Egypt")
@@ -1350,9 +1360,9 @@ try {
       return
     }
 
-    if ($EventDetailProviderStatus) {
-      Save-Screenshot -Name "cycle-EI-B-route-backed-status-live-top.png"
-      $providerStatusTopHierarchy = Save-UiHierarchy -Name "cycle-EI-B-route-backed-status-live-top.xml"
+    if ($EventDetailProviderRouteStatusProof) {
+      Save-Screenshot -Name "$ProviderStatusArtifactPrefix-live-top.png"
+      $providerStatusTopHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-live-top.xml"
       Assert-HierarchyContains -Path $providerStatusTopHierarchy -Expected @(
         "event-detail-live-data-inline",
         "live-data-status-ready",
@@ -1361,9 +1371,11 @@ try {
         "Live provider ready",
         "event-detail-price-chart",
         "event-detail-chart-route-state",
+        "chart-status-ready",
         "provider-lifecycle-ready",
         "Chart provider ready",
         "event-detail-chart-ticket-handoff-status",
+        "provider-source-polymarket",
         "Ticket provider ready",
         "event-detail-chart-open-book"
       )
@@ -1372,8 +1384,8 @@ try {
 
       Invoke-TapHierarchyNode -Path $providerStatusTopHierarchy -Identifier "event-detail-chart-open-book"
       Start-Sleep -Milliseconds 250
-      Save-Screenshot -Name "cycle-EI-B-route-backed-status-book-refreshing.png"
-      $providerStatusBookRefreshingHierarchy = Save-UiHierarchy -Name "cycle-EI-B-route-backed-status-book-refreshing.xml"
+      Save-Screenshot -Name "$ProviderStatusArtifactPrefix-book-refreshing.png"
+      $providerStatusBookRefreshingHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-book-refreshing.xml"
       Assert-HierarchyContains -Path $providerStatusBookRefreshingHierarchy -Expected @(
         "event-detail-order-book-screen",
         "event-detail-order-book-depth-state",
@@ -1385,8 +1397,8 @@ try {
       Assert-HierarchyDoesNotContain -Path $providerStatusBookRefreshingHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready")
 
       Start-Sleep -Seconds 2
-      Save-Screenshot -Name "cycle-EI-B-route-backed-status-book-resolved.png"
-      $providerStatusBookResolvedHierarchy = Save-UiHierarchy -Name "cycle-EI-B-route-backed-status-book-resolved.xml"
+      Save-Screenshot -Name "$ProviderStatusArtifactPrefix-book-resolved.png"
+      $providerStatusBookResolvedHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-book-resolved.xml"
       Assert-HierarchyContains -Path $providerStatusBookResolvedHierarchy -Expected @(
         "event-detail-order-book-screen",
         "event-detail-order-book-depth-state",
@@ -1396,29 +1408,45 @@ try {
         "orderbook-source-orderbook-route",
         "orderbook-status-ready",
         "event-detail-order-book-availability",
+        "orderbook-availability-ready",
+        "selected-provider-source-polymarket",
         "order-book-ticket-handoff-status",
         "Ticket provider ready",
         "order-book-buy-"
       )
       Assert-HierarchyDoesNotContain -Path $providerStatusBookResolvedHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Fixture depth", "selected-market-mexico-ecuador-winner", "Team to Advance")
 
-      Invoke-TapHierarchyNode -Path $providerStatusBookResolvedHierarchy -Identifier "order-book-buy-" -StartsWith
+      Invoke-TapHierarchyNode -Path $providerStatusBookResolvedHierarchy -Identifier "order-book-settings-open"
+      Start-Sleep -Milliseconds 500
+      Save-Screenshot -Name "$ProviderStatusArtifactPrefix-book-settings-cents.png"
+      $providerStatusBookSettingsCentsHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-book-settings-cents.xml"
+      Assert-HierarchyContains -Path $providerStatusBookSettingsCentsHierarchy -Expected @("order-book-settings-sheet", "Book settings", "Price display", "order-book-display-mode-toggle", "book-display-mode-cents", "decimalize-off", "selected-provider-source-polymarket")
+      Assert-HierarchyDoesNotContain -Path $providerStatusBookSettingsCentsHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Fixture depth", "selected-market-mexico-ecuador-winner", "Team to Advance")
+
+      Invoke-TapHierarchyNode -Path $providerStatusBookSettingsCentsHierarchy -Identifier "order-book-display-mode-toggle"
+      Start-Sleep -Milliseconds 500
+      Save-Screenshot -Name "$ProviderStatusArtifactPrefix-book-settings-decimal.png"
+      $providerStatusBookSettingsDecimalHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-book-settings-decimal.xml"
+      Assert-HierarchyContains -Path $providerStatusBookSettingsDecimalHierarchy -Expected @("order-book-settings-sheet", "book-display-mode-decimal", "decimalize-on", "selected-provider-source-polymarket", "Price (USDT)")
+      Assert-HierarchyDoesNotContain -Path $providerStatusBookSettingsDecimalHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Fixture depth", "selected-market-mexico-ecuador-winner", "Team to Advance")
+
+      Invoke-TapHierarchyNode -Path $providerStatusBookSettingsDecimalHierarchy -Identifier "order-book-buy-" -StartsWith
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-EI-B-route-backed-status-ticket-handoff.png"
-      $providerStatusTicketHierarchy = Save-UiHierarchy -Name "cycle-EI-B-route-backed-status-ticket-handoff.xml"
-      Assert-HierarchyContains -Path $providerStatusTicketHierarchy -Expected @("trade-ticket", "ticket-side-buy", "ticket-side-sell", "ticket-settings", "ticket-selection-summary", "provider-source-polymarket")
+      Save-Screenshot -Name "$ProviderStatusArtifactPrefix-ticket-handoff.png"
+      $providerStatusTicketHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-ticket-handoff.xml"
+      Assert-HierarchyContains -Path $providerStatusTicketHierarchy -Expected @("trade-ticket", "ticket-side-buy", "ticket-side-sell", "ticket-settings", "ticket-selection-summary", "provider-source-polymarket", "ticket-provider-source-polymarket", "ticket-market-id-", "ticket-outcome-id-")
       Assert-HierarchyDoesNotContain -Path $providerStatusTicketHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Team to Advance", "Mexico vs. Ecuador")
       Invoke-TapHierarchyNode -Path $providerStatusTicketHierarchy -Identifier "ticket-settings"
       Start-Sleep -Milliseconds 500
-      Save-Screenshot -Name "cycle-EI-B-route-backed-status-ticket-settings.png"
-      $providerStatusTicketSettingsHierarchy = Save-UiHierarchy -Name "cycle-EI-B-route-backed-status-ticket-settings.xml"
-      Assert-HierarchyContains -Path $providerStatusTicketSettingsHierarchy -Expected @("trade-ticket", "ticket-advanced-details", "ticket-trading-mode", "Trading mode: Server mode", "ticket-market-depth", "provider-source-polymarket")
+      Save-Screenshot -Name "$ProviderStatusArtifactPrefix-ticket-settings.png"
+      $providerStatusTicketSettingsHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-ticket-settings.xml"
+      Assert-HierarchyContains -Path $providerStatusTicketSettingsHierarchy -Expected @("trade-ticket", "ticket-advanced-details", "ticket-trading-mode", "Trading mode: Server mode", "ticket-market-depth", "provider-source-polymarket", "ticket-provider-source-polymarket")
       Assert-HierarchyDoesNotContain -Path $providerStatusTicketSettingsHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Team to Advance", "Mexico vs. Ecuador")
 
       $proof = [ordered]@{
-        cycle = "EI-B"
-        scope = "Route-backed provider lifecycle/status badges on live detail, chart, Book/orderbook, and ticket handoff"
-        command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailProviderStatus -Port $Port -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir"
+        cycle = $ProviderStatusCycle
+        scope = $ProviderStatusScope
+        command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 $ProviderStatusSwitch -Port $Port -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir"
         backendBaseUrl = $BackendBaseUrl
         serverMode = $env:EXPO_PUBLIC_ORDER_MODE
         apiBaseUrl = $env:EXPO_PUBLIC_API_BASE_URL
@@ -1431,26 +1459,32 @@ try {
         assertions = [ordered]@{
           backendHealth = "Backend /api/health was required before launch; the proof aborts instead of falling back when unavailable."
           liveRouteStatusReady = "Live detail consumed route-backed liveDataStatus with live-data-status-ready and live-data-source-polymarket-gamma."
+          chartRouteStatusReady = "Chart route state exposes chart-status-ready, provider-lifecycle-ready, and Ticket provider ready for the selected route-backed market."
           serverRuntime = "Expo launched with EXPO_PUBLIC_ORDER_MODE=server and EXPO_PUBLIC_API_BASE_URL set to the supplied BackendBaseUrl."
           bookRefreshing = "Opening Book produces a visible provider-lifecycle-refreshing Book depth refreshing state before the resolved depth state."
-          bookRouteDepthReady = "Resolved Book depth uses orderbook-source-orderbook-route and orderbook-status-ready rather than fixture depth."
-          ticketServerMode = "Ticket settings exposes Trading mode: Server mode while preserving provider-source-polymarket selection identity."
+          bookRouteDepthReady = "Resolved Book depth uses orderbook-source-orderbook-route, orderbook-status-ready, orderbook-availability-ready, and selected-provider-source-polymarket rather than fixture depth."
+          bookSettings = "Book settings toggles book-display-mode-cents to book-display-mode-decimal while preserving selected-provider-source-polymarket."
+          ticketServerMode = "Ticket settings exposes Trading mode: Server mode while preserving provider-source-polymarket and ticket-provider-source-polymarket selection identity."
           fallbackGuard = "The top, Book, and ticket hierarchies reject deterministic-status-fixture, fixture-ready, mock-ready, and default-ready markers."
         }
         artifacts = @(
-          "$OutputDir/cycle-EI-B-route-backed-status-live-top.png",
-          "$HierarchyOutputDir/cycle-EI-B-route-backed-status-live-top.xml",
-          "$OutputDir/cycle-EI-B-route-backed-status-book-refreshing.png",
-          "$HierarchyOutputDir/cycle-EI-B-route-backed-status-book-refreshing.xml",
-          "$OutputDir/cycle-EI-B-route-backed-status-book-resolved.png",
-          "$HierarchyOutputDir/cycle-EI-B-route-backed-status-book-resolved.xml",
-          "$OutputDir/cycle-EI-B-route-backed-status-ticket-handoff.png",
-          "$HierarchyOutputDir/cycle-EI-B-route-backed-status-ticket-handoff.xml",
-          "$OutputDir/cycle-EI-B-route-backed-status-ticket-settings.png",
-          "$HierarchyOutputDir/cycle-EI-B-route-backed-status-ticket-settings.xml"
+          "$OutputDir/$ProviderStatusArtifactPrefix-live-top.png",
+          "$HierarchyOutputDir/$ProviderStatusArtifactPrefix-live-top.xml",
+          "$OutputDir/$ProviderStatusArtifactPrefix-book-refreshing.png",
+          "$HierarchyOutputDir/$ProviderStatusArtifactPrefix-book-refreshing.xml",
+          "$OutputDir/$ProviderStatusArtifactPrefix-book-resolved.png",
+          "$HierarchyOutputDir/$ProviderStatusArtifactPrefix-book-resolved.xml",
+          "$OutputDir/$ProviderStatusArtifactPrefix-book-settings-cents.png",
+          "$HierarchyOutputDir/$ProviderStatusArtifactPrefix-book-settings-cents.xml",
+          "$OutputDir/$ProviderStatusArtifactPrefix-book-settings-decimal.png",
+          "$HierarchyOutputDir/$ProviderStatusArtifactPrefix-book-settings-decimal.xml",
+          "$OutputDir/$ProviderStatusArtifactPrefix-ticket-handoff.png",
+          "$HierarchyOutputDir/$ProviderStatusArtifactPrefix-ticket-handoff.xml",
+          "$OutputDir/$ProviderStatusArtifactPrefix-ticket-settings.png",
+          "$HierarchyOutputDir/$ProviderStatusArtifactPrefix-ticket-settings.xml"
         )
       }
-      $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-EI-B-route-backed-status-proof.json"
+      $proofPath = Join-Path $ResolvedHierarchyOutputDir "$ProviderStatusArtifactPrefix-proof.json"
       $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
       Write-Host "Proof summary: $proofPath"
       return
@@ -2186,7 +2220,7 @@ try {
       return
     }
 
-    if (-not ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailProviderStatus -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $ServerLiveDetailBackendProof)) {
+    if (-not ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailProviderRouteStatusProof -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $ServerLiveDetailBackendProof)) {
       Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "event-card-mexico-ecuador"
       Start-Sleep -Seconds 1
     }
