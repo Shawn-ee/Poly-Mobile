@@ -1424,7 +1424,7 @@ export default function App() {
     <SafeAreaView style={styles.safe}>
       <StatusBar style="light" />
       <View style={styles.shell}>
-        {!selectedEvent && (
+        {!selectedEvent && mainTab !== "portfolio" && (
           <Header
             locale={locale}
             promo={t.promo}

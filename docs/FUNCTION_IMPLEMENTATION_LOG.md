@@ -44,3 +44,12 @@
 - User interactions supported: profile/value header, performance chart, range selector, visual Deposit/Withdraw placeholders, Positions/Orders/History tabs, compact position rows, Cash out, plus/buy-more action, no-open-orders empty state, and simplified history rows.
 - State transitions: added local `activeTab` state for `positions`, `orders`, and `history`. Existing expanded row state and close/trade/cancel callbacks are preserved.
 - Known limitations: chart is a deterministic visual sparkline, not yet real portfolio history from backend. Deposit/Withdraw are visual placeholders only for MVP.
+
+## Cycle FR - Portfolio Shell Parity
+
+- Feature/page: Portfolio app shell.
+- Frontend components touched: `App.tsx`.
+- Important functions/services touched: no backend/provider service changes.
+- User interactions supported: Portfolio now opens as a full-screen account/value page without the global Holiwyn promo/header above it, while preserving bottom tab navigation and Portfolio's own settings control.
+- State transitions: unchanged. The render condition for the shared `Header` now excludes `mainTab === "portfolio"`.
+- Known limitations: Home/Live/Search/Account still use the shared header; this cycle intentionally scopes only the Portfolio reference mismatch.

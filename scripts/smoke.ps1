@@ -5672,7 +5672,7 @@ try {
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio.png"
       $mvpPortfolioHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio.xml"
       Assert-HierarchyContains -Path $mvpPortfolioHierarchy -Expected (@("Portfolio", "portfolio-profile-header", "portfolio-performance-chart", "portfolio-range-selector", "portfolio-deposit-placeholder", "portfolio-withdraw-placeholder", "portfolio-section-tabs", "Positions", "Orders", "History", "position-card-", "portfolio-display-label-MEX -2.5 1H", "Cost 25 USDT", "Cash out", "97% chance") + $mvpPortfolioExpected)
-      Assert-HierarchyDoesNotContain -Path $mvpPortfolioHierarchy -Unexpected @("event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth")
+      Assert-HierarchyDoesNotContain -Path $mvpPortfolioHierarchy -Unexpected @("event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth", "header-promo-action", "header-notifications-action", "header-account-action", "WORLD CUP MARKETS", "Get 50")
       Invoke-TapHierarchyNode -Path $mvpPortfolioHierarchy -Identifier "portfolio-tab-orders"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-orders.png"
