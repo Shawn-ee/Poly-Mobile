@@ -2698,6 +2698,35 @@ Future migration concern:
 
 - If production order/history reconstruction must survive provider remaps or market/outcome edits, persist immutable normalized selection metadata directly on order/fill/trade lifecycle rows rather than relying on request JSON plus current market/outcome fallback metadata.
 
+## Cycle EF-A - Snapshot Durability After Metadata Drift
+
+Closed or narrowed:
+
+- `docs/mobile/harness/cycle-EF-A-snapshot-durability.json` records the EF durability harness status: focused tests passed, while the database-backed route/data proof script was blocked locally by missing `DATABASE_URL`.
+- Focused backend tests now cover the same drift guard for `/api/portfolio` open orders and filled positions plus `/api/portfolio/history` canceled orders and recent trades.
+- The durability proof uses the existing matching same-user/same-market/same-outcome `ApiOrderRequest.requestBody.selection` bridge, so the selected Book identity wins over mutable current `Market`/`Outcome` metadata when a snapshot exists.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- First-class immutable `Order`, `Fill`, `Trade`, and/or `Position` selection snapshot columns remain future production hardening.
+- Same user, same market, same outcome, different historical selections are still limited by the latest matching request snapshot bridge until schema work is approved.
+
+Schema mismatch:
+
+- No schema migration was made for EF-A. This cycle intentionally makes the durability proof explicit within the existing `ApiOrderRequest`, `Order`, `Trade`, `Position`, `Market`, and `Outcome` model boundaries.
+
+Route mismatch:
+
+- No new route was required. Existing Portfolio and history routes already carry the mobile-facing `selection` contract.
+
+Temporary mock/static data:
+
+- No frontend mock/static data was added. The proof creates disposable backend market/order/trade state only.
+
+Future migration concern:
+
+- Persist immutable normalized selection metadata directly on order/fill/trade lifecycle rows before production trading depends on arbitrary provider remaps or same-market/outcome multi-selection historical reconstruction.
+
 ## Cycle EB-A - Live Detail Selected-Market Selector Contract
 
 Closed or narrowed:

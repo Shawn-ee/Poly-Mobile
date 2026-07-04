@@ -255,6 +255,104 @@ describe("GET /api/portfolio/history canceled orders", () => {
     });
   });
 
+  test("keeps canceled and recent-trade snapshots after current market metadata changes", async () => {
+    mockPrisma.trade.findMany.mockReset();
+    mockPrisma.order.findMany.mockReset();
+    mockPrisma.ledgerEntry.findMany.mockResolvedValue([]);
+
+    const snapshot = {
+      marketId: "market-ef-spread",
+      outcomeId: "outcome-ef-spread-yes",
+      marketGroupId: "spreads",
+      marketType: "spread",
+      line: "-0.5",
+      period: "2H",
+      side: "yes",
+      displayLabel: "Spain -0.5 2H",
+      contractSide: "yes",
+      referenceSource: "polymarket",
+      providerSource: "polymarket",
+      externalSlug: "ef-spain-japan-spread-original",
+      externalMarketId: "gamma-ef-spread-original",
+      conditionId: "condition-ef-spread-original",
+      referenceTokenId: "token-ef-spread-yes-original",
+      tokenId: "token-ef-spread-yes-original",
+      referenceOutcomeLabel: "Spain -0.5",
+    };
+    const driftedMarket = {
+      id: "market-ef-spread",
+      title: "Spain vs Japan moneyline after provider refresh",
+      status: "LIVE",
+      marketGroupKey: "moneyline",
+      marketType: "match_winner_1x2",
+      line: null,
+      period: "regulation",
+      referenceSource: "refreshed-provider",
+      externalSlug: "ef-moneyline-refreshed",
+      externalMarketId: "gamma-ef-moneyline-refreshed",
+      conditionId: "condition-ef-moneyline-refreshed",
+    };
+    const driftedOutcome = {
+      id: "outcome-ef-spread-yes",
+      name: "YES",
+      label: "Spain moneyline refreshed",
+      side: "home",
+      referenceTokenId: "token-ef-moneyline-yes-refreshed",
+      referenceOutcomeLabel: "Spain moneyline",
+    };
+
+    mockPrisma.trade.findMany
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([
+        {
+          id: "trade-ef-filled",
+          marketId: "market-ef-spread",
+          outcomeId: "outcome-ef-spread-yes",
+          side: "BUY",
+          shares: 12,
+          cost: 5.28,
+          fee: 0,
+          createdAt: new Date("2026-07-04T12:10:00.000Z"),
+          market: driftedMarket,
+          outcome: driftedOutcome,
+        },
+      ]);
+    mockPrisma.order.findMany
+      .mockResolvedValueOnce([
+        {
+          id: "order-ef-canceled",
+          side: "BUY",
+          status: "CANCELED",
+          price: 0.32,
+          amount: 10,
+          remaining: 10,
+          updatedAt: new Date("2026-07-04T12:06:00.000Z"),
+          market: driftedMarket,
+          outcome: driftedOutcome,
+          apiOrderRequest: { requestBody: { selection: snapshot } },
+        },
+      ])
+      .mockResolvedValueOnce([
+        {
+          marketId: "market-ef-spread",
+          outcomeId: "outcome-ef-spread-yes",
+          apiOrderRequest: { requestBody: { selection: snapshot } },
+        },
+      ]);
+
+    const { GET } = await import("@/app/api/portfolio/history/route");
+    const response = await GET(new NextRequest("http://localhost/api/portfolio/history"));
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.canceledOrders[0].selection).toEqual(snapshot);
+    expect(body.recentTrades[0].selection).toEqual(snapshot);
+    expect(JSON.stringify(body.canceledOrders[0].selection)).not.toContain("moneyline");
+    expect(JSON.stringify(body.recentTrades[0].selection)).not.toContain("refreshed");
+    expect(body.canceledOrders[0].selection.tokenId).toBe("token-ef-spread-yes-original");
+    expect(body.recentTrades[0].selection.marketGroupId).toBe("spreads");
+  });
+
   test("blocks anonymous history reads before canceled-order lookup", async () => {
     mockGetUserId.mockResolvedValue(null);
 

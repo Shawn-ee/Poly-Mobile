@@ -104,4 +104,69 @@ describe("ticket selection metadata", () => {
     expect(selection.marketType).not.toBe("match_winner_1x2");
     expect(selection.displayLabel).not.toContain("moneyline");
   });
+
+  test("keeps order-time provider token identity after current labels and provider metadata drift", () => {
+    const selection = buildTicketSelectionMetadata({
+      requestBody: {
+        selection: {
+          marketId: "ef-selected-spread-market",
+          outcomeId: "ef-selected-spread-yes",
+          marketGroupId: "spreads",
+          marketType: "spread",
+          line: "-0.5",
+          period: "2H",
+          side: "yes",
+          displayLabel: "Spain -0.5 2H",
+          contractSide: "yes",
+          referenceSource: "polymarket",
+          providerSource: "polymarket",
+          externalSlug: "ef-spain-japan-spread-original",
+          externalMarketId: "gamma-ef-spread-original",
+          conditionId: "condition-ef-spread-original",
+          referenceTokenId: "token-ef-spread-yes-original",
+          tokenId: "token-ef-spread-yes-original",
+          referenceOutcomeLabel: "Spain -0.5",
+        },
+      },
+      market: {
+        id: "ef-selected-spread-market",
+        title: "Spain vs Japan moneyline after refresh",
+        marketGroupKey: "moneyline",
+        marketType: "match_winner_1x2",
+        line: null,
+        period: "regulation",
+        referenceSource: "refreshed-provider",
+        externalSlug: "ef-moneyline-refreshed",
+        externalMarketId: "gamma-ef-moneyline-refreshed",
+        conditionId: "condition-ef-moneyline-refreshed",
+      },
+      outcome: {
+        id: "ef-selected-spread-yes",
+        name: "YES",
+        label: "Spain moneyline refreshed",
+        side: "home",
+        referenceTokenId: "token-ef-moneyline-yes-refreshed",
+        referenceOutcomeLabel: "Spain moneyline",
+      },
+    });
+
+    expect(selection).toEqual(
+      expect.objectContaining({
+        marketGroupId: "spreads",
+        marketType: "spread",
+        line: "-0.5",
+        period: "2H",
+        side: "yes",
+        displayLabel: "Spain -0.5 2H",
+        providerSource: "polymarket",
+        externalSlug: "ef-spain-japan-spread-original",
+        externalMarketId: "gamma-ef-spread-original",
+        conditionId: "condition-ef-spread-original",
+        tokenId: "token-ef-spread-yes-original",
+        referenceOutcomeLabel: "Spain -0.5",
+      }),
+    );
+    expect(JSON.stringify(selection)).not.toContain("moneyline");
+    expect(JSON.stringify(selection)).not.toContain("refreshed");
+  });
 });

@@ -306,6 +306,98 @@ describe("GET /api/portfolio open order display data", () => {
     expect(JSON.stringify(body.positions)).not.toContain("private-position-credential");
   });
 
+  test("keeps selected position and open-order snapshots after current market metadata changes", async () => {
+    getUserId.mockResolvedValue("user-1");
+    const snapshot = {
+      marketId: "market-ef-spread",
+      outcomeId: "outcome-ef-spread-yes",
+      marketGroupId: "spreads",
+      marketType: "spread",
+      line: "-0.5",
+      period: "2H",
+      side: "yes",
+      displayLabel: "Spain -0.5 2H",
+      contractSide: "yes",
+      providerSource: "polymarket",
+      externalSlug: "ef-spain-japan-spread-original",
+      externalMarketId: "gamma-ef-spread-original",
+      conditionId: "condition-ef-spread-original",
+      tokenId: "token-ef-spread-yes-original",
+      referenceOutcomeLabel: "Spain -0.5",
+    };
+    const driftedMarket = {
+      id: "market-ef-spread",
+      title: "Spain vs Japan moneyline after provider refresh",
+      status: "LIVE",
+      mechanism: "ORDERBOOK",
+      marketGroupKey: "moneyline",
+      marketType: "match_winner_1x2",
+      line: null,
+      period: "regulation",
+      referenceSource: "refreshed-provider",
+      externalSlug: "ef-moneyline-refreshed",
+      externalMarketId: "gamma-ef-moneyline-refreshed",
+      conditionId: "condition-ef-moneyline-refreshed",
+      resolveTime: null,
+      createdAt: new Date("2026-07-04T12:00:00Z"),
+    };
+    const driftedOutcome = {
+      id: "outcome-ef-spread-yes",
+      name: "YES",
+      label: "Spain moneyline refreshed",
+      side: "home",
+      referenceTokenId: "token-ef-moneyline-yes-refreshed",
+      referenceOutcomeLabel: "Spain moneyline",
+    };
+
+    prismaMock.order.findMany
+      .mockResolvedValueOnce([
+        {
+          marketId: "market-ef-spread",
+          outcomeId: "outcome-ef-spread-yes",
+          apiOrderRequest: { requestBody: { selection: snapshot } },
+        },
+      ])
+      .mockResolvedValueOnce([
+        {
+          id: "order-ef-open",
+          market: driftedMarket,
+          outcome: driftedOutcome,
+          apiOrderRequest: { requestBody: { selection: snapshot } },
+          side: "BUY",
+          status: "OPEN",
+          price: 0.44,
+          amount: 12,
+          remaining: 12,
+          reservedNotional: 5.28,
+          createdAt: new Date("2026-07-04T12:05:00Z"),
+          updatedAt: new Date("2026-07-04T12:05:00Z"),
+        },
+      ]);
+    prismaMock.position.findMany.mockResolvedValue([
+      {
+        marketId: "market-ef-spread",
+        outcomeId: "outcome-ef-spread-yes",
+        shares: 12,
+        avgCost: 0.44,
+        market: driftedMarket,
+        outcome: driftedOutcome,
+      },
+    ]);
+
+    const { GET } = await import("@/app/api/portfolio/route");
+    const response = await GET(new NextRequest("http://localhost/api/portfolio"));
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.positions[0].selection).toEqual(expect.objectContaining(snapshot));
+    expect(body.openOrders[0].selection).toEqual(expect.objectContaining(snapshot));
+    expect(JSON.stringify(body.positions[0].selection)).not.toContain("moneyline");
+    expect(JSON.stringify(body.openOrders[0].selection)).not.toContain("refreshed");
+    expect(body.positions[0].selection.tokenId).toBe("token-ef-spread-yes-original");
+    expect(body.openOrders[0].selection.marketType).toBe("spread");
+  });
+
   test("returns sanitized current-user open combo orders", async () => {
     getUserId.mockResolvedValue("user-1");
     prismaMock.comboOrder.findMany.mockResolvedValue([
