@@ -91,3 +91,14 @@
 - Validation: `npm run typecheck`; `npx vitest run src/__tests__/api.test.ts src/__tests__/portfolioValueHistoryService.test.ts`; PowerShell parser check for `scripts/smoke.ps1`; Samsung tablet proof `powershell -ExecutionPolicy Bypass -File scripts\local-mvp-home-route-server-filled-proof.ps1 -Port 8232 -BackendBaseUrl http://172.16.200.14:3002`.
 - Proof artifacts: `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-portfolio.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-portfolio.xml`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-proof.json`.
 - Known limitations: exact persisted account-value snapshots remain backend P2. The current route reconstructs from existing account/market snapshot data.
+
+## Cycle FW - Data-Driven Portfolio Sparkline
+
+- Feature/page: Portfolio performance chart visual behavior.
+- Frontend components touched: `src/components/Portfolio.tsx`, `scripts/smoke.ps1`.
+- Important functions/services touched: no new API service; this uses the existing `PortfolioValueHistory.points` payload from backend route or deterministic fallback.
+- User interactions supported: the Portfolio chart now renders plotted points and connecting segments from the active value-history payload instead of a fixed static placeholder. Server-mode proof taps `1W` and verifies the chart remains backend-backed with seven route points.
+- State transitions: unchanged from FV. `activeRange` drives the requested value-history range; `PortfolioSparkline` normalizes the returned point values into a visible chart.
+- Validation: `npm run typecheck`; `npx vitest run src/__tests__/api.test.ts src/__tests__/portfolioValueHistoryService.test.ts`; PowerShell parser check for `scripts/smoke.ps1`; Samsung tablet proof `powershell -ExecutionPolicy Bypass -File scripts\local-mvp-home-route-server-filled-proof.ps1 -Port 8233 -BackendBaseUrl http://172.16.200.14:3002`.
+- Proof artifacts: `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-portfolio-range-1w.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-portfolio-range-1w.xml`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-proof.json`.
+- Known limitations: the line is still a lightweight React Native approximation, not a high-fidelity native chart with press tooltip behavior.

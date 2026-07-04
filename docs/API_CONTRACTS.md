@@ -63,6 +63,8 @@ Cycle FU adds the main backend route for that contract: `GET /api/portfolio/valu
 
 Cycle FV wires the standalone mobile Portfolio to this route in server mode. The chart keeps deterministic fallback in mock mode or on request failure, but server-mode Android proof now expects `portfolio-chart-source-portfolio-value-history-route`.
 
+Cycle FW makes the Portfolio chart visually consume `PortfolioValueHistory.points`. Android proof now expects `portfolio-chart-data-driven` plus a server-backed `1W` range with seven points.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
