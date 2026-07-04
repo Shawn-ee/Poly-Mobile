@@ -98,6 +98,7 @@
     "smoke:tablet:server-live-first-half-order-book": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -ServerLiveDetailFirstHalfOrderBook -Port 8201",
     "smoke:tablet:server-live-second-half-order-book": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -ServerLiveDetailSecondHalfOrderBook -Port 8202",
     "smoke:tablet:event-detail-full-page": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailFullPage -Port 8190",
+    "smoke:tablet:dy-a-game-page-structure": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -DyAGamePageStructure -Port 8256 -OutputDir docs/mobile/screenshots/cycle-DY-A-game-page-structure -HierarchyOutputDir docs/mobile/harness/cycle-DY-A-game-page-structure",
     "smoke:tablet:live-detail": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -LiveDetail -Port 8217",
     "smoke:tablet:empty-error-loading": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EmptyErrorLoading -Port 8188",
     "smoke:tablet:whole-app-nav-discovery": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -WholeAppNavDiscovery -Port 8189",

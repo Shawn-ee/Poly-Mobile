@@ -22,6 +22,7 @@ param(
   [switch]$EventDetailOrderBookInteractions,
   [switch]$EventDetailOrderBookSelector,
   [switch]$EventDetailFullPage,
+  [switch]$DyAGamePageStructure,
   [switch]$EventDetailChart,
   [switch]$EmptyErrorLoading,
   [switch]$WholeAppNavDiscovery,
@@ -133,8 +134,17 @@ function Save-UiHierarchy {
   )
   $remote = "/sdcard/window-hierarchy.xml"
   $local = Join-Path $ResolvedHierarchyOutputDir $Name
-  & $adb -s $Device shell uiautomator dump $remote | Out-Null
-  & $adb -s $Device pull $remote $local | Out-Null
+  for ($attempt = 1; $attempt -le 4; $attempt++) {
+    & $adb -s $Device shell uiautomator dump $remote | Out-Null
+    & $adb -s $Device pull $remote $local | Out-Null
+    if ((Test-Path $local) -and ((Get-Item $local).Length -gt 0)) {
+      break
+    }
+    Start-Sleep -Milliseconds 400
+  }
+  if ((-not (Test-Path $local)) -or ((Get-Item $local).Length -eq 0)) {
+    throw "UI hierarchy dump was empty: $local"
+  }
   Write-Host "UI hierarchy: $local"
   return $local
 }
@@ -399,7 +409,7 @@ try {
     }
   }
   $expoArgs = @("expo", "start", "--port", "$Port", "--offline")
-  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail) {
+  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail) {
     $expoArgs += "--clear"
   }
   if ($ServerLiveDetailTotalsOrderBook) {
@@ -419,7 +429,7 @@ try {
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
   Wait-ExpoReady -Port $Port
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
   if ($ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook) {
     Start-Sleep -Seconds 10
   }
@@ -471,7 +481,7 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forcePortfolioSyncing=1"
   } elseif ($WholeAppNavDiscovery) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1"
-  } elseif ($LiveDetail) {
+  } elseif ($DyAGamePageStructure -or $LiveDetail) {
     "exp://${ExpoHost}:$Port/--/?forceLiveDetail=1,forceResetState=1"
   } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
     $liveReset = if ($LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { ",forceResetState=1" } else { "" }
@@ -511,7 +521,7 @@ try {
   } else {
     "exp://${ExpoHost}:$Port"
   }
-  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $FutureListClose -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
+  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $FutureListClose -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
     & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
     Start-Sleep -Seconds 2
   }
@@ -539,7 +549,7 @@ try {
     @("Game Lines", "Player Props", "Best bid", "Best ask", "Spread")
   } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade) {
     @("Mexico vs. Ecuador", "5 markets", "10 outcomes")
-  } elseif ($LiveDetail) {
+  } elseif ($DyAGamePageStructure -or $LiveDetail) {
     @("Australia vs. Egypt", "Live Winner", "LIVE WORLD CUP", "Game Lines", "Player Props")
   } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
     @("Live World Cup", "5 markets", "11 outcomes", "Australia vs. Egypt")
@@ -949,6 +959,171 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-live-summary.png"
       $liveSummaryHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-summary.xml"
       Assert-HierarchyContains -Path $liveSummaryHierarchy -Expected @("Live World Cup", "Updated just now", "Refresh", "live-market-summary", "5 markets", "11 outcomes", "Australia vs. Egypt", "Australia", "Egypt")
+      return
+    }
+
+    if ($DyAGamePageStructure) {
+      $dyResetUrl = "exp://${ExpoHost}:$Port/--/?forceLiveDetail=1,forceResetState=1"
+      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-top.png"
+      $dyTopHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-top.xml"
+      Assert-HierarchyContains -Path $dyTopHierarchy -Expected @(
+        "Australia vs. Egypt",
+        "event-detail-back",
+        "event-detail-tab-game",
+        "event-detail-tab-chat",
+        "event-detail-top-order-book",
+        "event-detail-share",
+        "AUS 40%",
+        "EGY 61%",
+        "0 - 1",
+        "63'",
+        "event-detail-live-match-strip",
+        "LIVE WORLD CUP",
+        "event-detail-price-chart",
+        "event-detail-chat-preview",
+        "event-detail-primary-outcomes",
+        "event-detail-primary-outcome-france-argentina-live-australia",
+        "event-detail-primary-outcome-france-argentina-live-egypt",
+        "Game Lines",
+        "Player Props"
+      )
+
+      Invoke-TapHierarchyNode -Path $dyTopHierarchy -Identifier "event-detail-top-order-book"
+      Start-Sleep -Seconds 2
+      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-top-book.png"
+      $dyTopBookHierarchy = Wait-HierarchyContains -Name "cycle-DY-A-holiwyn-game-page-structure-top-book.xml" -Expected @("event-detail-order-book-screen", "Order Book", "Australia vs. Egypt - Live winner", "event-detail-order-book-close") -Attempts 5 -DelaySeconds 1
+      Invoke-TapHierarchyNode -Path $dyTopBookHierarchy -Identifier "event-detail-order-book-close"
+      Start-Sleep -Seconds 1
+
+      $dyAfterBookHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-after-top-book.xml"
+      Invoke-TapHierarchyNode -Path $dyAfterBookHierarchy -Identifier "event-detail-share"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-share-sheet.png"
+      $dyShareHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-share-sheet.xml"
+      Assert-HierarchyContains -Path $dyShareHierarchy -Expected @("event-detail-share-sheet", "Share this market", "Australia vs. Egypt", "Copy link", "Share to chat", "Invite", "event-detail-share-dismiss")
+      Invoke-TapHierarchyNode -Path $dyShareHierarchy -Identifier "event-detail-share-dismiss"
+      Start-Sleep -Seconds 1
+
+      Start-DeepLink -Url $dyResetUrl
+      Start-Sleep -Seconds 4
+      $dyChatReadyHierarchy = Wait-HierarchyContains -Name "cycle-DY-A-holiwyn-game-page-structure-chat-ready.xml" -Expected @("Australia vs. Egypt", "event-detail-tab-chat") -RestartUrl $dyResetUrl -Attempts 5 -DelaySeconds 2
+      Invoke-TapHierarchyNode -Path $dyChatReadyHierarchy -Identifier "event-detail-tab-chat"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-chat.png"
+      $dyChatHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-chat.xml"
+      Assert-HierarchyContains -Path $dyChatHierarchy -Expected @("event-detail-chat-page", "Australia vs. Egypt", "AUS 40%", "EGY 61%", "0 - 1", "63'", "event-detail-chat-feed", "gigglyeel0550", "BTTS $36", "VAMOS", "event-detail-chat-input", "Message this market")
+      & $adb -s $Device shell input swipe 540 1850 540 1050 450 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-chat-lower.png"
+      $dyChatLowerHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-chat-lower.xml"
+      Assert-HierarchyContains -Path $dyChatLowerHierarchy -Expected @("event-detail-chat-reactions", "event-detail-chat-emoji-picker", "event-detail-chat-sticky-outcomes")
+
+      Start-DeepLink -Url $dyResetUrl
+      Start-Sleep -Seconds 4
+      $dyTicketReadyHierarchy = Wait-HierarchyContains -Name "cycle-DY-A-holiwyn-game-page-structure-ticket-ready.xml" -Expected @("event-detail-team-advance-australia", "event-detail-team-advance-egypt") -RestartUrl $dyResetUrl -Attempts 5 -DelaySeconds 2
+      Invoke-TapHierarchyNode -Path $dyTicketReadyHierarchy -Identifier "event-detail-team-advance-australia"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-ticket.png"
+      $dyTicketHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-ticket.xml"
+      Assert-HierarchyContains -Path $dyTicketHierarchy -Expected @("trade-ticket", "ticket-drag-handle", "Live winner", "Australia vs. Egypt", "Australia", "ticket-side-buy", "ticket-side-sell", "ticket-preset-1", "ticket-preset-10", "Choose an amount", "Final cost may vary.")
+      Invoke-TapHierarchyNode -Path $dyTicketHierarchy -Identifier "ticket-close"
+      Start-Sleep -Seconds 1
+
+      Start-DeepLink -Url $dyResetUrl
+      Start-Sleep -Seconds 4
+      $dyMarketReadyHierarchy = Wait-HierarchyContains -Name "cycle-DY-A-holiwyn-game-page-structure-market-ready.xml" -Expected @("Australia vs. Egypt", "Game Lines", "Player Props") -RestartUrl $dyResetUrl -Attempts 5 -DelaySeconds 2
+      & $adb -s $Device shell input swipe 540 1800 540 980 450 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-markets.png"
+      $dyMarketsHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-markets.xml"
+      Assert-HierarchyContains -Path $dyMarketsHierarchy -Expected @("AUS 40%", "EGY 61%", "Game Lines", "Player Props", "Live Winner")
+      & $adb -s $Device shell input swipe 720 2100 720 320 650 | Out-Null
+      Start-Sleep -Milliseconds 500
+      & $adb -s $Device shell input swipe 720 2100 720 320 650 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-pinned-context.png"
+      $dyPinnedContextHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-pinned-context.xml"
+      Assert-HierarchyContains -Path $dyPinnedContextHierarchy -Expected @("event-detail-compact-game-header", "event-detail-sticky-market-shell", "event-detail-sticky-market-tabs", "AUS 40%", "EGY 61%", "Game Lines", "Player Props")
+      & $adb -s $Device shell input swipe 720 2000 720 980 450 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-markets-lower.png"
+      $dyMarketsLowerHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-markets-lower.xml"
+      Assert-HierarchyContains -Path $dyMarketsLowerHierarchy -Expected @("event-detail-sticky-market-tabs", "Spread", "Totals")
+      Invoke-TapHierarchyNode -Path $dyMarketsLowerHierarchy -Identifier "event-detail-sticky-player-props-tab"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-sticky-props.png"
+      $dyStickyPropsHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-sticky-props.xml"
+      Assert-HierarchyContains -Path $dyStickyPropsHierarchy -Expected @("Player Props", "event-detail-player-props-empty", "Player Props unavailable for this match", "Market Rules")
+
+      Start-DeepLink -Url $dyResetUrl
+      Start-Sleep -Seconds 4
+      $dyPropsReadyHierarchy = Wait-HierarchyContains -Name "cycle-DY-A-holiwyn-game-page-structure-props-ready.xml" -Expected @("event-detail-player-props-tab") -RestartUrl $dyResetUrl -Attempts 5 -DelaySeconds 2
+      & $adb -s $Device shell input swipe 540 520 540 1900 450 | Out-Null
+      Start-Sleep -Milliseconds 500
+      & $adb -s $Device shell input swipe 540 520 540 1900 450 | Out-Null
+      Start-Sleep -Seconds 1
+      $dyPropsTabHierarchy = Wait-HierarchyContains -Name "cycle-DY-A-holiwyn-game-page-structure-props-tab.xml" -Expected @("event-detail-player-props-tab") -RestartUrl $dyResetUrl -Attempts 5 -DelaySeconds 2
+      Invoke-TapHierarchyNode -Path $dyPropsTabHierarchy -Identifier "event-detail-player-props-tab"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-props.png"
+      $dyPropsHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-props.xml"
+      Assert-HierarchyContains -Path $dyPropsHierarchy -Expected @("Player Props", "event-detail-player-props", "event-detail-player-props-empty", "Player Props unavailable for this match")
+      & $adb -s $Device shell input swipe 540 1800 540 620 550 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-props-lower.png"
+      $dyPropsLowerHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-props-lower.xml"
+      Assert-HierarchyContains -Path $dyPropsLowerHierarchy -Expected @("Market Rules", "View Full Rules", "More Events")
+      & $adb -s $Device shell input swipe 540 1800 540 650 550 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-rules-more.png"
+      $dyRulesHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-rules-more.xml"
+      Assert-HierarchyContains -Path $dyRulesHierarchy -Expected @("Market Rules", "AUS to advance", "View Full Rules", "More Events", "Portugal vs. Croatia", "England vs. Congo DR")
+
+      $proof = [ordered]@{
+        cycle = "DY-A"
+        issue = "PM-GAP-073"
+        scope = "Samsung tablet full live football World Cup game page structure"
+        command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -DyAGamePageStructure -Port 8256 -OutputDir docs/mobile/screenshots/cycle-DY-A-game-page-structure -HierarchyOutputDir docs/mobile/harness/cycle-DY-A-game-page-structure"
+        eventIdentity = "Australia vs. Egypt"
+        result = "pass"
+        assertions = [ordered]@{
+          headerActions = @("event-detail-back", "event-detail-top-order-book", "event-detail-share")
+          gameChatSegment = @("event-detail-tab-game", "event-detail-tab-chat")
+          topMatchContext = @("AUS 40%", "EGY 61%", "0 - 1", "63'", "LIVE WORLD CUP")
+          chart = @("event-detail-price-chart", "event-detail-chart-tooltip", "Game", "Live")
+          chat = @("event-detail-chat-preview", "event-detail-chat-page", "event-detail-chat-feed")
+          primaryOutcomes = @("event-detail-team-advance-australia", "event-detail-team-advance-egypt")
+          compactPinnedContext = @("event-detail-compact-game-header", "event-detail-sticky-market-shell", "event-detail-sticky-market-tabs")
+          groupedMarkets = @("Live Winner", "Spread", "Totals", "1st Half Winner", "2nd Half Winner", "Full Game Team Total Goals")
+          playerPropsBlankState = @("event-detail-player-props-empty", "Player Props unavailable for this match")
+          lowerContent = @("Market Rules", "View Full Rules", "More Events")
+          ticket = @("trade-ticket", "Live winner", "Australia vs. Egypt", "Australia")
+          actions = @("event-detail-order-book-screen", "event-detail-share-sheet")
+        }
+        artifacts = @(
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-top.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-top.xml",
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-top-book.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-top-book.xml",
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-share-sheet.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-share-sheet.xml",
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-chat.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-chat.xml",
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-ticket.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-ticket.xml",
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-markets.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-markets.xml",
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-pinned-context.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-pinned-context.xml",
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-sticky-props.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-sticky-props.xml",
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-rules-more.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-rules-more.xml"
+        )
+      }
+      $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-DY-A-holiwyn-game-page-structure-proof.json"
+      $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
+      Write-Host "Proof summary: $proofPath"
       return
     }
 

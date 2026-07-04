@@ -15,6 +15,7 @@ param(
   [switch]$EventDetailOrderBookInteractions,
   [switch]$EventDetailOrderBookSelector,
   [switch]$EventDetailFullPage,
+  [switch]$DyAGamePageStructure,
   [switch]$EventDetailChart,
   [switch]$ServerLiveDetailOrderBook,
   [switch]$ServerLiveDetailLineOrderBook,
@@ -93,6 +94,8 @@ if ($EventDetailTrade) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailOrderBookInteractions -EventDetailOrderBookSelector -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EventDetailFullPage) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailFullPage -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($DyAGamePageStructure) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -DyAGamePageStructure -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EventDetailChart) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailChart -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($ServerLiveDetailOrderBook) {
