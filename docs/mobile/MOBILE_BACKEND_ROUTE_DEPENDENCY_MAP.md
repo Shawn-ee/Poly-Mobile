@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle EK-A - Provider Transition Route Proof
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live-detail provider transition breadth | `/api/mobile/events/:slug/live-detail` before and after `/api/mobile/events/:slug/provider-refresh` | GET / POST / GET | Live-detail is public/mobile. Provider-refresh remains protected by internal/admin auth in production; the proof calls the route execution helper used by the protected POST. | Provider-refresh body uses `allowContractProofFallback=false`; no expire-first fallback is required. | Live-detail `markets[].providerLifecycle.status/ready/stale/refreshDue/unavailable/empty/notReady`, `markets[].providerLifecycle.quote/orderbookDepth/chartHistory.source/status/reason/nextRefreshAt/lastFetchedAt`, `markets[].providerOrderbookDepth.status`, `markets[].chartHistoryStatus.status`, `markets[].selection`, and `markets[].orderbookIdentity`. Provider-refresh `providerLifecycle.refreshStarted/refreshStatus/refreshStartedAt/refreshCompletedAt/ready/fallbackApplied`, `refresh.provider`, `refresh.providerDepth`, `refresh.providerHistory`, `refresh.contractProofFallback`, `refresh.mappingReadiness`, and `cacheInvalidation.invalidated`. | Creates disposable `Event`, `Market`, and `Outcome` rows. Reads/writes `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot` through the existing provider refresh services. | Contract-proof fallback is disabled and asserted null. Provider fetches are deterministic Polymarket Gamma/CLOB-shaped responses scoped to the disposable proof slugs/tokens; missing `OPTIC_ODDS_API_KEY` stays optional/unconfigured. | Android-visible refresh/loading/ready pairing remains Agent B/Lead scope. Production line-family breadth still depends on real mapped Polymarket markets being available. |
+| Focused EK-A proof harness | `scripts/prove_mobile_ek_a_provider_transition.ts` | Local script calling route modules | Local development database only | Optional `--output` / `--summaryPath` | JSON artifact records ready Moneyline, selected stale/refresh-due Spread before refresh, provider-refresh completed lifecycle, selected Spread ready after refresh, unavailable Totals before/after, cache invalidation paths, no fallback, and selected identity preservation | Same existing backend provider tables as live-detail/provider-refresh; no schema migration | No frontend fallback. The proof fails if `mock-ready`, `fixture-ready`, `frontend-fixture`, `default-ready`, fallback depth, or first-row fallback markers appear. | Requires local database and dependency runtime. It is backend route proof only. |
+
+Cycle EK-A implementation notes:
+
+- Proof artifact: `docs/mobile/harness/cycle-EK-A-provider-transition/cycle-EK-A-provider-transition.json`.
+- `executeMobileLiveProviderRefreshRoute()` is the shared route execution body used by protected `POST`; production auth behavior is unchanged.
+- Selected transition identity is preserved by market id, selector key, family, period, line, and token ids across before live-detail, route refresh response, and after live-detail.
+- Unavailable/not-ready Totals stays explicit and is not counted as ready evidence.
+
 ## Cycle EJ-A - Provider Status Breadth Route Proof
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

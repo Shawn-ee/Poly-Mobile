@@ -2,6 +2,43 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle EK-A - Backend Provider Transition Breadth
+
+Feature/page worked on:
+
+- Backend/provider proof for the next route-backed provider lifecycle breadth debt after EJ.
+- Proves live-detail unavailable/not-ready plus a selected stale/refresh-due Spread market moving through the provider-refresh route to ready without contract fallback.
+
+Backend/proof components touched:
+
+- `src/app/api/mobile/events/[slug]/provider-refresh/route.ts`
+- `scripts/prove_mobile_ek_a_provider_transition.ts`
+- `docs/mobile/harness/cycle-EK-A-provider-transition/cycle-EK-A-provider-transition.json`
+
+Important functions/services touched:
+
+- `executeMobileLiveProviderRefreshRoute()` exposes the existing provider-refresh route body so backend proofs can execute the same expire/refresh/cache-invalidation path without depending on a Next request auth context.
+- The proof script creates one disposable live event with ready Moneyline, stale/refresh-due Spread, and unavailable Totals compact markets.
+- It seeds `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot` rows, then stubs Polymarket Gamma/CLOB provider responses for the route refresh execution only.
+- It calls `/api/mobile/events/:slug/live-detail` before and after refresh and executes the provider-refresh route path with `allowContractProofFallback=false`.
+
+State transitions:
+
+- Ready Moneyline stays `providerLifecycle.status=ready`.
+- Selected Spread starts with `quote.status=refresh_due`, depth/chart `status=stale`, `orderbookIdentity.shouldRefresh=true`, then returns `providerLifecycle.status=ready` with the same market id, selector key, family, period, line, and token ids.
+- Totals remains explicit `providerLifecycle.status=unavailable`, `empty=true`, `notReady=true`, and `orderbookIdentity.ready=false`.
+- Provider-refresh reports `refreshStarted=true`, `refreshStatus=completed`, `refreshStartedAt`, `refreshCompletedAt`, cache invalidation for live-detail/chart/orderbook paths, and `fallbackApplied=false`.
+
+Verified:
+
+- `npx tsx scripts/prove_mobile_ek_a_provider_transition.ts --summaryPath=docs/mobile/harness/cycle-EK-A-provider-transition/cycle-EK-A-provider-transition.json`
+
+Known limitations:
+
+- This is backend route proof only; Android visible stale/loading/ready pairing remains Agent B/Lead scope.
+- Production breadth still depends on currently available real Polymarket line-family mappings beyond disposable proof rows.
+- Missing `OPTIC_ODDS_API_KEY` is optional and non-blocking for this Polymarket Gamma/CLOB transition proof.
+
 ## Cycle EJ-A - Backend Provider Status Breadth
 
 Feature/page worked on:
