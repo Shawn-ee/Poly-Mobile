@@ -170,3 +170,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Portfolio still exposed Deposit/Withdraw controls even though funding is out of scope for the Local MVP. | P0 | Passed | Funding controls are hidden in `Portfolio`; Android absence proof passed on Samsung tablet. |
 | Position rows used a hard-coded `PAR 0 - FRA 0` score line regardless of the traded event. | P0 | Passed | Score line now derives from the event title; Android proof verified `MEX 0 - ECU 0`. |
 | Portfolio needed another audit pass against the user-provided July 4 Portfolio screenshots. | P0 | Passed | Audit doc updated and tablet proof passed for Positions, Orders, and History. |
+
+## Cycle GF - Ticket Retail Amount Sheet Tightening
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| The Local MVP ticket proof still normalized old `Order review / LINE / PERIOD / SHARES / TO WIN` wording despite the Polymarket reference being a simple amount sheet. | P0 | Passed | Ticket hierarchy text and smoke gate updated; Samsung tablet proof passed with absence checks. |
+| Ticket outcome separator could render poorly on Android paths because the source used a bullet separator. | P0 | Passed | Separator changed to ASCII hyphen; Android proof captured the updated ticket. |
+| Ticket must keep selected market/line/outcome identity after removing review wording. | P0 | Passed | Machine-readable identity labels were preserved and submit-to-Portfolio proof passed. |

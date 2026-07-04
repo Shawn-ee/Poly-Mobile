@@ -396,7 +396,7 @@ export function TradeTicket({
               <View style={styles.selectionTextBlock}>
                 <Text numberOfLines={1} style={styles.ticketTitle}>{eventLabel}</Text>
                 <Text accessibilityLabel="ticket-selection-line" testID="ticket-selection-line" numberOfLines={1} style={styles.ticketOutcome}>
-                  <Text style={styles.ticketOutcomeSide}>{sideLabel}</Text> <Text style={styles.ticketOutcomeDot}>·</Text> {selectionLabel}
+                  <Text style={styles.ticketOutcomeSide}>{sideLabel}</Text> <Text style={styles.ticketOutcomeDot}>-</Text> {selectionLabel}
                 </Text>
               </View>
             </View>
@@ -458,7 +458,7 @@ export function TradeTicket({
               style={styles.orderReviewA11y}
               testID="ticket-order-review"
             >
-              <Text>{reviewCopy.title} MARKET {reviewMarketType} LINE {reviewLine} PERIOD {reviewPeriod} SHARES {reviewShares} TO WIN {reviewPayout}</Text>
+              <Text>ticket-identity-preserved</Text>
               <Text accessibilityLabel="ticket-order-review-price" testID="ticket-order-review-price">{priceDisplay}</Text>
               <Text accessibilityLabel="ticket-order-review-payout" testID="ticket-order-review-payout">{reviewPayout}</Text>
             </View>
