@@ -63,6 +63,51 @@ const outcomeDepthSize = (outcome: Outcome, labels: { bid: string; ask: string; 
   return `${labels.bid} ${formatSize(bidSize)} ${labels.shares} - ${labels.ask} ${formatSize(askSize)} ${labels.shares}`;
 };
 
+type DepthLevel = NonNullable<Market["orderbookDepth"]>[number];
+
+const levelProbability = (price: number) => Math.max(1, Math.min(99, Math.round(price <= 1 ? price * 100 : price)));
+
+const formatLevelPrice = (price: number) => `${(price <= 1 ? price : price / 100).toFixed(2)} USDT`;
+
+const fallbackDepthLevels = (outcome: Outcome, side: "bid" | "ask"): DepthLevel[] => {
+  const baseProbability = side === "bid"
+    ? outcome.bestBid ?? Math.max(outcome.probability - 3, 1)
+    : outcome.bestAsk ?? Math.min(outcome.probability + 4, 99);
+  const baseSize = side === "bid"
+    ? outcome.bestBidSize ?? Math.max(Math.round(outcome.probability * 20), 100)
+    : outcome.bestAskSize ?? Math.max(Math.round((100 - outcome.probability) * 25), 100);
+  const direction = side === "bid" ? -1 : 1;
+
+  return [0, 1, 2].map((index) => {
+    const probability = Math.max(1, Math.min(99, baseProbability + direction * index));
+    const shares = Math.max(25, Math.round(baseSize * (1 - index * 0.24)));
+    const price = probability / 100;
+    return {
+      outcomeId: outcome.id,
+      side,
+      price,
+      shares,
+      total: price * shares,
+    };
+  });
+};
+
+const depthLevelsForOutcome = (market: Market, outcome: Outcome, side: "bid" | "ask") => {
+  const explicitLevels = market.orderbookDepth?.filter((level) =>
+    level.side === side &&
+    (level.outcomeId === outcome.id || level.outcomeId === outcome.referenceOutcomeLabel || level.outcomeId === outcome.referenceTokenId),
+  ) ?? [];
+  const sharedLevels = market.orderbookDepth?.filter((level) => level.side === side && !level.outcomeId) ?? [];
+  const levels = explicitLevels.length > 0 ? explicitLevels : sharedLevels;
+  if (levels.length > 0) {
+    return levels
+      .slice()
+      .sort((left, right) => side === "bid" ? right.price - left.price : left.price - right.price)
+      .slice(0, 5);
+  }
+  return fallbackDepthLevels(outcome, side);
+};
+
 const marketStats = (event: Event) => {
   const outcomeCount = event.markets.reduce((total, market) => total + market.outcomes.length, 0);
   const volume = event.markets.length * 18250 + outcomeCount * 750;
@@ -253,7 +298,7 @@ export function EventDetail({
           ? "Chart unavailable"
           : event.chartHistoryLastUpdated
             ? `Updated ${event.chartHistoryRange ?? "1D"}`
-            : event.chartHistorySource === "market-chart-route"
+            : event.chartHistorySource === "market-chart-route" || event.chartHistorySource === "polymarket-clob-prices-history"
               ? "Route chart"
               : "Fallback chart";
   const depthStateText =
@@ -663,14 +708,19 @@ export function EventDetail({
         </View>
         <ScrollView style={styles.orderBookScroll} contentContainerStyle={styles.orderBookPad}>
           {orderBookMarket.outcomes.map((outcome) => {
-            const depth = outcomeDepth(outcome);
-            const fallbackBidSize = Math.max(Math.round(outcome.probability * 20), 100);
-            const fallbackAskSize = Math.max(Math.round((100 - outcome.probability) * 25), 100);
-            const bidSize = outcome.bestBidSize ?? fallbackBidSize;
-            const askSize = outcome.bestAskSize ?? fallbackAskSize;
-            const largest = Math.max(bidSize, askSize, 1);
+            const bidLevels = depthLevelsForOutcome(orderBookMarket, outcome, "bid");
+            const askLevels = depthLevelsForOutcome(orderBookMarket, outcome, "ask");
+            const bestBid = bidLevels[0];
+            const bestAsk = askLevels[0];
+            const largest = Math.max(...bidLevels.map((level) => level.shares), ...askLevels.map((level) => level.shares), 1);
+            const depthSourceLabel = (orderBookMarket.orderbookDepth?.length ?? 0) > 0 ? "route-depth-ladder" : "quote-fallback-ladder";
             return (
-              <View accessibilityLabel={`order-book-outcome-${outcome.id}`} key={outcome.id} style={styles.orderBookOutcome} testID={`order-book-outcome-${outcome.id}`}>
+              <View
+                accessibilityLabel={`order-book-outcome-${outcome.id} ${depthSourceLabel} ${bidLevels.length} bid-levels ${askLevels.length} ask-levels best-bid-${bestBid ? levelProbability(bestBid.price) : "none"} best-ask-${bestAsk ? levelProbability(bestAsk.price) : "none"}`}
+                key={outcome.id}
+                style={styles.orderBookOutcome}
+                testID={`order-book-outcome-${outcome.id}`}
+              >
                 <View style={styles.orderBookOutcomeTop}>
                   <View>
                     <Text style={styles.orderBookOutcomeTitle}>{label(locale, outcome)}</Text>
@@ -687,20 +737,48 @@ export function EventDetail({
                 </View>
                 <View style={styles.orderBookColumns}>
                   <View style={styles.orderBookColumn}>
-                    <Text style={styles.orderBookColumnLabel}>{t.bestBid}</Text>
-                    <Text style={styles.orderBookPrice}>{depth.bid}</Text>
-                    <View style={styles.depthBarTrack}>
-                      <View style={[styles.depthBidBar, { width: `${Math.max(12, (bidSize / largest) * 100)}%` }]} />
+                    <View style={styles.orderBookColumnHeader}>
+                      <Text style={styles.orderBookColumnLabel}>{t.bestBid}</Text>
+                      <Text style={styles.orderBookColumnMeta}>{formatSize(bidLevels.reduce((total, level) => total + level.shares, 0))} {t.shares}</Text>
                     </View>
-                    <Text style={styles.orderBookSize}>{formatSize(bidSize)} {t.shares}</Text>
+                    {bidLevels.map((level, index) => (
+                      <View
+                        accessibilityLabel={`order-book-bid-level-${outcome.id}-${index + 1} ${levelProbability(level.price)}c ${formatSize(level.shares)} ${t.shares}`}
+                        key={`bid-${outcome.id}-${level.price}-${index}`}
+                        style={styles.depthLevelRow}
+                        testID={`order-book-bid-level-${outcome.id}-${index + 1}`}
+                      >
+                        <View style={styles.depthBarTrack}>
+                          <View style={[styles.depthBidBar, { width: `${Math.max(12, (level.shares / largest) * 100)}%` }]} />
+                        </View>
+                        <View style={styles.depthLevelValues}>
+                          <Text style={styles.orderBookPrice}>{formatLevelPrice(level.price)}</Text>
+                          <Text style={styles.orderBookSize}>{formatSize(level.shares)} {t.shares}</Text>
+                        </View>
+                      </View>
+                    ))}
                   </View>
                   <View style={styles.orderBookColumn}>
-                    <Text style={styles.orderBookColumnLabel}>{t.bestAsk}</Text>
-                    <Text style={styles.orderBookPrice}>{depth.ask}</Text>
-                    <View style={styles.depthBarTrack}>
-                      <View style={[styles.depthAskBar, { width: `${Math.max(12, (askSize / largest) * 100)}%` }]} />
+                    <View style={styles.orderBookColumnHeader}>
+                      <Text style={styles.orderBookColumnLabel}>{t.bestAsk}</Text>
+                      <Text style={styles.orderBookColumnMeta}>{formatSize(askLevels.reduce((total, level) => total + level.shares, 0))} {t.shares}</Text>
                     </View>
-                    <Text style={styles.orderBookSize}>{formatSize(askSize)} {t.shares}</Text>
+                    {askLevels.map((level, index) => (
+                      <View
+                        accessibilityLabel={`order-book-ask-level-${outcome.id}-${index + 1} ${levelProbability(level.price)}c ${formatSize(level.shares)} ${t.shares}`}
+                        key={`ask-${outcome.id}-${level.price}-${index}`}
+                        style={styles.depthLevelRow}
+                        testID={`order-book-ask-level-${outcome.id}-${index + 1}`}
+                      >
+                        <View style={styles.depthBarTrack}>
+                          <View style={[styles.depthAskBar, { width: `${Math.max(12, (level.shares / largest) * 100)}%` }]} />
+                        </View>
+                        <View style={styles.depthLevelValues}>
+                          <Text style={styles.orderBookPrice}>{formatLevelPrice(level.price)}</Text>
+                          <Text style={styles.orderBookSize}>{formatSize(level.shares)} {t.shares}</Text>
+                        </View>
+                      </View>
+                    ))}
                   </View>
                 </View>
               </View>
@@ -1798,10 +1876,14 @@ const styles = StyleSheet.create({
   orderBookSellButton: { minWidth: 74, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
   orderBookSellText: { color: "#dbeafe", fontSize: 13, fontWeight: "900" },
   orderBookColumns: { flexDirection: "row", gap: 10, marginTop: 12 },
-  orderBookColumn: { flex: 1, gap: 5, padding: 10, borderRadius: 9, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937" },
+  orderBookColumn: { flex: 1, gap: 8, padding: 10, borderRadius: 9, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937" },
+  orderBookColumnHeader: { minHeight: 18, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 6 },
   orderBookColumnLabel: { color: "#64748b", fontSize: 10, fontWeight: "900" },
-  orderBookPrice: { color: "#f8fafc", fontSize: 14, fontWeight: "900" },
+  orderBookColumnMeta: { color: "#64748b", fontSize: 10, fontWeight: "800" },
+  orderBookPrice: { color: "#f8fafc", fontSize: 13, fontWeight: "900" },
   orderBookSize: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },
+  depthLevelRow: { minHeight: 42, justifyContent: "center", gap: 6 },
+  depthLevelValues: { minHeight: 18, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 5 },
   depthBarTrack: { height: 6, overflow: "hidden", borderRadius: 999, backgroundColor: "#111827" },
   depthBidBar: { height: 6, borderRadius: 999, backgroundColor: "#0a8f61" },
   depthAskBar: { height: 6, borderRadius: 999, backgroundColor: "#ef4444" },
