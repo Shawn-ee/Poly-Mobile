@@ -2,6 +2,33 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle EM-B - Visible Book-Staged Limit Lifecycle
+
+Feature/page worked on:
+
+- Android visible proof for Book ladder -> staged ask limit -> ticket -> fake-token submit -> Portfolio/open order/activity continuity.
+- Extends the existing EL staged-price handoff so downstream visible labels expose the same selected Book limit identity.
+
+Frontend/harness components touched:
+
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `docs/mobile/screenshots/cycle-EM-B-visible-limit-lifecycle/`
+- `docs/mobile/harness/cycle-EM-B-visible-limit-lifecycle/`
+
+Important functions/interactions/state transitions touched:
+
+- `TradeTicket` accessibility identity now includes `ticket-limit-side-*`, `ticket-limit-price-*`, `ticket-limit-decimal-*`, and `ticket-limit-shares-*` when opened from a staged Book ladder row.
+- `Portfolio` identity/snapshot labels now echo `portfolio-limit-side-*`, `portfolio-limit-price-*`, `portfolio-limit-decimal-*`, and `portfolio-limit-shares-*` on latest order, open order, position, and activity surfaces.
+- Added `-EventDetailVisibleLimitLifecycle` smoke/tablet path that opens the live event Book, switches to the Spread ladder, stages the first ask at `41c`, submits a `$25` fake-token order, then verifies latest order, open order, filled activity, and canceled activity preserve the same Book-selected limit identity.
+
+Known limitations:
+
+- This is a visible mobile/fake-token proof and does not edit backend routes or schemas.
+- Route-backed provider rerun remains available for Lead after Agent A integration; this isolated branch keeps `routeBackedProviderDepth=false` in the EM proof JSON.
+
 ## Cycle EL Integrated - Route-Backed Live Depth Staging
 
 Feature/page worked on:
