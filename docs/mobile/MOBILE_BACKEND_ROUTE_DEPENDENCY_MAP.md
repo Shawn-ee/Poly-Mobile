@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle DT-A - Provider Ready Orderbook Depth Proof
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Book ready provider ladder | `/api/orderbook/:marketId/book?maxLevels=24` | GET | Public visibility guard; private markets still use existing access checks | Query params only: optional `outcomeId`, optional `maxLevels` capped at 200 | `marketIdentity`, `availability`, `depthSource=provider-orderbook-depth`, `providerOrderbookDepth.status=ready`, `levels[].price`, `levels[].shares`, `levels[].total`, `bids[]`, `asks[]` | `Market`, active `Outcome`, `ReferenceOrderbookDepthSnapshot`; local `Order` rows still have precedence if present | None in backend. The route reports `emptyState=no-depth` when neither local nor provider depth exists | Production World Cup compact markets still need mapped provider identity and recurring depth refresh coverage. |
+| Focused DT proof harness | `scripts/prove_mobile_dt_ready_orderbook_depth.ts` | Local script calling route | Local development/server only | Optional `--baseUrl`, `--eventSlug`, `--output` | JSON artifact with route URL, compact market identity, provider depth summary, and Price/Shares/Value row evidence | Upserts a disposable World Cup-style `Event`/`Market`/`Outcome` set and provider depth rows | None. The proof fails if the route does not return provider-backed ready depth | Requires an available local database and Next server for the HTTP route probe. |
+| Focused route unit proof | `src/__tests__/public.orderbook-book.no-leak.test.ts` | Jest route test | Local development only | Mocked route request | Asserts provider-ready ladder shape, selector identity, numeric Price/Shares/Value rows, and no sensitive key leakage | Prisma and snapshot service are mocked | None | Broader live provider mappings remain outside this unit test. |
+
+Cycle DT-A implementation notes:
+
+- `marketIdentity` and provider depth are proven together so the Book UI can render a selected compact market without using fallback/unavailable depth.
+- The public payload continues to exclude provider token IDs, condition IDs, credentials, owner IDs, user IDs, and private order state.
+- The route's depth precedence is unchanged: local orderbook, provider ladder snapshot, provider quote top-of-book estimate, then empty.
+
 ## Cycle DS-A - Orderbook Selector Identity Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

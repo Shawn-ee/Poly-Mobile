@@ -208,6 +208,102 @@ describe("public orderbook book API no-leak checks", () => {
     }
   });
 
+  test("GET /api/orderbook/[marketId]/book returns provider-backed ready depth with selector identity", async () => {
+    buildPublicOrderbookSnapshot.mockResolvedValue({
+      bids: [
+        { outcomeId: "home", price: 0.57, size: 1200 },
+        { outcomeId: "away", price: 0.41, size: 900 },
+      ],
+      asks: [
+        { outcomeId: "home", price: 0.6, size: 1100 },
+        { outcomeId: "away", price: 0.44, size: 850 },
+      ],
+      depthSource: "provider-orderbook-depth",
+      depthReason: "Depth comes from provider orderbook ladder snapshots.",
+      providerOrderbookDepth: {
+        source: "reference-orderbook-depth-snapshot",
+        status: "ready",
+        levelCount: 4,
+        snapshotCount: 4,
+        latestFetchedAt: "2026-07-04T12:00:00.000Z",
+        latestUpdatedAt: "2026-07-04T12:00:01.000Z",
+        stalenessSeconds: 5,
+        staleAfterSeconds: 90,
+        refreshTtlSeconds: 60,
+        nextRefreshAt: "2026-07-04T12:01:00.000Z",
+        shouldRefresh: false,
+        isStale: false,
+        sources: ["polymarket-clob"],
+        reason: "Provider orderbook depth snapshot is fresh.",
+      },
+      providerQuoteDepth: {
+        source: "reference-quote-snapshot",
+        levelCount: 0,
+        sizeSource: null,
+        isEstimatedSize: false,
+        reason: "Provider orderbook ladder depth is preferred.",
+      },
+      providerQuoteSnapshot: {
+        source: "reference-quote-snapshot",
+        status: "ready",
+        snapshotCount: 2,
+        latestFetchedAt: "2026-07-04T12:00:00.000Z",
+        latestUpdatedAt: "2026-07-04T12:00:01.000Z",
+        stalenessSeconds: 5,
+        staleAfterSeconds: 90,
+        refreshTtlSeconds: 60,
+        nextRefreshAt: "2026-07-04T12:01:00.000Z",
+        shouldRefresh: false,
+        refreshKey: "polymarket:2026-07-04T12:00:00.000Z",
+        isStale: false,
+        acceptingOrders: true,
+        outcomeIds: ["away", "home"],
+        sources: ["polymarket"],
+        reason: "Provider quote snapshot is fresh.",
+      },
+    });
+
+    const response = await getOrderbook(new NextRequest("http://localhost/api/orderbook/market-1/book?maxLevels=24"), {
+      params: Promise.resolve({ marketId: "market-1" }),
+    });
+
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body).toMatchObject({
+      marketIdentity: {
+        selectorKey: "main:full-game:default",
+        marketFamily: "moneyline",
+        marketType: "match_winner_1x2",
+        outcomeCount: 2,
+      },
+      depthSource: "provider-orderbook-depth",
+      providerOrderbookDepth: {
+        status: "ready",
+        levelCount: 4,
+        sources: ["polymarket-clob"],
+      },
+      emptyState: null,
+      levels: [
+        { outcomeId: "home", side: "bid", price: 0.57, shares: 1200, total: 684 },
+        { outcomeId: "away", side: "bid", price: 0.41, shares: 900, total: 369 },
+        { outcomeId: "home", side: "ask", price: 0.6, shares: 1100, total: 660 },
+        { outcomeId: "away", side: "ask", price: 0.44, shares: 850, total: 374 },
+      ],
+    });
+    expect(body.levels).toHaveLength(4);
+    for (const level of body.levels) {
+      expect(level).toEqual(expect.objectContaining({
+        price: expect.any(Number),
+        shares: expect.any(Number),
+        total: expect.any(Number),
+      }));
+    }
+    const keys = collectKeys(body);
+    for (const forbidden of forbiddenFieldNames) {
+      expect(keys).not.toContain(forbidden);
+    }
+  });
+
   test.each([
     {
       name: "moneyline",
