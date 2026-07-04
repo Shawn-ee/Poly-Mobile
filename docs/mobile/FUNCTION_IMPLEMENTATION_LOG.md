@@ -2,6 +2,44 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ED-B - Visible Book Order Lifecycle
+
+Feature/page worked on:
+
+- Visible mobile Event Detail Book lifecycle for a selected line market.
+- Proves the user can select a Book Spread market, open the ticket, place a mock fake-token order, and see the same selected identity in Portfolio order, position, and activity surfaces.
+
+Frontend/harness components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/App.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+Important functions/interactions touched:
+
+- Book/ticket/Portfolio accessibility identity labels now expose selected market id, outcome id, market group, line, period, contract side, and provider source/market/condition/token identity.
+- Local mock positions created from ticket orders now keep `marketId` and `outcomeId` alongside the existing `selection` payload.
+- Added `-EventDetailOrderBookLifecycle` smoke path: opens Mexico vs. Ecuador Book, switches selector from Moneyline to Spread `line=1.5 period=regulation outcome=yes`, opens Buy ticket, adds `$25`, submits `place-mock-order`, and asserts Portfolio `latest-order-card`, `position-card`, `latest-activity-card`, and `activity-row` preserve the same Book-selected identity.
+
+Verified:
+
+- `npm --prefix mobile ci --no-audit --no-fund`
+- `npm --prefix mobile run typecheck`
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+
+Lead proof needed:
+
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBookLifecycle -Port 8258 -OutputDir docs/mobile/screenshots/cycle-ED-B-book-lifecycle -HierarchyOutputDir docs/mobile/harness/cycle-ED-B-book-lifecycle`
+
+Known limitations:
+
+- Local Android proof was not captured in this branch run because `adb devices` hung and the daemon had to be stopped.
+- The ED-B proof path uses the existing deterministic backend-shaped local Book/order service in mock mode. Integrated provider-ready live route proof should be recaptured by Lead after backend/provider branches are merged.
+
 ## Cycle EC-A - Provider Orderbook Identity Parity
 
 Feature/page worked on:

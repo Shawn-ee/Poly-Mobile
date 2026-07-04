@@ -1070,6 +1070,8 @@ export default function App() {
         {
           id: result.id,
           mode: result.mode,
+          marketId: result.selection?.marketId ?? ticket.market.id,
+          outcomeId: result.selection?.outcomeId ?? ticket.outcome.id,
           title: result.title,
           outcome: result.outcome,
           selection: result.selection,

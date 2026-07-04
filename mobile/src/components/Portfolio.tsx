@@ -152,7 +152,7 @@ const selectionIdentityLabel = (item: { outcome: string; side?: "buy" | "sell"; 
   const selection = item.selection;
   const contractSide = item.contractSide ?? selection?.contractSide ?? "yes";
   return selection
-    ? `portfolio-market-family-${selection.marketType} portfolio-market-type-${selection.marketType} portfolio-line-${selection.line ?? "none"} portfolio-period-${selection.period ?? "none"} portfolio-side-${item.side ?? selection.side ?? "none"} portfolio-outcome-${displayOutcome(item)} portfolio-display-label-${selection.displayLabel} portfolio-contract-side-${contractSide}`
+    ? `portfolio-market-family-${selection.marketType} portfolio-market-type-${selection.marketType} portfolio-market-id-${selection.marketId ?? "none"} portfolio-outcome-id-${selection.outcomeId ?? "none"} portfolio-market-group-${selection.marketGroupId ?? "none"} portfolio-line-${selection.line ?? "none"} portfolio-period-${selection.period ?? "none"} portfolio-side-${item.side ?? selection.side ?? "none"} portfolio-outcome-${displayOutcome(item)} portfolio-display-label-${selection.displayLabel} portfolio-contract-side-${contractSide} portfolio-provider-source-${selection.referenceSource ?? "none"} portfolio-provider-market-${selection.externalMarketId ?? "none"} portfolio-provider-condition-${selection.conditionId ?? "none"} portfolio-provider-token-${selection.referenceTokenId ?? "none"} portfolio-provider-outcome-${selection.referenceOutcomeLabel ?? "none"}`
     : `portfolio-market-family-none portfolio-line-none portfolio-period-none portfolio-side-${item.side ?? "none"} portfolio-outcome-${displayOutcome(item)} portfolio-contract-side-${contractSide}`;
 };
 

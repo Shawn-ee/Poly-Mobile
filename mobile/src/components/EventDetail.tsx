@@ -253,7 +253,7 @@ const makeTieOutcome = (): DisplayOutcome => ({
 
 const ticketSelectionIdentityLabel = (selection?: TicketSelection) =>
   selection
-    ? `selection-market-family-${selection.marketType} selection-market-type-${selection.marketType} selection-line-${selection.line ?? "none"} selection-period-${selection.period ?? "none"} selection-side-${selection.side ?? "yes"} selection-display-label-${selection.displayLabel} selection-contract-side-${selection.contractSide ?? "yes"}`
+    ? `selection-market-family-${selection.marketType} selection-market-type-${selection.marketType} selection-market-id-${selection.marketId ?? "none"} selection-outcome-id-${selection.outcomeId ?? "none"} selection-market-group-${selection.marketGroupId ?? "none"} selection-line-${selection.line ?? "none"} selection-period-${selection.period ?? "none"} selection-side-${selection.side ?? "yes"} selection-display-label-${selection.displayLabel} selection-contract-side-${selection.contractSide ?? "yes"} selection-provider-source-${selection.referenceSource ?? "none"} selection-provider-market-${selection.externalMarketId ?? "none"} selection-provider-condition-${selection.conditionId ?? "none"} selection-provider-token-${selection.referenceTokenId ?? "none"} selection-provider-outcome-${selection.referenceOutcomeLabel ?? "none"}`
     : "selection-market-family-none selection-line-none selection-period-none";
 
 export function EventDetail({
@@ -816,7 +816,7 @@ export function EventDetail({
     const selectedTicketLabel = label(locale, orderBookMarket);
     const selectedTicketSelection = orderBookTicketSelection(orderBookMarket, orderBookSelectedOutcome, selectedOutcomeIndex, selectedTicketLabel);
     const selectedSelectorKey = orderBookSelectorKey(orderBookMarket);
-    const selectedIdentityLabel = `selected-market-${orderBookMarket.id} selected-selector-key-${selectedSelectorKey} selected-family-${selectedMarketFamily} selected-outcome-${orderBookSelectedOutcome.id} selected-side-${selectedContractSide} selected-market-type-${selectedTicketSelection.marketType} selected-line-${selectedTicketSelection.line ?? "none"} selected-period-${selectedTicketSelection.period ?? "none"}`;
+    const selectedIdentityLabel = `selected-market-${orderBookMarket.id} selected-selector-key-${selectedSelectorKey} selected-family-${selectedMarketFamily} selected-outcome-${orderBookSelectedOutcome.id} selected-side-${selectedContractSide} selected-market-type-${selectedTicketSelection.marketType} selected-line-${selectedTicketSelection.line ?? "none"} selected-period-${selectedTicketSelection.period ?? "none"} selected-provider-source-${selectedTicketSelection.referenceSource ?? "none"} selected-provider-market-${selectedTicketSelection.externalMarketId ?? "none"} selected-provider-condition-${selectedTicketSelection.conditionId ?? "none"} selected-provider-token-${selectedTicketSelection.referenceTokenId ?? "none"} selected-provider-outcome-${selectedTicketSelection.referenceOutcomeLabel ?? "none"}`;
     const displayModeLabel = orderBookDisplayMode === "decimal" ? "Decimal" : "Cents";
     const priceHeaderLabel = orderBookDisplayMode === "decimal" ? "Price (USDT)" : "Price";
     const groupNamesLabel = marketGroups.map((group) => group.title).join(" ");
