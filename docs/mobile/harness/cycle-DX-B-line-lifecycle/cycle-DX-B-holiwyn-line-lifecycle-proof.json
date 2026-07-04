@@ -1,0 +1,49 @@
+{
+    "cycle":  "DX-B",
+    "scenario":  "Visible mobile line lifecycle",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailLinePortfolio -Port 8254 -OutputDir docs/mobile/screenshots/cycle-DX-B-line-lifecycle -HierarchyOutputDir docs/mobile/harness/cycle-DX-B-line-lifecycle",
+    "assertions":  {
+                       "selectedLineRow":  [
+                                               "Spread",
+                                               "line 2.5",
+                                               "period 1st Half",
+                                               "display label MEX -2.5 1H",
+                                               "market family spread"
+                                           ],
+                       "ticketReady":  [
+                                           "ticket market family spread",
+                                           "line 2.5",
+                                           "period 1st Half",
+                                           "side buy",
+                                           "outcome yes",
+                                           "place-mock-order"
+                                       ],
+                       "afterOrderPortfolio":  [
+                                                   "Order placed",
+                                                   "MOCK - Buy - MEX -2.5 1H",
+                                                   "latest-order-card",
+                                                   "latest-activity-card",
+                                                   "position-card",
+                                                   "no moneyline fallback"
+                                               ],
+                       "openOrderPortfolio":  [
+                                                  "Open orders",
+                                                  "Buy - MEX -2.5 1H - OPEN",
+                                                  "Limit 3%",
+                                                  "remaining 833.33 shares",
+                                                  "no moneyline fallback"
+                                              ]
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-selected-line-row.png",
+                      "docs/mobile/harness/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-selected-line-row.xml",
+                      "docs/mobile/screenshots/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-selected-line-25-1h.png",
+                      "docs/mobile/harness/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-selected-line-25-1h.xml",
+                      "docs/mobile/screenshots/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-ticket-ready.png",
+                      "docs/mobile/harness/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-ticket-ready.xml",
+                      "docs/mobile/screenshots/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-after-order.png",
+                      "docs/mobile/harness/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-after-order.xml",
+                      "docs/mobile/screenshots/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-open-order.png",
+                      "docs/mobile/harness/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-open-order.xml"
+                  ]
+}

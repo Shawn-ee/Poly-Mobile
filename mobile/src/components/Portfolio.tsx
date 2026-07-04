@@ -148,6 +148,14 @@ const displayOutcome = (item: { outcome: string; selection?: TicketSelection; co
   return contractSide === "no" ? `No - ${display}` : display;
 };
 
+const selectionIdentityLabel = (item: { outcome: string; side?: "buy" | "sell"; selection?: TicketSelection; contractSide?: BinaryContractSide }) => {
+  const selection = item.selection;
+  const contractSide = item.contractSide ?? selection?.contractSide ?? "yes";
+  return selection
+    ? `portfolio-market-family-${selection.marketType} portfolio-market-type-${selection.marketType} portfolio-line-${selection.line ?? "none"} portfolio-period-${selection.period ?? "none"} portfolio-side-${item.side ?? selection.side ?? "none"} portfolio-outcome-${displayOutcome(item)} portfolio-display-label-${selection.displayLabel} portfolio-contract-side-${contractSide}`
+    : `portfolio-market-family-none portfolio-line-none portfolio-period-none portfolio-side-${item.side ?? "none"} portfolio-outcome-${displayOutcome(item)} portfolio-contract-side-${contractSide}`;
+};
+
 const portfolioDetailCopy = {
   en: {
     details: "Details",
@@ -257,7 +265,7 @@ export function Portfolio({
         <Text style={styles.openOrdersTitle}>{t.openOrders}</Text>
         {openOrders.slice(0, 5).map((order) => (
           <Pressable
-            accessibilityLabel={`open-order-row-${order.id}`}
+            accessibilityLabel={`open-order-row-${order.id} ${selectionIdentityLabel(order)}`}
             key={order.id}
             onPress={() => setExpandedOrderId((current) => (current === order.id ? null : order.id))}
             style={[styles.openOrderItem, expandedOrderId === order.id && styles.rowExpanded]}
@@ -368,7 +376,7 @@ export function Portfolio({
         </View>
       </View>
       {latestActivity && (
-        <View accessibilityLabel="latest-activity-card" testID="latest-activity-card" style={styles.latestActivityCard}>
+        <View accessibilityLabel={`latest-activity-card ${selectionIdentityLabel(latestActivity)}`} testID="latest-activity-card" style={styles.latestActivityCard}>
           <View style={styles.latestActivityTop}>
             <Text style={styles.latestActivityLabel}>{t.recentActivity}</Text>
             <Text style={styles.latestActivityAmount}>{money(latestActivity.amount)}</Text>
@@ -391,7 +399,7 @@ export function Portfolio({
       )}
       {openOrdersSection}
       {latestOrder && (
-        <View accessibilityLabel="latest-order-card" testID="latest-order-card" style={styles.confirmationCard}>
+        <View accessibilityLabel={`latest-order-card ${selectionIdentityLabel(latestOrder)}`} testID="latest-order-card" style={styles.confirmationCard}>
           {latestOrder.isLive && (
             <View accessibilityLabel="latest-order-live-badge" testID="latest-order-live-badge" style={styles.liveBadge}>
               <Ionicons name="radio" color="#fecaca" size={13} />
@@ -464,7 +472,7 @@ export function Portfolio({
             </View>
           </View>
           {positions.map((position) => (
-            <View key={position.id} style={styles.positionCard}>
+            <View accessibilityLabel={`position-card-${position.id} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
               {position.isLive && (
                 <View accessibilityLabel="portfolio-position-live-badge" testID="portfolio-position-live-badge" style={styles.liveBadge}>
                   <Ionicons name="radio" color="#fecaca" size={13} />
@@ -580,7 +588,7 @@ export function Portfolio({
           <Text style={styles.activityTitle}>{t.recentActivity}</Text>
           {activities.slice(0, 5).map((activity) => (
             <Pressable
-              accessibilityLabel={`activity-row-${activity.id}`}
+              accessibilityLabel={`activity-row-${activity.id} ${selectionIdentityLabel(activity)}`}
               key={activity.id}
               onPress={() => setExpandedActivityId((current) => (current === activity.id ? null : activity.id))}
               style={[styles.activityItem, expandedActivityId === activity.id && styles.rowExpanded]}
