@@ -6,6 +6,31 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle DA
+
+Date: 2026-07-04
+Branch: `mobile/cycle-DA-provider-discovery-expansion`
+Goal: Expand provider discovery for the World Cup live event so the loop can find multiple real attach-ready Polymarket soccer markets without weakening the relevance gate.
+Reference app screens observed: Continued from Cycle CW/CX/CY Samsung S23 Polymarket official app Colombia vs Ghana game page and exact Gamma event `fifwc-col-gha-2026-07-03`.
+Holiwyn screens changed: No intended visual changes. Existing server-backed Colombia vs Ghana live-detail Book flow was re-proven on Samsung tablet.
+Backend/API changed: Provider candidate discovery now generates match-winner-only exact slug fallbacks from trusted provider event slugs, reports `manualSlugFallbacks` and `manualSlugFallbackCandidateCount`, and expands normalized soccer search phrases.
+Database/schema changed: None. Existing provider identity fields were populated by the proof through the existing attach service.
+Files changed: provider candidate service, provider candidate service tests, provider discovery expansion proof harness, docs/proof artifacts, tablet proof artifacts.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-candidates.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts`
+- `cmd /c npx.cmd tsx scripts/prove_mobile_provider_discovery_expansion.ts --output docs/mobile/harness/cycle-current-mobile-provider-discovery-expansion.json`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` from `mobile/`
+- Samsung tablet proof via `mobile/scripts/smoke.ps1 -Deep -ServerLiveDetailOrderBook -ServerEventSlug world-cup-2026-colombia-vs-ghana-2026-07-03`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-provider-discovery-expansion.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+Result: Pass for provider discovery expansion. Exact event plus fallback slugs produced 3 real attach-ready provider markets, attached 3 compact markets, refreshed 6 quote snapshots, wrote 246 CLOB depth rows, and preserved tablet Book proof. Full line-market provider parity remains open.
+Next focus: find/import real provider line-market slugs or source for spreads, totals, team totals, halves, corners, and props; keep broad search blocked by family/relevance gates.
+
 ## Cycle CZ
 
 Date: 2026-07-04

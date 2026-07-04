@@ -2,6 +2,48 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle DA - Provider Discovery Expansion
+
+Feature/page worked on:
+
+- PM-GAP-067B provider discovery expansion for the World Cup live event.
+- Focused on real attach-ready Polymarket soccer markets for Colombia vs Ghana, not new visual UI parity.
+
+Frontend/harness components touched:
+
+- No intended visual UI code changed.
+- Samsung tablet regression proof refreshed the server-backed Colombia vs Ghana live-detail Book path.
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `src/__tests__/mobile-live-provider-candidates.service.test.ts`
+- `scripts/prove_mobile_provider_discovery_expansion.ts`
+
+Important functions/services touched:
+
+- `buildProviderCandidateManualSlugFallbacks()` derives exact Polymarket match-winner fallback slugs from provider event slug plus normalized team/draw identity.
+- `buildProviderCandidateSearchQueries()` now includes more normalized soccer/event search phrases while keeping the relevance gate unchanged.
+- `discoverMobileLiveProviderCandidates()` now reports `manualSlugFallbacks` and `manualSlugFallbackCandidateCount`, merges exact fallback candidates into ranking, and still requires family, token, and relevance checks.
+
+User interactions supported:
+
+- No new end-user interaction.
+- The live game page remains backed by real provider quote/depth for the three mapped match-winner markets.
+
+State transitions:
+
+- Local proof event starts with 3 compact markets missing provider identity.
+- Discovery finds 3 real attach-ready provider candidates from exact event plus manual fallback slugs.
+- Attach moves readiness to 3 provider-refreshable markets and 6 provider-refreshable outcomes.
+- No-fallback provider refresh writes 6 quote snapshots and 246 CLOB depth rows.
+- Samsung tablet proof confirms the live-detail Book route remains usable after the provider mapping refresh.
+
+Known limitations:
+
+- Cycle DA improves match-winner discovery and fallback robustness; it does not find provider line markets.
+- Exact provider data for spreads, totals, team totals, halves, corners, props, and correct score remains open.
+
 ## Cycle CZ - Line Slug Family Gate
 
 Feature/page worked on:

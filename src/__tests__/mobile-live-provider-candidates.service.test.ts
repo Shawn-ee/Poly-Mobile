@@ -1,5 +1,6 @@
 import {
   buildProviderCandidateSearchQueries,
+  buildProviderCandidateManualSlugFallbacks,
   classifyProviderMarketFamily,
   deriveProviderEventSlugHints,
   expectedProviderMarketFamily,
@@ -245,6 +246,51 @@ describe("mobile live provider candidates", () => {
       "Curacao vs Cote d'Ivoire Match Winner",
       "Curacao vs Cote dIvoire Match Winner",
       "Curacao vs Cote d'Ivoire Match Winner match winner 1x2",
+    ]));
+  });
+
+  test("builds exact Polymarket match-winner slug fallbacks from normalized teams and draw", () => {
+    expect(buildProviderCandidateManualSlugFallbacks({
+      title: "Will Colombia win on 2026-07-03?",
+      marketType: "moneyline",
+      outcomes: [
+        { id: "yes", name: "Yes", side: "yes", displayOrder: 0 },
+        { id: "no", name: "No", side: "no", displayOrder: 1 },
+      ],
+    }, ["https://polymarket.com/sports/world-cup/fifwc-col-gha-2026-07-03"])).toEqual([
+      "fifwc-col-gha-2026-07-03-col",
+    ]);
+
+    expect(buildProviderCandidateManualSlugFallbacks({
+      title: "Will Colombia vs. Ghana end in a draw?",
+      marketType: "moneyline",
+      outcomes: [
+        { id: "yes", name: "Yes", side: "yes", displayOrder: 0 },
+        { id: "no", name: "No", side: "no", displayOrder: 1 },
+      ],
+    }, ["fifwc-col-gha-2026-07-03"])).toEqual([
+      "fifwc-col-gha-2026-07-03-draw",
+    ]);
+  });
+
+  test("adds normalized soccer event phrases to provider search queries", () => {
+    expect(buildProviderCandidateSearchQueries({
+      id: "market-col",
+      title: "Colombia vs Ghana: Match Winner",
+      marketType: "match_winner_1x2",
+      period: null,
+      line: null,
+      unit: null,
+      marketGroupKey: "main",
+      marketGroupTitle: "Game Lines",
+      outcomes: [
+        { id: "home", name: "Colombia", side: "home", displayOrder: 0, referenceOutcomeLabel: "Colombia" },
+        { id: "draw", name: "Draw", side: "draw", displayOrder: 1, referenceOutcomeLabel: "Draw" },
+        { id: "away", name: "Ghana", side: "away", displayOrder: 2, referenceOutcomeLabel: "Ghana" },
+      ],
+    })).toEqual(expect.arrayContaining([
+      "Colombia ghana soccer",
+      "Colombia ghana world cup",
     ]));
   });
 
@@ -580,4 +626,5 @@ describe("mobile live provider candidates", () => {
       eventTitle: "Colombia vs. Ghana",
     }));
   });
+
 });

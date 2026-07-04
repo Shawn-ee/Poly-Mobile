@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle DA - Provider Discovery Expansion
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Exact event plus manual slug fallback provider discovery | `/api/mobile/events/:slug/provider-candidates` | GET | Internal admin key or admin session | Query params: `providerSearchMode=sports-events`, optional `marketId`, optional `maxCandidatesPerMarket` | `providerEventSlugs`, `providerEventSlugSource`, `manualSlugFallbacks`, `manualSlugFallbackCandidateCount`, `providerCandidateFamilySummary`, `targets[].attachProposal`, `attachReadyCandidateCount` | Reads compact `Event`, `Market`, and active `Outcome`; fetches Gamma `/events?slug=...` and exact Gamma `/markets?slug=...`; attach writes `Market.referenceSource`, `Market.externalSlug`, `Market.externalMarketId`, `Market.conditionId`, and `Outcome.referenceTokenId` | None. Fallback slugs are exact provider slugs and still pass the same family, token, and relevance gates before attach | Need real provider source/slugs for line market families beyond match winner. |
+| Provider discovery expansion proof | `scripts/prove_mobile_provider_discovery_expansion.ts` | Local script | Local development only | `--providerEventSlug`, `--eventSlug`, `--output` | Proof artifact showing initial missing mapping, fallback slugs, 3 attach-ready candidates, attach result, no-fallback refresh, quote snapshots, and CLOB depth rows | Upserts local proof `Event`, `Market`, `Outcome` rows shaped like provider-backed compact markets; uses existing attach and refresh services | No frontend-only fixture. Local proof rows are populated with real Polymarket identity and token IDs before refresh | Production importer should persist trusted provider event slugs and eventually include provider line-market slugs when available. |
+
+Cycle DA implementation notes:
+
+- The manual slug fallback is narrow and match-winner-only: `fifwc-col-gha-2026-07-03-col`, `-draw`, and `-gha`.
+- The pass proof attached 3 real provider markets, refreshed 6 outcome quote snapshots, and wrote 246 provider CLOB depth rows without contract-proof fallback.
+- Broad Gamma search remains unsafe for automatic line-market attach and is still blocked by the relevance/family gate.
+
 ## Cycle CZ - Line Slug Family Gate
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle DA - Provider Discovery Expansion
+
+Closed or narrowed:
+
+- Provider discovery now has a deterministic exact-slug fallback for match-winner markets when a trusted provider event slug exists.
+- Discovery response now exposes `manualSlugFallbacks` and `manualSlugFallbackCandidateCount` so the search path is auditable.
+- The proof moved the Colombia vs Ghana local proof event from 3 unmapped compact markets to 3 provider-refreshable markets, 6 token-backed outcomes, 6 quote snapshots, and 246 CLOB depth rows.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider identities for spreads, totals, team totals, halves, corners, props, and correct score.
+- Production importer/operator review flow to persist trusted provider event slugs and any discovered exact line-market slugs.
+- Ticket/order/portfolio/history proof for provider-backed line markets after line IDs exist.
+
+Schema mismatch:
+
+- No schema change was required. Existing `Event.externalSlug`, `Market.externalSlug`, `Market.externalMarketId`, `Market.conditionId`, and `Outcome.referenceTokenId` store the provider mapping.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/provider-candidates` can expose fallback candidates, but there is no operator UI yet to review and apply mappings from the app/admin surface.
+
+Temporary mock/static data:
+
+- The proof upserts local compact event rows, then populates them with real Polymarket market identity and CLOB token IDs before refresh. It is not frontend-only display data.
+
+Future migration concern:
+
+- Keep fallback derivation exact and narrow. Do not generalize broad search results into automatic mapping for line markets unless they pass exact family, token, and relevance checks.
+
 ## Cycle CZ - Line Slug Family Gate
 
 Closed or narrowed:
