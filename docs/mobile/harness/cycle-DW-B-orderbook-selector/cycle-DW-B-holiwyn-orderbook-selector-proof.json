@@ -1,0 +1,34 @@
+{
+    "cycle":  "DW-B",
+    "scope":  "Visible Book grouped selector sheet and market identity carry-through proof",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBookSelector -Port 8252 -OutputDir docs/mobile/screenshots/cycle-DW-B-orderbook-selector -HierarchyOutputDir docs/mobile/harness/cycle-DW-B-orderbook-selector",
+    "eventIdentity":  "Mexico vs. Ecuador",
+    "result":  "pass",
+    "fixtureNote":  "UI proof uses deterministic backend-contract-shaped fixture markets with marketId/outcomeId/marketType/period/line/side/probability/depth fields.",
+    "assertions":  {
+                       "selectorTrigger":  "order-book-grouped-market-selector selector-closed selected-market-mexico-ecuador-winner selected-family-Moneyline",
+                       "selectorSheet":  "order-book-market-selector-sheet exposes Moneyline Totals Spreads grouped choices with market type, line, period, and depth labels",
+                       "totalsCarryThrough":  "selected-market-mexico-ecuador-total selected-family-Totals selected-outcome-over selected-side-yes selected-market-type-totals selected-line-2.5 selected-period-regulation",
+                       "spreadCarryThrough":  "selected-market-mexico-ecuador-spread selected-family-Spreads selected-outcome-yes selected-side-yes selected-market-type-spread selected-line-1.5 selected-period-regulation",
+                       "ticketCarryThrough":  "ticket-selection-summary Mexico -1.5 spread ticket-selection-line Yes provider-source-polymarket-fixture provider-token-token-spread-yes-15",
+                       "ladderPreserved":  "order-book-ask-level-yes-1 and order-book-bid-level-yes-1 remain visible after selector market change"
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-closed.png",
+                      "docs/mobile/harness/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-closed.xml",
+                      "docs/mobile/screenshots/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-sheet.png",
+                      "docs/mobile/harness/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-sheet.xml",
+                      "docs/mobile/screenshots/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-totals.png",
+                      "docs/mobile/harness/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-totals.xml",
+                      "docs/mobile/screenshots/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-totals-sheet.png",
+                      "docs/mobile/harness/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-totals-sheet.xml",
+                      "docs/mobile/screenshots/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-spread.png",
+                      "docs/mobile/harness/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-spread.xml",
+                      "docs/mobile/screenshots/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-spread-ticket.png",
+                      "docs/mobile/harness/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-spread-ticket.xml"
+                  ],
+    "remainingGaps":  [
+                          "Selector sheet is visible parity for mobile Book market switching; backend provider route behavior remains owned outside this Agent B change.",
+                          "Fixture data remains deterministic UI proof only when the backend route is absent."
+                      ]
+}

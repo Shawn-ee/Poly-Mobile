@@ -294,6 +294,7 @@ export function EventDetail({
   const [orderBookMarketId, setOrderBookMarketId] = useState<string | null>(null);
   const [orderBookOutcomeId, setOrderBookOutcomeId] = useState<string | null>(null);
   const [orderBookSettingsVisible, setOrderBookSettingsVisible] = useState(false);
+  const [orderBookSelectorVisible, setOrderBookSelectorVisible] = useState(false);
   const [orderBookDisplayMode, setOrderBookDisplayMode] = useState<BookDisplayMode>("cents");
   const [compactHeaderVisible, setCompactHeaderVisible] = useState(false);
   const isLiveEvent = event.status === "live";
@@ -395,6 +396,12 @@ export function EventDetail({
     setOrderBookOutcomeId(market.outcomes[0]?.id ?? null);
     requestMarketDepth?.(market.id);
     setOrderBookVisible(true);
+  };
+  const selectOrderBookMarket = (market: Market) => {
+    setOrderBookMarketId(market.id);
+    setOrderBookOutcomeId(market.outcomes[0]?.id ?? null);
+    setOrderBookSelectorVisible(false);
+    requestMarketDepth?.(market.id);
   };
   const liveStatRows = event.liveStats ?? [
     { label: "Possession", home: "54%", away: "46%" },
@@ -777,6 +784,7 @@ export function EventDetail({
     const selectedIdentityLabel = `selected-market-${orderBookMarket.id} selected-selector-key-${selectedSelectorKey} selected-family-${selectedMarketFamily} selected-outcome-${orderBookSelectedOutcome.id} selected-side-${selectedContractSide} selected-market-type-${selectedTicketSelection.marketType} selected-line-${selectedTicketSelection.line ?? "none"} selected-period-${selectedTicketSelection.period ?? "none"}`;
     const displayModeLabel = orderBookDisplayMode === "decimal" ? "Decimal" : "Cents";
     const priceHeaderLabel = orderBookDisplayMode === "decimal" ? "Price (USDT)" : "Price";
+    const groupNamesLabel = marketGroups.map((group) => group.title).join(" ");
     return (
       <View accessibilityLabel={`event-detail-order-book-screen event-detail-order-book-market-${orderBookMarket.id} ${selectedIdentityLabel} book-display-mode-${orderBookDisplayMode} orderbook-source-${selectedDepthSource ?? "fallback"} orderbook-status-${depthRouteStatus} orderbook-empty-${depthMarketMatches || hasSelectedMarketDepth ? event.orderbookDepthEmptyState ?? "none" : "not-selected"} orderbook-availability-${orderbookAvailabilityStatus} orderbook-market-status-${selectedOrderbookAvailability?.marketStatus ?? "unknown"}`} style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
         <View style={styles.orderBookHeader}>
@@ -826,38 +834,62 @@ export function EventDetail({
             </Pressable>
           </View>
         )}
-        <ScrollView
-          accessibilityLabel="order-book-grouped-market-selector"
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.orderBookMarketSelector}
-          contentContainerStyle={styles.orderBookMarketSelectorPad}
-          testID="order-book-grouped-market-selector"
-        >
-          {marketGroups.map((group) => (
-            <View key={group.title} style={styles.orderBookMarketGroup}>
-              <Text style={styles.orderBookMarketGroupTitle}>{group.title}</Text>
-              {group.markets.map((market) => {
-                const isActive = market.id === orderBookMarket.id;
-                return (
-                  <Pressable
-                    accessibilityLabel={`order-book-market-choice-${market.id} ${group.title} ${label(locale, market)} ${isActive ? "selected-market-choice" : "inactive-market-choice"} market-type-${orderBookMarketType(market)} line-${market.line ?? "none"} period-${market.period ?? "none"}`}
-                    key={market.id}
-                    onPress={() => {
-                      setOrderBookMarketId(market.id);
-                      setOrderBookOutcomeId(market.outcomes[0]?.id ?? null);
-                      requestMarketDepth?.(market.id);
-                    }}
-                    style={[styles.orderBookMarketChoice, isActive && styles.orderBookMarketChoiceActive]}
-                    testID={`order-book-market-choice-${market.id}`}
-                  >
-                    <Text numberOfLines={1} style={[styles.orderBookMarketChoiceText, isActive && styles.orderBookMarketChoiceTextActive]}>{label(locale, market)}</Text>
-                  </Pressable>
-                );
-              })}
+        <View style={styles.orderBookSelectorWrap}>
+          <Pressable
+            accessibilityLabel={`order-book-grouped-market-selector order-book-market-selector-trigger ${groupNamesLabel} ${selectedIdentityLabel} ${label(locale, orderBookMarket)} ${orderBookSelectorVisible ? "selector-open" : "selector-closed"}`}
+            accessibilityRole="button"
+            accessibilityState={{ expanded: orderBookSelectorVisible }}
+            onPress={() => setOrderBookSelectorVisible((visible) => !visible)}
+            style={[styles.orderBookSelectorTrigger, orderBookSelectorVisible && styles.orderBookSelectorTriggerActive]}
+            testID="order-book-grouped-market-selector"
+          >
+            <View style={styles.orderBookSelectorMain}>
+              <Text style={styles.orderBookSelectorFamily}>{selectedMarketFamily}</Text>
+              <Text numberOfLines={1} style={styles.orderBookSelectorTitle}>{label(locale, orderBookMarket)}</Text>
+              <Text style={styles.orderBookSelectorMeta}>{selectedTicketSelection.period ?? "full game"} - line {selectedTicketSelection.line ?? "none"} - {selectedTicketSelection.marketType}</Text>
             </View>
-          ))}
-        </ScrollView>
+            <View style={styles.orderBookSelectorRight}>
+              <Text style={styles.orderBookSelectorSide}>{selectedContractSide.toUpperCase()}</Text>
+              <Ionicons name={orderBookSelectorVisible ? "chevron-up" : "chevron-down"} color="#dbeafe" size={20} />
+            </View>
+          </Pressable>
+          {orderBookSelectorVisible && (
+            <ScrollView
+              accessibilityLabel={`order-book-market-selector-sheet ${selectedIdentityLabel} grouped-market-selector-sheet ${groupNamesLabel}`}
+              style={styles.orderBookSelectorSheet}
+              contentContainerStyle={styles.orderBookSelectorSheetContent}
+              testID="order-book-market-selector-sheet"
+            >
+              {marketGroups.map((group) => (
+                <View key={group.title} style={styles.orderBookMarketGroup}>
+                  <Text style={styles.orderBookMarketGroupTitle}>{group.title}</Text>
+                  {group.markets.map((market) => {
+                    const isActive = market.id === orderBookMarket.id;
+                    const marketType = orderBookMarketType(market);
+                    const hasDepth = (market.orderbookDepth?.length ?? 0) > 0;
+                    return (
+                      <Pressable
+                        accessibilityLabel={`order-book-market-choice-${market.id} ${group.title} ${label(locale, market)} ${isActive ? "selected-market-choice" : "inactive-market-choice"} market-type-${marketType} line-${market.line ?? "none"} period-${market.period ?? "none"} depth-${hasDepth ? "available" : "fallback"} selector-key-${orderBookSelectorKey(market)}`}
+                        key={market.id}
+                        onPress={() => selectOrderBookMarket(market)}
+                        style={[styles.orderBookMarketChoice, isActive && styles.orderBookMarketChoiceActive]}
+                        testID={`order-book-market-choice-${market.id}`}
+                      >
+                        <View style={styles.orderBookMarketChoiceTop}>
+                          <Text numberOfLines={1} style={[styles.orderBookMarketChoiceText, isActive && styles.orderBookMarketChoiceTextActive]}>{label(locale, market)}</Text>
+                          {isActive && <Ionicons name="checkmark-circle" color="#7dd3fc" size={16} />}
+                        </View>
+                        <Text style={[styles.orderBookMarketChoiceMeta, isActive && styles.orderBookMarketChoiceMetaActive]}>
+                          {market.period ?? "full game"} - line {market.line ?? "none"} - {marketType}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
+                </View>
+              ))}
+            </ScrollView>
+          )}
+        </View>
         <View accessibilityLabel="order-book-outcome-tabs Yes No" style={styles.orderBookOutcomeTabs} testID="order-book-outcome-tabs">
           {orderBookMarket.outcomes.map((outcome, index) => {
             const isActive = outcome.id === orderBookSelectedOutcome.id;
@@ -2051,14 +2083,26 @@ const styles = StyleSheet.create({
   orderBookDisplayToggleActive: { backgroundColor: "#dbeafe", borderColor: "#f8fafc" },
   orderBookDisplayToggleText: { color: "#dbeafe", fontSize: 13, fontWeight: "900" },
   orderBookDisplayToggleTextActive: { color: "#0b1220" },
-  orderBookMarketSelector: { maxHeight: 132, borderBottomWidth: 1, borderBottomColor: "#172033" },
-  orderBookMarketSelectorPad: { paddingHorizontal: 16, paddingVertical: 10, gap: 10 },
-  orderBookMarketGroup: { width: 178, gap: 7 },
+  orderBookSelectorWrap: { paddingHorizontal: 16, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "#172033", gap: 10 },
+  orderBookSelectorTrigger: { minHeight: 70, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#243244" },
+  orderBookSelectorTriggerActive: { borderColor: "#38bdf8", backgroundColor: "#102132" },
+  orderBookSelectorMain: { flex: 1, minWidth: 0 },
+  orderBookSelectorFamily: { color: "#7dd3fc", fontSize: 11, fontWeight: "900", textTransform: "uppercase" },
+  orderBookSelectorTitle: { color: "#f8fafc", fontSize: 15, fontWeight: "900", marginTop: 3 },
+  orderBookSelectorMeta: { color: "#94a3b8", fontSize: 11, fontWeight: "800", marginTop: 3 },
+  orderBookSelectorRight: { minWidth: 58, flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: 6 },
+  orderBookSelectorSide: { color: "#dbeafe", fontSize: 11, fontWeight: "900" },
+  orderBookSelectorSheet: { maxHeight: 270, borderRadius: 8, backgroundColor: "#070c14", borderWidth: 1, borderColor: "#1f2937" },
+  orderBookSelectorSheetContent: { gap: 10, padding: 10 },
+  orderBookMarketGroup: { gap: 7 },
   orderBookMarketGroupTitle: { color: "#64748b", fontSize: 11, fontWeight: "900", textTransform: "uppercase" },
-  orderBookMarketChoice: { minHeight: 34, justifyContent: "center", borderRadius: 8, paddingHorizontal: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937" },
+  orderBookMarketChoice: { minHeight: 48, justifyContent: "center", borderRadius: 8, paddingHorizontal: 10, paddingVertical: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937" },
   orderBookMarketChoiceActive: { backgroundColor: "#102132", borderColor: "#38bdf8" },
+  orderBookMarketChoiceTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8 },
   orderBookMarketChoiceText: { color: "#94a3b8", fontSize: 12, fontWeight: "900" },
   orderBookMarketChoiceTextActive: { color: "#f8fafc" },
+  orderBookMarketChoiceMeta: { color: "#64748b", fontSize: 10, fontWeight: "800", marginTop: 3 },
+  orderBookMarketChoiceMetaActive: { color: "#bfdbfe" },
   orderBookOutcomeTabs: { flexDirection: "row", gap: 10, paddingHorizontal: 16, paddingTop: 10 },
   orderBookOutcomeTab: { flex: 1, minHeight: 48, justifyContent: "center", borderRadius: 10, paddingHorizontal: 12, backgroundColor: "#111827", borderWidth: 1, borderColor: "#253043" },
   orderBookOutcomeTabActive: { backgroundColor: "#e5e7eb", borderColor: "#f8fafc" },
