@@ -208,6 +208,27 @@ describe("public orderbook book API no-leak checks", () => {
     }
   });
 
+  test("GET /api/orderbook/[marketId]/book treats missing direct route request scope as anonymous", async () => {
+    getUserId.mockRejectedValue(new Error("`cookies` was called outside a request scope."));
+
+    const response = await getOrderbook(new NextRequest("http://localhost/api/orderbook/market-1/book?maxLevels=5"), {
+      params: Promise.resolve({ marketId: "market-1" }),
+    });
+
+    expect(response.status).toBe(200);
+    expect(assertMarketVisibleToUser).toHaveBeenCalledWith(
+      expect.objectContaining({
+        market: expect.objectContaining({ id: "market-1" }),
+        userId: null,
+      }),
+    );
+    expect(buildPublicOrderbookSnapshot).toHaveBeenCalledWith({
+      marketId: "market-1",
+      outcomeId: null,
+      maxLevels: 5,
+    });
+  });
+
   test("GET /api/orderbook/[marketId]/book returns provider-backed ready depth with selector identity", async () => {
     buildPublicOrderbookSnapshot.mockResolvedValue({
       bids: [

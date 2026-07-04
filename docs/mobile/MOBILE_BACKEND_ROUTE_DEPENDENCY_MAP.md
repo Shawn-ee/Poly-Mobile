@@ -2,6 +2,25 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle EO-A - Route-Backed Lifecycle Breadth
+
+Cycle EO-A extends backend/provider route proof beyond the prior selected ask/Buy lifecycle:
+
+- Backend proof: `docs/mobile/harness/cycle-EO-A-route-breadth/proof.json`.
+- Proof script: `scripts/prove_mobile_eo_a_route_breadth.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Totals provider-depth Sell selection source | `/api/mobile/events/:slug/live-detail` and `/api/orderbook/:marketId/book?maxLevels=24` | GET / GET | Public/mobile routes | Event slug and selected market id | Live-detail `markets[].selection`, `markets[].outcomes[]`, `markets[].orderbookDepth[]`, `orderbookIdentity`, `providerLifecycle`, and Book `marketIdentity`, `availability`, `levels[]` preserve totals family/type/group, `2H`, line `3.5`, selected outcome token, provider source, and bid ladder price/share identity | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, `MarketOutcomeSnapshot` | No frontend-only fixture is accepted by the proof; disposable provider rows are backend-shaped Polymarket/Gamma/CLOB data | Production replay on a real live Polymarket event remains future coverage. |
+| Bid-side Sell limit order creation | Canonical order service backing `POST /api/orders` | POST | Canonical API key/idempotency flow in production; EO-A uses the route-backed service entry to avoid local trading-beta env flags | `marketId`, `outcomeId`, `side=SELL`, `type=LIMIT`, bid-row `price`, `size`, `contractSide=YES`, and `selection` born from Book provider depth, including `limitPrice`, `limitSide=bid`, and `limitShares` | Order response echoes `order.side=SELL` and `order.selection` with selected totals/provider/bid identity intact | `ApiOrderRequest`, `Order`, `Market`, `Outcome`; sell leg also uses existing share collateral/position state | None. Limit fields are sanitized into existing request JSON. | First-class immutable order/fill/trade/position selection columns remain future hardening. |
+| Bid-side Sell portfolio/history lifecycle | `/api/portfolio` and `/api/portfolio/history` | GET / GET | Session user or canonical API key with `account:read` | None | `openOrders[].selection`, `positions[].selection`, `canceledOrders[].selection`, and `recentTrades[].selection` preserve totals market/outcome/type/group/line/period/side/contract side/provider ids/tokens plus `limitPrice`, `limitSide=bid`, and `limitShares`; open/canceled/recent activity preserve `side=SELL` | `Order`, `ApiOrderRequest`, `Position`, `Trade`, `Market`, `Outcome` with the guarded request snapshot bridge | None in backend proof. Mobile fixtures are not used for EO-A identity. | Same-market/outcome multi-selection history still depends on the latest matching request snapshot until durable trade/position snapshots are approved. |
+
+Cycle EO-A implementation notes:
+
+- The proof starts from both route origins required by mobile, `/api/mobile/events/:slug/live-detail` and `/api/orderbook/:marketId/book`, then uses the Book route bid level as the staged limit source.
+- Focused route tests assert `/api/portfolio` and `/api/portfolio/history` preserve bid-side Sell totals snapshots with provider token identity.
+- `OPTIC_ODDS_API_KEY` remains optional/unconfigured and non-blocking; the proven path uses Polymarket-first quote and CLOB depth rows.
+
 ## Cycle EN Integrated - Route-Backed Provider-Depth Limit Lifecycle
 
 Cycle EN integrated pairs backend/provider route proof with visible Android proof:

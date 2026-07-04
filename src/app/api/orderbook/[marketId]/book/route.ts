@@ -10,6 +10,17 @@ type OrderbookAvailabilityStatus = "ready" | "stale" | "suspended" | "delayed" |
 
 const ORDERBOOK_STALE_AFTER_SECONDS = 90;
 
+async function optionalUserIdForPublicBookRoute() {
+  try {
+    return await getUserId();
+  } catch (error) {
+    if (error instanceof Error && error.message.includes("outside a request scope")) {
+      return null;
+    }
+    throw error;
+  }
+}
+
 const marketFamilyForSelector = (market: {
   marketType: string;
   marketGroupKey: string | null;
@@ -185,7 +196,7 @@ const availabilityFromProviderSnapshot = (
 
 export async function GET(request: NextRequest, context: Ctx) {
   const { marketId } = await context.params;
-  const userId = await getUserId();
+  const userId = await optionalUserIdForPublicBookRoute();
   const outcomeId = request.nextUrl.searchParams.get("outcomeId");
   const maxLevelsParam = Number(request.nextUrl.searchParams.get("maxLevels"));
   const maxLevels = Number.isFinite(maxLevelsParam) && maxLevelsParam > 0
