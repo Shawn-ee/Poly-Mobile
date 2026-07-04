@@ -728,10 +728,19 @@ export function EventDetail({
       </Pressable>
     </View>
   );
+  const marketAvailabilityLabel = (market?: Market) => {
+    const status = market?.availability?.status;
+    if (status === "ready") return "Market live";
+    if (status === "stale") return "Market stale";
+    if (status === "suspended") return "Market suspended";
+    if (status === "delayed") return "Market delayed";
+    if (status === "unavailable") return "Market unavailable";
+    return null;
+  };
   const renderGroup = (group: GameLineGroup) => (
     <View key={group.id} style={styles.marketBlock}>
       <Pressable
-        accessibilityLabel={`event-detail-market-toggle-${group.id} ${group.title} ${group.subtitle ?? ""}`}
+        accessibilityLabel={`event-detail-market-toggle-${group.id} ${group.title} ${group.subtitle ?? ""} market-availability-${group.backendMarket?.availability?.status ?? "unknown"}`}
         onPress={() => toggleGroup(group.id)}
         style={styles.marketHeaderRow}
         testID={`event-detail-market-toggle-${group.id}`}
@@ -741,9 +750,18 @@ export function EventDetail({
           {group.subtitle && <Text style={styles.marketSubcopy}>{group.subtitle}</Text>}
         </View>
         <View style={styles.headerRightCluster}>
+          {group.backendMarket?.availability && (
+            <View
+              accessibilityLabel={`event-detail-market-availability-${group.id} market-availability-${group.backendMarket.availability.status} market-status-${group.backendMarket.availability.marketStatus ?? "unknown"} ${marketAvailabilityLabel(group.backendMarket) ?? ""}`}
+              style={[styles.marketAvailabilityPill, group.backendMarket.availability.status !== "ready" && styles.marketAvailabilityPillWarning, group.backendMarket.availability.status === "suspended" && styles.marketAvailabilityPillSuspended]}
+              testID={`event-detail-market-availability-${group.id}`}
+            >
+              <Text style={[styles.marketAvailabilityText, group.backendMarket.availability.status !== "ready" && styles.marketAvailabilityTextWarning]}>{marketAvailabilityLabel(group.backendMarket)}</Text>
+            </View>
+          )}
           {group.backendMarket && (
             <Pressable
-              accessibilityLabel={`event-detail-open-order-book-${group.id} ${group.backendMarket.id}`}
+              accessibilityLabel={`event-detail-open-order-book-${group.id} ${group.backendMarket.id} market-availability-${group.backendMarket.availability?.status ?? "unknown"}`}
               onPress={() => openOrderBookForMarket(group.backendMarket!)}
               style={styles.depthBookButton}
               testID={`event-detail-open-order-book-${group.id}`}
@@ -1658,6 +1676,11 @@ const styles = StyleSheet.create({
   exactScoreButton: { minWidth: 116, minHeight: 40, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#25303a" },
   exactScoreButtonText: { color: "#d1d5db", fontSize: 17, fontWeight: "900" },
   headerRightCluster: { flexDirection: "row", alignItems: "center", gap: 10 },
+  marketAvailabilityPill: { minHeight: 28, justifyContent: "center", paddingHorizontal: 8, borderRadius: 999, backgroundColor: "rgba(14, 165, 233, 0.12)", borderWidth: 1, borderColor: "rgba(125, 211, 252, 0.28)" },
+  marketAvailabilityPillWarning: { backgroundColor: "rgba(53, 43, 20, 0.78)", borderColor: "rgba(251, 191, 36, 0.35)" },
+  marketAvailabilityPillSuspended: { backgroundColor: "rgba(58, 24, 31, 0.78)", borderColor: "rgba(248, 113, 113, 0.38)" },
+  marketAvailabilityText: { color: "#bfdbfe", fontSize: 10, fontWeight: "900" },
+  marketAvailabilityTextWarning: { color: "#fde68a" },
   lineValuePill: { minWidth: 58, minHeight: 32, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 2, borderRadius: 999, backgroundColor: "#052e1b", paddingHorizontal: 10 },
   lineValueText: { color: "#86efac", fontSize: 14, fontWeight: "900" },
   subSegmentRow: { flexDirection: "row", alignItems: "center", gap: 8, marginTop: 12, marginBottom: 4 },

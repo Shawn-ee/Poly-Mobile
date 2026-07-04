@@ -29,6 +29,8 @@ type MarketInput = {
   title: string;
   description: string | null;
   status: string;
+  sourceUpdatedAt?: Date | null;
+  updatedAt?: Date | null;
   marketGroupKey: string | null;
   marketGroupTitle: string | null;
   displayOrder: number;
@@ -99,6 +101,51 @@ const liveStatusFromMetadata = (value: string | null): LiveAvailabilityStatus | 
     return normalized as LiveAvailabilityStatus;
   }
   return null;
+};
+
+const availabilityForMarket = (market: MarketInput) => {
+  const normalizedStatus = market.status.toUpperCase();
+  const sourceDate = market.sourceUpdatedAt ?? market.updatedAt ?? null;
+  const lastUpdated = sourceDate?.toISOString() ?? null;
+  const stalenessSeconds = lastUpdated
+    ? Math.max(0, Math.round((Date.now() - new Date(lastUpdated).getTime()) / 1000))
+    : null;
+  const isStale = stalenessSeconds != null && stalenessSeconds > STALE_AFTER_SECONDS;
+  const isSuspended = ["PAUSED", "SUSPENDED", "HALTED"].includes(normalizedStatus);
+  const isDelayed = normalizedStatus === "UPCOMING";
+  const status: LiveAvailabilityStatus = isSuspended
+    ? "suspended"
+    : isDelayed
+      ? "delayed"
+      : !lastUpdated
+        ? "unavailable"
+        : isStale
+          ? "stale"
+          : normalizedStatus === "LIVE"
+            ? "ready"
+            : "unavailable";
+  const reason = status === "ready"
+    ? "Market orderbook data is fresh."
+    : status === "stale"
+      ? `Latest market update is older than ${STALE_AFTER_SECONDS} seconds.`
+      : status === "suspended"
+        ? "Market status is suspended or paused."
+        : status === "delayed"
+          ? "Market has not opened yet."
+          : "No market update timestamp is available.";
+
+  return {
+    source: market.sourceUpdatedAt ? "market-source-updated-at" : market.updatedAt ? "market-updated-at" : "unknown",
+    status,
+    marketStatus: normalizedStatus,
+    lastUpdated,
+    stalenessSeconds,
+    staleAfterSeconds: STALE_AFTER_SECONDS,
+    isStale: status === "stale",
+    isSuspended: status === "suspended",
+    isDelayed: status === "delayed",
+    reason,
+  };
 };
 
 const groupRank = (market: MarketInput) => {
@@ -191,6 +238,7 @@ export async function serializeMobileLiveEventDetail(input: {
         line: market.line?.toString() ?? null,
         unit: market.unit,
         propCategory: market.propCategory,
+        availability: availabilityForMarket(market),
         liquidity:
           market.id === primaryMarket?.id && primaryDepthLevels.length
             ? primaryDepthLevels.reduce((sum, level) => sum + level.total, 0)

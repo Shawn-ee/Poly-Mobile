@@ -139,6 +139,7 @@ export type Market = {
   line?: string | null;
   liquidity?: number | string | null;
   orderbookDepth?: OrderbookDepthLevel[];
+  availability?: OrderbookAvailability;
   propCategory: string | null;
 };
 

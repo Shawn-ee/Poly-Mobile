@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CE - Compact Market Availability Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible live line-market availability | `/api/mobile/events/:slug/live-detail` | GET | Optional public viewing | None | `markets[].availability.source`, `status`, `marketStatus`, `lastUpdated`, `stalenessSeconds`, `staleAfterSeconds`, `isStale`, `isSuspended`, `isDelayed`, `reason`; existing market `id`, `marketType`, `period`, `line`, outcomes | `Market.status`, `Market.sourceUpdatedAt`, `Market.updatedAt`, `Market`, `Outcome`; selected primary depth still uses open `Order` rows | Local fixtures may omit availability; server mode uses route-shaped `availability` when present | Real provider heartbeat/ingestion must update per-market timestamps/status before fresh provider parity can pass. |
+| Team Totals pre-open availability proof | Samsung tablet smoke against server-backed live detail | GET / device proof | Optional public viewing | None | `event-detail-market-availability-team-total-goals`, `market-availability-stale`, `market-status-LIVE`, selected book `orderbook-availability-stale` | Same as above plus selected Team Totals orderbook rows | N/A | Provider-owned availability and all-line refresh remain missing. |
+
+Cycle CE implementation notes:
+
+- This cycle closes the repeated compact-route per-visible-market availability gap without inventing frontend-only state.
+- The fixture/proof shape matches the intended backend contract, so future provider ingestion can replace the timestamp source without changing the mobile UI contract.
+- PM-GAP-067 remains open for real provider ingestion, provider-owned live stats, selected Halves proof, and provider-wide live liquidity.
+
 ## Cycle CD - Selected Orderbook Availability Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
