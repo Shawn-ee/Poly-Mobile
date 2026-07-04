@@ -137,17 +137,24 @@ Next required work:
 
 ## Lead Post-Proof Placeholder
 
-Result: pending.
+Result: pass for the selected PM-GAP-080 EC orderbook/depth and orderbook-to-ticket gate.
 
 Integrated evidence:
 
 - Proof JSON: `docs/mobile/harness/cycle-EC-integrated-orderbook-ticket/cycle-EC-orderbook-ticket-proof.json`
 - Screenshots: `docs/mobile/screenshots/cycle-EC-integrated-orderbook-ticket/`
 - XML: `docs/mobile/harness/cycle-EC-integrated-orderbook-ticket/`
-- Command: pending Lead final proof command.
+- Backend/provider identity proof: `docs/mobile/harness/cycle-EC-A-provider-orderbook-identity.json`
+- Command: `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke.ps1 -Deep -EventDetailOrderBookInteractions -Port 8302 -Device "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp" -ExpoHost 127.0.0.1 -OutputDir docs/mobile/screenshots/cycle-EC-integrated-orderbook-ticket -HierarchyOutputDir docs/mobile/harness/cycle-EC-integrated-orderbook-ticket`
 
 Decision after proof:
 
-- Pass/fail: pending.
-- Unresolved P0 gaps: pending.
-- Remaining P1/P2 gaps: pending.
+- Pass/fail: pass for selected EC gate.
+- Unresolved P0 gaps: 0 for this selected gate.
+- Remaining P1/P2 gaps: broader real provider-backed line-family breadth, richer Book settings, order/Portfolio/history carry-through for every family, and phone-density/visual/motion polish.
+
+Post-proof notes:
+
+- Agent A backend proof starts at live-detail, selects a provider-backed compact market, calls Book, and proves market/selector/outcome/token/source/status/freshness identity matches.
+- Integrated Android proof opens Book from the live event, shows ladder columns, ask/bid rows, spread, Yes/No switching, selector changes for Totals and Spread, cents/decimal settings, and a Spread ticket preserving selected line/period/outcome identity.
+- This pass does not claim production line-family provider breadth. Current line-family gaps stay tracked as P1/P2 until real provider-backed line markets are available and proven.
