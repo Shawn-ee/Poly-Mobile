@@ -2,6 +2,37 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle AZ - Selected Line Market Seeded Ready Depth
+
+Fields now provided or wired:
+
+- The line-depth seed harness can target a specific backend market by `marketId` or by backend-shaped `marketType` plus `line`.
+- The selected Spread market `ac527022-07f3-4abb-90f0-b291466e8459` now has deterministic route-readable BUY/SELL `Order` rows.
+- Samsung tablet proof confirms the selected Spread order book returns `orderbook-source-orderbook-route`, `orderbook-status-ready`, `orderbook-empty-none`, and concrete bid/ask depth rows.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real external/provider liquidity for all line markets, not only deterministic proof rows.
+- Provider freshness, staleness, delayed, suspended, and unavailable reasons per market and outcome.
+- A strategy for prefetching or batching depth for many visible line markets if one-route-per-market becomes too slow.
+
+Schema mismatch:
+
+- Existing open `Order` rows can model proof liquidity, but Holiwyn still lacks a provider-owned liquidity/orderbook snapshot model for production live sports pricing.
+
+Route mismatch:
+
+- `/api/orderbook/:marketId/book` is sufficient for selected-market depth proof.
+- The compact live-detail route still embeds only primary-market depth; non-primary line markets are hydrated on demand.
+
+Temporary mock/static data:
+
+- The seeded Spread liquidity is future-backend-shaped proof data written into real backend tables, not arbitrary display-only frontend mock strings.
+
+Future migration concern:
+
+- Promote line-market liquidity from deterministic local seeding to provider ingestion or durable market-maker/liquidity services before marking PM-GAP-067 backend parity complete.
+
 ## Cycle AY - Selected Line Market Depth Identity
 
 Fields now provided or wired:

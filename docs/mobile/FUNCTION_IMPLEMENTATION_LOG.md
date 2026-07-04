@@ -2,6 +2,49 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle AZ - Selected Line Market Seeded Ready Depth
+
+Feature/page worked on:
+
+- PM-GAP-067 selected live line-market orderbook depth for the live game page.
+- This cycle closes the repeated deferred item from Cycle AY: a selected Spread line market can now prove route-backed `ready` depth instead of only a truthful empty state.
+
+Frontend components touched:
+
+- `mobile/scripts/smoke.ps1`
+
+Backend/components touched:
+
+- `scripts/seed_mobile_live_orderbook_depth.ts`
+- `package.json`
+
+Important functions/services touched:
+
+- `seed_mobile_live_orderbook_depth.ts` now accepts `--marketId`, `--marketType`, and `--line`, so proof liquidity can target a selected backend-shaped line market instead of the first available primary market.
+- `mobile:live-spread-orderbook-depth-seed` seeds deterministic open `Order` rows for the selected Spread market `ac527022-07f3-4abb-90f0-b291466e8459`.
+- `smoke.ps1 -ServerLiveDetailLineOrderBook` now asserts route-backed `ready` depth for the selected Spread market id, bid/ask prices, and depth sizes.
+
+User interactions supported:
+
+- User opens the live game page, taps the Spread order-book control, and sees backend route depth for the selected Spread line rather than borrowed primary-market depth or a no-liquidity placeholder.
+- Buy/Sell controls remain attached to the selected line-market outcomes.
+
+State transitions:
+
+- Seed script writes backend `Order` rows for the selected Spread market -> compact live game page opens on tablet -> Spread Book tap calls `/api/orderbook/:marketId/book?maxLevels=24` -> EventDetail records `orderbookDepthMarketId` for the selected market -> overlay shows `orderbook-source-orderbook-route orderbook-status-ready orderbook-empty-none` and route depth rows.
+
+Known limitations:
+
+- Seeded liquidity is deterministic proof data, not real provider ingestion.
+- Only one selected Spread market is proven with ready depth in this cycle. Provider-backed liquidity/freshness for all Spread, Totals, Team Totals, Halves, and other line markets remains PM-GAP-067 P1 work.
+
+Verification:
+
+- `cmd /c npm.cmd run mobile:live-spread-orderbook-depth-seed`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-orderbook-depth-seeding.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/marketDepthService.test.ts mobile/src/__tests__/worldCupAdapter.test.ts`
+- `cmd /c npm.cmd run smoke:tablet:server-live-line-order-book`
+
 ## Cycle AY - Selected Line Market Depth Identity
 
 Feature/page worked on:
