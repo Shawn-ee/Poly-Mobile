@@ -44,6 +44,8 @@ Ticket and Portfolio flows should preserve:
 
 The mobile ticket review also derives its visible order preview from the same identity fields. `line`, `period`, `marketType`, `contractSide`, current probability/price, and selected outcome must remain stable from ticket open through `POST /api/orders`.
 
+Local mock mode uses the same contract-shaped `selection` payload as server mode. Cycle FN proves the selected spread line identity survives `TradeTicket -> submitTicketOrder -> latestOrder -> Portfolio position/activity` without requiring backend routes.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
