@@ -80,3 +80,14 @@
 - User interactions supported: no new mobile interaction in this documentation-only mobile cycle.
 - State transitions: unchanged. `Portfolio` still uses deterministic fallback chart data until a mobile wiring cycle fetches the backend route in server mode.
 - Known limitations: Android still needs proof that server mode switches the chart source from `deterministic-mobile-fallback` to `portfolio-value-history-route`.
+
+## Cycle FV - Portfolio Value History Server Wiring
+
+- Feature/page: Portfolio performance chart data source.
+- Frontend components touched: `App.tsx`, `src/components/Portfolio.tsx`, `scripts/smoke.ps1`.
+- Important functions/services touched: `PolyApi.getPortfolioValueHistory(range)` is now passed into `Portfolio` in server mode. `Portfolio` fetches the active chart range and falls back to deterministic chart data if the route is unavailable.
+- User interactions supported: opening Portfolio in server mode now loads route-backed chart history; changing the chart range requests that range from the backend.
+- State transitions: `activeRange` remains local to `Portfolio`; `serverValueHistory` updates asynchronously after each range change. If the server request fails, `serverValueHistory` clears and the chart uses deterministic fallback.
+- Validation: `npm run typecheck`; `npx vitest run src/__tests__/api.test.ts src/__tests__/portfolioValueHistoryService.test.ts`; PowerShell parser check for `scripts/smoke.ps1`; Samsung tablet proof `powershell -ExecutionPolicy Bypass -File scripts\local-mvp-home-route-server-filled-proof.ps1 -Port 8232 -BackendBaseUrl http://172.16.200.14:3002`.
+- Proof artifacts: `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-portfolio.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-portfolio.xml`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-proof.json`.
+- Known limitations: exact persisted account-value snapshots remain backend P2. The current route reconstructs from existing account/market snapshot data.

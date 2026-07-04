@@ -32,6 +32,7 @@ import {
   worldCupEvents,
   worldCupFutures,
 } from "./src/mocks/worldCup";
+import type { PortfolioValueHistoryRange } from "./src/types";
 import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 import { appendUniqueActivity, cancelOpenOrderOnServer, openOrderCanceledActivity } from "./src/services/openOrderService";
 import { closePositionOnServer } from "./src/services/positionCloseService";
@@ -991,6 +992,16 @@ export default function App() {
     applyServerState(serverState);
   }, [api, applyServerState]);
 
+  const loadPortfolioValueHistory = useCallback(
+    (range: PortfolioValueHistoryRange) => {
+      if (ORDER_MODE !== "server" || runtimeApiKey.length === 0) {
+        return Promise.reject(new Error("Portfolio value history route is unavailable outside server mode."));
+      }
+      return api.getPortfolioValueHistory(range);
+    },
+    [api, runtimeApiKey],
+  );
+
   useEffect(() => {
     if (ORDER_MODE !== "server" || runtimeApiKey.length === 0) return undefined;
     let cancelled = false;
@@ -1500,6 +1511,7 @@ export default function App() {
                   closePosition={closePosition}
                   openPositionTrade={openPositionTrade}
                   cancelOpenOrder={cancelOpenOrder}
+                  loadValueHistory={ORDER_MODE === "server" && runtimeApiKey.length > 0 ? loadPortfolioValueHistory : undefined}
                 />
               </>
             )}
