@@ -1020,12 +1020,24 @@ try {
 
       Start-DeepLink -Url $dyResetUrl
       Start-Sleep -Seconds 4
-      $dyTicketReadyHierarchy = Wait-HierarchyContains -Name "cycle-DY-A-holiwyn-game-page-structure-ticket-ready.xml" -Expected @("event-detail-team-advance-australia", "event-detail-team-advance-egypt") -RestartUrl $dyResetUrl -Attempts 5 -DelaySeconds 2
-      Invoke-TapHierarchyNode -Path $dyTicketReadyHierarchy -Identifier "event-detail-team-advance-australia"
+      $dyTicketGameReadyHierarchy = Wait-HierarchyContains -Name "cycle-DY-A-holiwyn-game-page-structure-ticket-game-ready.xml" -Expected @("Australia vs. Egypt", "event-detail-tab-game") -RestartUrl $dyResetUrl -Attempts 5 -DelaySeconds 2
+      Invoke-TapHierarchyNode -Path $dyTicketGameReadyHierarchy -Identifier "event-detail-tab-game"
+      Start-Sleep -Seconds 1
+      $dyTicketPrimaryReadyHierarchy = Wait-HierarchyContains -Name "cycle-DY-A-holiwyn-game-page-structure-ticket-primary-ready.xml" -Expected @("event-detail-primary-outcome-france-argentina-live-australia", "event-detail-primary-outcome-france-argentina-live-egypt") -RestartUrl $dyResetUrl -Attempts 5 -DelaySeconds 2
+      Invoke-TapHierarchyNode -Path $dyTicketPrimaryReadyHierarchy -Identifier "event-detail-primary-outcome-france-argentina-live-australia"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-primary-ticket.png"
+      $dyPrimaryTicketHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-primary-ticket.xml"
+      Assert-HierarchyContains -Path $dyPrimaryTicketHierarchy -Expected @("trade-ticket", "ticket-drag-handle", "Live winner", "Australia vs. Egypt", "Australia", "ticket-side-buy", "ticket-side-sell", "ticket-preset-1", "ticket-preset-10", "Choose an amount", "Final cost may vary.")
+      Invoke-TapHierarchyNode -Path $dyPrimaryTicketHierarchy -Identifier "ticket-close"
+      Start-Sleep -Seconds 1
+
+      $dyTicketCardReadyHierarchy = Wait-HierarchyContains -Name "cycle-DY-A-holiwyn-game-page-structure-ticket-card-ready.xml" -Expected @("event-detail-team-advance-australia", "event-detail-team-advance-egypt") -RestartUrl $dyResetUrl -Attempts 5 -DelaySeconds 2
+      Invoke-TapHierarchyNode -Path $dyTicketCardReadyHierarchy -Identifier "event-detail-team-advance-australia"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-ticket.png"
       $dyTicketHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-ticket.xml"
-      Assert-HierarchyContains -Path $dyTicketHierarchy -Expected @("trade-ticket", "ticket-drag-handle", "Live winner", "Australia vs. Egypt", "Australia", "ticket-side-buy", "ticket-side-sell", "ticket-preset-1", "ticket-preset-10", "Choose an amount", "Final cost may vary.")
+      Assert-HierarchyContains -Path $dyTicketHierarchy -Expected @("trade-ticket", "ticket-drag-handle", "Live Winner", "Australia vs. Egypt", "Australia", "ticket-side-buy", "ticket-side-sell", "ticket-preset-1", "ticket-preset-10", "Choose an amount", "Final cost may vary.")
       Invoke-TapHierarchyNode -Path $dyTicketHierarchy -Identifier "ticket-close"
       Start-Sleep -Seconds 1
 
@@ -1097,7 +1109,7 @@ try {
           groupedMarkets = @("Live Winner", "Spread", "Totals", "1st Half Winner", "2nd Half Winner", "Full Game Team Total Goals")
           playerPropsBlankState = @("event-detail-player-props-empty", "Player Props unavailable for this match")
           lowerContent = @("Market Rules", "View Full Rules", "More Events")
-          ticket = @("trade-ticket", "Live winner", "Australia vs. Egypt", "Australia")
+          ticket = @("trade-ticket", "Live winner", "event-detail-primary-outcome-france-argentina-live-australia", "event-detail-team-advance-australia", "Australia vs. Egypt", "Australia")
           actions = @("event-detail-order-book-screen", "event-detail-share-sheet")
         }
         artifacts = @(
@@ -1109,6 +1121,8 @@ try {
           "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-share-sheet.xml",
           "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-chat.png",
           "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-chat.xml",
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-primary-ticket.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-primary-ticket.xml",
           "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-ticket.png",
           "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-ticket.xml",
           "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-markets.png",
