@@ -2,6 +2,51 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle EB-B - Full Game Page Chart And Line Selector Proof
+
+Feature/page worked on:
+
+- PM-GAP-073 live World Cup game detail visible parity debt.
+- Extended the full live game page proof target beyond page structure into chart touch behavior and in-page Spread/Totals line selector ticket carry-through.
+
+Frontend/harness components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+
+Important functions/interactions touched:
+
+- `EventDetail` chart accessibility labels now expose `chart-filter-*` and `chart-selected-point-*` state so Audit Gate can prove chart touch changes the selected point/tooltip state.
+- The DY full-page tablet smoke now taps the live chart, verifies `mid` and `target` tooltip states, switches chart filters, scrolls to Game Lines, changes Spread to `2.5` and `1st Half`, opens the Spread ticket, then changes Totals to `3.5` and `2nd Half` and opens the Totals ticket.
+- The smoke asserts line identity through existing backend-shaped ticket labels: `selection-line-*`, `selection-period-*`, `ticket-market-family-*`, `ticket-line-*`, and `ticket-period-*`.
+
+User interactions supported:
+
+- Tap the live page chart to cycle through current, mid, and target tooltip states.
+- Switch chart filters from Game to All and Live.
+- Change visible Spread/Totals line and period controls inside the full live page, then open a matching ticket without falling back to the primary winner market.
+
+State transitions:
+
+- `selectedChartPoint` changes `latest -> mid -> target` and updates the chart tooltip proof label.
+- `chartFilter` changes `Game -> All -> Live` and is exposed on the chart accessibility label.
+- `spreadLine`, `spreadPeriod`, `totalsLine`, and `totalsPeriod` update row probabilities and carry the selected line/period into the trade ticket.
+
+Verified:
+
+- `npm --prefix mobile ci --no-audit --no-fund` in the isolated Agent B worktree to restore mobile dependencies.
+- `npm --prefix mobile run typecheck`
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+
+Lead proof needed:
+
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -DyAGamePageStructure -Port <free-port> -OutputDir docs/mobile/screenshots/cycle-DY-A-game-page-structure -HierarchyOutputDir docs/mobile/harness/cycle-DY-A-game-page-structure`
+
+Known limitations:
+
+- This Agent B cycle does not edit backend routes or provider mapping. The line selector proof continues to use the existing backend-shaped line/ticket contract and any deterministic fixture fallback already present in the mobile app.
+- Final parity pass still requires Lead integrated Android proof and Agent C audit-gate comparison.
+
 ## Cycle EA-A - Live Detail Per-Market Chart Contract
 
 Feature/page worked on:
