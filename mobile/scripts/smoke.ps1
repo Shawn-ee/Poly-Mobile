@@ -534,7 +534,7 @@ try {
   } elseif ($ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook) {
     @("Game Lines", "Player Props", "Best bid", "Best ask", "Spread")
   } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade) {
-    @("Mexico vs. Ecuador", "4 markets", "8 outcomes")
+    @("Mexico vs. Ecuador", "5 markets", "10 outcomes")
   } elseif ($LiveDetail) {
     @("Australia vs. Egypt", "Live Winner", "LIVE WORLD CUP", "Game Lines", "Player Props")
   } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
@@ -1826,7 +1826,7 @@ try {
     }
 
     if ($EventDetailSummary) {
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-market-summary", "4 markets", "8 outcomes", "Game lines", "1 market", "Props", "3 markets", "Match winner")
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-market-summary", "5 markets", "10 outcomes", "Game lines", "3 markets", "Props", "2 markets", "Match winner")
       return
     }
 
@@ -2019,69 +2019,87 @@ try {
       Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Regulation Time Winner", "Best bid", "Best ask", "Spread", "event-detail-open-order-book")
       Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-open-order-book"
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-DT-B-holiwyn-orderbook-book-action.png"
-      $orderBookBeforeHierarchy = Save-UiHierarchy -Name "cycle-DT-B-holiwyn-orderbook-book-action.xml"
-      Assert-HierarchyContains -Path $orderBookBeforeHierarchy -Expected @("event-detail-order-book-screen", "event-detail-order-book-market-mexico-ecuador-winner", "selected-market-mexico-ecuador-winner", "selected-family-Moneyline", "selected-outcome-mexico", "selected-side-yes", "order-book-outcome-tabs", "selected-side-yes", "inactive-side-no", "order-book-ladder", "Price", "Shares", "Value", "order-book-ask-level-mexico-1", "order-book-bid-level-mexico-1")
+      Save-Screenshot -Name "cycle-DU-B-holiwyn-orderbook-book-action.png"
+      $orderBookBeforeHierarchy = Save-UiHierarchy -Name "cycle-DU-B-holiwyn-orderbook-book-action.xml"
+      Assert-HierarchyContains -Path $orderBookBeforeHierarchy -Expected @("event-detail-order-book-screen", "event-detail-order-book-market-mexico-ecuador-winner", "selected-market-mexico-ecuador-winner", "selected-family-Moneyline", "selected-outcome-mexico", "selected-side-yes", "selected-market-type-winner", "book-display-mode-cents", "orderbook-source-embedded", "orderbook-status-ready", "orderbook-availability-ready", "order-book-outcome-tabs", "selected-side-yes", "inactive-side-no", "order-book-ladder", "Price", "Shares", "Value", "bid-side-label", "ask-side-label", "order-book-ask-level-mexico-1", "order-book-bid-level-mexico-1")
 
       Invoke-TapHierarchyNode -Path $orderBookBeforeHierarchy -Identifier "order-book-outcome-tab-ecuador"
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-DT-B-holiwyn-orderbook-yes-no-switch.png"
-      $orderBookNoHierarchy = Save-UiHierarchy -Name "cycle-DT-B-holiwyn-orderbook-yes-no-switch.xml"
+      Save-Screenshot -Name "cycle-DU-B-holiwyn-orderbook-yes-no-switch.png"
+      $orderBookNoHierarchy = Save-UiHierarchy -Name "cycle-DU-B-holiwyn-orderbook-yes-no-switch.xml"
       Assert-HierarchyContains -Path $orderBookNoHierarchy -Expected @("event-detail-order-book-screen", "selected-market-mexico-ecuador-winner", "selected-family-Moneyline", "selected-outcome-ecuador", "selected-side-no", "order-book-outcome-ecuador", "order-book-ask-level-ecuador-1", "order-book-bid-level-ecuador-1", "Mexico vs. Ecuador - Match winner")
 
       Invoke-TapHierarchyNode -Path $orderBookNoHierarchy -Identifier "order-book-market-choice-mexico-ecuador-total"
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-DT-B-holiwyn-orderbook-selector-carry-through.png"
-      $orderBookSelectorHierarchy = Save-UiHierarchy -Name "cycle-DT-B-holiwyn-orderbook-selector-carry-through.xml"
-      Assert-HierarchyContains -Path $orderBookSelectorHierarchy -Expected @("event-detail-order-book-screen", "selected-market-mexico-ecuador-total", "selected-family-Totals", "selected-outcome-over", "selected-side-yes", "selected-market-type-prop", "selected-line-none", "selected-period-none", "order-book-outcome-over", "order-book-ask-level-over-1", "order-book-bid-level-over-1", "Mexico vs. Ecuador - Total goals over 2.5")
+      Save-Screenshot -Name "cycle-DU-B-holiwyn-orderbook-totals-carry-through.png"
+      $orderBookTotalsHierarchy = Save-UiHierarchy -Name "cycle-DU-B-holiwyn-orderbook-totals-carry-through.xml"
+      Assert-HierarchyContains -Path $orderBookTotalsHierarchy -Expected @("event-detail-order-book-screen", "selected-market-mexico-ecuador-total", "selected-family-Totals", "selected-outcome-over", "selected-side-yes", "selected-market-type-totals", "selected-line-2.5", "selected-period-regulation", "orderbook-source-contract-fixture", "orderbook-status-ready", "orderbook-availability-ready", "Fixture depth", "order-book-outcome-over", "order-book-ask-level-over-1", "order-book-bid-level-over-1", "Mexico vs. Ecuador - Total goals over 2.5")
 
-      Invoke-TapHierarchyNode -Path $orderBookSelectorHierarchy -Identifier "order-book-outcome-tab-under"
+      Invoke-TapHierarchyNode -Path $orderBookTotalsHierarchy -Identifier "order-book-outcome-tab-under"
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-DT-B-holiwyn-orderbook-selector-no-carry-through.png"
-      $orderBookSelectorNoHierarchy = Save-UiHierarchy -Name "cycle-DT-B-holiwyn-orderbook-selector-no-carry-through.xml"
-      Assert-HierarchyContains -Path $orderBookSelectorNoHierarchy -Expected @("selected-market-mexico-ecuador-total", "selected-family-Totals", "selected-outcome-under", "selected-side-no", "order-book-outcome-under", "order-book-ask-level-under-1", "order-book-bid-level-under-1")
+      Save-Screenshot -Name "cycle-DU-B-holiwyn-orderbook-totals-no-carry-through.png"
+      $orderBookTotalsNoHierarchy = Save-UiHierarchy -Name "cycle-DU-B-holiwyn-orderbook-totals-no-carry-through.xml"
+      Assert-HierarchyContains -Path $orderBookTotalsNoHierarchy -Expected @("selected-market-mexico-ecuador-total", "selected-family-Totals", "selected-outcome-under", "selected-side-no", "selected-market-type-totals", "selected-line-2.5", "selected-period-regulation", "order-book-outcome-under", "order-book-ask-level-under-1", "order-book-bid-level-under-1")
 
-      Invoke-TapHierarchyNode -Path $orderBookSelectorNoHierarchy -Identifier "order-book-buy-under"
+      Invoke-TapHierarchyNode -Path $orderBookTotalsNoHierarchy -Identifier "order-book-market-choice-mexico-ecuador-spread"
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-DT-B-holiwyn-orderbook-selector-ticket.png"
-      $orderBookTicketHierarchy = Save-UiHierarchy -Name "cycle-DT-B-holiwyn-orderbook-selector-ticket.xml"
-      Assert-HierarchyContains -Path $orderBookTicketHierarchy -Expected @("trade-ticket", "ticket-selection-summary", "Total goals over 2.5", "Mexico vs. Ecuador", "ticket-selection-line", "Under", "ticket-side-buy", "ticket-side-sell", "Choose an amount")
+      Save-Screenshot -Name "cycle-DU-B-holiwyn-orderbook-spread-carry-through.png"
+      $orderBookSpreadHierarchy = Save-UiHierarchy -Name "cycle-DU-B-holiwyn-orderbook-spread-carry-through.xml"
+      Assert-HierarchyContains -Path $orderBookSpreadHierarchy -Expected @("event-detail-order-book-screen", "selected-market-mexico-ecuador-spread", "selected-family-Spreads", "selected-outcome-yes", "selected-side-yes", "selected-market-type-spread", "selected-line-1.5", "selected-period-regulation", "orderbook-source-contract-fixture", "orderbook-status-ready", "orderbook-availability-ready", "Fixture depth", "order-book-outcome-yes", "order-book-ask-level-yes-1", "order-book-bid-level-yes-1", "Mexico vs. Ecuador - Mexico -1.5 spread")
+
+      Invoke-TapHierarchyNode -Path $orderBookSpreadHierarchy -Identifier "order-book-settings-open"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DU-B-holiwyn-orderbook-settings-cents.png"
+      $orderBookSettingsCentsHierarchy = Save-UiHierarchy -Name "cycle-DU-B-holiwyn-orderbook-settings-cents.xml"
+      Assert-HierarchyContains -Path $orderBookSettingsCentsHierarchy -Expected @("order-book-settings-sheet", "Book settings", "Price display", "order-book-display-mode-toggle", "book-display-mode-cents", "decimalize-off", "selected-market-mexico-ecuador-spread", "selected-outcome-yes", "selected-side-yes", "Price", "41c")
+
+      Invoke-TapHierarchyNode -Path $orderBookSettingsCentsHierarchy -Identifier "order-book-display-mode-toggle"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DU-B-holiwyn-orderbook-settings-decimal.png"
+      $orderBookSettingsDecimalHierarchy = Save-UiHierarchy -Name "cycle-DU-B-holiwyn-orderbook-settings-decimal.xml"
+      Assert-HierarchyContains -Path $orderBookSettingsDecimalHierarchy -Expected @("order-book-settings-sheet", "book-display-mode-decimal", "decimalize-on", "selected-market-mexico-ecuador-spread", "selected-outcome-yes", "selected-side-yes", "Price (USDT)", "0.41 USDT", "0.34 USDT")
+
+      Invoke-TapHierarchyNode -Path $orderBookSettingsDecimalHierarchy -Identifier "order-book-buy-yes"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DU-B-holiwyn-orderbook-spread-ticket.png"
+      $orderBookTicketHierarchy = Save-UiHierarchy -Name "cycle-DU-B-holiwyn-orderbook-spread-ticket.xml"
+      Assert-HierarchyContains -Path $orderBookTicketHierarchy -Expected @("trade-ticket", "ticket-selection-summary", "Mexico -1.5 spread", "Mexico vs. Ecuador", "ticket-selection-line", "Yes", "provider-source-polymarket-fixture", "provider-market-gamma-mexico-ecuador-spread-15", "provider-condition-condition-mexico-ecuador-spread-15", "provider-token-token-spread-yes-15", "ticket-side-buy", "ticket-side-sell", "Choose an amount")
 
       $proof = [ordered]@{
-        cycle = "DT-B"
-        scope = "PM-GAP-075 orderbook interaction proof"
-        command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBookInteractions -Port 8238 -OutputDir docs/mobile/screenshots/cycle-DT-B-orderbook-interactions -HierarchyOutputDir docs/mobile/harness/cycle-DT-B-orderbook-interactions"
+        cycle = "DU-B"
+        scope = "PM-GAP-075 visible Book display setting and selector carry-through proof"
+        command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBookInteractions -Port 8244 -OutputDir docs/mobile/screenshots/cycle-DU-B-orderbook-settings -HierarchyOutputDir docs/mobile/harness/cycle-DU-B-orderbook-settings"
         eventIdentity = "Mexico vs. Ecuador"
         result = "pass"
         assertions = [ordered]@{
           yesNoSwitchBefore = "selected-market-mexico-ecuador-winner selected-outcome-mexico selected-side-yes"
           yesNoSwitchAfter = "selected-market-mexico-ecuador-winner selected-outcome-ecuador selected-side-no"
-          selectorCarryThrough = "selected-market-mexico-ecuador-total selected-family-Totals selected-outcome-under selected-side-no selected-market-type-prop selected-line-none selected-period-none"
-          ticketCarryThrough = "ticket-selection-summary Total goals over 2.5 ticket-selection-line Under"
+          totalsSelectorCarryThrough = "selected-market-mexico-ecuador-total selected-family-Totals selected-outcome-under selected-side-no selected-market-type-totals selected-line-2.5 selected-period-regulation"
+          spreadSelectorCarryThrough = "selected-market-mexico-ecuador-spread selected-family-Spreads selected-outcome-yes selected-side-yes selected-market-type-spread selected-line-1.5 selected-period-regulation"
+          decimalizeBeforeAfter = "order-book-display-mode-toggle changes book-display-mode-cents to book-display-mode-decimal without resetting selected market/outcome/side"
+          ticketCarryThrough = "ticket-selection-summary Mexico -1.5 spread ticket-selection-line Yes provider-source-polymarket-fixture provider-token-token-spread-yes-15"
           ladderColumns = "Price Shares Value"
           sideLabelProof = "order-book-ask-level-* above spread and order-book-bid-level-* below spread"
-          nonReadyState = "orderbook-source-fallback/orderbook-status-idle in fixture proof"
-          decimalizeEquivalent = "not implemented in DT-B; remains P1"
+          providerReadyUiState = "orderbook-source-contract-fixture/orderbook-status-ready/orderbook-availability-ready visible pending server integration"
+          decimalizeEquivalent = "implemented as Book price display Cents/Decimal toggle"
         }
         artifacts = @(
-          "docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-book-action.png",
-          "docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-book-action.xml",
-          "docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-yes-no-switch.png",
-          "docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-yes-no-switch.xml",
-          "docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-carry-through.png",
-          "docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-carry-through.xml",
-          "docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-no-carry-through.png",
-          "docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-no-carry-through.xml",
-          "docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-ticket.png",
-          "docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-ticket.xml"
+          "docs/mobile/screenshots/cycle-DU-B-orderbook-settings/cycle-DU-B-holiwyn-orderbook-book-action.png",
+          "docs/mobile/harness/cycle-DU-B-orderbook-settings/cycle-DU-B-holiwyn-orderbook-book-action.xml",
+          "docs/mobile/screenshots/cycle-DU-B-orderbook-settings/cycle-DU-B-holiwyn-orderbook-settings-cents.png",
+          "docs/mobile/harness/cycle-DU-B-orderbook-settings/cycle-DU-B-holiwyn-orderbook-settings-cents.xml",
+          "docs/mobile/screenshots/cycle-DU-B-orderbook-settings/cycle-DU-B-holiwyn-orderbook-settings-decimal.png",
+          "docs/mobile/harness/cycle-DU-B-orderbook-settings/cycle-DU-B-holiwyn-orderbook-settings-decimal.xml",
+          "docs/mobile/screenshots/cycle-DU-B-orderbook-settings/cycle-DU-B-holiwyn-orderbook-spread-ticket.png",
+          "docs/mobile/harness/cycle-DU-B-orderbook-settings/cycle-DU-B-holiwyn-orderbook-spread-ticket.xml"
         )
         remainingGaps = @(
-          "Ready provider-backed depth not proven by this fixture run.",
-          "Decimalize book/equivalent settings toggle remains open.",
-          "Spread/period/line selector carry-through needs a backend/live fixture with structured line data; this run proves available contract-shaped Totals market identity with line-none."
+          "Provider-backed ready UI proof remains pending integration with Agent A backend route changes in this worktree.",
+          "DU-B fixture is deterministic and backend-shaped; it is not random display-only data.",
+          "Full Polymarket settings sheet remains richer than this display-mode toggle."
         )
       }
-      $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-DT-B-holiwyn-orderbook-proof.json"
+      $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-DU-B-holiwyn-orderbook-proof.json"
       $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
       Write-Host "Proof summary: $proofPath"
       return
