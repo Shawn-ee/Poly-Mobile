@@ -4,6 +4,7 @@ import { MarketGuardError } from "@/lib/marketGuards";
 const assertReferenceBotAdmin = jest.fn();
 const expireMobileLiveProviderQuoteSnapshots = jest.fn();
 const refreshMobileLiveProviderQuoteSnapshots = jest.fn();
+const revalidatePath = jest.fn();
 
 jest.mock("@/lib/internalAdminAuth", () => ({
   assertReferenceBotAdmin: (...args: unknown[]) => assertReferenceBotAdmin(...args),
@@ -12,6 +13,10 @@ jest.mock("@/lib/internalAdminAuth", () => ({
 jest.mock("@/server/services/mobileLiveProviderRefresh", () => ({
   expireMobileLiveProviderQuoteSnapshots: (...args: unknown[]) => expireMobileLiveProviderQuoteSnapshots(...args),
   refreshMobileLiveProviderQuoteSnapshots: (...args: unknown[]) => refreshMobileLiveProviderQuoteSnapshots(...args),
+}));
+
+jest.mock("next/cache", () => ({
+  revalidatePath: (...args: unknown[]) => revalidatePath(...args),
 }));
 
 import { POST } from "@/app/api/mobile/events/[slug]/provider-refresh/route";
@@ -81,7 +86,21 @@ describe("mobile live provider refresh route", () => {
           snapshotCount: 31,
         }),
       }),
+      cacheInvalidation: expect.objectContaining({
+        source: "next-revalidate-path",
+        eventSlug: "world-cup-live",
+        marketCount: 1,
+        invalidated: expect.arrayContaining([
+          "/api/mobile/events/world-cup-live/live-detail",
+          "/api/events/world-cup-live",
+          "/api/orderbook/market-world-cup-live/book",
+        ]),
+        errors: [],
+      }),
     });
+    expect(revalidatePath).toHaveBeenCalledWith("/api/mobile/events/world-cup-live/live-detail");
+    expect(revalidatePath).toHaveBeenCalledWith("/api/events/world-cup-live");
+    expect(revalidatePath).toHaveBeenCalledWith("/api/orderbook/market-world-cup-live/book");
   });
 
   test("runs provider refresh without local proof fallback by default", async () => {
@@ -116,7 +135,14 @@ function refreshMobileProvider() {
       providerRefreshableMarketCount: 0,
       isProviderRefreshReady: false,
       nextRequiredAction: "map_compact_markets_to_polymarket_provider_identity",
-      markets: [],
+      markets: [
+        {
+          marketId: "market-world-cup-live",
+          title: "World Cup Live",
+          providerRefreshable: true,
+          outcomes: [],
+        },
+      ],
     },
     provider: {
       source: "polymarket-gamma",

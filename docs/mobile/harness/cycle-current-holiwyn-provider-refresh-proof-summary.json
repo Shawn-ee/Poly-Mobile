@@ -1,0 +1,26 @@
+{
+    "cycle":  "CR",
+    "feature":  "tablet provider refresh proof event",
+    "device":  "Samsung tablet adb-R5GYA13X7NJ",
+    "eventSlug":  "mobile-provider-refresh-proof-live",
+    "capturedAt":  "2026-07-04T04:48:29.9469469Z",
+    "artifacts":  {
+                      "eventDetailXml":  "docs/mobile/harness/cycle-current-holiwyn-event-detail.xml",
+                      "eventDetailScreenshot":  "docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-event-detail.png",
+                      "orderBookXml":  "docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-order-book.xml",
+                      "orderBookScreenshot":  "docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-order-book.png"
+                  },
+    "checks":  {
+                   "eventLoaded":  true,
+                   "liveDataReady":  true,
+                   "providerSourceRendered":  true,
+                   "providerQuoteBestBidRendered":  true,
+                   "providerQuoteBestAskRendered":  true,
+                   "orderBookOpened":  true,
+                   "orderBookShowsNoLocalDepth":  true,
+                   "orderBookProviderBestBidRendered":  true,
+                   "orderBookProviderBestAskRendered":  true
+               },
+    "result":  "pass-with-empty-local-depth-note",
+    "note":  "Holiwyn tablet opened the real-provider refreshed event and rendered provider-owned best bid/ask. Local orderbook depth is intentionally empty for the disposable proof market, so the overlay reports fallback/no-depth while provider quotes are visible."
+}

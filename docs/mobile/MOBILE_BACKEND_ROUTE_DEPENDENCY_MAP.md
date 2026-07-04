@@ -2,6 +2,21 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CR - Provider-Owned Refresh And Cache Invalidation
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Real provider-owned compact live refresh | `/api/mobile/events/:slug/provider-refresh` | POST | Internal admin key or admin session | Optional `expireFirst`, `staleSeconds`, `allowContractProofFallback` | `refresh.provider.attempted`, `refresh.providerMappedMarketCount`, `refresh.provider.snapshotsUpdated`, `refresh.provider.refreshedCount`, `refresh.provider.skippedCount`, `refresh.contractProofFallback.applied`, `refresh.postRefresh.readyCount`, `refresh.postRefresh.staleCount`, `refresh.postRefresh.refreshDueCount`, `cacheInvalidation.invalidated`, `cacheInvalidation.errors` | Reads `Event`, compact `Market`, active `Outcome`; writes `ReferenceQuoteSnapshot`; calls Polymarket Gamma using provider-owned `Market.externalSlug` / `externalMarketId` and `Outcome.referenceTokenId` identity | Explicit fallback remains opt-in. Cycle CR proof used `allowContractProofFallback=false`, so no local contract-proof fallback was applied | Real World Cup compact soccer event still lacks provider mappings for all compact markets; proof used a disposable mapped provider market. |
+| Refreshed compact live-detail consumption | `/api/mobile/events/:slug/live-detail` | GET | Optional public viewing | None | `contract.batchedProviderQuoteSnapshotReadyCount`, `batchedProviderQuoteSnapshotStaleCount`, `batchedProviderQuoteSnapshotRefreshDueCount`, `markets[].providerQuoteSnapshot.status`, `shouldRefresh`, `refreshKey`, provider best bid/ask fields surfaced by mobile | Reads `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, and local order/depth data where available | No frontend-only mock. Missing rows report unavailable/stale instead of fake readiness | Provider-owned quote snapshots do not currently create local orderbook depth ladders. |
+| Selected orderbook after provider refresh | `/api/orderbook/:marketId/book?maxLevels=2` | GET | Optional public viewing | None | `providerQuoteSnapshot.status`, `shouldRefresh`, `refreshKey`, `snapshotCount`, `bestBid`, `bestAsk`, `levels[]`, `emptyState` | Reads selected `Market`, `Outcome`, `ReferenceQuoteSnapshot`, and open `Order` rows for local ladder depth | No fake depth is created; Cycle CR tablet proof shows provider best bid/ask with no local depth | Need a future provider/orderbook bridge if product requires provider-owned depth ladders, not only top quote snapshots. |
+| Disposable provider proof setup | `scripts/prepare_mobile_provider_refresh_proof_event.ts` | Local script | Local development only | Optional `--providerSlug`, `--eventSlug`, `--output` | Proof artifact with `eventSlug`, `providerSlug`, `eventId`, `marketId`, `conditionId`, `outcomeCount`, `snapshotCount`, `staleFetchedAt` | Upserts disposable `Event`, `Market`, `Outcome`, and stale `ReferenceQuoteSnapshot` rows using real Gamma market identity | Fixture rows match the provider data contract and are intentionally disposable | Replace disposable proof setup with real World Cup provider import once soccer market provider slugs are confirmed. |
+
+Cycle CR implementation notes:
+
+- The provider refresh route now owns cache invalidation for the compact live-detail route, public event route, and affected orderbook routes through `next/cache` `revalidatePath`.
+- The response is marked `no-store` so the refresh result itself is not cached.
+- The proof route changed from stale/refresh-due to ready after real provider refresh, with `fallbackApplied=false`.
+
 ## Cycle CQ - Manual Provider Slug Preview Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

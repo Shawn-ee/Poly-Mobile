@@ -2,6 +2,38 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CR - Provider-Owned Refresh And Cache Invalidation
+
+Fields now provided or wired:
+
+- Protected `POST /api/mobile/events/:slug/provider-refresh` executes a real provider refresh for provider-mapped compact markets and returns refresh counts plus explicit cache invalidation metadata.
+- The refresh response exposes `cacheInvalidation.source`, `generatedAt`, `eventSlug`, `marketCount`, `invalidated[]`, and `errors[]`.
+- The disposable proof event demonstrates the full stale/refresh-due to ready transition through `ReferenceQuoteSnapshot` rows, with `allowContractProofFallback=false`.
+- Tablet proof confirms the refreshed provider quote data is visible in Holiwyn event detail and selected Book flow.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider identity mapping for every compact World Cup soccer market.
+- Provider-owned orderbook depth ladders or a documented bridge from provider quote snapshots into route-backed `levels[]`.
+- Provider error taxonomy beyond the current provider error string/counts.
+
+Schema mismatch:
+
+- No schema change was required. Cycle CR uses existing `Market.referenceSource`, `externalSlug`, `externalMarketId`, `conditionId`, `Outcome.referenceTokenId`, `Outcome.referenceOutcomeLabel`, and `ReferenceQuoteSnapshot` rows.
+
+Route mismatch:
+
+- The real refresh and invalidation route is now present and proven on a disposable mapped provider event.
+- The production World Cup live event remains partially unmapped, so the same no-fallback route cannot yet refresh all soccer compact markets.
+
+Temporary mock/static data:
+
+- The proof setup uses disposable fixture rows, but they are provider-contract-shaped and seeded from a real Gamma market response. They are not arbitrary display-only UI strings.
+
+Future migration concern:
+
+- Next structural work should either import/map real World Cup soccer markets or add the provider-depth bridge needed for full orderbook parity. Visual UI work should remain blocked until one of those provider data debts is closed.
+
 ## Cycle CQ - Manual Provider Slug Preview Contract
 
 Fields now provided or wired:
