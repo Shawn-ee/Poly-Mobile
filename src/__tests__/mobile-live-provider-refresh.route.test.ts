@@ -110,6 +110,14 @@ function refreshMobileProvider() {
     providerMappedMarketCount: 0,
     unsupportedMarketCount: 14,
     unsupportedMarkets: [],
+    mappingReadiness: {
+      eventSlug: "world-cup-live",
+      compactMarketCount: 14,
+      providerRefreshableMarketCount: 0,
+      isProviderRefreshReady: false,
+      nextRequiredAction: "map_compact_markets_to_polymarket_provider_identity",
+      markets: [],
+    },
     provider: {
       source: "polymarket-gamma",
       attempted: false,

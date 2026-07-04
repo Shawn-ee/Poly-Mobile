@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CN - Provider Mapping Readiness Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Compact live provider mapping readiness | `/api/mobile/events/:slug/provider-mapping` | GET | Internal admin key or admin session | None | `readiness.compactMarketCount`, `providerRefreshableMarketCount`, `unsupportedSourceMarketCount`, `missingOutcomeTokenMarketCount`, `isProviderRefreshReady`, `nextRequiredAction`, `markets[].missingFields`, `markets[].outcomes[].missingFields` | `Event`, compact `Market`, active `Outcome`; required provider fields are `Market.referenceSource`, `externalSlug`, `externalMarketId`, `conditionId`, `Outcome.referenceTokenId`, and `referenceOutcomeLabel` | None. The route is a readiness gate and must not fabricate provider identity. | Current local World Cup compact event has 14 compact markets but 0 provider-refreshable markets. |
+| Compact live provider refresh blocked state | `/api/mobile/events/:slug/provider-refresh` | POST | Internal admin key or admin session | optional `allowContractProofFallback` | `refresh.mappingReadiness`, `providerMappedMarketCount`, `unsupportedMarketCount`, `provider.attempted`, `contractProofFallback` | Same compact `Market`/`Outcome` identities plus `ReferenceQuoteSnapshot` when refresh can run | Fallback remains opt-in and was not used in the no-fallback proof | Real no-fallback refresh still requires imported Polymarket or production sports-provider market/outcome identities. |
+
+Cycle CN implementation notes:
+
+- The mapping readiness route is protected because it exposes provider identity and missing provider-token fields.
+- This cycle is intentionally a structural gate. It prevents UI parity cycles from claiming provider readiness while compact live markets remain unmapped.
+
 ## Cycle CM - Provider Refresh Execution Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

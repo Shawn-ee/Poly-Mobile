@@ -3,6 +3,7 @@ import { refreshPolymarketReferenceSnapshots } from "@/server/services/polymarke
 import { upsertReferenceQuoteSnapshots } from "@/server/services/referenceQuoteSnapshots";
 import { buildMobileLiveProviderQuoteSnapshotRows } from "@/server/services/mobileLiveProviderQuoteSnapshotSeeding";
 import { selectCompactLiveMarkets } from "@/server/services/mobileLiveEventDetail";
+import { assessMobileLiveProviderMappingReadiness } from "@/server/services/mobileLiveProviderMapping";
 
 export type MobileLiveProviderRefreshOptions = {
   eventSlug: string;
@@ -41,17 +42,22 @@ export async function expireMobileLiveProviderQuoteSnapshots(params: {
 export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiveProviderRefreshOptions) {
   const compactMarkets = await loadCompactLiveMarkets(options.eventSlug);
   const compactMarketIds = compactMarkets.map((market) => market.id);
-  const polymarketMappedMarkets = compactMarkets.filter(
-    (market) => market.referenceSource === "polymarket" && typeof market.externalSlug === "string" && market.externalSlug.length > 0,
+  const mappingReadiness = assessMobileLiveProviderMappingReadiness({
+    eventSlug: options.eventSlug,
+    compactMarkets,
+  });
+  const polymarketMappedMarkets = compactMarkets.filter((market) =>
+    mappingReadiness.markets.some((readyMarket) => readyMarket.marketId === market.id && readyMarket.providerRefreshable),
   );
-  const unsupportedMarkets = compactMarkets
-    .filter((market) => !polymarketMappedMarkets.some((candidate) => candidate.id === market.id))
+  const unsupportedMarkets = mappingReadiness.markets
+    .filter((market) => !market.providerRefreshable)
     .map((market) => ({
-      marketId: market.id,
+      marketId: market.marketId,
       title: market.title,
       referenceSource: market.referenceSource,
       externalSlug: market.externalSlug,
-      reason: market.referenceSource === "polymarket" ? "missing_external_slug" : "unsupported_provider_source",
+      missingFields: market.missingFields,
+      recommendedAction: market.recommendedAction,
     }));
 
   const providerReport = polymarketMappedMarkets.length
@@ -98,6 +104,7 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
     providerMappedMarketCount: polymarketMappedMarkets.length,
     unsupportedMarketCount: unsupportedMarkets.length,
     unsupportedMarkets,
+    mappingReadiness,
     provider: {
       source: "polymarket-gamma",
       attempted: polymarketMappedMarkets.length > 0,
