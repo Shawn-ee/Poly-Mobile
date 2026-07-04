@@ -1,0 +1,196 @@
+import type { PolyApi } from "../api";
+import type { Quote } from "../types";
+
+export type TicketQuote = {
+  outcomeId: string;
+  outcomeName: string;
+  probability: number;
+  bestBid: number | null;
+  bestAsk: number | null;
+  bestBidSize?: number;
+  bestAskSize?: number;
+  midPrice: number | null;
+  lastPrice: number | null;
+};
+
+type QuoteableOutcome = {
+  id: string;
+  label: string;
+  probability: number;
+  bestBid?: number | null;
+  bestAsk?: number | null;
+  bestBidSize?: number | null;
+  bestAskSize?: number | null;
+};
+
+const toDecimal = (value: string | number | null): number | null => {
+  if (value === null) return null;
+  const parsed = typeof value === "number" ? value : Number(value);
+  if (!Number.isFinite(parsed)) return null;
+  if (parsed < 0) return null;
+  return parsed > 1 ? parsed / 100 : parsed;
+};
+
+const toProbability = (value: number | null) => {
+  if (value === null) return null;
+  const bounded = Math.max(0, Math.min(1, value));
+  if (bounded > 0 && bounded < 0.01) return 1;
+  return Math.round(bounded * 100);
+};
+
+const toSize = (value: string | number | null | undefined): number | null => {
+  if (value === null || typeof value === "undefined") return null;
+  const parsed = typeof value === "number" ? value : Number(value);
+  if (!Number.isFinite(parsed) || parsed <= 0) return null;
+  return parsed;
+};
+
+export const quoteToTicketQuote = (quote: Quote): TicketQuote => {
+  const bestBid = toDecimal(quote.bestBid);
+  const bestAsk = toDecimal(quote.bestAsk);
+  const bestBidSize = toSize(quote.bestBidSize);
+  const bestAskSize = toSize(quote.bestAskSize);
+  const midPrice = toDecimal(quote.midPrice);
+  const lastPrice = toDecimal(quote.lastPrice);
+  const fallbackMid = bestBid !== null && bestAsk !== null ? (bestBid + bestAsk) / 2 : null;
+  const preferredPrice =
+    (midPrice && midPrice > 0 ? midPrice : null) ??
+    (lastPrice && lastPrice > 0 ? lastPrice : null) ??
+    fallbackMid ??
+    bestAsk ??
+    bestBid;
+  const probability = toProbability(preferredPrice) ?? 0;
+  return {
+    outcomeId: quote.outcomeId,
+    outcomeName: quote.outcomeName,
+    probability,
+    bestBid: toProbability(bestBid),
+    bestAsk: toProbability(bestAsk),
+    ...(bestBidSize !== null ? { bestBidSize } : {}),
+    ...(bestAskSize !== null ? { bestAskSize } : {}),
+    midPrice: toProbability(midPrice),
+    lastPrice: toProbability(lastPrice),
+  };
+};
+
+export const loadTicketQuotes = async (api: PolyApi, marketId: string, outcomeId?: string): Promise<TicketQuote[]> => {
+  const payload = await api.getMarketQuote(marketId, outcomeId);
+  return payload.quotes.map(quoteToTicketQuote);
+};
+
+export const loadMarketQuotesById = async (
+  api: PolyApi,
+  marketIds: string[],
+): Promise<Map<string, TicketQuote[]>> => {
+  const uniqueMarketIds = [...new Set(marketIds)];
+  const results = await Promise.all(
+    uniqueMarketIds.map(async (marketId) => {
+      try {
+        return { marketId, quotes: await loadTicketQuotes(api, marketId) };
+      } catch {
+        return { marketId, quotes: null };
+      }
+    }),
+  );
+
+  return new Map(
+    results
+      .filter((result): result is { marketId: string; quotes: TicketQuote[] } => result.quotes !== null)
+      .map((result) => [result.marketId, result.quotes]),
+  );
+};
+
+export const applyTicketQuoteToOutcome = <TOutcome extends QuoteableOutcome>(
+  outcome: TOutcome,
+  quotes: TicketQuote[],
+): TOutcome => {
+  const normalizedLabel = outcome.label.trim().toLowerCase();
+  const quote = quotes.find(
+    (item) =>
+      item.outcomeId === outcome.id ||
+      item.outcomeName.trim().toLowerCase() === normalizedLabel,
+  );
+
+  if (!quote) return outcome;
+  if (
+    quote.probability <= 0 &&
+    quote.bestBid === null &&
+    quote.bestAsk === null &&
+    quote.midPrice === null &&
+    quote.lastPrice === null
+  ) {
+    return outcome;
+  }
+  return {
+    ...outcome,
+    probability: quote.probability,
+    bestBid: quote.bestBid,
+    bestAsk: quote.bestAsk,
+    bestBidSize: quote.bestBidSize ?? null,
+    bestAskSize: quote.bestAskSize ?? null,
+  };
+};
+
+export const applyTicketQuotesToMarket = <
+  TOutcome extends QuoteableOutcome,
+  TMarket extends { outcomes: TOutcome[] },
+>(
+  market: TMarket,
+  quotes: TicketQuote[],
+): TMarket => {
+  let changed = false;
+  const outcomes = market.outcomes.map((outcome) => {
+    const quotedOutcome = applyTicketQuoteToOutcome(outcome, quotes);
+    if (quotedOutcome !== outcome) changed = true;
+    return quotedOutcome;
+  });
+
+  if (!changed) return market;
+  return {
+    ...market,
+    outcomes,
+  };
+};
+
+export const applyTicketQuotesToEvent = <
+  TOutcome extends QuoteableOutcome,
+  TMarket extends { id: string; outcomes: TOutcome[] },
+  TEvent extends { markets: TMarket[] },
+>(
+  event: TEvent,
+  quotesByMarketId: Map<string, TicketQuote[]>,
+): TEvent => {
+  let changed = false;
+  const markets = event.markets.map((market) => {
+    const quotes = quotesByMarketId.get(market.id);
+    if (!quotes) return market;
+    const quotedMarket = applyTicketQuotesToMarket(market, quotes);
+    if (quotedMarket !== market) changed = true;
+    return quotedMarket;
+  });
+
+  if (!changed) return event;
+  return {
+    ...event,
+    markets,
+  };
+};
+
+export const applyTicketQuotesToMarkets = <
+  TOutcome extends QuoteableOutcome,
+  TMarket extends { id: string; outcomes: TOutcome[] },
+>(
+  markets: TMarket[],
+  quotesByMarketId: Map<string, TicketQuote[]>,
+): TMarket[] => {
+  let changed = false;
+  const quotedMarkets = markets.map((market) => {
+    const quotes = quotesByMarketId.get(market.id);
+    if (!quotes) return market;
+    const quotedMarket = applyTicketQuotesToMarket(market, quotes);
+    if (quotedMarket !== market) changed = true;
+    return quotedMarket;
+  });
+
+  return changed ? quotedMarkets : markets;
+};
