@@ -1,0 +1,14 @@
+{
+    "cycle":  "EJ-B",
+    "scope":  "Route-backed visible Android status breadth across live detail, chart, Book/orderbook settings, and ticket settings",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleStatusBreadth -Port 8324 -BackendBaseUrl http://127.0.0.1:3002 -OutputDir docs/mobile/screenshots/cycle-EJ-B-visible-status-breadth -HierarchyOutputDir docs/mobile/harness/cycle-EJ-B-visible-status-breadth",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "serverMode":  "server",
+    "apiBaseUrl":  "http://127.0.0.1:3002",
+    "adbReverse":  "tcp:3002 tcp:3002",
+    "serverEventSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25",
+    "result":  "blocked",
+    "routeBackedStatusConsumed":  false,
+    "blockedReason":  "Backend health unavailable at http://127.0.0.1:3002/api/health after ADB reverse tcp:3002.",
+    "fallbackGuard":  "Proof aborts before Expo launch instead of using fixture, mock-ready, or default-ready status."
+}
