@@ -1,5 +1,5 @@
 import type { PolyApi } from "../api";
-import type { OrderbookBookLevel } from "../types";
+import type { OrderbookAvailability, OrderbookBookLevel } from "../types";
 import type { Event, Market } from "../mocks/worldCup";
 
 export type MarketDepthLoadResult = {
@@ -7,6 +7,7 @@ export type MarketDepthLoadResult = {
   marketId: string | null;
   lastUpdated: string | null;
   emptyState: "no-depth" | null;
+  availability?: OrderbookAvailability;
   levels: OrderbookBookLevel[];
 };
 
@@ -26,6 +27,7 @@ export const loadMarketDepthState = async (api: PolyApi, event: Event, marketId?
     marketId: book.marketId,
     lastUpdated: book.generatedAt,
     emptyState: book.emptyState,
+    availability: book.availability,
     levels: book.levels,
   };
 };
@@ -59,10 +61,11 @@ export const applyDepthStateToEvent = (event: Event, result: MarketDepthLoadResu
     return {
       ...event,
       orderbookDepthStatus: "empty",
-      orderbookDepthMarketId: result.marketId,
-      orderbookDepthLastUpdated: result.lastUpdated,
-      orderbookDepthEmptyState: result.emptyState,
-    };
+    orderbookDepthMarketId: result.marketId,
+    orderbookDepthLastUpdated: result.lastUpdated,
+    orderbookDepthEmptyState: result.emptyState,
+    orderbookAvailability: result.availability,
+  };
   }
 
   return {
@@ -72,6 +75,7 @@ export const applyDepthStateToEvent = (event: Event, result: MarketDepthLoadResu
     orderbookDepthMarketId: result.marketId,
     orderbookDepthLastUpdated: result.lastUpdated,
     orderbookDepthEmptyState: null,
+    orderbookAvailability: result.availability,
     markets: event.markets.map((market) =>
       market.id === result.marketId
         ? {

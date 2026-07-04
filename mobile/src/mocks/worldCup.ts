@@ -1,5 +1,20 @@
 export type Locale = "en" | "zh";
 
+export type AvailabilityStatus = "ready" | "stale" | "suspended" | "delayed" | "unavailable";
+
+export type AvailabilityState = {
+  source: string;
+  status: AvailabilityStatus;
+  marketStatus?: string;
+  lastUpdated: string | null;
+  stalenessSeconds: number | null;
+  staleAfterSeconds: number;
+  isStale: boolean;
+  isSuspended: boolean;
+  isDelayed: boolean;
+  reason: string;
+};
+
 export type Outcome = {
   id: string;
   label: string;
@@ -38,17 +53,7 @@ export type Event = {
   zhTag: string;
   teams: Array<{ name: string; zhName: string; flag: string }>;
   liveStats?: Array<{ statId: string; label: string; home: string; away: string }>;
-  liveDataStatus?: {
-    source: string;
-    status: "ready" | "stale" | "suspended" | "delayed" | "unavailable";
-    lastUpdated: string | null;
-    stalenessSeconds: number | null;
-    staleAfterSeconds: number;
-    isStale: boolean;
-    isSuspended: boolean;
-    isDelayed: boolean;
-    reason: string;
-  };
+  liveDataStatus?: AvailabilityState;
   chartHistory?: Array<{ outcomeId: string; timestamp: string; probability: number }>;
   chartHistorySource?: "embedded" | "market-chart-route";
   chartHistoryStatus?: "idle" | "loading" | "ready" | "empty" | "error";
@@ -60,6 +65,7 @@ export type Event = {
   orderbookDepthMarketId?: string | null;
   orderbookDepthLastUpdated?: string | null;
   orderbookDepthEmptyState?: "no-depth" | null;
+  orderbookAvailability?: AvailabilityState;
   markets: Market[];
 };
 

@@ -2,6 +2,38 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CD - Selected Orderbook Availability Contract
+
+Fields now provided or wired:
+
+- `/api/orderbook/:marketId/book` now returns selected-market `availability` with source, normalized status, raw `marketStatus`, last update timestamp, staleness seconds, stale threshold, booleans, and reason.
+- Mobile depth service stores selected-market availability on the event state.
+- EventDetail orderbook overlay displays `event-detail-order-book-availability` with labels like `orderbook-availability-stale` and `orderbook-market-status-LIVE`.
+- Samsung tablet proof confirms selected Team Totals shows route-backed ready depth plus stale selected-market availability.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Provider heartbeat/ingestion that refreshes `Market.sourceUpdatedAt` for each line market.
+- Provider-owned availability flags for delayed, suspended, or unavailable states rather than deriving only from `Market.status`.
+- Per-outcome/token availability if a provider can suspend one outcome while the market remains listed.
+
+Schema mismatch:
+
+- `Market.sourceUpdatedAt` is sufficient for a first selected-market availability contract, but production may need a dedicated provider status table or quote snapshot status per market/outcome.
+
+Route mismatch:
+
+- `/api/orderbook/:marketId/book` now carries selected-market availability.
+- `/api/mobile/events/:slug/live-detail` still carries event-level freshness, not per-visible-market availability for every row.
+
+Temporary mock/static data:
+
+- The proof uses real route data and existing market timestamps; stale status is not a frontend-only string.
+
+Future migration concern:
+
+- Provider ingestion must update `sourceUpdatedAt` and/or provider status fields before live line markets can pass fresh provider parity.
+
 ## Cycle BC - Live Provider Freshness Contract
 
 Fields now provided or wired:
