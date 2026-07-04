@@ -1,0 +1,27 @@
+{
+  "cycle": "CS",
+  "feature": "provider quote top-of-book depth bridge",
+  "capturedAt": "2026-07-04T05:27:14.1278872Z",
+  "result": "pass",
+  "backendRouteProof": "docs/mobile/harness/cycle-current-mobile-provider-quote-depth-route-proof.json",
+  "prepProof": "docs/mobile/harness/cycle-current-mobile-provider-quote-depth-proof-prep.json",
+  "androidDeviceProof": {
+    "device": "Samsung tablet adb-R5GYA13X7NJ",
+    "eventDetailXml": "docs/mobile/harness/cycle-current-holiwyn-event-detail.xml",
+    "orderBookXml": "docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-order-book.xml",
+    "eventDetailScreenshot": "docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-event-detail.png",
+    "orderBookScreenshot": "docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-order-book.png"
+  },
+  "checks": {
+    "providerRefreshStaleToReady": true,
+    "orderbookDepthSourceProviderQuoteSnapshot": true,
+    "orderbookEmptyStateCleared": true,
+    "routeLevelCount": 4,
+    "tabletHarnessPassed": true,
+    "orderBookSourceRouteRendered": true,
+    "orderBookStatusReadyRendered": true,
+    "routeDepthRendered": true,
+    "providerBidAskRendered": true
+  },
+  "note": "Samsung tablet proof passed after device reconnect. The selected Book overlay rendered orderbook-source-orderbook-route, orderbook-status-ready, Route depth, provider bid/ask, and provider-estimated share sizes."
+}

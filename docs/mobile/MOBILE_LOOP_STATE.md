@@ -6,6 +6,29 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle CS
+
+Date: 2026-07-04
+Branch: `mobile/cycle-CS-provider-quote-depth-bridge`
+Goal: Continue PM-GAP-067 by bridging refreshed provider quote snapshots into selected Book top-of-book depth.
+Reference app screens observed: Continued from Cycle CH Samsung S23 Polymarket official app live game page evidence; no new visual UI parity area was opened.
+Holiwyn screens changed: Adapter preserves server-hydrated backend depth as route-backed depth for EventDetail Book state.
+Backend/API changed: `/api/orderbook/:marketId/book` now exposes `depthSource`, `depthReason`, and `providerQuoteDepth`; when no local orders exist, it can return provider quote top levels from `ReferenceQuoteSnapshot`.
+Database/schema changed: None.
+Files changed: `src/server/services/orderbookSnapshot.ts`, `src/server/services/mobileLiveEventDetail.ts`, `mobile/src/adapters/worldCupAdapter.ts`, `mobile/scripts/smoke.ps1`, provider depth test, and docs/proof artifacts.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/orderbook-snapshot.provider-depth.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts src/__tests__/mobile-live-event-detail.test.ts`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` from `mobile/`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-provider-quote-depth-proof-prep.json`
+- `docs/mobile/harness/cycle-current-mobile-provider-quote-depth-route-proof.json`
+- `docs/mobile/harness/cycle-current-holiwyn-provider-quote-depth-proof-summary.json`
+- `docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-order-book.png`
+Result: Pass for the scoped provider quote top-of-book bridge. Backend/API route proof passed: selected Book route returns `depthSource=provider-quote-snapshot`, `emptyState=null`, and 4 top-of-book levels after provider refresh. Samsung tablet proof passed with route-backed ready Book state, `Best bid`, `Best ask`, provider-derived prices, and share sizes.
+Next focus: merge Cycle CS, then continue PM-GAP-067 structural work on real World Cup provider mapping or full provider CLOB/depth ladder before opening new visual UI parity work.
+
 ## Cycle CR
 
 Date: 2026-07-04
