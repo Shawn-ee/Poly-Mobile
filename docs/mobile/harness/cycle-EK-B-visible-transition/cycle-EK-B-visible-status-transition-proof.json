@@ -1,0 +1,76 @@
+{
+  "cycle": "EK-B",
+  "scope": "Route-backed visible Android unavailable/not-ready and stale-refreshing-ready transition proof across live detail, Book/orderbook, and ticket handoff",
+  "result": "blocked",
+  "blockedReason": "Backend EK route data and a tablet/device run were not available in this branch validation, so this artifact is a deterministic contract-shaped placeholder for Lead integrated proof only.",
+  "command": "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleStatusTransition -Port 8326 -BackendBaseUrl http://127.0.0.1:3002 -ServerEventSlug <ek-route-backed-transition-event> -OutputDir docs\\mobile\\screenshots\\cycle-EK-B-visible-transition -HierarchyOutputDir docs\\mobile\\harness\\cycle-EK-B-visible-transition",
+  "backendBaseUrl": "http://127.0.0.1:3002",
+  "serverMode": "server",
+  "serverEventSlug": "<ek-route-backed-transition-event>",
+  "routeBackedStatusConsumed": false,
+  "routeBackedStatusSource": "pending Lead/Agent A integrated route proof",
+  "placeholderDataPolicy": "This file is not backend parity evidence. It only records the expected contract shape and the committed Android proof lane.",
+  "expectedVisibleMatrix": {
+    "unavailableNotReady": [
+      "event-detail-live-data-inline",
+      "live-data-status-unavailable",
+      "provider-lifecycle-not-ready",
+      "live-data-source-polymarket-gamma",
+      "Live provider not ready",
+      "event-detail-chart-ticket-handoff-status",
+      "Ticket not ready"
+    ],
+    "refreshingLoading": [
+      "event-detail-order-book-screen",
+      "selected-market-",
+      "selected-selector-key-",
+      "selected-provider-source-polymarket",
+      "event-detail-order-book-depth-state",
+      "orderbook-status-loading",
+      "provider-lifecycle-refreshing",
+      "Book depth refreshing",
+      "Loading depth"
+    ],
+    "readyResolved": [
+      "orderbook-source-orderbook-route",
+      "orderbook-status-ready",
+      "orderbook-availability-ready",
+      "provider-lifecycle-ready",
+      "Ticket provider ready",
+      "ticket-provider-source-polymarket"
+    ],
+    "fallbackRejections": [
+      "deterministic-status-fixture",
+      "fixture-ready",
+      "mock-ready",
+      "default-ready",
+      "Fixture depth",
+      "Fallback depth",
+      "quote-fallback-ladder",
+      "selected-market-mexico-ecuador-winner",
+      "Team to Advance",
+      "Mexico vs. Ecuador"
+    ]
+  },
+  "expectedArtifacts": [
+    "docs\\mobile\\screenshots\\cycle-EK-B-visible-transition/cycle-EK-B-visible-status-transition-live-top.png",
+    "docs\\mobile\\harness\\cycle-EK-B-visible-transition/cycle-EK-B-visible-status-transition-live-top.xml",
+    "docs\\mobile\\screenshots\\cycle-EK-B-visible-transition/cycle-EK-B-visible-status-transition-book-refreshing.png",
+    "docs\\mobile\\harness\\cycle-EK-B-visible-transition/cycle-EK-B-visible-status-transition-book-refreshing.xml",
+    "docs\\mobile\\screenshots\\cycle-EK-B-visible-transition/cycle-EK-B-visible-status-transition-book-resolved.png",
+    "docs\\mobile\\harness\\cycle-EK-B-visible-transition/cycle-EK-B-visible-status-transition-book-resolved.xml",
+    "docs\\mobile\\screenshots\\cycle-EK-B-visible-transition/cycle-EK-B-visible-status-transition-book-settings-cents.png",
+    "docs\\mobile\\harness\\cycle-EK-B-visible-transition/cycle-EK-B-visible-status-transition-book-settings-cents.xml",
+    "docs\\mobile\\screenshots\\cycle-EK-B-visible-transition/cycle-EK-B-visible-status-transition-book-settings-decimal.png",
+    "docs\\mobile\\harness\\cycle-EK-B-visible-transition/cycle-EK-B-visible-status-transition-book-settings-decimal.xml",
+    "docs\\mobile\\screenshots\\cycle-EK-B-visible-transition/cycle-EK-B-visible-status-transition-ticket-handoff.png",
+    "docs\\mobile\\harness\\cycle-EK-B-visible-transition/cycle-EK-B-visible-status-transition-ticket-handoff.xml",
+    "docs\\mobile\\screenshots\\cycle-EK-B-visible-transition/cycle-EK-B-visible-status-transition-ticket-settings.png",
+    "docs\\mobile\\harness\\cycle-EK-B-visible-transition/cycle-EK-B-visible-status-transition-ticket-settings.xml"
+  ],
+  "remainingGaps": [
+    "Run the EK switch on a tablet against same-build route-backed Agent A/Lead data.",
+    "Replace this blocked placeholder with the generated pass proof JSON, XML, and screenshots.",
+    "Pair selected event, market, selector key, line, period, side/outcome, provider/source, condition/token, and status fields with backend proof before claiming backend parity."
+  ]
+}
