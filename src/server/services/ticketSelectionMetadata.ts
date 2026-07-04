@@ -42,6 +42,50 @@ const cleanSelectionSource = (requestBody: unknown): SelectionSource => {
     : undefined;
 };
 
+export const sanitizeTicketSelectionSnapshot = (value: unknown) => {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  const input = value as Record<string, unknown>;
+  const referenceSource =
+    stringValue(input.referenceSource) ?? stringValue(input.providerSource);
+  const externalMarketId =
+    stringValue(input.externalMarketId) ?? stringValue(input.providerMarketId);
+  const conditionId =
+    stringValue(input.conditionId) ?? stringValue(input.providerConditionId);
+  const referenceTokenId =
+    stringValue(input.referenceTokenId) ?? stringValue(input.tokenId);
+  const selection = {
+    marketId: stringValue(input.marketId),
+    outcomeId: stringValue(input.outcomeId),
+    marketGroupId: stringValue(input.marketGroupId),
+    marketType: stringValue(input.marketType),
+    line: stringValue(input.line),
+    period: stringValue(input.period),
+    side: stringValue(input.side),
+    displayLabel: stringValue(input.displayLabel),
+    contractSide: stringValue(input.contractSide),
+    referenceSource,
+    providerSource: stringValue(input.providerSource) ?? referenceSource,
+    externalSlug: stringValue(input.externalSlug),
+    externalMarketId,
+    conditionId,
+    referenceTokenId,
+    tokenId: stringValue(input.tokenId) ?? referenceTokenId,
+    referenceOutcomeLabel: stringValue(input.referenceOutcomeLabel),
+  };
+  return Object.fromEntries(Object.entries(selection).filter(([, field]) => field !== undefined));
+};
+
+export const selectionSnapshotFromRequestBody = (
+  requestBody: unknown,
+  expected?: { marketId?: string | null; outcomeId?: string | null },
+) => {
+  const snapshot = sanitizeTicketSelectionSnapshot(cleanSelectionSource(requestBody));
+  if (!snapshot) return null;
+  if (expected?.marketId && snapshot.marketId !== expected.marketId) return null;
+  if (expected?.outcomeId && snapshot.outcomeId !== expected.outcomeId) return null;
+  return snapshot;
+};
+
 const contractSideFromRequest = (requestBody: unknown, selection: SelectionSource) => {
   if (selection) {
     const fromSelection = normalizedContractSide(selection.contractSide);
@@ -59,6 +103,10 @@ export function buildTicketSelectionMetadata(params: {
   outcome: SelectionOutcome;
 }) {
   const selection = cleanSelectionSource(params.requestBody);
+  const requestSnapshot = selectionSnapshotFromRequestBody(params.requestBody, {
+    marketId: params.market.id,
+    outcomeId: params.outcome.id,
+  });
   const contractSide = contractSideFromRequest(params.requestBody, selection) ?? contractSideFromOutcome(params.outcome);
   const providerSource =
     stringValue(selection?.providerSource) ?? stringValue(selection?.referenceSource) ?? params.market.referenceSource ?? undefined;
@@ -102,5 +150,6 @@ export function buildTicketSelectionMetadata(params: {
     tokenId,
     referenceOutcomeLabel:
       stringValue(selection?.referenceOutcomeLabel) ?? params.outcome.referenceOutcomeLabel ?? undefined,
+    ...requestSnapshot,
   };
 }

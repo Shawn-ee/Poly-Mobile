@@ -37,6 +37,8 @@ describe("GET /api/portfolio/history canceled orders", () => {
       .mockResolvedValueOnce([
         {
           id: "trade-1",
+          marketId: "market-world-cup-winner",
+          outcomeId: "yes",
           side: "BUY",
           shares: 200,
           cost: 100,
@@ -66,53 +68,80 @@ describe("GET /api/portfolio/history canceled orders", () => {
         },
       ]);
     mockPrisma.ledgerEntry.findMany.mockResolvedValue([]);
-    mockPrisma.order.findMany.mockResolvedValue([
-      {
-        id: "order-canceled-1",
-        side: "BUY",
-        status: "CANCELED",
-        price: 0.5,
-        amount: 200,
-        remaining: 100,
-        updatedAt: new Date("2026-07-02T05:55:00.000Z"),
-        market: {
-          id: "market-world-cup-winner",
-          title: "Will France win the 2026 FIFA World Cup?",
-          status: "LIVE",
-          marketGroupKey: "live-game-lines",
-          marketType: "spread",
-          line: { toString: () => "+0.5" },
-          period: "regulation",
-          referenceSource: "polymarket",
-          externalSlug: "france-world-cup-spread",
-          externalMarketId: "gamma-market-france-spread",
-          conditionId: "condition-france-spread",
-        },
-        outcome: {
-          id: "yes",
-          name: "YES",
-          label: "France +0.5",
-          side: "home",
-          referenceTokenId: "token-france-spread",
-          referenceOutcomeLabel: "France +0.5",
-        },
-        apiOrderRequest: {
-          requestBody: {
-            selection: {
-              marketType: "spread",
-              line: "+0.5",
-              period: "regulation",
-              displayLabel: "France +0.5",
-              providerSource: "polymarket",
-              externalMarketId: "gamma-market-france-spread",
-              conditionId: "condition-france-spread",
-              tokenId: "token-france-spread",
+    mockPrisma.order.findMany
+      .mockResolvedValueOnce([
+        {
+          id: "order-canceled-1",
+          side: "BUY",
+          status: "CANCELED",
+          price: 0.5,
+          amount: 200,
+          remaining: 100,
+          updatedAt: new Date("2026-07-02T05:55:00.000Z"),
+          market: {
+            id: "market-world-cup-winner",
+            title: "Will France win the 2026 FIFA World Cup?",
+            status: "LIVE",
+            marketGroupKey: "live-game-lines",
+            marketType: "spread",
+            line: { toString: () => "+0.5" },
+            period: "regulation",
+            referenceSource: "polymarket",
+            externalSlug: "france-world-cup-spread",
+            externalMarketId: "gamma-market-france-spread",
+            conditionId: "condition-france-spread",
+          },
+          outcome: {
+            id: "yes",
+            name: "YES",
+            label: "France +0.5",
+            side: "home",
+            referenceTokenId: "token-france-spread",
+            referenceOutcomeLabel: "France +0.5",
+          },
+          apiOrderRequest: {
+            requestBody: {
+              selection: {
+                marketType: "spread",
+                line: "+0.5",
+                period: "regulation",
+                displayLabel: "France +0.5",
+                providerSource: "polymarket",
+                externalMarketId: "gamma-market-france-spread",
+                conditionId: "condition-france-spread",
+                tokenId: "token-france-spread",
+              },
+              contractSide: "YES",
             },
-            contractSide: "YES",
           },
         },
-      },
-    ]);
+      ])
+      .mockResolvedValueOnce([
+        {
+          marketId: "market-world-cup-winner",
+          outcomeId: "yes",
+          apiOrderRequest: {
+            requestBody: {
+              selection: {
+                marketId: "market-world-cup-winner",
+                outcomeId: "yes",
+                marketGroupId: "spreads",
+                marketType: "spread",
+                line: "+0.5",
+                period: "regulation",
+                side: "yes",
+                displayLabel: "France +0.5 regulation",
+                contractSide: "yes",
+                providerSource: "polymarket",
+                externalMarketId: "gamma-market-france-spread",
+                conditionId: "condition-france-spread",
+                tokenId: "token-france-spread",
+                referenceOutcomeLabel: "France +0.5",
+              },
+            },
+          },
+        },
+      ]);
   });
 
   test("returns API-key actor canceled orders and recent trades beside resolved history", async () => {
@@ -200,19 +229,21 @@ describe("GET /api/portfolio/history canceled orders", () => {
           selection: {
             marketId: "market-world-cup-winner",
             outcomeId: "yes",
-            marketGroupId: "live-game-lines",
-            marketType: "match_winner_1x2",
+            marketGroupId: "spreads",
+            marketType: "spread",
+            line: "+0.5",
             period: "regulation",
-            side: "home",
-            displayLabel: "France regulation",
+            side: "yes",
+            displayLabel: "France +0.5 regulation",
+            contractSide: "yes",
             referenceSource: "polymarket",
             providerSource: "polymarket",
             externalSlug: "world-cup-2026-france-winner",
-            externalMarketId: "gamma-market-france",
-            conditionId: "condition-france",
-            referenceTokenId: "token-france",
-            tokenId: "token-france",
-            referenceOutcomeLabel: "France",
+            externalMarketId: "gamma-market-france-spread",
+            conditionId: "condition-france-spread",
+            referenceTokenId: "token-france-spread",
+            tokenId: "token-france-spread",
+            referenceOutcomeLabel: "France +0.5",
           },
           side: "BUY",
           shares: 200,

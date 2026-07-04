@@ -9,6 +9,7 @@ import {
 } from "@/lib/canonicalApi";
 import { createApiOrderRequestWithPolicyCheck } from "@/server/services/canonicalGovernance";
 import { placeOrderAndMatch } from "@/server/services/matching";
+import { sanitizeTicketSelectionSnapshot } from "@/server/services/ticketSelectionMetadata";
 
 const PROCESSING_WAIT_MS = 100;
 const PROCESSING_MAX_ATTEMPTS = 30;
@@ -143,39 +144,6 @@ const buildFingerprint = (body: Record<string, unknown>) =>
 const sanitizeOptionalStringField = (value: unknown) =>
   typeof value === "string" && value.trim().length > 0 ? value.trim() : null;
 
-const sanitizeTicketSelection = (value: unknown) => {
-  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
-  const input = value as Record<string, unknown>;
-  const referenceSource =
-    sanitizeOptionalStringField(input.referenceSource) ?? sanitizeOptionalStringField(input.providerSource);
-  const externalMarketId =
-    sanitizeOptionalStringField(input.externalMarketId) ?? sanitizeOptionalStringField(input.providerMarketId);
-  const conditionId =
-    sanitizeOptionalStringField(input.conditionId) ?? sanitizeOptionalStringField(input.providerConditionId);
-  const referenceTokenId =
-    sanitizeOptionalStringField(input.referenceTokenId) ?? sanitizeOptionalStringField(input.tokenId);
-  const selection = {
-    marketId: sanitizeOptionalStringField(input.marketId),
-    outcomeId: sanitizeOptionalStringField(input.outcomeId),
-    marketGroupId: sanitizeOptionalStringField(input.marketGroupId),
-    marketType: sanitizeOptionalStringField(input.marketType),
-    line: sanitizeOptionalStringField(input.line),
-    period: sanitizeOptionalStringField(input.period),
-    side: sanitizeOptionalStringField(input.side),
-    displayLabel: sanitizeOptionalStringField(input.displayLabel),
-    contractSide: sanitizeOptionalStringField(input.contractSide),
-    referenceSource,
-    providerSource: sanitizeOptionalStringField(input.providerSource) ?? referenceSource,
-    externalSlug: sanitizeOptionalStringField(input.externalSlug),
-    externalMarketId,
-    conditionId,
-    referenceTokenId,
-    tokenId: sanitizeOptionalStringField(input.tokenId) ?? referenceTokenId,
-    referenceOutcomeLabel: sanitizeOptionalStringField(input.referenceOutcomeLabel),
-  };
-  return Object.fromEntries(Object.entries(selection).filter(([, field]) => field !== null));
-};
-
 const parseOptionalPositiveDecimalString = (
   value: unknown,
   fieldName: string,
@@ -238,7 +206,7 @@ const normalizeOrderRequest = (params: {
     body.contractSide === "YES" || body.contractSide === "NO"
       ? body.contractSide
       : null;
-  const selection = sanitizeTicketSelection(body.selection);
+  const selection = sanitizeTicketSelectionSnapshot(body.selection);
   const headerKey = params.idempotencyKeyHeader?.trim() || null;
   const idempotencyKey = headerKey ?? clientOrderId;
 

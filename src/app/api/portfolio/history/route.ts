@@ -106,6 +106,34 @@ export async function GET(request: NextRequest) {
     orderBy: { createdAt: "desc" },
     take: 50,
   });
+  const recentTradeSelectionOrders = recentTrades.length
+    ? await prisma.order.findMany({
+        where: {
+          userId,
+          marketId: {
+            in: Array.from(new Set(recentTrades.map((trade: { marketId: string }) => trade.marketId))),
+          },
+          outcomeId: {
+            in: Array.from(new Set(recentTrades.map((trade: { outcomeId: string }) => trade.outcomeId))),
+          },
+          status: { in: ["FILLED", "PARTIAL", "OPEN"] },
+          apiOrderRequest: { isNot: null },
+        },
+        orderBy: [{ updatedAt: "desc" }, { id: "desc" }],
+        select: {
+          marketId: true,
+          outcomeId: true,
+          apiOrderRequest: { select: { requestBody: true } },
+        },
+      })
+    : [];
+  const recentTradeSelectionByMarketOutcome = new Map<string, unknown>();
+  for (const order of recentTradeSelectionOrders) {
+    const key = `${order.marketId}:${order.outcomeId}`;
+    if (!recentTradeSelectionByMarketOutcome.has(key)) {
+      recentTradeSelectionByMarketOutcome.set(key, order.apiOrderRequest?.requestBody);
+    }
+  }
 
   const marketMap = new Map<
     string,
@@ -231,6 +259,7 @@ export async function GET(request: NextRequest) {
       market: trade.market,
       outcome: trade.outcome,
       selection: buildTicketSelectionMetadata({
+        requestBody: recentTradeSelectionByMarketOutcome.get(`${trade.marketId}:${trade.outcomeId}`),
         market: trade.market,
         outcome: trade.outcome,
       }),

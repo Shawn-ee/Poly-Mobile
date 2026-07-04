@@ -2668,6 +2668,36 @@ Future migration concern:
 
 - If production order/history reconstruction must survive provider remaps or market/outcome edits, persist immutable normalized selection metadata directly on order/fill/trade lifecycle rows rather than relying on request JSON plus current market/outcome fallback metadata.
 
+## Cycle EE-A - Book Lifecycle Selection Snapshots
+
+Closed or narrowed:
+
+- `docs/mobile/harness/cycle-EE-A-lifecycle-snapshots.json` proves a selected provider-backed Book Spread outcome keeps the same normalized snapshot through order request, order response, portfolio open order, canceled activity, filled portfolio position, and recent trade activity.
+- Canonical order submission and portfolio metadata now share `sanitizeTicketSelectionSnapshot()`, avoiding drift between order response snapshots and Portfolio/history selection serialization.
+- `/api/portfolio` filled positions and `/api/portfolio/history` recent trades now prefer the latest matching same-user/same-market/same-outcome `ApiOrderRequest.requestBody.selection`, guarded by matching `marketId` and `outcomeId`, before falling back to current `Market`/`Outcome` metadata.
+- Focused tests now assert a selected Spread/line/period/provider token does not fall back to a moneyline/current-market label in filled position or recent trade branches.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- A first-class immutable selection snapshot on `Order`, `Fill`, `Trade`, and/or `Position` remains future hardening. EE-A deliberately avoids schema migration and uses guarded request snapshots for the cycle-sized backend improvement.
+- If the same user accumulates multiple selections for the exact same market/outcome over time, filled position/recent trade serialization can only pick the latest matching request snapshot until durable trade/position selection columns are approved.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `ApiOrderRequest`, `Order`, `Trade`, `Position`, `Market`, and `Outcome` records carry enough information for the selected Book lifecycle proof, but not for permanent historical reconstruction after arbitrary provider remaps.
+
+Route mismatch:
+
+- No new mobile route was required. `/api/portfolio` and `/api/portfolio/history` now use the same backend selection helper as canonical order responses.
+
+Temporary mock/static data:
+
+- No frontend mock/static data was added. The proof uses a disposable backend provider-backed Spread market and local provider ladder rows.
+
+Future migration concern:
+
+- If production order/history reconstruction must survive provider remaps or market/outcome edits, persist immutable normalized selection metadata directly on order/fill/trade lifecycle rows rather than relying on request JSON plus current market/outcome fallback metadata.
+
 ## Cycle EB-A - Live Detail Selected-Market Selector Contract
 
 Closed or narrowed:

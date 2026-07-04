@@ -30,6 +30,34 @@ export async function GET(request: NextRequest) {
       market: true,
     },
   });
+  const positionSelectionOrders = positions.length
+    ? await prisma.order.findMany({
+        where: {
+          userId,
+          marketId: {
+            in: Array.from(new Set(positions.map((position: { marketId: string }) => position.marketId))),
+          },
+          outcomeId: {
+            in: Array.from(new Set(positions.map((position: { outcomeId: string }) => position.outcomeId))),
+          },
+          status: { in: ["FILLED", "PARTIAL", "OPEN"] },
+          apiOrderRequest: { isNot: null },
+        },
+        orderBy: [{ updatedAt: "desc" }, { id: "desc" }],
+        select: {
+          marketId: true,
+          outcomeId: true,
+          apiOrderRequest: { select: { requestBody: true } },
+        },
+      })
+    : [];
+  const positionSelectionByMarketOutcome = new Map<string, unknown>();
+  for (const order of positionSelectionOrders) {
+    const key = `${order.marketId}:${order.outcomeId}`;
+    if (!positionSelectionByMarketOutcome.has(key)) {
+      positionSelectionByMarketOutcome.set(key, order.apiOrderRequest?.requestBody);
+    }
+  }
 
   const realizedAgg = await prisma.position.aggregate({
     where: { userId },
@@ -130,6 +158,7 @@ export async function GET(request: NextRequest) {
       outcomeId: position.outcomeId,
       outcome: position.outcome.name,
       selection: buildTicketSelectionMetadata({
+        requestBody: positionSelectionByMarketOutcome.get(`${position.marketId}:${position.outcomeId}`),
         market: position.market,
         outcome: position.outcome,
       }),
