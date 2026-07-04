@@ -31,6 +31,7 @@ These apply to every page, feature, button, and interaction:
 
 | Feature | Criteria owner file | P0 status | P1/P2 status | Latest gate |
 | --- | --- | --- | --- | --- |
+| Book-origin snapshot durability after metadata drift EF | `docs/mobile/audits/cycle-ef-c-snapshot-durability-gate.md` | Fail until integrated proof. P0 requires backend and Android Portfolio/history to preserve order-time/fill-time selected Book identity after mutable market/outcome/provider metadata drift, with no fallback/default reconstruction and explicit fake-token labels | P1/P2 remaining: repeat across real provider-backed line families, provider-refresh drift regression, official production history recapture, and Portfolio/history visual clarity | EF-C gate opens PM-GAP-083; not verified |
 | Book-origin order status breadth and selection snapshots EE | `docs/mobile/audits/cycle-ee-c-book-order-status-gate.md` | Pass for selected EE integrated gate. P0 proof preserves the same Book-origin Spread identity across open order, cancel/canceled status, filled position, recent activity/history, Android-visible fake-token status labels, backend route/data proof, guarded selection snapshots, and no fallback | P1/P2 remaining: real provider-backed line-family status matrix, official production confirmation/cancel/fill recapture, durability checks after metadata changes, and Portfolio/history visual status polish | EE integrated gate pass; PM-GAP-082 verified for selected lifecycle |
 | Book-selected order to Portfolio/history ED lifecycle | `docs/mobile/audits/cycle-ed-c-book-order-portfolio-gate.md` | Pass for selected ED integrated gate. P0 proof starts on the live game page Book surface, selects Spread `1.5` regulation Yes, opens the matching ticket, submits a fake-token order, and preserves the same selected identity through Android-visible Portfolio open order/open position/activity plus backend order/portfolio/history route proof | P1/P2 remaining: real provider-backed line-family lifecycle breadth, open/cancel/fill status breadth, production confirmation recapture, immutable selection snapshots, and Portfolio/history visual polish | ED integrated gate pass; PM-GAP-081 verified for selected lifecycle |
 | Line-market lifecycle DX | `docs/mobile/audits/cycle-dx-c-line-lifecycle-gate.md`; `docs/mobile/audits/cycle-dr-c-line-market-ticket-target-gate.md`; `docs/mobile/audits/cycle-dw-c-book-selector-ticket-gate.md` | Pass for focused lifecycle gate. Backend proof preserves provider-shaped Spread identity through order request, order response, open order, canceled activity, filled position, and recent trade; Android proof preserves visible `MEX -2.5 1H` through row, ticket, order, Portfolio activity, and open order | P1/P2 remaining: repeat visible lifecycle on real provider-backed line market, official amount/swipe confirmation recapture, every line family, and production immutable selection storage | DX focused gate pass |
@@ -116,6 +117,24 @@ Navigation:
 - Tab persistence.
 - Scroll position.
 - Deep links if applicable.
+
+## Cycle EF-C Snapshot Durability Gate Criteria
+
+The focused EF-C gate in `docs/mobile/audits/cycle-ef-c-snapshot-durability-gate.md` opens PM-GAP-083 for immutable Book-origin selection durability after current metadata drift. Current status is fail-until-integrated-proof.
+
+| ID | Priority | Criterion | Required proof |
+| --- | --- | --- | --- |
+| EF-SD-P0-01 | P0 | Backend proof must create or select a Book-origin fake-token order and fill with complete order-time/fill-time selected snapshot fields before drift. | Backend proof JSON with event, market family/type, market id or selector key, line, period, side/outcome, provider/source, provider market/condition/token identity, amount, order id, fill id, and fake-token/test labels. |
+| EF-SD-P0-02 | P0 | Current market, outcome, selector, and provider metadata must change after the order/fill exists. | Backend proof JSON listing drift mutations, including labels/default selector/provider freshness or source-display changes. |
+| EF-SD-P0-03 | P0 | Backend Portfolio/history/order routes must still return the original Book identity from order-time/fill-time selected snapshots after drift. | Before/after route proof showing selected fields unchanged and no fallback/default reconstruction. |
+| EF-SD-P0-04 | P0 | Android Portfolio and history/activity must render the original selected Book identity after drift. | Android screenshots/XML/proof JSON after drift showing the same Book identity as the pre-drift order/fill snapshot. |
+| EF-SD-P0-05 | P0 | Fallback/default reconstruction is not acceptable pass evidence. | Assertions reject moneyline fallback, event-only labels, first-row/default selector identity, stale provider label substitution, missing snapshot fields, and fixture-only display reconstruction. |
+| EF-SD-P0-06 | P0 | Fake-token/test labeling must survive drift in backend and Android evidence. | Backend and Android proof showing fake-token/test labels on order, position, and history/activity rows after metadata drift. |
+| EF-SD-P0-07 | P0 | Agent A backend evidence and Agent B Android evidence must be integrated by Lead for the same selected identity and same drift scenario. | Lead-integrated bundle pairing backend before/after proof with Android post-drift recapture, including matching order/fill ids or deterministic proof ids. |
+| EF-SD-P1-01 | P1 | Repeat metadata-drift durability across multiple real provider-backed line families when available. | Backend and Android before/after drift proof for Spread, Totals, halves, and other provider-backed families. |
+| EF-SD-P1-02 | P1 | Add a regression that covers provider refresh replacing stale/ready/freshness labels after order creation. | Route proof and Android recapture after provider refresh state changes. |
+| EF-SD-P1-03 | P1 | Recapture official Polymarket history behavior if production account/location gates allow completed order/cancel/fill history. | Fresh official-app reference screenshots/XML paired with Holiwyn comparison. |
+| EF-SD-P2-01 | P2 | Historical Portfolio/activity visual treatment should make immutable order identity easy to scan after current metadata changes. | Side-by-side visual review after P0 durability passes. |
 
 ## Cycle DQ-C Live Football / World Cup Detail Criteria
 

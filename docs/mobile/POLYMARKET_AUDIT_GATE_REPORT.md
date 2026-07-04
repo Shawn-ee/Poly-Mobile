@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Current live game page Book-origin snapshot durability after metadata drift | Cycle EF-C | Fail until integrated proof; PM-GAP-083 open | 7 | P1 repeat across real provider-backed line families, provider-refresh drift regression, official production history recapture; P2 Portfolio/history visual clarity | Reused EE/ED checked-in proof and DQ-C Polymarket reference; gate: `docs/mobile/audits/cycle-ef-c-snapshot-durability-gate.md` | No EF Holiwyn Android proof collected by Agent C. Required future evidence: backend `docs/mobile/harness/cycle-EF-A-snapshot-durability.json`, Android `docs/mobile/harness/cycle-EF-integrated-snapshot-durability/`, screenshots `docs/mobile/screenshots/cycle-EF-integrated-snapshot-durability/` | Gate requires mutating current market/outcome/provider metadata after order/fill creation, then proving backend and Android Portfolio/history still render order-time/fill-time selected Book identity with no fallback/default reconstruction and explicit fake-token labels. |
 | Current live game page Book-origin open/cancel/fill status and selection snapshots | Cycle EE integrated | Pass for selected PM-GAP-082 gate | 0 for selected EE gate | P1 real provider-backed line-family status matrix, official production confirmation/cancel/fill recapture, durability checks after metadata changes; P2 Portfolio/history visual status polish | Reused DQ-C Samsung S23 official Polymarket Book/orderbook and location-gated ticket reference; ED/DX/DO/Portfolio checked-in lifecycle baselines; gate: `docs/mobile/audits/cycle-ee-c-book-order-status-gate.md` | Samsung tablet proof: `docs/mobile/harness/cycle-EE-integrated-book-order-status/cycle-EE-book-order-status-proof.json`; backend snapshot proof: `docs/mobile/harness/cycle-EE-A-book-order-status-snapshots.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EE-integrated-book-order-status/` and `docs/mobile/harness/cycle-EE-integrated-book-order-status/` | EE integrated proof shows the same Book-origin selected identity through open order, cancel/canceled status, filled position, recent activity/history, guarded backend selection snapshots, visible fake-token status labels, and no-fallback assertions. |
 | Current live game page Book-selected order to Portfolio/history lifecycle | Cycle ED integrated | Pass for selected PM-GAP-081 gate | 0 for selected ED gate | P1 broader real provider-backed line-family lifecycle breadth, open/cancel/fill status breadth, production confirmation recapture, immutable selection snapshots; P2 Portfolio/history visual/motion polish | Reused DQ-C Samsung S23 official Polymarket Book/orderbook and location-gated ticket reference; provider/lifecycle baselines from DN/DO/DX; gate: `docs/mobile/audits/cycle-ed-c-book-order-portfolio-gate.md` | Samsung tablet proof: `docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/cycle-ED-book-order-portfolio-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-ED-integrated-book-order-portfolio/` and `docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/`; backend route/data proof `docs/mobile/harness/cycle-ED-A-book-order-portfolio-history.json` | ED integrated proof starts on the live game page Book surface, selects Spread `1.5` regulation Yes, opens the matching ticket, submits a fake-token order, and preserves the same identity through Android-visible Portfolio open order/open position and activity/history with backend order/portfolio/history data proof. |
 | Current live game page orderbook/depth and ticket carry-through | Cycle EC integrated | Pass for selected PM-GAP-080 orderbook/ticket gate | 0 for selected EC gate | P1 broader real provider-backed line-family breadth, richer settings, order/Portfolio/history carry-through; P2 phone-density/visual/motion polish | Reused DQ-C Samsung S23 official Polymarket Book/orderbook reference; gate: `docs/mobile/audits/cycle-ec-c-orderbook-ticket-gate.md` | Samsung tablet proof: `docs/mobile/harness/cycle-EC-integrated-orderbook-ticket/cycle-EC-orderbook-ticket-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EC-integrated-orderbook-ticket/` and `docs/mobile/harness/cycle-EC-integrated-orderbook-ticket/`; backend identity proof: `docs/mobile/harness/cycle-EC-A-provider-orderbook-identity.json` | EC integrated proof shows selected live-page context -> Book ladder/depth -> selector changes/settings -> matching Spread ticket carry-through. Backend/provider identity proof supports the same selected feature but does not replace the Android evidence. |
@@ -1977,6 +1978,53 @@ Decision:
 - Unresolved P0 gaps for this selected gate: 0.
 - Remaining P1/P2 gaps: broader real provider-backed line-family breadth, richer Book settings, order/Portfolio/history carry-through for every family, and phone-density/visual/motion polish.
 - Next cycle required: yes for broader parity, but not to re-prove this selected EC gate unless regression appears.
+
+## Cycle EF-C Snapshot Durability Audit Gate
+
+Result: Fail until integrated proof. This is a docs-only gate and does not certify implementation.
+
+Lead Agent target:
+
+- Prove Book-origin order/fill snapshot durability after mutable market, outcome, provider, selector, label, freshness, or display metadata changes.
+- Preserve PM-GAP-082 EE status breadth as a regression baseline while opening PM-GAP-083 for metadata-drift durability.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: not applicable in EF-C docs-only lane.
+
+Audit Gate Agent: Agent C.
+
+Reference evidence:
+
+- `docs/mobile/audits/cycle-ee-c-book-order-status-gate.md`
+- `docs/mobile/harness/cycle-EE-integrated-book-order-status/cycle-EE-book-order-status-proof.json`
+- `docs/mobile/harness/cycle-EE-A-book-order-status-snapshots.json`
+- `docs/mobile/audits/cycle-ed-c-book-order-portfolio-gate.md`
+
+Holiwyn evidence required before pass:
+
+- `docs/mobile/harness/cycle-EF-A-snapshot-durability.json`
+- `docs/mobile/harness/cycle-EF-integrated-snapshot-durability/`
+- `docs/mobile/screenshots/cycle-EF-integrated-snapshot-durability/`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EF-SD-P0-01 | P0 | Fail until proof | No EF backend proof creates/selects a Book-origin order and fill with complete pre-drift selected snapshots. | Agent A must record order-time/fill-time selected Book identity before drift. |
+| EF-SD-P0-02 | P0 | Fail until proof | No EF proof mutates current market/outcome/selector/provider metadata after order/fill creation. | Agent A must record drift mutations in proof JSON. |
+| EF-SD-P0-03 | P0 | Fail until proof | No EF backend before/after route proof shows Portfolio/history still use original snapshots after drift. | Agent A must prove no fallback/default reconstruction. |
+| EF-SD-P0-04 | P0 | Fail until proof | No EF Android Portfolio/history recapture exists after metadata drift. | Agent B must capture Android screenshots/XML/proof JSON after drift. |
+| EF-SD-P0-05 | P0 | Fail until proof | No EF no-fallback matrix exists for moneyline, event-only, first-row/default selector, stale provider label, or fixture-only reconstruction. | Add explicit negative assertions. |
+| EF-SD-P0-06 | P0 | Fail until proof | No EF proof shows fake-token/test labels survive drift on backend and Android rows. | Add backend and visible fake-token/test label assertions. |
+| EF-SD-P0-07 | P0 | Fail until proof | Agent A and B evidence has not been Lead-integrated for the same selected identity and drift scenario. | Lead must combine backend and Android proof for matching order/fill ids or deterministic proof ids. |
+
+Decision:
+
+- Pass/fail: Fail until integrated proof.
+- Unresolved P0 gaps: 7.
+- Remaining P1/P2 gaps: repeat across real provider-backed line families, provider-refresh drift regression, official production history recapture, and Portfolio/history visual clarity.
+- Next cycle required: yes. Lead must combine Agent A backend drift proof and Agent B Android recapture before PM-GAP-083 can pass.
 
 Use this template for every feature gate:
 
