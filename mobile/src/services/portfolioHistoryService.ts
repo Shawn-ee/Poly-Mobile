@@ -35,6 +35,9 @@ const selectionFromBackend = (
     conditionId?: string;
     referenceTokenId?: string;
     referenceOutcomeLabel?: string;
+    limitPrice?: number;
+    limitSide?: "bid" | "ask";
+    limitShares?: number;
   } | null,
 ): TicketSelection | undefined => {
   if (!selection?.displayLabel) return undefined;
@@ -57,6 +60,9 @@ const selectionFromBackend = (
     conditionId: selection.conditionId,
     referenceTokenId: selection.referenceTokenId,
     referenceOutcomeLabel: selection.referenceOutcomeLabel,
+    limitPrice: selection.limitPrice,
+    limitSide: selection.limitSide,
+    limitShares: selection.limitShares,
   };
 };
 

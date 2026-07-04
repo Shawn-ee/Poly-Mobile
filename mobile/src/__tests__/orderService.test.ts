@@ -252,6 +252,62 @@ describe("ticket order service", () => {
     });
   });
 
+  test("preserves Book-staged limit fields in server-mode order selection", async () => {
+    const placeLimitOrder = vi.fn(async () => ({ order: { id: "server-book-limit-order-1" } }));
+    const api = { placeLimitOrder } as unknown as PolyApi;
+
+    const selection = {
+      marketType: "totals" as const,
+      line: "3.5",
+      period: "2nd Half",
+      side: "over",
+      displayLabel: "Over 3.5 2H",
+      limitPrice: 0.44,
+      limitSide: "ask" as const,
+      limitShares: 125.5,
+    };
+
+    const result = await submitTicketOrder({
+      mode: "server",
+      api,
+      event,
+      market: {
+        id: "mexico-ecuador-total-3.5-2H",
+        title: "Total 3.5 2H",
+        zhTitle: "Total 3.5 2H",
+        type: "game-line" as const,
+        outcomes: [],
+      },
+      outcome: {
+        id: "mexico-ecuador-total-3.5-2H-over",
+        label: "Over 3.5 2H",
+        zhLabel: "Over 3.5 2H",
+        probability: 44,
+        color: "#0a8f61",
+      },
+      selection,
+      side: "buy",
+      amount: 55.22,
+    });
+
+    expect(placeLimitOrder).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selection: expect.objectContaining({
+          ...selection,
+          marketId: "mexico-ecuador-total-3.5-2H",
+          outcomeId: "mexico-ecuador-total-3.5-2H-over",
+          contractSide: "yes",
+        }),
+      }),
+    );
+    expect(result.selection).toMatchObject({
+      ...selection,
+      marketId: "mexico-ecuador-total-3.5-2H",
+      outcomeId: "mexico-ecuador-total-3.5-2H-over",
+      contractSide: "yes",
+    });
+  });
+
   test("uses top-level server order id fallback when canonical response omits nested order id", async () => {
     const placeLimitOrder = vi.fn(async () => ({ id: "server-order-top-level" }));
     const api = { placeLimitOrder } as unknown as PolyApi;

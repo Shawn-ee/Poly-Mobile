@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EM-A - Book-Staged Limit Lifecycle Service Contract
+
+Closed or narrowed:
+
+- `selection.limitPrice`, `selection.limitSide`, and `selection.limitShares` now survive the backend/mobile service contract from ticket order creation through backend selection sanitization and mobile portfolio/history mappers.
+- `sanitizeTicketSelectionSnapshot()` preserves finite numeric limit price/share fields and normalizes `limitSide` to `bid` or `ask`, so canonical order request JSON can carry the tapped Book ladder level.
+- Mobile portfolio snapshot and history/activity mappers now keep the limit trio on positions, open orders, canceled order activity, and recent trade activity instead of dropping them after the route response.
+- `docs/mobile/harness/cycle-EM-A-limit-lifecycle/proof.json` records a local service-contract proof for order result, backend selection metadata, portfolio position/open order, recent trade, and canceled order mapping.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Android-visible integration proof remains Lead/Agent B scope; EM-A proves backend/mobile service contracts, not tablet screenshots or live route execution.
+- First-class immutable selection snapshots on `Order`, `Trade`, `Fill`, and/or `Position` remain future hardening. EM-A continues to use existing `ApiOrderRequest.requestBody.selection` plus guarded market/outcome fallback.
+
+Schema mismatch:
+
+- No schema migration was made. The staged limit fields ride the existing selection snapshot JSON contract.
+
+Route mismatch:
+
+- No new route shape was required. Existing `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` selection envelopes can carry the fields once sanitizers/types/mappers preserve them.
+
+Temporary mock/static data:
+
+- No frontend mock/static data was added. The proof script uses service-level backend-shaped payloads and writes a local JSON artifact only.
+
+Future migration concern:
+
+- If the same user can have multiple historical orders for the same market/outcome with different Book levels, immutable per-order/fill/trade selection snapshots should store `limitPrice`, `limitSide`, and `limitShares` instead of relying on latest matching request JSON.
+
 ## Cycle EL Integrated - Route-Backed Book/Ticket Limit Handoff
 
 Closed or narrowed:
@@ -13,7 +43,7 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Server order creation, portfolio, and history should get a dedicated follow-up proof that `selection.limitPrice`, `selection.limitSide`, and `selection.limitShares` survive after submission, cancellation, fill, and history rendering.
+- Android-visible order/portfolio/history proof should pair with EM-A, which now covers the backend/mobile service-contract survival of `selection.limitPrice`, `selection.limitSide`, and `selection.limitShares`.
 - The integrated proof uses one disposable provider-backed event. Production breadth still needs real mapped Polymarket events for spreads, totals, team totals, halves, corners, and props where available.
 
 Schema mismatch:

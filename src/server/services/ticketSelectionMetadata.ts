@@ -24,6 +24,21 @@ type SelectionOutcome = {
 
 const stringValue = (value: unknown) => (typeof value === "string" && value.trim() ? value.trim() : undefined);
 
+const numberValue = (value: unknown) => {
+  const parsed =
+    typeof value === "number"
+      ? value
+      : typeof value === "string" && value.trim()
+        ? Number(value)
+        : NaN;
+  return Number.isFinite(parsed) ? parsed : undefined;
+};
+
+const normalizedLimitSide = (value: unknown) => {
+  const raw = stringValue(value)?.toLowerCase();
+  return raw === "bid" || raw === "ask" ? raw : undefined;
+};
+
 const normalizedContractSide = (value: unknown) => {
   const raw = stringValue(value)?.toLowerCase();
   return raw === "yes" || raw === "no" ? raw : undefined;
@@ -71,6 +86,9 @@ export const sanitizeTicketSelectionSnapshot = (value: unknown) => {
     referenceTokenId,
     tokenId: stringValue(input.tokenId) ?? referenceTokenId,
     referenceOutcomeLabel: stringValue(input.referenceOutcomeLabel),
+    limitPrice: numberValue(input.limitPrice),
+    limitSide: normalizedLimitSide(input.limitSide),
+    limitShares: numberValue(input.limitShares),
   };
   return Object.fromEntries(Object.entries(selection).filter(([, field]) => field !== undefined));
 };
