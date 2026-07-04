@@ -2,6 +2,37 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CY - Provider Line Market Availability Diagnostic
+
+Closed or narrowed:
+
+- Provider discovery now exposes explicit provider candidate family counts, including zero counts for line families.
+- The exact Colombia vs. Ghana provider event is proven to expose only 3 match-winner candidates and 0 spread/total/team-total/halves/corners/correct-score candidates.
+- Broad line-search diagnostics are proven unsafe for automatic attach: 60 candidates were checked, 0 were attach-ready, and 48 were rejected for insufficient relevance.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-owned line market identities for spreads, totals, team totals, halves, corners, props, and correct score.
+- A provider source or reviewed exact-slug input that can supply `Market.externalSlug`, `Market.externalMarketId`, `Market.conditionId`, and `Outcome.referenceTokenId` for each line-market outcome.
+- Provider-backed ticket/order/portfolio/history proof for selected line markets after real provider IDs exist.
+
+Schema mismatch:
+
+- No schema change was required. Existing `Market.marketType`, `Market.line`, `Market.period`, `Market.participantName`, and `Outcome.referenceTokenId` can represent line markets.
+- If provider line markets come from a non-Polymarket source, `referenceSource` and provider metadata may need a first-class provider namespace.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/provider-candidates` can summarize provider families, but there is no production operator workflow yet for importing or reviewing line-specific provider slugs.
+
+Temporary mock/static data:
+
+- The CY proof uses in-memory Holiwyn-shaped line targets for diagnostics only. It does not create local markets and does not count any mock data as provider-backed.
+
+Future migration concern:
+
+- Do not use broad Gamma search results as line-market mappings. The proof shows broad search returns unrelated high-volume markets, so exact event/provider identity or a stronger provider endpoint is required.
+
 ## Cycle CX - Provider Event Slug Hint Discovery
 
 Closed or narrowed:

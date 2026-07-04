@@ -1,10 +1,12 @@
 import {
   buildProviderCandidateSearchQueries,
+  classifyProviderMarketFamily,
   deriveProviderEventSlugHints,
   fetchProviderCandidatesFromSportsEvents,
   fetchProviderCandidatesForQueries,
   fetchProviderCandidatesForSlugs,
   rankProviderCandidates,
+  summarizeProviderCandidateFamilies,
 } from "@/server/services/mobileLiveProviderCandidates";
 
 const compactMarket = {
@@ -46,6 +48,78 @@ describe("mobile live provider candidates", () => {
     }, ["https://polymarket.com/sports/world-cup/fifwc-por-cro-2026-07-02"])).toEqual([
       "fifwc-por-cro-2026-07-02",
     ]);
+  });
+
+  test("classifies provider market families for line availability diagnostics", () => {
+    const base = {
+      eventTitle: "Colombia vs. Ghana",
+      tags: ["soccer", "fifa-world-cup"],
+    };
+
+    expect(classifyProviderMarketFamily({
+      ...base,
+      slug: "fifwc-col-gha-2026-07-03-col",
+      question: "Will Colombia win on 2026-07-03?",
+    })).toBe("match_winner");
+    expect(classifyProviderMarketFamily({
+      ...base,
+      slug: "colombia-ghana-over-25",
+      question: "Colombia vs Ghana total goals over 2.5?",
+    })).toBe("total_goals");
+    expect(classifyProviderMarketFamily({
+      ...base,
+      slug: "colombia-ghana-team-total",
+      question: "Will Ghana team total goals be over 1.5?",
+    })).toBe("team_total_goals");
+    expect(classifyProviderMarketFamily({
+      ...base,
+      slug: "colombia-ghana-handicap",
+      question: "Will Colombia cover the +1.5 handicap?",
+    })).toBe("spread");
+    expect(classifyProviderMarketFamily({
+      ...base,
+      slug: "colombia-ghana-corners",
+      question: "Colombia vs Ghana corners over 8.5?",
+    })).toBe("corners");
+  });
+
+  test("summarizes exact event provider families with explicit zero line buckets", () => {
+    const summary = summarizeProviderCandidateFamilies([
+      {
+        slug: "fifwc-col-gha-2026-07-03-col",
+        question: "Will Colombia win on 2026-07-03?",
+        externalMarketId: "gamma-market-col",
+        conditionId: "condition-col",
+        eventTitle: "Colombia vs. Ghana",
+        active: true,
+        closed: false,
+        archived: false,
+        acceptingOrders: true,
+        bestBid: 0.8,
+        bestAsk: 0.82,
+        spread: 0.02,
+        lastTradePrice: null,
+        volume: null,
+        volume24hr: null,
+        liquidity: null,
+        outcomes: [
+          { name: "Yes", tokenId: "token-yes", outcomePrice: 0.8, displayOrder: 0 },
+          { name: "No", tokenId: "token-no", outcomePrice: 0.2, displayOrder: 1 },
+        ],
+        tags: ["soccer"],
+        category: "Sports / Soccer",
+        score: 0,
+        attachReadiness: { attachReady: false, reasons: ["not_ranked"] },
+      },
+    ]);
+
+    expect(summary).toEqual(expect.objectContaining({
+      match_winner: 1,
+      spread: 0,
+      total_goals: 0,
+      team_total_goals: 0,
+      corners: 0,
+    }));
   });
 
   test("builds compact market search queries", () => {
