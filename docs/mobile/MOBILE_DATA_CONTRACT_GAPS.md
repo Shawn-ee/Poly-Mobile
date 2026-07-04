@@ -3608,6 +3608,34 @@ Future migration concern:
 
 - Replace disposable provider-shaped proof events with production active Polymarket-backed World Cup events before treating provider breadth as complete.
 
+## Cycle FU - Portfolio Value History Backend Route
+
+Closed or narrowed:
+
+- The backend now exposes `GET /api/portfolio/value-history?range=1D|1W|1M|All` with the same `PortfolioValueHistory` shape already typed in standalone mobile.
+- The route supports mobile API-key auth with `account:read`, validates ranges, and emits source/status fields the Android proof harness can assert after mobile wiring.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Persisted account-value snapshots over time are not yet modeled. The route reconstructs historical position value from `MarketOutcomeSnapshot` and current position quantities.
+- Historical wallet cash movement is not replayed per point; current wallet cash is used across the generated range.
+
+Schema mismatch:
+
+- No schema migration was added. Existing `UserBalance`, `Position`, and `MarketOutcomeSnapshot` models are enough for a first route-backed Portfolio chart contract.
+
+Route mismatch:
+
+- Mobile has a typed `PolyApi.getPortfolioValueHistory(range)` client, but the Portfolio UI still uses deterministic fallback data. A later mobile wiring cycle should fetch this route in server mode and prove the chart source changes to `portfolio-value-history-route` on Android.
+
+Temporary mock/static data:
+
+- No arbitrary frontend-only data was added in the backend. Missing historical prices fall back to position average cost per point.
+
+Future migration concern:
+
+- If Portfolio needs exact Polymarket-style account performance, add a persisted portfolio value snapshot or ledger replay service so cash, realized P/L, and position quantities are historically accurate per point.
+
 ## Cycle FI - Home Route Server Filled Position And Activity
 
 Closed or narrowed:

@@ -1629,3 +1629,16 @@ Cycle FI implementation notes:
 - A temporary mobile dev credential was created by `npm run mobile:dev-credential`.
 - Tablet proof slug: `mobile-el-a-provider-breadth-0ca8dfb3`.
 - Mobile launched with `EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE=server`, and a real in-process mobile API key.
+
+## Cycle FU - Portfolio Value History Backend Route
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio performance chart range data | `/api/portfolio/value-history?range=1D|1W|1M|All` | GET | Session user or mobile API key with `account:read` | Query param `range`; defaults to `1D` when omitted | `range`, `ranges`, `source=portfolio-value-history-route`, `status`, `generatedAt`, `lastUpdated`, `emptyState`, `points[].timestamp/value/cash/positionsValue/pnl` | `UserBalance`, `Position`, `MarketOutcomeSnapshot` | Standalone mobile still has deterministic fallback data with the same response shape until route wiring is enabled. | Persisted account-level value snapshots remain future work; this route reconstructs value history from market outcome snapshots and current wallet/position state. |
+
+Cycle FU implementation notes:
+
+- The route reuses the same auth model as `/api/portfolio`.
+- Invalid ranges return `400` before account state queries.
+- Empty accounts return `status=empty`, `emptyState=no-history`, and no points.
+- No orderbook, deposit, withdraw, chat, live stats, or social behavior was added.

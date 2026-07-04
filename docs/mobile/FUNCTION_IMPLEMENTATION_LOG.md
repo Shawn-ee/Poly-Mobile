@@ -5414,3 +5414,41 @@ Proof artifacts:
 Known limitations:
 
 - FI uses disposable provider-shaped data and seeded counterparty liquidity. Production active Polymarket World Cup breadth remains P1.
+
+## Cycle FU - Portfolio Value History Backend Route
+
+Feature/page worked on:
+
+- Portfolio performance chart backend contract for `1D`, `1W`, `1M`, and `All` ranges.
+
+Frontend/harness/backend files touched:
+
+- `src/app/api/portfolio/value-history/route.ts`
+- `src/server/services/portfolioValueHistory.ts`
+- `src/__tests__/portfolio.value-history.route.test.ts`
+- `docs/mobile/audits/cycle-fu-portfolio-value-history-route.md`
+
+Important functions/services touched:
+
+- Added `parsePortfolioValueHistoryRange()` and `getPortfolioValueHistoryStart()` for route validation and range windows.
+- Added `buildPortfolioValueHistory()` to convert wallet balance, current positions, and `MarketOutcomeSnapshot` prices into the mobile `PortfolioValueHistory` response shape.
+- Added `GET /api/portfolio/value-history?range=1D|1W|1M|All`.
+
+User interactions supported/proven:
+
+- This is a backend-support cycle, not a visible UI cycle. It closes the repeated backend gap behind the existing Portfolio range selector by giving mobile a route-shaped account value history payload to consume in a later wiring pass.
+
+State transitions:
+
+- No order, wallet, position, or Portfolio UI state mutation.
+- Auth resolution matches `/api/portfolio`: session user for web/session requests, canonical API-key actor with `account:read` for mobile server mode.
+
+Validation:
+
+- `cmd /c npm.cmd run test:jest -- src/__tests__/portfolio.value-history.route.test.ts`
+
+Known limitations:
+
+- The route derives historical position value from existing market outcome snapshots and falls back to position average cost when older point-in-time prices are missing.
+- No new persisted account-value snapshot table was added.
+- Standalone mobile still uses the deterministic fallback chart until the next mobile wiring/proof cycle consumes this route on Android.
