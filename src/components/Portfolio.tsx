@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { activityPnl, activityShares, decimalOdds } from "../domain/portfolioActivityMetrics";
 import {
@@ -16,7 +16,7 @@ import {
   openOrderValue,
 } from "../services/openOrderEconomicsService";
 import type { OrderMode } from "../services/orderService";
-import type { PortfolioValueHistoryRange } from "../types";
+import type { PortfolioValueHistory, PortfolioValueHistoryRange } from "../types";
 import type { BinaryContractSide, TicketSelection } from "./TradeTicket";
 
 export type Position = {
@@ -319,6 +319,7 @@ export function Portfolio({
   closePosition,
   openPositionTrade,
   cancelOpenOrder,
+  loadValueHistory,
 }: {
   locale: Locale;
   t: PortfolioCopy;
@@ -331,12 +332,14 @@ export function Portfolio({
   closePosition: (position: Position) => void;
   openPositionTrade: (position: Position, side: "buy" | "sell") => void;
   cancelOpenOrder: (order: OpenOrder) => void;
+  loadValueHistory?: (range: PortfolioValueHistoryRange) => Promise<PortfolioValueHistory>;
 }) {
   const [expandedPositionId, setExpandedPositionId] = useState<string | null>(null);
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const [expandedActivityId, setExpandedActivityId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<PortfolioTab>("positions");
   const [activeRange, setActiveRange] = useState<PortfolioValueHistoryRange>("1D");
+  const [serverValueHistory, setServerValueHistory] = useState<PortfolioValueHistory | null>(null);
   const closedActivityCount = activities.filter((activity) => activity.action === "closed").length;
   const latestActivity = activities[0];
   const detailCopy = portfolioDetailCopy[locale];
@@ -350,6 +353,28 @@ export function Portfolio({
     positionsValue: currentValueTotal(positions),
     pnl: portfolioPnl,
   });
+  const displayedValueHistory =
+    serverValueHistory?.range === activeRange && serverValueHistory.status !== "error"
+      ? serverValueHistory
+      : valueHistory;
+
+  useEffect(() => {
+    if (!loadValueHistory) {
+      setServerValueHistory(null);
+      return undefined;
+    }
+    let cancelled = false;
+    loadValueHistory(activeRange)
+      .then((history) => {
+        if (!cancelled) setServerValueHistory(history);
+      })
+      .catch(() => {
+        if (!cancelled) setServerValueHistory(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [activeRange, loadValueHistory]);
   const syncTitle =
     syncStatus === "syncing"
       ? t.portfolioSyncing
@@ -471,10 +496,10 @@ export function Portfolio({
         </Text>
       </View>
       <PortfolioSparkline
-        pointCount={valueHistory.points.length}
-        range={valueHistory.range}
-        source={valueHistory.source}
-        status={valueHistory.status}
+        pointCount={displayedValueHistory.points.length}
+        range={displayedValueHistory.range}
+        source={displayedValueHistory.source}
+        status={displayedValueHistory.status}
       />
       <View accessibilityLabel="portfolio-range-selector" testID="portfolio-range-selector" style={styles.rangeRow}>
         {(["1D", "1W", "1M", "All"] as const).map((range) => (

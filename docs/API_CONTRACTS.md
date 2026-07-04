@@ -61,6 +61,8 @@ Cycle FT adds the mobile-side contract for that future route: `PortfolioValueHis
 
 Cycle FU adds the main backend route for that contract: `GET /api/portfolio/value-history?range=1D|1W|1M|All`. It returns `source=portfolio-value-history-route`, `status`, timestamps, and chart points derived from `UserBalance`, `Position`, and `MarketOutcomeSnapshot`. Standalone mobile still needs a wiring/proof cycle before the Portfolio chart consumes this route in server mode.
 
+Cycle FV wires the standalone mobile Portfolio to this route in server mode. The chart keeps deterministic fallback in mock mode or on request failure, but server-mode Android proof now expects `portfolio-chart-source-portfolio-value-history-route`.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
