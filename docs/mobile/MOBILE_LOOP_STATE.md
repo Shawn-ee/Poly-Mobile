@@ -6,6 +6,29 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle CP
+
+Date: 2026-07-03
+Branch: `mobile/cycle-CP-provider-candidate-discovery-contract`
+Goal: Keep PM-GAP-067 on provider ingestion/refresh by adding protected candidate discovery for compact live markets.
+Reference app screens observed: Continued from Cycle CH Samsung S23 Polymarket official app live game page evidence.
+Holiwyn screens changed: None.
+Backend/API changed: Added `GET /api/mobile/events/:slug/provider-candidates`.
+Database/schema changed: None.
+Files changed: `src/server/services/mobileLiveProviderCandidates.ts`, `src/app/api/mobile/events/[slug]/provider-candidates/route.ts`, provider candidate tests, and mobile docs.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-candidates.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts src/__tests__/mobile-live-provider-mapping.route.test.ts src/__tests__/mobile-live-provider-identity-attach.service.test.ts`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-live-provider-candidates-query-contract.json`
+- `docs/mobile/harness/cycle-current-mobile-live-provider-candidates-fetch-attempt.json`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`
+Result: Partial pass for provider candidate discovery contract. Query contract exists for 14 compact markets, but real provider fetch returned `fetch failed` for all 14 targets, so no attach-ready real candidates were found.
+Next focus: make provider fetch succeed or add a manual real Polymarket slug preview path, then attach real IDs and prove no-fallback refresh.
+
 ## Cycle CO
 
 Date: 2026-07-03
