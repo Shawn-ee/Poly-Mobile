@@ -2,6 +2,42 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle EL Integrated - Route-Backed Live Depth Staging
+
+Feature/page worked on:
+
+- Integrated backend/provider line-family breadth with visible mobile live event Book/orderbook staging.
+- Closes the selected route-backed Book ladder -> Buy/Sell ticket price handoff gap for the EL proof event.
+
+Frontend/harness/services touched:
+
+- `mobile/App.tsx`
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/src/services/orderService.ts`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `docs/mobile/screenshots/cycle-EL-integrated-live-depth/`
+- `docs/mobile/harness/cycle-EL-integrated-live-depth/`
+
+Important functions/interactions/state transitions touched:
+
+- `TicketSelection` now carries optional `limitPrice`, `limitSide`, and `limitShares` for Book-origin staged tickets.
+- `EventDetail` passes the tapped ask/bid level into the ticket selection when opening a staged Book ticket.
+- `App` skips server quote refresh for a ticket with an explicit Book-staged limit price so the ticket price line does not revert to the midpoint/outcome probability.
+- `selectionForOrder()` preserves staged limit fields so future order/portfolio/history flows can keep the Book-selected limit identity.
+- The EL visible-depth smoke path can now run against a custom backend event slug and backend URL instead of only the Mexico/Ecuador fixture.
+
+Verified:
+
+- `npm --prefix mobile run typecheck`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleLiveDepth -Port 8334 -Device 172.16.200.30:41299 -BackendBaseUrl http://127.0.0.1:3002 -ServerEventSlug mobile-el-a-provider-breadth-bc35089a -OutputDir docs/mobile/screenshots/cycle-EL-integrated-live-depth -HierarchyOutputDir docs/mobile/harness/cycle-EL-integrated-live-depth`
+
+Known limitations:
+
+- This proves the selected route-backed moneyline Book ladder/ticket path. Production breadth still depends on real mapped Polymarket line-family events and scheduled provider refresh coverage.
+- Ticket Buy/Sell Polymarket reference remains partially fresh/stale-mixed from Agent C; the S23 ticket tap did not open in the limited fresh probe.
+
 ## Cycle EL-B - Visible Live Depth Staging
 
 Feature/page worked on:

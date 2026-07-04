@@ -114,7 +114,7 @@ if ($EventDetailTrade) {
 } elseif ($EventDetailVisibleLiveParity) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailVisibleLiveParity -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EventDetailVisibleLiveDepth) {
-  & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailVisibleLiveDepth -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+  & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailVisibleLiveDepth -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EventDetailProviderStatus) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailProviderStatus -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EventDetailVisibleStatusBreadth) {

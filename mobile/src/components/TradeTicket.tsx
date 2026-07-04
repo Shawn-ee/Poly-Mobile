@@ -31,6 +31,9 @@ export type TicketSelection = {
   conditionId?: string;
   referenceTokenId?: string;
   referenceOutcomeLabel?: string;
+  limitPrice?: number;
+  limitSide?: "bid" | "ask";
+  limitShares?: number;
 };
 
 type TradeTicketCopy = {

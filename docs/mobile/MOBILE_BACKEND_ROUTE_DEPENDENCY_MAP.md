@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle EL Integrated - Route-Backed Book/Ticket Limit Handoff
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Route-backed Book ladder to staged ticket | `/api/mobile/events/:slug/live-detail` and `/api/orderbook/:marketId/book?maxLevels=24` | GET / GET | Public/mobile routes for live-detail and orderbook. Server order mode uses existing API key handling when a ticket is submitted. | Live-detail uses event slug. Book uses selected `marketId`, `maxLevels`, and mobile cache-buster `_ts`. Future order payloads preserve `selection.limitPrice`, `selection.limitSide`, and `selection.limitShares` from the tapped Book row. | Live-detail selected market/outcome identity, `orderbookIdentity`, provider lifecycle, chart status, and route-backed depth readiness. Book `levels[].side/price/shares/value`, `marketIdentity`, and availability. Mobile ticket consumes the selected `limitPrice/limitSide/limitShares` so price display and future order snapshots stay tied to the tapped ladder row. | Reads provider-backed `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot`. Future order/portfolio/history flows use existing order selection snapshot fields. | The integrated proof uses the disposable EL-A provider event seeded through route/provider services, not arbitrary frontend-only data. No frontend fixture is accepted for the selected integrated pass. | Production proof still needs live real Polymarket mapped events and scheduled refresh breadth. A future backend/order cycle should assert `limitPrice/limitSide/limitShares` through server order creation, portfolio, and history. |
+
+Cycle EL integrated implementation notes:
+
+- Proof artifacts: `docs/mobile/harness/cycle-EL-integrated-live-depth/cycle-EL-A-provider-breadth.json` and `docs/mobile/harness/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-proof.json`.
+- The Samsung tablet proof used backend event slug `mobile-el-a-provider-breadth-bc35089a` against `http://127.0.0.1:3002`.
+- The selected ask row staged Buy at `0.55` / 55c for 150 shares; the selected bid row staged Sell at `0.50` / 50c for 180 shares; both ticket price lines preserved the tapped Book level.
+
 ## Cycle EL-A - Provider Line-Family Breadth Route Proof
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

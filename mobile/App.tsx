@@ -1064,6 +1064,7 @@ export default function App() {
   useEffect(() => {
     if (ORDER_MODE !== "server" || !ticket) return undefined;
     if (forceServerOpenOrderProof.current) return undefined;
+    if (typeof ticket.selection?.limitPrice === "number") return undefined;
     let cancelled = false;
     const marketId = ticket.market.id;
     const outcomeId = ticket.outcome.id;

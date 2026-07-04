@@ -1,0 +1,39 @@
+{
+    "cycle":  "EL-integrated",
+    "scope":  "Integrated route-backed live Book ladder staged price and Buy/Sell ticket handoff",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleLiveDepth -Port 8334 -BackendBaseUrl http://127.0.0.1:3002 -ServerEventSlug mobile-el-a-provider-breadth-bc35089a -OutputDir docs/mobile/screenshots/cycle-EL-integrated-live-depth -HierarchyOutputDir docs/mobile/harness/cycle-EL-integrated-live-depth",
+    "eventIdentity":  "EL-A Provider Breadth World Cup Live",
+    "serverEventSlug":  "mobile-el-a-provider-breadth-bc35089a",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "routeBackedProviderDepth":  true,
+    "result":  "pass",
+    "assertions":  {
+                       "baseline":  "Book opens on Breadth Home winner with staged-level-none and visible ask/bid ladder rows.",
+                       "askStage":  "Tapping order-book-ask-level-e373c663-b58c-4d57-aae1-8f5cd136d44f-1 stages Buy ask at 0.55 USDT / 55c for 150 shares.",
+                       "askTicket":  "Staged open-ticket launches a Buy ticket; after tapping +$10 it shows ticket-price-line 55c, To win, and Swipe up to buy.",
+                       "bidStage":  "Tapping order-book-bid-level-e373c663-b58c-4d57-aae1-8f5cd136d44f-1 stages Sell bid at 0.50 USDT / 50c for 180 shares.",
+                       "bidTicket":  "Staged open-ticket launches a Sell ticket; after tapping +$10 it shows ticket-price-line 50c and Swipe up to sell.",
+                       "contractShape":  "The proof uses route-backed provider orderbook depth from the integrated backend event."
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-book-baseline.png",
+                      "docs/mobile/harness/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-book-baseline.xml",
+                      "docs/mobile/screenshots/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-ask-staged.png",
+                      "docs/mobile/harness/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-ask-staged.xml",
+                      "docs/mobile/screenshots/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-ask-ticket.png",
+                      "docs/mobile/harness/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-ask-ticket.xml",
+                      "docs/mobile/screenshots/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-ask-ticket-priced.png",
+                      "docs/mobile/harness/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-ask-ticket-priced.xml",
+                      "docs/mobile/harness/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-after-ask-ticket.xml",
+                      "docs/mobile/screenshots/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-bid-staged.png",
+                      "docs/mobile/harness/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-bid-staged.xml",
+                      "docs/mobile/screenshots/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-bid-ticket.png",
+                      "docs/mobile/harness/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-bid-ticket.xml",
+                      "docs/mobile/screenshots/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-bid-ticket-priced.png",
+                      "docs/mobile/harness/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-bid-ticket-priced.xml"
+                  ],
+    "remainingGaps":  [
+                          "The staged ladder handoff is local mobile UI behavior; server order submission still consumes the existing ticket/order service contract.",
+                          "Real provider-backed live depth breadth remains dependent on backend/provider coverage outside this Agent B UI-owned change."
+                      ]
+}

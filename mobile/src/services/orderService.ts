@@ -91,10 +91,13 @@ const selectionForOrder = (input: TicketOrderInput): TicketSelection => {
     referenceTokenId: input.selection?.referenceTokenId ?? input.outcome.referenceTokenId ?? undefined,
     referenceOutcomeLabel:
       input.selection?.referenceOutcomeLabel ?? input.outcome.referenceOutcomeLabel ?? undefined,
+    limitPrice: input.selection?.limitPrice,
+    limitSide: input.selection?.limitSide,
+    limitShares: input.selection?.limitShares,
   };
   return Object.fromEntries(
     Object.entries(selection).filter(([, value]) => value !== undefined),
-  ) as TicketSelection;
+  ) as unknown as TicketSelection;
 };
 
 const mockOrder = (input: TicketOrderInput): TicketOrderResult => ({

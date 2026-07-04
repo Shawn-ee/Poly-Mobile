@@ -1002,7 +1002,16 @@ export function EventDetail({
           }
         : orderBookSelectedOutcome;
     const openBookTicket = (side: "buy" | "sell") => {
-      openTicket(orderBookMarket, stagedTicketOutcome, event, side, selectedTicketSelection);
+      const stagedSelection =
+        activeStagedLevel && stagedProbability
+          ? {
+              ...selectedTicketSelection,
+              limitPrice: activeStagedLevel.price,
+              limitSide: activeStagedLevel.side,
+              limitShares: activeStagedLevel.shares,
+            }
+          : selectedTicketSelection;
+      openTicket(orderBookMarket, stagedTicketOutcome, event, side, stagedSelection);
     };
     const stageLevel = (level: DepthLevel) => {
       setStagedOrderBookLevel({

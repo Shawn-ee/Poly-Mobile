@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EL Integrated - Route-Backed Book/Ticket Limit Handoff
+
+Closed or narrowed:
+
+- The selected Book ladder -> ticket price handoff is now proven against route-backed provider depth on the Samsung tablet.
+- `TicketSelection` now includes optional `limitPrice`, `limitSide`, and `limitShares`, so a tapped Book row can preserve limit identity through the ticket and future order snapshot paths.
+- The app no longer overwrites a staged Book ticket with a fresh quote/midpoint before display; the ticket price line keeps the tapped ask/bid price.
+- `docs/mobile/harness/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-proof.json` proves Buy ask at 55c and Sell bid at 50c for the selected provider-backed moneyline market.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Server order creation, portfolio, and history should get a dedicated follow-up proof that `selection.limitPrice`, `selection.limitSide`, and `selection.limitShares` survive after submission, cancellation, fill, and history rendering.
+- The integrated proof uses one disposable provider-backed event. Production breadth still needs real mapped Polymarket events for spreads, totals, team totals, halves, corners, and props where available.
+
+Schema mismatch:
+
+- No database schema change was required. The staged limit fields are mobile selection metadata and can ride the existing order selection snapshot contract.
+
+Route mismatch:
+
+- No route-shape mismatch was found for live-detail or Book. Remaining route work is order/portfolio/history persistence proof for the new staged limit fields.
+
+Temporary mock/static data:
+
+- No arbitrary frontend-only fixture is accepted for the integrated pass. The visible proof used the EL-A disposable backend event with provider-shaped Gamma/CLOB refresh data and route-backed orderbook depth.
+
+Future migration concern:
+
+- Keep staged limit fields distinct from outcome probability and midpoint quote. Future quote refreshes must not silently replace an explicit user-selected Book level unless the user changes market/outcome/side or clears the staged level.
+
 ## Cycle EL-A - Provider Line-Family Breadth Route Proof
 
 Closed or narrowed:
