@@ -39,8 +39,15 @@ export function LiveScreen({
 
   return (
     <ScrollView style={styles.content} contentContainerStyle={styles.scrollPad}>
-      <View style={styles.liveHeader}>
-        <Text style={styles.sectionTitle}>{t.liveNow}</Text>
+      <View
+        accessibilityLabel={`live-world-cup-games-focus World Cup live games ${events.length} matches prediction-only-live`}
+        style={styles.liveHeader}
+        testID="live-world-cup-games-focus"
+      >
+        <View style={styles.liveHeaderText}>
+          <Text style={styles.liveEyebrow}>World Cup</Text>
+          <Text style={styles.sectionTitle}>{t.liveNow}</Text>
+        </View>
         <Text style={styles.liveCount}>{events.length}</Text>
       </View>
       <View style={styles.liveStatusRow}>
@@ -78,8 +85,10 @@ export function LiveScreen({
 const styles = StyleSheet.create({
   content: { flex: 1 },
   scrollPad: { paddingHorizontal: 16, paddingBottom: 110 },
-  sectionTitle: { color: "#f8fafc", fontSize: 24, fontWeight: "900", marginTop: 24, marginBottom: 12 },
-  liveHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  sectionTitle: { color: "#f8fafc", fontSize: 24, fontWeight: "900", marginTop: 2, marginBottom: 12 },
+  liveHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 24 },
+  liveHeaderText: { flex: 1, minWidth: 0 },
+  liveEyebrow: { color: "#60a5fa", fontSize: 12, fontWeight: "900", textTransform: "uppercase" },
   liveCount: { minWidth: 34, textAlign: "center", color: "#ffffff", fontWeight: "900", backgroundColor: "#ef4444", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 6 },
   liveStatusRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 14 },
   liveStatusText: { color: "#8ea0b8", fontWeight: "800" },

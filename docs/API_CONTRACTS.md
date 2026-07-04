@@ -77,6 +77,8 @@ Cycle GB changes only Event Detail chart/ticket presentation and proof coverage.
 
 Cycle GC changes only the default Event Detail visible shell by hiding non-MVP Chat, Share, Live stats, and chat preview entry points. Chart, market, ticket, order, and Portfolio data contracts are unchanged. No backend route, schema, request body, or response contract changes are required.
 
+Cycle GD changes only Home and Live discovery presentation priority. Home and Live still use the same event discovery payloads, route-backed event card IDs, market/outcome data, and ticket handoff fields. No backend route, schema, request body, or response contract changes are required.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
