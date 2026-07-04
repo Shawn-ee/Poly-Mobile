@@ -165,6 +165,11 @@ function compactCash(value: number) {
   return `$${value.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
 }
 
+const ticketSelectionIdentityLabel = (selection?: TicketSelection) =>
+  selection
+    ? `ticket-market-family-${selection.marketType} ticket-market-type-${selection.marketType} ticket-line-${selection.line ?? "none"} ticket-period-${selection.period ?? "none"} ticket-selection-side-${selection.side ?? "yes"} ticket-display-label-${selection.displayLabel} ticket-contract-side-${selection.contractSide ?? "yes"}`
+    : "ticket-market-family-none ticket-line-none ticket-period-none";
+
 export function TradeTicket({
   locale,
   t,
@@ -279,6 +284,7 @@ export function TradeTicket({
     ticket.selection?.referenceOutcomeLabel ?? ticket.outcome.referenceOutcomeLabel
       ? `provider-outcome-${ticket.selection?.referenceOutcomeLabel ?? ticket.outcome.referenceOutcomeLabel}`
       : null,
+    ticketSelectionIdentityLabel(ticket.selection),
   ].filter(Boolean).join(" ");
 
   return (

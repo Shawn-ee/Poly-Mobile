@@ -251,6 +251,11 @@ const makeTieOutcome = (): DisplayOutcome => ({
   miniLine: 58,
 });
 
+const ticketSelectionIdentityLabel = (selection?: TicketSelection) =>
+  selection
+    ? `selection-market-family-${selection.marketType} selection-market-type-${selection.marketType} selection-line-${selection.line ?? "none"} selection-period-${selection.period ?? "none"} selection-side-${selection.side ?? "yes"} selection-display-label-${selection.displayLabel} selection-contract-side-${selection.contractSide ?? "yes"}`
+    : "selection-market-family-none selection-line-none selection-period-none";
+
 export function EventDetail({
   event,
   locale,
@@ -1022,7 +1027,7 @@ export function EventDetail({
       </View>
       <Text style={styles.oddsMultiplier}>{outcome.odds}</Text>
       <Pressable
-        accessibilityLabel={`event-detail-outcome-${marketId}-${outcome.id} ticket-source-${ticketTarget?.source ?? "unavailable"} ticket-market-${ticketTarget?.market.id ?? "none"} ticket-outcome-${ticketTarget?.outcome.id ?? "none"} ${providerIdentityLabel(ticketTarget?.market ?? groupMarket, ticketTarget?.outcome ?? outcome.ticketOutcome ?? matchingOutcome)}`}
+        accessibilityLabel={`event-detail-outcome-${marketId}-${outcome.id} ticket-source-${ticketTarget?.source ?? "unavailable"} ticket-market-${ticketTarget?.market.id ?? "none"} ticket-outcome-${ticketTarget?.outcome.id ?? "none"} ${ticketSelectionIdentityLabel(outcome.ticketSelection)} ${providerIdentityLabel(ticketTarget?.market ?? groupMarket, ticketTarget?.outcome ?? outcome.ticketOutcome ?? matchingOutcome)}`}
         onPress={() => {
           if (!ticketTarget) return;
           openTicket(ticketTarget.market, ticketTarget.outcome, event, defaultSide, outcome.ticketSelection);

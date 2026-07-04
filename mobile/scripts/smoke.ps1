@@ -2381,56 +2381,111 @@ try {
     }
 
     if ($EventDetailLinePortfolio) {
+      $dxLineExpected = @(
+        "selection-market-family-spread",
+        "selection-market-type-spread",
+        "selection-line-2.5",
+        "selection-period-1st Half",
+        "selection-display-label-MEX -2.5 1H"
+      )
+      $dxTicketExpected = @(
+        "ticket-market-family-spread",
+        "ticket-market-type-spread",
+        "ticket-line-2.5",
+        "ticket-period-1st Half",
+        "ticket-display-label-MEX -2.5 1H",
+        "ticket-contract-side-yes"
+      )
+      $dxPortfolioExpected = @(
+        "portfolio-market-family-spread",
+        "portfolio-market-type-spread",
+        "portfolio-line-2.5",
+        "portfolio-period-1st Half",
+        "portfolio-side-buy",
+        "portfolio-display-label-MEX -2.5 1H",
+        "portfolio-contract-side-yes"
+      )
+      $dxNoMoneylineFallback = @("Mexico vs. Ecuador winner", "Team to Advance", "MOCK - Buy - Mexico")
       & $adb -s $Device shell input swipe 540 520 540 1900 450 | Out-Null
       Start-Sleep -Milliseconds 500
       & $adb -s $Device shell input swipe 540 520 540 1900 450 | Out-Null
       Start-Sleep -Seconds 1
       & $adb -s $Device shell input swipe 540 1800 540 1220 350 | Out-Null
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-current-holiwyn-line-portfolio-baseline.png"
-      $linePortfolioBaselineHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-line-portfolio-baseline.xml"
+      Save-Screenshot -Name "cycle-DX-B-holiwyn-line-lifecycle-selected-line-row.png"
+      $linePortfolioBaselineHierarchy = Save-UiHierarchy -Name "cycle-DX-B-holiwyn-line-lifecycle-selected-line-row.xml"
       if ((Dismiss-ExpoDeveloperMenuIfPresent -Path $linePortfolioBaselineHierarchy)) {
         Start-Sleep -Seconds 1
-        $linePortfolioBaselineHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-line-portfolio-baseline.xml"
+        $linePortfolioBaselineHierarchy = Save-UiHierarchy -Name "cycle-DX-B-holiwyn-line-lifecycle-selected-line-row.xml"
       }
       Assert-HierarchyContains -Path $linePortfolioBaselineHierarchy -Expected @("Spread", "MEX to win by over 1.5 goals", "event-detail-spread-line-1-5", "Reg. Time")
 
       Invoke-TapHierarchyNode -Path $linePortfolioBaselineHierarchy -Identifier "event-detail-spread-line-2-5"
       Start-Sleep -Seconds 1
-      $linePortfolioSpreadHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-line-portfolio-spread-25.xml"
+      $linePortfolioSpreadHierarchy = Save-UiHierarchy -Name "cycle-DX-B-holiwyn-line-lifecycle-spread-25.xml"
       Assert-HierarchyContains -Path $linePortfolioSpreadHierarchy -Expected @("MEX to win by over 2.5 goals", "Yes, MEX -2.5", "16%")
       Invoke-TapHierarchyNode -Path $linePortfolioSpreadHierarchy -Identifier "event-detail-spread-period-1st-half"
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-current-holiwyn-line-portfolio-spread-25-1h.png"
-      $linePortfolioSpreadChangedHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-line-portfolio-spread-25-1h.xml"
-      Assert-HierarchyContains -Path $linePortfolioSpreadChangedHierarchy -Expected @("Yes, MEX -2.5", "33.3x", "3%", "No", "97%")
+      Save-Screenshot -Name "cycle-DX-B-holiwyn-line-lifecycle-selected-line-25-1h.png"
+      $linePortfolioSpreadChangedHierarchy = Save-UiHierarchy -Name "cycle-DX-B-holiwyn-line-lifecycle-selected-line-25-1h.xml"
+      Assert-HierarchyContains -Path $linePortfolioSpreadChangedHierarchy -Expected (@("Spread", "MEX to win by over 2.5 goals", "Yes, MEX -2.5", "33.3x", "3%", "No", "97%") + $dxLineExpected + @("ticket-source-deterministic-line-fixture"))
 
       Invoke-TapHierarchyNode -Path $linePortfolioSpreadChangedHierarchy -Identifier "event-detail-outcome-spread-spread-yes"
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-current-holiwyn-line-portfolio-ticket.png"
-      $linePortfolioTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-line-portfolio-ticket.xml"
-      Assert-HierarchyContains -Path $linePortfolioTicketHierarchy -Expected @("trade-ticket", "Mexico vs. Ecuador", "ticket-selection-line", "Yes - MEX -2.5 1H", "ticket-selected-outcome-choice", "ticket-preset-5", "Choose an amount")
+      Save-Screenshot -Name "cycle-DX-B-holiwyn-line-lifecycle-ticket.png"
+      $linePortfolioTicketHierarchy = Save-UiHierarchy -Name "cycle-DX-B-holiwyn-line-lifecycle-ticket.xml"
+      Assert-HierarchyContains -Path $linePortfolioTicketHierarchy -Expected (@("trade-ticket", "Mexico vs. Ecuador", "ticket-selection-line", "Yes - MEX -2.5 1H", "ticket-selected-outcome-choice", "ticket-preset-5", "Choose an amount") + $dxTicketExpected)
+      Assert-HierarchyDoesNotContain -Path $linePortfolioTicketHierarchy -Unexpected @("Team to Advance")
       Invoke-TapHierarchyNode -Path $linePortfolioTicketHierarchy -Identifier "ticket-preset-10"
       Start-Sleep -Milliseconds 500
-      $linePortfolioTicketAmount2Hierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-line-portfolio-ticket-amount-2.xml"
+      $linePortfolioTicketAmount2Hierarchy = Save-UiHierarchy -Name "cycle-DX-B-holiwyn-line-lifecycle-ticket-amount-10.xml"
       Invoke-TapHierarchyNode -Path $linePortfolioTicketAmount2Hierarchy -Identifier "ticket-preset-10"
       Start-Sleep -Milliseconds 500
-      $linePortfolioTicketAmount20Hierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-line-portfolio-ticket-amount-20.xml"
+      $linePortfolioTicketAmount20Hierarchy = Save-UiHierarchy -Name "cycle-DX-B-holiwyn-line-lifecycle-ticket-amount-20.xml"
       Invoke-TapHierarchyNode -Path $linePortfolioTicketAmount20Hierarchy -Identifier "ticket-preset-5"
       Start-Sleep -Seconds 1
-      $linePortfolioTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-line-portfolio-ticket-ready.xml"
-      Assert-HierarchyContains -Path $linePortfolioTicketReadyHierarchy -Expected @('$25', 'To win $833.33', "ticket-price-line", "Swipe up to buy")
+      Save-Screenshot -Name "cycle-DX-B-holiwyn-line-lifecycle-ticket-ready.png"
+      $linePortfolioTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-DX-B-holiwyn-line-lifecycle-ticket-ready.xml"
+      Assert-HierarchyContains -Path $linePortfolioTicketReadyHierarchy -Expected (@('$25', 'To win $833.33', "ticket-price-line", "Swipe up to buy", "place-mock-order", "Yes - MEX -2.5 1H") + $dxTicketExpected)
       Invoke-TapHierarchyNode -Path $linePortfolioTicketReadyHierarchy -Identifier "place-mock-order"
       Start-Sleep -Seconds 2
-      Save-Screenshot -Name "cycle-current-holiwyn-line-portfolio-after-order.png"
-      $linePortfolioAfterOrderHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-line-portfolio-after-order.xml"
-      Assert-HierarchyContains -Path $linePortfolioAfterOrderHierarchy -Expected @("Portfolio", "Open positions", "Recent activity", "1", "Order placed", "MOCK - Buy - MEX -2.5 1H", "Mexico vs. Ecuador", "Mexico vs. Ecuador - MEX -2.5 1H", "Buy - Filled shares 833.33 - Exec price 3% - Implied odds 33.3x")
+      Save-Screenshot -Name "cycle-DX-B-holiwyn-line-lifecycle-after-order.png"
+      $linePortfolioAfterOrderHierarchy = Save-UiHierarchy -Name "cycle-DX-B-holiwyn-line-lifecycle-after-order.xml"
+      Assert-HierarchyContains -Path $linePortfolioAfterOrderHierarchy -Expected (@("Portfolio", "Open positions", "Recent activity", "1", "Order placed", "latest-order-card", "latest-activity-card", "position-card-", "MOCK - Buy - MEX -2.5 1H", "Mexico vs. Ecuador", "Mexico vs. Ecuador - MEX -2.5 1H", "Buy - Filled shares 833.33 - Exec price 3% - Implied odds 33.3x") + $dxPortfolioExpected)
+      Assert-HierarchyDoesNotContain -Path $linePortfolioAfterOrderHierarchy -Unexpected $dxNoMoneylineFallback
       $lineOpenOrderUrl = "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceLineOpenOrder=1"
       Start-DeepLink -Url $lineOpenOrderUrl
       Start-Sleep -Seconds 4
-      Save-Screenshot -Name "cycle-current-holiwyn-line-portfolio-open-order.png"
-      $linePortfolioOpenOrderHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-line-portfolio-open-order.xml"
-      Assert-HierarchyContains -Path $linePortfolioOpenOrderHierarchy -Expected @("Portfolio", "Open orders", "Mexico vs. Ecuador", "Buy - MEX -2.5 1H - OPEN", "Limit", "3%", "Order value", "25 USDT", "Remaining:", "833.33 shares", "Potential payout")
+      Save-Screenshot -Name "cycle-DX-B-holiwyn-line-lifecycle-open-order.png"
+      $linePortfolioOpenOrderHierarchy = Save-UiHierarchy -Name "cycle-DX-B-holiwyn-line-lifecycle-open-order.xml"
+      Assert-HierarchyContains -Path $linePortfolioOpenOrderHierarchy -Expected (@("Portfolio", "portfolio-open-order-count", "Open orders", "open-order-row-smoke-line-open-order", "Mexico vs. Ecuador", "Buy - MEX -2.5 1H - OPEN", "Limit", "3%", "Order value", "25 USDT", "Remaining:", "833.33 shares", "Potential payout") + $dxPortfolioExpected)
+      Assert-HierarchyDoesNotContain -Path $linePortfolioOpenOrderHierarchy -Unexpected $dxNoMoneylineFallback
+      $proof = [ordered]@{
+        cycle = "DX-B"
+        scenario = "Visible mobile line lifecycle"
+        command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailLinePortfolio -Port 8254 -OutputDir docs/mobile/screenshots/cycle-DX-B-line-lifecycle -HierarchyOutputDir docs/mobile/harness/cycle-DX-B-line-lifecycle"
+        assertions = [ordered]@{
+          selectedLineRow = @("Spread", "line 2.5", "period 1st Half", "display label MEX -2.5 1H", "market family spread")
+          ticketReady = @("ticket market family spread", "line 2.5", "period 1st Half", "side buy", "outcome yes", "place-mock-order")
+          afterOrderPortfolio = @("Order placed", "MOCK - Buy - MEX -2.5 1H", "latest-order-card", "latest-activity-card", "position-card", "no moneyline fallback")
+          openOrderPortfolio = @("Open orders", "Buy - MEX -2.5 1H - OPEN", "Limit 3%", "remaining 833.33 shares", "no moneyline fallback")
+        }
+        artifacts = @(
+          "docs/mobile/screenshots/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-selected-line-row.png",
+          "docs/mobile/harness/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-selected-line-row.xml",
+          "docs/mobile/screenshots/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-selected-line-25-1h.png",
+          "docs/mobile/harness/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-selected-line-25-1h.xml",
+          "docs/mobile/screenshots/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-ticket-ready.png",
+          "docs/mobile/harness/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-ticket-ready.xml",
+          "docs/mobile/screenshots/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-after-order.png",
+          "docs/mobile/harness/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-after-order.xml",
+          "docs/mobile/screenshots/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-open-order.png",
+          "docs/mobile/harness/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-open-order.xml"
+        )
+      }
+      $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-DX-B-holiwyn-line-lifecycle-proof.json"
+      $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
+      Write-Host "Proof summary: $proofPath"
       return
     }
 
