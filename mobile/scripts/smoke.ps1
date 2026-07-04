@@ -29,6 +29,7 @@ param(
   [switch]$EventDetailVisibleLiveParity,
   [switch]$EventDetailProviderStatus,
   [switch]$EventDetailVisibleStatusBreadth,
+  [switch]$EventDetailVisibleStatusTransition,
   [switch]$EmptyErrorLoading,
   [switch]$WholeAppNavDiscovery,
   [switch]$EventDetailPosition,
@@ -113,7 +114,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 $ServerLiveDetailHalvesOrderBook = $ServerLiveDetailFirstHalfOrderBook -or $ServerLiveDetailSecondHalfOrderBook
-$EventDetailProviderRouteStatusProof = $EventDetailProviderStatus -or $EventDetailVisibleStatusBreadth
+$EventDetailProviderRouteStatusProof = $EventDetailProviderStatus -or $EventDetailVisibleStatusBreadth -or $EventDetailVisibleStatusTransition
 $ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook -or $ServerLiveProviderRefreshProof -or $EventDetailProviderRouteStatusProof
 
 $MobileRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
@@ -123,14 +124,16 @@ $ResolvedHierarchyOutputDir = Join-Path $RepoRoot $HierarchyOutputDir
 New-Item -ItemType Directory -Force -Path $ResolvedOutputDir | Out-Null
 New-Item -ItemType Directory -Force -Path $ResolvedHierarchyOutputDir | Out-Null
 
-$ProviderStatusCycle = if ($EventDetailVisibleStatusBreadth) { "EJ-B" } else { "EI-B" }
-$ProviderStatusArtifactPrefix = if ($EventDetailVisibleStatusBreadth) { "cycle-EJ-B-visible-status-breadth" } else { "cycle-EI-B-route-backed-status" }
-$ProviderStatusScope = if ($EventDetailVisibleStatusBreadth) {
+$ProviderStatusCycle = if ($EventDetailVisibleStatusTransition) { "EK-B" } elseif ($EventDetailVisibleStatusBreadth) { "EJ-B" } else { "EI-B" }
+$ProviderStatusArtifactPrefix = if ($EventDetailVisibleStatusTransition) { "cycle-EK-B-visible-status-transition" } elseif ($EventDetailVisibleStatusBreadth) { "cycle-EJ-B-visible-status-breadth" } else { "cycle-EI-B-route-backed-status" }
+$ProviderStatusScope = if ($EventDetailVisibleStatusTransition) {
+  "Route-backed visible Android unavailable/not-ready and stale-refreshing-ready transition proof across live detail, Book/orderbook, and ticket handoff"
+} elseif ($EventDetailVisibleStatusBreadth) {
   "Route-backed visible Android status breadth across live detail, chart, Book/orderbook settings, and ticket settings"
 } else {
   "Route-backed provider lifecycle/status badges on live detail, chart, Book/orderbook, and ticket handoff"
 }
-$ProviderStatusSwitch = if ($EventDetailVisibleStatusBreadth) { "-EventDetailVisibleStatusBreadth" } else { "-EventDetailProviderStatus" }
+$ProviderStatusSwitch = if ($EventDetailVisibleStatusTransition) { "-EventDetailVisibleStatusTransition" } elseif ($EventDetailVisibleStatusBreadth) { "-EventDetailVisibleStatusBreadth" } else { "-EventDetailProviderStatus" }
 
 function Save-Screenshot {
   param(
@@ -1363,22 +1366,43 @@ try {
     if ($EventDetailProviderRouteStatusProof) {
       Save-Screenshot -Name "$ProviderStatusArtifactPrefix-live-top.png"
       $providerStatusTopHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-live-top.xml"
-      $providerStatusTopExpected = @(
-        "event-detail-live-data-inline",
-        "live-data-status-ready",
-        "provider-lifecycle-ready",
-        "live-data-source-polymarket-gamma",
-        "Live provider ready",
-        "event-detail-price-chart",
-        "event-detail-chart-route-state",
-        "chart-status-ready",
-        "provider-lifecycle-ready",
-        "Chart provider ready",
-        "event-detail-chart-ticket-handoff-status",
-        "provider-source-polymarket",
-        "event-detail-chart-open-book"
-      )
-      if ($EventDetailVisibleStatusBreadth) {
+      if ($EventDetailVisibleStatusTransition) {
+        $providerStatusTopExpected = @(
+          "event-detail-live-data-inline",
+          "live-data-status-unavailable",
+          "provider-lifecycle-not-ready",
+          "live-data-source-polymarket-gamma",
+          "Live provider not ready",
+          "event-detail-price-chart",
+          "event-detail-chart-route-state",
+          "chart-status-",
+          "event-detail-chart-ticket-handoff-status",
+          "provider-source-polymarket",
+          "Ticket not ready",
+          "event-detail-chart-open-book"
+        )
+      } else {
+        $providerStatusTopExpected = @(
+          "event-detail-live-data-inline",
+          "live-data-status-ready",
+          "provider-lifecycle-ready",
+          "live-data-source-polymarket-gamma",
+          "Live provider ready",
+          "event-detail-price-chart",
+          "event-detail-chart-route-state",
+          "chart-status-ready",
+          "provider-lifecycle-ready",
+          "Chart provider ready",
+          "event-detail-chart-ticket-handoff-status",
+          "provider-source-polymarket",
+          "event-detail-chart-open-book"
+        )
+      }
+      if ($EventDetailVisibleStatusTransition) {
+        $providerStatusTopExpected += @(
+          "provider-lifecycle-not-ready"
+        )
+      } elseif ($EventDetailVisibleStatusBreadth) {
         $providerStatusTopExpected += @(
           "provider-lifecycle-refresh-due",
           "Ticket refresh due"
@@ -1388,7 +1412,13 @@ try {
       }
       Assert-HierarchyContains -Path $providerStatusTopHierarchy -Expected $providerStatusTopExpected
 
-      Assert-HierarchyDoesNotContain -Path $providerStatusTopHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Live refresh due")
+      $providerStatusTopUnexpected = @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready")
+      if ($EventDetailVisibleStatusTransition) {
+        $providerStatusTopUnexpected += @("Ticket provider ready", "selected-market-mexico-ecuador-winner", "Team to Advance", "Mexico vs. Ecuador")
+      } else {
+        $providerStatusTopUnexpected += @("Live refresh due")
+      }
+      Assert-HierarchyDoesNotContain -Path $providerStatusTopHierarchy -Unexpected $providerStatusTopUnexpected
 
       Invoke-TapHierarchyNode -Path $providerStatusTopHierarchy -Identifier "event-detail-chart-open-book"
       Start-Sleep -Milliseconds 250
@@ -1396,7 +1426,11 @@ try {
       $providerStatusBookRefreshingHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-book-refreshing.xml"
       Assert-HierarchyContains -Path $providerStatusBookRefreshingHierarchy -Expected @(
         "event-detail-order-book-screen",
+        "selected-market-",
+        "selected-selector-key-",
+        "selected-provider-source-polymarket",
         "event-detail-order-book-depth-state",
+        "orderbook-status-loading",
         "provider-lifecycle-refreshing",
         "Book depth refreshing",
         "Loading depth",
@@ -1420,7 +1454,21 @@ try {
         "order-book-ticket-handoff-status",
         "order-book-buy-"
       )
-      if ($EventDetailVisibleStatusBreadth) {
+      if ($EventDetailVisibleStatusTransition) {
+        $providerStatusBookResolvedExpected += @(
+          "orderbook-availability-ready",
+          "provider-lifecycle-ready",
+          "Ticket provider ready",
+          "selected-market-",
+          "selected-selector-key-",
+          "selected-family-",
+          "selected-market-type-",
+          "selected-outcome-",
+          "selected-provider-market-",
+          "selected-provider-condition-",
+          "selected-provider-token-"
+        )
+      } elseif ($EventDetailVisibleStatusBreadth) {
         $providerStatusBookResolvedExpected += @(
           "orderbook-availability-stale",
           "provider-lifecycle-refresh-due",
@@ -1434,34 +1482,34 @@ try {
         )
       }
       Assert-HierarchyContains -Path $providerStatusBookResolvedHierarchy -Expected $providerStatusBookResolvedExpected
-      Assert-HierarchyDoesNotContain -Path $providerStatusBookResolvedHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Fixture depth", "selected-market-mexico-ecuador-winner", "Team to Advance")
+      Assert-HierarchyDoesNotContain -Path $providerStatusBookResolvedHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Fixture depth", "Fallback depth", "quote-fallback-ladder", "selected-market-mexico-ecuador-winner", "Team to Advance", "Mexico vs. Ecuador")
 
       Invoke-TapHierarchyNode -Path $providerStatusBookResolvedHierarchy -Identifier "order-book-settings-open"
       Start-Sleep -Milliseconds 500
       Save-Screenshot -Name "$ProviderStatusArtifactPrefix-book-settings-cents.png"
       $providerStatusBookSettingsCentsHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-book-settings-cents.xml"
-      Assert-HierarchyContains -Path $providerStatusBookSettingsCentsHierarchy -Expected @("order-book-settings-sheet", "Book settings", "Price display", "order-book-display-mode-toggle", "book-display-mode-cents", "decimalize-off", "selected-provider-source-polymarket")
-      Assert-HierarchyDoesNotContain -Path $providerStatusBookSettingsCentsHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Fixture depth", "selected-market-mexico-ecuador-winner", "Team to Advance")
+      Assert-HierarchyContains -Path $providerStatusBookSettingsCentsHierarchy -Expected @("order-book-settings-sheet", "Book settings", "Price display", "order-book-display-mode-toggle", "book-display-mode-cents", "decimalize-off", "selected-market-", "selected-selector-key-", "selected-provider-source-polymarket")
+      Assert-HierarchyDoesNotContain -Path $providerStatusBookSettingsCentsHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Fixture depth", "selected-market-mexico-ecuador-winner", "Team to Advance", "Mexico vs. Ecuador")
 
       Invoke-TapHierarchyNode -Path $providerStatusBookSettingsCentsHierarchy -Identifier "order-book-display-mode-toggle"
       Start-Sleep -Milliseconds 500
       Save-Screenshot -Name "$ProviderStatusArtifactPrefix-book-settings-decimal.png"
       $providerStatusBookSettingsDecimalHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-book-settings-decimal.xml"
-      Assert-HierarchyContains -Path $providerStatusBookSettingsDecimalHierarchy -Expected @("order-book-settings-sheet", "book-display-mode-decimal", "decimalize-on", "selected-provider-source-polymarket", "Price (USDT)")
-      Assert-HierarchyDoesNotContain -Path $providerStatusBookSettingsDecimalHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Fixture depth", "selected-market-mexico-ecuador-winner", "Team to Advance")
+      Assert-HierarchyContains -Path $providerStatusBookSettingsDecimalHierarchy -Expected @("order-book-settings-sheet", "book-display-mode-decimal", "decimalize-on", "selected-market-", "selected-selector-key-", "selected-provider-source-polymarket", "Price (USDT)")
+      Assert-HierarchyDoesNotContain -Path $providerStatusBookSettingsDecimalHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Fixture depth", "selected-market-mexico-ecuador-winner", "Team to Advance", "Mexico vs. Ecuador")
 
       Invoke-TapHierarchyNode -Path $providerStatusBookSettingsDecimalHierarchy -Identifier "order-book-buy-" -StartsWith
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "$ProviderStatusArtifactPrefix-ticket-handoff.png"
       $providerStatusTicketHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-ticket-handoff.xml"
-      Assert-HierarchyContains -Path $providerStatusTicketHierarchy -Expected @("trade-ticket", "ticket-side-buy", "ticket-side-sell", "ticket-settings", "ticket-selection-summary", "provider-source-polymarket", "ticket-provider-source-polymarket", "ticket-market-id-", "ticket-outcome-id-")
-      Assert-HierarchyDoesNotContain -Path $providerStatusTicketHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Team to Advance", "Mexico vs. Ecuador")
+      Assert-HierarchyContains -Path $providerStatusTicketHierarchy -Expected @("trade-ticket", "ticket-side-buy", "ticket-side-sell", "ticket-settings", "ticket-selection-summary", "provider-source-polymarket", "ticket-provider-source-polymarket", "ticket-market-id-", "ticket-outcome-id-", "ticket-provider-market-", "ticket-provider-condition-", "ticket-provider-token-")
+      Assert-HierarchyDoesNotContain -Path $providerStatusTicketHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Team to Advance", "Mexico vs. Ecuador", "selected-market-mexico-ecuador-winner")
       Invoke-TapHierarchyNode -Path $providerStatusTicketHierarchy -Identifier "ticket-settings"
       Start-Sleep -Milliseconds 500
       Save-Screenshot -Name "$ProviderStatusArtifactPrefix-ticket-settings.png"
       $providerStatusTicketSettingsHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-ticket-settings.xml"
-      Assert-HierarchyContains -Path $providerStatusTicketSettingsHierarchy -Expected @("trade-ticket", "ticket-advanced-details", "ticket-trading-mode", "Trading mode: Server mode", "ticket-market-depth", "provider-source-polymarket", "ticket-provider-source-polymarket")
-      Assert-HierarchyDoesNotContain -Path $providerStatusTicketSettingsHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Team to Advance", "Mexico vs. Ecuador")
+      Assert-HierarchyContains -Path $providerStatusTicketSettingsHierarchy -Expected @("trade-ticket", "ticket-advanced-details", "ticket-trading-mode", "Trading mode: Server mode", "ticket-market-depth", "provider-source-polymarket", "ticket-provider-source-polymarket", "ticket-provider-market-", "ticket-provider-condition-", "ticket-provider-token-")
+      Assert-HierarchyDoesNotContain -Path $providerStatusTicketSettingsHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Team to Advance", "Mexico vs. Ecuador", "selected-market-mexico-ecuador-winner")
 
       $proof = [ordered]@{
         cycle = $ProviderStatusCycle
@@ -1478,11 +1526,11 @@ try {
         result = "pass"
         assertions = [ordered]@{
           backendHealth = "Backend /api/health was required before launch; the proof aborts instead of falling back when unavailable."
-          liveRouteStatusReady = "Live detail consumed route-backed liveDataStatus with live-data-status-ready and live-data-source-polymarket-gamma."
-          chartRouteStatusReady = if ($EventDetailVisibleStatusBreadth) { "Chart route state exposes chart-status-ready plus a visible Ticket refresh due handoff for the mixed provider lifecycle event." } else { "Chart route state exposes chart-status-ready, provider-lifecycle-ready, and Ticket provider ready for the selected route-backed market." }
+          liveRouteStatusReady = if ($EventDetailVisibleStatusTransition) { "Live detail consumed route-backed liveDataStatus with live-data-status-unavailable, provider-lifecycle-not-ready, and live-data-source-polymarket-gamma." } else { "Live detail consumed route-backed liveDataStatus with live-data-status-ready and live-data-source-polymarket-gamma." }
+          chartRouteStatusReady = if ($EventDetailVisibleStatusTransition) { "Initial route-backed live/chart state exposes unavailable/not-ready markers with explicit Ticket not ready messaging instead of a ready fallback." } elseif ($EventDetailVisibleStatusBreadth) { "Chart route state exposes chart-status-ready plus a visible Ticket refresh due handoff for the mixed provider lifecycle event." } else { "Chart route state exposes chart-status-ready, provider-lifecycle-ready, and Ticket provider ready for the selected route-backed market." }
           serverRuntime = "Expo launched with EXPO_PUBLIC_ORDER_MODE=server and EXPO_PUBLIC_API_BASE_URL set to the supplied BackendBaseUrl."
           bookRefreshing = "Opening Book produces a visible provider-lifecycle-refreshing Book depth refreshing state before the resolved depth state."
-          bookRouteDepthReady = if ($EventDetailVisibleStatusBreadth) { "Resolved Book depth uses orderbook-source-orderbook-route and orderbook-status-ready while the selected market availability remains visibly refresh-due/stale rather than fixture/default ready." } else { "Resolved Book depth uses orderbook-source-orderbook-route, orderbook-status-ready, orderbook-availability-ready, and selected-provider-source-polymarket rather than fixture depth." }
+          bookRouteDepthReady = if ($EventDetailVisibleStatusTransition) { "Resolved Book depth uses orderbook-source-orderbook-route, orderbook-status-ready, orderbook-availability-ready, selected provider identity, and Ticket provider ready after the visible loading state." } elseif ($EventDetailVisibleStatusBreadth) { "Resolved Book depth uses orderbook-source-orderbook-route and orderbook-status-ready while the selected market availability remains visibly refresh-due/stale rather than fixture/default ready." } else { "Resolved Book depth uses orderbook-source-orderbook-route, orderbook-status-ready, orderbook-availability-ready, and selected-provider-source-polymarket rather than fixture depth." }
           bookSettings = "Book settings toggles book-display-mode-cents to book-display-mode-decimal while preserving selected-provider-source-polymarket."
           ticketServerMode = "Ticket settings exposes Trading mode: Server mode while preserving provider-source-polymarket and ticket-provider-source-polymarket selection identity."
           fallbackGuard = "The top, Book, and ticket hierarchies reject deterministic-status-fixture, fixture-ready, mock-ready, and default-ready markers."

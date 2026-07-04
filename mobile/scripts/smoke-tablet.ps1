@@ -24,6 +24,7 @@ param(
   [switch]$EventDetailVisibleLiveParity,
   [switch]$EventDetailProviderStatus,
   [switch]$EventDetailVisibleStatusBreadth,
+  [switch]$EventDetailVisibleStatusTransition,
   [switch]$ServerLiveDetailOrderBook,
   [switch]$ServerLiveDetailLineOrderBook,
   [switch]$ServerLiveDetailTotalsOrderBook,
@@ -115,6 +116,8 @@ if ($EventDetailTrade) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailProviderStatus -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EventDetailVisibleStatusBreadth) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailVisibleStatusBreadth -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($EventDetailVisibleStatusTransition) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailVisibleStatusTransition -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($ServerLiveDetailOrderBook) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerLiveDetailOrderBook -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl "http://127.0.0.1:3002" -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($ServerLiveDetailLineOrderBook) {
