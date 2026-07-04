@@ -61,3 +61,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | App shell header/promo controls appeared above the Portfolio surface, unlike Polymarket's full-screen Portfolio page. | P0 | Passed | `App.tsx` no longer renders the shared `Header` when `mainTab === "portfolio"`. Tablet proof asserts header controls are absent. |
 | Bottom tab navigation must remain available from Portfolio. | P0 | Passed | Header condition changed only the shared top header; tablet proof shows bottom tab navigation remains available. |
 | Exact native status bar/top spacing match. | P2 | Deferred | Needs final device polish after more page parity cycles. |
+
+## Cycle FS - Portfolio Range Selector Interaction
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio chart range selector was static text instead of an interactive control. | P0 | Passed | `Portfolio` now tracks `activeRange` and each range is a tappable `Pressable`. Tablet proof taps `1W`. |
+| Chart needs a selected range identity that future backend data can target. | P0 | Passed | Chart accessibility label includes `portfolio-performance-chart-range-{range}` and tablet proof verifies `portfolio-performance-chart-range-1W`. |
+| Real portfolio history time series per range. | P1 | Deferred | Requires a future backend route for account value history. |

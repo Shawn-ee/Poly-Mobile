@@ -54,6 +54,8 @@ Cycle FQ changes only Portfolio presentation. The screen still consumes the same
 
 Cycle FR changes only the app shell render condition for Portfolio. It has no backend, API, storage, or data contract impact.
 
+Cycle FS adds local Portfolio range state for `1D`, `1W`, `1M`, and `All`. No route changes were made. Future backend support should expose a portfolio value time-series route that accepts a range key and returns points suitable for the chart.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
