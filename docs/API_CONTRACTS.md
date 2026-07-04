@@ -89,6 +89,8 @@ Cycle GH changes only discovery-card rail behavior/proof and hides the old row f
 
 Cycle GI changes only Live page presentation by hiding market/outcome summary pills from the default MVP view. It does not change live event discovery payloads, refresh behavior, market/outcome fields, ticket request fields, order routes, or Portfolio contracts.
 
+Cycle GJ changes only Home discovery presentation by removing default Saved/watchlist controls from the Local MVP path. It does not change event discovery payloads, saved state storage, market/outcome fields, ticket request fields, order routes, or Portfolio contracts.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

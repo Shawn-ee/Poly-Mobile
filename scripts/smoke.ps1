@@ -796,6 +796,10 @@ try {
     }
 
     if ($LocalMvpHomeRouteTicketFlow) {
+      $localMvpHomeRouteCycle = "GD"
+      if ($OutputDir -match "cycle-([A-Z]{2})-") {
+        $localMvpHomeRouteCycle = $Matches[1]
+      }
       $mvpHiddenOrderBookExpected = @(
         "event-detail-top-order-book",
         "event-detail-chart-open-book",
@@ -808,7 +812,10 @@ try {
         "MLB",
         "Tennis",
         "future-outcome-",
-        "future-market-chart"
+        "future-market-chart",
+        "home-filter-saved",
+        "save-event-",
+        "home-saved-empty"
       )
 
       Save-Screenshot -Name "cycle-FE-home-route-ticket-home.png"
@@ -902,7 +909,7 @@ try {
       Assert-HierarchyDoesNotContain -Path $homeRouteTicketSpreadTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
       $proof = [ordered]@{
-        cycle = "GD"
+        cycle = $localMvpHomeRouteCycle
         scenario = "World Cup games-focused discovery opens route-backed Event Detail and simple spread Buy/Sell ticket"
         command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpHomeRouteTicketFlow -Port $Port -BackendBaseUrl $BackendBaseUrl -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir"
         backendBaseUrl = $BackendBaseUrl
@@ -914,7 +921,7 @@ try {
           homeDiscovery = @("World Cup live games-focused header", "route-backed event card", "retail outcome rail", "direct rail-to-ticket proof", "no non-MVP sport/futures promo")
           detailHydration = @("same route-backed event", "price chart", "Game Lines")
           ticket = @("spread ticket opens from Home-opened detail", "line/period/side/provider token identity preserved", "Buy/Sell controls visible")
-          noFallback = @("no Mexico/Ecuador fallback", "no default orderbook UI")
+          noFallback = @("no Mexico/Ecuador fallback", "no default orderbook UI", "no default Home watchlist/save controls")
         }
         artifacts = @(
           "$OutputDir/cycle-FE-home-route-ticket-home.png",
@@ -929,7 +936,7 @@ try {
           "$HierarchyOutputDir/cycle-FE-home-route-ticket-spread-ticket.xml"
         )
       }
-      $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-GD-home-world-cup-games-focus-proof.json"
+      $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-$localMvpHomeRouteCycle-local-mvp-home-route-ticket-flow-proof.json"
       New-Item -ItemType Directory -Force -Path (Split-Path $proofPath) | Out-Null
       $proof | ConvertTo-Json -Depth 8 | Set-Content -Path $proofPath -Encoding UTF8
       Write-Host "Proof summary: $proofPath"

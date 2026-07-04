@@ -5,7 +5,7 @@ import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { FutureList, MarketList } from "./MarketLists";
 import { WorldCupSegmented, WorldCupTab } from "./WorldCupSegmented";
 
-type HomeFilter = "all" | "live" | "today" | "saved";
+type HomeFilter = "all" | "live" | "today";
 
 type HomeScreenCopy = {
   games: string;
@@ -34,8 +34,6 @@ export function HomeScreen({
   openEvent,
   openTicket,
   futures,
-  savedEventIds,
-  toggleSavedEvent,
 }: {
   locale: Locale;
   t: HomeScreenCopy;
@@ -55,7 +53,6 @@ export function HomeScreen({
     ["all", t.searchAll],
     ["live", t.searchLive],
     ["today", t.today],
-    ["saved", t.saved],
   ];
   const visibleEvents = useMemo(
     () =>
@@ -63,12 +60,10 @@ export function HomeScreen({
         ? events.filter((event) => event.status === "live")
         : homeFilter === "today"
           ? events.filter((event) => event.status === "today")
-          : homeFilter === "saved"
-            ? events.filter((event) => savedEventIds.has(event.id))
           : events,
-    [events, homeFilter, savedEventIds],
+    [events, homeFilter],
   );
-  const emptyCopy = homeFilter === "saved" ? t.noSavedMarkets : t.noResults;
+  const emptyCopy = t.noResults;
   const liveCount = events.filter((event) => event.status === "live").length;
   const availableGameCount = events.length;
 
@@ -117,25 +112,16 @@ export function HomeScreen({
           </Pressable>
         ))}
       </View>
-      {homeFilter === "saved" && visibleEvents.length === 0 && (
-        <Text accessibilityLabel="home-saved-empty" testID="home-saved-empty" style={styles.savedEmptyText}>
-          {t.noSavedMarkets}
-        </Text>
-      )}
       <WorldCupSegmented left={t.games} right={t.futures} value={worldCupTab} setValue={setWorldCupTab} />
       {worldCupTab === "games" ? (
-        homeFilter === "saved" && visibleEvents.length === 0 ? null : (
-          <MarketList
-            locale={locale}
-            events={visibleEvents}
-            empty={emptyCopy}
-            openEvent={openEvent}
-            openTicket={openTicket}
-            savedEventIds={savedEventIds}
-            toggleSavedEvent={toggleSavedEvent}
-            statsCopy={{ volume: t.volume, liquidity: t.liquidity }}
-          />
-        )
+        <MarketList
+          locale={locale}
+          events={visibleEvents}
+          empty={emptyCopy}
+          openEvent={openEvent}
+          openTicket={openTicket}
+          statsCopy={{ volume: t.volume, liquidity: t.liquidity }}
+        />
       ) : (
         <FutureList locale={locale} futures={futures} openTicket={openTicket} statsCopy={{ volume: t.volume, liquidity: t.liquidity }} />
       )}
