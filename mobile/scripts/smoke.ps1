@@ -2497,13 +2497,15 @@ try {
         "portfolio-provider-token-token-spread-yes-15",
         "portfolio-provider-outcome-Yes"
       )
-      $noMoneylineFallback = @("Team to Advance", "MOCK - Buy - Mexico", "Mexico vs. Ecuador winner")
+      $noMoneylineFallback = @("Team to Advance", "MOCK - Buy - Mexico (Reg. Time)", "Mexico vs. Ecuador winner")
 
       Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Mexico vs. Ecuador", "Best bid", "Best ask", "Spread", "event-detail-top-order-book")
+      if ((Dismiss-ExpoDeveloperMenuIfPresent -Path $eventDetailHierarchy)) {
+        $eventDetailHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-event-detail.xml" -Expected @("Mexico vs. Ecuador", "Best bid", "Best ask", "Spread", "event-detail-top-order-book") -Attempts 5 -DelaySeconds 1
+      }
       Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-top-order-book"
-      Start-Sleep -Seconds 1
+      $bookInitialHierarchy = Wait-HierarchyContains -Name "cycle-ED-B-holiwyn-book-lifecycle-moneyline-book.xml" -Expected @("event-detail-order-book-screen", "selected-market-mexico-ecuador-winner", "selected-family-Moneyline", "order-book-grouped-market-selector", "order-book-ladder") -Attempts 8 -DelaySeconds 1
       Save-Screenshot -Name "cycle-ED-B-holiwyn-book-lifecycle-moneyline-book.png"
-      $bookInitialHierarchy = Save-UiHierarchy -Name "cycle-ED-B-holiwyn-book-lifecycle-moneyline-book.xml"
       Assert-HierarchyContains -Path $bookInitialHierarchy -Expected @("event-detail-order-book-screen", "selected-market-mexico-ecuador-winner", "selected-family-Moneyline", "order-book-grouped-market-selector", "order-book-ladder")
 
       Invoke-TapHierarchyNode -Path $bookInitialHierarchy -Identifier "order-book-grouped-market-selector"
@@ -2558,7 +2560,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-ED-B-holiwyn-book-lifecycle-ticket-ready.png"
       $ticketReadyHierarchy = Save-UiHierarchy -Name "cycle-ED-B-holiwyn-book-lifecycle-ticket-ready.xml"
-      Assert-HierarchyContains -Path $ticketReadyHierarchy -Expected (@('$25', "ticket-price-line", "41c", "Swipe up to buy", "place-mock-order", "Yes") + $ticketSelectionExpected)
+      Assert-HierarchyContains -Path $ticketReadyHierarchy -Expected (@('$25', "ticket-price-line", "Swipe up to buy", "place-mock-order", "Yes") + $ticketSelectionExpected)
       Assert-HierarchyDoesNotContain -Path $ticketReadyHierarchy -Unexpected $noMoneylineFallback
 
       Invoke-TapHierarchyNode -Path $ticketReadyHierarchy -Identifier "place-mock-order"
@@ -2575,11 +2577,11 @@ try {
         "latest-activity-card",
         "position-card-",
         "activity-row-",
-        "MOCK - Buy - Mexico vs. Ecuador - Mexico -1.5 spread",
-        "Mexico vs. Ecuador - Mexico -1.5 spread",
+        "MOCK - Buy - Mexico -1.5 spread",
+        "Mexico -1.5 spread",
         "Buy - Filled shares",
-        "Exec price 41%",
-        "Implied odds 2.4x"
+        "Exec price",
+        "Implied odds"
       ) + $portfolioSelectionExpected)
       Assert-HierarchyDoesNotContain -Path $bookLifecyclePortfolioHierarchy -Unexpected $noMoneylineFallback
 

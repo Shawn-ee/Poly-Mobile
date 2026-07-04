@@ -1,6 +1,6 @@
 # Cycle ED-C Book-Selected Order To Portfolio Lifecycle Gate
 
-Status: fail until integrated proof. This is a docs-only audit/reference gate and does not certify implementation.
+Status: passed for the selected ED integrated gate after Lead proof. This gate certifies the selected fake-token Book-origin lifecycle, not production wallet signing or full provider-family breadth.
 
 Audit Gate Agent: Agent C.
 
@@ -24,7 +24,7 @@ ED does not reopen those passes unless new proof regresses them. ED promotes the
 
 Out of scope:
 
-- Editing mobile source, backend source, scripts, tests, or generated proof artifacts.
+- Further editing mobile source, backend source, scripts, tests, or generated proof artifacts inside this audit file.
 - Certifying production Polymarket order submission or swipe confirmation. The DQ-C reference was location-gated before real order entry.
 - Claiming full selector-family lifecycle breadth before real provider-backed line families are available.
 - Fresh Polymarket device capture by Agent C.
@@ -64,16 +64,16 @@ All P0 rows must pass before ED can mark the selected Book-order-Portfolio lifec
 
 | ID | Priority | Criterion | Required proof | Current ED status |
 | --- | --- | --- | --- | --- |
-| ED-LC-P0-01 | P0 | The lifecycle must start on the live game page, open Book from the selected market context, and identify the selected Book market/line/outcome before ticket open. | Android screenshot/XML/proof JSON showing live page event, Book entry, opened Book, selected market id or selector key, family/type, line, period, outcome/side, source/status, and row/action target. | Fail until integrated proof |
-| ED-LC-P0-02 | P0 | Ticket opened from Book must preserve the selected Book identity and must not fall back to moneyline, default event, first rendered line, or stale selector state. | Android ticket screenshot/XML plus proof JSON showing matching event, market id or selector key, family/type, line, period, outcome/side, row side/price where applicable, provider/source fields, and ticket order target. | Fail until integrated proof |
-| ED-LC-P0-03 | P0 | Fake-token order submit must preserve the same selected Book/ticket identity in the backend order request and order response. | Backend route/proof artifact for order request/response fields paired with Android visible submit/result proof for the same selection and order id. | Fail until integrated proof |
-| ED-LC-P0-04 | P0 | Portfolio open order must preserve the selected Book identity when the order remains open. | Backend portfolio/open-orders route proof plus Android Portfolio/open-order screenshot/XML showing matching market/outcome, family/type, line, period, side/outcome, amount, status, and order id. | Fail until integrated proof |
-| ED-LC-P0-05 | P0 | Portfolio position/open position must preserve the selected Book identity when the fake-token order is filled or represented as a position. | Backend position/fill proof plus Android Portfolio position/open-position screenshot/XML showing matching market/outcome, family/type, line, period, side/outcome, amount, status, and provider/source fields where available. | Fail until integrated proof |
-| ED-LC-P0-06 | P0 | Activity/history must preserve selected lifecycle identity, including order/fill linkage and visible status. | Backend `/api/portfolio/history` or equivalent route proof plus Android activity/history screenshot/XML with matching event, market, line, period, side/outcome, order/fill id, amount, and status. | Fail until integrated proof |
-| ED-LC-P0-07 | P0 | Identity must be consistent across Book, ticket, order request, order response, Portfolio/open order/open position, and history/activity. | A single integrated proof bundle mapping each step to the same market id or selector key, outcome id, family/type, line, period, side/outcome, display label, provider fields, and order/fill ids. | Fail until integrated proof |
-| ED-LC-P0-08 | P0 | Android-visible proof and backend route/data proof are both mandatory for identity preservation. | Committed Android screenshots/XML/proof JSON plus backend route/data proof for the same selected lifecycle. Backend-only, screenshot-only, compile-only, and reused EC/DX/DO-only evidence cannot pass. | Fail until integrated proof |
-| ED-LC-P0-09 | P0 | Non-ready/fallback/provider-unavailable states must remain honest throughout the lifecycle and cannot be counted as provider-ready evidence. | Proof fields distinguishing provider-ready depth/source from fixture/fallback/unavailable/stale/error states, plus visible UI labels or documented skip reason. | Fail until integrated proof |
-| ED-LC-P0-10 | P0 | The ED proof must be integrated, same-build, Android-visible, and preserve EA/EB/EC regression markers for the live page and Book path. | One committed ED proof bundle under the ED paths with live page, Book, ticket, submit, Portfolio, and history artifacts, plus same-build references or assertions for EA/EB/EC markers. | Fail until integrated proof |
+| ED-LC-P0-01 | P0 | The lifecycle must start on the live game page, open Book from the selected market context, and identify the selected Book market/line/outcome before ticket open. | Android screenshot/XML/proof JSON showing live page event, Book entry, opened Book, selected market id or selector key, family/type, line, period, outcome/side, source/status, and row/action target. | Pass for selected ED proof |
+| ED-LC-P0-02 | P0 | Ticket opened from Book must preserve the selected Book identity and must not fall back to moneyline, default event, first rendered line, or stale selector state. | Android ticket screenshot/XML plus proof JSON showing matching event, market id or selector key, family/type, line, period, outcome/side, row side/price where applicable, provider/source fields, and ticket order target. | Pass for selected ED proof |
+| ED-LC-P0-03 | P0 | Fake-token order submit must preserve the same selected Book/ticket identity in the backend order request and order response. | Backend route/proof artifact for order request/response fields paired with Android visible submit/result proof for the same selection and order id. | Pass for selected ED proof |
+| ED-LC-P0-04 | P0 | Portfolio open order must preserve the selected Book identity when the order remains open. | Backend portfolio/open-orders route proof plus Android Portfolio/open-order screenshot/XML showing matching market/outcome, family/type, line, period, side/outcome, amount, status, and order id. | Pass for selected ED proof |
+| ED-LC-P0-05 | P0 | Portfolio position/open position must preserve the selected Book identity when the fake-token order is filled or represented as a position. | Backend position/fill proof plus Android Portfolio position/open-position screenshot/XML showing matching market/outcome, family/type, line, period, side/outcome, amount, status, and provider/source fields where available. | Pass for selected ED proof |
+| ED-LC-P0-06 | P0 | Activity/history must preserve selected lifecycle identity, including order/fill linkage and visible status. | Backend `/api/portfolio/history` or equivalent route proof plus Android activity/history screenshot/XML with matching event, market, line, period, side/outcome, order/fill id, amount, and status. | Pass for selected ED proof |
+| ED-LC-P0-07 | P0 | Identity must be consistent across Book, ticket, order request, order response, Portfolio/open order/open position, and history/activity. | A single integrated proof bundle mapping each step to the same market id or selector key, outcome id, family/type, line, period, side/outcome, display label, provider fields, and order/fill ids. | Pass for selected ED proof |
+| ED-LC-P0-08 | P0 | Android-visible proof and backend route/data proof are both mandatory for identity preservation. | Committed Android screenshots/XML/proof JSON plus backend route/data proof for the same selected lifecycle. Backend-only, screenshot-only, compile-only, and reused EC/DX/DO-only evidence cannot pass. | Pass for selected ED proof |
+| ED-LC-P0-09 | P0 | Non-ready/fallback/provider-unavailable states must remain honest throughout the lifecycle and cannot be counted as provider-ready evidence. | Proof fields distinguishing provider-ready depth/source from fixture/fallback/unavailable/stale/error states, plus visible UI labels or documented skip reason. | Pass for selected ED proof |
+| ED-LC-P0-10 | P0 | The ED proof must be integrated, same-build, Android-visible, and preserve EA/EB/EC regression markers for the live page and Book path. | One committed ED proof bundle under the ED paths with live page, Book, ticket, submit, Portfolio, and history artifacts, plus same-build references or assertions for EA/EB/EC markers. | Pass for selected ED proof |
 
 ## P1 Criteria
 
@@ -97,7 +97,7 @@ Preferred final paths for Lead integration:
 - Screenshots: `docs/mobile/screenshots/cycle-ED-integrated-book-order-portfolio/`
 - XML: `docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/`
 - Proof JSON: `docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/cycle-ED-book-order-portfolio-proof.json`
-- Backend route/data proof: `docs/mobile/harness/cycle-ED-A-book-order-portfolio-backend-proof.json`
+- Backend route/data proof: `docs/mobile/harness/cycle-ED-A-book-order-portfolio-history.json`
 
 The proof bundle must include:
 
@@ -127,32 +127,31 @@ Block ED pass if any of these occur:
 
 ## Audit Gate Decision
 
-Current result: fail until integrated proof.
+Current result: pass for the selected ED integrated gate.
 
-Unresolved ED P0 gaps: all ED P0 rows are open because this Agent C cycle is docs-only and no integrated Book-origin lifecycle proof was collected.
+Unresolved ED P0 gaps: 0 for the selected Book-selected fake-token lifecycle proven by Lead integration.
 
-New tracked gap: PM-GAP-081.
+Tracked gap: PM-GAP-081 is verified for the selected ED lifecycle.
 
 Next required work:
 
-1. Agent A/Lead provide backend route/data proof tying Book-selected market identity to order request/response, Portfolio, and history route data.
-2. Agent B/Lead run the integrated Android proof bundle under the ED paths above.
-3. Audit Gate compares every P0 row against the ED proof. Any missing visible proof or backend identity proof keeps ED failed.
+1. Keep the ED proof as regression coverage for future Book/order/Portfolio changes.
+2. Promote remaining P1/P2 debt into later cycles when broader real provider-backed line-family lifecycle, cancel/fill status breadth, production confirmation recapture, immutable snapshots, or Portfolio/history visual polish become the selected scope.
 
 ## Lead Post-Proof Placeholder
 
-Result: pending.
+Result: pass.
 
 Integrated evidence:
 
 - Proof JSON: `docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/cycle-ED-book-order-portfolio-proof.json`
 - Screenshots: `docs/mobile/screenshots/cycle-ED-integrated-book-order-portfolio/`
 - XML: `docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/`
-- Backend route/data proof: `docs/mobile/harness/cycle-ED-A-book-order-portfolio-backend-proof.json`
-- Command: pending Lead final proof path.
+- Backend route/data proof: `docs/mobile/harness/cycle-ED-A-book-order-portfolio-history.json`
+- Command: `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBookLifecycle -Port 8308 -Device 172.16.200.30:41299 -OutputDir docs/mobile/screenshots/cycle-ED-integrated-book-order-portfolio -HierarchyOutputDir docs/mobile/harness/cycle-ED-integrated-book-order-portfolio`
 
 Decision after proof:
 
-- Pass/fail: pending.
-- Unresolved P0 gaps: all ED P0 rows remain open until integrated proof exists.
+- Pass/fail: pass for selected PM-GAP-081 gate.
+- Unresolved P0 gaps: 0 for the selected ED integrated lifecycle.
 - Remaining P1/P2 gaps: broader real provider-backed line-family lifecycle breadth, open/cancel/fill status breadth, official production confirmation recapture, immutable selection snapshots, and visual/motion polish.

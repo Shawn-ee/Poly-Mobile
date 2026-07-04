@@ -1,0 +1,39 @@
+{
+    "cycle":  "ED-integrated",
+    "scope":  "Integrated Book-selected fake-token order to Portfolio/history lifecycle",
+    "issue":  "PM-GAP-081",
+    "device":  "Samsung tablet 172.16.200.30:41299",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBookLifecycle -Port 8308 -Device 172.16.200.30:41299 -OutputDir docs/mobile/screenshots/cycle-ED-integrated-book-order-portfolio -HierarchyOutputDir docs/mobile/harness/cycle-ED-integrated-book-order-portfolio",
+    "eventIdentity":  "Mexico vs. Ecuador",
+    "result":  "pass",
+    "assertions":  {
+                       "bookSelection":  "Book selector changes from Moneyline to Spreads with selected-market-mexico-ecuador-spread selected-line-1.5 selected-period-regulation selected-outcome-yes selected-side-yes",
+                       "providerToken":  "provider-source-polymarket-fixture provider-market-gamma-mexico-ecuador-spread-15 provider-condition-condition-mexico-ecuador-spread-15 provider-token-token-spread-yes-15",
+                       "ticketReady":  "trade-ticket keeps ticket-market-id-mexico-ecuador-spread ticket-outcome-id-yes ticket-line-1.5 ticket-period-regulation and enables place-mock-order",
+                       "portfolioPosition":  "position-card keeps portfolio market/outcome/line/period/side/provider token identity after mock order",
+                       "portfolioActivity":  "latest-order-card latest-activity-card and activity-row expose the same Book-selected identity",
+                       "fallbackGuard":  "No Team to Advance or Mexico moneyline fallback appears after the Book-selected order"
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-ED-integrated-book-order-portfolio/cycle-current-holiwyn-event-detail.png",
+                      "docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/cycle-current-holiwyn-event-detail.xml",
+                      "docs/mobile/screenshots/cycle-ED-integrated-book-order-portfolio/cycle-ED-B-holiwyn-book-lifecycle-moneyline-book.png",
+                      "docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/cycle-ED-B-holiwyn-book-lifecycle-moneyline-book.xml",
+                      "docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/cycle-ED-B-holiwyn-book-lifecycle-selector.xml",
+                      "docs/mobile/screenshots/cycle-ED-integrated-book-order-portfolio/cycle-ED-B-holiwyn-book-lifecycle-spread-selected.png",
+                      "docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/cycle-ED-B-holiwyn-book-lifecycle-spread-selected.xml",
+                      "docs/mobile/screenshots/cycle-ED-integrated-book-order-portfolio/cycle-ED-B-holiwyn-book-lifecycle-ticket-empty.png",
+                      "docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/cycle-ED-B-holiwyn-book-lifecycle-ticket-empty.xml",
+                      "docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/cycle-ED-B-holiwyn-book-lifecycle-ticket-amount-10.xml",
+                      "docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/cycle-ED-B-holiwyn-book-lifecycle-ticket-amount-20.xml",
+                      "docs/mobile/screenshots/cycle-ED-integrated-book-order-portfolio/cycle-ED-B-holiwyn-book-lifecycle-ticket-ready.png",
+                      "docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/cycle-ED-B-holiwyn-book-lifecycle-ticket-ready.xml",
+                      "docs/mobile/screenshots/cycle-ED-integrated-book-order-portfolio/cycle-ED-B-holiwyn-book-lifecycle-portfolio.png",
+                      "docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/cycle-ED-B-holiwyn-book-lifecycle-portfolio.xml",
+                      "docs/mobile/harness/cycle-ED-A-book-order-portfolio-history.json"
+                  ],
+    "remainingGaps":  [
+                          "This proof uses the deterministic backend-shaped local Book/order service in mock mode, not a real wallet signature.",
+                          "Broader real provider-backed line-family lifecycle breadth remains P1 after the selected ED gate."
+                      ]
+}
