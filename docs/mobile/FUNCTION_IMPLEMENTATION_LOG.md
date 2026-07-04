@@ -2,6 +2,31 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle EN Integrated - Route-Backed Book-Staged Limit Lifecycle
+
+Feature/page worked on:
+
+- Integrated Agent C audit gate, Agent A backend/provider route contract proof, and Agent B visible Samsung tablet proof.
+- Reran the Android proof from the integrated main branch against backend `http://127.0.0.1:3002` and server event `mobile-el-a-provider-breadth-54db8e5a`.
+
+Important functions/interactions/state transitions touched:
+
+- Live event detail consumes server market data and route-backed Book depth.
+- Book selector switches to provider-backed Spread `1.5`, selected outcome `fa8cde2d-acf8-4f8a-89d5-710203200c8f`, provider market `gamma-el-a-spread-54db8e5a`, provider token `token-el-a-spread-home-54db8e5a`.
+- Tapped ask `55c` stages `limit-side=ask`, ticket preserves `ticket-limit-price-55`, submit creates a visible fake-token open order, and Portfolio opened/canceled activity preserves the same order-time identity.
+
+Verified:
+
+- `npm --prefix mobile run typecheck`
+- `npx vitest run --config vitest.mobile.config.mts mobile/src/__tests__/orderService.test.ts mobile/src/__tests__/openOrderService.test.ts mobile/src/__tests__/portfolioSnapshotService.test.ts mobile/src/__tests__/portfolioHistoryService.test.ts`
+- `npx jest --runInBand --detectOpenHandles src/__tests__/ticketSelectionMetadata.test.ts src/__tests__/portfolio.open-orders.route.test.ts src/__tests__/portfolio.history.route.test.ts`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleLimitLifecycle -Port 8358 -Device 172.16.200.30:41299 -BackendBaseUrl http://127.0.0.1:3002 -ServerEventSlug mobile-el-a-provider-breadth-54db8e5a -OutputDir docs/mobile/screenshots/cycle-EN-integrated-route-limit-lifecycle -HierarchyOutputDir docs/mobile/harness/cycle-EN-integrated-route-limit-lifecycle`
+
+Known limitations:
+
+- The Android proof uses mock trading mode with server market-data mode; it proves route-backed market/depth/ticket/Portfolio identity, not production real-money order placement.
+- Remaining P1 work: fresh S23 production lifecycle recapture, broader market-family/bid-side route-backed proof, and durable first-class backend selection snapshots.
+
 ## Cycle EN-B - Visible Route-Backed Book-Staged Limit Lifecycle
 
 Feature/page worked on:

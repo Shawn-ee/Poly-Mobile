@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle EN Integrated - Route-Backed Provider-Depth Limit Lifecycle
+
+Cycle EN integrated pairs backend/provider route proof with visible Android proof:
+
+- Backend proof: `docs/mobile/harness/cycle-EN-A-route-limit-lifecycle/proof.json`.
+- Integrated Android proof: `docs/mobile/harness/cycle-EN-integrated-route-limit-lifecycle/cycle-EN-B-visible-route-limit-lifecycle-proof.json`.
+
+Backend/data dependency notes:
+
+- Mobile consumes `/api/mobile/events/:slug/live-detail`, `/api/orderbook/:marketId/book`, `/api/markets/:marketId/quote`, and `/api/markets/:marketId/chart` from backend `http://127.0.0.1:3002` in server market-data mode.
+- The integrated Android proof uses mock trading mode for submit/cancel, but the selected market/depth identity is route-backed from provider-depth rows and not arbitrary local UI-only data.
+- Backend EN-A separately proves the selected provider-depth Book limit identity through the canonical order service contract, `/api/portfolio`, and `/api/portfolio/history` mapping.
+- Production hardening still needs HTTP `POST /api/orders` route proof under the trading-beta environment, broader market-family/bid-side route-backed Android proof, and first-class immutable order/fill/trade/position selection snapshots.
+
 ## Cycle EN-A - Route-Backed Provider-Depth Limit Lifecycle
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

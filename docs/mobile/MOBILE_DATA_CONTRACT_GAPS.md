@@ -2,6 +2,19 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EN Integrated - Route-Backed Provider-Depth Limit Lifecycle
+
+Closed or narrowed:
+
+- Android-visible proof now consumes server market data and route-backed provider-depth Book rows while preserving selected market/outcome/provider/limit identity through ticket, open order, opened activity, and canceled activity.
+- Backend EN-A proof separately proves the same contract family through order creation, portfolio, and history mappers.
+
+Still open:
+
+- Android submit/cancel proof remains mock trading mode; production HTTP `POST /api/orders` route proof is still future work.
+- Fresh S23 official production order/Portfolio/history recapture remains P1.
+- Multi-family/bid-side route-backed lifecycle coverage and immutable first-class backend selection snapshots remain P1/backend hardening.
+
 ## Cycle EN-A - Route-Backed Provider-Depth Limit Lifecycle
 
 Closed or narrowed:
