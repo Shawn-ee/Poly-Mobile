@@ -2,6 +2,35 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EJ-A - Provider Status Breadth Route Proof
+
+Closed or narrowed:
+
+- PM-GAP-084 backend breadth is now proven for `/api/mobile/events/:slug/live-detail`: one disposable route response carries ready, refresh-due plus stale, and unavailable/not-ready provider lifecycle shapes across compact markets.
+- `docs/mobile/harness/cycle-EJ-A-provider-status-breadth.json` records route-backed `markets[].providerLifecycle.quote/orderbookDepth/chartHistory`, `providerOrderbookDepth`, `chartHistoryStatus`, `selection`, `orderbookIdentity`, aggregate `contract.providerLifecycle`, and batched ready/stale/refresh-due counts.
+- Missing `OPTIC_ODDS_API_KEY` remains non-blocking. The proof uses Polymarket-first quote rows plus CLOB-shaped orderbook depth and chart history rows already consumed by live-detail.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- This is backend route proof only; Android visible rendering and broader production mapped-market coverage remain outside Agent A scope.
+- Production line-family breadth still depends on real provider mappings and recurring refresh coverage for active events.
+
+Schema mismatch:
+
+- No schema change was required. Existing `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot` rows represent the three status shapes.
+
+Route mismatch:
+
+- No new route-shape mismatch was found for the proven status breadth. Remaining risk is data coverage, not the live-detail response contract.
+
+Temporary mock/static data:
+
+- No frontend mock/static data was added. The proof creates disposable backend rows and fails if route output contains `mock-ready`, `fixture-ready`, `frontend-fixture`, or `default-ready` markers.
+
+Future migration concern:
+
+- Keep unavailable/not-ready separate from stale and refresh-due so mobile cannot treat missing provider rows or old CLOB rows as ready evidence.
+
 ## Cycle EI-A - Route-Backed Provider Status Proof
 
 Closed or narrowed:

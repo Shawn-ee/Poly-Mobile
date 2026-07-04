@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle EJ-A - Provider Status Breadth Route Proof
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live-detail provider status breadth | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile route | Event slug | `event.liveDataStatus`, top-level and `contract.providerLifecycle`, `contract.batchedProviderOrderbookDepthReadyCount/StaleCount/RefreshDueCount`, `contract.batchedChartHistoryReadyCount/StaleCount/RefreshDueCount`, compact `markets[].providerLifecycle.status/ready/stale/refreshDue/unavailable/empty/notReady`, `markets[].providerLifecycle.quote/orderbookDepth/chartHistory.source/status/reason/nextRefreshAt/lastFetchedAt`, `markets[].providerOrderbookDepth.status`, `markets[].chartHistoryStatus.status`, `markets[].selection`, and `markets[].orderbookIdentity` | Reads compact live `Event`, provider-shaped `Market`, active `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot` rows | None. The EJ-A proof fails if `mock-ready`, `fixture-ready`, `frontend-fixture`, or `default-ready` appears in the route payload. Missing `OPTIC_ODDS_API_KEY` is non-blocking. | Android visible consumption and production mapped-market breadth remain Agent B/production coverage work. |
+| Focused EJ-A proof harness | `scripts/prove_mobile_ej_a_provider_status_breadth.ts` | Local script calling the route module | Local development database only | Optional `--output` / `--summaryPath` | JSON artifact records a ready moneyline, refresh-due quote plus stale depth/chart spread, unavailable/not-ready totals market, aggregate contract counts, Polymarket/CLOB sources, and no fixture/mock/default-ready markers | Creates one disposable live event with three compact markets and seeds only the backend provider snapshot tables needed for each state | No frontend fallback. The unavailable market intentionally has no provider snapshot rows and is not counted as ready evidence. | Requires local database and dependency runtime. It is backend route proof only. |
+
+Cycle EJ-A implementation notes:
+
+- Proof artifact: `docs/mobile/harness/cycle-EJ-A-provider-status-breadth.json`.
+- The ready market proves `providerLifecycle.status=ready`, `orderbookDepthSource=provider-orderbook-depth`, and `orderbookIdentity.ready=true`.
+- The stale market proves `providerLifecycle.quote.status=refresh_due` while orderbook depth and chart history are `stale`.
+- The unavailable market proves `providerLifecycle.status=unavailable`, `empty=true`, `notReady=true`, and route identity remains present without provider-ready labeling.
+
 ## Cycle EI-A - Route-Backed Provider Status Proof
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
