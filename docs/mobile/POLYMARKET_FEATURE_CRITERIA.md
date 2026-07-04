@@ -31,6 +31,7 @@ These apply to every page, feature, button, and interaction:
 
 | Feature | Criteria owner file | P0 status | P1/P2 status | Latest gate |
 | --- | --- | --- | --- | --- |
+| Book-staged selected limit lifecycle after EL | `docs/mobile/audits/cycle-em-c-limit-lifecycle-gate.md` | Fail-until-integrated-proof for EM selected Book limit lifecycle. Fresh EL integrated Holiwyn proof preserves ask 55c and bid 50c into Buy/Sell tickets, but EM requires the same selected limit fields through amount entry, order snapshot, open order, Portfolio, activity, and history. Backend JSON without Android Holiwyn lifecycle proof fails. | P1/P2 remaining: repeat across multiple market families and both sides, recapture official Polymarket production order/history when gates allow, prove durability after refresh/metadata drift, and polish lifecycle labels | EM-C docs gate; PM-GAP-087 open |
 | Live event detail depth after EK | `docs/mobile/audits/cycle-el-c-live-event-depth-gate.md` | Fail-until-integrated-proof for EL live event detail depth. Partial fresh S23 official Polymarket reference exists for chart/top, swiped market sections, Game/Chat, line controls, Book/orderbook, and grouped selector; ticket Buy/Sell remains stale-context only. Agent B is blocked without Android-visible Holiwyn proof. | P1/P2 remaining: fresh S23 ticket Buy/Sell recapture, multi-family provider breadth, Book row-to-ticket price/side carry-through, Player Props/lower-section breadth, and visual/chart/orderbook polish | EL-C docs gate; PM-GAP-086 open |
 | Route-backed provider transition breadth after EJ | `docs/mobile/audits/cycle-ek-c-provider-transition-gate.md` | Fail-until-integrated-proof for EK transition breadth. EJ selected mixed route-backed Android path remains regression coverage, but EK requires visible route-backed unavailable/not-ready state, full same-selected-market stale -> refreshing/loading -> ready transition, selected identity preservation across live page/chart/Book/ticket, no fallback/default/generic market behavior, and real-provider family breadth if available. | P1/P2 remaining: expand transition proof to every real provider-backed family when available, repeat transitions across more than one family, fresh official S23 recapture, and status/density polish | EK-C docs gate; PM-GAP-085 open |
 | Route-backed provider status breadth after EI | `docs/mobile/audits/cycle-ej-c-provider-status-breadth-gate.md` | Fail-until-integrated-proof for EJ breadth. EI selected route-backed ready/Book/ticket path remains verified, but EJ requires new Agent A/B/Lead proof for real provider-backed family breadth, route-backed stale/refresh-due, route-backed unavailable/not-ready, full stale -> refreshing/loading -> ready transition, and no fallback/default proof substitutes. | P1/P2 remaining: expand to every real provider-backed family when available, fresh official S23 recapture, repeated transition breadth, and status/density polish | EJ-C docs gate; PM-GAP-085 open |
@@ -99,6 +100,25 @@ Live event detail DN super-round required checks:
 - Orderbook/depth must use route-backed provider data and expose best bid, best ask, spread, price, shares, and total.
 - Buy/Sell ticket must preserve selected provider source, external market, condition, outcome token, outcome label, market type, group, period, line, and side.
 - Closed/resolved events must not be shown as current-live ready; stale/ended state is acceptable and required when the provider says so.
+
+## Cycle EM-C Book-Staged Limit Lifecycle Gate Criteria
+
+The focused EM-C gate in `docs/mobile/audits/cycle-em-c-limit-lifecycle-gate.md` opens PM-GAP-087 for the next Book/orderbook lifecycle milestone after EL. EL integrated proof is fresh Holiwyn support for selected Book ask/bid price preservation into the ticket; Polymarket ticket/order/Portfolio/history reference remains stale or blocked and must be labeled as such.
+
+| ID | Priority | Criterion | Required proof |
+| --- | --- | --- | --- |
+| EM-LIMIT-P0-01 | P0 | Fresh-vs-stale evidence status is explicit and no Polymarket production parity is claimed without Android Holiwyn proof. | Docs label partial fresh EL-C S23 Book reference, fresh EL Holiwyn ticket-price proof, and stale DQ-C/AG/AI ticket/order support. |
+| EM-LIMIT-P0-02 | P0 | A tapped Book ask/bid row must stage the exact selected limit price into the ticket. | Android proof showing tapped row price/side/shares and ticket price for ask->Buy and bid->Sell, with no midpoint/outcome probability reversion. |
+| EM-LIMIT-P0-03 | P0 | Amount entry and ready/submit state must preserve limit price, limit side, row shares/value, selected market/outcome, and provider/source identity. | Android ticket proof after amount entry plus proof JSON for the same selected row. |
+| EM-LIMIT-P0-04 | P0 | Order request/response must snapshot selected Book limit fields. | Backend support proof paired with Android submit proof for the same order id. |
+| EM-LIMIT-P0-05 | P0 | Open order, Portfolio/open position, activity, and history must render the order-time selected limit snapshot. | Android screenshots/XML plus backend route proof for the same order/fill/cancel ids. |
+| EM-LIMIT-P0-06 | P0 | Status changes such as open, canceled, filled, or partially filled must not drop limit fields. | Lifecycle proof showing unchanged limit snapshot across status transitions. |
+| EM-LIMIT-P0-07 | P0 | Fallback/default labels fail the lifecycle. | Negative assertions reject event-only, first-row, moneyline, generic team, generic Yes/No, fallback market, default probability, stale metadata, or missing provider/source labels. |
+| EM-LIMIT-P0-08 | P0 | Backend JSON without Android-visible Holiwyn proof cannot pass. | Lead proof matrix maps backend JSON to visible Android ticket/order/Portfolio/activity/history markers for the same ids. |
+| EM-LIMIT-P1-01 | P1 | Repeat across multiple market families and both Book sides. | Spread plus another family where provider-backed depth exists; ask->Buy and bid->Sell covered. |
+| EM-LIMIT-P1-02 | P1 | Recapture official Polymarket production order/history behavior when location/trading gates allow. | Fresh S23 screenshots/XML or documented blocked state. |
+| EM-LIMIT-P1-03 | P1 | Prove selected limit snapshot durability after provider refresh or metadata drift. | Before/after Android and backend proof with unchanged historical selected limit fields. |
+| EM-LIMIT-P2-01 | P2 | Improve visual scan clarity for limit price/side/status in lifecycle surfaces. | Side-by-side Android visual QA after P0 passes. |
 
 ## Cycle EL-C Live Event Detail Depth Gate Criteria
 
