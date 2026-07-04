@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CG - Second-Half Orderbook Depth Proof
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Selected second-half orderbook proof | `/api/orderbook/:marketId/book?maxLevels=24` for second-half winner market `ed121b08-88bd-4735-9793-64a0022e9696` | GET | Optional public viewing | None | `marketId`, `levels[].outcomeId`, `levels[].side`, `levels[].price`, `levels[].shares`, `levels[].total`, `availability.status` | Open `Order` rows from deterministic depth seed, selected `Market(period=second-half)`, active `Outcome` rows | N/A | Provider-owned live liquidity remains required before backend parity can be marked complete. |
+| Second-half seed/proof harness | `mobile:live-second-half-orderbook-depth-seed` and `smoke:tablet:server-live-second-half-order-book` | Local scripts / device proof | Local development only | `--eventSlug`, `--period=second-half`, `--summaryPath`, `--apply` | Summary artifact records event, market id, market type, period, outcome ids, created order count, and depth preview | `Market`, `Outcome`, `User`, `Order` | N/A | Real provider market discovery/ingestion should own second-half pricing and market freshness. |
+
+Cycle CG implementation notes:
+
+- This cycle closes the repeated second-half separate depth proof debt left by Cycle CF.
+- Halves orderbook parity is now proven for both first-half and second-half selected period markets.
+- PM-GAP-067 remains open for real provider ingestion, provider-owned live stats, production batching/prefetch, and provider-wide liquidity for all line markets.
+
 ## Cycle CF - Halves Orderbook Depth Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
@@ -14,7 +27,7 @@ Cycle CF implementation notes:
 
 - This cycle closes the selected Halves proof item that was repeatedly deferred under PM-GAP-067.
 - Halves are now backend-shaped and period-addressable instead of ad hoc local UI rows.
-- PM-GAP-067 remains open for real provider ingestion, provider-owned live stats, second-half separate depth proof, and all-line provider liquidity.
+- PM-GAP-067 remains open for real provider ingestion, provider-owned live stats, production batching/prefetch, and all-line provider liquidity. Second-half separate depth proof is closed in Cycle CG.
 
 ## Cycle CE - Compact Market Availability Contract
 

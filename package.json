@@ -86,6 +86,7 @@
     "mobile:live-team-totals-orderbook-depth-seed": "tsx scripts/seed_mobile_live_orderbook_depth.ts --apply --eventSlug=world-cup-2026-curacao-vs-cote-divoire-2026-06-25 --marketType=team_total_goals --line=1.5 --summaryPath=docs/mobile/harness/cycle-current-mobile-live-team-totals-orderbook-depth-seed.json",
     "mobile:live-halves-markets-seed": "tsx scripts/seed_mobile_live_halves_markets.ts --apply --eventSlug=world-cup-2026-curacao-vs-cote-divoire-2026-06-25 --summaryPath=docs/mobile/harness/cycle-current-mobile-live-halves-markets-seed.json",
     "mobile:live-first-half-orderbook-depth-seed": "tsx scripts/seed_mobile_live_orderbook_depth.ts --apply --eventSlug=world-cup-2026-curacao-vs-cote-divoire-2026-06-25 --marketType=match_winner_1x2 --period=first-half --summaryPath=docs/mobile/harness/cycle-current-mobile-live-first-half-orderbook-depth-seed.json",
+    "mobile:live-second-half-orderbook-depth-seed": "tsx scripts/seed_mobile_live_orderbook_depth.ts --apply --eventSlug=world-cup-2026-curacao-vs-cote-divoire-2026-06-25 --marketType=match_winner_1x2 --period=second-half --summaryPath=docs/mobile/harness/cycle-current-mobile-live-second-half-orderbook-depth-seed.json",
     "mobile:definition-of-done-sweep": "tsx scripts/mobile_definition_of_done_sweep.ts",
     "mobile:final-qa-review-signoff": "tsx scripts/mobile_final_qa_review_signoff.ts",
     "mobile:android-apk-artifact-readiness": "powershell -ExecutionPolicy Bypass -File mobile/scripts/check-android-apk-artifact-readiness.ps1",

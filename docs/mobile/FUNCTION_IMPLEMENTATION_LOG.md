@@ -2,6 +2,49 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CG - Second-Half Orderbook Depth Proof
+
+Feature/page worked on:
+
+- PM-GAP-067 selected second-half route-backed orderbook depth for the live event detail page.
+- This cycle closes the specific deferred parity debt left by Cycle CF: the backend-shaped `2nd Half Winner` market now has the same route-backed Book proof as first half.
+
+Frontend components touched:
+
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/package.json`
+
+Backend/components touched:
+
+- `scripts/seed_mobile_live_orderbook_depth.ts` through the existing `--period=second-half` contract.
+- `package.json`
+
+Important functions/services touched:
+
+- The shared server-live smoke path now treats first-half and second-half orderbook proofs as the same Halves proof family.
+- `smoke:tablet:server-live-second-half-order-book` launches the server-backed live detail route, scrolls to `2nd Half Winner`, taps its Book action, and verifies the selected route-backed orderbook state.
+- `mobile:live-second-half-orderbook-depth-seed` seeds deterministic orderbook depth against the backend second-half market, preserving `marketId`, `outcomeId`, `period`, side, price, and size identity.
+
+User interactions supported:
+
+- User scrolls to `2nd Half Winner`, sees backend availability, taps Book, and opens the selected second-half orderbook with route-backed bid/ask depth.
+
+State transitions:
+
+- Halves seed confirms `Market(period=second-half, marketType=match_winner_1x2)` -> second-half depth seed writes open `Order` rows for that market's outcomes -> compact live-detail route returns the second-half market -> EventDetail attaches it to `event-detail-open-order-book-second-half-winner` -> orderbook route returns depth and selected-market availability.
+
+Known limitations:
+
+- Second-half depth is deterministic local proof data in real backend tables, not provider-ingested live liquidity.
+- Provider ingestion, provider-owned live stats, production batching/prefetch, and provider-wide all-line liquidity remain open under PM-GAP-067.
+
+Verification:
+
+- `cmd /c npm.cmd run mobile:live-halves-markets-seed`
+- `cmd /c npm.cmd run mobile:live-second-half-orderbook-depth-seed`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+
 ## Cycle CF - Halves Orderbook Depth Contract
 
 Feature/page worked on:
@@ -42,7 +85,7 @@ State transitions:
 Known limitations:
 
 - Halves markets/depth are deterministic local proof data, not provider-ingested live liquidity.
-- First-half selected depth is proven; second-half market identity is present but second-half orderbook depth is not separately proven in this cycle.
+- First-half selected depth is proven in this cycle; second-half selected depth is proven separately in Cycle CG.
 
 Verification:
 

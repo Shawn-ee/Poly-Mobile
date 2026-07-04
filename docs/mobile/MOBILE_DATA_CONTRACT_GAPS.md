@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CG - Second-Half Orderbook Depth Proof
+
+Fields now provided or wired:
+
+- Samsung tablet proof confirms second-half row availability and selected second-half orderbook route depth.
+- The proof uses the backend second-half market `ed121b08-88bd-4735-9793-64a0022e9696` with `marketType=match_winner_1x2`, `period=second-half`, stable `outcomeId` values, and route-backed bid/ask depth.
+- The new second-half smoke path proves the selected market identity does not fall back to the primary full-game winner or first-half winner.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Provider-ingested half-period pricing, liquidity, freshness, and settlement data.
+- Provider-owned live stats and all-line market liquidity across every visible live soccer market group.
+
+Schema mismatch:
+
+- Same as Cycle CF: current seed harness avoids relying on the declared `Outcome(marketId, code)` conflict target until database migration hygiene is confirmed.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/live-detail` and `/api/orderbook/:marketId/book` can now serve both first-half and second-half selected proof paths.
+- There is still no provider feed route/schema that continuously refreshes half-period markets.
+
+Temporary mock/static data:
+
+- Second-half orderbook depth is deterministic local proof data in real backend tables. It is future-backend-shaped and uses `marketId`, `outcomeId`, side, price, shares, and period identity.
+
+Future migration concern:
+
+- Provider ingestion should write the same `period=second-half` and `marketType=match_winner_1x2` shape so mobile can replace proof markets without changing UI logic.
+
 ## Cycle CF - Halves Orderbook Depth Contract
 
 Fields now provided or wired:
@@ -14,7 +44,6 @@ Fields now provided or wired:
 Fields Holiwyn still needs but backend does not fully provide:
 
 - Provider-ingested half-period market discovery, pricing, liquidity, and freshness.
-- Second-half selected route-depth proof.
 - Settlement data contract for half-period markets.
 
 Schema mismatch:
@@ -28,7 +57,7 @@ Route mismatch:
 
 Temporary mock/static data:
 
-- The first-half market and orderbook depth are deterministic local proof rows in real backend tables, not frontend-only mock strings.
+- The first-half market and orderbook depth are deterministic local proof rows in real backend tables, not frontend-only mock strings. Second-half route depth is proven in Cycle CG.
 
 Future migration concern:
 
