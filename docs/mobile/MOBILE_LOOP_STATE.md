@@ -6,6 +6,21 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Heartbeat: Structural Live Detail Cycles CE-CG
+
+Date: 2026-07-03
+Summary: Shifted the loop away from screenshot-level wins and closed meaningful backend-shaped live event detail gaps. Cycle CE added compact per-visible-market availability, Cycle CF made first-half winner a backend period market with route-backed depth, and Cycle CG proved the same route-backed depth path for second-half winner.
+Verification:
+- `cmd /c npm.cmd run smoke:tablet:server-live-team-totals-order-book`
+- `cmd /c npm.cmd run smoke:tablet:server-live-first-half-order-book`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+- `cmd /c npm.cmd run mobile:live-halves-markets-seed`
+- `cmd /c npm.cmd run mobile:live-second-half-orderbook-depth-seed`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+Current gap state: PM-GAP-067 remains in progress with 0 unresolved P0 gaps for these selected proof scopes. First-half and second-half selected Halves depth are no longer deferred; remaining P1 work is provider ingestion, provider-owned live stats, batching/prefetch, and provider-wide liquidity for all live soccer line markets.
+Next focus: continue structural Polymarket parity by defining/proving provider-style live stats or provider-wide all-line liquidity/batching before opening a new visual micro-polish cycle.
+
 ## Heartbeat: Polymarket Audit-Gated Cycles AG-AI
 
 Date: 2026-07-03
