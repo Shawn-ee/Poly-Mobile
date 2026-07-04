@@ -386,6 +386,10 @@ export async function previewMobileLiveProviderCandidatesBulkBySlug(options: Pro
   }
 
   const attachReadyResults = results.filter((result) => result.attachProposal?.attachReady);
+  const mappings = attachReadyResults.flatMap((result) => {
+    const mapping = result.attachProposal?.mapping;
+    return mapping ? [mapping] : [];
+  });
   return {
     eventSlug: options.eventSlug,
     generatedAt: new Date().toISOString(),
@@ -395,9 +399,7 @@ export async function previewMobileLiveProviderCandidatesBulkBySlug(options: Pro
     attachReadyReviewCount: attachReadyResults.length,
     candidateCount: results.reduce((sum, result) => sum + result.candidateCount, 0),
     attachReadyCandidateCount: results.reduce((sum, result) => sum + result.attachReadyCandidateCount, 0),
-    mappings: attachReadyResults
-      .map((result) => result.attachProposal?.mapping ?? null)
-      .filter((mapping): mapping is NonNullable<(typeof attachReadyResults)[number]["attachProposal"]>["mapping"] => Boolean(mapping)),
+    mappings,
     nextRequiredAction:
       attachReadyResults.length === results.length
         ? "review_and_apply_bulk_provider_identity_mappings"
@@ -756,7 +758,7 @@ function buildAttachProposal(
           referenceSource: "polymarket",
           externalSlug: candidate.slug,
           externalMarketId: candidate.externalMarketId,
-          conditionId: candidate.conditionId,
+          conditionId: candidate.conditionId ?? "",
           outcomes: market.outcomes.map((outcome, index) => ({
             outcomeId: outcome.id,
             referenceTokenId: candidate.outcomes[index]?.tokenId ?? "",

@@ -6,6 +6,31 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle DE
+
+Date: 2026-07-04
+Branch: `mobile/cycle-DE-bulk-review-apply-workflow`
+Goal: Add a protected review-first bulk exact-slug apply workflow so operator-collected Polymarket slugs can be reviewed as a set and applied only when every review passes.
+Reference app screens observed: Continued from Cycle CW/CX/CY Samsung S23 Polymarket official app Colombia vs Ghana game page and exact Gamma event `fifwc-col-gha-2026-07-03`.
+Holiwyn screens changed: No intended visual changes. Existing server-backed Colombia vs Ghana live-detail Book flow was re-proven on Samsung tablet.
+Backend/API changed: `POST /api/mobile/events/:slug/provider-mapping` now accepts `reviews[]` for review-first bulk apply. New service `reviewMobileLiveProviderBulkSlugMappings()` runs the bulk preview, blocks attach when any review fails, and calls the existing provider identity attach flow only for all-pass dry-run or confirmed apply.
+Database/schema changed: None. Confirmed apply uses existing provider identity fields on `Market` and `Outcome`.
+Files changed: provider bulk review service, provider candidate mapping typing, provider-mapping route, service/route tests, bulk review/apply proof harness, docs/proof artifacts, tablet proof artifacts.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-bulk-slug-review.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts src/__tests__/mobile-live-provider-mapping.route.test.ts`
+- `cmd /c npx.cmd tsx scripts/prove_mobile_provider_bulk_review_apply_workflow.ts --output docs/mobile/harness/cycle-current-mobile-provider-bulk-review-apply-workflow.json`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` from `mobile/`
+- Samsung tablet proof via `mobile/scripts/smoke.ps1 -Deep -ServerLiveDetailOrderBook -ServerEventSlug world-cup-2026-colombia-vs-ghana-2026-07-03`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-provider-bulk-review-apply-workflow.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+Result: Pass for the protected all-pass bulk review/apply workflow and safety. Mixed proof blocked apply on a wrong-family totals review and left provider-refreshable readiness unchanged; all-valid proof dry-ran, then confirmed apply mapped 3 real match-winner markets and 6 outcome token IDs. Existing provider-backed Book proof passed on Samsung tablet.
+Next focus: add an operator/admin capture/review/apply UI for exact slugs or collect real line-market slugs/provider data; real line provider parity remains open.
+
 ## Cycle DC
 
 Date: 2026-07-04

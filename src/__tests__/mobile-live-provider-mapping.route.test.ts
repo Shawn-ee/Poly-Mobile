@@ -4,6 +4,7 @@ import { MarketGuardError } from "@/lib/marketGuards";
 const assertReferenceBotAdmin = jest.fn();
 const getMobileLiveProviderMappingReadiness = jest.fn();
 const attachMobileLiveProviderIdentities = jest.fn();
+const reviewMobileLiveProviderBulkSlugMappings = jest.fn();
 
 jest.mock("@/lib/internalAdminAuth", () => ({
   assertReferenceBotAdmin: (...args: unknown[]) => assertReferenceBotAdmin(...args),
@@ -15,6 +16,10 @@ jest.mock("@/server/services/mobileLiveProviderMapping", () => ({
 
 jest.mock("@/server/services/mobileLiveProviderIdentityAttach", () => ({
   attachMobileLiveProviderIdentities: (...args: unknown[]) => attachMobileLiveProviderIdentities(...args),
+}));
+
+jest.mock("@/server/services/mobileLiveProviderBulkSlugReview", () => ({
+  reviewMobileLiveProviderBulkSlugMappings: (...args: unknown[]) => reviewMobileLiveProviderBulkSlugMappings(...args),
 }));
 
 import { GET, POST } from "@/app/api/mobile/events/[slug]/provider-mapping/route";
@@ -39,6 +44,23 @@ describe("mobile live provider mapping route", () => {
       validation: { valid: true, compactMarketCount: 14, requestedMarketCount: 1, errors: [] },
       before: { providerRefreshableMarketCount: 0 },
       after: { providerRefreshableMarketCount: 1 },
+    });
+    reviewMobileLiveProviderBulkSlugMappings.mockResolvedValue({
+      eventSlug: "world-cup-live",
+      mode: "bulk-manual-slug-review-apply",
+      dryRun: true,
+      applied: false,
+      blocked: false,
+      preview: {
+        reviewCount: 2,
+        attachReadyReviewCount: 2,
+        mappings: [],
+      },
+      attach: {
+        dryRun: true,
+        applied: false,
+      },
+      nextRequiredAction: "confirm_apply_bulk_provider_identity_mappings",
     });
   });
 
@@ -129,5 +151,60 @@ describe("mobile live provider mapping route", () => {
 
     expect(response.status).toBe(403);
     expect(attachMobileLiveProviderIdentities).not.toHaveBeenCalled();
+  });
+
+  test("review-first bulk slug mappings are dry-run by default", async () => {
+    const response = await POST(
+      new NextRequest("http://localhost/api/mobile/events/world-cup-live/provider-mapping", {
+        method: "POST",
+        body: JSON.stringify({
+          reviews: [
+            { marketId: "market-1", slugs: ["fifwc-col-gha-2026-07-03-col"] },
+            { marketId: "market-2", slugs: ["fifwc-col-gha-2026-07-03-draw"] },
+          ],
+        }),
+      }),
+      { params: Promise.resolve({ slug: "world-cup-live" }) },
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(reviewMobileLiveProviderBulkSlugMappings).toHaveBeenCalledWith({
+      eventSlug: "world-cup-live",
+      dryRun: true,
+      confirmApply: false,
+      reviews: [
+        { marketId: "market-1", slugs: ["fifwc-col-gha-2026-07-03-col"] },
+        { marketId: "market-2", slugs: ["fifwc-col-gha-2026-07-03-draw"] },
+      ],
+    });
+    expect(attachMobileLiveProviderIdentities).not.toHaveBeenCalled();
+    expect(body.result).toEqual(expect.objectContaining({
+      mode: "bulk-manual-slug-review-apply",
+      blocked: false,
+    }));
+  });
+
+  test("passes confirm apply through review-first bulk slug mapping workflow", async () => {
+    const response = await POST(
+      new NextRequest("http://localhost/api/mobile/events/world-cup-live/provider-mapping", {
+        method: "POST",
+        body: JSON.stringify({
+          dryRun: false,
+          confirmApply: true,
+          reviews: [
+            { marketId: "market-1", slugs: ["fifwc-col-gha-2026-07-03-col"] },
+          ],
+        }),
+      }),
+      { params: Promise.resolve({ slug: "world-cup-live" }) },
+    );
+
+    expect(response.status).toBe(200);
+    expect(reviewMobileLiveProviderBulkSlugMappings).toHaveBeenCalledWith(expect.objectContaining({
+      eventSlug: "world-cup-live",
+      dryRun: false,
+      confirmApply: true,
+    }));
   });
 });

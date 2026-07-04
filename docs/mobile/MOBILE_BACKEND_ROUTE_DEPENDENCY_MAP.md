@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle DE - Bulk Review Apply Workflow
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Review-first bulk provider mapping apply | `/api/mobile/events/:slug/provider-mapping` | POST | Internal admin key or admin session | `reviews[]`, optional `dryRun`, optional `confirmApply` | `mode=bulk-manual-slug-review-apply`, `blocked`, `blockReason`, `preview.reviewCount`, `preview.attachReadyReviewCount`, `preview.failedReviews[]`, `attach`, `nextRequiredAction` | Reads compact `Event`, `Market`, and active `Outcome`; fetches exact Gamma `/markets?slug=...`; on confirmed all-pass apply writes `Market.referenceSource`, `Market.externalSlug`, `Market.externalMarketId`, `Market.conditionId`, `Outcome.referenceTokenId`, and `Outcome.referenceOutcomeLabel` | None. Failed review blocks all attach; no partial success is written | Need operator/admin UI to collect captured slugs and call this route. |
+| Existing direct mapping apply | `/api/mobile/events/:slug/provider-mapping` | POST | Internal admin key or admin session | Existing `mappings[]`, `dryRun`, `confirmApply` | Existing validation and before/after readiness report | Same provider identity fields as above | None | Kept for lower-level tooling; operator flow should prefer `reviews[]` so relevance/family checks happen in the same apply cycle. |
+| Bulk review/apply proof harness | `scripts/prove_mobile_provider_bulk_review_apply_workflow.ts` | Local script | Local development only | `--providerEventSlug`, `--eventSlug`, `--output` | Proof artifact showing blocked mixed review, unchanged readiness, all-valid dry-run, confirmed apply, and after-apply readiness | Upserts local proof event/market/outcome rows shaped like compact live markets; applies real provider IDs only after all reviews pass | Uses real Polymarket slugs/tokens for match-winner mappings; guard totals market remains unmapped | Real line-market slugs are still needed before line markets can pass review/apply. |
+
+Cycle DE implementation notes:
+
+- `reviews[]` on `/provider-mapping` is the protected high-level apply path: review first, block on any failure, then dry-run or confirmed apply only when every review is attach-ready.
+- The pass proof shows a bad totals review cannot be silently skipped while 3 match-winner markets are attached.
+- The route returns `nextRequiredAction=fix_failed_slug_reviews_before_bulk_apply` for blocked review sets and `nextRequiredAction=run_provider_refresh_without_contract_fallback` after confirmed all-pass apply.
+
 ## Cycle DC - Bulk Manual Slug Review Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

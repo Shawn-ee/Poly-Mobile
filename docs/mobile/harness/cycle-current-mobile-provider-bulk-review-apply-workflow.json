@@ -1,0 +1,147 @@
+{
+  "generatedAt": "2026-07-04T07:46:50.048Z",
+  "eventSlug": "world-cup-2026-colombia-vs-ghana-2026-07-03",
+  "providerEventSlug": "fifwc-col-gha-2026-07-03",
+  "providerEventTitle": "Colombia vs. Ghana",
+  "prepared": {
+    "eventId": "8485921d-d6fe-4578-ba82-21f63ecca536",
+    "eventSlug": "world-cup-2026-colombia-vs-ghana-2026-07-03",
+    "matchWinnerMarkets": {
+      "colombia": {
+        "id": "d89acdee-41f6-4766-87e3-53928e1901b4",
+        "slug": "world-cup-2026-colombia-vs-ghana-2026-07-03-fifwc-col-gha-2026-07-03-col",
+        "title": "Will Colombia win on 2026-07-03?"
+      },
+      "draw": {
+        "id": "03e4dd0f-796c-4630-b40d-555e5760a33c",
+        "slug": "world-cup-2026-colombia-vs-ghana-2026-07-03-fifwc-col-gha-2026-07-03-draw",
+        "title": "Will Colombia vs. Ghana end in a draw?"
+      },
+      "ghana": {
+        "id": "30c78d5d-7a4a-4ad5-b1d8-ff75999e5453",
+        "slug": "world-cup-2026-colombia-vs-ghana-2026-07-03-fifwc-col-gha-2026-07-03-gha",
+        "title": "Will Ghana win on 2026-07-03?"
+      }
+    },
+    "lineMarket": {
+      "id": "24c0f0fe-073b-4661-8fa3-6e90bf6f23a5",
+      "slug": "world-cup-2026-colombia-vs-ghana-2026-07-03-bulk-apply-total-goals-25",
+      "title": "Colombia vs Ghana total goals 2.5"
+    }
+  },
+  "before": {
+    "compactMarketCount": 5,
+    "providerRefreshableMarketCount": 0,
+    "providerRefreshableOutcomeCount": 0,
+    "missingExternalSlugMarketCount": 5,
+    "missingExternalMarketIdMarketCount": 5,
+    "missingConditionIdMarketCount": 5,
+    "missingOutcomeTokenMarketCount": 5,
+    "isProviderRefreshReady": false,
+    "nextRequiredAction": "map_compact_markets_to_polymarket_provider_identity"
+  },
+  "blocked": {
+    "mode": "bulk-manual-slug-review-apply",
+    "dryRun": false,
+    "applied": false,
+    "blocked": true,
+    "blockReason": "bulk_review_has_failed_items",
+    "nextRequiredAction": "fix_failed_slug_reviews_before_bulk_apply",
+    "preview": {
+      "reviewCount": 4,
+      "attachReadyReviewCount": 3,
+      "candidateCount": 4,
+      "attachReadyCandidateCount": 3,
+      "mappingCount": 3,
+      "failedReviews": [
+        {
+          "marketId": "24c0f0fe-073b-4661-8fa3-6e90bf6f23a5",
+          "title": "Colombia vs Ghana total goals 2.5",
+          "requestedSlugs": [
+            "fifwc-col-gha-2026-07-03-col"
+          ],
+          "reasons": [
+            "provider_family_mismatch",
+            "insufficient_market_relevance"
+          ]
+        }
+      ]
+    },
+    "attach": null
+  },
+  "afterBlocked": {
+    "compactMarketCount": 5,
+    "providerRefreshableMarketCount": 0,
+    "providerRefreshableOutcomeCount": 0,
+    "missingExternalSlugMarketCount": 5,
+    "missingExternalMarketIdMarketCount": 5,
+    "missingConditionIdMarketCount": 5,
+    "missingOutcomeTokenMarketCount": 5,
+    "isProviderRefreshReady": false,
+    "nextRequiredAction": "map_compact_markets_to_polymarket_provider_identity"
+  },
+  "dryRun": {
+    "mode": "bulk-manual-slug-review-apply",
+    "dryRun": true,
+    "applied": false,
+    "blocked": false,
+    "blockReason": null,
+    "nextRequiredAction": "confirm_apply_bulk_provider_identity_mappings",
+    "preview": {
+      "reviewCount": 3,
+      "attachReadyReviewCount": 3,
+      "candidateCount": 3,
+      "attachReadyCandidateCount": 3,
+      "mappingCount": 3,
+      "failedReviews": []
+    },
+    "attach": {
+      "dryRun": true,
+      "applied": false,
+      "validation": {
+        "valid": true,
+        "compactMarketCount": 5,
+        "requestedMarketCount": 3,
+        "errors": []
+      }
+    }
+  },
+  "apply": {
+    "mode": "bulk-manual-slug-review-apply",
+    "dryRun": false,
+    "applied": true,
+    "blocked": false,
+    "blockReason": null,
+    "nextRequiredAction": "run_provider_refresh_without_contract_fallback",
+    "preview": {
+      "reviewCount": 3,
+      "attachReadyReviewCount": 3,
+      "candidateCount": 3,
+      "attachReadyCandidateCount": 3,
+      "mappingCount": 3,
+      "failedReviews": []
+    },
+    "attach": {
+      "dryRun": false,
+      "applied": true,
+      "validation": {
+        "valid": true,
+        "compactMarketCount": 5,
+        "requestedMarketCount": 3,
+        "errors": []
+      }
+    }
+  },
+  "afterApply": {
+    "compactMarketCount": 5,
+    "providerRefreshableMarketCount": 3,
+    "providerRefreshableOutcomeCount": 6,
+    "missingExternalSlugMarketCount": 2,
+    "missingExternalMarketIdMarketCount": 2,
+    "missingConditionIdMarketCount": 2,
+    "missingOutcomeTokenMarketCount": 2,
+    "isProviderRefreshReady": false,
+    "nextRequiredAction": "map_compact_markets_to_polymarket_provider_identity"
+  },
+  "pass": true
+}
