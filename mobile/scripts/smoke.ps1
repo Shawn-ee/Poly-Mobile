@@ -273,6 +273,9 @@ function Wait-HierarchyContains {
       return $path
     } catch {
       $hierarchy = Get-Content -Raw -Path $path
+      if (Dismiss-ExpoDeveloperMenuIfPresent -Path $path) {
+        Start-Sleep -Seconds 1
+      }
       if ($RestartUrl -and $hierarchy -match "Something went wrong\.") {
         & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
         Start-Sleep -Seconds 1
@@ -964,8 +967,8 @@ try {
 
     if ($DyAGamePageStructure) {
       $dyResetUrl = "exp://${ExpoHost}:$Port/--/?forceLiveDetail=1,forceResetState=1"
+      $dyTopHierarchy = Wait-HierarchyContains -Name "cycle-DY-A-holiwyn-game-page-structure-top.xml" -Expected @("Australia vs. Egypt", "event-detail-tab-game", "event-detail-top-order-book") -RestartUrl $dyResetUrl -Attempts 8 -DelaySeconds 2
       Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-top.png"
-      $dyTopHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-top.xml"
       Assert-HierarchyContains -Path $dyTopHierarchy -Expected @(
         "Australia vs. Egypt",
         "event-detail-back",
