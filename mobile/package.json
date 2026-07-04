@@ -85,6 +85,7 @@
     "smoke:tablet:event-detail-line-adjustment": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailLineAdjustment -Port 8185",
     "smoke:tablet:event-detail-line-portfolio": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailLinePortfolio -Port 8186",
     "smoke:tablet:event-detail-order-book": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailOrderBook -Port 8187",
+    "smoke:tablet:ds-b-orderbook-ui": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailOrderBook -Port 8220 -OutputDir docs/mobile/screenshots/cycle-DS-B-orderbook-ui -HierarchyOutputDir docs/mobile/harness/cycle-DS-B-orderbook-ui",
     "smoke:tablet:server-live-order-book": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -ServerLiveDetailOrderBook -Port 8197",
     "smoke:tablet:server-live-line-order-book": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -ServerLiveDetailLineOrderBook -Port 8198",
     "smoke:tablet:server-live-totals-order-book": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -ServerLiveDetailTotalsOrderBook -Port 8199",
@@ -165,6 +166,7 @@
   },
   "devDependencies": {
     "@types/react": "~19.1.10",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "vitest": "^4.1.9"
   }
 }

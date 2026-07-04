@@ -2020,7 +2020,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-order-book.png"
       $orderBookHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-order-book.xml"
-      Assert-HierarchyContains -Path $orderBookHierarchy -Expected @("event-detail-order-book-screen", "orderbook-source", "orderbook-status", "event-detail-order-book-depth-state", "Order Book", "Mexico vs. Ecuador - Match winner", "Best bid", "Best ask", "Spread", "order-book-outcome-mexico", "Mexico", "64%", "1.6x", "0.61 USDT", "0.68 USDT", "1.28k shares", "900 shares", "Buy", "Sell")
+      Assert-HierarchyContains -Path $orderBookHierarchy -Expected @("event-detail-order-book-screen", "orderbook-source", "orderbook-status", "event-detail-order-book-depth-state", "Order Book", "Mexico vs. Ecuador - Match winner", "order-book-grouped-market-selector", "Moneyline", "Totals", "order-book-outcome-tabs", "Yes", "No", "order-book-ladder", "Price", "Shares", "Value", "order-book-spread-separator", "Best bid", "Best ask", "Spread", "order-book-outcome-mexico", "Mexico", "64%", "1.6x", "0.61 USDT", "0.68 USDT", "1.28k shares", "900 shares", "Buy", "Sell")
       Invoke-TapHierarchyNode -Path $orderBookHierarchy -Identifier "order-book-buy-mexico"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-order-book-ticket.png"
