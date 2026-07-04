@@ -315,6 +315,35 @@ export function TradeTicket({
       : null,
     ticketSelectionIdentityLabel(ticket.selection, contractSide),
   ].filter(Boolean).join(" ");
+  const reviewCopy =
+    locale === "zh"
+      ? {
+          title: "\u8ba2\u5355\u9884\u89c8",
+          market: "\u5e02\u573a",
+          line: "\u76d8\u53e3",
+          period: "\u65f6\u6bb5",
+          price: "\u4ef7\u683c",
+          shares: "\u4efd\u989d",
+          payout: "\u53ef\u8d62",
+          main: "\u4e3b\u76d8",
+          fullGame: "\u5168\u573a",
+        }
+      : {
+          title: "Order review",
+          market: "Market",
+          line: "Line",
+          period: "Period",
+          price: "Price",
+          shares: "Shares",
+          payout: "To win",
+          main: "Main",
+          fullGame: "Full game",
+        };
+  const reviewMarketType = ticket.selection?.marketType ?? ticket.market.marketType ?? ticket.market.type;
+  const reviewLine = ticket.selection?.line ?? ticket.market.line ?? reviewCopy.main;
+  const reviewPeriod = ticket.selection?.period ?? ticket.market.period ?? reviewCopy.fullGame;
+  const reviewShares = estimatedShares.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  const reviewPayout = compactCash(estimatedPayout);
 
   return (
     <Modal visible transparent animationType="slide">
@@ -408,6 +437,38 @@ export function TradeTicket({
                 <Text accessibilityLabel="ticket-price-line" testID="ticket-price-line" style={styles.priceText}>{priceDisplay}</Text>
               </View>
             )}
+            <View
+              accessibilityLabel={`ticket-order-review market-${reviewMarketType} line-${reviewLine} period-${reviewPeriod} price-${contractProbability} shares-${reviewShares} payout-${reviewPayout} ${providerIdentityLabel}`}
+              style={styles.orderReviewCard}
+              testID="ticket-order-review"
+            >
+              <View style={styles.orderReviewHeader}>
+                <Text style={styles.orderReviewTitle}>{reviewCopy.title}</Text>
+                <Text accessibilityLabel="ticket-order-review-price" testID="ticket-order-review-price" style={styles.orderReviewPrice}>{priceDisplay}</Text>
+              </View>
+              <View style={styles.orderReviewGrid}>
+                <View style={styles.orderReviewCell}>
+                  <Text style={styles.orderReviewLabel}>{reviewCopy.market}</Text>
+                  <Text numberOfLines={1} style={styles.orderReviewValue}>{reviewMarketType}</Text>
+                </View>
+                <View style={styles.orderReviewCell}>
+                  <Text style={styles.orderReviewLabel}>{reviewCopy.line}</Text>
+                  <Text numberOfLines={1} style={styles.orderReviewValue}>{reviewLine}</Text>
+                </View>
+                <View style={styles.orderReviewCell}>
+                  <Text style={styles.orderReviewLabel}>{reviewCopy.period}</Text>
+                  <Text numberOfLines={1} style={styles.orderReviewValue}>{reviewPeriod}</Text>
+                </View>
+                <View style={styles.orderReviewCell}>
+                  <Text style={styles.orderReviewLabel}>{reviewCopy.shares}</Text>
+                  <Text numberOfLines={1} style={styles.orderReviewValue}>{reviewShares}</Text>
+                </View>
+                <View style={styles.orderReviewCellWide}>
+                  <Text style={styles.orderReviewLabel}>{reviewCopy.payout}</Text>
+                  <Text accessibilityLabel="ticket-order-review-payout" testID="ticket-order-review-payout" numberOfLines={1} style={styles.orderReviewValueStrong}>{reviewPayout}</Text>
+                </View>
+              </View>
+            </View>
             <View style={styles.ticketSideRow}>
               {(["buy", "sell"] as const).map((option) => {
                 const isContractActive = contractSide === "no" ? option === "sell" : side === option;
@@ -594,6 +655,16 @@ const styles = StyleSheet.create({
   toWinText: { color: "#cbd5e1", fontSize: 22, fontWeight: "900" },
   toWinValue: { color: "#22c55e", fontSize: 25, fontWeight: "900" },
   priceText: { color: "#94a3b8", fontSize: 15, fontWeight: "900", marginTop: 4 },
+  orderReviewCard: { marginTop: 8, padding: 12, borderRadius: 16, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247", gap: 10 },
+  orderReviewHeader: { minHeight: 30, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10 },
+  orderReviewTitle: { color: "#f8fafc", fontSize: 15, fontWeight: "900" },
+  orderReviewPrice: { color: "#93c5fd", fontSize: 18, fontWeight: "900" },
+  orderReviewGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
+  orderReviewCell: { width: "31.5%", minHeight: 48, justifyContent: "center", paddingHorizontal: 8, paddingVertical: 6, borderRadius: 10, backgroundColor: "#111827" },
+  orderReviewCellWide: { flex: 1, minWidth: "31.5%", minHeight: 48, justifyContent: "center", paddingHorizontal: 8, paddingVertical: 6, borderRadius: 10, backgroundColor: "#111827" },
+  orderReviewLabel: { color: "#64748b", fontSize: 10, fontWeight: "900", textTransform: "uppercase" },
+  orderReviewValue: { color: "#e2e8f0", fontSize: 12, fontWeight: "900", marginTop: 3 },
+  orderReviewValueStrong: { color: "#22c55e", fontSize: 15, fontWeight: "900", marginTop: 3 },
   ticketSideRow: { flexDirection: "row", gap: 8, marginTop: 4, padding: 4, borderRadius: 14, backgroundColor: "#111827" },
   sideButton: { flex: 1, minHeight: 34, alignItems: "center", justifyContent: "center", borderRadius: 11, backgroundColor: "transparent" },
   sideButtonActive: { backgroundColor: "#273244" },
