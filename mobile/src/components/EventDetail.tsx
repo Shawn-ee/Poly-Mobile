@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View, type NativeScrollEvent, type NativeSyntheticEvent } from "react-native";
 import {
   estimatedPositionPnl,
@@ -189,6 +189,80 @@ const marketStats = (event: Event) => {
   };
 };
 
+type RouteStatus = NonNullable<Event["chartHistoryStatus"]>;
+type AvailabilityStatus = NonNullable<NonNullable<Event["liveDataStatus"]>["status"]>;
+type ProviderLifecycle = "ready" | "refresh-due" | "refreshing" | "not-ready";
+
+type ProviderStatusBadge = {
+  lifecycle: ProviderLifecycle;
+  text: string;
+  meta: string;
+  source: string;
+};
+
+const providerLifecycleText: Record<ProviderLifecycle, string> = {
+  ready: "Provider ready",
+  "refresh-due": "Refresh due",
+  refreshing: "Refreshing",
+  "not-ready": "Not ready",
+};
+
+const providerLifecycleIcon: Record<ProviderLifecycle, keyof typeof Ionicons.glyphMap> = {
+  ready: "checkmark-circle-outline",
+  "refresh-due": "time-outline",
+  refreshing: "sync-outline",
+  "not-ready": "alert-circle-outline",
+};
+
+const providerLifecycleFromRoute = (status: RouteStatus): ProviderLifecycle => {
+  if (status === "ready") return "ready";
+  if (status === "loading") return "refreshing";
+  if (status === "idle") return "refresh-due";
+  return "not-ready";
+};
+
+const providerLifecycleFromAvailability = (status: AvailabilityStatus): ProviderLifecycle => {
+  if (status === "ready") return "ready";
+  if (status === "stale" || status === "delayed") return "refresh-due";
+  return "not-ready";
+};
+
+const providerStatusMeta = (source?: string | null, stalenessSeconds?: number | null, lastUpdated?: string | null) => {
+  const sourceText = source ?? "deterministic-status-fixture";
+  if (typeof stalenessSeconds === "number") return `${sourceText} - ${stalenessSeconds}s old`;
+  if (lastUpdated) return `${sourceText} - timestamped`;
+  return sourceText;
+};
+
+const providerBadgeFromAvailability = (
+  prefix: string,
+  status: NonNullable<Event["liveDataStatus"]> | undefined,
+  fixtureStatus: AvailabilityStatus,
+): ProviderStatusBadge => {
+  const lifecycle = providerLifecycleFromAvailability(status?.status ?? fixtureStatus);
+  return {
+    lifecycle,
+    text: `${prefix} ${providerLifecycleText[lifecycle].toLowerCase()}`,
+    meta: providerStatusMeta(status?.source, status?.stalenessSeconds, status?.lastUpdated),
+    source: status?.source ?? "deterministic-status-fixture",
+  };
+};
+
+const providerBadgeFromRoute = (
+  prefix: string,
+  status: RouteStatus,
+  source?: string | null,
+  lastUpdated?: string | null,
+): ProviderStatusBadge => {
+  const lifecycle = providerLifecycleFromRoute(status);
+  return {
+    lifecycle,
+    text: `${prefix} ${providerLifecycleText[lifecycle].toLowerCase()}`,
+    meta: lastUpdated ? `${source ?? "deterministic-status-fixture"} - timestamped` : (source ?? "deterministic-status-fixture"),
+    source: source ?? "deterministic-status-fixture",
+  };
+};
+
 const teamCode = (name: string) => name.replace(/[^A-Za-z]/g, "").slice(0, 3).toUpperCase();
 
 const positionCurrentProbability = (position: Position) => {
@@ -305,6 +379,7 @@ export function EventDetail({
   const [orderBookSettingsVisible, setOrderBookSettingsVisible] = useState(false);
   const [orderBookSelectorVisible, setOrderBookSelectorVisible] = useState(false);
   const [orderBookDisplayMode, setOrderBookDisplayMode] = useState<BookDisplayMode>("cents");
+  const [refreshingDepthMarketId, setRefreshingDepthMarketId] = useState<string | null>(null);
   const [compactHeaderVisible, setCompactHeaderVisible] = useState(false);
   const [selectedPrimaryOutcomeId, setSelectedPrimaryOutcomeId] = useState<string | null>(null);
   const isLiveEvent = event.status === "live";
@@ -323,6 +398,11 @@ export function EventDetail({
     "second-half-winner": true,
     "team-total-goals": true,
   });
+  useEffect(() => {
+    if (!refreshingDepthMarketId) return undefined;
+    const timer = setTimeout(() => setRefreshingDepthMarketId(null), 4000);
+    return () => clearTimeout(timer);
+  }, [refreshingDepthMarketId]);
   const stats = marketStats(event);
   const position = positions.find((item) =>
     event.markets.some((market) => market.id === item.marketId || market.title === item.title),
@@ -337,24 +417,12 @@ export function EventDetail({
   const selectedChartProbability = selectedChartOutcome?.probability ?? 0;
   const homeChartSeries = event.chartHistory?.filter((point) => point.outcomeId === leftOutcome?.id).map((point) => point.probability) ?? homeChartPoints;
   const awayChartSeries = event.chartHistory?.filter((point) => point.outcomeId === rightOutcome?.id).map((point) => point.probability) ?? awayChartPoints;
-  const chartRouteStatus = event.chartHistoryStatus ?? (event.chartHistorySource === "market-chart-route" ? "ready" : "idle");
+  const chartRouteStatus = event.chartHistoryStatus ?? (event.chartHistory?.length ? "ready" : event.chartHistorySource === "market-chart-route" ? "ready" : "idle");
   const liveDataStatus = event.liveDataStatus;
   const liveDataState = liveDataStatus?.status ?? (isLiveEvent ? "unavailable" : "ready");
-  const liveDataText =
-    liveDataState === "ready"
-      ? "Live data fresh"
-      : liveDataState === "stale"
-        ? "Live data stale"
-        : liveDataState === "suspended"
-          ? "Markets suspended"
-          : liveDataState === "delayed"
-            ? "Feed delayed"
-            : "Live data unavailable";
-  const liveDataMeta = liveDataStatus?.stalenessSeconds != null
-    ? `${liveDataStatus.stalenessSeconds}s old`
-    : liveDataStatus?.lastUpdated
-      ? "Timestamped"
-      : "No timestamp";
+  const liveDataBadge = providerBadgeFromAvailability("Live", liveDataStatus, isLiveEvent ? "stale" : "ready");
+  const liveDataText = liveDataBadge.text;
+  const liveDataMeta = liveDataBadge.meta;
   const depthMarketMatches = Boolean(orderBookMarket && event.orderbookDepthMarketId === orderBookMarket.id);
   const hasSelectedMarketDepth = (orderBookMarket?.orderbookDepth?.length ?? 0) > 0;
   const selectedDepthSource = depthMarketMatches
@@ -362,14 +430,16 @@ export function EventDetail({
     : hasSelectedMarketDepth
       ? "contract-fixture"
       : undefined;
-  const depthRouteStatus = depthMarketMatches
+  const resolvedDepthRouteStatus = depthMarketMatches
     ? (event.orderbookDepthStatus ?? (event.orderbookDepthSource === "orderbook-route" ? "ready" : "idle"))
     : hasSelectedMarketDepth
       ? "ready"
-    : "idle";
+      : "idle";
+  const depthRouteStatus = refreshingDepthMarketId === orderBookMarket?.id ? "loading" : resolvedDepthRouteStatus;
   const selectedOrderbookAvailability = depthMarketMatches ? event.orderbookAvailability : orderBookMarket?.availability;
   const orderbookAvailabilityStatus = selectedOrderbookAvailability?.status ?? "unavailable";
-  const orderbookAvailabilityText =
+  const orderbookAvailabilityBadge = providerBadgeFromAvailability("Book", selectedOrderbookAvailability, "unavailable");
+  const orderbookAvailabilitySourceText =
     orderbookAvailabilityStatus === "ready"
       ? "Market live"
       : orderbookAvailabilityStatus === "stale"
@@ -379,7 +449,14 @@ export function EventDetail({
           : orderbookAvailabilityStatus === "delayed"
             ? "Market delayed"
             : "Market unavailable";
-  const chartStateText =
+  const orderbookAvailabilityText = `${orderbookAvailabilityBadge.text} - ${orderbookAvailabilitySourceText}`;
+  const chartStatusBadge = providerBadgeFromRoute(
+    "Chart",
+    chartRouteStatus,
+    event.chartHistorySource ?? (event.chartHistory?.length ? "embedded-history" : "deterministic-status-fixture"),
+    event.chartHistoryLastUpdated,
+  );
+  const chartSourceText =
     chartRouteStatus === "loading"
       ? "Updating chart"
       : chartRouteStatus === "empty"
@@ -391,7 +468,9 @@ export function EventDetail({
             : event.chartHistorySource === "market-chart-route" || event.chartHistorySource === "polymarket-clob-prices-history"
               ? "Route chart"
               : "Fallback chart";
-  const depthStateText =
+  const chartStateText = `${chartStatusBadge.text} - ${chartSourceText}`;
+  const depthStatusBadge = providerBadgeFromRoute("Book depth", depthRouteStatus, selectedDepthSource, event.orderbookDepthLastUpdated);
+  const depthSourceText =
     depthRouteStatus === "loading"
       ? "Loading depth"
       : depthRouteStatus === "empty"
@@ -402,10 +481,12 @@ export function EventDetail({
             ? "Route depth"
             : selectedDepthSource === "contract-fixture"
               ? "Fixture depth"
-            : "Fallback depth";
+              : "Fallback depth";
+  const depthStateText = `${depthStatusBadge.text} - ${depthSourceText}`;
   const openOrderBookForMarket = (market: Market) => {
     setOrderBookMarketId(market.id);
     setOrderBookOutcomeId(market.outcomes[0]?.id ?? null);
+    setRefreshingDepthMarketId(market.id);
     requestMarketDepth?.(market.id);
     setOrderBookVisible(true);
   };
@@ -437,6 +518,7 @@ export function EventDetail({
     setOrderBookMarketId(market.id);
     setOrderBookOutcomeId(market.outcomes[0]?.id ?? null);
     setOrderBookSelectorVisible(false);
+    setRefreshingDepthMarketId(market.id);
     requestMarketDepth?.(market.id);
   };
   const selectChartOutcome = (outcome: Outcome) => {
@@ -618,6 +700,7 @@ export function EventDetail({
       : selectedChartOutcome && primaryMarket
         ? orderBookTicketSelection(primaryMarket, selectedChartOutcome, primaryMarket.outcomes.findIndex((outcome) => outcome.id === selectedChartOutcome.id), "Match winner")
         : undefined;
+  const selectedChartTicketStatusBadge = providerBadgeFromAvailability("Ticket", selectedChartMarket?.availability, selectedChartMarket ? "ready" : "unavailable");
   const openSelectedChartBook = () => {
     if (!selectedChartMarket) return;
     openOrderBookForMarket(selectedChartMarket);
@@ -876,7 +959,7 @@ export function EventDetail({
     const selectedAskSizeText = bestAsk ? `${formatSize(bestAsk.shares)} ${t.shares}` : `0 ${t.shares}`;
     const selectedSpreadText = spreadCents == null ? "-" : `${spreadCents}c`;
     return (
-      <View accessibilityLabel={`event-detail-order-book-screen event-detail-order-book-market-${orderBookMarket.id} ${selectedIdentityLabel} book-display-mode-${orderBookDisplayMode} orderbook-source-${selectedDepthSource ?? "fallback"} orderbook-status-${depthRouteStatus} orderbook-empty-${depthMarketMatches || hasSelectedMarketDepth ? event.orderbookDepthEmptyState ?? "none" : "not-selected"} orderbook-availability-${orderbookAvailabilityStatus} orderbook-market-status-${selectedOrderbookAvailability?.marketStatus ?? "unknown"}`} style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
+      <View accessibilityLabel={`event-detail-order-book-screen event-detail-order-book-market-${orderBookMarket.id} ${selectedIdentityLabel} book-display-mode-${orderBookDisplayMode} orderbook-source-${selectedDepthSource ?? "fallback"} orderbook-status-${depthRouteStatus} provider-lifecycle-${depthStatusBadge.lifecycle} orderbook-empty-${depthMarketMatches || hasSelectedMarketDepth ? event.orderbookDepthEmptyState ?? "none" : "not-selected"} orderbook-availability-${orderbookAvailabilityStatus} orderbook-availability-lifecycle-${orderbookAvailabilityBadge.lifecycle} orderbook-market-status-${selectedOrderbookAvailability?.marketStatus ?? "unknown"}`} style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
         <View style={styles.orderBookHeader}>
           <View>
             <Text style={styles.orderBookTitle}>Order Book</Text>
@@ -1019,25 +1102,25 @@ export function EventDetail({
             </View>
           </View>
         </View>
-        <View accessibilityLabel={`event-detail-order-book-depth-state orderbook-status-${depthRouteStatus} ${depthStateText}`} style={[styles.orderBookStatePill, depthRouteStatus === "error" && styles.orderBookStatePillError, depthRouteStatus === "empty" && styles.orderBookStatePillEmpty]} testID="event-detail-order-book-depth-state">
+        <View accessibilityLabel={`event-detail-order-book-depth-state orderbook-status-${depthRouteStatus} provider-lifecycle-${depthStatusBadge.lifecycle} provider-source-${depthStatusBadge.source} ${depthStateText}`} style={[styles.orderBookStatePill, depthStatusBadge.lifecycle === "not-ready" && styles.orderBookStatePillError, depthStatusBadge.lifecycle === "refresh-due" && styles.orderBookStatePillEmpty]} testID="event-detail-order-book-depth-state">
           <Ionicons
-            name={depthRouteStatus === "error" ? "warning-outline" : depthRouteStatus === "loading" ? "sync-outline" : depthRouteStatus === "empty" ? "layers-outline" : "server-outline"}
-            color={depthRouteStatus === "error" ? "#f87171" : depthRouteStatus === "empty" ? "#fbbf24" : "#7dd3fc"}
+            name={providerLifecycleIcon[depthStatusBadge.lifecycle]}
+            color={depthStatusBadge.lifecycle === "not-ready" ? "#f87171" : depthStatusBadge.lifecycle === "refresh-due" ? "#fbbf24" : "#7dd3fc"}
             size={14}
           />
-          <Text style={[styles.orderBookStateText, depthRouteStatus === "error" && styles.orderBookStateTextError, depthRouteStatus === "empty" && styles.orderBookStateTextEmpty]}>{depthStateText}</Text>
+          <Text style={[styles.orderBookStateText, depthStatusBadge.lifecycle === "not-ready" && styles.orderBookStateTextError, depthStatusBadge.lifecycle === "refresh-due" && styles.orderBookStateTextEmpty]}>{depthStateText}</Text>
         </View>
         <View
-          accessibilityLabel={`event-detail-order-book-availability orderbook-availability-${orderbookAvailabilityStatus} orderbook-availability-source-${selectedOrderbookAvailability?.source ?? "unknown"} ${orderbookAvailabilityText}`}
-          style={[styles.orderBookAvailabilityPill, orderbookAvailabilityStatus !== "ready" && styles.orderBookAvailabilityPillWarning, orderbookAvailabilityStatus === "suspended" && styles.orderBookAvailabilityPillSuspended]}
+          accessibilityLabel={`event-detail-order-book-availability orderbook-availability-${orderbookAvailabilityStatus} provider-lifecycle-${orderbookAvailabilityBadge.lifecycle} orderbook-availability-source-${orderbookAvailabilityBadge.source} ${orderbookAvailabilityText}`}
+          style={[styles.orderBookAvailabilityPill, orderbookAvailabilityBadge.lifecycle === "refresh-due" && styles.orderBookAvailabilityPillWarning, orderbookAvailabilityBadge.lifecycle === "not-ready" && styles.orderBookAvailabilityPillSuspended]}
           testID="event-detail-order-book-availability"
         >
           <Ionicons
-            name={orderbookAvailabilityStatus === "ready" ? "radio-outline" : orderbookAvailabilityStatus === "suspended" ? "pause-circle-outline" : "time-outline"}
-            color={orderbookAvailabilityStatus === "ready" ? "#7dd3fc" : orderbookAvailabilityStatus === "suspended" ? "#f87171" : "#fbbf24"}
+            name={providerLifecycleIcon[orderbookAvailabilityBadge.lifecycle]}
+            color={orderbookAvailabilityBadge.lifecycle === "ready" ? "#7dd3fc" : orderbookAvailabilityBadge.lifecycle === "not-ready" ? "#f87171" : "#fbbf24"}
             size={14}
           />
-          <Text style={[styles.orderBookAvailabilityText, orderbookAvailabilityStatus !== "ready" && styles.orderBookAvailabilityTextWarning]}>{orderbookAvailabilityText}</Text>
+          <Text style={[styles.orderBookAvailabilityText, orderbookAvailabilityBadge.lifecycle !== "ready" && styles.orderBookAvailabilityTextWarning]}>{orderbookAvailabilityText}</Text>
         </View>
         <ScrollView style={styles.orderBookScroll} contentContainerStyle={styles.orderBookPad}>
           <View
@@ -1050,15 +1133,24 @@ export function EventDetail({
                 <Text style={styles.orderBookOutcomeTitle}>{label(locale, orderBookSelectedOutcome)}</Text>
                 <Text style={styles.orderBookOutcomeMeta}>{orderBookSelectedOutcome.probability}% - {outcomeOdds(orderBookSelectedOutcome)}x</Text>
               </View>
-              <View style={styles.orderBookActionRow}>
-                <Pressable accessibilityLabel={`order-book-buy-${orderBookSelectedOutcome.id} ${selectedIdentityLabel}`} onPress={() => openTicket(orderBookMarket, orderBookSelectedOutcome, event, "buy", selectedTicketSelection)} style={[styles.orderBookTradeButton, { backgroundColor: orderBookSelectedOutcome.color }]} testID={`order-book-buy-${orderBookSelectedOutcome.id}`}>
+              <View style={styles.orderBookActionColumn}>
+                <Text
+                  accessibilityLabel={`order-book-ticket-handoff-status provider-lifecycle-${orderbookAvailabilityBadge.lifecycle} provider-source-${orderbookAvailabilityBadge.source} ${orderbookAvailabilityText}`}
+                  style={[styles.orderBookTicketHandoff, orderbookAvailabilityBadge.lifecycle !== "ready" && styles.orderBookTicketHandoffWarning]}
+                  testID="order-book-ticket-handoff-status"
+                >
+                  Ticket {providerLifecycleText[orderbookAvailabilityBadge.lifecycle].toLowerCase()}
+                </Text>
+                <View style={styles.orderBookActionRow}>
+                <Pressable accessibilityLabel={`order-book-buy-${orderBookSelectedOutcome.id} provider-lifecycle-${orderbookAvailabilityBadge.lifecycle} ${selectedIdentityLabel}`} onPress={() => openTicket(orderBookMarket, orderBookSelectedOutcome, event, "buy", selectedTicketSelection)} style={[styles.orderBookTradeButton, { backgroundColor: orderBookSelectedOutcome.color }]} testID={`order-book-buy-${orderBookSelectedOutcome.id}`}>
                   <Text style={styles.orderBookTradeText}>{t.buy}</Text>
                   <Text style={styles.orderBookTradeSubtext}>{selectedContractSide.toUpperCase()}</Text>
                 </Pressable>
-                <Pressable accessibilityLabel={`order-book-sell-${orderBookSelectedOutcome.id} ${selectedIdentityLabel}`} onPress={() => openTicket(orderBookMarket, orderBookSelectedOutcome, event, "sell", selectedTicketSelection)} style={styles.orderBookSellButton} testID={`order-book-sell-${orderBookSelectedOutcome.id}`}>
+                <Pressable accessibilityLabel={`order-book-sell-${orderBookSelectedOutcome.id} provider-lifecycle-${orderbookAvailabilityBadge.lifecycle} ${selectedIdentityLabel}`} onPress={() => openTicket(orderBookMarket, orderBookSelectedOutcome, event, "sell", selectedTicketSelection)} style={styles.orderBookSellButton} testID={`order-book-sell-${orderBookSelectedOutcome.id}`}>
                   <Text style={styles.orderBookSellText}>{t.sell}</Text>
                   <Text style={styles.orderBookTradeSubtext}>{selectedContractSide.toUpperCase()}</Text>
                 </Pressable>
+                </View>
               </View>
             </View>
             <View accessibilityLabel={`order-book-ladder Price Shares Value book-display-mode-${orderBookDisplayMode}`} style={styles.orderBookLadder} testID="order-book-ladder">
@@ -1482,7 +1574,7 @@ export function EventDetail({
             <Text style={styles.bodySwitchSource}>{isLiveEvent ? "Live World Cup" : "Holiwyn"}</Text>
             {liveDataStatus && (
               <Text
-                accessibilityLabel={`event-detail-live-data-inline live-data-status-${liveDataState} live-data-source-${liveDataStatus.source} ${liveDataText}`}
+                accessibilityLabel={`event-detail-live-data-inline live-data-status-${liveDataState} provider-lifecycle-${liveDataBadge.lifecycle} live-data-source-${liveDataBadge.source} ${liveDataText}`}
                 style={[styles.bodySwitchFreshness, liveDataState !== "ready" && styles.bodySwitchFreshnessWarning]}
                 testID="event-detail-live-data-inline"
               >
@@ -1517,11 +1609,11 @@ export function EventDetail({
             <View style={styles.liveStatsHeader}>
               <Text style={styles.liveStatsTitle}>Live stats</Text>
               <View
-                accessibilityLabel={`event-detail-live-data-status live-data-status-${liveDataState} live-data-source-${liveDataStatus?.source ?? "unknown"} live-data-stale-after-${liveDataStatus?.staleAfterSeconds ?? "none"} ${liveDataText} ${liveDataMeta}`}
-                style={[styles.liveDataPill, liveDataState !== "ready" && styles.liveDataPillWarning, liveDataState === "suspended" && styles.liveDataPillSuspended]}
+                accessibilityLabel={`event-detail-live-data-status live-data-status-${liveDataState} provider-lifecycle-${liveDataBadge.lifecycle} live-data-source-${liveDataBadge.source} live-data-stale-after-${liveDataStatus?.staleAfterSeconds ?? "none"} ${liveDataText} ${liveDataMeta}`}
+                style={[styles.liveDataPill, liveDataBadge.lifecycle === "refresh-due" && styles.liveDataPillWarning, liveDataBadge.lifecycle === "not-ready" && styles.liveDataPillSuspended]}
                 testID="event-detail-live-data-status"
               >
-                <Text style={[styles.liveDataText, liveDataState !== "ready" && styles.liveDataTextWarning]}>{event.status === "live" ? liveDataText : "Pregame preview"}</Text>
+                <Text style={[styles.liveDataText, liveDataBadge.lifecycle !== "ready" && styles.liveDataTextWarning]}>{event.status === "live" ? liveDataText : "Pregame preview"}</Text>
                 <Text style={styles.liveDataMeta}>{liveDataMeta}</Text>
               </View>
             </View>
@@ -1552,7 +1644,7 @@ export function EventDetail({
               <Text style={styles.liveStripLabel}>LIVE WORLD CUP</Text>
               <Text style={styles.liveStripScore}>{scoreboard} · {liveClock}</Text>
               <Text
-                accessibilityLabel={`event-detail-live-data-inline live-data-status-${liveDataState} live-data-source-${liveDataStatus?.source ?? "unknown"} ${liveDataText}`}
+                accessibilityLabel={`event-detail-live-data-inline live-data-status-${liveDataState} provider-lifecycle-${liveDataBadge.lifecycle} live-data-source-${liveDataBadge.source} ${liveDataText}`}
                 style={[styles.liveStripFreshness, liveDataState !== "ready" && styles.liveStripFreshnessWarning]}
                 testID="event-detail-live-data-inline"
               >
@@ -1569,21 +1661,21 @@ export function EventDetail({
           </View>
         )}
         <View
-          accessibilityLabel={`event-detail-price-chart chart-source-${event.chartHistorySource ?? "fallback"} chart-status-${chartRouteStatus} chart-range-${event.chartHistoryRange ?? "none"} chart-empty-${event.chartHistoryEmptyState ?? "none"} chart-filter-${chartFilter} chart-selected-point-${selectedChartPoint} chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"} two outcome traces ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartProbability}% ${chartPointMeta.label} ${chartPointMeta.value} +$9 +$39 +$479 All Game Live`}
+          accessibilityLabel={`event-detail-price-chart chart-source-${event.chartHistorySource ?? "fallback"} chart-status-${chartRouteStatus} provider-lifecycle-${chartStatusBadge.lifecycle} chart-range-${event.chartHistoryRange ?? "none"} chart-empty-${event.chartHistoryEmptyState ?? "none"} chart-filter-${chartFilter} chart-selected-point-${selectedChartPoint} chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"} two outcome traces ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartProbability}% ${chartPointMeta.label} ${chartPointMeta.value} +$9 +$39 +$479 All Game Live`}
           style={[styles.chartBlock, isLiveEvent && styles.liveChartBlock]}
           testID="event-detail-price-chart"
         >
           <View
-            accessibilityLabel={`event-detail-chart-route-state chart-status-${chartRouteStatus} ${chartStateText}`}
-            style={[styles.chartRouteState, chartRouteStatus === "error" && styles.chartRouteStateError, chartRouteStatus === "empty" && styles.chartRouteStateEmpty]}
+            accessibilityLabel={`event-detail-chart-route-state chart-status-${chartRouteStatus} provider-lifecycle-${chartStatusBadge.lifecycle} provider-source-${chartStatusBadge.source} ${chartStateText}`}
+            style={[styles.chartRouteState, chartStatusBadge.lifecycle === "not-ready" && styles.chartRouteStateError, chartStatusBadge.lifecycle === "refresh-due" && styles.chartRouteStateEmpty]}
             testID="event-detail-chart-route-state"
           >
             <Ionicons
-              name={chartRouteStatus === "error" ? "warning-outline" : chartRouteStatus === "loading" ? "sync-outline" : chartRouteStatus === "empty" ? "time-outline" : "pulse-outline"}
-              color={chartRouteStatus === "error" ? "#f87171" : chartRouteStatus === "empty" ? "#fbbf24" : "#7dd3fc"}
+              name={providerLifecycleIcon[chartStatusBadge.lifecycle]}
+              color={chartStatusBadge.lifecycle === "not-ready" ? "#f87171" : chartStatusBadge.lifecycle === "refresh-due" ? "#fbbf24" : "#7dd3fc"}
               size={14}
             />
-            <Text style={[styles.chartRouteStateText, chartRouteStatus === "error" && styles.chartRouteStateTextError, chartRouteStatus === "empty" && styles.chartRouteStateTextEmpty]}>
+            <Text style={[styles.chartRouteStateText, chartStatusBadge.lifecycle === "not-ready" && styles.chartRouteStateTextError, chartStatusBadge.lifecycle === "refresh-due" && styles.chartRouteStateTextEmpty]}>
               {chartStateText}
             </Text>
           </View>
@@ -1694,13 +1786,20 @@ export function EventDetail({
             ))}
           </View>
           <View
-            accessibilityLabel={`event-detail-chart-contract-rail chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-outcome-${selectedChartTicketOutcome?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"} ${selectedChartContractLabel}`}
+            accessibilityLabel={`event-detail-chart-contract-rail chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-outcome-${selectedChartTicketOutcome?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"} provider-lifecycle-${selectedChartTicketStatusBadge.lifecycle} ${selectedChartContractLabel}`}
             style={styles.chartContractRail}
             testID="event-detail-chart-contract-rail"
           >
             <View style={styles.chartContractTextBlock}>
               <Text style={styles.chartContractEyebrow}>{selectedChartContract === "moneyline" ? "Selected outcome" : "Selected line"}</Text>
               <Text numberOfLines={1} style={styles.chartContractTitle}>{selectedChartContractLabel}</Text>
+              <Text
+                accessibilityLabel={`event-detail-chart-ticket-handoff-status provider-lifecycle-${selectedChartTicketStatusBadge.lifecycle} provider-source-${selectedChartTicketStatusBadge.source} ${selectedChartTicketStatusBadge.text}`}
+                style={[styles.chartContractStatus, selectedChartTicketStatusBadge.lifecycle !== "ready" && styles.chartContractStatusWarning]}
+                testID="event-detail-chart-ticket-handoff-status"
+              >
+                {selectedChartTicketStatusBadge.text}
+              </Text>
             </View>
             <View style={styles.chartContractActions}>
               <Pressable
@@ -1713,7 +1812,7 @@ export function EventDetail({
                 <Text style={styles.chartContractButtonText}>Book</Text>
               </Pressable>
               <Pressable
-                accessibilityLabel={`event-detail-chart-open-ticket chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-outcome-${selectedChartTicketOutcome?.id ?? "none"} ${ticketSelectionIdentityLabel(selectedChartTicketSelection)}`}
+                accessibilityLabel={`event-detail-chart-open-ticket chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-outcome-${selectedChartTicketOutcome?.id ?? "none"} provider-lifecycle-${selectedChartTicketStatusBadge.lifecycle} ${ticketSelectionIdentityLabel(selectedChartTicketSelection)}`}
                 onPress={openSelectedChartTicket}
                 style={[styles.chartTradeButton, { backgroundColor: selectedChartColor }]}
                 testID="event-detail-chart-open-ticket"
@@ -2132,6 +2231,8 @@ const styles = StyleSheet.create({
   chartContractTextBlock: { flex: 1, minWidth: 0 },
   chartContractEyebrow: { color: "#7dd3fc", fontSize: 10, fontWeight: "900", textTransform: "uppercase" },
   chartContractTitle: { color: "#f8fafc", fontSize: 15, fontWeight: "900", marginTop: 3 },
+  chartContractStatus: { color: "#93c5fd", fontSize: 10, fontWeight: "900", marginTop: 4 },
+  chartContractStatusWarning: { color: "#fde68a" },
   chartContractActions: { flexDirection: "row", alignItems: "center", gap: 8 },
   chartContractButton: { minHeight: 36, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5, borderRadius: 8, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247", paddingHorizontal: 10 },
   chartContractButtonText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
@@ -2381,6 +2482,9 @@ const styles = StyleSheet.create({
   orderBookSelectedText: { flex: 1, minWidth: 0 },
   orderBookOutcomeTitle: { color: "#f8fafc", fontSize: 17, fontWeight: "900" },
   orderBookOutcomeMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "800", marginTop: 3 },
+  orderBookActionColumn: { alignItems: "flex-end", gap: 5 },
+  orderBookTicketHandoff: { color: "#93c5fd", fontSize: 10, fontWeight: "900" },
+  orderBookTicketHandoffWarning: { color: "#fde68a" },
   orderBookActionRow: { flexDirection: "row", gap: 8 },
   orderBookTradeButton: { minWidth: 74, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 10 },
   orderBookTradeText: { color: "#ffffff", fontSize: 13, fontWeight: "900" },

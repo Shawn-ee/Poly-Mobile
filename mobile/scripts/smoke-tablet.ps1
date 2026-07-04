@@ -20,6 +20,7 @@ param(
   [switch]$DyAGamePageStructure,
   [switch]$EventDetailChart,
   [switch]$EventDetailVisibleLiveParity,
+  [switch]$EventDetailProviderStatus,
   [switch]$ServerLiveDetailOrderBook,
   [switch]$ServerLiveDetailLineOrderBook,
   [switch]$ServerLiveDetailTotalsOrderBook,
@@ -107,6 +108,8 @@ if ($EventDetailTrade) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailChart -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EventDetailVisibleLiveParity) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailVisibleLiveParity -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($EventDetailProviderStatus) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailProviderStatus -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($ServerLiveDetailOrderBook) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerLiveDetailOrderBook -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl "http://127.0.0.1:3002" -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($ServerLiveDetailLineOrderBook) {

@@ -4048,3 +4048,42 @@ Known limitations:
 
 - Chart geometry is still rendered with React Native layout primitives rather than a true pan/zoom chart engine.
 - Real provider-backed line-family chart history remains dependent on backend/provider market history coverage.
+
+## Cycle EH-B - Visible Provider Lifecycle Status Badges
+
+Feature/page worked on:
+
+- Mobile EventDetail visible provider lifecycle/status badges for live event detail, chart context, Book/orderbook, and ticket handoff.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+User interactions supported/proven:
+
+- Live detail exposes a visible refresh-due provider badge when backend live status fields are absent.
+- Chart context exposes a visible provider-ready badge and carries ticket handoff provider status.
+- Opening Book shows a visible refreshing/loading depth badge, then resolves to provider-ready depth.
+- Book availability and Book ticket handoff visibly show not-ready/unavailable instead of silently becoming provider-ready.
+- Ticket handoff keeps the live Australia/Egypt selection and guards against moneyline/default/mock-ready fallback markers.
+
+Validation:
+
+- `npm ci` in `mobile/` to restore missing local dependencies.
+- `npm run typecheck` from `mobile/`
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailProviderStatus -Port 8316 -OutputDir docs/mobile/screenshots/cycle-EH-B-provider-status -HierarchyOutputDir docs/mobile/harness/cycle-EH-B-provider-status`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-EH-B-provider-status/cycle-EH-B-provider-status-proof.json`
+- `docs/mobile/harness/cycle-EH-B-provider-status/cycle-EH-B-provider-status-*.xml`
+- `docs/mobile/screenshots/cycle-EH-B-provider-status/cycle-EH-B-provider-status-*.png`
+
+Known limitations:
+
+- Live mock status is deterministic backend-contract-shaped fixture UI because backend liveDataStatus is absent in this branch.
+- Real provider freshness remains dependent on backend/provider contract fields.
