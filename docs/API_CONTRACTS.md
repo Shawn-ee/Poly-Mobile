@@ -20,6 +20,7 @@ The app can run in mock mode without a backend. Server mode expects a Holiwyn ba
 | Order cancel | `DELETE /api/orders/:id` | Required in server mode | Cancel open fake-token orders. |
 | Portfolio | `GET /api/portfolio` | Required in server mode | Read positions, open orders, latest order, recent activity. |
 | Portfolio history | `GET /api/portfolio/history` | Required in server mode | Read filled/canceled/closed activity history. |
+| Portfolio value history | `GET /api/portfolio/value-history?range=1D\|1W\|1M\|All` | Required in server mode when implemented | Read account value chart points for Portfolio range selector. |
 | Account/balance | `GET /api/account/balance` | Required in server mode | Read fake-token balance when server mode is enabled. |
 
 ## Selection Identity
@@ -55,6 +56,8 @@ Cycle FQ changes only Portfolio presentation. The screen still consumes the same
 Cycle FR changes only the app shell render condition for Portfolio. It has no backend, API, storage, or data contract impact.
 
 Cycle FS adds local Portfolio range state for `1D`, `1W`, `1M`, and `All`. No route changes were made. Future backend support should expose a portfolio value time-series route that accepts a range key and returns points suitable for the chart.
+
+Cycle FT adds the mobile-side contract for that future route: `PortfolioValueHistory`, `PortfolioValueHistoryPoint`, and `PolyApi.getPortfolioValueHistory(range)`. Until the backend route exists, `Portfolio` uses deterministic fallback data with the same payload shape and exposes `source`, `status`, `range`, and point count in Android proof labels.
 
 ## Provider Data
 

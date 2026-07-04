@@ -356,6 +356,27 @@ export type PortfolioSnapshot = {
   comboOrders: unknown[];
 };
 
+export type PortfolioValueHistoryRange = "1D" | "1W" | "1M" | "All";
+
+export type PortfolioValueHistoryPoint = {
+  timestamp: string;
+  value: number;
+  cash: number;
+  positionsValue: number;
+  pnl: number;
+};
+
+export type PortfolioValueHistory = {
+  range: PortfolioValueHistoryRange;
+  ranges: PortfolioValueHistoryRange[];
+  source: "portfolio-value-history-route" | "deterministic-mobile-fallback";
+  status: "ready" | "empty" | "error";
+  generatedAt: string;
+  lastUpdated: string | null;
+  emptyState: "no-history" | null;
+  points: PortfolioValueHistoryPoint[];
+};
+
 export type ProfilePreferences = {
   locale: "en" | "zh";
   ticketDefaultAmount: string;

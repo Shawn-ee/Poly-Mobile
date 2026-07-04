@@ -5677,7 +5677,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-range-1w.png"
       $mvpPortfolioRangeHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-range-1w.xml"
-      Assert-HierarchyContains -Path $mvpPortfolioRangeHierarchy -Expected @("portfolio-range-1W portfolio-range-selected", "portfolio-performance-chart-range-1W")
+      Assert-HierarchyContains -Path $mvpPortfolioRangeHierarchy -Expected @("portfolio-range-1W portfolio-range-selected", "portfolio-performance-chart-range-1W", "portfolio-chart-source-deterministic-mobile-fallback", "portfolio-chart-status-ready", "portfolio-chart-point-count-7")
       Invoke-TapHierarchyNode -Path $mvpPortfolioHierarchy -Identifier "portfolio-tab-orders"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-orders.png"

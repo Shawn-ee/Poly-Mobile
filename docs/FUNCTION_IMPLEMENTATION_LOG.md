@@ -62,3 +62,12 @@
 - User interactions supported: `1D`, `1W`, `1M`, and `All` are now tappable controls with selected state, and the performance chart exposes the active range in its proof label.
 - State transitions: added local `activeRange` state. Tapping a range updates `activeRange` and the deterministic chart variant.
 - Known limitations: range selection does not yet fetch real portfolio history. A backend time-series route remains needed for true chart data.
+
+## Cycle FT - Portfolio Value History Contract
+
+- Feature/page: Portfolio performance chart data contract.
+- Frontend components touched: `src/components/Portfolio.tsx`.
+- Important functions/services touched: `src/api.ts`, `src/types.ts`, `src/services/portfolioValueHistoryService.ts`.
+- User interactions supported: range selection now feeds a backend-shaped chart history object with range, source, status, timestamps, and value points. Android proof checks the selected `1W` range uses `deterministic-mobile-fallback` with ready status and seven points.
+- State transitions: `activeRange` remains local UI state. The derived chart history object changes when the selected range changes.
+- Known limitations: the real backend route `GET /api/portfolio/value-history?range={range}` is documented and typed in mobile, but not implemented in this mobile repo.
