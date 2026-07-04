@@ -278,6 +278,9 @@ describe("GET /api/portfolio/history canceled orders", () => {
       referenceTokenId: "token-ef-spread-yes-original",
       tokenId: "token-ef-spread-yes-original",
       referenceOutcomeLabel: "Spain -0.5",
+      limitPrice: 0.44,
+      limitSide: "ask",
+      limitShares: 125.5,
     };
     const driftedMarket = {
       id: "market-ef-spread",
@@ -351,6 +354,9 @@ describe("GET /api/portfolio/history canceled orders", () => {
     expect(JSON.stringify(body.recentTrades[0].selection)).not.toContain("refreshed");
     expect(body.canceledOrders[0].selection.tokenId).toBe("token-ef-spread-yes-original");
     expect(body.recentTrades[0].selection.marketGroupId).toBe("spreads");
+    expect(body.canceledOrders[0].selection.limitPrice).toBe(0.44);
+    expect(body.recentTrades[0].selection.limitSide).toBe("ask");
+    expect(body.recentTrades[0].selection.limitShares).toBe(125.5);
   });
 
   test("blocks anonymous history reads before canceled-order lookup", async () => {

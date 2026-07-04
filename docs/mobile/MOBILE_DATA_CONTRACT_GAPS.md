@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EN-A - Route-Backed Provider-Depth Limit Lifecycle
+
+Closed or narrowed:
+
+- `docs/mobile/harness/cycle-EN-A-route-limit-lifecycle/proof.json` now proves the backend P1 route gap as far as current schema allows: a Book-staged limit selection is born from `/api/mobile/events/:slug/live-detail` provider orderbook depth, then preserves selected `marketId`, `outcomeId`, market group/type, line, period, side, contract side, provider source, external slug/market/condition ids, provider token ids, `limitPrice`, `limitSide`, and `limitShares` through order response, `/api/portfolio`, and `/api/portfolio/history`.
+- The proof uses existing Polymarket-first provider rows (`ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot`) and keeps `OPTIC_ODDS_API_KEY` optional/non-blocking.
+- Focused portfolio and history route tests now assert the limit trio survives alongside provider token identity after current market/outcome metadata drift.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- The proof runs order creation through the canonical service backing `POST /api/orders`, not the HTTP route handler, because local route execution also depends on internal trading-beta environment flags. Portfolio and history reads do use route handlers.
+- A production real-live Polymarket event replay remains open; EN-A uses disposable backend rows with Polymarket/Gamma/CLOB-shaped provider data.
+- First-class immutable selection snapshots on `Order`, `Fill`, `Trade`, and/or `Position` remain future hardening. Filled positions and recent trades still use the existing guarded `ApiOrderRequest.requestBody.selection` bridge.
+
+Schema mismatch:
+
+- No schema migration was made. The selected provider and limit identity continues to ride the existing order request JSON selection snapshot.
+
+Route mismatch:
+
+- The selected live-detail -> order -> portfolio/history contract is materially narrowed. The exact remaining route gap is HTTP `POST /api/orders` proof under local trading-beta route flags plus a real production-mapped provider event replay.
+
+Temporary mock/static data:
+
+- No frontend mock/static data was added. The proof creates disposable backend rows and fails unless live-detail reports provider orderbook depth as ready.
+
+Future migration concern:
+
+- Same user, same market, same outcome, different historical Book levels still need immutable lifecycle-row snapshots before production can rely on exact historical reconstruction after remaps or repeated selections.
+
 ## Cycle EM Integrated - Book-Staged Limit Lifecycle Proof Pairing
 
 Closed or narrowed:

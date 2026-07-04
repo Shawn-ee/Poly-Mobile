@@ -324,6 +324,9 @@ describe("GET /api/portfolio open order display data", () => {
       conditionId: "condition-ef-spread-original",
       tokenId: "token-ef-spread-yes-original",
       referenceOutcomeLabel: "Spain -0.5",
+      limitPrice: 0.44,
+      limitSide: "ask",
+      limitShares: 125.5,
     };
     const driftedMarket = {
       id: "market-ef-spread",
@@ -396,6 +399,9 @@ describe("GET /api/portfolio open order display data", () => {
     expect(JSON.stringify(body.openOrders[0].selection)).not.toContain("refreshed");
     expect(body.positions[0].selection.tokenId).toBe("token-ef-spread-yes-original");
     expect(body.openOrders[0].selection.marketType).toBe("spread");
+    expect(body.positions[0].selection.limitPrice).toBe(0.44);
+    expect(body.openOrders[0].selection.limitSide).toBe("ask");
+    expect(body.openOrders[0].selection.limitShares).toBe(125.5);
   });
 
   test("returns sanitized current-user open combo orders", async () => {
