@@ -20,6 +20,7 @@ param(
   [switch]$EventDetailLinePortfolio,
   [switch]$EventDetailOrderBook,
   [switch]$EventDetailOrderBookInteractions,
+  [switch]$EventDetailOrderBookSelector,
   [switch]$EventDetailFullPage,
   [switch]$EventDetailChart,
   [switch]$EmptyErrorLoading,
@@ -2102,6 +2103,84 @@ try {
         )
       }
       $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-DV-provider-line-orderbook-proof.json"
+      $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
+      Write-Host "Proof summary: $proofPath"
+      return
+    }
+
+    if ($EventDetailOrderBookSelector) {
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Regulation Time Winner", "Best bid", "Best ask", "Spread", "event-detail-open-order-book")
+      Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-open-order-book"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DW-B-holiwyn-orderbook-selector-closed.png"
+      $selectorClosedHierarchy = Save-UiHierarchy -Name "cycle-DW-B-holiwyn-orderbook-selector-closed.xml"
+      Assert-HierarchyContains -Path $selectorClosedHierarchy -Expected @("event-detail-order-book-screen", "order-book-grouped-market-selector", "order-book-market-selector-trigger", "selector-closed", "selected-market-mexico-ecuador-winner", "selected-family-Moneyline", "selected-outcome-mexico", "selected-side-yes", "selected-market-type-winner", "Moneyline", "Totals", "Spreads", "Mexico vs. Ecuador - Match winner", "order-book-ladder", "Price", "Shares", "Value")
+
+      Invoke-TapHierarchyNode -Path $selectorClosedHierarchy -Identifier "order-book-grouped-market-selector"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DW-B-holiwyn-orderbook-selector-sheet.png"
+      $selectorSheetHierarchy = Save-UiHierarchy -Name "cycle-DW-B-holiwyn-orderbook-selector-sheet.xml"
+      Assert-HierarchyContains -Path $selectorSheetHierarchy -Expected @("order-book-market-selector-sheet", "selector-open", "selected-market-mexico-ecuador-winner", "order-book-market-choice-mexico-ecuador-winner", "order-book-market-choice-mexico-ecuador-total", "order-book-market-choice-mexico-ecuador-spread", "selected-market-choice", "inactive-market-choice", "market-type-totals", "line-2.5", "period-regulation", "depth-available")
+
+      Invoke-TapHierarchyNode -Path $selectorSheetHierarchy -Identifier "order-book-market-choice-mexico-ecuador-total"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DW-B-holiwyn-orderbook-selector-totals.png"
+      $selectorTotalsHierarchy = Save-UiHierarchy -Name "cycle-DW-B-holiwyn-orderbook-selector-totals.xml"
+      Assert-HierarchyContains -Path $selectorTotalsHierarchy -Expected @("event-detail-order-book-screen", "selector-closed", "selected-market-mexico-ecuador-total", "selected-family-Totals", "selected-outcome-over", "selected-side-yes", "selected-market-type-totals", "selected-line-2.5", "selected-period-regulation", "orderbook-source-contract-fixture", "orderbook-status-ready", "orderbook-availability-ready", "Fixture depth", "order-book-outcome-over", "order-book-ask-level-over-1", "order-book-bid-level-over-1", "Mexico vs. Ecuador - Total goals over 2.5")
+
+      Invoke-TapHierarchyNode -Path $selectorTotalsHierarchy -Identifier "order-book-grouped-market-selector"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DW-B-holiwyn-orderbook-selector-totals-sheet.png"
+      $selectorTotalsSheetHierarchy = Save-UiHierarchy -Name "cycle-DW-B-holiwyn-orderbook-selector-totals-sheet.xml"
+      Assert-HierarchyContains -Path $selectorTotalsSheetHierarchy -Expected @("order-book-market-selector-sheet", "selector-open", "selected-market-mexico-ecuador-total", "selected-family-Totals", "order-book-market-choice-mexico-ecuador-spread", "market-type-spread", "line-1.5", "period-regulation")
+
+      Invoke-TapHierarchyNode -Path $selectorTotalsSheetHierarchy -Identifier "order-book-market-choice-mexico-ecuador-spread"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DW-B-holiwyn-orderbook-selector-spread.png"
+      $selectorSpreadHierarchy = Save-UiHierarchy -Name "cycle-DW-B-holiwyn-orderbook-selector-spread.xml"
+      Assert-HierarchyContains -Path $selectorSpreadHierarchy -Expected @("event-detail-order-book-screen", "selector-closed", "selected-market-mexico-ecuador-spread", "selected-family-Spreads", "selected-outcome-yes", "selected-side-yes", "selected-market-type-spread", "selected-line-1.5", "selected-period-regulation", "orderbook-source-contract-fixture", "orderbook-status-ready", "orderbook-availability-ready", "Fixture depth", "order-book-outcome-yes", "order-book-ask-level-yes-1", "order-book-bid-level-yes-1", "Mexico vs. Ecuador - Mexico -1.5 spread")
+
+      Invoke-TapHierarchyNode -Path $selectorSpreadHierarchy -Identifier "order-book-buy-yes"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DW-B-holiwyn-orderbook-selector-spread-ticket.png"
+      $selectorTicketHierarchy = Save-UiHierarchy -Name "cycle-DW-B-holiwyn-orderbook-selector-spread-ticket.xml"
+      Assert-HierarchyContains -Path $selectorTicketHierarchy -Expected @("trade-ticket", "ticket-selection-summary", "Mexico -1.5 spread", "Mexico vs. Ecuador", "ticket-selection-line", "Yes", "provider-source-polymarket-fixture", "provider-market-gamma-mexico-ecuador-spread-15", "provider-condition-condition-mexico-ecuador-spread-15", "provider-token-token-spread-yes-15", "ticket-side-buy", "ticket-side-sell", "Choose an amount")
+
+      $proof = [ordered]@{
+        cycle = "DW-B"
+        scope = "Visible Book grouped selector sheet and market identity carry-through proof"
+        command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBookSelector -Port 8252 -OutputDir docs/mobile/screenshots/cycle-DW-B-orderbook-selector -HierarchyOutputDir docs/mobile/harness/cycle-DW-B-orderbook-selector"
+        eventIdentity = "Mexico vs. Ecuador"
+        result = "pass"
+        fixtureNote = "UI proof uses deterministic backend-contract-shaped fixture markets with marketId/outcomeId/marketType/period/line/side/probability/depth fields."
+        assertions = [ordered]@{
+          selectorTrigger = "order-book-grouped-market-selector selector-closed selected-market-mexico-ecuador-winner selected-family-Moneyline"
+          selectorSheet = "order-book-market-selector-sheet exposes Moneyline Totals Spreads grouped choices with market type, line, period, and depth labels"
+          totalsCarryThrough = "selected-market-mexico-ecuador-total selected-family-Totals selected-outcome-over selected-side-yes selected-market-type-totals selected-line-2.5 selected-period-regulation"
+          spreadCarryThrough = "selected-market-mexico-ecuador-spread selected-family-Spreads selected-outcome-yes selected-side-yes selected-market-type-spread selected-line-1.5 selected-period-regulation"
+          ticketCarryThrough = "ticket-selection-summary Mexico -1.5 spread ticket-selection-line Yes provider-source-polymarket-fixture provider-token-token-spread-yes-15"
+          ladderPreserved = "order-book-ask-level-yes-1 and order-book-bid-level-yes-1 remain visible after selector market change"
+        }
+        artifacts = @(
+          "docs/mobile/screenshots/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-closed.png",
+          "docs/mobile/harness/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-closed.xml",
+          "docs/mobile/screenshots/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-sheet.png",
+          "docs/mobile/harness/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-sheet.xml",
+          "docs/mobile/screenshots/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-totals.png",
+          "docs/mobile/harness/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-totals.xml",
+          "docs/mobile/screenshots/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-totals-sheet.png",
+          "docs/mobile/harness/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-totals-sheet.xml",
+          "docs/mobile/screenshots/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-spread.png",
+          "docs/mobile/harness/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-spread.xml",
+          "docs/mobile/screenshots/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-spread-ticket.png",
+          "docs/mobile/harness/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-spread-ticket.xml"
+        )
+        remainingGaps = @(
+          "Selector sheet is visible parity for mobile Book market switching; backend provider route behavior remains owned outside this Agent B change.",
+          "Fixture data remains deterministic UI proof only when the backend route is absent."
+        )
+      }
+      $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-DW-B-holiwyn-orderbook-selector-proof.json"
       $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
       Write-Host "Proof summary: $proofPath"
       return
