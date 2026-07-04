@@ -18,6 +18,8 @@ const market = (overrides: Partial<Parameters<typeof serializeMobileLiveEventDet
   title: "Curacao vs Cote d'Ivoire: Match Winner",
   description: null,
   status: "LIVE",
+  sourceUpdatedAt: new Date(),
+  updatedAt: new Date(),
   marketGroupKey: "main",
   marketGroupTitle: "Match Winner",
   displayOrder: 0,
@@ -125,6 +127,16 @@ describe("mobile live event detail contract", () => {
       id: "market-main",
       marketGroupId: "main",
       marketType: "match_winner_1x2",
+      availability: {
+        source: "market-source-updated-at",
+        status: "ready",
+        marketStatus: "LIVE",
+        staleAfterSeconds: 90,
+        isStale: false,
+        isSuspended: false,
+        isDelayed: false,
+        reason: "Market orderbook data is fresh.",
+      },
       orderbookDepth: [
         { outcomeId: "home", side: "bid", price: 0.59, shares: 1060, total: 625.4 },
         { outcomeId: "home", side: "ask", price: 0.65, shares: 940, total: 611 },
@@ -172,6 +184,60 @@ describe("mobile live event detail contract", () => {
       isDelayed: false,
       reason: "No provider timestamp available.",
     });
+  });
+
+  test("serializes compact market availability from backend market timestamps", async () => {
+    const payload = await serializeMobileLiveEventDetail({
+      event: {
+        id: "event-1",
+        slug: "world-cup-match",
+        title: "Curacao vs Cote d'Ivoire",
+        description: "M55",
+        category: "sports",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        eventType: "match",
+        homeTeamName: "Curacao",
+        awayTeamName: "Cote d'Ivoire",
+        startTime: new Date("2026-06-25T20:00:00.000Z"),
+        status: "LIVE",
+        liveStatus: "in_progress",
+        period: "2H",
+        clock: "67'",
+        homeScore: 0,
+        awayScore: 1,
+        imageUrl: null,
+        metadata: {},
+        markets: [
+          market({
+            id: "stale-team-total",
+            marketGroupKey: "team-totals",
+            marketGroupTitle: "Team totals",
+            marketType: "team_total_goals",
+            line: new Prisma.Decimal("1.5"),
+            sourceUpdatedAt: new Date("2020-01-01T00:00:00.000Z"),
+            updatedAt: new Date("2020-01-01T00:00:00.000Z"),
+          }),
+        ],
+      },
+      chartSnapshots: [],
+    });
+
+    expect(payload.markets[0]).toMatchObject({
+      id: "stale-team-total",
+      availability: {
+        source: "market-source-updated-at",
+        status: "stale",
+        marketStatus: "LIVE",
+        lastUpdated: "2020-01-01T00:00:00.000Z",
+        staleAfterSeconds: 90,
+        isStale: true,
+        isSuspended: false,
+        isDelayed: false,
+        reason: "Latest market update is older than 90 seconds.",
+      },
+    });
+    expect(payload.markets[0].availability.stalenessSeconds).toBeGreaterThan(90);
   });
 
   test("reserves compact payload slots for rendered line market groups", () => {

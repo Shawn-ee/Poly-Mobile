@@ -2,6 +2,38 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CE - Compact Market Availability Contract
+
+Fields now provided or wired:
+
+- `/api/mobile/events/:slug/live-detail` now returns `markets[].availability` for each compact market with source, status, raw `marketStatus`, timestamp, staleness seconds, stale threshold, booleans, and reason.
+- Mobile `Market` types and adapter preserve the availability object instead of collapsing it into display text.
+- EventDetail exposes visible line-row proof labels such as `event-detail-market-availability-team-total-goals`, `market-availability-stale`, and `market-status-LIVE`.
+- Samsung tablet proof confirms the Team Totals row shows pre-open stale availability and the opened orderbook shows the same stale selected-market state with route depth.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Provider heartbeat/ingestion that refreshes `Market.sourceUpdatedAt` and provider status for every line market.
+- Provider-owned delayed/suspended/unavailable states beyond deriving from local `Market.status`.
+- Per-outcome availability if a provider suspends a specific outcome while leaving the market visible.
+
+Schema mismatch:
+
+- The current schema can derive a first market availability contract from `Market.status`, `Market.sourceUpdatedAt`, and `Market.updatedAt`; production may need a dedicated provider status/history table.
+
+Route mismatch:
+
+- Compact live-detail and selected orderbook routes now both carry compatible availability shapes.
+- Broader route work is still needed for all-line batching/prefetch and provider-refresh lifecycle.
+
+Temporary mock/static data:
+
+- This cycle does not introduce arbitrary local availability strings. Fallback fixtures may omit the field; server proof uses backend-shaped timestamps.
+
+Future migration concern:
+
+- When provider ingestion lands, keep the same `availability` response shape so ticket/order/portfolio/history can preserve selected market freshness without mobile rewrites.
+
 ## Cycle CD - Selected Orderbook Availability Contract
 
 Fields now provided or wired:

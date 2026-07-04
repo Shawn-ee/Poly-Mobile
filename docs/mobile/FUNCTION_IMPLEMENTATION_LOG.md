@@ -2,6 +2,56 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CE - Compact Market Availability Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 compact per-visible-market availability for the live event detail page.
+- `/api/mobile/events/:slug/live-detail` now emits backend-shaped market availability for each compact market row before the user opens an order book.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/types.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/src/__tests__/worldCupAdapter.test.ts`
+- `mobile/scripts/smoke.ps1`
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+
+Important functions/services touched:
+
+- `serializeMobileLiveEventDetail()` now emits `markets[].availability` with source, status, raw market status, timestamps, staleness, booleans, and reason.
+- `normalizeMarket()` preserves `availability` into the mobile market contract.
+- EventDetail renders `event-detail-market-availability-*` labels on visible line groups and keeps the same availability identity on each Book button.
+
+User interactions supported:
+
+- User scrolls to Team Totals and can see the selected market is stale before opening its order book; opening the book still shows route-backed depth and matching stale availability.
+
+State transitions:
+
+- Compact route reads `Market.status`, `Market.sourceUpdatedAt`, and `Market.updatedAt` -> returns `markets[].availability` -> mobile adapter stores it on each `Market` -> EventDetail exposes `market-availability-stale market-status-LIVE` on the visible Team Totals row -> Book opens the selected market orderbook and preserves the availability state.
+
+Known limitations:
+
+- Availability is derived from existing market timestamps, not an external provider heartbeat.
+- Backend parity remains incomplete until provider ingestion refreshes market timestamps/status for every live line market.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-event-detail.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/worldCupAdapter.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run mobile:live-chart-snapshot-seed`
+- `cmd /c npm.cmd run mobile:live-team-totals-orderbook-depth-seed`
+- `cmd /c npm.cmd run smoke:tablet:server-live-team-totals-order-book`
+
 ## Cycle CD - Selected Orderbook Availability Contract
 
 Feature/page worked on:

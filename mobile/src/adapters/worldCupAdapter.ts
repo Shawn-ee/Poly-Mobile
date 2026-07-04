@@ -145,6 +145,7 @@ export const normalizeMarket = (market: BackendMarket): Market => ({
     shares: level.shares,
     total: level.total,
   })),
+  availability: market.availability,
   outcomes: market.outcomes.map((outcome, index) => normalizeOutcome(outcome, index, market.outcomes.length)),
 });
 

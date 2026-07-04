@@ -1941,7 +1941,7 @@ try {
       & $adb -s $Device shell input swipe 540 1800 540 760 600 | Out-Null
       Start-Sleep -Seconds 1
       $eventDetailTeamTotalsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-live-team-totals-line-groups.xml"
-      Assert-HierarchyContains -Path $eventDetailTeamTotalsHierarchy -Expected @("event-detail-open-order-book-team-total-goals", "Full Game Team Total Goals", "1.5")
+      Assert-HierarchyContains -Path $eventDetailTeamTotalsHierarchy -Expected @("event-detail-open-order-book-team-total-goals", "event-detail-market-availability-team-total-goals", "market-availability-stale", "market-status-LIVE", "Market stale", "Full Game Team Total Goals", "1.5")
       Invoke-TapHierarchyNode -Path $eventDetailTeamTotalsHierarchy -Identifier "event-detail-open-order-book-team-total-goals"
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-server-live-team-totals-order-book.png"

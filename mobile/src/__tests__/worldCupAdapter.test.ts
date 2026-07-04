@@ -65,6 +65,18 @@ describe("world cup adapter", () => {
       line: "+0.5",
       liquidity: "4500",
       orderbookDepth: [{ outcomeId: "aus", side: "bid", price: 0.58, shares: 100, total: 58 }],
+      availability: {
+        source: "market-source-updated-at",
+        status: "stale",
+        marketStatus: "LIVE",
+        lastUpdated: "2026-07-03T22:00:10.000Z",
+        stalenessSeconds: 121,
+        staleAfterSeconds: 90,
+        isStale: true,
+        isSuspended: false,
+        isDelayed: false,
+        reason: "Latest market update is older than 90 seconds.",
+      },
       outcomes: [
         {
           id: "aus",
@@ -86,6 +98,14 @@ describe("world cup adapter", () => {
       line: "+0.5",
       liquidity: 4500,
       orderbookDepth: [{ outcomeId: "aus", side: "bid", price: 0.58, shares: 100, total: 58 }],
+      availability: {
+        source: "market-source-updated-at",
+        status: "stale",
+        marketStatus: "LIVE",
+        stalenessSeconds: 121,
+        staleAfterSeconds: 90,
+        isStale: true,
+      },
       outcomes: [{ id: "aus", side: "home", bestBid: 0.58, bestAsk: 0.62 }],
     });
   });
