@@ -15,6 +15,19 @@ Cycle DS-A implementation notes:
 - The route intentionally does not expose provider token IDs, condition IDs, credentials, owner IDs, or user/order private state in `marketIdentity`.
 - This closes the backend-side compact market identity gap for Book selector/depth parity; mobile can switch/select line markets without inventing family, line, period, outcome, or display-unit labels.
 
+## Cycle DS-B/Integrated - Visible Orderbook Selector And Ladder
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Orderbook overlay selector/ladder | `/api/orderbook/:marketId/book` plus existing event/live-detail data | GET | Public/mobile visibility guard | Optional selected market/outcome and max depth through existing mobile flow | `marketIdentity` when route-backed; existing `levels[]`, bid/ask prices, shares, value, `availability`, `emptyState`, source/status labels | `Market`, `Outcome`, local orderbook/provider snapshot rows | Existing contract-shaped fallback depth renders with explicit `Fallback depth` and unavailable labels when route-backed ready depth is absent | Need integrated provider-backed ready depth proof and selector carry-through for Moneyline -> Spread/Totals. |
+| Tablet orderbook smoke proof | `mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBook` | Local harness | Local device proof only | `-OutputDir`, `-HierarchyOutputDir`, `-Port` | Screenshots/XML for event detail, Book overlay, Book ticket, close state | No DB writes | Uses current mobile app state and backend availability | Add interaction steps for Yes/No tab switching, selector choice changes, and Decimalize/equivalent settings. |
+
+Cycle DS-B/Integrated implementation notes:
+
+- `docs/mobile/harness/cycle-DS-integrated-orderbook-ui-proof.json` records the integrated partial proof.
+- The Book overlay now depends on stable market/outcome identity and explicit depth status labels. It must not hide fallback/unavailable state as a ready provider-backed ladder.
+- PM-GAP-075 remains open until selector changes, Yes/No tab switching, settings, and provider-backed ready depth are proven together.
+
 ## Cycle DR-A - Scheduled Provider Refresh Run Reporting
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

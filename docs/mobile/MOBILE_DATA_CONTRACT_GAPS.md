@@ -32,6 +32,30 @@ Future migration concern:
 
 - Keep `marketIdentity` free of provider tokens, credential fields, owner fields, and private trading state. Provider token/condition identity should remain on the existing provider/ticket metadata paths that already have no-leak coverage.
 
+## Cycle DS-B/Integrated - Orderbook UI Contract Gaps
+
+Feature:
+
+- PM-GAP-075 visible Book/orderbook selector and ladder parity.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Event-level Book selector payload may be needed if mobile should open a full Polymarket-like selector sheet without making one orderbook route call per sibling market.
+- A persisted/display contract for a `Decimalize book` equivalent setting is not defined.
+- Stronger route/proof metadata for bid/ask side labels would make red/green ladder audit less dependent on screenshots.
+
+Route mismatch:
+
+- `/api/orderbook/:marketId/book` now exposes `marketIdentity`, but the integrated mobile smoke still proves mostly fallback/unavailable depth. Provider-backed ready depth must be proven on the same UI surface before PM-GAP-075 can pass.
+
+Temporary mock/static data:
+
+- DS integrated UI proof used existing contract-shaped mobile orderbook data and fallback depth rows where route-backed ready depth was not available in the smoke state.
+
+Future migration concern:
+
+- Keep `marketIdentity.selectorKey`, `marketType`, `period`, `line`, `unit`, `outcomes[]`, and depth `side` stable so the Book selector can carry identity into ticket, order, portfolio, and history.
+
 ## Cycle DR-A - Scheduled Provider Refresh Run Reporting
 
 Closed or narrowed:

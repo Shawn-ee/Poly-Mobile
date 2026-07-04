@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Orderbook family/depth selector | Cycle DS integrated | Partial; PM-GAP-075 remains open | 5 P0 areas remain | P1 Decimalize/settings; full selector sheet parity; provider-backed line depth proof | `docs/mobile/audits/cycle-ds-c-orderbook-audit-gate.md`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-12-top-book-action.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-13-orderbook-market-selector.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-15-orderbook-depth-scroll.png` | Integrated tablet proof: `docs/mobile/harness/cycle-DS-integrated-orderbook-ui-proof.json`; screenshot/XML folders under `docs/mobile/screenshots/cycle-DS-integrated-orderbook-ui/` and `docs/mobile/harness/cycle-DS-integrated-orderbook-ui/`; backend proof `docs/mobile/harness/cycle-DS-A-orderbook-selector-contract.json` | Material behavior closer: Book opens a dedicated surface, shows event identity, Yes/No tabs, grouped market selector labels, Price/Shares/Value ladder, spread separator, fallback/unavailable states, and ticket action. Not a pass because tab switching, selector carry-through, Decimalize/settings, and provider-backed ready depth were not proven together. |
 | Line-market ticket target parity | Cycle DR-C integrated | Pass for focused ticket-target gate | 0 | P1 ticket amount/swipe recapture remains location-gated in DQ-C reference; PM-GAP-074 remains open for Book/order/portfolio/history coupling | `docs/mobile/audits/live-football-world-cup-dq-c.md`; `docs/mobile/audits/cycle-dr-c-line-market-ticket-target-gate.md`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-08-spread-line-dropdown.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-10-spread-ticket.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-16-markets-scroll-2.png` | Integrated tablet proof: `docs/mobile/harness/cycle-DR-C-integrated-line-market-ticket-proof.json`; `docs/mobile/screenshots/cycle-DR-C-integrated-line-adjustment-spread-ticket.png`; `docs/mobile/screenshots/cycle-DR-C-integrated-line-adjustment-totals-ticket.png`; XML under `docs/mobile/harness/cycle-DR-C-integrated-line-adjustment-*.xml` | Integrated smoke passed on Samsung tablet. Spread carries `MEX -2.5 1H`, Totals carries `Over 3.5 2H`, ticket odds/keypad/balance/submit rail are visible, and line ticket targets no longer fall back to the wrong backend-shaped market. |
 | Live football / World Cup game detail DQ-C reference audit | Cycle DQ-C | Reference criteria complete; Holiwyn parity not passed | Not evaluated against Holiwyn by Agent C | P1 ticket amount/swipe confirmation recapture; P1 Book selector proof across families; P2 visual/motion polish | `docs/mobile/audits/live-football-world-cup-dq-c.md`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-03-world-cup-game-top.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-12-top-book-action.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-17-share-sheet.png` | Not run by Agent C in this docs/reference worktree | Fresh S23 official app audit captured Canada vs Morocco World Cup detail, chart press, Chat tab, line selector, spread/totals/halves, orderbook/depth, market selector, location-gated ticket, share sheet, and scroll behavior. |
 | Scheduled provider refresh lifecycle | Cycle DQ-A | Pass for backend provider scheduler stale-to-ready lifecycle; partial for deployed worker/device visual proof | 0 | P1 deployed cron/queue cadence and run history; P1 exact line-family provider parity; P2 visual density/motion | Existing Polymarket-first provider evidence from Cycle DK-DN plus mapped disposable Polymarket proof event | Backend: `docs/mobile/harness/cycle-DQ-A-mobile-scheduled-provider-refresh.json`; tests: provider scheduler/refresh route/service Jest set; Holiwyn smoke attempted via `mobile/scripts/smoke-tablet.ps1 -ServerLiveProviderRefreshProof -Port 8218` | Material behavior closer: scheduler finds stale provider snapshots, refreshes without contract fallback, and live-detail returns ready. OpticOdds is skipped for this proof and does not block Polymarket Gamma/CLOB parity. Tablet smoke failed before provider assertions on missing `event-detail-group-prop`, so backend proof is the accepted DQ-A evidence. |
@@ -1347,13 +1348,13 @@ Decision:
 
 ## Cycle DS-C Orderbook Audit Gate
 
-Result: Fail until proof for PM-GAP-075.
+Result: Partial integrated proof; PM-GAP-075 remains open.
 
 Lead Agent target: Agent B orderbook parity against the fresh DQ-C Polymarket reference.
 
 Reference Audit Agent: DQ-C Samsung S23 Polymarket reference audit.
 
-Implementation Agent: Agent B, integrated Holiwyn DS build pending proof.
+Implementation Agent: Agent B, integrated Holiwyn DS build.
 
 Audit Gate Agent: Agent C.
 
@@ -1367,7 +1368,7 @@ Reference route/URL:
 
 Holiwyn device:
 
-- Not provided in this Agent C worktree for PM-GAP-075.
+- Samsung tablet / Holiwyn Expo Go integrated branch.
 
 Reference evidence:
 
@@ -1381,21 +1382,26 @@ Reference evidence:
 
 Holiwyn evidence:
 
-- None accepted for DS-C PM-GAP-075 in this branch. Older route-backed Book proof remains background only.
+- `docs/mobile/harness/cycle-DS-integrated-orderbook-ui-proof.json`
+- `docs/mobile/screenshots/cycle-DS-integrated-orderbook-ui/cycle-current-holiwyn-order-book.png`
+- `docs/mobile/harness/cycle-DS-integrated-orderbook-ui/cycle-current-holiwyn-order-book.xml`
+- `docs/mobile/screenshots/cycle-DS-integrated-orderbook-ui/cycle-current-holiwyn-order-book-ticket.png`
+- `docs/mobile/harness/cycle-DS-integrated-orderbook-ui/cycle-current-holiwyn-order-book-ticket.xml`
+- `docs/mobile/harness/cycle-DS-A-orderbook-selector-contract.json`
 
 Criteria results:
 
 | Criterion ID | Priority | Result | Evidence | Fix if failed |
 | --- | --- | --- | --- | --- |
-| OB-DS-C-P0-01 | P0 | Fail until proof | DQ-C proves Book opens a dedicated `Order Book` page with `Canada vs Morocco`. | Provide integrated Android Book-action screenshot/XML preserving event identity. |
-| OB-DS-C-P0-02 | P0 | Fail until proof | DQ-C proves visible `Yes` and `No` tabs. | Provide Yes/No before/after tab-switch proof preserving selected market identity. |
-| OB-DS-C-P0-03 | P0 | Fail until proof | DQ-C selector shows `Moneyline`, `CAN to advance`, `MAR to advance`, `Spreads`, `CAN -2.5`, and `CAN -2.5 1H`. | Provide grouped selector screenshot/XML for Moneyline plus Spreads. |
-| OB-DS-C-P0-04 | P0 | Fail until proof | DQ-C selector carries family/line/period choices into the Book surface. | Provide selector carry-through into ladder and ticket identity. |
-| OB-DS-C-P0-05 | P0 | Fail until proof | DQ-C ladder exposes `Price`, `Shares`, and `Value` with multiple rows. | Provide XML/screenshot with the same column contract and multiple rows. |
-| OB-DS-C-P0-06 | P0 | Fail until proof | DQ-C screenshots show red asks and green bids. | Provide screenshot plus metadata proving bid/ask side separation. |
-| OB-DS-C-P0-07 | P0 | Fail until proof | DQ-C XML shows `Spread 0.5c`. | Provide active spread separator proof. |
-| OB-DS-C-P0-08 | P0 | Fail until proof | DQ-C is ready-state reference; Holiwyn must also be honest for non-ready states. | Provide ready plus loading/empty/error/stale/unavailable state proof or documented untriggerable-state reason. |
-| OB-DS-C-P0-09 | P0 | Fail until proof | No `cycle-DS-C-*` Holiwyn artifacts found. | Commit DS-C-owned screenshots/XML/proof JSON and passing smoke/test summary. |
+| OB-DS-C-P0-01 | P0 | Pass | Integrated proof shows a dedicated Book surface preserving `Mexico vs. Ecuador - Match winner`. | Keep Book action smoke coverage. |
+| OB-DS-C-P0-02 | P0 | Partial | Integrated proof shows Yes/No tabs, but no before/after tab-switch state. | Add tab-switch smoke proof preserving selected market identity. |
+| OB-DS-C-P0-03 | P0 | Partial | Integrated proof shows grouped labels and choices, but not Moneyline-to-Spreads selector interaction. | Add selector interaction proof for Moneyline plus Spread/line choices. |
+| OB-DS-C-P0-04 | P0 | Fail | Selector carry-through into ladder and ticket identity was not proven. | Provide selector before/after plus ladder/ticket XML or proof JSON. |
+| OB-DS-C-P0-05 | P0 | Pass | Integrated proof shows Price, Shares, Value, and multiple ladder rows. | Keep ladder column smoke coverage. |
+| OB-DS-C-P0-06 | P0 | Partial | Integrated screenshot shows side styling, but side-labelled metadata/proof is not strong enough. | Add row-side metadata/proof for ask/bid separation. |
+| OB-DS-C-P0-07 | P0 | Pass | Integrated proof shows a spread separator. | Keep spread separator smoke coverage. |
+| OB-DS-C-P0-08 | P0 | Partial | Integrated proof shows fallback/unavailable non-ready states, but not provider-backed ready state on this UI. | Rerun with provider-backed ready depth and keep non-ready labels. |
+| OB-DS-C-P0-09 | P0 | Pass | Integrated DS proof artifacts and passing tablet smoke exist under `cycle-DS-integrated-orderbook-ui`. | Keep final proof on integrated branch. |
 | OB-DS-C-P1-01 | P1 | Open | DQ-C settings exposes `Decimalize book`. | Provide settings/equivalent display toggle proof. |
 | OB-DS-C-P1-02 | P1 | Open | DQ-C minimum selector coverage is Moneyline plus Spreads. | Extend selector proof to every visible family/period when available. |
 | OB-DS-C-P1-03 | P1 | Open | DQ-C ladder rows are tappable. | Provide row-to-ticket/order carry-through proof. |
@@ -1403,8 +1409,8 @@ Criteria results:
 
 Decision:
 
-- Pass/fail: Fail until proof.
-- Unresolved P0 gaps: 9.
+- Pass/fail: Partial; PM-GAP-075 remains open.
+- Unresolved P0 gaps: 5 areas remain.
 - Remaining P1/P2 gaps: Decimalize/equivalent setting, broader selector coverage, row-to-ticket carry-through, and visual polish.
 - Exact proof Agent B must provide: integrated `cycle-DS-C-*` Android screenshots/XML/proof JSON for Book action, Yes/No tab switch, grouped selector, selected family/period/line identity carry-through, Price/Shares/Value ladder rows, red/green bid/ask sides, spread separator, settings, ready and non-ready states, plus a passing smoke/test summary from the integrated DS build.
 

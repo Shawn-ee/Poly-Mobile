@@ -1,0 +1,48 @@
+{
+  "cycle": "DS integrated",
+  "scope": "PM-GAP-075 orderbook family/depth selector partial parity",
+  "generatedAt": "2026-07-04T11:07:00.000Z",
+  "referenceEvidence": [
+    "docs/mobile/audits/cycle-ds-c-orderbook-audit-gate.md",
+    "docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-12-top-book-action.png",
+    "docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-13-orderbook-market-selector.png",
+    "docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-14-orderbook-settings.png",
+    "docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-15-orderbook-depth-scroll.png"
+  ],
+  "holiwynProof": {
+    "command": "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBook -Port 8234 -OutputDir docs/mobile/screenshots/cycle-DS-integrated-orderbook-ui -HierarchyOutputDir docs/mobile/harness/cycle-DS-integrated-orderbook-ui",
+    "device": "adb-R5GYA13X7NJ-4O0ADU._adb-tls-connect._tcp",
+    "result": "pass",
+    "artifacts": [
+      "docs/mobile/screenshots/cycle-DS-integrated-orderbook-ui/cycle-current-holiwyn-order-book.png",
+      "docs/mobile/harness/cycle-DS-integrated-orderbook-ui/cycle-current-holiwyn-order-book.xml",
+      "docs/mobile/screenshots/cycle-DS-integrated-orderbook-ui/cycle-current-holiwyn-order-book-ticket.png",
+      "docs/mobile/harness/cycle-DS-integrated-orderbook-ui/cycle-current-holiwyn-order-book-ticket.xml"
+    ]
+  },
+  "assertions": {
+    "bookActionOpensDedicatedSurface": true,
+    "eventIdentityVisible": "Mexico vs. Ecuador - Match winner",
+    "yesNoTabsVisible": true,
+    "groupedSelectorVisible": true,
+    "selectorFamiliesVisible": [
+      "MONEYLINE",
+      "TOTALS",
+      "PROPS"
+    ],
+    "priceSharesValueColumnsVisible": true,
+    "multipleDepthRowsVisible": true,
+    "spreadSeparatorVisible": true,
+    "fallbackDepthStateVisible": true,
+    "marketUnavailableStateVisible": true,
+    "ticketActionFromOrderbookVisible": true
+  },
+  "notYetPassed": [
+    "Yes/No tab switch was not captured as before/after state.",
+    "Selector interaction did not prove Moneyline-to-Spreads carry-through.",
+    "Decimalize book or equivalent settings action is not implemented/proven.",
+    "Ready provider-backed depth was not rerun in this DS proof; the captured state is fallback/unavailable.",
+    "Red/green bid/ask styling is screenshot-only and needs stronger side-labelled proof."
+  ],
+  "pmGap075Status": "partial"
+}

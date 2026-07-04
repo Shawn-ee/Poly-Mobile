@@ -3301,6 +3301,53 @@ User interactions supported:
 State transitions:
 
 - `Market` + active `Outcome` rows -> `/api/orderbook/:marketId/book` -> `marketIdentity` + ladder response.
+
+## Super Round DS-B/Integrated - Visible Orderbook Selector And Ladder
+
+Feature/page worked on:
+
+- PM-GAP-075 visible Book/orderbook family/depth selector parity for live football game detail.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/package.json`
+- `mobile/package-lock.json`
+
+Important functions/services touched:
+
+- EventDetail orderbook overlay rendering.
+- Orderbook grouped market selector rendering.
+- Orderbook Yes/No tab surface.
+- Orderbook ladder rendering for Price/Shares/Value rows.
+- Tablet smoke output routing for orderbook-specific screenshot/XML evidence.
+
+User interactions supported:
+
+- Tap Book from game detail to open a dedicated orderbook surface.
+- View event identity and selected market context on the Book surface.
+- See grouped selector labels and market choices.
+- See visible Yes/No outcome tabs.
+- See a single Price/Shares/Value ladder with spread separator.
+- Tap a Book-side action into the existing ticket path.
+
+State transitions:
+
+- Game detail market row -> Order Book overlay.
+- Selected market context -> grouped selector + ladder display.
+- Orderbook row/ticket action -> trade ticket.
+- Orderbook overlay -> closed state back to event detail.
+
+Known limitations:
+
+- PM-GAP-075 remains open after DS integrated proof.
+- Yes/No tab switching was visible but not captured as before/after interactive proof.
+- Grouped selector is inline, not yet a full Polymarket-style selector sheet.
+- Selector carry-through into ladder/ticket identity for Moneyline -> Spread was not proven.
+- `Decimalize book` or equivalent display setting is not implemented/proven.
+- Integrated proof captured fallback/unavailable depth state, not provider-backed ready depth.
 - The focused proof exercises Moneyline (`match_winner_1x2`), Spread (`spread` line `1.5`), and Totals (`total_goals` line `2.5`) route identities.
 
 Known limitations:
