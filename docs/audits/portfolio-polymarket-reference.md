@@ -36,3 +36,33 @@ Deposit/withdraw behavior is not implemented for Holiwyn MVP. The buttons are vi
 - Backend/API impact: none expected. Portfolio uses existing local/server state and order identity fields.
 - Android proof: passed on Samsung tablet with `powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -LocalMvpSellFlow -Port 8227`.
 - Audit status: P0 pass. Remaining gaps are tracked as P1/P2: app-shell header difference, deterministic chart data, and exact visual polish.
+
+## Cycle FY Reference Refresh
+
+User-provided Polymarket screenshots on July 4, 2026 show the Portfolio page still needs tighter visual density:
+
+- the profile avatar should read as a soft gradient circle, not a flat badge;
+- the chart should stay clean by default and show value readout only after touch;
+- the range selector should share the row with a faint branded watermark;
+- position rows should avoid visible internal debug/proof pills and should show score/live time, flag, Yes/No badge, cost/to-win/entry, current value/chance, Cash out, and plus action;
+- Orders should keep a centered `No open orders` empty state;
+- History should be simple rows with an icon, action/outcome, event, amount, and time, with execution/debug details hidden from the default visual row.
+
+## Cycle FY Acceptance Criteria
+
+| Criteria | Priority | Verification |
+| --- | --- | --- |
+| Portfolio header shows gradient avatar, username, settings, large value, P/L, and cash line without the old app-shell promo header. | P0 | Android screenshot/XML. |
+| Performance chart is clean by default; touch still reveals a value readout for inspection. | P0 | Android screenshot/XML after chart tap. |
+| Range selector and Holiwyn watermark occupy the same row, matching the reference structure while avoiding Polymarket branding. | P0 | Android screenshot/XML. |
+| Position row hides internal proof/status details from the visible row while preserving order identity in accessibility labels. | P0 | Android screenshot/XML and hierarchy. |
+| Position and History rows use flag/icon-style leading visuals and simplified text hierarchy. | P0 | Android screenshot/XML. |
+| Deposit/Withdraw remain placeholders only; no funding flow is implemented. | P0 | Android screenshot/XML. |
+| Exact native gradient, chart curve physics, and continuous drag tooltip. | P2 | Deferred polish. |
+
+## Cycle FY Result
+
+- Implementation: `Portfolio` now hides visible internal proof details from default rows, uses gradient/flag-style visual anchors, keeps the chart clean until touch, and adds a Holiwyn watermark beside the range selector.
+- Backend/API impact: none. The cycle only changes mobile presentation and preserves existing Portfolio data contracts.
+- Android proof: passed on Samsung tablet with `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -LocalMvpTradeFlow -Port 8236`.
+- Audit status: P0 pass for Portfolio visual density in the local MVP buy-flow proof. Remaining P2 gaps are exact native gradient/chart physics and final pixel polish.

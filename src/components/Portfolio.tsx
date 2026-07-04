@@ -153,6 +153,42 @@ const displayOutcome = (item: { outcome: string; selection?: TicketSelection; co
 const displayPositionChoice = (item: { outcome: string; selection?: TicketSelection }) =>
   item.selection?.displayLabel ?? item.outcome;
 
+function PortfolioAvatar() {
+  return (
+    <View accessibilityLabel="portfolio-gradient-avatar" style={styles.avatarGradient}>
+      <View style={[styles.avatarColorStop, styles.avatarColorStopPink]} />
+      <View style={[styles.avatarColorStop, styles.avatarColorStopYellow]} />
+      <View style={[styles.avatarColorStop, styles.avatarColorStopBlue]} />
+    </View>
+  );
+}
+
+function PositionFlag() {
+  return (
+    <View accessibilityLabel="portfolio-position-flag" style={styles.positionFlag}>
+      <View style={[styles.flagStripe, styles.flagBlue]} />
+      <View style={[styles.flagStripe, styles.flagWhite]} />
+      <View style={[styles.flagStripe, styles.flagRed]} />
+    </View>
+  );
+}
+
+function ActivityIcon({ activity }: { activity: PortfolioActivity }) {
+  if (activity.outcome.toLowerCase().includes("fra") || activity.title.toLowerCase().includes("france")) {
+    return <PositionFlag />;
+  }
+
+  return (
+    <View style={styles.activityIcon}>
+      <Ionicons
+        name={activity.action === "opened" ? "arrow-down" : activity.action === "canceled" ? "close" : "checkmark"}
+        size={18}
+        color="#dbeafe"
+      />
+    </View>
+  );
+}
+
 const limitIdentityLabel = (selection?: TicketSelection) =>
   selection?.limitPrice
     ? `portfolio-limit-side-${selection.limitSide ?? "none"} portfolio-limit-price-${Math.round(selection.limitPrice * 100)} portfolio-limit-decimal-${selection.limitPrice.toFixed(2)} portfolio-limit-shares-${selection.limitShares ?? "none"}`
@@ -310,14 +346,16 @@ function PortfolioSparkline({
       testID="portfolio-performance-chart"
       style={styles.chartArea}
     >
-      <View
-        accessibilityLabel={`portfolio-chart-readout portfolio-chart-selected-index-${selectedIndex} portfolio-chart-selected-value-${Math.round(selectedValue)}`}
-        style={styles.chartReadout}
-        testID="portfolio-chart-readout"
-      >
-        <Text style={styles.chartReadoutValue}>{money(selectedValue)}</Text>
-        <Text style={styles.chartReadoutLabel}>{range}</Text>
-      </View>
+      {selectedIndexOverride !== null && (
+        <View
+          accessibilityLabel={`portfolio-chart-readout portfolio-chart-selected-index-${selectedIndex} portfolio-chart-selected-value-${Math.round(selectedValue)}`}
+          style={styles.chartReadout}
+          testID="portfolio-chart-readout"
+        >
+          <Text style={styles.chartReadoutValue}>{money(selectedValue)}</Text>
+          <Text style={styles.chartReadoutLabel}>{range}</Text>
+        </View>
+      )}
       {plotted.slice(0, -1).map((point, index) => {
         const next = plotted[index + 1];
         return (
@@ -526,7 +564,7 @@ export function Portfolio({
     <ScrollView accessibilityLabel="portfolio-screen" testID="portfolio-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
       <View accessibilityLabel="portfolio-profile-header" testID="portfolio-profile-header" style={styles.profileHeader}>
         <View style={styles.profileLeft}>
-          <View style={styles.avatarGradient} />
+          <PortfolioAvatar />
           <Text style={styles.profileName}>{pageCopy.profile}</Text>
         </View>
         <Pressable accessibilityLabel="portfolio-settings" testID="portfolio-settings" style={styles.settingsIconButton}>
@@ -546,19 +584,25 @@ export function Portfolio({
         source={displayedValueHistory.source}
         status={displayedValueHistory.status}
       />
-      <View accessibilityLabel="portfolio-range-selector" testID="portfolio-range-selector" style={styles.rangeRow}>
-        {(["1D", "1W", "1M", "All"] as const).map((range) => (
-          <Pressable
-            accessibilityLabel={`portfolio-range-${range} ${activeRange === range ? "portfolio-range-selected" : "portfolio-range-inactive"}`}
-            accessibilityState={{ selected: activeRange === range }}
-            key={range}
-            onPress={() => setActiveRange(range)}
-            style={[styles.rangePill, activeRange === range && styles.rangePillActive]}
-            testID={`portfolio-range-${range.toLowerCase()}`}
-          >
-            <Text style={[styles.rangeText, activeRange === range && styles.rangeTextActive]}>{range}</Text>
-          </Pressable>
-        ))}
+      <View style={styles.rangeBrandRow}>
+        <View accessibilityLabel="portfolio-range-selector" testID="portfolio-range-selector" style={styles.rangeRow}>
+          {(["1D", "1W", "1M", "All"] as const).map((range) => (
+            <Pressable
+              accessibilityLabel={`portfolio-range-${range} ${activeRange === range ? "portfolio-range-selected" : "portfolio-range-inactive"}`}
+              accessibilityState={{ selected: activeRange === range }}
+              key={range}
+              onPress={() => setActiveRange(range)}
+              style={[styles.rangePill, activeRange === range && styles.rangePillActive]}
+              testID={`portfolio-range-${range.toLowerCase()}`}
+            >
+              <Text style={[styles.rangeText, activeRange === range && styles.rangeTextActive]}>{range}</Text>
+            </Pressable>
+          ))}
+        </View>
+        <View accessibilityLabel="portfolio-brand-watermark" testID="portfolio-brand-watermark" style={styles.brandWatermark}>
+          <Ionicons name="cube-outline" color="#334155" size={25} />
+          <Text style={styles.brandWatermarkText}>Holiwyn</Text>
+        </View>
       </View>
       <View style={styles.walletActionRow}>
         <Pressable accessibilityLabel="portfolio-deposit-placeholder" testID="portfolio-deposit-placeholder" style={styles.depositButton}>
@@ -730,21 +774,23 @@ export function Portfolio({
           </View>
           {positions.map((position) => (
             <View accessibilityLabel={`position-card-${position.id} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
-              {position.isLive && (
-                <View accessibilityLabel="portfolio-position-live-badge" testID="portfolio-position-live-badge" style={styles.liveBadge}>
-                  <Ionicons name="radio" color="#fecaca" size={13} />
-                  <Text style={styles.liveBadgeText}>{t.liveNow}</Text>
-                </View>
-              )}
-              {position.liveClock && (
-                <Text accessibilityLabel="portfolio-position-live-clock" testID="portfolio-position-live-clock" style={styles.liveClock}>
-                  {position.liveClock}
-                </Text>
-              )}
+              <View style={styles.positionEventLine}>
+                <Text style={styles.positionScoreLine}>PAR 0 - FRA 0</Text>
+                {(position.isLive || position.liveClock) && (
+                  <View style={styles.positionLiveInline}>
+                    <View style={styles.liveDot} />
+                    {position.isLive && (
+                      <Text accessibilityLabel="portfolio-position-live-badge" testID="portfolio-position-live-badge" style={styles.positionLiveText}>{t.liveNow}</Text>
+                    )}
+                    {position.liveClock && (
+                      <Text accessibilityLabel="portfolio-position-live-clock" testID="portfolio-position-live-clock" style={styles.positionLiveClock}>{position.liveClock}</Text>
+                    )}
+                  </View>
+                )}
+              </View>
               <View style={styles.positionRowTop}>
-                <View style={[styles.positionFlag, { backgroundColor: position.side === "sell" ? "#991b1b" : "#0f766e" }]} />
+                <PositionFlag />
                 <View style={styles.positionTextColumn}>
-                  <Text style={styles.positionScoreLine}>PAR 0 - FRA 0</Text>
                   <Text style={styles.positionTitle}><Text style={styles.yesBadge}>{position.contractSide === "no" ? "No" : "Yes"}</Text> {displayPositionChoice(position)}</Text>
                   <Text style={styles.positionMeta}>
                     Cost {money(position.amount)} | To win {money(portfolioPositionValue(position) + Math.max(estimatedPnl(position), 0))} | Entry {position.probability}%
@@ -752,14 +798,14 @@ export function Portfolio({
                 </View>
               </View>
               {position.selection && (
-                <Text accessibilityLabel={`position-snapshot-${position.id} ${snapshotSourceLabel(position.id, position.selection)}`} style={styles.snapshotText}>
+                <Text accessibilityLabel={`position-snapshot-${position.id} ${snapshotSourceLabel(position.id, position.selection)}`} style={[styles.snapshotText, styles.a11yOnly]}>
                   Order-time snapshot
                 </Text>
               )}
               <Pressable
                 accessibilityLabel={`position-detail-toggle-${position.id}`}
                 onPress={() => setExpandedPositionId((current) => (current === position.id ? null : position.id))}
-                style={styles.detailToggle}
+                style={[styles.detailToggle, styles.a11yOnly]}
                 testID={`position-detail-toggle-${position.id}`}
               >
                 <Ionicons name={expandedPositionId === position.id ? "chevron-up" : "chevron-down"} color="#93c5fd" size={16} />
@@ -789,7 +835,7 @@ export function Portfolio({
                   </Pressable>
                 </View>
               </View>
-              <View style={styles.positionDetailGrid}>
+              <View style={[styles.positionDetailGrid, styles.a11yOnly]}>
                 <View style={styles.positionDetailItem}>
                   <Text style={styles.positionDetailLabel}>{t.entry}</Text>
                   <Text style={styles.positionDetailValue}>{position.probability}%</Text>
@@ -807,13 +853,13 @@ export function Portfolio({
                 </View>
               </View>
               {typeof position.shares === "number" && (
-                <Text accessibilityLabel={`position-shares-${position.id}`} style={styles.positionServerMeta}>
+                <Text accessibilityLabel={`position-shares-${position.id}`} style={[styles.positionServerMeta, styles.a11yOnly]}>
                   {t.filledShares}: {position.shares.toFixed(2)}
                   {typeof position.currentPrice === "number" ? ` - ${t.currentPrice} ${Math.round(position.currentPrice * 100)}%` : ""}
                 </Text>
               )}
               {(typeof position.shares === "number" || typeof position.currentPrice === "number") && (
-                <View style={styles.positionServerDetailGrid}>
+                <View style={[styles.positionServerDetailGrid, styles.a11yOnly]}>
                   {typeof position.shares === "number" && (
                     <View
                       accessibilityLabel={`position-filled-shares-${position.id}`}
@@ -889,18 +935,12 @@ export function Portfolio({
               style={[styles.activityItem, expandedActivityId === activity.id && styles.rowExpanded]}
               testID={`activity-row-${activity.id}`}
             >
-              <View style={styles.activityIcon}>
-                <Ionicons
-                  name={activity.action === "opened" ? "arrow-down" : activity.action === "canceled" ? "close" : "checkmark"}
-                  size={16}
-                  color="#dbeafe"
-                />
-              </View>
+              <ActivityIcon activity={activity} />
               <View style={styles.activityMain}>
                 <Text style={styles.activityAction}>{activityActionLabel(activity, t)} {displayOutcome(activity)}</Text>
                 <View
                   accessibilityLabel={`activity-status-${activity.id} fake-token-test activity-${activity.action} status-${activityStatusLabel(activity).toLowerCase()}`}
-                  style={styles.statusPillRow}
+                  style={[styles.statusPillRow, styles.a11yOnly]}
                   testID={`activity-status-${activity.id}`}
                 >
                   <Text style={styles.statusPill}>Fake-token test</Text>
@@ -926,7 +966,7 @@ export function Portfolio({
                   {activity.title}
                 </Text>
                 {hasActivityExecutionDetails(activity) && (
-                  <Text accessibilityLabel={`activity-execution-${activity.id}`} style={styles.activityExecution}>
+                  <Text accessibilityLabel={`activity-execution-${activity.id}`} style={[styles.activityExecution, styles.a11yOnly]}>
                     {activityExecutionText(activity, t)}
                   </Text>
                 )}
@@ -956,14 +996,18 @@ const styles = StyleSheet.create({
   scrollPad: { paddingHorizontal: 0, paddingBottom: 110 },
   profileHeader: { minHeight: 72, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingTop: 12 },
   profileLeft: { flexDirection: "row", alignItems: "center", gap: 14, flex: 1 },
-  avatarGradient: { width: 50, height: 50, borderRadius: 999, backgroundColor: "#f43f5e", borderWidth: 10, borderColor: "#facc15" },
+  avatarGradient: { width: 50, height: 50, borderRadius: 999, overflow: "hidden", backgroundColor: "#f43f5e", position: "relative" },
+  avatarColorStop: { position: "absolute", borderRadius: 999 },
+  avatarColorStopPink: { left: -8, top: -5, width: 48, height: 48, backgroundColor: "#f43f5e" },
+  avatarColorStopYellow: { right: -4, top: 2, width: 44, height: 44, backgroundColor: "#facc15" },
+  avatarColorStopBlue: { left: 4, bottom: -12, width: 42, height: 42, backgroundColor: "#7c3aed" },
   profileName: { color: "#e5e7eb", fontSize: 22, fontWeight: "500", flexShrink: 1 },
   settingsIconButton: { width: 44, height: 44, alignItems: "center", justifyContent: "center" },
   valueBlock: { paddingHorizontal: 24, paddingTop: 8 },
   portfolioValue: { color: "#f8fafc", fontSize: 58, fontWeight: "300" },
   portfolioPnlLine: { fontSize: 19, fontWeight: "500", marginTop: 4 },
   cashText: { color: "#a8b0bf" },
-  chartArea: { height: 210, marginTop: 20, marginHorizontal: 22, position: "relative" },
+  chartArea: { height: 198, marginTop: 20, marginHorizontal: 22, position: "relative" },
   chartSegment: { position: "absolute", height: 6, borderRadius: 999, backgroundColor: "#22c55e" },
   chartSegmentOne: { left: "0%", top: 80, width: "17%" },
   chartSegmentTwo: { left: "16%", top: 84, width: "15%", transform: [{ rotate: "7deg" }] },
@@ -980,11 +1024,14 @@ const styles = StyleSheet.create({
   chartReadout: { position: "absolute", top: 0, left: 0, minWidth: 124, minHeight: 58, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937", zIndex: 2 },
   chartReadoutValue: { color: "#f8fafc", fontSize: 17, fontWeight: "700" },
   chartReadoutLabel: { color: "#22c55e", fontSize: 12, fontWeight: "700", marginTop: 2 },
-  rangeRow: { alignSelf: "flex-start", flexDirection: "row", marginLeft: 24, marginTop: 6, padding: 4, borderRadius: 999, backgroundColor: "#202633" },
+  rangeBrandRow: { minHeight: 56, marginTop: 6, paddingHorizontal: 24, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 14 },
+  rangeRow: { flexDirection: "row", padding: 4, borderRadius: 999, backgroundColor: "#202633" },
   rangePill: { minWidth: 58, minHeight: 44, alignItems: "center", justifyContent: "center", borderRadius: 999 },
   rangePillActive: { backgroundColor: "#0c111d" },
   rangeText: { color: "#a8b0bf", fontSize: 16, fontWeight: "500" },
   rangeTextActive: { color: "#f8fafc" },
+  brandWatermark: { flexShrink: 1, minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: 7, opacity: 0.55 },
+  brandWatermarkText: { color: "#334155", fontSize: 21, fontWeight: "700" },
   walletActionRow: { flexDirection: "row", gap: 12, paddingHorizontal: 24, marginTop: 26 },
   depositButton: { flex: 1, minHeight: 80, borderRadius: 22, alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 10, backgroundColor: "#f1f5f9" },
   withdrawButton: { flex: 1, minHeight: 80, borderRadius: 22, alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 10, borderWidth: 1, borderColor: "#263247", backgroundColor: "#080d16" },
@@ -1034,10 +1081,19 @@ const styles = StyleSheet.create({
   liveBadge: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, marginBottom: 8, paddingHorizontal: 9, paddingVertical: 5, borderRadius: 999, backgroundColor: "#451a1a", borderWidth: 1, borderColor: "#7f1d1d" },
   liveBadgeText: { color: "#fecaca", fontSize: 11, fontWeight: "900", textTransform: "uppercase" },
   liveClock: { alignSelf: "flex-start", color: "#fca5a5", fontSize: 12, fontWeight: "900", marginBottom: 8 },
+  positionEventLine: { minHeight: 22, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 6 },
+  positionLiveInline: { flexDirection: "row", alignItems: "center", gap: 7 },
+  liveDot: { width: 7, height: 7, borderRadius: 999, backgroundColor: "#dc2626" },
+  positionLiveText: { color: "#ef4444", fontSize: 13, fontWeight: "700" },
+  positionLiveClock: { color: "#ef4444", fontSize: 15, fontWeight: "700" },
   positionRowTop: { flexDirection: "row", gap: 14, alignItems: "center" },
-  positionFlag: { width: 66, height: 66, borderRadius: 12 },
+  positionFlag: { width: 66, height: 66, borderRadius: 12, overflow: "hidden", flexDirection: "row", backgroundColor: "#f8fafc" },
+  flagStripe: { flex: 1 },
+  flagBlue: { backgroundColor: "#0055a4" },
+  flagWhite: { backgroundColor: "#f8fafc" },
+  flagRed: { backgroundColor: "#ef4135" },
   positionTextColumn: { flex: 1 },
-  positionScoreLine: { color: "#a8b0bf", fontSize: 15, fontWeight: "500", marginBottom: 8 },
+  positionScoreLine: { color: "#a8b0bf", fontSize: 15, fontWeight: "500" },
   yesBadge: { color: "#22c55e", backgroundColor: "#052e16" },
   positionTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "500" },
   positionMeta: { color: "#a8b0bf", marginTop: 5, fontSize: 16, fontWeight: "500" },

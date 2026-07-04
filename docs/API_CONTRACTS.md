@@ -67,6 +67,8 @@ Cycle FW makes the Portfolio chart visually consume `PortfolioValueHistory.point
 
 Cycle FX adds a mobile-only selected chart point/readout interaction. It does not change backend contracts; the readout is derived from the same `PortfolioValueHistory.points` payload.
 
+Cycle FY changes only Portfolio visual density. It keeps the same local/server Portfolio props, `PortfolioValueHistory` route contract, fake-token position/order/activity identity fields, and Deposit/Withdraw placeholder policy. No backend, route, schema, or request/response changes are required.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

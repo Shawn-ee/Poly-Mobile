@@ -109,3 +109,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Portfolio chart had no user inspection behavior after becoming data-driven. | P1 | Passed | Tapping the chart selects a point and displays `portfolio-chart-readout` with selected index/value. |
 | Server-backed chart touch needs Android proof. | P1 | Passed | Samsung tablet proof taps `1W`, then taps the chart and verifies `portfolio-chart-touchable`, `portfolio-chart-selected-index-3`, `portfolio-chart-selected-value-10000`, and backend route source. |
 | Continuous drag tooltip and exact Polymarket chart gesture physics. | P2 | Open | Current MVP supports tap-to-select; drag gesture polish remains future work. |
+
+## Cycle FY - Portfolio Visual Density Parity
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio still looked busier than the Polymarket screenshots because proof/status details were visible in position and history rows. | P0 | Passed | Internal order-time snapshot/status/execution details are now kept in accessibility labels or hidden proof nodes instead of visible row content. Tablet buy-flow proof passed. |
+| Portfolio avatar and position leading icon looked too flat compared with reference. | P0 | Passed | Added gradient-style profile avatar and flag-style position/history leading visuals. Tablet proof verifies `portfolio-gradient-avatar` and `portfolio-position-flag`. |
+| Portfolio chart readout was visible by default instead of appearing after touch. | P0 | Passed | `PortfolioSparkline` now renders `portfolio-chart-readout` only after the user taps the chart. Existing chart touch proof remains supported. |
+| Range selector row lacked the faint brand watermark structure from reference. | P0 | Passed | Added `portfolio-brand-watermark` with Holiwyn branding, not Polymarket branding. Tablet proof verifies the marker. |
+| Exact native gradient/chart physics and final pixel parity. | P2 | Open | Deferred until after core MVP user-flow parity stabilizes. |

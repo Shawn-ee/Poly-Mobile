@@ -113,3 +113,14 @@
 - Validation: `npm run typecheck`; `npx vitest run src/__tests__/api.test.ts src/__tests__/portfolioValueHistoryService.test.ts`; PowerShell parser check for `scripts/smoke.ps1`; Samsung tablet proof `powershell -ExecutionPolicy Bypass -File scripts\local-mvp-home-route-server-filled-proof.ps1 -Port 8234 -BackendBaseUrl http://172.16.200.14:3002`.
 - Proof artifacts: `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-portfolio-chart-touch.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-portfolio-chart-touch.xml`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-proof.json`.
 - Known limitations: this is a tap-to-select readout, not a continuous drag/press tooltip.
+
+## Cycle FY - Portfolio Visual Density Parity
+
+- Feature/page: Portfolio positions/orders/history surface.
+- Frontend components touched: `src/components/Portfolio.tsx`, `scripts/smoke.ps1`.
+- Important functions/services touched: no backend/API changes. Existing balance, position, open-order, activity, and `PortfolioValueHistory` inputs are preserved.
+- User interactions supported: Portfolio still supports range switching, chart touch readout, Positions/Orders/History tabs, Cash out, plus/buy-more, and history row expansion. The default visual row is now simpler: gradient avatar, faint Holiwyn watermark beside ranges, flag-style position/history icon, and hidden internal proof/status details.
+- State transitions: unchanged except `PortfolioSparkline` no longer shows the readout until the user touches the chart. `activeRange`, `activeTab`, row expansion, close/trade/cancel callbacks, and server/fallback history behavior remain unchanged.
+- Validation: `npm run typecheck`; `npx vitest run src/__tests__/portfolioValueHistoryService.test.ts src/__tests__/portfolioPositionMetrics.test.ts src/__tests__/portfolioActivityMetrics.test.ts`; PowerShell parser check for `scripts/smoke.ps1`; Samsung tablet proof `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -LocalMvpTradeFlow -Port 8236`.
+- Proof artifacts: `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-EP-local-mvp-trade-flow\cycle-EP-holiwyn-local-mvp-portfolio.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-EP-local-mvp-trade-flow\cycle-EP-holiwyn-local-mvp-portfolio-orders.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-EP-local-mvp-trade-flow\cycle-EP-holiwyn-local-mvp-portfolio-history.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-EP-local-mvp-trade-flow-proof.json`.
+- Known limitations: Deposit/Withdraw remain visual placeholders. Exact native gradient/chart gesture polish remains P2.
