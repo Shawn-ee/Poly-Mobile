@@ -2954,3 +2954,46 @@ Known limitations:
 - Cycle DI did not apply reviewed identities to the database; proof is intentionally dry-run.
 - `OPTIC_ODDS_API_KEY` is still not configured, so live OpticOdds refresh was not executed.
 - No live OpticOdds rows were written, and line-market parity remains open until confirmed identities plus credentials produce route-readable provider snapshots.
+
+## Cycle DJ - Line Provider Refresh Execution
+
+Feature/page worked on:
+
+- PM-GAP-067 structural provider refresh execution for reviewed live soccer line markets.
+- Protected provider-mapping route support for reviewed `optic_odds` line identity.
+- Stale-to-ready live-detail route contract proof for compact line markets.
+
+Backend/API components touched:
+
+- `src/app/api/mobile/events/[slug]/provider-mapping/route.ts`
+- `src/app/api/mobile/events/[slug]/provider-refresh/route.ts`
+- `src/server/services/mobileLiveProviderMapping.ts`
+- `src/server/services/mobileLiveProviderRefresh.ts`
+- `scripts/prove_mobile_line_provider_refresh_execution.ts`
+- `src/__tests__/mobile-live-provider-mapping.route.test.ts`
+- `src/__tests__/mobile-live-provider-refresh.route.test.ts`
+
+Important functions/services touched:
+
+- `POST /api/mobile/events/:slug/provider-mapping` now accepts `lineIdentityReviews[]` and routes them through `reviewMobileLiveLineProviderIdentities()`.
+- `getMobileLiveProviderMappingReadiness()` now includes `lineProviderIdentityReadiness` so operators can see reviewed line identity readiness with the normal provider mapping readout.
+- `refreshMobileLiveProviderQuoteSnapshots()` accepts an injected line-provider fetch implementation for proof/testing while production still uses the real OpticOdds request path.
+- `prove_mobile_line_provider_refresh_execution.ts` applies reviewed line identity, seeds stale official-shaped `optic_odds` rows, runs refresh without contract fallback, and verifies live-detail provider quote state changes to ready.
+
+User interactions supported:
+
+- No new visible mobile control was added.
+- Existing Samsung tablet server-mode Colombia vs Ghana live-detail Book proof was re-smoked to ensure the provider refresh route changes did not regress the user-facing route-backed flow.
+
+State transitions:
+
+- Provider mapping route can move compact line markets from missing reviewed line identity to applied reviewed identity when `dryRun=false` and `confirmApply=true`.
+- Proof route state starts with target line markets `providerQuoteSnapshot.status=stale` and `shouldRefresh=true`.
+- After refresh, target line markets report `providerQuoteSnapshot.status=ready`, `shouldRefresh=false`, and `source=optic_odds` with no contract-proof fallback.
+
+Known limitations:
+
+- Cycle DJ uses an official-shaped OpticOdds response injected by the proof harness. OpticOdds is optional enrichment and missing `OPTIC_ODDS_API_KEY` is not a P0 blocker for Polymarket parity.
+- The Polymarket-first path remains Gamma/CLOB for markets that exist on Polymarket; non-Polymarket line enrichments must stay explicitly optional or unavailable.
+- It proves provider quote snapshots for reviewed optional line enrichment, not provider orderbook ladder depth.
+- Ticket/order/portfolio/history preservation for refreshed line identities remains a separate lifecycle proof.

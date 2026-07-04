@@ -1649,8 +1649,8 @@ Acceptance criteria:
 | --- | --- | --- | --- |
 | LD-DH-P1-01 | P1 | Pass | `fetchOpticOddsFixtureOdds()` builds `GET /fixtures/odds` with `X-Api-Key`, repeated `sportsbook`, repeated `market`, `fixture_id`, and `odds_format=PROBABILITY`. |
 | LD-DH-P1-02 | P1 | Pass | Contract proof maps 3 line families and 6 outcomes into `source=optic_odds` `ReferenceQuoteSnapshot` rows. |
-| LD-DH-P1-03 | P1 | Pass | Provider refresh report includes `lineProvider` and reports skipped state when credentials are absent. |
-| LD-DH-P1-04 | P1 | Pass | Current event diagnostic explicitly sets `readyForLiveProviderApply=false` until credentials and reviewed line identity exist. |
+| LD-DH-P1-03 | P1 | Pass | Provider refresh report includes optional `lineProvider` and reports skipped state when OpticOdds is unconfigured. |
+| LD-DH-P1-04 | P1 | Pass | Current event diagnostic avoids falsely applying optional external line enrichment without reviewed identity. |
 | LD-DH-P1-05 | P1 | Pass | Samsung tablet server-mode live-detail Book proof still shows route-backed ready state after the service change. |
 
 Evidence:
@@ -1669,7 +1669,7 @@ Unresolved P0 gaps: 0 for this focused contract cycle.
 
 Remaining P1 gaps:
 
-- Configure `OPTIC_ODDS_API_KEY` and approved sportsbooks.
+- Keep OpticOdds optional/unconfigured unless external enrichment is intentionally enabled.
 - Add reviewed per-line provider identity persistence before applying current-event line rows.
 - Prove live OpticOdds refresh writes real provider rows for the current event.
 - Add provider-owned orderbook/depth for line markets if visual/orderbook parity requires it.
@@ -1711,9 +1711,54 @@ Unresolved P0 gaps: 0 for this focused contract cycle.
 Remaining P1 gaps:
 
 - Add a protected route/UI or operational workflow to apply real operator-reviewed line identities.
-- Configure `OPTIC_ODDS_API_KEY` and approved sportsbooks.
+- Keep OpticOdds optional/unconfigured unless external enrichment is intentionally enabled.
 - Prove live OpticOdds refresh changes line-market quote state from stale/refresh-due to ready.
 - Preserve selected provider line/outcome identity through ticket, order, portfolio, and history after real line rows exist.
+
+## Cycle DJ Line Provider Refresh Execution Audit
+
+Result: Pass for reviewed line-provider route apply and stale-to-ready refresh execution; partial for final live provider parity.
+
+What became materially closer to Polymarket:
+
+- Polymarket line markets update from provider-owned market data. Holiwyn now has a protected route path to apply reviewed line identity and a refresh proof showing route-readable line quote state moving from stale/refresh-due to ready.
+- The proof uses the same `/api/mobile/events/:slug/live-detail` contract consumed by the Android app, not a screenshot-only check.
+- Contract fallback stayed disabled, so the pass was not a local fake snapshot escape hatch.
+
+Acceptance criteria:
+
+| Criterion ID | Priority | Status | Verification |
+| --- | --- | --- | --- |
+| LD-DJ-P1-01 | P1 | Pass | `POST /api/mobile/events/:slug/provider-mapping` accepts `lineIdentityReviews[]` and routes to reviewed line identity apply. |
+| LD-DJ-P1-02 | P1 | Pass | Provider mapping readiness includes `lineProviderIdentityReadiness`. |
+| LD-DJ-P1-03 | P1 | Pass | Proof applies 2 reviewed compact line markets and writes 4 stale `optic_odds` quote rows. |
+| LD-DJ-P1-04 | P1 | Pass | Before refresh, target line markets are `status=stale` and `shouldRefresh=true`. |
+| LD-DJ-P1-05 | P1 | Pass | After refresh, target line markets are `status=ready` and `shouldRefresh=false`; `contractProofFallback=null`. |
+| LD-DJ-P1-06 | P1 | Pass | Samsung tablet server-mode live-detail Book proof still passes after route/service changes. |
+
+Evidence:
+
+- `src/app/api/mobile/events/[slug]/provider-mapping/route.ts`
+- `src/app/api/mobile/events/[slug]/provider-refresh/route.ts`
+- `src/server/services/mobileLiveProviderMapping.ts`
+- `src/server/services/mobileLiveProviderRefresh.ts`
+- `src/__tests__/mobile-live-provider-mapping.route.test.ts`
+- `src/__tests__/mobile-live-provider-refresh.route.test.ts`
+- `scripts/prove_mobile_line_provider_refresh_execution.ts`
+- `docs/mobile/harness/cycle-current-mobile-line-provider-refresh-execution.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+
+Unresolved P0 gaps: 0 for this focused contract cycle.
+
+Remaining P1 gaps:
+
+- Continue with Polymarket-first Gamma/CLOB provider proof for markets that exist on Polymarket.
+- Keep missing `OPTIC_ODDS_API_KEY` as optional/unconfigured enrichment, not a P0 blocker.
+- Add provider-owned ladder/depth if needed for line-market Book parity.
+- Preserve refreshed line identity through ticket, order, portfolio, and history.
 
 ## Cycle CW Provider Sports Event Discovery Expansion Audit
 

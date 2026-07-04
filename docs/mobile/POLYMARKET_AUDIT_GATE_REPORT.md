@@ -20,7 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
-| OpticOdds line ingestion contract | Cycle DH | Pass for backend line-ingestion contract; partial for live line-market provider parity | 0 | P1 `OPTIC_ODDS_API_KEY`; P1 reviewed per-line provider identity; P1 live OpticOdds apply proof; P1 provider depth/orderbook for lines | Cycle CW/CX/CY/DG Colombia vs Ghana Polymarket reference, exact Gamma fixture metadata, and official OpticOdds `/fixtures/odds` docs | Backend: `docs/mobile/harness/cycle-current-mobile-optic-odds-line-ingestion-contract.json`; Holiwyn regression: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: provider refresh now has a credential-gated `optic_odds` line-provider lane, and the normalizer maps official-response-shaped spread/total/team-total odds into `ReferenceQuoteSnapshot` rows. Current event live apply remains blocked rather than falsely passing. |
+| OpticOdds line ingestion contract | Cycle DH | Pass for optional backend enrichment contract; partial for live line-market provider parity | 0 | P1 reviewed per-line provider identity; P1 provider depth/orderbook for lines; optional `OPTIC_ODDS_API_KEY` if external enrichment is desired | Cycle CW/CX/CY/DG Colombia vs Ghana Polymarket reference, exact Gamma fixture metadata, and official OpticOdds `/fixtures/odds` docs | Backend: `docs/mobile/harness/cycle-current-mobile-optic-odds-line-ingestion-contract.json`; Holiwyn regression: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: provider refresh has an optional `optic_odds` enrichment lane, and the normalizer maps official-response-shaped spread/total/team-total odds into `ReferenceQuoteSnapshot` rows. Polymarket Gamma/CLOB remains the default parity source. |
 | Provider fixture metadata contract | Cycle DG | Pass for provider fixture identity/data contract; partial for actual line-market provider parity | 0 | P1 real OpticOdds/API ingestion for spreads/totals/team totals/halves/corners/correct-score; P1 importer persistence for every fixture | Cycle CW/CX/CY Colombia vs Ghana Polymarket reference plus exact Gamma event `fifwc-col-gha-2026-07-03` with `eventMetadata` fixture IDs | Backend: `docs/mobile/harness/cycle-current-mobile-provider-fixture-metadata-contract.json`; Holiwyn regression: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: Holiwyn now exposes real provider fixture/team identity in readiness, including `opticOddsFixtureId`, `opticOddsGameId`, team provider IDs, and a line-market source contract. This stops the loop from treating line-market discovery as broad search, without claiming line odds are ingested. |
 | Provider mapping operator UI | Cycle DF | Pass for admin/operator access to protected review-first workflow; partial for actual line-market provider parity | 0 | P1 real line-market slugs/source; P1 durable review audit persistence | Cycle CW/CX/CY Colombia vs Ghana Polymarket reference and exact Gamma event diagnostics | Admin build route: `/admin/mobile-provider-mapping`; Parser/backend tests; Holiwyn regression: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: operator no longer needs direct scripts to use the protected review/apply workflow. The UI loads readiness, normalizes pasted reviews, dry-runs, requires explicit confirm apply, and shows failed review reasons. |
 | Bulk review apply workflow | Cycle DE | Pass for protected review-first bulk apply workflow; partial for actual line-market provider parity | 0 | P1 operator/admin UI for capture/review/apply; P1 real line-market slugs/source | Cycle CW/CX/CY Colombia vs Ghana Polymarket reference and exact Gamma event diagnostics | Backend: `docs/mobile/harness/cycle-current-mobile-provider-bulk-review-apply-workflow.json`; Holiwyn: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: operator-collected slugs can now be reviewed and applied through one protected all-pass workflow. Mixed proof blocks apply and leaves readiness unchanged; all-valid proof applies 3 real match-winner mappings and 6 token IDs. |
@@ -1054,6 +1054,60 @@ Decision:
 - Unresolved P0 gaps: 0 for this focused contract cycle.
 - Remaining P1/P2 gaps: confirmed apply with real operator-reviewed identities, real OpticOdds credentials, live refresh producing route-readable provider snapshots, and ticket/order/portfolio/history identity proof.
 - Next cycle required: yes, continue PM-GAP-067 with real provider-owned refresh execution and cache invalidation once credentials and confirmed identity apply are available.
+
+## Feature: Line Provider Refresh Execution
+
+Cycle: DJ
+Lead Agent target: Expose reviewed line identity through protected routes and prove line-provider refresh changes compact line markets from stale/refresh-due to ready.
+Reference Audit Agent: Continued Samsung S23 Colombia vs Ghana Polymarket reference, exact Gamma fixture metadata, and Cycle DH OpticOdds endpoint contract.
+Implementation Agent: Added route support for `lineIdentityReviews[]`, readiness exposure, refresh proof injection, focused tests, and stale-to-ready proof harness.
+Audit Gate Agent: Passed focused route/data-contract gate; did not claim real credentialed OpticOdds network parity.
+
+Reference device:
+Samsung S23.
+
+Reference app/browser:
+Official Polymarket Android app plus exact Gamma event payload and OpticOdds fixture-odds contract from Cycle DH.
+
+Reference route/URL:
+`https://polymarket.com/sports/world-cup/fifwc-col-gha-2026-07-03`; provider data from `https://gamma-api.polymarket.com/events?slug=fifwc-col-gha-2026-07-03`.
+
+Holiwyn device:
+Samsung tablet.
+
+Holiwyn app mode:
+Expo Go with server mode and backend `http://127.0.0.1:3002`.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-CW-polymarket-s23-window.xml`
+- `docs/mobile/harness/cycle-current-mobile-optic-odds-line-ingestion-contract.json`
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-current-mobile-line-provider-refresh-execution.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LD-DJ-P1-01 | P1 | Pass | Route test proves `lineIdentityReviews[]` reaches `reviewMobileLiveLineProviderIdentities()`. | None |
+| LD-DJ-P1-02 | P1 | Pass | Readiness includes `lineProviderIdentityReadiness`. | None |
+| LD-DJ-P1-03 | P1 | Pass | Proof applies 2 reviewed line markets and seeds 4 stale `optic_odds` rows. | None |
+| LD-DJ-P1-04 | P1 | Pass | Before refresh, live-detail target line markets report stale/refresh-due. | None |
+| LD-DJ-P1-05 | P1 | Pass | After refresh, live-detail target line markets report ready/not-refresh-due; no contract fallback. | None |
+| LD-DJ-P1-06 | P1 | Pass | Samsung tablet server-mode Book proof passed. | None |
+
+Decision:
+
+- Pass/fail: Pass for focused line-provider refresh execution and Android regression proof.
+- Unresolved P0 gaps: 0 for this focused contract cycle.
+- Remaining P1/P2 gaps: Polymarket-first Gamma/CLOB provider proof expansion, provider line ladder/depth where Polymarket exposes it, and ticket/order/portfolio/history lifecycle proof. OpticOdds is optional enrichment.
+- Next cycle required: yes, continue PM-GAP-067 with Polymarket Gamma/CLOB as the default provider source.
 
 Use this template for every feature gate:
 

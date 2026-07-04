@@ -2061,7 +2061,7 @@ Future migration concern:
 
 Fields Holiwyn needs but backend does not provide consistently yet:
 
-- `OPTIC_ODDS_API_KEY` and an approved sportsbook basket for live line refresh.
+- Optional OpticOdds external enrichment requires `OPTIC_ODDS_API_KEY` and an approved sportsbook basket, but Polymarket parity should use Gamma/CLOB first.
 - Reviewed per-line provider identity for current local markets so same-family lines cannot accidentally consume the same provider odds row.
 - Durable mapping for OpticOdds `market_id`, `points`, `selection_line`, `team_id`, sportsbook source, and period.
 - Provider-owned depth/orderbook data for line markets if product parity requires ladder/depth beyond top quote snapshots.
@@ -2107,7 +2107,7 @@ Schema mismatch:
 Route mismatch:
 
 - `/api/mobile/events/:slug/provider-refresh` can consume reviewed identity indirectly through the row builder, but no route exists yet to collect and confirm the reviews.
-- Live OpticOdds refresh still skips when `OPTIC_ODDS_API_KEY` is absent.
+- Optional OpticOdds refresh still skips when `OPTIC_ODDS_API_KEY` is absent; this is not a Polymarket parity blocker.
 
 Temporary mock/static data:
 
@@ -2116,3 +2116,32 @@ Temporary mock/static data:
 Future migration concern:
 
 - Do not mark line-market provider parity complete until confirmed reviewed identities plus real credentials produce route-readable `ReferenceQuoteSnapshot` rows and preserve selected market/line/outcome through ticket, order, portfolio, and history.
+
+## Cycle DJ - Line Provider Refresh Execution
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Polymarket Gamma/CLOB should remain the default provider path for markets that exist on Polymarket.
+- OpticOdds can enrich line markets that do not exist on Polymarket, but missing `OPTIC_ODDS_API_KEY` must be reported as optional/unconfigured rather than a Polymarket parity blocker.
+- Provider-owned depth/orderbook ladder data for non-Polymarket line enrichments if product parity later requires more than top quote snapshots.
+- Ticket/order/portfolio/history proof that selected line identity survives after provider refresh.
+
+Fields backend provides but mobile ignores:
+
+- Provider mapping readiness now includes `lineProviderIdentityReadiness`; current user mobile UI only consumes live-detail quote/depth readiness, not the operator readiness object.
+
+Schema mismatch:
+
+- Reviewed line identity still lives in JSON metadata. This is sufficient for proof and route execution, but a normalized provider line mapping table may be safer before production.
+
+Route mismatch:
+
+- The protected mapping route can apply reviewed line identities, and protected refresh can update line quote snapshots. There is not yet a dedicated operator UI section for entering line identity reviews.
+
+Temporary mock/static data:
+
+- Cycle DJ's proof injects an official-shaped OpticOdds response because local credentials are unavailable. It is backend-contract-shaped, uses reviewed provider odd IDs, and disables local contract-proof fallback.
+
+Future migration concern:
+
+- The next provider milestone should be Polymarket-first: discover a real Polymarket event through Gamma, map markets/outcomes/tokens, fetch CLOB price/depth, expose it through Holiwyn routes, and prove Android. OpticOdds network proof is optional external enrichment, not the parity gate.

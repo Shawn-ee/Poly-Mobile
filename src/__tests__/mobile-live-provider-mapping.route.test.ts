@@ -5,6 +5,7 @@ const assertReferenceBotAdmin = jest.fn();
 const getMobileLiveProviderMappingReadiness = jest.fn();
 const attachMobileLiveProviderIdentities = jest.fn();
 const reviewMobileLiveProviderBulkSlugMappings = jest.fn();
+const reviewMobileLiveLineProviderIdentities = jest.fn();
 
 jest.mock("@/lib/internalAdminAuth", () => ({
   assertReferenceBotAdmin: (...args: unknown[]) => assertReferenceBotAdmin(...args),
@@ -20,6 +21,10 @@ jest.mock("@/server/services/mobileLiveProviderIdentityAttach", () => ({
 
 jest.mock("@/server/services/mobileLiveProviderBulkSlugReview", () => ({
   reviewMobileLiveProviderBulkSlugMappings: (...args: unknown[]) => reviewMobileLiveProviderBulkSlugMappings(...args),
+}));
+
+jest.mock("@/server/services/mobileLiveLineProviderIdentityReview", () => ({
+  reviewMobileLiveLineProviderIdentities: (...args: unknown[]) => reviewMobileLiveLineProviderIdentities(...args),
 }));
 
 import { GET, POST } from "@/app/api/mobile/events/[slug]/provider-mapping/route";
@@ -61,6 +66,15 @@ describe("mobile live provider mapping route", () => {
         applied: false,
       },
       nextRequiredAction: "confirm_apply_bulk_provider_identity_mappings",
+    });
+    reviewMobileLiveLineProviderIdentities.mockResolvedValue({
+      eventSlug: "world-cup-live",
+      mode: "line-provider-identity-review",
+      dryRun: true,
+      applied: false,
+      blocked: false,
+      validation: { valid: true, errors: [] },
+      nextRequiredAction: "confirm_apply_line_provider_identity_reviews",
     });
   });
 
@@ -206,5 +220,57 @@ describe("mobile live provider mapping route", () => {
       dryRun: false,
       confirmApply: true,
     }));
+  });
+
+  test("routes reviewed line provider identity reviews through the protected mapping workflow", async () => {
+    const response = await POST(
+      new NextRequest("http://localhost/api/mobile/events/world-cup-live/provider-mapping", {
+        method: "POST",
+        body: JSON.stringify({
+          dryRun: false,
+          confirmApply: true,
+          lineIdentityReviews: [
+            {
+              marketId: "total-market",
+              providerSource: "optic_odds",
+              fixtureId: "fixture-123",
+              sportsbook: "BetMGM",
+              providerMarketId: "total_goals",
+              points: 2.5,
+              period: null,
+              outcomes: [
+                { outcomeId: "over", providerOddId: "odd-over", selection: "Over 2.5", selectionLine: "over" },
+                { outcomeId: "under", providerOddId: "odd-under", selection: "Under 2.5", selectionLine: "under" },
+              ],
+            },
+          ],
+        }),
+      }),
+      { params: Promise.resolve({ slug: "world-cup-live" }) },
+    );
+
+    expect(response.status).toBe(200);
+    expect(reviewMobileLiveLineProviderIdentities).toHaveBeenCalledWith({
+      eventSlug: "world-cup-live",
+      dryRun: false,
+      confirmApply: true,
+      reviews: [
+        {
+          marketId: "total-market",
+          providerSource: "optic_odds",
+          fixtureId: "fixture-123",
+          sportsbook: "BetMGM",
+          providerMarketId: "total_goals",
+          points: 2.5,
+          period: null,
+          outcomes: [
+            { outcomeId: "over", providerOddId: "odd-over", selection: "Over 2.5", selectionLine: "over" },
+            { outcomeId: "under", providerOddId: "odd-under", selection: "Under 2.5", selectionLine: "under" },
+          ],
+        },
+      ],
+    });
+    expect(attachMobileLiveProviderIdentities).not.toHaveBeenCalled();
+    expect(reviewMobileLiveProviderBulkSlugMappings).not.toHaveBeenCalled();
   });
 });

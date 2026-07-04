@@ -113,7 +113,7 @@ export async function reviewMobileLiveLineProviderIdentities(
     validation,
     before: summarizeLineProviderIdentityReadiness(compactMarkets),
     after: summarizeLineProviderIdentityReadiness(reloaded),
-    nextRequiredAction: "run_optic_odds_refresh_after_credentials_are_available",
+    nextRequiredAction: "optional_optic_odds_enrichment_ready",
   };
 }
 
@@ -194,7 +194,7 @@ export function summarizeLineProviderIdentityReadiness(compactMarkets: CompactMa
     lineProviderMissingMarketCount: Math.max(0, lineMarkets.length - readyMarkets.length),
     readyMarketIds: readyMarkets.map((market) => market.id),
     nextRequiredAction: readyMarkets.length === lineMarkets.length && lineMarkets.length > 0
-      ? "run_optic_odds_refresh_after_credentials_are_available"
+      ? "optional_optic_odds_enrichment_ready"
       : "review_and_apply_line_provider_identity",
   };
 }

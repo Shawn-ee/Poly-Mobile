@@ -4,6 +4,10 @@ import { toGuardResponse } from "@/lib/marketGuards";
 import { getMobileLiveProviderMappingReadiness } from "@/server/services/mobileLiveProviderMapping";
 import { attachMobileLiveProviderIdentities } from "@/server/services/mobileLiveProviderIdentityAttach";
 import { reviewMobileLiveProviderBulkSlugMappings } from "@/server/services/mobileLiveProviderBulkSlugReview";
+import {
+  reviewMobileLiveLineProviderIdentities,
+  type LineProviderMarketReviewInput,
+} from "@/server/services/mobileLiveLineProviderIdentityReview";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -39,8 +43,23 @@ export async function POST(request: Request, context: Params) {
         confirmApply?: boolean;
         mappings?: Parameters<typeof attachMobileLiveProviderIdentities>[0]["mappings"];
         reviews?: Parameters<typeof reviewMobileLiveProviderBulkSlugMappings>[0]["reviews"];
+        lineIdentityReviews?: LineProviderMarketReviewInput[];
       }
     | null;
+
+  if (Array.isArray(body?.lineIdentityReviews)) {
+    const result = await reviewMobileLiveLineProviderIdentities({
+      eventSlug: slug,
+      dryRun: body?.dryRun !== false,
+      confirmApply: body?.confirmApply === true,
+      reviews: body.lineIdentityReviews,
+    });
+
+    return NextResponse.json({
+      ok: true,
+      result,
+    });
+  }
 
   if (Array.isArray(body?.reviews)) {
     const result = await reviewMobileLiveProviderBulkSlugMappings({
