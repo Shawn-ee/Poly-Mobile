@@ -17,3 +17,12 @@
 - User interactions supported: user selects the `MEX -2.5 1H` spread line, opens the ticket, enters 25 USDT with presets, reviews price/shares/payout, submits with the swipe-style control, and lands on Portfolio.
 - State transitions: `ticket` closes, `selectedEvent` clears, `mainTab` becomes `portfolio`, fake balance decreases by 25 USDT, one position is added, `latestOrder` is set, and recent activity receives a filled buy activity.
 - Known limitations: this cycle proves mock/fake-token mode only. Server-backed order and portfolio sync remain covered by separate server-mode cycles.
+
+## Cycle FO - Polymarket-Like Place Order Sheet
+
+- Feature/page: place order ticket sheet for Event Detail markets.
+- Frontend components touched: `src/components/TradeTicket.tsx`.
+- Important functions/services touched: no backend/provider service changes. `submitTicketOrder` and Portfolio handoff remain unchanged.
+- User interactions supported: close/settings, selected event/outcome header, large amount display, compact Yes/No toggle, odds/balance line, +5/+10/Max presets, sparse numeric keypad, and blue swipe-up submit area.
+- State transitions: unchanged from the existing ticket flow. The visible order review card was removed from the user-facing layout, but contract-shaped line/period/shares/payout identity remains in the accessibility hierarchy for proof and downstream Portfolio handoff.
+- Known limitations: the current blue submit area is a flat color instead of Polymarket's exact blue gradient.
