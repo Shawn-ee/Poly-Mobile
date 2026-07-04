@@ -2517,3 +2517,33 @@ Temporary mock/static data:
 Future migration concern:
 
 - Repeat selector -> ladder -> ticket -> order -> portfolio -> history proof for a real active provider-backed market when available, and store immutable order/trade selection snapshots before production trading.
+
+## Cycle DW-A - Provider Orderbook State Matrix
+
+Closed or narrowed:
+
+- The remaining DV P1 harness gap is now covered by a focused backend matrix proof for `/api/orderbook/:marketId/book?maxLevels=24`.
+- `docs/mobile/harness/cycle-DW-A-provider-orderbook-state-matrix.json` records the same provider-shaped selected market moving through unavailable/empty, stale, and ready provider ladder states.
+- Ready depth is not inferred from fallback rows: the proof clears local open orders and `ReferenceQuoteSnapshot` rows for the disposable market before asserting that only fresh `ReferenceOrderbookDepthSnapshot` rows produce `depthSource=provider-orderbook-depth` with `providerOrderbookDepth.status=ready`.
+- The route response fields proven in the artifact include `depthSource`, `availability.status`, `providerOrderbookDepth.status/reason`, `emptyState`, selected `marketIdentity`, `selectorKey`, `period`, `line`, and outcome ids on both identity and ladder levels.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- A first-class event-level Book selector/options contract remains future work; DW-A only proves selected-market state transitions.
+- Production recurring provider refresh should eventually prove the same state matrix on non-disposable, provider-mapped live markets.
+
+Schema mismatch:
+
+- No schema change was required. Existing `Market`, `Outcome`, `ReferenceOrderbookDepthSnapshot`, and `ReferenceQuoteSnapshot` rows can represent ready, stale, unavailable, and no-depth states.
+
+Route mismatch:
+
+- No new route shape was needed. `/api/orderbook/:marketId/book` already exposes the distinguishing fields; DW-A adds proof and route/service tests to guard the matrix.
+
+Temporary mock/static data:
+
+- No frontend mock data was added. The harness uses a disposable backend market and the same provider ladder table consumed by the refresh services.
+
+Future migration concern:
+
+- Keep readiness decisions keyed to `providerOrderbookDepth.status=ready` rather than `levels[]` alone, because stale provider ladder rows may still produce levels while correctly reporting non-ready freshness.

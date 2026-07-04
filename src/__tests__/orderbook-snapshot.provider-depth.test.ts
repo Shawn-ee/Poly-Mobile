@@ -71,6 +71,55 @@ describe("provider quote depth bridge", () => {
     });
   });
 
+  test("marks provider ladder depth stale when latest snapshot is old", () => {
+    jest.spyOn(Date, "now").mockReturnValue(new Date("2026-07-04T06:15:31.000Z").getTime());
+
+    const depth = buildProviderOrderbookDepth([
+      {
+        outcomeId: "yes",
+        source: "polymarket-clob",
+        side: "bid",
+        price: decimal(0.51),
+        size: decimal(120),
+        levelIndex: 0,
+        fetchedAt: new Date("2026-07-04T06:10:00.000Z"),
+        updatedAt: new Date("2026-07-04T06:10:01.000Z"),
+      },
+    ]);
+
+    expect(depth.bids).toEqual([{ outcomeId: "yes", price: 0.51, size: 120 }]);
+    expect(depth.summary).toMatchObject({
+      source: "reference-orderbook-depth-snapshot",
+      status: "stale",
+      levelCount: 1,
+      snapshotCount: 1,
+      latestFetchedAt: "2026-07-04T06:10:00.000Z",
+      isStale: true,
+      shouldRefresh: true,
+      sources: ["polymarket-clob"],
+      reason: "Provider orderbook depth snapshot is older than 90 seconds.",
+    });
+  });
+
+  test("marks provider ladder depth unavailable when no rows exist", () => {
+    const depth = buildProviderOrderbookDepth([]);
+
+    expect(depth.bids).toEqual([]);
+    expect(depth.asks).toEqual([]);
+    expect(depth.summary).toMatchObject({
+      source: "reference-orderbook-depth-snapshot",
+      status: "unavailable",
+      levelCount: 0,
+      snapshotCount: 0,
+      latestFetchedAt: null,
+      latestUpdatedAt: null,
+      shouldRefresh: true,
+      isStale: false,
+      sources: [],
+      reason: "No provider orderbook depth snapshot is available.",
+    });
+  });
+
   test("builds provider top-of-book levels from best bid/ask and liquidity", () => {
     const depth = buildProviderQuoteDepth([
       {
