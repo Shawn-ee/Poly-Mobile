@@ -879,3 +879,16 @@ Cycle DI implementation notes:
 - No public user route changed.
 - The service can apply reviewed line identity later, but the Cycle DI proof stayed dry-run to avoid writing unreviewed provider identity into the local database.
 - The row builder now supports exact reviewed provider IDs, closing the ambiguity between same-family lines before the next live OpticOdds refresh attempt.
+
+## Cycle DJ - Line Provider Refresh Execution
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Reviewed line identity apply | `/api/mobile/events/:slug/provider-mapping` | POST | Internal admin guard | `lineIdentityReviews[]`, `dryRun`, `confirmApply`; each review includes local `marketId`, `providerSource=optic_odds`, provider fixture/market/line/period, and every outcome's provider odd id | Route returns review validation, before/after `lineProviderIdentityReadiness`, `applied`, `blocked`, and `nextRequiredAction` | `Market.referenceMetadata.lineProviderIdentity`, `Outcome.referenceMetadata.lineProviderIdentity` | None. Route defaults to dry-run and requires `confirmApply=true` for mutation. | Operator/admin UI fields for line identity capture can be added on top of the route. |
+| Line-provider refresh execution | `/api/mobile/events/:slug/provider-refresh` plus service `refreshMobileLiveProviderQuoteSnapshots()` | POST | Internal admin guard | Existing refresh body; production uses env `OPTIC_ODDS_API_KEY`/sportsbooks, proof injects official-shaped provider response | Mobile consumes refreshed `markets[].providerQuoteSnapshot` and `contract.batchedProviderQuoteSnapshot*` from `/api/mobile/events/:slug/live-detail` | `ReferenceQuoteSnapshot` rows with `source=optic_odds`; reviewed market/outcome metadata | Contract fallback remains disabled in Cycle DJ proof. | Real API key/network proof, provider-owned ladder depth, and lifecycle ticket/order/portfolio/history proof. |
+
+Cycle DJ implementation notes:
+
+- `/api/mobile/events/:slug/provider-mapping` now exposes the reviewed line identity apply path instead of requiring direct script access.
+- The proof harness shows target line markets moving from stale/refresh-due to ready in the same live-detail contract that the mobile page reads.
+- Cache invalidation remains owned by `/provider-refresh` through `revalidatePath` for live-detail, event-detail, and affected orderbook paths.

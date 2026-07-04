@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { selectCompactLiveMarkets } from "@/server/services/mobileLiveEventDetail";
 import { extractProviderFixtureMetadataFromEventMetadata } from "@/server/services/mobileLiveProviderFixtureMetadata";
+import { summarizeLineProviderIdentityReadiness } from "@/server/services/mobileLiveLineProviderIdentityReview";
 
 type MappingMarketInput = {
   id: string;
@@ -11,6 +12,7 @@ type MappingMarketInput = {
   externalSlug?: string | null;
   externalMarketId?: string | null;
   conditionId?: string | null;
+  referenceMetadata?: Prisma.JsonValue | null;
   marketGroupKey: string | null;
   marketGroupTitle: string | null;
   displayOrder: number;
@@ -27,6 +29,7 @@ type MappingMarketInput = {
     isTradable: boolean;
     referenceTokenId?: string | null;
     referenceOutcomeLabel?: string | null;
+    referenceMetadata?: Prisma.JsonValue | null;
   }>;
 };
 
@@ -125,6 +128,16 @@ export function assessMobileLiveProviderMappingReadiness(params: {
     eventSlug: params.eventSlug,
     generatedAt: new Date().toISOString(),
     providerFixture: params.providerFixture ?? null,
+    lineProviderIdentityReadiness: summarizeLineProviderIdentityReadiness(
+      params.compactMarkets.map((market) => ({
+        ...market,
+        referenceMetadata: market.referenceMetadata ?? null,
+        outcomes: market.outcomes.map((outcome) => ({
+          ...outcome,
+          referenceMetadata: outcome.referenceMetadata ?? null,
+        })),
+      })),
+    ),
     compactMarketCount: markets.length,
     providerRefreshableMarketCount: refreshableMarkets.length,
     providerRefreshableOutcomeCount: refreshableOutcomes.length,

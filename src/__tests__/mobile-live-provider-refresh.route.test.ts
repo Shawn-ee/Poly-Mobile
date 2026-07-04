@@ -71,6 +71,7 @@ describe("mobile live provider refresh route", () => {
     expect(refreshMobileLiveProviderQuoteSnapshots).toHaveBeenCalledWith({
       eventSlug: "world-cup-live",
       allowContractProofFallback: true,
+      lineProviderFetchImpl: undefined,
     });
     expect(body).toEqual({
       ok: true,
@@ -117,6 +118,7 @@ describe("mobile live provider refresh route", () => {
     expect(refreshMobileLiveProviderQuoteSnapshots).toHaveBeenCalledWith({
       eventSlug: "world-cup-live",
       allowContractProofFallback: false,
+      lineProviderFetchImpl: undefined,
     });
   });
 });

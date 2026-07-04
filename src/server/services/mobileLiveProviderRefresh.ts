@@ -11,6 +11,7 @@ import { refreshOpticOddsLineQuoteSnapshots } from "@/server/services/mobileLive
 export type MobileLiveProviderRefreshOptions = {
   eventSlug: string;
   allowContractProofFallback?: boolean;
+  lineProviderFetchImpl?: typeof fetch;
 };
 
 export async function expireMobileLiveProviderQuoteSnapshots(params: {
@@ -100,6 +101,7 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
     eventSlug: options.eventSlug,
     providerFixture,
     compactMarkets,
+    fetchImpl: options.lineProviderFetchImpl,
   });
 
   let contractProofFallback:

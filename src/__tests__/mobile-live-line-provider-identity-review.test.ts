@@ -60,7 +60,7 @@ describe("mobile live line provider identity review", () => {
     expect(summarizeLineProviderIdentityReadiness([readyMarket])).toEqual(expect.objectContaining({
       lineMarketCount: 1,
       lineProviderReadyMarketCount: 1,
-      nextRequiredAction: "run_optic_odds_refresh_after_credentials_are_available",
+      nextRequiredAction: "optional_optic_odds_enrichment_ready",
     }));
   });
 

@@ -35,6 +35,7 @@ export async function POST(request: NextRequest, context: Params) {
   const refresh = await refreshMobileLiveProviderQuoteSnapshots({
     eventSlug: slug,
     allowContractProofFallback: body?.allowContractProofFallback === true,
+    lineProviderFetchImpl: undefined,
   });
   const cacheInvalidation = invalidateMobileLiveProviderRefreshCache(slug, refresh.mappingReadiness.markets.map((market) => market.marketId));
 

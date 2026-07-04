@@ -6,6 +6,31 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle DJ
+
+Date: 2026-07-04
+Branch: `mobile/cycle-DJ-line-provider-refresh-execution`
+Goal: Expose reviewed line-provider identity through the protected route workflow and prove line-provider refresh moves compact line markets from stale/refresh-due to ready.
+Reference app screens observed: Continued Samsung S23 Polymarket official Colombia vs Ghana game page, exact Gamma fixture metadata, and Cycle DH OpticOdds endpoint contract.
+Holiwyn screens changed: No visible mobile UI change. Existing server-backed Colombia vs Ghana live-detail Book flow was re-proven on Samsung tablet.
+Backend/API changed: `POST /api/mobile/events/:slug/provider-mapping` accepts `lineIdentityReviews[]`; provider mapping readiness includes `lineProviderIdentityReadiness`; provider refresh service supports injected line-provider fetch for proof while retaining real OpticOdds production path.
+Database/schema changed: No migration. Cycle DJ confirmed apply writes reviewed line-provider identity into existing market/outcome metadata and refresh writes `ReferenceQuoteSnapshot` rows with `source=optic_odds`.
+Files changed: protected provider mapping/refresh routes, provider mapping readiness service, provider refresh service, route tests, line-provider refresh execution proof harness, docs/proof artifacts, tablet proof artifacts.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-mapping.route.test.ts src/__tests__/mobile-live-provider-refresh.route.test.ts src/__tests__/mobile-live-line-provider-identity-review.test.ts src/__tests__/mobile-live-optic-odds-line-ingestion.test.ts`
+- `cmd /c npx.cmd tsx scripts/prove_mobile_line_provider_refresh_execution.ts --output docs/mobile/harness/cycle-current-mobile-line-provider-refresh-execution.json`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` from `mobile/`
+- Samsung tablet proof via `mobile/scripts/smoke.ps1 -Deep -ServerLiveDetailOrderBook -ServerEventSlug world-cup-2026-colombia-vs-ghana-2026-07-03`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-line-provider-refresh-execution.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+Result: Pass for reviewed line-provider route apply, stale-to-ready optional line-provider refresh execution, cache-invalidation route contract, and tablet regression. Missing `OPTIC_ODDS_API_KEY` is not a P0 blocker. Remaining P1 parity gaps are Polymarket-first Gamma/CLOB provider proof expansion, provider line depth where Polymarket exposes it, and ticket/order/portfolio/history identity lifecycle proof.
+Next focus: replace OpticOdds-centered planning with a Polymarket-first provider path: discover real Polymarket events via Gamma, map markets/outcomes/tokens, fetch CLOB price/depth, expose route source/status fields, and verify on Android.
+
 ## Cycle DI
 
 Date: 2026-07-04
@@ -28,7 +53,7 @@ Evidence captured:
 - `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
 - `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
 - `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
-Result: Pass for reviewed line-provider identity contract and tablet regression. Remaining P1 parity gaps are confirmed apply with real operator-reviewed identities, `OPTIC_ODDS_API_KEY`, live OpticOdds refresh, and ticket/order/portfolio/history proof for selected line identity.
+Result: Pass for reviewed optional line-provider identity contract and tablet regression. Missing `OPTIC_ODDS_API_KEY` is optional/unconfigured and not a P0 blocker; Polymarket Gamma/CLOB remains the default parity source. Remaining P1 parity gaps are Polymarket-first provider proof expansion and ticket/order/portfolio/history proof for selected line identity.
 Next focus: add the protected route/UI or operational apply path for reviewed line identities, configure real credentials, and prove live OpticOdds refresh changes route state from refresh-due/stale to ready.
 
 ## Cycle DH
