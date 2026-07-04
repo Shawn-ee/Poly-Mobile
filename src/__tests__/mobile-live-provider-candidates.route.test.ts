@@ -3,6 +3,7 @@ import { MarketGuardError } from "@/lib/marketGuards";
 
 const assertReferenceBotAdmin = jest.fn();
 const discoverMobileLiveProviderCandidates = jest.fn();
+const previewMobileLiveProviderCandidatesBySlug = jest.fn();
 
 jest.mock("@/lib/internalAdminAuth", () => ({
   assertReferenceBotAdmin: (...args: unknown[]) => assertReferenceBotAdmin(...args),
@@ -10,9 +11,10 @@ jest.mock("@/lib/internalAdminAuth", () => ({
 
 jest.mock("@/server/services/mobileLiveProviderCandidates", () => ({
   discoverMobileLiveProviderCandidates: (...args: unknown[]) => discoverMobileLiveProviderCandidates(...args),
+  previewMobileLiveProviderCandidatesBySlug: (...args: unknown[]) => previewMobileLiveProviderCandidatesBySlug(...args),
 }));
 
-import { GET } from "@/app/api/mobile/events/[slug]/provider-candidates/route";
+import { GET, POST } from "@/app/api/mobile/events/[slug]/provider-candidates/route";
 
 describe("mobile live provider candidates route", () => {
   beforeEach(() => {
@@ -24,6 +26,13 @@ describe("mobile live provider candidates route", () => {
       targetMarketCount: 1,
       attachReadyCandidateCount: 0,
       targets: [],
+    });
+    previewMobileLiveProviderCandidatesBySlug.mockResolvedValue({
+      eventSlug: "world-cup-live",
+      mode: "manual-slug-preview",
+      marketId: "market-1",
+      candidateCount: 1,
+      attachReadyCandidateCount: 1,
     });
   });
 
@@ -59,5 +68,30 @@ describe("mobile live provider candidates route", () => {
         provider: "polymarket-gamma",
       }),
     });
+  });
+
+  test("previews manual Polymarket slugs for a compact market", async () => {
+    const response = await POST(
+      new NextRequest("http://localhost/api/mobile/events/world-cup-live/provider-candidates", {
+        method: "POST",
+        body: JSON.stringify({
+          marketId: "market-1",
+          slugs: ["curacao-cote-divoire-match-winner"],
+        }),
+      }),
+      { params: Promise.resolve({ slug: "world-cup-live" }) },
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(previewMobileLiveProviderCandidatesBySlug).toHaveBeenCalledWith({
+      eventSlug: "world-cup-live",
+      marketId: "market-1",
+      slugs: ["curacao-cote-divoire-match-winner"],
+    });
+    expect(body.result).toEqual(expect.objectContaining({
+      mode: "manual-slug-preview",
+      candidateCount: 1,
+    }));
   });
 });

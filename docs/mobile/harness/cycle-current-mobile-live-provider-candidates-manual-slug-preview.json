@@ -1,0 +1,23 @@
+{
+    "ok":  true,
+    "result":  {
+                   "eventSlug":  "world-cup-2026-curacao-vs-cote-divoire-2026-06-25",
+                   "generatedAt":  "2026-07-04T04:14:33.687Z",
+                   "provider":  "polymarket-gamma",
+                   "mode":  "manual-slug-preview",
+                   "marketId":  "aca976d2-2bad-416c-b010-c874c0ee493f",
+                   "title":  "Curaçao vs Côte d\u0027Ivoire: Match Winner",
+                   "requestedSlugs":  [
+                                          "curacao-cote-divoire-match-winner"
+                                      ],
+                   "providerError":  "fetch failed",
+                   "candidateCount":  0,
+                   "bestCandidate":  null,
+                   "attachProposal":  null,
+                   "attachReadyCandidateCount":  0,
+                   "nextRequiredAction":  "fix_provider_fetch_or_retry_manual_slug_preview",
+                   "candidates":  [
+
+                                  ]
+               }
+}

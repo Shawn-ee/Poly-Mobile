@@ -34,6 +34,13 @@ export type ProviderCandidateDiscoveryOptions = {
   fetchImpl?: typeof fetch;
 };
 
+export type ProviderCandidateSlugPreviewOptions = {
+  eventSlug: string;
+  marketId: string;
+  slugs: string[];
+  fetchImpl?: typeof fetch;
+};
+
 export type ProviderMarketCandidate = NonNullable<ReturnType<typeof normalizeProviderCandidate>>;
 
 export async function discoverMobileLiveProviderCandidates(options: ProviderCandidateDiscoveryOptions) {
@@ -104,6 +111,57 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
   };
 }
 
+export async function previewMobileLiveProviderCandidatesBySlug(options: ProviderCandidateSlugPreviewOptions) {
+  const compactMarkets = await loadCompactLiveMarkets(options.eventSlug);
+  const market = compactMarkets.find((candidate) => candidate.id === options.marketId);
+  if (!market) {
+    throw new Error(`Market ${options.marketId} is not in compact live event ${options.eventSlug}.`);
+  }
+
+  const requestedSlugs = Array.from(new Set(options.slugs.map(sanitizeSlug).filter(Boolean))).slice(0, 10);
+  if (requestedSlugs.length === 0) {
+    throw new Error("At least one Polymarket slug is required.");
+  }
+
+  let providerError: string | null = null;
+  let candidates: ProviderMarketCandidate[] = [];
+  try {
+    candidates = rankProviderCandidates(
+      market,
+      await fetchProviderCandidatesForSlugs(requestedSlugs, {
+        fetchImpl: options.fetchImpl ?? fetch,
+      }),
+    );
+  } catch (error) {
+    providerError = error instanceof Error ? error.message : String(error);
+  }
+
+  const bestCandidate = candidates[0] ?? null;
+  const attachProposal = bestCandidate ? buildAttachProposal(market, bestCandidate) : null;
+
+  return {
+    eventSlug: options.eventSlug,
+    generatedAt: new Date().toISOString(),
+    provider: "polymarket-gamma",
+    mode: "manual-slug-preview",
+    marketId: market.id,
+    title: market.title,
+    requestedSlugs,
+    providerError,
+    candidateCount: candidates.length,
+    bestCandidate,
+    attachProposal,
+    attachReadyCandidateCount: candidates.filter((candidate) => candidate.attachReadiness.attachReady).length,
+    nextRequiredAction:
+      attachProposal?.attachReady
+        ? "review_and_attach_provider_identity_candidate"
+        : providerError
+          ? "fix_provider_fetch_or_retry_manual_slug_preview"
+          : "supply_better_polymarket_slug_for_compact_market",
+    candidates,
+  };
+}
+
 export function buildProviderCandidateSearchQueries(market: CompactMarketForCandidates) {
   const title = market.title.replace(/[:]/g, " ").replace(/\s+/g, " ").trim();
   const withoutLine = title.replace(/[+-]?\d+(\.\d+)?/g, " ").replace(/\s+/g, " ").trim();
@@ -149,6 +207,39 @@ export async function fetchProviderCandidatesForQueries(
       if (candidate && !bySlug.has(candidate.slug)) {
         bySlug.set(candidate.slug, candidate);
       }
+    }
+  }
+
+  return Array.from(bySlug.values());
+}
+
+export async function fetchProviderCandidatesForSlugs(
+  slugs: string[],
+  options: {
+    fetchImpl?: typeof fetch;
+  } = {},
+) {
+  const fetchImpl = options.fetchImpl ?? fetch;
+  const bySlug = new Map<string, ProviderMarketCandidate>();
+
+  for (const slug of slugs.map(sanitizeSlug).filter(Boolean)) {
+    const url = new URL("/markets", GAMMA_BASE_URL);
+    url.searchParams.set("slug", slug);
+    const response = await fetchImpl(url.toString(), { headers: { Accept: "application/json" } });
+    if (!response.ok) {
+      throw new Error(`Gamma slug preview request failed: ${response.status} ${response.statusText}`);
+    }
+    const payload = (await response.json()) as unknown;
+    if (!Array.isArray(payload)) {
+      throw new Error("Gamma slug preview response was not an array.");
+    }
+    const exact = payload.find((entry) => entry && typeof entry === "object" && asString((entry as GammaWire).slug) === slug);
+    if (!exact || typeof exact !== "object") {
+      continue;
+    }
+    const candidate = normalizeProviderCandidate(exact as GammaWire);
+    if (candidate && !bySlug.has(candidate.slug)) {
+      bySlug.set(candidate.slug, candidate);
     }
   }
 
@@ -300,6 +391,18 @@ function normalizeText(value: string) {
     .replace(/[^a-z0-9\s]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function sanitizeSlug(value: string | null | undefined) {
+  const trimmed = value?.trim();
+  if (!trimmed) return "";
+  if (!trimmed.includes("://")) return trimmed;
+  try {
+    const url = new URL(trimmed);
+    return url.pathname.split("/").filter(Boolean).pop() ?? "";
+  } catch {
+    return "";
+  }
 }
 
 function parseStringArray(value: unknown): string[] {
