@@ -2504,19 +2504,19 @@ try {
         $eventDetailHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-event-detail.xml" -Expected @("Mexico vs. Ecuador", "Best bid", "Best ask", "Spread", "event-detail-top-order-book") -Attempts 5 -DelaySeconds 1
       }
       Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-top-order-book"
-      $bookInitialHierarchy = Wait-HierarchyContains -Name "cycle-ED-B-holiwyn-book-lifecycle-moneyline-book.xml" -Expected @("event-detail-order-book-screen", "selected-market-mexico-ecuador-winner", "selected-family-Moneyline", "order-book-grouped-market-selector", "order-book-ladder") -Attempts 8 -DelaySeconds 1
-      Save-Screenshot -Name "cycle-ED-B-holiwyn-book-lifecycle-moneyline-book.png"
+      $bookInitialHierarchy = Wait-HierarchyContains -Name "cycle-EE-B-holiwyn-book-status-moneyline-book.xml" -Expected @("event-detail-order-book-screen", "selected-market-mexico-ecuador-winner", "selected-family-Moneyline", "order-book-grouped-market-selector", "order-book-ladder") -Attempts 8 -DelaySeconds 1
+      Save-Screenshot -Name "cycle-EE-B-holiwyn-book-status-moneyline-book.png"
       Assert-HierarchyContains -Path $bookInitialHierarchy -Expected @("event-detail-order-book-screen", "selected-market-mexico-ecuador-winner", "selected-family-Moneyline", "order-book-grouped-market-selector", "order-book-ladder")
 
       Invoke-TapHierarchyNode -Path $bookInitialHierarchy -Identifier "order-book-grouped-market-selector"
       Start-Sleep -Seconds 1
-      $bookSelectorHierarchy = Save-UiHierarchy -Name "cycle-ED-B-holiwyn-book-lifecycle-selector.xml"
+      $bookSelectorHierarchy = Save-UiHierarchy -Name "cycle-EE-B-holiwyn-book-status-selector.xml"
       Assert-HierarchyContains -Path $bookSelectorHierarchy -Expected @("order-book-market-selector-sheet", "order-book-market-choice-mexico-ecuador-spread", "market-type-spread", "line-1.5", "period-regulation")
       Invoke-TapHierarchyNode -Path $bookSelectorHierarchy -Identifier "order-book-market-choice-mexico-ecuador-spread"
       Start-Sleep -Seconds 1
 
-      Save-Screenshot -Name "cycle-ED-B-holiwyn-book-lifecycle-spread-selected.png"
-      $bookSpreadHierarchy = Save-UiHierarchy -Name "cycle-ED-B-holiwyn-book-lifecycle-spread-selected.xml"
+      Save-Screenshot -Name "cycle-EE-B-holiwyn-book-status-spread-selected.png"
+      $bookSpreadHierarchy = Save-UiHierarchy -Name "cycle-EE-B-holiwyn-book-status-spread-selected.xml"
       Assert-HierarchyContains -Path $bookSpreadHierarchy -Expected (@(
         "event-detail-order-book-screen",
         "order-book-selected-contract",
@@ -2531,8 +2531,8 @@ try {
 
       Invoke-TapHierarchyNode -Path $bookSpreadHierarchy -Identifier "order-book-buy-yes"
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-ED-B-holiwyn-book-lifecycle-ticket-empty.png"
-      $ticketEmptyHierarchy = Save-UiHierarchy -Name "cycle-ED-B-holiwyn-book-lifecycle-ticket-empty.xml"
+      Save-Screenshot -Name "cycle-EE-B-holiwyn-book-status-ticket-empty.png"
+      $ticketEmptyHierarchy = Save-UiHierarchy -Name "cycle-EE-B-holiwyn-book-status-ticket-empty.xml"
       Assert-HierarchyContains -Path $ticketEmptyHierarchy -Expected (@(
         "trade-ticket",
         "ticket-selection-summary",
@@ -2552,31 +2552,38 @@ try {
 
       Invoke-TapHierarchyNode -Path $ticketEmptyHierarchy -Identifier "ticket-preset-10"
       Start-Sleep -Milliseconds 500
-      $ticketAmount10Hierarchy = Save-UiHierarchy -Name "cycle-ED-B-holiwyn-book-lifecycle-ticket-amount-10.xml"
+      $ticketAmount10Hierarchy = Save-UiHierarchy -Name "cycle-EE-B-holiwyn-book-status-ticket-amount-10.xml"
       Invoke-TapHierarchyNode -Path $ticketAmount10Hierarchy -Identifier "ticket-preset-10"
       Start-Sleep -Milliseconds 500
-      $ticketAmount20Hierarchy = Save-UiHierarchy -Name "cycle-ED-B-holiwyn-book-lifecycle-ticket-amount-20.xml"
+      $ticketAmount20Hierarchy = Save-UiHierarchy -Name "cycle-EE-B-holiwyn-book-status-ticket-amount-20.xml"
       Invoke-TapHierarchyNode -Path $ticketAmount20Hierarchy -Identifier "ticket-preset-5"
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-ED-B-holiwyn-book-lifecycle-ticket-ready.png"
-      $ticketReadyHierarchy = Save-UiHierarchy -Name "cycle-ED-B-holiwyn-book-lifecycle-ticket-ready.xml"
+      Save-Screenshot -Name "cycle-EE-B-holiwyn-book-status-ticket-ready.png"
+      $ticketReadyHierarchy = Save-UiHierarchy -Name "cycle-EE-B-holiwyn-book-status-ticket-ready.xml"
       Assert-HierarchyContains -Path $ticketReadyHierarchy -Expected (@('$25', "ticket-price-line", "Swipe up to buy", "place-mock-order", "Yes") + $ticketSelectionExpected)
       Assert-HierarchyDoesNotContain -Path $ticketReadyHierarchy -Unexpected $noMoneylineFallback
 
       Invoke-TapHierarchyNode -Path $ticketReadyHierarchy -Identifier "place-mock-order"
       Start-Sleep -Seconds 2
-      Save-Screenshot -Name "cycle-ED-B-holiwyn-book-lifecycle-portfolio.png"
-      $bookLifecyclePortfolioHierarchy = Save-UiHierarchy -Name "cycle-ED-B-holiwyn-book-lifecycle-portfolio.xml"
+      Save-Screenshot -Name "cycle-EE-B-holiwyn-book-status-portfolio-open-filled.png"
+      $bookLifecyclePortfolioHierarchy = Save-UiHierarchy -Name "cycle-EE-B-holiwyn-book-status-portfolio-open-filled.xml"
       Assert-HierarchyContains -Path $bookLifecyclePortfolioHierarchy -Expected (@(
         "Portfolio",
         "Open positions",
+        "Open orders",
         "Recent activity",
         "1",
         "Order placed",
         "latest-order-card",
+        "latest-order-status",
+        "order-status-open",
+        "open-order-row-",
+        "open-order-status-",
+        "fake-token-test",
         "latest-activity-card",
+        "activity-opened",
+        "status-filled",
         "position-card-",
-        "activity-row-",
         "MOCK - Buy - Mexico -1.5 spread",
         "Mexico -1.5 spread",
         "Buy - Filled shares",
@@ -2585,39 +2592,60 @@ try {
       ) + $portfolioSelectionExpected)
       Assert-HierarchyDoesNotContain -Path $bookLifecyclePortfolioHierarchy -Unexpected $noMoneylineFallback
 
+      Invoke-TapHierarchyNode -Path $bookLifecyclePortfolioHierarchy -Identifier "cancel-open-order-" -StartsWith
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-EE-B-holiwyn-book-status-portfolio-canceled-activity.png"
+      $bookLifecycleCanceledHierarchy = Save-UiHierarchy -Name "cycle-EE-B-holiwyn-book-status-portfolio-canceled-activity.xml"
+      Assert-HierarchyContains -Path $bookLifecycleCanceledHierarchy -Expected (@(
+        "Portfolio",
+        "portfolio-open-order-count",
+        "0",
+        "latest-activity-card",
+        "latest-activity-status-",
+        "Canceled",
+        "activity-canceled",
+        "status-canceled",
+        "Buy - Canceled",
+        "fake-token-test"
+      ) + $portfolioSelectionExpected)
+      Assert-HierarchyDoesNotContain -Path $bookLifecycleCanceledHierarchy -Unexpected $noMoneylineFallback
+
       $proof = [ordered]@{
-        cycle = "ED-B"
-        scope = "Visible Book-selected fake-token order lifecycle"
-        command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBookLifecycle -Port 8258 -OutputDir docs/mobile/screenshots/cycle-ED-B-book-lifecycle -HierarchyOutputDir docs/mobile/harness/cycle-ED-B-book-lifecycle"
+        cycle = "EE-B"
+        scope = "Visible Book-selected fake-token open/cancel/fill status breadth"
+        command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBookLifecycle -Port 8309 -OutputDir docs/mobile/screenshots/cycle-EE-B-visible-status -HierarchyOutputDir docs/mobile/harness/cycle-EE-B-visible-status"
         eventIdentity = "Mexico vs. Ecuador"
         result = "pass"
         assertions = [ordered]@{
           bookSelection = "Book selector changes from Moneyline to Spreads with selected-market-mexico-ecuador-spread selected-line-1.5 selected-period-regulation selected-outcome-yes selected-side-yes"
           providerToken = "provider-source-polymarket-fixture provider-market-gamma-mexico-ecuador-spread-15 provider-condition-condition-mexico-ecuador-spread-15 provider-token-token-spread-yes-15"
-          ticketReady = "trade-ticket keeps ticket-market-id-mexico-ecuador-spread ticket-outcome-id-yes ticket-line-1.5 ticket-period-regulation and enables place-mock-order at $25"
-          portfolioPosition = "position-card keeps portfolio market/outcome/line/period/side/provider token identity after mock order"
-          portfolioActivity = "latest-order-card latest-activity-card and activity-row expose the same Book-selected identity"
+          ticketReady = "trade-ticket keeps ticket-market-id-mexico-ecuador-spread ticket-outcome-id-yes ticket-line-1.5 ticket-period-regulation and enables place-mock-order at `$25"
+          openStatus = "latest-order-card and open-order-row expose fake-token-test order-status-open for the same Book-selected Spread identity"
+          cancelStatus = "cancel-open-order removes the open branch and latest-activity-card/activity-row expose fake-token-test activity-canceled status-canceled"
+          filledStatus = "position-card plus filled activity-row expose fake-token-test activity-opened status-filled for the same Book-selected identity"
           fallbackGuard = "No Team to Advance or Mexico moneyline fallback appears after the Book-selected order"
         }
         artifacts = @(
-          "docs/mobile/screenshots/cycle-ED-B-book-lifecycle/cycle-ED-B-holiwyn-book-lifecycle-moneyline-book.png",
-          "docs/mobile/harness/cycle-ED-B-book-lifecycle/cycle-ED-B-holiwyn-book-lifecycle-moneyline-book.xml",
-          "docs/mobile/harness/cycle-ED-B-book-lifecycle/cycle-ED-B-holiwyn-book-lifecycle-selector.xml",
-          "docs/mobile/screenshots/cycle-ED-B-book-lifecycle/cycle-ED-B-holiwyn-book-lifecycle-spread-selected.png",
-          "docs/mobile/harness/cycle-ED-B-book-lifecycle/cycle-ED-B-holiwyn-book-lifecycle-spread-selected.xml",
-          "docs/mobile/screenshots/cycle-ED-B-book-lifecycle/cycle-ED-B-holiwyn-book-lifecycle-ticket-empty.png",
-          "docs/mobile/harness/cycle-ED-B-book-lifecycle/cycle-ED-B-holiwyn-book-lifecycle-ticket-empty.xml",
-          "docs/mobile/screenshots/cycle-ED-B-book-lifecycle/cycle-ED-B-holiwyn-book-lifecycle-ticket-ready.png",
-          "docs/mobile/harness/cycle-ED-B-book-lifecycle/cycle-ED-B-holiwyn-book-lifecycle-ticket-ready.xml",
-          "docs/mobile/screenshots/cycle-ED-B-book-lifecycle/cycle-ED-B-holiwyn-book-lifecycle-portfolio.png",
-          "docs/mobile/harness/cycle-ED-B-book-lifecycle/cycle-ED-B-holiwyn-book-lifecycle-portfolio.xml"
+          "docs/mobile/screenshots/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-moneyline-book.png",
+          "docs/mobile/harness/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-moneyline-book.xml",
+          "docs/mobile/harness/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-selector.xml",
+          "docs/mobile/screenshots/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-spread-selected.png",
+          "docs/mobile/harness/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-spread-selected.xml",
+          "docs/mobile/screenshots/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-ticket-empty.png",
+          "docs/mobile/harness/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-ticket-empty.xml",
+          "docs/mobile/screenshots/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-ticket-ready.png",
+          "docs/mobile/harness/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-ticket-ready.xml",
+          "docs/mobile/screenshots/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-portfolio-open-filled.png",
+          "docs/mobile/harness/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-portfolio-open-filled.xml",
+          "docs/mobile/screenshots/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-portfolio-canceled-activity.png",
+          "docs/mobile/harness/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-portfolio-canceled-activity.xml"
         )
         remainingGaps = @(
           "This proof uses the deterministic backend-shaped local Book/order service in mock mode, not a real wallet signature.",
-          "Provider-ready live route lifecycle should be recaptured by Lead after integrated backend/provider branch merge."
+          "Broader real provider-backed line-family lifecycle breadth remains P1 until backend/provider line families are ready."
         )
       }
-      $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-ED-B-holiwyn-book-lifecycle-proof.json"
+      $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-EE-B-visible-status-proof.json"
       $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
       Write-Host "Proof summary: $proofPath"
       return

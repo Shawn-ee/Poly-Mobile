@@ -2,6 +2,43 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle EE-B - Visible Book Status Breadth
+
+Feature/page worked on:
+
+- Holiwyn Android-visible Event Detail Book-selected fake-token lifecycle status breadth.
+- Extends the selected Mexico vs. Ecuador Spread Book path beyond the ED filled-position proof to show open order status, cancel action/status, filled/recent activity markers, and explicit fake-token/test labels.
+
+Frontend/harness components touched:
+
+- `mobile/App.tsx`
+- `mobile/src/components/Portfolio.tsx`
+- `mobile/scripts/smoke.ps1`
+
+Important functions/interactions/state transitions touched:
+
+- `isBookSpreadLifecycleSelection()` scopes the deterministic status breadth branch to the Book-selected Spread fixture: `marketId=mexico-ecuador-spread`, `outcomeId=yes`, `line=1.5`, `period=regulation`.
+- Mock `placeOrder()` now creates a backend-shaped sibling open order for that selected Book Spread branch while preserving the filled position/activity marker, so Portfolio can prove both open and filled statuses from the same selected Book identity.
+- `Portfolio` now renders visible `Fake-token test` plus status pills on latest order, open-order rows, latest activity, and activity rows. The same selected market/outcome/line/period/provider identity remains in the existing accessibility labels.
+- `cancelOpenOrder()` continues to remove the open order and append a canceled activity; the EE proof now taps the cancel button and asserts `Canceled`, `activity-canceled`, `status-canceled`, and the remaining filled activity marker.
+- `-EventDetailOrderBookLifecycle` now emits EE-B artifact names and proof JSON under `cycle-EE-B-visible-status`.
+
+Verified:
+
+- `npm --prefix mobile install --no-audit --no-fund`
+- `npm --prefix mobile run typecheck`
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+
+Lead proof command:
+
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBookLifecycle -Port 8309 -OutputDir docs/mobile/screenshots/cycle-EE-B-visible-status -HierarchyOutputDir docs/mobile/harness/cycle-EE-B-visible-status`
+
+Known limitations:
+
+- The EE-B visible breadth path is deterministic fake-token/test state, not a real wallet signature or production Polymarket order.
+- Broader real provider-backed line-family lifecycle breadth remains P1 until backend/provider line families are ready.
+
 ## Cycle ED-A - Book Order Portfolio History Provider Identity
 
 Feature/page worked on:

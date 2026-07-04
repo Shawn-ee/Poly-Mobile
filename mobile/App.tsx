@@ -99,6 +99,13 @@ const SMOKE_LINE_OPEN_ORDER: OpenOrder = {
   placedAt: "Just now",
 };
 
+const isBookSpreadLifecycleSelection = (selection?: TicketSelection) =>
+  selection?.marketType === "spread" &&
+  selection.marketId === "mexico-ecuador-spread" &&
+  selection.outcomeId === "yes" &&
+  selection.line === "1.5" &&
+  selection.period === "regulation";
+
 const mexicoEcuadorGamePositionFixture = (): Position | undefined => {
   const event = worldCupEvents.find((item) => item.id === "mexico-ecuador");
   const market = event?.markets.find((item) => item.id === "mexico-ecuador-winner");
@@ -1064,6 +1071,25 @@ export default function App() {
     const liveClock = isLiveOrder
       ? ticket.event?.startsAt.replace(/[^\x00-\x7F]+/g, "-").replace(/\s+-\s+/g, " - ")
       : undefined;
+    const isBookSpreadLifecycle = isBookSpreadLifecycleSelection(result.selection);
+    const orderShares = result.probability > 0 ? result.amount / (result.probability / 100) : result.amount;
+    const bookOpenOrder: OpenOrder | null = isBookSpreadLifecycle
+      ? {
+          id: `${result.id}-book-open`,
+          title: result.title,
+          outcome: result.outcome,
+          selection: result.selection,
+          contractSide: result.contractSide,
+          side: result.side,
+          status: "OPEN",
+          price: result.probability / 100,
+          remaining: orderShares,
+          originalShares: orderShares,
+          remainingShares: orderShares,
+          orderValue: result.amount,
+          placedAt: t.justNow,
+        }
+      : null;
     if (ORDER_MODE !== "server") {
       setBalance((current) => current - cost);
       setPositions((current) => [
@@ -1096,13 +1122,16 @@ export default function App() {
       side: result.side,
       amount: result.amount,
       probability: result.probability,
-      status: result.status,
-      size: result.size,
-      filledSize: result.filledSize,
-      remainingSize: result.remainingSize,
+      status: isBookSpreadLifecycle ? "OPEN" : result.status,
+      size: isBookSpreadLifecycle ? orderShares : result.size,
+      filledSize: isBookSpreadLifecycle ? 0 : result.filledSize,
+      remainingSize: isBookSpreadLifecycle ? orderShares : result.remainingSize,
       isLive: isLiveOrder,
       liveClock,
     });
+    if (bookOpenOrder) {
+      setOpenOrders((current) => [bookOpenOrder, ...current.filter((order) => order.id !== bookOpenOrder.id)]);
+    }
     setActivities((current) => [
       {
         id: `${result.id}-opened`,
