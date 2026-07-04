@@ -1002,6 +1002,59 @@ Decision:
 - Remaining P1/P2 gaps: real OpticOdds/API ingestion, automatic fixture metadata persistence during import, and line-market ticket/order/portfolio/history proof.
 - Next cycle required: yes, implement or integrate the provider route/schema that can consume `opticOddsFixtureId`/`opticOddsGameId` for line-market odds and depth.
 
+## Feature: Reviewed Line Provider Identity Gate
+
+Cycle: DI
+Lead Agent target: Add a reviewed per-line provider identity gate before any live OpticOdds line rows are applied to compact live markets.
+Reference Audit Agent: Continued Samsung S23 Colombia vs Ghana Polymarket reference, exact Gamma fixture metadata, and Cycle DH OpticOdds contract shape.
+Implementation Agent: Added reviewed line identity validation/projection/apply service, hardened OpticOdds row matching, focused tests, and dry-run proof harness.
+Audit Gate Agent: Passed focused data-contract gate; did not pass or claim live OpticOdds apply parity.
+
+Reference device:
+Samsung S23.
+
+Reference app/browser:
+Official Polymarket Android app plus exact Gamma event payload and OpticOdds fixture-odds contract from Cycle DH.
+
+Reference route/URL:
+`https://polymarket.com/sports/world-cup/fifwc-col-gha-2026-07-03`; provider data from `https://gamma-api.polymarket.com/events?slug=fifwc-col-gha-2026-07-03`.
+
+Holiwyn device:
+Samsung tablet.
+
+Holiwyn app mode:
+Expo Go with server mode and backend `http://127.0.0.1:3002`.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-CW-polymarket-s23-window.xml`
+- `docs/mobile/harness/cycle-current-mobile-optic-odds-line-ingestion-contract.json`
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-current-mobile-line-provider-identity-review.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LD-DI-P1-01 | P1 | Pass | Dry-run review validates 2 compact line markets and projects readiness from 0 reviewed line-provider markets to 2. | None |
+| LD-DI-P1-02 | P1 | Pass | Bad review is blocked for wrong provider family, wrong line value, and incomplete outcome coverage. | None |
+| LD-DI-P1-03 | P1 | Pass | `buildOpticOddsReferenceQuoteRows()` honors reviewed provider market and odd IDs when present. | None |
+| LD-DI-P1-04 | P1 | Pass | Proof reports `mutatedDatabase=false`, preserving review-first safety. | None |
+| LD-DI-P1-05 | P1 | Pass | Samsung tablet server-mode live-detail Book proof still shows the route-backed flow after implementation. | None |
+
+Decision:
+
+- Pass/fail: Pass for focused reviewed line-provider identity contract.
+- Unresolved P0 gaps: 0 for this focused contract cycle.
+- Remaining P1/P2 gaps: confirmed apply with real operator-reviewed identities, real OpticOdds credentials, live refresh producing route-readable provider snapshots, and ticket/order/portfolio/history identity proof.
+- Next cycle required: yes, continue PM-GAP-067 with real provider-owned refresh execution and cache invalidation once credentials and confirmed identity apply are available.
+
 Use this template for every feature gate:
 
 ```md

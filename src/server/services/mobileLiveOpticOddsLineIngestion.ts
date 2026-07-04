@@ -8,11 +8,13 @@ type LocalMarket = {
   marketType: string;
   line: Prisma.Decimal | null;
   period: string | null;
+  referenceMetadata?: Prisma.JsonValue | null;
   outcomes: Array<{
     id: string;
     name: string;
     label: string | null;
     side: string | null;
+    referenceMetadata?: Prisma.JsonValue | null;
   }>;
 };
 
@@ -163,10 +165,18 @@ export function buildOpticOddsReferenceQuoteRows(params: {
 
   const odds = fixture.odds.filter((odd) => odd.is_main !== false);
   return params.compactMarkets.flatMap((market) => {
-    const marketOdds = odds.filter((odd) => opticMarketMatchesLocalMarket(odd, market));
+    const reviewedMarketIdentity = parseLineProviderIdentity(market.referenceMetadata);
+    const marketOdds = odds.filter((odd) =>
+      reviewedMarketIdentity?.providerMarketId
+        ? normalize(odd.market_id ?? odd.market) === normalize(reviewedMarketIdentity.providerMarketId)
+        : opticMarketMatchesLocalMarket(odd, market),
+    );
     if (marketOdds.length === 0) return [];
     return market.outcomes.flatMap((outcome) => {
-      const odd = marketOdds.find((candidate) => opticOddMatchesOutcome(candidate, outcome, fixture));
+      const reviewedOutcomeIdentity = parseLineProviderIdentity(outcome.referenceMetadata);
+      const odd = reviewedOutcomeIdentity?.providerOddId
+        ? marketOdds.find((candidate) => candidate.id === reviewedOutcomeIdentity.providerOddId)
+        : marketOdds.find((candidate) => opticOddMatchesOutcome(candidate, outcome, fixture));
       if (!odd) return [];
       const probability = probabilityFromOpticPrice(odd.price);
       if (probability == null) return [];
@@ -248,6 +258,20 @@ function teamSideForOdd(odd: OpticOddsOdd, fixture: OpticOddsFixtureOddsFixture)
   if (fixture.home_competitors?.some((team) => team.id === teamId)) return "home";
   if (fixture.away_competitors?.some((team) => team.id === teamId)) return "away";
   return null;
+}
+
+function parseLineProviderIdentity(value: Prisma.JsonValue | null | undefined) {
+  const root = value && typeof value === "object" && !Array.isArray(value)
+    ? value as Record<string, unknown>
+    : null;
+  const identity = root?.lineProviderIdentity;
+  if (!identity || typeof identity !== "object" || Array.isArray(identity)) return null;
+  const record = identity as Record<string, unknown>;
+  if (record.providerSource !== "optic_odds") return null;
+  return {
+    providerMarketId: typeof record.providerMarketId === "string" ? record.providerMarketId : null,
+    providerOddId: typeof record.providerOddId === "string" ? record.providerOddId : null,
+  };
 }
 
 function probabilityFromOpticPrice(value: OpticOddsOdd["price"]) {
