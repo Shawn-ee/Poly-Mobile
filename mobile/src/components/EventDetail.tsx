@@ -79,6 +79,11 @@ const formatLevelPrice = (price: number) => `${(price <= 1 ? price : price / 100
 
 const formatLevelCents = (price: number) => `${levelProbability(price)}c`;
 
+type BookDisplayMode = "cents" | "decimal";
+
+const formatBookDisplayPrice = (price: number, mode: BookDisplayMode) =>
+  mode === "decimal" ? formatLevelPrice(price) : formatLevelCents(price);
+
 const fallbackDepthLevels = (outcome: Outcome, side: "bid" | "ask"): DepthLevel[] => {
   const baseProbability = side === "bid"
     ? outcome.bestBid ?? Math.max(outcome.probability - 3, 1)
@@ -283,6 +288,8 @@ export function EventDetail({
   const [orderBookVisible, setOrderBookVisible] = useState(false);
   const [orderBookMarketId, setOrderBookMarketId] = useState<string | null>(null);
   const [orderBookOutcomeId, setOrderBookOutcomeId] = useState<string | null>(null);
+  const [orderBookSettingsVisible, setOrderBookSettingsVisible] = useState(false);
+  const [orderBookDisplayMode, setOrderBookDisplayMode] = useState<BookDisplayMode>("cents");
   const [compactHeaderVisible, setCompactHeaderVisible] = useState(false);
   const isLiveEvent = event.status === "live";
   const gameLineMarkets = useMemo(() => event.markets.filter((market) => market.type !== "prop" && market.type !== "future"), [event.markets]);
@@ -331,11 +338,18 @@ export function EventDetail({
       ? "Timestamped"
       : "No timestamp";
   const depthMarketMatches = Boolean(orderBookMarket && event.orderbookDepthMarketId === orderBookMarket.id);
-  const selectedDepthSource = depthMarketMatches ? event.orderbookDepthSource : undefined;
+  const hasSelectedMarketDepth = (orderBookMarket?.orderbookDepth?.length ?? 0) > 0;
+  const selectedDepthSource = depthMarketMatches
+    ? event.orderbookDepthSource
+    : hasSelectedMarketDepth
+      ? "contract-fixture"
+      : undefined;
   const depthRouteStatus = depthMarketMatches
     ? (event.orderbookDepthStatus ?? (event.orderbookDepthSource === "orderbook-route" ? "ready" : "idle"))
+    : hasSelectedMarketDepth
+      ? "ready"
     : "idle";
-  const selectedOrderbookAvailability = depthMarketMatches ? event.orderbookAvailability : undefined;
+  const selectedOrderbookAvailability = depthMarketMatches ? event.orderbookAvailability : orderBookMarket?.availability;
   const orderbookAvailabilityStatus = selectedOrderbookAvailability?.status ?? "unavailable";
   const orderbookAvailabilityText =
     orderbookAvailabilityStatus === "ready"
@@ -368,6 +382,8 @@ export function EventDetail({
           ? "Depth unavailable"
           : selectedDepthSource === "orderbook-route"
             ? "Route depth"
+            : selectedDepthSource === "contract-fixture"
+              ? "Fixture depth"
             : "Fallback depth";
   const openOrderBookForMarket = (market: Market) => {
     setOrderBookMarketId(market.id);
@@ -753,22 +769,57 @@ export function EventDetail({
     const selectedTicketLabel = label(locale, orderBookMarket);
     const selectedTicketSelection = orderBookTicketSelection(orderBookMarket, orderBookSelectedOutcome, selectedOutcomeIndex, selectedTicketLabel);
     const selectedIdentityLabel = `selected-market-${orderBookMarket.id} selected-family-${selectedMarketFamily} selected-outcome-${orderBookSelectedOutcome.id} selected-side-${selectedContractSide} selected-market-type-${selectedTicketSelection.marketType} selected-line-${selectedTicketSelection.line ?? "none"} selected-period-${selectedTicketSelection.period ?? "none"}`;
+    const displayModeLabel = orderBookDisplayMode === "decimal" ? "Decimal" : "Cents";
+    const priceHeaderLabel = orderBookDisplayMode === "decimal" ? "Price (USDT)" : "Price";
     return (
-      <View accessibilityLabel={`event-detail-order-book-screen event-detail-order-book-market-${orderBookMarket.id} ${selectedIdentityLabel} orderbook-source-${selectedDepthSource ?? "fallback"} orderbook-status-${depthRouteStatus} orderbook-empty-${depthMarketMatches ? event.orderbookDepthEmptyState ?? "none" : "not-selected"} orderbook-availability-${orderbookAvailabilityStatus} orderbook-market-status-${selectedOrderbookAvailability?.marketStatus ?? "unknown"}`} style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
+      <View accessibilityLabel={`event-detail-order-book-screen event-detail-order-book-market-${orderBookMarket.id} ${selectedIdentityLabel} book-display-mode-${orderBookDisplayMode} orderbook-source-${selectedDepthSource ?? "fallback"} orderbook-status-${depthRouteStatus} orderbook-empty-${depthMarketMatches || hasSelectedMarketDepth ? event.orderbookDepthEmptyState ?? "none" : "not-selected"} orderbook-availability-${orderbookAvailabilityStatus} orderbook-market-status-${selectedOrderbookAvailability?.marketStatus ?? "unknown"}`} style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
         <View style={styles.orderBookHeader}>
           <View>
             <Text style={styles.orderBookTitle}>Order Book</Text>
             <Text style={styles.orderBookSubtitle}>{label(locale, event)} - {label(locale, orderBookMarket)}</Text>
           </View>
-          <Pressable accessibilityLabel="event-detail-order-book-close" onPress={() => setOrderBookVisible(false)} style={styles.orderBookClose} testID="event-detail-order-book-close">
-            <Ionicons name="close" color="#f8fafc" size={22} />
-          </Pressable>
+          <View style={styles.orderBookHeaderActions}>
+            <Pressable
+              accessibilityLabel={`order-book-settings-open book-display-mode-${orderBookDisplayMode} ${selectedIdentityLabel}`}
+              accessibilityState={{ expanded: orderBookSettingsVisible }}
+              onPress={() => setOrderBookSettingsVisible((visible) => !visible)}
+              style={[styles.orderBookClose, orderBookSettingsVisible && styles.orderBookSettingsButtonActive]}
+              testID="order-book-settings-open"
+            >
+              <Ionicons name="options-outline" color="#f8fafc" size={22} />
+            </Pressable>
+            <Pressable accessibilityLabel="event-detail-order-book-close" onPress={() => setOrderBookVisible(false)} style={styles.orderBookClose} testID="event-detail-order-book-close">
+              <Ionicons name="close" color="#f8fafc" size={22} />
+            </Pressable>
+          </View>
         </View>
         <View style={styles.orderBookSummary}>
           <Text style={styles.orderBookSummaryText}>{t.bestBid} {marketDepth(orderBookMarket).bid}</Text>
           <Text style={styles.orderBookSummaryText}>{t.bestAsk} {marketDepth(orderBookMarket).ask}</Text>
           <Text style={styles.orderBookSummaryText}>{t.spread} {marketDepth(orderBookMarket).spread}</Text>
         </View>
+        {orderBookSettingsVisible && (
+          <View
+            accessibilityLabel={`order-book-settings-sheet book-display-mode-${orderBookDisplayMode} ${selectedIdentityLabel}`}
+            style={styles.orderBookSettingsSheet}
+            testID="order-book-settings-sheet"
+          >
+            <View style={styles.orderBookSettingsTextBlock}>
+              <Text style={styles.orderBookSettingsTitle}>Book settings</Text>
+              <Text style={styles.orderBookSettingsSubtitle}>Price display</Text>
+            </View>
+            <Pressable
+              accessibilityLabel={`order-book-display-mode-toggle book-display-mode-${orderBookDisplayMode} decimalize-${orderBookDisplayMode === "decimal" ? "on" : "off"} selected-market-${orderBookMarket.id} selected-outcome-${orderBookSelectedOutcome.id} selected-side-${selectedContractSide}`}
+              accessibilityRole="switch"
+              accessibilityState={{ checked: orderBookDisplayMode === "decimal" }}
+              onPress={() => setOrderBookDisplayMode((mode) => mode === "decimal" ? "cents" : "decimal")}
+              style={[styles.orderBookDisplayToggle, orderBookDisplayMode === "decimal" && styles.orderBookDisplayToggleActive]}
+              testID="order-book-display-mode-toggle"
+            >
+              <Text style={[styles.orderBookDisplayToggleText, orderBookDisplayMode === "decimal" && styles.orderBookDisplayToggleTextActive]}>{displayModeLabel}</Text>
+            </Pressable>
+          </View>
+        )}
         <ScrollView
           accessibilityLabel="order-book-grouped-market-selector"
           horizontal
@@ -842,7 +893,7 @@ export function EventDetail({
         </View>
         <ScrollView style={styles.orderBookScroll} contentContainerStyle={styles.orderBookPad}>
           <View
-            accessibilityLabel={`order-book-outcome-${orderBookSelectedOutcome.id} ${selectedIdentityLabel} ${depthSourceLabel} ${bidLevels.length} bid-levels ${askLevels.length} ask-levels best-bid-${bestBid ? levelProbability(bestBid.price) : "none"} best-ask-${bestAsk ? levelProbability(bestAsk.price) : "none"} Price Shares Value ${bestBid ? formatLevelPrice(bestBid.price) : ""} ${bestAsk ? formatLevelPrice(bestAsk.price) : ""} ${formatSize(bidLevels.reduce((total, level) => total + level.shares, 0))} shares ${formatSize(askLevels.reduce((total, level) => total + level.shares, 0))} shares`}
+            accessibilityLabel={`order-book-outcome-${orderBookSelectedOutcome.id} ${selectedIdentityLabel} book-display-mode-${orderBookDisplayMode} ${depthSourceLabel} ${bidLevels.length} bid-levels ${askLevels.length} ask-levels bid-side-label ask-side-label best-bid-${bestBid ? levelProbability(bestBid.price) : "none"} best-ask-${bestAsk ? levelProbability(bestAsk.price) : "none"} Price Shares Value ${bestBid ? formatLevelPrice(bestBid.price) : ""} ${bestAsk ? formatLevelPrice(bestAsk.price) : ""} ${formatSize(bidLevels.reduce((total, level) => total + level.shares, 0))} shares ${formatSize(askLevels.reduce((total, level) => total + level.shares, 0))} shares`}
             style={styles.orderBookOutcome}
             testID={`order-book-outcome-${orderBookSelectedOutcome.id}`}
           >
@@ -860,15 +911,15 @@ export function EventDetail({
                 </Pressable>
               </View>
             </View>
-            <View accessibilityLabel="order-book-ladder Price Shares Value" style={styles.orderBookLadder} testID="order-book-ladder">
+            <View accessibilityLabel={`order-book-ladder Price Shares Value book-display-mode-${orderBookDisplayMode}`} style={styles.orderBookLadder} testID="order-book-ladder">
               <View style={styles.orderBookLadderHeader}>
-                <Text style={styles.orderBookLadderHeaderText}>Price</Text>
+                <Text style={styles.orderBookLadderHeaderText}>{priceHeaderLabel}</Text>
                 <Text style={styles.orderBookLadderHeaderText}>Shares</Text>
                 <Text style={styles.orderBookLadderHeaderText}>Value</Text>
               </View>
               {visibleAsks.map((level, index) => (
                 <View
-                  accessibilityLabel={`order-book-ask-level-${orderBookSelectedOutcome.id}-${index + 1} ${formatLevelCents(level.price)} ${formatLevelPrice(level.price)} ${formatSize(level.shares)} shares ${formatBookValue(level.total)}`}
+                  accessibilityLabel={`order-book-ask-level-${orderBookSelectedOutcome.id}-${index + 1} ask-side-label book-display-mode-${orderBookDisplayMode} ${formatLevelCents(level.price)} ${formatLevelPrice(level.price)} ${formatSize(level.shares)} shares ${formatBookValue(level.total)}`}
                   key={`ask-${orderBookSelectedOutcome.id}-${level.price}-${index}`}
                   style={[styles.orderBookLadderRow, styles.orderBookAskRow]}
                   testID={`order-book-ask-level-${orderBookSelectedOutcome.id}-${index + 1}`}
@@ -876,7 +927,7 @@ export function EventDetail({
                   <View style={styles.orderBookLadderBarTrack}>
                     <View style={[styles.orderBookAskBar, { width: `${Math.max(10, (level.shares / largest) * 100)}%` }]} />
                   </View>
-                  <Text style={[styles.orderBookLadderPrice, styles.orderBookAskPrice]}>{formatLevelCents(level.price)}</Text>
+                  <Text style={[styles.orderBookLadderPrice, styles.orderBookAskPrice]}>{formatBookDisplayPrice(level.price, orderBookDisplayMode)}</Text>
                   <Text style={styles.orderBookLadderCell}>{formatSize(level.shares)}</Text>
                   <Text style={styles.orderBookLadderValue}>{formatBookValue(level.total)}</Text>
                 </View>
@@ -888,7 +939,7 @@ export function EventDetail({
               </View>
               {visibleBids.map((level, index) => (
                 <View
-                  accessibilityLabel={`order-book-bid-level-${orderBookSelectedOutcome.id}-${index + 1} ${formatLevelCents(level.price)} ${formatLevelPrice(level.price)} ${formatSize(level.shares)} shares ${formatBookValue(level.total)}`}
+                  accessibilityLabel={`order-book-bid-level-${orderBookSelectedOutcome.id}-${index + 1} bid-side-label book-display-mode-${orderBookDisplayMode} ${formatLevelCents(level.price)} ${formatLevelPrice(level.price)} ${formatSize(level.shares)} shares ${formatBookValue(level.total)}`}
                   key={`bid-${orderBookSelectedOutcome.id}-${level.price}-${index}`}
                   style={[styles.orderBookLadderRow, styles.orderBookBidRow]}
                   testID={`order-book-bid-level-${orderBookSelectedOutcome.id}-${index + 1}`}
@@ -896,7 +947,7 @@ export function EventDetail({
                   <View style={styles.orderBookLadderBarTrack}>
                     <View style={[styles.orderBookBidBar, { width: `${Math.max(10, (level.shares / largest) * 100)}%` }]} />
                   </View>
-                  <Text style={[styles.orderBookLadderPrice, styles.orderBookBidPrice]}>{formatLevelCents(level.price)}</Text>
+                  <Text style={[styles.orderBookLadderPrice, styles.orderBookBidPrice]}>{formatBookDisplayPrice(level.price, orderBookDisplayMode)}</Text>
                   <Text style={styles.orderBookLadderCell}>{formatSize(level.shares)}</Text>
                   <Text style={styles.orderBookLadderValue}>{formatBookValue(level.total)}</Text>
                 </View>
@@ -1981,9 +2032,19 @@ const styles = StyleSheet.create({
   orderBookHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12, paddingHorizontal: 16, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: "#172033" },
   orderBookTitle: { color: "#f8fafc", fontSize: 22, fontWeight: "900" },
   orderBookSubtitle: { color: "#94a3b8", fontSize: 12, fontWeight: "800", marginTop: 4 },
+  orderBookHeaderActions: { flexDirection: "row", alignItems: "center", gap: 8 },
   orderBookClose: { width: 40, height: 40, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247" },
+  orderBookSettingsButtonActive: { backgroundColor: "#172033", borderColor: "#38bdf8" },
   orderBookSummary: { flexDirection: "row", gap: 8, paddingHorizontal: 16, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "#172033" },
   orderBookSummaryText: { flex: 1, color: "#cbd5e1", fontSize: 11, fontWeight: "900" },
+  orderBookSettingsSheet: { minHeight: 66, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12, paddingHorizontal: 16, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "#172033", backgroundColor: "#0b1220" },
+  orderBookSettingsTextBlock: { flex: 1, minWidth: 0 },
+  orderBookSettingsTitle: { color: "#f8fafc", fontSize: 15, fontWeight: "900" },
+  orderBookSettingsSubtitle: { color: "#94a3b8", fontSize: 12, fontWeight: "800", marginTop: 3 },
+  orderBookDisplayToggle: { minWidth: 92, minHeight: 40, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#111827", borderWidth: 1, borderColor: "#293548", paddingHorizontal: 14 },
+  orderBookDisplayToggleActive: { backgroundColor: "#dbeafe", borderColor: "#f8fafc" },
+  orderBookDisplayToggleText: { color: "#dbeafe", fontSize: 13, fontWeight: "900" },
+  orderBookDisplayToggleTextActive: { color: "#0b1220" },
   orderBookMarketSelector: { maxHeight: 132, borderBottomWidth: 1, borderBottomColor: "#172033" },
   orderBookMarketSelectorPad: { paddingHorizontal: 16, paddingVertical: 10, gap: 10 },
   orderBookMarketGroup: { width: 178, gap: 7 },

@@ -2,6 +2,65 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle DU-B - Visible Book Settings And Selector Carry-Through
+
+Feature/page worked on:
+
+- PM-GAP-075 visible mobile live event Book/orderbook parity increment.
+- Added a Book price display setting that toggles ladder prices between cents and decimal USDT while preserving selected market/outcome/side.
+- Added deterministic backend-shaped Mexico/Ecuador fixture markets for Moneyline, Totals, and Spread selector proof.
+
+Frontend/harness components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/scripts/smoke.ps1`
+- `mobile/package.json`
+- Proof artifacts:
+  - `docs/mobile/screenshots/cycle-DU-B-orderbook-settings/`
+  - `docs/mobile/harness/cycle-DU-B-orderbook-settings/`
+
+Important functions/interactions touched:
+
+- `renderOrderBook()` now exposes `book-display-mode-cents|decimal`, `order-book-settings-open`, `order-book-settings-sheet`, and `order-book-display-mode-toggle`.
+- Ladder row rendering uses `formatBookDisplayPrice()` so the same book levels visibly switch from `41c`/`34c` to `0.41 USDT`/`0.34 USDT`.
+- Orderbook state markers now distinguish route depth, deterministic contract fixture depth, fallback depth, availability, market status, bid/ask side labels, Price/Shares/Value, spread, selected market id/family/type/period/line/side/outcome, and ticket identity.
+- The Book selector carries Totals `line=2.5 period=regulation` and Spread `line=1.5 period=regulation` into the selected orderbook context and spread ticket.
+
+User interactions supported:
+
+- Open Book from the event detail page.
+- Switch Yes/No outcome tabs without changing selected market.
+- Select Totals and Spread markets from the grouped Book selector.
+- Open Book settings and toggle price display from Cents to Decimal without resetting selected Spread market, outcome, or side.
+- Tap the selected Spread Book Buy action and see the ticket retain the provider-shaped market/source/condition/token identity.
+
+State transitions:
+
+- Moneyline Book opens as `selected-market-mexico-ecuador-winner`, `book-display-mode-cents`, `orderbook-status-ready`.
+- Outcome tab changes `selected-outcome-mexico selected-side-yes` to `selected-outcome-ecuador selected-side-no`.
+- Selector changes to Totals with `selected-market-type-totals selected-line-2.5 selected-period-regulation`.
+- Selector changes to Spread with `selected-market-type-spread selected-line-1.5 selected-period-regulation`.
+- Settings toggle changes `book-display-mode-cents decimalize-off` to `book-display-mode-decimal decimalize-on` while selected Spread identity remains stable.
+
+Verified:
+
+- `npm run typecheck` from `mobile/`
+- `npx vitest --config vitest.mobile.config.mts run mobile/src/__tests__/eventDetailLineTicketService.test.ts mobile/src/__tests__/marketDepthService.test.ts mobile/src/__tests__/worldCupAdapter.test.ts`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBookInteractions -Port 8244 -OutputDir docs/mobile/screenshots/cycle-DU-B-orderbook-settings -HierarchyOutputDir docs/mobile/harness/cycle-DU-B-orderbook-settings`
+
+Proof notes:
+
+- `cycle-DU-B-holiwyn-orderbook-settings-cents.xml` shows the settings sheet before state with `book-display-mode-cents`, `decimalize-off`, `selected-market-mexico-ecuador-spread`, `selected-outcome-yes`, and `selected-side-yes`.
+- `cycle-DU-B-holiwyn-orderbook-settings-decimal.xml` shows the after state with `book-display-mode-decimal`, `decimalize-on`, the same selected identity, and decimal ladder prices.
+- `cycle-DU-B-holiwyn-orderbook-spread-ticket.xml` shows ticket carry-through for `Mexico -1.5 spread`, `provider-source-polymarket-fixture`, `provider-market-gamma-mexico-ecuador-spread-15`, `provider-condition-condition-mexico-ecuador-spread-15`, and `provider-token-token-spread-yes-15`.
+
+Known limitations:
+
+- PM-GAP-075 remains partial.
+- Provider-backed ready UI proof remains pending integration with Agent A backend route changes in this worktree; DU-B proves the visible UI against deterministic backend-shaped fixture data, not random display-only data.
+- The setting is a focused Polymarket-equivalent price display toggle, not a complete clone of every Polymarket Book settings option.
+
 ## Cycle DT-A - Provider Ready Orderbook Depth Proof
 
 Feature/page worked on:
