@@ -2,6 +2,55 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle BB - Selected Team Totals Ready Depth
+
+Feature/page worked on:
+
+- PM-GAP-067 selected Team Totals orderbook depth for the live game page.
+- Backend/mobile market-type alias for `team_total_goals`.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/__tests__/worldCupAdapter.test.ts`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/package.json`
+
+Backend/components touched:
+
+- `package.json`
+
+Important functions/services touched:
+
+- `asMarketContractType()` now maps backend `team_total_goals` to the mobile `team-total` contract.
+- `matchingBackendLineMarket()` supports Team Totals aliases and attaches the reserved compact backend market to the Team Totals game-line group.
+- `mobile:live-team-totals-orderbook-depth-seed` seeds deterministic backend `Order` rows for Team Totals market `408ffb79-3492-4fd0-b31b-87a26f8b9dd5`.
+- `smoke:tablet:server-live-team-totals-order-book` proves the Team Totals Book control and route-backed ready depth on the Samsung tablet.
+
+User interactions supported:
+
+- User scrolls to Full Game Team Total Goals, taps Book, and sees the selected backend Team Totals order book with bid/ask depth.
+
+State transitions:
+
+- Compact live-detail route includes Team Totals market -> mobile adapter normalizes `team_total_goals` to `team-total` -> EventDetail renders `event-detail-open-order-book-team-total-goals` -> Team Totals Book tap calls `/api/orderbook/:marketId/book?maxLevels=24` -> overlay shows `orderbook-source-orderbook-route orderbook-status-ready orderbook-empty-none`.
+
+Known limitations:
+
+- Team Totals ready depth uses deterministic seeded proof rows, not provider-owned live liquidity.
+- Halves selected orderbook proof and provider freshness/stale/suspended states remain open PM-GAP-067 work.
+
+Verification:
+
+- `cmd /c npm.cmd run mobile:live-team-totals-orderbook-depth-seed`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-event-detail.test.ts src/__tests__/mobile-live-orderbook-depth-seeding.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/marketDepthService.test.ts mobile/src/__tests__/worldCupAdapter.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:server-live-team-totals-order-book`
+
 ## Cycle BA - Compact Line Group Coverage And Totals Ready Depth
 
 Feature/page worked on:

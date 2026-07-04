@@ -83,6 +83,7 @@
     "mobile:live-orderbook-depth-seed": "tsx scripts/seed_mobile_live_orderbook_depth.ts --apply --summaryPath=docs/mobile/harness/cycle-current-mobile-live-orderbook-depth-seed.json",
     "mobile:live-spread-orderbook-depth-seed": "tsx scripts/seed_mobile_live_orderbook_depth.ts --apply --eventSlug=world-cup-2026-curacao-vs-cote-divoire-2026-06-25 --marketType=spread --line=1.5 --summaryPath=docs/mobile/harness/cycle-current-mobile-live-spread-orderbook-depth-seed.json",
     "mobile:live-totals-orderbook-depth-seed": "tsx scripts/seed_mobile_live_orderbook_depth.ts --apply --eventSlug=world-cup-2026-curacao-vs-cote-divoire-2026-06-25 --marketType=total_goals --line=2.5 --summaryPath=docs/mobile/harness/cycle-current-mobile-live-totals-orderbook-depth-seed.json",
+    "mobile:live-team-totals-orderbook-depth-seed": "tsx scripts/seed_mobile_live_orderbook_depth.ts --apply --eventSlug=world-cup-2026-curacao-vs-cote-divoire-2026-06-25 --marketType=team_total_goals --line=1.5 --summaryPath=docs/mobile/harness/cycle-current-mobile-live-team-totals-orderbook-depth-seed.json",
     "mobile:definition-of-done-sweep": "tsx scripts/mobile_definition_of_done_sweep.ts",
     "mobile:final-qa-review-signoff": "tsx scripts/mobile_final_qa_review_signoff.ts",
     "mobile:android-apk-artifact-readiness": "powershell -ExecutionPolicy Bypass -File mobile/scripts/check-android-apk-artifact-readiness.ps1",

@@ -2,6 +2,37 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle BB - Selected Team Totals Ready Depth
+
+Fields now provided or wired:
+
+- Backend `team_total_goals` markets now normalize to mobile `team-total` markets.
+- Team Totals group now exposes a backend-selected Book control when the compact live-detail route provides the market.
+- Samsung tablet proof confirms Team Totals market `408ffb79-3492-4fd0-b31b-87a26f8b9dd5` reaches `orderbook-status-ready` through the public orderbook route.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Provider-owned live liquidity for all Team Totals lines and both teams, not only deterministic proof rows for one home-team line.
+- Provider freshness, delayed, suspended, unavailable, and stale fields per line market.
+- Selected Halves orderbook contract/proof if Polymarket exposes half-specific books for the chosen reference.
+
+Schema mismatch:
+
+- Backend type `team_total_goals` required an adapter alias to mobile `team-total`. The app now handles it, but backend/mobile canonical market-type documentation should be tightened.
+
+Route mismatch:
+
+- `/api/orderbook/:marketId/book` is sufficient for selected Team Totals depth.
+- Compact route still carries representative markets rather than every line for every team.
+
+Temporary mock/static data:
+
+- Team Totals proof depth is seeded into real backend `Order` rows with stable `marketId` and `outcomeId`; it is not arbitrary local UI data.
+
+Future migration concern:
+
+- Replace local seeding with provider/liquidity ingestion before marking PM-GAP-067 backend parity complete.
+
 ## Cycle BA - Compact Line Group Coverage And Totals Ready Depth
 
 Fields now provided or wired:

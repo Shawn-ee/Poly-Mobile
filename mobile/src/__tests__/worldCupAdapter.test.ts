@@ -89,4 +89,33 @@ describe("world cup adapter", () => {
       outcomes: [{ id: "aus", side: "home", bestBid: 0.58, bestAsk: 0.62 }],
     });
   });
+
+  test("maps backend team total goals market type to the mobile team-total contract", () => {
+    const normalized = normalizeMarket({
+      ...baseMarket,
+      title: "Curacao goals 1.5",
+      marketGroupKey: "team-totals",
+      marketGroupTitle: "Team totals",
+      marketType: "team_total_goals",
+      line: "1.5",
+      outcomes: [
+        {
+          id: "over",
+          name: "Over 1.5",
+          label: "Over 1.5",
+          side: "over",
+          price: 0.59,
+          bestBid: 0.57,
+          bestAsk: 0.65,
+          isTradable: true,
+        },
+      ],
+    });
+
+    expect(normalized).toMatchObject({
+      marketType: "team-total",
+      line: "1.5",
+      outcomes: [{ id: "over", side: "over", bestBid: 0.57, bestAsk: 0.65 }],
+    });
+  });
 });
