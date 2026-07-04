@@ -46,6 +46,8 @@ The mobile ticket review also derives its visible order preview from the same id
 
 Local mock mode uses the same contract-shaped `selection` payload as server mode. Cycle FN proves the selected spread line identity survives `TradeTicket -> submitTicketOrder -> latestOrder -> Portfolio position/activity` without requiring backend routes.
 
+Cycle FO changes only the ticket presentation. It does not change the order request body or route expectations; `selection`, `contractSide`, market, outcome, price, and size are still the contract fields needed by `POST /api/orders`.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
