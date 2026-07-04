@@ -1641,6 +1641,43 @@ Decision:
 - Remaining P1/P2 gaps: real-provider selector breadth for all line families, full settings sheet parity, phone visual density, and selector identity through order/portfolio/history.
 - Next cycle required: yes for broader live-event structural parity, but not to re-prove this focused selector/state gate unless regression appears.
 
+## Cycle DX Line Lifecycle Audit Gate
+
+Result: Pass for the focused PM-GAP-074 line lifecycle gate.
+
+Lead Agent target: prove selected line-market identity through ticket, order, Portfolio, and history/activity instead of stopping at the ticket.
+
+Reference Audit Agent: Agent C reused DQ-C line selector/ticket reference evidence and created `docs/mobile/audits/cycle-dx-c-line-lifecycle-gate.md`.
+
+Implementation Agents:
+
+- Agent A backend lifecycle: order/portfolio/history contract proof.
+- Agent B visible mobile lifecycle: Samsung tablet line selection -> ticket -> order -> Portfolio/open-order proof.
+
+Evidence:
+
+- Backend proof: `docs/mobile/harness/cycle-DX-A-line-order-portfolio-history.json`
+- Tablet proof: `docs/mobile/harness/cycle-DX-B-line-lifecycle/cycle-DX-B-holiwyn-line-lifecycle-proof.json`
+- Tablet screenshots/XML: `docs/mobile/screenshots/cycle-DX-B-line-lifecycle/`, `docs/mobile/harness/cycle-DX-B-line-lifecycle/`
+- Gate criteria: `docs/mobile/audits/cycle-dx-c-line-lifecycle-gate.md`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| DX-P0-01 | P0 | Pass | Backend proof preserves provider-shaped Spread identity through order request and order response. | Keep DX-A proof script as regression. |
+| DX-P0-02 | P0 | Pass | Backend proof preserves the same identity in portfolio open order and canceled activity. | Keep portfolio route tests. |
+| DX-P0-03 | P0 | Pass | Backend proof preserves the same identity in filled position and recent trade activity. | Normalize immutable order/trade selection later as production hardening. |
+| DX-P0-04 | P0 | Pass | Tablet proof preserves `MEX -2.5 1H`, Spread, line `2.5`, period `1st Half`, buy/yes side from row to ticket ready state. | Keep focused smoke. |
+| DX-P0-05 | P0 | Pass | Tablet proof shows after-order Portfolio activity/order markers and open-order markers without moneyline fallback. | Keep visible markers in Portfolio/TradeTicket. |
+| DX-P0-06 | P0 | Pass with scoped caveat | Backend proof is provider-shaped; tablet proof is fake-token/deterministic UI. The two together close the focused lifecycle gate, while exact real-provider visible lifecycle remains P1. | Repeat on real provider-backed visible line market when available. |
+
+Decision:
+
+- Pass/fail: Pass for focused line lifecycle parity.
+- Unresolved P0 gaps: 0 for this focused PM-GAP-074 gate.
+- Remaining P1/P2 gaps: visible lifecycle on real provider-backed line market, official amount/swipe confirmation recapture, every line family, and production-grade immutable selection storage.
+
 Use this template for every feature gate:
 
 ```md

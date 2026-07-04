@@ -2,15 +2,15 @@
   "pass": true,
   "proof": "DX-A selected World Cup Spread line lifecycle preserves identity through order request, order response, open order, canceled activity, filled position, and recent trade activity.",
   "user": {
-    "id": "548befb9-51d1-4d2f-9c9e-dc62d0777045",
-    "username": "holiwyn_dx_a_line_lifecycle_user_1d29abb1"
+    "id": "67a99087-3676-4c68-a1a2-d9499432f76b",
+    "username": "holiwyn_dx_a_line_lifecycle_user_45976b33"
   },
   "credential": {
-    "keyId": "pk_live_511d12626188db88"
+    "keyId": "pk_live_1491588b24ec7161"
   },
   "expectedIdentity": {
-    "marketId": "23dc2df6-38b7-4d9f-a15e-e5307898fda1",
-    "outcomeId": "1fcacbc4-163a-4d5f-9f56-2e7e0027fc2c",
+    "marketId": "5e27253d-69be-4829-b0e7-c2690ca5523d",
+    "outcomeId": "4cfe7184-96da-4dd4-ad80-ed7feccc1b80",
     "marketType": "spread",
     "marketGroupId": "spreads",
     "line": "-1.5",
@@ -19,13 +19,13 @@
     "displayLabel": "Japan -1.5 1H",
     "contractSide": "yes",
     "referenceSource": "polymarket",
-    "externalMarketId": "gamma-dx-a-japan-morocco-spread-1h-91463a9f",
-    "conditionId": "condition-dx-a-japan-morocco-spread-1h-91463a9f",
-    "referenceTokenId": "token-dx-a-japan-spread-yes-91463a9f"
+    "externalMarketId": "gamma-dx-a-japan-morocco-spread-1h-07e338f8",
+    "conditionId": "condition-dx-a-japan-morocco-spread-1h-07e338f8",
+    "referenceTokenId": "token-dx-a-japan-spread-yes-07e338f8"
   },
   "orderRequest": {
-    "marketId": "23dc2df6-38b7-4d9f-a15e-e5307898fda1",
-    "outcomeId": "1fcacbc4-163a-4d5f-9f56-2e7e0027fc2c",
+    "marketId": "5e27253d-69be-4829-b0e7-c2690ca5523d",
+    "outcomeId": "4cfe7184-96da-4dd4-ad80-ed7feccc1b80",
     "marketType": "spread",
     "marketGroupId": "spreads",
     "line": "-1.5",
@@ -34,16 +34,16 @@
     "displayLabel": "Japan -1.5 1H",
     "contractSide": "yes",
     "referenceSource": "polymarket",
-    "externalMarketId": "gamma-dx-a-japan-morocco-spread-1h-91463a9f",
-    "conditionId": "condition-dx-a-japan-morocco-spread-1h-91463a9f",
-    "referenceTokenId": "token-dx-a-japan-spread-yes-91463a9f"
+    "externalMarketId": "gamma-dx-a-japan-morocco-spread-1h-07e338f8",
+    "conditionId": "condition-dx-a-japan-morocco-spread-1h-07e338f8",
+    "referenceTokenId": "token-dx-a-japan-spread-yes-07e338f8"
   },
   "orderResponse": {
-    "id": "19c53f26-2c36-4bf6-87cd-6eb12043cb08",
+    "id": "c0592d7f-a393-4d48-82f7-295468fa6d7b",
     "status": "OPEN",
     "selection": {
-      "marketId": "23dc2df6-38b7-4d9f-a15e-e5307898fda1",
-      "outcomeId": "1fcacbc4-163a-4d5f-9f56-2e7e0027fc2c",
+      "marketId": "5e27253d-69be-4829-b0e7-c2690ca5523d",
+      "outcomeId": "4cfe7184-96da-4dd4-ad80-ed7feccc1b80",
       "marketType": "spread",
       "marketGroupId": "spreads",
       "line": "-1.5",
@@ -52,17 +52,17 @@
       "displayLabel": "Japan -1.5 1H",
       "contractSide": "yes",
       "referenceSource": "polymarket",
-      "externalMarketId": "gamma-dx-a-japan-morocco-spread-1h-91463a9f",
-      "conditionId": "condition-dx-a-japan-morocco-spread-1h-91463a9f",
-      "referenceTokenId": "token-dx-a-japan-spread-yes-91463a9f"
+      "externalMarketId": "gamma-dx-a-japan-morocco-spread-1h-07e338f8",
+      "conditionId": "condition-dx-a-japan-morocco-spread-1h-07e338f8",
+      "referenceTokenId": "token-dx-a-japan-spread-yes-07e338f8"
     }
   },
   "portfolioOpenOrder": {
-    "id": "19c53f26-2c36-4bf6-87cd-6eb12043cb08",
+    "id": "c0592d7f-a393-4d48-82f7-295468fa6d7b",
     "status": "OPEN",
     "selection": {
-      "marketId": "23dc2df6-38b7-4d9f-a15e-e5307898fda1",
-      "outcomeId": "1fcacbc4-163a-4d5f-9f56-2e7e0027fc2c",
+      "marketId": "5e27253d-69be-4829-b0e7-c2690ca5523d",
+      "outcomeId": "4cfe7184-96da-4dd4-ad80-ed7feccc1b80",
       "marketType": "spread",
       "marketGroupId": "spreads",
       "line": "-1.5",
@@ -71,17 +71,17 @@
       "displayLabel": "Japan -1.5 1H",
       "contractSide": "yes",
       "referenceSource": "polymarket",
-      "externalMarketId": "gamma-dx-a-japan-morocco-spread-1h-91463a9f",
-      "conditionId": "condition-dx-a-japan-morocco-spread-1h-91463a9f",
-      "referenceTokenId": "token-dx-a-japan-spread-yes-91463a9f"
+      "externalMarketId": "gamma-dx-a-japan-morocco-spread-1h-07e338f8",
+      "conditionId": "condition-dx-a-japan-morocco-spread-1h-07e338f8",
+      "referenceTokenId": "token-dx-a-japan-spread-yes-07e338f8"
     }
   },
   "canceledActivity": {
-    "id": "19c53f26-2c36-4bf6-87cd-6eb12043cb08",
+    "id": "c0592d7f-a393-4d48-82f7-295468fa6d7b",
     "status": "CANCELED",
     "selection": {
-      "marketId": "23dc2df6-38b7-4d9f-a15e-e5307898fda1",
-      "outcomeId": "1fcacbc4-163a-4d5f-9f56-2e7e0027fc2c",
+      "marketId": "5e27253d-69be-4829-b0e7-c2690ca5523d",
+      "outcomeId": "4cfe7184-96da-4dd4-ad80-ed7feccc1b80",
       "marketType": "spread",
       "marketGroupId": "spreads",
       "line": "-1.5",
@@ -90,18 +90,18 @@
       "displayLabel": "Japan -1.5 1H",
       "contractSide": "yes",
       "referenceSource": "polymarket",
-      "externalMarketId": "gamma-dx-a-japan-morocco-spread-1h-91463a9f",
-      "conditionId": "condition-dx-a-japan-morocco-spread-1h-91463a9f",
-      "referenceTokenId": "token-dx-a-japan-spread-yes-91463a9f"
+      "externalMarketId": "gamma-dx-a-japan-morocco-spread-1h-07e338f8",
+      "conditionId": "condition-dx-a-japan-morocco-spread-1h-07e338f8",
+      "referenceTokenId": "token-dx-a-japan-spread-yes-07e338f8"
     }
   },
   "fillOrderResponse": {
-    "id": "09637d1e-4bdf-4fc1-a21a-b63920f5c304",
+    "id": "93c96eb2-4bf5-4740-926f-9ac3bef7b213",
     "status": "FILLED",
     "fillCount": 1,
     "selection": {
-      "marketId": "23dc2df6-38b7-4d9f-a15e-e5307898fda1",
-      "outcomeId": "1fcacbc4-163a-4d5f-9f56-2e7e0027fc2c",
+      "marketId": "5e27253d-69be-4829-b0e7-c2690ca5523d",
+      "outcomeId": "4cfe7184-96da-4dd4-ad80-ed7feccc1b80",
       "marketType": "spread",
       "marketGroupId": "spreads",
       "line": "-1.5",
@@ -110,19 +110,19 @@
       "displayLabel": "Japan -1.5 1H",
       "contractSide": "yes",
       "referenceSource": "polymarket",
-      "externalMarketId": "gamma-dx-a-japan-morocco-spread-1h-91463a9f",
-      "conditionId": "condition-dx-a-japan-morocco-spread-1h-91463a9f",
-      "referenceTokenId": "token-dx-a-japan-spread-yes-91463a9f"
+      "externalMarketId": "gamma-dx-a-japan-morocco-spread-1h-07e338f8",
+      "conditionId": "condition-dx-a-japan-morocco-spread-1h-07e338f8",
+      "referenceTokenId": "token-dx-a-japan-spread-yes-07e338f8"
     }
   },
   "portfolioPosition": {
-    "marketId": "23dc2df6-38b7-4d9f-a15e-e5307898fda1",
-    "outcomeId": "1fcacbc4-163a-4d5f-9f56-2e7e0027fc2c",
+    "marketId": "5e27253d-69be-4829-b0e7-c2690ca5523d",
+    "outcomeId": "4cfe7184-96da-4dd4-ad80-ed7feccc1b80",
     "shares": 12,
     "avgCost": 0.42,
     "selection": {
-      "marketId": "23dc2df6-38b7-4d9f-a15e-e5307898fda1",
-      "outcomeId": "1fcacbc4-163a-4d5f-9f56-2e7e0027fc2c",
+      "marketId": "5e27253d-69be-4829-b0e7-c2690ca5523d",
+      "outcomeId": "4cfe7184-96da-4dd4-ad80-ed7feccc1b80",
       "marketType": "spread",
       "marketGroupId": "spreads",
       "line": "-1.5",
@@ -131,19 +131,19 @@
       "displayLabel": "Japan -1.5 1H",
       "contractSide": "yes",
       "referenceSource": "polymarket",
-      "externalMarketId": "gamma-dx-a-japan-morocco-spread-1h-91463a9f",
-      "conditionId": "condition-dx-a-japan-morocco-spread-1h-91463a9f",
-      "referenceTokenId": "token-dx-a-japan-spread-yes-91463a9f"
+      "externalMarketId": "gamma-dx-a-japan-morocco-spread-1h-07e338f8",
+      "conditionId": "condition-dx-a-japan-morocco-spread-1h-07e338f8",
+      "referenceTokenId": "token-dx-a-japan-spread-yes-07e338f8"
     }
   },
   "recentActivity": {
-    "id": "1a2c794a-8362-40d8-ba6b-b916f5c0e4df",
+    "id": "7b2f3daa-b8ad-47ac-85d9-1dd8f7ef941b",
     "side": "BUY",
     "shares": 12,
     "cost": 5.04,
     "selection": {
-      "marketId": "23dc2df6-38b7-4d9f-a15e-e5307898fda1",
-      "outcomeId": "1fcacbc4-163a-4d5f-9f56-2e7e0027fc2c",
+      "marketId": "5e27253d-69be-4829-b0e7-c2690ca5523d",
+      "outcomeId": "4cfe7184-96da-4dd4-ad80-ed7feccc1b80",
       "marketType": "spread",
       "marketGroupId": "spreads",
       "line": "-1.5",
@@ -152,9 +152,9 @@
       "displayLabel": "Japan -1.5 1H",
       "contractSide": "yes",
       "referenceSource": "polymarket",
-      "externalMarketId": "gamma-dx-a-japan-morocco-spread-1h-91463a9f",
-      "conditionId": "condition-dx-a-japan-morocco-spread-1h-91463a9f",
-      "referenceTokenId": "token-dx-a-japan-spread-yes-91463a9f"
+      "externalMarketId": "gamma-dx-a-japan-morocco-spread-1h-07e338f8",
+      "conditionId": "condition-dx-a-japan-morocco-spread-1h-07e338f8",
+      "referenceTokenId": "token-dx-a-japan-spread-yes-07e338f8"
     }
   },
   "counts": {
