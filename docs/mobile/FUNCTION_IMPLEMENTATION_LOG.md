@@ -2,6 +2,54 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CH - Batched Live Market Depth Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 provider-wide/batched live market depth for the live event detail page.
+- Re-scoped from live stats after the S23 Polymarket reference showed the current game detail focuses on chart, chat, outcome buttons, and Game Lines rather than a separate soccer stats tab.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+
+Important functions/services touched:
+
+- `serializeMobileLiveEventDetail()` now builds public orderbook snapshots for every compact visible market, not only the primary market.
+- Compact markets now carry backend-shaped `liquidity`, `orderbookDepth[]`, `outcomes[].bestBid`, `bestAsk`, `bestBidSize`, and `bestAskSize` when route depth exists.
+- The route contract now reports `batchedOrderbookDepthSource` and `batchedOrderbookDepthMarketCount`.
+- EventDetail shows an auditable `Route depth` chip on backend-backed market groups with batched depth.
+
+User interactions supported:
+
+- User can scroll the live game detail and see that `2nd Half Winner` has server-batched route depth before opening its Book; tapping Book still opens the selected second-half orderbook with route-backed depth.
+
+State transitions:
+
+- Compact live-detail route selects visible markets -> batches `/api/orderbook` snapshot generation per market -> serializes each market's depth/quote fields -> mobile adapter normalizes the market -> EventDetail marks the row as `market-depth-batched` -> selected Book opens the same market's full route-backed orderbook.
+
+Known limitations:
+
+- Batched depth currently comes from deterministic local proof orders in real backend tables; provider-owned liquidity ingestion is still required for production parity.
+- Only markets with seeded/open orders return non-empty batched depth; production batching/prefetch policy still needs provider-scale performance tuning.
+
+Verification:
+
+- S23 Polymarket reference capture: `docs/mobile/reference/screenshots/cycle-CH-polymarket-reference.png`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-event-detail.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run mobile:live-halves-markets-seed`
+- `cmd /c npm.cmd run mobile:live-second-half-orderbook-depth-seed`
+- Direct route probe saved to `docs/mobile/harness/cycle-current-mobile-live-batched-orderbook-depth-probe.json`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+
 ## Cycle CG - Second-Half Orderbook Depth Proof
 
 Feature/page worked on:
