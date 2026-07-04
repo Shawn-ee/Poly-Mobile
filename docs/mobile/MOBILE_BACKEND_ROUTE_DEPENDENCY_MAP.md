@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle EQ - Local MVP Sell Flow
+
+Cycle EQ changes mobile ticket identity and proof coverage, not backend schema/routes:
+
+- Android proof: `docs/mobile/harness/cycle-EQ-local-mvp-sell-flow/cycle-EQ-local-mvp-trade-flow-proof.json`.
+- Visible Book/orderbook controls remain hidden by default and debug/internal via `EXPO_PUBLIC_SHOW_ORDERBOOK=1`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Default local MVP simple Sell ticket | No new endpoint; fixture proof exercises existing mobile fake-token trading state and selected-ticket/portfolio mappers | N/A for EQ proof | N/A for EQ proof | Ticket submit uses existing fake-token order shape with selected spread line identity, `side=sell`, and `contractSide=no` | Mobile consumes the same selection envelope in ticket, latest order, activity, and position rows: market family/type, line, period, side, contract side, display label, order status, and fake-token activity text | Future backend route remains existing `Event`, `Market`, `Outcome`, `Order`, `Position`, `Trade`, and selection snapshot fields; no new schema | Deterministic line fixture is accepted only for local UI proof and is shaped like backend selection data, not arbitrary display-only strings | P1: repeat Buy/Sell simple-ticket flow with real provider-backed spreads, totals, and team totals. Production backend order route should preserve the same `side` plus `contractSide` envelope into portfolio/history. |
+
 ## Cycle EP - Local MVP Trade Flow Steering
 
 Cycle EP changes the default mobile surface, not backend schema/routes:

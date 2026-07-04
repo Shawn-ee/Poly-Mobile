@@ -20,9 +20,11 @@ Current implementation:
 - `mobile/src/components/EventDetail.tsx` hides the top Book icon, chart Book action, market Book actions, inline Order Book tab, technical route-depth labels, and the orderbook overlay unless debug mode is enabled.
 - Event detail defaults the line detail area to Graph.
 - Samsung tablet proof passed for the selected default Buy path with `orderbookDebug=unset`: `docs/mobile/harness/cycle-EP-local-mvp-trade-flow/cycle-EP-local-mvp-trade-flow-proof.json`.
+- Samsung tablet proof passed for the selected default Sell path with `orderbookDebug=unset`: `docs/mobile/harness/cycle-EQ-local-mvp-sell-flow/cycle-EQ-local-mvp-trade-flow-proof.json`.
+- `mobile/src/components/TradeTicket.tsx` now updates ticket identity metadata when the user switches from Buy/Yes to Sell/No, so the auditable contract side matches the visible ticket and Portfolio order.
 
 Next focus:
-- Continue Local MVP user-flow breadth instead of orderbook breadth: Sell-side simple ticket, provider-backed spreads/totals/team totals when available, and loading/stale/unavailable states that keep users in the retail ticket flow.
+- Continue Local MVP user-flow breadth instead of orderbook breadth: provider-backed spreads/totals/team totals when available, and loading/stale/unavailable states that keep users in the retail ticket flow.
 
 ## Heartbeat: Route-Backed Live Detail Cycles EL-EN
 

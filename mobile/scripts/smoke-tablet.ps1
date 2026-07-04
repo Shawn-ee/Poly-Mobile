@@ -44,7 +44,8 @@ param(
   [switch]$FutureListTrade,
   [switch]$FutureListBuyNo,
   [switch]$SearchSort,
-  [switch]$LocalMvpTradeFlow
+  [switch]$LocalMvpTradeFlow,
+  [switch]$LocalMvpSellFlow
 )
 
 $ErrorActionPreference = "Stop"
@@ -84,7 +85,9 @@ Write-Host "Tablet smoke target: $Device"
 Write-Host "Expo host: $resolvedExpoHost"
 Write-Host "Expo port: $Port"
 
-if ($LocalMvpTradeFlow) {
+if ($LocalMvpSellFlow) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpSellFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($LocalMvpTradeFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpTradeFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EventDetailTrade) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailTrade -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir

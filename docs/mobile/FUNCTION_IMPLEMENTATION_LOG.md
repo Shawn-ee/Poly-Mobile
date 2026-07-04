@@ -2,6 +2,43 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle EQ - Local MVP Sell Flow
+
+Feature/page worked on:
+
+- Proved the default Local MVP Sell path with visible orderbook hidden.
+- Fixed trade-ticket identity metadata so switching from Buy/Yes to Sell/No updates the auditable selected contract side before submit.
+
+Frontend components/functions touched:
+
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+User interactions supported:
+
+- Open event detail, select Spread `2.5` / `1st Half`, open the simple ticket, switch to Sell/No, enter `$25`, submit `Swipe up to sell`, then review Portfolio/latest order/activity/position.
+- The selected line remains auditable as Spread, `2.5`, `1st Half`, `contract-side=no`, and `portfolio-side-sell`.
+- Default user UI still hides visible Book/orderbook controls unless `EXPO_PUBLIC_SHOW_ORDERBOOK=1`.
+
+State transitions:
+
+- Initial ticket opens as Buy/Yes for the selected spread outcome.
+- Tapping Sell changes active ticket identity to Sell/No, updates probability/price from `3%` to `97%`, and submits a fake-token Sell order.
+- Portfolio renders `MOCK - Sell - No - MEX -2.5 1H`, latest activity `Sold`, and the same line/period/contract-side metadata.
+
+Verified:
+
+- PowerShell smoke script parser check passed.
+- Mobile typecheck passed.
+- Focused mobile line-ticket/order/open-order tests passed: 17 tests.
+- Samsung tablet proof passed: `docs/mobile/harness/cycle-EQ-local-mvp-sell-flow/cycle-EQ-local-mvp-trade-flow-proof.json`.
+
+Known limitations:
+
+- Sell ready-state copy still uses the compact `To win` line; richer Polymarket-like proceeds wording remains P1 polish.
+- This cycle uses deterministic contract-shaped local line data for UI proof. Provider-backed spread/totals/team-total Sell breadth remains P1.
+
 ## Cycle EP - Local MVP Trading Flow Steering
 
 Feature/page worked on:

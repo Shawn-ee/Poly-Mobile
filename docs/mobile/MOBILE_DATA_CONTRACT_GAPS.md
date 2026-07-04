@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EQ - Local MVP Sell Flow
+
+Closed or narrowed:
+
+- `docs/mobile/harness/cycle-EQ-local-mvp-sell-flow/cycle-EQ-local-mvp-trade-flow-proof.json` proves the selected Sell journey with `orderbookDebug=unset`.
+- Trade-ticket identity metadata now follows the active contract side. After switching to Sell/No, the ticket exposes `ticket-contract-side-no` and Portfolio exposes `portfolio-contract-side-no`.
+- The deterministic line fixture preserves backend-shaped Sell fields through ticket/order/Portfolio: market family/type, line, period, side, contract side, display label, and fake-token lifecycle state.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed simple-ticket Buy/Sell breadth for spreads, totals, and team totals without exposing Book as the primary user action.
+- Production route-backed Sell order/portfolio/history proof with the same `side=sell` and `contractSide=no` selection envelope.
+- Loading/stale/unavailable route state fields that can render in event detail/ticket without sending users to Book.
+
+Schema mismatch:
+
+- No schema migration was made. EQ keeps using the existing selection snapshot envelope and mobile fake-token local state.
+
+Temporary mock/static data:
+
+- EQ uses deterministic contract-shaped line fixture data only for local UI proof. It must be replaced by provider-backed routes before provider/data parity is claimed.
+
 ## Cycle EP - Local MVP Trade Flow Steering
 
 Closed or narrowed:

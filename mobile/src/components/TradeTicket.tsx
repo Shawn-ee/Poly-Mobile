@@ -173,9 +173,9 @@ const limitIdentityLabel = (selection?: TicketSelection) =>
     ? `ticket-limit-side-${selection.limitSide ?? "none"} ticket-limit-price-${Math.round(selection.limitPrice * 100)} ticket-limit-decimal-${selection.limitPrice.toFixed(2)} ticket-limit-shares-${selection.limitShares ?? "none"}`
     : "ticket-limit-side-none ticket-limit-price-none ticket-limit-shares-none";
 
-const ticketSelectionIdentityLabel = (selection?: TicketSelection) =>
+const ticketSelectionIdentityLabel = (selection?: TicketSelection, activeContractSide?: BinaryContractSide) =>
   selection
-    ? `ticket-market-family-${selection.marketType} ticket-market-type-${selection.marketType} ticket-market-id-${selection.marketId ?? "none"} ticket-outcome-id-${selection.outcomeId ?? "none"} ticket-market-group-${selection.marketGroupId ?? "none"} ticket-line-${selection.line ?? "none"} ticket-period-${selection.period ?? "none"} ticket-selection-side-${selection.side ?? "yes"} ticket-display-label-${selection.displayLabel} ticket-contract-side-${selection.contractSide ?? "yes"} ticket-provider-source-${selection.referenceSource ?? "none"} ticket-provider-market-${selection.externalMarketId ?? "none"} ticket-provider-condition-${selection.conditionId ?? "none"} ticket-provider-token-${selection.referenceTokenId ?? "none"} ticket-provider-outcome-${selection.referenceOutcomeLabel ?? "none"} ${limitIdentityLabel(selection)}`
+    ? `ticket-market-family-${selection.marketType} ticket-market-type-${selection.marketType} ticket-market-id-${selection.marketId ?? "none"} ticket-outcome-id-${selection.outcomeId ?? "none"} ticket-market-group-${selection.marketGroupId ?? "none"} ticket-line-${selection.line ?? "none"} ticket-period-${selection.period ?? "none"} ticket-selection-side-${activeContractSide ?? selection.side ?? "yes"} ticket-display-label-${selection.displayLabel} ticket-contract-side-${activeContractSide ?? selection.contractSide ?? "yes"} ticket-provider-source-${selection.referenceSource ?? "none"} ticket-provider-market-${selection.externalMarketId ?? "none"} ticket-provider-condition-${selection.conditionId ?? "none"} ticket-provider-token-${selection.referenceTokenId ?? "none"} ticket-provider-outcome-${selection.referenceOutcomeLabel ?? "none"} ${limitIdentityLabel(selection)}`
     : "ticket-market-family-none ticket-line-none ticket-period-none ticket-limit-side-none ticket-limit-price-none ticket-limit-shares-none";
 
 export function TradeTicket({
@@ -292,7 +292,7 @@ export function TradeTicket({
     ticket.selection?.referenceOutcomeLabel ?? ticket.outcome.referenceOutcomeLabel
       ? `provider-outcome-${ticket.selection?.referenceOutcomeLabel ?? ticket.outcome.referenceOutcomeLabel}`
       : null,
-    ticketSelectionIdentityLabel(ticket.selection),
+    ticketSelectionIdentityLabel(ticket.selection, contractSide),
   ].filter(Boolean).join(" ");
 
   return (
