@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CX - Provider Event Slug Hint Discovery
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider event slug hint discovery | `/api/mobile/events/:slug/provider-candidates` | GET | Internal admin key or admin session | Query params: optional `providerEventSlug(s)` override, `providerSearchMode`, `marketId`, `fetchProvider`, `maxCandidatesPerMarket` | `providerEventSlugs`, `providerEventSlugSource`, `targets[].attachProposal`, `attachReadyCandidateCount`, `nextRequiredAction` | Reads `Event.externalSlug`, `Event.externalEventId`, `Event.source`, `Event.metadata`, compact `Market`, and active `Outcome`; does not write DB | None. Exact provider event hints only narrow provider search; candidates still must pass relevance and token completeness | Need provider event slug metadata on all imported World Cup fixtures; line markets still need provider slugs when available. |
+| Event-derived provider attach proof | `scripts/prove_mobile_provider_sports_event_discovery.ts` | Local script | Local development only | `--providerEventSlug`, `--eventSlug`, `--output` for setup; discovery call intentionally omits `providerEventSlugs` | Proof requires `providerEventSlugSource=event`, `providerEventSlugs[]`, 3 attach-ready markets, no-fallback refresh, and depth rows | Upserts a local proof `Event` with provider event metadata, compact `Market` rows, active `Outcome` rows; writes provider IDs through existing attach service | No frontend-only fixture. Local rows are provider-shaped and then populated with real Polymarket token IDs | Replace proof setup with production importer that persists exact provider event slugs for real World Cup fixtures. |
+
+Cycle CX implementation notes:
+
+- Request-provided provider event slugs still override event-derived hints for manual audit work.
+- If an exact event hint is available, discovery uses `/events?slug=...` without broad tag discovery, so high-volume unrelated World Cup futures are not mixed into the focused live-match proof.
+- The relevance gate from Cycle CV remains required before any attach proposal is considered ready.
+
 ## Cycle CV - Provider Candidate Relevance Gate
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

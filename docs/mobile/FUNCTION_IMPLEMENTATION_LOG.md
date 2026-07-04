@@ -2,6 +2,48 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CX - Provider Event Slug Hint Discovery
+
+Feature/page worked on:
+
+- PM-GAP-067 provider discovery for the World Cup live event detail.
+- Backend-owned Polymarket sports-event slug discovery from Holiwyn `Event` provider fields and metadata.
+- Samsung tablet server-mode live detail and orderbook regression proof for the provider-mapped Colombia vs. Ghana event.
+
+Frontend/harness components touched:
+
+- `mobile/scripts/smoke.ps1` evidence was refreshed through the existing server live-detail orderbook proof path.
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `src/__tests__/mobile-live-provider-candidates.service.test.ts`
+- `scripts/prove_mobile_provider_sports_event_discovery.ts`
+
+Important functions/services touched:
+
+- `discoverMobileLiveProviderCandidates()` now derives exact provider event slug hints from the local event when no request override is supplied.
+- `deriveProviderEventSlugHints()` extracts request-provided slugs first, then event `externalSlug`, `externalEventId`, and provider-related metadata values.
+- `fetchProviderCandidatesFromSportsEvents()` remains the exact Gamma event fetcher; this cycle changes how the exact slug is sourced.
+
+User interactions supported:
+
+- Samsung tablet proof opens the Holiwyn server-backed Colombia vs. Ghana live detail page and opens the route-backed Book.
+- The Book proof still renders provider-backed `Best bid`, `Best ask`, `Spread`, `Route depth`, `Buy`, and `Sell` controls.
+
+State transitions:
+
+- Local proof event carries `source=polymarket`, `externalSlug=fifwc-col-gha-2026-07-03`, and provider metadata.
+- Discovery runs with `providerSearchMode=sports-events` and no manual `providerEventSlugs` request parameter.
+- Discovery reports `providerEventSlugSource=event`, finds 3 attach-ready compact markets, attach moves readiness from 0 to 3, and no-fallback provider refresh writes 6 quote snapshots plus 232 CLOB depth rows.
+- Mobile live detail reports 3 ready provider quote snapshots and 3 ready provider orderbook-depth markets.
+
+Known limitations:
+
+- This closes the exact provider event slug handoff for compact match markets; it does not discover unavailable Polymarket line markets.
+- Remaining P1 debt is still provider identity for spreads, totals, team totals, halves, corners, and props when Polymarket exposes those markets.
+- Event-derived hints require Holiwyn event rows to retain trustworthy provider slug metadata.
+
 ## Cycle CV - Provider Candidate Relevance Gate
 
 Feature/page worked on:

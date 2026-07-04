@@ -38,7 +38,6 @@ async function main() {
   const discovery = await discoverMobileLiveProviderCandidates({
     eventSlug,
     providerSearchMode: "sports-events",
-    providerEventSlugs: [providerEventSlug],
     maxCandidatesPerMarket: 6,
   });
   const mappings = discovery.targets
@@ -67,6 +66,8 @@ async function main() {
     before: summarizeReadiness(before),
     discovery: {
       providerSearchMode: discovery.providerSearchMode,
+      providerEventSlugs: discovery.providerEventSlugs,
+      providerEventSlugSource: discovery.providerEventSlugSource,
       targetMarketCount: discovery.targetMarketCount,
       attachReadyCandidateCount: discovery.attachReadyCandidateCount,
       providerErrorCount: discovery.providerErrorCount,
@@ -104,6 +105,8 @@ async function main() {
     },
     pass:
       prepared.marketCount >= 2 &&
+      discovery.providerEventSlugs.includes(providerEventSlug) &&
+      discovery.providerEventSlugSource === "event" &&
       discovery.providerErrorCount === 0 &&
       discovery.attachReadyCandidateCount >= 2 &&
       mappings.length >= 2 &&
@@ -288,14 +291,14 @@ function summarizeReadiness(readiness: Awaited<ReturnType<typeof getMobileLivePr
 
 function eventMetadata(providerEventSlug: string, now: Date) {
   return {
-    cycle: "CW",
+    cycle: "CX",
     providerEventSlug,
     mobileLiveDetail: {
       liveDataStatus: {
         source: "polymarket-gamma",
         status: "ready",
         lastUpdated: now.toISOString(),
-        reason: "Cycle CW provider discovery proof event is backed by exact Polymarket sports event slug.",
+        reason: "Cycle CX provider discovery proof event is backed by event-derived exact Polymarket sports event slug.",
       },
       liveStats: [
         { label: "Possession", home: "54%", away: "46%" },

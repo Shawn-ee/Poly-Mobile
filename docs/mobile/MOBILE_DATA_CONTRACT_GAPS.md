@@ -2,6 +2,37 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CX - Provider Event Slug Hint Discovery
+
+Closed or narrowed:
+
+- Provider candidate discovery can now use exact provider event slug hints from Holiwyn `Event` data instead of requiring every proof or operator call to pass `providerEventSlug`.
+- `/provider-candidates` now reports `providerEventSlugs` and `providerEventSlugSource`, making the search path auditable.
+- The real provider proof passed with `providerEventSlugSource=event`, 3 attach-ready compact markets, no-fallback quote refresh, and provider CLOB depth refresh.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Durable provider event slug metadata for every imported World Cup fixture, not only the local Colombia vs. Ghana proof row.
+- Provider market slugs/token IDs for spreads, totals, team totals, halves, corners, and props when those markets exist.
+- A production importer/review workflow that populates `Event.externalSlug` or equivalent metadata before provider candidate discovery runs.
+
+Schema mismatch:
+
+- No schema change was required. Existing `Event.externalSlug`, `Event.externalEventId`, `Event.source`, and `Event.metadata` are sufficient for exact event hints.
+- If multiple providers are added later, event-level provider metadata should become first-class enough to distinguish provider name, event slug, provider event id, and source URL.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/provider-candidates` can derive exact event hints, but there is no separate operator UI/API yet to inspect or repair missing event-level provider slug metadata.
+
+Temporary mock/static data:
+
+- The proof setup still upserts a local event row, but the discovery/attach/refresh path uses real Gamma event markets, real CLOB token IDs, and no contract-proof fallback.
+
+Future migration concern:
+
+- Keep exact event hints separate from broad tag search. Broad FIFA/World Cup tag discovery remains useful for discovery, but it must not be treated as attach-ready without the relevance gate.
+
 ## Cycle CV - Provider Candidate Relevance Gate
 
 Closed or narrowed:

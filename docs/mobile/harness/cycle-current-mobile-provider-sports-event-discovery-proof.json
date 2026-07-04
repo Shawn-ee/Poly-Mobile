@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T06:43:07.421Z",
+  "generatedAt": "2026-07-04T06:48:05.184Z",
   "eventSlug": "world-cup-2026-colombia-vs-ghana-2026-07-03",
   "providerEventSlug": "fifwc-col-gha-2026-07-03",
   "providerEventTitle": "Colombia vs. Ghana",
@@ -39,6 +39,10 @@
   },
   "discovery": {
     "providerSearchMode": "sports-events",
+    "providerEventSlugs": [
+      "fifwc-col-gha-2026-07-03"
+    ],
+    "providerEventSlugSource": "event",
     "targetMarketCount": 3,
     "attachReadyCandidateCount": 3,
     "providerErrorCount": 0,
@@ -157,12 +161,12 @@
     "snapshotsUpdated": 6,
     "refreshedCount": 3,
     "skippedCount": 0,
-    "depthRowsUpdated": 262,
+    "depthRowsUpdated": 232,
     "postRefresh": {
       "marketCount": 3,
       "snapshotCount": 6,
-      "latestFetchedAt": "2026-07-04T06:43:06.425Z",
-      "oldestFetchedAt": "2026-07-04T06:43:06.384Z",
+      "latestFetchedAt": "2026-07-04T06:48:04.212Z",
+      "oldestFetchedAt": "2026-07-04T06:48:04.171Z",
       "sourceCount": 1
     },
     "contractProofFallback": null
