@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CI - Depth Batching Policy Contract
+
+Fields now provided or wired:
+
+- `/api/mobile/events/:slug/live-detail` now returns compact route policy metadata: `contract.generatedAt`, `contract.maxMarkets`, `contract.batchedOrderbookDepthRequestedMarketCount`, `contract.batchedOrderbookDepthRequestedMarketIds`, `contract.batchedOrderbookDepthMaxLevels`, and `contract.batchedOrderbookDepthCacheTtlSeconds`.
+- The focused backend test proves the route requests 14 compact markets, records the requested market IDs in order, caps depth at 24 levels, and exposes a 3-second TTL.
+- Samsung tablet proof confirms the visible second-half route-backed depth row and selected Book flow still work with the expanded contract.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Provider-owned cache/invalidation metadata such as provider snapshot ID, provider update sequence, cache hit/miss, and stale reason per depth batch.
+- Provider-owned liquidity for every visible World Cup live market and line.
+- Backend-owned provider live stats only if Holiwyn keeps a stats tab for predicting-related context.
+
+Schema mismatch:
+
+- Current proof depth still comes from open `Order` rows. Production provider parity may need a quote/orderbook snapshot table keyed by `marketId`, `outcomeId`, provider timestamp/sequence, side, price, size, and snapshot freshness.
+
+Route mismatch:
+
+- The compact live-detail route now documents batching policy metadata, but there is still no dedicated provider-scale batch depth route with cache invalidation controls.
+
+Temporary mock/static data:
+
+- No new frontend mock shape was added. Existing local proof orders remain backend-shaped with stable `marketId`, `outcomeId`, side, price, shares, and total.
+
+Future migration concern:
+
+- Keep the new policy fields stable when provider depth replaces local proof orders so the mobile app can reason about route freshness, limits, and selected market identity without changing UI contracts.
+
 ## Cycle CH - Batched Live Market Depth Contract
 
 Fields now provided or wired:

@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CI - Depth Batching Policy Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Compact live-detail depth policy metadata | `/api/mobile/events/:slug/live-detail` | GET | Optional public viewing | None | `contract.generatedAt`, `contract.maxMarkets`, `contract.marketCount`, `contract.batchedOrderbookDepthRequestedMarketCount`, `contract.batchedOrderbookDepthRequestedMarketIds`, `contract.batchedOrderbookDepthMaxLevels`, `contract.batchedOrderbookDepthCacheTtlSeconds`, plus existing `markets[].orderbookDepth[]` and outcome quote fields | Selected compact `Market` rows, active `Outcome` rows, open `Order` rows through `buildPublicOrderbookSnapshot()` | Local rows still render without provider depth; policy metadata stays present for route-backed compact responses | Real provider cache/invalidation layer, provider snapshot status per market depth response, and provider-owned liquidity ingestion remain missing. |
+| Visible depth regression proof | Samsung tablet smoke against server-backed live detail | GET / device proof | Optional public viewing | None | `event-detail-market-depth-second-half-winner`, `market-depth-batched`, selected orderbook `orderbook-source-orderbook-route` | Same as above, with selected second-half market `ed121b08-88bd-4735-9793-64a0022e9696` | N/A | Need provider-scale batching/prefetch implementation behind the documented policy shape. |
+
+Cycle CI implementation notes:
+
+- This cycle reduces PM-GAP-067's repeated production batching/prefetch debt by defining and testing route-level limits, requested market IDs, max depth levels, generated time, and TTL.
+- It does not mark backend parity complete because the route still uses current route-backed/local open orders rather than a provider cache with invalidation.
+
 ## Cycle CH - Batched Live Market Depth Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

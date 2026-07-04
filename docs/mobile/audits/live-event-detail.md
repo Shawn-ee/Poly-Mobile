@@ -1,6 +1,6 @@
 # Live Event Detail Audit
 
-Status: Cycle CH passed batched compact-market route-backed depth proof. Cycle CG passed selected second-half orderbook depth proof. Cycle CF passed selected first-half orderbook depth proof. Cycle CE passed compact per-visible-market availability contract proof. Cycle CD passed selected orderbook availability contract proof. Cycle BC passed the live provider freshness contract and tablet proof. Cycle BB passed selected Team Totals seeded ready-depth proof. Cycle BA passed compact line-group coverage and selected Totals seeded ready-depth proof. Cycle AZ passed selected Spread line-market seeded ready-depth proof. Cycle AY passed selected line-market depth identity proof. Cycle AX passed the compact mobile live-detail route and route-backed primary orderbook-depth tablet proof. Cycle AN passed structural live event detail UI with backend-shaped fixture data and tablet proof; Cycle AO added the real `/api/events/:slug` contract for market identity, line identity, compact depth, and optional chart/live-stat arrays. Cycle AQ sources embedded chart history from `MarketOutcomeSnapshot` rows when available and preserves depth outcome identity in mobile. Cycle AR adds the dedicated `/api/markets/:marketId/chart?range=...` route/client contract. Cycle AS wires EventDetail to consume that chart route in server mode. Cycle AT adds deterministic `MarketOutcomeSnapshot` seeding for local/server proof. Cycle AU exposes chart loading/empty/error route states in the game chart. Cycle AW seeded route-readable orderbook depth. This is still not full backend parity because real provider ingestion, provider-owned liquidity for all live markets, production batching/prefetch policy, and provider-owned live stats if product keeps that tab remain open.
+Status: Cycle CI passed compact depth batching policy metadata and preserved tablet route-depth proof. Cycle CH passed batched compact-market route-backed depth proof. Cycle CG passed selected second-half orderbook depth proof. Cycle CF passed selected first-half orderbook depth proof. Cycle CE passed compact per-visible-market availability contract proof. Cycle CD passed selected orderbook availability contract proof. Cycle BC passed the live provider freshness contract and tablet proof. Cycle BB passed selected Team Totals seeded ready-depth proof. Cycle BA passed compact line-group coverage and selected Totals seeded ready-depth proof. Cycle AZ passed selected Spread line-market seeded ready-depth proof. Cycle AY passed selected line-market depth identity proof. Cycle AX passed the compact mobile live-detail route and route-backed primary orderbook-depth tablet proof. Cycle AN passed structural live event detail UI with backend-shaped fixture data and tablet proof; Cycle AO added the real `/api/events/:slug` contract for market identity, line identity, compact depth, and optional chart/live-stat arrays. Cycle AQ sources embedded chart history from `MarketOutcomeSnapshot` rows when available and preserves depth outcome identity in mobile. Cycle AR adds the dedicated `/api/markets/:marketId/chart?range=...` route/client contract. Cycle AS wires EventDetail to consume that chart route in server mode. Cycle AT adds deterministic `MarketOutcomeSnapshot` seeding for local/server proof. Cycle AU exposes chart loading/empty/error route states in the game chart. Cycle AW seeded route-readable orderbook depth. This is still not full backend parity because real provider ingestion, provider-owned liquidity for all live markets, provider cache/invalidation, and provider-owned live stats if product keeps that tab remain open.
 
 ## Scope
 
@@ -9,6 +9,45 @@ Status: Cycle CH passed batched compact-market route-backed depth proof. Cycle C
 - Holiwyn proof device: Samsung tablet running Holiwyn through Expo Go.
 - Cycle branch name: `mobile/cycle-AN-saved-watchlist-parity`, re-scoped honestly to live event detail after product steering changed.
 - Out of scope: deposit, location verification, notifications, non-football live markets, World Cup informational ad/detail pages.
+
+## Cycle CI Depth Batching Policy Contract Audit
+
+Result: Pass for compact live-detail depth batching policy metadata and regression tablet proof.
+
+Reference audit:
+
+- Cycle CI continues Cycle CH's same S23 Polymarket reference: logged-in official Android app on a Colombia vs Ghana game page.
+- Reference behavior remains predicting-focused: game/chart area, chat preview, outcome buttons, Game Lines, expandable market rows, and tradable market depth available from the same page context.
+
+What became materially closer to Polymarket:
+
+- Holiwyn's compact live-detail backend no longer just returns some depth; it now declares the batching policy that controls visible market hydration. This is needed before replacing proof orders with provider-scale live depth.
+- The route records exactly which compact market IDs were requested for depth, how many markets were capped, max depth levels, generation time, and TTL.
+
+Acceptance criteria:
+
+| ID | Priority | Criterion | Audit method | Result |
+| --- | --- | --- | --- | --- |
+| LED-CI-P0-01 | P0 | `/api/mobile/events/:slug/live-detail` exposes `generatedAt`, `maxMarkets`, requested market count, requested market IDs, max depth levels, and cache TTL. | Backend unit test and direct route probe | Pass |
+| LED-CI-P0-02 | P0 | Requested market IDs are stable backend market IDs and match the compact market selection order. | Backend unit test | Pass |
+| LED-CI-P0-03 | P0 | Existing Samsung tablet live-detail depth proof still passes after adding policy metadata. | Samsung tablet XML/screenshot | Pass |
+| LED-CI-P1-01 | P1 | Real provider cache/invalidation and provider snapshot status drive the depth batch. | Future provider proof | Open |
+| LED-CI-P1-02 | P1 | Provider liquidity exists for every visible live soccer line market. | Future provider proof | Open |
+
+Holiwyn evidence:
+
+- Backend route probe: `docs/mobile/harness/cycle-current-mobile-live-depth-batching-policy-probe.json`
+- Unit proof: `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-event-detail.test.ts`
+- Device proof: `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`, `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`, `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`
+- Proof command: `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+
+Unresolved P0 gaps: 0 for depth batching policy metadata scope.
+
+Remaining P1/P2 gaps:
+
+- Provider-owned liquidity for all live markets.
+- Provider cache/invalidation and snapshot status.
+- Provider-owned live stats only if product keeps the Live stats tab.
 
 ## Cycle CH Batched Live Market Depth Contract Audit
 
