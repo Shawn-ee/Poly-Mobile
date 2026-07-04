@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CN - Provider Mapping Readiness Contract
+
+Fields now provided or wired:
+
+- Protected `/api/mobile/events/:slug/provider-mapping` reports compact market/provider identity readiness.
+- Provider refresh responses now include `mappingReadiness`, so a no-fallback refresh can explain why it did not call the external provider.
+- Route proof confirms the current compact World Cup event has 14 compact markets, 0 provider-refreshable markets, 14 unsupported-source markets, and 14 markets with missing outcome token mappings.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-owned market identities for compact World Cup live markets: `referenceSource=polymarket` or a production provider source, `externalSlug`, `externalMarketId`, and `conditionId`.
+- Real provider-owned outcome identities for every compact outcome: `referenceTokenId` and `referenceOutcomeLabel`.
+- An import/mapping workflow that connects FIFA schedule live markets to actual provider markets, or a production sports provider adapter that owns those fields.
+
+Schema mismatch:
+
+- Current `Market` and `Outcome` columns can hold provider mapping, but the seeded compact live event is still `fifa_schedule` sourced and therefore cannot be refreshed from Polymarket Gamma without mapping.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/provider-refresh` can execute refresh, but no-fallback refresh is correctly blocked for the current compact event because provider mapping readiness is false.
+
+Temporary mock/static data:
+
+- No new dummy UI data was added. The no-fallback proof deliberately did not use `allowContractProofFallback`.
+
+Future migration concern:
+
+- The next PM-GAP-067 cycle should import or attach provider identities to compact World Cup live markets, then rerun `/provider-refresh` without `allowContractProofFallback` and prove stale/refresh-due moves to ready through real provider-owned rows.
+
 ## Cycle CM - Provider Refresh Execution Contract
 
 Fields now provided or wired:

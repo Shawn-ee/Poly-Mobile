@@ -6,6 +6,29 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle CN
+
+Date: 2026-07-03
+Branch: `mobile/cycle-CN-provider-mapping-readiness-contract`
+Goal: Keep PM-GAP-067 on provider ingestion/refresh and add an auditable provider mapping readiness gate before any new visual UI parity work.
+Reference app screens observed: Continued from Cycle CH Samsung S23 Polymarket official app live game page evidence.
+Holiwyn screens changed: None.
+Backend/API changed: Added protected `/api/mobile/events/:slug/provider-mapping` and included `mappingReadiness` in `/api/mobile/events/:slug/provider-refresh`.
+Database/schema changed: None.
+Files changed: `src/server/services/mobileLiveProviderMapping.ts`, `src/app/api/mobile/events/[slug]/provider-mapping/route.ts`, `src/server/services/mobileLiveProviderRefresh.ts`, new route/service tests, and mobile docs.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-mapping.route.test.ts src/__tests__/mobile-live-provider-mapping.service.test.ts src/__tests__/mobile-live-provider-refresh.route.test.ts`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-live-provider-mapping-readiness.json`
+- `docs/mobile/harness/cycle-current-mobile-live-provider-no-fallback-refresh-blocked-proof.json`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`
+Result: Partial pass for provider mapping readiness gate. It proves the current local compact event is not provider-refreshable without mapping: 14 compact markets, 0 provider-refreshable markets, 14 unsupported-source markets, and no-fallback refresh correctly does not run a provider update.
+Next focus: import or attach real provider market/outcome identities for compact World Cup live markets, then prove `/provider-refresh` moves stale/refresh-due to ready without `allowContractProofFallback`.
+
 ## Heartbeat: Structural Live Detail Cycles CK-CM
 
 Date: 2026-07-03

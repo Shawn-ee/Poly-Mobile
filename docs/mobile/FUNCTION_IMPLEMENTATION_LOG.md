@@ -2,6 +2,55 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CN - Provider Mapping Readiness Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 provider ingestion readiness for compact live event detail.
+- This cycle blocks visual UI parity work and makes the missing real-provider mapping auditable before another refresh cycle claims provider parity.
+
+Frontend components touched:
+
+- None. Samsung tablet proof was rerun against the existing live event detail and selected second-half Book flow after backend route changes.
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveProviderMapping.ts`
+- `src/app/api/mobile/events/[slug]/provider-mapping/route.ts`
+- `src/server/services/mobileLiveProviderRefresh.ts`
+- `src/__tests__/mobile-live-provider-mapping.route.test.ts`
+- `src/__tests__/mobile-live-provider-mapping.service.test.ts`
+- `src/__tests__/mobile-live-provider-refresh.route.test.ts`
+
+Important functions/services touched:
+
+- `getMobileLiveProviderMappingReadiness()` loads compact live markets and reports whether each market/outcome has provider-owned identity.
+- `assessMobileLiveProviderMappingReadiness()` returns per-market `missingFields`, per-outcome token/label readiness, aggregate provider-refreshable counts, and the next required action.
+- `refreshMobileLiveProviderQuoteSnapshots()` now includes `mappingReadiness` in its response and only attempts provider refresh for markets with complete provider mapping.
+
+User interactions supported:
+
+- No new visual interaction. The user-visible effect is that future refresh/loading states can be driven by a truthful backend readiness gate instead of frontend guesses.
+- The existing Samsung tablet live detail and selected second-half Book flow still work after the backend contract change.
+
+State transitions:
+
+- Current compact event mapping probe reports `providerRefreshableMarketCount=0`, `unsupportedSourceMarketCount=14`, `missingOutcomeTokenMarketCount=14`, and `isProviderRefreshReady=false`.
+- No-fallback provider refresh reports `providerMappedMarketCount=0`, `unsupportedMarketCount=14`, `provider.attempted=false`, and no contract-proof fallback.
+
+Known limitations:
+
+- This cycle does not solve real provider ingestion. It proves the current blocker: compact World Cup match markets are `fifa_schedule` sourced and lack Polymarket market/outcome identity.
+- Next structural cycle must import/map real provider identities or add a production sports provider adapter before no-fallback refresh can pass.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-mapping.route.test.ts src/__tests__/mobile-live-provider-mapping.service.test.ts src/__tests__/mobile-live-provider-refresh.route.test.ts`
+- `cmd /c npm.cmd run build`
+- Mapping proof: `docs/mobile/harness/cycle-current-mobile-live-provider-mapping-readiness.json`
+- No-fallback blocked proof: `docs/mobile/harness/cycle-current-mobile-live-provider-no-fallback-refresh-blocked-proof.json`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+
 ## Cycle CM - Provider Refresh Execution Contract
 
 Feature/page worked on:
