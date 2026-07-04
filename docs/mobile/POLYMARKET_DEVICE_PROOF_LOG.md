@@ -470,3 +470,43 @@ Pass for selected Home -> Event Detail -> Spread ticket -> server fake-token ord
 
 Remaining gaps:
 Filled/cancel lifecycle from the exact Home-opened path and production active Polymarket World Cup provider breadth.
+
+### 2026-07-04 - Cycle FH - Home route server cancel and Portfolio activity
+
+Reference device:
+Product steering plus existing Polymarket sports audits. Fresh S23 proof was not required for this local server-cancel gate.
+
+Holiwyn device:
+Samsung tablet / Holiwyn Expo Go / local Expo port `8277`.
+
+Holiwyn app mode:
+`EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE=server`, `EXPO_PUBLIC_SHOW_ORDERBOOK` unset, backend `http://172.16.200.14:3002`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, tapped the freshly seeded route-backed disposable World Cup live event card, verified the same Event Detail opened, selected the Spread outcome, entered `$25` in the ticket, submitted the server fake-token buy, verified server-synced Portfolio open order, tapped Cancel, and verified canceled activity/history.
+
+Holiwyn evidence:
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-event.json`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-wrapper.json`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-proof.json`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-home.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-detail-top.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-line-markets.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-portfolio.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-portfolio-canceled.xml`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-home.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-detail-top.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-line-markets.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-portfolio.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-portfolio-canceled.png`
+
+Smoke/tests:
+PowerShell parser checks, mobile typecheck, provider breadth route proof, mobile dev credential setup, backend health, and tablet proof wrapper passed.
+
+Result:
+Pass for selected Home -> Event Detail -> Spread ticket -> server fake-token order -> Cancel -> server Portfolio canceled activity flow with orderbook hidden by default.
+
+Remaining gaps:
+Filled lifecycle from the exact Home-opened path and production active Polymarket World Cup provider breadth.

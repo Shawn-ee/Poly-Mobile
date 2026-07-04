@@ -3607,3 +3607,34 @@ Temporary mock/static data:
 Future migration concern:
 
 - Replace disposable provider-shaped proof events with production active Polymarket-backed World Cup events before treating provider breadth as complete.
+
+## Cycle FH - Home Route Server Cancel And Portfolio Activity
+
+Closed or narrowed:
+
+- Home-opened route-backed Event Detail now has Android proof through server fake-token order cancellation and server Portfolio/history canceled activity.
+- The exact selected identity now flows through `/api/orders`, `/api/orders/:id`, `/api/portfolio`, and `/api/portfolio/history`: market type `spread`, line `1.5`, period `Reg. Time`, side `buy`, contract side `yes`, provider source `polymarket`, and provider token.
+- Default orderbook UI remains hidden through Home -> Detail -> Ticket -> Server Portfolio -> Cancel -> Canceled activity.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Production active Polymarket World Cup event breadth remains P1.
+- Filled lifecycle from the exact Home-opened path remains P1, although prior route-deep cycles prove filled backend paths.
+
+Schema mismatch:
+
+- No schema migration was required. Existing order request, order, market/outcome, and Portfolio/history response fields carry the selected identity for the FH proof.
+
+Route mismatch:
+
+- `/api/events?includeMobileMarkets=1`, `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/orders/:id`, `/api/portfolio`, and `/api/portfolio/history` are enough for the selected Home-started cancel lifecycle.
+
+Temporary mock/static data:
+
+- No arbitrary frontend-only market data was added.
+- The proof event is disposable backend provider-shaped data created by the existing provider breadth harness.
+- The order and cancel lifecycle use server fake-token mode, not local mock Portfolio state.
+
+Future migration concern:
+
+- Replace disposable provider-shaped proof events with production active Polymarket-backed World Cup events before treating provider breadth as complete.

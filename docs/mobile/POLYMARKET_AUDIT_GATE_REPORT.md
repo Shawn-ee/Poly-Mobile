@@ -3169,3 +3169,60 @@ Decision:
 - Unresolved P0 gaps: 0 for selected feature.
 - Remaining P1/P2 gaps: filled/cancel lifecycle from the exact Home-opened path and production active provider breadth.
 - Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Home Route Server Cancel And Portfolio Activity
+
+Cycle: FH
+
+Lead Agent target: Continue the Local MVP route-backed Home flow from FG through visible Cancel and server-synced canceled activity/history.
+
+Reference Audit Agent: Product steering audit from current Local MVP retail-flow direction. This cycle verifies the Holiwyn server-cancel user-flow step and does not claim full production Polymarket parity.
+
+Implementation Agent: Added focused `LocalMvpHomeRouteServerCancelFlow` Android harness path and wrapper.
+
+Audit Gate Agent: PowerShell parser checks, mobile typecheck, provider-shaped route event setup, temporary mobile dev credential, backend health, and Samsung tablet proof.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8277`.
+
+Holiwyn evidence:
+
+- `docs/mobile/audits/cycle-fh-home-route-server-cancel.md`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-event.json`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-wrapper.json`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-proof.json`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-home.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-detail-top.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-line-markets.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-portfolio.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-portfolio-canceled.xml`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-home.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-detail-top.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-line-markets.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-portfolio.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-portfolio-canceled.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FH-CANCEL-P0-01 | P0 | Pass | Tablet Home hierarchy shows the freshly seeded route-backed event card and compact outcomes. | N/A |
+| FH-CANCEL-P0-02 | P0 | Pass | Tapping the Home card opens same route event detail with chart/probability and Game Lines. | N/A |
+| FH-CANCEL-P0-03 | P0 | Pass | Line-market hierarchy shows Spread row with backend line-market source, line `1.5`, period `Reg. Time`, and provider source. | N/A |
+| FH-CANCEL-P0-04 | P0 | Pass | Spread outcome opens ticket with selected market type, line, period, side, provider source, and provider token. | N/A |
+| FH-CANCEL-P0-05 | P0 | Pass | Amount presets produce `$25` and `Swipe up to buy`. | N/A |
+| FH-CANCEL-P0-06 | P0 | Pass | Submit posts a server fake-token order through `/api/orders`. | N/A |
+| FH-CANCEL-P0-07 | P0 | Pass | Server Portfolio sync shows latest order/open order and visible Cancel action. | N/A |
+| FH-CANCEL-P0-08 | P0 | Pass | Cancel action calls server cancel and refreshes Portfolio/history to canceled activity. | N/A |
+| FH-CANCEL-P0-09 | P0 | Pass | Canceled activity preserves selected line, period, provider source, and provider token. | N/A |
+| FH-CANCEL-P0-10 | P0 | Pass | Default orderbook markers are absent from evidence. | N/A |
+| FH-CANCEL-P1-01 | P1 | Open | Filled lifecycle from the exact Home-opened path is not covered by FH. | Future Android proof continuing from Home. |
+| FH-CANCEL-P1-02 | P1 | Open | Production active Polymarket event breadth is not covered by disposable proof. | Map/import more real active provider events. |
+
+Decision:
+
+- Pass/fail: Pass for selected Home -> Event Detail -> Spread ticket -> server fake-token order -> Cancel -> server Portfolio canceled activity feature.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: filled lifecycle from the exact Home-opened path and production active provider breadth.
+- Next cycle required: yes, continue Local MVP user-flow breadth.

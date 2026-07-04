@@ -1596,3 +1596,19 @@ Cycle FG implementation notes:
 - A temporary mobile dev credential was created by `npm run mobile:dev-credential`.
 - Tablet proof slug: `mobile-el-a-provider-breadth-61978ca5`.
 - Mobile launched with `EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE=server`, and a real in-process mobile API key.
+
+## Cycle FH - Home Route Server Cancel And Portfolio Activity
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home card entry to cancelable server order | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1`, `/api/mobile/events/:slug/live-detail` | GET | Public viewing | None for event list; event id/slug for detail | Event title/status, chart/probability, Game Lines, selected Spread market/outcome identity, provider source/token | `Event`, `Market`, `Outcome`, provider quote/read-model fields | FH proof requires the route-backed card. Local fixtures remain only as app fallback. | Production active Polymarket event breadth remains P1. |
+| Server fake-token order submit from Home-opened ticket | `/api/orders` | POST | Temporary mobile dev API credential with order scope | Ticket amount `$25`, side `buy`, order type/price/size, selected `marketId`, `outcomeId`, contract side `yes`, and selected Spread metadata | Order success state and Portfolio navigation after submit | `ApiOrderRequest`, `Order`, `Market`, `Outcome`, provider snapshot/read-model fields | None for FH. The order submit uses server mode. | Filled lifecycle from the exact Home-opened path remains P1. |
+| Server order cancel from Portfolio | `/api/orders/:id` | DELETE | Same mobile dev API key with order cancel scope | Order id from visible open order row | Canceled state via refreshed Portfolio/history, `activity-canceled`, `status-canceled`, selected market metadata | `Order`, `ApiOrderRequest`, `Market`, `Outcome`, portfolio/history read models | None for FH. The cancel uses server mode. | Production active-event provider liquidity remains follow-up. |
+| Server Portfolio/history sync after cancel | `/api/portfolio`, `/api/portfolio/history` | GET | Same mobile dev API key with account read scope | None | `latest-activity-card`, canceled activity row, market type `spread`, line `1.5`, period `Reg. Time`, provider source/token | `Order`, `ApiOrderRequest`, `Market`, `Outcome`, portfolio/history read models | None for FH. Portfolio/history is server-synced. | Production active-event provider liquidity remains follow-up. |
+
+Cycle FH implementation notes:
+
+- The backend route event was created by `scripts/prove_mobile_el_a_provider_breadth.ts` into `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-event.json`.
+- A temporary mobile dev credential was created by `npm run mobile:dev-credential`.
+- Tablet proof slug: `mobile-el-a-provider-breadth-4f7f2397`.
+- Mobile launched with `EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE=server`, and a real in-process mobile API key.

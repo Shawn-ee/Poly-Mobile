@@ -12898,3 +12898,21 @@ Open blockers: None for continued Local MVP visible user-flow work.
 Risks: FG still uses disposable provider-shaped data. Filled/cancel lifecycle from the exact Home-opened path and production active Polymarket World Cup provider breadth remain P1.
 
 Next three likely cycles: filled/cancel lifecycle from the Home-opened server order path, broaden Home-opened proof beyond Spread to Totals/Team Total only if it closes a material flow gap, and production active event breadth hardening.
+
+### Cycle FH Update
+
+Completed cycle: FH.
+
+Verified progress: The Local MVP Home-entry path now covers the visible server cancel lifecycle. Samsung tablet proof opens a freshly seeded route-backed Home event card, lands on Event Detail, selects a route-backed Spread outcome, enters `$25`, submits through `/api/orders`, sees the server open order in Portfolio, taps Cancel, and verifies `/api/portfolio` plus `/api/portfolio/history` show canceled activity while preserving spread line, period, provider source, and provider token.
+
+Current app state: Home -> Event Detail -> chart/probability -> Spread line selector -> Buy/Sell ticket -> server fake-token order -> Portfolio open order -> Cancel -> canceled activity/history is proven with default orderbook UI hidden.
+
+Current backend state: No backend route or schema changes were made. FH uses the existing `/api/events?includeMobileMarkets=1` discovery contract, `/api/mobile/events/:slug/live-detail` detail contract, `/api/orders` submit route, `/api/orders/:id` cancel route, and `/api/portfolio` plus `/api/portfolio/history` sync routes.
+
+Device strategy: Samsung tablet remains the Holiwyn proof device. Samsung S23 remains reference device only when a fresh Polymarket interaction audit is required.
+
+Open blockers: None for continued Local MVP visible user-flow work.
+
+Risks: FH still uses disposable provider-shaped data. Filled lifecycle from the exact Home-opened path and production active Polymarket World Cup provider breadth remain P1.
+
+Next three likely cycles: filled lifecycle from the Home-opened server order path, production active event breadth hardening, and broader Home-opened line family proof only if it closes a material flow gap.

@@ -5294,3 +5294,64 @@ Known limitations:
 
 - FG proves the server open-order path, not the filled/cancel lifecycle from the exact Home-opened path.
 - FG uses disposable provider-shaped data. Production active Polymarket World Cup breadth remains P1.
+
+## Cycle FH - Home Route Server Cancel And Portfolio Activity
+
+Feature/page worked on:
+
+- Local MVP Home -> route-backed Event Detail -> Spread ticket -> server fake-token order -> Cancel -> server Portfolio canceled activity/history.
+
+Frontend/harness/backend files touched:
+
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/scripts/local-mvp-home-route-server-cancel-proof.ps1`
+- `docs/mobile/audits/cycle-fh-home-route-server-cancel.md`
+
+Important functions/services touched:
+
+- Added `LocalMvpHomeRouteServerCancelFlow` harness support.
+- Reused and parameterized the FG Home route server proof path so FH can assert a visible Cancel lifecycle without duplicating a separate flow.
+- Reused existing `/api/orders`, `/api/orders/:id`, `/api/portfolio`, and `/api/portfolio/history` mobile flows. No backend route, schema, or service code was changed.
+
+User interactions supported/proven:
+
+- Open Holiwyn on the Samsung tablet in server market-data and server order mode.
+- Tap the freshly seeded route-backed Home event card.
+- Open the same Event Detail with chart/probability and Game Lines.
+- Tap the route-backed Spread outcome.
+- Add `$25` using ticket presets and submit the fake-token buy through the backend.
+- Verify server-synced Portfolio shows the latest order and open order row.
+- Tap the visible Cancel control and verify server-synced Portfolio/history shows canceled activity with spread line, period, provider source, and provider token preserved.
+- Default orderbook UI remains hidden.
+
+Validation:
+
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+- PowerShell parser check for `mobile/scripts/local-mvp-home-route-server-cancel-proof.ps1`
+- `npm --prefix mobile run typecheck`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/local-mvp-home-route-server-cancel-proof.ps1 -Port 8277 -BackendBaseUrl http://172.16.200.14:3002`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-event.json`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-wrapper.json`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-proof.json`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-home.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-detail-top.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-line-markets.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-portfolio.xml`
+- `docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-portfolio-canceled.xml`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-home.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-detail-top.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-line-markets.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-portfolio.png`
+- `docs/mobile/screenshots/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-portfolio-canceled.png`
+
+Known limitations:
+
+- FH proves cancel lifecycle from the exact Home-opened path, not filled lifecycle from that path.
+- FH uses disposable provider-shaped data. Production active Polymarket World Cup breadth remains P1.

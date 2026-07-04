@@ -473,3 +473,22 @@ The focused FG gate in `docs/mobile/audits/cycle-fg-home-route-server-order.md` 
 | FG-ORDER-P0-08 | P0 | Default orderbook UI must remain hidden for this retail path. | Android assertions reject orderbook markers across evidence. |
 | FG-ORDER-P1-01 | P1 | Prove filled/cancel lifecycle from the exact Home-opened path. | Future Android proof continuing from Home through lifecycle action and Portfolio/history. |
 | FG-ORDER-P1-02 | P1 | Replace disposable proof event with production active Polymarket-backed event breadth. | Future provider mapping and Android proof against active production events. |
+
+## Cycle FH Home Route Server Cancel Criteria
+
+The focused FH gate in `docs/mobile/audits/cycle-fh-home-route-server-cancel.md` verifies the Local MVP retail lifecycle from Home-opened route-backed event through server fake-token order cancel and server Portfolio canceled activity/history.
+
+| ID | Priority | Criterion | Required proof |
+| --- | --- | --- | --- |
+| FH-CANCEL-P0-01 | P0 | Home must show the freshly seeded route-backed World Cup event card with compact outcomes. | Samsung tablet screenshot/XML with route-backed event title, outcome labels, and event-card marker. |
+| FH-CANCEL-P0-02 | P0 | Tapping the Home card must open the same route-backed Event Detail. | Android screenshot/XML after tap showing same event title, chart/probability marker, and Game Lines. |
+| FH-CANCEL-P0-03 | P0 | Event Detail must expose a route-backed Spread row using backend line-market identity. | Android XML with `ticket-source-backend-line-market`, `selection-market-family-spread`, `selection-line-1.5`, `selection-period-Reg. Time`, and provider source. |
+| FH-CANCEL-P0-04 | P0 | Spread ticket must open with selected market type, line, period, side, provider source, and provider token. | Ticket XML with selected identity markers. |
+| FH-CANCEL-P0-05 | P0 | Amount presets must create a `$25` ready state with `Swipe up to buy`. | Ticket-ready screenshot/XML with amount and submit marker. |
+| FH-CANCEL-P0-06 | P0 | Submit must post a server fake-token order through `/api/orders`. | Proof JSON plus Portfolio screenshot/XML after submit. |
+| FH-CANCEL-P0-07 | P0 | Server Portfolio sync must show latest order/open order and a visible Cancel action. | Portfolio XML with `latest-order-card`, `portfolio-open-order-count`, `open-order-row-`, and `cancel-open-order-`. |
+| FH-CANCEL-P0-08 | P0 | Cancel must call the server cancel path and refresh Portfolio/history to canceled activity. | Canceled Portfolio XML with `latest-activity-card`, `activity-canceled`, and `status-canceled`. |
+| FH-CANCEL-P0-09 | P0 | Canceled activity must preserve selected line, period, provider source, and provider token. | Canceled Portfolio XML with provider/line/period markers. |
+| FH-CANCEL-P0-10 | P0 | Default orderbook UI must remain hidden for this retail path. | Android assertions reject orderbook markers across evidence. |
+| FH-CANCEL-P1-01 | P1 | Prove filled lifecycle from the exact Home-opened path. | Future Android proof continuing from Home through fill and Portfolio/history. |
+| FH-CANCEL-P1-02 | P1 | Replace disposable proof event with production active Polymarket-backed event breadth. | Future provider mapping and Android proof against active production events. |

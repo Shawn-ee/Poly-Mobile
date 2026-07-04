@@ -1,0 +1,14 @@
+﻿{
+    "cycle":  "FH",
+    "result":  "pass",
+    "username":  "holiwyn-mobile-fh-20260704151441",
+    "userId":  "d5e501fc-fd04-47b3-a06c-8c5aed37a32f",
+    "keyId":  "pk_live_f59cd2ab7ffd1f56",
+    "token":  "redacted",
+    "eventSlug":  "mobile-el-a-provider-breadth-4f7f2397",
+    "eventProofPath":  "docs/mobile/harness/cycle-FH-home-route-server-cancel/cycle-FH-home-route-server-cancel-event.json",
+    "tabletProofPath":  "docs\\mobile\\harness\\cycle-FH-home-route-server-cancel\\cycle-FH-home-route-server-cancel-proof.json",
+    "orderMode":  "server",
+    "marketDataMode":  "server",
+    "backendBaseUrl":  "http://172.16.200.14:3002"
+}
