@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CV - Provider Candidate Relevance Gate
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider candidate discovery safety gate | `/api/mobile/events/:slug/provider-candidates` | GET | Internal admin key or admin session | Query params: `marketId`, `fetchProvider`, `maxCandidatesPerMarket` | `targets[].bestCandidate.attachReadiness.reasons`, `attachReadiness.relevance`, `attachReadyCandidateCount`, `providerErrorCount`, `nextRequiredAction` | Reads compact `Event`, `Market`, and active `Outcome`; does not write DB | None. Real provider search is allowed, but unrelated candidates are reported as not attach-ready | Real matching World Cup soccer provider slugs/token IDs remain missing. |
+| Manual slug preview safety gate | `/api/mobile/events/:slug/provider-candidates` | POST | Internal admin key or admin session | `marketId`, `slugs[]` | Same candidate `attachReadiness` and `relevance` fields before any attach proposal can be used | Reads compact market/outcome identity only; attach still happens through `/provider-mapping` | No automatic attach. Even exact slugs must pass relevance and token completeness | Need reviewed exact soccer market slugs when provider search is noisy. |
+
+Cycle CV implementation notes:
+
+- A candidate can no longer be attach-ready only because it has `conditionId`, `externalMarketId`, `externalSlug`, and token IDs.
+- The relevance report records `matchedImportantTokens`, `outcomeNameMatches`, required outcome matches, and score.
+- The proof used real provider search and found 42 candidates, all rejected for relevance or outcome-shape mismatch.
+
 ## Cycle CU - Provider CLOB Depth Fetcher
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
