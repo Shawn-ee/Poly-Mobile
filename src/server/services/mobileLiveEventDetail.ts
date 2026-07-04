@@ -86,14 +86,33 @@ const groupRank = (market: MarketInput) => {
 };
 
 export const selectCompactLiveMarkets = (markets: MarketInput[]) =>
-  [...markets]
-    .filter((market) => market.outcomes.length > 0)
-    .sort((left, right) => {
+  {
+    const sorted = [...markets]
+      .filter((market) => market.outcomes.length > 0)
+      .sort((left, right) => {
       const rank = groupRank(left) - groupRank(right);
       if (rank !== 0) return rank;
       return left.displayOrder - right.displayOrder;
-    })
-    .slice(0, MAX_MARKETS);
+      });
+    const selected: MarketInput[] = [];
+    const addFirst = (predicate: (market: MarketInput) => boolean) => {
+      const match = sorted.find(predicate);
+      if (match && !selected.some((market) => market.id === match.id)) selected.push(match);
+    };
+    const lineMatches = (market: MarketInput, target: number) => Number(market.line?.toString()) === target;
+
+    addFirst((market) => groupRank(market) === 0);
+    addFirst((market) => market.marketType === "spread" && lineMatches(market, 1.5));
+    addFirst((market) => ["total_goals", "totals"].includes(market.marketType) && lineMatches(market, 2.5));
+    addFirst((market) => market.marketType === "team_total_goals" && lineMatches(market, 1.5));
+
+    for (const market of sorted) {
+      if (selected.length >= MAX_MARKETS) break;
+      if (!selected.some((item) => item.id === market.id)) selected.push(market);
+    }
+
+    return selected;
+  };
 
 export async function serializeMobileLiveEventDetail(input: {
   event: EventInput;

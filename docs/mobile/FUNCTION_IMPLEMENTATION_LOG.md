@@ -2,6 +2,57 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle BA - Compact Line Group Coverage And Totals Ready Depth
+
+Feature/page worked on:
+
+- PM-GAP-067 compact live-detail route coverage for line-market groups rendered by the live game page.
+- Selected Totals orderbook proof for backend market `a552efe6-3147-4573-be95-8fe15c068c08`.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/package.json`
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+- `package.json`
+
+Important functions/services touched:
+
+- `selectCompactLiveMarkets()` now reserves compact route slots for representative rendered groups: primary winner, Spread 1.5, Totals 2.5, and Team Total 1.5 before filling the rest of the mobile payload.
+- `matchingBackendLineMarket()` now maps the mobile Totals UI contract onto backend `total_goals` markets.
+- `mobile:live-totals-orderbook-depth-seed` seeds backend-shaped orderbook rows for the selected Totals market.
+- `smoke:tablet:server-live-totals-order-book` proves the Totals line group exposes a Book control and opens route-backed ready depth.
+
+User interactions supported:
+
+- User scrolls to Totals on the live game page, taps Book, and sees the selected Totals market order book with route-backed bid/ask depth.
+- The compact route no longer drops Totals because Spread lines consume the mobile market cap.
+
+State transitions:
+
+- Compact live-detail route selects representative line markets -> mobile adapter maps `total_goals` to Totals -> EventDetail renders `event-detail-open-order-book-totals` -> Totals Book tap calls `/api/orderbook/:marketId/book?maxLevels=24` -> overlay shows `orderbook-source-orderbook-route orderbook-status-ready orderbook-empty-none`.
+
+Known limitations:
+
+- Totals proof uses deterministic seeded `Order` rows, not provider-owned live liquidity.
+- Team Totals are now reserved in the compact route, but selected Team Total ready-depth tablet proof remains a later PM-GAP-067 cycle.
+- Provider freshness/stale/suspended states remain open.
+
+Verification:
+
+- `cmd /c npm.cmd run mobile:live-totals-orderbook-depth-seed`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-event-detail.test.ts src/__tests__/mobile-live-orderbook-depth-seeding.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/marketDepthService.test.ts mobile/src/__tests__/worldCupAdapter.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:server-live-totals-order-book`
+
 ## Cycle AZ - Selected Line Market Seeded Ready Depth
 
 Feature/page worked on:

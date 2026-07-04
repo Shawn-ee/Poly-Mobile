@@ -11,7 +11,7 @@ jest.mock("@/server/services/orderbookSnapshot", () => ({
   buildPublicOrderbookSnapshot: (...args: unknown[]) => buildPublicOrderbookSnapshot(...args),
 }));
 
-import { serializeMobileLiveEventDetail } from "@/server/services/mobileLiveEventDetail";
+import { selectCompactLiveMarkets, serializeMobileLiveEventDetail } from "@/server/services/mobileLiveEventDetail";
 
 const market = (overrides: Partial<Parameters<typeof serializeMobileLiveEventDetail>[0]["event"]["markets"][number]> = {}) => ({
   id: "market-main",
@@ -111,5 +111,50 @@ describe("mobile live event detail contract", () => {
       ],
     });
     expect(buildPublicOrderbookSnapshot).toHaveBeenCalledWith({ marketId: "market-main", maxLevels: 24 });
+  });
+
+  test("reserves compact payload slots for rendered line market groups", () => {
+    const markets = [
+      market({ id: "market-main", displayOrder: 0 }),
+      ...Array.from({ length: 16 }, (_, index) =>
+        market({
+          id: `spread-${index}`,
+          title: `Spread ${index}`,
+          marketGroupKey: "spreads",
+          marketGroupTitle: "Spreads",
+          displayOrder: index + 1,
+          marketType: "spread",
+          line: new Prisma.Decimal(index === 1 ? "1.5" : `${index + 0.5}`),
+        }),
+      ),
+      market({
+        id: "totals-25",
+        title: "Total goals 2.5",
+        marketGroupKey: "totals",
+        marketGroupTitle: "Totals",
+        displayOrder: 50,
+        marketType: "total_goals",
+        line: new Prisma.Decimal("2.5"),
+      }),
+      market({
+        id: "team-total-15",
+        title: "Curacao goals 1.5",
+        marketGroupKey: "team-totals",
+        marketGroupTitle: "Team totals",
+        displayOrder: 51,
+        marketType: "team_total_goals",
+        line: new Prisma.Decimal("1.5"),
+      }),
+    ];
+
+    const compactMarkets = selectCompactLiveMarkets(markets);
+
+    expect(compactMarkets).toHaveLength(14);
+    expect(compactMarkets.map((item) => item.id)).toEqual(expect.arrayContaining([
+      "market-main",
+      "spread-1",
+      "totals-25",
+      "team-total-15",
+    ]));
   });
 });
