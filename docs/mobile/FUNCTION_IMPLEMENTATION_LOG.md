@@ -2,6 +2,25 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle EN-B - Visible Route-Backed Book-Staged Limit Lifecycle
+
+Feature/page worked on:
+
+- Android visible proof for route-backed live event Book/orderbook -> provider-backed Spread ask -> staged limit ticket -> fake-token submit -> Portfolio/open order/activity/canceled continuity.
+- Extends the EM-B lifecycle smoke so a supplied backend event slug requires backend health and writes EN-B-owned screenshots/XML/proof artifacts under `cycle-EN-B-visible-route-limit-lifecycle`.
+
+Frontend/harness touched:
+
+- `mobile/scripts/smoke.ps1`
+- `docs/mobile/screenshots/cycle-EN-B-visible-route-limit-lifecycle/`
+- `docs/mobile/harness/cycle-EN-B-visible-route-limit-lifecycle/`
+
+Important functions/interactions/state transitions touched:
+
+- `-EventDetailVisibleLimitLifecycle` now has a route-backed branch when `-ServerEventSlug` is supplied.
+- The route-backed branch opens the live-detail route event, opens Book, switches to provider-backed Spread `1.5`, extracts the tapped ask limit from the visible ladder, and asserts the same limit price/side/provider identity through ticket, latest order, open order, latest activity, and canceled activity.
+- Fallback guards reject fixture markers, Mexico/Ecuador fixture labels, and generic moneyline fallback labels on the selected Portfolio/activity lifecycle.
+
 ## Cycle EM Integrated - Book-Staged Limit Lifecycle
 
 Feature/page worked on:
