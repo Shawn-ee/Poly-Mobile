@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
 import type { PolyApi } from "../api";
-import { applyDepthErrorToEvent, applyDepthLoadingToEvent, applyDepthStateToEvent, depthMarketForEvent, loadMarketDepthState } from "../services/marketDepthService";
+import { applyDepthErrorToEvent, applyDepthLoadingToEvent, applyDepthStateToEvent, applyMarketDepthLoadingToEvent, depthMarketForEvent, loadMarketDepthState } from "../services/marketDepthService";
 import { worldCupEvents } from "../mocks/worldCup";
 
 describe("market depth service", () => {
@@ -37,7 +37,33 @@ describe("market depth service", () => {
     });
     expect(hydrated.orderbookDepthSource).toBe("orderbook-route");
     expect(hydrated.orderbookDepthStatus).toBe("ready");
+    expect(hydrated.orderbookDepthMarketId).toBe("france-argentina-live");
     expect(hydrated.markets[0]?.orderbookDepth).toEqual(result.levels);
+  });
+
+  test("loads backend orderbook depth for an explicitly selected market", async () => {
+    const event = worldCupEvents.find((item) => item.status === "live")!;
+    const selectedMarketId = event.markets[1]!.id;
+    const getOrderbook = vi.fn(async () => ({
+      marketId: selectedMarketId,
+      outcomeId: null,
+      generatedAt: "2026-06-15T12:05:00.000Z",
+      emptyState: "no-depth" as const,
+      levels: [],
+      bids: [],
+      asks: [],
+    }));
+
+    const result = await loadMarketDepthState({ getOrderbook } as unknown as PolyApi, event, selectedMarketId);
+    const loading = applyMarketDepthLoadingToEvent(event, selectedMarketId);
+    const hydrated = applyDepthStateToEvent(event, result);
+
+    expect(depthMarketForEvent(event, selectedMarketId)?.id).toBe(selectedMarketId);
+    expect(getOrderbook).toHaveBeenCalledWith(selectedMarketId, { maxLevels: 24 });
+    expect(loading.orderbookDepthMarketId).toBe(selectedMarketId);
+    expect(hydrated.orderbookDepthStatus).toBe("empty");
+    expect(hydrated.orderbookDepthMarketId).toBe(selectedMarketId);
+    expect(hydrated.orderbookDepthEmptyState).toBe("no-depth");
   });
 
   test("preserves explicit empty and error states", () => {
@@ -56,4 +82,3 @@ describe("market depth service", () => {
     expect(applyDepthErrorToEvent(event).orderbookDepthStatus).toBe("error");
   });
 });
-

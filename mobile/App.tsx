@@ -41,7 +41,7 @@ import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { resolvePositionTradeTarget } from "./src/services/positionTradeTargetService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
 import { applyChartErrorToEvent, applyChartLoadingToEvent, applyChartStateToEvent, loadMarketChartState } from "./src/services/marketChartService";
-import { applyDepthErrorToEvent, applyDepthLoadingToEvent, applyDepthStateToEvent, loadMarketDepthState } from "./src/services/marketDepthService";
+import { applyMarketDepthErrorToEvent, applyMarketDepthLoadingToEvent, applyDepthStateToEvent, loadMarketDepthState } from "./src/services/marketDepthService";
 import {
   applyTicketQuoteToOutcome,
   applyTicketQuotesToEvent,
@@ -150,6 +150,7 @@ export default function App() {
   const [mainTab, setMainTab] = useState<MainTab>("home");
   const [worldCupTab, setWorldCupTab] = useState<WorldCupTab>("games");
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [selectedDepthMarketId, setSelectedDepthMarketId] = useState<string | null>(null);
   const [eventDetailForcedSide, setEventDetailForcedSide] = useState<"buy" | "sell" | null>(null);
   const [query, setQuery] = useState("");
   const [ticket, setTicket] = useState<Ticket | null>(null);
@@ -397,6 +398,7 @@ export default function App() {
         setTicketOrderError(null);
         setTicketOrderErrorDetail(null);
         setSelectedEvent(null);
+        setSelectedDepthMarketId(null);
         setQuery("");
         setMainTab("home");
         setWorldCupTab("games");
@@ -859,6 +861,10 @@ export default function App() {
     return () => subscription.remove();
   }, [selectedEvent]);
 
+  useEffect(() => {
+    setSelectedDepthMarketId(null);
+  }, [selectedEvent?.id]);
+
   const refreshLiveMarkets = useCallback(async () => {
     setIsRefreshingLive(true);
     try {
@@ -965,9 +971,9 @@ export default function App() {
     const eventId = selectedEvent.id;
     setSelectedEvent((current) => {
       if (!current || current.id !== eventId) return current;
-      return applyDepthLoadingToEvent(current);
+      return applyMarketDepthLoadingToEvent(current, selectedDepthMarketId);
     });
-    loadMarketDepthState(api, selectedEvent)
+    loadMarketDepthState(api, selectedEvent, selectedDepthMarketId)
       .then((depthState) => {
         if (cancelled || !mounted.current) return;
         setSelectedEvent((current) => {
@@ -979,13 +985,13 @@ export default function App() {
         if (cancelled || !mounted.current) return;
         setSelectedEvent((current) => {
           if (!current || current.id !== eventId) return current;
-          return applyDepthErrorToEvent(current);
+          return applyMarketDepthErrorToEvent(current, selectedDepthMarketId);
         });
       });
     return () => {
       cancelled = true;
     };
-  }, [api, selectedEvent?.id]);
+  }, [api, selectedEvent?.id, selectedDepthMarketId]);
 
   useEffect(() => {
     if (ORDER_MODE !== "server" || !selectedEvent) return undefined;
@@ -1233,6 +1239,7 @@ export default function App() {
             }}
             isSaved={savedEventIds.has(selectedEvent.id)}
             toggleSavedEvent={toggleSavedEvent}
+            requestMarketDepth={setSelectedDepthMarketId}
             positions={positions}
             closePosition={closePosition}
             openPositionTrade={openPositionTrade}

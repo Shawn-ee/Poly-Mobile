@@ -46,6 +46,7 @@ export type Event = {
   chartHistoryEmptyState?: "no-history" | null;
   orderbookDepthSource?: "embedded" | "orderbook-route";
   orderbookDepthStatus?: "idle" | "loading" | "ready" | "empty" | "error";
+  orderbookDepthMarketId?: string | null;
   orderbookDepthLastUpdated?: string | null;
   orderbookDepthEmptyState?: "no-depth" | null;
   markets: Market[];

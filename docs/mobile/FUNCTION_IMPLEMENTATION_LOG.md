@@ -2,6 +2,58 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle AY - Selected Line Market Depth Identity
+
+Feature/page worked on:
+
+- PM-GAP-067 on-demand orderbook/depth identity for selected live line markets.
+- Live game page order book now tracks the exact selected market id, not only the primary winner market.
+
+Frontend components touched:
+
+- `mobile/App.tsx`
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/services/marketDepthService.ts`
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/src/__tests__/marketDepthService.test.ts`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/package.json`
+
+Backend components touched:
+
+- No route/schema code changed. This cycle consumes the existing `/api/orderbook/:marketId/book` route for a selected non-primary live market.
+
+Important functions/services touched:
+
+- `loadMarketDepthState(api, event, marketId)` can now request depth for an explicit market id.
+- `applyMarketDepthLoadingToEvent()` and `applyMarketDepthErrorToEvent()` preserve the selected market id while loading/error states are visible.
+- `applyDepthStateToEvent()` records `orderbookDepthMarketId` for ready/empty states.
+- `EventDetail` keeps `orderBookMarketId`, opens order books for backend-backed line groups, and labels overlays with `event-detail-order-book-market-<marketId>`.
+
+User interactions supported:
+
+- User can open the live Spread market order book from the game page.
+- Holiwyn requests `/api/orderbook/:marketId/book` for that selected spread market, then shows a truthful `No depth` state when the backend has no seeded liquidity for that line.
+- Buy/Sell controls remain attached to the selected line market outcomes.
+
+State transitions:
+
+- Spread Book tap -> `requestMarketDepth(spreadMarketId)` -> selected event depth state becomes `loading` for that market id -> orderbook route returns empty -> overlay shows `orderbook-source-orderbook-route orderbook-status-empty orderbook-empty-no-depth` for the spread market id.
+
+Known limitations:
+
+- This cycle proves selected-market depth identity and empty-state behavior, not seeded liquidity for every line market.
+- Real provider/liquidity ingestion remains required before line-market order books can show full live depth like Polymarket.
+
+Verification:
+
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/marketDepthService.test.ts mobile/src/__tests__/worldCupAdapter.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:server-live-line-order-book`
+
 ## Cycle AX - Compact Live Detail Route And Route-Backed Depth Proof
 
 Feature/page worked on:

@@ -153,6 +153,7 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
   const away = event.awayTeamName || event.title.split(/\s+vs\.?\s+/i)[1] || "Away";
   const status = eventStatus(event);
   const normalizedMarkets = markets.map(normalizeMarket).filter((market) => market.outcomes.length > 0);
+  const depthMarket = normalizedMarkets.find((market) => (market.orderbookDepth?.length ?? 0) > 0);
   const isFuturesBundle = normalizedMarkets.length > 0 && normalizedMarkets.every((market) => market.type === "future");
   const title = isGenericFixtureTitle(event.title) && isFuturesBundle ? "World Cup futures" : event.title;
   return {
@@ -172,8 +173,9 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
     chartHistory: event.chartHistory,
     chartHistorySource: event.chartHistory?.length ? "embedded" : undefined,
     chartHistoryStatus: event.chartHistory?.length ? "ready" : undefined,
-    orderbookDepthSource: normalizedMarkets.some((market) => (market.orderbookDepth?.length ?? 0) > 0) ? "embedded" : undefined,
-    orderbookDepthStatus: normalizedMarkets.some((market) => (market.orderbookDepth?.length ?? 0) > 0) ? "ready" : undefined,
+    orderbookDepthSource: depthMarket ? "embedded" : undefined,
+    orderbookDepthStatus: depthMarket ? "ready" : undefined,
+    orderbookDepthMarketId: depthMarket?.id,
     markets: normalizedMarkets,
   };
 };

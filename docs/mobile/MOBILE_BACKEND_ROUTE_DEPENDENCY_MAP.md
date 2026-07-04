@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle AY - Selected Line Market Depth Identity
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Selected live line market order book | `/api/orderbook/:marketId/book?maxLevels=24` through `PolyApi.getOrderbook()` and `loadMarketDepthState(api, event, marketId)` | GET | Optional for public viewing; bearer token may be sent by runtime client | None | `marketId`, `generatedAt`, `emptyState`, `levels[].outcomeId`, `levels[].side`, `levels[].price`, `levels[].shares`, `levels[].total` | `Market`, `Outcome`, open `Order` rows through `buildPublicOrderbookSnapshot()` | UI keeps showing the selected market and truthful route empty state when no backend depth exists | Seeded/provider liquidity is still missing for most spread/totals/team-total line markets. |
+| Live game order-book state identity | Client state plus orderbook route | Client state -> GET | Optional viewing | None | `orderbookDepthMarketId`, `orderbookDepthSource`, `orderbookDepthStatus`, `orderbookDepthEmptyState` | Same orderbook route plus selected mobile `Market.id` | Local fixtures remain fallback only when server mode is unavailable | Need on-demand depth hydration for every market group and a provider/source freshness model before production parity. |
+
+Cycle AY implementation notes:
+
+- This cycle closes a repeated structural ambiguity: the app can now prove which market id its order-book state belongs to.
+- Empty depth is a valid backend state and is now visible for unseeded line markets instead of falsely reusing primary-market route depth.
+- Backend parity is still incomplete until real or seeded liquidity exists for line markets beyond the primary winner market.
+
 ## Cycle AX - Compact Live Detail Route And Route-Backed Depth Proof
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

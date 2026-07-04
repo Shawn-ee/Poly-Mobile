@@ -2,6 +2,38 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle AY - Selected Line Market Depth Identity
+
+Fields now provided or wired:
+
+- Mobile event state now records `orderbookDepthMarketId`, so route-backed depth status belongs to a specific market id.
+- `loadMarketDepthState()` can request depth for an explicit selected market id.
+- EventDetail order-book overlays include `event-detail-order-book-market-<marketId>` plus route source/status/empty-state labels.
+- Samsung tablet proof confirms the Spread market id `ac527022-07f3-4abb-90f0-b291466e8459` returns route-backed `empty/no-depth` instead of incorrectly inheriting primary-market depth.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Seeded or provider-backed liquidity for spread, totals, team totals, halves, and other line markets.
+- Market freshness/staleness/suspended metadata per selected line market.
+- A richer mobile depth summary route if fetching every market book one at a time becomes too slow.
+
+Schema mismatch:
+
+- Existing open `Order` rows can back depth, but there is no first-class provider/liquidity model for line-market depth availability.
+
+Route mismatch:
+
+- `/api/orderbook/:marketId/book` is sufficient for on-demand selected market depth.
+- The compact live-detail route still embeds depth only for the primary market; other markets rely on on-demand route calls.
+
+Temporary mock/static data:
+
+- Local fallback line markets still exist for some older fixture flows, but server live proof now uses backend market ids from the compact route for the selected spread book.
+
+Future migration concern:
+
+- Add a line-market liquidity seeding/provider cycle so non-primary line markets can prove `ready` depth, not only `empty` depth.
+
 ## Cycle AX - Compact Live Detail Route And Route-Backed Depth Proof
 
 Fields now provided or wired:

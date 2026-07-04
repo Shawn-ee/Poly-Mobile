@@ -10,11 +10,13 @@ export type MarketDepthLoadResult = {
   levels: OrderbookBookLevel[];
 };
 
-export const depthMarketForEvent = (event: Event): Market | undefined =>
-  event.markets.find((market) => market.type !== "prop" && market.type !== "future") ?? event.markets[0];
+export const depthMarketForEvent = (event: Event, marketId?: string | null): Market | undefined =>
+  (marketId ? event.markets.find((market) => market.id === marketId) : undefined)
+  ?? event.markets.find((market) => market.type !== "prop" && market.type !== "future")
+  ?? event.markets[0];
 
-export const loadMarketDepthState = async (api: PolyApi, event: Event): Promise<MarketDepthLoadResult> => {
-  const market = depthMarketForEvent(event);
+export const loadMarketDepthState = async (api: PolyApi, event: Event, marketId?: string | null): Promise<MarketDepthLoadResult> => {
+  const market = depthMarketForEvent(event, marketId);
   if (!market) {
     return { status: "empty", marketId: null, lastUpdated: null, emptyState: "no-depth", levels: [] };
   }
@@ -33,10 +35,23 @@ export const applyDepthLoadingToEvent = (event: Event): Event => ({
   orderbookDepthStatus: "loading",
 });
 
+export const applyMarketDepthLoadingToEvent = (event: Event, marketId?: string | null): Event => ({
+  ...event,
+  orderbookDepthStatus: "loading",
+  orderbookDepthMarketId: marketId ?? depthMarketForEvent(event)?.id ?? null,
+});
+
 export const applyDepthErrorToEvent = (event: Event): Event => ({
   ...event,
   orderbookDepthStatus: "error",
   orderbookDepthSource: event.orderbookDepthSource ?? "embedded",
+});
+
+export const applyMarketDepthErrorToEvent = (event: Event, marketId?: string | null): Event => ({
+  ...event,
+  orderbookDepthStatus: "error",
+  orderbookDepthSource: event.orderbookDepthSource ?? "embedded",
+  orderbookDepthMarketId: marketId ?? event.orderbookDepthMarketId ?? null,
 });
 
 export const applyDepthStateToEvent = (event: Event, result: MarketDepthLoadResult): Event => {
@@ -44,6 +59,7 @@ export const applyDepthStateToEvent = (event: Event, result: MarketDepthLoadResu
     return {
       ...event,
       orderbookDepthStatus: "empty",
+      orderbookDepthMarketId: result.marketId,
       orderbookDepthLastUpdated: result.lastUpdated,
       orderbookDepthEmptyState: result.emptyState,
     };
@@ -53,6 +69,7 @@ export const applyDepthStateToEvent = (event: Event, result: MarketDepthLoadResu
     ...event,
     orderbookDepthSource: "orderbook-route",
     orderbookDepthStatus: "ready",
+    orderbookDepthMarketId: result.marketId,
     orderbookDepthLastUpdated: result.lastUpdated,
     orderbookDepthEmptyState: null,
     markets: event.markets.map((market) =>
@@ -71,4 +88,3 @@ export const applyDepthStateToEvent = (event: Event, result: MarketDepthLoadResu
     ),
   };
 };
-

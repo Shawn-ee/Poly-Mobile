@@ -108,6 +108,7 @@ type GameLineGroup = {
   id: string;
   title: string;
   subtitle?: string;
+  backendMarket?: Market;
   rows: DisplayOutcome[];
   lineValue?: string;
   lineOptions?: string[];
@@ -148,6 +149,7 @@ export function EventDetail({
   goBack,
   isSaved,
   toggleSavedEvent,
+  requestMarketDepth,
   positions = [],
   closePosition,
   openPositionTrade,
@@ -160,6 +162,7 @@ export function EventDetail({
   goBack: () => void;
   isSaved: boolean;
   toggleSavedEvent: (event: Event) => void;
+  requestMarketDepth?: (marketId: string) => void;
   positions?: Position[];
   closePosition?: (position: Position) => void;
   openPositionTrade?: (position: Position, side: "buy" | "sell") => void;
@@ -177,11 +180,13 @@ export function EventDetail({
   const [savedNoticeVisible, setSavedNoticeVisible] = useState(false);
   const [shareSheetVisible, setShareSheetVisible] = useState(false);
   const [orderBookVisible, setOrderBookVisible] = useState(false);
+  const [orderBookMarketId, setOrderBookMarketId] = useState<string | null>(null);
   const [compactHeaderVisible, setCompactHeaderVisible] = useState(false);
   const isLiveEvent = event.status === "live";
   const gameLineMarkets = useMemo(() => event.markets.filter((market) => market.type !== "prop" && market.type !== "future"), [event.markets]);
   const propMarkets = useMemo(() => event.markets.filter((market) => market.type === "prop"), [event.markets]);
   const primaryMarket = gameLineMarkets[0] ?? event.markets[0];
+  const orderBookMarket = event.markets.find((market) => market.id === orderBookMarketId) ?? primaryMarket;
   const primaryOutcomes = primaryMarket?.outcomes.slice(0, 2) ?? [];
   const [expandedMarketIds, setExpandedMarketIds] = useState<Record<string, boolean>>({
     "regulation-time-winner": true,
@@ -205,7 +210,11 @@ export function EventDetail({
   const homeChartSeries = event.chartHistory?.filter((point) => point.outcomeId === leftOutcome?.id).map((point) => point.probability) ?? homeChartPoints;
   const awayChartSeries = event.chartHistory?.filter((point) => point.outcomeId === rightOutcome?.id).map((point) => point.probability) ?? awayChartPoints;
   const chartRouteStatus = event.chartHistoryStatus ?? (event.chartHistorySource === "market-chart-route" ? "ready" : "idle");
-  const depthRouteStatus = event.orderbookDepthStatus ?? (event.orderbookDepthSource === "orderbook-route" ? "ready" : "idle");
+  const depthMarketMatches = Boolean(orderBookMarket && event.orderbookDepthMarketId === orderBookMarket.id);
+  const selectedDepthSource = depthMarketMatches ? event.orderbookDepthSource : undefined;
+  const depthRouteStatus = depthMarketMatches
+    ? (event.orderbookDepthStatus ?? (event.orderbookDepthSource === "orderbook-route" ? "ready" : "idle"))
+    : "idle";
   const chartStateText =
     chartRouteStatus === "loading"
       ? "Updating chart"
@@ -225,9 +234,14 @@ export function EventDetail({
         ? "No depth"
         : depthRouteStatus === "error"
           ? "Depth unavailable"
-          : event.orderbookDepthSource === "orderbook-route"
+          : selectedDepthSource === "orderbook-route"
             ? "Route depth"
             : "Fallback depth";
+  const openOrderBookForMarket = (market: Market) => {
+    setOrderBookMarketId(market.id);
+    requestMarketDepth?.(market.id);
+    setOrderBookVisible(true);
+  };
   const liveStatRows = event.liveStats ?? [
     { label: "Possession", home: "54%", away: "46%" },
     { label: "Shots", home: "8", away: "5" },
@@ -289,6 +303,18 @@ export function EventDetail({
     type: "game-line",
     outcomes,
   });
+  const lineAsNumber = (value: string | null | undefined) => {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
+  };
+  const matchingBackendLineMarket = (type: Market["marketType"], line: string) => {
+    const target = Number(line);
+    if (!Number.isFinite(target)) return undefined;
+    return event.markets.find((market) => market.marketType === type && Math.abs(lineAsNumber(market.line) ?? Number.NaN) === target)
+      ?? event.markets.find((market) => market.marketType === type);
+  };
+  const backendSpreadMarket = matchingBackendLineMarket("spread", spreadLine);
+  const backendTotalsMarket = matchingBackendLineMarket("totals", totalsLine);
   const spreadMarket = makeLineMarket(`${event.id}-spread-${spreadLine}-${linePeriodCode(spreadPeriod)}`, `Spread ${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`, []);
   const spreadYesOutcome = withLineOutcome({
     id: `${spreadMarket.id}-yes`,
@@ -354,6 +380,7 @@ export function EventDetail({
       id: "totals",
       title: "Totals",
       subtitle: `Total goals over ${totalsLine}`,
+      backendMarket: backendTotalsMarket,
       lineValue: totalsLine,
       lineOptions: totalsLineOptions,
       selectedPeriod: totalsPeriod,
@@ -551,22 +578,22 @@ export function EventDetail({
   );
 
   const renderOrderBook = () => {
-    if (!primaryMarket) return null;
+    if (!orderBookMarket) return null;
     return (
-      <View accessibilityLabel={`event-detail-order-book-screen orderbook-source-${event.orderbookDepthSource ?? "fallback"} orderbook-status-${depthRouteStatus} orderbook-empty-${event.orderbookDepthEmptyState ?? "none"}`} style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
+      <View accessibilityLabel={`event-detail-order-book-screen event-detail-order-book-market-${orderBookMarket.id} orderbook-source-${selectedDepthSource ?? "fallback"} orderbook-status-${depthRouteStatus} orderbook-empty-${depthMarketMatches ? event.orderbookDepthEmptyState ?? "none" : "not-selected"}`} style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
         <View style={styles.orderBookHeader}>
           <View>
             <Text style={styles.orderBookTitle}>Order Book</Text>
-            <Text style={styles.orderBookSubtitle}>{label(locale, event)} - {label(locale, primaryMarket)}</Text>
+            <Text style={styles.orderBookSubtitle}>{label(locale, event)} - {label(locale, orderBookMarket)}</Text>
           </View>
           <Pressable accessibilityLabel="event-detail-order-book-close" onPress={() => setOrderBookVisible(false)} style={styles.orderBookClose} testID="event-detail-order-book-close">
             <Ionicons name="close" color="#f8fafc" size={22} />
           </Pressable>
         </View>
         <View style={styles.orderBookSummary}>
-          <Text style={styles.orderBookSummaryText}>{t.bestBid} {marketDepth(primaryMarket).bid}</Text>
-          <Text style={styles.orderBookSummaryText}>{t.bestAsk} {marketDepth(primaryMarket).ask}</Text>
-          <Text style={styles.orderBookSummaryText}>{t.spread} {marketDepth(primaryMarket).spread}</Text>
+          <Text style={styles.orderBookSummaryText}>{t.bestBid} {marketDepth(orderBookMarket).bid}</Text>
+          <Text style={styles.orderBookSummaryText}>{t.bestAsk} {marketDepth(orderBookMarket).ask}</Text>
+          <Text style={styles.orderBookSummaryText}>{t.spread} {marketDepth(orderBookMarket).spread}</Text>
         </View>
         <View accessibilityLabel={`event-detail-order-book-depth-state orderbook-status-${depthRouteStatus} ${depthStateText}`} style={[styles.orderBookStatePill, depthRouteStatus === "error" && styles.orderBookStatePillError, depthRouteStatus === "empty" && styles.orderBookStatePillEmpty]} testID="event-detail-order-book-depth-state">
           <Ionicons
@@ -577,7 +604,7 @@ export function EventDetail({
           <Text style={[styles.orderBookStateText, depthRouteStatus === "error" && styles.orderBookStateTextError, depthRouteStatus === "empty" && styles.orderBookStateTextEmpty]}>{depthStateText}</Text>
         </View>
         <ScrollView style={styles.orderBookScroll} contentContainerStyle={styles.orderBookPad}>
-          {primaryMarket.outcomes.map((outcome) => {
+          {orderBookMarket.outcomes.map((outcome) => {
             const depth = outcomeDepth(outcome);
             const fallbackBidSize = Math.max(Math.round(outcome.probability * 20), 100);
             const fallbackAskSize = Math.max(Math.round((100 - outcome.probability) * 25), 100);
@@ -592,10 +619,10 @@ export function EventDetail({
                     <Text style={styles.orderBookOutcomeMeta}>{outcome.probability}% - {outcomeOdds(outcome)}x</Text>
                   </View>
                   <View style={styles.orderBookActionRow}>
-                    <Pressable accessibilityLabel={`order-book-buy-${outcome.id}`} onPress={() => openTicket(primaryMarket, outcome, event, "buy")} style={[styles.orderBookTradeButton, { backgroundColor: outcome.color }]} testID={`order-book-buy-${outcome.id}`}>
+                    <Pressable accessibilityLabel={`order-book-buy-${outcome.id}`} onPress={() => openTicket(orderBookMarket, outcome, event, "buy")} style={[styles.orderBookTradeButton, { backgroundColor: outcome.color }]} testID={`order-book-buy-${outcome.id}`}>
                       <Text style={styles.orderBookTradeText}>{t.buy}</Text>
                     </Pressable>
-                    <Pressable accessibilityLabel={`order-book-sell-${outcome.id}`} onPress={() => openTicket(primaryMarket, outcome, event, "sell")} style={styles.orderBookSellButton} testID={`order-book-sell-${outcome.id}`}>
+                    <Pressable accessibilityLabel={`order-book-sell-${outcome.id}`} onPress={() => openTicket(orderBookMarket, outcome, event, "sell")} style={styles.orderBookSellButton} testID={`order-book-sell-${outcome.id}`}>
                       <Text style={styles.orderBookSellText}>{t.sell}</Text>
                     </Pressable>
                   </View>
@@ -665,6 +692,17 @@ export function EventDetail({
           {group.subtitle && <Text style={styles.marketSubcopy}>{group.subtitle}</Text>}
         </View>
         <View style={styles.headerRightCluster}>
+          {group.backendMarket && (
+            <Pressable
+              accessibilityLabel={`event-detail-open-order-book-${group.id} ${group.backendMarket.id}`}
+              onPress={() => openOrderBookForMarket(group.backendMarket!)}
+              style={styles.depthBookButton}
+              testID={`event-detail-open-order-book-${group.id}`}
+            >
+              <Ionicons name="book-outline" color="#dbeafe" size={14} />
+              <Text style={styles.depthBookText}>Book</Text>
+            </Pressable>
+          )}
           {group.lineValue && (
             <View style={styles.lineValuePill}>
               <Text style={styles.lineValueText}>{group.lineValue}</Text>
@@ -1215,7 +1253,7 @@ export function EventDetail({
                       <Text style={styles.depthText}>{t.bestBid} {marketDepth(primaryMarket).bid}</Text>
                       <Text style={styles.depthText}>{t.bestAsk} {marketDepth(primaryMarket).ask}</Text>
                       <Text style={styles.depthText}>{t.spread} {marketDepth(primaryMarket).spread}</Text>
-                      <Pressable accessibilityLabel="event-detail-open-order-book" onPress={() => setOrderBookVisible(true)} style={styles.depthBookButton} testID="event-detail-open-order-book">
+                      <Pressable accessibilityLabel="event-detail-open-order-book" onPress={() => openOrderBookForMarket(primaryMarket)} style={styles.depthBookButton} testID="event-detail-open-order-book">
                         <Ionicons name="book-outline" color="#dbeafe" size={14} />
                         <Text style={styles.depthBookText}>Book</Text>
                       </Pressable>
@@ -1240,6 +1278,17 @@ export function EventDetail({
                   <Text style={styles.marketSubcopy}>{homeCode} to win by over {spreadLine} goals</Text>
                 </View>
                 <View style={styles.headerRightCluster}>
+                  {backendSpreadMarket && (
+                    <Pressable
+                      accessibilityLabel={`event-detail-open-order-book-spread ${backendSpreadMarket.id}`}
+                      onPress={() => openOrderBookForMarket(backendSpreadMarket)}
+                      style={styles.depthBookButton}
+                      testID="event-detail-open-order-book-spread"
+                    >
+                      <Ionicons name="book-outline" color="#dbeafe" size={14} />
+                      <Text style={styles.depthBookText}>Book</Text>
+                    </Pressable>
+                  )}
                   <View style={styles.lineValuePill}>
                     <Text style={styles.lineValueText}>{spreadLine}</Text>
                     <Ionicons name="chevron-down" color="#86efac" size={16} />
