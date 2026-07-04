@@ -432,3 +432,41 @@ Pass for selected Home -> Event Detail -> Spread ticket -> fake-token order -> P
 
 Remaining gaps:
 Repeat this exact Home-opened flow in server order mode and replace disposable provider-shaped proof events with production active Polymarket event breadth.
+
+### 2026-07-04 - Cycle FG - Home route server order and Portfolio open order
+
+Reference device:
+Product steering plus existing Polymarket sports audits. Fresh S23 proof was not required for this local server-order gate.
+
+Holiwyn device:
+Samsung tablet / Holiwyn Expo Go / local Expo port `8276`.
+
+Holiwyn app mode:
+`EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE=server`, `EXPO_PUBLIC_SHOW_ORDERBOOK` unset, backend `http://172.16.200.14:3002`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, tapped the freshly seeded route-backed disposable World Cup live event card, verified the same Event Detail opened, selected the Spread outcome, entered `$25` in the ticket, submitted the server fake-token buy, and verified server-synced Portfolio latest order/open order identity.
+
+Holiwyn evidence:
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-event.json`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-wrapper.json`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-proof.json`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-home.xml`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-detail-top.xml`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-line-markets.xml`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-portfolio.xml`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-home.png`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-detail-top.png`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-line-markets.png`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-portfolio.png`
+
+Smoke/tests:
+PowerShell parser checks, mobile typecheck, provider breadth route proof, mobile dev credential setup, backend health, and tablet proof wrapper passed.
+
+Result:
+Pass for selected Home -> Event Detail -> Spread ticket -> server fake-token order -> server Portfolio open order flow with orderbook hidden by default.
+
+Remaining gaps:
+Filled/cancel lifecycle from the exact Home-opened path and production active Polymarket World Cup provider breadth.

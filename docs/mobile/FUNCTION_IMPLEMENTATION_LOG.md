@@ -5236,3 +5236,61 @@ Known limitations:
 
 - FF runs in local mock/fake-token order mode. Server order mode for the same Home-opened flow remains P1.
 - FF uses disposable provider-shaped data. Production active Polymarket World Cup breadth remains P1.
+
+## Cycle FG - Home Route Server Order And Portfolio Open Order
+
+Feature/page worked on:
+
+- Local MVP Home -> route-backed Event Detail -> Spread ticket -> server fake-token order -> server Portfolio open order.
+
+Frontend/harness/backend files touched:
+
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/scripts/local-mvp-home-route-server-order-proof.ps1`
+- `docs/mobile/audits/cycle-fg-home-route-server-order.md`
+
+Important functions/services touched:
+
+- Added `LocalMvpHomeRouteServerOrderFlow` harness support.
+- Added a wrapper that creates a disposable route-backed provider event, creates a temporary mobile dev credential, launches server market-data/server order mode, and runs the tablet proof.
+- Reused existing `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` mobile flows. No backend route, schema, or service code was changed.
+
+User interactions supported/proven:
+
+- Open Holiwyn on the Samsung tablet in server market-data and server order mode.
+- Tap the freshly seeded route-backed Home event card.
+- Open the same Event Detail with chart/probability and Game Lines.
+- Tap the route-backed Spread outcome.
+- Add `$25` using ticket presets and submit the fake-token buy through the backend.
+- Verify server-synced Portfolio shows the latest order and open order row with selected spread line, period, provider source, and provider token preserved.
+- Default orderbook UI remains hidden.
+
+Validation:
+
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+- PowerShell parser check for `mobile/scripts/local-mvp-home-route-server-order-proof.ps1`
+- `npm --prefix mobile run typecheck`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/local-mvp-home-route-server-order-proof.ps1 -Port 8276 -BackendBaseUrl http://172.16.200.14:3002`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-event.json`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-wrapper.json`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-proof.json`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-home.xml`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-detail-top.xml`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-line-markets.xml`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-portfolio.xml`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-home.png`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-detail-top.png`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-line-markets.png`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-portfolio.png`
+
+Known limitations:
+
+- FG proves the server open-order path, not the filled/cancel lifecycle from the exact Home-opened path.
+- FG uses disposable provider-shaped data. Production active Polymarket World Cup breadth remains P1.

@@ -3116,3 +3116,56 @@ Decision:
 - Unresolved P0 gaps: 0 for selected feature.
 - Remaining P1/P2 gaps: server order mode for the same Home-opened path and production active provider breadth.
 - Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Home Route Server Order And Portfolio Open Order
+
+Cycle: FG
+
+Lead Agent target: Continue the Local MVP route-backed Home flow from FF through server fake-token order submit and server-synced Portfolio open order.
+
+Reference Audit Agent: Product steering audit from current Local MVP retail-flow direction. This cycle verifies the Holiwyn server-order user-flow step and does not claim full production Polymarket parity.
+
+Implementation Agent: Added focused `LocalMvpHomeRouteServerOrderFlow` Android harness path and wrapper.
+
+Audit Gate Agent: PowerShell parser checks, mobile typecheck, provider-shaped route event setup, temporary mobile dev credential, backend health, and Samsung tablet proof.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8276`.
+
+Holiwyn evidence:
+
+- `docs/mobile/audits/cycle-fg-home-route-server-order.md`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-event.json`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-wrapper.json`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-proof.json`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-home.xml`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-detail-top.xml`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-line-markets.xml`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-portfolio.xml`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-home.png`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-detail-top.png`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-line-markets.png`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-portfolio.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FG-ORDER-P0-01 | P0 | Pass | Tablet Home hierarchy shows the freshly seeded route-backed event card and compact outcomes. | N/A |
+| FG-ORDER-P0-02 | P0 | Pass | Tapping the Home card opens same route event detail with chart/probability and Game Lines. | N/A |
+| FG-ORDER-P0-03 | P0 | Pass | Line-market hierarchy shows Spread row with backend line-market source, line `1.5`, period `Reg. Time`, and provider source. | N/A |
+| FG-ORDER-P0-04 | P0 | Pass | Spread outcome opens ticket with selected market type, line, period, side, provider source, and provider token. | N/A |
+| FG-ORDER-P0-05 | P0 | Pass | Amount presets produce `$25` and `Swipe up to buy`. | N/A |
+| FG-ORDER-P0-06 | P0 | Pass | Submit posts a server fake-token order through `/api/orders`. | N/A |
+| FG-ORDER-P0-07 | P0 | Pass | Server Portfolio sync shows latest order/open order preserving selected identity. | N/A |
+| FG-ORDER-P0-08 | P0 | Pass | Default orderbook markers are absent from evidence. | N/A |
+| FG-ORDER-P1-01 | P1 | Open | Filled/cancel lifecycle from the exact Home-opened path is not covered by FG. | Future Android proof continuing from Home. |
+| FG-ORDER-P1-02 | P1 | Open | Production active Polymarket event breadth is not covered by disposable proof. | Map/import more real active provider events. |
+
+Decision:
+
+- Pass/fail: Pass for selected Home -> Event Detail -> Spread ticket -> server fake-token order -> server Portfolio open order feature.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: filled/cancel lifecycle from the exact Home-opened path and production active provider breadth.
+- Next cycle required: yes, continue Local MVP user-flow breadth.

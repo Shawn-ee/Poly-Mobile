@@ -12880,3 +12880,21 @@ Open blockers: None for continued Local MVP visible user-flow work.
 Risks: FF still uses disposable provider-shaped data and local mock order mode. Server-order proof for this exact Home-opened path remains P1.
 
 Next three likely cycles: repeat Home-opened flow in server order mode, broaden Home-opened proof beyond Spread to Totals/Team Total, and production active event breadth hardening.
+
+### Cycle FG Update
+
+Completed cycle: FG.
+
+Verified progress: The Local MVP Home-entry path now reaches the backend server fake-token order path. Samsung tablet proof opens a freshly seeded route-backed Home event card, lands on Event Detail, selects a route-backed Spread outcome, enters `$25`, submits through `/api/orders`, and verifies server-synced Portfolio shows the latest order/open order with spread line, period, provider source, and provider token preserved.
+
+Current app state: Home -> Event Detail -> chart/probability -> Spread line selector -> Buy/Sell ticket -> server fake-token order -> Portfolio open order is proven with default orderbook UI hidden.
+
+Current backend state: No backend route or schema changes were made. FG uses the existing `/api/events?includeMobileMarkets=1` discovery contract, `/api/mobile/events/:slug/live-detail` detail contract, `/api/orders` submit route, and `/api/portfolio` plus `/api/portfolio/history` sync routes.
+
+Device strategy: Samsung tablet remains the Holiwyn proof device. Samsung S23 remains reference device only when a fresh Polymarket interaction audit is required.
+
+Open blockers: None for continued Local MVP visible user-flow work.
+
+Risks: FG still uses disposable provider-shaped data. Filled/cancel lifecycle from the exact Home-opened path and production active Polymarket World Cup provider breadth remain P1.
+
+Next three likely cycles: filled/cancel lifecycle from the Home-opened server order path, broaden Home-opened proof beyond Spread to Totals/Team Total only if it closes a material flow gap, and production active event breadth hardening.

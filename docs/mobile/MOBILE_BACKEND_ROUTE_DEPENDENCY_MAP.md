@@ -1581,3 +1581,18 @@ Cycle FF implementation notes:
 - No route or schema changes were made.
 - FF uses route-backed market data, then local fake-token order state.
 - Tablet proof slug: `mobile-el-a-provider-breadth-ad48c541`.
+
+## Cycle FG - Home Route Server Order And Portfolio Open Order
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home card entry to server fake-token order | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1`, `/api/mobile/events/:slug/live-detail` | GET | Public viewing | None for event list; event id/slug for detail | Event title/status, chart/probability, Game Lines, selected Spread market/outcome identity, provider source/token | `Event`, `Market`, `Outcome`, provider quote/read-model fields | FG proof requires the route-backed card. Local fixtures remain only as app fallback. | Production active Polymarket event breadth remains P1. |
+| Server fake-token order submit from Home-opened ticket | `/api/orders` | POST | Temporary mobile dev API credential with order scope | Ticket amount `$25`, side `buy`, order type/price/size, selected `marketId`, `outcomeId`, contract side `yes`, and selected Spread metadata | Order success state and Portfolio navigation after submit | `ApiOrderRequest`, `Order`, `Market`, `Outcome`, provider snapshot/read-model fields | None for FG. The order submit uses server mode. | Filled/cancel lifecycle from the exact Home-opened path remains P1. |
+| Server Portfolio/history sync after Home-opened order | `/api/portfolio`, `/api/portfolio/history` | GET | Same mobile dev API key with account read scope | None | `latest-order-card`, `portfolio-open-order-count`, open order row, market type `spread`, line `1.5`, period `Reg. Time`, provider source/token | `Order`, `ApiOrderRequest`, `Market`, `Outcome`, portfolio/history read models | None for FG. Portfolio is server-synced. | Production active-event provider liquidity remains follow-up. |
+
+Cycle FG implementation notes:
+
+- The backend route event was created by `scripts/prove_mobile_el_a_provider_breadth.ts` into `docs/mobile/harness/cycle-FG-home-route-server-order/cycle-FG-home-route-server-order-event.json`.
+- A temporary mobile dev credential was created by `npm run mobile:dev-credential`.
+- Tablet proof slug: `mobile-el-a-provider-breadth-61978ca5`.
+- Mobile launched with `EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE=server`, and a real in-process mobile API key.

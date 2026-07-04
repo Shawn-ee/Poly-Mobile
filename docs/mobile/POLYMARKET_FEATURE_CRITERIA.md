@@ -456,3 +456,20 @@ The focused FF gate in `docs/mobile/audits/cycle-ff-home-route-order.md` verifie
 | FF-ORDER-P0-08 | P0 | Default orderbook UI must remain hidden for this retail path. | Android assertions reject orderbook markers across evidence. |
 | FF-ORDER-P1-01 | P1 | Repeat this exact Home-opened flow in server order mode. | Future Android proof using `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`. |
 | FF-ORDER-P1-02 | P1 | Replace disposable proof event with production active Polymarket-backed event breadth. | Future provider mapping and Android proof against active production events. |
+
+## Cycle FG Home Route Server Order Criteria
+
+The focused FG gate in `docs/mobile/audits/cycle-fg-home-route-server-order.md` verifies the Local MVP retail journey from Home-opened route-backed event through server fake-token order and server Portfolio open order.
+
+| ID | Priority | Criterion | Required proof |
+| --- | --- | --- | --- |
+| FG-ORDER-P0-01 | P0 | Home must show the freshly seeded route-backed World Cup event card with compact outcomes. | Samsung tablet screenshot/XML with route-backed event title, outcome labels, and event-card marker. |
+| FG-ORDER-P0-02 | P0 | Tapping the Home card must open the same route-backed Event Detail. | Android screenshot/XML after tap showing same event title, chart/probability marker, and Game Lines. |
+| FG-ORDER-P0-03 | P0 | Event Detail must expose a route-backed Spread row using backend line-market identity. | Android XML with `ticket-source-backend-line-market`, `selection-market-family-spread`, `selection-line-1.5`, `selection-period-Reg. Time`, and provider source. |
+| FG-ORDER-P0-04 | P0 | Spread ticket must open with selected market type, line, period, side, provider source, and provider token. | Ticket XML with selected identity markers. |
+| FG-ORDER-P0-05 | P0 | Amount presets must create a `$25` ready state with `Swipe up to buy`. | Ticket-ready screenshot/XML with amount and submit marker. |
+| FG-ORDER-P0-06 | P0 | Submit must post a server fake-token order through `/api/orders`. | Proof JSON plus Portfolio screenshot/XML after submit. |
+| FG-ORDER-P0-07 | P0 | Server Portfolio sync must show latest order/open order preserving selected identity. | Portfolio XML with `latest-order-card`, `portfolio-open-order-count`, `open-order-row-`, and provider/line/period markers. |
+| FG-ORDER-P0-08 | P0 | Default orderbook UI must remain hidden for this retail path. | Android assertions reject orderbook markers across evidence. |
+| FG-ORDER-P1-01 | P1 | Prove filled/cancel lifecycle from the exact Home-opened path. | Future Android proof continuing from Home through lifecycle action and Portfolio/history. |
+| FG-ORDER-P1-02 | P1 | Replace disposable proof event with production active Polymarket-backed event breadth. | Future provider mapping and Android proof against active production events. |

@@ -469,3 +469,11 @@ For every UI element or interaction, answer:
 - Samsung tablet proof passes for Home route-backed card -> Event Detail -> Spread row -> ticket -> fake-token order -> Portfolio/history.
 - Default Book/orderbook UI remains hidden and is not a blocker for Local MVP completion.
 - Remaining P1: repeat the same Home-opened flow in server order mode, production active Polymarket World Cup provider breadth, and non-disposable liquidity/source breadth.
+
+## Cycle FG Gap Tracker Update
+
+- PM-GAP-102 is opened and verified for the Home-opened route event completing the server fake-token open-order path.
+- FG closes FF's remaining server-mode P1 by proving the exact Home-started flow through `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- Samsung tablet proof passes for Home route-backed card -> Event Detail -> Spread row -> ticket -> server fake-token order -> server-synced Portfolio open order.
+- Default Book/orderbook UI remains hidden and is not a blocker for Local MVP completion.
+- Remaining P1: filled/cancel lifecycle from the exact Home-opened path, production active Polymarket World Cup provider breadth, and non-disposable liquidity/source breadth.
