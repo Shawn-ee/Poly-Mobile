@@ -33,7 +33,8 @@ Holiwyn device:
 Backend evidence:
 
 - `docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-route-backed-retail-event.json`
-- Disposable event slug: `mobile-el-a-provider-breadth-b917234c`
+- Backend proof disposable event slug: `mobile-el-a-provider-breadth-4f35da22`
+- Tablet proof disposable event slug: `mobile-el-a-provider-breadth-b917234c`
 - Route: `/api/mobile/events/:slug/live-detail`
 - Provider refresh: Polymarket Gamma/CLOB-shaped spread and totals rows refreshed to ready. `OPTIC_ODDS_API_KEY` missing remained non-blocking.
 

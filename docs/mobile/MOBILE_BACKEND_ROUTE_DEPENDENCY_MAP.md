@@ -1431,5 +1431,6 @@ Cycle EB-A implementation notes:
 Cycle EU implementation notes:
 
 - The backend route event was created by `scripts/prove_mobile_el_a_provider_breadth.ts` into `docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-route-backed-retail-event.json`.
+- Backend proof artifact slug: `mobile-el-a-provider-breadth-4f35da22`; tablet proof slug: `mobile-el-a-provider-breadth-b917234c`.
 - Mobile launched against `EXPO_PUBLIC_MARKET_DATA_MODE=server` and `EXPO_PUBLIC_ORDER_MODE` unset, proving server market data plus mock fake-token trading.
 - `full-game` backend line periods are treated as retail `Reg. Time`; `first-half` and `second-half` remain distinct and period-safe.

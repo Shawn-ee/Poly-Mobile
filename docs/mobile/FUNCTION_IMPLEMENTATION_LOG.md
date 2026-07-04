@@ -4690,6 +4690,7 @@ Validation:
 - `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-refresh.route.test.ts src/__tests__/mobile-live-event-detail.test.ts`
 - `cmd /c npx.cmd tsx scripts/prove_mobile_el_a_provider_breadth.ts --output docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-route-backed-retail-event.json`
 - `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpRouteTicketFlow -Port 8262 -BackendBaseUrl http://127.0.0.1:3002 -ServerEventSlug mobile-el-a-provider-breadth-b917234c -OutputDir docs/mobile/screenshots/cycle-EU-local-mvp-route-ticket-flow -HierarchyOutputDir docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow`
+- Backend proof artifact slug: `mobile-el-a-provider-breadth-4f35da22`; tablet proof slug: `mobile-el-a-provider-breadth-b917234c`.
 
 Known limitations:
 

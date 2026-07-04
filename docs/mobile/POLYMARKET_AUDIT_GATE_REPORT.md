@@ -2632,6 +2632,7 @@ Holiwyn evidence:
 - `docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-local-mvp-route-ticket-flow-proof.json`
 - `docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-route-backed-retail-event.json`
 - `docs/mobile/screenshots/cycle-EU-local-mvp-route-ticket-flow/`
+- Backend proof artifact slug: `mobile-el-a-provider-breadth-4f35da22`; tablet proof slug: `mobile-el-a-provider-breadth-b917234c`.
 
 Criteria results:
 
