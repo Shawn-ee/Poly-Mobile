@@ -318,6 +318,8 @@ type LinePeriod = "Reg. Time" | "1st Half" | "2nd Half";
 const linePeriods: LinePeriod[] = ["Reg. Time", "1st Half", "2nd Half"];
 
 const linePeriodCode = (period: LinePeriod) => period === "Reg. Time" ? "RT" : period === "1st Half" ? "1H" : "2H";
+const marketPeriodForLinePeriod = (period: LinePeriod): Market["period"] =>
+  period === "Reg. Time" ? "regulation" : period === "1st Half" ? "first-half" : "second-half";
 
 const boundedProbability = (value: number) => Math.max(1, Math.min(99, Math.round(value)));
 
@@ -623,7 +625,7 @@ export function EventDetail({
     const parsed = Number(value);
     return Number.isFinite(parsed) ? parsed : null;
   };
-  const matchingBackendLineMarket = (type: string, line: string) => {
+  const matchingBackendLineMarket = (type: string, line: string, period: LinePeriod) => {
     const target = Number(line);
     if (!Number.isFinite(target)) return undefined;
     const matchingTypes = type === "totals"
@@ -631,11 +633,16 @@ export function EventDetail({
       : type === "team-total"
         ? ["team-total", "team_total", "team_totals", "team_total_goals"]
         : [type];
-    return event.markets.find((market) => matchingTypes.includes(market.marketType ?? "") && Math.abs(lineAsNumber(market.line) ?? Number.NaN) === target);
+    const targetPeriod = marketPeriodForLinePeriod(period);
+    return event.markets.find((market) =>
+      matchingTypes.includes(market.marketType ?? "") &&
+      Math.abs(lineAsNumber(market.line) ?? Number.NaN) === target &&
+      (!market.period || market.period === targetPeriod)
+    );
   };
-  const backendSpreadMarket = matchingBackendLineMarket("spread", spreadLine);
-  const backendTotalsMarket = matchingBackendLineMarket("totals", totalsLine);
-  const backendTeamTotalMarket = matchingBackendLineMarket("team-total", "1.5");
+  const backendSpreadMarket = matchingBackendLineMarket("spread", spreadLine, spreadPeriod);
+  const backendTotalsMarket = matchingBackendLineMarket("totals", totalsLine, totalsPeriod);
+  const backendTeamTotalMarket = matchingBackendLineMarket("team-total", "1.5", "Reg. Time");
   const matchingBackendPeriodWinnerMarket = (period: Market["period"]) =>
     event.markets.find((market) =>
       market.period === period &&
@@ -643,7 +650,7 @@ export function EventDetail({
       market.outcomes.length > 0);
   const backendFirstHalfMarket = matchingBackendPeriodWinnerMarket("first-half");
   const backendSecondHalfMarket = matchingBackendPeriodWinnerMarket("second-half");
-  const spreadMarket = makeLineMarket(`${event.id}-spread-${spreadLine}-${linePeriodCode(spreadPeriod)}`, `Spread ${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`, [], "spread", spreadLine, spreadPeriod === "Reg. Time" ? "regulation" : spreadPeriod === "1st Half" ? "first-half" : "second-half");
+  const spreadMarket = makeLineMarket(`${event.id}-spread-${spreadLine}-${linePeriodCode(spreadPeriod)}`, `Spread ${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`, [], "spread", spreadLine, marketPeriodForLinePeriod(spreadPeriod));
   const spreadYesOutcome = withLineOutcome({
     id: `${spreadMarket.id}-yes`,
     label: `${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`,
@@ -685,7 +692,7 @@ export function EventDetail({
       ticketSelection: { marketType: "spread", line: spreadLine, period: spreadPeriod, displayLabel: `No ${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}` },
     },
   ];
-  const totalsMarket = makeLineMarket(`${event.id}-totals-${totalsLine}-${linePeriodCode(totalsPeriod)}`, `Totals ${totalsLine} ${linePeriodCode(totalsPeriod)}`, [], "totals", totalsLine, totalsPeriod === "Reg. Time" ? "regulation" : totalsPeriod === "1st Half" ? "first-half" : "second-half");
+  const totalsMarket = makeLineMarket(`${event.id}-totals-${totalsLine}-${linePeriodCode(totalsPeriod)}`, `Totals ${totalsLine} ${linePeriodCode(totalsPeriod)}`, [], "totals", totalsLine, marketPeriodForLinePeriod(totalsPeriod));
   const totalsOverOutcome = withLineOutcome({
     id: `${totalsMarket.id}-over`,
     label: `Over ${totalsLine} ${linePeriodCode(totalsPeriod)}`,

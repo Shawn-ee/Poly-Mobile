@@ -2,6 +2,16 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ET - Period-Safe Retail Line Matching
+
+Cycle ET changes mobile route-data selection rules, not backend schema/routes:
+
+- Android proof: `docs/mobile/harness/cycle-ET-local-mvp-period-safe-line-family/cycle-ES-local-mvp-line-family-breadth-proof.json`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider-backed retail line ticket matching | Existing `/api/mobile/events/:slug/live-detail` data when in server mode; local proof uses fixture fallback | GET | Public/mobile route | Event slug | Mobile requires each backend line market to expose `marketType`, `line`, `period`, outcomes, provider ids/tokens, and availability so the selected retail ticket can match family + line + period | Existing `Market.period`, `Market.line`, `Market.marketType`, `Outcome.referenceTokenId`, provider snapshot tables | If backend family/line/period does not match, mobile falls back to deterministic contract-shaped fixture instead of using wrong route data | P1: route proof with real provider-backed spread/totals/team-total rows through the simple ticket path. |
+
 ## Cycle ES - Local MVP Line-Family Ticket Breadth
 
 Cycle ES changes mobile contract-shaped fallback coverage and Android proof, not backend schema/routes:

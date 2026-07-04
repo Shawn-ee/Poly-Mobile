@@ -2,6 +2,33 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ET - Period-Safe Retail Line Matching
+
+Feature/page worked on:
+
+- Tightened line-ticket market identity so backend line markets are used only when market family, line, and period match the selected retail ticket.
+- Prevents a same-line first-half/second-half route-backed market from being used for a regulation-time simple ticket.
+
+Frontend/services touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/services/eventDetailLineTicketService.ts`
+- `mobile/src/__tests__/eventDetailLineTicketService.test.ts`
+
+User interactions supported/proven:
+
+- The existing Totals and Team Total simple-ticket paths still open on Android with default orderbook hidden after the period-safe resolver change.
+
+Verified:
+
+- Mobile typecheck passed.
+- Focused mobile line-ticket/order/open-order tests passed: 20 tests.
+- Samsung tablet proof passed using the line-family breadth harness with ET-owned evidence directories: `docs/mobile/harness/cycle-ET-local-mvp-period-safe-line-family/cycle-ES-local-mvp-line-family-breadth-proof.json`.
+
+Known limitations:
+
+- This cycle hardens identity matching but does not create new provider-backed route data. Real provider-backed spread/totals/team-total route proof remains P1.
+
 ## Cycle ES - Local MVP Line-Family Ticket Breadth
 
 Feature/page worked on:

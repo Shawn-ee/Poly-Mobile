@@ -10,7 +10,7 @@ const outcome = (id: string, label = id): Outcome => ({
   color: "#22c55e",
 });
 
-const market = (id: string, marketType: Market["marketType"], outcomes: Outcome[]): Market => ({
+const market = (id: string, marketType: Market["marketType"], outcomes: Outcome[], overrides: Partial<Market> = {}): Market => ({
   id,
   title: id,
   zhTitle: id,
@@ -22,6 +22,7 @@ const market = (id: string, marketType: Market["marketType"], outcomes: Outcome[
   externalMarketId: `gamma-${id}`,
   conditionId: `condition-${id}`,
   outcomes,
+  ...overrides,
 });
 
 describe("event detail line ticket resolver", () => {
@@ -89,6 +90,27 @@ describe("event detail line ticket resolver", () => {
     });
   });
 
+  test("does not carry a same-line backend market when the selected period differs", () => {
+    const backendOutcome = outcome("backend-over", "Over 3.5 1H");
+    const backendMarket = market("backend-totals-35-1h", "totals", [backendOutcome], { line: "3.5", period: "first-half" });
+    const syntheticOutcome = outcome("display-over-35-2h", "Over 3.5 2H");
+    const syntheticMarket = market("display-totals-35-2h", "totals", [syntheticOutcome], { line: "3.5", period: "second-half" });
+
+    const target = resolveLineTicketTarget({
+      selection: { marketType: "totals", line: "3.5", period: "2nd Half", displayLabel: "Over 3.5 2H" },
+      backendMarket,
+      backendOutcome,
+      syntheticOutcome,
+      syntheticMarkets: { totals: syntheticMarket },
+    });
+
+    expect(target).toMatchObject({
+      source: "deterministic-line-fixture",
+      market: { id: "display-totals-35-2h" },
+      outcome: { id: "display-over-35-2h" },
+    });
+  });
+
   test("falls back to deterministic team-total fixture when backend team total is unavailable", () => {
     const syntheticOutcome = outcome("display-team-total-over", "MEX Over 1.5");
     const syntheticMarket = market("display-team-total-market", "team-total", [syntheticOutcome]);
@@ -102,6 +124,27 @@ describe("event detail line ticket resolver", () => {
     expect(target).toMatchObject({
       source: "deterministic-line-fixture",
       market: { id: "display-team-total-market", marketType: "team-total" },
+      outcome: { id: "display-team-total-over" },
+    });
+  });
+
+  test("does not use a second-half backend team total for a regulation-time team total ticket", () => {
+    const backendOutcome = outcome("backend-team-over", "MEX Over 1.5 2H");
+    const backendMarket = market("backend-team-total-15-2h", "team-total", [backendOutcome], { line: "1.5", period: "second-half" });
+    const syntheticOutcome = outcome("display-team-total-over", "MEX Over 1.5 RT");
+    const syntheticMarket = market("display-team-total-market", "team-total", [syntheticOutcome], { line: "1.5", period: "regulation" });
+
+    const target = resolveLineTicketTarget({
+      selection: { marketType: "team-total", line: "1.5", period: "Reg. Time", displayLabel: "MEX Over 1.5 RT" },
+      backendMarket,
+      backendOutcome,
+      syntheticOutcome,
+      syntheticMarkets: { teamTotal: syntheticMarket },
+    });
+
+    expect(target).toMatchObject({
+      source: "deterministic-line-fixture",
+      market: { id: "display-team-total-market" },
       outcome: { id: "display-team-total-over" },
     });
   });

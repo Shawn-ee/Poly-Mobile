@@ -2,6 +2,26 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle ET - Period-Safe Retail Line Matching
+
+Closed or narrowed:
+
+- Mobile no longer accepts a backend line market solely because family and line match. The selected ticket period must also match the backend market period when both are present.
+- Focused tests cover wrong-period Totals and Team Total backend markets falling back to deterministic contract-shaped fixtures.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed retail ticket proof with spread/totals/team-total route rows whose `marketType`, `line`, and `period` exactly match the selected ticket.
+- Explicit unavailable/stale route status when exact family/line/period provider data is missing.
+
+Schema mismatch:
+
+- No schema migration was made; the existing `Market.period`/`line`/`marketType` fields are sufficient for this matching rule.
+
+Temporary mock/static data:
+
+- ET still uses deterministic fixtures for Android proof when backend health is unavailable. The resolver now prevents those fixtures from being incorrectly replaced by wrong-period backend markets.
+
 ## Cycle ES - Local MVP Line-Family Ticket Breadth
 
 Closed or narrowed:
