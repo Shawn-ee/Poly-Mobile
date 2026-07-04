@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle EC-A - Provider Orderbook Identity Parity
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live-detail compact market to Book identity carry-through | `/api/mobile/events/:slug/live-detail` then `/api/orderbook/:marketId/book?maxLevels=24` | GET | Public/mobile route then public visibility guard | Event slug; selected compact `marketId` for Book route | Live-detail compact `markets[].selection.selectorKey`, `markets[].orderbookIdentity.route/marketId/marketGroupId/selectorKey/marketFamily/period/line/outcomeIds/tokenIds/providerSource/providerStatus/depthSource/depthStatus/depthProviderStatus/depthProviderSources/refreshedAt/nextRefreshAt/shouldRefresh/isStale/ready/reason`, plus Book `marketIdentity.marketId/marketGroupId/selectorKey/marketFamily/period/line/outcomes[].id/outcomeId/tokenId`, `depthSource`, `providerOrderbookDepth.status/sources/latestFetchedAt/nextRefreshAt/isStale/shouldRefresh/reason`, and `levels[]`. | `Event`, `Market`, active `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`; local `Order` rows still take precedence in Book snapshot resolution | None in backend. The EC proof fails unless live-detail selects a provider-backed compact market and the corresponding Book route returns the same identity with ready provider depth | Real production line-family provider mappings/refresh coverage remain incomplete; EC documents the line gap when only match-winner is provider-backed. |
+| Focused EC-A proof harness | `scripts/prove_mobile_ec_provider_orderbook_identity.ts` | Local script calling both routes | Local development/server only | Optional `--baseUrl`, `--eventSlug`, `--output` | JSON artifact with live-detail selected compact identity, matching Book identity, provider depth summary, token equality, selector equality, and line-market gap note | Upserts a disposable World Cup-style event with match-winner and Totals markets, writes provider quote/depth rows for match winner, clears local open orders/provider rows for proof markets | None. Disposable provider rows use the same reference snapshot tables as production refresh code | Requires local database and a Next server running the current worktree code. |
+| Focused route/service unit proof | `src/__tests__/mobile-live-event-detail.test.ts`, `src/__tests__/public.orderbook-book.no-leak.test.ts` | Jest | Local development only | Mocked service/route requests | Asserts live-detail `orderbookIdentity` and Book `marketIdentity.outcomes[].tokenId` align with compact selector identity while no private account/order fields leak | Prisma and orderbook snapshot service are mocked | None | Broader end-to-end visible mobile proof remains outside Agent A backend scope. |
+
+Cycle EC-A implementation notes:
+
+- `selection.selectorKey` is now compact and route-compatible: `marketGroupKey:period:line-or-default`. `marketId` remains explicit for uniqueness.
+- Book `marketIdentity.outcomes[].tokenId` is a public provider contract id, not an auth token or credential. Sensitive owner/user/order fields remain excluded by no-leak tests.
+- `docs/mobile/harness/cycle-EC-A-provider-orderbook-identity.json` passed with `sameMarketId`, `sameSelectorKey`, `sameOutcomeIds`, `sameTokenIds`, provider source, ready depth status, and freshness assertions all true.
+
 ## Cycle EA-A - Live Detail Per-Market Chart Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
@@ -40,7 +54,7 @@ Cycle DU-A implementation notes:
 Cycle DT-A implementation notes:
 
 - `marketIdentity` and provider depth are proven together so the Book UI can render a selected compact market without using fallback/unavailable depth.
-- The public payload continues to exclude provider token IDs, condition IDs, credentials, owner IDs, user IDs, and private order state.
+- Earlier DT-A proof kept provider token IDs out of the Book identity. Cycle EC-A intentionally adds public provider `tokenId` to `marketIdentity.outcomes[]` for cross-route identity proof while credentials, owner IDs, user IDs, private order state, and condition IDs remain excluded.
 - The route's depth precedence is unchanged: local orderbook, provider ladder snapshot, provider quote top-of-book estimate, then empty.
 
 ## Cycle DS-A - Orderbook Selector Identity Contract
@@ -53,7 +67,7 @@ Cycle DT-A implementation notes:
 Cycle DS-A implementation notes:
 
 - `docs/mobile/harness/cycle-DS-A-orderbook-selector-contract.json` records the focused backend proof.
-- The route intentionally does not expose provider token IDs, condition IDs, credentials, owner IDs, or user/order private state in `marketIdentity`.
+- Cycle EC-A intentionally exposes public provider `tokenId` in `marketIdentity.outcomes[]` so live-detail and Book can prove the same outcome/token identity. Condition IDs, credentials, owner IDs, user IDs, and private order state remain excluded.
 - This closes the backend-side compact market identity gap for Book selector/depth parity; mobile can switch/select line markets without inventing family, line, period, outcome, or display-unit labels.
 
 ## Cycle DS-B/Integrated - Visible Orderbook Selector And Ladder

@@ -72,8 +72,8 @@ const mockMarket = (overrides: Record<string, unknown> = {}) => ({
   unit: null,
   period: "full-game",
   outcomes: [
-    { id: "home", name: "Curacao", label: "Curacao", side: "home", displayOrder: 0, isTradable: true },
-    { id: "away", name: "Cote d'Ivoire", label: "Cote d'Ivoire", side: "away", displayOrder: 1, isTradable: true },
+    { id: "home", name: "Curacao", label: "Curacao", side: "home", displayOrder: 0, isTradable: true, referenceTokenId: "token-home", referenceOutcomeLabel: "Curacao" },
+    { id: "away", name: "Cote d'Ivoire", label: "Cote d'Ivoire", side: "away", displayOrder: 1, isTradable: true, referenceTokenId: "token-away", referenceOutcomeLabel: "Cote d'Ivoire" },
   ],
   ...overrides,
 });
@@ -160,8 +160,8 @@ describe("public orderbook book API no-leak checks", () => {
         outcomeCount: 2,
         tradableOutcomeCount: 2,
         outcomes: [
-          { id: "home", name: "Curacao", label: "Curacao", side: "home", displayOrder: 0, isTradable: true },
-          { id: "away", name: "Cote d'Ivoire", label: "Cote d'Ivoire", side: "away", displayOrder: 1, isTradable: true },
+          { id: "home", outcomeId: "home", name: "Curacao", label: "Curacao", side: "home", displayOrder: 0, isTradable: true, tokenId: "token-home", referenceOutcomeLabel: "Curacao" },
+          { id: "away", outcomeId: "away", name: "Cote d'Ivoire", label: "Cote d'Ivoire", side: "away", displayOrder: 1, isTradable: true, tokenId: "token-away", referenceOutcomeLabel: "Cote d'Ivoire" },
         ],
       },
       availability: {
@@ -275,6 +275,10 @@ describe("public orderbook book API no-leak checks", () => {
         marketFamily: "moneyline",
         marketType: "match_winner_1x2",
         outcomeCount: 2,
+        outcomes: [
+          { id: "home", outcomeId: "home", tokenId: "token-home" },
+          { id: "away", outcomeId: "away", tokenId: "token-away" },
+        ],
       },
       depthSource: "provider-orderbook-depth",
       providerOrderbookDepth: {
@@ -460,8 +464,8 @@ describe("public orderbook book API no-leak checks", () => {
         period: "full-game",
         line: "2.5",
         outcomes: [
-          { id: "over" },
-          { id: "under" },
+          { id: "over", outcomeId: "over" },
+          { id: "under", outcomeId: "under" },
         ],
       },
       availability: {
@@ -528,8 +532,8 @@ describe("public orderbook book API no-leak checks", () => {
         line: { toString: () => "2.5" },
         unit: "goals",
         outcomes: [
-          { id: "over", name: "Over", label: "Over 2.5", side: "over", displayOrder: 0, isTradable: true },
-          { id: "under", name: "Under", label: "Under 2.5", side: "under", displayOrder: 1, isTradable: true },
+          { id: "over", name: "Over", label: "Over 2.5", side: "over", displayOrder: 0, isTradable: true, referenceTokenId: "token-over", referenceOutcomeLabel: "Over 2.5" },
+          { id: "under", name: "Under", label: "Under 2.5", side: "under", displayOrder: 1, isTradable: true, referenceTokenId: "token-under", referenceOutcomeLabel: "Under 2.5" },
         ],
       }),
       expected: {
@@ -567,13 +571,16 @@ describe("public orderbook book API no-leak checks", () => {
       tradableOutcomeCount: market.outcomes.length,
     });
     expect(body.marketIdentity.outcomes).toEqual(
-      market.outcomes.map((outcome: { id: string; name: string; label: string | null; side: string | null; displayOrder: number; isTradable: boolean }) => ({
+      market.outcomes.map((outcome: { id: string; name: string; label: string | null; side: string | null; displayOrder: number; isTradable: boolean; referenceTokenId?: string | null; referenceOutcomeLabel?: string | null }) => ({
         id: outcome.id,
+        outcomeId: outcome.id,
         name: outcome.name,
         label: outcome.label ?? outcome.name,
         side: outcome.side,
         displayOrder: outcome.displayOrder,
         isTradable: outcome.isTradable,
+        tokenId: outcome.referenceTokenId ?? null,
+        referenceOutcomeLabel: outcome.referenceOutcomeLabel ?? null,
       })),
     );
   });

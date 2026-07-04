@@ -241,8 +241,7 @@ const marketLineValue = (market: MarketInput) => {
 const compactSelectorKeyForMarket = (market: MarketInput) => [
   market.marketGroupKey ?? marketFamilyForMarket(market),
   market.period ?? "full-game",
-  market.line?.toString() ?? "none",
-  market.id,
+  market.line?.toString() ?? "default",
 ].join(":");
 
 const compactDisplayLabelForMarket = (market: MarketInput) => {
@@ -279,13 +278,63 @@ const selectionContractForMarket = (market: MarketInput, chartStatus: ReturnType
   },
   outcomes: market.outcomes.map((outcome) => ({
     outcomeId: outcome.id,
+    id: outcome.id,
     side: outcome.side,
     label: outcome.label ?? outcome.name,
+    tokenId: outcome.referenceTokenId,
     referenceTokenId: outcome.referenceTokenId,
     referenceOutcomeLabel: outcome.referenceOutcomeLabel,
     isTradable: outcome.isTradable,
   })),
 });
+
+const orderbookIdentityForMarket = (params: {
+  market: MarketInput;
+  depth: OrderbookDepthEntry;
+  chartStatus: ReturnType<typeof chartHistoryStatusForMarket>;
+}) => {
+  const selector = selectionContractForMarket(params.market, params.chartStatus);
+  const depth = params.depth.snapshot;
+  const refreshedAt = depth.providerOrderbookDepth.latestFetchedAt
+    ?? depth.providerQuoteSnapshot.latestFetchedAt
+    ?? params.market.sourceUpdatedAt?.toISOString()
+    ?? params.market.updatedAt?.toISOString()
+    ?? null;
+  const depthStatus = depth.providerOrderbookDepth.status !== "unavailable"
+    ? depth.providerOrderbookDepth.status
+    : depth.depthSource === "local-orderbook"
+      ? "ready"
+      : depth.providerQuoteSnapshot.status;
+
+  return {
+    route: `/api/orderbook/${encodeURIComponent(params.market.id)}/book`,
+    marketId: params.market.id,
+    marketGroupId: params.market.marketGroupKey,
+    marketGroupKey: params.market.marketGroupKey,
+    selectorKey: selector.selectorKey,
+    marketFamily: selector.marketFamily,
+    period: selector.period,
+    line: selector.line,
+    lineValue: selector.lineValue,
+    outcomeIds: params.market.outcomes.map((outcome) => outcome.id),
+    tokenIds: params.market.outcomes.map((outcome) => outcome.referenceTokenId).filter((tokenId): tokenId is string => Boolean(tokenId)),
+    providerSource: depth.providerQuoteSnapshot.sources[0] ?? depth.providerOrderbookDepth.sources[0] ?? params.market.referenceSource ?? null,
+    providerStatus: depth.providerQuoteSnapshot.status,
+    depthSource: depth.depthSource,
+    depthStatus,
+    depthProviderSource: depth.providerOrderbookDepth.source,
+    depthProviderStatus: depth.providerOrderbookDepth.status,
+    depthProviderSources: depth.providerOrderbookDepth.sources,
+    refreshedAt,
+    staleAfterSeconds: depth.providerOrderbookDepth.staleAfterSeconds,
+    refreshTtlSeconds: depth.providerOrderbookDepth.refreshTtlSeconds,
+    nextRefreshAt: depth.providerOrderbookDepth.nextRefreshAt ?? depth.providerQuoteSnapshot.nextRefreshAt,
+    shouldRefresh: depth.providerOrderbookDepth.shouldRefresh || depth.providerQuoteSnapshot.shouldRefresh,
+    isStale: depth.providerOrderbookDepth.isStale || depth.providerQuoteSnapshot.isStale,
+    ready: depth.depthSource !== "empty" && depthStatus === "ready",
+    reason: depth.depthReason,
+  };
+};
 
 const availabilityForMarket = (market: MarketInput) => {
   const normalizedStatus = market.status.toUpperCase();
@@ -452,8 +501,14 @@ export async function serializeMobileLiveEventDetail(input: {
         chartHistory: chartHistoryFromSnapshots(marketChartSnapshots),
         chartHistoryStatus,
         selection: selectionContractForMarket(market, chartHistoryStatus),
+        orderbookIdentity: orderbookIdentityForMarket({ market, depth, chartStatus: chartHistoryStatus }),
         orderbookDepth: depth.levels,
         orderbookDepthSource: depth.snapshot.depthSource,
+        orderbookDepthStatus: depth.snapshot.providerOrderbookDepth.status !== "unavailable"
+          ? depth.snapshot.providerOrderbookDepth.status
+          : depth.snapshot.depthSource === "local-orderbook"
+            ? "ready"
+            : depth.snapshot.providerQuoteSnapshot.status,
         providerOrderbookDepth: depth.snapshot.providerOrderbookDepth,
         providerQuoteSnapshot: depth.snapshot.providerQuoteSnapshot,
         rulesText: market.rulesText,
@@ -469,6 +524,7 @@ export async function serializeMobileLiveEventDetail(input: {
             name: outcome.name,
             label: outcome.label ?? outcome.name,
             side: outcome.side,
+            tokenId: outcome.referenceTokenId,
             referenceTokenId: outcome.referenceTokenId,
             referenceOutcomeLabel: outcome.referenceOutcomeLabel,
             price,
