@@ -29,6 +29,10 @@ type MarketInput = {
   title: string;
   description: string | null;
   status: string;
+  referenceSource?: string | null;
+  externalSlug?: string | null;
+  externalMarketId?: string | null;
+  conditionId?: string | null;
   sourceUpdatedAt?: Date | null;
   updatedAt?: Date | null;
   marketGroupKey: string | null;
@@ -50,6 +54,8 @@ type OutcomeInput = {
   side: string | null;
   displayOrder: number;
   isTradable: boolean;
+  referenceTokenId?: string | null;
+  referenceOutcomeLabel?: string | null;
 };
 
 type SnapshotInput = {

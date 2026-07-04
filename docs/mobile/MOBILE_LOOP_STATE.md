@@ -6,6 +6,18 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Heartbeat: Structural Live Detail Cycles CK-CM
+
+Date: 2026-07-03
+Summary: Continued structural PM-GAP-067 work instead of visual micro-polish. Cycle CK proved provider-shaped `ReferenceQuoteSnapshot` ready state for all compact live markets, Cycle CL added refresh TTL/next-refresh/refresh-due policy fields, and Cycle CM added a protected provider refresh execution route with stale/refresh-due to ready proof plus Samsung tablet validation.
+Verification:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-refresh.route.test.ts src/__tests__/mobile-live-event-detail.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+- Route proofs: `docs/mobile/harness/cycle-current-mobile-live-provider-quote-snapshot-ready-probe.json`, `docs/mobile/harness/cycle-current-mobile-live-provider-refresh-policy-probe.json`, `docs/mobile/harness/cycle-current-mobile-live-provider-refresh-execution-proof.json`
+Current gap state: PM-GAP-067 remains in progress with 0 unresolved P0 gaps for these selected route/proof scopes. The new active P1 blocker is real provider mapping for compact World Cup match markets; the current local event is `fifa_schedule` sourced, so real Polymarket Gamma refresh cannot update it without mapping/import work.
+Next focus: map/import real provider market/outcome IDs for compact World Cup match markets, then rerun provider refresh without the contract-proof fallback before returning to visual UI parity.
+
 ## Heartbeat: Structural Live Detail Cycles CH-CJ
 
 Date: 2026-07-03

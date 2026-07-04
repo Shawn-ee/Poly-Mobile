@@ -8,6 +8,7 @@ type GammaWire = Record<string, unknown>;
 export type RefreshReferenceSnapshotsOptions = {
   slug?: string | null;
   marketId?: string | null;
+  marketIds?: string[] | null;
   eventSlug?: string | null;
   onlyMmEnabled?: boolean;
 };
@@ -17,6 +18,7 @@ export async function refreshPolymarketReferenceSnapshots(options: RefreshRefere
     where: {
       referenceSource: "polymarket",
       ...(options.marketId ? { id: options.marketId } : {}),
+      ...(options.marketIds?.length ? { id: { in: options.marketIds } } : {}),
       externalSlug: options.slug ?? { not: null },
       ...(options.slug ? { externalSlug: options.slug } : {}),
       ...(options.eventSlug ? { event: { slug: options.eventSlug } } : {}),
@@ -97,11 +99,12 @@ export async function refreshPolymarketReferenceSnapshots(options: RefreshRefere
       };
     });
 
-    await upsertReferenceQuoteSnapshots(inputs);
+    const results = await upsertReferenceQuoteSnapshots(inputs);
     refreshed.push({
       marketId: market.id,
       title: market.title,
       slug: market.externalSlug,
+      snapshotsUpdated: results.length,
       outcomes: inputs.map((input) => ({
         outcomeId: input.outcomeId,
         tokenId: input.tokenId,
@@ -120,9 +123,11 @@ export async function refreshPolymarketReferenceSnapshots(options: RefreshRefere
   return {
     generatedAt: new Date().toISOString(),
     dryRun: true,
+    snapshotWritesApplied: true,
     liveOrdersEnabled: false,
     pollMs: referenceSnapshotConfig.pollMs,
     refreshedCount: refreshed.length,
+    snapshotsUpdated: refreshed.reduce((sum, market) => sum + (typeof market.snapshotsUpdated === "number" ? market.snapshotsUpdated : 0), 0),
     skippedCount: skipped.length,
     refreshed,
     skipped,

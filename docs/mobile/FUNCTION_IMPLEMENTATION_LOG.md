@@ -2,6 +2,53 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CM - Provider Refresh Execution Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 provider-owned refresh execution path for compact live event detail.
+- This cycle adds a protected mobile live-detail refresh route, stale/refresh-due invalidation proof, and Android proof after refreshing back to ready state.
+
+Frontend components touched:
+
+- None. Samsung tablet proof was rerun against the existing live event detail and selected second-half Book flow after provider refresh.
+
+Backend/components touched:
+
+- `src/server/services/polymarketReferenceSnapshots.ts`
+- `src/server/services/mobileLiveProviderRefresh.ts`
+- `src/app/api/mobile/events/[slug]/provider-refresh/route.ts`
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/__tests__/mobile-live-provider-refresh.route.test.ts`
+
+Important functions/services touched:
+
+- `refreshPolymarketReferenceSnapshots()` now supports explicit `marketIds` and reports `snapshotWritesApplied` / `snapshotsUpdated`.
+- `refreshMobileLiveProviderQuoteSnapshots()` selects compact live markets, attempts real Polymarket Gamma refresh for mapped markets, reports unsupported markets, and summarizes post-refresh snapshot state.
+- `expireMobileLiveProviderQuoteSnapshots()` deliberately ages compact-market snapshots for stale/refresh-due proof.
+
+User interactions supported:
+
+- A user reopening the live game page after refresh sees the same route-backed second-half orderbook path with provider-ready state.
+- The app can now distinguish stale/refresh-due state from ready state through backend route changes rather than local UI guesses.
+
+State transitions:
+
+- Fresh rows -> protected route expires snapshots -> live-detail reports `ready=0`, `stale=14`, `refreshDue=14`, selected second-half `status=stale`, `shouldRefresh=true`.
+- Explicit refresh proof -> live-detail reports `ready=14`, `stale=0`, `refreshDue=0`, selected second-half and selected Book `status=ready`, `shouldRefresh=false`.
+
+Known limitations:
+
+- The current local World Cup compact event is sourced from `fifa_schedule`, not imported Polymarket markets. Real Gamma refresh is therefore not attempted for those compact markets and the route truthfully reports 14 unsupported markets.
+- The ready proof uses an explicit local contract-proof fallback after the real provider mapping is reported missing. Backend parity remains incomplete until compact World Cup markets have real Polymarket market/outcome mappings or a production sports odds provider.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-refresh.route.test.ts src/__tests__/mobile-live-event-detail.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts`
+- `cmd /c npm.cmd run build`
+- Route proof: `docs/mobile/harness/cycle-current-mobile-live-provider-refresh-execution-proof.json`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+
 ## Cycle CL - Provider Refresh Policy Contract
 
 Feature/page worked on:

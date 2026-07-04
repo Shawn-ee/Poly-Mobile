@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CM - Provider Refresh Execution Contract
+
+Fields now provided or wired:
+
+- Protected `/api/mobile/events/:slug/provider-refresh` executes compact live provider refresh/invalidation.
+- `refreshPolymarketReferenceSnapshots()` can refresh an explicit market-id batch and reports actual snapshot write counts.
+- Route proof demonstrates stale/refresh-due live-detail state after snapshot expiration and ready state after explicit refresh proof.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket or production sports-provider mapping for compact World Cup match markets.
+- Provider-owned market/outcome IDs for first-half, second-half, spreads, totals, team totals, and other line markets.
+- Real provider error classification beyond unsupported local mappings and Gamma fetch failures.
+
+Schema mismatch:
+
+- `ReferenceQuoteSnapshot` is sufficient for top quote refresh execution, but compact World Cup markets currently use `referenceSource=fifa_schedule`; they are not Polymarket-imported markets.
+
+Route mismatch:
+
+- The refresh route exists and is protected, but real refresh cannot update local compact markets until those markets are mapped to real provider slugs/tokens.
+
+Temporary mock/static data:
+
+- Explicit local contract-proof fallback is allowed only through the protected refresh route with `allowContractProofFallback=true`. It writes the same `ReferenceQuoteSnapshot` table shape and is documented as proof fallback, not production provider parity.
+
+Future migration concern:
+
+- The next structural provider cycle should import/map real provider market IDs for compact World Cup live markets or add a production sports odds provider adapter before removing the fallback proof lane.
+
 ## Cycle CL - Provider Refresh Policy Contract
 
 Fields now provided or wired:
