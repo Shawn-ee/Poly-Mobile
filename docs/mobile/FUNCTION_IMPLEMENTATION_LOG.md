@@ -2,6 +2,58 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CU - Provider CLOB Depth Fetcher
+
+Feature/page worked on:
+
+- PM-GAP-067 provider-owned refresh execution for compact live event detail and selected Book.
+- This cycle adds real Polymarket CLOB orderbook fetch execution for provider-mapped compact markets, then proves the route moves from quote-derived depth to provider ladder depth after refresh.
+
+Frontend components touched:
+
+- No visual UI code changed. Existing EventDetail/Book rendering consumes the refreshed route-backed orderbook payload.
+
+Backend/components touched:
+
+- `src/server/services/polymarketOrderbookDepthSnapshots.ts`
+- `src/server/services/mobileLiveProviderRefresh.ts`
+- `src/__tests__/polymarket-orderbook-depth-snapshots.test.ts`
+- `src/__tests__/mobile-live-provider-refresh.route.test.ts`
+- `scripts/prove_mobile_provider_clob_depth_refresh.ts`
+
+Important functions/services touched:
+
+- `refreshPolymarketOrderbookDepthSnapshots()` fetches official Polymarket CLOB `/book?token_id=...` data for each active outcome with `referenceTokenId` and writes normalized bid/ask ladder rows.
+- `refreshMobileLiveProviderQuoteSnapshots()` now reports `providerDepth` and runs CLOB depth refresh after mapped provider quote refresh.
+- `buildPublicOrderbookSnapshot()` was already ready for provider ladder rows from Cycle CT; Cycle CU proves the real fetcher populates that path.
+
+User interactions supported:
+
+- Samsung tablet proof opens the provider refresh proof event and selected Book after refresh. The Book surface renders route-backed provider depth, best bid/ask, share sizes, and preserved selected market identity.
+
+State transitions:
+
+- Proof starts with no `ReferenceOrderbookDepthSnapshot` rows for the disposable provider market, so `/api/orderbook/:marketId/book` returns `depthSource=provider-quote-snapshot`.
+- Provider refresh fetches real CLOB depth and writes 96 `polymarket-clob` ladder rows.
+- The same Book route then returns `depthSource=provider-orderbook-depth`, `providerOrderbookDepth.status=ready`, and 48 provider levels.
+
+Known limitations:
+
+- Cycle CU proves real provider CLOB refresh for a mapped disposable provider market. The production World Cup compact soccer markets still need real provider identity mapping before every live game can use this path.
+- Provider depth retention/cleanup policy remains a later operational concern.
+
+Verification:
+
+- Official provider contract checked against Polymarket CLOB docs for `GET /book?token_id=...`.
+- Route proof: `docs/mobile/harness/cycle-current-mobile-provider-clob-depth-refresh-proof.json`
+- Proof prep: `docs/mobile/harness/cycle-current-mobile-provider-clob-depth-prep.json`
+- Tablet XML proof: `docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-order-book.xml`
+- Tablet screenshot proof: `docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-order-book.png`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/polymarket-orderbook-depth-snapshots.test.ts src/__tests__/mobile-live-provider-refresh.route.test.ts src/__tests__/orderbook-snapshot.provider-depth.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts src/__tests__/mobile-live-event-detail.test.ts`
+- `cmd /c npm.cmd run build`
+- mobile `cmd /c npm.cmd run typecheck`
+- Samsung tablet provider proof via `mobile/scripts/smoke.ps1 -Deep -ServerLiveProviderRefreshProof -ServerEventSlug mobile-provider-refresh-proof-live`
+
 ## Cycle CT - Provider Orderbook Depth Snapshot Contract
 
 Feature/page worked on:

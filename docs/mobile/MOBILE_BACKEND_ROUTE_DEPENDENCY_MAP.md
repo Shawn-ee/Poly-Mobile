@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CU - Provider CLOB Depth Fetcher
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Real provider CLOB refresh for compact live markets | `/api/mobile/events/:slug/provider-refresh` | POST | Internal admin key or admin session | Optional `expireFirst`, `staleSeconds`, `allowContractProofFallback` | `refresh.providerDepth.generatedAt`, `source=polymarket-clob`, `requestedMarketCount`, `refreshedCount`, `depthRowsUpdated`, `skippedCount`, `refreshed[]`, `skipped[]`; post-refresh live-detail/orderbook cache invalidation remains owned by the route | `Event`, provider-mapped compact `Market`, active `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot` | No frontend-only mock. The route fetches real provider CLOB data for mapped markets; disposable proof uses real provider identity on local proof rows | Real World Cup compact soccer markets still need provider mapping before this can cover production soccer events. |
+| Selected Book after CLOB refresh | `/api/orderbook/:marketId/book?maxLevels=...` | GET | Optional public viewing | None | `depthSource=provider-orderbook-depth`, `depthReason`, `providerOrderbookDepth.status`, `levelCount`, `snapshotCount`, `sources`, `bids[]`, `asks[]`, `levels[]` | Reads local `Order` rows first, then `ReferenceOrderbookDepthSnapshot` rows written by the CLOB fetcher, then `ReferenceQuoteSnapshot` top-quote fallback | No arbitrary local UI data. If CLOB rows are absent, the route truthfully falls back to provider quote top-of-book or empty state | Retention/cleanup of old provider depth snapshots remains open. |
+| External provider order book dependency | `https://clob.polymarket.com/book?token_id=...` | GET | Public provider endpoint | Query string `token_id` from `Outcome.referenceTokenId` | Provider `bids[]` and `asks[]` price/size rows plus provider timestamp when present | Requires `Market.referenceSource=polymarket`, `Market.externalSlug`, and complete active outcome `referenceTokenId` values | Unit tests mock this provider endpoint; production refresh uses live fetch | Need production error taxonomy and retry policy beyond the current skipped/error report. |
+
+Cycle CU implementation notes:
+
+- The CLOB fetcher writes `ReferenceOrderbookDepthSnapshot.source=polymarket-clob`.
+- Row freshness uses refresh time so route precedence is stable even when the provider book timestamp is older than the current process time; provider timestamp is still reported in refresh diagnostics.
+- Cycle CU closes the real provider-owned depth fetcher gap for mapped markets, not the real World Cup provider-mapping gap.
+
 ## Cycle CT - Provider Orderbook Depth Snapshot Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

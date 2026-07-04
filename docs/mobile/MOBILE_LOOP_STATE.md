@@ -6,6 +6,30 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle CU
+
+Date: 2026-07-04
+Branch: `mobile/cycle-CU-provider-clob-depth-fetcher`
+Goal: Continue PM-GAP-067 by adding real provider-owned CLOB depth fetch execution and proving cache-visible route depth changes before opening new visual UI parity work.
+Reference app screens observed: Continued from Cycle CH Samsung S23 Polymarket official app live game page evidence; no new visual UI parity area was opened. Official Polymarket CLOB docs confirmed `GET /book?token_id=...` with bid/ask price-size rows.
+Holiwyn screens changed: No intended visual changes. Existing Book surface consumes route depth that can now be populated by real provider CLOB rows.
+Backend/API changed: `POST /api/mobile/events/:slug/provider-refresh` now runs Polymarket CLOB depth refresh for mapped compact markets and returns `providerDepth` report data. `/api/orderbook/:marketId/book` is proven to move from provider quote fallback to `provider-orderbook-depth` after refresh.
+Database/schema changed: None. Uses Cycle CT `ReferenceOrderbookDepthSnapshot`.
+Files changed: provider CLOB depth fetcher service, mobile provider refresh service, provider refresh route tests, CLOB depth tests, proof harness, docs/proof artifacts.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/polymarket-orderbook-depth-snapshots.test.ts src/__tests__/mobile-live-provider-refresh.route.test.ts src/__tests__/orderbook-snapshot.provider-depth.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts src/__tests__/mobile-live-event-detail.test.ts`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` from `mobile/`
+- `scripts/prove_mobile_provider_clob_depth_refresh.ts`
+- Samsung tablet provider proof via `mobile/scripts/smoke.ps1 -Deep -ServerLiveProviderRefreshProof -ServerEventSlug mobile-provider-refresh-proof-live`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-provider-clob-depth-prep.json`
+- `docs/mobile/harness/cycle-current-mobile-provider-clob-depth-refresh-proof.json`
+- `docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-order-book.png`
+Result: Pass for real provider CLOB depth fetch execution on a mapped disposable provider event. Route proof starts at `depthSource=provider-quote-snapshot`, refresh writes 96 `polymarket-clob` rows, then the Book route returns `depthSource=provider-orderbook-depth`, `providerOrderbookDepth.status=ready`, and 48 provider levels. Samsung tablet proof passed with route-backed Book depth.
+Next focus: real World Cup compact soccer provider mapping, then run the same refresh/depth path against actual soccer compact markets before returning to visual UI parity.
+
 ## Cycle CT
 
 Date: 2026-07-04

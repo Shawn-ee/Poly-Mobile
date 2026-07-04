@@ -153,6 +153,17 @@ function refreshMobileProvider() {
       refreshed: [],
       skipped: [],
     },
+    providerDepth: {
+      generatedAt: "2026-07-03T22:01:00.000Z",
+      source: "polymarket-clob",
+      maxLevels: 24,
+      requestedMarketCount: 1,
+      refreshedCount: 1,
+      depthRowsUpdated: 8,
+      skippedCount: 0,
+      refreshed: [{ marketId: "market-world-cup-live", depthRowsUpdated: 8 }],
+      skipped: [],
+    },
     contractProofFallback: {
       applied: true,
       reason: "local_event_has_no_real_polymarket_market_mapping",
