@@ -153,3 +153,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Default Event Detail still exposed non-MVP social controls despite Local MVP being prediction-only. | P0 | Passed | `EventDetail` now hides Chat, Share, Live stats, and chat preview entry points; Samsung tablet proof passed. |
 | Local MVP proof should fail if social/live-stats/orderbook controls reappear in the default prediction path. | P0 | Passed | `LocalMvpStatusFlow` asserts those labels are absent while chart, ticket, and market lines still work. |
 | Future full social/chat/share parity. | P2 | Open | Out of current Local MVP scope. |
+
+## Cycle GD - Home And Live World Cup Games Focus
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Home first screen still exposed non-World-Cup sport navigation and a futures promo before game discovery. | P0 | Passed | `HomeScreen` now renders `home-world-cup-games-focus` and removes the default `SportNav`/`FeaturedFuture` surfaces. |
+| Route-backed Live discovery needed the same World Cup games focus because this proof path lands on Live. | P0 | Passed | `LiveScreen` now renders `live-world-cup-games-focus`; Samsung tablet proof passed. |
+| Discovery proof should fail if non-MVP sport/futures promo surfaces reappear before game discovery. | P0 | Passed | `LocalMvpHomeRouteTicketFlow` asserts `MLB`, `Tennis`, `featured-future-*`, and `future-market-chart` are absent. |
+| Route-backed discovery card must still open Event Detail and a simple spread ticket. | P0 | Passed | Samsung tablet proof opened Event Detail and a provider-backed spread ticket from the route-backed card. |

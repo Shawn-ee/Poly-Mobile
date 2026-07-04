@@ -803,12 +803,17 @@ try {
         "event-detail-line-detail-order-book",
         "event-detail-inline-order-book",
         "orderbook-source-",
-        "Route depth"
+        "Route depth",
+        "featured-future-",
+        "MLB",
+        "Tennis",
+        "future-outcome-",
+        "future-market-chart"
       )
 
       Save-Screenshot -Name "cycle-FE-home-route-ticket-home.png"
       $homeRouteTicketHomeHierarchy = Save-UiHierarchy -Name "cycle-FE-home-route-ticket-home.xml"
-      Assert-HierarchyContains -Path $homeRouteTicketHomeHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "Breadth Home", "Breadth Away", "event-card-mobile-el-a-provider-breadth")
+      Assert-HierarchyContains -Path $homeRouteTicketHomeHierarchy -Expected @("live-world-cup-games-focus", "prediction-only-live", "World Cup", "Live World Cup", "EL-A Provider Breadth World Cup Live", "Breadth Home", "Breadth Away", "event-card-mobile-el-a-provider-breadth")
       Assert-HierarchyDoesNotContain -Path $homeRouteTicketHomeHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
       Invoke-TapHierarchyNode -Path $homeRouteTicketHomeHierarchy -Identifier "event-card-mobile-el-a-provider-breadth" -StartsWith
@@ -880,8 +885,8 @@ try {
       Assert-HierarchyDoesNotContain -Path $homeRouteTicketSpreadTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
       $proof = [ordered]@{
-        cycle = "FE"
-        scenario = "Home route-backed event opens Event Detail and simple spread Buy/Sell ticket"
+        cycle = "GD"
+        scenario = "World Cup games-focused discovery opens route-backed Event Detail and simple spread Buy/Sell ticket"
         command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpHomeRouteTicketFlow -Port $Port -BackendBaseUrl $BackendBaseUrl -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir"
         backendBaseUrl = $BackendBaseUrl
         orderbookDebug = if ($env:EXPO_PUBLIC_SHOW_ORDERBOOK) { $env:EXPO_PUBLIC_SHOW_ORDERBOOK } else { "unset" }
@@ -889,23 +894,23 @@ try {
         orderMode = if ($env:EXPO_PUBLIC_ORDER_MODE) { $env:EXPO_PUBLIC_ORDER_MODE } else { "mock" }
         result = "pass"
         assertions = [ordered]@{
-          homeDiscovery = @("route-backed event card", "compact outcomes")
+          homeDiscovery = @("World Cup live games-focused header", "route-backed event card", "compact outcomes", "no non-MVP sport/futures promo")
           detailHydration = @("same route-backed event", "price chart", "Game Lines")
           ticket = @("spread ticket opens from Home-opened detail", "line/period/side/provider token identity preserved", "Buy/Sell controls visible")
           noFallback = @("no Mexico/Ecuador fallback", "no default orderbook UI")
         }
         artifacts = @(
-          "docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-home.png",
-          "docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-home.xml",
-          "docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-detail-top.png",
-          "docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-detail-top.xml",
-          "docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-line-markets.png",
-          "docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-line-markets.xml",
-          "docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-spread-ticket.png",
-          "docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-spread-ticket.xml"
+          "$OutputDir/cycle-FE-home-route-ticket-home.png",
+          "$HierarchyOutputDir/cycle-FE-home-route-ticket-home.xml",
+          "$OutputDir/cycle-FE-home-route-ticket-detail-top.png",
+          "$HierarchyOutputDir/cycle-FE-home-route-ticket-detail-top.xml",
+          "$OutputDir/cycle-FE-home-route-ticket-line-markets.png",
+          "$HierarchyOutputDir/cycle-FE-home-route-ticket-line-markets.xml",
+          "$OutputDir/cycle-FE-home-route-ticket-spread-ticket.png",
+          "$HierarchyOutputDir/cycle-FE-home-route-ticket-spread-ticket.xml"
         )
       }
-      $proofPath = Join-Path $RepoRoot "docs\mobile\harness\cycle-FE-home-route-ticket\cycle-FE-home-route-ticket-proof.json"
+      $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-GD-home-world-cup-games-focus-proof.json"
       New-Item -ItemType Directory -Force -Path (Split-Path $proofPath) | Out-Null
       $proof | ConvertTo-Json -Depth 8 | Set-Content -Path $proofPath -Encoding UTF8
       Write-Host "Proof summary: $proofPath"
