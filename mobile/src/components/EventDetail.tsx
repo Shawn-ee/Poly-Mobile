@@ -723,7 +723,7 @@ export function EventDetail({
       </View>
       <Text style={styles.oddsMultiplier}>{outcome.odds}</Text>
       <Pressable
-        accessibilityLabel={`event-detail-outcome-${marketId}-${outcome.id}`}
+        accessibilityLabel={`event-detail-outcome-${marketId}-${outcome.id} ${providerIdentityLabel(groupMarket, outcome.ticketOutcome ?? matchingOutcome)}`}
         onPress={() => {
           const ticketOutcome = outcome.ticketOutcome ?? matchingOutcome;
           if (!ticketOutcome) return;
@@ -748,10 +748,18 @@ export function EventDetail({
   };
   const marketDepthBatchLabel = (market?: Market) =>
     (market?.orderbookDepth?.length ?? 0) > 0 ? "Route depth" : null;
+  const providerIdentityLabel = (market?: Market, outcome?: Outcome) =>
+    [
+      market?.referenceSource ? `provider-source-${market.referenceSource}` : null,
+      market?.externalMarketId ? `provider-market-${market.externalMarketId}` : null,
+      market?.conditionId ? `provider-condition-${market.conditionId}` : null,
+      outcome?.referenceTokenId ? `provider-token-${outcome.referenceTokenId}` : null,
+      outcome?.referenceOutcomeLabel ? `provider-outcome-${outcome.referenceOutcomeLabel}` : null,
+    ].filter(Boolean).join(" ");
   const renderGroup = (group: GameLineGroup) => (
     <View key={group.id} style={styles.marketBlock}>
       <Pressable
-        accessibilityLabel={`event-detail-market-toggle-${group.id} ${group.title} ${group.subtitle ?? ""} market-availability-${group.backendMarket?.availability?.status ?? "unknown"} market-depth-${marketDepthBatchLabel(group.backendMarket) ? "batched" : "empty"}`}
+        accessibilityLabel={`event-detail-market-toggle-${group.id} ${group.title} ${group.subtitle ?? ""} market-availability-${group.backendMarket?.availability?.status ?? "unknown"} market-depth-${marketDepthBatchLabel(group.backendMarket) ? "batched" : "empty"} ${providerIdentityLabel(group.backendMarket)}`}
         onPress={() => toggleGroup(group.id)}
         style={styles.marketHeaderRow}
         testID={`event-detail-market-toggle-${group.id}`}
@@ -781,7 +789,7 @@ export function EventDetail({
           )}
           {group.backendMarket && (
             <Pressable
-              accessibilityLabel={`event-detail-open-order-book-${group.id} ${group.backendMarket.id} market-availability-${group.backendMarket.availability?.status ?? "unknown"}`}
+              accessibilityLabel={`event-detail-open-order-book-${group.id} ${group.backendMarket.id} market-availability-${group.backendMarket.availability?.status ?? "unknown"} ${providerIdentityLabel(group.backendMarket)}`}
               onPress={() => openOrderBookForMarket(group.backendMarket!)}
               style={styles.depthBookButton}
               testID={`event-detail-open-order-book-${group.id}`}
@@ -1346,7 +1354,7 @@ export function EventDetail({
             {primaryMarket && (
               <View style={styles.marketBlock}>
                 <Pressable
-                  accessibilityLabel={`event-detail-market-toggle-regulation-time-winner event-detail-market-toggle-${primaryMarket.id}`}
+                  accessibilityLabel={`event-detail-market-toggle-regulation-time-winner event-detail-market-toggle-${primaryMarket.id} ${providerIdentityLabel(primaryMarket)}`}
                   onPress={() => toggleGroup("regulation-time-winner")}
                   style={styles.marketHeaderRow}
                   testID={`event-detail-market-toggle-${primaryMarket.id}`}
@@ -1363,14 +1371,14 @@ export function EventDetail({
                       <Text style={styles.depthText}>{t.bestBid} {marketDepth(primaryMarket).bid}</Text>
                       <Text style={styles.depthText}>{t.bestAsk} {marketDepth(primaryMarket).ask}</Text>
                       <Text style={styles.depthText}>{t.spread} {marketDepth(primaryMarket).spread}</Text>
-                      <Pressable accessibilityLabel="event-detail-open-order-book" onPress={() => openOrderBookForMarket(primaryMarket)} style={styles.depthBookButton} testID="event-detail-open-order-book">
+                      <Pressable accessibilityLabel={`event-detail-open-order-book ${providerIdentityLabel(primaryMarket)}`} onPress={() => openOrderBookForMarket(primaryMarket)} style={styles.depthBookButton} testID="event-detail-open-order-book">
                         <Ionicons name="book-outline" color="#dbeafe" size={14} />
                         <Text style={styles.depthBookText}>Book</Text>
                       </Pressable>
                     </View>
                     {regulationWinnerRows.map((outcome) => {
                       const matchingOutcome = primaryMarket.outcomes.find((item) => item.id === outcome.id);
-                      return renderParityOutcomeRow(outcome, primaryMarket.id, matchingOutcome);
+                      return renderParityOutcomeRow(outcome, primaryMarket.id, matchingOutcome, primaryMarket);
                     })}
                   </>
                 )}

@@ -2206,3 +2206,30 @@ Temporary mock/static data:
 Future migration concern:
 
 - Before production, add snapshot provenance and retention/downsampling so chart rows can be audited, refreshed, and expired independently from local test fixtures.
+
+## Cycle DM - Provider Token Lifecycle
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- First-class durable selection identity columns on `Order`, `Trade`, and possibly `Position` remain absent. Cycle DM preserves the data through `ApiOrderRequest.requestBody.selection` and market/outcome fallback metadata.
+- Full lifecycle with actual filled order/history for the closed Colombia/Ghana provider event remains unproven on Android; current proof covers ticket and open-order/portfolio/history mapping contracts.
+
+Fields backend provides but mobile ignores:
+
+- Mobile does not display provider IDs to users. It uses provider fields for ticket/order/portfolio identity and exposes them only through accessibility markers for harness proof.
+
+Schema mismatch:
+
+- Provider market identity is normalized on `Market`/`Outcome`, while selected ticket identity is request-body JSON. This is sufficient for current fake-token/server-mode proof but should be normalized before production-grade audit/reporting.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` now share provider selection fields. Dedicated order-history/fill routes should adopt the same selection contract when mobile consumes them directly.
+
+Temporary mock/static data:
+
+- No arbitrary display-only provider data was added. The proof uses the real local Polymarket-mapped Colombia/Ghana market and token IDs.
+
+Future migration concern:
+
+- When real-money trading is in scope, store provider selection identity on immutable order/trade records, not only via the original API request body.

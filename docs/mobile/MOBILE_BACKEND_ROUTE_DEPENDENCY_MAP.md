@@ -921,3 +921,18 @@ Cycle DL implementation notes:
 
 - Official Polymarket docs name the CLOB price-history query parameter `market`, but it takes the outcome token ID.
 - The current Colombia vs Ghana provider event is closed/resolved. Holiwyn keeps a live-detail proof page for parity work, while the provider freshness label remains stale.
+
+## Cycle DM - Provider Token Lifecycle
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Server-backed live event provider identity | `/api/mobile/events/:slug/live-detail` | GET | Public viewing | Event slug | `markets[].referenceSource`, `externalSlug`, `externalMarketId`, `conditionId`, `outcomes[].referenceTokenId`, `referenceOutcomeLabel` | `Market.referenceSource`, `Market.externalSlug`, `Market.externalMarketId`, `Market.conditionId`, `Outcome.referenceTokenId`, `Outcome.referenceOutcomeLabel` | Mobile fallback events have null provider fields and are not marked provider-backed | None for Polymarket match-winner identity; line-family markets remain unavailable unless mapped. |
+| Ticket order provider selection | `/api/orders` | POST | Canonical API key with `orders:write` and internal trading beta | Existing limit-order body plus `selection` provider fields | Order response id/status/size/remaining; request metadata later consumed by portfolio routes | `ApiOrderRequest.requestBody.selection`; existing `Order`, `Market`, `Outcome` | Mock orders preserve the same selection object locally | First-class `Order.selection` column is not present. |
+| Portfolio provider identity echo | `/api/portfolio` | GET | Session user or canonical API key with `account:read` | None | `positions[].selection` and `openOrders[].selection` include market/outcome plus provider market/condition/token fields | `Position`, `Order`, `ApiOrderRequest`, `Market`, `Outcome` | Server-unavailable mobile fallback omits provider fields | No production migration yet for storing selection directly on positions/orders. |
+| Portfolio history provider identity echo | `/api/portfolio/history` | GET | Session user or canonical API key with `account:read` | None | `canceledOrders[].selection`, `recentTrades[].selection` provider fields | `Trade`, `Order`, `ApiOrderRequest`, `Market`, `Outcome` | None for Cycle DM proof | Recent trades without original request body rely on market/outcome provider fields. |
+
+Cycle DM implementation notes:
+
+- Provider lifecycle proof is Polymarket-first and does not depend on `OPTIC_ODDS_API_KEY`.
+- Android proof uses accessibility markers only; provider IDs are not visible UI copy.
+- `mobile/scripts/smoke.ps1` now honors `-BackendBaseUrl` for server live-detail proof and asserts provider identity on the server-backed page and ticket.

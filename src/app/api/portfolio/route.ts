@@ -45,7 +45,14 @@ export async function GET(request: NextRequest) {
     take: 25,
     include: {
       outcome: {
-        select: { id: true, name: true, label: true, side: true },
+        select: {
+          id: true,
+          name: true,
+          label: true,
+          side: true,
+          referenceTokenId: true,
+          referenceOutcomeLabel: true,
+        },
       },
       market: {
         select: {
@@ -56,6 +63,10 @@ export async function GET(request: NextRequest) {
           marketType: true,
           line: true,
           period: true,
+          referenceSource: true,
+          externalSlug: true,
+          externalMarketId: true,
+          conditionId: true,
         },
       },
       apiOrderRequest: {

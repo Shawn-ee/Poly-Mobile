@@ -1193,6 +1193,44 @@ Remaining P1/P2 gaps:
 - Find or ingest exact line-family chart/history only when real provider markets exist.
 - Prove provider token identity through ticket, order, portfolio, and history.
 
+## Cycle DM Provider Token Lifecycle Audit
+
+Result: Pass for focused provider token lifecycle and Android page-to-ticket proof; partial for full filled-order/history lifecycle.
+
+What became materially closer to Polymarket:
+
+- Holiwyn now preserves real Polymarket market, condition, and outcome token identity from the live-detail route into the order ticket and order metadata contract.
+- The Samsung tablet proof opens the provider-backed Colombia vs Ghana page, opens the route-backed orderbook, taps a Buy row, and verifies the ticket still carries `polymarket` source plus market/condition/token identity.
+- Portfolio and history mapping now preserve the same provider selection fields when backend rows contain them.
+
+Acceptance criteria:
+
+| Criterion ID | Priority | Status | Verification |
+| --- | --- | --- | --- |
+| LD-DM-P0-01 | P0 | Pass | Live-detail serializes `referenceSource`, `externalSlug`, `externalMarketId`, `conditionId`, and outcome token fields. |
+| LD-DM-P0-02 | P0 | Pass | Mobile adapter and ticket order service preserve provider fields in selected market/outcome payloads. |
+| LD-DM-P0-03 | P0 | Pass | Order, portfolio, and history selection metadata preserve provider fields from request body or market/outcome fallback. |
+| LD-DM-P0-04 | P0 | Pass | Backend proof writes `cycle-current-mobile-provider-token-lifecycle.json` with real Polymarket market and token IDs. |
+| LD-DM-P0-05 | P0 | Pass | Samsung tablet XML shows provider markers on the event page and ticket. |
+| LD-DM-P1-01 | P1 | Partial | A real filled trade/history row for the closed provider event is not created in this cycle. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-current-mobile-provider-token-lifecycle.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book-ticket.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book-ticket.png`
+
+Unresolved P0 gaps: 0 for this focused provider token lifecycle cycle.
+
+Remaining P1/P2 gaps:
+
+- Create an end-to-end filled-order/history proof for an active provider-backed market.
+- Normalize immutable order/trade selection identity before production real-money audit requirements.
+
 Use this template for every feature gate:
 
 ```md

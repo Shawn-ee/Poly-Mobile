@@ -29,6 +29,12 @@ const selectionFromBackend = (
     side?: string;
     displayLabel?: string;
     contractSide?: "yes" | "no";
+    referenceSource?: string;
+    externalSlug?: string;
+    externalMarketId?: string;
+    conditionId?: string;
+    referenceTokenId?: string;
+    referenceOutcomeLabel?: string;
   } | null,
 ): TicketSelection | undefined => {
   if (!selection?.displayLabel) return undefined;
@@ -45,6 +51,12 @@ const selectionFromBackend = (
     side: selection.side,
     displayLabel: selection.displayLabel,
     contractSide: selection.contractSide,
+    referenceSource: selection.referenceSource,
+    externalSlug: selection.externalSlug,
+    externalMarketId: selection.externalMarketId,
+    conditionId: selection.conditionId,
+    referenceTokenId: selection.referenceTokenId,
+    referenceOutcomeLabel: selection.referenceOutcomeLabel,
   };
 };
 

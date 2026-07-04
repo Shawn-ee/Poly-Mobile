@@ -7,6 +7,10 @@ type SelectionMarket = {
   marketType?: string | null;
   line?: { toString(): string } | string | number | null;
   period?: string | null;
+  referenceSource?: string | null;
+  externalSlug?: string | null;
+  externalMarketId?: string | null;
+  conditionId?: string | null;
 };
 
 type SelectionOutcome = {
@@ -14,6 +18,8 @@ type SelectionOutcome = {
   name: string;
   label?: string | null;
   side?: string | null;
+  referenceTokenId?: string | null;
+  referenceOutcomeLabel?: string | null;
 };
 
 const stringValue = (value: unknown) => (typeof value === "string" && value.trim() ? value.trim() : undefined);
@@ -68,5 +74,12 @@ export function buildTicketSelectionMetadata(params: {
     side: stringValue(selection?.side) ?? params.outcome.side ?? undefined,
     displayLabel,
     ...(contractSide ? { contractSide } : {}),
+    referenceSource: stringValue(selection?.referenceSource) ?? params.market.referenceSource ?? undefined,
+    externalSlug: stringValue(selection?.externalSlug) ?? params.market.externalSlug ?? undefined,
+    externalMarketId: stringValue(selection?.externalMarketId) ?? params.market.externalMarketId ?? undefined,
+    conditionId: stringValue(selection?.conditionId) ?? params.market.conditionId ?? undefined,
+    referenceTokenId: stringValue(selection?.referenceTokenId) ?? params.outcome.referenceTokenId ?? undefined,
+    referenceOutcomeLabel:
+      stringValue(selection?.referenceOutcomeLabel) ?? params.outcome.referenceOutcomeLabel ?? undefined,
   };
 }

@@ -21,6 +21,8 @@ export type Outcome = {
   zhLabel: string;
   probability: number;
   side?: "yes" | "no" | "over" | "under" | "home" | "away" | "draw";
+  referenceTokenId?: string | null;
+  referenceOutcomeLabel?: string | null;
   bestBid?: number | null;
   bestAsk?: number | null;
   bestBidSize?: number | null;
@@ -34,6 +36,10 @@ export type Market = {
   marketType?: "moneyline" | "spread" | "totals" | "team-total" | "next-goal" | "prop" | "future";
   period?: "full-game" | "regulation" | "first-half" | "second-half";
   line?: string | null;
+  referenceSource?: string | null;
+  externalSlug?: string | null;
+  externalMarketId?: string | null;
+  conditionId?: string | null;
   title: string;
   zhTitle: string;
   type: "game-line" | "prop" | "future" | "live";
