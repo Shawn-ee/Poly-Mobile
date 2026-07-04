@@ -2610,3 +2610,42 @@ Decision:
 - Remaining P1/P2 gaps:
 - Next cycle required:
 ```
+
+## Feature: Route-Backed Retail Line Ticket Flow
+
+Cycle: EU
+
+Lead Agent target: Prove Local MVP simple ticket flow uses backend live-detail spread/totals identity while hiding default orderbook UI.
+
+Reference Audit Agent: Product steering audit from current Local MVP policy.
+
+Implementation Agent: EventDetail line ticket resolver and Samsung tablet harness.
+
+Audit Gate Agent: Same-cycle tablet proof.
+
+Reference device: Not refreshed in EU; this is a Holiwyn contract/user-flow gate based on existing Polymarket retail interaction direction.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8262`.
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-local-mvp-route-ticket-flow-proof.json`
+- `docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-route-backed-retail-event.json`
+- `docs/mobile/screenshots/cycle-EU-local-mvp-route-ticket-flow/`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EU-RETAIL-P0-01 | P0 | Pass | Backend event loaded from `/api/mobile/events/:slug/live-detail` with `live-data-source-polymarket-gamma`. | N/A |
+| EU-RETAIL-P0-02 | P0 | Pass | Spread/totals rows use `ticket-source-backend-line-market`. | N/A |
+| EU-RETAIL-P0-03 | P0 | Pass | Ticket and Portfolio retain provider source/token/line/period identity. | N/A |
+| EU-RETAIL-P0-04 | P0 | Pass | Orderbook markers absent from default UI proof. | N/A |
+| EU-RETAIL-P1-01 | P1 | Open | Team-total row remains deterministic fixture in EU screenshot. | Add provider-backed team-total row support when source-approved markets exist. |
+
+Decision:
+
+- Pass/fail: Pass for selected EU spread/totals Local MVP route-backed retail flow.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: provider-backed team-total, real production line-family breadth, fresh S23 retail ticket proof.
+- Next cycle required: yes, continue Local MVP user-flow breadth.

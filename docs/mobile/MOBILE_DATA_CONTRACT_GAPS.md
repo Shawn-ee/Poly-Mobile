@@ -3189,6 +3189,37 @@ Future migration concern:
 
 - Persist immutable normalized selection metadata directly on order/fill/trade lifecycle rows before production trading depends on arbitrary provider remaps or same-market/outcome multi-selection historical reconstruction.
 
+## Cycle EU - Route-Backed Retail Ticket Flow
+
+Closed or narrowed:
+
+- Spread rows now consume matching backend route markets rather than silently opening deterministic line fixtures.
+- Backend `full-game` period and mobile retail `Reg. Time` period are explicitly equivalent for full-match soccer line markets.
+- Tablet proof shows route-backed spread/totals provider source/token identity survives through ticket and local Portfolio cards.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Provider-backed team-total route rows for the same Local MVP retail path.
+- A production route that guarantees real Polymarket spread/totals/team-total line-family breadth for active World Cup events without disposable proof fixtures.
+
+Schema mismatch:
+
+- No schema migration was required. Existing `Market.period`, `Market.line`, `Market.marketType`, and outcome provider token fields cover the EU selected route proof.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/live-detail` is enough for selected spread/totals retail tickets when the compact market exists.
+- A future selector/options route may still be needed for complete Polymarket-style line/period breadth beyond compact markets.
+
+Temporary mock/static data:
+
+- No arbitrary frontend data was added. Team-total remains deterministic contract-shaped fallback already tracked from ES/ET.
+- EU order placement intentionally uses mobile mock/fake-token mode while route-backed market data comes from server mode.
+
+Future migration concern:
+
+- When fake-token server orders are promoted for Local MVP, persist the route-backed ticket selection snapshot through order, portfolio, and history instead of relying only on client local state.
+
 ## Cycle EB-A - Live Detail Selected-Market Selector Contract
 
 Closed or narrowed:

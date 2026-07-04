@@ -1,0 +1,40 @@
+{
+    "cycle":  "EU",
+    "scenario":  "Local MVP Android route-backed retail ticket flow with orderbook hidden by default",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpRouteTicketFlow -Port 8262 -BackendBaseUrl http://127.0.0.1:3002 -ServerEventSlug mobile-el-a-provider-breadth-b917234c -OutputDir docs/mobile/screenshots/cycle-EU-local-mvp-route-ticket-flow -HierarchyOutputDir docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "serverEventSlug":  "mobile-el-a-provider-breadth-b917234c",
+    "orderbookDebug":  "unset",
+    "marketDataMode":  "server",
+    "orderMode":  "mock",
+    "result":  "pass",
+    "assertions":  {
+                       "routeBackedEvent":  [
+                                                "live-detail loaded through forceBackendEventSlug",
+                                                "live-data-source-polymarket-gamma"
+                                            ],
+                       "retailRows":  [
+                                          "spread and totals rows use ticket-source-backend-line-market",
+                                          "provider-source-polymarket visible",
+                                          "no default Book/orderbook entry points"
+                                      ],
+                       "ticket":  [
+                                      "spread/totals simple ticket opens with current probability",
+                                      "provider token/source visible",
+                                      "fake-token buy uses swipe-style submit"
+                                  ],
+                       "portfolio":  [
+                                         "position/latest order/latest activity preserve route-backed market/outcome/provider identity"
+                                     ]
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-holiwyn-route-mvp-line-markets.png",
+                      "docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-holiwyn-route-mvp-line-markets.xml",
+                      "docs/mobile/screenshots/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-holiwyn-route-mvp-totals-ticket.png",
+                      "docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-holiwyn-route-mvp-totals-ticket.xml",
+                      "docs/mobile/screenshots/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-holiwyn-route-mvp-spread-ticket-ready.png",
+                      "docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-holiwyn-route-mvp-spread-ticket-ready.xml",
+                      "docs/mobile/screenshots/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-holiwyn-route-mvp-portfolio.png",
+                      "docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-holiwyn-route-mvp-portfolio.xml"
+                  ]
+}

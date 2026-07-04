@@ -374,3 +374,11 @@ For every UI element or interaction, answer:
 7. If not, what exactly is missing?
 8. Is the gap P0, P1, or P2?
 9. What implementation change is recommended?
+
+## Cycle EU Gap Tracker Update
+
+- PM-GAP-090 is opened and verified for Local MVP route-backed retail spread/totals ticket flow with orderbook hidden by default.
+- EU closes the repeated P0 gap where visible spread rows could stay on deterministic local fixture even when backend live-detail provided a matching provider-backed spread market.
+- Samsung tablet proof passes for route-backed event load, spread/totals `ticket-source-backend-line-market`, provider source/token identity in tickets, fake-token spread buy, and Portfolio/latest order/activity/position identity preservation.
+- Default Book/orderbook UI remains hidden and is not a milestone blocker.
+- Remaining P1: route-backed team-total provider rows, real active Polymarket line-family source breadth, and fresh S23 retail ticket recapture when gates allow.

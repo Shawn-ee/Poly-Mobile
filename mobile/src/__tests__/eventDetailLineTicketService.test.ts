@@ -111,6 +111,27 @@ describe("event detail line ticket resolver", () => {
     });
   });
 
+  test("treats full-game backend lines as regulation-time retail selections", () => {
+    const backendOutcome = outcome("backend-over", "Over 2.5");
+    const backendMarket = market("backend-totals-25-full-game", "totals", [backendOutcome], { line: "2.5", period: "full-game" });
+    const syntheticOutcome = outcome("display-over-25", "Over 2.5 RT");
+    const syntheticMarket = market("display-totals-25", "totals", [syntheticOutcome], { line: "2.5", period: "regulation" });
+
+    const target = resolveLineTicketTarget({
+      selection: { marketType: "totals", line: "2.5", period: "Reg. Time", displayLabel: "Over 2.5 RT" },
+      backendMarket,
+      backendOutcome,
+      syntheticOutcome,
+      syntheticMarkets: { totals: syntheticMarket },
+    });
+
+    expect(target).toMatchObject({
+      source: "backend-line-market",
+      market: { id: "backend-totals-25-full-game" },
+      outcome: { id: "backend-over" },
+    });
+  });
+
   test("falls back to deterministic team-total fixture when backend team total is unavailable", () => {
     const syntheticOutcome = outcome("display-team-total-over", "MEX Over 1.5");
     const syntheticMarket = market("display-team-total-market", "team-total", [syntheticOutcome]);

@@ -634,10 +634,11 @@ export function EventDetail({
         ? ["team-total", "team_total", "team_totals", "team_total_goals"]
         : [type];
     const targetPeriod = marketPeriodForLinePeriod(period);
+    const equivalentPeriod = (value?: Market["period"]) => value === "full-game" ? "regulation" : value;
     return event.markets.find((market) =>
       matchingTypes.includes(market.marketType ?? "") &&
       Math.abs(lineAsNumber(market.line) ?? Number.NaN) === target &&
-      (!market.period || market.period === targetPeriod)
+      (!market.period || equivalentPeriod(market.period) === equivalentPeriod(targetPeriod))
     );
   };
   const backendSpreadMarket = matchingBackendLineMarket("spread", spreadLine, spreadPeriod);
@@ -2187,7 +2188,7 @@ export function EventDetail({
                       </Pressable>
                     ))}
                   </View>
-                  {spreadRows.map((outcome) => renderParityOutcomeRow(outcome, "spread"))}
+                  {spreadRows.map((outcome, index) => renderParityOutcomeRow(outcome, "spread", backendSpreadMarket?.outcomes[index], backendSpreadMarket))}
                 </>
               )}
             </View>

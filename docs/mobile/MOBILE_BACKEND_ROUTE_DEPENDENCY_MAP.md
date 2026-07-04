@@ -1420,3 +1420,16 @@ Cycle EB-A implementation notes:
 - The live-detail response now carries a backend-owned `selection` block per compact market so mobile can change selected market, period, line, and chart state without constructing UI-only selector structures.
 - `scripts/probe_mobile_live_detail_route.ts` now fails its route proof if any compact market lacks a matching `selection.marketId`, selector key containing the market id, or chart target matching the market id.
 - No schema change was required. Existing `Market` fields (`marketGroupKey`, `marketGroupTitle`, `marketType`, `period`, `line`, `unit`), active `Outcome` rows, provider outcome fields, and `MarketOutcomeSnapshot` rows cover the contract.
+
+## Cycle EU - Route-Backed Retail Ticket Flow
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Backend event open for Local MVP retail ticket | `/api/mobile/events/:slug/live-detail` | GET | Public viewing | Event slug from deep link `forceBackendEventSlug` | `event.title`, `event.liveDataStatus`, `markets[].id`, `marketType`, `period`, `line`, `referenceSource`, `externalMarketId`, `conditionId`, `outcomes[].id`, `outcomes[].referenceTokenId`, `outcomes[].referenceOutcomeLabel`, `outcomes[].price/bestBid/bestAsk` | `Event`, `Market`, active `Outcome`, provider quote/depth/history snapshots for proof event | None for spread/totals in EU proof. If a matching backend line is absent, mobile falls back to deterministic contract-shaped fixture and the row is not counted as route-backed. | Team-total provider rows are not covered by the disposable EU route event. |
+| Local MVP fake-token order from route-backed ticket | Local mobile mock order path using backend-shaped ticket selection | Client-side mock | No auth for MVP fake-token order | Ticket amount/side plus market/outcome/selection identity | Portfolio cards consume order-time selection fields generated from backend market/outcome fallback metadata | Mobile local state only for EU order/Portfolio proof | This is intentional for the Local MVP. Market data is server-backed, order placement is mock/fake-token. | Server order lifecycle for this exact retail path remains a later milestone when fake-token order APIs are promoted. |
+
+Cycle EU implementation notes:
+
+- The backend route event was created by `scripts/prove_mobile_el_a_provider_breadth.ts` into `docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-route-backed-retail-event.json`.
+- Mobile launched against `EXPO_PUBLIC_MARKET_DATA_MODE=server` and `EXPO_PUBLIC_ORDER_MODE` unset, proving server market data plus mock fake-token trading.
+- `full-game` backend line periods are treated as retail `Reg. Time`; `first-half` and `second-half` remain distinct and period-safe.

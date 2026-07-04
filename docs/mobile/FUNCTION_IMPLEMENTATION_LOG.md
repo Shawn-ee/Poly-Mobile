@@ -4653,3 +4653,45 @@ Known limitations:
 
 - Live mock status is deterministic backend-contract-shaped fixture UI because backend liveDataStatus is absent in this branch.
 - Real provider freshness remains dependent on backend/provider contract fields.
+
+## Cycle EU - Route-Backed Retail Ticket Flow
+
+Feature/page worked on:
+
+- Mobile EventDetail Local MVP retail line tickets for a backend live-detail event.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/services/eventDetailLineTicketService.ts`
+- `mobile/src/__tests__/eventDetailLineTicketService.test.ts`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+Important functions/services touched:
+
+- `matchingBackendLineMarket()` now treats backend `full-game` line markets as equivalent to retail `Reg. Time` selections while still rejecting first-half/second-half mismatches.
+- `resolveLineTicketTarget()` applies the same full-game/regulation equivalence before choosing `backend-line-market`.
+- Spread rows now pass `backendSpreadMarket` and matching backend outcomes into `renderParityOutcomeRow()`, matching the existing totals path.
+
+User interactions supported/proven:
+
+- Open backend live-detail event on Samsung tablet through `forceBackendEventSlug`.
+- See spread/totals rows use `ticket-source-backend-line-market` with `provider-source-polymarket`.
+- Open totals simple ticket and spread simple ticket with provider source/token identity.
+- Submit fake-token spread buy through the default retail ticket.
+- See Portfolio/latest order/activity/position preserve route-backed spread line/provider identity.
+- Default Book/orderbook UI stays hidden.
+
+Validation:
+
+- `npm run typecheck` from `mobile/`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/eventDetailLineTicketService.test.ts mobile/src/__tests__/worldCupAdapter.test.ts`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-refresh.route.test.ts src/__tests__/mobile-live-event-detail.test.ts`
+- `cmd /c npx.cmd tsx scripts/prove_mobile_el_a_provider_breadth.ts --output docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow/cycle-EU-route-backed-retail-event.json`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpRouteTicketFlow -Port 8262 -BackendBaseUrl http://127.0.0.1:3002 -ServerEventSlug mobile-el-a-provider-breadth-b917234c -OutputDir docs/mobile/screenshots/cycle-EU-local-mvp-route-ticket-flow -HierarchyOutputDir docs/mobile/harness/cycle-EU-local-mvp-route-ticket-flow`
+
+Known limitations:
+
+- The disposable backend proof covers moneyline, spread, and totals. Team-total remains contract-shaped fixture UI until provider/source-approved backend rows exist.
+- The mobile proof uses mock order mode by design for the Local MVP fake-token flow while market data uses server mode.

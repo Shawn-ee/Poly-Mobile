@@ -38,6 +38,8 @@ const normalizedPeriod = (period: string | null | undefined) => {
   return normalized;
 };
 
+const comparablePeriod = (period: string | null) => period === "full-game" ? "regulation" : period;
+
 const backendLineMatchesSelection = (selection: TicketSelection | undefined, market: Market | undefined) => {
   if (!selection || !["spread", "totals", "team-total"].includes(selection.marketType)) return true;
   const selectedLine = numberFromLine(selection.line);
@@ -45,7 +47,7 @@ const backendLineMatchesSelection = (selection: TicketSelection | undefined, mar
   if (selectedLine == null || marketLine == null) return false;
   const selectedPeriod = normalizedPeriod(selection.period);
   const marketPeriod = normalizedPeriod(market?.period);
-  if (selectedPeriod && marketPeriod && selectedPeriod !== marketPeriod) return false;
+  if (selectedPeriod && marketPeriod && comparablePeriod(selectedPeriod) !== comparablePeriod(marketPeriod)) return false;
   return Math.abs(Math.abs(marketLine) - Math.abs(selectedLine)) < 0.001;
 };
 
