@@ -1,0 +1,90 @@
+{
+  "cycle": "DS-A",
+  "agent": "Agent A - Backend/Orderbook Contract",
+  "gap": "PM-GAP-075",
+  "generatedAt": "2026-07-04T05:52:56.7740018-05:00",
+  "scope": "backend orderbook route/data contract",
+  "route": "/api/orderbook/:marketId/book",
+  "change": {
+    "summary": "Added backend-derived marketIdentity metadata to the public orderbook book route.",
+    "fields": [
+      "marketIdentity.source",
+      "marketIdentity.marketId",
+      "marketIdentity.title",
+      "marketIdentity.selectorKey",
+      "marketIdentity.marketFamily",
+      "marketIdentity.marketType",
+      "marketIdentity.marketGroupKey",
+      "marketIdentity.marketGroupId",
+      "marketIdentity.marketGroupTitle",
+      "marketIdentity.displayOrder",
+      "marketIdentity.period",
+      "marketIdentity.line",
+      "marketIdentity.unit",
+      "marketIdentity.displayUnits",
+      "marketIdentity.outcomeCount",
+      "marketIdentity.tradableOutcomeCount",
+      "marketIdentity.outcomes"
+    ],
+    "sensitiveFieldsExcluded": [
+      "ownerId",
+      "userId",
+      "privateKey",
+      "secret",
+      "token",
+      "credential",
+      "conditionId",
+      "externalMarketId"
+    ]
+  },
+  "familiesProven": [
+    {
+      "name": "moneyline",
+      "marketType": "match_winner_1x2",
+      "selectorKeyExample": "main:full-game:default"
+    },
+    {
+      "name": "spread",
+      "marketType": "spread",
+      "lineExample": "1.5",
+      "unitExample": "goals",
+      "selectorKeyExample": "spreads:full-game:1.5"
+    },
+    {
+      "name": "totals",
+      "marketType": "total_goals",
+      "lineExample": "2.5",
+      "unitExample": "goals",
+      "selectorKeyExample": "totals:full-game:2.5"
+    }
+  ],
+  "proof": {
+    "command": "npx jest --runInBand src/__tests__/public.orderbook-book.no-leak.test.ts",
+    "status": "passed",
+    "testSuites": {
+      "passed": 1,
+      "total": 1
+    },
+    "tests": {
+      "passed": 7,
+      "total": 7
+    },
+    "assertions": [
+      "mobile depth levels still return without sensitive keys",
+      "selector-ready identity is exposed for moneyline",
+      "selector-ready identity is exposed for spread",
+      "selector-ready identity is exposed for totals",
+      "no-depth empty state still returns",
+      "suspended market availability still returns",
+      "guarded errors remain public"
+    ]
+  },
+  "remainingGaps": {
+    "p0": [],
+    "p1": [
+      "Broader real provider identity coverage for live Spread/Totals markets when production mappings are available.",
+      "Active tradable provider-backed line-market event coverage for full filled-order lifecycle proof.",
+      "Optional event-level sibling Book selector route if mobile needs all selector options without live-detail."
+    ]
+  }
+}

@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle DS-A - Orderbook Selector Identity Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Book selector/depth identity | `/api/orderbook/:marketId/book` | GET | Public visibility guard; private market access still uses existing user visibility checks | Query params: optional `outcomeId`, optional `maxLevels` capped at 200 | Existing `marketId`, `outcomeId`, `availability`, `emptyState`, `levels[]`, `bids[]`, `asks[]`, provider depth metadata; new `marketIdentity.selectorKey`, `marketFamily`, `marketType`, `marketGroupKey`, `marketGroupId`, `marketGroupTitle`, `displayOrder`, `period`, `line`, `unit`, `displayUnits`, `outcomes[]` | Reads `Market` plus active `Outcome`; reads local orderbook/provider snapshots through `buildPublicOrderbookSnapshot()` | None. The route reports no-depth/availability truthfully and does not synthesize frontend-only family data | Broader production provider mappings for live line-family markets remain outside this route contract. |
+| Focused backend proof | `src/__tests__/public.orderbook-book.no-leak.test.ts` | Jest unit route test | Local development only | Mocked route request for Moneyline, Spread, and Totals markets | Asserts selector-ready identity, public ladder units, active outcome list, and no sensitive key leakage | No DB writes; Prisma is mocked | None | Add integration proof against a seeded real event if Agent B needs an end-to-end sibling selector proof. |
+
+Cycle DS-A implementation notes:
+
+- `docs/mobile/harness/cycle-DS-A-orderbook-selector-contract.json` records the focused backend proof.
+- The route intentionally does not expose provider token IDs, condition IDs, credentials, owner IDs, or user/order private state in `marketIdentity`.
+- This closes the backend-side compact market identity gap for Book selector/depth parity; mobile can switch/select line markets without inventing family, line, period, outcome, or display-unit labels.
+
 ## Cycle DR-A - Scheduled Provider Refresh Run Reporting
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

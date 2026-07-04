@@ -10,6 +10,77 @@ type OrderbookAvailabilityStatus = "ready" | "stale" | "suspended" | "delayed" |
 
 const ORDERBOOK_STALE_AFTER_SECONDS = 90;
 
+const marketFamilyForSelector = (market: {
+  marketType: string;
+  marketGroupKey: string | null;
+  marketGroupTitle: string | null;
+  title: string;
+}) => {
+  const key = `${market.marketType} ${market.marketGroupKey ?? ""} ${market.marketGroupTitle ?? ""} ${market.title}`.toLowerCase();
+  if (key.includes("spread") || key.includes("handicap")) return "spread";
+  if (key.includes("total")) return "total";
+  if (key.includes("winner") || key.includes("moneyline") || key.includes("match_winner")) return "moneyline";
+  return market.marketType;
+};
+
+const marketIdentityForSelector = (market: {
+  id: string;
+  title: string;
+  marketType: string;
+  marketGroupKey: string | null;
+  marketGroupTitle: string | null;
+  displayOrder: number;
+  line: { toString(): string } | null;
+  unit: string | null;
+  period: string | null;
+  outcomes: Array<{
+    id: string;
+    name: string;
+    label: string | null;
+    side: string | null;
+    displayOrder: number;
+    isTradable: boolean;
+  }>;
+}) => {
+  const marketFamily = marketFamilyForSelector(market);
+  return {
+    source: "market-route-contract",
+    marketId: market.id,
+    title: market.title,
+    selectorKey: [
+      market.marketGroupKey ?? marketFamily,
+      market.period ?? "full-game",
+      market.line?.toString() ?? "default",
+    ].join(":"),
+    marketFamily,
+    marketType: market.marketType,
+    marketGroupKey: market.marketGroupKey,
+    marketGroupId: market.marketGroupKey,
+    marketGroupTitle: market.marketGroupTitle,
+    displayOrder: market.displayOrder,
+    period: market.period,
+    line: market.line?.toString() ?? null,
+    unit: market.unit,
+    displayUnits: {
+      price: "probability",
+      priceFormat: "cents",
+      shares: "shares",
+      total: "notional",
+      line: market.unit,
+    },
+    outcomeCount: market.outcomes.length,
+    tradableOutcomeCount: market.outcomes.filter((outcome) => outcome.isTradable).length,
+    outcomes: market.outcomes.map((outcome) => ({
+      id: outcome.id,
+      name: outcome.name,
+      label: outcome.label ?? outcome.name,
+      side: outcome.side,
+      displayOrder: outcome.displayOrder,
+      isTradable: outcome.isTradable,
+    })),
+  };
+};
+
 const asDepthLevels = (
   levels: Array<{ outcomeId: string; price: number; size: number }>,
   side: "bid" | "ask",
@@ -74,7 +145,35 @@ export async function GET(request: NextRequest, context: Ctx) {
 
   const market = await prisma.market.findUnique({
     where: { id: marketId },
-    select: { id: true, mechanism: true, visibility: true, ownerId: true, status: true, sourceUpdatedAt: true, updatedAt: true },
+    select: {
+      id: true,
+      title: true,
+      mechanism: true,
+      visibility: true,
+      ownerId: true,
+      status: true,
+      sourceUpdatedAt: true,
+      updatedAt: true,
+      marketType: true,
+      marketGroupKey: true,
+      marketGroupTitle: true,
+      displayOrder: true,
+      line: true,
+      unit: true,
+      period: true,
+      outcomes: {
+        where: { isActive: true },
+        orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
+        select: {
+          id: true,
+          name: true,
+          label: true,
+          side: true,
+          displayOrder: true,
+          isTradable: true,
+        },
+      },
+    },
   });
   if (!market) {
     return NextResponse.json({ error: "Market not found" }, { status: 404 });
@@ -98,6 +197,7 @@ export async function GET(request: NextRequest, context: Ctx) {
       marketId,
       outcomeId,
       generatedAt: new Date().toISOString(),
+      marketIdentity: marketIdentityForSelector(market),
       availability: availabilityForMarket(market),
       emptyState: levels.length === 0 ? "no-depth" : null,
       levels,
