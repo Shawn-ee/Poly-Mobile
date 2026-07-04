@@ -7,13 +7,15 @@ Purpose: track fields, route mismatches, schema mismatches, ignored backend fiel
 Closed or narrowed:
 
 - PM-GAP-084 backend route proof is now explicit: `/api/mobile/events/:slug/live-detail` returns the tablet status fields from backend route data, including `event.liveDataStatus`, top-level and `contract.providerLifecycle`, selected `markets[].providerLifecycle.quote/orderbookDepth/chartHistory`, `chartHistoryStatus`, `orderbookDepthSource/orderbookDepthStatus`, `providerOrderbookDepth.status`, `selection`, and `orderbookIdentity`.
-- `docs/mobile/harness/cycle-EI-A-route-backed-status.json` records a disposable provider-backed route response with live data status, chart status, orderbook/availability status, selected market identity, source, reason, `nextRefreshAt`, `lastFetchedAt`, and a no fixture/mock-ready marker assertion.
+- `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-A-route-backed-status.json` records a disposable provider-backed route response with live data status, chart status, orderbook/availability status, selected market identity, source, reason, `nextRefreshAt`, `lastFetchedAt`, and a no fixture/mock-ready marker assertion.
+- `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-proof.json` proves the Samsung tablet consumes that route-backed contract and does not use deterministic fixture/default-ready status UI for the selected path.
 - Missing `OPTIC_ODDS_API_KEY` remains non-blocking for this route proof because the status fields come from Polymarket/CLOB-shaped provider quote, orderbook depth, and chart snapshot rows already consumed by live-detail.
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Visible tablet rendering remains outside Agent A scope.
+- Visible tablet rendering is now proven for the selected EI route-backed ready/Book/ticket path.
 - Production line-family readiness still depends on mapped provider markets and recurring refresh coverage; EI-A proves the route shape and a provider-backed selected market, not universal production data coverage.
+- Broader route-backed stale/unavailable transition proof remains a follow-up; EH visible-state evidence remains regression support but not a substitute for production-wide status coverage.
 
 Schema mismatch:
 
@@ -26,6 +28,7 @@ Route mismatch:
 Temporary mock/static data:
 
 - No frontend mock/static data was added. The proof uses disposable backend rows and fails if the live-detail payload contains `mock-ready`, `fixture-ready`, or `frontend-fixture` markers.
+- No deterministic fixture UI was accepted by the tablet proof. The selected visible route rejects fixture/mock/default markers and proves `EXPO_PUBLIC_ORDER_MODE=server`.
 
 Future migration concern:
 

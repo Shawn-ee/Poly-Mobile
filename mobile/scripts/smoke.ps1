@@ -580,6 +580,8 @@ try {
     @("Japan vs Morocco", "Game Lines", "Spread", "event-detail-open-order-book")
   } elseif ($ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook) {
     @("Game Lines", "Player Props", "Best bid", "Best ask", "Spread")
+  } elseif ($EventDetailProviderStatus) {
+    @("EI-A Route Backed Status", "Game Lines", "Player Props", "event-detail-live-data-inline", "live-data-source-polymarket-gamma")
   } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade) {
     @("Mexico vs. Ecuador", "5 markets", "10 outcomes")
   } elseif ($DyAGamePageStructure -or $LiveDetail -or $EventDetailProviderStatus) {
@@ -1404,13 +1406,19 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-EI-B-route-backed-status-ticket-handoff.png"
       $providerStatusTicketHierarchy = Save-UiHierarchy -Name "cycle-EI-B-route-backed-status-ticket-handoff.xml"
-      Assert-HierarchyContains -Path $providerStatusTicketHierarchy -Expected @("trade-ticket", "ticket-side-buy", "ticket-side-sell", "Trading mode: Server mode")
+      Assert-HierarchyContains -Path $providerStatusTicketHierarchy -Expected @("trade-ticket", "ticket-side-buy", "ticket-side-sell", "ticket-settings", "ticket-selection-summary", "provider-source-polymarket")
       Assert-HierarchyDoesNotContain -Path $providerStatusTicketHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Team to Advance", "Mexico vs. Ecuador")
+      Invoke-TapHierarchyNode -Path $providerStatusTicketHierarchy -Identifier "ticket-settings"
+      Start-Sleep -Milliseconds 500
+      Save-Screenshot -Name "cycle-EI-B-route-backed-status-ticket-settings.png"
+      $providerStatusTicketSettingsHierarchy = Save-UiHierarchy -Name "cycle-EI-B-route-backed-status-ticket-settings.xml"
+      Assert-HierarchyContains -Path $providerStatusTicketSettingsHierarchy -Expected @("trade-ticket", "ticket-advanced-details", "ticket-trading-mode", "Trading mode: Server mode", "ticket-market-depth", "provider-source-polymarket")
+      Assert-HierarchyDoesNotContain -Path $providerStatusTicketSettingsHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Team to Advance", "Mexico vs. Ecuador")
 
       $proof = [ordered]@{
         cycle = "EI-B"
         scope = "Route-backed provider lifecycle/status badges on live detail, chart, Book/orderbook, and ticket handoff"
-        command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailProviderStatus -Port $Port -BackendBaseUrl $BackendBaseUrl -OutputDir docs/mobile/screenshots/cycle-EI-B-route-backed-status -HierarchyOutputDir docs/mobile/harness/cycle-EI-B-route-backed-status"
+        command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailProviderStatus -Port $Port -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir"
         backendBaseUrl = $BackendBaseUrl
         serverMode = $env:EXPO_PUBLIC_ORDER_MODE
         apiBaseUrl = $env:EXPO_PUBLIC_API_BASE_URL
@@ -1426,17 +1434,20 @@ try {
           serverRuntime = "Expo launched with EXPO_PUBLIC_ORDER_MODE=server and EXPO_PUBLIC_API_BASE_URL set to the supplied BackendBaseUrl."
           bookRefreshing = "Opening Book produces a visible provider-lifecycle-refreshing Book depth refreshing state before the resolved depth state."
           bookRouteDepthReady = "Resolved Book depth uses orderbook-source-orderbook-route and orderbook-status-ready rather than fixture depth."
+          ticketServerMode = "Ticket settings exposes Trading mode: Server mode while preserving provider-source-polymarket selection identity."
           fallbackGuard = "The top, Book, and ticket hierarchies reject deterministic-status-fixture, fixture-ready, mock-ready, and default-ready markers."
         }
         artifacts = @(
-          "docs/mobile/screenshots/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-live-top.png",
-          "docs/mobile/harness/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-live-top.xml",
-          "docs/mobile/screenshots/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-book-refreshing.png",
-          "docs/mobile/harness/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-book-refreshing.xml",
-          "docs/mobile/screenshots/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-book-resolved.png",
-          "docs/mobile/harness/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-book-resolved.xml",
-          "docs/mobile/screenshots/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-ticket-handoff.png",
-          "docs/mobile/harness/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-ticket-handoff.xml"
+          "$OutputDir/cycle-EI-B-route-backed-status-live-top.png",
+          "$HierarchyOutputDir/cycle-EI-B-route-backed-status-live-top.xml",
+          "$OutputDir/cycle-EI-B-route-backed-status-book-refreshing.png",
+          "$HierarchyOutputDir/cycle-EI-B-route-backed-status-book-refreshing.xml",
+          "$OutputDir/cycle-EI-B-route-backed-status-book-resolved.png",
+          "$HierarchyOutputDir/cycle-EI-B-route-backed-status-book-resolved.xml",
+          "$OutputDir/cycle-EI-B-route-backed-status-ticket-handoff.png",
+          "$HierarchyOutputDir/cycle-EI-B-route-backed-status-ticket-handoff.xml",
+          "$OutputDir/cycle-EI-B-route-backed-status-ticket-settings.png",
+          "$HierarchyOutputDir/cycle-EI-B-route-backed-status-ticket-settings.xml"
         )
       }
       $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-EI-B-route-backed-status-proof.json"

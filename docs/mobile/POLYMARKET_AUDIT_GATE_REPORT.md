@@ -20,7 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
-| Current live event detail route-backed provider lifecycle/status parity | Cycle EI-C docs gate | Fail-until-integrated-proof; PM-GAP-084 remains open | 12 P0 route-backed proof areas remain | P1 fresh S23 recapture, broader real provider-backed family status matrix, actual route-backed stale -> refreshing/loading -> ready transition; P2 status visual polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence plus EH progress; gate: `docs/mobile/audits/cycle-ei-c-route-backed-status-gate.md` | No EI Holiwyn device proof collected by Agent C; future required paths: `docs/mobile/harness/cycle-EI-integrated-route-backed-status/`, `docs/mobile/screenshots/cycle-EI-integrated-route-backed-status/`, backend support `docs/mobile/harness/cycle-EI-A-route-backed-status.json` | EI defines the remaining blocker precisely: tablet-visible status must be sourced from the live backend route. Lead must prove backend health/reachability from tablet launch context, route-backed markers in tablet XML/proof, same selected market identity through live page/chart/Book/ticket, and no deterministic fixture/mock-ready/default fallback. |
+| Current live event detail route-backed provider lifecycle/status parity | Cycle EI integrated | Pass for selected route-backed tablet status gate; PM-GAP-084 verified for selected path | 0 for selected EI gate | P1 fresh S23 recapture, broader real provider-backed family status matrix, actual route-backed stale -> refreshing/loading -> ready transition; P2 status visual polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence plus EH progress; gate: `docs/mobile/audits/cycle-ei-c-route-backed-status-gate.md` | Backend proof: `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-A-route-backed-status.json`; Samsung tablet proof: `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EI-integrated-route-backed-status/` and `docs/mobile/harness/cycle-EI-integrated-route-backed-status/` | EI closes the remaining PM-GAP-084 blocker for the selected path: tablet launch requires backend health, consumes live route status, shows `live-data-source-polymarket-gamma`, preserves selected provider identity through Book/orderbook and ticket, opens ticket settings to prove `Trading mode: Server mode`, and rejects fixture/mock/default fallback markers. |
 | Current live event detail visible provider lifecycle/status parity | Cycle EH integrated | Partial; PM-GAP-084 remains open for route-backed tablet status rendering | 2 P0 integration proof areas remain | P1 fresh S23 recapture, broader real provider-backed family status matrix, actual stale -> refreshing/loading -> ready transition; P2 status visual polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence; gate: `docs/mobile/audits/cycle-eh-c-provider-status-gate.md` | Backend status proof: `docs/mobile/harness/cycle-EH-A-provider-status-surface.json`; Samsung tablet visible proof: `docs/mobile/harness/cycle-EH-integrated-provider-status/cycle-EH-integrated-provider-status-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EH-integrated-provider-status/` and `docs/mobile/harness/cycle-EH-integrated-provider-status/` | EH proves Android-visible ready, refresh-due, refreshing, and not-ready status badges through live page, chart, Book/orderbook, and ticket handoff, while backend route proof separately proves status fields. It remains partial because the tablet launch still used deterministic contract-shaped fixture status UI instead of live backend route data. |
 | Current live event detail visible provider behavior and structural parity | Cycle EG integrated | Partial; PM-GAP-084 remains open | 4 P0 status/provider-lifecycle proof areas remain | P1 fresh S23 recapture, broader real provider-backed family breadth, visible provider refresh lifecycle; P2 density/chart/orderbook/status polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence; gate: `docs/mobile/audits/cycle-eg-c-live-event-visible-provider-gate.md` | Backend refresh lifecycle proof: `docs/mobile/harness/cycle-EG-A-provider-refresh-lifecycle.json`; Samsung tablet visible proof: `docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-visible-live-parity-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EG-B-visible-live-parity/` and `docs/mobile/harness/cycle-EG-B-visible-live-parity/` | EG materially closes chart, line-selector, Book ladder, and ticket carry-through gaps for the selected Mexico/Ecuador Spread path. It remains partial because the Android run used contract-shaped fallback data and did not visibly prove ready/stale/refreshing/unavailable provider lifecycle states tied to the backend route in one run. |
 | Current live game page Book-origin snapshot durability after metadata drift | Cycle EF integrated | Pass for selected EF proof; PM-GAP-083 verified for selected path | 0 for selected EF gate | P1 repeat across real provider-backed line families, provider-refresh drift regression, official production history recapture; P2 Portfolio/history visual clarity | Reused EE/ED checked-in proof and DQ-C Polymarket reference; gate: `docs/mobile/audits/cycle-ef-c-snapshot-durability-gate.md` | Backend proof: `docs/mobile/harness/cycle-EF-A-snapshot-durability.json`; Samsung tablet proof: `docs/mobile/harness/cycle-EF-integrated-snapshot-durability/cycle-EF-snapshot-durability-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EF-integrated-snapshot-durability/` and `docs/mobile/harness/cycle-EF-integrated-snapshot-durability/` | Integrated proof mutates current market/outcome/provider metadata after order/fill creation, then proves backend and Android Portfolio/activity still render order-time/fill-time selected Book identity with no fallback/default reconstruction and explicit fake-token labels. |
@@ -2167,7 +2167,7 @@ Decision:
 
 ## Cycle EI-C Route-Backed Provider Status Gate
 
-Result: Fail-until-integrated-proof. PM-GAP-084 remains open until tablet-visible provider status is sourced from the live backend route.
+Result: Pass for selected EI integrated route-backed status proof. PM-GAP-084 is verified for the selected route-backed tablet path.
 
 Lead Agent target:
 
@@ -2189,8 +2189,8 @@ Reference device:
 
 Holiwyn device:
 
-- No EI-C Holiwyn device proof collected by Agent C.
-- Required future proof device: Samsung tablet or assigned Holiwyn Android device.
+- Samsung tablet / Holiwyn Expo Go, device `172.16.200.30:41299`, local Expo port 8322.
+- Backend base URL `http://127.0.0.1:3002` was required by health check and ADB reverse before launch.
 
 Reference evidence:
 
@@ -2201,36 +2201,37 @@ Reference evidence:
 - `docs/mobile/screenshots/cycle-EH-integrated-provider-status/`
 - `docs/mobile/harness/cycle-EH-integrated-provider-status/`
 
-Holiwyn evidence required before pass:
+Holiwyn evidence:
 
 - `docs/mobile/screenshots/cycle-EI-integrated-route-backed-status/`
 - `docs/mobile/harness/cycle-EI-integrated-route-backed-status/`
-- `docs/mobile/harness/cycle-EI-A-route-backed-status.json`
+- `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-A-route-backed-status.json`
+- `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-proof.json`
 
 Criteria results:
 
 | Criterion ID | Priority | Result | Evidence | Fix if failed |
 | --- | --- | --- | --- | --- |
-| EI-ROUTE-STATUS-P0-01 | P0 | Fail until proof | No EI proof shows backend health/reachability from the tablet launch context. | Record backend base URL, health result, live-detail/status route identity, HTTP success, and no backend-unavailable tablet fallback in the same run. |
-| EI-ROUTE-STATUS-P0-02 | P0 | Fail until proof | No EI tablet XML/proof shows route-backed status markers matched to backend route fields. | Add visible/proof markers for route/source/status/freshness/provider fields and pair them with backend response fields. |
-| EI-ROUTE-STATUS-P0-03 | P0 | Fail until proof | Ready status has not been proven as live-route-backed on tablet. | Pair backend ready fields with visible ready markers for the selected market. |
-| EI-ROUTE-STATUS-P0-04 | P0 | Fail until proof | Stale or refresh-due status has not been proven as live-route-backed on tablet. | Pair backend stale/refresh-due fields with visible tablet markers without silent ready conversion. |
-| EI-ROUTE-STATUS-P0-05 | P0 | Fail until proof | Refreshing or loading status has not been proven as live-route-backed on tablet. | Pair backend refresh/loading state or trigger proof with visible tablet loading/refreshing markers. |
-| EI-ROUTE-STATUS-P0-06 | P0 | Fail until proof | Unavailable, empty, or not-ready status has not been proven as live-route-backed on tablet. | Pair backend unavailable/not-ready fields with explicit tablet state and no ready fallback ladder. |
-| EI-ROUTE-STATUS-P0-07 | P0 | Fail until proof | No EI proof matrix carries the same selected market identity through live page, chart, Book/orderbook, and ticket with route-backed status context. | Map event, family/type, line, period, side/outcome, provider/source, market id or selector key, and condition/token where available across all surfaces. |
-| EI-ROUTE-STATUS-P0-08 | P0 | Fail until proof | Book/orderbook route-backed status has not been proven for the same selected identity. | Capture Book/orderbook XML/proof with route-backed status, selected market id or selector key, ready rows only when ready, and explicit non-ready states otherwise. |
-| EI-ROUTE-STATUS-P0-09 | P0 | Fail until proof | Ticket route-backed status handoff has not been proven. | Open ticket and assert matching selected identity plus route-backed status context and correct ready/not-ready behavior. |
-| EI-ROUTE-STATUS-P0-10 | P0 | Fail until proof | No EI negative assertion matrix rejects fixture/mock/default fallback status. | Assert deterministic fixture UI, mock-ready, moneyline/default reconstruction, first-row fallback, event-only labels, stale-as-ready, and backend-unreachable tablet fallback fail. |
-| EI-ROUTE-STATUS-P0-11 | P0 | Fail until proof | Backend route JSON alone is not paired with Android-visible route-backed markers. | Combine backend route fields and tablet XML/proof markers in one same-build proof bundle. |
-| EI-ROUTE-STATUS-P0-12 | P0 | Fail until proof | Prior EC/ED/EE/EF/EG/EH proof bundles cannot substitute for EI. | Collect same-build EI proof plus prior-gate regression references or rerun markers. |
+| EI-ROUTE-STATUS-P0-01 | P0 | Pass for selected proof | Tablet proof records backend health before launch, backend base URL, server mode, API base URL, and selected event slug. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-02 | P0 | Pass for selected proof | Tablet XML/proof shows `live-data-source-polymarket-gamma`, `provider-lifecycle-ready`, route-backed Book source/status, and provider identity markers. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-03 | P0 | Pass for selected proof | Ready status is live-route-backed on tablet for the selected disposable event and market. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-04 | P0 | Deferred to P1 breadth | EH visible regression covers refresh-due status; EI selected proof did not repeat a route-backed stale/refresh-due fixture. | Add a future route-backed transition proof across stale/refresh-due states. |
+| EI-ROUTE-STATUS-P0-05 | P0 | Pass for selected proof | Opening Book produces visible `provider-lifecycle-refreshing` / `Book depth refreshing` before route-backed ready depth. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-06 | P0 | Deferred to P1 breadth | EH visible regression covers not-ready/unavailable; EI selected proof did not repeat a route-backed unavailable fixture. | Add future route-backed unavailable/not-ready proof for real provider-family breadth. |
+| EI-ROUTE-STATUS-P0-07 | P0 | Pass for selected proof | Selected provider market/source/status identity carries through live page, Book/orderbook, ticket handoff, and ticket settings. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-08 | P0 | Pass for selected proof | Book/orderbook shows selected market identity, `orderbook-source-orderbook-route`, `orderbook-status-ready`, and route depth. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-09 | P0 | Pass for selected proof | Ticket preserves `provider-source-polymarket` identity, and settings expose `Trading mode: Server mode`. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-10 | P0 | Pass for selected proof | Negative assertions reject fixture/mock/default fallback markers and wrong-market/default labels. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-11 | P0 | Pass for selected proof | Backend route JSON is paired with Android-visible XML/screenshots/proof in the same EI bundle. | Keep as regression coverage. |
+| EI-ROUTE-STATUS-P0-12 | P0 | Pass for selected proof | EI proof uses same-build backend route proof and Samsung tablet proof; prior bundles are regression references only. | Keep as regression coverage. |
 | EI-ROUTE-STATUS-P0-13 | P0 | Pass for docs gate | EI audit explicitly labels reused DQ-C/S23 evidence as stale/reference-only. | Keep this limitation visible until fresh reference proof exists. |
 
 Decision:
 
-- Pass/fail: Fail-until-integrated-proof.
-- Unresolved P0 gaps: 12 open route-backed integration proof areas; only the stale-reference limitation disclosure is satisfied in docs.
+- Pass/fail: Pass for selected EI integrated route-backed tablet status proof.
+- Unresolved P0 gaps: 0 for the selected EI route-backed ready/refreshing/Book/ticket path.
 - Remaining P1/P2 gaps: fresh official S23 recapture, broader real provider-backed line-family status matrix, actual route-backed stale -> refreshing/loading -> ready transition proof, and status visual polish.
-- Next cycle required: yes. Lead must produce one same-build tablet proof bundle where backend health/reachability succeeds, tablet XML/proof contains route-backed status markers, selected market identity carries through live page/chart/Book/ticket, and fixture/mock-ready/default fallback is rejected.
+- Next cycle required: yes, but as follow-up breadth rather than this selected PM-GAP-084 blocker. Continue with real provider-backed family breadth and full route-backed transition proof.
 
 Use this template for every feature gate:
 

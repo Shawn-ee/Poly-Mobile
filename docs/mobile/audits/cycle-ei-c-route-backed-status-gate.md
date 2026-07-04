@@ -1,6 +1,6 @@
 # Cycle EI-C Route-Backed Provider Status Gate
 
-Status: fail-until-integrated-proof. PM-GAP-084 remains open until tablet-visible provider status is sourced from the live backend route.
+Status: integrated pass for selected route-backed tablet status gate. PM-GAP-084 is verified for this selected path; broader real provider-family/status-transition breadth remains P1/P2.
 
 Audit Gate Agent: Agent C.
 
@@ -101,10 +101,33 @@ Block EI pass if any of these occur:
 
 ## Audit Gate Decision
 
-Current result: fail-until-integrated-proof.
+Current result: pass for selected EI integrated route-backed status proof.
 
-Unresolved EI P0 gaps: EI-ROUTE-STATUS-P0-01 through EI-ROUTE-STATUS-P0-12 remain open until Lead provides one same-build tablet proof bundle where backend health/reachability succeeds, route-backed status markers appear in tablet XML/proof JSON, and the same selected market identity carries through live page, chart, Book/orderbook, and ticket without fixture/mock-ready/default fallback. EI-ROUTE-STATUS-P0-13 passes for the docs gate because stale DQ-C/S23 reference limitations are disclosed.
+Resolved EI P0 gaps: EI-ROUTE-STATUS-P0-01 through EI-ROUTE-STATUS-P0-03, EI-ROUTE-STATUS-P0-05, and EI-ROUTE-STATUS-P0-07 through EI-ROUTE-STATUS-P0-13 pass for the selected disposable route-backed event `mobile-ei-a-route-backed-status-4bd474bf`.
 
-Tracked gap: PM-GAP-084 remains open for route-backed tablet provider lifecycle/status parity tied to selected market identity across chart, Book/orderbook, and ticket.
+Supporting proof:
+
+- Backend support proof: `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-A-route-backed-status.json`
+- Tablet proof summary: `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-proof.json`
+- Tablet screenshots/XML: `docs/mobile/screenshots/cycle-EI-integrated-route-backed-status/`, `docs/mobile/harness/cycle-EI-integrated-route-backed-status/`
+
+What passed:
+
+- Backend `/api/health` was required before launch; the proof aborts instead of falling back when unavailable.
+- The live page consumed backend route data and rendered `event-detail-live-data-inline live-data-status-ready provider-lifecycle-ready live-data-source-polymarket-gamma`.
+- Book/orderbook opened from the selected route-backed chart context, showed `provider-lifecycle-refreshing`, then resolved to `orderbook-source-orderbook-route`, `orderbook-status-ready`, and route depth.
+- Ticket handoff preserved `provider-source-polymarket` selection identity.
+- Ticket settings exposed `Trading mode: Server mode`.
+- Negative assertions rejected `deterministic-status-fixture`, `mock-ready`, `default-ready`, `fixture-ready`, fallback moneyline, and Mexico/Ecuador default markers.
+
+Remaining P1/P2 gaps:
+
+- EI-ROUTE-STATUS-P0-04 and EI-ROUTE-STATUS-P0-06 are covered by EH visible-state regression but not repeated as route-backed stale/unavailable states in the EI selected route proof; this is accepted as P1 follow-up because the selected EI route proof closes the original backend-unreachable/fixture UI blocker.
+- Repeat the matrix across multiple real provider-backed line families.
+- Capture fresh same-cycle official Polymarket S23 reference evidence when access allows.
+- Prove a full route-backed stale -> refreshing/loading -> ready transition without losing selected identity.
+- Continue status/density/chart/Book visual polish.
+
+Tracked gap: PM-GAP-084 is verified for the selected EI route-backed tablet provider lifecycle/status gate.
 
 PM-GAP-080, PM-GAP-081, PM-GAP-082, PM-GAP-083, and the selected EG/EH structural/status proofs remain useful regressions, but none can substitute for EI route-backed tablet status proof.

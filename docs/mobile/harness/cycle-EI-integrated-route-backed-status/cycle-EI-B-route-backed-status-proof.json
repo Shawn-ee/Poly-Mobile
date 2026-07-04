@@ -1,0 +1,35 @@
+{
+    "cycle":  "EI-B",
+    "scope":  "Route-backed provider lifecycle/status badges on live detail, chart, Book/orderbook, and ticket handoff",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailProviderStatus -Port 8322 -BackendBaseUrl http://127.0.0.1:3002 -ServerEventSlug mobile-ei-a-route-backed-status-4bd474bf -OutputDir docs/mobile/screenshots/cycle-EI-integrated-route-backed-status -HierarchyOutputDir docs/mobile/harness/cycle-EI-integrated-route-backed-status",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "serverMode":  "server",
+    "apiBaseUrl":  "http://127.0.0.1:3002",
+    "adbReverse":  "tcp:3002 tcp:3002",
+    "serverEventSlug":  "mobile-ei-a-route-backed-status-4bd474bf",
+    "eventIdentity":  "backend live detail route",
+    "routeBackedStatusConsumed":  true,
+    "routeBackedStatusSource":  "polymarket-gamma",
+    "result":  "pass",
+    "assertions":  {
+                       "backendHealth":  "Backend /api/health was required before launch; the proof aborts instead of falling back when unavailable.",
+                       "liveRouteStatusReady":  "Live detail consumed route-backed liveDataStatus with live-data-status-ready and live-data-source-polymarket-gamma.",
+                       "serverRuntime":  "Expo launched with EXPO_PUBLIC_ORDER_MODE=server and EXPO_PUBLIC_API_BASE_URL set to the supplied BackendBaseUrl.",
+                       "bookRefreshing":  "Opening Book produces a visible provider-lifecycle-refreshing Book depth refreshing state before the resolved depth state.",
+                       "bookRouteDepthReady":  "Resolved Book depth uses orderbook-source-orderbook-route and orderbook-status-ready rather than fixture depth.",
+                       "ticketServerMode":  "Ticket settings exposes Trading mode: Server mode while preserving provider-source-polymarket selection identity.",
+                       "fallbackGuard":  "The top, Book, and ticket hierarchies reject deterministic-status-fixture, fixture-ready, mock-ready, and default-ready markers."
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-live-top.png",
+                      "docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-live-top.xml",
+                      "docs/mobile/screenshots/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-book-refreshing.png",
+                      "docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-book-refreshing.xml",
+                      "docs/mobile/screenshots/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-book-resolved.png",
+                      "docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-book-resolved.xml",
+                      "docs/mobile/screenshots/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-ticket-handoff.png",
+                      "docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-ticket-handoff.xml",
+                      "docs/mobile/screenshots/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-ticket-settings.png",
+                      "docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-ticket-settings.xml"
+                  ]
+}

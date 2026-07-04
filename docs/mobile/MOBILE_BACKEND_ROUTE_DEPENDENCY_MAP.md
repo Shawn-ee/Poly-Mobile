@@ -11,9 +11,10 @@ Purpose: document what the mobile app needs from backend routes, auth, request/r
 
 Cycle EI-A implementation notes:
 
-- `docs/mobile/harness/cycle-EI-A-route-backed-status.json` records the focused route proof for PM-GAP-084.
-- No route/service source change was required after EH-A; EI-A verifies the existing `/api/mobile/events/:slug/live-detail` response is route-backed and tablet-renderable.
-- No mobile UI, smoke scripts, schema files, or audit docs were changed.
+- `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-A-route-backed-status.json` records the focused route proof for PM-GAP-084.
+- `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-proof.json` pairs the route proof with Samsung tablet UI proof for the same disposable event slug.
+- The tablet proof consumes `/api/mobile/events/:slug/live-detail` through `EXPO_PUBLIC_API_BASE_URL=http://127.0.0.1:3002`, requires `/api/health`, and preserves route-backed provider/source/status identity through live page, Book/orderbook, ticket handoff, and ticket settings.
+- No backend route/service or schema source change was required after EH-A; EI integrated work changed proof seeding and mobile harness routing/expectations only.
 
 ## Cycle EH-A - Provider Status Surface Contract
 

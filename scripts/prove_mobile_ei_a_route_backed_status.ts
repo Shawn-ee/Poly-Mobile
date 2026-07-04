@@ -54,7 +54,7 @@ async function createProofEvent() {
         },
         mobileLiveDetail: {
           liveDataStatus: {
-            source: "polymarket-route-proof",
+            source: "polymarket-gamma",
             status: "ready",
             lastUpdated: now.toISOString(),
             reason: "EI-A route-backed live-detail status proof event.",
@@ -252,7 +252,7 @@ async function main() {
     liveDetailRouteReturnedRouteBackedContract: routeStatus.route === "mobile-live-detail",
     liveDataStatusIsProviderReady:
       routeStatus.liveDataStatus.status === "ready" &&
-      routeStatus.liveDataStatus.source === "polymarket-route-proof" &&
+      routeStatus.liveDataStatus.source === "polymarket-gamma" &&
       routeStatus.liveDataStatus.lastUpdated != null &&
       typeof routeStatus.liveDataStatus.reason === "string",
     chartStatusIsReadyWithFreshness:

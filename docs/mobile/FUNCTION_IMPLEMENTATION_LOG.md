@@ -2,6 +2,38 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle EI Integrated - Route-Backed Tablet Provider Status
+
+Feature/page worked on:
+
+- Live event detail provider lifecycle/status proof for the selected route-backed tablet path.
+- Closes the backend-unreachable/fixture-status blocker by proving the Samsung tablet consumes `/api/mobile/events/:slug/live-detail` through `EXPO_PUBLIC_API_BASE_URL=http://127.0.0.1:3002`.
+
+Frontend/harness/backend components touched:
+
+- `scripts/prove_mobile_ei_a_route_backed_status.ts`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+Important functions/interactions/state transitions touched:
+
+- EI proof event now exposes `event.liveDataStatus.source=polymarket-gamma`, matching the Polymarket-first provider direction instead of a proof-only source label.
+- `smoke-tablet.ps1` now forwards `-ServerEventSlug` to the inner route-backed status smoke.
+- `smoke.ps1 -EventDetailProviderStatus` now launches `forceBackendEventSlug`, requires backend health, expects the disposable route-backed event instead of the Australia/Egypt fixture, opens Book, verifies refreshing/loading then route-backed ready depth, opens a Book-origin ticket, opens ticket settings, and asserts `Trading mode: Server mode`.
+- The proof rejects `deterministic-status-fixture`, `mock-ready`, `default-ready`, `fixture-ready`, Mexico/Ecuador default fallback, and generic Team to Advance fallback markers.
+
+Verified:
+
+- `npm run mobile:backend-readiness:summary`
+- `npx tsx scripts/prove_mobile_ei_a_route_backed_status.ts --output=docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-A-route-backed-status.json`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailProviderStatus -Port 8322 -Device "172.16.200.30:41299" -BackendBaseUrl "http://127.0.0.1:3002" -ServerEventSlug "mobile-ei-a-route-backed-status-4bd474bf" -OutputDir docs/mobile/screenshots/cycle-EI-integrated-route-backed-status -HierarchyOutputDir docs/mobile/harness/cycle-EI-integrated-route-backed-status`
+
+Known limitations:
+
+- This is a selected disposable route-backed proof path, not universal production provider-family coverage.
+- Fresh official Polymarket S23 reference evidence was not recaptured in EI; DQ-C remains stale/reference-only.
+- Broader route-backed stale/unavailable transition proof across real provider-backed line families remains P1 follow-up.
+
 ## Cycle EE-B - Visible Book Status Breadth
 
 Feature/page worked on:

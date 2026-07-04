@@ -3,6 +3,7 @@ param(
   [int]$Port = 8181,
   [string]$ExpoHost = "",
   [string]$BackendBaseUrl = "http://127.0.0.1:3002",
+  [string]$ServerEventSlug = "world-cup-2026-curacao-vs-cote-divoire-2026-06-25",
   [string]$OutputDir = "docs\mobile\screenshots",
   [string]$HierarchyOutputDir = "docs\mobile\harness",
   [switch]$EventDetailSummary,
@@ -110,7 +111,7 @@ if ($EventDetailTrade) {
 } elseif ($EventDetailVisibleLiveParity) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailVisibleLiveParity -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EventDetailProviderStatus) {
-  & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailProviderStatus -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+  & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailProviderStatus -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($ServerLiveDetailOrderBook) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerLiveDetailOrderBook -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl "http://127.0.0.1:3002" -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($ServerLiveDetailLineOrderBook) {
