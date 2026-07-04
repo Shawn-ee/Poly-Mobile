@@ -75,6 +75,8 @@ Cycle GA changes only bottom navigation presentation. The Portfolio tab value is
 
 Cycle GB changes only Event Detail chart/ticket presentation and proof coverage. The chart point readout is derived from existing mobile chart state, and the chart Trade handoff still uses the existing `selectedChartMarket`, `selectedChartTicketOutcome`, and `selectedChartTicketSelection` payload. No backend route, schema, request body, or response contract changes are required.
 
+Cycle GC changes only the default Event Detail visible shell by hiding non-MVP Chat, Share, Live stats, and chat preview entry points. Chart, market, ticket, order, and Portfolio data contracts are unchanged. No backend route, schema, request body, or response contract changes are required.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

@@ -145,3 +145,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Chart point selection needed a visible state near the selected contract, not only a tooltip. | P0 | Passed | `EventDetail` renders `event-detail-chart-contract-point` with selected point/value; tablet XML proof passed. |
 | Chart Trade handoff should preserve selected point/contract identity while keeping orderbook hidden by default. | P0 | Passed | Chart Trade accessibility includes `chart-selected-point-*`; smoke asserts ticket opens and hidden orderbook labels stay absent. |
 | Exact Polymarket continuous chart press/drag tooltip physics. | P2 | Open | Deferred. |
+
+## Cycle GC - Event Detail Prediction-Only MVP
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Default Event Detail still exposed non-MVP social controls despite Local MVP being prediction-only. | P0 | Passed | `EventDetail` now hides Chat, Share, Live stats, and chat preview entry points; Samsung tablet proof passed. |
+| Local MVP proof should fail if social/live-stats/orderbook controls reappear in the default prediction path. | P0 | Passed | `LocalMvpStatusFlow` asserts those labels are absent while chart, ticket, and market lines still work. |
+| Future full social/chat/share parity. | P2 | Open | Out of current Local MVP scope. |
