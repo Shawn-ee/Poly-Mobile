@@ -16,6 +16,18 @@ describe("market depth service", () => {
       marketId: "france-argentina-live",
       outcomeId: null,
       generatedAt: "2026-06-15T12:00:00.000Z",
+      availability: {
+        source: "market-source-updated-at",
+        status: "ready" as const,
+        marketStatus: "LIVE",
+        lastUpdated: "2026-06-15T11:59:30.000Z",
+        stalenessSeconds: 30,
+        staleAfterSeconds: 90,
+        isStale: false,
+        isSuspended: false,
+        isDelayed: false,
+        reason: "Selected market is live and fresh.",
+      },
       emptyState: null,
       levels: [
         { outcomeId: "australia", side: "bid" as const, price: 0.4, shares: 120, total: 48 },
@@ -38,6 +50,11 @@ describe("market depth service", () => {
     expect(hydrated.orderbookDepthSource).toBe("orderbook-route");
     expect(hydrated.orderbookDepthStatus).toBe("ready");
     expect(hydrated.orderbookDepthMarketId).toBe("france-argentina-live");
+    expect(hydrated.orderbookAvailability).toMatchObject({
+      status: "ready",
+      marketStatus: "LIVE",
+      stalenessSeconds: 30,
+    });
     expect(hydrated.markets[0]?.orderbookDepth).toEqual(result.levels);
   });
 
@@ -48,6 +65,18 @@ describe("market depth service", () => {
       marketId: selectedMarketId,
       outcomeId: null,
       generatedAt: "2026-06-15T12:05:00.000Z",
+      availability: {
+        source: "market-updated-at",
+        status: "suspended" as const,
+        marketStatus: "PAUSED",
+        lastUpdated: "2026-06-15T12:04:00.000Z",
+        stalenessSeconds: 60,
+        staleAfterSeconds: 90,
+        isStale: false,
+        isSuspended: true,
+        isDelayed: false,
+        reason: "Selected market is paused or suspended.",
+      },
       emptyState: "no-depth" as const,
       levels: [],
       bids: [],
@@ -64,6 +93,7 @@ describe("market depth service", () => {
     expect(hydrated.orderbookDepthStatus).toBe("empty");
     expect(hydrated.orderbookDepthMarketId).toBe(selectedMarketId);
     expect(hydrated.orderbookDepthEmptyState).toBe("no-depth");
+    expect(hydrated.orderbookAvailability?.status).toBe("suspended");
   });
 
   test("preserves explicit empty and error states", () => {
@@ -73,11 +103,24 @@ describe("market depth service", () => {
       marketId: "france-argentina-live",
       lastUpdated: "2026-06-15T12:00:00.000Z",
       emptyState: "no-depth",
+      availability: {
+        source: "market-updated-at",
+        status: "delayed",
+        marketStatus: "UPCOMING",
+        lastUpdated: "2026-06-15T11:59:00.000Z",
+        stalenessSeconds: 60,
+        staleAfterSeconds: 90,
+        isStale: false,
+        isSuspended: false,
+        isDelayed: true,
+        reason: "Selected market is not live yet.",
+      },
       levels: [],
     });
 
     expect(empty.orderbookDepthStatus).toBe("empty");
     expect(empty.orderbookDepthEmptyState).toBe("no-depth");
+    expect(empty.orderbookAvailability?.status).toBe("delayed");
     expect(applyDepthLoadingToEvent(event).orderbookDepthStatus).toBe("loading");
     expect(applyDepthErrorToEvent(event).orderbookDepthStatus).toBe("error");
   });

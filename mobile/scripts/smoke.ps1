@@ -1938,13 +1938,15 @@ try {
     if ($ServerLiveDetailTeamTotalsOrderBook) {
       & $adb -s $Device shell input swipe 540 1800 540 760 600 | Out-Null
       Start-Sleep -Seconds 1
+      & $adb -s $Device shell input swipe 540 1800 540 760 600 | Out-Null
+      Start-Sleep -Seconds 1
       $eventDetailTeamTotalsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-live-team-totals-line-groups.xml"
       Assert-HierarchyContains -Path $eventDetailTeamTotalsHierarchy -Expected @("event-detail-open-order-book-team-total-goals", "Full Game Team Total Goals", "1.5")
       Invoke-TapHierarchyNode -Path $eventDetailTeamTotalsHierarchy -Identifier "event-detail-open-order-book-team-total-goals"
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-server-live-team-totals-order-book.png"
       $serverTeamTotalsOrderBookHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-live-team-totals-order-book.xml"
-      Assert-HierarchyContains -Path $serverTeamTotalsOrderBookHierarchy -Expected @("event-detail-order-book-screen", "event-detail-order-book-market-408ffb79-3492-4fd0-b31b-87a26f8b9dd5", "orderbook-source-orderbook-route", "orderbook-status-ready", "orderbook-empty-none", "Route depth", "Team", "Order Book", "Best bid", "Best ask", "0.59 USDT", "0.65 USDT", "1.06k shares", "940 shares", "Buy", "Sell")
+      Assert-HierarchyContains -Path $serverTeamTotalsOrderBookHierarchy -Expected @("event-detail-order-book-screen", "event-detail-order-book-market-408ffb79-3492-4fd0-b31b-87a26f8b9dd5", "orderbook-source-orderbook-route", "orderbook-status-ready", "orderbook-empty-none", "orderbook-availability-stale", "orderbook-market-status-LIVE", "event-detail-order-book-availability", "Market stale", "Route depth", "Team", "Order Book", "Best bid", "Best ask", "0.59 USDT", "0.65 USDT", "1.06k shares", "940 shares", "Buy", "Sell")
       return
     }
 

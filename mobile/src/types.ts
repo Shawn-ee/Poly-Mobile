@@ -36,6 +36,19 @@ export type EventLiveDataStatus = {
   reason: string;
 };
 
+export type OrderbookAvailability = {
+  source: string;
+  status: "ready" | "stale" | "suspended" | "delayed" | "unavailable";
+  marketStatus: string;
+  lastUpdated: string | null;
+  stalenessSeconds: number | null;
+  staleAfterSeconds: number;
+  isStale: boolean;
+  isSuspended: boolean;
+  isDelayed: boolean;
+  reason: string;
+};
+
 export type MarketChartRange = "1D" | "1W" | "1M" | "MAX";
 
 export type MarketChartHistoryPoint = {
@@ -77,6 +90,7 @@ export type OrderbookBook = {
   marketId: string;
   outcomeId: string | null;
   generatedAt: string;
+  availability?: OrderbookAvailability;
   emptyState: "no-depth" | null;
   levels: OrderbookBookLevel[];
   bids: Array<{ outcomeId: string; price: number; size: number }>;

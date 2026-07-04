@@ -2,6 +2,57 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CD - Selected Orderbook Availability Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 selected-market orderbook availability for the live event detail page.
+- Public orderbook route now exposes market-level availability/freshness state beside depth rows.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/services/marketDepthService.ts`
+- `mobile/src/types.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/src/__tests__/marketDepthService.test.ts`
+- `mobile/scripts/smoke.ps1`
+
+Backend/components touched:
+
+- `src/app/api/orderbook/[marketId]/book/route.ts`
+- `src/__tests__/public.orderbook-book.no-leak.test.ts`
+
+Important functions/services touched:
+
+- `/api/orderbook/:marketId/book` now returns `availability` with source, status, raw market status, last update, staleness, booleans, and reason.
+- `loadMarketDepthState()` and `applyDepthStateToEvent()` preserve selected-market availability into the mobile event state.
+- EventDetail orderbook overlay displays `event-detail-order-book-availability` and accessibility labels such as `orderbook-availability-stale`.
+
+User interactions supported:
+
+- User opens a selected Team Totals order book and sees both route-backed depth and selected-market availability instead of only price rows.
+
+State transitions:
+
+- Public orderbook route reads `Market.status`, `Market.sourceUpdatedAt`, and `Market.updatedAt` -> returns `availability.status` -> mobile depth service stores it on the selected event -> orderbook overlay renders `orderbook-availability-stale orderbook-market-status-LIVE`.
+
+Known limitations:
+
+- Availability is still derived from local market timestamps, not an external provider heartbeat.
+- The selected Team Totals proof is truthfully `stale`; provider ingestion must refresh `sourceUpdatedAt` before the same market can be considered fresh.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/public.orderbook-book.no-leak.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/marketDepthService.test.ts mobile/src/__tests__/api.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run mobile:live-chart-snapshot-seed`
+- `cmd /c npm.cmd run mobile:live-team-totals-orderbook-depth-seed`
+- Direct route probe for `/api/orderbook/408ffb79-3492-4fd0-b31b-87a26f8b9dd5/book?maxLevels=2`
+- `cmd /c npm.cmd run smoke:tablet:server-live-team-totals-order-book`
+
 ## Cycle BC - Live Provider Freshness Contract
 
 Feature/page worked on:

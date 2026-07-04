@@ -70,6 +70,9 @@ describe("public orderbook book API no-leak checks", () => {
       mechanism: "ORDERBOOK",
       visibility: "PUBLIC",
       ownerId: null,
+      status: "LIVE",
+      sourceUpdatedAt: new Date(),
+      updatedAt: new Date(),
     });
     buildPublicOrderbookSnapshot.mockResolvedValue({
       bids: [{ outcomeId: "home", price: 0.57, size: 120 }],
@@ -100,6 +103,16 @@ describe("public orderbook book API no-leak checks", () => {
     expect(body).toMatchObject({
       marketId: "market-1",
       outcomeId: "home",
+      availability: {
+        source: "market-source-updated-at",
+        status: "ready",
+        marketStatus: "LIVE",
+        staleAfterSeconds: 90,
+        isStale: false,
+        isSuspended: false,
+        isDelayed: false,
+        reason: "Selected market is live and fresh.",
+      },
       emptyState: null,
       bids: [{ outcomeId: "home", price: 0.57, size: 120 }],
       asks: [{ outcomeId: "home", price: 0.6, size: 90 }],
@@ -109,6 +122,8 @@ describe("public orderbook book API no-leak checks", () => {
       ],
     });
     expect(body.generatedAt).toEqual(expect.any(String));
+    expect(body.availability.lastUpdated).toEqual(expect.any(String));
+    expect(body.availability.stalenessSeconds).toEqual(expect.any(Number));
     const keys = collectKeys(body);
     for (const forbidden of forbiddenFieldNames) {
       expect(keys).not.toContain(forbidden);
@@ -138,6 +153,35 @@ describe("public orderbook book API no-leak checks", () => {
     });
   });
 
+  test("GET /api/orderbook/[marketId]/book exposes suspended market availability", async () => {
+    mockPrisma.market.findUnique.mockResolvedValue({
+      id: "market-1",
+      mechanism: "ORDERBOOK",
+      visibility: "PUBLIC",
+      ownerId: null,
+      status: "PAUSED",
+      sourceUpdatedAt: null,
+      updatedAt: new Date("2026-07-03T22:00:00.000Z"),
+    });
+
+    const response = await getOrderbook(new NextRequest("http://localhost/api/orderbook/market-1/book"), {
+      params: Promise.resolve({ marketId: "market-1" }),
+    });
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toMatchObject({
+      marketId: "market-1",
+      availability: {
+        source: "market-updated-at",
+        status: "suspended",
+        marketStatus: "PAUSED",
+        lastUpdated: "2026-07-03T22:00:00.000Z",
+        isSuspended: true,
+        reason: "Selected market is paused or suspended.",
+      },
+    });
+  });
+
   test("GET /api/orderbook/[marketId]/book keeps guarded errors public", async () => {
     assertMarketVisibleToUser.mockRejectedValue(new Error("hidden"));
 
@@ -150,4 +194,3 @@ describe("public orderbook book API no-leak checks", () => {
     await expect(response.json()).resolves.toEqual({ error: "Not allowed." });
   });
 });
-

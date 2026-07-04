@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CD - Selected Orderbook Availability Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Selected market orderbook availability | `/api/orderbook/:marketId/book?maxLevels=24` | GET | Optional public viewing | None | `availability.source`, `status`, `marketStatus`, `lastUpdated`, `stalenessSeconds`, `staleAfterSeconds`, `isStale`, `isSuspended`, `isDelayed`, `reason`; existing `levels[]` depth | `Market.status`, `Market.sourceUpdatedAt`, `Market.updatedAt`, open `Order` rows | Existing fallback orderbook data remains display-only when server mode is unavailable; server mode now exposes selected-market availability | External provider heartbeat/ingestion should own `sourceUpdatedAt` updates before production parity. |
+| Selected Team Totals stale-state proof | `/api/orderbook/408ffb79-3492-4fd0-b31b-87a26f8b9dd5/book?maxLevels=2` and tablet smoke | GET / device proof | Optional public viewing | None | `availability.status: stale`, `marketStatus: LIVE`, route-backed bid/ask levels | Same as above | N/A | Need provider refresh path to turn stale live line books into ready/fresh state. |
+
+Cycle CD implementation notes:
+
+- This cycle closes the selected-market availability contract gap without pretending stale data is fresh.
+- The proof shows a Polymarket-like distinction: the Team Totals market has depth but its source timestamp is stale.
+- PM-GAP-067 remains open for real provider ingestion, per-line provider status sourced externally, provider-owned live stats, and broader liquidity.
+
 ## Cycle BC - Live Provider Freshness Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

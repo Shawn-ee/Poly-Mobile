@@ -232,6 +232,18 @@ export function EventDetail({
   const depthRouteStatus = depthMarketMatches
     ? (event.orderbookDepthStatus ?? (event.orderbookDepthSource === "orderbook-route" ? "ready" : "idle"))
     : "idle";
+  const selectedOrderbookAvailability = depthMarketMatches ? event.orderbookAvailability : undefined;
+  const orderbookAvailabilityStatus = selectedOrderbookAvailability?.status ?? "unavailable";
+  const orderbookAvailabilityText =
+    orderbookAvailabilityStatus === "ready"
+      ? "Market live"
+      : orderbookAvailabilityStatus === "stale"
+        ? "Market stale"
+        : orderbookAvailabilityStatus === "suspended"
+          ? "Market suspended"
+          : orderbookAvailabilityStatus === "delayed"
+            ? "Market delayed"
+            : "Market unavailable";
   const chartStateText =
     chartRouteStatus === "loading"
       ? "Updating chart"
@@ -605,7 +617,7 @@ export function EventDetail({
   const renderOrderBook = () => {
     if (!orderBookMarket) return null;
     return (
-      <View accessibilityLabel={`event-detail-order-book-screen event-detail-order-book-market-${orderBookMarket.id} orderbook-source-${selectedDepthSource ?? "fallback"} orderbook-status-${depthRouteStatus} orderbook-empty-${depthMarketMatches ? event.orderbookDepthEmptyState ?? "none" : "not-selected"}`} style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
+      <View accessibilityLabel={`event-detail-order-book-screen event-detail-order-book-market-${orderBookMarket.id} orderbook-source-${selectedDepthSource ?? "fallback"} orderbook-status-${depthRouteStatus} orderbook-empty-${depthMarketMatches ? event.orderbookDepthEmptyState ?? "none" : "not-selected"} orderbook-availability-${orderbookAvailabilityStatus} orderbook-market-status-${selectedOrderbookAvailability?.marketStatus ?? "unknown"}`} style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
         <View style={styles.orderBookHeader}>
           <View>
             <Text style={styles.orderBookTitle}>Order Book</Text>
@@ -627,6 +639,18 @@ export function EventDetail({
             size={14}
           />
           <Text style={[styles.orderBookStateText, depthRouteStatus === "error" && styles.orderBookStateTextError, depthRouteStatus === "empty" && styles.orderBookStateTextEmpty]}>{depthStateText}</Text>
+        </View>
+        <View
+          accessibilityLabel={`event-detail-order-book-availability orderbook-availability-${orderbookAvailabilityStatus} orderbook-availability-source-${selectedOrderbookAvailability?.source ?? "unknown"} ${orderbookAvailabilityText}`}
+          style={[styles.orderBookAvailabilityPill, orderbookAvailabilityStatus !== "ready" && styles.orderBookAvailabilityPillWarning, orderbookAvailabilityStatus === "suspended" && styles.orderBookAvailabilityPillSuspended]}
+          testID="event-detail-order-book-availability"
+        >
+          <Ionicons
+            name={orderbookAvailabilityStatus === "ready" ? "radio-outline" : orderbookAvailabilityStatus === "suspended" ? "pause-circle-outline" : "time-outline"}
+            color={orderbookAvailabilityStatus === "ready" ? "#7dd3fc" : orderbookAvailabilityStatus === "suspended" ? "#f87171" : "#fbbf24"}
+            size={14}
+          />
+          <Text style={[styles.orderBookAvailabilityText, orderbookAvailabilityStatus !== "ready" && styles.orderBookAvailabilityTextWarning]}>{orderbookAvailabilityText}</Text>
         </View>
         <ScrollView style={styles.orderBookScroll} contentContainerStyle={styles.orderBookPad}>
           {orderBookMarket.outcomes.map((outcome) => {
@@ -1704,6 +1728,11 @@ const styles = StyleSheet.create({
   orderBookStateText: { color: "#bfdbfe", fontSize: 11, fontWeight: "900" },
   orderBookStateTextEmpty: { color: "#fde68a" },
   orderBookStateTextError: { color: "#fecaca" },
+  orderBookAvailabilityPill: { minHeight: 32, marginHorizontal: 16, marginTop: 8, alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 10, borderRadius: 999, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#243244" },
+  orderBookAvailabilityPillWarning: { borderColor: "rgba(251, 191, 36, 0.35)", backgroundColor: "rgba(53, 43, 20, 0.82)" },
+  orderBookAvailabilityPillSuspended: { borderColor: "rgba(248, 113, 113, 0.38)", backgroundColor: "rgba(58, 24, 31, 0.82)" },
+  orderBookAvailabilityText: { color: "#bfdbfe", fontSize: 11, fontWeight: "900" },
+  orderBookAvailabilityTextWarning: { color: "#fde68a" },
   orderBookScroll: { flex: 1 },
   orderBookPad: { paddingHorizontal: 16, paddingVertical: 12, paddingBottom: 28 },
   orderBookOutcome: { paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "#172033" },
