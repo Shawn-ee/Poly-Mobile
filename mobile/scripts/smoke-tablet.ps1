@@ -51,7 +51,8 @@ param(
   [switch]$LocalMvpRouteTicketFlow,
   [switch]$LocalMvpRouteServerOrderFlow,
   [switch]$LocalMvpRouteServerCancelFlow,
-  [switch]$LocalMvpRouteServerFilledFlow
+  [switch]$LocalMvpRouteServerFilledFlow,
+  [switch]$LocalMvpRouteServerFilledTotalsFlow
 )
 
 $ErrorActionPreference = "Stop"
@@ -99,6 +100,8 @@ if ($LocalMvpRouteTicketFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerCancelFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpRouteServerFilledFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerFilledFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($LocalMvpRouteServerFilledTotalsFlow) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerFilledTotalsFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpLineFamilyBreadth) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpLineFamilyBreadth -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpStatusFlow) {

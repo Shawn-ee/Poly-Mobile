@@ -3316,6 +3316,39 @@ Future migration concern:
 
 - Production trading should persist immutable normalized selection snapshots directly on fill/trade lifecycle rows and replace disposable liquidity with real market-maker or user liquidity.
 
+## Cycle EY - Route-Backed Server Filled Totals Trade And Activity Flow
+
+Closed or narrowed:
+
+- Server filled trade lifecycle is now proven from Android for a selected route-backed Totals ticket, not only Spread.
+- `/api/portfolio` returns a position carrying selected totals line `2.5`, period, provider source, and token identity.
+- `/api/portfolio/history` recent trade data maps into Android-visible Portfolio activity with selected totals/provider identity.
+- The Local MVP user journey now covers server-filled route-backed Spread and Totals tickets with orderbook hidden by default.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Team-total route-backed filled lifecycle breadth. The current disposable provider breadth event does not create a `team_total_goals`/team-total market.
+- Production active-event provider mappings and real liquidity source.
+- Fresh S23 retail lifecycle recapture when Polymarket gates allow it.
+
+Schema mismatch:
+
+- No schema migration was required for EY. Existing order request JSON and portfolio/history selection serialization carry the selected totals identity.
+
+Route mismatch:
+
+- `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` are enough for the selected Totals filled trade/activity path.
+- A future route/provider fixture update must expose team-total markets with stable `marketGroupKey`, `marketType`, `period`, `line`, and outcome token ids before team-total can pass the same gate.
+
+Temporary mock/static data:
+
+- No arbitrary frontend data was added.
+- The counterparty seed is disposable backend proof liquidity shaped like real orderbook liquidity.
+
+Future migration concern:
+
+- Production trading should persist immutable normalized selection snapshots directly on fill/trade lifecycle rows and replace disposable liquidity with real market-maker or user liquidity.
+
 ## Cycle EB-A - Live Detail Selected-Market Selector Contract
 
 Closed or narrowed:

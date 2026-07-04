@@ -4837,3 +4837,52 @@ Known limitations:
 
 - EX proves filled spread lifecycle only. Totals/team-total filled breadth remains follow-up work.
 - Liquidity is seeded as disposable provider-shaped proof data, not production user liquidity.
+
+## Cycle EY - Route-Backed Server Filled Totals Trade And Activity Flow
+
+Feature/page worked on:
+
+- Mobile EventDetail and Portfolio Local MVP server filled trade/history proof for a route-backed Totals ticket.
+
+Frontend/harness files touched:
+
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/scripts/local-mvp-route-server-filled-totals-proof.ps1`
+- `scripts/seed_mobile_route_spread_counterparty.ts`
+
+Important functions/services touched:
+
+- Existing mobile order/portfolio/history services were not changed.
+- `seed_mobile_route_spread_counterparty.ts` now accepts `marketGroupKey`, `outcomeSide`, `askPrice`, and `askSize`, while defaulting to the EX spread behavior.
+- `smoke.ps1` route-backed server proof now supports EY totals filled-trade assertions in addition to EV/EW/EX.
+
+User interactions supported/proven:
+
+- Open backend live-detail event on Samsung tablet through `forceBackendEventSlug`.
+- Open a provider-backed Totals `Over 2.5` ticket and submit a `$25` server fake-token buy.
+- Fill against seeded provider-shaped maker liquidity.
+- See Portfolio show one open position, zero open orders, one recent activity row, and a filled latest activity card.
+- See both recent activity and position preserve selected totals line/provider identity.
+- Default Book/orderbook UI stays hidden.
+
+Validation:
+
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+- PowerShell parser check for `mobile/scripts/local-mvp-route-server-filled-totals-proof.ps1`
+- Mobile typecheck
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/local-mvp-route-server-filled-totals-proof.ps1 -Port 8266 -BackendBaseUrl http://172.16.200.14:3002`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-route-backed-retail-event.json`
+- `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-route-backed-totals-counterparty.json`
+- `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-local-mvp-route-server-filled-totals-flow-proof.json`
+- `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-holiwyn-route-server-mvp-*.xml`
+- `docs/mobile/screenshots/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-holiwyn-route-server-mvp-*.png`
+
+Known limitations:
+
+- EY proves filled totals lifecycle only. Team-total route-backed filled breadth remains follow-up work because the disposable provider event does not yet create a team-total market.
+- Liquidity is seeded as disposable provider-shaped proof data, not production user liquidity.

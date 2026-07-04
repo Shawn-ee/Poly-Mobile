@@ -15,6 +15,10 @@ const argValue = (name: string) => {
 
 const eventSlug = argValue("eventSlug");
 const outputPath = argValue("output") ?? "docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-route-backed-counterparty.json";
+const marketGroupKey = argValue("marketGroupKey") ?? "spread";
+const outcomeSide = argValue("outcomeSide") ?? "home";
+const askPrice = argValue("askPrice") ?? "0.52";
+const askSize = argValue("askSize") ?? "60";
 
 const assert: (condition: unknown, message: string) => asserts condition = (condition, message) => {
   if (!condition) throw new Error(message);
@@ -44,7 +48,7 @@ async function main() {
     where: { slug: eventSlug },
     include: {
       markets: {
-        where: { marketGroupKey: "spread" },
+        where: { marketGroupKey },
         include: { outcomes: { orderBy: { displayOrder: "asc" } } },
         orderBy: { displayOrder: "asc" },
       },
@@ -52,9 +56,9 @@ async function main() {
   });
   assert(event, `Event ${eventSlug} was not found.`);
   const market = event.markets[0];
-  assert(market, `Event ${eventSlug} has no spread market.`);
-  const outcome = market.outcomes.find((item) => item.side === "home") ?? market.outcomes[0];
-  assert(outcome, `Spread market ${market.id} has no outcome.`);
+  assert(market, `Event ${eventSlug} has no ${marketGroupKey} market.`);
+  const outcome = market.outcomes.find((item) => item.side === outcomeSide) ?? market.outcomes[0];
+  assert(outcome, `${marketGroupKey} market ${market.id} has no outcome.`);
 
   const maker = await createMaker();
   await mintCompleteSetForPublicOrderbook({ marketId: market.id, userId: maker.id, quantity: "80" });
@@ -64,8 +68,8 @@ async function main() {
     userId: maker.id,
     side: "SELL",
     type: "LIMIT",
-    price: "0.52",
-    size: "60",
+    price: askPrice,
+    size: askSize,
   });
 
   assert(makerOrder.order.status === "OPEN", `Expected maker order to rest open, got ${makerOrder.order.status}.`);
@@ -98,9 +102,9 @@ async function main() {
     makerOrder: makerOrder.order,
     seededAsk: {
       side: "SELL",
-      price: "0.52",
-      size: "60",
-      intendedMobileTaker: "BUY $25 route-backed spread ticket at 52%",
+      price: askPrice,
+      size: askSize,
+      intendedMobileTaker: `BUY $25 route-backed ${marketGroupKey} ticket`,
     },
   };
 

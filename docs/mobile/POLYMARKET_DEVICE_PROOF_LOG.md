@@ -239,3 +239,33 @@ Pass for selected route-backed spread server filled trade/activity flow with ord
 
 Remaining gaps:
 Totals/team-total filled breadth, production active-event provider breadth, fresh S23 retail lifecycle recapture, and non-disposable liquidity source.
+
+### 2026-07-04 - Cycle EY - Route-backed server filled totals trade/activity Local MVP flow
+
+Reference device:
+Product steering plus existing Polymarket sports audits. Fresh S23 proof was not required for this local line-family lifecycle breadth gate.
+
+Holiwyn device:
+Samsung tablet / Holiwyn Expo Go / local Expo port `8266`.
+
+Holiwyn app mode:
+`EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE=server`, API key created by mobile dev credential helper, backend `http://172.16.200.14:3002`.
+
+Holiwyn actions:
+Opened disposable route-backed live event, selected the Totals `Over 2.5` row, submitted `$25` server-mode fake-token buy into seeded maker liquidity, and verified filled position plus recent activity.
+
+Holiwyn evidence:
+- `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-local-mvp-route-server-filled-totals-flow-proof.json`
+- `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-route-backed-retail-event.json`
+- `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-route-backed-totals-counterparty.json`
+- `docs/mobile/screenshots/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-holiwyn-route-server-mvp-totals-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-holiwyn-route-server-mvp-portfolio.png`
+
+Smoke/tests:
+PowerShell parser checks, mobile typecheck from the proof wrapper, backend health, and tablet proof wrapper passed.
+
+Result:
+Pass for selected route-backed totals server filled trade/activity flow with orderbook hidden by default.
+
+Remaining gaps:
+Team-total route-backed filled breadth, production active-event provider breadth, fresh S23 retail lifecycle recapture, and non-disposable liquidity source.

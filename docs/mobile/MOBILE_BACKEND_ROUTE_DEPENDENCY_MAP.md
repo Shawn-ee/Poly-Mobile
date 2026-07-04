@@ -1478,3 +1478,18 @@ Cycle EX implementation notes:
 - Counterparty liquidity proof: `docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-route-backed-counterparty.json`.
 - Tablet proof slug: `mobile-el-a-provider-breadth-9bd275c5`.
 - Mobile launched against `EXPO_PUBLIC_MARKET_DATA_MODE=server` and `EXPO_PUBLIC_ORDER_MODE=server`, then filled the visible simple retail spread ticket against the seeded maker ask.
+
+## Cycle EY - Route-Backed Server Filled Totals Trade And Activity Flow
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Route-backed filled totals retail order | `/api/orders` | POST | Mobile dev API key with order write scope; backend local flags `INTERNAL_TRADING_BETA_ENABLED=true` and `TRADING_KILL_SWITCH=false` | `marketId`, `outcomeId`, `side=BUY`, `type=LIMIT`, price near `0.46`, size from `$25`, `contractSide=YES`, and selected totals/provider metadata | Order response status `FILLED`, filled shares, execution price, selection identity | `ApiKey`, `ApiOrderRequest`, `Order`, `Fill`, `Trade`, `Position`, `Market`, `Outcome` | None. EY runs with `EXPO_PUBLIC_ORDER_MODE=server`. | Team-total route-backed filled lifecycle is not covered yet. |
+| Counterparty liquidity seed for totals | `scripts/seed_mobile_route_spread_counterparty.ts` using `mintCompleteSetForPublicOrderbook` and `placeOrderAndMatch` | Local script/service | Local development/server only | Event slug, `marketGroupKey=totals`, `outcomeSide=over`, `askPrice=0.46`, `askSize=60` | Writes seeded maker order, market id, outcome id, provider source/condition/token | `User`, `UserBalance`, `Position`, `Order`, `Market`, `Outcome` | None. The seed is proof liquidity, not UI fallback. | Production liquidity provider strategy remains separate. |
+| Server Portfolio/history sync after totals fill | `/api/portfolio`, `/api/portfolio/history` | GET | Same mobile dev API key with account read scope | None | `positions[]`, `recentTrades[]`, `latest-activity-card`, position and activity selection metadata for totals line `2.5` | `Position`, `Trade`, `ApiOrderRequest`, `Market`, `Outcome` | None. EY requires Android-visible position and recent activity. | Team-total filled lifecycle and production active-event provider liquidity remain follow-up. |
+
+Cycle EY implementation notes:
+
+- The backend route event was created by `scripts/prove_mobile_el_a_provider_breadth.ts` into `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-route-backed-retail-event.json`.
+- Counterparty liquidity proof: `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-route-backed-totals-counterparty.json`.
+- Tablet proof slug: `mobile-el-a-provider-breadth-62990515`.
+- Mobile launched against `EXPO_PUBLIC_MARKET_DATA_MODE=server` and `EXPO_PUBLIC_ORDER_MODE=server`, then filled the visible simple retail Totals ticket against the seeded maker ask.

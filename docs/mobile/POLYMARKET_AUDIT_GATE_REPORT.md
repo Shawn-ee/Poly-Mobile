@@ -2776,3 +2776,46 @@ Decision:
 - Unresolved P0 gaps: 0 for selected feature.
 - Remaining P1/P2 gaps: totals/team-total filled breadth, production active-event provider breadth, fresh S23 retail lifecycle proof, and non-disposable liquidity source.
 - Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Route-Backed Retail Server Filled Totals Trade And Activity Flow
+
+Cycle: EY
+
+Lead Agent target: Prove the route-backed server-order Local MVP filled lifecycle on a Totals market, closing the repeated spread-only breadth gap from EX.
+
+Reference Audit Agent: Product steering audit from current Local MVP policy.
+
+Implementation Agent: Parameterized counterparty seed script, tablet harness totals-filled variant, and local wrapper for disposable backend event, mobile dev credential, server order mode, and tablet proof.
+
+Audit Gate Agent: Same-cycle tablet proof.
+
+Reference device: Not refreshed in EY; this is a Holiwyn contract/user-flow gate based on existing Polymarket retail interaction direction and the latest Local MVP orderbook policy.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8266`.
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-local-mvp-route-server-filled-totals-flow-proof.json`
+- `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-route-backed-retail-event.json`
+- `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-route-backed-totals-counterparty.json`
+- `docs/mobile/screenshots/cycle-EY-local-mvp-route-server-filled-totals-flow/`
+- Tablet proof slug: `mobile-el-a-provider-breadth-62990515`.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EY-TOTALS-P0-01 | P0 | Pass | Route-backed totals row opens with provider source/token identity. | N/A |
+| EY-TOTALS-P0-02 | P0 | Pass | Counterparty proof seeds matching SELL liquidity for the same route-backed totals outcome. | N/A |
+| EY-TOTALS-P0-03 | P0 | Pass | Android submit fills and Portfolio shows open positions `1`, open orders `0`, recent activity `1`. | N/A |
+| EY-TOTALS-P0-04 | P0 | Pass | Activity card shows `Bought`, `status-filled`, filled shares, execution price, and provider identity. | N/A |
+| EY-TOTALS-P0-05 | P0 | Pass | Position card preserves totals line, period, provider source, and provider token. | N/A |
+| EY-TOTALS-P0-06 | P0 | Pass | Orderbook markers remain absent from default UI proof. | N/A |
+| EY-TOTALS-P1-01 | P1 | Open | Team-total route-backed filled lifecycle is not covered. | Add a route-backed team-total provider fixture and repeat this lifecycle. |
+
+Decision:
+
+- Pass/fail: Pass for selected EY route-backed totals filled-trade Local MVP flow.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: team-total filled breadth, production active-event provider breadth, fresh S23 retail lifecycle proof, and non-disposable liquidity source.
+- Next cycle required: yes, continue Local MVP user-flow breadth.
