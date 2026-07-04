@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CT - Provider Orderbook Depth Snapshot Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider ladder-backed selected Book | `/api/orderbook/:marketId/book?maxLevels=...` | GET | Optional public viewing | None | `depthSource=provider-orderbook-depth`, `depthReason`, `providerOrderbookDepth.status`, `levelCount`, `snapshotCount`, `sources`, `levels[]`, `bids[]`, `asks[]` | `ReferenceOrderbookDepthSnapshot`, `Market`, `Outcome`, existing local `Order` rows, `ReferenceQuoteSnapshot` fallback | No frontend-only mock. Proof rows use the same `ReferenceOrderbookDepthSnapshot` shape intended for future provider ingestion | Real provider CLOB fetcher is still missing. Real World Cup compact markets still need provider mapping. |
+| Compact live-detail provider ladder summary | `/api/mobile/events/:slug/live-detail` | GET | Optional public viewing | None | `markets[].providerOrderbookDepth`, `markets[].orderbookDepthSource`, `contract.batchedProviderOrderbookDepthSource`, ready/stale/refresh-due counts | Same provider depth table plus compact selected `Market`/`Outcome` rows | No mobile local fixture. The adapter continues to consume backend route depth | The UI does not yet display a provider-specific ladder source label; it shows route depth. |
+
+Cycle CT implementation notes:
+
+- `ReferenceOrderbookDepthSnapshot` stores durable provider ladder rows separately from local orders and top-quote snapshots.
+- `buildPublicOrderbookSnapshot()` source precedence is now local orders, provider ladder snapshots, provider quote top-of-book estimates, then empty.
+- Local proof applied the Cycle CT SQL directly because the workstation database has migration-history drift.
+
 ## Cycle CS - Provider Quote Top-Of-Book Depth Bridge
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

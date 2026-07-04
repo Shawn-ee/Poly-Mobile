@@ -2,6 +2,61 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CT - Provider Orderbook Depth Snapshot Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 provider-owned depth ladder contract for compact live event detail and selected Book.
+- This cycle adds a durable backend shape for provider CLOB/orderbook ladder rows so Holiwyn does not have to treat top-quote estimates as the final depth model.
+
+Frontend components touched:
+
+- No visual UI code changed. Existing EventDetail/Book rendering consumes the richer route-backed depth payload.
+
+Backend/components touched:
+
+- `prisma/schema.prisma`
+- `prisma/migrations/20260704062000_add_reference_orderbook_depth_snapshot/migration.sql`
+- `src/server/services/orderbookSnapshot.ts`
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/server/services/referenceOrderbookDepthSnapshots.ts`
+- `scripts/prove_mobile_provider_depth_snapshot_route.ts`
+- `src/__tests__/orderbook-snapshot.provider-depth.test.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+
+Important functions/services touched:
+
+- `buildPublicOrderbookSnapshot()` now prefers local orders, then provider orderbook depth snapshots, then provider top-quote snapshot estimates.
+- `buildProviderOrderbookDepth()` normalizes latest provider ladder rows into bid/ask levels and freshness metadata.
+- `upsertReferenceOrderbookDepthSnapshots()` writes future provider-owned ladder rows using stable market/outcome/source/side/price identity.
+- `serializeMobileLiveEventDetail()` exposes provider ladder counts and per-market `providerOrderbookDepth` metadata.
+
+User interactions supported:
+
+- Samsung tablet Book proof still opens the selected proof market and renders route-backed depth, best bid/ask, provider prices, and share sizes.
+
+State transitions:
+
+- Route proof starts with no provider ladder rows, so `/api/orderbook/:marketId/book` returns `depthSource=provider-quote-snapshot`.
+- After seeding eight provider ladder rows, the same Book route returns `depthSource=provider-orderbook-depth`, `providerOrderbookDepth.status=ready`, and eight route levels.
+
+Known limitations:
+
+- Cycle CT defines and proves the durable provider ladder contract with proof rows. It does not yet fetch real CLOB ladder levels from Polymarket or map real World Cup compact markets to provider identities.
+- Local database proof applied the new table SQL directly because this workstation database has older migration records that are not present in this checkout.
+
+Verification:
+
+- Route proof: `docs/mobile/harness/cycle-current-mobile-provider-depth-snapshot-route-proof.json`
+- Proof prep: `docs/mobile/harness/cycle-current-mobile-provider-depth-snapshot-prep.json`
+- Tablet XML proof: `docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-order-book.xml`
+- Tablet screenshot proof: `docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-order-book.png`
+- `cmd /c npx.cmd prisma generate`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/orderbook-snapshot.provider-depth.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts src/__tests__/mobile-live-event-detail.test.ts`
+- `cmd /c npm.cmd run build`
+- mobile `cmd /c npm.cmd run typecheck`
+- Samsung tablet provider proof via `mobile/scripts/smoke.ps1 -ServerLiveProviderRefreshProof -ServerEventSlug mobile-provider-refresh-proof-live`
+
 ## Cycle CS - Provider Quote Top-Of-Book Depth Bridge
 
 Feature/page worked on:

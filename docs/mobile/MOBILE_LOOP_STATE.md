@@ -6,6 +6,30 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle CT
+
+Date: 2026-07-04
+Branch: `mobile/cycle-CT-provider-depth-snapshot-contract`
+Goal: Continue PM-GAP-067 by adding a durable provider orderbook depth snapshot contract and route proof before opening new visual UI parity work.
+Reference app screens observed: Continued from Cycle CH Samsung S23 Polymarket official app live game page evidence; no new visual UI parity area was opened.
+Holiwyn screens changed: No intended visual changes. Existing Book surface now consumes route depth that can come from provider ladder rows.
+Backend/API changed: `/api/orderbook/:marketId/book` now exposes `depthSource=provider-orderbook-depth` and `providerOrderbookDepth` metadata when `ReferenceOrderbookDepthSnapshot` rows exist. `/api/mobile/events/:slug/live-detail` exposes batched provider ladder counts and per-market provider ladder metadata.
+Database/schema changed: Added `ReferenceOrderbookDepthSnapshot` model and migration.
+Files changed: Prisma schema/migration, orderbook snapshot service, mobile live-detail serializer, provider depth upsert service, provider depth proof harness, tests, docs/proof artifacts.
+Tests run:
+- `cmd /c npx.cmd prisma generate`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/orderbook-snapshot.provider-depth.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts src/__tests__/mobile-live-event-detail.test.ts`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` from `mobile/`
+- Samsung tablet provider proof via `mobile/scripts/smoke.ps1 -ServerLiveProviderRefreshProof -ServerEventSlug mobile-provider-refresh-proof-live`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-provider-depth-snapshot-prep.json`
+- `docs/mobile/harness/cycle-current-mobile-provider-depth-snapshot-route-proof.json`
+- `docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-order-book.png`
+Result: Pass for the provider orderbook depth snapshot contract. Route proof moved the Book route from `depthSource=provider-quote-snapshot` to `depthSource=provider-orderbook-depth` after seeding eight provider ladder rows. Samsung tablet proof passed with route-backed Book depth.
+Next focus: continue PM-GAP-067 by adding a real provider CLOB/depth fetcher or mapping real World Cup compact soccer markets to provider identities before opening new visual UI parity work.
+
 ## Cycle CS
 
 Date: 2026-07-04

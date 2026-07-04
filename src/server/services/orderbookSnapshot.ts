@@ -38,6 +38,17 @@ type ProviderSnapshotRow = {
   volume24hr: Prisma.Decimal | null;
 };
 
+type ProviderOrderbookDepthRow = {
+  outcomeId: string;
+  source: string;
+  side: string;
+  price: Prisma.Decimal;
+  size: Prisma.Decimal;
+  levelIndex: number;
+  fetchedAt: Date;
+  updatedAt: Date;
+};
+
 export type PublicOrderbookSnapshot = {
   bids: Array<{
     outcomeId: string;
@@ -49,8 +60,24 @@ export type PublicOrderbookSnapshot = {
     price: number;
     size: number;
   }>;
-  depthSource: "local-orderbook" | "provider-quote-snapshot" | "empty";
+  depthSource: "local-orderbook" | "provider-orderbook-depth" | "provider-quote-snapshot" | "empty";
   depthReason: string;
+  providerOrderbookDepth: {
+    source: "reference-orderbook-depth-snapshot";
+    status: "ready" | "stale" | "unavailable";
+    levelCount: number;
+    snapshotCount: number;
+    latestFetchedAt: string | null;
+    latestUpdatedAt: string | null;
+    stalenessSeconds: number | null;
+    staleAfterSeconds: number;
+    refreshTtlSeconds: number;
+    nextRefreshAt: string | null;
+    shouldRefresh: boolean;
+    isStale: boolean;
+    sources: string[];
+    reason: string;
+  };
   providerQuoteDepth: {
     source: "reference-quote-snapshot";
     levelCount: number;
@@ -93,7 +120,7 @@ export async function buildPublicOrderbookSnapshot(params: {
   };
 
   return prisma.$transaction(async (tx) => {
-    const [bids, asks, topOrders, providerSnapshots] = await Promise.all([
+    const [bids, asks, topOrders, providerSnapshots, providerDepthRows] = await Promise.all([
       tx.order.groupBy({
         by: ["outcomeId", "price"],
         where: { ...whereBase, side: "BUY" },
@@ -141,10 +168,29 @@ export async function buildPublicOrderbookSnapshot(params: {
         },
         orderBy: [{ fetchedAt: "desc" }, { updatedAt: "desc" }],
       }),
+      tx.referenceOrderbookDepthSnapshot.findMany({
+        where: {
+          marketId: params.marketId,
+          ...(outcomeId ? { outcomeId } : {}),
+        },
+        select: {
+          outcomeId: true,
+          source: true,
+          side: true,
+          price: true,
+          size: true,
+          levelIndex: true,
+          fetchedAt: true,
+          updatedAt: true,
+        },
+        orderBy: [{ fetchedAt: "desc" }, { levelIndex: "asc" }, { price: "asc" }],
+        take: maxLevels * 2,
+      }),
     ]);
 
     logCrossedOutcomeDiagnostics(params.marketId, bids, asks, topOrders);
     const providerQuoteSnapshot = summarizeProviderSnapshots(providerSnapshots);
+    const providerOrderbookDepth = buildProviderOrderbookDepth(providerDepthRows);
     const localBids = bids.map((row) => ({
       outcomeId: row.outcomeId,
       price: Number(row.price),
@@ -156,21 +202,28 @@ export async function buildPublicOrderbookSnapshot(params: {
       size: Number(row._sum.remaining ?? 0),
     }));
     const providerDepth = buildProviderQuoteDepth(providerSnapshots, providerQuoteSnapshot.status);
-    const useProviderDepth = localBids.length === 0 && localAsks.length === 0 && providerDepth.levelCount > 0;
+    const hasLocalDepth = localBids.length > 0 || localAsks.length > 0;
+    const useProviderOrderbookDepth = !hasLocalDepth && providerOrderbookDepth.levelCount > 0;
+    const useProviderQuoteDepth = !hasLocalDepth && !useProviderOrderbookDepth && providerDepth.levelCount > 0;
 
     return {
-      bids: useProviderDepth ? providerDepth.bids : localBids,
-      asks: useProviderDepth ? providerDepth.asks : localAsks,
-      depthSource: localBids.length > 0 || localAsks.length > 0
+      bids: useProviderOrderbookDepth ? providerOrderbookDepth.bids : useProviderQuoteDepth ? providerDepth.bids : localBids,
+      asks: useProviderOrderbookDepth ? providerOrderbookDepth.asks : useProviderQuoteDepth ? providerDepth.asks : localAsks,
+      depthSource: hasLocalDepth
         ? "local-orderbook"
-        : useProviderDepth
+        : useProviderOrderbookDepth
+          ? "provider-orderbook-depth"
+          : useProviderQuoteDepth
           ? "provider-quote-snapshot"
           : "empty",
-      depthReason: localBids.length > 0 || localAsks.length > 0
+      depthReason: hasLocalDepth
         ? "Depth comes from local open orderbook orders."
-        : useProviderDepth
+        : useProviderOrderbookDepth
+          ? "Depth comes from provider orderbook ladder snapshots."
+          : useProviderQuoteDepth
           ? "Depth comes from provider quote snapshot top-of-book prices and estimated size."
-          : "No local depth or provider top-of-book depth is available.",
+          : "No local depth, provider orderbook ladder depth, or provider top-of-book depth is available.",
+      providerOrderbookDepth: providerOrderbookDepth.summary,
       providerQuoteDepth: {
         source: "reference-quote-snapshot",
         levelCount: providerDepth.levelCount,
@@ -181,6 +234,84 @@ export async function buildPublicOrderbookSnapshot(params: {
       providerQuoteSnapshot,
     } satisfies PublicOrderbookSnapshot;
   });
+}
+
+export function buildProviderOrderbookDepth(rows: ProviderOrderbookDepthRow[]) {
+  if (rows.length === 0) {
+    return {
+      bids: [] as PublicOrderbookSnapshot["bids"],
+      asks: [] as PublicOrderbookSnapshot["asks"],
+      levelCount: 0,
+      summary: emptyProviderOrderbookDepth("No provider orderbook depth snapshot is available."),
+    };
+  }
+
+  const latestFetchedAt = rows.reduce(
+    (latest, row) => row.fetchedAt > latest ? row.fetchedAt : latest,
+    rows[0]!.fetchedAt,
+  );
+  const latestRows = rows.filter((row) => row.fetchedAt.getTime() === latestFetchedAt.getTime());
+  const bids = latestRows
+    .filter((row) => row.side.toLowerCase() === "bid")
+    .sort((left, right) => Number(right.price) - Number(left.price) || left.levelIndex - right.levelIndex)
+    .map((row) => ({ outcomeId: row.outcomeId, price: Number(row.price), size: Number(row.size) }));
+  const asks = latestRows
+    .filter((row) => row.side.toLowerCase() === "ask")
+    .sort((left, right) => Number(left.price) - Number(right.price) || left.levelIndex - right.levelIndex)
+    .map((row) => ({ outcomeId: row.outcomeId, price: Number(row.price), size: Number(row.size) }));
+  const levelCount = bids.length + asks.length;
+  const latestUpdatedAt = latestRows.reduce(
+    (latest, row) => row.updatedAt > latest ? row.updatedAt : latest,
+    latestRows[0]?.updatedAt ?? latestFetchedAt,
+  );
+  const stalenessSeconds = Math.max(0, Math.round((Date.now() - latestFetchedAt.getTime()) / 1000));
+  const isStale = stalenessSeconds > PROVIDER_SNAPSHOT_STALE_AFTER_SECONDS;
+  const shouldRefresh = stalenessSeconds >= PROVIDER_SNAPSHOT_REFRESH_TTL_SECONDS;
+  const nextRefreshAt = new Date(latestFetchedAt.getTime() + PROVIDER_SNAPSHOT_REFRESH_TTL_SECONDS * 1000);
+  const status: PublicOrderbookSnapshot["providerOrderbookDepth"]["status"] = isStale ? "stale" : "ready";
+
+  return {
+    bids,
+    asks,
+    levelCount,
+    summary: {
+      source: "reference-orderbook-depth-snapshot" as const,
+      status,
+      levelCount,
+      snapshotCount: latestRows.length,
+      latestFetchedAt: latestFetchedAt.toISOString(),
+      latestUpdatedAt: latestUpdatedAt.toISOString(),
+      stalenessSeconds,
+      staleAfterSeconds: PROVIDER_SNAPSHOT_STALE_AFTER_SECONDS,
+      refreshTtlSeconds: PROVIDER_SNAPSHOT_REFRESH_TTL_SECONDS,
+      nextRefreshAt: nextRefreshAt.toISOString(),
+      shouldRefresh,
+      isStale,
+      sources: [...new Set(latestRows.map((row) => row.source))].sort(),
+      reason: status === "ready"
+        ? "Provider orderbook depth snapshot is fresh."
+        : `Provider orderbook depth snapshot is older than ${PROVIDER_SNAPSHOT_STALE_AFTER_SECONDS} seconds.`,
+    },
+  };
+}
+
+function emptyProviderOrderbookDepth(reason: string): PublicOrderbookSnapshot["providerOrderbookDepth"] {
+  return {
+    source: "reference-orderbook-depth-snapshot",
+    status: "unavailable",
+    levelCount: 0,
+    snapshotCount: 0,
+    latestFetchedAt: null,
+    latestUpdatedAt: null,
+    stalenessSeconds: null,
+    staleAfterSeconds: PROVIDER_SNAPSHOT_STALE_AFTER_SECONDS,
+    refreshTtlSeconds: PROVIDER_SNAPSHOT_REFRESH_TTL_SECONDS,
+    nextRefreshAt: null,
+    shouldRefresh: true,
+    isStale: false,
+    sources: [],
+    reason,
+  };
 }
 
 export function buildProviderQuoteDepth(
