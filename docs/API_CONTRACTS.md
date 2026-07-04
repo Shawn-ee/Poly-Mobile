@@ -59,6 +59,8 @@ Cycle FS adds local Portfolio range state for `1D`, `1W`, `1M`, and `All`. No ro
 
 Cycle FT adds the mobile-side contract for that future route: `PortfolioValueHistory`, `PortfolioValueHistoryPoint`, and `PolyApi.getPortfolioValueHistory(range)`. Until the backend route exists, `Portfolio` uses deterministic fallback data with the same payload shape and exposes `source`, `status`, `range`, and point count in Android proof labels.
 
+Cycle FU adds the main backend route for that contract: `GET /api/portfolio/value-history?range=1D|1W|1M|All`. It returns `source=portfolio-value-history-route`, `status`, timestamps, and chart points derived from `UserBalance`, `Position`, and `MarketOutcomeSnapshot`. Standalone mobile still needs a wiring/proof cycle before the Portfolio chart consumes this route in server mode.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
