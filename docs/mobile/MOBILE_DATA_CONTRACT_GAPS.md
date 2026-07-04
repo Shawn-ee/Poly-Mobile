@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CL - Provider Refresh Policy Contract
+
+Fields now provided or wired:
+
+- `/api/orderbook/:marketId/book` now exposes `providerQuoteSnapshot.refreshTtlSeconds`, `nextRefreshAt`, `shouldRefresh`, and `refreshKey`.
+- `/api/mobile/events/:slug/live-detail` now exposes compact aggregate provider snapshot counts: ready, stale, refresh-due, and earliest next refresh.
+- Tests and route proof confirm the selected second-half market/book carries the same policy fields while preserving provider-ready status and route-backed depth.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real external provider refresh execution for current World Cup live markets.
+- Provider-owned cache invalidation/update sequence, provider response sequence/id, and provider error classification.
+- Provider-owned multi-level depth if top quote snapshots are not enough for Polymarket parity.
+
+Schema mismatch:
+
+- Existing `ReferenceQuoteSnapshot` supports top quote freshness and policy fields derived from `fetchedAt`. Full provider depth ladders may still need a dedicated provider orderbook-depth snapshot table.
+
+Route mismatch:
+
+- Public live-detail/orderbook routes can now report refresh due state, but there is no provider/admin refresh route or worker that updates snapshots on demand.
+
+Temporary mock/static data:
+
+- Cycle CL reuses deterministic local proof rows in the real `ReferenceQuoteSnapshot` table. The rows remain future-backend-shaped and can be replaced by an external provider feed without changing the mobile response shape.
+
+Future migration concern:
+
+- Keep `refreshKey` stable enough for mobile cache invalidation, but avoid exposing sensitive provider token, condition, or credential fields in public routes.
+
 ## Cycle CK - Live Provider Quote Snapshot Ready Proof
 
 Fields now provided or wired:

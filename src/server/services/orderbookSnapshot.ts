@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 
 const OPEN_STATUSES: OrderStatus[] = ["OPEN", "PARTIAL"];
 const PROVIDER_SNAPSHOT_STALE_AFTER_SECONDS = 90;
+const PROVIDER_SNAPSHOT_REFRESH_TTL_SECONDS = 60;
 
 type LevelRow = {
   outcomeId: string;
@@ -41,6 +42,10 @@ export type PublicOrderbookSnapshot = {
     latestUpdatedAt: string | null;
     stalenessSeconds: number | null;
     staleAfterSeconds: number;
+    refreshTtlSeconds: number;
+    nextRefreshAt: string | null;
+    shouldRefresh: boolean;
+    refreshKey: string | null;
     isStale: boolean;
     acceptingOrders: boolean;
     outcomeIds: string[];
@@ -142,6 +147,10 @@ function summarizeProviderSnapshots(snapshots: Array<{
       latestUpdatedAt: null,
       stalenessSeconds: null,
       staleAfterSeconds: PROVIDER_SNAPSHOT_STALE_AFTER_SECONDS,
+      refreshTtlSeconds: PROVIDER_SNAPSHOT_REFRESH_TTL_SECONDS,
+      nextRefreshAt: null,
+      shouldRefresh: true,
+      refreshKey: null,
       isStale: false,
       acceptingOrders: false,
       outcomeIds: [],
@@ -160,6 +169,8 @@ function summarizeProviderSnapshots(snapshots: Array<{
   );
   const stalenessSeconds = Math.max(0, Math.round((Date.now() - latestFetchedAt.getTime()) / 1000));
   const isStale = stalenessSeconds > PROVIDER_SNAPSHOT_STALE_AFTER_SECONDS;
+  const shouldRefresh = stalenessSeconds >= PROVIDER_SNAPSHOT_REFRESH_TTL_SECONDS;
+  const nextRefreshAt = new Date(latestFetchedAt.getTime() + PROVIDER_SNAPSHOT_REFRESH_TTL_SECONDS * 1000);
   const acceptingOrders = snapshots.some((snapshot) => snapshot.acceptingOrders);
   const status = isStale ? "stale" : "ready";
 
@@ -171,6 +182,10 @@ function summarizeProviderSnapshots(snapshots: Array<{
     latestUpdatedAt: latestUpdatedAt.toISOString(),
     stalenessSeconds,
     staleAfterSeconds: PROVIDER_SNAPSHOT_STALE_AFTER_SECONDS,
+    refreshTtlSeconds: PROVIDER_SNAPSHOT_REFRESH_TTL_SECONDS,
+    nextRefreshAt: nextRefreshAt.toISOString(),
+    shouldRefresh,
+    refreshKey: `${[...new Set(snapshots.map((snapshot) => snapshot.source))].sort().join("+")}:${latestFetchedAt.toISOString()}`,
     isStale,
     acceptingOrders,
     outcomeIds: [...new Set(snapshots.map((snapshot) => snapshot.outcomeId))].sort(),

@@ -105,6 +105,10 @@ const emptyProviderQuoteSnapshot: Awaited<ReturnType<typeof buildPublicOrderbook
   latestUpdatedAt: null,
   stalenessSeconds: null,
   staleAfterSeconds: STALE_AFTER_SECONDS,
+  refreshTtlSeconds: 60,
+  nextRefreshAt: null,
+  shouldRefresh: true,
+  refreshKey: null,
   isStale: false,
   acceptingOrders: false,
   outcomeIds: [],
@@ -252,9 +256,15 @@ export async function serializeMobileLiveEventDetail(input: {
   const depthByMarketId = new Map(depthEntries);
   const primaryDepthLevels = primaryMarket ? depthByMarketId.get(primaryMarket.id)?.levels ?? [] : [];
   const batchedOrderbookDepthMarketCount = Array.from(depthByMarketId.values()).filter((entry) => entry.levels.length > 0).length;
-  const batchedProviderQuoteSnapshotMarketCount = Array.from(depthByMarketId.values()).filter(
-    (entry) => entry.snapshot.providerQuoteSnapshot.status !== "unavailable",
-  ).length;
+  const providerSnapshots = Array.from(depthByMarketId.values()).map((entry) => entry.snapshot.providerQuoteSnapshot);
+  const batchedProviderQuoteSnapshotMarketCount = providerSnapshots.filter((snapshot) => snapshot.status !== "unavailable").length;
+  const batchedProviderQuoteSnapshotReadyCount = providerSnapshots.filter((snapshot) => snapshot.status === "ready").length;
+  const batchedProviderQuoteSnapshotStaleCount = providerSnapshots.filter((snapshot) => snapshot.status === "stale").length;
+  const batchedProviderQuoteSnapshotRefreshDueCount = providerSnapshots.filter((snapshot) => snapshot.shouldRefresh).length;
+  const batchedProviderQuoteSnapshotNextRefreshAt = providerSnapshots
+    .map((snapshot) => snapshot.nextRefreshAt)
+    .filter((value): value is string => typeof value === "string")
+    .sort()[0] ?? null;
 
   const serializedMarkets = await Promise.all(
     markets.map(async (market) => {
@@ -391,6 +401,10 @@ export async function serializeMobileLiveEventDetail(input: {
       batchedOrderbookDepthCacheTtlSeconds: DEPTH_BATCH_CACHE_TTL_SECONDS,
       batchedProviderQuoteSnapshotSource: batchedProviderQuoteSnapshotMarketCount ? "reference-quote-snapshot" : "empty",
       batchedProviderQuoteSnapshotMarketCount,
+      batchedProviderQuoteSnapshotReadyCount,
+      batchedProviderQuoteSnapshotStaleCount,
+      batchedProviderQuoteSnapshotRefreshDueCount,
+      batchedProviderQuoteSnapshotNextRefreshAt,
       chartHistorySource: chartHistory.length ? "market-outcome-snapshot" : "empty",
       liveDataStatus,
     },
