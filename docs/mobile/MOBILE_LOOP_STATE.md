@@ -6,6 +6,28 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle CQ
+
+Date: 2026-07-03
+Branch: `mobile/cycle-CQ-manual-provider-slug-preview-contract`
+Goal: Keep PM-GAP-067 on provider ingestion/refresh by adding a controlled exact Polymarket slug preview path for compact live markets.
+Reference app screens observed: Continued from Cycle CH Samsung S23 Polymarket official app live game page evidence.
+Holiwyn screens changed: None.
+Backend/API changed: Extended `POST /api/mobile/events/:slug/provider-candidates` for manual slug preview.
+Database/schema changed: None.
+Files changed: `src/server/services/mobileLiveProviderCandidates.ts`, `src/app/api/mobile/events/[slug]/provider-candidates/route.ts`, provider candidate tests, and mobile docs.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-candidates.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts src/__tests__/mobile-live-provider-mapping.route.test.ts src/__tests__/mobile-live-provider-identity-attach.service.test.ts`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-live-provider-candidates-manual-slug-preview.json`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`
+Result: Partial pass for manual provider slug preview contract. The route is in place and tested, but proof still returned `providerError=fetch failed`, so real candidate import is not complete.
+Next focus: fix provider fetch from the route environment or run exact slug preview where Gamma is reachable; then attach real IDs and prove no-fallback refresh.
+
 ## Cycle CP
 
 Date: 2026-07-03

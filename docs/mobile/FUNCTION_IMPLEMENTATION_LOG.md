@@ -2,6 +2,52 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CQ - Manual Provider Slug Preview Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 manual provider slug preview for compact live event detail.
+- This cycle extends provider candidate discovery so a known Polymarket slug can be tested against a specific compact Holiwyn market without broad search or DB mutation.
+
+Frontend components touched:
+
+- None. Samsung tablet proof was rerun against the existing live event detail and selected second-half Book flow after backend route changes.
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `src/app/api/mobile/events/[slug]/provider-candidates/route.ts`
+- `src/__tests__/mobile-live-provider-candidates.service.test.ts`
+- `src/__tests__/mobile-live-provider-candidates.route.test.ts`
+
+Important functions/services touched:
+
+- `previewMobileLiveProviderCandidatesBySlug()` validates the compact market, fetches exact provider markets by supplied slugs, ranks them, and returns attach proposals when complete.
+- `fetchProviderCandidatesForSlugs()` calls Polymarket Gamma `/markets?slug=...` and normalizes exact slug matches.
+- `POST /api/mobile/events/:slug/provider-candidates` exposes the manual slug preview path behind internal/admin auth.
+
+User interactions supported:
+
+- No new visual interaction. This is a backend review path for the future real provider identity import step.
+- Existing Samsung tablet live detail and selected second-half Book flow still work after the backend contract change.
+
+State transitions:
+
+- Manual preview proof targeted the first compact market and slug `curacao-cote-divoire-match-winner`.
+- The route returned `mode=manual-slug-preview`, `candidateCount=0`, `attachReadyCandidateCount=0`, `providerError=fetch failed`, and `nextRequiredAction=fix_provider_fetch_or_retry_manual_slug_preview`.
+
+Known limitations:
+
+- Manual preview contract exists, but provider fetch still failed in this local proof run.
+- No real provider IDs were discovered, attached, or refreshed.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-candidates.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts src/__tests__/mobile-live-provider-mapping.route.test.ts src/__tests__/mobile-live-provider-identity-attach.service.test.ts`
+- `cmd /c npm.cmd run build`
+- Manual slug preview proof: `docs/mobile/harness/cycle-current-mobile-live-provider-candidates-manual-slug-preview.json`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+
 ## Cycle CP - Provider Candidate Discovery Contract
 
 Feature/page worked on:

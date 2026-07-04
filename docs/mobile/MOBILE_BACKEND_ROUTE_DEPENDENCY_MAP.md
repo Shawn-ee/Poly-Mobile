@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CQ - Manual Provider Slug Preview Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Manual compact-market provider slug preview | `/api/mobile/events/:slug/provider-candidates` | POST | Internal admin key or admin session | `marketId`, `slugs[]` | `mode`, `marketId`, `requestedSlugs`, `providerError`, `candidateCount`, `bestCandidate`, `attachProposal`, `attachReadyCandidateCount`, `nextRequiredAction` | Reads compact `Event`, `Market`, `Outcome`; provider preview uses Polymarket Gamma `/markets?slug=...`; does not write DB | None. The route returns explicit provider errors instead of fake candidates | Current proof environment still returns `fetch failed` for Gamma fetch, so real provider candidate preview remains open. |
+
+Cycle CQ implementation notes:
+
+- The route is protected because successful previews can expose provider market IDs, condition IDs, and token IDs.
+- The route is read-only and prepares data for the existing provider identity attach endpoint.
+
 ## Cycle CP - Provider Candidate Discovery Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

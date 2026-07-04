@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CQ - Manual Provider Slug Preview Contract
+
+Fields now provided or wired:
+
+- Protected `POST /api/mobile/events/:slug/provider-candidates` accepts a compact `marketId` and explicit Polymarket slugs for exact candidate preview.
+- Manual preview output reuses the same candidate and attach-proposal shape as broad discovery.
+- Route proof preserves provider fetch errors as data, preventing fake provider identity from being attached.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Successful Gamma slug preview in the current proof environment.
+- Real Polymarket market slugs for compact World Cup live markets.
+- Confirmed provider identity apply and no-fallback refresh proof after real IDs are attached.
+
+Schema mismatch:
+
+- No schema change was needed. Manual preview is read-only and prepares data for existing `Market`/`Outcome` provider identity fields.
+
+Route mismatch:
+
+- Manual preview route exists, but provider fetch still returned `fetch failed`; no attach-ready candidates were found in this cycle.
+
+Temporary mock/static data:
+
+- None. The proof did not fabricate provider candidate payloads or write provider IDs.
+
+Future migration concern:
+
+- The next cycle should address the provider fetch failure directly or run the preview path where Gamma is reachable, then attach real IDs with the protected mapping route.
+
 ## Cycle CP - Provider Candidate Discovery Contract
 
 Fields now provided or wired:

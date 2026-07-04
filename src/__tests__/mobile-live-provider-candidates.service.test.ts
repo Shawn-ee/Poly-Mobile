@@ -1,6 +1,7 @@
 import {
   buildProviderCandidateSearchQueries,
   fetchProviderCandidatesForQueries,
+  fetchProviderCandidatesForSlugs,
   rankProviderCandidates,
 } from "@/server/services/mobileLiveProviderCandidates";
 
@@ -107,5 +108,38 @@ describe("mobile live provider candidates", () => {
       attachReady: false,
       reasons: ["missing_reference_token_id"],
     });
+  });
+
+  test("fetches exact manual slug previews from Gamma-style responses", async () => {
+    const fetchImpl = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => [
+        {
+          slug: "curacao-cote-divoire-match-winner",
+          question: "Curacao vs Cote d'Ivoire Match Winner",
+          id: "gamma-market-1",
+          conditionId: "condition-1",
+          outcomes: JSON.stringify(["Curacao", "Draw", "Cote d'Ivoire"]),
+          clobTokenIds: JSON.stringify(["token-home", "token-draw", "token-away"]),
+          active: true,
+          closed: false,
+          archived: false,
+          acceptingOrders: true,
+        },
+      ],
+    });
+
+    const candidates = await fetchProviderCandidatesForSlugs(["https://polymarket.com/event/foo/curacao-cote-divoire-match-winner"], {
+      fetchImpl: fetchImpl as unknown as typeof fetch,
+    });
+
+    expect(fetchImpl).toHaveBeenCalledWith(
+      expect.stringContaining("slug=curacao-cote-divoire-match-winner"),
+      expect.any(Object),
+    );
+    expect(candidates[0]).toEqual(expect.objectContaining({
+      slug: "curacao-cote-divoire-match-winner",
+      conditionId: "condition-1",
+    }));
   });
 });
