@@ -3,6 +3,7 @@ import { assertReferenceBotAdmin } from "@/lib/internalAdminAuth";
 import { toGuardResponse } from "@/lib/marketGuards";
 import {
   discoverMobileLiveProviderCandidates,
+  previewMobileLiveProviderCandidatesBulkBySlug,
   type ProviderSearchMode,
   previewMobileLiveProviderCandidatesBySlug,
 } from "@/server/services/mobileLiveProviderCandidates";
@@ -47,8 +48,27 @@ export async function POST(request: NextRequest, context: Params) {
     | {
         marketId?: string;
         slugs?: string[];
+        reviews?: Array<{
+          marketId?: string;
+          slugs?: string[];
+        }>;
       }
     | null;
+
+  if (Array.isArray(body?.reviews)) {
+    const result = await previewMobileLiveProviderCandidatesBulkBySlug({
+      eventSlug: slug,
+      reviews: body.reviews.map((review) => ({
+        marketId: typeof review.marketId === "string" ? review.marketId : "",
+        slugs: Array.isArray(review.slugs) ? review.slugs.filter((value): value is string => typeof value === "string") : [],
+      })),
+    });
+
+    return NextResponse.json({
+      ok: true,
+      result,
+    });
+  }
 
   const result = await previewMobileLiveProviderCandidatesBySlug({
     eventSlug: slug,

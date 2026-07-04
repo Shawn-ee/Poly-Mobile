@@ -2,6 +2,48 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle DC - Bulk Manual Slug Review Contract
+
+Feature/page worked on:
+
+- PM-GAP-067B operator-reviewed provider mapping workflow.
+- Bulk exact-slug review for real Polymarket soccer market identities before any provider attach is applied.
+
+Frontend/harness components touched:
+
+- No visual UI code changed.
+- Samsung tablet regression proof refreshed the server-backed Colombia vs Ghana live-detail Book path.
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `src/app/api/mobile/events/[slug]/provider-candidates/route.ts`
+- `src/__tests__/mobile-live-provider-candidates.route.test.ts`
+- `scripts/prove_mobile_provider_bulk_slug_review.ts`
+
+Important functions/services touched:
+
+- `previewMobileLiveProviderCandidatesBulkBySlug()` reviews multiple `{ marketId, slugs[] }` requests and returns aggregate preview results plus attach-ready mappings.
+- `POST /api/mobile/events/:slug/provider-candidates` now accepts either the existing single preview body or a new `reviews[]` bulk body.
+- Existing single-market preview, family matching, relevance checks, token checks, and protected attach route remain unchanged.
+
+User interactions supported:
+
+- No direct end-user UI yet.
+- Future operator/admin workflow can review several exact provider slugs before applying mappings.
+
+State transitions:
+
+- Bulk proof reviews 4 entries: 3 match-winner markets and 1 totals market.
+- The 3 real match-winner slugs become attach-ready mappings.
+- The totals market rejects the Colombia winner slug with `provider_family_mismatch` and `insufficient_market_relevance`.
+- Samsung tablet proof confirms the existing provider-backed live-detail Book still works.
+
+Known limitations:
+
+- This cycle does not create the operator UI for capturing slugs from the reference app.
+- Real provider line-market slugs/source remain missing.
+
 ## Cycle DB - Provider Line Source Probe
 
 Feature/page worked on:

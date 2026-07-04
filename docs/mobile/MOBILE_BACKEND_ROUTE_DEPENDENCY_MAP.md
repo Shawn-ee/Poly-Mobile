@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle DC - Bulk Manual Slug Review Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Bulk exact provider slug review | `/api/mobile/events/:slug/provider-candidates` | POST | Internal admin key or admin session | `reviews[]` where each review has `marketId` and `slugs[]` | `mode=bulk-manual-slug-preview`, `reviewCount`, `attachReadyReviewCount`, `candidateCount`, `attachReadyCandidateCount`, `mappings[]`, `results[].expectedProviderFamily`, `bestCandidate.attachReadiness.reasons`, `nextRequiredAction` | Reads compact `Event`, `Market`, and active `Outcome`; fetches exact Gamma `/markets?slug=...`; returned mappings can later be sent to `/provider-mapping` | None. The route is read-only and does not attach provider IDs | Need operator UI/admin flow to submit bulk reviews and then apply only all-approved mappings. |
+| Bulk provider identity apply | `/api/mobile/events/:slug/provider-mapping` | POST | Internal admin key or admin session | Existing `mappings[]`, `dryRun`, `confirmApply` | Existing validation and before/after readiness report | Writes `Market.referenceSource`, `Market.externalSlug`, `Market.externalMarketId`, `Market.conditionId`, `Outcome.referenceTokenId`, and `Outcome.referenceOutcomeLabel` | None | Not changed this cycle; applying remains separate by design. |
+| Bulk slug proof harness | `scripts/prove_mobile_provider_bulk_slug_review.ts` | Local script | Local development only | `--providerEventSlug`, `--eventSlug`, `--output` | Proof artifact showing 3 attach-ready match-winner reviews and 1 rejected wrong-family totals review | Upserts local proof event/market/outcome rows shaped like compact live markets; does not apply returned mappings | Uses real Polymarket slugs/tokens for preview; no frontend-only mapping fixture | Real line-market slugs are still needed before line markets can pass bulk review. |
+
+Cycle DC implementation notes:
+
+- The bulk preview contract deliberately stops before attach.
+- `nextRequiredAction=fix_failed_slug_reviews_before_bulk_apply` when any review fails, preventing partial silent completion.
+- The proof shows wrong-family match-winner slugs cannot satisfy totals markets in bulk mode.
+
 ## Cycle DB - Provider Line Source Probe
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

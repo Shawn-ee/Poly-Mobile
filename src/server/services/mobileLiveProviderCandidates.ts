@@ -99,6 +99,15 @@ export type ProviderCandidateSlugPreviewOptions = {
   fetchImpl?: typeof fetch;
 };
 
+export type ProviderCandidateBulkSlugPreviewOptions = {
+  eventSlug: string;
+  reviews: Array<{
+    marketId: string;
+    slugs: string[];
+  }>;
+  fetchImpl?: typeof fetch;
+};
+
 export type ProviderMarketCandidate = NonNullable<ReturnType<typeof normalizeProviderCandidate>>;
 export type ProviderMarketFamily =
   | "match_winner"
@@ -350,6 +359,52 @@ export async function previewMobileLiveProviderCandidatesBySlug(options: Provide
           ? "fix_provider_fetch_or_retry_manual_slug_preview"
           : "supply_better_polymarket_slug_for_compact_market",
     candidates,
+  };
+}
+
+export async function previewMobileLiveProviderCandidatesBulkBySlug(options: ProviderCandidateBulkSlugPreviewOptions) {
+  const reviews = options.reviews
+    .map((review) => ({
+      marketId: review.marketId.trim(),
+      slugs: Array.from(new Set(review.slugs.map(sanitizeSlug).filter(Boolean))).slice(0, 10),
+    }))
+    .filter((review) => review.marketId && review.slugs.length > 0)
+    .slice(0, 20);
+
+  if (reviews.length === 0) {
+    throw new Error("At least one provider slug review is required.");
+  }
+
+  const results = [];
+  for (const review of reviews) {
+    results.push(await previewMobileLiveProviderCandidatesBySlug({
+      eventSlug: options.eventSlug,
+      marketId: review.marketId,
+      slugs: review.slugs,
+      fetchImpl: options.fetchImpl,
+    }));
+  }
+
+  const attachReadyResults = results.filter((result) => result.attachProposal?.attachReady);
+  return {
+    eventSlug: options.eventSlug,
+    generatedAt: new Date().toISOString(),
+    provider: "polymarket-gamma",
+    mode: "bulk-manual-slug-preview",
+    reviewCount: results.length,
+    attachReadyReviewCount: attachReadyResults.length,
+    candidateCount: results.reduce((sum, result) => sum + result.candidateCount, 0),
+    attachReadyCandidateCount: results.reduce((sum, result) => sum + result.attachReadyCandidateCount, 0),
+    mappings: attachReadyResults
+      .map((result) => result.attachProposal?.mapping ?? null)
+      .filter((mapping): mapping is NonNullable<(typeof attachReadyResults)[number]["attachProposal"]>["mapping"] => Boolean(mapping)),
+    nextRequiredAction:
+      attachReadyResults.length === results.length
+        ? "review_and_apply_bulk_provider_identity_mappings"
+        : attachReadyResults.length > 0
+          ? "fix_failed_slug_reviews_before_bulk_apply"
+          : "supply_better_polymarket_slugs_for_bulk_review",
+    results,
   };
 }
 

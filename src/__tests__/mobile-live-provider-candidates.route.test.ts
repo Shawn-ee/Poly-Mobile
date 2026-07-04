@@ -4,6 +4,7 @@ import { MarketGuardError } from "@/lib/marketGuards";
 const assertReferenceBotAdmin = jest.fn();
 const discoverMobileLiveProviderCandidates = jest.fn();
 const previewMobileLiveProviderCandidatesBySlug = jest.fn();
+const previewMobileLiveProviderCandidatesBulkBySlug = jest.fn();
 
 jest.mock("@/lib/internalAdminAuth", () => ({
   assertReferenceBotAdmin: (...args: unknown[]) => assertReferenceBotAdmin(...args),
@@ -12,6 +13,7 @@ jest.mock("@/lib/internalAdminAuth", () => ({
 jest.mock("@/server/services/mobileLiveProviderCandidates", () => ({
   discoverMobileLiveProviderCandidates: (...args: unknown[]) => discoverMobileLiveProviderCandidates(...args),
   previewMobileLiveProviderCandidatesBySlug: (...args: unknown[]) => previewMobileLiveProviderCandidatesBySlug(...args),
+  previewMobileLiveProviderCandidatesBulkBySlug: (...args: unknown[]) => previewMobileLiveProviderCandidatesBulkBySlug(...args),
 }));
 
 import { GET, POST } from "@/app/api/mobile/events/[slug]/provider-candidates/route";
@@ -33,6 +35,16 @@ describe("mobile live provider candidates route", () => {
       marketId: "market-1",
       candidateCount: 1,
       attachReadyCandidateCount: 1,
+    });
+    previewMobileLiveProviderCandidatesBulkBySlug.mockResolvedValue({
+      eventSlug: "world-cup-live",
+      mode: "bulk-manual-slug-preview",
+      reviewCount: 2,
+      attachReadyReviewCount: 1,
+      candidateCount: 2,
+      attachReadyCandidateCount: 1,
+      mappings: [],
+      results: [],
     });
   });
 
@@ -108,6 +120,36 @@ describe("mobile live provider candidates route", () => {
     expect(body.result).toEqual(expect.objectContaining({
       mode: "manual-slug-preview",
       candidateCount: 1,
+    }));
+  });
+
+  test("previews bulk manual Polymarket slug reviews", async () => {
+    const response = await POST(
+      new NextRequest("http://localhost/api/mobile/events/world-cup-live/provider-candidates", {
+        method: "POST",
+        body: JSON.stringify({
+          reviews: [
+            { marketId: "market-1", slugs: ["fifwc-col-gha-2026-07-03-col"] },
+            { marketId: "market-2", slugs: ["fifwc-col-gha-2026-07-03-total-goals"] },
+          ],
+        }),
+      }),
+      { params: Promise.resolve({ slug: "world-cup-live" }) },
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(previewMobileLiveProviderCandidatesBulkBySlug).toHaveBeenCalledWith({
+      eventSlug: "world-cup-live",
+      reviews: [
+        { marketId: "market-1", slugs: ["fifwc-col-gha-2026-07-03-col"] },
+        { marketId: "market-2", slugs: ["fifwc-col-gha-2026-07-03-total-goals"] },
+      ],
+    });
+    expect(previewMobileLiveProviderCandidatesBySlug).not.toHaveBeenCalled();
+    expect(body.result).toEqual(expect.objectContaining({
+      mode: "bulk-manual-slug-preview",
+      reviewCount: 2,
     }));
   });
 });

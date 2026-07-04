@@ -6,6 +6,31 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle DC
+
+Date: 2026-07-04
+Branch: `mobile/cycle-DC-bulk-slug-review-contract`
+Goal: Add a bulk manual exact-slug review contract so operator-collected Polymarket slugs can be checked safely before provider mapping apply.
+Reference app screens observed: Continued from Cycle CW/CX/CY Samsung S23 Polymarket official app Colombia vs Ghana game page and exact Gamma event `fifwc-col-gha-2026-07-03`.
+Holiwyn screens changed: No intended visual changes. Existing server-backed Colombia vs Ghana live-detail Book flow was re-proven on Samsung tablet.
+Backend/API changed: `POST /api/mobile/events/:slug/provider-candidates` now supports `reviews[]` bulk manual slug previews. New service `previewMobileLiveProviderCandidatesBulkBySlug()` aggregates preview results and returns attach-ready mappings only for passing reviews.
+Database/schema changed: None.
+Files changed: provider candidate service, provider-candidates route, route tests, bulk slug review proof harness, docs/proof artifacts, tablet proof artifacts.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-candidates.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts`
+- `cmd /c npx.cmd tsx scripts/prove_mobile_provider_bulk_slug_review.ts --output docs/mobile/harness/cycle-current-mobile-provider-bulk-slug-review.json`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` from `mobile/`
+- Samsung tablet proof via `mobile/scripts/smoke.ps1 -Deep -ServerLiveDetailOrderBook -ServerEventSlug world-cup-2026-colombia-vs-ghana-2026-07-03`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-provider-bulk-slug-review.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+Result: Pass for bulk review contract and safety. Bulk proof returned 3 attach-ready match-winner mappings and rejected a wrong-family totals review with `provider_family_mismatch`. Existing match-winner provider-backed Book proof passed on Samsung tablet.
+Next focus: build an operator/admin capture/review UI or collect real line slugs from Polymarket reference; real line provider parity remains open.
+
 ## Cycle DB
 
 Date: 2026-07-04
