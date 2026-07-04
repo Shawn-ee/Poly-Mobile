@@ -169,4 +169,57 @@ describe("ticket selection metadata", () => {
     expect(JSON.stringify(selection)).not.toContain("moneyline");
     expect(JSON.stringify(selection)).not.toContain("refreshed");
   });
+
+  test("preserves Book-staged limit fields from the order request snapshot", () => {
+    const selection = buildTicketSelectionMetadata({
+      requestBody: {
+        selection: {
+          marketId: "book-selected-total-market",
+          outcomeId: "book-selected-over",
+          marketGroupId: "totals",
+          marketType: "totals",
+          line: "3.5",
+          period: "2H",
+          side: "over",
+          displayLabel: "Over 3.5 2H",
+          contractSide: "yes",
+          referenceSource: "polymarket",
+          externalMarketId: "gamma-book-total",
+          conditionId: "condition-book-total",
+          referenceTokenId: "token-book-total-over",
+          referenceOutcomeLabel: "Over 3.5",
+          limitPrice: 0.44,
+          limitSide: "ask",
+          limitShares: 125.5,
+        },
+      },
+      market: {
+        id: "book-selected-total-market",
+        title: "Mexico vs Ecuador moneyline fallback label",
+        marketGroupKey: "moneyline",
+        marketType: "match_winner_1x2",
+        line: null,
+        period: "regulation",
+      },
+      outcome: {
+        id: "book-selected-over",
+        name: "YES",
+        label: "Mexico moneyline",
+        side: "home",
+      },
+    });
+
+    expect(selection).toEqual(
+      expect.objectContaining({
+        marketId: "book-selected-total-market",
+        outcomeId: "book-selected-over",
+        marketType: "totals",
+        displayLabel: "Over 3.5 2H",
+        limitPrice: 0.44,
+        limitSide: "ask",
+        limitShares: 125.5,
+      }),
+    );
+    expect(JSON.stringify(selection)).not.toContain("moneyline");
+  });
 });

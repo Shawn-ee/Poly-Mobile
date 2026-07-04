@@ -2,6 +2,21 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle EM-A - Book-Staged Limit Lifecycle Service Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Book-staged limit order creation | Mobile `submitTicketOrder()` -> `/api/orders` via `placeLimitOrder()` and canonical order normalization | POST | Server mode uses existing canonical API key/idempotency flow | `selection` now preserves `limitPrice`, `limitSide`, and `limitShares` with selected `marketId`, `outcomeId`, family/line/period/side, display label, contract side, and provider identity | Immediate mobile order result keeps the staged Book limit fields in `result.selection`; backend `sanitizeTicketSelectionSnapshot()` keeps the same fields in `ApiOrderRequest.requestBody.selection` | Existing `ApiOrderRequest.requestBody` JSON snapshot; no schema migration | Mock order mode uses the same mobile `selectionForOrder()` path, so the service contract is identical for local ticket tests | Live Android route proof and immutable first-class order/trade selection columns remain future hardening. |
+| Book-staged limit open orders and positions | `/api/portfolio` | GET | Session user or canonical API key with `account:read` | None | `openOrders[].selection.limitPrice`, `openOrders[].selection.limitSide`, `openOrders[].selection.limitShares`, and matching fields on `positions[].selection` survive mobile portfolio mapping | `Order`, `ApiOrderRequest`, `Position`, `Market`, `Outcome` with existing request snapshot bridge for matching market/outcome | Mobile portfolio service tests use backend-shaped payloads, not UI-only fields | Filled positions still depend on the latest matching request snapshot or current market/outcome fallback; no immutable position snapshot column. |
+| Book-staged limit activity/history | `/api/portfolio/history` | GET | Session user or canonical API key with `account:read` | None | `canceledOrders[].selection.*` and `recentTrades[].selection.*` carry `limitPrice`, `limitSide`, and `limitShares` into mobile activity rows | `Order`, `ApiOrderRequest`, `Trade`, `Market`, `Outcome` | Mobile history mapper tests use backend-shaped canceled/recent trade payloads | Same-market/outcome multi-selection history remains limited by existing request JSON lookup until durable trade snapshots are added. |
+
+Cycle EM-A implementation notes:
+
+- Proof artifact: `docs/mobile/harness/cycle-EM-A-limit-lifecycle/proof.json`.
+- Focused tests cover mobile order creation, mobile portfolio snapshot mapping, mobile history/activity mapping, and backend selection metadata sanitization/building for `selection.limitPrice`, `selection.limitSide`, and `selection.limitShares`.
+- `sanitizeTicketSelectionSnapshot()` now preserves finite numeric `limitPrice`/`limitShares` and normalized `limitSide=bid|ask`, so Book-staged fields survive canonical request storage and later portfolio/history serialization through the existing selection snapshot JSON.
+- No visible mobile UI, mobile smoke scripts, shared audit gate docs, Prisma schema, or migration files were changed.
+
 ## Cycle EL Integrated - Route-Backed Book/Ticket Limit Handoff
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

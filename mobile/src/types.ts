@@ -210,6 +210,9 @@ export type PortfolioCanceledOrderItem = {
     conditionId?: string;
     referenceTokenId?: string;
     referenceOutcomeLabel?: string;
+    limitPrice?: number;
+    limitSide?: "bid" | "ask";
+    limitShares?: number;
   } | null;
   side: "BUY" | "SELL";
   status: string;
@@ -245,6 +248,9 @@ export type PortfolioRecentTradeItem = {
     conditionId?: string;
     referenceTokenId?: string;
     referenceOutcomeLabel?: string;
+    limitPrice?: number;
+    limitSide?: "bid" | "ask";
+    limitShares?: number;
   } | null;
   side: "BUY" | "SELL";
   shares: number;
@@ -278,6 +284,9 @@ export type PortfolioPositionItem = {
     conditionId?: string;
     referenceTokenId?: string;
     referenceOutcomeLabel?: string;
+    limitPrice?: number;
+    limitSide?: "bid" | "ask";
+    limitShares?: number;
   } | null;
   shares: number;
   avgCost: number;
@@ -318,6 +327,9 @@ export type PortfolioOpenOrderItem = {
     conditionId?: string;
     referenceTokenId?: string;
     referenceOutcomeLabel?: string;
+    limitPrice?: number;
+    limitSide?: "bid" | "ask";
+    limitShares?: number;
   } | null;
   side: "BUY" | "SELL";
   status: string;
