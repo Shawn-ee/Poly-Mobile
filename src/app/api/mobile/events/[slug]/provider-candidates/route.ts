@@ -3,6 +3,7 @@ import { assertReferenceBotAdmin } from "@/lib/internalAdminAuth";
 import { toGuardResponse } from "@/lib/marketGuards";
 import {
   discoverMobileLiveProviderCandidates,
+  type ProviderSearchMode,
   previewMobileLiveProviderCandidatesBySlug,
 } from "@/server/services/mobileLiveProviderCandidates";
 
@@ -23,6 +24,8 @@ export async function GET(request: NextRequest, context: Params) {
     marketId: searchParams.get("marketId"),
     fetchProvider: searchParams.get("fetchProvider") !== "false",
     maxCandidatesPerMarket: numberParam(searchParams.get("maxCandidatesPerMarket")),
+    providerSearchMode: providerSearchModeParam(searchParams.get("providerSearchMode")),
+    providerEventSlugs: providerEventSlugsParam(searchParams),
   });
 
   return NextResponse.json({
@@ -63,4 +66,22 @@ function numberParam(value: string | null) {
   if (!value) return null;
   const parsed = Number.parseInt(value, 10);
   return Number.isFinite(parsed) ? parsed : null;
+}
+
+function providerSearchModeParam(value: string | null): ProviderSearchMode | null {
+  if (value === "market-search" || value === "sports-events" || value === "combined") {
+    return value;
+  }
+  return null;
+}
+
+function providerEventSlugsParam(searchParams: URLSearchParams): string[] | null {
+  const values = [
+    ...searchParams.getAll("providerEventSlug"),
+    ...searchParams.getAll("providerEventSlugs")
+      .flatMap((value) => value.split(",")),
+  ]
+    .map((value) => value.trim())
+    .filter(Boolean);
+  return values.length ? Array.from(new Set(values)) : null;
 }

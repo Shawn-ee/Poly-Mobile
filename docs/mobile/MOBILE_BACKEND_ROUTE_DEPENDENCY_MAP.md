@@ -717,3 +717,17 @@ Cycle AW implementation notes:
 - The depth seed harness created 12 open proof orders for `world-cup-2026-curacao-vs-cote-divoire-2026-06-25` / `aca976d2-2bad-416c-b010-c874c0ee493f`.
 - A direct orderbook route probe returned seeded `levels[]` with `emptyState: null`.
 - `/api/events/:slug` returned a very large event-detail payload, while `/api/markets/:id/chart?range=1D` timed out during a 20-second probe. This promotes a mobile-optimized live detail/chart/depth payload to active structural work.
+
+## Cycle CW - Provider Sports Event Discovery Expansion
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider candidate discovery by exact sports event | `/api/mobile/events/:slug/provider-candidates?providerSearchMode=sports-events&providerEventSlug=fifwc-col-gha-2026-07-03` | GET | Internal admin guard | None | `targets[].bestCandidate`, `attachProposal.mapping`, candidate `slug`, `externalMarketId`, `conditionId`, outcome `tokenId`, relevance result | `Event`, `Market`, `Outcome`; provider identity fields on markets/outcomes | None for exact provider-event proof; broad tag discovery remains available when no exact event slug is supplied | More exact event/market slugs are needed for spreads, totals, team totals, halves, and props. |
+| Provider identity attach for compact live markets | `attachMobileLiveProviderIdentities()` local/service path, same contract as protected provider-mapping route | Service/API contract | Internal admin guard when called through route | provider mappings with market id, external slug/id, condition id, outcome token ids | readiness moves to provider-refreshable compact markets | `Market.referenceSource`, `Market.externalSlug`, `Market.externalMarketId`, `Market.conditionId`, `Outcome.referenceTokenId`, `Outcome.referenceOutcomeLabel` | None for the proof event | UI/admin apply workflow should eventually review/apply mappings outside the proof harness. |
+| Provider refresh and CLOB depth | `/api/mobile/events/:slug/provider-refresh` equivalent service path | POST/service | Internal admin guard through route | `allowContractProofFallback=false` | refreshed count, snapshots updated, CLOB depth rows, post-refresh snapshot status | `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot` | Contract fallback explicitly disabled | Broader provider ingestion scheduler remains needed. |
+| Server-backed live detail proof | `/api/mobile/events/:slug/live-detail` | GET | Public viewing | None | `event`, compact `markets[]`, `availability`, `providerQuoteSnapshot`, `providerOrderbookDepth`, `orderbookDepth`, contract readiness counts | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot` | Mobile fallback remains for non-server mode | First dev compile can be slow; production/dev-build route warmup should be included in harness setup. |
+
+Cycle CW implementation notes:
+
+- Exact provider event slug fallback prevents broad World Cup futures from being attached to the live match.
+- The Samsung tablet proof uses `world-cup-2026-colombia-vs-ghana-2026-07-03` and confirms route-backed Book UI after provider refresh.

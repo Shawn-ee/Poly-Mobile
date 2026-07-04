@@ -886,6 +886,60 @@ Decision:
 
 ## Gate Report Template
 
+## Feature: Provider Sports Event Discovery Expansion
+
+Cycle: CW
+Lead Agent target: exact provider discovery for the logged-in Polymarket Colombia vs Ghana World Cup live event.
+Reference Audit Agent: Samsung S23 official Polymarket Android app plus exact Gamma event route.
+Implementation Agent: provider candidate service, route query params, proof harnesses, and tablet smoke harness.
+Audit Gate Agent: post-implementation proof compared exact provider slugs and tablet route-backed Book evidence.
+
+Reference device:
+Samsung S23.
+
+Reference app/browser:
+Official Polymarket Android app, logged-in game page.
+
+Reference route/URL:
+`https://polymarket.com/sports/world-cup/fifwc-col-gha-2026-07-03`; provider data from `https://gamma-api.polymarket.com/events?slug=fifwc-col-gha-2026-07-03`.
+
+Holiwyn device:
+Samsung tablet.
+
+Holiwyn app mode:
+Expo Go with server mode and backend `http://127.0.0.1:3002`.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-CW-polymarket-s23-window.xml`
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-current-mobile-provider-sports-event-discovery-proof.json`
+- `docs/mobile/harness/cycle-current-mobile-live-detail-route-probe.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LD-CW-P1-01 | P1 | Pass | Exact Gamma event route returned Colombia/Ghana with 3 tokenized markets. | None |
+| LD-CW-P1-02 | P1 | Pass | Discovery produced 3 attach-ready candidates with exact `fifwc-col-gha-2026-07-03-*` slugs. | None |
+| LD-CW-P1-03 | P1 | Pass | Relevance gate rejected broad futures/noisy candidates and exact-event mode no longer mixes tag futures into the live match proof. | None |
+| LD-CW-P1-04 | P1 | Pass | Provider identity attach moved compact readiness from 0 to 3 provider-refreshable markets. | None |
+| LD-CW-P1-05 | P1 | Pass | No-fallback provider refresh wrote quote snapshots and CLOB orderbook depth rows. | None |
+| LD-CW-P1-06 | P1 | Pass | Samsung tablet Book proof showed route-backed orderbook, ready status, Best bid/ask, Spread, Buy, and Sell. | None |
+
+Decision:
+
+- Pass/fail: Pass for focused provider sports-event discovery expansion.
+- Unresolved P0 gaps: 0 for this focused cycle.
+- Remaining P1/P2 gaps: exact mappings for spreads/totals/team totals/halves/props, provider-owned scheduled ingestion, and full ticket/order/portfolio/history proof for these mapped binary match markets.
+- Next cycle required: yes, continue structural PM-GAP-067 for line-market provider mapping and lifecycle coverage.
+
 Use this template for every feature gate:
 
 ```md

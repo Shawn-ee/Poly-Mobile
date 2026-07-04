@@ -12314,3 +12314,15 @@ Current backend state: Existing backend health is `ok`; event/detail APIs are av
 Open blockers: None for autonomous progress.
 Risks: Real order placement requires auth/trading guards; large `mobile/App.tsx` will slow future iteration if not split soon; Chinese source text should be normalized if encoding problems appear in editor tooling.
 Next three likely cycles: component extraction, order-service boundary with mock/server modes, and richer World Cup market groups/live-state polish.
+
+### Cycle CW - Provider Sports Event Discovery Expansion
+
+Goal: Find and attach multiple real provider-owned Polymarket soccer markets for the World Cup live event without weakening the relevance gate.
+
+Reference audit: Samsung S23 showed the official Polymarket Colombia vs Ghana live game page. Exact provider route `gamma-api.polymarket.com/events?slug=fifwc-col-gha-2026-07-03` returned 3 real tokenized markets for Colombia win, draw, and Ghana win.
+
+Holiwyn/backend changed: Provider candidate discovery now supports exact sports event slugs, ranks relevant attach-ready candidates ahead of noisy high-volume candidates, and handles legitimate Yes/No binary markets through same-question relevance. Cycle harness creates a local Colombia/Ghana live event, discovers exact provider mappings, applies provider identity, and refreshes quote plus CLOB depth without fallback.
+
+Verification: `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-candidates.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts` passed. `cmd /c npx.cmd tsx scripts/prove_mobile_provider_sports_event_discovery.ts` passed with 3 attach-ready exact markets, 3 provider-refreshable markets, 6 quote snapshots, and 262 CLOB depth rows. `cmd /c npx.cmd tsx scripts/probe_mobile_live_detail_route.ts` passed with 3 ready provider quote/depth markets. Samsung tablet smoke passed with server-mode Colombia/Ghana Book proof.
+
+Audit Gate: Pass for focused PM-GAP-067 provider sports-event discovery expansion. Remaining work is not visual polish: add exact/provider-owned mappings for line markets and prove selected market/line/outcome identity through ticket, order, portfolio, and history.

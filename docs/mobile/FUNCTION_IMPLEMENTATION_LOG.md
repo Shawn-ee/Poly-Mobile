@@ -2458,3 +2458,49 @@ Known limitations:
 - Holiwyn tablet proof still captured `orderbook-source-fallback orderbook-status-idle`; route-backed mobile UI proof remains open.
 - `/api/events/:slug` can return a very large 37-market payload, and `/api/markets/:id/chart?range=1D` timed out during this cycle's route probe. The next structural cycle should add or use a mobile-optimized live detail/depth/chart proof path.
 - Seeded orderbook depth is deterministic proof data, not real provider ingestion.
+
+## Cycle CW - Provider Sports Event Discovery Expansion
+
+Feature/page worked on:
+
+- PM-GAP-067 provider discovery for the World Cup live event detail.
+- Exact Polymarket sports event fallback for Colombia vs. Ghana (`fifwc-col-gha-2026-07-03`).
+- Samsung tablet server-mode live detail and orderbook proof for a real provider-mapped compact event.
+
+Frontend/harness components touched:
+
+- `mobile/scripts/smoke.ps1`
+
+Backend/API components touched:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `src/app/api/mobile/events/[slug]/provider-candidates/route.ts`
+- `scripts/prove_mobile_provider_sports_event_discovery.ts`
+- `scripts/probe_mobile_live_detail_route.ts`
+
+Important functions/services touched:
+
+- `discoverMobileLiveProviderCandidates()` now accepts `providerEventSlugs` and can run exact sports-event discovery before broad tag discovery.
+- `fetchProviderCandidatesFromSportsEvents()` can fetch exact Gamma event slugs and normalize nested event markets.
+- `rankProviderCandidates()` now ranks attach-ready and relevant candidates ahead of high-score irrelevant candidates.
+- `assessCandidateRelevance()` now supports legitimate Polymarket Yes/No binary markets by requiring strong same-question/title token relevance instead of generic `Yes`/`No` outcome-name matches.
+
+User interactions supported:
+
+- Open the Holiwyn server-backed Colombia vs. Ghana live detail page on the Samsung tablet.
+- Open the route-backed order book for the mapped live winner market.
+- See provider-backed `Best bid`, `Best ask`, `Spread`, `Route depth`, `Buy`, and `Sell` controls.
+
+State transitions:
+
+- Local proof event starts with 3 compact markets missing provider identity.
+- Exact provider-event discovery finds 3 attach-ready Polymarket markets: `fifwc-col-gha-2026-07-03-col`, `fifwc-col-gha-2026-07-03-draw`, and `fifwc-col-gha-2026-07-03-gha`.
+- Provider identity attach moves readiness from 0 to 3 refreshable compact markets.
+- No-fallback provider refresh writes 6 quote snapshots and 262 CLOB depth rows.
+- Mobile live detail reports 3 ready provider quote snapshots and 3 ready provider orderbook-depth markets.
+
+Known limitations:
+
+- This closes the exact live match winner/draw/Ghana mapping path, not all Polymarket line markets.
+- Adjustable spreads/totals/team totals still need real provider event discovery or exact provider slugs when available.
+- The first Next dev compile for `/api/mobile/events/:slug/live-detail` was slow, but the serializer probe is fast after route warmup.
