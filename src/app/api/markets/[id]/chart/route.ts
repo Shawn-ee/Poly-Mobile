@@ -86,6 +86,11 @@ export async function GET(
 
   return NextResponse.json({
     marketId: id,
+    source: history.length > 0 && market.referenceSource === "polymarket"
+      ? "polymarket-clob-prices-history"
+      : history.length > 0
+        ? "market-outcome-snapshot"
+        : "empty",
     range,
     ranges: CHART_RANGES,
     generatedAt: new Date(now).toISOString(),

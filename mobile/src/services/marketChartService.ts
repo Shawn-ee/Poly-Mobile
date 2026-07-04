@@ -4,6 +4,7 @@ import type { Event, Market } from "../mocks/worldCup";
 
 export type MarketChartLoadResult = {
   status: "ready" | "empty";
+  source: string;
   range: MarketChartRange;
   lastUpdated: string | null;
   emptyState: "no-history" | null;
@@ -25,11 +26,12 @@ export const chartHistoryFromMarketChart = (history: Awaited<ReturnType<PolyApi[
 export const loadMarketChartState = async (api: PolyApi, event: Event): Promise<MarketChartLoadResult> => {
   const market = chartMarketForEvent(event);
   const range = chartRangeForEvent(event);
-  if (!market) return { status: "empty", range, lastUpdated: null, emptyState: "no-history", chartHistory: [] };
+  if (!market) return { status: "empty", source: "empty", range, lastUpdated: null, emptyState: "no-history", chartHistory: [] };
   const chart = await api.getMarketChart(market.id, range);
   const chartHistory = chartHistoryFromMarketChart(chart);
   return {
     status: chartHistory.length > 0 ? "ready" : "empty",
+    source: chart.source ?? "market-chart-route",
     range: chart.range,
     lastUpdated: chart.lastUpdated,
     emptyState: chart.emptyState,
@@ -57,6 +59,7 @@ export const applyChartStateToEvent = (event: Event, result: MarketChartLoadResu
     return {
       ...event,
       chartHistoryStatus: "empty",
+      chartHistorySource: result.source === "polymarket-clob-prices-history" ? "polymarket-clob-prices-history" : event.chartHistorySource,
       chartHistoryRange: result.range,
       chartHistoryLastUpdated: result.lastUpdated,
       chartHistoryEmptyState: result.emptyState,
@@ -65,7 +68,7 @@ export const applyChartStateToEvent = (event: Event, result: MarketChartLoadResu
   return {
     ...event,
     chartHistory: result.chartHistory,
-    chartHistorySource: "market-chart-route",
+    chartHistorySource: result.source === "polymarket-clob-prices-history" ? "polymarket-clob-prices-history" : "market-chart-route",
     chartHistoryStatus: "ready",
     chartHistoryRange: result.range,
     chartHistoryLastUpdated: result.lastUpdated,
@@ -76,6 +79,7 @@ export const applyChartStateToEvent = (event: Event, result: MarketChartLoadResu
 export const applyChartHistoryToEvent = (event: Event, chartHistory: EventChartPoint[]): Event =>
   applyChartStateToEvent(event, {
     status: chartHistory.length > 0 ? "ready" : "empty",
+    source: "market-chart-route",
     range: chartRangeForEvent(event),
     lastUpdated: null,
     emptyState: chartHistory.length > 0 ? null : "no-history",

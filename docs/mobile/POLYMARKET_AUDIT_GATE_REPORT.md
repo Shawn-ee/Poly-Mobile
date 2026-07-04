@@ -1151,6 +1151,48 @@ Remaining P1/P2 gaps:
 - Ticket/order/portfolio/history lifecycle proof for the mapped Polymarket token identities remains open.
 - Scheduled/background refresh orchestration remains open.
 
+## Cycle DL Polymarket CLOB Chart History Audit
+
+Result: Pass for focused provider-backed chart/history baseline and Android route proof; partial for full live-detail parity.
+
+What became materially closer to Polymarket:
+
+- Holiwyn's live-detail chart is no longer a fallback/static source for the mapped event. It now hydrates from real Polymarket CLOB `/prices-history` token history.
+- The mobile proof shows the provider chart source and ready chart state on the actual tablet UI.
+- The audit distinguishes real chart history from live provider availability: the reference event is closed/resolved, so live data is stale while chart history is still valid.
+
+Acceptance criteria:
+
+| Criterion ID | Priority | Status | Verification |
+| --- | --- | --- | --- |
+| LD-DL-P0-01 | P0 | Pass | Official CLOB price-history path is implemented by token ID and writes `MarketOutcomeSnapshot` rows. |
+| LD-DL-P0-02 | P0 | Pass | Proof created 1,708 real CLOB price-history snapshots across 3 mapped Polymarket markets. |
+| LD-DL-P0-03 | P0 | Pass | `/api/markets/:id/chart` returns `source=polymarket-clob-prices-history`, non-empty history, and no empty state. |
+| LD-DL-P0-04 | P0 | Pass | Samsung tablet EventDetail XML shows `chart-source-polymarket-clob-prices-history chart-status-ready chart-range-1D`. |
+| LD-DL-P0-05 | P0 | Pass | Samsung tablet Book proof remains route-backed with `orderbook-source-orderbook-route orderbook-status-ready`. |
+| LD-DL-P1-01 | P1 | Partial | Provider event is closed/resolved, so live provider data is intentionally `stale`, not current-live ready. |
+
+Evidence:
+
+- `src/server/services/polymarketPriceHistorySnapshots.ts`
+- `src/server/services/mobileLiveProviderRefresh.ts`
+- `src/app/api/markets/[id]/chart/route.ts`
+- `scripts/prove_mobile_polymarket_chart_history.ts`
+- `docs/mobile/harness/cycle-current-mobile-polymarket-chart-history.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+
+Unresolved P0 gaps: 0 for this focused chart/history cycle.
+
+Remaining P1/P2 gaps:
+
+- Add first-class chart snapshot provenance.
+- Add scheduled/background chart-history refresh.
+- Find or ingest exact line-family chart/history only when real provider markets exist.
+- Prove provider token identity through ticket, order, portfolio, and history.
+
 Use this template for every feature gate:
 
 ```md

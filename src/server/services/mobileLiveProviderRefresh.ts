@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 import { refreshPolymarketReferenceSnapshots } from "@/server/services/polymarketReferenceSnapshots";
 import { refreshPolymarketOrderbookDepthSnapshots } from "@/server/services/polymarketOrderbookDepthSnapshots";
+import { refreshPolymarketPriceHistorySnapshots } from "@/server/services/polymarketPriceHistorySnapshots";
 import { upsertReferenceQuoteSnapshots } from "@/server/services/referenceQuoteSnapshots";
 import { buildMobileLiveProviderQuoteSnapshotRows } from "@/server/services/mobileLiveProviderQuoteSnapshotSeeding";
 import { selectCompactLiveMarkets } from "@/server/services/mobileLiveEventDetail";
@@ -97,6 +98,24 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
         refreshed: [],
         skipped: [],
       };
+  const providerHistoryReport = polymarketMappedMarkets.length
+    ? await refreshPolymarketPriceHistorySnapshots({
+        marketIds: polymarketMappedMarkets.map((market) => market.id),
+        interval: "1d",
+        fidelityMinutes: 5,
+      })
+    : {
+        generatedAt: new Date().toISOString(),
+        source: "polymarket-clob-prices-history",
+        interval: "1d",
+        fidelityMinutes: 5,
+        requestedMarketCount: 0,
+        refreshedCount: 0,
+        snapshotsCreated: 0,
+        skippedCount: 0,
+        refreshed: [],
+        skipped: [],
+      };
   const lineProviderReport = await refreshOpticOddsLineQuoteSnapshots({
     eventSlug: options.eventSlug,
     providerFixture,
@@ -142,6 +161,7 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
       skipped: providerReport.skipped,
     },
     providerDepth: providerDepthReport,
+    providerHistory: providerHistoryReport,
     lineProvider: lineProviderReport,
     contractProofFallback,
     postRefresh,

@@ -60,6 +60,7 @@ export type MarketChartHistoryPoint = {
 
 export type MarketChart = {
   marketId: string;
+  source?: "polymarket-clob-prices-history" | "market-outcome-snapshot" | "empty" | string;
   range: MarketChartRange;
   ranges: MarketChartRange[];
   generatedAt: string;

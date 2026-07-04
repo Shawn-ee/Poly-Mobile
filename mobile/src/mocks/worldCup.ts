@@ -56,7 +56,7 @@ export type Event = {
   liveStats?: Array<{ statId: string; label: string; home: string; away: string }>;
   liveDataStatus?: AvailabilityState;
   chartHistory?: Array<{ outcomeId: string; timestamp: string; probability: number }>;
-  chartHistorySource?: "embedded" | "market-chart-route";
+  chartHistorySource?: "embedded" | "market-chart-route" | "polymarket-clob-prices-history";
   chartHistoryStatus?: "idle" | "loading" | "ready" | "empty" | "error";
   chartHistoryRange?: "1D" | "1W" | "1M" | "MAX";
   chartHistoryLastUpdated?: string | null;

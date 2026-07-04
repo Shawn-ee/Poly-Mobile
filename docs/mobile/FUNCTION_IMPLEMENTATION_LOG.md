@@ -3036,3 +3036,54 @@ Known limitations:
 - The exact Polymarket event still exposes no verified spread, total, team-total, halves, corners, props, or correct-score provider markets through the current Gamma/CLOB path; those line families remain unavailable/rejected with backend reasons, not silently mocked.
 - The event-detail chart still uses fallback chart history in the tablet proof and needs a Polymarket-backed chart/history route later.
 - Ticket/order/portfolio/history lifecycle proof for the refreshed Polymarket identities remains a separate milestone.
+
+## Cycle DL - Polymarket CLOB Chart History
+
+Feature/page worked on:
+
+- PM-GAP-067 Polymarket-backed chart/history for the live-detail game page.
+- Replaced the prior fallback chart source with CLOB `/prices-history` snapshots for mapped Polymarket token IDs.
+- Preserved the distinction between provider chart history and provider live/order-entry state: Colombia vs Ghana is now closed/resolved on Polymarket, so mobile live data is correctly marked stale while chart history remains real.
+
+Backend/API components touched:
+
+- `src/server/services/polymarketPriceHistorySnapshots.ts`
+- `src/server/services/mobileLiveProviderRefresh.ts`
+- `src/app/api/markets/[id]/chart/route.ts`
+- `scripts/prove_mobile_polymarket_chart_history.ts`
+- `src/__tests__/polymarket-price-history-snapshots.test.ts`
+- `src/__tests__/public.market-chart.no-leak.test.ts`
+
+Mobile components/services touched:
+
+- `mobile/src/services/marketChartService.ts`
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/types.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/src/__tests__/marketChartService.test.ts`
+- `mobile/src/__tests__/worldCupAdapter.test.ts`
+
+Important functions/services touched:
+
+- `refreshPolymarketPriceHistorySnapshots()` fetches CLOB `/prices-history` by outcome token ID, deletes the matching timestamp window, and writes `MarketOutcomeSnapshot` rows.
+- `refreshMobileLiveProviderQuoteSnapshots()` now includes `providerHistory` alongside Gamma quote refresh, CLOB depth refresh, and optional line-provider enrichment.
+- `GET /api/markets/:id/chart` now returns `source: "polymarket-clob-prices-history"` when history exists for a Polymarket-backed market.
+- `applyChartStateToEvent()` carries the provider chart source into the EventDetail accessibility marker.
+- `normalizeEventDetail()` now keeps backend `status: live` as a live mobile page even when provider freshness is stale/ended.
+
+User interactions supported:
+
+- Samsung tablet server-mode event detail now shows the chart as ready with `chart-source-polymarket-clob-prices-history` and `chart-range-1D`.
+- The Book interaction still opens the route-backed orderbook with `orderbook-source-orderbook-route` and `orderbook-status-ready`.
+
+State transitions:
+
+- Real Polymarket token IDs -> CLOB `/prices-history` -> `MarketOutcomeSnapshot` rows -> `/api/markets/:id/chart` -> mobile EventDetail chart source marker.
+- Proof created 1,708 CLOB price-history snapshots across 3 Polymarket match-winner markets.
+- Tablet proof moved the visible chart from fallback to provider-backed ready state.
+
+Known limitations:
+
+- The reference provider event is now closed/resolved, so this cycle proves real CLOB chart history and stale provider labeling, not current live order entry.
+- Chart history snapshots do not yet store a first-class source column; the chart route infers provider source from Polymarket market identity plus existing history rows.
+- Line-family chart/history parity remains unavailable until real line-family Polymarket markets or explicitly optional enrichment exist.

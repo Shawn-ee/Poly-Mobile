@@ -25,6 +25,7 @@ describe("market chart service", () => {
     const event = worldCupEvents.find((item) => item.status === "live")!;
     const getMarketChart = vi.fn(async () => ({
       marketId: "france-argentina-live",
+      source: "polymarket-clob-prices-history",
       range: "1D" as const,
       ranges: ["1D", "1W", "1M", "MAX"] as const,
       generatedAt: "2026-06-15T12:00:00.000Z",
@@ -54,7 +55,7 @@ describe("market chart service", () => {
     ]);
     const hydrated = applyChartStateToEvent(event, result);
     expect(hydrated.chartHistory).toEqual(history);
-    expect(hydrated.chartHistorySource).toBe("market-chart-route");
+    expect(hydrated.chartHistorySource).toBe("polymarket-clob-prices-history");
     expect(hydrated.chartHistoryStatus).toBe("ready");
     expect(hydrated.chartHistoryRange).toBe("1D");
     expect(hydrated.chartHistoryLastUpdated).toBe("2026-06-15T11:59:00.000Z");
@@ -64,6 +65,7 @@ describe("market chart service", () => {
     const event = worldCupEvents.find((item) => item.status === "live")!;
     const result = {
       status: "empty" as const,
+      source: "empty",
       range: "1D" as const,
       lastUpdated: null,
       emptyState: "no-history" as const,
