@@ -2,6 +2,19 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EM Integrated - Book-Staged Limit Lifecycle Proof Pairing
+
+Closed or narrowed:
+
+- The integrated Android proof now shows the selected Book-staged limit identity through ticket amount entry, fake-token submit, latest order, open order, latest activity, and canceled activity.
+- The Agent A service proof separately shows the same field family survives backend selection sanitization and mobile portfolio/history mappers.
+
+Still open:
+
+- Route-backed provider-depth lifecycle remains P1 because the integrated tablet proof used deterministic fake-token app data after backend health was unavailable from the tablet launch context.
+- Fresh S23 official ticket/order recapture remains P1.
+- Immutable first-class selection snapshots on order/trade/fill/position remain future hardening for same market/outcome multi-selection history.
+
 ## Cycle EM-A - Book-Staged Limit Lifecycle Service Contract
 
 Closed or narrowed:

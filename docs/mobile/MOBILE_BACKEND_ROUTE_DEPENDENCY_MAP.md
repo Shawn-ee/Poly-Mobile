@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle EM Integrated - Book-Staged Limit Lifecycle Proof Pairing
+
+Cycle EM integrated pairs two evidence types:
+
+- Service/backend contract proof: `docs/mobile/harness/cycle-EM-A-limit-lifecycle/proof.json`.
+- Android-visible lifecycle proof: `docs/mobile/harness/cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-proof.json`.
+
+Backend/data dependency notes:
+
+- The selected staged limit fields use the existing `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` selection envelopes documented in Cycle EM-A.
+- The integrated tablet proof was accepted as a fake-token visible lifecycle proof because it exercised the mobile state surfaces and was paired with EM-A's service proof. It did not prove a live route-backed provider-depth lifecycle from the tablet because backend health was unavailable in that launch context.
+- No new schema migration or route shape was introduced in Lead integration.
+- Remaining backend work is P1: route-backed provider-depth lifecycle execution through order/portfolio/history and durable first-class DB snapshots for same market/outcome multi-selection history.
+
 ## Cycle EM-A - Book-Staged Limit Lifecycle Service Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

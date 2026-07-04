@@ -2,6 +2,36 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle EM Integrated - Book-Staged Limit Lifecycle
+
+Feature/page worked on:
+
+- Integrated Agent A service/backend/mobile contract proof with Agent B Android-visible Book ladder -> staged ask limit -> ticket -> submit -> Portfolio/activity proof.
+- Closes the selected fake-token EM lifecycle path without claiming provider-backed live-route lifecycle breadth.
+
+Frontend/services/harness touched:
+
+- Integrated prior EM merges from `mobile/super-EM-agent-A-limit-lifecycle`, `mobile/super-EM-agent-B-visible-limit-lifecycle`, and `mobile/super-EM-agent-C-audit-limit-lifecycle`.
+- `docs/mobile/harness/cycle-EM-A-limit-lifecycle/proof.json`
+- `docs/mobile/harness/cycle-EM-integrated-limit-lifecycle/cycle-EM-A-limit-lifecycle-proof.json`
+- `docs/mobile/harness/cycle-EM-integrated-limit-lifecycle/`
+- `docs/mobile/screenshots/cycle-EM-integrated-limit-lifecycle/`
+
+Important functions/interactions/state transitions touched:
+
+- Agent A service proof verifies `limitPrice`, `limitSide`, and `limitShares` survive order result mapping, backend selection sanitization, portfolio position mapping, open-order mapping, recent-trade mapping, and canceled-order mapping.
+- Integrated Android proof verifies the visible path: live event Book -> Spread `1.5` regulation Yes ask `41c` -> ticket with `limit-side=ask` and `limit-price=41` -> `$25` fake-token submit -> latest order/open order/latest activity/canceled activity retaining the same selected market/outcome/line/period/provider identity.
+- Negative proof checks reject fallback identity such as Team to Advance or Mexico moneyline when the selected staged order is a Spread line.
+
+Verified:
+
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleLimitLifecycle -Port 8345 -Device 172.16.200.30:41299 -OutputDir docs/mobile/screenshots/cycle-EM-integrated-limit-lifecycle -HierarchyOutputDir docs/mobile/harness/cycle-EM-integrated-limit-lifecycle`
+
+Known limitations:
+
+- Integrated visible proof uses deterministic fake-token app data because backend health was unavailable from the tablet launch context.
+- Route-backed provider-depth lifecycle, fresh S23 ticket/order recapture, repeat market-family coverage, and durable first-class DB selection snapshots remain P1.
+
 ## Cycle EM-B - Visible Book-Staged Limit Lifecycle
 
 Feature/page worked on:

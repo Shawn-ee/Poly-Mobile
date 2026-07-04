@@ -1,0 +1,38 @@
+{
+    "cycle":  "EM-B",
+    "scope":  "Visible Android Book-staged limit lifecycle",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleLimitLifecycle -Port 8345 -OutputDir docs\\mobile\\screenshots\\cycle-EM-integrated-limit-lifecycle -HierarchyOutputDir docs\\mobile\\harness\\cycle-EM-integrated-limit-lifecycle",
+    "eventIdentity":  "Mexico vs. Ecuador",
+    "routeBackedProviderDepth":  false,
+    "result":  "pass",
+    "assertions":  {
+                       "bookSelection":  "Live event Book ladder switches to selected-market-mexico-ecuador-spread selected-line-1.5 selected-period-regulation selected-outcome-yes.",
+                       "stagedAsk":  "Tapping order-book-ask-level-yes-1 stages Buy ask at 0.41 USDT / 41c.",
+                       "ticketLimit":  "Trade ticket exposes ticket-limit-side-ask ticket-limit-price-41 ticket-limit-decimal-0.41 and submits at ticket-price-line 41c.",
+                       "latestOrder":  "Latest order card exposes order-status-open and the same portfolio limit/source/market/outcome/line/period/provider tokens.",
+                       "openOrder":  "Open order row shows Limit 41% and the same order-time snapshot identity.",
+                       "activityHistory":  "Filled latest-activity and canceled latest-activity cards retain portfolio-limit-side-ask portfolio-limit-price-41 and the same selected Book identity.",
+                       "fallbackGuard":  "No Team to Advance or Mexico moneyline fallback appears after the Book-selected limit order."
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-book-baseline.png",
+                      "docs\\mobile\\harness\\cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-book-baseline.xml",
+                      "docs\\mobile\\harness\\cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-selector.xml",
+                      "docs\\mobile\\screenshots\\cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-spread-book.png",
+                      "docs\\mobile\\harness\\cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-spread-book.xml",
+                      "docs\\mobile\\screenshots\\cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-ask-staged.png",
+                      "docs\\mobile\\harness\\cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-ask-staged.xml",
+                      "docs\\mobile\\screenshots\\cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-ticket-empty.png",
+                      "docs\\mobile\\harness\\cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-ticket-empty.xml",
+                      "docs\\mobile\\screenshots\\cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-ticket-ready.png",
+                      "docs\\mobile\\harness\\cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-ticket-ready.xml",
+                      "docs\\mobile\\screenshots\\cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-portfolio-open.png",
+                      "docs\\mobile\\harness\\cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-portfolio-open.xml",
+                      "docs\\mobile\\screenshots\\cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-portfolio-canceled.png",
+                      "docs\\mobile\\harness\\cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-portfolio-canceled.xml"
+                  ],
+    "remainingGaps":  [
+                          "This branch proves the visible mobile fake-token lifecycle without editing backend routes.",
+                          "If Agent A adds new provider-backed route support, Lead can rerun this EM harness with that integrated event and tighten routeBackedProviderDepth to true."
+                      ]
+}
