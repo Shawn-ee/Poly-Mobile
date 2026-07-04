@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Live football / World Cup game page structure | Cycle DY/DZ reviewed by EA-C | Fail/partial; PM-GAP-073 remains open | 1 failed P0 plus open P0 same-run proof items | P1 ticket amount/swipe confirmation recapture remains location-gated; P2 visual/motion polish remains after P0 | Reused DQ-C S23 reference: `docs/mobile/audits/live-football-world-cup-dq-c.md`; gate: `docs/mobile/audits/cycle-dy-c-game-page-structure-gate.md` | DY-A partial tablet proof: `docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-partial-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-DY-A-game-page-structure/` and `docs/mobile/harness/cycle-DY-A-game-page-structure/` | DY-A proves material shell behavior: launch, header actions, Game/Chat controls, top area, chart context, chat preview, primary outcomes, top Book, Share, and Chat feed/input/reactions. It fails because the primary outcome tap did not open `trade-ticket`; backend JSON, focused Book/line proofs, or compile checks cannot pass full game-page parity. |
 | Orderbook family/depth selector | Cycle DU integrated | Partial; PM-GAP-075 remains open | 3 remaining gate areas | P1 richer full Polymarket settings sheet, row-level ladder price carry-through polish, and phone-density visual polish remain after P0 pass | Reused DQ-C S23 reference: `docs/mobile/audits/live-football-world-cup-dq-c.md`; DU-C gate: `docs/mobile/audits/cycle-du-c-orderbook-final-gate.md` | Backend provider line proof: `docs/mobile/harness/cycle-DU-integrated-provider-line-orderbook-depth-proof.json`; tablet UI proof: `docs/mobile/harness/cycle-DU-B-orderbook-settings/cycle-DU-B-holiwyn-orderbook-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-DU-B-orderbook-settings/` and `docs/mobile/harness/cycle-DU-B-orderbook-settings/` | DU integrated closes major visible gaps: Cents/Decimal Book setting is visible and state-preserving, Spread `1.5` regulation and Totals `2.5` regulation carry through selector/ladder/ticket in backend-shaped fixture data, Yes/No switching still passes, side-labelled ladder proof remains, and backend route proof now returns provider-ready first-half Spread depth with `selectorKey=spreads:first-half:1.5`. Not a pass because the provider-ready backend market is not yet rendered in the same Android UI run, so backend JSON and app-visible market id/selector key are still separate evidence bundles. |
 | Orderbook family/depth selector | Cycle DU-C final gate | Fail until Agent A/B integrated proof; PM-GAP-075 remains open | 5 remaining gate areas | P1 row-to-ticket polish and P2 phone-density/visual polish remain after P0 pass | Reused DQ-C S23 reference: `docs/mobile/audits/live-football-world-cup-dq-c.md`; focused DU-C gate: `docs/mobile/audits/cycle-du-c-orderbook-final-gate.md`; DS/DT gates: `docs/mobile/audits/cycle-ds-c-orderbook-audit-gate.md`, `docs/mobile/audits/cycle-dt-c-orderbook-regate.md` | Reused DT progress only: backend ready-depth JSON `docs/mobile/harness/cycle-DT-integrated-ready-orderbook-depth-proof.json`; tablet interaction proof `docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-proof.json`; no fresh DU-C Android proof | DU-C prepares the final audit gate and does not certify parity. PM-GAP-075 remains blocked until one integrated Android run shows provider-backed `ready` depth visible in the Book UI with the same backend market id/selector key, proves Spread/period/line carry-through, proves Decimalize/equivalent settings, and preserves ticket/identity from selected ladder/market into the ticket. |
 | Orderbook family/depth selector | Cycle DT integrated | Partial; PM-GAP-075 remains open | 3 gate areas remain | P1 Decimalize/equivalent setting, broader spread/period/line selector coverage, row-to-ticket carry-through polish, and visual polish remain after provider-ready UI proof | `docs/mobile/audits/cycle-dt-c-orderbook-regate.md`; `docs/mobile/audits/cycle-ds-c-orderbook-audit-gate.md`; DQ-C reference screenshots/XML for Book action, selector, settings, and depth scroll | Backend ready-depth proof: `docs/mobile/harness/cycle-DT-integrated-ready-orderbook-depth-proof.json`; tablet interaction proof: `docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/` and `docs/mobile/harness/cycle-DT-B-orderbook-interactions/` | DT closed meaningful behavior gaps: Yes/No switching now changes side/outcome while preserving market identity, selector-to-ticket carry-through is proven for a contract-shaped Totals market, side-labelled ask/bid ladder proof exists, and the backend route returns provider-backed `ready` depth with market identity. Not a pass because provider-backed ready depth has not been proven in the same visible UI run, Spread/period/line carry-through is still incomplete, and Decimalize/equivalent Book settings are not implemented/proven. |
@@ -1677,6 +1678,45 @@ Decision:
 - Pass/fail: Pass for focused line lifecycle parity.
 - Unresolved P0 gaps: 0 for this focused PM-GAP-074 gate.
 - Remaining P1/P2 gaps: visible lifecycle on real provider-backed line market, official amount/swipe confirmation recapture, every line family, and production-grade immutable selection storage.
+
+## Cycle DY/DZ Game Page Structure Audit Gate Update
+
+Result: Fail/partial. PM-GAP-073 remains open.
+
+Audit Gate Agent: Agent C / EA-C docs-only update.
+
+Reference evidence:
+
+- Reused DQ-C Samsung S23 official Polymarket reference: `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- Key reference areas: game page top, chart press, Chat tab, market scroll, Spread selector, Totals/halves scroll, ticket-open/location gate, Book action, Book selector/depth, Share action.
+- No new S23 reference capture was collected in EA-C.
+
+Holiwyn evidence reviewed:
+
+- DY-A partial tablet proof: `docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-partial-proof.json`
+- DY-A screenshot/XML folders: `docs/mobile/screenshots/cycle-DY-A-game-page-structure/`; `docs/mobile/harness/cycle-DY-A-game-page-structure/`
+
+Criteria results:
+
+| Criterion area | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| Full page shell: header actions, Game/Chat, teams/time/probability, chart context, chat preview, primary outcomes | P0 | Pass for visible shell | DY-A partial proof lists these as passed before failure. | Keep in the next integrated proof as non-regression checks. |
+| Book action/orderbook surface from top page | P0 | Pass for this DY run | DY-A partial proof lists top orderbook as opened with depth/selector state. | Keep same-run Book evidence in the next proof. |
+| Share action | P0 | Pass for this DY run | DY-A partial proof lists Android share sheet as opened. | Keep same-run Share evidence in the next proof. |
+| Game/Chat segmented behavior | P0 | Pass for Chat direction; return-to-Game still needs explicit same-run final proof | DY-A partial proof lists Chat feed/input/reactions as passed. | Next proof must include Game return plus market restore after Chat. |
+| Chart touch/press behavior | P0 | Open | DY-A proof shows chart context visibility, but does not close the required touch/press interaction criterion. | Capture before/after chart touch showing page context is preserved. |
+| Full scroll/lower market completeness | P0 | Open | DY-A partial proof failed before a complete same-run lower-page pass was recorded in this gate. | Capture grouped markets, line-family groups, lower-period groups, sticky/compact context, and lower/rules content. |
+| Line selector behavior inside the full game page | P0 | Open | DV/DW/DX focused line/orderbook evidence supports the behavior but does not replace same-run full page proof. | Capture selector open/change and selected line/period/price updates inside this full-page run. |
+| Player Props blank/unavailable state | P0 | Open | Earlier AM evidence exists, but DY/DZ gate still needs same-run proof for the current full-page milestone. | Capture Player Props tab/section with the requested blank/unavailable state. |
+| Primary outcome opens correct ticket | P0 | Fail | DY-A proof states tapping the visible AUS primary outcome did not open `trade-ticket`; manual ADB tap also stayed on the game page. | Fix the full game-page primary outcome tap path and prove `trade-ticket` opens with event/market/outcome/side identity. |
+| Backend JSON/route proof as substitute for visible Android proof | P0 | Fail if used alone | Existing provider and orderbook proofs are supporting evidence only. | Require screenshots/XML/proof JSON from Holiwyn Android for the full page and ticket interaction. |
+
+Decision:
+
+- Pass/fail: Fail/partial.
+- Unresolved P0 gaps: primary outcome ticket open failed; chart touch, full scroll/lower market completeness, full-page line selector, Player Props blank state, and return-to-Game market restore still need same-run visible proof.
+- Remaining P1/P2 gaps: ticket amount/swipe confirmation recapture remains P1 because DQ-C reference was location-gated; final phone-density/motion/visual polish remains P2.
+- Next cycle required: yes. Implementation must fix the ticket tap path first, then rerun full Samsung tablet proof.
 
 Use this template for every feature gate:
 
