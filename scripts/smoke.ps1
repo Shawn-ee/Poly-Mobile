@@ -5639,14 +5639,14 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-ticket.png"
       $mvpTicketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-ticket.xml"
-      Assert-HierarchyContains -Path $mvpTicketHierarchy -Expected (@("trade-ticket", "Mexico vs. Ecuador", "ticket-selection-line", "Yes - MEX -2.5 1H", "ticket-selected-outcome-choice", "ticket-preset-10", "Choose an amount") + $mvpTicketExpected)
+      Assert-HierarchyContains -Path $mvpTicketHierarchy -Expected (@("trade-ticket", "Mexico vs. Ecuador", "ticket-selection-line", "Yes - MEX -2.5 1H", "ticket-selected-outcome-choice", "ticket-order-review", "Order review", "LINE", "2.5", "PERIOD", "1st Half", "SHARES", "TO WIN", "ticket-preset-10", "Choose an amount") + $mvpTicketExpected)
       Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
       if ($LocalMvpSellFlow) {
         Invoke-TapHierarchyNode -Path $mvpTicketHierarchy -Identifier "ticket-side-sell"
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-sell-ticket.png"
         $mvpTicketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-sell-ticket.xml"
-        Assert-HierarchyContains -Path $mvpTicketHierarchy -Expected (@("trade-ticket", "Sell", "No", "Odds 97%", "ticket-side-sell", "ticket-preset-10", "Choose an amount") + $mvpSellTicketExpected)
+        Assert-HierarchyContains -Path $mvpTicketHierarchy -Expected (@("trade-ticket", "Sell", "No", "Odds 97%", "ticket-side-sell", "ticket-order-review", "LINE", "2.5", "PERIOD", "1st Half", "ticket-preset-10", "Choose an amount") + $mvpSellTicketExpected)
         Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
       }
       Invoke-TapHierarchyNode -Path $mvpTicketHierarchy -Identifier "ticket-preset-10"
@@ -5660,9 +5660,9 @@ try {
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-ticket-ready.png"
       $mvpTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-ticket-ready.xml"
       $mvpReadyExpected = if ($LocalMvpSellFlow) {
-        @('$25', "To win", "97c", "ticket-price-line", $mvpSubmitText, "place-mock-order", "MEX -2.5 1H")
+        @('$25', "To win", "97c", "ticket-price-line", "ticket-order-review", "ticket-order-review-payout", $mvpSubmitText, "place-mock-order", "MEX -2.5 1H")
       } else {
-        @('$25', 'To win $833.33', "ticket-price-line", $mvpSubmitText, "place-mock-order", "Yes - MEX -2.5 1H")
+        @('$25', 'To win $833.33', "ticket-price-line", "ticket-order-review", "ticket-order-review-payout", $mvpSubmitText, "place-mock-order", "Yes - MEX -2.5 1H")
       }
       $mvpActiveTicketExpected = if ($LocalMvpSellFlow) { $mvpSellTicketExpected } else { $mvpTicketExpected }
       Assert-HierarchyContains -Path $mvpTicketReadyHierarchy -Expected ($mvpReadyExpected + $mvpActiveTicketExpected)
@@ -5683,7 +5683,7 @@ try {
         assertions = [ordered]@{
           defaultEventDetail = @("chart", "contract rail", "game lines", "spread/totals selectors", "no visible Book/orderbook entry points")
           selectedLine = @("spread 2.5", "1st Half", "market/outcome identity preserved")
-          simpleTicket = @("fake-token $($mvpSideLabel.ToLowerInvariant())", "current probability price", $mvpSubmitText, "no visible Book/orderbook entry points")
+          simpleTicket = @("fake-token $($mvpSideLabel.ToLowerInvariant())", "visible order review", "line/period/shares/payout", "current probability price", $mvpSubmitText, "no visible Book/orderbook entry points")
           portfolio = @("Order placed", "latest order", "latest activity", "position card", "line identity preserved")
         }
         artifacts = @(

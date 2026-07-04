@@ -9,3 +9,11 @@
 - State transitions: `ticket` open state remains unchanged; `amount`, `side`, `activeContractSide`, `slippage`, and `showDetails` remain local ticket state. The new visible review is derived from existing ticket state and does not create a second source of order truth.
 - Known limitations: Android visual proof must confirm the review card fits on the physical tablet viewport and remains readable for long line labels.
 
+## Cycle FN - Local MVP Submit To Portfolio Proof
+
+- Feature/page: Event Detail spread line ticket through fake-token submit into Portfolio/history.
+- Frontend components touched: no UI component changed in this cycle; `scripts/smoke.ps1` proof expectations were tightened for the existing ticket and Portfolio flow.
+- Important functions/services touched: no backend/provider service changes. The flow continues through `TradeTicket -> App.placeOrder -> submitTicketOrder -> Portfolio`.
+- User interactions supported: user selects the `MEX -2.5 1H` spread line, opens the ticket, enters 25 USDT with presets, reviews price/shares/payout, submits with the swipe-style control, and lands on Portfolio.
+- State transitions: `ticket` closes, `selectedEvent` clears, `mainTab` becomes `portfolio`, fake balance decreases by 25 USDT, one position is added, `latestOrder` is set, and recent activity receives a filled buy activity.
+- Known limitations: this cycle proves mock/fake-token mode only. Server-backed order and portfolio sync remain covered by separate server-mode cycles.
