@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Live event detail depth after EK | Cycle EL-C docs gate | Fail until Agent B Android-visible proof exists | 12 EL implementation proof rows fail until evidence; reference-status disclosure passes with partial fresh S23 notes | P1 fresh S23 ticket Buy/Sell recapture, multi-family provider breadth, Book row-to-ticket price/side carry-through, Player Props/lower-section breadth; P2 visual/chart/orderbook polish | Partial fresh S23 official Polymarket app live probe on 2026-07-04 for Canada vs Morocco chart/top, swipe depth, Game/Chat, line controls, Book/orderbook, and grouped selector; stale DQ-C/AG/AI ticket evidence is support-only; gate: `docs/mobile/audits/cycle-el-c-live-event-depth-gate.md` | No EL Holiwyn Android proof captured by Agent C; required future proof must be Agent B Android screenshots/XML/proof JSON for the same selected identity across live page, chart, line selectors, Book/orderbook, and ticket | Blocks Agent B if there is no Android-visible proof. Backend JSON alone, static placeholders, fallback/default market reconstruction, and line selection that does not preserve identity into ticket/orderbook fail this gate. |
 | Route-backed provider transition breadth after EJ | Cycle EK integrated | Pass for selected route-backed unavailable -> loading/refresh -> ready Android path; broader family breadth remains P1 | 0 for selected EK transition path | P1 repeat across real provider-backed line families, fresh S23 recapture, production provider refresh scheduling; P2 status/density polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence plus EI/EJ checked-in progress; no fresh EK S23 capture | Backend proof: `docs/mobile/harness/cycle-EK-A-provider-transition/cycle-EK-A-provider-transition.json`; refresh helper proof: `docs/mobile/harness/cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-refresh-route.json`; Samsung tablet proof: `docs/mobile/harness/cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EK-integrated-provider-transition/` and `docs/mobile/harness/cycle-EK-integrated-provider-transition/` | Lead integration proves the selected EK path: live page starts `live-data-status-unavailable provider-lifecycle-not-ready`, chart/ticket shows refresh-due for the stale selected market, Book shows visible refreshing/loading, backend provider refresh writes fresh Gamma/CLOB-shaped rows with `fallbackApplied=false`, reopened Book shows route-backed ready depth and ready availability, and ticket settings preserve provider/server identity. |
 | Route-backed provider transition breadth after EJ | Cycle EK-C docs gate | Fail until Agent A/B/Lead integrated transition proof; EJ selected mixed path remains regression coverage | 10 EK transition P0 proof rows fail until evidence; stale-reference disclosure passes for docs | P1 real-provider family transition breadth, repeated transitions, fresh S23 recapture; P2 status/density polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence plus EI/EJ checked-in progress; gate: `docs/mobile/audits/cycle-ek-c-provider-transition-gate.md` | No fresh EK Holiwyn proof captured by Agent C; required future proof must pair Agent A backend route proof with Agent B Samsung tablet screenshots/XML/proof JSON for the same selected identities | EK defines the remaining post-EJ bar: visible route-backed unavailable/not-ready state, full same-selected-market stale -> refreshing/loading -> ready transition, selected identity preservation through live page/chart/Book/ticket, no fallback/default/generic market behavior, and real-provider family breadth if available. |
 | Route-backed provider status breadth after EI | Cycle EJ integrated | Partial/pass for selected mixed route-backed Android path; breadth gate still open | 4 P0 breadth areas remain: visible unavailable/not-ready state, real provider-backed family breadth, full stale -> refreshing/loading -> ready transition, and broader selected-identity matrix | P1 fresh S23 recapture, multi-family real provider-backed breadth, repeated transition proof; P2 status/density polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence plus EH/EI checked-in progress; no fresh EJ S23 capture | Backend proof: `docs/mobile/harness/cycle-EJ-A-provider-status-breadth.json`; Samsung tablet proof: `docs/mobile/harness/cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EJ-integrated-status-breadth/` and `docs/mobile/harness/cycle-EJ-integrated-status-breadth/` | Lead integration now pairs Agent A backend route state with Agent B Android markers for one selected event: live data is route-backed ready, chart is ready, ticket handoff is visibly refresh-due, Book shows refreshing/loading then route-backed depth ready, selected Book availability remains refresh-due/stale, ticket settings preserve server/provider identity, and fallback/mock/default labels are rejected. This is not final breadth parity. |
@@ -2168,6 +2169,68 @@ Decision:
 - Unresolved P0 gaps: 2 route-backed integration areas remain plus same-build regression breadth.
 - Remaining P1/P2 gaps: fresh official S23 recapture, broader real provider-backed line-family status matrix, actual stale -> refreshing/loading -> ready transition proof, and status visual polish.
 - Next cycle required: yes. Lead must make the tablet consume live backend route status data before Audit Gate can fully pass PM-GAP-084.
+
+## Cycle EL-C Live Event Detail Depth Gate
+
+Result: Fail until Agent B Android-visible proof exists. Agent C confirmed partial fresh S23 official Polymarket reference access, but this docs-only lane did not create committed proof artifacts and did not complete fresh ticket Buy/Sell reference.
+
+Lead Agent target:
+
+- Use the partial fresh S23 reference observations for current live event depth: chart/top, swipe depth, Game/Chat, Game Lines/Player Props, line controls, Book/orderbook, and grouped selector.
+- Treat DQ-C/AG/AI ticket evidence as stale support only until fresh non-confirming S23 ticket proof is recaptured.
+- Require Agent B Android proof for a full human path through live page swipe, chart tap, line selector changes, Book/orderbook selector, Book row/action, page-row ticket, Buy/Sell or side state, and live Game/Chat sections.
+- Keep deposit verification, location verification, and notification page proof out of scope.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: Agent B, blocked until proof exists.
+
+Audit Gate Agent: Agent C.
+
+Reference device:
+
+- Samsung S23 `SM-S911U1`, official Polymarket app `com.polymarket.android` version `4.2967`, connected on 2026-07-04.
+- Partial fresh live probe reached Canada vs Morocco on the official app.
+
+Holiwyn device:
+
+- No EL Holiwyn Android proof collected by Agent C.
+- Required future proof device: Samsung tablet/phone or assigned Holiwyn Android device.
+
+Reference evidence:
+
+- Partial fresh Agent C S23 observation, not committed as artifacts because EL-C ownership is docs-only.
+- Stale support only: `docs/mobile/audits/live-football-world-cup-dq-c.md`, `docs/mobile/audits/trade-ticket.md`, `docs/mobile/audits/binary-side.md`, `docs/mobile/audits/cycle-ec-c-orderbook-ticket-gate.md`, `docs/mobile/audits/cycle-eb-c-chart-line-selector-gate.md`.
+
+Holiwyn evidence required before pass:
+
+- Agent B Android screenshots/XML/proof JSON for the same selected event and selected market identity across chart/top, swipe depth, market sections, line selector changes, Book/orderbook, grouped selector, ticket, and Game/Chat sections.
+- Backend route JSON only as supporting evidence for the exact visible market id or selector key.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EL-DEPTH-P0-01 | P0 | Fail until proof | No EL same-build Holiwyn Android proof exists. | Agent B must provide screenshots/XML/proof JSON covering live page, chart, market sections, Book/orderbook, selector, and ticket. |
+| EL-DEPTH-P0-02 | P0 | Pass for docs gate | EL labels the S23 reference as partial fresh and ticket support as stale-context only. | Keep this limitation visible until fresh ticket proof exists. |
+| EL-DEPTH-P0-03 | P0 | Fail until proof | No Holiwyn swipe-depth proof exists for EL. | Prove event and selected identity survive scrolling through top/mid/lower page sections. |
+| EL-DEPTH-P0-04 | P0 | Fail until proof | No Holiwyn chart tap proof exists for EL. | Prove chart tap is selected-market aware and does not trigger unrelated navigation. |
+| EL-DEPTH-P0-05 | P0 | Fail until proof | No Holiwyn Game/Chat live-section proof exists for EL. | Prove live sections are functional surfaces, not placeholders. |
+| EL-DEPTH-P0-06 | P0 | Fail until proof | No EL market-section depth proof exists. | Prove Regulation Time Winner, Spread, Totals, and lower/Player Props states. |
+| EL-DEPTH-P0-07 | P0 | Fail until proof | No EL line/period selector identity proof exists. | Prove line/period changes update subject, odds/probabilities, and selected identity together. |
+| EL-DEPTH-P0-08 | P0 | Fail until proof | No EL Book/orderbook identity proof exists. | Prove Book opens for the same selected event/market with visible depth columns and side distinction. |
+| EL-DEPTH-P0-09 | P0 | Fail until proof | No EL grouped selector proof exists. | Prove selector families and selected check without default-market reset. |
+| EL-DEPTH-P0-10 | P0 | Fail until proof | No EL ticket handoff proof exists. | Prove page-row and Book-origin ticket identity, including Buy/Sell or side state. |
+| EL-DEPTH-P0-11 | P0 | Fail until proof | No EL non-ready/loading/unavailable state proof exists. | Prove explicit non-ready states or document same-run reason. |
+| EL-DEPTH-P0-12 | P0 | Fail until proof | No EL negative no-fallback assertions exist in implementation proof. | Reject backend-only pass, static placeholders, defaults, generic labels, stale-as-ready, mock-ready, and fallback depth. |
+| EL-DEPTH-P0-13 | P0 | Fail until proof | Agent B Android-visible proof is absent. | Agent B cannot pass from backend JSON or source inspection alone. |
+
+Decision:
+
+- Pass/fail: Fail until integrated Android-visible proof.
+- Unresolved P0 gaps: 12 implementation proof rows remain open; reference-status disclosure passes.
+- Remaining P1/P2 gaps: fresh S23 ticket Buy/Sell recapture, multi-family provider breadth, Book row-to-ticket price/side carry-through, Player Props/lower-section breadth, and visual/chart/orderbook polish.
+- Next cycle required: yes. Agent B is blocked until the EL evidence bundle exists.
 
 ## Cycle EK-C Provider Transition Breadth Gate
 
