@@ -142,6 +142,7 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
   }
 
   const postRefresh = await summarizeCompactProviderSnapshots(compactMarketIds);
+  const postRefreshHistory = await summarizeCompactChartHistory(compactMarketIds);
 
   return {
     eventSlug: options.eventSlug,
@@ -165,6 +166,7 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
     lineProvider: lineProviderReport,
     contractProofFallback,
     postRefresh,
+    postRefreshHistory,
   };
 }
 
@@ -225,5 +227,35 @@ async function summarizeCompactProviderSnapshots(marketIds: string[]) {
     latestFetchedAt: latest,
     oldestFetchedAt: oldest,
     sourceCount: new Set(snapshots.map((snapshot) => snapshot.source)).size,
+  };
+}
+
+async function summarizeCompactChartHistory(marketIds: string[]) {
+  if (marketIds.length === 0) {
+    return {
+      marketCount: 0,
+      snapshotCount: 0,
+      latestSnapshotAt: null,
+      oldestSnapshotAt: null,
+      outcomeCount: 0,
+      source: "empty",
+    };
+  }
+
+  const snapshots = await prisma.marketOutcomeSnapshot.findMany({
+    where: { marketId: { in: marketIds } },
+    select: { outcomeId: true, ts: true },
+  });
+  const snapshotTimes = snapshots.map((snapshot) => snapshot.ts.getTime()).sort((a, b) => a - b);
+  const oldest = snapshotTimes[0] != null ? new Date(snapshotTimes[0]).toISOString() : null;
+  const latest = snapshotTimes[snapshotTimes.length - 1] != null ? new Date(snapshotTimes[snapshotTimes.length - 1]).toISOString() : null;
+
+  return {
+    marketCount: marketIds.length,
+    snapshotCount: snapshots.length,
+    latestSnapshotAt: latest,
+    oldestSnapshotAt: oldest,
+    outcomeCount: new Set(snapshots.map((snapshot) => snapshot.outcomeId)).size,
+    source: snapshots.length > 0 ? "market-outcome-snapshot" : "empty",
   };
 }
