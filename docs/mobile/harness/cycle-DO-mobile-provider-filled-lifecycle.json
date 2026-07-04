@@ -1,0 +1,93 @@
+{
+  "ready": true,
+  "buyerUsername": "holiwyn-mobile-dev",
+  "providerLifecycle": {
+    "requestSelectionHasProviderIdentity": true,
+    "portfolioPositionHasProviderIdentity": true,
+    "recentTradeHasProviderIdentity": true
+  },
+  "market": {
+    "id": "59a64240-4094-4265-9efd-6da5a46afa49",
+    "title": "World Cup Provider Filled Trade Proof c54b1bb9",
+    "referenceSource": "polymarket",
+    "externalSlug": "fifwc-mobile-provider-filled-c54b1bb9",
+    "externalMarketId": "gamma-mobile-provider-filled-c54b1bb9",
+    "conditionId": "0x6d6f62696c652d66696c6c65642d70726f76696465722d633534623162623900"
+  },
+  "outcome": {
+    "id": "9f047484-0dfb-47c5-af9b-13fb190eadc6",
+    "name": "YES",
+    "referenceTokenId": "pm-mobile-filled-yes-c54b1bb9",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "makerOrder": {
+    "id": "989b9b5d-752a-466c-b7bf-80bd9f8eac91",
+    "status": "OPEN"
+  },
+  "takerOrder": {
+    "id": "eee3d208-792e-4ae3-80e8-1c7fbbcf7075",
+    "status": "FILLED"
+  },
+  "fillCount": 1,
+  "position": {
+    "marketId": "59a64240-4094-4265-9efd-6da5a46afa49",
+    "outcomeId": "9f047484-0dfb-47c5-af9b-13fb190eadc6",
+    "shares": 2,
+    "selection": {
+      "marketId": "59a64240-4094-4265-9efd-6da5a46afa49",
+      "outcomeId": "9f047484-0dfb-47c5-af9b-13fb190eadc6",
+      "marketGroupId": "live-game-lines",
+      "marketType": "winner",
+      "period": "regulation",
+      "side": "home",
+      "displayLabel": "Provider YES regulation",
+      "referenceSource": "polymarket",
+      "externalSlug": "fifwc-mobile-provider-filled-c54b1bb9",
+      "externalMarketId": "gamma-mobile-provider-filled-c54b1bb9",
+      "conditionId": "0x6d6f62696c652d66696c6c65642d70726f76696465722d633534623162623900",
+      "referenceTokenId": "pm-mobile-filled-yes-c54b1bb9",
+      "referenceOutcomeLabel": "Yes"
+    }
+  },
+  "recentTradeCount": 2,
+  "latestTrade": {
+    "id": "8aaccf8d-8ae3-4d47-ac58-b33765c0319e",
+    "side": "BUY",
+    "shares": 2,
+    "cost": 1,
+    "marketTitle": "World Cup Provider Filled Trade Proof c54b1bb9",
+    "outcomeName": "YES",
+    "selection": {
+      "marketId": "59a64240-4094-4265-9efd-6da5a46afa49",
+      "outcomeId": "9f047484-0dfb-47c5-af9b-13fb190eadc6",
+      "marketGroupId": "live-game-lines",
+      "marketType": "winner",
+      "period": "regulation",
+      "side": "home",
+      "displayLabel": "Provider YES regulation",
+      "referenceSource": "polymarket",
+      "externalSlug": "fifwc-mobile-provider-filled-c54b1bb9",
+      "externalMarketId": "gamma-mobile-provider-filled-c54b1bb9",
+      "conditionId": "0x6d6f62696c652d66696c6c65642d70726f76696465722d633534623162623900",
+      "referenceTokenId": "pm-mobile-filled-yes-c54b1bb9",
+      "referenceOutcomeLabel": "Yes"
+    }
+  },
+  "requestSelection": {
+    "side": "home",
+    "period": "regulation",
+    "marketId": "59a64240-4094-4265-9efd-6da5a46afa49",
+    "outcomeId": "9f047484-0dfb-47c5-af9b-13fb190eadc6",
+    "marketType": "winner",
+    "conditionId": "0x6d6f62696c652d66696c6c65642d70726f76696465722d633534623162623900",
+    "contractSide": "yes",
+    "displayLabel": "Provider YES regulation",
+    "externalSlug": "fifwc-mobile-provider-filled-c54b1bb9",
+    "marketGroupId": "live-game-lines",
+    "referenceSource": "polymarket",
+    "externalMarketId": "gamma-mobile-provider-filled-c54b1bb9",
+    "referenceTokenId": "pm-mobile-filled-yes-c54b1bb9",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "usedApiCredential": true
+}

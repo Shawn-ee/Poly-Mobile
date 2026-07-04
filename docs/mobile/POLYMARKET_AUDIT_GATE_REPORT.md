@@ -1267,6 +1267,33 @@ Remaining P1/P2 gaps:
 - Scheduled provider refresh and durable freshness state.
 - Exact provider-backed line-family markets when Polymarket exposes them or a scoped enrichment source is approved.
 
+## Cycle DO Provider Filled Lifecycle Audit
+
+Result: Pass for provider-backed filled lifecycle contract and Samsung tablet Portfolio activity proof; partial for active real Polymarket market execution.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence |
+| --- | --- | --- | --- |
+| LD-DO-P0-01 | P0 | Pass | Proof creates a provider-shaped World Cup market/outcome with source, external slug/id, condition id, and token id. |
+| LD-DO-P0-02 | P0 | Pass | Taker BUY uses canonical order submission with provider selection metadata and fills against prepared maker liquidity. |
+| LD-DO-P0-03 | P0 | Pass | Proof asserts provider identity in request selection, portfolio position selection, and recent trade selection. |
+| LD-DO-P0-04 | P0 | Pass | Samsung tablet Portfolio smoke shows the provider-filled trade in Recent activity. |
+| LD-DO-P1-01 | P1 | Partial | The proof uses a dev-only provider-shaped market because the current real reference event is closed/resolved. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-DO-mobile-provider-filled-lifecycle.json`
+- `docs/mobile/harness/cycle-current-holiwyn-server-filled-trade-history.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-filled-trade-history.png`
+
+Unresolved P0 gaps: 0 for Cycle DO selected scope.
+
+Remaining P1/P2 gaps:
+
+- Repeat filled lifecycle proof against a currently active real Polymarket-backed market when available.
+- Normalize immutable provider selection snapshots on order/trade records before production.
+
 Use this template for every feature gate:
 
 ```md

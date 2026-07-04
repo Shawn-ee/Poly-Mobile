@@ -12670,3 +12670,17 @@ Agent split: Agent C produced DN live-detail criteria and gaps first. Agent A ad
 Verification: Backend provider refresh tests passed, provider chart lifecycle proof passed, mobile API tests passed, root build passed, and Samsung tablet server-mode proof passed for event detail -> route-backed orderbook ladder -> Buy ticket with provider token identity.
 
 Audit Gate: Pass for selected Super Round DN scope with 0 unresolved P0 gaps. Remaining P1 gaps are filled provider lifecycle proof, scheduled provider refresh, and exact line-family provider parity when real provider markets exist.
+
+### Cycle DO - Provider Filled Lifecycle
+
+Goal: Close PM-GAP-071 by proving provider identity survives a filled fake-token order into Portfolio position and recent activity/history.
+
+Reference audit: Polymarket order/trading lifecycle is tokenized; selected market, condition, and outcome token identity must remain consistent after trading. The real Colombia/Ghana event is closed, so this cycle used a dev-only provider-shaped market with the same backend contract fields.
+
+Holiwyn/backend changed: The filled-trade proof now creates provider-shaped market/outcome metadata and submits the taker order through canonical order submission with provider selection metadata.
+
+Holiwyn/mobile changed: The Portfolio filled-trade smoke now expects the provider-filled proof market title and verifies the filled activity remains visible on the Samsung tablet.
+
+Verification: Provider-filled lifecycle proof passed, writing `cycle-DO-mobile-provider-filled-lifecycle.json`; Samsung tablet `ServerFilledTradeHistory` proof passed and captured Portfolio activity XML/screenshot.
+
+Audit Gate: Pass for Cycle DO selected scope with 0 unresolved P0 gaps. Remaining P1 work is active real-provider market execution and immutable production selection snapshots.

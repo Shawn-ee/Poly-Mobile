@@ -3170,3 +3170,31 @@ Known limitations:
 
 - This round proves chart-route cache invalidation and visible route-depth ladder behavior, not a new scheduled refresh worker.
 - Filled provider-backed order/history lifecycle remains P1 until an active provider-backed market can be traded through the full fake-token path.
+
+## Cycle DO - Provider Filled Lifecycle
+
+Feature/page worked on:
+
+- PM-GAP-071 provider-backed filled order, portfolio position, and recent activity lifecycle.
+
+Frontend components touched:
+
+- `mobile/scripts/smoke.ps1`
+
+Backend/proof components touched:
+
+- `scripts/prove_mobile_filled_trade.ts`
+
+User interactions supported:
+
+- Samsung tablet opens Portfolio in server mode and shows the latest provider-backed filled trade in Recent activity with filled shares, execution price, implied odds, and cost.
+
+State transitions:
+
+- Dev-only provider-shaped World Cup market -> maker liquidity -> canonical BUY order with provider selection metadata -> filled order -> position -> recent trade/history -> mobile Portfolio recent activity.
+- The proof asserts the same provider source, external slug, external market id, condition id, outcome token id, and reference outcome label in the original order request selection, portfolio position selection, and recent trade selection.
+
+Known limitations:
+
+- The proof uses a dev-only provider-shaped market because the current real Colombia/Ghana reference event is closed/resolved. It proves lifecycle contract preservation, not live real-money execution.
+- No secret API token is written to docs or evidence.

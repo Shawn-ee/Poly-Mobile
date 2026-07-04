@@ -2260,3 +2260,29 @@ Temporary mock/static data:
 Future migration concern:
 
 - When line-family markets become provider-backed, ladder depth must carry provider token/outcome IDs through line selectors, ticket, orders, portfolio, and history.
+
+## Cycle DO - Provider Filled Lifecycle
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Filled provider lifecycle is now proven for a dev-only provider-shaped market. The same proof still needs to be repeated on a currently active real Polymarket-backed market when one is available and tradable in fake-token mode.
+
+Fields backend provides but mobile ignores:
+
+- Mobile does not display provider IDs in Portfolio activity; it consumes them in `selection` for identity-preserving retrade/close flows and harness proof.
+
+Schema mismatch:
+
+- `ApiOrderRequest.requestBody.selection` preserves the original ticket selection, while positions and recent trades rebuild provider selection from `Market`/`Outcome`. This is acceptable for the current fake-token lifecycle proof but should be normalized on immutable order/trade records before production.
+
+Route mismatch:
+
+- Cycle DO uses the canonical service path directly for deterministic proof setup and the mobile Portfolio route for device proof. A future active-market cycle should submit via the external `/api/orders` HTTP route and then verify `/api/portfolio` plus `/api/portfolio/history`.
+
+Temporary mock/static data:
+
+- The proof market is dev-only but backend-shaped: `referenceSource`, `externalSlug`, `externalMarketId`, `conditionId`, and outcome token fields match the real provider contract shape.
+
+Future migration concern:
+
+- Real-money launch should store immutable provider selection snapshots on orders/trades so later provider metadata changes cannot alter historical activity identity.
