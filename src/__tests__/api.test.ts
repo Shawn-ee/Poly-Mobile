@@ -100,6 +100,36 @@ describe("Holiwyn mobile API client", () => {
     });
   });
 
+  test("loads range-aware portfolio value history", async () => {
+    const fetchImpl = vi.fn(async () =>
+      jsonResponse({
+        range: "1W",
+        ranges: ["1D", "1W", "1M", "All"],
+        source: "portfolio-value-history-route",
+        status: "ready",
+        generatedAt: "2026-07-04T12:00:00.000Z",
+        lastUpdated: "2026-07-04T12:00:00.000Z",
+        emptyState: null,
+        points: [{ timestamp: "2026-07-04T12:00:00.000Z", value: 10004.62, cash: 8.35, positionsValue: 9996.27, pnl: 4.62 }],
+      }),
+    );
+    vi.stubGlobal("fetch", fetchImpl);
+
+    const history = await new PolyApi("https://api.example.test", "test-api-key").getPortfolioValueHistory("1W");
+
+    const [url, init] = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
+    const headers = init.headers as Headers;
+    expect(url).toBe("https://api.example.test/api/portfolio/value-history?range=1W");
+    expect(headers.get("Authorization")).toBe("Bearer test-api-key");
+    expect(history.points[0]).toEqual({
+      timestamp: "2026-07-04T12:00:00.000Z",
+      value: 10004.62,
+      cash: 8.35,
+      positionsValue: 9996.27,
+      pnl: 4.62,
+    });
+  });
+
   test("lists World Cup events with structured filters and mobile compact markets", async () => {
     const fetchImpl = vi.fn(async () => jsonResponse({ events: [] }));
     vi.stubGlobal("fetch", fetchImpl);

@@ -8,6 +8,7 @@ import {
 } from "../domain/portfolioPositionMetrics";
 import type { Locale } from "../mocks/worldCup";
 import { money } from "../presentation/formatters";
+import { deterministicPortfolioValueHistory } from "../services/portfolioValueHistoryService";
 import {
   openOrderPotentialCopyKey,
   openOrderPotentialValue,
@@ -15,6 +16,7 @@ import {
   openOrderValue,
 } from "../services/openOrderEconomicsService";
 import type { OrderMode } from "../services/orderService";
+import type { PortfolioValueHistoryRange } from "../types";
 import type { BinaryContractSide, TicketSelection } from "./TradeTicket";
 
 export type Position = {
@@ -239,7 +241,6 @@ const activityStatusLabel = (activity: PortfolioActivity) =>
   activity.action === "canceled" ? "Canceled" : activity.action === "opened" || activity.action === "sold" ? "Filled" : "Closed";
 
 type PortfolioTab = "positions" | "orders" | "history";
-type PortfolioRange = "1D" | "1W" | "1M" | "All";
 
 const portfolioPageCopy = {
   en: {
@@ -270,7 +271,17 @@ const portfolioPageCopy = {
   },
 };
 
-function PortfolioSparkline({ range }: { range: PortfolioRange }) {
+function PortfolioSparkline({
+  range,
+  source,
+  status,
+  pointCount,
+}: {
+  range: PortfolioValueHistoryRange;
+  source: string;
+  status: string;
+  pointCount: number;
+}) {
   const rangeStyle =
     range === "1W"
       ? styles.chartRangeWeek
@@ -281,7 +292,7 @@ function PortfolioSparkline({ range }: { range: PortfolioRange }) {
           : null;
   return (
     <View
-      accessibilityLabel={`portfolio-performance-chart portfolio-performance-chart-range-${range}`}
+      accessibilityLabel={`portfolio-performance-chart portfolio-performance-chart-range-${range} portfolio-chart-source-${source} portfolio-chart-status-${status} portfolio-chart-point-count-${pointCount}`}
       testID="portfolio-performance-chart"
       style={styles.chartArea}
     >
@@ -325,7 +336,7 @@ export function Portfolio({
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const [expandedActivityId, setExpandedActivityId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<PortfolioTab>("positions");
-  const [activeRange, setActiveRange] = useState<PortfolioRange>("1D");
+  const [activeRange, setActiveRange] = useState<PortfolioValueHistoryRange>("1D");
   const closedActivityCount = activities.filter((activity) => activity.action === "closed").length;
   const latestActivity = activities[0];
   const detailCopy = portfolioDetailCopy[locale];
@@ -333,6 +344,12 @@ export function Portfolio({
   const portfolioValue = balance + currentValueTotal(positions);
   const portfolioPnl = pnlTotal(positions);
   const portfolioPnlPercent = investedTotal(positions) > 0 ? (portfolioPnl / investedTotal(positions)) * 100 : 0;
+  const valueHistory = deterministicPortfolioValueHistory({
+    range: activeRange,
+    cash: balance,
+    positionsValue: currentValueTotal(positions),
+    pnl: portfolioPnl,
+  });
   const syncTitle =
     syncStatus === "syncing"
       ? t.portfolioSyncing
@@ -453,7 +470,12 @@ export function Portfolio({
           {money(portfolioPnl)} ({portfolioPnlPercent >= 0 ? "+" : ""}{portfolioPnlPercent.toFixed(1)}%) <Text style={styles.cashText}>{money(balance)} {pageCopy.cash}</Text>
         </Text>
       </View>
-      <PortfolioSparkline range={activeRange} />
+      <PortfolioSparkline
+        pointCount={valueHistory.points.length}
+        range={valueHistory.range}
+        source={valueHistory.source}
+        status={valueHistory.status}
+      />
       <View accessibilityLabel="portfolio-range-selector" testID="portfolio-range-selector" style={styles.rangeRow}>
         {(["1D", "1W", "1M", "All"] as const).map((range) => (
           <Pressable

@@ -69,3 +69,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Portfolio chart range selector was static text instead of an interactive control. | P0 | Passed | `Portfolio` now tracks `activeRange` and each range is a tappable `Pressable`. Tablet proof taps `1W`. |
 | Chart needs a selected range identity that future backend data can target. | P0 | Passed | Chart accessibility label includes `portfolio-performance-chart-range-{range}` and tablet proof verifies `portfolio-performance-chart-range-1W`. |
 | Real portfolio history time series per range. | P1 | Deferred | Requires a future backend route for account value history. |
+
+## Cycle FT - Portfolio Value History Contract
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio chart used local UI-only range state with no backend-shaped data contract. | P0 | Passed | Added `PortfolioValueHistory` types, `PolyApi.getPortfolioValueHistory`, and deterministic fallback service. Typecheck and targeted unit tests passed. |
+| Chart proof should expose source/status/point count for future backend replacement. | P0 | Passed | `PortfolioSparkline` accessibility label includes `portfolio-chart-source-*`, `portfolio-chart-status-*`, and `portfolio-chart-point-count-*`; Android proof verifies the `1W` fallback state. |
+| Real persisted backend account value history route. | P1 | Deferred | Mobile contract exists; backend route/schema still needed. |
