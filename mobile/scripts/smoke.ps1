@@ -1071,21 +1071,9 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-markets.png"
       $dyMarketsHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-markets.xml"
-      Assert-HierarchyContains -Path $dyMarketsHierarchy -Expected @("AUS 40%", "EGY 61%", "Game Lines", "Player Props", "Live Winner")
-      & $adb -s $Device shell input swipe 720 2100 720 320 650 | Out-Null
-      Start-Sleep -Milliseconds 500
-      & $adb -s $Device shell input swipe 720 2100 720 320 650 | Out-Null
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-pinned-context.png"
-      $dyPinnedContextHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-pinned-context.xml"
-      Assert-HierarchyContains -Path $dyPinnedContextHierarchy -Expected @("event-detail-compact-game-header", "event-detail-sticky-market-shell", "event-detail-sticky-market-tabs", "AUS 40%", "EGY 61%", "Game Lines", "Player Props")
-      & $adb -s $Device shell input swipe 720 2000 720 980 450 | Out-Null
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-markets-lower.png"
-      $dyMarketsLowerHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-markets-lower.xml"
-      Assert-HierarchyContains -Path $dyMarketsLowerHierarchy -Expected @("event-detail-sticky-market-tabs", "Spread", "Totals")
+      Assert-HierarchyContains -Path $dyMarketsHierarchy -Expected @("AUS 40%", "EGY 61%", "Game Lines", "Player Props", "Live Winner", "Spread", "Totals", "event-detail-spread-line-2-5", "event-detail-totals-line-3-5")
 
-      Invoke-TapHierarchyNode -Path $dyMarketsLowerHierarchy -Identifier "event-detail-spread-line-2-5"
+      Invoke-TapHierarchyNode -Path $dyMarketsHierarchy -Identifier "event-detail-spread-line-2-5"
       Start-Sleep -Milliseconds 700
       $ebSpread25Hierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-spread-line-25.xml"
       Invoke-TapHierarchyNode -Path $ebSpread25Hierarchy -Identifier "event-detail-spread-period-1st-half"
@@ -1101,8 +1089,6 @@ try {
       Invoke-TapHierarchyNode -Path $ebSpreadTicketHierarchy -Identifier "ticket-close"
       Start-Sleep -Seconds 1
 
-      & $adb -s $Device shell input swipe 720 1700 720 1250 350 | Out-Null
-      Start-Sleep -Seconds 1
       $ebTotalsReadyHierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-totals-ready.xml"
       Assert-HierarchyContains -Path $ebTotalsReadyHierarchy -Expected @("Totals", "event-detail-totals-line-3.5", "event-detail-totals-period-2nd Half")
       Invoke-TapHierarchyNode -Path $ebTotalsReadyHierarchy -Identifier "event-detail-totals-period-2nd-half"
@@ -1120,6 +1106,19 @@ try {
       Assert-HierarchyContains -Path $ebTotalsTicketHierarchy -Expected @("trade-ticket", "Australia vs. Egypt", "ticket-selection-line", "Yes - Over 3.5 2H", "ticket-market-family-totals", "ticket-line-3.5", "ticket-period-2nd Half", "ticket-selected-outcome-choice", "Choose an amount")
       Invoke-TapHierarchyNode -Path $ebTotalsTicketHierarchy -Identifier "ticket-close"
       Start-Sleep -Seconds 1
+
+      & $adb -s $Device shell input swipe 720 2100 720 320 650 | Out-Null
+      Start-Sleep -Milliseconds 500
+      & $adb -s $Device shell input swipe 720 2100 720 320 650 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-pinned-context.png"
+      $dyPinnedContextHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-pinned-context.xml"
+      Assert-HierarchyContains -Path $dyPinnedContextHierarchy -Expected @("event-detail-compact-game-header", "event-detail-sticky-market-shell", "event-detail-sticky-market-tabs", "AUS 40%", "EGY 61%", "Game Lines", "Player Props")
+      & $adb -s $Device shell input swipe 720 2000 720 980 450 | Out-Null
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-markets-lower.png"
+      $dyMarketsLowerHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-markets-lower.xml"
+      Assert-HierarchyContains -Path $dyMarketsLowerHierarchy -Expected @("event-detail-sticky-market-tabs", "Totals", "Full Game Team Total Goals")
 
       $dyMarketsLowerHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-markets-lower-after-line-proof.xml"
       Invoke-TapHierarchyNode -Path $dyMarketsLowerHierarchy -Identifier "event-detail-sticky-player-props-tab"

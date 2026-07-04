@@ -128,3 +128,28 @@ Next required work:
 2. Agent A confirms any route/data contract needed for per-market chart history, line market source/status, Book target, and selected identity.
 3. Lead runs a Samsung tablet EB proof bundle.
 4. Audit Gate compares the EB proof against this document. Any failed EB P0 row blocks chart/line-selector parity completion.
+
+## Lead Post-Proof Addendum
+
+Result: pass for the selected EB chart-touch and in-page Spread/Totals line-selector ticket-carry-through gate.
+
+Integrated evidence:
+
+- Proof JSON: `docs/mobile/harness/cycle-EB-integrated-chart-line/cycle-DY-A-holiwyn-game-page-structure-proof.json`
+- Screenshots: `docs/mobile/screenshots/cycle-EB-integrated-chart-line/`
+- XML: `docs/mobile/harness/cycle-EB-integrated-chart-line/`
+- Command: `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -DyAGamePageStructure -Port 8300 -OutputDir docs/mobile/screenshots/cycle-EB-integrated-chart-line -HierarchyOutputDir docs/mobile/harness/cycle-EB-integrated-chart-line`
+
+Validated pass evidence:
+
+- Chart touch cycles to `chart-selected-point-mid` and `chart-selected-point-target` while preserving the same live game page context.
+- Chart filters `All` and `Live` update in place without opening ticket, Book, Share, or Chat.
+- Spread line `2.5` and period `1st Half` update in the full game page, then open a ticket preserving `ticket-market-family-spread`, `ticket-line-2.5`, `ticket-period-1st Half`, and `Yes - AUS -2.5 1H`.
+- Totals line `3.5` and period `2nd Half` update in the full game page, then open a ticket preserving `ticket-market-family-totals`, `ticket-line-3.5`, `ticket-period-2nd Half`, and `Yes - Over 3.5 2H`.
+- The same run preserves EA regression markers for Book, Share, Chat, primary ticket, lower card ticket, Player Props unavailable state, rules, and More Events.
+
+Decision:
+
+- Pass/fail: pass for the selected EB gate.
+- Unresolved P0 gaps for this selected gate: 0.
+- Remaining P1/P2 gaps: changed-line Book/orderbook target proof, selected-market chart switching to backend `markets[].selection`, real provider-backed line-family breadth, line lifecycle through Portfolio/history for every family, gesture feel, and visual density.
