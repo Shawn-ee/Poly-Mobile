@@ -1,0 +1,461 @@
+{
+  "cycle": "DW-A",
+  "agent": "Agent A - Backend/provider lifecycle",
+  "gap": "PM-GAP-075",
+  "generatedAt": "2026-07-04T07:20:38.473Z",
+  "route": "/api/orderbook/0f1c65cb-1239-46e2-846d-0d61b3cb91f4/book?maxLevels=24",
+  "baseUrl": "http://127.0.0.1:3002",
+  "event": {
+    "id": "93c94599-80f6-4e47-afea-a459e97aea69",
+    "slug": "cycle-dw-a-world-cup-provider-orderbook-state",
+    "title": "World Cup 2026: Netherlands vs Portugal",
+    "compactStyle": "World Cup regulation totals provider state matrix"
+  },
+  "market": {
+    "id": "0f1c65cb-1239-46e2-846d-0d61b3cb91f4",
+    "slug": "cycle-dw-a-world-cup-provider-orderbook-state-regulation-total-2-5",
+    "title": "Netherlands vs Portugal: Total Goals 2.5",
+    "referenceSource": "polymarket",
+    "externalSlug": "cycle-dw-a-world-cup-provider-orderbook-state-regulation-total-2-5",
+    "externalMarketId": "dw-a-provider-orderbook-state-market",
+    "conditionId": "dw-a-provider-orderbook-state-condition",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "marketGroupTitle": "Totals",
+    "period": "regulation",
+    "line": "2.5",
+    "unit": "goals",
+    "outcomeCount": 2,
+    "outcomeIds": [
+      "b91d5a94-80c8-4903-8fe7-67fb07009a43",
+      "3b0d9d6f-569f-4c35-84da-34b0d76821be"
+    ]
+  },
+  "setup": {
+    "localOpenOrdersClearedForMarket": true,
+    "providerQuoteSnapshotsClearedForMarket": true,
+    "fallbackQuoteDepthClearedForMarket": true,
+    "proofDepthSource": "polymarket-clob-dw-state-matrix"
+  },
+  "matrix": {
+    "unavailable": {
+      "seededProviderDepthRows": 0,
+      "response": {
+        "marketId": "0f1c65cb-1239-46e2-846d-0d61b3cb91f4",
+        "outcomeId": null,
+        "depthSource": "empty",
+        "depthReason": "No local depth, provider orderbook ladder depth, or provider top-of-book depth is available.",
+        "emptyState": "no-depth",
+        "availability": {
+          "source": "market-source-updated-at",
+          "status": "ready",
+          "marketStatus": "LIVE",
+          "isStale": false,
+          "isSuspended": false,
+          "isDelayed": false,
+          "reason": "Selected market is live and fresh."
+        },
+        "marketIdentity": {
+          "source": "market-route-contract",
+          "marketId": "0f1c65cb-1239-46e2-846d-0d61b3cb91f4",
+          "title": "Netherlands vs Portugal: Total Goals 2.5",
+          "selectorKey": "totals:regulation:2.5",
+          "marketFamily": "total",
+          "marketType": "total_goals",
+          "marketGroupKey": "totals",
+          "marketGroupId": "totals",
+          "marketGroupTitle": "Totals",
+          "displayOrder": 20,
+          "period": "regulation",
+          "line": "2.5",
+          "unit": "goals",
+          "outcomeCount": 2,
+          "tradableOutcomeCount": 2,
+          "outcomes": [
+            {
+              "id": "b91d5a94-80c8-4903-8fe7-67fb07009a43",
+              "name": "Over 2.5",
+              "label": "Over 2.5",
+              "side": "over",
+              "displayOrder": 0,
+              "isTradable": true
+            },
+            {
+              "id": "3b0d9d6f-569f-4c35-84da-34b0d76821be",
+              "name": "Under 2.5",
+              "label": "Under 2.5",
+              "side": "under",
+              "displayOrder": 1,
+              "isTradable": true
+            }
+          ]
+        },
+        "levelCount": 0,
+        "visibleMobileFields": {
+          "source": "empty",
+          "availabilityStatus": "ready",
+          "providerOrderbookDepthStatus": "unavailable",
+          "providerOrderbookDepthReason": "No provider orderbook depth snapshot is available.",
+          "emptyState": "no-depth",
+          "selectorKey": "totals:regulation:2.5",
+          "marketFamily": "total",
+          "period": "regulation",
+          "line": "2.5",
+          "outcomeIds": [
+            "b91d5a94-80c8-4903-8fe7-67fb07009a43",
+            "3b0d9d6f-569f-4c35-84da-34b0d76821be"
+          ],
+          "levels": []
+        },
+        "providerOrderbookDepth": {
+          "source": "reference-orderbook-depth-snapshot",
+          "status": "unavailable",
+          "levelCount": 0,
+          "snapshotCount": 0,
+          "latestFetchedAt": null,
+          "latestUpdatedAt": null,
+          "stalenessSeconds": null,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": null,
+          "shouldRefresh": true,
+          "isStale": false,
+          "sources": [],
+          "reason": "No provider orderbook depth snapshot is available."
+        },
+        "providerQuoteDepth": {
+          "source": "reference-quote-snapshot",
+          "levelCount": 0,
+          "sizeSource": null,
+          "isEstimatedSize": false,
+          "reason": "No provider quote snapshot is available."
+        }
+      }
+    },
+    "stale": {
+      "seededProviderDepth": {
+        "source": "polymarket-clob-dw-state-matrix",
+        "rowsRequested": 8,
+        "rowsUpserted": 8,
+        "fetchedAt": "2026-07-04T07:15:38.412Z"
+      },
+      "response": {
+        "marketId": "0f1c65cb-1239-46e2-846d-0d61b3cb91f4",
+        "outcomeId": null,
+        "depthSource": "provider-orderbook-depth",
+        "depthReason": "Depth comes from provider orderbook ladder snapshots.",
+        "emptyState": null,
+        "availability": {
+          "source": "market-source-updated-at",
+          "status": "ready",
+          "marketStatus": "LIVE",
+          "isStale": false,
+          "isSuspended": false,
+          "isDelayed": false,
+          "reason": "Selected market is live and fresh."
+        },
+        "marketIdentity": {
+          "source": "market-route-contract",
+          "marketId": "0f1c65cb-1239-46e2-846d-0d61b3cb91f4",
+          "title": "Netherlands vs Portugal: Total Goals 2.5",
+          "selectorKey": "totals:regulation:2.5",
+          "marketFamily": "total",
+          "marketType": "total_goals",
+          "marketGroupKey": "totals",
+          "marketGroupId": "totals",
+          "marketGroupTitle": "Totals",
+          "displayOrder": 20,
+          "period": "regulation",
+          "line": "2.5",
+          "unit": "goals",
+          "outcomeCount": 2,
+          "tradableOutcomeCount": 2,
+          "outcomes": [
+            {
+              "id": "b91d5a94-80c8-4903-8fe7-67fb07009a43",
+              "name": "Over 2.5",
+              "label": "Over 2.5",
+              "side": "over",
+              "displayOrder": 0,
+              "isTradable": true
+            },
+            {
+              "id": "3b0d9d6f-569f-4c35-84da-34b0d76821be",
+              "name": "Under 2.5",
+              "label": "Under 2.5",
+              "side": "under",
+              "displayOrder": 1,
+              "isTradable": true
+            }
+          ]
+        },
+        "levelCount": 8,
+        "visibleMobileFields": {
+          "source": "provider-orderbook-depth",
+          "availabilityStatus": "ready",
+          "providerOrderbookDepthStatus": "stale",
+          "providerOrderbookDepthReason": "Provider orderbook depth snapshot is older than 90 seconds.",
+          "emptyState": null,
+          "selectorKey": "totals:regulation:2.5",
+          "marketFamily": "total",
+          "period": "regulation",
+          "line": "2.5",
+          "outcomeIds": [
+            "b91d5a94-80c8-4903-8fe7-67fb07009a43",
+            "3b0d9d6f-569f-4c35-84da-34b0d76821be"
+          ],
+          "levels": [
+            {
+              "outcomeId": "b91d5a94-80c8-4903-8fe7-67fb07009a43",
+              "side": "bid",
+              "price": 0.49,
+              "shares": 21400,
+              "value": 10486
+            },
+            {
+              "outcomeId": "3b0d9d6f-569f-4c35-84da-34b0d76821be",
+              "side": "bid",
+              "price": 0.48,
+              "shares": 19650,
+              "value": 9432
+            },
+            {
+              "outcomeId": "b91d5a94-80c8-4903-8fe7-67fb07009a43",
+              "side": "bid",
+              "price": 0.47,
+              "shares": 22650,
+              "value": 10645.5
+            },
+            {
+              "outcomeId": "3b0d9d6f-569f-4c35-84da-34b0d76821be",
+              "side": "bid",
+              "price": 0.46,
+              "shares": 20900,
+              "value": 9614
+            },
+            {
+              "outcomeId": "3b0d9d6f-569f-4c35-84da-34b0d76821be",
+              "side": "ask",
+              "price": 0.52,
+              "shares": 18550,
+              "value": 9646
+            },
+            {
+              "outcomeId": "b91d5a94-80c8-4903-8fe7-67fb07009a43",
+              "side": "ask",
+              "price": 0.53,
+              "shares": 20300,
+              "value": 10759
+            },
+            {
+              "outcomeId": "3b0d9d6f-569f-4c35-84da-34b0d76821be",
+              "side": "ask",
+              "price": 0.54,
+              "shares": 20500,
+              "value": 11070
+            },
+            {
+              "outcomeId": "b91d5a94-80c8-4903-8fe7-67fb07009a43",
+              "side": "ask",
+              "price": 0.55,
+              "shares": 22250,
+              "value": 12237.5
+            }
+          ]
+        },
+        "providerOrderbookDepth": {
+          "source": "reference-orderbook-depth-snapshot",
+          "status": "stale",
+          "levelCount": 8,
+          "snapshotCount": 8,
+          "latestFetchedAt": "2026-07-04T07:15:38.412Z",
+          "latestUpdatedAt": "2026-07-04T07:20:38.415Z",
+          "stalenessSeconds": 300,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T07:16:38.412Z",
+          "shouldRefresh": true,
+          "isStale": true,
+          "sources": [
+            "polymarket-clob-dw-state-matrix"
+          ],
+          "reason": "Provider orderbook depth snapshot is older than 90 seconds."
+        },
+        "providerQuoteDepth": {
+          "source": "reference-quote-snapshot",
+          "levelCount": 0,
+          "sizeSource": null,
+          "isEstimatedSize": false,
+          "reason": "No provider quote snapshot is available."
+        }
+      }
+    },
+    "ready": {
+      "seededProviderDepth": {
+        "source": "polymarket-clob-dw-state-matrix",
+        "rowsRequested": 8,
+        "rowsUpserted": 8,
+        "fetchedAt": "2026-07-04T07:20:38.443Z"
+      },
+      "response": {
+        "marketId": "0f1c65cb-1239-46e2-846d-0d61b3cb91f4",
+        "outcomeId": null,
+        "depthSource": "provider-orderbook-depth",
+        "depthReason": "Depth comes from provider orderbook ladder snapshots.",
+        "emptyState": null,
+        "availability": {
+          "source": "market-source-updated-at",
+          "status": "ready",
+          "marketStatus": "LIVE",
+          "isStale": false,
+          "isSuspended": false,
+          "isDelayed": false,
+          "reason": "Selected market is live and fresh."
+        },
+        "marketIdentity": {
+          "source": "market-route-contract",
+          "marketId": "0f1c65cb-1239-46e2-846d-0d61b3cb91f4",
+          "title": "Netherlands vs Portugal: Total Goals 2.5",
+          "selectorKey": "totals:regulation:2.5",
+          "marketFamily": "total",
+          "marketType": "total_goals",
+          "marketGroupKey": "totals",
+          "marketGroupId": "totals",
+          "marketGroupTitle": "Totals",
+          "displayOrder": 20,
+          "period": "regulation",
+          "line": "2.5",
+          "unit": "goals",
+          "outcomeCount": 2,
+          "tradableOutcomeCount": 2,
+          "outcomes": [
+            {
+              "id": "b91d5a94-80c8-4903-8fe7-67fb07009a43",
+              "name": "Over 2.5",
+              "label": "Over 2.5",
+              "side": "over",
+              "displayOrder": 0,
+              "isTradable": true
+            },
+            {
+              "id": "3b0d9d6f-569f-4c35-84da-34b0d76821be",
+              "name": "Under 2.5",
+              "label": "Under 2.5",
+              "side": "under",
+              "displayOrder": 1,
+              "isTradable": true
+            }
+          ]
+        },
+        "levelCount": 8,
+        "visibleMobileFields": {
+          "source": "provider-orderbook-depth",
+          "availabilityStatus": "ready",
+          "providerOrderbookDepthStatus": "ready",
+          "providerOrderbookDepthReason": "Provider orderbook depth snapshot is fresh.",
+          "emptyState": null,
+          "selectorKey": "totals:regulation:2.5",
+          "marketFamily": "total",
+          "period": "regulation",
+          "line": "2.5",
+          "outcomeIds": [
+            "b91d5a94-80c8-4903-8fe7-67fb07009a43",
+            "3b0d9d6f-569f-4c35-84da-34b0d76821be"
+          ],
+          "levels": [
+            {
+              "outcomeId": "b91d5a94-80c8-4903-8fe7-67fb07009a43",
+              "side": "bid",
+              "price": 0.49,
+              "shares": 21400,
+              "value": 10486
+            },
+            {
+              "outcomeId": "3b0d9d6f-569f-4c35-84da-34b0d76821be",
+              "side": "bid",
+              "price": 0.48,
+              "shares": 19650,
+              "value": 9432
+            },
+            {
+              "outcomeId": "b91d5a94-80c8-4903-8fe7-67fb07009a43",
+              "side": "bid",
+              "price": 0.47,
+              "shares": 22650,
+              "value": 10645.5
+            },
+            {
+              "outcomeId": "3b0d9d6f-569f-4c35-84da-34b0d76821be",
+              "side": "bid",
+              "price": 0.46,
+              "shares": 20900,
+              "value": 9614
+            },
+            {
+              "outcomeId": "3b0d9d6f-569f-4c35-84da-34b0d76821be",
+              "side": "ask",
+              "price": 0.52,
+              "shares": 18550,
+              "value": 9646
+            },
+            {
+              "outcomeId": "b91d5a94-80c8-4903-8fe7-67fb07009a43",
+              "side": "ask",
+              "price": 0.53,
+              "shares": 20300,
+              "value": 10759
+            },
+            {
+              "outcomeId": "3b0d9d6f-569f-4c35-84da-34b0d76821be",
+              "side": "ask",
+              "price": 0.54,
+              "shares": 20500,
+              "value": 11070
+            },
+            {
+              "outcomeId": "b91d5a94-80c8-4903-8fe7-67fb07009a43",
+              "side": "ask",
+              "price": 0.55,
+              "shares": 22250,
+              "value": 12237.5
+            }
+          ]
+        },
+        "providerOrderbookDepth": {
+          "source": "reference-orderbook-depth-snapshot",
+          "status": "ready",
+          "levelCount": 8,
+          "snapshotCount": 8,
+          "latestFetchedAt": "2026-07-04T07:20:38.443Z",
+          "latestUpdatedAt": "2026-07-04T07:20:38.445Z",
+          "stalenessSeconds": 0,
+          "staleAfterSeconds": 90,
+          "refreshTtlSeconds": 60,
+          "nextRefreshAt": "2026-07-04T07:21:38.443Z",
+          "shouldRefresh": false,
+          "isStale": false,
+          "sources": [
+            "polymarket-clob-dw-state-matrix"
+          ],
+          "reason": "Provider orderbook depth snapshot is fresh."
+        },
+        "providerQuoteDepth": {
+          "source": "reference-quote-snapshot",
+          "levelCount": 0,
+          "sizeSource": null,
+          "isEstimatedSize": false,
+          "reason": "No provider quote snapshot is available."
+        }
+      }
+    }
+  },
+  "assertions": {
+    "unavailableDoesNotUseFallbackRowsAsReadyEvidence": true,
+    "staleIsDistinctFromReady": true,
+    "readyUsesProviderOrderbookDepth": true,
+    "selectedMarketIdentityStableAcrossMatrix": true,
+    "responseFieldsProven": true,
+    "outcomeIdsPresentOnIdentityAndLevels": true
+  },
+  "pass": true
+}

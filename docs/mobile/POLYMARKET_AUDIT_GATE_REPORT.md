@@ -1602,6 +1602,45 @@ Decision:
 - Remaining P1/P2 gaps: broader Book selector sheet parity, richer settings sheet, same-harness non-ready recapture, and phone-density/red-green visual polish.
 - Next cycle required: not for this focused gate. Continue higher-priority live event structural parity without reopening PM-GAP-075 unless regression appears.
 
+## Cycle DW Book Selector And Provider State Audit Gate
+
+Result: Pass for the focused DW selector/state breadth gate.
+
+Lead Agent target: continue PM-GAP-075 breadth without reopening the DV P0 path by proving a grouped Book selector interaction and provider ready/non-ready state honesty.
+
+Reference Audit Agent: Agent C reused DQ-C Samsung S23 official Polymarket Book/orderbook evidence and created `docs/mobile/audits/cycle-dw-c-book-selector-ticket-gate.md`.
+
+Implementation Agents:
+
+- Agent A backend/provider lifecycle: provider orderbook state matrix.
+- Agent B visible mobile UI parity: grouped Book selector sheet and ticket carry-through.
+
+Holiwyn evidence:
+
+- Backend integrated proof: `docs/mobile/harness/cycle-DW-integrated-provider-orderbook-state-matrix.json`
+- Backend worker proof: `docs/mobile/harness/cycle-DW-A-provider-orderbook-state-matrix.json`
+- Tablet proof: `docs/mobile/harness/cycle-DW-B-orderbook-selector/cycle-DW-B-holiwyn-orderbook-selector-proof.json`
+- Tablet screenshots/XML: `docs/mobile/screenshots/cycle-DW-B-orderbook-selector/`, `docs/mobile/harness/cycle-DW-B-orderbook-selector/`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| DW-P0-01 | P0 | Pass | Audit doc exists and reuses DQ-C Book action, selector, settings, and depth reference paths. | Keep the gate doc with future selector changes. |
+| DW-P0-02 | P0 | Pass | Tablet proof opens `order-book-market-selector-sheet` with grouped Moneyline/Totals/Spreads choices and selected-state markers. | Keep `smoke:tablet:dw-b-orderbook-selector`. |
+| DW-P0-03 | P0 | Pass | Proof switches Totals and Spreads while preserving selected market, market type, line, period, side/outcome, and ladder markers. | Broaden to backend route markets when available. |
+| DW-P0-04 | P0 | Pass | Spread selector path opens a ticket preserving `Mexico -1.5`, Spread, line, side, provider fixture source, and token marker. | Extend to order/portfolio/history later. |
+| DW-P0-05 | P0 | Pass | Backend state matrix proves unavailable/empty, stale, and ready are distinct for a provider-shaped Totals market. | Keep route tests and proof script as regression. |
+| DW-P0-06 | P0 | Pass | The unavailable case clears quote fallback rows and returns `depthSource=empty`/`emptyState=no-depth`, while ready requires `providerOrderbookDepth.status=ready`. | Do not use fallback rows as provider-ready evidence. |
+| DW-P0-07 | P0 | Pass | Integrated tablet screenshots/XML and proof JSON exist; backend tests and mobile typecheck passed. | Keep integrated evidence committed. |
+
+Decision:
+
+- Pass/fail: Pass for focused DW selector/state breadth.
+- Unresolved P0 gaps: 0 for this focused DW gate.
+- Remaining P1/P2 gaps: real-provider selector breadth for all line families, full settings sheet parity, phone visual density, and selector identity through order/portfolio/history.
+- Next cycle required: yes for broader live-event structural parity, but not to re-prove this focused selector/state gate unless regression appears.
+
 Use this template for every feature gate:
 
 ```md

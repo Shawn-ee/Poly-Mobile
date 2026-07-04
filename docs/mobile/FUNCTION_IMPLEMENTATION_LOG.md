@@ -3542,3 +3542,43 @@ Known limitations:
 - The proof is focused on one provider-ready first-half Spread market, not every Polymarket selector family.
 - Non-ready provider server state is documented by earlier fallback/unavailable evidence, not recaptured in the DV ready-only server run.
 - Full Polymarket settings sheet and phone-density visual polish remain P1/P2.
+
+## Cycle DW Integrated - Grouped Book Selector And Provider State Matrix
+
+Feature/page worked on:
+
+- PM-GAP-075 grouped Book selector/state breadth for live football orderbook parity.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/package.json`
+
+Backend/proof components touched:
+
+- `scripts/prove_mobile_dw_provider_orderbook_state_matrix.ts`
+- `src/__tests__/orderbook-snapshot.provider-depth.test.ts`
+- `src/__tests__/public.orderbook-book.no-leak.test.ts`
+- `package.json`
+
+User interactions supported/proven:
+
+- Open Book and see a current-market selector trigger.
+- Open a grouped selector sheet with Moneyline, Totals, and Spreads choices.
+- Select Totals and Spreads without losing selected market family, line, period, side/outcome, or ladder context.
+- Open a Spread ticket from the selected Book context.
+
+State transitions:
+
+- Book selected market -> grouped selector sheet.
+- Selector sheet choice -> selected Book market and ladder identity.
+- Selected Spread market -> ticket selection summary and provider token marker.
+- Provider-shaped orderbook route state moves through unavailable/empty, stale, and ready without treating fallback rows as provider-ready depth.
+
+Known limitations:
+
+- The visible selector proof uses deterministic backend-contract-shaped fixture markets; real provider-backed selector breadth remains dependent on available Polymarket line-family markets.
+- Full settings sheet parity and visual density/motion polish remain P1/P2.
+- Order/portfolio/history coupling for every selector family remains future lifecycle scope.
