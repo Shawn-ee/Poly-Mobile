@@ -1,0 +1,62 @@
+{
+    "cycle":  "EO-B",
+    "scope":  "Visible Android route-backed lifecycle breadth: Moneyline Book plus Spread bid/Sell open/cancel lifecycle",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleLifecycleBreadth -Port 8361 -BackendBaseUrl http://127.0.0.1:3002 -ServerEventSlug mobile-el-a-provider-breadth-54db8e5a -OutputDir docs\\mobile\\screenshots\\cycle-EO-B-visible-breadth -HierarchyOutputDir docs\\mobile\\harness\\cycle-EO-B-visible-breadth",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "orderMode":  "mock",
+    "marketDataMode":  "server",
+    "apiBaseUrl":  "http://127.0.0.1:3002",
+    "adbReverse":  "tcp:3002 tcp:3002",
+    "eventIdentity":  "EL-A Provider Breadth World Cup Live",
+    "serverEventSlug":  "mobile-el-a-provider-breadth-54db8e5a",
+    "selectedMarketId":  "3e3cda24-bd1b-4837-8702-7500c27f0187",
+    "selectedOutcomeId":  "fa8cde2d-acf8-4f8a-89d5-710203200c8f",
+    "selectedProviderMarket":  "gamma-el-a-spread-54db8e5a",
+    "selectedProviderToken":  "token-el-a-spread-home-54db8e5a",
+    "routeBackedProviderDepth":  true,
+    "result":  "pass",
+    "selectedLimit":  {
+                          "side":  "bid",
+                          "cents":  50,
+                          "decimal":  "0.50",
+                          "shares":  "180"
+                      },
+    "assertions":  {
+                       "backendHealth":  "Backend /api/health was required before launch; the proof aborts instead of falling back when unavailable.",
+                       "moneylineBreadth":  "Initial Book baseline is route-backed Moneyline with selected-family-Moneyline selected-market-type-winner selected-line-none and orderbook-source-orderbook-route/orderbook-status-ready.",
+                       "spreadSelection":  "Grouped selector switches to provider-backed Spread 1.5 without losing selected market/outcome/line/period/provider identity.",
+                       "stagedBid":  "Tapping order-book-bid-level-fa8cde2d-acf8-4f8a-89d5-710203200c8f-1 stages Sell bid at 0.50 USDT / 50c.",
+                       "ticketLimit":  "Sell ticket exposes ticket-limit-side-bid ticket-limit-price-50 ticket-limit-decimal-0.50 and submits at ticket-price-line 50c.",
+                       "latestOrder":  "Latest order card exposes order-status-open and the same sell-side portfolio limit/source/market/outcome/line/period/provider tokens.",
+                       "openOrder":  "Open order row shows Limit 50% and the same order-time snapshot identity.",
+                       "activityHistory":  "Sell filled and canceled activity cards retain portfolio-limit-side-bid portfolio-limit-price-50 and the same selected route-backed Book identity.",
+                       "fallbackGuard":  "Portfolio and activity reject Mexico fixture labels, Team to Advance, and generic Match Winner fallback labels for the selected spread Sell lifecycle."
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-moneyline-book.png",
+                      "docs\\mobile\\harness\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-moneyline-book.xml",
+                      "docs\\mobile\\harness\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-selector.xml",
+                      "docs\\mobile\\screenshots\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-spread-book.png",
+                      "docs\\mobile\\harness\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-spread-book.xml",
+                      "docs\\mobile\\screenshots\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-bid-staged.png",
+                      "docs\\mobile\\harness\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-bid-staged.xml",
+                      "docs\\mobile\\screenshots\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-sell-ticket-empty.png",
+                      "docs\\mobile\\harness\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-sell-ticket-empty.xml",
+                      "docs\\mobile\\harness\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-sell-ticket-amount-10.xml",
+                      "docs\\mobile\\harness\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-sell-ticket-amount-20.xml",
+                      "docs\\mobile\\screenshots\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-sell-ticket-ready.png",
+                      "docs\\mobile\\harness\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-sell-ticket-ready.xml",
+                      "docs\\mobile\\screenshots\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-portfolio-open.png",
+                      "docs\\mobile\\harness\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-portfolio-open.xml",
+                      "docs\\mobile\\screenshots\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-portfolio-open-order.png",
+                      "docs\\mobile\\harness\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-portfolio-open-order.xml",
+                      "docs\\mobile\\screenshots\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-portfolio-cancel-target.png",
+                      "docs\\mobile\\harness\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-portfolio-cancel-target.xml",
+                      "docs\\mobile\\screenshots\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-portfolio-canceled.png",
+                      "docs\\mobile\\harness\\cycle-EO-B-visible-breadth/cycle-EO-B-visible-breadth-portfolio-canceled.xml"
+                  ],
+    "remainingGaps":  [
+                          "This visible proof uses mock trading with server market-data mode; it proves visible route-backed identity preservation, not production order execution.",
+                          "Totals lifecycle breadth and immutable first-class backend selection snapshots remain future hardening."
+                      ]
+}

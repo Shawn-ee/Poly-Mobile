@@ -29,6 +29,7 @@ param(
   [switch]$EventDetailVisibleLiveParity,
   [switch]$EventDetailVisibleLiveDepth,
   [switch]$EventDetailVisibleLimitLifecycle,
+  [switch]$EventDetailVisibleLifecycleBreadth,
   [switch]$EventDetailProviderStatus,
   [switch]$EventDetailVisibleStatusBreadth,
   [switch]$EventDetailVisibleStatusTransition,
@@ -118,7 +119,7 @@ $ErrorActionPreference = "Stop"
 $ServerLiveDetailHalvesOrderBook = $ServerLiveDetailFirstHalfOrderBook -or $ServerLiveDetailSecondHalfOrderBook
 $EventDetailProviderRouteStatusProof = $EventDetailProviderStatus -or $EventDetailVisibleStatusBreadth -or $EventDetailVisibleStatusTransition
 $EventDetailVisibleLiveDepthBackendProof = $EventDetailVisibleLiveDepth -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25"
-$EventDetailVisibleLimitLifecycleBackendProof = $EventDetailVisibleLimitLifecycle -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25"
+$EventDetailVisibleLimitLifecycleBackendProof = ($EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth) -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25"
 $ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook -or $ServerLiveProviderRefreshProof -or $EventDetailProviderRouteStatusProof -or $EventDetailVisibleLiveDepthBackendProof -or $EventDetailVisibleLimitLifecycleBackendProof
 
 $MobileRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
@@ -387,6 +388,26 @@ function Wait-ExpoReady {
   throw "Expo Metro did not become ready on port $Port"
 }
 
+function Stop-SmokeExpoProcess {
+  param(
+    [System.Diagnostics.Process]$Process,
+    [int]$Port
+  )
+
+  if ($Process -and -not $Process.HasExited) {
+    & taskkill.exe /PID $Process.Id /T /F | Out-Null
+  }
+
+  $portProcesses = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue |
+    Select-Object -ExpandProperty OwningProcess -Unique
+
+  foreach ($processId in $portProcesses) {
+    if ($processId) {
+      Stop-Process -Id $processId -Force -ErrorAction SilentlyContinue
+    }
+  }
+}
+
 Push-Location $MobileRoot
 try {
   npm run typecheck
@@ -461,7 +482,7 @@ try {
     }
   }
   $expoArgs = @("expo", "start", "--port", "$Port", "--offline")
-  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailProviderRouteStatusProof -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail) {
+  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $EventDetailProviderRouteStatusProof -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail) {
     $expoArgs += "--clear"
   }
   if ($ServerLiveDetailTotalsOrderBook) {
@@ -481,7 +502,7 @@ try {
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
   Wait-ExpoReady -Port $Port
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailProviderRouteStatusProof -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $EventDetailProviderRouteStatusProof -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
   if ($ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook) {
     Start-Sleep -Seconds 10
   }
@@ -529,10 +550,10 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceMexicoEcuadorDetailSellDefault=1"
   } elseif ($EventDetailPosition) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceMexicoEcuadorGamePosition=1"
-  } elseif ($EventDetailVisibleLiveDepth -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25") {
+  } elseif (($EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth) -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25") {
     $encodedSlug = [uri]::EscapeDataString($ServerEventSlug)
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceBackendEventSlug=$encodedSlug"
-  } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount) {
+  } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount) {
     "exp://${ExpoHost}:$Port/--/?forceMexicoEcuadorDetail=1"
   } elseif ($EmptyErrorLoading) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forcePortfolioSyncing=1"
@@ -578,7 +599,7 @@ try {
   } else {
     "exp://${ExpoHost}:$Port"
   }
-  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailProviderRouteStatusProof -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $FutureListClose -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
+  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $EventDetailProviderRouteStatusProof -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $FutureListClose -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
     & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
     Start-Sleep -Seconds 2
   }
@@ -612,7 +633,7 @@ try {
     @("EL-A Provider Breadth World Cup Live", "Game Lines", "Best bid", "Best ask")
   } elseif ($EventDetailVisibleLiveDepth -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25") {
     @("EL-A Provider Breadth World Cup Live", "Game Lines", "Best bid", "Best ask")
-  } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade) {
+  } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade) {
     @("Mexico vs. Ecuador", "5 markets", "10 outcomes")
   } elseif ($DyAGamePageStructure -or $LiveDetail -or $EventDetailProviderRouteStatusProof) {
     @("Australia vs. Egypt", "Live Winner", "LIVE WORLD CUP", "Game Lines", "Player Props")
@@ -665,7 +686,7 @@ try {
   } else {
     @("Holiwyn", "World Cup", "Games", "Futures")
   }
-  $launchAttempts = if ($LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle) { 14 } else { 8 }
+  $launchAttempts = if ($LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth) { 14 } else { 8 }
   $homeHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-home.xml" -Expected $launchExpected -RestartUrl $launchUrl -Attempts $launchAttempts
   if ((Dismiss-ExpoDeveloperMenuIfPresent -Path $homeHierarchy)) {
     $homeHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-home.xml" -Expected $launchExpected -RestartUrl $launchUrl -Attempts 4 -DelaySeconds 2
@@ -2323,7 +2344,7 @@ try {
       return
     }
 
-    if (-not ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailProviderRouteStatusProof -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $ServerLiveDetailBackendProof)) {
+    if (-not ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $EventDetailProviderRouteStatusProof -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $ServerLiveDetailBackendProof)) {
       Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "event-card-mexico-ecuador"
       Start-Sleep -Seconds 1
     }
@@ -2450,6 +2471,314 @@ try {
       $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
       Write-Host "Proof summary: $proofPath"
       return
+    }
+
+    if ($EventDetailVisibleLifecycleBreadth) {
+      if ($EventDetailVisibleLimitLifecycleBackendProof) {
+        $eoPrefix = "cycle-EO-B-visible-breadth"
+        $eoEventTitle = "EL-A Provider Breadth World Cup Live"
+        $eoNoFallback = @("Mexico -1.5 spread", "Mexico vs. Ecuador", "Team to Advance", "portfolio-display-label-Match Winner")
+
+        Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @($eoEventTitle, "event-detail-top-order-book", "event-detail-price-chart", "event-detail-game-lines", "live-data-source-polymarket-gamma")
+        Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-top-order-book"
+        $eoBookBaselineHierarchy = Wait-HierarchyContains -Name "$eoPrefix-moneyline-book.xml" -Expected @("event-detail-order-book-screen", "order-book-grouped-market-selector", "selected-family-Moneyline", "selected-market-type-winner", "selected-line-none", "selected-period-full-game", "orderbook-source-orderbook-route", "orderbook-status-ready") -Attempts 8 -DelaySeconds 1
+        Save-Screenshot -Name "$eoPrefix-moneyline-book.png"
+        Assert-HierarchyDoesNotContain -Path $eoBookBaselineHierarchy -Unexpected @("orderbook-source-contract-fixture", "polymarket-fixture", "deterministic-contract-fixture")
+
+        Invoke-TapHierarchyNode -Path $eoBookBaselineHierarchy -Identifier "order-book-grouped-market-selector"
+        Start-Sleep -Seconds 1
+        $eoBookSelectorHierarchy = Save-UiHierarchy -Name "$eoPrefix-selector.xml"
+        Assert-HierarchyContains -Path $eoBookSelectorHierarchy -Expected @("order-book-market-selector-sheet", "market-type-spread", "line-1.5", "period-full-game", "selector-key-spread:full-game:1.5")
+        $eoBookSelectorContent = Get-Content -Raw -Path $eoBookSelectorHierarchy
+        if ($eoBookSelectorContent -notmatch "order-book-market-choice-([0-9a-f-]{36})[^\`"]*?market-type-spread line-1\.5 period-full-game") {
+          throw "Unable to extract provider-backed spread market id from selector hierarchy."
+        }
+        $eoSpreadMarketId = $matches[1]
+        Invoke-TapHierarchyNode -Path $eoBookSelectorHierarchy -Identifier "order-book-market-choice-$eoSpreadMarketId"
+        $eoSpreadBookHierarchy = Wait-HierarchyContains -Name "$eoPrefix-spread-book.xml" -Expected @("event-detail-order-book-screen", "orderbook-source-orderbook-route", "orderbook-status-ready", "selected-market-$eoSpreadMarketId", "selected-family-Spreads", "selected-market-type-spread", "selected-line-1.5", "selected-period-full-game") -Attempts 8 -DelaySeconds 1
+        Save-Screenshot -Name "$eoPrefix-spread-book.png"
+
+        $eoSpreadBookContent = Get-Content -Raw -Path $eoSpreadBookHierarchy
+        if ($eoSpreadBookContent -notmatch "selected-outcome-([0-9a-f-]{36})") {
+          throw "Unable to extract provider-backed spread outcome id from Book hierarchy."
+        }
+        $eoSpreadOutcomeId = $matches[1]
+        if ($eoSpreadBookContent -notmatch "selected-provider-market-([^ ]+)") {
+          throw "Unable to extract provider market id from Book hierarchy."
+        }
+        $eoProviderMarket = $matches[1]
+        if ($eoSpreadBookContent -notmatch "selected-provider-condition-([^ ]+)") {
+          throw "Unable to extract provider condition id from Book hierarchy."
+        }
+        $eoProviderCondition = $matches[1]
+        if ($eoSpreadBookContent -notmatch "selected-provider-token-([^ ]+)") {
+          throw "Unable to extract provider token id from Book hierarchy."
+        }
+        $eoProviderToken = $matches[1]
+        if ($eoSpreadBookContent -notmatch "selected-provider-outcome-([^\`"]+?) book-display-mode") {
+          throw "Unable to extract provider outcome label from Book hierarchy."
+        }
+        $eoProviderOutcome = $matches[1]
+        $eoSelectionExpected = @(
+          "selected-market-$eoSpreadMarketId",
+          "selected-family-Spreads",
+          "selected-outcome-$eoSpreadOutcomeId",
+          "selected-side-yes",
+          "selected-market-type-spread",
+          "selected-line-1.5",
+          "selected-period-full-game",
+          "selected-provider-source-polymarket",
+          "selected-provider-market-$eoProviderMarket",
+          "selected-provider-condition-$eoProviderCondition",
+          "selected-provider-token-$eoProviderToken",
+          "selected-provider-outcome-$eoProviderOutcome"
+        )
+        $eoTicketSelectionExpected = @(
+          "ticket-market-family-spread",
+          "ticket-market-type-spread",
+          "ticket-market-id-$eoSpreadMarketId",
+          "ticket-outcome-id-$eoSpreadOutcomeId",
+          "ticket-market-group-spread",
+          "ticket-line-1.5",
+          "ticket-period-full-game",
+          "ticket-selection-side-home",
+          "ticket-display-label-Spread",
+          "ticket-contract-side-yes",
+          "ticket-provider-source-polymarket",
+          "ticket-provider-market-$eoProviderMarket",
+          "ticket-provider-condition-$eoProviderCondition",
+          "ticket-provider-token-$eoProviderToken",
+          "ticket-provider-outcome-$eoProviderOutcome"
+        )
+        $eoPortfolioSelectionExpected = @(
+          "portfolio-snapshot-source-order-time",
+          "portfolio-market-family-spread",
+          "portfolio-market-type-spread",
+          "portfolio-market-id-$eoSpreadMarketId",
+          "portfolio-outcome-id-$eoSpreadOutcomeId",
+          "portfolio-market-group-spread",
+          "portfolio-line-1.5",
+          "portfolio-period-full-game",
+          "portfolio-side-sell",
+          "portfolio-display-label-Spread",
+          "portfolio-contract-side-yes",
+          "portfolio-provider-source-polymarket",
+          "portfolio-provider-market-$eoProviderMarket",
+          "portfolio-provider-condition-$eoProviderCondition",
+          "portfolio-provider-token-$eoProviderToken",
+          "portfolio-provider-outcome-$eoProviderOutcome"
+        )
+        Assert-HierarchyContains -Path $eoSpreadBookHierarchy -Expected (@("order-book-ask-level-$eoSpreadOutcomeId-1", "order-book-bid-level-$eoSpreadOutcomeId-1") + $eoSelectionExpected)
+        if ($eoSpreadBookContent -notmatch "order-book-bid-level-$eoSpreadOutcomeId-1[^\`"]*?([0-9]+)c ([0-9]+\.[0-9]{2}) USDT ([0-9.,k]+) shares") {
+          throw "Unable to extract route-backed bid limit from spread Book hierarchy."
+        }
+        $eoBidCents = $matches[1]
+        $eoBidDecimal = $matches[2]
+        $eoBidShares = $matches[3]
+        $eoBidProbability = [int]$eoBidCents
+        Assert-HierarchyContains -Path $eoSpreadBookHierarchy -Expected @("order-book-selected-contract", "selected-provider-source-polymarket", "selected-provider-market-$eoProviderMarket", "selected-provider-token-$eoProviderToken", "$($eoBidCents)c", "$eoBidDecimal USDT")
+        Assert-HierarchyDoesNotContain -Path $eoSpreadBookHierarchy -Unexpected @("orderbook-source-contract-fixture", "polymarket-fixture", "deterministic-contract-fixture")
+
+        Invoke-TapHierarchyNode -Path $eoSpreadBookHierarchy -Identifier "order-book-bid-level-$eoSpreadOutcomeId-1"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "$eoPrefix-bid-staged.png"
+        $eoBidStagedHierarchy = Save-UiHierarchy -Name "$eoPrefix-bid-staged.xml"
+        Assert-HierarchyContains -Path $eoBidStagedHierarchy -Expected (@(
+          "order-book-staged-order",
+          "staged-level-bid-$eoBidCents",
+          "staged-ticket-side-sell",
+          "staged-price-$eoBidDecimal USDT",
+          "Sell bid",
+          "$($eoBidCents)c",
+          "staged-level-selected"
+        ) + $eoSelectionExpected)
+
+        Invoke-TapHierarchyNode -Path $eoBidStagedHierarchy -Identifier "order-book-staged-open-ticket"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "$eoPrefix-sell-ticket-empty.png"
+        $eoTicketEmptyHierarchy = Save-UiHierarchy -Name "$eoPrefix-sell-ticket-empty.xml"
+        Assert-HierarchyContains -Path $eoTicketEmptyHierarchy -Expected (@(
+          "trade-ticket",
+          "ticket-side-pill",
+          "Sell",
+          "ticket-selection-summary",
+          "Spread",
+          $eoProviderOutcome,
+          "ticket-limit-side-bid",
+          "ticket-limit-price-$eoBidCents",
+          "ticket-limit-decimal-$eoBidDecimal"
+        ) + $eoTicketSelectionExpected)
+        Assert-HierarchyDoesNotContain -Path $eoTicketEmptyHierarchy -Unexpected $eoNoFallback
+
+        Invoke-TapHierarchyNode -Path $eoTicketEmptyHierarchy -Identifier "ticket-preset-10"
+        Start-Sleep -Milliseconds 500
+        $eoTicketAmount10Hierarchy = Save-UiHierarchy -Name "$eoPrefix-sell-ticket-amount-10.xml"
+        Invoke-TapHierarchyNode -Path $eoTicketAmount10Hierarchy -Identifier "ticket-preset-10"
+        Start-Sleep -Milliseconds 500
+        $eoTicketAmount20Hierarchy = Save-UiHierarchy -Name "$eoPrefix-sell-ticket-amount-20.xml"
+        Invoke-TapHierarchyNode -Path $eoTicketAmount20Hierarchy -Identifier "ticket-preset-5"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "$eoPrefix-sell-ticket-ready.png"
+        $eoTicketReadyHierarchy = Save-UiHierarchy -Name "$eoPrefix-sell-ticket-ready.xml"
+        Assert-HierarchyContains -Path $eoTicketReadyHierarchy -Expected (@('$25', "ticket-price-line", "$($eoBidCents)c", "Swipe up to sell", "place-mock-order", "ticket-limit-side-bid", "ticket-limit-price-$eoBidCents", "ticket-limit-decimal-$eoBidDecimal") + $eoTicketSelectionExpected)
+        Assert-HierarchyDoesNotContain -Path $eoTicketReadyHierarchy -Unexpected ($eoNoFallback + @("Odds $($eoBidProbability - 1)%", "Odds $($eoBidProbability + 1)%"))
+
+        Invoke-TapHierarchyNode -Path $eoTicketReadyHierarchy -Identifier "place-mock-order"
+        Start-Sleep -Seconds 2
+        Save-Screenshot -Name "$eoPrefix-portfolio-open.png"
+        $eoPortfolioOpenHierarchy = Save-UiHierarchy -Name "$eoPrefix-portfolio-open.xml"
+        Assert-HierarchyContains -Path $eoPortfolioOpenHierarchy -Expected (@(
+          "Portfolio",
+          "Open positions",
+          "Open orders",
+          "Recent activity",
+          "Order placed",
+          "latest-order-card",
+          "latest-order-status",
+          "order-status-open",
+          "latest-order-snapshot",
+          "latest-activity-card",
+          "activity-sold",
+          "status-filled",
+          "Limit",
+          "$eoBidCents%",
+          "portfolio-limit-side-bid",
+          "portfolio-limit-price-$eoBidCents",
+          "portfolio-limit-decimal-$eoBidDecimal",
+          "portfolio-provider-source-polymarket",
+          "portfolio-provider-market-$eoProviderMarket",
+          "portfolio-provider-token-$eoProviderToken"
+        ) + $eoPortfolioSelectionExpected)
+        Assert-HierarchyDoesNotContain -Path $eoPortfolioOpenHierarchy -Unexpected $eoNoFallback
+
+        & $adb -s $Device shell input swipe 540 1300 540 760 450 | Out-Null
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "$eoPrefix-portfolio-open-order.png"
+        $eoPortfolioOpenOrderHierarchy = Save-UiHierarchy -Name "$eoPrefix-portfolio-open-order.xml"
+        Assert-HierarchyContains -Path $eoPortfolioOpenOrderHierarchy -Expected (@(
+          "Portfolio",
+          "open-order-row-",
+          "open-order-status-",
+          "cancel-open-order-",
+          "Limit",
+          "$eoBidCents%",
+          "portfolio-limit-side-bid",
+          "portfolio-limit-price-$eoBidCents",
+          "portfolio-limit-decimal-$eoBidDecimal",
+          "portfolio-provider-source-polymarket",
+          "portfolio-provider-market-$eoProviderMarket",
+          "portfolio-provider-token-$eoProviderToken"
+        ) + $eoPortfolioSelectionExpected)
+        Assert-HierarchyDoesNotContain -Path $eoPortfolioOpenOrderHierarchy -Unexpected $eoNoFallback
+
+        & $adb -s $Device shell input swipe 540 760 540 1300 450 | Out-Null
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "$eoPrefix-portfolio-cancel-target.png"
+        $eoPortfolioCancelHierarchy = Save-UiHierarchy -Name "$eoPrefix-portfolio-cancel-target.xml"
+        Assert-HierarchyContains -Path $eoPortfolioCancelHierarchy -Expected (@(
+          "Portfolio",
+          "open-order-row-",
+          "open-order-status-",
+          "cancel-open-order-",
+          "portfolio-limit-side-bid",
+          "portfolio-limit-price-$eoBidCents",
+          "portfolio-provider-source-polymarket",
+          "portfolio-provider-token-$eoProviderToken"
+        ) + $eoPortfolioSelectionExpected)
+        Assert-HierarchyDoesNotContain -Path $eoPortfolioCancelHierarchy -Unexpected $eoNoFallback
+
+        Invoke-TapHierarchyNode -Path $eoPortfolioCancelHierarchy -Identifier "cancel-open-order-" -StartsWith
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "$eoPrefix-portfolio-canceled.png"
+        $eoPortfolioCanceledHierarchy = Save-UiHierarchy -Name "$eoPrefix-portfolio-canceled.xml"
+        Assert-HierarchyContains -Path $eoPortfolioCanceledHierarchy -Expected (@(
+          "Portfolio",
+          "portfolio-open-order-count",
+          "0",
+          "latest-activity-card",
+          "latest-activity-status-",
+          "Canceled",
+          "activity-canceled",
+          "latest-activity-snapshot",
+          "portfolio-limit-side-bid",
+          "portfolio-limit-price-$eoBidCents",
+          "portfolio-limit-decimal-$eoBidDecimal",
+          "portfolio-provider-source-polymarket",
+          "portfolio-provider-market-$eoProviderMarket",
+          "portfolio-provider-token-$eoProviderToken"
+        ) + $eoPortfolioSelectionExpected)
+        Assert-HierarchyDoesNotContain -Path $eoPortfolioCanceledHierarchy -Unexpected $eoNoFallback
+
+        $proof = [ordered]@{
+          cycle = "EO-B"
+          scope = "Visible Android route-backed lifecycle breadth: Moneyline Book plus Spread bid/Sell open/cancel lifecycle"
+          command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleLifecycleBreadth -Port $Port -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir"
+          backendBaseUrl = $BackendBaseUrl
+          orderMode = "mock"
+          marketDataMode = $env:EXPO_PUBLIC_MARKET_DATA_MODE
+          apiBaseUrl = $env:EXPO_PUBLIC_API_BASE_URL
+          adbReverse = "tcp:3002 tcp:3002"
+          eventIdentity = $eoEventTitle
+          serverEventSlug = $ServerEventSlug
+          selectedMarketId = $eoSpreadMarketId
+          selectedOutcomeId = $eoSpreadOutcomeId
+          selectedProviderMarket = $eoProviderMarket
+          selectedProviderToken = $eoProviderToken
+          routeBackedProviderDepth = $true
+          result = "pass"
+          selectedLimit = [ordered]@{
+            side = "bid"
+            cents = [int]$eoBidCents
+            decimal = $eoBidDecimal
+            shares = $eoBidShares
+          }
+          assertions = [ordered]@{
+            backendHealth = "Backend /api/health was required before launch; the proof aborts instead of falling back when unavailable."
+            moneylineBreadth = "Initial Book baseline is route-backed Moneyline with selected-family-Moneyline selected-market-type-winner selected-line-none and orderbook-source-orderbook-route/orderbook-status-ready."
+            spreadSelection = "Grouped selector switches to provider-backed Spread 1.5 without losing selected market/outcome/line/period/provider identity."
+            stagedBid = "Tapping order-book-bid-level-$eoSpreadOutcomeId-1 stages Sell bid at $eoBidDecimal USDT / $($eoBidCents)c."
+            ticketLimit = "Sell ticket exposes ticket-limit-side-bid ticket-limit-price-$eoBidCents ticket-limit-decimal-$eoBidDecimal and submits at ticket-price-line $($eoBidCents)c."
+            latestOrder = "Latest order card exposes order-status-open and the same sell-side portfolio limit/source/market/outcome/line/period/provider tokens."
+            openOrder = "Open order row shows Limit $eoBidCents% and the same order-time snapshot identity."
+            activityHistory = "Sell filled and canceled activity cards retain portfolio-limit-side-bid portfolio-limit-price-$eoBidCents and the same selected route-backed Book identity."
+            fallbackGuard = "Portfolio and activity reject Mexico fixture labels, Team to Advance, and generic Match Winner fallback labels for the selected spread Sell lifecycle."
+          }
+          artifacts = @(
+            "$OutputDir/$eoPrefix-moneyline-book.png",
+            "$HierarchyOutputDir/$eoPrefix-moneyline-book.xml",
+            "$HierarchyOutputDir/$eoPrefix-selector.xml",
+            "$OutputDir/$eoPrefix-spread-book.png",
+            "$HierarchyOutputDir/$eoPrefix-spread-book.xml",
+            "$OutputDir/$eoPrefix-bid-staged.png",
+            "$HierarchyOutputDir/$eoPrefix-bid-staged.xml",
+            "$OutputDir/$eoPrefix-sell-ticket-empty.png",
+            "$HierarchyOutputDir/$eoPrefix-sell-ticket-empty.xml",
+            "$HierarchyOutputDir/$eoPrefix-sell-ticket-amount-10.xml",
+            "$HierarchyOutputDir/$eoPrefix-sell-ticket-amount-20.xml",
+            "$OutputDir/$eoPrefix-sell-ticket-ready.png",
+            "$HierarchyOutputDir/$eoPrefix-sell-ticket-ready.xml",
+            "$OutputDir/$eoPrefix-portfolio-open.png",
+            "$HierarchyOutputDir/$eoPrefix-portfolio-open.xml",
+            "$OutputDir/$eoPrefix-portfolio-open-order.png",
+            "$HierarchyOutputDir/$eoPrefix-portfolio-open-order.xml",
+            "$OutputDir/$eoPrefix-portfolio-cancel-target.png",
+            "$HierarchyOutputDir/$eoPrefix-portfolio-cancel-target.xml",
+            "$OutputDir/$eoPrefix-portfolio-canceled.png",
+            "$HierarchyOutputDir/$eoPrefix-portfolio-canceled.xml"
+          )
+          remainingGaps = @(
+            "This visible proof uses mock trading with server market-data mode; it proves visible route-backed identity preservation, not production order execution.",
+            "Totals lifecycle breadth and immutable first-class backend selection snapshots remain future hardening."
+          )
+        }
+        $proofPath = Join-Path $ResolvedHierarchyOutputDir "$eoPrefix-proof.json"
+        $proofJson = ($proof | ConvertTo-Json -Depth 6) -replace "`r`n", "`n"
+        [System.IO.File]::WriteAllText($proofPath, "$proofJson`n", [System.Text.UTF8Encoding]::new($false))
+        Write-Host "Proof summary: $proofPath"
+        return
+      }
+
+      throw "-EventDetailVisibleLifecycleBreadth requires a backend server event slug so routeBackedProviderDepth can be proven."
     }
 
     if ($EventDetailVisibleLimitLifecycle) {
@@ -4257,9 +4586,7 @@ try {
   }
 }
 finally {
-  if ($expo -and -not $expo.HasExited) {
-    Stop-Process -Id $expo.Id -Force
-  }
+  Stop-SmokeExpoProcess -Process $expo -Port $Port
   if ($null -eq $previousSmokeInputFlag) {
     Remove-Item Env:\EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT -ErrorAction SilentlyContinue
   } else {
