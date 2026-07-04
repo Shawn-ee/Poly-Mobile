@@ -1,0 +1,48 @@
+{
+  "cycle": "EF-A",
+  "scope": "Backend snapshot durability for selected provider-backed Book Spread identity after mutable market/outcome metadata drift",
+  "result": "focused-tests-pass-proof-script-blocked",
+  "proofScript": "scripts/prove_mobile_ef_a_snapshot_durability.ts",
+  "proofScriptStatus": {
+    "attempted": true,
+    "command": "npx tsx scripts/prove_mobile_ef_a_snapshot_durability.ts --summaryPath=docs/mobile/harness/cycle-EF-A-snapshot-durability.json --baseUrl=http://127.0.0.1:3012",
+    "blockedReason": "Local DATABASE_URL is not configured in this worktree, so Prisma cannot create the disposable provider-backed market/order/fill state required by the backend proof script.",
+    "errorMarker": "Environment variable not found: DATABASE_URL"
+  },
+  "focusedTests": {
+    "command": "npm run test:jest -- src/__tests__/ticketSelectionMetadata.test.ts src/__tests__/portfolio.open-orders.route.test.ts src/__tests__/portfolio.history.route.test.ts",
+    "result": "pass",
+    "testSuites": 3,
+    "tests": 12
+  },
+  "assertionsCoveredByTests": {
+    "ticketSelectionHelperPrefersOrderTimeSnapshotAfterMetadataDrift": true,
+    "portfolioOpenOrdersPreferOrderTimeSnapshotAfterMetadataDrift": true,
+    "portfolioPositionsPreferFillTimeMatchingOrderSnapshotAfterMetadataDrift": true,
+    "portfolioHistoryCanceledOrdersPreferOrderTimeSnapshotAfterMetadataDrift": true,
+    "portfolioHistoryRecentTradesPreferFillTimeMatchingOrderSnapshotAfterMetadataDrift": true,
+    "noMoneylineOrDefaultFallbackWhenSnapshotExists": true
+  },
+  "selectedIdentityUnderTest": {
+    "marketType": "spread",
+    "marketGroupId": "spreads",
+    "line": "-0.5",
+    "period": "2H",
+    "side": "yes",
+    "providerSource": "polymarket",
+    "tokenId": "token-ef-spread-yes-original"
+  },
+  "metadataDriftAppliedInTests": {
+    "marketType": "match_winner_1x2",
+    "marketGroupId": "moneyline",
+    "line": null,
+    "period": "regulation",
+    "providerSource": "refreshed-provider",
+    "outcomeLabel": "Spain moneyline refreshed",
+    "tokenId": "token-ef-moneyline-yes-refreshed"
+  },
+  "remainingGaps": [
+    "The database-backed proof script should be rerun in an environment with DATABASE_URL configured to produce a full route/data proof artifact.",
+    "First-class immutable Order/Fill/Trade/Position selection snapshot columns remain future production hardening for arbitrary provider remaps and same-market/outcome multi-selection history."
+  ]
+}

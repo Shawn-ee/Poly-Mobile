@@ -1154,6 +1154,19 @@ Cycle EE-A implementation notes:
 - Filled position and recent trade routes now avoid moneyline/default fallback for a selected Spread/line/period/provider token when a matching order request snapshot exists.
 - No visible mobile UI, mobile scripts, Prisma schema, migrations, audit-gate docs, or Polymarket gate/index files were changed.
 
+## Cycle EF-A - Snapshot Durability After Metadata Drift
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Historical Portfolio open/canceled/filled selection display after mutable metadata changes | `/api/portfolio`, `/api/portfolio/history` | GET | Session user or canonical API key with `account:read` | None | `openOrders[].selection`, `positions[].selection`, `canceledOrders[].selection`, and `recentTrades[].selection` prefer the matching order-time/fill-time `ApiOrderRequest.requestBody.selection` for market/outcome/type/group/line/period/side/display label/source/market/condition/token fields | `ApiOrderRequest`, `Order`, `Position`, `Trade`, `Market`, `Outcome` | Current `Market`/`Outcome` fields remain a guarded fallback only when no matching request snapshot exists | First-class immutable `Trade`/`Position` selection columns remain future production hardening for arbitrary remaps and same market/outcome multi-selection history. |
+
+Cycle EF-A implementation notes:
+
+- Proof artifact/status: `docs/mobile/harness/cycle-EF-A-snapshot-durability.json`.
+- The EF proof script creates a selected provider-backed Book Spread order, then mutates current market/outcome labels, selector-like defaults, and provider metadata to moneyline/default-looking values before reading Portfolio/history. The local run was blocked by missing `DATABASE_URL`; focused route/helper tests cover the durability assertions in this worktree.
+- Focused route tests now assert open orders, filled positions, canceled history, and recent trades keep the selected Spread/line/period/provider token snapshot and do not fall back to mutated moneyline/current metadata.
+- No mobile source, mobile scripts, Prisma schema, or migration files were changed.
+
 ## Cycle EB-A - Live Detail Selector And Selected Chart Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
