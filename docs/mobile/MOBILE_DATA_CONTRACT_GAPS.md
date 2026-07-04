@@ -2087,3 +2087,32 @@ Temporary mock/static data:
 Future migration concern:
 
 - Do not write live OpticOdds rows for a current event until the provider response can be matched to a specific market/line/outcome without ambiguity. This protects the Polymarket parity gate from false line-market passes.
+
+## Cycle DI - Reviewed Line Provider Identity Gate
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Operator-reviewed `lineProviderIdentity` for each compact line market and outcome before live provider apply.
+- Real OpticOdds provider market IDs, provider odd IDs, period, points, selection labels, sportsbook, and source timestamp for every reviewed spread/total/team-total/halves/corners market.
+- A protected route or admin UI that persists reviewed line identities after dry-run validation.
+
+Fields backend provides but mobile ignores:
+
+- Reviewed line-provider readiness is currently backend/operator metadata. The mobile user UI does not expose this separately from existing live detail source/readiness labels.
+
+Schema mismatch:
+
+- Cycle DI stores reviewed line identity under `Market.referenceMetadata` and `Outcome.referenceMetadata`; this is adequate for the contract gate but may need a normalized provider line mapping table before production.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/provider-refresh` can consume reviewed identity indirectly through the row builder, but no route exists yet to collect and confirm the reviews.
+- Live OpticOdds refresh still skips when `OPTIC_ODDS_API_KEY` is absent.
+
+Temporary mock/static data:
+
+- The proof harness uses backend-shaped reviewed identity fixtures and official-response-shaped OpticOdds fixture data. It does not create arbitrary display-only odds and does not mutate the database.
+
+Future migration concern:
+
+- Do not mark line-market provider parity complete until confirmed reviewed identities plus real credentials produce route-readable `ReferenceQuoteSnapshot` rows and preserve selected market/line/outcome through ticket, order, portfolio, and history.

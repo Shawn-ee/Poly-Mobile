@@ -2915,3 +2915,42 @@ Known limitations:
 - `OPTIC_ODDS_API_KEY` is not configured in the local environment, so no live OpticOdds request was executed.
 - The current Colombia/Ghana event still needs reviewed per-line provider identity before applying live line rows; otherwise same-family lines can be ambiguous.
 - The cycle does not add provider orderbook depth for OpticOdds lines, only quote snapshots.
+
+## Cycle DI - Reviewed Line Provider Identity Gate
+
+Feature/page worked on:
+
+- PM-GAP-067 structural provider identity gate for live soccer line markets.
+- Reviewed OpticOdds market/outcome identity for compact live line markets before any line-provider rows are applied.
+- OpticOdds row-builder matching hardened to prefer reviewed provider market and odd IDs over loose same-family matching.
+
+Backend/API components touched:
+
+- `src/server/services/mobileLiveLineProviderIdentityReview.ts`
+- `src/server/services/mobileLiveOpticOddsLineIngestion.ts`
+- `scripts/prove_mobile_line_provider_identity_review.ts`
+- `src/__tests__/mobile-live-line-provider-identity-review.test.ts`
+
+Important functions/services touched:
+
+- `reviewMobileLiveLineProviderIdentities()` validates operator-reviewed line-provider mappings, supports dry-run projection, and requires `confirmApply=true` before writing metadata.
+- `validateLineProviderIdentityReviews()` blocks wrong provider source, wrong market family, wrong line value, wrong period, missing outcome coverage, duplicate provider market reviews, and duplicate provider odd IDs.
+- `summarizeLineProviderIdentityReadiness()` reports how many compact line markets have reviewed market/outcome identity.
+- `buildOpticOddsReferenceQuoteRows()` now uses reviewed `lineProviderIdentity` metadata when present, so a selected line/outcome can match a specific provider market and odd ID instead of relying only on market family and line.
+
+User interactions supported:
+
+- No new visible mobile control was added.
+- Existing Samsung tablet server-mode Colombia vs Ghana live-detail Book proof was re-smoked to ensure the provider identity gate did not regress the user-facing route-backed flow.
+
+State transitions:
+
+- Dry-run review can project the current Colombia/Ghana compact line markets from missing reviewed line identity to ready line-provider identity without mutating the database.
+- Bad review data is blocked before apply and reports concrete reasons such as `provider_market_type_mismatch`, `provider_line_value_mismatch`, and `review_must_include_every_compact_market_outcome`.
+- Confirmed apply, when used later with real operator-reviewed mappings, stores `lineProviderIdentity` in `Market.referenceMetadata` and `Outcome.referenceMetadata`.
+
+Known limitations:
+
+- Cycle DI did not apply reviewed identities to the database; proof is intentionally dry-run.
+- `OPTIC_ODDS_API_KEY` is still not configured, so live OpticOdds refresh was not executed.
+- No live OpticOdds rows were written, and line-market parity remains open until confirmed identities plus credentials produce route-readable provider snapshots.

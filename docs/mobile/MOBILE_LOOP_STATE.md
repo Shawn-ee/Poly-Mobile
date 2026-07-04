@@ -6,6 +6,31 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle DI
+
+Date: 2026-07-04
+Branch: `mobile/cycle-DI-reviewed-line-provider-identity`
+Goal: Add a reviewed per-line provider identity gate so OpticOdds live refresh can avoid ambiguous same-family line matching.
+Reference app screens observed: Continued from Samsung S23 Polymarket official Colombia vs Ghana game page, exact Gamma fixture metadata, and Cycle DH OpticOdds `/fixtures/odds` contract.
+Holiwyn screens changed: No visible mobile UI change. Existing server-backed Colombia vs Ghana live-detail Book flow was re-proven on Samsung tablet.
+Backend/API changed: Added a review service for line-provider market/outcome identity. OpticOdds quote normalization now honors reviewed provider market IDs and provider odd IDs when present.
+Database/schema changed: No migration. Confirmed apply can write `lineProviderIdentity` into existing `Market.referenceMetadata` and `Outcome.referenceMetadata`; Cycle DI proof was dry-run only and did not mutate the database.
+Files changed: reviewed line provider identity service, OpticOdds line ingestion matcher, focused tests, dry-run proof harness, docs/proof artifacts, tablet proof artifacts.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-line-provider-identity-review.test.ts src/__tests__/mobile-live-optic-odds-line-ingestion.test.ts`
+- `cmd /c npx.cmd tsx scripts/prove_mobile_line_provider_identity_review.ts --output docs/mobile/harness/cycle-current-mobile-line-provider-identity-review.json`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` from `mobile/`
+- Samsung tablet proof via `mobile/scripts/smoke.ps1 -Deep -ServerLiveDetailOrderBook -ServerEventSlug world-cup-2026-colombia-vs-ghana-2026-07-03`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-line-provider-identity-review.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+Result: Pass for reviewed line-provider identity contract and tablet regression. Remaining P1 parity gaps are confirmed apply with real operator-reviewed identities, `OPTIC_ODDS_API_KEY`, live OpticOdds refresh, and ticket/order/portfolio/history proof for selected line identity.
+Next focus: add the protected route/UI or operational apply path for reviewed line identities, configure real credentials, and prove live OpticOdds refresh changes route state from refresh-due/stale to ready.
+
 ## Cycle DH
 
 Date: 2026-07-04

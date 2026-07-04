@@ -866,3 +866,16 @@ Cycle DH implementation notes:
 - The endpoint contract follows the official OpticOdds docs for `/fixtures/odds`, including repeated sportsbook/market query params and API-key header auth.
 - The current event diagnostic intentionally reports `readyForLiveProviderApply=false` until credentials and reviewed per-line provider market identity exist.
 - This cycle moves the backend closer to real line ingestion without weakening the provider relevance gate.
+
+## Cycle DI - Reviewed Line Provider Identity Gate
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Reviewed line-provider identity readiness | Future protected provider-mapping/admin workflow using `reviewMobileLiveLineProviderIdentities()` | Future POST/service | Internal admin guard when routed | `reviews[]` containing `marketId`, `providerSource=optic_odds`, provider market id/name/type/period/points, and every local outcome mapped to a provider odd id | Readiness counts and validation failures for exact market/line/outcome identity | `Market.referenceMetadata.lineProviderIdentity`, `Outcome.referenceMetadata.lineProviderIdentity`; existing `Market`, `Outcome` | None. Dry-run projection is contract-shaped and does not mutate the database. | Protected route/UI for collecting confirmed line identity reviews and applying them with `confirmApply=true`. |
+| OpticOdds row matching with reviewed identity | `/api/mobile/events/:slug/provider-refresh` through existing refresh service once credentials and reviews exist | POST/service | Internal admin guard through route | Existing refresh request plus stored reviewed metadata | `ReferenceQuoteSnapshot` rows matched by provider market and provider odd ID when reviewed identity exists | `ReferenceQuoteSnapshot`, `Market.referenceMetadata`, `Outcome.referenceMetadata` | None. Missing reviews fall back to existing family/line/outcome matching for contract tests only. | Real `OPTIC_ODDS_API_KEY`, approved sportsbooks, and confirmed reviewed identities before live apply. |
+
+Cycle DI implementation notes:
+
+- No public user route changed.
+- The service can apply reviewed line identity later, but the Cycle DI proof stayed dry-run to avoid writing unreviewed provider identity into the local database.
+- The row builder now supports exact reviewed provider IDs, closing the ambiguity between same-family lines before the next live OpticOdds refresh attempt.

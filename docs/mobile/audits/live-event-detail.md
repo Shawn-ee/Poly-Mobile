@@ -1674,6 +1674,47 @@ Remaining P1 gaps:
 - Prove live OpticOdds refresh writes real provider rows for the current event.
 - Add provider-owned orderbook/depth for line markets if visual/orderbook parity requires it.
 
+## Cycle DI Reviewed Line Provider Identity Gate Audit
+
+Result: Pass for reviewed line-provider identity contract; partial for live line-market provider parity.
+
+What became materially closer to Polymarket:
+
+- Polymarket line markets are provider-owned at the exact market/line/outcome level. Holiwyn now has a review gate that prevents a live line refresh from treating two same-family markets as interchangeable.
+- The current Colombia vs Ghana compact line markets can be dry-run projected from missing reviewed identity to ready reviewed identity without writing unconfirmed data.
+- OpticOdds normalization now prefers reviewed provider market IDs and provider odd IDs when they exist, which is required before live provider rows can safely drive the mobile game page.
+
+Acceptance criteria:
+
+| Criterion ID | Priority | Status | Verification |
+| --- | --- | --- | --- |
+| LD-DI-P1-01 | P1 | Pass | Dry-run review validates 2 compact line markets and projects `lineProviderReadyMarketCount=2`. |
+| LD-DI-P1-02 | P1 | Pass | Invalid review is blocked for wrong family, wrong line value, and missing outcome coverage. |
+| LD-DI-P1-03 | P1 | Pass | OpticOdds row builder uses reviewed provider market/odd IDs over loose matching when metadata exists. |
+| LD-DI-P1-04 | P1 | Pass | Proof reports `mutatedDatabase=false`; no unreviewed live identity was written. |
+| LD-DI-P1-05 | P1 | Pass | Samsung tablet server-mode live-detail Book proof still passes after the service changes. |
+
+Evidence:
+
+- `src/server/services/mobileLiveLineProviderIdentityReview.ts`
+- `src/server/services/mobileLiveOpticOddsLineIngestion.ts`
+- `src/__tests__/mobile-live-line-provider-identity-review.test.ts`
+- `scripts/prove_mobile_line_provider_identity_review.ts`
+- `docs/mobile/harness/cycle-current-mobile-line-provider-identity-review.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+
+Unresolved P0 gaps: 0 for this focused contract cycle.
+
+Remaining P1 gaps:
+
+- Add a protected route/UI or operational workflow to apply real operator-reviewed line identities.
+- Configure `OPTIC_ODDS_API_KEY` and approved sportsbooks.
+- Prove live OpticOdds refresh changes line-market quote state from stale/refresh-due to ready.
+- Preserve selected provider line/outcome identity through ticket, order, portfolio, and history after real line rows exist.
+
 ## Cycle CW Provider Sports Event Discovery Expansion Audit
 
 Result: Pass for focused exact provider sports-event discovery and route-backed tablet Book proof.
