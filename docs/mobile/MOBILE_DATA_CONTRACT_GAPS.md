@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle DS-A - Orderbook Selector Identity Contract
+
+Closed or narrowed:
+
+- `/api/orderbook/:marketId/book` now returns backend-derived `marketIdentity` metadata next to the existing availability, bid/ask, and `levels[]` ladder fields.
+- The identity block is selector-ready for Book parity: `selectorKey`, `marketFamily`, `marketType`, `marketGroupKey`, `marketGroupId`, `marketGroupTitle`, `displayOrder`, `period`, `line`, `unit`, `displayUnits`, and compact active outcomes.
+- Focused backend tests prove the contract for Moneyline, Spread, and Totals selectable market families while preserving the public no-leak route guard.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Broader real provider identity coverage for live Spread/Totals markets when production provider mappings are available.
+- Active tradable provider-backed event coverage for full filled-order lifecycle on line markets.
+- First-class event-level Book selector route may still be useful if mobile wants all sibling market identities without first calling live-detail.
+
+Schema mismatch:
+
+- No schema change was required. The contract uses existing `Market` and active `Outcome` columns.
+
+Route mismatch:
+
+- The standalone Book route now exposes the same compact identity primitives that mobile previously had to infer from live-detail market rows.
+
+Temporary mock/static data:
+
+- None added. Unit proof uses mocked route inputs only; no frontend-only data or Prisma fixture was introduced.
+
+Future migration concern:
+
+- Keep `marketIdentity` free of provider tokens, credential fields, owner fields, and private trading state. Provider token/condition identity should remain on the existing provider/ticket metadata paths that already have no-leak coverage.
+
 ## Cycle DR-A - Scheduled Provider Refresh Run Reporting
 
 Closed or narrowed:

@@ -55,6 +55,29 @@ const collectKeys = (value: unknown): string[] => {
   return [];
 };
 
+const mockMarket = (overrides: Record<string, unknown> = {}) => ({
+  id: "market-1",
+  title: "Curacao vs Cote d'Ivoire: Match Winner",
+  mechanism: "ORDERBOOK",
+  visibility: "PUBLIC",
+  ownerId: null,
+  status: "LIVE",
+  sourceUpdatedAt: new Date(),
+  updatedAt: new Date(),
+  marketType: "match_winner_1x2",
+  marketGroupKey: "main",
+  marketGroupTitle: "Match Winner",
+  displayOrder: 0,
+  line: null,
+  unit: null,
+  period: "full-game",
+  outcomes: [
+    { id: "home", name: "Curacao", label: "Curacao", side: "home", displayOrder: 0, isTradable: true },
+    { id: "away", name: "Cote d'Ivoire", label: "Cote d'Ivoire", side: "away", displayOrder: 1, isTradable: true },
+  ],
+  ...overrides,
+});
+
 describe("public orderbook book API no-leak checks", () => {
   beforeEach(() => {
     getUserId.mockReset();
@@ -65,15 +88,7 @@ describe("public orderbook book API no-leak checks", () => {
 
     getUserId.mockResolvedValue(null);
     assertMarketVisibleToUser.mockResolvedValue(undefined);
-    mockPrisma.market.findUnique.mockResolvedValue({
-      id: "market-1",
-      mechanism: "ORDERBOOK",
-      visibility: "PUBLIC",
-      ownerId: null,
-      status: "LIVE",
-      sourceUpdatedAt: new Date(),
-      updatedAt: new Date(),
-    });
+    mockPrisma.market.findUnique.mockResolvedValue(mockMarket());
     buildPublicOrderbookSnapshot.mockResolvedValue({
       bids: [{ outcomeId: "home", price: 0.57, size: 120 }],
       asks: [{ outcomeId: "home", price: 0.6, size: 90 }],
@@ -121,6 +136,34 @@ describe("public orderbook book API no-leak checks", () => {
     expect(body).toMatchObject({
       marketId: "market-1",
       outcomeId: "home",
+      marketIdentity: {
+        source: "market-route-contract",
+        marketId: "market-1",
+        title: "Curacao vs Cote d'Ivoire: Match Winner",
+        selectorKey: "main:full-game:default",
+        marketFamily: "moneyline",
+        marketType: "match_winner_1x2",
+        marketGroupKey: "main",
+        marketGroupId: "main",
+        marketGroupTitle: "Match Winner",
+        displayOrder: 0,
+        period: "full-game",
+        line: null,
+        unit: null,
+        displayUnits: {
+          price: "probability",
+          priceFormat: "cents",
+          shares: "shares",
+          total: "notional",
+          line: null,
+        },
+        outcomeCount: 2,
+        tradableOutcomeCount: 2,
+        outcomes: [
+          { id: "home", name: "Curacao", label: "Curacao", side: "home", displayOrder: 0, isTradable: true },
+          { id: "away", name: "Cote d'Ivoire", label: "Cote d'Ivoire", side: "away", displayOrder: 1, isTradable: true },
+        ],
+      },
       availability: {
         source: "market-source-updated-at",
         status: "ready",
@@ -165,6 +208,104 @@ describe("public orderbook book API no-leak checks", () => {
     }
   });
 
+  test.each([
+    {
+      name: "moneyline",
+      market: mockMarket(),
+      expected: {
+        selectorKey: "main:full-game:default",
+        marketFamily: "moneyline",
+        marketType: "match_winner_1x2",
+        marketGroupKey: "main",
+        marketGroupTitle: "Match Winner",
+        period: "full-game",
+        line: null,
+        unit: null,
+      },
+    },
+    {
+      name: "spread",
+      market: mockMarket({
+        title: "Curacao +1.5",
+        marketType: "spread",
+        marketGroupKey: "spreads",
+        marketGroupTitle: "Spread",
+        displayOrder: 10,
+        line: { toString: () => "1.5" },
+        unit: "goals",
+      }),
+      expected: {
+        selectorKey: "spreads:full-game:1.5",
+        marketFamily: "spread",
+        marketType: "spread",
+        marketGroupKey: "spreads",
+        marketGroupTitle: "Spread",
+        period: "full-game",
+        line: "1.5",
+        unit: "goals",
+      },
+    },
+    {
+      name: "totals",
+      market: mockMarket({
+        title: "Total goals 2.5",
+        marketType: "total_goals",
+        marketGroupKey: "totals",
+        marketGroupTitle: "Totals",
+        displayOrder: 20,
+        line: { toString: () => "2.5" },
+        unit: "goals",
+        outcomes: [
+          { id: "over", name: "Over", label: "Over 2.5", side: "over", displayOrder: 0, isTradable: true },
+          { id: "under", name: "Under", label: "Under 2.5", side: "under", displayOrder: 1, isTradable: true },
+        ],
+      }),
+      expected: {
+        selectorKey: "totals:full-game:2.5",
+        marketFamily: "total",
+        marketType: "total_goals",
+        marketGroupKey: "totals",
+        marketGroupTitle: "Totals",
+        period: "full-game",
+        line: "2.5",
+        unit: "goals",
+      },
+    },
+  ])("GET /api/orderbook/[marketId]/book exposes selector-ready identity for $name", async ({ market, expected }) => {
+    mockPrisma.market.findUnique.mockResolvedValue(market);
+
+    const response = await getOrderbook(new NextRequest("http://localhost/api/orderbook/market-1/book?maxLevels=5"), {
+      params: Promise.resolve({ marketId: "market-1" }),
+    });
+
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body.marketIdentity).toMatchObject({
+      source: "market-route-contract",
+      marketId: "market-1",
+      ...expected,
+      displayUnits: {
+        price: "probability",
+        priceFormat: "cents",
+        shares: "shares",
+        total: "notional",
+        line: expected.unit,
+      },
+      outcomeCount: market.outcomes.length,
+      tradableOutcomeCount: market.outcomes.length,
+    });
+    expect(body.marketIdentity.outcomes).toEqual(
+      market.outcomes.map((outcome: { id: string; name: string; label: string | null; side: string | null; displayOrder: number; isTradable: boolean }) => ({
+        id: outcome.id,
+        name: outcome.name,
+        label: outcome.label ?? outcome.name,
+        side: outcome.side,
+        displayOrder: outcome.displayOrder,
+        isTradable: outcome.isTradable,
+      })),
+    );
+  });
+
   test("GET /api/orderbook/[marketId]/book returns no-depth empty state", async () => {
     buildPublicOrderbookSnapshot.mockResolvedValue({ bids: [], asks: [] });
 
@@ -189,15 +330,11 @@ describe("public orderbook book API no-leak checks", () => {
   });
 
   test("GET /api/orderbook/[marketId]/book exposes suspended market availability", async () => {
-    mockPrisma.market.findUnique.mockResolvedValue({
-      id: "market-1",
-      mechanism: "ORDERBOOK",
-      visibility: "PUBLIC",
-      ownerId: null,
+    mockPrisma.market.findUnique.mockResolvedValue(mockMarket({
       status: "PAUSED",
       sourceUpdatedAt: null,
       updatedAt: new Date("2026-07-03T22:00:00.000Z"),
-    });
+    }));
 
     const response = await getOrderbook(new NextRequest("http://localhost/api/orderbook/market-1/book"), {
       params: Promise.resolve({ marketId: "market-1" }),

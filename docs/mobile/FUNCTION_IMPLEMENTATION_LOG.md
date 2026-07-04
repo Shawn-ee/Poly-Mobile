@@ -3280,3 +3280,31 @@ Known limitations:
 
 - The proof uses a dev-only provider-shaped market because the current real Colombia/Ghana reference event is closed/resolved. It proves lifecycle contract preservation, not live real-money execution.
 - No secret API token is written to docs or evidence.
+
+## Super Round DS-A - Backend Orderbook Selector Contract
+
+Feature/page worked on:
+
+- PM-GAP-075 backend support for Polymarket-like Book selector/depth parity.
+- Standalone orderbook route contract for compact market family, period, line, outcome, and display-unit identity.
+
+Backend/API components touched:
+
+- `src/app/api/orderbook/[marketId]/book/route.ts`
+- `src/__tests__/public.orderbook-book.no-leak.test.ts`
+
+User interactions supported:
+
+- Mobile can open a route-backed Book for Moneyline, Spread, or Totals and receive the backend's selector identity without inventing frontend-only family, line, period, outcome, or display-unit data.
+- The same route response still carries depth `levels[]`, `bids[]`, `asks[]`, availability, and provider depth metadata for the selected market.
+
+State transitions:
+
+- `Market` + active `Outcome` rows -> `/api/orderbook/:marketId/book` -> `marketIdentity` + ladder response.
+- The focused proof exercises Moneyline (`match_winner_1x2`), Spread (`spread` line `1.5`), and Totals (`total_goals` line `2.5`) route identities.
+
+Known limitations:
+
+- This is a backend route/data-contract improvement only; no mobile UI files were edited.
+- Broader real provider mapping coverage for live Spread/Totals markets remains P1 outside this route contract.
+- If mobile later needs one request for all sibling Book selector options, add an event-level sibling selector endpoint or extend live-detail rather than overloading a single-market book route.
