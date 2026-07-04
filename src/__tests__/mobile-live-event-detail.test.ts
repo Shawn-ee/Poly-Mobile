@@ -106,12 +106,22 @@ describe("mobile live event detail contract", () => {
     expect(payload.contract).toMatchObject({
       route: "mobile-live-detail",
       primaryMarketId: "market-main",
+      maxMarkets: 14,
       orderbookDepthSource: "orderbook-route",
       batchedOrderbookDepthSource: "orderbook-route",
       batchedOrderbookDepthMarketCount: 14,
+      batchedOrderbookDepthRequestedMarketCount: 14,
+      batchedOrderbookDepthMaxLevels: 24,
+      batchedOrderbookDepthCacheTtlSeconds: 3,
       chartHistorySource: "market-outcome-snapshot",
       liveDataStatus: "ready",
     });
+    expect(payload.contract.generatedAt).toEqual(expect.any(String));
+    expect(new Date(payload.contract.generatedAt).toString()).not.toBe("Invalid Date");
+    expect(payload.contract.batchedOrderbookDepthRequestedMarketIds).toEqual([
+      "market-main",
+      ...Array.from({ length: 13 }, (_, index) => `market-${index}`),
+    ]);
     expect(payload.event.liveDataStatus).toMatchObject({
       source: "provider-feed",
       status: "ready",

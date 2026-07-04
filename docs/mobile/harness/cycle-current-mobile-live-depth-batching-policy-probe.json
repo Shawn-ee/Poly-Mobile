@@ -1,0 +1,36 @@
+{
+  "cycle": "CI",
+  "feature": "Live event detail depth batching policy contract",
+  "route": "GET /api/mobile/events/world-cup-2026-curacao-vs-cote-divoire-2026-06-25/live-detail",
+  "capturedAt": "2026-07-04T02:50:16.238Z",
+  "contract": {
+    "route": "mobile-live-detail",
+    "generatedAt": "2026-07-04T02:50:16.238Z",
+    "marketCount": 14,
+    "maxMarkets": 14,
+    "primaryMarketId": "aca976d2-2bad-416c-b010-c874c0ee493f",
+    "orderbookDepthSource": "orderbook-route",
+    "batchedOrderbookDepthSource": "orderbook-route",
+    "batchedOrderbookDepthMarketCount": 6,
+    "batchedOrderbookDepthRequestedMarketCount": 14,
+    "batchedOrderbookDepthRequestedMarketIdsFirst3": [
+      "aca976d2-2bad-416c-b010-c874c0ee493f",
+      "ac527022-07f3-4abb-90f0-b291466e8459",
+      "a552efe6-3147-4573-be95-8fe15c068c08"
+    ],
+    "batchedOrderbookDepthMaxLevels": 24,
+    "batchedOrderbookDepthCacheTtlSeconds": 3,
+    "chartHistorySource": "market-outcome-snapshot",
+    "liveDataStatus": "stale"
+  },
+  "marketShape": {
+    "returnedAs": "flat markets list with marketGroupId, marketGroupKey, marketGroupTitle, marketType, period, line, outcomes, liquidity, orderbookDepth",
+    "sampleGroups": [
+      "main",
+      "spreads",
+      "totals"
+    ],
+    "notes": "Cycle CI proves policy metadata for all compact markets requested by the live-detail route. It does not claim a real provider cache or invalidation layer yet."
+  },
+  "result": "pass"
+}

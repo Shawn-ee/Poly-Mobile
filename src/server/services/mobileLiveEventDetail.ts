@@ -61,6 +61,7 @@ type SnapshotInput = {
 const MAX_MARKETS = 14;
 const MAX_DEPTH_LEVELS = 24;
 const STALE_AFTER_SECONDS = 90;
+const DEPTH_BATCH_CACHE_TTL_SECONDS = 3;
 
 type LiveAvailabilityStatus = "ready" | "stale" | "suspended" | "delayed" | "unavailable";
 
@@ -211,6 +212,7 @@ export async function serializeMobileLiveEventDetail(input: {
   event: EventInput;
   chartSnapshots: SnapshotInput[];
 }) {
+  const generatedAt = new Date().toISOString();
   const markets = selectCompactLiveMarkets(input.event.markets);
   const primaryMarket = markets.find((market) => groupRank(market) === 0) ?? markets[0] ?? null;
   const metadata = metadataObject(input.event.metadata);
@@ -351,11 +353,17 @@ export async function serializeMobileLiveEventDetail(input: {
     markets: serializedMarkets,
     contract: {
       route: "mobile-live-detail",
+      generatedAt,
       marketCount: serializedMarkets.length,
+      maxMarkets: MAX_MARKETS,
       primaryMarketId: primaryMarket?.id ?? null,
       orderbookDepthSource: primaryDepthLevels.length ? "orderbook-route" : "empty",
       batchedOrderbookDepthSource: batchedOrderbookDepthMarketCount ? "orderbook-route" : "empty",
       batchedOrderbookDepthMarketCount,
+      batchedOrderbookDepthRequestedMarketCount: markets.length,
+      batchedOrderbookDepthRequestedMarketIds: markets.map((market) => market.id),
+      batchedOrderbookDepthMaxLevels: MAX_DEPTH_LEVELS,
+      batchedOrderbookDepthCacheTtlSeconds: DEPTH_BATCH_CACHE_TTL_SECONDS,
       chartHistorySource: chartHistory.length ? "market-outcome-snapshot" : "empty",
       liveDataStatus,
     },

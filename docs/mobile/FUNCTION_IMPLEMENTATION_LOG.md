@@ -2,6 +2,48 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CI - Depth Batching Policy Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 production-style compact live-detail depth batching policy metadata.
+- This cycle continues the structural live event detail work from Cycle CH instead of opening a new visual feature area.
+
+Frontend components touched:
+
+- None. The existing EventDetail tablet proof was rerun to confirm the visible route-backed depth behavior still works after the route contract change.
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+
+Important functions/services touched:
+
+- `serializeMobileLiveEventDetail()` now exposes backend policy metadata for compact-market depth batching: `generatedAt`, `maxMarkets`, `batchedOrderbookDepthRequestedMarketCount`, `batchedOrderbookDepthRequestedMarketIds`, `batchedOrderbookDepthMaxLevels`, and `batchedOrderbookDepthCacheTtlSeconds`.
+- The compact live-detail route continues to batch route-backed depth for visible markets while making its batching limits auditable by mobile and future backend/provider work.
+
+User interactions supported:
+
+- No new UI control was added. The material user-visible behavior preserved in this cycle is the existing server-backed live game detail: user scrolls to `2nd Half Winner`, sees `Route depth`, taps Book, and opens the selected second-half route-backed orderbook.
+
+State transitions:
+
+- Compact live-detail route selects visible markets -> records which market IDs were requested for batched depth -> serializes per-market depth/quote fields when available -> exposes route policy metadata -> mobile renders the same selected market rows and selected Book flow.
+
+Known limitations:
+
+- This is not provider parity. There is still no real provider cache, invalidation layer, provider snapshot status per depth response, or provider-owned liquidity for every line market.
+- The frontend does not yet surface the policy metadata; it is documented and tested so future provider-scale mobile work can depend on it.
+
+Verification:
+
+- Direct route probe saved to `docs/mobile/harness/cycle-current-mobile-live-depth-batching-policy-probe.json`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-event-detail.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+
 ## Cycle CH - Batched Live Market Depth Contract
 
 Feature/page worked on:
