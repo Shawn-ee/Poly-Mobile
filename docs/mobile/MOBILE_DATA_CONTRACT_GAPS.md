@@ -2056,3 +2056,34 @@ Temporary mock/static data:
 Future migration concern:
 
 - Do not count line-market provider parity complete until the real provider route/schema exists and selected line/outcome IDs preserve identity through ticket, order, portfolio, and history.
+
+## Cycle DH - OpticOdds Line Ingestion Contract
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- `OPTIC_ODDS_API_KEY` and an approved sportsbook basket for live line refresh.
+- Reviewed per-line provider identity for current local markets so same-family lines cannot accidentally consume the same provider odds row.
+- Durable mapping for OpticOdds `market_id`, `points`, `selection_line`, `team_id`, sportsbook source, and period.
+- Provider-owned depth/orderbook data for line markets if product parity requires ladder/depth beyond top quote snapshots.
+
+Fields backend provides but mobile ignores:
+
+- The provider refresh service can now report `lineProvider` status, but the mobile UI does not yet surface OpticOdds-specific provider state separately from existing route-backed quote/depth labels.
+
+Schema mismatch:
+
+- `ReferenceQuoteSnapshot` can store `source=optic_odds` rows today.
+- A first-class provider line mapping table may still be needed before production because `marketType + line + outcome side` is not enough to disambiguate every soccer line market.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/provider-refresh` now has the line-provider execution lane, but with no local API key it reports a skipped state.
+- No protected UI exists yet for entering/reviewing OpticOdds line mapping metadata.
+
+Temporary mock/static data:
+
+- The proof harness uses official-response-shaped contract fixture data to test normalization only. It does not mark the current event ready for live provider apply.
+
+Future migration concern:
+
+- Do not write live OpticOdds rows for a current event until the provider response can be matched to a specific market/line/outcome without ambiguity. This protects the Polymarket parity gate from false line-market passes.

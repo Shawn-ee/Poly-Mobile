@@ -1,0 +1,159 @@
+{
+  "generatedAt": "2026-07-04T08:18:00.136Z",
+  "eventSlug": "world-cup-2026-colombia-vs-ghana-2026-07-03",
+  "providerEventSlug": "fifwc-col-gha-2026-07-03",
+  "opticOddsFixtureId": "2026070464F44C1E",
+  "opticOddsGameId": "27043-35049-2026-07-03",
+  "source": "optic_odds",
+  "apiCredentialConfigured": false,
+  "apiCredentialStatus": "missing_optic_odds_api_key",
+  "officialEndpointContract": {
+    "method": "GET",
+    "url": "https://api.opticodds.com/api/v3/fixtures/odds",
+    "auth": "X-Api-Key",
+    "repeatedQueryParams": [
+      "sportsbook",
+      "market"
+    ],
+    "fixtureParam": "fixture_id",
+    "oddsFormat": "PROBABILITY"
+  },
+  "compactMarketCount": 5,
+  "lineMarketCount": 2,
+  "contractFixture": {
+    "marketCount": 3,
+    "snapshotRowsBuilt": 6,
+    "matchedMarketCount": 3,
+    "matchedMarketTypes": [
+      "spread",
+      "team_total_goals",
+      "total_goals"
+    ],
+    "sampleRows": [
+      {
+        "marketId": "contract-spread-market",
+        "outcomeId": "contract-spread-home",
+        "source": "optic_odds",
+        "externalSlug": "2026070464F44C1E",
+        "externalMarketId": "contract-spread-market:contract-spread-home:optic-contract",
+        "outcomeLabel": "Colombia",
+        "outcomePrice": 0.46,
+        "bestBid": 0.46,
+        "bestAsk": 0.46
+      },
+      {
+        "marketId": "contract-spread-market",
+        "outcomeId": "contract-spread-away",
+        "source": "optic_odds",
+        "externalSlug": "2026070464F44C1E",
+        "externalMarketId": "contract-spread-market:contract-spread-away:optic-contract",
+        "outcomeLabel": "Ghana",
+        "outcomePrice": 0.5,
+        "bestBid": 0.5,
+        "bestAsk": 0.5
+      },
+      {
+        "marketId": "contract-total-market",
+        "outcomeId": "contract-total-over",
+        "source": "optic_odds",
+        "externalSlug": "2026070464F44C1E",
+        "externalMarketId": "contract-total-market:contract-total-over:optic-contract",
+        "outcomeLabel": "Over",
+        "outcomePrice": 0.46,
+        "bestBid": 0.46,
+        "bestAsk": 0.46
+      },
+      {
+        "marketId": "contract-total-market",
+        "outcomeId": "contract-total-under",
+        "source": "optic_odds",
+        "externalSlug": "2026070464F44C1E",
+        "externalMarketId": "contract-total-market:contract-total-under:optic-contract",
+        "outcomeLabel": "Under",
+        "outcomePrice": 0.5,
+        "bestBid": 0.5,
+        "bestAsk": 0.5
+      },
+      {
+        "marketId": "contract-team-total-market",
+        "outcomeId": "contract-team-total-over",
+        "source": "optic_odds",
+        "externalSlug": "2026070464F44C1E",
+        "externalMarketId": "contract-team-total-market:contract-team-total-over:optic-contract",
+        "outcomeLabel": "Over",
+        "outcomePrice": 0.46,
+        "bestBid": 0.46,
+        "bestAsk": 0.46
+      },
+      {
+        "marketId": "contract-team-total-market",
+        "outcomeId": "contract-team-total-under",
+        "source": "optic_odds",
+        "externalSlug": "2026070464F44C1E",
+        "externalMarketId": "contract-team-total-market:contract-team-total-under:optic-contract",
+        "outcomeLabel": "Under",
+        "outcomePrice": 0.5,
+        "bestBid": 0.5,
+        "bestAsk": 0.5
+      }
+    ],
+    "pass": true
+  },
+  "currentEventDiagnostic": {
+    "snapshotRowsBuilt": 4,
+    "matchedMarketCount": 2,
+    "matchedMarketTypes": [
+      "total_goals"
+    ],
+    "uniqueExternalOddCount": 2,
+    "readyForLiveProviderApply": false,
+    "reason": "missing_optic_odds_api_key_and_reviewed_provider_line_market_identity",
+    "sampleRows": [
+      {
+        "marketId": "2dfbdb0f-a21e-42da-adce-055e9528638e",
+        "outcomeId": "4d189be8-83cd-42aa-8593-14c7df1e5e2e",
+        "source": "optic_odds",
+        "externalSlug": "2026070464F44C1E",
+        "externalMarketId": "2dfbdb0f-a21e-42da-adce-055e9528638e:4d189be8-83cd-42aa-8593-14c7df1e5e2e:optic-contract",
+        "outcomeLabel": "Over 2.5",
+        "outcomePrice": 0.46,
+        "bestBid": 0.46,
+        "bestAsk": 0.46
+      },
+      {
+        "marketId": "2dfbdb0f-a21e-42da-adce-055e9528638e",
+        "outcomeId": "21a4c1dd-6913-4502-ade1-0bbd96cd4f16",
+        "source": "optic_odds",
+        "externalSlug": "2026070464F44C1E",
+        "externalMarketId": "2dfbdb0f-a21e-42da-adce-055e9528638e:21a4c1dd-6913-4502-ade1-0bbd96cd4f16:optic-contract",
+        "outcomeLabel": "Under 2.5",
+        "outcomePrice": 0.5,
+        "bestBid": 0.5,
+        "bestAsk": 0.5
+      },
+      {
+        "marketId": "24c0f0fe-073b-4661-8fa3-6e90bf6f23a5",
+        "outcomeId": "617c6198-09d2-4e78-afb7-c974b0b452d6",
+        "source": "optic_odds",
+        "externalSlug": "2026070464F44C1E",
+        "externalMarketId": "2dfbdb0f-a21e-42da-adce-055e9528638e:4d189be8-83cd-42aa-8593-14c7df1e5e2e:optic-contract",
+        "outcomeLabel": "Over 2.5",
+        "outcomePrice": 0.46,
+        "bestBid": 0.46,
+        "bestAsk": 0.46
+      },
+      {
+        "marketId": "24c0f0fe-073b-4661-8fa3-6e90bf6f23a5",
+        "outcomeId": "2c43a64a-83ca-4ee5-99ab-1a1adfc4e1ce",
+        "source": "optic_odds",
+        "externalSlug": "2026070464F44C1E",
+        "externalMarketId": "2dfbdb0f-a21e-42da-adce-055e9528638e:21a4c1dd-6913-4502-ade1-0bbd96cd4f16:optic-contract",
+        "outcomeLabel": "Under 2.5",
+        "outcomePrice": 0.5,
+        "bestBid": 0.5,
+        "bestAsk": 0.5
+      }
+    ]
+  },
+  "pass": true
+}
