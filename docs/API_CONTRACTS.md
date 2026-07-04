@@ -73,6 +73,8 @@ Cycle FZ changes only the ticket submit interaction proof and visual footer. It 
 
 Cycle GA changes only bottom navigation presentation. The Portfolio tab value is derived from existing `accountPortfolioValue` state in `App.tsx`; no backend route, schema, request body, or response contract changes are required.
 
+Cycle GB changes only Event Detail chart/ticket presentation and proof coverage. The chart point readout is derived from existing mobile chart state, and the chart Trade handoff still uses the existing `selectedChartMarket`, `selectedChartTicketOutcome`, and `selectedChartTicketSelection` payload. No backend route, schema, request body, or response contract changes are required.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

@@ -136,3 +136,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Bottom Portfolio tab still showed a generic `Portfolio` label instead of Polymarket's account-value style label. | P0 | Passed | `BottomTabs` now renders compact `accountPortfolioValue` such as `$10K`; tablet XML proof passed. |
 | Tests still need a stable Portfolio destination label after visible text changes. | P0 | Passed | Accessibility label preserves `Portfolio`, `holiwyn-portfolio-tab`, and adds `portfolio-tab-value-*`; tablet proof verifies `portfolio-tab-value-$10K`. |
 | Exact Polymarket tab icon, badge, and animation polish. | P2 | Open | Deferred. |
+
+## Cycle GB - Event Detail Chart Ticket Handoff
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Event Detail chart interaction was not part of the main Local MVP proof before opening a ticket. | P0 | Passed | `LocalMvpStatusFlow` taps Target, verifies selected chart point/readout, and opens the chart Trade ticket on Samsung tablet. |
+| Chart point selection needed a visible state near the selected contract, not only a tooltip. | P0 | Passed | `EventDetail` renders `event-detail-chart-contract-point` with selected point/value; tablet XML proof passed. |
+| Chart Trade handoff should preserve selected point/contract identity while keeping orderbook hidden by default. | P0 | Passed | Chart Trade accessibility includes `chart-selected-point-*`; smoke asserts ticket opens and hidden orderbook labels stay absent. |
+| Exact Polymarket continuous chart press/drag tooltip physics. | P2 | Open | Deferred. |
