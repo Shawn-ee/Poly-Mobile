@@ -2997,3 +2997,42 @@ Known limitations:
 - The Polymarket-first path remains Gamma/CLOB for markets that exist on Polymarket; non-Polymarket line enrichments must stay explicitly optional or unavailable.
 - It proves provider quote snapshots for reviewed optional line enrichment, not provider orderbook ladder depth.
 - Ticket/order/portfolio/history preservation for refreshed line identities remains a separate lifecycle proof.
+
+## Cycle DK - Polymarket-First Provider Path
+
+Feature/page worked on:
+
+- PM-GAP-067 Polymarket-first provider discovery and refresh for the live Colombia vs Ghana World Cup event.
+- Missing `OPTIC_ODDS_API_KEY` is no longer treated as a blocker for Polymarket parity; OpticOdds remains optional external enrichment.
+- Provider candidate relevance was tightened so a generic Yes/No winner market cannot attach to the wrong team just because it shares the same event context.
+
+Backend/API components touched:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `scripts/prove_mobile_provider_discovery_expansion.ts`
+- `docs/mobile/harness/cycle-current-mobile-polymarket-first-provider-path.json`
+
+Important functions/services touched:
+
+- `assessCandidateRelevance()` now includes `binaryQuestionSubjectRelevant` for generic binary winner markets.
+- `isBinaryQuestionSubjectRelevant()` requires the local market question subject tokens to appear in the provider candidate question before same-event binary winner candidates can be considered relevant.
+- Existing provider attach and refresh services were exercised with Polymarket Gamma event discovery and CLOB depth refresh while `OPTIC_ODDS_API_KEY` was unset.
+
+User interactions supported:
+
+- Samsung tablet server-mode live-detail proof shows Colombia vs Ghana with `live-data-source-polymarket-gamma`, ready live-data status, and route-backed ready orderbook state.
+- The Book UI remains usable with bid/ask, spread, depth rows, and Buy/Sell affordances after Polymarket-backed refresh.
+
+State transitions:
+
+- Before discovery, the compact event has 5 compact markets and 0 provider-refreshable markets.
+- Exact Gamma event discovery plus manual slug fallback finds 3 attach-ready Polymarket match-winner markets: Colombia win, draw, and Ghana win.
+- Confirmed attach moves 3 markets and 6 outcomes to provider-refreshable Polymarket identity.
+- Refresh writes 6 quote snapshots and 96 CLOB depth rows without contract-proof fallback.
+- Samsung tablet route proof reports `live-data-status-ready`, `live-data-source-polymarket-gamma`, `orderbook-source-orderbook-route`, and `orderbook-status-ready`.
+
+Known limitations:
+
+- The exact Polymarket event still exposes no verified spread, total, team-total, halves, corners, props, or correct-score provider markets through the current Gamma/CLOB path; those line families remain unavailable/rejected with backend reasons, not silently mocked.
+- The event-detail chart still uses fallback chart history in the tablet proof and needs a Polymarket-backed chart/history route later.
+- Ticket/order/portfolio/history lifecycle proof for the refreshed Polymarket identities remains a separate milestone.

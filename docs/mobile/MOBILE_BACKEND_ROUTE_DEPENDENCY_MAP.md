@@ -892,3 +892,18 @@ Cycle DJ implementation notes:
 - `/api/mobile/events/:slug/provider-mapping` now exposes the reviewed line identity apply path instead of requiring direct script access.
 - The proof harness shows target line markets moving from stale/refresh-due to ready in the same live-detail contract that the mobile page reads.
 - Cache invalidation remains owned by `/provider-refresh` through `revalidatePath` for live-detail, event-detail, and affected orderbook paths.
+
+## Cycle DK - Polymarket-First Provider Path
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Polymarket event discovery and mapping | Polymarket Gamma `https://gamma-api.polymarket.com/events?slug=fifwc-col-gha-2026-07-03` through provider candidate services | GET/service | Public provider API; internal apply path remains guarded | Exact event slug plus generated manual slug fallbacks | Provider event title/slug, candidate market slug/question, external market id, condition id, outcome token ids, family/relevance fields | `Event`, `Market`, `Outcome`; provider identity fields on market/outcome records | None for the match-winner proof; irrelevant candidates are rejected instead of mocked | Exact line-family provider markets remain absent for this event through current Gamma discovery. |
+| Provider identity attach | Existing provider mapping service path, same contract as `/api/mobile/events/:slug/provider-mapping` | POST/service | Internal admin guard when routed | 3 verified Polymarket match-winner mappings for Colombia, draw, and Ghana | Readiness changes to 3 provider-refreshable markets and 6 provider-refreshable outcomes | `Market.referenceSource`, `Market.externalSlug`, `Market.externalMarketId`, `Market.conditionId`, `Outcome.referenceTokenId`, `Outcome.referenceOutcomeLabel` | None | Operator UI can reuse this route for reviewed exact slugs. |
+| Polymarket quote and CLOB depth refresh | Existing provider refresh service path, same contract as `/api/mobile/events/:slug/provider-refresh` | POST/service | Internal admin guard when routed | `allowContractProofFallback=false`; `OPTIC_ODDS_API_KEY` unset | `providerQuoteSnapshot.status=ready`, provider source, bid/ask/spread, `providerOrderbookDepth`, depth rows | `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot` | Contract-proof fallback disabled | Scheduled/background refresh still needs production orchestration. |
+| Server-backed live detail and orderbook proof | `/api/mobile/events/:slug/live-detail`; `/api/orderbook/:marketId/book?maxLevels=24` | GET | Public viewing | Event slug and selected market id | `liveDataStatus`, `liveDataSource`, compact markets, selected orderbook route source/status, levels, empty state | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot` | Expo/mobile fallback remains for offline mode, but Cycle DK tablet proof is server-backed | Chart history remains fallback until Polymarket-backed history is wired. |
+
+Cycle DK implementation notes:
+
+- Polymarket Gamma/CLOB is the default provider source for markets that exist on Polymarket.
+- Missing OpticOdds credentials are optional/unconfigured and must not block this parity milestone.
+- The relevance gate now blocks wrong-team binary winner attachment before provider identity is applied.

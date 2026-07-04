@@ -790,9 +790,11 @@ function assessCandidateRelevance(
     candidateFamily === expectedFamily &&
     matchedImportantTokens.length >= Math.min(2, marketTokens.length) &&
     candidateScore >= 30;
+  const binaryQuestionSubjectRelevant = isBinaryQuestionSubjectRelevant(market, candidate);
   const binaryQuestionRelevant =
     isGenericBinaryMarket(market) &&
     isGenericBinaryCandidate(candidate) &&
+    binaryQuestionSubjectRelevant &&
     matchedImportantTokens.length >= Math.min(3, marketTokens.length) &&
     candidateScore >= 30;
   const relevant =
@@ -808,6 +810,7 @@ function assessCandidateRelevance(
     relevant,
     lineFamilyRelevant,
     binaryQuestionRelevant,
+    binaryQuestionSubjectRelevant,
     expectedFamily,
     candidateFamily,
     matchedImportantTokens,
@@ -816,6 +819,19 @@ function assessCandidateRelevance(
     requiredOutcomeMatches,
     score: Number(candidateScore.toFixed(2)),
   };
+}
+
+function isBinaryQuestionSubjectRelevant(
+  market: CompactMarketForCandidates,
+  candidate: NonNullable<ProviderMarketCandidate>,
+) {
+  const marketQuestionTokens = normalizeText(market.title)
+    .split(" ")
+    .filter((token) => token.length > 2 && !GENERIC_RELEVANCE_TOKENS.has(token) && !/^\d+$/.test(token));
+  const candidateQuestionTokens = new Set(normalizeText(candidate.question).split(" ").filter(Boolean));
+  if (marketQuestionTokens.length === 0) return false;
+  const required = marketQuestionTokens.filter((token) => token !== "end");
+  return required.length > 0 && required.every((token) => candidateQuestionTokens.has(token));
 }
 
 function isGenericBinaryMarket(market: CompactMarketForCandidates) {

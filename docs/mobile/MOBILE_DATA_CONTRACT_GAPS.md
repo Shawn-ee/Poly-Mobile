@@ -2145,3 +2145,34 @@ Temporary mock/static data:
 Future migration concern:
 
 - The next provider milestone should be Polymarket-first: discover a real Polymarket event through Gamma, map markets/outcomes/tokens, fetch CLOB price/depth, expose it through Holiwyn routes, and prove Android. OpticOdds network proof is optional external enrichment, not the parity gate.
+
+## Cycle DK - Polymarket-First Provider Path
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Polymarket-backed chart/history series for the selected market/outcome/range. Cycle DK proves Gamma/CLOB quote and depth, but the tablet chart still reports `chart-source-fallback`.
+- Provider-backed line-family markets for spreads, totals, team totals, halves, corners, props, and correct score when those markets actually exist on Polymarket.
+- End-to-end lifecycle proof that selected Polymarket `marketId`, `outcomeId`, token id, line, and side flow through ticket, order, portfolio, and history.
+
+Fields backend provides but mobile ignores:
+
+- Provider discovery relevance diagnostics such as `binaryQuestionSubjectRelevant` are proof/operator fields; the user mobile app only needs source/readiness/depth labels.
+
+Schema mismatch:
+
+- Existing market/outcome provider identity fields are sufficient for Gamma/CLOB match-winner mappings.
+- Line-market enrichments may still need normalized provider mapping records if future non-Polymarket provider data is used.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/live-detail` and `/api/orderbook/:marketId/book` expose the Polymarket-backed route proof, but chart history remains on the separate fallback path.
+- The protected provider refresh path is still manually invoked by proof/admin tooling; production scheduling is not yet wired.
+
+Temporary mock/static data:
+
+- No arbitrary display-only provider odds were added in Cycle DK.
+- Unavailable line families remain rejected/unavailable with backend reasons instead of being faked as Polymarket-backed markets.
+
+Future migration concern:
+
+- Keep Polymarket Gamma/CLOB as P0 for parity. OpticOdds or any other external provider should only enrich gaps that Polymarket public data cannot cover and must never weaken the Polymarket relevance gate.
