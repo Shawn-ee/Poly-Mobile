@@ -1751,3 +1751,32 @@ Temporary mock/static data:
 Future migration concern:
 
 - The next PM-GAP-067 cycle should add a mobile-optimized live detail/depth/chart endpoint or proof harness so the tablet can capture `orderbook-source-orderbook-route orderbook-status-ready` without waiting on a full event payload.
+
+## Cycle CW - Provider Sports Event Discovery Expansion
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Exact provider event slug or provider market slug hints for every World Cup match and line market.
+- Provider-backed spreads, totals, team totals, halves, corners, and prop/correct-score mappings beyond the basic match winner/draw/winner markets.
+- A scheduler/ingestion owner that refreshes exact provider mappings without relying on local proof scripts.
+
+Fields backend provides but mobile ignores:
+
+- `providerOrderbookDepth` freshness metadata is present in the mobile live-detail route. The current UI proves route-backed status but does not yet expose all refresh timing/source metadata visually.
+
+Schema mismatch:
+
+- Polymarket live match winner is modeled as three separate binary Yes/No markets. Holiwyn can display these compactly, but future ticket/portfolio/history must keep binary market identity explicit instead of treating it as one 1x2 market.
+
+Route mismatch:
+
+- Exact event slug discovery is available through provider candidates, but there is no user-facing/admin flow yet to review and apply all discovered mappings.
+- Broad tag discovery must not be used as proof for a live match when an exact event slug is known.
+
+Temporary mock/static data:
+
+- Cycle CW creates/updates a local proof event shaped like the real Colombia vs. Ghana provider event. Its market identities and CLOB depth are real provider-backed; live score/stat display remains proof metadata.
+
+Future migration concern:
+
+- Keep the relevance gate strict: exact live match markets must beat high-volume but irrelevant World Cup futures. Do not count provider mapping complete for line markets until each selected line/outcome preserves provider identity through ticket, order, portfolio, and history.

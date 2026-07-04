@@ -1335,3 +1335,47 @@ Remaining P1 gaps:
 ## Next Structural Work
 
 The next cycle should continue PM-GAP-067 by adding a compact mobile live detail/depth/chart endpoint or proof harness that lets the Samsung tablet capture route-backed chart/depth status without waiting on the full 37-market event payload.
+
+## Cycle CW Provider Sports Event Discovery Expansion Audit
+
+Result: Pass for focused exact provider sports-event discovery and route-backed tablet Book proof.
+
+What became materially closer to Polymarket:
+
+- Holiwyn can now discover and attach real provider-owned markets from the exact Polymarket World Cup live event rather than relying on broad search or local fixture data.
+- The relevance gate remains strict: noisy broad candidates and unrelated futures are not accepted as proof for a live match when an exact event slug is available.
+- The Colombia vs Ghana Holiwyn proof event now has 3 provider-refreshable compact markets matching the Polymarket event's live binary markets: Colombia win, draw, and Ghana win.
+- Route-backed Book proof on the Samsung tablet now shows provider-backed depth for the exact mapped event, closing the old fallback-only route-backed proof gap for this focused event.
+
+Acceptance criteria:
+
+| Criterion ID | Priority | Status | Verification |
+| --- | --- | --- | --- |
+| LD-CW-P1-01 | P1 | Pass | Exact Gamma event route returned `fifwc-col-gha-2026-07-03-col`, `-draw`, and `-gha`. |
+| LD-CW-P1-02 | P1 | Pass | Provider discovery proof shows 3 attach-ready candidates and 0 provider errors. |
+| LD-CW-P1-03 | P1 | Pass | Applied mappings move readiness from 0 to 3 provider-refreshable compact markets. |
+| LD-CW-P1-04 | P1 | Pass | No-fallback refresh writes 6 quote snapshots and 262 CLOB depth rows. |
+| LD-CW-P1-05 | P1 | Pass | Mobile live-detail route probe shows 3 ready quote snapshots and 3 ready provider orderbook-depth markets. |
+| LD-CW-P1-06 | P1 | Pass | Samsung tablet proof shows Colombia vs Ghana route-backed orderbook with ready status, Best bid/ask, Spread, Buy, and Sell. |
+
+Evidence:
+
+- `docs/mobile/reference/screenshots/cycle-CW-polymarket-s23-window.xml`
+- `docs/mobile/harness/cycle-current-mobile-provider-sports-event-discovery-proof.json`
+- `docs/mobile/harness/cycle-current-mobile-live-detail-route-probe.json`
+- `docs/mobile/harness/cycle-current-mobile-live-detail-http-warm.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-candidates.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke.ps1 -Deep -ServerLiveDetailOrderBook -ServerEventSlug world-cup-2026-colombia-vs-ghana-2026-07-03 -Port 8181 -Device adb-R5GYA13X7NJ-4O0ADU._adb-tls-connect._tcp -ExpoHost 172.16.200.14 -BackendBaseUrl http://127.0.0.1:3002`
+
+Unresolved P0 gaps: 0 for this focused provider discovery expansion.
+
+Remaining P1 gaps:
+
+- Discover/attach provider-owned spreads, totals, team totals, halves, corners, props/correct score, and other line markets when exact provider markets are available.
+- Move the proof harness into an operator/admin mapping workflow if mappings should be reviewed outside scripts.
+- Prove selected provider market/line/outcome through ticket, order, portfolio, and history for the exact mapped event.
+- Add provider-owned scheduled refresh/ingestion beyond manual proof execution.

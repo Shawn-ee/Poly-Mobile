@@ -5,6 +5,9 @@ import { selectCompactLiveMarkets } from "@/server/services/mobileLiveEventDetai
 const GAMMA_BASE_URL = "https://gamma-api.polymarket.com";
 const DEFAULT_LIMIT_PER_QUERY = 20;
 const MAX_MARKETS = 14;
+const DEFAULT_PROVIDER_SEARCH_MODE: ProviderSearchMode = "combined";
+const SPORTS_EVENT_TAG_SLUGS = ["fifa-world-cup", "2026-fifa-world-cup", "soccer"];
+const DEFAULT_SPORTS_EVENT_LIMIT = 12;
 const MIN_RELEVANT_TOKEN_MATCHES = 2;
 const GENERIC_RELEVANCE_TOKENS = new Set([
   "and",
@@ -29,6 +32,7 @@ const GENERIC_RELEVANCE_TOKENS = new Set([
 ]);
 
 type GammaWire = Record<string, unknown>;
+export type ProviderSearchMode = "market-search" | "sports-events" | "combined";
 
 type CompactMarketForCandidates = {
   id: string;
@@ -53,6 +57,8 @@ export type ProviderCandidateDiscoveryOptions = {
   marketId?: string | null;
   maxCandidatesPerMarket?: number | null;
   fetchProvider?: boolean;
+  providerSearchMode?: ProviderSearchMode | null;
+  providerEventSlugs?: string[] | null;
   fetchImpl?: typeof fetch;
 };
 
@@ -76,20 +82,40 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
   }
 
   const fetchProvider = options.fetchProvider !== false;
+  const providerSearchMode = options.providerSearchMode ?? DEFAULT_PROVIDER_SEARCH_MODE;
   const maxCandidatesPerMarket = Math.max(1, Math.min(options.maxCandidatesPerMarket ?? 5, 10));
+  let providerSportsEventErrorGlobal: string | null = null;
+  let sportsEventCandidates: ProviderMarketCandidate[] = [];
+  if (fetchProvider && providerSearchMode !== "market-search") {
+    try {
+      sportsEventCandidates = await fetchProviderCandidatesFromSportsEvents({
+        eventSlugs: options.providerEventSlugs ?? undefined,
+        tagSlugs: options.providerEventSlugs?.length ? [] : undefined,
+        fetchImpl: options.fetchImpl ?? fetch,
+      });
+    } catch (error) {
+      providerSportsEventErrorGlobal = error instanceof Error ? error.message : String(error);
+    }
+  }
   const providerTargets = [];
 
   for (const market of selectedMarkets) {
     const queries = buildProviderCandidateSearchQueries(market);
     let providerError: string | null = null;
+    let providerSportsEventError: string | null = providerSportsEventErrorGlobal;
     let candidates: ProviderMarketCandidate[] = [];
 
     if (fetchProvider) {
       try {
-        const raw = await fetchProviderCandidatesForQueries(queries, {
-          limitPerQuery: DEFAULT_LIMIT_PER_QUERY,
-          fetchImpl: options.fetchImpl ?? fetch,
-        });
+        const raw = mergeProviderCandidates([
+          ...(providerSearchMode !== "sports-events"
+            ? await fetchProviderCandidatesForQueries(queries, {
+                limitPerQuery: DEFAULT_LIMIT_PER_QUERY,
+                fetchImpl: options.fetchImpl ?? fetch,
+              })
+            : []),
+          ...sportsEventCandidates,
+        ]);
         candidates = rankProviderCandidates(market, raw).slice(0, maxCandidatesPerMarket);
       } catch (error) {
         providerError = error instanceof Error ? error.message : String(error);
@@ -106,8 +132,10 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
       unit: market.unit,
       outcomeCount: market.outcomes.length,
       queries,
+      providerSearchMode,
       providerFetchAttempted: fetchProvider,
       providerError,
+      providerSportsEventError,
       candidateCount: candidates.length,
       bestCandidate,
       attachProposal: bestCandidate ? buildAttachProposal(market, bestCandidate) : null,
@@ -120,9 +148,10 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
     generatedAt: new Date().toISOString(),
     provider: "polymarket-gamma",
     fetchProvider,
+    providerSearchMode,
     targetMarketCount: providerTargets.length,
     attachReadyCandidateCount: providerTargets.filter((target) => target.attachProposal?.attachReady).length,
-    providerErrorCount: providerTargets.filter((target) => target.providerError).length,
+    providerErrorCount: providerTargets.filter((target) => target.providerError || target.providerSportsEventError).length,
     nextRequiredAction:
       providerTargets.some((target) => target.attachProposal?.attachReady)
         ? "review_and_attach_provider_identity_candidates"
@@ -187,12 +216,25 @@ export async function previewMobileLiveProviderCandidatesBySlug(options: Provide
 export function buildProviderCandidateSearchQueries(market: CompactMarketForCandidates) {
   const title = market.title.replace(/[:]/g, " ").replace(/\s+/g, " ").trim();
   const withoutLine = title.replace(/[+-]?\d+(\.\d+)?/g, " ").replace(/\s+/g, " ").trim();
+  const normalizedTitle = normalizeProviderSearchPhrase(title);
+  const normalizedWithoutLine = normalizeProviderSearchPhrase(withoutLine);
+  const outcomeTeams = market.outcomes
+    .map((outcome) => normalizeProviderSearchPhrase(outcome.name))
+    .filter((name) => name.length > 2 && !GENERIC_RELEVANCE_TOKENS.has(name));
+  const teamPair = outcomeTeams.length >= 2 ? `${outcomeTeams[0]} ${outcomeTeams[outcomeTeams.length - 1]}` : null;
   const terms = [
     title,
+    normalizedTitle,
     withoutLine,
+    normalizedWithoutLine,
+    teamPair,
+    teamPair ? `${teamPair} ${marketTypeSearchAlias(market.marketType)}` : null,
     `${withoutLine} ${market.marketType.replace(/_/g, " ")}`,
+    `${normalizedWithoutLine} ${marketTypeSearchAlias(market.marketType)}`,
     market.marketGroupTitle ? `${withoutLine} ${market.marketGroupTitle}` : null,
+    market.marketGroupTitle ? `${normalizedWithoutLine} ${normalizeProviderSearchPhrase(market.marketGroupTitle)}` : null,
     market.period ? `${withoutLine} ${market.period.replace(/-/g, " ")}` : null,
+    market.period ? `${normalizedWithoutLine} ${market.period.replace(/-/g, " ")}` : null,
   ].filter((query): query is string => Boolean(query && query.length > 2));
   return Array.from(new Set(terms)).slice(0, 5);
 }
@@ -268,6 +310,83 @@ export async function fetchProviderCandidatesForSlugs(
   return Array.from(bySlug.values());
 }
 
+export async function fetchProviderCandidatesFromSportsEvents(
+  options: {
+    tagSlugs?: string[];
+    eventSlugs?: string[];
+    eventLimitPerTag?: number;
+    fetchImpl?: typeof fetch;
+  } = {},
+) {
+  const fetchImpl = options.fetchImpl ?? fetch;
+  const tagSlugs = options.tagSlugs ?? SPORTS_EVENT_TAG_SLUGS;
+  const eventSlugs = Array.from(new Set((options.eventSlugs ?? []).map(sanitizeSlug).filter(Boolean)));
+  const eventLimitPerTag = Math.max(1, Math.min(options.eventLimitPerTag ?? DEFAULT_SPORTS_EVENT_LIMIT, 50));
+  const bySlug = new Map<string, ProviderMarketCandidate>();
+
+  for (const eventSlug of eventSlugs) {
+    const url = new URL("/events", GAMMA_BASE_URL);
+    url.searchParams.set("slug", eventSlug);
+    await collectProviderCandidatesFromSportsEventUrl({
+      url,
+      fetchImpl,
+      bySlug,
+      errorPrefix: "Gamma exact sports event request failed",
+    });
+  }
+
+  for (const tagSlug of tagSlugs) {
+    const url = new URL("/events", GAMMA_BASE_URL);
+    url.searchParams.set("active", "true");
+    url.searchParams.set("closed", "false");
+    url.searchParams.set("archived", "false");
+    url.searchParams.set("limit", String(eventLimitPerTag));
+    url.searchParams.set("tag_slug", tagSlug);
+    await collectProviderCandidatesFromSportsEventUrl({
+      url,
+      fetchImpl,
+      bySlug,
+      errorPrefix: "Gamma sports event request failed",
+    });
+  }
+
+  return Array.from(bySlug.values());
+}
+
+async function collectProviderCandidatesFromSportsEventUrl(params: {
+  url: URL;
+  fetchImpl: typeof fetch;
+  bySlug: Map<string, ProviderMarketCandidate>;
+  errorPrefix: string;
+}) {
+  const response = await params.fetchImpl(params.url.toString(), { headers: { Accept: "application/json" } });
+  if (!response.ok) {
+    throw new Error(`${params.errorPrefix}: ${response.status} ${response.statusText}`);
+  }
+  const payload = (await response.json()) as unknown;
+  if (!Array.isArray(payload)) {
+    throw new Error("Gamma sports event response was not an array.");
+  }
+  for (const eventEntry of payload) {
+    if (!eventEntry || typeof eventEntry !== "object") continue;
+    const event = eventEntry as GammaWire;
+    const eventTitle = asString(event.title) ?? asString(event.name);
+    const tags = parseTags(event.tags);
+    const markets = Array.isArray(event.markets) ? event.markets : [];
+    for (const marketEntry of markets) {
+      if (!marketEntry || typeof marketEntry !== "object") continue;
+      const candidate = normalizeProviderCandidate(marketEntry as GammaWire, {
+        eventTitle,
+        tags,
+        category: asString(event.category),
+      });
+      if (candidate && !params.bySlug.has(candidate.slug)) {
+        params.bySlug.set(candidate.slug, candidate);
+      }
+    }
+  }
+}
+
 export function rankProviderCandidates(
   market: CompactMarketForCandidates,
   candidates: ProviderMarketCandidate[],
@@ -281,10 +400,19 @@ export function rankProviderCandidates(
         attachReadiness: evaluateCandidateAttachReadiness(market, candidate, score),
       };
     })
-    .sort((left, right) => right.score - left.score);
+    .sort((left, right) => {
+      const attachReadyRank = Number(right.attachReadiness.attachReady) - Number(left.attachReadiness.attachReady);
+      if (attachReadyRank !== 0) return attachReadyRank;
+      const relevanceRank = Number(right.attachReadiness.relevance.relevant) - Number(left.attachReadiness.relevance.relevant);
+      if (relevanceRank !== 0) return relevanceRank;
+      return right.score - left.score;
+    });
 }
 
-function normalizeProviderCandidate(input: GammaWire) {
+function normalizeProviderCandidate(
+  input: GammaWire,
+  context: { eventTitle?: string | null; tags?: string[]; category?: string | null } = {},
+) {
   const slug = asString(input.slug);
   const question = asString(input.question) ?? asString(input.title) ?? asString(input.name);
   const externalMarketId = asString(input.id) ?? asString(input.marketId) ?? asString(input.questionID);
@@ -300,7 +428,7 @@ function normalizeProviderCandidate(input: GammaWire) {
     question,
     externalMarketId,
     conditionId: asString(input.conditionId),
-    eventTitle: parseEventTitle(input),
+    eventTitle: parseEventTitle(input) ?? context.eventTitle ?? null,
     active: asBoolean(input.active),
     closed: asBoolean(input.closed),
     archived: asBoolean(input.archived),
@@ -318,8 +446,8 @@ function normalizeProviderCandidate(input: GammaWire) {
       outcomePrice: outcomePrices[index] ?? null,
       displayOrder: index,
     })),
-    tags: parseTags(input.tags),
-    category: asString(input.category),
+    tags: Array.from(new Set([...parseTags(input.tags), ...(context.tags ?? [])])),
+    category: asString(input.category) ?? context.category ?? null,
     score: 0,
     attachReadiness: {
       attachReady: false,
@@ -327,6 +455,17 @@ function normalizeProviderCandidate(input: GammaWire) {
     },
   };
 }
+
+function mergeProviderCandidates(candidates: ProviderMarketCandidate[]) {
+  const bySlug = new Map<string, ProviderMarketCandidate>();
+  for (const candidate of candidates) {
+    if (!bySlug.has(candidate.slug)) {
+      bySlug.set(candidate.slug, candidate);
+    }
+  }
+  return Array.from(bySlug.values());
+}
+
 
 function scoreProviderCandidate(market: CompactMarketForCandidates, candidate: NonNullable<ProviderMarketCandidate>) {
   const marketText = normalizeText(`${market.title} ${market.marketType} ${market.period ?? ""} ${market.line?.toString() ?? ""}`);
@@ -407,19 +546,40 @@ function assessCandidateRelevance(
   const matchedImportantTokens = marketTokens.filter((token) => candidateTokens.has(token));
   const outcomeNameMatches = countOutcomeNameMatches(market, candidate, candidateText);
   const requiredOutcomeMatches = market.outcomes.length >= 3 ? 2 : 1;
-  const relevant =
-    matchedImportantTokens.length >= MIN_RELEVANT_TOKEN_MATCHES &&
-    outcomeNameMatches >= requiredOutcomeMatches &&
+  const binaryQuestionRelevant =
+    isGenericBinaryMarket(market) &&
+    isGenericBinaryCandidate(candidate) &&
+    matchedImportantTokens.length >= Math.min(3, marketTokens.length) &&
     candidateScore >= 30;
+  const relevant =
+    binaryQuestionRelevant ||
+    (
+      matchedImportantTokens.length >= MIN_RELEVANT_TOKEN_MATCHES &&
+      outcomeNameMatches >= requiredOutcomeMatches &&
+      candidateScore >= 30
+    );
 
   return {
     relevant,
+    binaryQuestionRelevant,
     matchedImportantTokens,
     importantTokenCount: marketTokens.length,
     outcomeNameMatches,
     requiredOutcomeMatches,
     score: Number(candidateScore.toFixed(2)),
   };
+}
+
+function isGenericBinaryMarket(market: CompactMarketForCandidates) {
+  if (market.outcomes.length !== 2) return false;
+  const labels = market.outcomes.map((outcome) => normalizeText(outcome.name)).sort();
+  return labels[0] === "no" && labels[1] === "yes";
+}
+
+function isGenericBinaryCandidate(candidate: NonNullable<ProviderMarketCandidate>) {
+  if (candidate.outcomes.length !== 2) return false;
+  const labels = candidate.outcomes.map((outcome) => normalizeText(outcome.name)).sort();
+  return labels[0] === "no" && labels[1] === "yes";
 }
 
 function relevantMarketTokens(market: CompactMarketForCandidates) {
@@ -479,6 +639,26 @@ function normalizeText(value: string) {
     .trim();
 }
 
+function normalizeProviderSearchPhrase(value: string) {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[’']/g, "")
+    .replace(/&/g, " and ")
+    .replace(/[^a-zA-Z0-9\s.+-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function marketTypeSearchAlias(marketType: string) {
+  if (marketType === "match_winner_1x2") return "match winner";
+  if (marketType === "total_goals") return "over under";
+  if (marketType === "team_total_goals") return "team total";
+  if (marketType === "spread") return "spread";
+  if (marketType === "draw_no_bet") return "draw no bet";
+  return marketType.replace(/_/g, " ");
+}
+
 function sanitizeSlug(value: string | null | undefined) {
   const trimmed = value?.trim();
   if (!trimmed) return "";
@@ -525,7 +705,7 @@ function parseTags(value: unknown): string[] {
     .map((item) => {
       if (typeof item === "string") return item;
       if (item && typeof item === "object") {
-        return asString((item as GammaWire).label) ?? asString((item as GammaWire).name);
+        return asString((item as GammaWire).slug) ?? asString((item as GammaWire).label) ?? asString((item as GammaWire).name);
       }
       return null;
     })

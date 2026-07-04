@@ -61,6 +61,8 @@ describe("mobile live provider candidates route", () => {
       marketId: "market-1",
       fetchProvider: false,
       maxCandidatesPerMarket: 3,
+      providerSearchMode: null,
+      providerEventSlugs: null,
     });
     expect(body).toEqual({
       ok: true,
@@ -68,6 +70,20 @@ describe("mobile live provider candidates route", () => {
         provider: "polymarket-gamma",
       }),
     });
+  });
+
+  test("passes provider search mode to the service", async () => {
+    const response = await GET(
+      new NextRequest("http://localhost/api/mobile/events/world-cup-live/provider-candidates?providerSearchMode=sports-events&providerEventSlug=fifwc-col-gha-2026-07-03"),
+      { params: Promise.resolve({ slug: "world-cup-live" }) },
+    );
+
+    expect(response.status).toBe(200);
+    expect(discoverMobileLiveProviderCandidates).toHaveBeenCalledWith(expect.objectContaining({
+      eventSlug: "world-cup-live",
+      providerSearchMode: "sports-events",
+      providerEventSlugs: ["fifwc-col-gha-2026-07-03"],
+    }));
   });
 
   test("previews manual Polymarket slugs for a compact market", async () => {
