@@ -2,6 +2,42 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle EL-B - Visible Live Depth Staging
+
+Feature/page worked on:
+
+- Mobile live event detail Book/orderbook parity on Android.
+- Makes the visible ladder materially more Polymarket-like by allowing ask/bid rows to stage a Buy/Sell ticket at the tapped level price.
+
+Frontend/harness components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `docs/mobile/screenshots/cycle-EL-B-visible-live-depth/`
+- `docs/mobile/harness/cycle-EL-B-visible-live-depth/`
+
+Important functions/interactions/state transitions touched:
+
+- `EventDetail` now tracks a staged orderbook level scoped to the selected market/outcome.
+- Tapping an ask row stages a Buy ask with the row price/size and highlights that row plus the Buy button.
+- Tapping a bid row stages a Sell bid with the row price/size and highlights that row plus the Sell button.
+- The staged ticket handoff clones the selected outcome with the tapped level probability so the ticket price line reflects the exact staged ladder price.
+- Changing Book market or outcome clears the staged level to prevent cross-contract price leakage.
+
+Verified:
+
+- `npm run typecheck` from `mobile/`
+- PowerShell parser checks for `mobile/scripts/smoke.ps1` and `mobile/scripts/smoke-tablet.ps1`
+- `npx vitest run --config vitest.mobile.config.mts mobile/src/__tests__/eventDetailLineTicketService.test.ts mobile/src/__tests__/marketDepthService.test.ts`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleLiveDepth -Port 8331 -OutputDir docs/mobile/screenshots/cycle-EL-B-visible-live-depth -HierarchyOutputDir docs/mobile/harness/cycle-EL-B-visible-live-depth`
+
+Known limitations:
+
+- Backend health was unavailable during the Android proof, so the passed tablet proof used the existing deterministic backend-shaped mobile fixture/fallback data.
+- The staged ladder handoff is mobile UI behavior; server order submission still uses the existing ticket/order service contract.
+- Real provider-backed live depth breadth still depends on backend/provider market coverage outside this Agent B UI-owned change.
+
 ## Cycle EK-A - Backend Provider Transition Breadth
 
 Feature/page worked on:

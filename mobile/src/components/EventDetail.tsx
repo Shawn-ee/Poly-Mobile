@@ -81,6 +81,15 @@ const formatLevelCents = (price: number) => `${levelProbability(price)}c`;
 
 type BookDisplayMode = "cents" | "decimal";
 
+type StagedOrderBookLevel = {
+  marketId: string;
+  outcomeId: string;
+  side: "bid" | "ask";
+  price: number;
+  shares: number;
+  total: number;
+};
+
 const formatBookDisplayPrice = (price: number, mode: BookDisplayMode) =>
   mode === "decimal" ? formatLevelPrice(price) : formatLevelCents(price);
 
@@ -379,6 +388,7 @@ export function EventDetail({
   const [orderBookSettingsVisible, setOrderBookSettingsVisible] = useState(false);
   const [orderBookSelectorVisible, setOrderBookSelectorVisible] = useState(false);
   const [orderBookDisplayMode, setOrderBookDisplayMode] = useState<BookDisplayMode>("cents");
+  const [stagedOrderBookLevel, setStagedOrderBookLevel] = useState<StagedOrderBookLevel | null>(null);
   const [refreshingDepthMarketId, setRefreshingDepthMarketId] = useState<string | null>(null);
   const [compactHeaderVisible, setCompactHeaderVisible] = useState(false);
   const [selectedPrimaryOutcomeId, setSelectedPrimaryOutcomeId] = useState<string | null>(null);
@@ -498,6 +508,7 @@ export function EventDetail({
   const openOrderBookForMarket = (market: Market) => {
     setOrderBookMarketId(market.id);
     setOrderBookOutcomeId(market.outcomes[0]?.id ?? null);
+    setStagedOrderBookLevel(null);
     setRefreshingDepthMarketId(market.id);
     requestMarketDepth?.(market.id);
     setOrderBookVisible(true);
@@ -529,6 +540,7 @@ export function EventDetail({
   const selectOrderBookMarket = (market: Market) => {
     setOrderBookMarketId(market.id);
     setOrderBookOutcomeId(market.outcomes[0]?.id ?? null);
+    setStagedOrderBookLevel(null);
     setOrderBookSelectorVisible(false);
     setRefreshingDepthMarketId(market.id);
     requestMarketDepth?.(market.id);
@@ -970,8 +982,40 @@ export function EventDetail({
     const selectedBidSizeText = bestBid ? `${formatSize(bestBid.shares)} ${t.shares}` : `0 ${t.shares}`;
     const selectedAskSizeText = bestAsk ? `${formatSize(bestAsk.shares)} ${t.shares}` : `0 ${t.shares}`;
     const selectedSpreadText = spreadCents == null ? "-" : `${spreadCents}c`;
+    const activeStagedLevel =
+      stagedOrderBookLevel?.marketId === orderBookMarket.id && stagedOrderBookLevel?.outcomeId === orderBookSelectedOutcome.id
+        ? stagedOrderBookLevel
+        : null;
+    const stagedTicketSide = activeStagedLevel?.side === "bid" ? "sell" : "buy";
+    const stagedPriceText = activeStagedLevel ? formatBookDisplayPrice(activeStagedLevel.price, orderBookDisplayMode) : null;
+    const stagedDecimalPriceText = activeStagedLevel ? formatLevelPrice(activeStagedLevel.price) : null;
+    const stagedProbability = activeStagedLevel ? levelProbability(activeStagedLevel.price) : null;
+    const stagedTicketOutcome =
+      activeStagedLevel && stagedProbability
+        ? {
+            ...orderBookSelectedOutcome,
+            probability: stagedProbability,
+            bestBid: activeStagedLevel.side === "bid" ? stagedProbability : orderBookSelectedOutcome.bestBid,
+            bestAsk: activeStagedLevel.side === "ask" ? stagedProbability : orderBookSelectedOutcome.bestAsk,
+            bestBidSize: activeStagedLevel.side === "bid" ? activeStagedLevel.shares : orderBookSelectedOutcome.bestBidSize,
+            bestAskSize: activeStagedLevel.side === "ask" ? activeStagedLevel.shares : orderBookSelectedOutcome.bestAskSize,
+          }
+        : orderBookSelectedOutcome;
+    const openBookTicket = (side: "buy" | "sell") => {
+      openTicket(orderBookMarket, stagedTicketOutcome, event, side, selectedTicketSelection);
+    };
+    const stageLevel = (level: DepthLevel) => {
+      setStagedOrderBookLevel({
+        marketId: orderBookMarket.id,
+        outcomeId: orderBookSelectedOutcome.id,
+        side: level.side,
+        price: level.price,
+        shares: level.shares,
+        total: level.total,
+      });
+    };
     return (
-      <View accessibilityLabel={`event-detail-order-book-screen event-detail-order-book-market-${orderBookMarket.id} ${selectedIdentityLabel} book-display-mode-${orderBookDisplayMode} orderbook-source-${selectedDepthSource ?? "fallback"} orderbook-status-${depthRouteStatus} provider-lifecycle-${depthStatusBadge.lifecycle} orderbook-empty-${depthMarketMatches || hasSelectedMarketDepth ? event.orderbookDepthEmptyState ?? "none" : "not-selected"} orderbook-availability-${orderbookAvailabilityStatus} orderbook-availability-lifecycle-${orderbookAvailabilityBadge.lifecycle} orderbook-market-status-${selectedOrderbookAvailability?.marketStatus ?? "unknown"}`} style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
+      <View accessibilityLabel={`event-detail-order-book-screen event-detail-order-book-market-${orderBookMarket.id} ${selectedIdentityLabel} book-display-mode-${orderBookDisplayMode} orderbook-source-${selectedDepthSource ?? "fallback"} orderbook-status-${depthRouteStatus} provider-lifecycle-${depthStatusBadge.lifecycle} orderbook-empty-${depthMarketMatches || hasSelectedMarketDepth ? event.orderbookDepthEmptyState ?? "none" : "not-selected"} orderbook-availability-${orderbookAvailabilityStatus} orderbook-availability-lifecycle-${orderbookAvailabilityBadge.lifecycle} orderbook-market-status-${selectedOrderbookAvailability?.marketStatus ?? "unknown"} staged-level-${activeStagedLevel ? `${activeStagedLevel.side}-${levelProbability(activeStagedLevel.price)}` : "none"}`} style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
         <View style={styles.orderBookHeader}>
           <View>
             <Text style={styles.orderBookTitle}>Order Book</Text>
@@ -1084,9 +1128,12 @@ export function EventDetail({
               <Pressable
                 accessibilityLabel={`order-book-outcome-tab-${outcome.id} ${sideLabel} ${label(locale, outcome)} ${isActive ? `selected-side-${contractSide}` : `inactive-side-${contractSide}`} selected-market-${orderBookMarket.id}`}
                 key={outcome.id}
-                onPress={() => setOrderBookOutcomeId(outcome.id)}
                 style={[styles.orderBookOutcomeTab, isActive && styles.orderBookOutcomeTabActive]}
                 testID={`order-book-outcome-tab-${outcome.id}`}
+                onPress={() => {
+                  setOrderBookOutcomeId(outcome.id);
+                  setStagedOrderBookLevel(null);
+                }}
               >
                 <Text style={[styles.orderBookOutcomeTabText, isActive && styles.orderBookOutcomeTabTextActive]}>{sideLabel}</Text>
                 <Text numberOfLines={1} style={[styles.orderBookOutcomeTabMeta, isActive && styles.orderBookOutcomeTabMetaActive]}>{label(locale, outcome)}</Text>
@@ -1154,16 +1201,45 @@ export function EventDetail({
                   Ticket {providerLifecycleText[orderbookAvailabilityBadge.lifecycle].toLowerCase()}
                 </Text>
                 <View style={styles.orderBookActionRow}>
-                <Pressable accessibilityLabel={`order-book-buy-${orderBookSelectedOutcome.id} provider-lifecycle-${orderbookAvailabilityBadge.lifecycle} ${selectedIdentityLabel}`} onPress={() => openTicket(orderBookMarket, orderBookSelectedOutcome, event, "buy", selectedTicketSelection)} style={[styles.orderBookTradeButton, { backgroundColor: orderBookSelectedOutcome.color }]} testID={`order-book-buy-${orderBookSelectedOutcome.id}`}>
-                  <Text style={styles.orderBookTradeText}>{t.buy}</Text>
-                  <Text style={styles.orderBookTradeSubtext}>{selectedContractSide.toUpperCase()}</Text>
-                </Pressable>
-                <Pressable accessibilityLabel={`order-book-sell-${orderBookSelectedOutcome.id} provider-lifecycle-${orderbookAvailabilityBadge.lifecycle} ${selectedIdentityLabel}`} onPress={() => openTicket(orderBookMarket, orderBookSelectedOutcome, event, "sell", selectedTicketSelection)} style={styles.orderBookSellButton} testID={`order-book-sell-${orderBookSelectedOutcome.id}`}>
-                  <Text style={styles.orderBookSellText}>{t.sell}</Text>
-                  <Text style={styles.orderBookTradeSubtext}>{selectedContractSide.toUpperCase()}</Text>
-                </Pressable>
+                  <Pressable
+                    accessibilityLabel={`order-book-buy-${orderBookSelectedOutcome.id} provider-lifecycle-${orderbookAvailabilityBadge.lifecycle} staged-level-${activeStagedLevel ? `${activeStagedLevel.side}-${levelProbability(activeStagedLevel.price)}` : "none"} ${selectedIdentityLabel}`}
+                    onPress={() => openBookTicket("buy")}
+                    style={[styles.orderBookTradeButton, { backgroundColor: orderBookSelectedOutcome.color }, activeStagedLevel?.side === "ask" && styles.orderBookTradeButtonStaged]}
+                    testID={`order-book-buy-${orderBookSelectedOutcome.id}`}
+                  >
+                    <Text style={styles.orderBookTradeText}>{t.buy}</Text>
+                    <Text style={styles.orderBookTradeSubtext}>{activeStagedLevel?.side === "ask" && stagedPriceText ? stagedPriceText : selectedContractSide.toUpperCase()}</Text>
+                  </Pressable>
+                  <Pressable
+                    accessibilityLabel={`order-book-sell-${orderBookSelectedOutcome.id} provider-lifecycle-${orderbookAvailabilityBadge.lifecycle} staged-level-${activeStagedLevel ? `${activeStagedLevel.side}-${levelProbability(activeStagedLevel.price)}` : "none"} ${selectedIdentityLabel}`}
+                    onPress={() => openBookTicket("sell")}
+                    style={[styles.orderBookSellButton, activeStagedLevel?.side === "bid" && styles.orderBookSellButtonStaged]}
+                    testID={`order-book-sell-${orderBookSelectedOutcome.id}`}
+                  >
+                    <Text style={styles.orderBookSellText}>{t.sell}</Text>
+                    <Text style={styles.orderBookTradeSubtext}>{activeStagedLevel?.side === "bid" && stagedPriceText ? stagedPriceText : selectedContractSide.toUpperCase()}</Text>
+                  </Pressable>
                 </View>
               </View>
+            </View>
+            <View
+              accessibilityLabel={`order-book-staged-order staged-level-${activeStagedLevel ? `${activeStagedLevel.side}-${levelProbability(activeStagedLevel.price)}` : "none"} staged-ticket-side-${activeStagedLevel ? stagedTicketSide : "none"} staged-price-${stagedDecimalPriceText ?? "none"} staged-shares-${activeStagedLevel ? formatSize(activeStagedLevel.shares) : "none"} ${activeStagedLevel ? `${stagedTicketSide === "buy" ? "Buy ask" : "Sell bid"} ${stagedPriceText} ${formatSize(activeStagedLevel.shares)} shares` : "Tap a ladder price to stage an order"}`}
+              style={[styles.orderBookStagedOrder, activeStagedLevel && styles.orderBookStagedOrderActive]}
+              testID="order-book-staged-order"
+            >
+              <View style={styles.orderBookStagedTextBlock}>
+                <Text style={styles.orderBookStagedLabel}>{activeStagedLevel ? (stagedTicketSide === "buy" ? "Buy ask" : "Sell bid") : "Tap ladder to stage"}</Text>
+                <Text style={styles.orderBookStagedValue}>{activeStagedLevel && stagedPriceText ? `${stagedPriceText} - ${formatSize(activeStagedLevel.shares)} shares` : "Pick an ask or bid level"}</Text>
+              </View>
+              <Pressable
+                accessibilityLabel={`order-book-staged-open-ticket staged-ticket-side-${activeStagedLevel ? stagedTicketSide : "none"} staged-price-${stagedDecimalPriceText ?? "none"} ${selectedIdentityLabel}`}
+                disabled={!activeStagedLevel}
+                onPress={() => openBookTicket(stagedTicketSide)}
+                style={[styles.orderBookStagedButton, !activeStagedLevel && styles.orderBookStagedButtonDisabled]}
+                testID="order-book-staged-open-ticket"
+              >
+                <Text style={[styles.orderBookStagedButtonText, !activeStagedLevel && styles.orderBookStagedButtonTextDisabled]}>{activeStagedLevel ? (stagedTicketSide === "buy" ? t.buy : t.sell) : "Stage"}</Text>
+              </Pressable>
             </View>
             <View accessibilityLabel={`order-book-ladder Price Shares Value book-display-mode-${orderBookDisplayMode}`} style={styles.orderBookLadder} testID="order-book-ladder">
               <View style={styles.orderBookLadderHeader}>
@@ -1172,10 +1248,11 @@ export function EventDetail({
                 <Text style={styles.orderBookLadderHeaderText}>Value</Text>
               </View>
               {visibleAsks.map((level, index) => (
-                <View
-                  accessibilityLabel={`order-book-ask-level-${orderBookSelectedOutcome.id}-${index + 1} ask-side-label book-display-mode-${orderBookDisplayMode} ${formatLevelCents(level.price)} ${formatLevelPrice(level.price)} ${formatSize(level.shares)} shares ${formatBookValue(level.total)}`}
+                <Pressable
+                  accessibilityLabel={`order-book-ask-level-${orderBookSelectedOutcome.id}-${index + 1} ask-side-label tap-to-stage-buy book-display-mode-${orderBookDisplayMode} ${activeStagedLevel?.side === "ask" && activeStagedLevel.price === level.price ? "staged-level-selected" : "staged-level-inactive"} ${formatLevelCents(level.price)} ${formatLevelPrice(level.price)} ${formatSize(level.shares)} shares ${formatBookValue(level.total)}`}
                   key={`ask-${orderBookSelectedOutcome.id}-${level.price}-${index}`}
-                  style={[styles.orderBookLadderRow, styles.orderBookAskRow]}
+                  onPress={() => stageLevel(level)}
+                  style={[styles.orderBookLadderRow, styles.orderBookAskRow, activeStagedLevel?.side === "ask" && activeStagedLevel.price === level.price && styles.orderBookLadderRowSelected]}
                   testID={`order-book-ask-level-${orderBookSelectedOutcome.id}-${index + 1}`}
                 >
                   <View style={styles.orderBookLadderBarTrack}>
@@ -1184,7 +1261,7 @@ export function EventDetail({
                   <Text style={[styles.orderBookLadderPrice, styles.orderBookAskPrice]}>{formatBookDisplayPrice(level.price, orderBookDisplayMode)}</Text>
                   <Text style={styles.orderBookLadderCell}>{formatSize(level.shares)}</Text>
                   <Text style={styles.orderBookLadderValue}>{formatBookValue(level.total)}</Text>
-                </View>
+                </Pressable>
               ))}
               <View accessibilityLabel={`order-book-spread-separator Spread ${spreadCents ?? "unknown"}c`} style={styles.orderBookSpreadSeparator} testID="order-book-spread-separator">
                 <View style={styles.orderBookSpreadLine} />
@@ -1192,10 +1269,11 @@ export function EventDetail({
                 <View style={styles.orderBookSpreadLine} />
               </View>
               {visibleBids.map((level, index) => (
-                <View
-                  accessibilityLabel={`order-book-bid-level-${orderBookSelectedOutcome.id}-${index + 1} bid-side-label book-display-mode-${orderBookDisplayMode} ${formatLevelCents(level.price)} ${formatLevelPrice(level.price)} ${formatSize(level.shares)} shares ${formatBookValue(level.total)}`}
+                <Pressable
+                  accessibilityLabel={`order-book-bid-level-${orderBookSelectedOutcome.id}-${index + 1} bid-side-label tap-to-stage-sell book-display-mode-${orderBookDisplayMode} ${activeStagedLevel?.side === "bid" && activeStagedLevel.price === level.price ? "staged-level-selected" : "staged-level-inactive"} ${formatLevelCents(level.price)} ${formatLevelPrice(level.price)} ${formatSize(level.shares)} shares ${formatBookValue(level.total)}`}
                   key={`bid-${orderBookSelectedOutcome.id}-${level.price}-${index}`}
-                  style={[styles.orderBookLadderRow, styles.orderBookBidRow]}
+                  onPress={() => stageLevel(level)}
+                  style={[styles.orderBookLadderRow, styles.orderBookBidRow, activeStagedLevel?.side === "bid" && activeStagedLevel.price === level.price && styles.orderBookLadderRowSelected]}
                   testID={`order-book-bid-level-${orderBookSelectedOutcome.id}-${index + 1}`}
                 >
                   <View style={styles.orderBookLadderBarTrack}>
@@ -1204,7 +1282,7 @@ export function EventDetail({
                   <Text style={[styles.orderBookLadderPrice, styles.orderBookBidPrice]}>{formatBookDisplayPrice(level.price, orderBookDisplayMode)}</Text>
                   <Text style={styles.orderBookLadderCell}>{formatSize(level.shares)}</Text>
                   <Text style={styles.orderBookLadderValue}>{formatBookValue(level.total)}</Text>
-                </View>
+                </Pressable>
               ))}
             </View>
           </View>
@@ -2499,10 +2577,21 @@ const styles = StyleSheet.create({
   orderBookTicketHandoffWarning: { color: "#fde68a" },
   orderBookActionRow: { flexDirection: "row", gap: 8 },
   orderBookTradeButton: { minWidth: 74, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 10 },
+  orderBookTradeButtonStaged: { borderWidth: 2, borderColor: "#f8fafc" },
   orderBookTradeText: { color: "#ffffff", fontSize: 13, fontWeight: "900" },
   orderBookSellButton: { minWidth: 74, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
+  orderBookSellButtonStaged: { backgroundColor: "#334155", borderWidth: 2, borderColor: "#f8fafc" },
   orderBookSellText: { color: "#dbeafe", fontSize: 13, fontWeight: "900" },
   orderBookTradeSubtext: { color: "rgba(255,255,255,0.72)", fontSize: 9, fontWeight: "900", marginTop: 1 },
+  orderBookStagedOrder: { minHeight: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10, marginTop: 12, paddingHorizontal: 12, paddingVertical: 9, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#243244" },
+  orderBookStagedOrderActive: { backgroundColor: "#102132", borderColor: "#38bdf8" },
+  orderBookStagedTextBlock: { flex: 1, minWidth: 0 },
+  orderBookStagedLabel: { color: "#7dd3fc", fontSize: 10, fontWeight: "900", textTransform: "uppercase" },
+  orderBookStagedValue: { color: "#f8fafc", fontSize: 14, fontWeight: "900", marginTop: 3 },
+  orderBookStagedButton: { minWidth: 82, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 8, backgroundColor: "#dbeafe", paddingHorizontal: 12 },
+  orderBookStagedButtonDisabled: { backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247" },
+  orderBookStagedButtonText: { color: "#0b1220", fontSize: 12, fontWeight: "900" },
+  orderBookStagedButtonTextDisabled: { color: "#64748b" },
   orderBookColumns: { flexDirection: "row", gap: 10, marginTop: 12 },
   orderBookColumn: { flex: 1, gap: 8, padding: 10, borderRadius: 9, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937" },
   orderBookColumnHeader: { minHeight: 18, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 6 },
@@ -2514,6 +2603,7 @@ const styles = StyleSheet.create({
   orderBookLadderHeader: { minHeight: 40, flexDirection: "row", alignItems: "center", paddingHorizontal: 12, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   orderBookLadderHeaderText: { flex: 1, color: "#64748b", fontSize: 11, fontWeight: "900", textAlign: "right" },
   orderBookLadderRow: { minHeight: 42, flexDirection: "row", alignItems: "center", paddingHorizontal: 12, borderTopWidth: 1, borderTopColor: "#111827" },
+  orderBookLadderRowSelected: { borderColor: "#dbeafe", borderTopWidth: 2 },
   orderBookAskRow: { backgroundColor: "rgba(127, 29, 29, 0.12)" },
   orderBookBidRow: { backgroundColor: "rgba(6, 95, 70, 0.12)" },
   orderBookLadderBarTrack: { position: "absolute", top: 9, right: 12, bottom: 9, width: "58%", overflow: "hidden", borderRadius: 6 },
