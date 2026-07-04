@@ -4009,3 +4009,42 @@ Known limitations:
 
 - EF-B is deterministic fake-token mobile proof, not production wallet signing or settlement.
 - Real provider-backed metadata drift remains a later provider/backend integration proof.
+
+## Cycle EG-B - Visible Chart, Line Selector, Book, And Ticket Parity
+
+Feature/page worked on:
+
+- Mobile EventDetail visible Polymarket-like event page parity for chart touch state, line selector carry-through, orderbook ladder entry, and trade ticket handoff.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+User interactions supported/proven:
+
+- Chart filter changes the selected chart outcome to Ecuador and the point selector moves the tooltip to Target.
+- Spread line rail visibly switches to 2.5, then back to the backend-shaped 1.5 contract.
+- Chart contract rail carries selected contract, market, line, period, and visible action buttons.
+- Chart Book opens the Spread orderbook with ladder columns and selected line/period state.
+- Chart Trade opens the ticket for Mexico -1.5 spread with provider fixture market, condition, and token metadata.
+
+Validation:
+
+- `npm ci` in `mobile/` to restore missing local dependencies.
+- `npm run typecheck` from `mobile/`
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleLiveParity -Port 8315 -OutputDir docs/mobile/screenshots/cycle-EG-B-visible-live-parity -HierarchyOutputDir docs/mobile/harness/cycle-EG-B-visible-live-parity`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-visible-live-parity-proof.json`
+- `docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-*.xml`
+- `docs/mobile/screenshots/cycle-EG-B-visible-live-parity/cycle-EG-B-holiwyn-*.png`
+
+Known limitations:
+
+- Chart geometry is still rendered with React Native layout primitives rather than a true pan/zoom chart engine.
+- Real provider-backed line-family chart history remains dependent on backend/provider market history coverage.
