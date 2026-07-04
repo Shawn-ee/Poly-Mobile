@@ -37,12 +37,15 @@ export async function POST(request: NextRequest, context: Params) {
     eventSlug: slug,
     allowContractProofFallback: body?.allowContractProofFallback === true,
     lineProviderFetchImpl: undefined,
+    providerDepthFetchImpl: undefined,
+    providerHistoryFetchImpl: undefined,
   });
   const cacheInvalidation = invalidateMobileLiveProviderRefreshCache(slug, refresh.mappingReadiness.markets.map((market) => market.marketId));
 
   return NextResponse.json({
     ok: true,
     expired,
+    providerLifecycle: refresh.providerLifecycle,
     refresh,
     cacheInvalidation,
   }, {

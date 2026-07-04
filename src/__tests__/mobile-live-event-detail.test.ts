@@ -40,6 +40,7 @@ describe("mobile live event detail contract", () => {
   beforeEach(() => {
     getOutcomeQuotes.mockReset();
     buildPublicOrderbookSnapshot.mockReset();
+    jest.spyOn(Date, "now").mockReturnValue(new Date("2026-07-03T22:00:40.000Z").getTime());
     getOutcomeQuotes.mockResolvedValue(
       new Map([
         ["home", { bestBid: 0.59, bestAsk: 0.65, bestBidSize: 1060, bestAskSize: 940, mid: 0.62, spread: 0.06 }],
@@ -86,6 +87,10 @@ describe("mobile live event detail contract", () => {
         reason: "Provider quote snapshot is fresh.",
       },
     });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   test("returns compact ticket-ready markets with chart history and depth levels", async () => {

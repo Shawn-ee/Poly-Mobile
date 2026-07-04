@@ -72,6 +72,8 @@ describe("mobile live provider refresh route", () => {
       eventSlug: "world-cup-live",
       allowContractProofFallback: true,
       lineProviderFetchImpl: undefined,
+      providerDepthFetchImpl: undefined,
+      providerHistoryFetchImpl: undefined,
     });
     expect(body).toEqual({
       ok: true,
@@ -81,8 +83,16 @@ describe("mobile live provider refresh route", () => {
         expiredSnapshotCount: 31,
         staleFetchedAt: "2026-07-03T22:00:00.000Z",
       },
+      providerLifecycle: expect.objectContaining({
+        source: "mobile-live-provider-refresh",
+        ready: true,
+        nextRefreshAt: "2026-07-03T22:02:00.000Z",
+      }),
       refresh: expect.objectContaining({
         compactMarketCount: 14,
+        providerLifecycle: expect.objectContaining({
+          ready: true,
+        }),
         postRefresh: expect.objectContaining({
           snapshotCount: 31,
         }),
@@ -123,6 +133,8 @@ describe("mobile live provider refresh route", () => {
       eventSlug: "world-cup-live",
       allowContractProofFallback: false,
       lineProviderFetchImpl: undefined,
+      providerDepthFetchImpl: undefined,
+      providerHistoryFetchImpl: undefined,
     });
   });
 });
@@ -175,12 +187,71 @@ function refreshMobileProvider() {
       reason: "local_event_has_no_real_polymarket_market_mapping",
       snapshotsUpdated: 31,
     },
+    providerLifecycle: {
+      source: "mobile-live-provider-refresh",
+      generatedAt: "2026-07-03T22:01:00.000Z",
+      quote: {
+        source: "reference-quote-snapshot",
+        status: "ready",
+        latestAt: "2026-07-03T22:01:00.000Z",
+        stalenessSeconds: 0,
+        readyAfterSeconds: 60,
+        staleAfterSeconds: 90,
+        nextRefreshAt: "2026-07-03T22:02:00.000Z",
+        shouldRefresh: false,
+        reason: "Provider snapshot is fresh.",
+      },
+      orderbookDepth: {
+        source: "reference-orderbook-depth-snapshot",
+        status: "ready",
+        latestAt: "2026-07-03T22:01:00.000Z",
+        stalenessSeconds: 0,
+        readyAfterSeconds: 60,
+        staleAfterSeconds: 90,
+        nextRefreshAt: "2026-07-03T22:02:00.000Z",
+        shouldRefresh: false,
+        reason: "Provider snapshot is fresh.",
+      },
+      chartHistory: {
+        source: "market-outcome-snapshot",
+        status: "ready",
+        latestAt: "2026-07-03T22:01:00.000Z",
+        stalenessSeconds: 0,
+        readyAfterSeconds: 60,
+        staleAfterSeconds: 90,
+        nextRefreshAt: "2026-07-03T22:02:00.000Z",
+        shouldRefresh: false,
+        reason: "Provider snapshot is fresh.",
+      },
+      ready: true,
+      refreshDue: false,
+      stale: false,
+      nextRefreshAt: "2026-07-03T22:02:00.000Z",
+    },
     postRefresh: {
       marketCount: 14,
       snapshotCount: 31,
       latestFetchedAt: "2026-07-03T22:01:00.000Z",
       oldestFetchedAt: "2026-07-03T22:01:00.000Z",
       sourceCount: 1,
+    },
+    postRefreshDepth: {
+      marketCount: 1,
+      snapshotCount: 8,
+      latestFetchedAt: "2026-07-03T22:01:00.000Z",
+      oldestFetchedAt: "2026-07-03T22:01:00.000Z",
+      sourceCount: 1,
+      lifecycle: {
+        source: "reference-orderbook-depth-snapshot",
+        status: "ready",
+        latestAt: "2026-07-03T22:01:00.000Z",
+        stalenessSeconds: 0,
+        readyAfterSeconds: 60,
+        staleAfterSeconds: 90,
+        nextRefreshAt: "2026-07-03T22:02:00.000Z",
+        shouldRefresh: false,
+        reason: "Provider snapshot is fresh.",
+      },
     },
     postRefreshHistory: {
       marketCount: 1,
@@ -189,6 +260,17 @@ function refreshMobileProvider() {
       oldestSnapshotAt: "2026-07-03T20:01:00.000Z",
       outcomeCount: 2,
       source: "market-outcome-snapshot",
+      lifecycle: {
+        source: "market-outcome-snapshot",
+        status: "ready",
+        latestAt: "2026-07-03T22:01:00.000Z",
+        stalenessSeconds: 0,
+        readyAfterSeconds: 60,
+        staleAfterSeconds: 90,
+        nextRefreshAt: "2026-07-03T22:02:00.000Z",
+        shouldRefresh: false,
+        reason: "Provider snapshot is fresh.",
+      },
     },
   });
 }
