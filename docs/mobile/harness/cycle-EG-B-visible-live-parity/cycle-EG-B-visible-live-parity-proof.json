@@ -1,7 +1,7 @@
 {
     "cycle":  "EG-B",
     "scope":  "Visible chart, line selector, orderbook ladder, and ticket carry-through parity",
-    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleLiveParity -Port 8315 -OutputDir docs/mobile/screenshots/cycle-EG-B-visible-live-parity -HierarchyOutputDir docs/mobile/harness/cycle-EG-B-visible-live-parity",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleLiveParity -Port 8316 -OutputDir docs/mobile/screenshots/cycle-EG-B-visible-live-parity -HierarchyOutputDir docs/mobile/harness/cycle-EG-B-visible-live-parity",
     "eventIdentity":  "Mexico vs. Ecuador",
     "result":  "pass",
     "assertions":  {
