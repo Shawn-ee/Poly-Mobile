@@ -948,3 +948,16 @@ Super Round DN implementation notes:
 
 - Cache invalidation now includes `/api/markets/:marketId/chart` for every compact provider market, using the same market set as orderbook invalidation.
 - Samsung tablet proof asserts `route-depth-ladder`, bid/ask level labels, provider source, provider market, provider condition, and provider token markers.
+
+## Cycle DO - Provider Filled Lifecycle
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider-backed filled order creation | `/api/orders` equivalent canonical service path in proof | POST | Canonical mobile API key with `orders:write` and internal trading beta | `marketId`, `outcomeId`, `side`, `type`, `price`, `size`, `contractSide`, `selection` with provider fields | Filled order id/status, fills, position | `ApiOrderRequest`, `Order`, `Trade`, `Position`, `Market`, `Outcome` | None in backend proof | Production route/device proof with a currently active real Polymarket market remains future work. |
+| Portfolio provider position | `/api/portfolio` | GET | Session user or canonical API key with `account:read` | None | `positions[].selection.referenceSource`, `externalSlug`, `externalMarketId`, `conditionId`, `referenceTokenId`, `referenceOutcomeLabel` | `Position`, `Market`, `Outcome` | None in proof | First-class immutable order/trade selection columns remain future hardening. |
+| Recent provider trade activity | `/api/portfolio/history` | GET | Session user or canonical API key with `account:read` | None | `recentTrades[].selection` provider fields | `Trade`, `Market`, `Outcome` | None in proof | Resolved-history settlement proof remains separate from filled-trade activity proof. |
+
+Cycle DO implementation notes:
+
+- `scripts/prove_mobile_filled_trade.ts` now creates provider-shaped market/outcome identity and submits the taker order through canonical order submission so the original ticket selection is preserved in `ApiOrderRequest`.
+- Samsung tablet proof uses the existing Portfolio history smoke and asserts the provider-filled proof trade is visible.

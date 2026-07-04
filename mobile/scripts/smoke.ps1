@@ -815,7 +815,7 @@ try {
     if ($ServerFilledTradeHistory) {
       Save-Screenshot -Name "cycle-current-holiwyn-server-filled-trade-history.png"
       $serverFilledTradeHistoryHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-filled-trade-history.xml"
-      Assert-HierarchyContains -Path $serverFilledTradeHistoryHierarchy -Expected @("portfolio-screen", "latest-activity-card", "Bought", "World Cup Mobile Filled Trade Proof", "YES", "Filled shares 2.00", "Exec price 50%", "Implied odds 2.0x", "1 USDT")
+      Assert-HierarchyContains -Path $serverFilledTradeHistoryHierarchy -Expected @("portfolio-screen", "latest-activity-card", "Bought", "World Cup Provider Filled Trade Proof", "YES", "Filled shares 2.00", "Exec price 50%", "Implied odds 2.0x", "1 USDT")
       return
     }
 
