@@ -53,3 +53,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Real portfolio performance chart history route. | P1 | Deferred | Current chart is deterministic UI proof only; backend history contract is still future work. |
 | App shell header/promo controls still appear above the Portfolio surface on tablet proof, unlike the cleaner Polymarket screenshot. | P1 | Deferred | Needs a broader app-shell/navigation cycle, not only Portfolio internals. |
 | Exact Polymarket chart curve, avatar gradient, watermark, and animation polish. | P2 | Deferred | Current cycle focuses on layout and tab behavior. |
+
+## Cycle FR - Portfolio Shell Parity
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| App shell header/promo controls appeared above the Portfolio surface, unlike Polymarket's full-screen Portfolio page. | P0 | Passed | `App.tsx` no longer renders the shared `Header` when `mainTab === "portfolio"`. Tablet proof asserts header controls are absent. |
+| Bottom tab navigation must remain available from Portfolio. | P0 | Passed | Header condition changed only the shared top header; tablet proof shows bottom tab navigation remains available. |
+| Exact native status bar/top spacing match. | P2 | Deferred | Needs final device polish after more page parity cycles. |
