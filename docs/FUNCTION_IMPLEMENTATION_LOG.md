@@ -71,3 +71,12 @@
 - User interactions supported: range selection now feeds a backend-shaped chart history object with range, source, status, timestamps, and value points. Android proof checks the selected `1W` range uses `deterministic-mobile-fallback` with ready status and seven points.
 - State transitions: `activeRange` remains local UI state. The derived chart history object changes when the selected range changes.
 - Known limitations: the real backend route `GET /api/portfolio/value-history?range={range}` is documented and typed in mobile, but not implemented in this mobile repo.
+
+## Cycle FU - Backend Route Available, Mobile Wiring Pending
+
+- Feature/page: Portfolio performance chart backend dependency.
+- Frontend components touched: documentation only in standalone mobile repo.
+- Important functions/services touched: no standalone mobile code changed. The main Holiwyn backend now exposes `GET /api/portfolio/value-history?range=1D|1W|1M|All` with the same `PortfolioValueHistory` payload shape typed in mobile.
+- User interactions supported: no new mobile interaction in this documentation-only mobile cycle.
+- State transitions: unchanged. `Portfolio` still uses deterministic fallback chart data until a mobile wiring cycle fetches the backend route in server mode.
+- Known limitations: Android still needs proof that server mode switches the chart source from `deterministic-mobile-fallback` to `portfolio-value-history-route`.
