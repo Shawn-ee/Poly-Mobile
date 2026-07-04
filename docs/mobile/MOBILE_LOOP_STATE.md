@@ -6,6 +6,20 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Heartbeat: Structural Live Detail Cycles CH-CJ
+
+Date: 2026-07-03
+Summary: Kept the loop on structural Polymarket parity instead of tiny visual passes. Cycle CH batched route-backed depth across compact visible live markets, Cycle CI made the compact depth batching policy auditable with generated time, requested market IDs, max levels, and TTL, and Cycle CJ wired safe provider quote snapshot status from the existing `ReferenceQuoteSnapshot` model into selected orderbook and compact live-detail contracts.
+Verification:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-event-detail.test.ts`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-event-detail.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+- Route probes: `docs/mobile/harness/cycle-current-mobile-live-batched-orderbook-depth-probe.json`, `docs/mobile/harness/cycle-current-mobile-live-depth-batching-policy-probe.json`, `docs/mobile/harness/cycle-current-mobile-live-provider-quote-snapshot-probe.json`
+Current gap state: PM-GAP-067 remains in progress with 0 unresolved P0 gaps for these selected contract scopes. Remaining P1 work is real provider ingestion for World Cup live markets, provider cache/invalidation or refresh sequencing, provider-owned liquidity/depth across every visible line market, and live stats only if the product keeps that surface.
+Next focus: continue structural live event parity by adding provider ingestion/refresh proof for World Cup live markets or a provider cache invalidation path before doing visual micro-polish.
+
 ## Heartbeat: Structural Live Detail Cycles CE-CG
 
 Date: 2026-07-03
