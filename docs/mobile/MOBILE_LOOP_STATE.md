@@ -12776,3 +12776,21 @@ Open blockers: None for continued Local MVP user-flow work.
 Risks: The EU backend event is disposable Polymarket-shaped proof data, not guaranteed production line-family breadth. Fresh S23 retail ticket proof is still gated by Polymarket account/location/deposit realities.
 
 Next three likely cycles: route-backed team-total or unavailable-state handling, full Home -> event -> ticket -> Portfolio journey proof, and loading/stale/unavailable state proof in the simple retail flow.
+
+### Heartbeat After Cycle EW
+
+Completed recent cycles: EU, EV, EW.
+
+Verified progress: Local MVP retail trading now reaches a materially stronger end-to-end state. EU proved route-backed spread/totals line tickets with server market data and mock fake-token order placement. EV proved the same route-backed spread ticket can submit through the real local server `/api/orders` path and show a server-synced open order in Portfolio. EW proved the Android Portfolio Cancel control calls server cancel and refreshes `/api/portfolio` plus `/api/portfolio/history` into visible canceled activity with the same spread line, period, provider source, and provider token identity.
+
+Current app state: Samsung tablet proof passes for a retail-first, orderbook-hidden route-backed spread flow: event detail -> simple ticket -> server fake-token order -> Portfolio open order -> Cancel -> canceled activity/history.
+
+Current backend state: `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/orders/:id`, `/api/portfolio`, and `/api/portfolio/history` are enough for the selected route-backed spread lifecycle. The local backend must run with internal trading beta enabled and kill switch disabled for the server-order/cancel proof path.
+
+Device strategy: Samsung tablet remains the Holiwyn proof device. Samsung S23 remains reference device for fresh Polymarket checks when a new UI/interaction feature needs reference interaction.
+
+Open blockers: None for continued Local MVP user-flow work.
+
+Risks: EV/EW still use disposable Polymarket-shaped proof events rather than guaranteed active production line-family breadth. Filled trade history, totals/team-total lifecycle breadth, and fresh S23 retail lifecycle recapture remain P1.
+
+Next three likely cycles: route-backed filled trade/history proof, totals/team-total lifecycle breadth, and a full Home -> live event -> ticket -> Portfolio journey proof using the retail default UI.
