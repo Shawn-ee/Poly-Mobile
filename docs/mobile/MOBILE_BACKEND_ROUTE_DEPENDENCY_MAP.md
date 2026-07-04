@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CL - Provider Refresh Policy Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Compact live-detail provider refresh policy | `/api/mobile/events/:slug/live-detail` | GET | Optional public viewing | None | `contract.batchedProviderQuoteSnapshotReadyCount`, `batchedProviderQuoteSnapshotStaleCount`, `batchedProviderQuoteSnapshotRefreshDueCount`, `batchedProviderQuoteSnapshotNextRefreshAt`, plus existing provider snapshot source/count | `ReferenceQuoteSnapshot` rows joined to compact `Market`/`Outcome` pairs | If snapshot rows are absent, counts remain zero and per-market snapshots report unavailable with `shouldRefresh=true` | Real provider-owned refresh execution, cache invalidation, and external error classification. |
+| Selected orderbook provider refresh policy | `/api/orderbook/:marketId/book?maxLevels=...` | GET | Optional public viewing | None | `providerQuoteSnapshot.refreshTtlSeconds`, `nextRefreshAt`, `shouldRefresh`, `refreshKey`, `status`, `stalenessSeconds`, `levels[]` | `ReferenceQuoteSnapshot`, `Market`, `Outcome`, open `Order` rows | Deterministic local proof rows are future-backend-shaped and keyed by `marketId`/`outcomeId`/`source`; route stays truthful when rows are missing or stale | Real external provider ingestion should update rows continuously and own invalidation/update sequence. |
+| Provider refresh policy proof | `mobile:live-provider-quote-snapshot-seed` plus direct route probe | Local script / GET routes | Local development only | `--eventSlug`, `--summaryPath`, `--apply` | Seed artifact plus route proof showing 14 ready markets, refresh TTL 60s, next-refresh timestamp, and selected second-half book policy | `ReferenceQuoteSnapshot` | N/A | Replace deterministic proof rows with real provider feed once production ingestion is in scope. |
+
+Cycle CL implementation notes:
+
+- This cycle does not invent frontend-only refresh state; it exposes refresh policy from backend-shaped provider snapshot rows.
+- It is still a partial PM-GAP-067 pass because the actual provider refresh worker/cache invalidator does not exist yet.
+
 ## Cycle CK - Live Provider Quote Snapshot Ready Proof
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

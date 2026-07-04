@@ -2,6 +2,53 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CL - Provider Refresh Policy Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 provider refresh/cache policy fields for compact live detail and selected orderbook routes.
+- This cycle closes the repeated "provider cache/invalidation unknown" debt far enough for mobile to reason about when quote snapshots are ready, stale, or due for refresh.
+
+Frontend components touched:
+
+- None. Samsung tablet proof was rerun to confirm the existing live event detail and selected second-half Book flow still work with the expanded provider snapshot contract.
+
+Backend/components touched:
+
+- `src/server/services/orderbookSnapshot.ts`
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+- `src/__tests__/public.orderbook-book.no-leak.test.ts`
+
+Important functions/services touched:
+
+- `buildPublicOrderbookSnapshot()` now exposes `providerQuoteSnapshot.refreshTtlSeconds`, `nextRefreshAt`, `shouldRefresh`, and `refreshKey`.
+- `buildMobileLiveEventDetail()` now aggregates provider snapshot readiness, stale, refresh-due, and earliest next-refresh state across compact live markets.
+- Existing `mobile:live-provider-quote-snapshot-seed` proof rows were reused so the new policy fields come from backend-shaped `ReferenceQuoteSnapshot` rows.
+
+User interactions supported:
+
+- A user opening the live game page and then the second-half Book still sees the same route-backed market/orderbook path.
+- The mobile app can now make future refresh/loading/stale decisions from route fields instead of inventing local refresh state.
+
+State transitions:
+
+- Fresh provider snapshot rows -> route reports `status=ready`, `shouldRefresh=false`, `nextRefreshAt=<fetchedAt+60s>`, and stable `refreshKey`.
+- Compact live detail aggregates those market-level states into `batchedProviderQuoteSnapshotReadyCount`, `StaleCount`, `RefreshDueCount`, and `NextRefreshAt`.
+
+Known limitations:
+
+- This is still not a real external provider refresh worker.
+- Provider-owned invalidation/update execution, provider error classification, and full provider depth ladders remain active PM-GAP-067 work.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-event-detail.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts src/__tests__/mobile-live-provider-quote-snapshot-seeding.test.ts`
+- `cmd /c npm.cmd run mobile:live-provider-quote-snapshot-seed`
+- Direct route probe saved to `docs/mobile/harness/cycle-current-mobile-live-provider-refresh-policy-probe.json`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+- `cmd /c npm.cmd run build`
+
 ## Cycle CK - Live Provider Quote Snapshot Ready Proof
 
 Feature/page worked on:
