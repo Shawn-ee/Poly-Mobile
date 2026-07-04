@@ -1,6 +1,6 @@
 # Cycle DU-C Orderbook Final Gate - PM-GAP-075
 
-Status: final pre-integration gate prepared by Agent C. PM-GAP-075 remains open until Agent A/B provide integrated Android proof that satisfies every P0 below.
+Status: integrated DU evidence reviewed by Lead. PM-GAP-075 remains open because backend provider-ready depth and visible Android Book proof are still separate evidence bundles.
 
 This gate does not certify final parity. It converts the remaining DT evidence gap into exact pass/fail checks Lead can apply after integration.
 
@@ -35,7 +35,14 @@ Reused Holiwyn progress evidence from DS/DT:
 - `docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/`
 - `docs/mobile/harness/cycle-DT-B-orderbook-interactions/`
 
-Fresh DU-C evidence: none captured by Agent C. This is a gate-definition cycle, not a device-control cycle.
+Fresh DU-C evidence: none captured by Agent C. This was a gate-definition cycle, not a device-control cycle.
+
+Integrated DU evidence added after Agent A/B merge:
+
+- Backend provider line proof: `docs/mobile/harness/cycle-DU-integrated-provider-line-orderbook-depth-proof.json`
+- Tablet UI proof: `docs/mobile/harness/cycle-DU-B-orderbook-settings/cycle-DU-B-holiwyn-orderbook-proof.json`
+- Tablet screenshots/XML: `docs/mobile/screenshots/cycle-DU-B-orderbook-settings/`, `docs/mobile/harness/cycle-DU-B-orderbook-settings/`
+- Integrated checks: mobile typecheck passed; focused mobile tests passed; backend Book/provider tests passed; `npm --prefix mobile run smoke:tablet:du-b-orderbook-settings` passed.
 
 ## Current Evidence Call
 
@@ -46,12 +53,21 @@ DT closes these earlier gaps:
 - Ask/bid ladder markers are side-labelled.
 - Backend `/api/orderbook/:marketId/book` can return provider-backed `ready` depth with `depthSource=provider-orderbook-depth`, `availability.status=ready`, `providerOrderbookDepth.status=ready`, `marketIdentity.selectorKey`, and 12 Price/Shares/Value rows.
 
-DT does not close these remaining gate areas:
+DT did not close these remaining gate areas:
 
 - Provider-backed ready depth is not visible in the same Android Book UI run.
 - Spread/period/line selector carry-through is not proven; DT Totals proof still reports `selected-line-none selected-period-none`.
 - `Decimalize book` or a documented equivalent setting is not implemented/proven.
 - Ticket/identity preservation still needs to be proven for the final selected Spread/period/line path and provider-backed ready depth path in the integrated app.
+
+DU closes these additional areas:
+
+- Backend route proof returns provider-backed ready first-half Spread depth with `selectorKey=spreads:first-half:1.5`, `period=first-half`, `line=1.5`, outcome ids, side-labelled levels, and Price/Shares/Value rows.
+- Android tablet proof shows a state-preserving Cents/Decimal Book display toggle.
+- Android tablet proof shows Spread `1.5` regulation and Totals `2.5` regulation selector carry-through into ladder context and ticket.
+- Yes/No switching and side-labelled ladder assertions remain intact.
+
+DU still does not close the final provider-ready visible UI requirement: the backend provider-ready market is not the same app-visible market/selector key rendered in the tablet Book proof.
 
 ## DU-C Final Gate Criteria
 
@@ -59,11 +75,11 @@ DT does not close these remaining gate areas:
 | --- | --- | --- | --- | --- |
 | OB-DU-C-P0-01 | P0 | Provider-backed ready depth must be visible in the Android Book UI, not only returned by backend JSON. | One integrated Android run showing the Book UI with `orderbook-source` or equivalent provider marker, ready status, event title, selected market identity, Price/Shares/Value columns, visible bid and ask rows, and spread. The same run must include proof JSON tying the visible market id/selector key to backend `depthSource=provider-orderbook-depth` and `providerOrderbookDepth.status=ready`. | Open |
 | OB-DU-C-P0-02 | P0 | Backend ready JSON proof must be app-visible; backend proof alone cannot pass. | Android XML/screenshot and proof JSON must reference the same market id or selector key as the backend ready-depth response. If the UI shows fallback, idle, unavailable, or a fixture-only ladder while backend JSON is ready, fail. | Open |
-| OB-DU-C-P0-03 | P0 | Spread selector carry-through must preserve family, period, line, side/outcome, and selected market identity through selector, ladder, and ticket. | Before/after Android selector proof for a Spread entry with a non-default line and at least one period marker, plus ladder and ticket XML/proof JSON showing matching family, period, line, side/outcome, market id or selector key, and odds/depth source. | Open |
-| OB-DU-C-P0-04 | P0 | Period and line state must not collapse to `none` when the selected reference-equivalent market is a Spread line/period market. | Proof JSON must show non-null/non-`none` line and period fields for the selected Spread path, or a documented backend reason that the exact Polymarket-visible Spread market is unavailable and therefore not eligible for pass. | Open |
-| OB-DU-C-P0-05 | P0 | Decimalize/equivalent Book display setting must be present and state-preserving. | Android screenshot/XML of the settings action showing `Decimalize book` or a documented Holiwyn equivalent; before/after proof must show toggling/opening it does not reset event, selected market, selected side, line, period, ready depth status, or ticket identity. | Open |
-| OB-DU-C-P0-06 | P0 | Ticket/identity preservation must cover the final integrated path, not only earlier Totals or fixture paths. | After selecting the Spread/period/line and viewing provider-backed ready depth, tapping a ladder row or ticket action must open a ticket whose XML/proof JSON preserves event, family, period, line, side/outcome, market id/selector key, provider/source identity, and row price/side when applicable. | Open |
-| OB-DU-C-P0-07 | P0 | Yes/No switching and side-labelled ladder proof must remain intact in the same final evidence bundle. | Proof JSON or XML must keep the DT-passed tab switch and side-labelled ask/bid assertions in the integrated DU run. Regression on these previously closed DT items fails the final gate. | Open until rerun |
+| OB-DU-C-P0-03 | P0 | Spread selector carry-through must preserve family, period, line, side/outcome, and selected market identity through selector, ladder, and ticket. | Before/after Android selector proof for a Spread entry with a non-default line and at least one period marker, plus ladder and ticket XML/proof JSON showing matching family, period, line, side/outcome, market id or selector key, and odds/depth source. | Passed for deterministic backend-shaped fixture data; must rerun against provider-ready backend market before final pass |
+| OB-DU-C-P0-04 | P0 | Period and line state must not collapse to `none` when the selected reference-equivalent market is a Spread line/period market. | Proof JSON must show non-null/non-`none` line and period fields for the selected Spread path, or a documented backend reason that the exact Polymarket-visible Spread market is unavailable and therefore not eligible for pass. | Passed for fixture UI and backend route independently; still needs same-market integrated proof |
+| OB-DU-C-P0-05 | P0 | Decimalize/equivalent Book display setting must be present and state-preserving. | Android screenshot/XML of the settings action showing `Decimalize book` or a documented Holiwyn equivalent; before/after proof must show toggling/opening it does not reset event, selected market, selected side, line, period, ready depth status, or ticket identity. | Passed as Cents/Decimal equivalent toggle in DU-B tablet proof |
+| OB-DU-C-P0-06 | P0 | Ticket/identity preservation must cover the final integrated path, not only earlier Totals or fixture paths. | After selecting the Spread/period/line and viewing provider-backed ready depth, tapping a ladder row or ticket action must open a ticket whose XML/proof JSON preserves event, family, period, line, side/outcome, market id/selector key, provider/source identity, and row price/side when applicable. | Passed for fixture Spread ticket; open for provider-ready backend market |
+| OB-DU-C-P0-07 | P0 | Yes/No switching and side-labelled ladder proof must remain intact in the same final evidence bundle. | Proof JSON or XML must keep the DT-passed tab switch and side-labelled ask/bid assertions in the integrated DU run. Regression on these previously closed DT items fails the final gate. | Passed in DU-B tablet proof |
 | OB-DU-C-P0-08 | P0 | Non-ready states must remain honest and distinct from ready provider depth. | Integrated proof must include at least one loading/stale/unavailable/empty/error state or a documented reason it cannot be triggered, and it must not use non-ready/fallback rows as provider-ready evidence. | Open |
 | OB-DU-C-P0-09 | P0 | Evidence must be integrated, Android-visible, and owned by the final integration cycle. | Committed screenshots/XML/proof JSON from the integrated DU build, plus a passing smoke/test summary. Worker-branch-only proof, backend-only proof, or screenshots generated by another agent outside the integrated run are insufficient. | Open |
 
@@ -102,8 +118,8 @@ The final proof JSON must include:
 
 ## Gate Decision
 
-Current result: Fail until integrated proof.
+Current result: Partial; fail until same-market provider-ready Android proof.
 
 PM-GAP-075 status: Open, not passed.
 
-Agent C will only mark PM-GAP-075 pass after Agent A/B integrated evidence proves the backend provider-ready route is visible in the Android Book UI and the Spread/period/line/settings/ticket identity checks above pass without regression.
+The next cycle should make the DU-A provider-ready first-half Spread market render in the Book UI and prove the app-visible selector key/market id matches the backend ready-depth response. Only then can Agent C consider PM-GAP-075 for pass.
