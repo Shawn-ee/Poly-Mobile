@@ -305,6 +305,181 @@ describe("public orderbook book API no-leak checks", () => {
     }
   });
 
+  test("GET /api/orderbook/[marketId]/book keeps stale provider depth distinct from ready", async () => {
+    buildPublicOrderbookSnapshot.mockResolvedValue({
+      bids: [{ outcomeId: "home", price: 0.57, size: 1200 }],
+      asks: [{ outcomeId: "home", price: 0.6, size: 1100 }],
+      depthSource: "provider-orderbook-depth",
+      depthReason: "Depth comes from provider orderbook ladder snapshots.",
+      providerOrderbookDepth: {
+        source: "reference-orderbook-depth-snapshot",
+        status: "stale",
+        levelCount: 2,
+        snapshotCount: 2,
+        latestFetchedAt: "2026-07-04T12:00:00.000Z",
+        latestUpdatedAt: "2026-07-04T12:00:01.000Z",
+        stalenessSeconds: 301,
+        staleAfterSeconds: 90,
+        refreshTtlSeconds: 60,
+        nextRefreshAt: "2026-07-04T12:01:00.000Z",
+        shouldRefresh: true,
+        isStale: true,
+        sources: ["polymarket-clob"],
+        reason: "Provider orderbook depth snapshot is older than 90 seconds.",
+      },
+      providerQuoteDepth: {
+        source: "reference-quote-snapshot",
+        levelCount: 0,
+        sizeSource: null,
+        isEstimatedSize: false,
+        reason: "No provider quote snapshot is available.",
+      },
+      providerQuoteSnapshot: {
+        source: "reference-quote-snapshot",
+        status: "unavailable",
+        snapshotCount: 0,
+        latestFetchedAt: null,
+        latestUpdatedAt: null,
+        stalenessSeconds: null,
+        staleAfterSeconds: 90,
+        refreshTtlSeconds: 60,
+        nextRefreshAt: null,
+        shouldRefresh: true,
+        refreshKey: null,
+        isStale: false,
+        acceptingOrders: false,
+        outcomeIds: [],
+        sources: [],
+        reason: "No provider quote snapshot is available for this market.",
+      },
+    });
+
+    const response = await getOrderbook(new NextRequest("http://localhost/api/orderbook/market-1/book?maxLevels=24"), {
+      params: Promise.resolve({ marketId: "market-1" }),
+    });
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toMatchObject({
+      marketIdentity: {
+        marketId: "market-1",
+        selectorKey: "main:full-game:default",
+        period: "full-game",
+        line: null,
+        outcomes: [
+          { id: "home" },
+          { id: "away" },
+        ],
+      },
+      availability: {
+        status: "ready",
+      },
+      depthSource: "provider-orderbook-depth",
+      providerOrderbookDepth: {
+        status: "stale",
+        reason: "Provider orderbook depth snapshot is older than 90 seconds.",
+      },
+      emptyState: null,
+      levels: [
+        { outcomeId: "home", side: "bid", price: 0.57, shares: 1200, total: 684, value: 684 },
+        { outcomeId: "home", side: "ask", price: 0.6, shares: 1100, total: 660, value: 660 },
+      ],
+    });
+  });
+
+  test("GET /api/orderbook/[marketId]/book exposes unavailable provider depth as empty state", async () => {
+    mockPrisma.market.findUnique.mockResolvedValue(mockMarket({
+      title: "Curacao vs Cote d'Ivoire: Total Goals 2.5",
+      marketType: "total_goals",
+      marketGroupKey: "totals",
+      marketGroupTitle: "Totals",
+      line: { toString: () => "2.5" },
+      unit: "goals",
+      outcomes: [
+        { id: "over", name: "Over", label: "Over 2.5", side: "over", displayOrder: 0, isTradable: true },
+        { id: "under", name: "Under", label: "Under 2.5", side: "under", displayOrder: 1, isTradable: true },
+      ],
+    }));
+    buildPublicOrderbookSnapshot.mockResolvedValue({
+      bids: [],
+      asks: [],
+      depthSource: "empty",
+      depthReason: "No local depth, provider orderbook ladder depth, or provider top-of-book depth is available.",
+      providerOrderbookDepth: {
+        source: "reference-orderbook-depth-snapshot",
+        status: "unavailable",
+        levelCount: 0,
+        snapshotCount: 0,
+        latestFetchedAt: null,
+        latestUpdatedAt: null,
+        stalenessSeconds: null,
+        staleAfterSeconds: 90,
+        refreshTtlSeconds: 60,
+        nextRefreshAt: null,
+        shouldRefresh: true,
+        isStale: false,
+        sources: [],
+        reason: "No provider orderbook depth snapshot is available.",
+      },
+      providerQuoteDepth: {
+        source: "reference-quote-snapshot",
+        levelCount: 0,
+        sizeSource: null,
+        isEstimatedSize: false,
+        reason: "No provider quote snapshot is available.",
+      },
+      providerQuoteSnapshot: {
+        source: "reference-quote-snapshot",
+        status: "unavailable",
+        snapshotCount: 0,
+        latestFetchedAt: null,
+        latestUpdatedAt: null,
+        stalenessSeconds: null,
+        staleAfterSeconds: 90,
+        refreshTtlSeconds: 60,
+        nextRefreshAt: null,
+        shouldRefresh: true,
+        refreshKey: null,
+        isStale: false,
+        acceptingOrders: false,
+        outcomeIds: [],
+        sources: [],
+        reason: "No provider quote snapshot is available for this market.",
+      },
+    });
+
+    const response = await getOrderbook(new NextRequest("http://localhost/api/orderbook/market-1/book?maxLevels=24"), {
+      params: Promise.resolve({ marketId: "market-1" }),
+    });
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toMatchObject({
+      marketIdentity: {
+        marketId: "market-1",
+        selectorKey: "totals:full-game:2.5",
+        marketFamily: "total",
+        period: "full-game",
+        line: "2.5",
+        outcomes: [
+          { id: "over" },
+          { id: "under" },
+        ],
+      },
+      availability: {
+        status: "ready",
+      },
+      depthSource: "empty",
+      providerOrderbookDepth: {
+        status: "unavailable",
+        reason: "No provider orderbook depth snapshot is available.",
+      },
+      providerQuoteDepth: {
+        levelCount: 0,
+      },
+      emptyState: "no-depth",
+      levels: [],
+    });
+  });
+
   test.each([
     {
       name: "moneyline",

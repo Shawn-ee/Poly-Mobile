@@ -1070,3 +1070,16 @@ Cycle DV implementation notes:
 - The focused smoke command first runs the backend provider depth proof and then the Samsung tablet proof, so the app-visible markers are tied to the same seeded market id and selector key as the route JSON.
 - The mobile UI now exposes `selected-selector-key-*` accessibility metadata for audit proof only; provider ids are not user-facing copy.
 - DV closes the previous backend-only evidence gap for PM-GAP-075 without weakening the requirement that provider-backed ready depth must be Android-visible.
+
+## Cycle DW-A - Provider Orderbook State Matrix
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider Book ready/non-ready state matrix | `/api/orderbook/:marketId/book?maxLevels=24` | GET | Public visibility guard; private markets still use existing access checks | Query params only: optional `outcomeId`, optional `maxLevels` capped at 200 | `depthSource`, `availability.status`, `providerOrderbookDepth.status`, `providerOrderbookDepth.reason`, `emptyState`, `marketIdentity.marketId`, `marketIdentity.selectorKey`, `marketIdentity.period`, `marketIdentity.line`, `marketIdentity.outcomes[].id`, `levels[].outcomeId`, `levels[].side`, `levels[].price`, `levels[].shares`, `levels[].value` | `Market`, active `Outcome`, `ReferenceOrderbookDepthSnapshot`; proof clears local `Order` rows and `ReferenceQuoteSnapshot` rows for the disposable market | None. The unavailable state returns `depthSource=empty`, `providerOrderbookDepth.status=unavailable`, and `emptyState=no-depth`; it is not counted as ready route depth | Event-level sibling selector/options and production recurring provider refresh remain outside this focused backend state proof. |
+| Focused DW-A proof harness | `scripts/prove_mobile_dw_provider_orderbook_state_matrix.ts` | Local script calling route | Local development/server only | Optional `--baseUrl`, `--eventSlug`, `--output` | Writes `docs/mobile/harness/cycle-DW-A-provider-orderbook-state-matrix.json` with unavailable, stale, and ready route snapshots for one provider-shaped totals market | Upserts a disposable World Cup-style `Event`/`Market`/`Outcome` set, clears proof-market local and quote fallback inputs, then writes stale and fresh provider ladder rows | None. The proof fails if fresh ready state is not `provider-orderbook-depth` or if empty/unavailable is treated as ready evidence | Requires an available local database and Next server for the HTTP route probe. |
+
+Cycle DW-A implementation notes:
+
+- The DW-A matrix closes the DV harness gap by proving one provider-shaped selected market can report unavailable/empty, stale, and ready provider ladder states through the same Book route contract.
+- Ready evidence is accepted only when `depthSource=provider-orderbook-depth` and `providerOrderbookDepth.status=ready`; the unavailable state clears quote snapshots so fallback quote rows cannot satisfy the ready assertion.
+- The artifact records selector identity (`totals:regulation:2.5`), period, line, selected market id, and outcome ids in each matrix state.
