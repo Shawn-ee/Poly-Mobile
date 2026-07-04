@@ -16,15 +16,23 @@ export function BottomTabs({
   tab,
   setTab,
   t,
+  portfolioValue,
 }: {
   tab: MainTab;
   setTab: (tab: MainTab) => void;
   t: BottomTabCopy;
+  portfolioValue?: number;
 }) {
+  const portfolioValueLabel =
+    typeof portfolioValue === "number" && Number.isFinite(portfolioValue)
+      ? portfolioValue >= 1000
+        ? `$${Math.round(portfolioValue / 1000)}K`
+        : `$${Math.round(portfolioValue)}`
+      : t.portfolio;
   const items: Array<[PrimaryTab, keyof typeof Ionicons.glyphMap, string]> = [
     ["home", "compass", t.home],
     ["live", "radio", t.live],
-    ["portfolio", "person-circle-outline", t.portfolio],
+    ["portfolio", "person-circle-outline", portfolioValueLabel],
     ["search", "search", t.search],
   ];
 
@@ -33,13 +41,13 @@ export function BottomTabs({
       {items.map(([key, icon, text]) => (
         <Pressable
           key={key}
-          accessibilityLabel={`holiwyn-${key}-tab`}
+          accessibilityLabel={key === "portfolio" ? `holiwyn-${key}-tab ${t.portfolio} portfolio-tab-value-${portfolioValueLabel}` : `holiwyn-${key}-tab`}
           testID={`holiwyn-${key}-tab`}
           style={styles.tabButton}
           onPress={() => setTab(key)}
         >
           <Ionicons name={icon} size={26} color={tab === key ? "#1d6dff" : "#64748b"} />
-          <Text style={[styles.tabText, tab === key && styles.tabTextActive]}>{text}</Text>
+          <Text adjustsFontSizeToFit minimumFontScale={0.78} numberOfLines={1} style={[styles.tabText, tab === key && styles.tabTextActive]}>{text}</Text>
         </Pressable>
       ))}
     </View>
@@ -49,6 +57,6 @@ export function BottomTabs({
 const styles = StyleSheet.create({
   tabs: { height: 74, flexDirection: "row", backgroundColor: "#080d16", borderTopWidth: 1, borderTopColor: "#1f2937" },
   tabButton: { flex: 1, alignItems: "center", justifyContent: "center", gap: 3 },
-  tabText: { color: "#64748b", fontWeight: "800", fontSize: 12 },
+  tabText: { color: "#64748b", fontWeight: "800", fontSize: 12, maxWidth: 76 },
   tabTextActive: { color: "#1d6dff" },
 });

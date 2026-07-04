@@ -128,3 +128,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Ticket submit control did not expose proof-friendly swipe state. | P0 | Passed | `SwipeSubmitControl` now exposes `swipe-submit-gesture-required`, state, progress, and handle labels; tablet XML proof includes the labels. |
 | Blue submit footer looked flatter than the reference swipe zone. | P1 | Passed | Added layered blue footer bands and an armed handle state; tablet screenshot proof passed. |
 | Exact native blur/continuous gesture physics and removing tap fallback entirely. | P2 | Open | Tap fallback remains for accessibility and legacy smoke flows. |
+
+## Cycle GA - Bottom Navigation Portfolio Value
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Bottom Portfolio tab still showed a generic `Portfolio` label instead of Polymarket's account-value style label. | P0 | Passed | `BottomTabs` now renders compact `accountPortfolioValue` such as `$10K`; tablet XML proof passed. |
+| Tests still need a stable Portfolio destination label after visible text changes. | P0 | Passed | Accessibility label preserves `Portfolio`, `holiwyn-portfolio-tab`, and adds `portfolio-tab-value-*`; tablet proof verifies `portfolio-tab-value-$10K`. |
+| Exact Polymarket tab icon, badge, and animation polish. | P2 | Open | Deferred. |

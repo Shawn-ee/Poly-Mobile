@@ -1549,7 +1549,7 @@ export default function App() {
             )}
           </>
         )}
-        {!selectedEvent && <BottomTabs tab={mainTab} setTab={setMainTab} t={t} />}
+        {!selectedEvent && <BottomTabs portfolioValue={accountPortfolioValue} tab={mainTab} setTab={setMainTab} t={t} />}
       </View>
       <TradeTicket
         locale={locale}

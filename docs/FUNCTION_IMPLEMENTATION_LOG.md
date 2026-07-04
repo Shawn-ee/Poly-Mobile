@@ -135,3 +135,14 @@
 - Validation: `npm run typecheck`; `npx vitest run src/__tests__/portfolioValueHistoryService.test.ts src/__tests__/portfolioPositionMetrics.test.ts src/__tests__/portfolioActivityMetrics.test.ts`; PowerShell parser check for `scripts/smoke.ps1`; Samsung tablet proof `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -LocalMvpTradeFlow -Port 8239`.
 - Proof artifacts: `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-EP-local-mvp-trade-flow\cycle-EP-holiwyn-local-mvp-ticket-ready.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-EP-local-mvp-trade-flow\cycle-EP-holiwyn-local-mvp-ticket-ready.xml`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-EP-local-mvp-trade-flow-proof.json`.
 - Known limitations: exact native gesture physics/blur remain P2.
+
+## Cycle GA - Bottom Navigation Portfolio Value
+
+- Feature/page: Bottom navigation shell.
+- Frontend components touched: `App.tsx`, `src/components/BottomTabs.tsx`, `scripts/smoke.ps1`.
+- Important functions/services touched: no backend/API changes. `BottomTabs` receives the already-computed `accountPortfolioValue` from `App.tsx`.
+- User interactions supported: the Portfolio tab remains tappable as before, but its visible label now shows a compact account value like `$10K`, closer to Polymarket's value-labeled Portfolio tab. Accessibility labels still include `Portfolio`, `holiwyn-portfolio-tab`, and `portfolio-tab-value-*`.
+- State transitions: unchanged. The label updates whenever `balance` or `positions` change because it derives from `accountPortfolioValue`.
+- Validation: `npm run typecheck`; `npx vitest run src/__tests__/portfolioValueHistoryService.test.ts src/__tests__/portfolioPositionMetrics.test.ts src/__tests__/portfolioActivityMetrics.test.ts`; PowerShell parser check for `scripts/smoke.ps1`; Samsung tablet proof `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -LocalMvpTradeFlow -Port 8240`.
+- Proof artifacts: `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-EP-local-mvp-trade-flow\cycle-EP-holiwyn-local-mvp-portfolio.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-EP-local-mvp-trade-flow\cycle-EP-holiwyn-local-mvp-portfolio.xml`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-EP-local-mvp-trade-flow-proof.json`.
+- Known limitations: exact Polymarket tab icon/badge animation remains P2.

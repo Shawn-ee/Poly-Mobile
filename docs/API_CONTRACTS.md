@@ -71,6 +71,8 @@ Cycle FY changes only Portfolio visual density. It keeps the same local/server P
 
 Cycle FZ changes only the ticket submit interaction proof and visual footer. It does not change the order request body, `POST /api/orders` expectations, local mock order payload, Portfolio handoff, or any backend route/schema contract.
 
+Cycle GA changes only bottom navigation presentation. The Portfolio tab value is derived from existing `accountPortfolioValue` state in `App.tsx`; no backend route, schema, request body, or response contract changes are required.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
