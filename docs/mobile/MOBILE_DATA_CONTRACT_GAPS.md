@@ -2,6 +2,35 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EI-A - Route-Backed Provider Status Proof
+
+Closed or narrowed:
+
+- PM-GAP-084 backend route proof is now explicit: `/api/mobile/events/:slug/live-detail` returns the tablet status fields from backend route data, including `event.liveDataStatus`, top-level and `contract.providerLifecycle`, selected `markets[].providerLifecycle.quote/orderbookDepth/chartHistory`, `chartHistoryStatus`, `orderbookDepthSource/orderbookDepthStatus`, `providerOrderbookDepth.status`, `selection`, and `orderbookIdentity`.
+- `docs/mobile/harness/cycle-EI-A-route-backed-status.json` records a disposable provider-backed route response with live data status, chart status, orderbook/availability status, selected market identity, source, reason, `nextRefreshAt`, `lastFetchedAt`, and a no fixture/mock-ready marker assertion.
+- Missing `OPTIC_ODDS_API_KEY` remains non-blocking for this route proof because the status fields come from Polymarket/CLOB-shaped provider quote, orderbook depth, and chart snapshot rows already consumed by live-detail.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Visible tablet rendering remains outside Agent A scope.
+- Production line-family readiness still depends on mapped provider markets and recurring refresh coverage; EI-A proves the route shape and a provider-backed selected market, not universal production data coverage.
+
+Schema mismatch:
+
+- No schema change was required. EI-A uses existing `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot` rows.
+
+Route mismatch:
+
+- No remaining PM-GAP-084 backend route-shape mismatch was found. Remaining risk is provider coverage/deployment, not missing lifecycle/status fields on live-detail.
+
+Temporary mock/static data:
+
+- No frontend mock/static data was added. The proof uses disposable backend rows and fails if the live-detail payload contains `mock-ready`, `fixture-ready`, or `frontend-fixture` markers.
+
+Future migration concern:
+
+- Keep tablet status rendering bound to `providerLifecycle` and selected market identity from live-detail, and keep missing optional line-provider enrichment separate from Polymarket quote/depth/chart readiness.
+
 ## Cycle EH-A - Provider Status Surface Contract
 
 Closed or narrowed:

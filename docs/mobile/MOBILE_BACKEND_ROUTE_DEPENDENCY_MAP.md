@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle EI-A - Route-Backed Provider Status Proof
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Tablet live-detail provider lifecycle/status rendering | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile route | Event slug | `event.liveDataStatus.source/status/lastUpdated/reason`, top-level and `contract.providerLifecycle.status/source/reason/ready/stale/refreshDue/unavailable/empty/notReady/nextRefreshAt/lastFetchedAt`, selected `markets[].providerLifecycle.quote/orderbookDepth/chartHistory.source/status/reason/nextRefreshAt/lastFetchedAt/ready/notReady`, `markets[].chartHistoryStatus.status/source/lastUpdated/nextRefreshAt`, `markets[].orderbookDepthSource/orderbookDepthStatus/providerOrderbookDepth.status`, and selected `markets[].selection` plus `markets[].orderbookIdentity` | Reads compact live `Event`, mapped `Market`, active `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot` | None. The EI-A route proof fails if `mock-ready`, `fixture-ready`, or `frontend-fixture` markers appear in the route payload. Missing `OPTIC_ODDS_API_KEY` is non-blocking for this live-detail route proof. | Visible tablet rendering remains Agent B scope. Production line-family coverage still depends on mapped provider markets and scheduled refresh coverage. |
+| Focused EI-A proof harness | `scripts/prove_mobile_ei_a_route_backed_status.ts` | Local script calling the route module | Local development database only | Optional `--output` / `--summaryPath` | JSON artifact records liveDataStatus, chart status, orderbook/availability status, selected market identity, provider source/reason/freshness fields, aggregate lifecycle status, missing Optic Odds non-blocking state, and no fixture/mock-ready markers | Creates a disposable provider-backed event and seeds provider quote, provider orderbook depth, and chart snapshot rows consumed by the real live-detail route | No frontend fallback and no mobile smoke fixture. Disposable backend rows use the same snapshot tables as production refresh code. | Requires local database. It is backend proof only and does not replace Android/tablet UI proof. |
+
+Cycle EI-A implementation notes:
+
+- `docs/mobile/harness/cycle-EI-A-route-backed-status.json` records the focused route proof for PM-GAP-084.
+- No route/service source change was required after EH-A; EI-A verifies the existing `/api/mobile/events/:slug/live-detail` response is route-backed and tablet-renderable.
+- No mobile UI, smoke scripts, schema files, or audit docs were changed.
+
 ## Cycle EH-A - Provider Status Surface Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

@@ -583,6 +583,117 @@ describe("mobile live event detail contract", () => {
     });
   });
 
+  test("keeps tablet status fields route-backed on the selected live-detail market", async () => {
+    const payload = await serializeMobileLiveEventDetail({
+      event: {
+        id: "event-1",
+        slug: "world-cup-match",
+        title: "Curacao vs Cote d'Ivoire",
+        description: "M55",
+        category: "sports",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        eventType: "match",
+        homeTeamName: "Curacao",
+        awayTeamName: "Cote d'Ivoire",
+        startTime: new Date("2026-06-25T20:00:00.000Z"),
+        status: "LIVE",
+        liveStatus: "in_progress",
+        period: "2H",
+        clock: "67'",
+        homeScore: 0,
+        awayScore: 1,
+        imageUrl: null,
+        metadata: {
+          mobileLiveDetail: {
+            liveDataStatus: {
+              source: "provider-feed",
+              status: "ready",
+              lastUpdated: "2026-07-03T22:00:10.000Z",
+              reason: "Provider heartbeat accepted.",
+            },
+          },
+        },
+        markets: [market({ id: "market-main", displayOrder: 0, referenceSource: "polymarket" })],
+      },
+      chartSnapshots: [
+        { marketId: "market-main", outcomeId: "home", ts: new Date("2026-07-03T22:00:00.000Z"), price: new Prisma.Decimal("0.59") },
+      ],
+    });
+
+    const selectedMarket = payload.markets[0];
+    expect(payload.event.liveDataStatus).toMatchObject({
+      source: "provider-feed",
+      status: "ready",
+      lastUpdated: "2026-07-03T22:00:10.000Z",
+      reason: "Provider heartbeat accepted.",
+    });
+    expect(selectedMarket.selection).toMatchObject({
+      marketId: "market-main",
+      selectorKey: "main:full-game:default",
+      marketFamily: "moneyline",
+      chart: {
+        targetMarketId: "market-main",
+        status: "ready",
+        source: "polymarket-clob-prices-history",
+      },
+    });
+    expect(selectedMarket.orderbookIdentity).toMatchObject({
+      marketId: "market-main",
+      selectorKey: "main:full-game:default",
+      providerSource: "polymarket",
+      providerStatus: "ready",
+      depthSource: "provider-orderbook-depth",
+      depthStatus: "ready",
+      nextRefreshAt: "2026-07-03T22:01:09.000Z",
+      refreshedAt: "2026-07-03T22:00:09.000Z",
+      ready: true,
+      reason: "Depth comes from provider orderbook ladder snapshots.",
+    });
+    expect(selectedMarket.providerLifecycle).toMatchObject({
+      source: "mobile-live-detail-market",
+      status: "ready",
+      ready: true,
+      notReady: false,
+      stale: false,
+      refreshDue: false,
+      unavailable: false,
+      reason: "Provider lifecycle surfaces are ready.",
+      nextRefreshAt: "2026-07-03T22:01:00.000Z",
+      lastFetchedAt: "2026-07-03T22:00:10.000Z",
+      quote: {
+        source: "polymarket",
+        status: "ready",
+        reason: "Provider quote snapshot is fresh.",
+        nextRefreshAt: "2026-07-03T22:01:10.000Z",
+        lastFetchedAt: "2026-07-03T22:00:10.000Z",
+        ready: true,
+        notReady: false,
+      },
+      orderbookDepth: {
+        source: "polymarket-clob",
+        status: "ready",
+        reason: "Provider orderbook depth snapshot is fresh.",
+        nextRefreshAt: "2026-07-03T22:01:09.000Z",
+        lastFetchedAt: "2026-07-03T22:00:09.000Z",
+        ready: true,
+        notReady: false,
+      },
+      chartHistory: {
+        source: "polymarket-clob-prices-history",
+        status: "ready",
+        reason: "Provider chart history is fresh.",
+        nextRefreshAt: "2026-07-03T22:01:00.000Z",
+        lastFetchedAt: "2026-07-03T22:00:00.000Z",
+        ready: true,
+        notReady: false,
+      },
+    });
+    expect(JSON.stringify(payload).toLowerCase()).not.toContain("mock-ready");
+    expect(JSON.stringify(payload).toLowerCase()).not.toContain("fixture-ready");
+    expect(JSON.stringify(payload).toLowerCase()).not.toContain("frontend-fixture");
+  });
+
   test("serializes compact market availability from backend market timestamps", async () => {
     const payload = await serializeMobileLiveEventDetail({
       event: {
