@@ -79,6 +79,7 @@ const expectedEventSummaryKeys = [
   "activeMarketCount",
   "awayTeamName",
   "category",
+  "chartHistory",
   "createdAt",
   "description",
   "eventType",
@@ -91,6 +92,7 @@ const expectedEventSummaryKeys = [
   "image",
   "imageUrl",
   "leagueKey",
+  "liveStats",
   "marketCount",
   "metadata",
   "slug",
@@ -174,6 +176,32 @@ const market = {
   mechanism: "ORDERBOOK",
 };
 
+const mobileListMarket = {
+  ...market,
+  event: baseEvent,
+  category: null,
+  tags: [],
+  outcomeSnapshots: [],
+  marketGroupKey: "main",
+  marketGroupTitle: "Match Winner",
+  displayOrder: 0,
+  line: null,
+  unit: null,
+  period: "full-game",
+  participantType: null,
+  participantName: null,
+  participantId: null,
+  propCategory: null,
+  sourceUpdatedAt: now,
+  updatedAt: now,
+  rulesText: null,
+  outcomes: market.outcomes.map((outcome) => ({
+    ...outcome,
+    side: outcome.id === "home" ? "home" : "away",
+    resolvedResult: null,
+  })),
+};
+
 describe("public event API no-leak checks", () => {
   beforeEach(() => {
     mockPrisma.event.findMany.mockReset();
@@ -220,6 +248,48 @@ describe("public event API no-leak checks", () => {
       sportKey: "soccer",
       marketCount: 1,
       activeMarketCount: 1,
+    });
+    expectNoForbiddenKeys(body);
+  });
+
+  test("GET /api/events can include mobile compact markets when explicitly requested", async () => {
+    mockPrisma.event.findMany.mockResolvedValue([
+      {
+        ...baseEvent,
+        markets: [mobileListMarket],
+      },
+    ]);
+
+    const response = await listEvents(
+      new NextRequest("http://localhost/api/events?category=sports&sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1"),
+    );
+
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expectOnlyKeys(body, ["events"]);
+    expect(body.events).toHaveLength(1);
+    expectOnlyKeys(body.events[0], [
+      ...expectedEventSummaryKeys,
+      "groupedSummary",
+      "markets",
+      "topOutcomes",
+    ]);
+    expect(body.events[0]).toMatchObject({
+      slug: "france-vs-argentina",
+      marketCount: 1,
+      activeMarketCount: 1,
+      markets: [
+        {
+          id: "market-1",
+          marketGroupTitle: "Match Winner",
+          marketType: "match_winner",
+          period: "full-game",
+          outcomes: [
+            { id: "home", label: "France", side: "home", isTradable: true },
+            { id: "away", label: "Argentina", side: "away", isTradable: true },
+          ],
+        },
+      ],
     });
     expectNoForbiddenKeys(body);
   });

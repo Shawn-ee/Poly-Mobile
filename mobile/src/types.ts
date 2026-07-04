@@ -124,6 +124,7 @@ export type EventSummary = {
   liveDataStatus?: EventLiveDataStatus;
   chartHistory?: EventChartPoint[];
   topOutcomes?: string[];
+  markets?: Market[];
 };
 
 export type Market = {

@@ -1530,3 +1530,15 @@ Cycle FA implementation notes:
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Server fake-token order on provider-backed ticket | `/api/orders` | POST | Mobile/API credential with `orders:write`; internal trading gate enabled | `marketId`, `outcomeId`, `side`, `type`, `price`, `size`, optional `contractSide`, and `selection` | Success path unchanged; unavailable path returns/stores `{ error: { code: "MARKET_UNAVAILABLE" } }` with HTTP `409` | `ApiOrderRequest`, `Market`, `ReferenceQuoteSnapshot`, `Order` only on accepted path | None. Provider-backed unavailable markets require provider quote data. | Future: expose this server rejection in mobile only if a submit bypass/error path becomes visible. |
 | Provider quote tradability guard | Latest `ReferenceQuoteSnapshot` for market/outcome | Internal Prisma read | Backend only | Selected `marketId` and `outcomeId` from order payload | `acceptingOrders`, `reason`, `fetchedAt`, provider identity on `Market` | `ReferenceQuoteSnapshot`, provider identity fields on `Market` | Non-provider markets keep existing local behavior. | Production provider refresh breadth must keep quote snapshots fresh for real active events. |
+
+## Cycle FC - Route-Backed Event Discovery Cards
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home/Search/Live World Cup discovery | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1` | GET | Public viewing | None | `events[].slug`, title/team/status/live clock fields, `marketCount`, `activeMarketCount`, and opt-in `events[].markets[]` compact market data | `Event`, `Market`, `Outcome`, quote/depth read models via `serializeMarketReadModel` | Mobile keeps local World Cup fixtures if backend discovery fails or returns no usable markets. | Production active Polymarket event breadth remains P1. |
+| Compact route-backed event card markets | `events[].markets[]` from `/api/events` opt-in payload | GET payload field | Public viewing | Query param `includeMobileMarkets=1` | `id`, `marketGroupKey`, `marketGroupTitle`, `marketType`, `period`, `line`, provider source/market/condition/token fields, outcomes, best bid/ask, price | `Market`, `Outcome`, `ReferenceQuoteSnapshot`, orderbook pricing read model | None for returned events; no ad hoc frontend-only market structure is created. | The route currently returns compact market data, not full event-detail chart/live stats. Detail route still owns rich game-page data. |
+
+Cycle FC implementation notes:
+
+- Mobile discovery no longer sends a default text search for `World Cup`; structured `sportKey=soccer` and `leagueKey=world_cup` prevent valid team-titled World Cup events from being hidden.
+- Tablet evidence proves the route-backed disposable event `mobile-el-a-provider-breadth-e0acffe0` appears on Home with compact outcomes and no default orderbook UI.

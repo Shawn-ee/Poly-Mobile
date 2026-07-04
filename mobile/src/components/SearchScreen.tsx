@@ -194,9 +194,9 @@ export function SearchScreen({
                     <Text style={styles.resultKicker}>{label(locale, { label: "Sports - Soccer", zhLabel: "\u4f53\u80b2 - \u8db3\u7403" })}</Text>
                     <Text style={styles.resultTitle}>{label(locale, event)}</Text>
                     <View style={styles.resultStats}>
-                      <Text style={styles.resultStat}>{money(volume)} Vol.</Text>
+                      <Text style={styles.resultStat}>{t.volume}: {money(volume)}</Text>
                       <Text style={styles.resultStat}>{money(Math.round(volume * 0.08))} today</Text>
-                      <Text style={styles.resultStat}>{money(liquidity)} Liq.</Text>
+                      <Text style={styles.resultStat}>{t.liquidity}: {money(liquidity)}</Text>
                     </View>
                     <View style={styles.resultStats}>
                       <Text style={styles.resultStat}>Chat {420 + outcomeCount * 37}</Text>

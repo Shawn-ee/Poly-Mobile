@@ -2936,3 +2936,41 @@ Decision:
 - Unresolved P0 gaps: 0 for selected backend feature.
 - Remaining P1/P2 gaps: production active-event provider breadth and future visible server-error proof if unavailable submit ever becomes reachable.
 - Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Route-Backed Event Discovery Cards
+
+Cycle: FC
+
+Lead Agent target: Close the Local MVP entry-point gap where Home/Search discovery could still depend on local fixture markets or a deep-linked event instead of server event discovery.
+
+Reference Audit Agent: Product steering audit from current Local MVP retail-flow direction. Default discovery should lead users into football events and simple tickets without exposing Book/orderbook by default.
+
+Implementation Agent: Optional compact market payload on `/api/events`, mobile discovery request/wiring, Search stats labels, and focused Android artifact gate.
+
+Audit Gate Agent: Focused route tests, mobile API tests, typechecks, provider-shaped event route proof, and Samsung tablet Home hierarchy proof.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8272`.
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-event.json`
+- `docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-android-proof.json`
+- `docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-home.xml`
+- `docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-home.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FC-DISC-P0-01 | P0 | Pass | `/api/events?includeMobileMarkets=1` returns compact route-backed markets for the seeded World Cup event. | N/A |
+| FC-DISC-P0-02 | P0 | Pass | Mobile request uses `sportKey=soccer` and `leagueKey=world_cup` without a default text search that hides team-titled events. | N/A |
+| FC-DISC-P0-03 | P0 | Pass | Tablet Home hierarchy shows `EL-A Provider Breadth World Cup Live`, `Breadth Home`, `Breadth Away`, and outcome buttons. | N/A |
+| FC-DISC-P0-04 | P0 | Pass | Default orderbook markers are absent from the Android Home hierarchy. | N/A |
+| FC-DISC-P1-01 | P1 | Open | Production active Polymarket event breadth is not covered by the disposable proof. | Map/import more real active provider events. |
+
+Decision:
+
+- Pass/fail: Pass for selected route-backed discovery-card feature.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: production active provider breadth and legacy broad nav smoke expectations that are still fixture-specific.
+- Next cycle required: yes, continue Local MVP user-flow breadth.

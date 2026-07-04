@@ -44,15 +44,13 @@ export class PolyApi {
 
   listWorldCupEvents(search = "") {
     const params = new URLSearchParams({
-      category: "sports",
       sportKey: "soccer",
       leagueKey: "world_cup",
     });
     if (search.trim()) {
       params.set("search", search.trim());
-    } else {
-      params.set("search", "World Cup");
     }
+    params.set("includeMobileMarkets", "1");
     return this.request<{ events: EventSummary[] }>(`/api/events?${params.toString()}`);
   }
 

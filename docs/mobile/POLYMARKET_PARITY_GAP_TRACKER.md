@@ -437,3 +437,11 @@ For every UI element or interaction, answer:
 - FB closes FA's server-side P1 guardrail: provider-backed markets without an accepting provider quote now reject canonical order submission with `MARKET_UNAVAILABLE`.
 - Focused tests prove rejected attempts are stored as failed `ApiOrderRequest` rows, no order is created, and accepting provider quote snapshots remain tradable.
 - Remaining P1: production active provider breadth/freshness and mobile-visible server error proof only if an unavailable submit path becomes reachable again.
+
+## Cycle FC Gap Tracker Update
+
+- PM-GAP-098 is opened and verified for Local MVP route-backed event discovery cards.
+- FC closes the P0 entry-point gap where Home/Search could still depend on local fixture markets or a hand-picked deep link before the user reached the retail ticket flow.
+- `/api/events?includeMobileMarkets=1` now returns compact backend-shaped markets for mobile discovery, and mobile consumes them before falling back to detail fetches.
+- Samsung tablet Home hierarchy proof passes for a route-backed disposable World Cup live event with compact outcomes and hidden default orderbook controls.
+- Remaining P1: production active Polymarket World Cup provider breadth, and updating the older broad `WholeAppNavDiscovery` smoke path so it can accept route-backed event identities instead of only Mexico/Ecuador.

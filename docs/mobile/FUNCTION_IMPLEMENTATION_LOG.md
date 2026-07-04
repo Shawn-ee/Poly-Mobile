@@ -5024,3 +5024,55 @@ Proof artifacts:
 Known limitations:
 
 - FB is a backend/provider guard with no new mobile UI. FA remains the Android-visible proof that unavailable markets are disabled in the simple ticket.
+
+## Cycle FC - Route-Backed Event Discovery Cards
+
+Feature/page worked on:
+
+- Local MVP Home/Search discovery for World Cup football events backed by the server event list route.
+
+Frontend/harness/backend files touched:
+
+- `src/app/api/events/route.ts`
+- `src/__tests__/public.events.no-leak.test.ts`
+- `mobile/App.tsx`
+- `mobile/src/api.ts`
+- `mobile/src/types.ts`
+- `mobile/src/components/SearchScreen.tsx`
+- `mobile/src/__tests__/api.test.ts`
+- `scripts/prove_mobile_fc_route_discovery_artifacts.ts`
+
+Important functions/services touched:
+
+- `GET /api/events` now supports `includeMobileMarkets=1` as an explicit mobile opt-in for compact serialized markets.
+- `PolyApi.listWorldCupEvents` now relies on structured `sportKey=soccer` and `leagueKey=world_cup` filters instead of adding a default text search that can hide valid team-titled World Cup events.
+- `loadBackendWorldCup` can render route-backed compact market summaries immediately and only falls back to per-event detail fetches when summaries do not include markets.
+- Search result rows now expose explicit `Volume:` and `Liquidity:` labels, matching Home card stats and the discovery proof.
+
+User interactions supported/proven:
+
+- Open Holiwyn on the Samsung tablet in server market-data mode.
+- See a disposable provider-backed World Cup live event discovered on Home through `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1`.
+- See route-backed compact outcomes and probability buttons on the Home event card.
+- Default orderbook UI remains hidden.
+
+Validation:
+
+- `npm run test:mobile-api -- api.test.ts worldCupAdapter.test.ts`
+- `npm run test:jest -- src/__tests__/public.events.no-leak.test.ts`
+- `npx tsc --noEmit`
+- `npm --prefix mobile run typecheck`
+- `npx tsx scripts/prove_mobile_el_a_provider_breadth.ts --output=docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-event.json`
+- `npx tsx scripts/prove_mobile_fc_route_discovery_artifacts.ts --xml=docs/mobile/harness/cycle-current-holiwyn-home.xml --eventProof=docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-event.json --output=docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-android-proof.json`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-event.json`
+- `docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-android-proof.json`
+- `docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-home.xml`
+- `docs/mobile/harness/cycle-FC-route-backed-discovery/cycle-FC-route-backed-discovery-home.png`
+
+Known limitations:
+
+- The broad `WholeAppNavDiscovery` smoke path remains fixture-specific and expects the older Mexico/Ecuador mock card. FC added a focused route-backed discovery artifact gate instead of changing that legacy fixture proof.
+- FC proves disposable provider-shaped event discovery; production active Polymarket provider breadth remains P1.

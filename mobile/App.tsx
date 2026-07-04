@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BackHandler, Linking, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PolyApi } from "./src/api";
-import { normalizeEventDetail } from "./src/adapters/worldCupAdapter";
+import { normalizeEventDetail, normalizeEventSummary } from "./src/adapters/worldCupAdapter";
 import { AccountScreen } from "./src/components/AccountScreen";
 import { BottomTabs } from "./src/components/BottomTabs";
 import { EventDetail } from "./src/components/EventDetail";
@@ -913,8 +913,14 @@ export default function App() {
   const loadBackendWorldCup = useCallback(async () => {
     try {
       const payload = await api.listWorldCupEvents();
+      const summaryEvents = payload.events
+        .map((event) => normalizeEventSummary(event, event.markets ?? []))
+        .filter((event) => event.markets.length > 0);
       const details = await Promise.all(
-        payload.events.slice(0, 8).map(async (event) => {
+        payload.events
+          .filter((event) => !event.markets?.length)
+          .slice(0, Math.max(0, 8 - summaryEvents.length))
+          .map(async (event) => {
           try {
             return normalizeEventDetail(await api.getEvent(event.slug));
           } catch {
@@ -922,7 +928,10 @@ export default function App() {
           }
         }),
       );
-      const normalized = details.filter((event): event is Event => Boolean(event));
+      const normalized = [
+        ...summaryEvents,
+        ...details.filter((event): event is Event => Boolean(event)),
+      ];
       if (mounted.current && normalized.length > 0) {
         if (ORDER_MODE !== "server") {
           setEvents(normalized);

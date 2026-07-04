@@ -3453,3 +3453,32 @@ Temporary mock/static data:
 Future migration concern:
 
 - Agent B needs Android proof that visible chart, line selector, orderbook, and ticket handoff consume `markets[].selection` rather than local display-only structures.
+
+## Cycle FC - Route-Backed Event Discovery Cards
+
+Closed or narrowed:
+
+- Home/Search discovery can consume compact server market data directly from `/api/events?includeMobileMarkets=1`.
+- Mobile discovery no longer applies a default `World Cup` text search that hides valid team-titled events already identified by `sportKey=soccer` and `leagueKey=world_cup`.
+- Search result stats now expose explicit `Volume:` and `Liquidity:` labels, matching Home card expectations.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Production active Polymarket World Cup event breadth remains P1; FC uses a disposable provider-shaped event to prove the contract.
+- Compact discovery markets do not replace full live-detail chart/live stats/status data.
+
+Schema mismatch:
+
+- No schema migration was required. Existing `Event`, `Market`, `Outcome`, and provider snapshot/read-model fields cover the compact discovery contract.
+
+Route mismatch:
+
+- `/api/events?includeMobileMarkets=1` is sufficient for discovery cards. `/api/mobile/events/:slug/live-detail` remains the richer game-page route.
+
+Temporary mock/static data:
+
+- No arbitrary frontend-only market data was added. The disposable event was created in the backend and returned through the public event route.
+
+Future migration concern:
+
+- If production event discovery grows beyond compact cards, add pagination/status/source controls rather than overloading the first-screen payload with full event detail.
