@@ -194,3 +194,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Outcome rail needed proof that it opens the ticket directly, not only that it renders on the card. | P0 | Passed | Smoke taps `event-outcome-retail-*`; Samsung tablet proof passed. |
 | Old hidden row-style outcome layout should not remain in the rendered MVP card hierarchy. | P0 | Passed | Old row style changed to `display: none`; tablet proof used the rail path. |
 | Card tap still needs to open Event Detail after direct rail ticket close. | P0 | Passed | Smoke closes the rail ticket and continues through card-to-detail; Android proof passed. |
+
+## Cycle GI - Live Discovery Games First
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Live page still showed operational market/outcome summary pills above the game cards. | P0 | Passed | Summary moved to hidden proof metadata; Samsung tablet proof passed. |
+| Live page must keep route-backed game cards and ticket path after summary removal. | P0 | Passed | Smoke gate passed through rail ticket, card-to-detail, and spread ticket. |
+| Backend/data contract should not change for this presentation-only cycle. | P0 | Passed | No API or backend route changed. |
