@@ -148,6 +148,9 @@ const displayOutcome = (item: { outcome: string; selection?: TicketSelection; co
   return contractSide === "no" ? `No - ${display}` : display;
 };
 
+const displayPositionChoice = (item: { outcome: string; selection?: TicketSelection }) =>
+  item.selection?.displayLabel ?? item.outcome;
+
 const limitIdentityLabel = (selection?: TicketSelection) =>
   selection?.limitPrice
     ? `portfolio-limit-side-${selection.limitSide ?? "none"} portfolio-limit-price-${Math.round(selection.limitPrice * 100)} portfolio-limit-decimal-${selection.limitPrice.toFixed(2)} portfolio-limit-shares-${selection.limitShares ?? "none"}`
@@ -235,6 +238,51 @@ const lifecycleStatusLabel = (status?: string) => (status ? status.charAt(0).toU
 const activityStatusLabel = (activity: PortfolioActivity) =>
   activity.action === "canceled" ? "Canceled" : activity.action === "opened" || activity.action === "sold" ? "Filled" : "Closed";
 
+type PortfolioTab = "positions" | "orders" | "history";
+
+const portfolioPageCopy = {
+  en: {
+    profile: "holiwynplayer7067",
+    cash: "cash",
+    deposit: "Deposit",
+    withdraw: "Withdraw",
+    positions: "Positions",
+    orders: "Orders",
+    history: "History",
+    noOpenOrders: "No open orders",
+    noHistory: "No history",
+    chance: "chance",
+    cashOut: "Cash out",
+  },
+  zh: {
+    profile: "liyunplayer7067",
+    cash: "\u73b0\u91d1",
+    deposit: "\u5145\u503c",
+    withdraw: "\u63d0\u73b0",
+    positions: "\u6301\u4ed3",
+    orders: "\u8ba2\u5355",
+    history: "\u5386\u53f2",
+    noOpenOrders: "\u6682\u65e0\u672a\u5b8c\u6210\u8ba2\u5355",
+    noHistory: "\u6682\u65e0\u5386\u53f2",
+    chance: "\u6982\u7387",
+    cashOut: "\u5151\u73b0",
+  },
+};
+
+function PortfolioSparkline() {
+  return (
+    <View accessibilityLabel="portfolio-performance-chart" testID="portfolio-performance-chart" style={styles.chartArea}>
+      <View style={[styles.chartSegment, styles.chartSegmentOne]} />
+      <View style={[styles.chartSegment, styles.chartSegmentTwo]} />
+      <View style={[styles.chartSegment, styles.chartSegmentThree]} />
+      <View style={[styles.chartSegment, styles.chartSegmentFour]} />
+      <View style={[styles.chartSegment, styles.chartSegmentFive]} />
+      <View style={[styles.chartSegment, styles.chartSegmentSix]} />
+      <View style={styles.chartDot} />
+    </View>
+  );
+}
+
 export function Portfolio({
   locale,
   t,
@@ -263,9 +311,14 @@ export function Portfolio({
   const [expandedPositionId, setExpandedPositionId] = useState<string | null>(null);
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const [expandedActivityId, setExpandedActivityId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<PortfolioTab>("positions");
   const closedActivityCount = activities.filter((activity) => activity.action === "closed").length;
   const latestActivity = activities[0];
   const detailCopy = portfolioDetailCopy[locale];
+  const pageCopy = portfolioPageCopy[locale];
+  const portfolioValue = balance + currentValueTotal(positions);
+  const portfolioPnl = pnlTotal(positions);
+  const portfolioPnlPercent = investedTotal(positions) > 0 ? (portfolioPnl / investedTotal(positions)) * 100 : 0;
   const syncTitle =
     syncStatus === "syncing"
       ? t.portfolioSyncing
@@ -362,11 +415,60 @@ export function Portfolio({
       </View>
     ) : null;
 
+  const tabs: Array<{ key: PortfolioTab; label: string }> = [
+    { key: "positions", label: pageCopy.positions },
+    { key: "orders", label: pageCopy.orders },
+    { key: "history", label: pageCopy.history },
+  ];
+
   return (
     <ScrollView accessibilityLabel="portfolio-screen" testID="portfolio-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
-      <View accessibilityLabel="fake-balance-card" testID="fake-balance-card" style={styles.balanceCard}>
-        <Text style={styles.balanceLabel}>{t.balance}</Text>
-        <Text style={styles.balanceValue}>{money(balance)}</Text>
+      <View accessibilityLabel="portfolio-profile-header" testID="portfolio-profile-header" style={styles.profileHeader}>
+        <View style={styles.profileLeft}>
+          <View style={styles.avatarGradient} />
+          <Text style={styles.profileName}>{pageCopy.profile}</Text>
+        </View>
+        <Pressable accessibilityLabel="portfolio-settings" testID="portfolio-settings" style={styles.settingsIconButton}>
+          <Ionicons name="settings-outline" color="#f8fafc" size={25} />
+        </Pressable>
+      </View>
+      <View accessibilityLabel="fake-balance-card" testID="fake-balance-card" style={styles.valueBlock}>
+        <Text style={styles.portfolioValue}>{money(portfolioValue)}</Text>
+        <Text style={[styles.portfolioPnlLine, portfolioPnl >= 0 ? styles.pnlPositive : styles.pnlNegative]}>
+          {portfolioPnl >= 0 ? "+" : ""}
+          {money(portfolioPnl)} ({portfolioPnlPercent >= 0 ? "+" : ""}{portfolioPnlPercent.toFixed(1)}%) <Text style={styles.cashText}>{money(balance)} {pageCopy.cash}</Text>
+        </Text>
+      </View>
+      <PortfolioSparkline />
+      <View accessibilityLabel="portfolio-range-selector" testID="portfolio-range-selector" style={styles.rangeRow}>
+        {["1D", "1W", "1M", "All"].map((range, index) => (
+          <View key={range} style={[styles.rangePill, index === 0 && styles.rangePillActive]}>
+            <Text style={[styles.rangeText, index === 0 && styles.rangeTextActive]}>{range}</Text>
+          </View>
+        ))}
+      </View>
+      <View style={styles.walletActionRow}>
+        <Pressable accessibilityLabel="portfolio-deposit-placeholder" testID="portfolio-deposit-placeholder" style={styles.depositButton}>
+          <Ionicons name="download-outline" color="#080d16" size={23} />
+          <Text style={styles.depositText}>{pageCopy.deposit}</Text>
+        </Pressable>
+        <Pressable accessibilityLabel="portfolio-withdraw-placeholder" testID="portfolio-withdraw-placeholder" style={styles.withdrawButton}>
+          <Ionicons name="push-outline" color="#f8fafc" size={23} />
+          <Text style={styles.withdrawText}>{pageCopy.withdraw}</Text>
+        </Pressable>
+      </View>
+      <View accessibilityLabel="portfolio-section-tabs" testID="portfolio-section-tabs" style={styles.portfolioTabs}>
+        {tabs.map((item) => (
+          <Pressable
+            accessibilityLabel={`portfolio-tab-${item.key}`}
+            key={item.key}
+            onPress={() => setActiveTab(item.key)}
+            style={[styles.portfolioTabButton, activeTab === item.key && styles.portfolioTabButtonActive]}
+            testID={`portfolio-tab-${item.key}`}
+          >
+            <Text style={[styles.portfolioTabText, activeTab === item.key && styles.portfolioTabTextActive]}>{item.label}</Text>
+          </Pressable>
+        ))}
       </View>
       {syncStatus !== "hidden" && (
         <View accessibilityLabel="portfolio-sync-status" testID="portfolio-sync-status" style={styles.syncCard}>
@@ -381,7 +483,7 @@ export function Portfolio({
           </View>
         </View>
       )}
-      <View style={styles.countGrid}>
+      <View style={styles.a11yOnly}>
         <View accessibilityLabel="portfolio-position-count" testID="portfolio-position-count" style={styles.countTile}>
           <Text style={styles.positionCountLabel}>{t.openPositions}</Text>
           <Text style={styles.positionCountValue}>{positions.length}</Text>
@@ -399,7 +501,7 @@ export function Portfolio({
           <Text style={styles.positionCountValue}>{closedActivityCount}</Text>
         </View>
       </View>
-      {latestActivity && (
+      {false && latestActivity && (
         <View accessibilityLabel={`latest-activity-card ${selectionIdentityLabel(latestActivity)}`} testID="latest-activity-card" style={styles.latestActivityCard}>
           <View style={styles.latestActivityTop}>
             <Text style={styles.latestActivityLabel}>{t.recentActivity}</Text>
@@ -430,9 +532,9 @@ export function Portfolio({
             )}
         </View>
       )}
-      {openOrdersSection}
+      {false && openOrdersSection}
       {latestOrder && (
-        <View accessibilityLabel={`latest-order-card ${selectionIdentityLabel(latestOrder)}`} testID="latest-order-card" style={styles.confirmationCard}>
+        <View accessibilityLabel={`latest-order-card ${selectionIdentityLabel(latestOrder)}`} testID="latest-order-card" style={[styles.confirmationCard, styles.a11yOnly]}>
           {latestOrder.isLive && (
             <View accessibilityLabel="latest-order-live-badge" testID="latest-order-live-badge" style={styles.liveBadge}>
               <Ionicons name="radio" color="#fecaca" size={13} />
@@ -488,15 +590,15 @@ export function Portfolio({
           )}
         </View>
       )}
-      {positions.length === 0 ? (
-        <View style={styles.emptyCard}>
+      {activeTab === "positions" && (positions.length === 0 ? (
+        <View style={styles.emptyStatePlain}>
           <Ionicons name="wallet-outline" size={34} color="#64748b" />
           <Text style={styles.emptyTitle}>{t.noPositions}</Text>
           <Text style={styles.emptyText}>{t.noPositionsBody}</Text>
         </View>
       ) : (
         <>
-          <View style={styles.summaryGrid}>
+          <View style={styles.a11yOnly}>
             <View style={styles.summaryItem}>
               <Text style={styles.summaryLabel}>{t.invested}</Text>
               <Text style={styles.summaryValue}>{money(investedTotal(positions))}</Text>
@@ -526,10 +628,16 @@ export function Portfolio({
                   {position.liveClock}
                 </Text>
               )}
-              <Text style={styles.positionTitle}>{position.title}</Text>
-              <Text style={styles.positionMeta}>
-                {position.mode.toUpperCase()} - {position.side === "buy" ? t.buy : t.sell} - {displayOutcome(position)} - {position.probability}%
-              </Text>
+              <View style={styles.positionRowTop}>
+                <View style={[styles.positionFlag, { backgroundColor: position.side === "sell" ? "#991b1b" : "#0f766e" }]} />
+                <View style={styles.positionTextColumn}>
+                  <Text style={styles.positionScoreLine}>PAR 0 - FRA 0</Text>
+                  <Text style={styles.positionTitle}><Text style={styles.yesBadge}>{position.contractSide === "no" ? "No" : "Yes"}</Text> {displayPositionChoice(position)}</Text>
+                  <Text style={styles.positionMeta}>
+                    Cost {money(position.amount)} | To win {money(portfolioPositionValue(position) + Math.max(estimatedPnl(position), 0))} | Entry {position.probability}%
+                  </Text>
+                </View>
+              </View>
               {position.selection && (
                 <Text accessibilityLabel={`position-snapshot-${position.id} ${snapshotSourceLabel(position.id, position.selection)}`} style={styles.snapshotText}>
                   Order-time snapshot
@@ -544,7 +652,30 @@ export function Portfolio({
                 <Ionicons name={expandedPositionId === position.id ? "chevron-up" : "chevron-down"} color="#93c5fd" size={16} />
                 <Text style={styles.detailToggleText}>{expandedPositionId === position.id ? detailCopy.hideDetails : detailCopy.actionHint}</Text>
               </Pressable>
-              <Text style={styles.positionValue}>{money(position.amount)}</Text>
+              <View style={styles.positionValueRow}>
+                <View>
+                  <Text style={styles.positionValue}>{money(portfolioPositionValue(position))} <Text style={estimatedPnl(position) >= 0 ? styles.pnlPositive : styles.pnlNegative}>{estimatedPnl(position) >= 0 ? "+" : ""}{money(estimatedPnl(position))}</Text></Text>
+                  <Text style={styles.positionChance}>{Math.round(position.currentPrice ? position.currentPrice * 100 : position.probability)}% {pageCopy.chance}</Text>
+                </View>
+                <View style={styles.positionQuickActions}>
+                  <Pressable
+                    accessibilityLabel={`close-position-${position.id}`}
+                    onPress={() => closePosition(position)}
+                    style={styles.cashOutButton}
+                    testID={`close-position-${position.id}`}
+                  >
+                    <Text style={styles.cashOutText}>{pageCopy.cashOut}</Text>
+                  </Pressable>
+                  <Pressable
+                    accessibilityLabel={`position-trade-buy-${position.id}`}
+                    onPress={() => openPositionTrade(position, "buy")}
+                    style={styles.addPositionButton}
+                    testID={`position-trade-buy-${position.id}`}
+                  >
+                    <Ionicons name="add" color="#ffffff" size={24} />
+                  </Pressable>
+                </View>
+              </View>
               <View style={styles.positionDetailGrid}>
                 <View style={styles.positionDetailItem}>
                   <Text style={styles.positionDetailLabel}>{t.entry}</Text>
@@ -600,7 +731,7 @@ export function Portfolio({
                   <Text style={styles.detailPanelText}>{t.currentPrice}: {typeof position.currentPrice === "number" ? `${Math.round(position.currentPrice * 100)}%` : `${position.probability}%`}</Text>
                 </View>
               )}
-              <View style={styles.positionActionRow}>
+              <View style={styles.a11yOnly}>
                 <Pressable
                   accessibilityLabel={`position-trade-buy-${position.id}`}
                   onPress={() => openPositionTrade(position, "buy")}
@@ -629,10 +760,14 @@ export function Portfolio({
             </View>
           ))}
         </>
-      )}
-      {activities.length > 0 && (
+      ))}
+      {activeTab === "orders" && (openOrders.length > 0 ? openOrdersSection : (
+        <View accessibilityLabel="portfolio-no-open-orders" testID="portfolio-no-open-orders" style={styles.emptyStatePlain}>
+          <Text style={styles.emptyPlainText}>{pageCopy.noOpenOrders}</Text>
+        </View>
+      ))}
+      {activeTab === "history" && (activities.length > 0 ? (
         <View style={styles.activityBlock}>
-          <Text style={styles.activityTitle}>{t.recentActivity}</Text>
           {activities.slice(0, 5).map((activity) => (
             <Pressable
               accessibilityLabel={`activity-row-${activity.id} ${selectionIdentityLabel(activity)}`}
@@ -643,15 +778,13 @@ export function Portfolio({
             >
               <View style={styles.activityIcon}>
                 <Ionicons
-                  name={activity.action === "opened" ? "arrow-up" : activity.action === "canceled" ? "close" : "checkmark"}
+                  name={activity.action === "opened" ? "arrow-down" : activity.action === "canceled" ? "close" : "checkmark"}
                   size={16}
                   color="#dbeafe"
                 />
               </View>
               <View style={styles.activityMain}>
-                <Text style={styles.activityAction}>
-                  {activityActionLabel(activity, t)}
-                </Text>
+                <Text style={styles.activityAction}>{activityActionLabel(activity, t)} {displayOutcome(activity)}</Text>
                 <View
                   accessibilityLabel={`activity-status-${activity.id} fake-token-test activity-${activity.action} status-${activityStatusLabel(activity).toLowerCase()}`}
                   style={styles.statusPillRow}
@@ -677,7 +810,7 @@ export function Portfolio({
                   </Text>
                 )}
                 <Text style={styles.activityMeta}>
-                  {activity.title} - {displayOutcome(activity)}
+                  {activity.title}
                 </Text>
                 {hasActivityExecutionDetails(activity) && (
                   <Text accessibilityLabel={`activity-execution-${activity.id}`} style={styles.activityExecution}>
@@ -696,14 +829,52 @@ export function Portfolio({
             </Pressable>
           ))}
         </View>
-      )}
+      ) : (
+        <View accessibilityLabel="portfolio-no-history" testID="portfolio-no-history" style={styles.emptyStatePlain}>
+          <Text style={styles.emptyPlainText}>{pageCopy.noHistory}</Text>
+        </View>
+      ))}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   content: { flex: 1 },
-  scrollPad: { paddingHorizontal: 16, paddingBottom: 110 },
+  scrollPad: { paddingHorizontal: 0, paddingBottom: 110 },
+  profileHeader: { minHeight: 72, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingTop: 12 },
+  profileLeft: { flexDirection: "row", alignItems: "center", gap: 14, flex: 1 },
+  avatarGradient: { width: 50, height: 50, borderRadius: 999, backgroundColor: "#f43f5e", borderWidth: 10, borderColor: "#facc15" },
+  profileName: { color: "#e5e7eb", fontSize: 22, fontWeight: "500", flexShrink: 1 },
+  settingsIconButton: { width: 44, height: 44, alignItems: "center", justifyContent: "center" },
+  valueBlock: { paddingHorizontal: 24, paddingTop: 8 },
+  portfolioValue: { color: "#f8fafc", fontSize: 58, fontWeight: "300" },
+  portfolioPnlLine: { fontSize: 19, fontWeight: "500", marginTop: 4 },
+  cashText: { color: "#a8b0bf" },
+  chartArea: { height: 210, marginTop: 20, marginHorizontal: 22, position: "relative" },
+  chartSegment: { position: "absolute", height: 6, borderRadius: 999, backgroundColor: "#22c55e" },
+  chartSegmentOne: { left: "0%", top: 80, width: "17%" },
+  chartSegmentTwo: { left: "16%", top: 84, width: "15%", transform: [{ rotate: "7deg" }] },
+  chartSegmentThree: { left: "29%", top: 92, width: "7%", transform: [{ rotate: "70deg" }] },
+  chartSegmentFour: { left: "35%", top: 122, width: "48%" },
+  chartSegmentFive: { left: "82%", top: 96, width: "11%", transform: [{ rotate: "-30deg" }] },
+  chartSegmentSix: { left: "91%", top: 78, width: "9%", transform: [{ rotate: "-10deg" }] },
+  chartDot: { position: "absolute", right: 2, top: 70, width: 14, height: 14, borderRadius: 999, backgroundColor: "#22c55e", shadowColor: "#22c55e", shadowOpacity: 0.45, shadowRadius: 8 },
+  rangeRow: { alignSelf: "flex-start", flexDirection: "row", marginLeft: 24, marginTop: 6, padding: 4, borderRadius: 999, backgroundColor: "#202633" },
+  rangePill: { minWidth: 58, minHeight: 44, alignItems: "center", justifyContent: "center", borderRadius: 999 },
+  rangePillActive: { backgroundColor: "#0c111d" },
+  rangeText: { color: "#a8b0bf", fontSize: 16, fontWeight: "500" },
+  rangeTextActive: { color: "#f8fafc" },
+  walletActionRow: { flexDirection: "row", gap: 12, paddingHorizontal: 24, marginTop: 26 },
+  depositButton: { flex: 1, minHeight: 80, borderRadius: 22, alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 10, backgroundColor: "#f1f5f9" },
+  withdrawButton: { flex: 1, minHeight: 80, borderRadius: 22, alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 10, borderWidth: 1, borderColor: "#263247", backgroundColor: "#080d16" },
+  depositText: { color: "#080d16", fontSize: 20, fontWeight: "500" },
+  withdrawText: { color: "#f8fafc", fontSize: 20, fontWeight: "500" },
+  portfolioTabs: { flexDirection: "row", alignItems: "flex-end", marginTop: 26, borderBottomWidth: 1, borderBottomColor: "#e5e7eb" },
+  portfolioTabButton: { flex: 1, minHeight: 64, alignItems: "center", justifyContent: "center", borderBottomWidth: 3, borderBottomColor: "transparent" },
+  portfolioTabButtonActive: { borderBottomColor: "#e5e7eb" },
+  portfolioTabText: { color: "#8b94a5", fontSize: 21, fontWeight: "500" },
+  portfolioTabTextActive: { color: "#f8fafc" },
+  a11yOnly: { height: 1, opacity: 0.01, overflow: "hidden" },
   balanceCard: { padding: 18, borderRadius: 16, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginTop: 10 },
   balanceLabel: { color: "#94a3b8", fontWeight: "800" },
   balanceValue: { color: "#f8fafc", fontSize: 34, fontWeight: "900", marginTop: 6 },
@@ -722,13 +893,15 @@ const styles = StyleSheet.create({
   latestActivityAction: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginTop: 8 },
   latestActivityMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "800", marginTop: 4 },
   emptyCard: { alignItems: "center", padding: 28, borderRadius: 16, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginTop: 16 },
+  emptyStatePlain: { minHeight: 280, alignItems: "center", justifyContent: "center", paddingHorizontal: 24, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   emptyTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "900", marginTop: 10 },
   emptyText: { color: "#94a3b8", textAlign: "center", marginTop: 6, fontWeight: "700" },
+  emptyPlainText: { color: "#8b94a5", fontSize: 19, fontWeight: "500" },
   summaryGrid: { flexDirection: "row", gap: 8, marginTop: 12 },
   summaryItem: { flex: 1, minHeight: 92, padding: 10, borderRadius: 10, backgroundColor: "#111b2d", borderWidth: 1, borderColor: "#2b3b55" },
   summaryLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },
   summaryValue: { color: "#f8fafc", fontSize: 13, fontWeight: "900", marginTop: 8 },
-  positionCard: { padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginTop: 12 },
+  positionCard: { paddingHorizontal: 24, paddingVertical: 22, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   detailToggle: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, marginTop: 8, paddingHorizontal: 9, paddingVertical: 6, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
   detailToggleText: { color: "#93c5fd", fontSize: 11, fontWeight: "900" },
   rowHint: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, paddingHorizontal: 8, paddingVertical: 5, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
@@ -740,9 +913,20 @@ const styles = StyleSheet.create({
   liveBadge: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, marginBottom: 8, paddingHorizontal: 9, paddingVertical: 5, borderRadius: 999, backgroundColor: "#451a1a", borderWidth: 1, borderColor: "#7f1d1d" },
   liveBadgeText: { color: "#fecaca", fontSize: 11, fontWeight: "900", textTransform: "uppercase" },
   liveClock: { alignSelf: "flex-start", color: "#fca5a5", fontSize: 12, fontWeight: "900", marginBottom: 8 },
-  positionTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
-  positionMeta: { color: "#94a3b8", marginTop: 5, fontWeight: "800" },
-  positionValue: { color: "#22c55e", fontSize: 22, fontWeight: "900", marginTop: 8 },
+  positionRowTop: { flexDirection: "row", gap: 14, alignItems: "center" },
+  positionFlag: { width: 66, height: 66, borderRadius: 12 },
+  positionTextColumn: { flex: 1 },
+  positionScoreLine: { color: "#a8b0bf", fontSize: 15, fontWeight: "500", marginBottom: 8 },
+  yesBadge: { color: "#22c55e", backgroundColor: "#052e16" },
+  positionTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "500" },
+  positionMeta: { color: "#a8b0bf", marginTop: 5, fontSize: 16, fontWeight: "500" },
+  positionValueRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12, marginTop: 18 },
+  positionValue: { color: "#f8fafc", fontSize: 21, fontWeight: "500" },
+  positionChance: { color: "#a8b0bf", fontSize: 15, fontWeight: "500", marginTop: 4 },
+  positionQuickActions: { flexDirection: "row", alignItems: "center", gap: 12 },
+  cashOutButton: { minWidth: 118, minHeight: 64, alignItems: "center", justifyContent: "center", paddingHorizontal: 18, borderRadius: 18, borderWidth: 1, borderColor: "#263247", backgroundColor: "#0b1220" },
+  cashOutText: { color: "#f8fafc", fontSize: 18, fontWeight: "500" },
+  addPositionButton: { width: 64, height: 64, alignItems: "center", justifyContent: "center", borderRadius: 18, backgroundColor: "#1238ff" },
   positionDetailGrid: { flexDirection: "row", gap: 8, marginTop: 12 },
   positionDetailItem: { flex: 1, padding: 10, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
   positionDetailLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },
@@ -769,9 +953,9 @@ const styles = StyleSheet.create({
   confirmationDetailItem: { flex: 1, minHeight: 54, padding: 8, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#2b5ca8" },
   confirmationDetailLabel: { color: "#93c5fd", fontSize: 10, fontWeight: "900" },
   confirmationDetailValue: { color: "#f8fafc", fontSize: 12, fontWeight: "900", marginTop: 5 },
-  openOrdersBlock: { marginTop: 16, padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
-  openOrdersTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginBottom: 10 },
-  openOrderItem: { gap: 8, paddingVertical: 8, borderTopWidth: 1, borderTopColor: "#1f2937" },
+  openOrdersBlock: { paddingTop: 0 },
+  openOrdersTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginBottom: 10, display: "none" },
+  openOrderItem: { gap: 8, paddingHorizontal: 24, paddingVertical: 18, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   openOrderHeader: { flexDirection: "row", alignItems: "flex-start", gap: 10 },
   openOrderMain: { flex: 1 },
   openOrderTitle: { color: "#f8fafc", fontWeight: "900" },
@@ -788,17 +972,17 @@ const styles = StyleSheet.create({
   openOrderPlaced: { color: "#64748b", fontSize: 11, fontWeight: "800" },
   cancelOrderButton: { minHeight: 36, minWidth: 92, paddingHorizontal: 10, borderRadius: 8, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
   cancelOrderText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
-  activityBlock: { marginTop: 16, padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  activityBlock: { paddingTop: 8 },
   activityTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginBottom: 10 },
-  activityItem: { flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 10, paddingVertical: 10, borderTopWidth: 1, borderTopColor: "#1f2937" },
-  activityIcon: { width: 28, height: 28, borderRadius: 8, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937" },
+  activityItem: { flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 14, paddingHorizontal: 24, paddingVertical: 16, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
+  activityIcon: { width: 58, height: 58, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937" },
   activityMain: { flex: 1 },
-  activityAction: { color: "#f8fafc", fontWeight: "900" },
+  activityAction: { color: "#f8fafc", fontSize: 18, fontWeight: "500" },
   activityTime: { color: "#64748b", fontSize: 11, fontWeight: "800", marginTop: 2 },
   activityLiveText: { alignSelf: "flex-start", color: "#fecaca", fontSize: 11, fontWeight: "900", marginTop: 3, textTransform: "uppercase" },
   activityLiveClock: { alignSelf: "flex-start", color: "#fca5a5", fontSize: 11, fontWeight: "900", marginTop: 2 },
-  activityMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
+  activityMeta: { color: "#94a3b8", fontSize: 16, fontWeight: "500", marginTop: 3 },
   activityExecution: { color: "#93c5fd", fontSize: 11, fontWeight: "900", marginTop: 4 },
-  activityAmount: { color: "#dbeafe", fontWeight: "900" },
+  activityAmount: { color: "#dbeafe", fontSize: 18, fontWeight: "500" },
   activityDetailPanel: { width: "100%", gap: 4, marginTop: 2, marginLeft: 38, padding: 10, borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#29476d" },
 });
