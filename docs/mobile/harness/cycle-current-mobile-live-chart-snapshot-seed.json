@@ -14,46 +14,46 @@
     "outcomeCount": 3
   },
   "range": {
-    "firstTimestamp": "2026-07-04T00:13:36.916Z",
-    "lastTimestamp": "2026-07-04T01:58:36.916Z",
+    "firstTimestamp": "2026-07-04T00:29:42.692Z",
+    "lastTimestamp": "2026-07-04T02:14:42.692Z",
     "pointCount": 24
   },
-  "deletedSnapshots": 21,
+  "deletedSnapshots": 18,
   "createdSnapshots": 24,
   "preview": [
     {
       "outcomeId": "0d480622-e2d5-4344-bb3f-748cb55ba257",
-      "timestamp": "2026-07-04T00:13:36.916Z",
+      "timestamp": "2026-07-04T00:29:42.692Z",
       "probability": 40,
       "price": "0.4"
     },
     {
       "outcomeId": "8c8596bd-d65b-4368-a537-f3f01dbccb2c",
-      "timestamp": "2026-07-04T00:13:36.916Z",
+      "timestamp": "2026-07-04T00:29:42.692Z",
       "probability": 29,
       "price": "0.29"
     },
     {
       "outcomeId": "e96086f5-e9ce-45c1-a255-8a77425279e1",
-      "timestamp": "2026-07-04T00:13:36.916Z",
+      "timestamp": "2026-07-04T00:29:42.692Z",
       "probability": 31,
       "price": "0.31"
     },
     {
       "outcomeId": "0d480622-e2d5-4344-bb3f-748cb55ba257",
-      "timestamp": "2026-07-04T00:28:36.916Z",
+      "timestamp": "2026-07-04T00:44:42.692Z",
       "probability": 44,
       "price": "0.44"
     },
     {
       "outcomeId": "8c8596bd-d65b-4368-a537-f3f01dbccb2c",
-      "timestamp": "2026-07-04T00:28:36.916Z",
+      "timestamp": "2026-07-04T00:44:42.692Z",
       "probability": 27,
       "price": "0.27"
     },
     {
       "outcomeId": "e96086f5-e9ce-45c1-a255-8a77425279e1",
-      "timestamp": "2026-07-04T00:28:36.916Z",
+      "timestamp": "2026-07-04T00:44:42.692Z",
       "probability": 28,
       "price": "0.28"
     }

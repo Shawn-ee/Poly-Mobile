@@ -272,6 +272,24 @@ describe("mobile live event detail contract", () => {
         marketType: "team_total_goals",
         line: new Prisma.Decimal("1.5"),
       }),
+      market({
+        id: "first-half-winner",
+        title: "1st Half Winner",
+        marketGroupKey: "halves",
+        marketGroupTitle: "Halves",
+        displayOrder: 60,
+        marketType: "match_winner_1x2",
+        period: "first-half",
+      }),
+      market({
+        id: "second-half-winner",
+        title: "2nd Half Winner",
+        marketGroupKey: "halves",
+        marketGroupTitle: "Halves",
+        displayOrder: 61,
+        marketType: "match_winner_1x2",
+        period: "second-half",
+      }),
     ];
 
     const compactMarkets = selectCompactLiveMarkets(markets);
@@ -282,6 +300,8 @@ describe("mobile live event detail contract", () => {
       "spread-1",
       "totals-25",
       "team-total-15",
+      "first-half-winner",
+      "second-half-winner",
     ]));
   });
 });

@@ -1,0 +1,38 @@
+{
+  "applied": true,
+  "event": {
+    "id": "4a9eb675-cfa6-4873-93f9-1a4ffb8e45eb",
+    "slug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25",
+    "title": "Curaçao vs Côte d'Ivoire"
+  },
+  "markets": [
+    {
+      "id": "be4ab6f8-c054-4f6b-a6d9-7d857f7655ca",
+      "slug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-first-half-winner",
+      "title": "1st Half Winner",
+      "marketType": "match_winner_1x2",
+      "marketGroupKey": "halves",
+      "period": "first-half",
+      "outcomeCount": 3,
+      "outcomeIds": [
+        "2c051ece-4d2f-42cc-9d72-3c77e2ad5a51",
+        "3293b5a2-9eee-41dc-b19e-92f85aa79567",
+        "399d8bff-8eb1-4c3a-a5dc-4002494af0e1"
+      ]
+    },
+    {
+      "id": "ed121b08-88bd-4735-9793-64a0022e9696",
+      "slug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25-second-half-winner",
+      "title": "2nd Half Winner",
+      "marketType": "match_winner_1x2",
+      "marketGroupKey": "halves",
+      "period": "second-half",
+      "outcomeCount": 3,
+      "outcomeIds": [
+        "22d284df-1ba5-45de-b6b9-506cc01040d6",
+        "b1ce873f-c80c-4018-a535-dbf0b5296d32",
+        "331c2444-d27f-4982-95e9-c76d24e50988"
+      ]
+    }
+  ]
+}

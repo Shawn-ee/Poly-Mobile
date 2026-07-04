@@ -179,6 +179,8 @@ export const selectCompactLiveMarkets = (markets: MarketInput[]) =>
     addFirst((market) => market.marketType === "spread" && lineMatches(market, 1.5));
     addFirst((market) => ["total_goals", "totals"].includes(market.marketType) && lineMatches(market, 2.5));
     addFirst((market) => market.marketType === "team_total_goals" && lineMatches(market, 1.5));
+    addFirst((market) => market.period === "first-half" && ["match_winner_1x2", "moneyline"].includes(market.marketType));
+    addFirst((market) => market.period === "second-half" && ["match_winner_1x2", "moneyline"].includes(market.marketType));
 
     for (const market of sorted) {
       if (selected.length >= MAX_MARKETS) break;
