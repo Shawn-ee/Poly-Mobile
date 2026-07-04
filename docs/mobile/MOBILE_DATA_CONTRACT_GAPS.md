@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle BA - Compact Line Group Coverage And Totals Ready Depth
+
+Fields now provided or wired:
+
+- `/api/mobile/events/:slug/live-detail` now reserves representative compact markets for primary winner, Spread 1.5, Totals 2.5, and Team Total 1.5.
+- Mobile Totals lookup now accepts backend `total_goals` market type.
+- Samsung tablet proof confirms selected Totals market `a552efe6-3147-4573-be95-8fe15c068c08` reaches `orderbook-status-ready` through the public orderbook route.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Provider-owned live liquidity for all Totals, Team Totals, Spreads, Halves, and other discovered market groups.
+- Market availability/freshness fields for stale, delayed, suspended, or no-liquidity states.
+- Pagination or follow-up market-group route if the compact route cap is not enough for full Polymarket market depth.
+
+Schema mismatch:
+
+- Existing `Market.marketType` values are backend-specific (`total_goals`) while mobile uses a normalized UI contract (`totals`). The adapter/resolver now bridges this, but future contracts should document canonical market type aliases.
+
+Route mismatch:
+
+- The compact route now includes representative rendered line groups; full market-group browsing still needs either a larger payload strategy or focused route by group.
+
+Temporary mock/static data:
+
+- Totals ready depth is seeded into real backend `Order` rows with stable market/outcome IDs. It is acceptable proof data, not arbitrary frontend-only strings.
+
+Future migration concern:
+
+- Add provider ingestion or market-maker liquidity services so selected line books no longer depend on local seed scripts.
+
 ## Cycle AZ - Selected Line Market Seeded Ready Depth
 
 Fields now provided or wired:

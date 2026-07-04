@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle BA - Compact Line Group Coverage And Totals Ready Depth
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Compact live game line group coverage | `/api/mobile/events/:slug/live-detail` | GET | Optional for public viewing; bearer token may be sent by runtime client | None | `markets[].id`, `marketType`, `marketGroupKey`, `line`, `period`, `outcomes[]`; route now reserves representative primary, Spread, Totals, and Team Total markets | `Event`, `Market`, `Outcome`; selected compact markets are still capped by mobile payload budget | Local line groups remain fallback only when server mode is unavailable | Provider/live availability states and broader market pagination remain missing. |
+| Selected Totals line orderbook with ready depth | `/api/orderbook/:marketId/book?maxLevels=24` for market `a552efe6-3147-4573-be95-8fe15c068c08` | GET | Optional public viewing | None | `marketId`, `emptyState: null`, `levels[].outcomeId`, `levels[].side`, `levels[].price`, `levels[].shares`, `levels[].total` | Open `Order` rows for the selected `total_goals` market through `buildPublicOrderbookSnapshot()` | Existing local Totals rows are only display fallback; server proof uses backend `total_goals` market identity | Real provider liquidity ingestion, market freshness, and selected Team Total/Halves depth proof remain missing. |
+| Targeted Totals depth seed harness | `mobile:live-totals-orderbook-depth-seed` | Local script | Local development only | `--eventSlug`, `--marketType=total_goals`, `--line=2.5`, `--summaryPath`, `--apply` | Summary artifact records event, market id/type/group/line, outcome ids, created order count, and preview rows | `User`, `Order`, `Market`, `Outcome` | N/A | Provider-owned live liquidity remains required for production parity. |
+
+Cycle BA implementation notes:
+
+- This cycle fixes a backend/mobile contract mismatch: the server used `total_goals`, while the UI group is labeled Totals.
+- The compact route now keeps representative rendered line groups instead of spending the whole cap on many Spread rows.
+- PM-GAP-067 remains in progress because seeded Totals depth is proof data, not external provider liquidity.
+
 ## Cycle AZ - Selected Line Market Seeded Ready Depth
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

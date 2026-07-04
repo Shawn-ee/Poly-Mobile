@@ -307,11 +307,12 @@ export function EventDetail({
     const parsed = Number(value);
     return Number.isFinite(parsed) ? parsed : null;
   };
-  const matchingBackendLineMarket = (type: Market["marketType"], line: string) => {
+  const matchingBackendLineMarket = (type: string, line: string) => {
     const target = Number(line);
     if (!Number.isFinite(target)) return undefined;
-    return event.markets.find((market) => market.marketType === type && Math.abs(lineAsNumber(market.line) ?? Number.NaN) === target)
-      ?? event.markets.find((market) => market.marketType === type);
+    const matchingTypes = type === "totals" ? ["totals", "total_goals"] : [type];
+    return event.markets.find((market) => matchingTypes.includes(market.marketType ?? "") && Math.abs(lineAsNumber(market.line) ?? Number.NaN) === target)
+      ?? event.markets.find((market) => matchingTypes.includes(market.marketType ?? ""));
   };
   const backendSpreadMarket = matchingBackendLineMarket("spread", spreadLine);
   const backendTotalsMarket = matchingBackendLineMarket("totals", totalsLine);
