@@ -31,3 +31,26 @@ The visible Event Detail page should not remain behind the order UI once the use
 - Backend/API impact: none.
 - Android proof: passed on Samsung tablet with `powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailTrade -Port 8224`.
 - Audit status: P0 pass. Remaining P2 polish is exact gradient/blur transition behavior.
+
+## Cycle FZ - Swipe Confirmation Proof
+
+### Reference Refresh
+
+The user-provided Polymarket place-order screenshots show the submit area as a large blue zone with an upward cue and `Swipe to buy`. The interaction should be proven as a swipe, not only as a tap on a submit button.
+
+### Acceptance Criteria
+
+| Criteria | Priority | Verification |
+| --- | --- | --- |
+| Submit control exposes a swipe-required state and handle cue. | P0 | Android XML. |
+| Local MVP buy-flow proof submits with an actual upward device swipe. | P0 | Samsung tablet smoke. |
+| The swipe still preserves selected market, line, period, outcome, side, amount, and Portfolio/history handoff. | P0 | Samsung tablet smoke. |
+| The blue footer is visually closer to the reference with layered blue bands and an upward cue. | P1 | Android screenshot. |
+| Exact native blur/gesture physics and no tap fallback at all. | P2 | Deferred; tap fallback remains for accessibility/harness compatibility. |
+
+### Result
+
+- Implementation: `SwipeSubmitControl` now exposes swipe gesture state/progress, owns the touch gesture from start, and keeps a visible upward handle inside a layered blue submit footer. The Local MVP proof submits with a footer-local upward swipe.
+- Backend/API impact: none. The submit still calls the existing `placeOrder(amount, side, contractSide)` flow.
+- Android proof: passed on Samsung tablet with `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -LocalMvpTradeFlow -Port 8239`.
+- Audit status: P0 pass. Remaining P2 gap is exact native blur/gesture physics and removal of the accessibility tap fallback.

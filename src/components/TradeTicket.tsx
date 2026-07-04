@@ -82,6 +82,7 @@ function SwipeSubmitControl({
 }) {
   const [isArmed, setIsArmed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [swipeProgress, setSwipeProgress] = useState(0);
   const triggerSubmit = async () => {
     if (disabled || isSubmitting) return;
     setIsSubmitting(true);
@@ -90,38 +91,57 @@ function SwipeSubmitControl({
     } finally {
       setIsSubmitting(false);
       setIsArmed(false);
+      setSwipeProgress(0);
     }
   };
   const panResponder = useMemo(
     () =>
       PanResponder.create({
         onStartShouldSetPanResponder: () => !disabled && !isSubmitting,
+        onStartShouldSetPanResponderCapture: () => !disabled && !isSubmitting,
         onMoveShouldSetPanResponder: (_, gesture) => Math.abs(gesture.dy) > 8 && Math.abs(gesture.dy) > Math.abs(gesture.dx),
-        onPanResponderGrant: () => setIsArmed(false),
-        onPanResponderMove: (_, gesture) => setIsArmed(gesture.dy < -42),
+        onMoveShouldSetPanResponderCapture: (_, gesture) => Math.abs(gesture.dy) > 8 && Math.abs(gesture.dy) > Math.abs(gesture.dx),
+        onPanResponderGrant: () => {
+          setIsArmed(false);
+          setSwipeProgress(0);
+        },
+        onPanResponderMove: (_, gesture) => {
+          const progress = gesture.dy < 0 ? Math.min(Math.abs(gesture.dy) / 90, 1) : 0;
+          setSwipeProgress(progress);
+          setIsArmed(progress >= 0.58);
+        },
         onPanResponderRelease: (_, gesture) => {
           if (gesture.dy < -70) {
             void triggerSubmit();
             return;
           }
           setIsArmed(false);
+          setSwipeProgress(0);
         },
-        onPanResponderTerminate: () => setIsArmed(false),
+        onPanResponderTerminate: () => {
+          setIsArmed(false);
+          setSwipeProgress(0);
+        },
       }),
     [disabled, isSubmitting, onSubmit],
   );
+  const progressBucket = disabled ? "disabled" : isSubmitting ? "submitting" : isArmed ? "armed" : swipeProgress > 0 ? "dragging" : "idle";
 
   return (
     <Pressable
       accessibilityHint={helper}
-      accessibilityLabel="swipe-to-submit-order"
+      accessibilityLabel={`swipe-to-submit-order swipe-submit-gesture-required swipe-submit-state-${progressBucket} swipe-submit-progress-${Math.round(swipeProgress * 100)}`}
       disabled={disabled || isSubmitting}
       onPress={() => void triggerSubmit()}
       style={[styles.swipeSubmit, isArmed && styles.swipeSubmitArmed, disabled && styles.swipeSubmitDisabled]}
       testID="place-mock-order"
       {...panResponder.panHandlers}
     >
-      <View style={styles.swipeIcon}>
+      <View
+        accessibilityLabel={`swipe-submit-handle swipe-submit-state-${progressBucket}`}
+        style={[styles.swipeIcon, isArmed && styles.swipeIconArmed]}
+        testID="swipe-submit-handle"
+      >
         <Ionicons name={isSubmitting ? "hourglass-outline" : "chevron-up"} color="#ffffff" size={22} />
       </View>
       <View style={styles.swipeTextBlock}>
@@ -573,6 +593,8 @@ export function TradeTicket({
             )}
           </ScrollView>
           <View style={styles.ticketFooter}>
+            <View style={styles.ticketFooterLightBand} />
+            <View style={styles.ticketFooterDarkBand} />
             <SwipeSubmitControl
               disabled={numericAmount <= 0 || !marketTradable}
               helper={t.finalCostMayVary}
@@ -675,11 +697,14 @@ const styles = StyleSheet.create({
   errorTextBlock: { flex: 1, gap: 3 },
   errorText: { color: "#fde68a", fontWeight: "800" },
   errorDetailText: { color: "#fcd34d", fontSize: 12, fontWeight: "700" },
-  ticketFooter: { minHeight: 210, paddingHorizontal: 18, paddingTop: 18, paddingBottom: 34, backgroundColor: "#1e5eff" },
+  ticketFooter: { minHeight: 210, paddingHorizontal: 18, paddingTop: 18, paddingBottom: 34, backgroundColor: "#1d4ed8", position: "relative", overflow: "hidden" },
+  ticketFooterLightBand: { position: "absolute", top: 0, left: -60, right: -20, height: 118, backgroundColor: "#5c94ff", opacity: 0.72, transform: [{ rotate: "-10deg" }] },
+  ticketFooterDarkBand: { position: "absolute", left: -40, right: -40, bottom: -58, height: 142, backgroundColor: "#1648bd", opacity: 0.86, transform: [{ rotate: "8deg" }] },
   swipeSubmit: { flex: 1, minHeight: 154, alignItems: "center", justifyContent: "center", gap: 16, paddingHorizontal: 14, borderRadius: 24, backgroundColor: "transparent" },
-  swipeSubmitArmed: { backgroundColor: "rgba(255,255,255,0.10)" },
+  swipeSubmitArmed: { backgroundColor: "rgba(255,255,255,0.14)" },
   swipeSubmitDisabled: { opacity: 0.55 },
   swipeIcon: { width: 56, height: 42, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "transparent" },
+  swipeIconArmed: { backgroundColor: "rgba(255,255,255,0.18)", transform: [{ translateY: -8 }] },
   swipeTextBlock: { alignItems: "center" },
   swipeLabel: { color: "#ffffff", fontSize: 24, fontWeight: "500" },
   swipeHelper: { display: "none" },

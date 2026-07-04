@@ -69,6 +69,8 @@ Cycle FX adds a mobile-only selected chart point/readout interaction. It does no
 
 Cycle FY changes only Portfolio visual density. It keeps the same local/server Portfolio props, `PortfolioValueHistory` route contract, fake-token position/order/activity identity fields, and Deposit/Withdraw placeholder policy. No backend, route, schema, or request/response changes are required.
 
+Cycle FZ changes only the ticket submit interaction proof and visual footer. It does not change the order request body, `POST /api/orders` expectations, local mock order payload, Portfolio handoff, or any backend route/schema contract.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

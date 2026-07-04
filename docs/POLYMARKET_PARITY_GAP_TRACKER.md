@@ -119,3 +119,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Portfolio chart readout was visible by default instead of appearing after touch. | P0 | Passed | `PortfolioSparkline` now renders `portfolio-chart-readout` only after the user taps the chart. Existing chart touch proof remains supported. |
 | Range selector row lacked the faint brand watermark structure from reference. | P0 | Passed | Added `portfolio-brand-watermark` with Holiwyn branding, not Polymarket branding. Tablet proof verifies the marker. |
 | Exact native gradient/chart physics and final pixel parity. | P2 | Open | Deferred until after core MVP user-flow parity stabilizes. |
+
+## Cycle FZ - Trade Ticket Swipe Confirmation
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Local MVP proof still submitted by tapping the order node even though the reference uses swipe-up confirmation. | P0 | Passed | `LocalMvpTradeFlow` now submits with an upward footer-local `adb input swipe`; tablet proof passed on port 8239. |
+| Ticket submit control did not expose proof-friendly swipe state. | P0 | Passed | `SwipeSubmitControl` now exposes `swipe-submit-gesture-required`, state, progress, and handle labels; tablet XML proof includes the labels. |
+| Blue submit footer looked flatter than the reference swipe zone. | P1 | Passed | Added layered blue footer bands and an armed handle state; tablet screenshot proof passed. |
+| Exact native blur/continuous gesture physics and removing tap fallback entirely. | P2 | Open | Tap fallback remains for accessibility and legacy smoke flows. |

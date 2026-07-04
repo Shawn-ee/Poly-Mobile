@@ -5688,9 +5688,9 @@ try {
         @('$25', 'To win $833.33', "ticket-price-line", "ticket-order-review", "ticket-order-review-payout", $mvpSubmitText, "place-mock-order", "Yes - MEX -2.5 1H")
       }
       $mvpActiveTicketExpected = if ($LocalMvpSellFlow) { $mvpSellTicketExpected } else { $mvpTicketExpected }
-      Assert-HierarchyContains -Path $mvpTicketReadyHierarchy -Expected ($mvpReadyExpected + $mvpActiveTicketExpected)
+      Assert-HierarchyContains -Path $mvpTicketReadyHierarchy -Expected ($mvpReadyExpected + @("swipe-submit-gesture-required", "swipe-submit-state-idle", "swipe-submit-handle") + $mvpActiveTicketExpected)
       Assert-HierarchyDoesNotContain -Path $mvpTicketReadyHierarchy -Unexpected $mvpHiddenOrderBookExpected
-      Invoke-TapHierarchyNode -Path $mvpTicketReadyHierarchy -Identifier "place-mock-order"
+      & $adb -s $Device shell input swipe 720 2185 720 2035 900 | Out-Null
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio.png"
       $mvpPortfolioHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio.xml"

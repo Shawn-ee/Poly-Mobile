@@ -124,3 +124,14 @@
 - Validation: `npm run typecheck`; `npx vitest run src/__tests__/portfolioValueHistoryService.test.ts src/__tests__/portfolioPositionMetrics.test.ts src/__tests__/portfolioActivityMetrics.test.ts`; PowerShell parser check for `scripts/smoke.ps1`; Samsung tablet proof `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -LocalMvpTradeFlow -Port 8236`.
 - Proof artifacts: `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-EP-local-mvp-trade-flow\cycle-EP-holiwyn-local-mvp-portfolio.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-EP-local-mvp-trade-flow\cycle-EP-holiwyn-local-mvp-portfolio-orders.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-EP-local-mvp-trade-flow\cycle-EP-holiwyn-local-mvp-portfolio-history.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-EP-local-mvp-trade-flow-proof.json`.
 - Known limitations: Deposit/Withdraw remain visual placeholders. Exact native gradient/chart gesture polish remains P2.
+
+## Cycle FZ - Trade Ticket Swipe Confirmation
+
+- Feature/page: Full-screen place-order ticket.
+- Frontend components touched: `src/components/TradeTicket.tsx`, `scripts/smoke.ps1`.
+- Important functions/services touched: no backend/API changes. The ticket still calls the existing `placeOrder(amount, side, contractSide)` callback and preserves the same ticket `selection` identity for mock/server order handling.
+- User interactions supported: the blue submit footer now exposes swipe gesture state (`idle`, `dragging`, `armed`, `submitting`) and a handle cue. The Local MVP tablet proof submits with an actual upward device swipe instead of tapping the submit node.
+- State transitions: `SwipeSubmitControl` now tracks local `swipeProgress` and `isArmed`; release past the upward threshold submits and resets progress after completion. A tap fallback remains for accessibility and existing harness paths.
+- Validation: `npm run typecheck`; `npx vitest run src/__tests__/portfolioValueHistoryService.test.ts src/__tests__/portfolioPositionMetrics.test.ts src/__tests__/portfolioActivityMetrics.test.ts`; PowerShell parser check for `scripts/smoke.ps1`; Samsung tablet proof `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -LocalMvpTradeFlow -Port 8239`.
+- Proof artifacts: `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-EP-local-mvp-trade-flow\cycle-EP-holiwyn-local-mvp-ticket-ready.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-EP-local-mvp-trade-flow\cycle-EP-holiwyn-local-mvp-ticket-ready.xml`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-EP-local-mvp-trade-flow-proof.json`.
+- Known limitations: exact native gesture physics/blur remain P2.
