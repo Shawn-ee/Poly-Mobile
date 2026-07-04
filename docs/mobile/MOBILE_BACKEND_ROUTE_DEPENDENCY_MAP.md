@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CM - Provider Refresh Execution Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Compact live provider refresh execution | `/api/mobile/events/:slug/provider-refresh` | POST | Internal admin key or admin session | `expireFirst`, `staleSeconds`, `allowContractProofFallback` | `expired.expiredSnapshotCount`, `refresh.provider.attempted`, `snapshotsUpdated`, `unsupportedMarketCount`, `contractProofFallback`, `postRefresh.snapshotCount` | `Event`, compact `Market`, `Outcome`, `ReferenceQuoteSnapshot`; real refresh path uses Polymarket Gamma via `refreshPolymarketReferenceSnapshots()` | Explicit `allowContractProofFallback=true` can upsert future-backend-shaped rows only for local QA after the real provider mapping is reported unsupported | Current local World Cup compact event has `referenceSource=fifa_schedule`, so real Polymarket Gamma mapping is missing. |
+| Live-detail stale-to-ready proof | `/api/mobile/events/:slug/live-detail` and `/api/orderbook/:marketId/book?maxLevels=2` | GET | Optional public viewing | None | `batchedProviderQuoteSnapshotReadyCount`, `StaleCount`, `RefreshDueCount`, selected `providerQuoteSnapshot.status`, `shouldRefresh`, `refreshKey` | Same `ReferenceQuoteSnapshot` rows and selected `Order` depth rows | No frontend-only mock data; fallback writes the same provider snapshot table shape | Real provider refresh cannot complete until compact markets are imported/mapped from Polymarket or another sports odds provider. |
+
+Cycle CM implementation notes:
+
+- The route is protected because provider refresh mutates backend snapshot state.
+- This cycle proves cache invalidation and refresh-state transitions, but it does not claim full real-provider parity for the local fixture event.
+
 ## Cycle CL - Provider Refresh Policy Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
