@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle DR-A - Scheduled Provider Refresh Run Reporting
+
+Closed or narrowed:
+
+- Scheduled refresh now returns a backend-consumable run report with `runId`, `startedAt`, `completedAt`, `durationMs`, run `status`, and attempted/successful/failed/dry-run event counts.
+- Per-event scheduled refresh results now expose `status=completed|failed|dry_run`; failed attempts include sanitized error name/message while preserving the cache invalidation contract for due markets.
+- The proof harness asserts run reporting in addition to stale/refresh-due -> ready provider quote/depth/chart state.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Durable run history if operations needs audit visibility beyond JSON proof artifacts.
+- Production scheduler/worker registration with cadence, retry policy, and alert routing.
+- Broader production provider identity coverage for line-family markets when real provider markets or optional enrichment are available.
+
+Schema mismatch:
+
+- No schema change was required. Run reporting is returned by the scheduler service and not persisted.
+
+Route mismatch:
+
+- None for the backend contract. This remains a backend-only scheduler service; no mobile UI route consumes the new fields directly.
+
+Temporary mock/static data:
+
+- No frontend-only mock data was added. The proof uses disposable local event `mobile-provider-refresh-proof-live` with real Polymarket market/outcome identity and contract-proof fallback disabled.
+
+Future migration concern:
+
+- If scheduler run status becomes production-critical, persist run envelopes and per-event outcomes in a dedicated run-history table instead of relying only on logs or harness artifacts.
+
 ## Cycle DQ-A - Scheduled Provider Refresh Lifecycle
 
 Closed or narrowed:

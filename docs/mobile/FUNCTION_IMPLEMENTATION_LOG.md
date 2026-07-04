@@ -2,6 +2,47 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle DR-A - Scheduled Provider Refresh Run Reporting
+
+Feature/page worked on:
+
+- PM-GAP-072 scheduler observability after scheduled provider refresh.
+- Backend-only provider lifecycle service/reporting contract; no mobile UI or frontend service files changed.
+
+Frontend/harness components touched:
+
+- No mobile UI or visual parity code changed.
+- Backend proof artifact: `docs/mobile/harness/cycle-DR-A-mobile-scheduled-provider-refresh-run-report.json`.
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveProviderScheduler.ts`
+- `scripts/prove_mobile_scheduled_provider_refresh.ts`
+- `src/__tests__/mobile-live-provider-scheduler.service.test.ts`
+
+Data/API contract notes:
+
+- `runScheduledMobileLiveProviderRefresh()` now returns stable run metadata: `runId`, `startedAt`, `completedAt`, `durationMs`, and run `status`.
+- The scheduler reports `attemptedEventCount`, `successfulEventCount`, `failedEventCount`, and `dryRunEventCount` alongside existing due/refreshed counts.
+- Each scheduled refresh item now carries `status=completed|failed|dry_run`; failed provider refresh attempts include a sanitized `{ name, message }` error and still return the backend cache invalidation contract for due markets.
+- Scheduled execution still calls `refreshMobileLiveProviderQuoteSnapshots()` with `allowContractProofFallback=false`.
+
+Verified:
+
+- `npx jest --runInBand --detectOpenHandles src/__tests__/mobile-live-provider-scheduler.service.test.ts`
+- `DATABASE_URL=postgresql://postgres:postgres@localhost:5432/polymarket npx tsx scripts/prove_mobile_scheduled_provider_refresh.ts --output docs/mobile/harness/cycle-DR-A-mobile-scheduled-provider-refresh-run-report.json`
+
+Proof notes:
+
+- Proof event `mobile-provider-refresh-proof-live` starts stale/refresh-due with 2 expired provider quote snapshots.
+- Scheduler reports `status=completed`, `attemptedEventCount=1`, `successfulEventCount=1`, `failedEventCount=0`, and refreshed item `status=completed`.
+- After scheduler: live-detail reports provider quote ready, refresh-due cleared, provider orderbook depth ready, and chart history from `market-outcome-snapshot`.
+
+Known limitations:
+
+- Production cron/queue registration, retry policy, alert routing, and durable run-history persistence remain open.
+- Real line-market provider identities and optional OpticOdds credentials remain open for line-family parity.
+
 ## Cycle DQ-A - Scheduled Provider Refresh Lifecycle
 
 Feature/page worked on:

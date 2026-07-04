@@ -6,7 +6,7 @@ import { runScheduledMobileLiveProviderRefresh } from "@/server/services/mobileL
 import { selectCompactLiveMarkets, serializeMobileLiveEventDetail } from "@/server/services/mobileLiveEventDetail";
 
 const DEFAULT_EVENT_SLUG = "mobile-provider-refresh-proof-live";
-const DEFAULT_OUTPUT_PATH = "docs/mobile/harness/cycle-DP-mobile-scheduled-provider-refresh.json";
+const DEFAULT_OUTPUT_PATH = "docs/mobile/harness/cycle-DR-A-mobile-scheduled-provider-refresh-run-report.json";
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
@@ -26,8 +26,13 @@ async function main() {
   const pass =
     expired.expiredSnapshotCount > 0 &&
     before.batchedProviderQuoteSnapshotRefreshDueCount > 0 &&
+    scheduler.status === "completed" &&
+    scheduler.attemptedEventCount === 1 &&
     scheduler.dueEventCount === 1 &&
     scheduler.refreshedEventCount === 1 &&
+    scheduler.successfulEventCount === 1 &&
+    scheduler.failedEventCount === 0 &&
+    scheduler.refreshed[0]?.status === "completed" &&
     after.batchedProviderQuoteSnapshotReadyCount > 0 &&
     after.batchedProviderQuoteSnapshotRefreshDueCount === 0;
 
@@ -42,8 +47,13 @@ async function main() {
     assertions: {
       expiredSnapshots: expired.expiredSnapshotCount > 0,
       beforeRefreshDue: before.batchedProviderQuoteSnapshotRefreshDueCount > 0,
+      schedulerRunCompleted: scheduler.status === "completed",
+      schedulerAttemptedOneEvent: scheduler.attemptedEventCount === 1,
       schedulerFoundDueEvent: scheduler.dueEventCount === 1,
       schedulerRefreshedEvent: scheduler.refreshedEventCount === 1,
+      schedulerSuccessfulEventCount: scheduler.successfulEventCount === 1,
+      schedulerFailedEventCount: scheduler.failedEventCount === 0,
+      schedulerRefreshItemCompleted: scheduler.refreshed[0]?.status === "completed",
       afterReady: after.batchedProviderQuoteSnapshotReadyCount > 0,
       afterNotRefreshDue: after.batchedProviderQuoteSnapshotRefreshDueCount === 0,
     },
