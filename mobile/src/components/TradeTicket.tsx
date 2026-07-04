@@ -167,7 +167,7 @@ function compactCash(value: number) {
 
 const ticketSelectionIdentityLabel = (selection?: TicketSelection) =>
   selection
-    ? `ticket-market-family-${selection.marketType} ticket-market-type-${selection.marketType} ticket-line-${selection.line ?? "none"} ticket-period-${selection.period ?? "none"} ticket-selection-side-${selection.side ?? "yes"} ticket-display-label-${selection.displayLabel} ticket-contract-side-${selection.contractSide ?? "yes"}`
+    ? `ticket-market-family-${selection.marketType} ticket-market-type-${selection.marketType} ticket-market-id-${selection.marketId ?? "none"} ticket-outcome-id-${selection.outcomeId ?? "none"} ticket-market-group-${selection.marketGroupId ?? "none"} ticket-line-${selection.line ?? "none"} ticket-period-${selection.period ?? "none"} ticket-selection-side-${selection.side ?? "yes"} ticket-display-label-${selection.displayLabel} ticket-contract-side-${selection.contractSide ?? "yes"} ticket-provider-source-${selection.referenceSource ?? "none"} ticket-provider-market-${selection.externalMarketId ?? "none"} ticket-provider-condition-${selection.conditionId ?? "none"} ticket-provider-token-${selection.referenceTokenId ?? "none"} ticket-provider-outcome-${selection.referenceOutcomeLabel ?? "none"}`
     : "ticket-market-family-none ticket-line-none ticket-period-none";
 
 export function TradeTicket({
