@@ -6,6 +6,31 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle DG
+
+Date: 2026-07-04
+Branch: `mobile/cycle-DG-provider-fixture-metadata-contract`
+Goal: Promote real Polymarket/Gamma fixture metadata into Holiwyn provider mapping readiness so future live line-market ingestion can target the correct provider fixture and teams instead of repeating noisy broad searches.
+Reference app screens observed: Continued from Cycle CW/CX/CY Samsung S23 Polymarket official app Colombia vs Ghana game page and exact Gamma event `fifwc-col-gha-2026-07-03`.
+Holiwyn screens changed: No visible mobile UI change. Existing server-backed Colombia vs Ghana live-detail Book flow was re-proven on Samsung tablet.
+Backend/API changed: Provider mapping readiness now includes stored `providerFixture` metadata when present on the event. New extraction service reads `eventMetadata` and market metadata from the real Gamma event payload.
+Database/schema changed: No schema migration. The proof stores `providerFixture` in `Event.metadata`; first-class schema/table support remains a future production concern.
+Files changed: provider fixture extraction service, provider mapping readiness service, extraction/roundtrip tests, proof harness, docs/proof artifacts, tablet proof artifacts.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-fixture-metadata.test.ts src/__tests__/mobile-live-provider-mapping.route.test.ts`
+- `cmd /c npx.cmd tsx scripts/prove_mobile_provider_fixture_metadata_contract.ts --output docs/mobile/harness/cycle-current-mobile-provider-fixture-metadata-contract.json`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` from `mobile/`
+- Samsung tablet proof via `mobile/scripts/smoke.ps1 -Deep -ServerLiveDetailOrderBook -ServerEventSlug world-cup-2026-colombia-vs-ghana-2026-07-03`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-provider-fixture-metadata-contract.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+Result: Pass for provider fixture metadata contract and tablet regression. Remaining P1 parity gap is real provider/API ingestion for line-market odds and depth, not fixture identity.
+Next focus: integrate or define the real `optic_odds` provider ingestion route keyed by `opticOddsFixtureId`/`opticOddsGameId`, then prove spreads/totals/team totals/halves/corners/correct-score with the same strict relevance gate.
+
 ## Cycle DF
 
 Date: 2026-07-04

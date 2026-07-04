@@ -2840,3 +2840,39 @@ Known limitations:
 - This closes the exact live match winner/draw/Ghana mapping path, not all Polymarket line markets.
 - Adjustable spreads/totals/team totals still need real provider event discovery or exact provider slugs when available.
 - The first Next dev compile for `/api/mobile/events/:slug/live-detail` was slow, but the serializer probe is fast after route warmup.
+
+## Cycle DG - Provider Fixture Metadata Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 structural provider data contract for the World Cup live event detail.
+- Provider fixture identity extraction from the real Polymarket/Gamma Colombia vs Ghana event.
+- Mapping readiness metadata that tells the next line-market provider cycle which fixture/team identifiers to use.
+
+Backend/API components touched:
+
+- `src/server/services/mobileLiveProviderFixtureMetadata.ts`
+- `src/server/services/mobileLiveProviderMapping.ts`
+- `scripts/prove_mobile_provider_fixture_metadata_contract.ts`
+- `src/__tests__/mobile-live-provider-fixture-metadata.test.ts`
+
+Important functions/services touched:
+
+- `extractProviderFixtureMetadataFromPolymarketEvent()` extracts `eventMetadata` and market-level provider IDs from a real Gamma event payload.
+- `mergeProviderFixtureMetadata()` persists the extracted object under event metadata without discarding existing metadata.
+- `getMobileLiveProviderMappingReadiness()` now exposes `providerFixture` when stored event metadata contains it.
+
+User interactions supported:
+
+- No new visible mobile control was added.
+- Existing Samsung tablet server-mode Colombia vs Ghana live detail and Book proof was re-smoked to ensure the provider identity contract did not regress the user-facing route-backed flow.
+
+State transitions:
+
+- The local Colombia vs Ghana proof event moves from only provider event slug/match-winner mapping context to a richer `providerFixture` contract with `opticOddsFixtureId`, `opticOddsGameId`, `opticOddsNumericalId`, `sportradarGameId`, team provider IDs, and moneyline provider metadata.
+- Mapping readiness now reports `lineMarketSourceContract.intendedProvider=optic_odds` and a fixture key instead of leaving line-market source discovery as an unstructured broad-search problem.
+
+Known limitations:
+
+- This does not ingest OpticOdds line prices yet.
+- Polymarket/Gamma still exposes only 3 match-winner markets for the checked exact event; spreads, totals, team totals, halves, corners, and correct-score markets remain open until a real provider route/source is integrated.

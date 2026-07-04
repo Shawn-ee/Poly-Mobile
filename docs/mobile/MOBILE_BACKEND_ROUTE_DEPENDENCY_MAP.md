@@ -840,3 +840,16 @@ Cycle CW implementation notes:
 
 - Exact provider event slug fallback prevents broad World Cup futures from being attached to the live match.
 - The Samsung tablet proof uses `world-cup-2026-colombia-vs-ghana-2026-07-03` and confirms route-backed Book UI after provider refresh.
+
+## Cycle DG - Provider Fixture Metadata Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider mapping readiness with fixture metadata | `/api/mobile/events/:slug/provider-mapping` | GET | Internal admin guard | None | Existing readiness fields plus `providerFixture.providerEventSlug`, `opticOddsFixtureId`, `opticOddsGameId`, `opticOddsNumericalId`, `sportradarGameId`, `teams[]`, `moneylineMarkets[]`, and `lineMarketSourceContract` | `Event.metadata.providerFixture`; existing `Event`, `Market`, `Outcome` provider identity fields | None; proof extracts from real Gamma event metadata and stores the contract-shaped object on the local proof event | Real OpticOdds/API ingestion route for line-market families is still missing. |
+| Provider fixture extraction proof | `scripts/prove_mobile_provider_fixture_metadata_contract.ts` against `https://gamma-api.polymarket.com/events?slug=fifwc-col-gha-2026-07-03` | Local proof script | Local development only | Exact provider event slug | Extracted fixture IDs, provider team IDs, 3 moneyline markets, readiness compact-market counts, and future line-market source contract | `Event.metadata` stores the extracted provider fixture contract for later route use | None | Production importer should persist this metadata automatically for every trusted World Cup fixture. |
+
+Cycle DG implementation notes:
+
+- No public user route changed.
+- The provider mapping readiness route now surfaces stored fixture metadata so future admin/operator and ingestion cycles can target the correct provider fixture instead of repeating broad Gamma line searches.
+- The intended line-market source is recorded as `optic_odds`; this is a contract definition, not proof that line odds have been ingested.
