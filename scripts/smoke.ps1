@@ -5741,8 +5741,8 @@ try {
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio.png"
       $mvpPortfolioHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio.xml"
-      Assert-HierarchyContains -Path $mvpPortfolioHierarchy -Expected (@("Portfolio", 'portfolio-tab-value-$10K', "portfolio-profile-header", "portfolio-gradient-avatar", "portfolio-performance-chart", "portfolio-range-selector", "portfolio-brand-watermark", "portfolio-deposit-placeholder", "portfolio-withdraw-placeholder", "portfolio-section-tabs", "Positions", "Orders", "History", "position-card-", "portfolio-position-flag", "portfolio-display-label-MEX -2.5 1H", "Cost 25 USDT", "Cash out", "chance") + $mvpPortfolioExpected)
-      Assert-HierarchyDoesNotContain -Path $mvpPortfolioHierarchy -Unexpected @("event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth", "header-promo-action", "header-notifications-action", "header-account-action", "WORLD CUP MARKETS", "Get 50")
+      Assert-HierarchyContains -Path $mvpPortfolioHierarchy -Expected (@("Portfolio", 'portfolio-tab-value-$10K', "portfolio-profile-header", "portfolio-gradient-avatar", "portfolio-performance-chart", "portfolio-range-selector", "portfolio-brand-watermark", "portfolio-funding-hidden-local-mvp", "portfolio-section-tabs", "Positions", "Orders", "History", "position-card-", "portfolio-position-flag", "MEX 0 - ECU 0", "portfolio-display-label-MEX -2.5 1H", "Cost 25 USDT", "Cash out", "chance") + $mvpPortfolioExpected)
+      Assert-HierarchyDoesNotContain -Path $mvpPortfolioHierarchy -Unexpected @("event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth", "header-promo-action", "header-notifications-action", "header-account-action", "WORLD CUP MARKETS", "Get 50", "portfolio-deposit-placeholder", "portfolio-withdraw-placeholder", "Deposit", "Withdraw")
       Invoke-TapHierarchyNode -Path $mvpPortfolioHierarchy -Identifier "portfolio-range-1w"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-range-1w.png"

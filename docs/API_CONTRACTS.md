@@ -79,6 +79,8 @@ Cycle GC changes only the default Event Detail visible shell by hiding non-MVP C
 
 Cycle GD changes only Home and Live discovery presentation priority. Home and Live still use the same event discovery payloads, route-backed event card IDs, market/outcome data, and ticket handoff fields. No backend route, schema, request body, or response contract changes are required.
 
+Cycle GE changes only Portfolio presentation. It does not change `GET /api/portfolio`, `GET /api/portfolio/value-history`, local fake-token order state, server sync state, or any order/position/activity identity fields. Deposit/Withdraw remain intentionally unimplemented and hidden from the default Local MVP Portfolio UI.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

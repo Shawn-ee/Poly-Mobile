@@ -153,6 +153,23 @@ const displayOutcome = (item: { outcome: string; selection?: TicketSelection; co
 const displayPositionChoice = (item: { outcome: string; selection?: TicketSelection }) =>
   item.selection?.displayLabel ?? item.outcome;
 
+const teamAbbrev = (team: string) => {
+  const clean = team
+    .replace(/\([^)]*\)/g, "")
+    .replace(/[^a-zA-Z\s]/g, " ")
+    .trim();
+  const words = clean.split(/\s+/).filter(Boolean);
+  if (words.length === 0) return "TBD";
+  if (words.length > 1 && words[0].length <= 3) return words[0].slice(0, 3).toUpperCase();
+  return words[words.length - 1].slice(0, 3).toUpperCase();
+};
+
+const scoreLineForTitle = (title: string) => {
+  const [home, away] = title.split(/\s+v(?:s\.?|\.?)\s+/i).map((value) => value.trim());
+  if (!home || !away) return title;
+  return `${teamAbbrev(home)} 0 - ${teamAbbrev(away)} 0`;
+};
+
 function PortfolioAvatar() {
   return (
     <View accessibilityLabel="portfolio-gradient-avatar" style={styles.avatarGradient}>
@@ -604,15 +621,8 @@ export function Portfolio({
           <Text style={styles.brandWatermarkText}>Holiwyn</Text>
         </View>
       </View>
-      <View style={styles.walletActionRow}>
-        <Pressable accessibilityLabel="portfolio-deposit-placeholder" testID="portfolio-deposit-placeholder" style={styles.depositButton}>
-          <Ionicons name="download-outline" color="#080d16" size={23} />
-          <Text style={styles.depositText}>{pageCopy.deposit}</Text>
-        </Pressable>
-        <Pressable accessibilityLabel="portfolio-withdraw-placeholder" testID="portfolio-withdraw-placeholder" style={styles.withdrawButton}>
-          <Ionicons name="push-outline" color="#f8fafc" size={23} />
-          <Text style={styles.withdrawText}>{pageCopy.withdraw}</Text>
-        </Pressable>
+      <View accessibilityLabel="portfolio-funding-hidden-local-mvp" testID="portfolio-funding-hidden-local-mvp" style={styles.a11yOnly}>
+        <Text>funding-hidden-local-mvp</Text>
       </View>
       <View accessibilityLabel="portfolio-section-tabs" testID="portfolio-section-tabs" style={styles.portfolioTabs}>
         {tabs.map((item) => (
@@ -628,7 +638,7 @@ export function Portfolio({
         ))}
       </View>
       {syncStatus !== "hidden" && (
-        <View accessibilityLabel="portfolio-sync-status" testID="portfolio-sync-status" style={styles.syncCard}>
+        <View accessibilityLabel="portfolio-sync-status" testID="portfolio-sync-status" style={[styles.syncCard, styles.a11yOnly]}>
           <Ionicons
             name={syncStatus === "error" ? "cloud-offline-outline" : "cloud-done-outline"}
             size={20}
@@ -775,7 +785,7 @@ export function Portfolio({
           {positions.map((position) => (
             <View accessibilityLabel={`position-card-${position.id} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
               <View style={styles.positionEventLine}>
-                <Text style={styles.positionScoreLine}>PAR 0 - FRA 0</Text>
+                <Text style={styles.positionScoreLine}>{scoreLineForTitle(position.title)}</Text>
                 {(position.isLive || position.liveClock) && (
                   <View style={styles.positionLiveInline}>
                     <View style={styles.liveDot} />
