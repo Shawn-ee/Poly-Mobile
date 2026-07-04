@@ -229,6 +229,57 @@ describe("Phase 5 canonical order submission", () => {
     expect(orderCountAfterRetry).toBe(orderCountBeforeRetry);
   });
 
+  test("returns stored ticket selection identity on canonical order responses", async () => {
+    const user = await createUser("line_selection_user");
+    const market = await createMarket();
+    const credential = await createApiCredential({ userId: user.id });
+    await fundUser(user.id, "100.000000");
+
+    const selection = {
+      marketId: market.id,
+      outcomeId: market.outcomes[0].id,
+      marketGroupId: "spreads",
+      marketType: "spread",
+      line: "-1.5",
+      period: "1H",
+      side: "yes",
+      displayLabel: "Japan -1.5 1H",
+      contractSide: "yes",
+      referenceSource: "polymarket",
+      externalMarketId: "gamma-line-selection",
+      conditionId: "condition-line-selection",
+      referenceTokenId: "token-line-selection-yes",
+    };
+
+    const result = await submitCanonicalOrder({
+      userId: user.id,
+      apiCredentialId: credential.id,
+      apiKeyId: credential.keyId,
+      body: {
+        marketId: market.id,
+        outcomeId: market.outcomes[0].id,
+        side: "BUY",
+        type: "LIMIT",
+        price: "0.45",
+        size: "10.000000",
+        clientOrderId: "line-selection-response-1",
+        contractSide: "YES",
+        selection,
+      },
+      idempotencyKeyHeader: "line-selection-response-key",
+    });
+
+    expect(result.status).toBe(200);
+    expect(result.body).toEqual(
+      expect.objectContaining({
+        order: expect.objectContaining({
+          contractSide: "YES",
+          selection,
+        }),
+      }),
+    );
+  });
+
   test("disabled and read-only API keys are blocked before order creation", async () => {
     const user = await createUser("policy_user");
     const market = await createMarket();

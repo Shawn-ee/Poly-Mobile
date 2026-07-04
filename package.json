@@ -91,6 +91,7 @@
     "mobile:dt-ready-orderbook-depth-proof": "tsx scripts/prove_mobile_dt_ready_orderbook_depth.ts",
     "mobile:du-provider-line-orderbook-depth-proof": "tsx scripts/prove_mobile_du_provider_line_orderbook_depth.ts",
     "mobile:dw-provider-orderbook-state-matrix": "tsx scripts/prove_mobile_dw_provider_orderbook_state_matrix.ts",
+    "mobile:dx-a-line-order-portfolio-history": "tsx scripts/prove_mobile_dx_a_line_order_portfolio_history.ts",
     "mobile:definition-of-done-sweep": "tsx scripts/mobile_definition_of_done_sweep.ts",
     "mobile:final-qa-review-signoff": "tsx scripts/mobile_final_qa_review_signoff.ts",
     "mobile:android-apk-artifact-readiness": "powershell -ExecutionPolicy Bypass -File mobile/scripts/check-android-apk-artifact-readiness.ps1",
