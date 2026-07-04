@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Orderbook family/depth selector | Cycle DU-C final gate | Fail until Agent A/B integrated proof; PM-GAP-075 remains open | 5 remaining gate areas | P1 row-to-ticket polish and P2 phone-density/visual polish remain after P0 pass | Reused DQ-C S23 reference: `docs/mobile/audits/live-football-world-cup-dq-c.md`; focused DU-C gate: `docs/mobile/audits/cycle-du-c-orderbook-final-gate.md`; DS/DT gates: `docs/mobile/audits/cycle-ds-c-orderbook-audit-gate.md`, `docs/mobile/audits/cycle-dt-c-orderbook-regate.md` | Reused DT progress only: backend ready-depth JSON `docs/mobile/harness/cycle-DT-integrated-ready-orderbook-depth-proof.json`; tablet interaction proof `docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-proof.json`; no fresh DU-C Android proof | DU-C prepares the final audit gate and does not certify parity. PM-GAP-075 remains blocked until one integrated Android run shows provider-backed `ready` depth visible in the Book UI with the same backend market id/selector key, proves Spread/period/line carry-through, proves Decimalize/equivalent settings, and preserves ticket/identity from selected ladder/market into the ticket. |
 | Orderbook family/depth selector | Cycle DT integrated | Partial; PM-GAP-075 remains open | 3 gate areas remain | P1 Decimalize/equivalent setting, broader spread/period/line selector coverage, row-to-ticket carry-through polish, and visual polish remain after provider-ready UI proof | `docs/mobile/audits/cycle-dt-c-orderbook-regate.md`; `docs/mobile/audits/cycle-ds-c-orderbook-audit-gate.md`; DQ-C reference screenshots/XML for Book action, selector, settings, and depth scroll | Backend ready-depth proof: `docs/mobile/harness/cycle-DT-integrated-ready-orderbook-depth-proof.json`; tablet interaction proof: `docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/` and `docs/mobile/harness/cycle-DT-B-orderbook-interactions/` | DT closed meaningful behavior gaps: Yes/No switching now changes side/outcome while preserving market identity, selector-to-ticket carry-through is proven for a contract-shaped Totals market, side-labelled ask/bid ladder proof exists, and the backend route returns provider-backed `ready` depth with market identity. Not a pass because provider-backed ready depth has not been proven in the same visible UI run, Spread/period/line carry-through is still incomplete, and Decimalize/equivalent Book settings are not implemented/proven. |
 | Orderbook family/depth selector | Cycle DT-C re-gate | Fail until proof; PM-GAP-075 remains open | 5 P0 areas remain | P1 broader selector coverage, row-to-ticket carry-through, and visual polish remain after P0 pass | `docs/mobile/audits/cycle-dt-c-orderbook-regate.md`; `docs/mobile/audits/cycle-ds-c-orderbook-audit-gate.md`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-12-top-book-action.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-13-orderbook-market-selector.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-15-orderbook-depth-scroll.png` | Integrated tablet proof: `docs/mobile/harness/cycle-DS-integrated-orderbook-ui-proof.json`; screenshot/XML folders under `docs/mobile/screenshots/cycle-DS-integrated-orderbook-ui/` and `docs/mobile/harness/cycle-DS-integrated-orderbook-ui/`; backend proof `docs/mobile/harness/cycle-DS-A-orderbook-selector-contract.json` | DS proof moves the surface closer: Book opens a dedicated surface, shows event identity, Yes/No tabs, grouped market selector labels, Price/Shares/Value ladder, spread separator, fallback/unavailable states, and ticket action. Not a pass because tab switching, selector carry-through, Decimalize/equivalent setting, provider-backed ready depth, and bid/ask side-labelled proof were not proven together. |
 | Line-market ticket target parity | Cycle DR-C integrated | Pass for focused ticket-target gate | 0 | P1 ticket amount/swipe recapture remains location-gated in DQ-C reference; PM-GAP-074 remains open for Book/order/portfolio/history coupling | `docs/mobile/audits/live-football-world-cup-dq-c.md`; `docs/mobile/audits/cycle-dr-c-line-market-ticket-target-gate.md`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-08-spread-line-dropdown.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-10-spread-ticket.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-16-markets-scroll-2.png` | Integrated tablet proof: `docs/mobile/harness/cycle-DR-C-integrated-line-market-ticket-proof.json`; `docs/mobile/screenshots/cycle-DR-C-integrated-line-adjustment-spread-ticket.png`; `docs/mobile/screenshots/cycle-DR-C-integrated-line-adjustment-totals-ticket.png`; XML under `docs/mobile/harness/cycle-DR-C-integrated-line-adjustment-*.xml` | Integrated smoke passed on Samsung tablet. Spread carries `MEX -2.5 1H`, Totals carries `Over 3.5 2H`, ticket odds/keypad/balance/submit rail are visible, and line ticket targets no longer fall back to the wrong backend-shaped market. |
@@ -1443,6 +1444,47 @@ Decision:
 - Pass/fail: Fail until proof.
 - Unresolved P0 gaps: 5 areas remain.
 - Do not pass PM-GAP-075 unless one integrated DT/DS evidence bundle proves all five remaining checklist items.
+
+## Cycle DU-C Orderbook Final Gate
+
+Result: Final gate prepared; fail until Agent A/B integrated proof; PM-GAP-075 remains open.
+
+Audit Agent: Agent C docs-only gate update.
+
+Inputs inspected:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/audits/cycle-ds-c-orderbook-audit-gate.md`
+- `docs/mobile/audits/cycle-dt-c-orderbook-regate.md`
+- `docs/mobile/harness/cycle-DT-integrated-ready-orderbook-depth-proof.json`
+- `docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-proof.json`
+- DT screenshots/XML under `docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/` and `docs/mobile/harness/cycle-DT-B-orderbook-interactions/`
+
+Reference evidence:
+
+- Reused DQ-C Samsung S23 official Polymarket Android reference evidence. No fresh DU-C S23 control was captured by Agent C.
+
+Holiwyn evidence:
+
+- Reused DT progress evidence only. Agent C did not run fresh DU-C Android proof and does not certify parity.
+
+DU-C final gate checklist:
+
+| Area | Gate result | Required Agent A/B evidence |
+| --- | --- | --- |
+| Provider-backed ready visible depth | Open | One integrated Android Book UI run showing provider-backed `ready` depth with the same market id/selector key as backend `depthSource=provider-orderbook-depth` and `providerOrderbookDepth.status=ready`. |
+| Backend JSON visible in app | Open | Proof JSON, screenshot, and XML tying the visible UI source/status to the backend ready response. Backend-only proof must fail this gate. |
+| Spread/period/line selector carry-through | Open | Before/after selector proof for a Spread market with non-`none` line and period, plus matching ladder and ticket identity. |
+| Decimalize/equivalent setting | Open | Settings screenshot/XML proving `Decimalize book` or documented equivalent, with state preservation after open/toggle. |
+| Ticket/identity preservation | Open | Ticket proof preserving event, family, line, period, side/outcome, market id/selector key, provider/source identity, and selected row identity where applicable. |
+| DT non-regression | Open until rerun | Final integrated proof must retain Yes/No switching and side-labelled ask/bid ladder markers already closed by DT. |
+
+Decision:
+
+- Pass/fail: Fail until integrated proof.
+- Unresolved P0 gaps: provider-backed ready depth visible in Android UI, backend-ready proof tied to the same UI run, Spread/period/line selector carry-through, Decimalize/equivalent setting, and final ticket/identity preservation.
+- Required focused gate: `docs/mobile/audits/cycle-du-c-orderbook-final-gate.md`.
+- Do not pass PM-GAP-075 before Agent A/B integrated Android evidence proves every `OB-DU-C-*` criterion.
 
 ## Cycle DR-C Line-Market Ticket Target Audit Gate
 
