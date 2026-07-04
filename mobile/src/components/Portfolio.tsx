@@ -148,18 +148,23 @@ const displayOutcome = (item: { outcome: string; selection?: TicketSelection; co
   return contractSide === "no" ? `No - ${display}` : display;
 };
 
+const limitIdentityLabel = (selection?: TicketSelection) =>
+  selection?.limitPrice
+    ? `portfolio-limit-side-${selection.limitSide ?? "none"} portfolio-limit-price-${Math.round(selection.limitPrice * 100)} portfolio-limit-decimal-${selection.limitPrice.toFixed(2)} portfolio-limit-shares-${selection.limitShares ?? "none"}`
+    : "portfolio-limit-side-none portfolio-limit-price-none portfolio-limit-shares-none";
+
 const selectionIdentityLabel = (item: { outcome: string; side?: "buy" | "sell"; selection?: TicketSelection; contractSide?: BinaryContractSide }) => {
   const selection = item.selection;
   const contractSide = item.contractSide ?? selection?.contractSide ?? "yes";
   return selection
-    ? `portfolio-snapshot-source-order-time portfolio-market-family-${selection.marketType} portfolio-market-type-${selection.marketType} portfolio-market-id-${selection.marketId ?? "none"} portfolio-outcome-id-${selection.outcomeId ?? "none"} portfolio-market-group-${selection.marketGroupId ?? "none"} portfolio-line-${selection.line ?? "none"} portfolio-period-${selection.period ?? "none"} portfolio-side-${item.side ?? selection.side ?? "none"} portfolio-outcome-${displayOutcome(item)} portfolio-display-label-${selection.displayLabel} portfolio-contract-side-${contractSide} portfolio-provider-source-${selection.referenceSource ?? "none"} portfolio-provider-market-${selection.externalMarketId ?? "none"} portfolio-provider-condition-${selection.conditionId ?? "none"} portfolio-provider-token-${selection.referenceTokenId ?? "none"} portfolio-provider-outcome-${selection.referenceOutcomeLabel ?? "none"}`
-    : `portfolio-market-family-none portfolio-line-none portfolio-period-none portfolio-side-${item.side ?? "none"} portfolio-outcome-${displayOutcome(item)} portfolio-contract-side-${contractSide}`;
+    ? `portfolio-snapshot-source-order-time portfolio-market-family-${selection.marketType} portfolio-market-type-${selection.marketType} portfolio-market-id-${selection.marketId ?? "none"} portfolio-outcome-id-${selection.outcomeId ?? "none"} portfolio-market-group-${selection.marketGroupId ?? "none"} portfolio-line-${selection.line ?? "none"} portfolio-period-${selection.period ?? "none"} portfolio-side-${item.side ?? selection.side ?? "none"} portfolio-outcome-${displayOutcome(item)} portfolio-display-label-${selection.displayLabel} portfolio-contract-side-${contractSide} portfolio-provider-source-${selection.referenceSource ?? "none"} portfolio-provider-market-${selection.externalMarketId ?? "none"} portfolio-provider-condition-${selection.conditionId ?? "none"} portfolio-provider-token-${selection.referenceTokenId ?? "none"} portfolio-provider-outcome-${selection.referenceOutcomeLabel ?? "none"} ${limitIdentityLabel(selection)}`
+    : `portfolio-market-family-none portfolio-line-none portfolio-period-none portfolio-side-${item.side ?? "none"} portfolio-outcome-${displayOutcome(item)} portfolio-contract-side-${contractSide} portfolio-limit-side-none portfolio-limit-price-none portfolio-limit-shares-none`;
 };
 
 const snapshotSourceLabel = (id: string, selection?: TicketSelection) =>
   selection
-    ? `snapshot-source-order-time snapshot-display-label-${selection.displayLabel} snapshot-provider-market-${selection.externalMarketId ?? "none"} snapshot-provider-token-${selection.referenceTokenId ?? "none"} snapshot-market-id-${selection.marketId ?? "none"} snapshot-outcome-id-${selection.outcomeId ?? "none"}`
-    : `snapshot-source-current-state snapshot-row-${id}`;
+    ? `snapshot-source-order-time snapshot-display-label-${selection.displayLabel} snapshot-provider-market-${selection.externalMarketId ?? "none"} snapshot-provider-token-${selection.referenceTokenId ?? "none"} snapshot-market-id-${selection.marketId ?? "none"} snapshot-outcome-id-${selection.outcomeId ?? "none"} ${limitIdentityLabel(selection)}`
+    : `snapshot-source-current-state snapshot-row-${id} portfolio-limit-side-none portfolio-limit-price-none portfolio-limit-shares-none`;
 
 const portfolioDetailCopy = {
   en: {

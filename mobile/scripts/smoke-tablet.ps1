@@ -23,6 +23,7 @@ param(
   [switch]$EventDetailChart,
   [switch]$EventDetailVisibleLiveParity,
   [switch]$EventDetailVisibleLiveDepth,
+  [switch]$EventDetailVisibleLimitLifecycle,
   [switch]$EventDetailProviderStatus,
   [switch]$EventDetailVisibleStatusBreadth,
   [switch]$EventDetailVisibleStatusTransition,
@@ -115,6 +116,8 @@ if ($EventDetailTrade) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailVisibleLiveParity -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EventDetailVisibleLiveDepth) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailVisibleLiveDepth -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($EventDetailVisibleLimitLifecycle) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailVisibleLimitLifecycle -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EventDetailProviderStatus) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailProviderStatus -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EventDetailVisibleStatusBreadth) {
