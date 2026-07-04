@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CY - Provider Line Market Availability Diagnostic
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider market-family diagnostics | `/api/mobile/events/:slug/provider-candidates` | GET | Internal admin key or admin session | Existing discovery params; exact sports-event mode can derive event slug from `Event` data | `providerCandidateFamilySummary`, `providerEventSlugs`, `providerEventSlugSource`, `targets[].attachProposal` | Reads `Event`, compact `Market`, and active `Outcome`; exact provider candidates come from Gamma `/events?slug=...` | None. Missing line families are reported as zero counts; no local line fixture is treated as provider-backed | Need a real source for provider-owned line markets or reviewed exact provider line slugs. |
+| Provider line availability proof | `scripts/prove_mobile_provider_line_market_availability.ts` | Local script | Local development only | `--providerEventSlug`, `--output` | Exact event family summary, synthetic Holiwyn-shaped line target search results, attach-ready counts, insufficient-relevance counts, `nextRequiredAction` | Does not write DB. Uses provider candidates plus in-memory line target contracts shaped like `Market.marketType`, `line`, `period`, and `Outcome` identities | None. The script is read-only and must not attach or fabricate provider IDs | Production provider/import path still needs line-market provider identities for spreads, totals, team totals, halves, corners, and props. |
+
+Cycle CY implementation notes:
+
+- Exact event discovery for `fifwc-col-gha-2026-07-03` classified all 3 provider candidates as `match_winner`.
+- Broad line searches returned noisy candidates, but the relevance gate kept attach-ready count at 0.
+- This is a diagnostic contract improvement, not a claim that line-market provider parity is complete.
+
 ## Cycle CX - Provider Event Slug Hint Discovery
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

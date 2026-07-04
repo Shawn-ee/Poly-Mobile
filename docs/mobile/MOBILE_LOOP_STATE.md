@@ -6,6 +6,29 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle CY
+
+Date: 2026-07-04
+Branch: `mobile/cycle-CY-provider-line-availability-diagnostic`
+Goal: Continue PM-GAP-067B by proving whether real provider line markets are available for the Colombia vs Ghana World Cup live event without weakening the provider relevance gate.
+Reference app screens observed: Continued from Cycle CW/CX Samsung S23 Polymarket official app Colombia vs Ghana game page and exact Gamma event `fifwc-col-gha-2026-07-03`.
+Holiwyn screens changed: No intended visual changes. Existing server-backed Colombia vs Ghana live-detail Book flow was re-proven on Samsung tablet.
+Backend/API changed: Provider candidate discovery now exposes `providerCandidateFamilySummary`. Added provider-family classification for match winner, spread, total goals, team totals, corners, halves, correct score, and other.
+Database/schema changed: None.
+Files changed: provider candidate service, provider candidate service tests, line-market availability proof harness, docs/proof artifacts, tablet proof artifacts.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-candidates.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts`
+- `cmd /c npx.cmd tsx scripts/prove_mobile_provider_line_market_availability.ts --output docs/mobile/harness/cycle-current-mobile-provider-line-market-availability.json`
+- Samsung tablet proof via `mobile/scripts/smoke.ps1 -Deep -ServerLiveDetailOrderBook -ServerEventSlug world-cup-2026-colombia-vs-ghana-2026-07-03`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-provider-line-market-availability.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+Result: Pass for line-market availability diagnosis and safety. Exact provider event has 3 match-winner candidates and 0 line-family candidates. Broad line searches checked 60 candidates, produced 0 attach-ready mappings, and recorded 48 insufficient-relevance rejections. Actual line-market provider mapping remains open.
+Next focus: find a stronger provider source, sports endpoint, or operator-reviewed exact slugs for line-market identities; do not use broad Gamma search for automatic line attaches.
+
 ## Cycle CX
 
 Date: 2026-07-04

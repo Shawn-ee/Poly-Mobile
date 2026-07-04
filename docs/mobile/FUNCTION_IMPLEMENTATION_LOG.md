@@ -2,6 +2,45 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CY - Provider Line Market Availability Diagnostic
+
+Feature/page worked on:
+
+- PM-GAP-067B provider identity mapping for line-market families on the World Cup live event detail.
+- Provider availability diagnostic for spreads, totals, team totals, first-half markets, and corners against the Colombia vs. Ghana Polymarket event.
+
+Frontend/harness components touched:
+
+- No visual UI code changed. Samsung tablet regression proof refreshed the existing server-backed Colombia vs. Ghana live-detail Book path.
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `src/__tests__/mobile-live-provider-candidates.service.test.ts`
+- `scripts/prove_mobile_provider_line_market_availability.ts`
+
+Important functions/services touched:
+
+- `classifyProviderMarketFamily()` classifies Gamma candidates into match winner, spread, total goals, team totals, corners, halves, correct score, or other.
+- `summarizeProviderCandidateFamilies()` exposes explicit zero-filled family counts, so missing provider line markets are auditable.
+- `discoverMobileLiveProviderCandidates()` now includes `providerCandidateFamilySummary` for sports-event candidates.
+
+User interactions supported:
+
+- No new end-user interaction. The tablet proof confirms the existing provider-backed live detail Book remains usable after the backend diagnostic changes.
+
+State transitions:
+
+- Exact Gamma event `fifwc-col-gha-2026-07-03` returns 3 provider candidates, all classified as `match_winner`.
+- Exact event line-family candidate count is 0 for spread, totals, team totals, corners, first half, second half, and correct score.
+- Broad line-search diagnostics checked 6 Holiwyn-shaped line targets and 60 provider candidates; 0 became attach-ready and 48 were rejected for insufficient relevance.
+
+Known limitations:
+
+- This cycle does not attach line markets because no safe attach-ready provider line markets were found.
+- The next implementation path should use another provider source, a richer Polymarket sports endpoint if one exists, or operator-reviewed exact slugs when Polymarket exposes line markets.
+- Line-market parity remains open for provider-backed spreads, totals, team totals, halves, corners, props, and ticket/order/portfolio/history proof.
+
 ## Cycle CX - Provider Event Slug Hint Discovery
 
 Feature/page worked on:

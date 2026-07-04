@@ -70,6 +70,16 @@ export type ProviderCandidateSlugPreviewOptions = {
 };
 
 export type ProviderMarketCandidate = NonNullable<ReturnType<typeof normalizeProviderCandidate>>;
+export type ProviderMarketFamily =
+  | "match_winner"
+  | "spread"
+  | "total_goals"
+  | "team_total_goals"
+  | "corners"
+  | "first_half"
+  | "second_half"
+  | "correct_score"
+  | "other";
 
 export async function discoverMobileLiveProviderCandidates(options: ProviderCandidateDiscoveryOptions) {
   const compactEvent = await loadCompactLiveEvent(options.eventSlug);
@@ -158,6 +168,7 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
           ? "request"
           : "event"
         : "none",
+    providerCandidateFamilySummary: summarizeProviderCandidateFamilies(sportsEventCandidates),
     targetMarketCount: providerTargets.length,
     attachReadyCandidateCount: providerTargets.filter((target) => target.attachProposal?.attachReady).length,
     providerErrorCount: providerTargets.filter((target) => target.providerError || target.providerSportsEventError).length,
@@ -168,6 +179,42 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
           ? "expand_provider_search_or_use_manual_polymarket_slugs"
           : "run_provider_candidate_discovery_with_fetch_enabled",
     targets: providerTargets,
+  };
+}
+
+export function summarizeProviderCandidateFamilies(candidates: ProviderMarketCandidate[]) {
+  const summary = emptyProviderCandidateFamilySummary();
+  for (const candidate of candidates) {
+    const family = classifyProviderMarketFamily(candidate);
+    summary[family] += 1;
+  }
+  return summary;
+}
+
+export function classifyProviderMarketFamily(candidate: Pick<ProviderMarketCandidate, "question" | "slug" | "eventTitle" | "tags">): ProviderMarketFamily {
+  const text = normalizeText(`${candidate.question} ${candidate.slug} ${candidate.eventTitle ?? ""} ${candidate.tags.join(" ")}`);
+  if (/\b(correct score|final score|score exact)\b/.test(text)) return "correct_score";
+  if (/\b(corner|corners)\b/.test(text)) return "corners";
+  if (/\b(second half|2nd half|2h)\b/.test(text)) return "second_half";
+  if (/\b(first half|1st half|1h)\b/.test(text)) return "first_half";
+  if (/\b(team total|team goals|team goal)\b/.test(text)) return "team_total_goals";
+  if (/\b(total goals|over under|over \d|under \d|goals over|goals under)\b/.test(text)) return "total_goals";
+  if (/\b(spread|handicap|cover|covers|asian handicap)\b/.test(text)) return "spread";
+  if (/\b(win on|winner|match winner|draw|end in a draw)\b/.test(text)) return "match_winner";
+  return "other";
+}
+
+function emptyProviderCandidateFamilySummary(): Record<ProviderMarketFamily, number> {
+  return {
+    match_winner: 0,
+    spread: 0,
+    total_goals: 0,
+    team_total_goals: 0,
+    corners: 0,
+    first_half: 0,
+    second_half: 0,
+    correct_score: 0,
+    other: 0,
   };
 }
 
