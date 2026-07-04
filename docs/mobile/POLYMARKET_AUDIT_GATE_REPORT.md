@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Current live event detail visible provider behavior and structural parity | Cycle EG-C | Fail until same-cycle integrated visible proof; PM-GAP-084 opened | 9 open P0 proof areas | P1 fresh S23 recapture, broader real provider-backed family breadth, visible provider refresh lifecycle; P2 density/chart/orderbook/status polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence; gate: `docs/mobile/audits/cycle-eg-c-live-event-visible-provider-gate.md` | No EG Holiwyn Android proof collected by Agent C; required future paths: `docs/mobile/screenshots/cycle-EG-integrated-live-event-visible-provider/`, `docs/mobile/harness/cycle-EG-integrated-live-event-visible-provider/`, backend support `docs/mobile/harness/cycle-EG-A-live-event-visible-provider.json` | Blocks pass unless Android-visible proof shows provider-backed live event behavior and the same selected market/line/outcome/provider/status identity through chart, Book/orderbook, and ticket. Backend JSON alone, stale reference alone, or hidden ready/stale state cannot pass. |
 | Current live game page Book-origin snapshot durability after metadata drift | Cycle EF integrated | Pass for selected EF proof; PM-GAP-083 verified for selected path | 0 for selected EF gate | P1 repeat across real provider-backed line families, provider-refresh drift regression, official production history recapture; P2 Portfolio/history visual clarity | Reused EE/ED checked-in proof and DQ-C Polymarket reference; gate: `docs/mobile/audits/cycle-ef-c-snapshot-durability-gate.md` | Backend proof: `docs/mobile/harness/cycle-EF-A-snapshot-durability.json`; Samsung tablet proof: `docs/mobile/harness/cycle-EF-integrated-snapshot-durability/cycle-EF-snapshot-durability-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EF-integrated-snapshot-durability/` and `docs/mobile/harness/cycle-EF-integrated-snapshot-durability/` | Integrated proof mutates current market/outcome/provider metadata after order/fill creation, then proves backend and Android Portfolio/activity still render order-time/fill-time selected Book identity with no fallback/default reconstruction and explicit fake-token labels. |
 | Current live game page Book-origin open/cancel/fill status and selection snapshots | Cycle EE integrated | Pass for selected PM-GAP-082 gate | 0 for selected EE gate | P1 real provider-backed line-family status matrix, official production confirmation/cancel/fill recapture, durability checks after metadata changes; P2 Portfolio/history visual status polish | Reused DQ-C Samsung S23 official Polymarket Book/orderbook and location-gated ticket reference; ED/DX/DO/Portfolio checked-in lifecycle baselines; gate: `docs/mobile/audits/cycle-ee-c-book-order-status-gate.md` | Samsung tablet proof: `docs/mobile/harness/cycle-EE-integrated-book-order-status/cycle-EE-book-order-status-proof.json`; backend snapshot proof: `docs/mobile/harness/cycle-EE-A-book-order-status-snapshots.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EE-integrated-book-order-status/` and `docs/mobile/harness/cycle-EE-integrated-book-order-status/` | EE integrated proof shows the same Book-origin selected identity through open order, cancel/canceled status, filled position, recent activity/history, guarded backend selection snapshots, visible fake-token status labels, and no-fallback assertions. |
 | Current live game page Book-selected order to Portfolio/history lifecycle | Cycle ED integrated | Pass for selected PM-GAP-081 gate | 0 for selected ED gate | P1 broader real provider-backed line-family lifecycle breadth, open/cancel/fill status breadth, production confirmation recapture, immutable selection snapshots; P2 Portfolio/history visual/motion polish | Reused DQ-C Samsung S23 official Polymarket Book/orderbook and location-gated ticket reference; provider/lifecycle baselines from DN/DO/DX; gate: `docs/mobile/audits/cycle-ed-c-book-order-portfolio-gate.md` | Samsung tablet proof: `docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/cycle-ED-book-order-portfolio-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-ED-integrated-book-order-portfolio/` and `docs/mobile/harness/cycle-ED-integrated-book-order-portfolio/`; backend route/data proof `docs/mobile/harness/cycle-ED-A-book-order-portfolio-history.json` | ED integrated proof starts on the live game page Book surface, selects Spread `1.5` regulation Yes, opens the matching ticket, submits a fake-token order, and preserves the same identity through Android-visible Portfolio open order/open position and activity/history with backend order/portfolio/history data proof. |
@@ -2025,6 +2026,71 @@ Decision:
 - Unresolved P0 gaps: 0 for the selected EF fake-token durability path.
 - Remaining P1/P2 gaps: repeat across real provider-backed line families, provider-refresh drift regression, official production history recapture, and Portfolio/history visual clarity.
 - Next cycle required: no for the selected EF gate. Future cycles should extend this to real provider-backed line families and provider-refresh drift regression.
+
+## Cycle EG-C Live Event Visible Provider Audit Gate
+
+Result: Fail until same-cycle integrated Android-visible proof. PM-GAP-084 is opened.
+
+Lead Agent target:
+
+- Prove structural live event detail parity with provider-backed visible behavior.
+- Preserve EC/ED/EE/EF selected passes as regressions while requiring a new live event proof that carries selected identity through chart, Book/orderbook, and ticket.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: not applicable in EG-C docs-only lane.
+
+Audit Gate Agent: Agent C.
+
+Reference device:
+
+- Reused stale/reference-only Samsung S23 official Polymarket Android evidence from DQ-C.
+- No fresh EG reference capture by Agent C.
+
+Holiwyn device:
+
+- No EG-C Holiwyn device proof collected by Agent C.
+- Required future proof device: Samsung tablet or assigned Holiwyn Android device.
+
+Reference evidence:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-03-world-cup-game-top.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-04-chart-press.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-08-spread-line-dropdown.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-12-top-book-action.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-13-orderbook-market-selector.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-15-orderbook-depth-scroll.png`
+- Matching XML under `docs/mobile/harness/cycle-DQ-C-polymarket-reference/`
+
+Holiwyn evidence required before pass:
+
+- `docs/mobile/screenshots/cycle-EG-integrated-live-event-visible-provider/`
+- `docs/mobile/harness/cycle-EG-integrated-live-event-visible-provider/`
+- `docs/mobile/harness/cycle-EG-A-live-event-visible-provider.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EG-LV-P0-01 | P0 | Fail until proof | No EG Android-visible proof exists. | Capture same-cycle screenshots/XML/proof JSON for the exact live event feature. |
+| EG-LV-P0-02 | P0 | Fail until proof | Backend/provider JSON has not been paired to visible Android markers for EG. | Pair backend/provider fields to visible selected-market/status markers in the same run. |
+| EG-LV-P0-03 | P0 | Fail until proof | Stale, refreshing, ready, and unavailable/empty statuses are not visibly proven in EG. | Capture visible provider status states or a documented same-run skip reason for non-ready states. |
+| EG-LV-P0-04 | P0 | Fail until proof | Selected market/line/outcome/provider/status identity is not proven through live page, chart, Book/orderbook, and ticket. | Add a proof matrix carrying the same selected identity across all surfaces. |
+| EG-LV-P0-05 | P0 | Fail until proof | Chart proof is not tied to the selected market/outcome/status for EG. | Capture chart touch/context proof with selected identity and no unintended side effects. |
+| EG-LV-P0-06 | P0 | Fail until proof | Provider-backed Book/orderbook ready depth is not visibly proven for the same selected identity. | Capture Book/orderbook rows, side labels, spread, provider/source/status, and selected market id or selector key. |
+| EG-LV-P0-07 | P0 | Fail until proof | Ticket handoff is not proven from the selected row/line/orderbook action. | Open ticket and assert matching event, family/type, line, period, side/outcome, provider/source, market id or selector key, and price/odds. |
+| EG-LV-P0-08 | P0 | Fail until proof | No EG no-fallback guard exists for non-ready or default states. | Add visible and proof-level rejection of moneyline/default/event-only/first-row fallback. |
+| EG-LV-P0-09 | P0 | Fail until proof | EC/ED/EE/EF regressions are not paired with a separate EG proof. | Include same-build regression references while collecting new EG visible proof. |
+| EG-LV-P0-10 | P0 | Pass for docs gate | The EG audit explicitly labels reused DQ-C/S23 evidence as stale/reference-only. | Keep this limitation visible until fresh reference proof exists. |
+
+Decision:
+
+- Pass/fail: Fail until same-cycle integrated visible proof.
+- Unresolved P0 gaps: 9 open proof areas; only the stale-reference limitation disclosure is satisfied in docs.
+- Remaining P1/P2 gaps: fresh official S23 recapture, broader real provider-backed family breadth, visible refresh lifecycle, and visual/status polish.
+- Next cycle required: yes. Lead must collect Android-visible EG proof before Audit Gate can pass PM-GAP-084.
 
 Use this template for every feature gate:
 

@@ -31,6 +31,7 @@ These apply to every page, feature, button, and interaction:
 
 | Feature | Criteria owner file | P0 status | P1/P2 status | Latest gate |
 | --- | --- | --- | --- | --- |
+| Live event visible provider behavior and structural parity EG | `docs/mobile/audits/cycle-eg-c-live-event-visible-provider-gate.md` | Fail until same-cycle integrated Android-visible proof. P0 requires visible provider status and the same selected market, line, period, side/outcome, provider/source, market id or selector key, and status identity through live page, chart, Book/orderbook, and ticket. Backend-only JSON, stale/reference-only evidence, hidden ready/stale state, or generic/default ticket proof cannot pass | P1/P2 remaining: fresh official S23 recapture, broader real provider-backed line-family breadth, visible stale/refreshing/ready lifecycle, and live-page visual/status polish | EG-C docs gate fail; PM-GAP-084 opened |
 | Book-origin snapshot durability after metadata drift EF | `docs/mobile/audits/cycle-ef-c-snapshot-durability-gate.md` | Pass for selected EF integrated gate. P0 proof preserves order-time/fill-time selected Book identity after mutable market/outcome/provider metadata drift in backend routes and Android Portfolio/activity, with no fallback/default reconstruction and explicit fake-token labels | P1/P2 remaining: repeat across real provider-backed line families, provider-refresh drift regression, official production history recapture, and Portfolio/history visual clarity | EF integrated gate pass; PM-GAP-083 verified for selected lifecycle |
 | Book-origin order status breadth and selection snapshots EE | `docs/mobile/audits/cycle-ee-c-book-order-status-gate.md` | Pass for selected EE integrated gate. P0 proof preserves the same Book-origin Spread identity across open order, cancel/canceled status, filled position, recent activity/history, Android-visible fake-token status labels, backend route/data proof, guarded selection snapshots, and no fallback | P1/P2 remaining: real provider-backed line-family status matrix, official production confirmation/cancel/fill recapture, durability checks after metadata changes, and Portfolio/history visual status polish | EE integrated gate pass; PM-GAP-082 verified for selected lifecycle |
 | Book-selected order to Portfolio/history ED lifecycle | `docs/mobile/audits/cycle-ed-c-book-order-portfolio-gate.md` | Pass for selected ED integrated gate. P0 proof starts on the live game page Book surface, selects Spread `1.5` regulation Yes, opens the matching ticket, submits a fake-token order, and preserves the same selected identity through Android-visible Portfolio open order/open position/activity plus backend order/portfolio/history route proof | P1/P2 remaining: real provider-backed line-family lifecycle breadth, open/cancel/fill status breadth, production confirmation recapture, immutable selection snapshots, and Portfolio/history visual polish | ED integrated gate pass; PM-GAP-081 verified for selected lifecycle |
@@ -117,6 +118,27 @@ Navigation:
 - Tab persistence.
 - Scroll position.
 - Deep links if applicable.
+
+## Cycle EG-C Live Event Visible Provider Gate Criteria
+
+The focused EG-C gate in `docs/mobile/audits/cycle-eg-c-live-event-visible-provider-gate.md` opens PM-GAP-084 for structural live event detail parity and provider-backed visible behavior. Current status is fail until same-cycle integrated Android proof exists.
+
+| ID | Priority | Criterion | Required proof |
+| --- | --- | --- | --- |
+| EG-LV-P0-01 | P0 | Same-cycle Holiwyn Android visible proof must exist for the exact live event detail feature. | Committed screenshots, XML, and proof JSON from an EG integrated Android run. |
+| EG-LV-P0-02 | P0 | Backend-only proof is not sufficient. | Backend/provider fields must be paired to visible Android markers in the same selected flow; route JSON, compile checks, smoke logs, or source inspection cannot pass alone. |
+| EG-LV-P0-03 | P0 | The live event page must visibly expose provider-backed ready, stale, refreshing, and unavailable/empty states honestly. | Android proof showing ready provider source/status and at least one stale/refreshing/unavailable state or a documented same-run reason it cannot be triggered. |
+| EG-LV-P0-04 | P0 | Selected market identity must carry through live page, chart, Book/orderbook, and ticket. | One proof maps event, family/type, line, period, side/outcome, provider/source, market id or selector key, condition/token where available, and visible labels across each surface. |
+| EG-LV-P0-05 | P0 | Chart state must be tied to the selected market/outcome and status, not a generic placeholder. | Chart screenshot/XML/proof showing selected outcome or market context, provider/source/status, and no unintended ticket/book/share/chat/navigation side effect after chart touch. |
+| EG-LV-P0-06 | P0 | Book/orderbook must render provider-backed visible depth for the same selected market identity when claiming ready status. | Android Book proof showing event identity, selected market id or selector key, provider/status markers, Price/Shares/Value rows, side labels, spread, and no fallback rows counted as ready. |
+| EG-LV-P0-07 | P0 | Ticket handoff must preserve selected identity from the selected row/line/orderbook action. | Android ticket proof showing matching event, family/type, line, period, side/outcome, provider/source, market id or selector key, visible odds/price, and fake-token/test labeling if applicable. |
+| EG-LV-P0-08 | P0 | Non-ready states must not silently fall back to moneyline, first visible row, event-only labels, or mock-ready rows. | Proof assertions and visible labels reject fallback/default reconstruction. |
+| EG-LV-P0-09 | P0 | EC/ED/EE/EF regression markers must remain intact but cannot substitute for EG. | Same-build non-regression references or rerun markers for prior selected gates, plus separate EG live-event visible provider proof. |
+| EG-LV-P0-10 | P0 | If stale S23 reference evidence is reused, the gate must state that limitation and cannot call it fresh same-cycle reference proof. | Audit notes name reused DQ-C/S23 evidence as stale/reference-only. |
+| EG-LV-P1-01 | P1 | Repeat the integrated visible provider proof across multiple real provider-backed line families. | Android proof for Spread, Totals, halves, and other visible families when available. |
+| EG-LV-P1-02 | P1 | Recapture fresh official Polymarket S23 reference evidence for the same live event and interaction chain when access/location allows. | Same-cycle S23 screenshots/XML for live page, chart, Book, selector, and ticket/gated sheet. |
+| EG-LV-P1-03 | P1 | Prove provider refresh changing stale -> refreshing -> ready without losing selected market identity. | Android-visible refresh lifecycle plus backend proof for the same selected identity. |
+| EG-LV-P2-01 | P2 | Polish live-page density, chart touch feel, orderbook row styling, and status messaging after P0 identity/status proof passes. | Side-by-side visual review against fresh or reused Polymarket reference. |
 
 ## Cycle EF-C Snapshot Durability Gate Criteria
 
