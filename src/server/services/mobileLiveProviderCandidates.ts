@@ -72,7 +72,8 @@ export type ProviderCandidateSlugPreviewOptions = {
 export type ProviderMarketCandidate = NonNullable<ReturnType<typeof normalizeProviderCandidate>>;
 
 export async function discoverMobileLiveProviderCandidates(options: ProviderCandidateDiscoveryOptions) {
-  const compactMarkets = await loadCompactLiveMarkets(options.eventSlug);
+  const compactEvent = await loadCompactLiveEvent(options.eventSlug);
+  const compactMarkets = compactEvent.markets;
   const selectedMarkets = options.marketId
     ? compactMarkets.filter((market) => market.id === options.marketId)
     : compactMarkets.slice(0, MAX_MARKETS);
@@ -84,13 +85,14 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
   const fetchProvider = options.fetchProvider !== false;
   const providerSearchMode = options.providerSearchMode ?? DEFAULT_PROVIDER_SEARCH_MODE;
   const maxCandidatesPerMarket = Math.max(1, Math.min(options.maxCandidatesPerMarket ?? 5, 10));
+  const providerEventSlugs = deriveProviderEventSlugHints(compactEvent.event, options.providerEventSlugs);
   let providerSportsEventErrorGlobal: string | null = null;
   let sportsEventCandidates: ProviderMarketCandidate[] = [];
   if (fetchProvider && providerSearchMode !== "market-search") {
     try {
       sportsEventCandidates = await fetchProviderCandidatesFromSportsEvents({
-        eventSlugs: options.providerEventSlugs ?? undefined,
-        tagSlugs: options.providerEventSlugs?.length ? [] : undefined,
+        eventSlugs: providerEventSlugs.length ? providerEventSlugs : undefined,
+        tagSlugs: providerEventSlugs.length ? [] : undefined,
         fetchImpl: options.fetchImpl ?? fetch,
       });
     } catch (error) {
@@ -149,6 +151,13 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
     provider: "polymarket-gamma",
     fetchProvider,
     providerSearchMode,
+    providerEventSlugs,
+    providerEventSlugSource:
+      providerEventSlugs.length > 0
+        ? options.providerEventSlugs?.length
+          ? "request"
+          : "event"
+        : "none",
     targetMarketCount: providerTargets.length,
     attachReadyCandidateCount: providerTargets.filter((target) => target.attachProposal?.attachReady).length,
     providerErrorCount: providerTargets.filter((target) => target.providerError || target.providerSportsEventError).length,
@@ -163,7 +172,7 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
 }
 
 export async function previewMobileLiveProviderCandidatesBySlug(options: ProviderCandidateSlugPreviewOptions) {
-  const compactMarkets = await loadCompactLiveMarkets(options.eventSlug);
+  const compactMarkets = (await loadCompactLiveEvent(options.eventSlug)).markets;
   const market = compactMarkets.find((candidate) => candidate.id === options.marketId);
   if (!market) {
     throw new Error(`Market ${options.marketId} is not in compact live event ${options.eventSlug}.`);
@@ -211,6 +220,37 @@ export async function previewMobileLiveProviderCandidatesBySlug(options: Provide
           : "supply_better_polymarket_slug_for_compact_market",
     candidates,
   };
+}
+
+export function deriveProviderEventSlugHints(
+  event: {
+    externalSlug?: string | null;
+    externalEventId?: string | null;
+    source?: string | null;
+    metadata?: Prisma.JsonValue | null;
+  },
+  requestedSlugs?: string[] | null,
+) {
+  const hints = new Set<string>();
+  for (const value of requestedSlugs ?? []) {
+    const slug = sanitizeSlug(value);
+    if (slug) hints.add(slug);
+  }
+  if (hints.size > 0) {
+    return Array.from(hints);
+  }
+
+  for (const value of [
+    event.externalSlug,
+    event.externalEventId,
+    ...providerSlugHintsFromMetadata(event.metadata),
+  ]) {
+    const slug = sanitizeSlug(value);
+    if (slug && looksLikePolymarketEventSlug(slug, event.source)) {
+      hints.add(slug);
+    }
+  }
+  return Array.from(hints);
 }
 
 export function buildProviderCandidateSearchQueries(market: CompactMarketForCandidates) {
@@ -605,7 +645,7 @@ function countOutcomeNameMatches(
   }).length;
 }
 
-async function loadCompactLiveMarkets(eventSlug: string) {
+async function loadCompactLiveEvent(eventSlug: string) {
   const event = await prisma.event.findFirst({
     where: { slug: eventSlug },
     include: {
@@ -626,7 +666,50 @@ async function loadCompactLiveMarkets(eventSlug: string) {
     throw new Error(`No live event found for ${eventSlug}.`);
   }
 
-  return selectCompactLiveMarkets(event.markets);
+  return {
+    event: {
+      externalSlug: event.externalSlug,
+      externalEventId: event.externalEventId,
+      source: event.source,
+      metadata: event.metadata,
+    },
+    markets: selectCompactLiveMarkets(event.markets),
+  };
+}
+
+function providerSlugHintsFromMetadata(metadata: Prisma.JsonValue | null | undefined) {
+  const hints: string[] = [];
+  collectProviderSlugHints(metadata, hints, 0);
+  return hints;
+}
+
+function collectProviderSlugHints(value: Prisma.JsonValue | null | undefined, hints: string[], depth: number) {
+  if (depth > 4 || value == null) return;
+  if (typeof value === "string") {
+    const slug = sanitizeSlug(value);
+    if (slug) hints.push(slug);
+    return;
+  }
+  if (Array.isArray(value)) {
+    for (const item of value) collectProviderSlugHints(item, hints, depth + 1);
+    return;
+  }
+  if (typeof value !== "object") return;
+  for (const [key, entry] of Object.entries(value)) {
+    if (typeof entry === "string" && /polymarket|provider.*event|event.*slug|external.*slug|source.*url|url/i.test(key)) {
+      const slug = sanitizeSlug(entry);
+      if (slug) hints.push(slug);
+    } else if (/polymarket|provider|external|source|event/i.test(key)) {
+      collectProviderSlugHints(entry, hints, depth + 1);
+    }
+  }
+}
+
+function looksLikePolymarketEventSlug(slug: string, source?: string | null) {
+  if (source === "polymarket") return true;
+  if (/^fifwc-[a-z0-9-]+-\d{4}-\d{2}-\d{2}$/i.test(slug)) return true;
+  if (/world-cup/i.test(slug) && /\d{4}-\d{2}-\d{2}/.test(slug)) return true;
+  return false;
 }
 
 function normalizeText(value: string) {

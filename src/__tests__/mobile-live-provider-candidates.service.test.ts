@@ -1,5 +1,6 @@
 import {
   buildProviderCandidateSearchQueries,
+  deriveProviderEventSlugHints,
   fetchProviderCandidatesFromSportsEvents,
   fetchProviderCandidatesForQueries,
   fetchProviderCandidatesForSlugs,
@@ -23,6 +24,30 @@ const compactMarket = {
 };
 
 describe("mobile live provider candidates", () => {
+  test("derives exact provider event slugs from event fields and metadata", () => {
+    expect(deriveProviderEventSlugHints({
+      externalSlug: "https://polymarket.com/sports/world-cup/fifwc-col-gha-2026-07-03",
+      externalEventId: null,
+      source: "polymarket",
+      metadata: {
+        provider: {
+          eventSlug: "fifwc-col-gha-2026-07-03",
+        },
+      },
+    })).toEqual(["fifwc-col-gha-2026-07-03"]);
+  });
+
+  test("request provider event slugs override event-derived hints", () => {
+    expect(deriveProviderEventSlugHints({
+      externalSlug: "fifwc-col-gha-2026-07-03",
+      externalEventId: null,
+      source: "polymarket",
+      metadata: null,
+    }, ["https://polymarket.com/sports/world-cup/fifwc-por-cro-2026-07-02"])).toEqual([
+      "fifwc-por-cro-2026-07-02",
+    ]);
+  });
+
   test("builds compact market search queries", () => {
     expect(buildProviderCandidateSearchQueries(compactMarket)).toEqual(expect.arrayContaining([
       "Curacao vs Cote d'Ivoire Match Winner",

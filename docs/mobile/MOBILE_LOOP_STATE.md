@@ -6,6 +6,31 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle CX
+
+Date: 2026-07-04
+Branch: `mobile/cycle-CX-provider-event-slug-hints`
+Goal: Continue PM-GAP-067 by making exact Polymarket sports-event discovery backend-owned through Holiwyn event slug metadata, not manual one-off discovery parameters.
+Reference app screens observed: Continued from Cycle CW Samsung S23 Polymarket official app Colombia vs Ghana game page and exact Gamma event `fifwc-col-gha-2026-07-03`.
+Holiwyn screens changed: No intended visual changes. Existing server-backed Colombia vs Ghana live-detail Book flow was re-proven on Samsung tablet.
+Backend/API changed: `discoverMobileLiveProviderCandidates()` now derives provider event slug hints from `Event.externalSlug`, `Event.externalEventId`, `Event.source`, and provider-related `Event.metadata` when request overrides are absent. Discovery response now reports `providerEventSlugs` and `providerEventSlugSource`.
+Database/schema changed: None. Existing `Event` provider fields and metadata carry the hint contract.
+Files changed: provider candidate service, candidate service tests, provider sports-event proof harness, docs/proof artifacts, tablet proof artifacts.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-candidates.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts`
+- `cmd /c npx.cmd tsx scripts/prove_mobile_provider_sports_event_discovery.ts --output docs/mobile/harness/cycle-current-mobile-provider-sports-event-discovery-proof.json`
+- `cmd /c npx.cmd tsx scripts/probe_mobile_live_detail_route.ts`
+- Samsung tablet proof via `mobile/scripts/smoke.ps1 -Deep -ServerLiveDetailOrderBook -ServerEventSlug world-cup-2026-colombia-vs-ghana-2026-07-03`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-provider-sports-event-discovery-proof.json`
+- `docs/mobile/harness/cycle-current-mobile-live-detail-route-probe.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+Result: Pass for event-derived exact provider event discovery. Proof reports `providerEventSlugSource=event`, 3 attach-ready compact markets, 3 provider-refreshable markets after attach, 6 quote snapshots, 232 CLOB depth rows, and Samsung tablet route-backed Book proof.
+Next focus: line-market provider mapping for spreads, totals, team totals, halves, corners, and props when real provider markets are available; ensure production fixture import preserves exact provider event slug metadata.
+
 ## Cycle CV
 
 Date: 2026-07-04
