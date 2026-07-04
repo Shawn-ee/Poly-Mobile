@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CP - Provider Candidate Discovery Contract
+
+Fields now provided or wired:
+
+- Protected `/api/mobile/events/:slug/provider-candidates` returns compact market search queries, provider candidate rows, ranking metadata, attach readiness, and attach proposals when candidates are complete.
+- Candidate rows are shaped for the existing provider identity attach contract: `externalSlug`, `externalMarketId`, `conditionId`, outcome token IDs, and outcome labels.
+- Query-contract proof shows all 14 compact markets now have backend-derived provider search terms.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Successful provider fetch in the current local proof environment.
+- Real attach-ready candidates for compact World Cup live markets.
+- Confirmed apply using real provider IDs and subsequent no-fallback provider refresh proof.
+
+Schema mismatch:
+
+- No schema change was needed. Discovery is read-only and prepares data for existing `Market`/`Outcome` provider identity columns.
+
+Route mismatch:
+
+- Candidate route exists, but provider fetch proof returned `fetch failed` for all 14 targets. No real provider identities were discovered in this cycle.
+
+Temporary mock/static data:
+
+- None. `fetchProvider=false` only proves query generation and does not fabricate provider candidates.
+
+Future migration concern:
+
+- The next structural cycle should either make provider fetch succeed from the local proof environment or add a manual real-slug preview/import path that uses actual Polymarket market slugs and the existing attach route.
+
 ## Cycle CO - Provider Identity Attach Contract
 
 Fields now provided or wired:

@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CP - Provider Candidate Discovery Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Compact live provider candidate discovery | `/api/mobile/events/:slug/provider-candidates` | GET | Internal admin key or admin session | Query params: `marketId`, `fetchProvider`, `maxCandidatesPerMarket` | `result.targets[].queries`, `candidateCount`, `providerError`, `candidates[]`, `bestCandidate`, `attachProposal.mapping`, `attachReadyCandidateCount`, `nextRequiredAction` | Reads compact `Event`, `Market`, `Outcome`; provider search uses Polymarket Gamma `/markets` and maps candidate fields to the existing attach contract shape | `fetchProvider=false` returns query contract only and does not call Gamma | In this run, provider fetch returned `fetch failed` for all 14 compact targets. Real provider identity import remains open. |
+
+Cycle CP implementation notes:
+
+- The route is protected because it can expose provider identity candidates and token IDs.
+- The route never mutates `Market`, `Outcome`, or `ReferenceQuoteSnapshot`; it only prepares reviewable candidate and attach-proposal data.
+
 ## Cycle CO - Provider Identity Attach Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

@@ -2,6 +2,55 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CP - Provider Candidate Discovery Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 provider candidate discovery for compact live event detail.
+- This cycle adds the protected provider-search route needed before real provider identity can be reviewed and attached.
+
+Frontend components touched:
+
+- None. Samsung tablet proof was rerun against the existing live event detail and selected second-half Book flow after backend route changes.
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `src/app/api/mobile/events/[slug]/provider-candidates/route.ts`
+- `src/__tests__/mobile-live-provider-candidates.service.test.ts`
+- `src/__tests__/mobile-live-provider-candidates.route.test.ts`
+
+Important functions/services touched:
+
+- `discoverMobileLiveProviderCandidates()` loads compact live markets, derives provider search queries, optionally fetches Polymarket Gamma candidates, ranks them, and returns attach-ready proposals only when provider identity is complete.
+- `buildProviderCandidateSearchQueries()` turns compact market title/type/period/line metadata into auditable search terms.
+- `fetchProviderCandidatesForQueries()` normalizes Gamma-style market payloads into provider candidate rows with `externalMarketId`, `conditionId`, outcomes, token IDs, prices, quality fields, and tags.
+- `rankProviderCandidates()` scores candidates against the compact market and marks attach readiness.
+
+User interactions supported:
+
+- No new visual interaction. This is a backend discovery contract for the future import/review step.
+- Existing Samsung tablet live detail and selected second-half Book flow still work after the backend contract change.
+
+State transitions:
+
+- Contract-only proof (`fetchProvider=false`) returns 14 compact targets with generated search queries and next action `run_provider_candidate_discovery_with_fetch_enabled`.
+- Provider-fetch proof attempted discovery for all 14 targets and returned `providerErrorCount=14` with `providerError="fetch failed"`, so real candidate import remains blocked by provider fetch/network state in this run.
+
+Known limitations:
+
+- No provider identities were applied.
+- No attach-ready candidates were found because provider fetch failed during route proof.
+- The next provider cycle should rerun discovery in an environment where Gamma fetch works, or accept manually supplied real Polymarket slugs through a controlled candidate/attach workflow.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-candidates.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts src/__tests__/mobile-live-provider-mapping.route.test.ts src/__tests__/mobile-live-provider-identity-attach.service.test.ts`
+- `cmd /c npm.cmd run build`
+- Query-contract proof: `docs/mobile/harness/cycle-current-mobile-live-provider-candidates-query-contract.json`
+- Provider-fetch attempt proof: `docs/mobile/harness/cycle-current-mobile-live-provider-candidates-fetch-attempt.json`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+
 ## Cycle CO - Provider Identity Attach Contract
 
 Feature/page worked on:
