@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Route-backed provider-depth Book-staged limit lifecycle | Cycle EN-C docs gate | Fail until Agent A/B/Lead integrated route-backed lifecycle proof exists | 9 EN implementation proof rows fail until evidence; reference-status disclosure passes; Book-to-ticket route price preservation has EL support only | P1 fresh S23 production order recapture, multi-family/both-side route-backed breadth, durable DB snapshots after refresh/metadata drift; P2 lifecycle label/visual polish | Partial fresh EL-C S23 Book/orderbook reference for context only; stale DQ-C/AG/AI ticket/order support only; gate: `docs/mobile/audits/cycle-en-c-route-limit-lifecycle-gate.md` | Fresh EL integrated Holiwyn tablet proof supports route-backed ask 55c -> Buy ticket and bid 50c -> Sell ticket price preservation; fresh EM integrated proof supports selected fake-token lifecycle, but no EN route-backed order/open order/Portfolio/activity/history lifecycle proof exists | Blocks PM-GAP-088. Hard fails include midpoint/default price reversion, selected id/line/outcome/provider drift, Portfolio/history fallback labels, backend JSON without Android proof, arbitrary local UI-only mocks, fake provider-depth rows, and any fresh S23 production lifecycle claim without fresh capture. |
 | Book-staged selected limit lifecycle after EL | Cycle EM integrated | Pass for selected fake-token Book-staged limit lifecycle; provider-backed live-route lifecycle remains P1 | 0 for selected EM integrated path | P1 route-backed provider-depth lifecycle, fresh S23 ticket/order recapture, repeat across multiple market families and both sides, immutable DB selection snapshots for same market/outcome multi-selection; P2 lifecycle label polish | Partial fresh EL-C S23 Book/orderbook reference for context only; stale DQ-C/AG/AI ticket/order support only; gate: `docs/mobile/audits/cycle-em-c-limit-lifecycle-gate.md` | Service proof: `docs/mobile/harness/cycle-EM-A-limit-lifecycle/proof.json` and `docs/mobile/harness/cycle-EM-integrated-limit-lifecycle/cycle-EM-A-limit-lifecycle-proof.json`; integrated tablet proof: `docs/mobile/harness/cycle-EM-integrated-limit-lifecycle/cycle-EM-B-visible-limit-lifecycle-proof.json`; screenshots/XML: `docs/mobile/screenshots/cycle-EM-integrated-limit-lifecycle/`, `docs/mobile/harness/cycle-EM-integrated-limit-lifecycle/` | Lead integration pairs Agent A service/backend/mobile mapper proof with Agent B Android visible lifecycle proof. The Samsung tablet proof stages Spread `1.5` regulation Yes ask `41c`, opens the ticket, submits `$25`, and proves latest order, open order, latest activity, and canceled activity preserve `limit-side=ask`, `limit-price=41`, selected market/outcome/line/period/provider identity, and no fallback to Team to Advance or Mexico moneyline. |
 | Book-staged selected limit lifecycle after EL | Cycle EM-C docs gate | Fail until Agent A/B/Lead integrated lifecycle proof exists | 8 EM implementation proof areas fail until evidence; reference-status disclosure passes; ticket price preservation is partial from EL integrated proof | P1 repeat across multiple market families and both sides, recapture official production order/history when gates allow, durability after provider refresh/metadata drift; P2 lifecycle label polish | Partial fresh EL-C S23 Book/orderbook reference for context only; stale DQ-C/AG/AI ticket/order support only; gate: `docs/mobile/audits/cycle-em-c-limit-lifecycle-gate.md` | Fresh EL integrated Holiwyn tablet proof supports Book ask 55c -> Buy ticket and bid 50c -> Sell ticket price preservation, but no EM order/open order/Portfolio/activity/history lifecycle proof exists | Blocks PM-GAP-087. Hard fails include ticket reverting to midpoint/outcome probability, order snapshots dropping limit fields, Portfolio/history using default/fallback labels, backend JSON without Android proof, and any Polymarket parity claim without labeled fresh/stale evidence. |
 | Live event detail depth after EK | Cycle EL integrated | Pass for selected route-backed Book ladder -> staged Buy/Sell ticket path; broader page depth remains P1 | 0 for selected integrated Book/ticket path | P1 fresh S23 ticket recapture, production real mapped line-family breadth, additional line-family staged tickets; P2 density/chart/orderbook polish | Fresh partial S23 official Polymarket app live probe from EL-C for chart/top, swipe depth, line controls, Book/orderbook, and grouped selector; ticket evidence remains stale-support only | Backend proof: `docs/mobile/harness/cycle-EL-integrated-live-depth/cycle-EL-A-provider-breadth.json`; tablet proof: `docs/mobile/harness/cycle-EL-integrated-live-depth/cycle-EL-B-visible-live-depth-proof.json`; screenshots/XML: `docs/mobile/screenshots/cycle-EL-integrated-live-depth/`, `docs/mobile/harness/cycle-EL-integrated-live-depth/` | Lead integration pairs Agent A route-backed provider breadth with Agent B visible Book staging. The Samsung tablet proof opens the backend event, opens Book, taps a provider-depth ask at 55c/150 shares and bid at 50c/180 shares, opens Buy/Sell tickets, and proves the ticket price line preserves the tapped ladder price instead of reverting to the outcome probability. |
@@ -2172,6 +2173,69 @@ Decision:
 - Unresolved P0 gaps: 2 route-backed integration areas remain plus same-build regression breadth.
 - Remaining P1/P2 gaps: fresh official S23 recapture, broader real provider-backed line-family status matrix, actual stale -> refreshing/loading -> ready transition proof, and status visual polish.
 - Next cycle required: yes. Lead must make the tablet consume live backend route status data before Audit Gate can fully pass PM-GAP-084.
+
+## Cycle EN-C Route-Backed Book-Staged Limit Lifecycle Gate
+
+Result: Fail until Agent A/B/Lead integrated route-backed lifecycle proof. EL proves the route-backed Book row can stage ticket price, and EM proves a fake-token selected lifecycle, but EN does not pass until the same route-backed provider-depth selected Book row is visible through ticket, order, open order, Portfolio, activity, and history.
+
+Lead Agent target:
+
+- Pair Agent A backend route/order/portfolio/history proof with Agent B Holiwyn Android screenshots/XML/proof JSON for the same selected provider-depth Book row and order ids.
+- Require Android-visible Holiwyn proof for visible parity; backend JSON alone cannot pass.
+- Fail if ticket price reverts to midpoint/outcome probability/default price, if selected id/line/outcome/provider changes, if Portfolio/history uses fallback/default labels, or if proof uses arbitrary local UI-only mocks.
+- Do not claim fresh S23 production ticket/order/Portfolio/history reference unless it is newly captured and committed.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: not applicable in EN-C docs-only lane.
+
+Audit Gate Agent: Agent C.
+
+Reference device:
+
+- Partial fresh EL-C Samsung S23 official Polymarket app Book/orderbook context from 2026-07-04.
+- No fresh EN S23 production ticket/order/Portfolio/history recapture.
+
+Holiwyn device:
+
+- No EN Holiwyn device proof collected by Agent C.
+- Fresh support only: EL integrated route-backed Book-to-ticket proof and EM integrated fake-token lifecycle proof.
+
+Reference evidence:
+
+- `docs/mobile/audits/cycle-en-c-route-limit-lifecycle-gate.md`
+- `docs/mobile/audits/cycle-em-c-limit-lifecycle-gate.md`
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/audits/trade-ticket.md`
+- `docs/mobile/audits/binary-side.md`
+
+Holiwyn evidence required before pass:
+
+- Agent A route-backed backend proof for provider-depth selected Book row, order request/response, open order, Portfolio/open position, activity/history, status transitions, and no-fallback assertions.
+- Agent B Android screenshots/XML/proof JSON for Book, ticket before/after amount entry, submit, open order, Portfolio/open position, activity, and history for the same ids.
+- Lead-integrated matrix mapping event, market id/selector key, outcome id, line, period, side, provider/source, condition/token, limit price, row shares/value, route depth source, and order/fill/cancel ids across all surfaces.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EN-ROUTE-LIMIT-P0-01 | P0 | Pass for docs gate | EN labels EL/EM Holiwyn evidence fresh support, EL-C S23 Book context partial fresh, and DQ-C/AG/AI ticket/order evidence stale/reference-only. | Keep this limitation visible until fresh S23 production lifecycle proof exists. |
+| EN-ROUTE-LIMIT-P0-02 | P0 | Fail until proof | No EN Android proof shows the selected Book row is route-backed provider depth rather than local UI-only data. | Pair backend route depth fields to visible Android Book markers. |
+| EN-ROUTE-LIMIT-P0-03 | P0 | Partial support only | EL integrated proves route-backed ask 55c and bid 50c stage ticket prices, but not the EN lifecycle. | Re-run as part of the same EN order/Portfolio/history bundle. |
+| EN-ROUTE-LIMIT-P0-04 | P0 | Fail until proof | No EN ticket amount/ready/submit proof exists for the same route-backed row. | Capture Android ticket before/after amount entry and submit with matching route-backed selected snapshot. |
+| EN-ROUTE-LIMIT-P0-05 | P0 | Fail until proof | No EN route-backed order request/response snapshot is paired with Android submit proof. | Pair backend order JSON to the Android order id. |
+| EN-ROUTE-LIMIT-P0-06 | P0 | Fail until proof | No EN open-order route-backed lifecycle proof exists. | Capture open-order Android proof and backend route proof with unchanged selected fields. |
+| EN-ROUTE-LIMIT-P0-07 | P0 | Fail until proof | No EN Portfolio/open-position route-backed lifecycle proof exists. | Capture Portfolio/open-position proof for the same order/fill ids. |
+| EN-ROUTE-LIMIT-P0-08 | P0 | Fail until proof | No EN activity/history route-backed lifecycle proof exists. | Capture activity/history proof with selected limit identity and status labels. |
+| EN-ROUTE-LIMIT-P0-09 | P0 | Fail until proof | No EN Lead matrix proves selected identity is unchanged across all surfaces. | Map selected ids, line/outcome/provider, price, shares/value, and lifecycle ids across Book -> history. |
+| EN-ROUTE-LIMIT-P0-10 | P0 | Fail until proof | No EN negative assertions reject backend-only pass, local UI-only mocks, fake provider-depth rows, or fallback/default labels. | Add explicit negative assertions to the integrated proof bundle. |
+
+Decision:
+
+- Pass/fail: Fail until integrated route-backed Android-visible lifecycle proof.
+- Unresolved P0 gaps: 9 implementation proof rows remain open; reference-status disclosure passes.
+- Remaining P1/P2 gaps: fresh S23 production order recapture, multi-family/both-side breadth, durable DB snapshots after provider refresh/metadata drift, and visual polish.
+- Next cycle required: yes. Lead must require the integrated proof above before final EN pass.
 
 ## Cycle EL-C Live Event Detail Depth Gate
 
