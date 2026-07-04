@@ -2,6 +2,38 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle DU-A - Provider Ready Line Orderbook Depth Proof
+
+Closed or narrowed:
+
+- PM-GAP-075 backend/provider half now proves provider-backed ready depth on a line-family Book route response, not only a moneyline.
+- The DU-A proof seeds a disposable compact World Cup first-half spread market and records the real `/api/orderbook/:marketId/book?maxLevels=24` response with `depthSource=provider-orderbook-depth`, `availability.status=ready`, and `providerOrderbookDepth.status=ready`.
+- The same response carries selector-ready identity for visible mobile carry-through: `selectorKey=spreads:first-half:1.5`, `marketFamily=spread`, `marketType=spread`, `marketGroupKey=spreads`, `period=first-half`, `line=1.5`, `unit=goals`, and route outcome ids/sides.
+- `levels[]` now includes additive `value` beside existing `total`, so mobile proof can assert Price/Shares/Value without renaming the legacy notional field.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- A visible mobile run still needs to consume provider-backed ready depth from this route in the same UI session as selector/ticket interactions.
+- Production-mapped World Cup Spread/Totals markets still need recurring provider refresh coverage when real provider line markets are available.
+- A persisted/display contract for a Decimalize/equivalent Book setting remains outside this backend proof.
+
+Schema mismatch:
+
+- No schema change was required. Existing `Market.period`, `Market.line`, active `Outcome`, and `ReferenceOrderbookDepthSnapshot` rows cover the proof.
+
+Route mismatch:
+
+- The standalone Book route now provides the backend fields needed for provider-ready line ladder proof. Remaining mismatch is visible UI adoption/proof, not backend route shape.
+
+Temporary mock/static data:
+
+- No frontend mock data was added. The DU-A script uses disposable backend rows in the same provider ladder table consumed by production refresh code, and clears local proof-market open orders so `provider-orderbook-depth` is the route source.
+
+Future migration concern:
+
+- Keep `levels[].value` and `levels[].total` equivalent unless a future contract explicitly separates display notional from settlement value.
+- Keep provider-ready line identity route-backed so selector, ladder, ticket, order, portfolio, and history can carry the same `marketId`/`outcomeId` values.
+
 ## Cycle DT-A - Provider Ready Orderbook Depth Proof
 
 Closed or narrowed:

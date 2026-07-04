@@ -85,13 +85,17 @@ const asDepthLevels = (
   levels: Array<{ outcomeId: string; price: number; size: number }>,
   side: "bid" | "ask",
 ) =>
-  levels.map((level) => ({
-    outcomeId: level.outcomeId,
-    side,
-    price: level.price,
-    shares: level.size,
-    total: Number((level.price * level.size).toFixed(6)),
-  }));
+  levels.map((level) => {
+    const notionalValue = Number((level.price * level.size).toFixed(6));
+    return {
+      outcomeId: level.outcomeId,
+      side,
+      price: level.price,
+      shares: level.size,
+      total: notionalValue,
+      value: notionalValue,
+    };
+  });
 
 const availabilityForMarket = (market: {
   status: string;

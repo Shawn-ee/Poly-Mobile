@@ -1,0 +1,200 @@
+{
+  "cycle": "DU-A",
+  "agent": "Agent A - Backend/provider lifecycle",
+  "gap": "PM-GAP-075",
+  "generatedAt": "2026-07-04T11:36:48.860Z",
+  "route": "/api/orderbook/d08da13e-80b8-4452-9067-f91d08f6fba4/book?maxLevels=24",
+  "baseUrl": "http://127.0.0.1:3002",
+  "event": {
+    "id": "ea3ea09a-b3bd-4b47-9b6d-2990a5887492",
+    "slug": "cycle-du-a-world-cup-provider-line-depth",
+    "title": "World Cup 2026: Japan vs Morocco",
+    "compactStyle": "World Cup first-half spread"
+  },
+  "market": {
+    "id": "d08da13e-80b8-4452-9067-f91d08f6fba4",
+    "slug": "cycle-du-a-world-cup-provider-line-depth-first-half-spread-1-5",
+    "title": "Japan vs Morocco: 1H Spread 1.5",
+    "marketType": "spread",
+    "marketGroupKey": "spreads",
+    "marketGroupTitle": "Spread",
+    "period": "first-half",
+    "line": "1.5",
+    "unit": "goals",
+    "outcomeCount": 2
+  },
+  "seededProviderDepth": {
+    "source": "polymarket-clob-du-proof",
+    "rowsRequested": 8,
+    "rowsUpserted": 8,
+    "fetchedAt": "2026-07-04T11:36:48.785Z",
+    "localOpenOrdersClearedForMarket": true
+  },
+  "response": {
+    "marketId": "d08da13e-80b8-4452-9067-f91d08f6fba4",
+    "outcomeId": null,
+    "depthSource": "provider-orderbook-depth",
+    "depthReason": "Depth comes from provider orderbook ladder snapshots.",
+    "emptyState": null,
+    "availability": {
+      "source": "market-source-updated-at",
+      "status": "ready",
+      "marketStatus": "LIVE",
+      "isStale": false,
+      "isSuspended": false,
+      "isDelayed": false
+    },
+    "marketIdentity": {
+      "source": "market-route-contract",
+      "marketId": "d08da13e-80b8-4452-9067-f91d08f6fba4",
+      "title": "Japan vs Morocco: 1H Spread 1.5",
+      "selectorKey": "spreads:first-half:1.5",
+      "marketFamily": "spread",
+      "marketType": "spread",
+      "marketGroupKey": "spreads",
+      "marketGroupId": "spreads",
+      "marketGroupTitle": "Spread",
+      "displayOrder": 10,
+      "period": "first-half",
+      "line": "1.5",
+      "unit": "goals",
+      "displayUnits": {
+        "price": "probability",
+        "priceFormat": "cents",
+        "shares": "shares",
+        "total": "notional",
+        "line": "goals"
+      },
+      "outcomeCount": 2,
+      "tradableOutcomeCount": 2,
+      "outcomes": [
+        {
+          "id": "361d2e0b-5043-4fc9-93d3-150a98adfc00",
+          "name": "Japan -1.5",
+          "label": "Japan -1.5",
+          "side": "home",
+          "displayOrder": 0,
+          "isTradable": true
+        },
+        {
+          "id": "33dca821-0204-4316-a441-cf250ad37b2b",
+          "name": "Morocco +1.5",
+          "label": "Morocco +1.5",
+          "side": "away",
+          "displayOrder": 1,
+          "isTradable": true
+        }
+      ]
+    },
+    "levelCount": 8,
+    "visibleMobileFields": {
+      "source": "provider-orderbook-depth",
+      "status": "ready",
+      "readyAvailability": "ready",
+      "selectorKey": "spreads:first-half:1.5",
+      "marketFamily": "spread",
+      "period": "first-half",
+      "line": "1.5",
+      "outcomeIds": [
+        "361d2e0b-5043-4fc9-93d3-150a98adfc00",
+        "33dca821-0204-4316-a441-cf250ad37b2b"
+      ],
+      "levels": [
+        {
+          "outcomeId": "33dca821-0204-4316-a441-cf250ad37b2b",
+          "side": "bid",
+          "price": 0.55,
+          "shares": 16250,
+          "value": 8937.5
+        },
+        {
+          "outcomeId": "33dca821-0204-4316-a441-cf250ad37b2b",
+          "side": "bid",
+          "price": 0.53,
+          "shares": 17350,
+          "value": 9195.5
+        },
+        {
+          "outcomeId": "361d2e0b-5043-4fc9-93d3-150a98adfc00",
+          "side": "bid",
+          "price": 0.42,
+          "shares": 18500,
+          "value": 7770
+        },
+        {
+          "outcomeId": "361d2e0b-5043-4fc9-93d3-150a98adfc00",
+          "side": "bid",
+          "price": 0.4,
+          "shares": 19600,
+          "value": 7840
+        },
+        {
+          "outcomeId": "361d2e0b-5043-4fc9-93d3-150a98adfc00",
+          "side": "ask",
+          "price": 0.46,
+          "shares": 17600,
+          "value": 8096
+        },
+        {
+          "outcomeId": "361d2e0b-5043-4fc9-93d3-150a98adfc00",
+          "side": "ask",
+          "price": 0.48,
+          "shares": 19150,
+          "value": 9192
+        },
+        {
+          "outcomeId": "33dca821-0204-4316-a441-cf250ad37b2b",
+          "side": "ask",
+          "price": 0.59,
+          "shares": 15350,
+          "value": 9056.5
+        },
+        {
+          "outcomeId": "33dca821-0204-4316-a441-cf250ad37b2b",
+          "side": "ask",
+          "price": 0.61,
+          "shares": 16900,
+          "value": 10309
+        }
+      ]
+    },
+    "providerOrderbookDepth": {
+      "source": "reference-orderbook-depth-snapshot",
+      "status": "ready",
+      "levelCount": 8,
+      "snapshotCount": 8,
+      "latestFetchedAt": "2026-07-04T11:36:48.785Z",
+      "latestUpdatedAt": "2026-07-04T11:36:48.788Z",
+      "staleAfterSeconds": 90,
+      "refreshTtlSeconds": 60,
+      "nextRefreshAt": "2026-07-04T11:37:48.785Z",
+      "shouldRefresh": false,
+      "isStale": false,
+      "sources": [
+        "polymarket-clob-du-proof"
+      ],
+      "reason": "Provider orderbook depth snapshot is fresh."
+    },
+    "providerQuoteDepth": {
+      "source": "reference-quote-snapshot",
+      "levelCount": 0,
+      "sizeSource": null,
+      "isEstimatedSize": false,
+      "reason": "No provider quote snapshot is available."
+    }
+  },
+  "assertions": {
+    "routeReturnedProviderBackedReadyDepth": true,
+    "availabilityReady": true,
+    "providerDepthReady": true,
+    "providerDepthSourcePresent": true,
+    "selectorKeyCarriesFamilyPeriodLine": true,
+    "spreadIdentityPresent": true,
+    "periodPresent": true,
+    "linePresent": true,
+    "outcomeIdsPresentOnIdentityAndLevels": true,
+    "sidePriceSharesValueRowsPresent": true,
+    "noEmptyState": true
+  },
+  "pass": true
+}

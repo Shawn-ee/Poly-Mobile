@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle DU-A - Provider Ready Line Orderbook Depth Proof
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Book ready provider line ladder | `/api/orderbook/:marketId/book?maxLevels=24` | GET | Public visibility guard; private markets still use existing access checks | Query params only: optional `outcomeId`, optional `maxLevels` capped at 200 | `depthSource=provider-orderbook-depth`, `availability.status=ready`, `providerOrderbookDepth.status=ready`, `providerOrderbookDepth.sources[]`, `marketIdentity.selectorKey`, `marketIdentity.marketFamily`, `marketIdentity.marketType`, `marketIdentity.marketGroupKey`, `marketIdentity.marketGroupId`, `marketIdentity.period`, `marketIdentity.line`, `marketIdentity.unit`, `marketIdentity.outcomes[].id`, `marketIdentity.outcomes[].side`, `levels[].outcomeId`, `levels[].side`, `levels[].price`, `levels[].shares`, `levels[].value`, legacy `levels[].total`, `bids[]`, `asks[]` | `Market`, active `Outcome`, `ReferenceOrderbookDepthSnapshot`; local `Order` rows still have precedence if present | None in backend. The route reports `emptyState=no-depth` when neither local nor provider depth exists | Production-mapped World Cup line-family markets still need recurring provider refresh coverage outside disposable proof rows. |
+| Focused DU-A proof harness | `scripts/prove_mobile_du_provider_line_orderbook_depth.ts` | Local script calling route | Local development/server only | Optional `--baseUrl`, `--eventSlug`, `--output` | JSON artifact with route URL, compact first-half spread identity, provider depth source/status, selector key `spreads:first-half:1.5`, outcome ids, and side-labelled Price/Shares/Value rows | Upserts a disposable World Cup-style `Event`/`Market`/`Outcome` set, clears local open orders for that proof market, then writes provider depth rows | None. The proof fails if the route does not return provider-backed ready depth and line selector identity together | Requires an available local database and Next server for the HTTP route probe. |
+
+Cycle DU-A implementation notes:
+
+- `docs/mobile/harness/cycle-DU-A-provider-line-orderbook-depth-proof.json` proves provider-backed ready ladder depth for a compact World Cup first-half spread market.
+- The Book route now emits `levels[].value` as an additive alias for the existing notional `levels[].total`, making mobile XML/accessibility proof labels easier without breaking existing consumers.
+- The DU-A artifact closes the backend half of PM-GAP-075 for provider-ready line identity: source/status, ready availability, selector key, family/type/group, period, line, outcome ids, level side, price, shares, and value are all route-backed in one response.
+- Visible tablet proof still needs to consume this provider-backed route state in the same UI run before PM-GAP-075 can pass end to end.
+
 ## Cycle DT-A - Provider Ready Orderbook Depth Proof
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

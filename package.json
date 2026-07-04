@@ -89,6 +89,7 @@
     "mobile:live-second-half-orderbook-depth-seed": "tsx scripts/seed_mobile_live_orderbook_depth.ts --apply --eventSlug=world-cup-2026-curacao-vs-cote-divoire-2026-06-25 --marketType=match_winner_1x2 --period=second-half --summaryPath=docs/mobile/harness/cycle-current-mobile-live-second-half-orderbook-depth-seed.json",
     "mobile:live-provider-quote-snapshot-seed": "tsx scripts/seed_mobile_live_provider_quote_snapshots.ts --apply --eventSlug=world-cup-2026-curacao-vs-cote-divoire-2026-06-25 --summaryPath=docs/mobile/harness/cycle-current-mobile-live-provider-quote-snapshot-seed.json",
     "mobile:dt-ready-orderbook-depth-proof": "tsx scripts/prove_mobile_dt_ready_orderbook_depth.ts",
+    "mobile:du-provider-line-orderbook-depth-proof": "tsx scripts/prove_mobile_du_provider_line_orderbook_depth.ts",
     "mobile:definition-of-done-sweep": "tsx scripts/mobile_definition_of_done_sweep.ts",
     "mobile:final-qa-review-signoff": "tsx scripts/mobile_final_qa_review_signoff.ts",
     "mobile:android-apk-artifact-readiness": "powershell -ExecutionPolicy Bypass -File mobile/scripts/check-android-apk-artifact-readiness.ps1",
