@@ -23,6 +23,27 @@ Temporary mock/static data:
 
 - FA uses disposable provider-shaped rows created by `scripts/prove_mobile_ej_a_provider_status_breadth.ts`; this is contract proof data, not arbitrary UI-only data.
 
+## Cycle FB - Provider Unavailable Order Guard
+
+Closed or narrowed:
+
+- Server fake-token order submission now rejects provider-backed markets with no accepting provider quote snapshot.
+- The backend no longer relies only on mobile disabled-submit behavior for unavailable provider markets.
+- Failed unavailable attempts are stored in `ApiOrderRequest`, preserving auditability.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Production active-event quote snapshot freshness/breadth so valid provider-backed markets do not become unavailable because refresh coverage is missing.
+- A mobile-visible server error proof is only needed if a future UI path can submit an unavailable market.
+
+Schema mismatch:
+
+- No schema migration was made. The guard uses existing `Market` provider identity fields and `ReferenceQuoteSnapshot.acceptingOrders`.
+
+Temporary mock/static data:
+
+- FB uses focused service tests and disposable provider-status route proof data. It does not introduce UI-only mock order data.
+
 ## Cycle ET - Period-Safe Retail Line Matching
 
 Closed or narrowed:

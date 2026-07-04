@@ -1523,3 +1523,10 @@ Cycle FA implementation notes:
 - `availability.source=provider-lifecycle` is now emitted for provider-backed stale/unavailable compact markets.
 - Mobile launched with `EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE` unset, and `EXPO_PUBLIC_SHOW_ORDERBOOK` unset.
 - Tablet proof slug: `mobile-ej-a-provider-status-breadth-6b9b3845`.
+
+## Cycle FB - Provider Unavailable Order Guard
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Server fake-token order on provider-backed ticket | `/api/orders` | POST | Mobile/API credential with `orders:write`; internal trading gate enabled | `marketId`, `outcomeId`, `side`, `type`, `price`, `size`, optional `contractSide`, and `selection` | Success path unchanged; unavailable path returns/stores `{ error: { code: "MARKET_UNAVAILABLE" } }` with HTTP `409` | `ApiOrderRequest`, `Market`, `ReferenceQuoteSnapshot`, `Order` only on accepted path | None. Provider-backed unavailable markets require provider quote data. | Future: expose this server rejection in mobile only if a submit bypass/error path becomes visible. |
+| Provider quote tradability guard | Latest `ReferenceQuoteSnapshot` for market/outcome | Internal Prisma read | Backend only | Selected `marketId` and `outcomeId` from order payload | `acceptingOrders`, `reason`, `fetchedAt`, provider identity on `Market` | `ReferenceQuoteSnapshot`, provider identity fields on `Market` | Non-provider markets keep existing local behavior. | Production provider refresh breadth must keep quote snapshots fresh for real active events. |

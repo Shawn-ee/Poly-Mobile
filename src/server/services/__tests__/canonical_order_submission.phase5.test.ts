@@ -31,7 +31,11 @@ const fundUser = async (userId: string, amount: string) => {
   });
 };
 
-const createMarket = async () =>
+const createMarket = async (overrides: {
+  referenceSource?: string | null;
+  externalMarketId?: string | null;
+  conditionId?: string | null;
+} = {}) =>
   prisma.market.create({
     data: {
       title: "Canonical Phase5 Market",
@@ -42,6 +46,9 @@ const createMarket = async () =>
       kind: "ORDERBOOK",
       isCanceled: false,
       isListed: true,
+      referenceSource: overrides.referenceSource ?? undefined,
+      externalMarketId: overrides.externalMarketId ?? undefined,
+      conditionId: overrides.conditionId ?? undefined,
       outcomes: {
         create: [
           { name: "YES", slug: `phase5-yes-${Math.random()}`, displayOrder: 0, isActive: true },
@@ -366,6 +373,103 @@ describe("Phase 5 canonical order submission", () => {
     ).rejects.toMatchObject({
       code: "ORDER_SIZE_LIMIT_EXCEEDED",
     } satisfies Partial<CanonicalApiError>);
+  });
+
+  test("provider-backed unavailable markets are stored as failed order responses before matching", async () => {
+    const user = await createUser("provider_unavailable_user");
+    const market = await createMarket({
+      referenceSource: "polymarket",
+      externalMarketId: "gamma-unavailable-market",
+      conditionId: "condition-unavailable-market",
+    });
+    const credential = await createApiCredential({ userId: user.id });
+    await fundUser(user.id, "100.000000");
+
+    const result = await submitCanonicalOrder({
+      userId: user.id,
+      apiCredentialId: credential.id,
+      apiKeyId: credential.keyId,
+      body: {
+        marketId: market.id,
+        outcomeId: market.outcomes[0].id,
+        side: "BUY",
+        type: "LIMIT",
+        price: "0.45",
+        size: "10.000000",
+      },
+      idempotencyKeyHeader: "provider-unavailable-key",
+    });
+
+    expect(result.status).toBe(409);
+    expect(result.body).toMatchObject({
+      error: {
+        code: "MARKET_UNAVAILABLE",
+        message: "Market is unavailable for provider-backed trading.",
+      },
+    });
+    expect(await prisma.order.count({ where: { marketId: market.id } })).toBe(0);
+    expect(await prisma.apiOrderRequest.findFirst({
+      where: { userId: user.id, idempotencyKey: "provider-unavailable-key" },
+      select: { status: true, errorCode: true, responseStatus: true },
+    })).toMatchObject({
+      status: "FAILED",
+      errorCode: "MARKET_UNAVAILABLE",
+      responseStatus: 409,
+    });
+  });
+
+  test("provider-backed markets with accepting quotes can still submit", async () => {
+    const user = await createUser("provider_accepting_user");
+    const market = await createMarket({
+      referenceSource: "polymarket",
+      externalMarketId: "gamma-accepting-market",
+      conditionId: "condition-accepting-market",
+    });
+    const credential = await createApiCredential({ userId: user.id });
+    await fundUser(user.id, "100.000000");
+    await prisma.referenceQuoteSnapshot.create({
+      data: {
+        marketId: market.id,
+        outcomeId: market.outcomes[0].id,
+        source: "polymarket",
+        externalMarketId: "gamma-accepting-market",
+        conditionId: "condition-accepting-market",
+        tokenId: "token-accepting-yes",
+        outcomeLabel: "YES",
+        outcomePrice: "0.45",
+        bestBid: "0.43",
+        bestAsk: "0.47",
+        spread: "0.04",
+        acceptingOrders: true,
+        qualityStatus: "test_accepting",
+        fetchedAt: new Date(),
+      },
+    });
+
+    const result = await submitCanonicalOrder({
+      userId: user.id,
+      apiCredentialId: credential.id,
+      apiKeyId: credential.keyId,
+      body: {
+        marketId: market.id,
+        outcomeId: market.outcomes[0].id,
+        side: "BUY",
+        type: "LIMIT",
+        price: "0.45",
+        size: "10.000000",
+      },
+      idempotencyKeyHeader: "provider-accepting-key",
+    });
+
+    expect(result.status).toBe(200);
+    expect(result.body).toEqual(
+      expect.objectContaining({
+        order: expect.objectContaining({
+          marketId: market.id,
+          outcomeId: market.outcomes[0].id,
+        }),
+      }),
+    );
   });
 });
 

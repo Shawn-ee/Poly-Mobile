@@ -181,6 +181,47 @@ const getMatchingPrice = (order: Pick<NormalizedOrderRequest, "type" | "side" | 
   return order.side === "BUY" ? "1" : "0";
 };
 
+const assertProviderMarketAcceptsOrders = async (order: Pick<NormalizedOrderRequest, "marketId" | "outcomeId">) => {
+  const market = await prisma.market.findUnique({
+    where: { id: order.marketId },
+    select: {
+      id: true,
+      referenceSource: true,
+      externalMarketId: true,
+      conditionId: true,
+      referenceQuoteSnapshots: {
+        where: { outcomeId: order.outcomeId },
+        orderBy: [{ fetchedAt: "desc" }, { updatedAt: "desc" }],
+        take: 1,
+        select: {
+          acceptingOrders: true,
+          source: true,
+          fetchedAt: true,
+          reason: true,
+        },
+      },
+    },
+  });
+
+  if (!market) {
+    return;
+  }
+
+  const providerBackedMarket = Boolean(market.referenceSource || market.externalMarketId || market.conditionId);
+  if (!providerBackedMarket) {
+    return;
+  }
+
+  const latestQuote = market.referenceQuoteSnapshots[0] ?? null;
+  if (!latestQuote?.acceptingOrders) {
+    throw new CanonicalApiError(
+      "MARKET_UNAVAILABLE",
+      latestQuote?.reason || "Market is unavailable for provider-backed trading.",
+      409,
+    );
+  }
+};
+
 const normalizeOrderRequest = (params: {
   userId: string;
   body: unknown;
@@ -455,6 +496,7 @@ export const submitCanonicalOrder = async (params: {
   });
 
   try {
+    await assertProviderMarketAcceptsOrders(normalized);
     const matchingPrice = getMatchingPrice(normalized);
     const result = await placeOrderAndMatch({
       marketId: normalized.marketId,

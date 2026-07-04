@@ -2903,3 +2903,36 @@ Decision:
 - Unresolved P0 gaps: 0 for selected feature.
 - Remaining P1/P2 gaps: production active-event status breadth, server-side unavailable-market order guard, and fresh S23 status recapture.
 - Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Provider Unavailable Order Guard
+
+Cycle: FB
+
+Lead Agent target: Close FA's backend guardrail follow-up so unavailable provider-backed markets cannot be traded by bypassing the mobile disabled-submit UI.
+
+Reference Audit Agent: Product steering audit from Local MVP status policy; no fresh S23 visual reference needed because this is a backend/provider guard.
+
+Implementation Agent: Canonical order submission provider quote guard and focused tests.
+
+Audit Gate Agent: Focused Jest and TypeScript compile.
+
+Holiwyn evidence:
+
+- `src/server/services/__tests__/canonical_order_submission.phase5.test.ts`
+- `docs/mobile/harness/cycle-FB-provider-unavailable-order-guard/proof-provider-status-breadth.json`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FB-GUARD-P0-01 | P0 | Pass | Provider-backed market without accepting quote returns `MARKET_UNAVAILABLE` and no order. | N/A |
+| FB-GUARD-P0-02 | P0 | Pass | Failed unavailable attempt is stored in `ApiOrderRequest`. | N/A |
+| FB-GUARD-P0-03 | P0 | Pass | Provider-backed market with accepting quote still submits successfully. | N/A |
+| FB-GUARD-P0-04 | P0 | Pass | Non-provider markets keep existing canonical order behavior. | N/A |
+
+Decision:
+
+- Pass/fail: Pass for selected backend/provider guard.
+- Unresolved P0 gaps: 0 for selected backend feature.
+- Remaining P1/P2 gaps: production active-event provider breadth and future visible server-error proof if unavailable submit ever becomes reachable.
+- Next cycle required: yes, continue Local MVP user-flow breadth.

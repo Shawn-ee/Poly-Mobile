@@ -4986,3 +4986,41 @@ Proof artifacts:
 Known limitations:
 
 - FA proves disposable provider-backed status breadth. Production active-event status breadth and fresh S23 status recapture remain P1.
+
+## Cycle FB - Provider Unavailable Order Guard
+
+Feature/page worked on:
+
+- Backend canonical order submission guard for provider-backed markets that are unavailable to trade.
+
+Frontend/harness/backend files touched:
+
+- `src/server/services/canonicalOrderSubmission.ts`
+- `src/server/services/__tests__/canonical_order_submission.phase5.test.ts`
+- `docs/mobile/audits/cycle-fb-provider-unavailable-order-guard.md`
+
+Important functions/services touched:
+
+- `submitCanonicalOrder` now checks provider-backed market quote availability after API request logging and before `placeOrderAndMatch`.
+- The guard uses the latest `ReferenceQuoteSnapshot` for the selected market/outcome and requires `acceptingOrders=true`.
+- Unavailable provider-backed orders are stored as failed canonical API order responses with `MARKET_UNAVAILABLE`.
+
+User interactions supported/proven:
+
+- Direct API/client bypass attempts on provider-backed unavailable markets are rejected before matching.
+- Stale-but-quoting provider-backed markets remain allowed because they still have accepting quote snapshots.
+
+Validation:
+
+- `npm run test:jest -- src/server/services/__tests__/canonical_order_submission.phase5.test.ts`
+- `npx tsc --noEmit`
+- `npx tsx scripts/prove_mobile_ej_a_provider_status_breadth.ts --output=docs/mobile/harness/cycle-FB-provider-unavailable-order-guard/proof-provider-status-breadth.json`
+- `git diff --check`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-FB-provider-unavailable-order-guard/proof-provider-status-breadth.json`
+
+Known limitations:
+
+- FB is a backend/provider guard with no new mobile UI. FA remains the Android-visible proof that unavailable markets are disabled in the simple ticket.

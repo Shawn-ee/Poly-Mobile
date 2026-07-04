@@ -54,9 +54,10 @@ Remaining structural debt:
 - Fresh S23 retail lifecycle recapture remains reference debt when gates allow it.
 - Non-disposable liquidity source remains backend/product work for later.
 - Cycle FA additionally closed the repeated route-backed retail status gap: provider-backed stale/unavailable market states now appear in Game Lines and TradeTicket without opening Book.
+- Cycle FB closed FA's backend guardrail: provider-backed markets without accepting quote snapshots now reject canonical order submission before matching.
 
 Next focus:
-- Continue Local MVP user-flow breadth around event discovery/home, Portfolio/history polish, production active provider breadth, and server-side unavailable-market guardrails, while keeping the default experience retail-ticket first.
+- Continue Local MVP user-flow breadth around event discovery/home, Portfolio/history polish, and production active provider breadth, while keeping the default experience retail-ticket first.
 
 ## Heartbeat: Local MVP Retail Flow Cycles EP-ER
 

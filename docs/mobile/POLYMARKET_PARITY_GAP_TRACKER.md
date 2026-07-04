@@ -430,3 +430,10 @@ For every UI element or interaction, answer:
 - Samsung tablet proof passes for route-backed event load, Game Lines `Market stale` and `Market unavailable`, stale Spread ticket status, unavailable Totals ticket status, and hidden default orderbook controls.
 - The backend live-detail route now emits provider-lifecycle-backed `availability` for provider-backed compact markets.
 - Remaining P1: production active Polymarket status breadth, fresh S23 status recapture, and server-side unavailable-market order rejection beyond the mobile disabled submit guard.
+
+## Cycle FB Gap Tracker Update
+
+- PM-GAP-097 is opened and verified for the backend/provider unavailable order guard.
+- FB closes FA's server-side P1 guardrail: provider-backed markets without an accepting provider quote now reject canonical order submission with `MARKET_UNAVAILABLE`.
+- Focused tests prove rejected attempts are stored as failed `ApiOrderRequest` rows, no order is created, and accepting provider quote snapshots remain tradable.
+- Remaining P1: production active provider breadth/freshness and mobile-visible server error proof only if an unavailable submit path becomes reachable again.
