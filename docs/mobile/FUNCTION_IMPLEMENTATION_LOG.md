@@ -2,6 +2,47 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle DQ-A - Scheduled Provider Refresh Lifecycle
+
+Feature/page worked on:
+
+- PM-GAP-072 scheduled provider refresh orchestration for live-detail provider quote readiness.
+- Polymarket-first provider lifecycle proof with optional OpticOdds enrichment left non-blocking.
+
+Frontend/harness components touched:
+
+- No mobile UI or visual parity code changed.
+- Android tablet smoke was attempted with `mobile/scripts/smoke-tablet.ps1 -ServerLiveProviderRefreshProof -Port 8218`; it reached the event detail but failed before provider assertions because the current hierarchy did not expose `event-detail-group-prop`.
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveProviderScheduler.ts`
+- `scripts/prove_mobile_scheduled_provider_refresh.ts`
+- `src/__tests__/mobile-live-provider-scheduler.service.test.ts`
+
+Important functions/services touched:
+
+- `runScheduledMobileLiveProviderRefresh()` loads provider-backed live events, assesses missing/stale `ReferenceQuoteSnapshot` rows per active outcome, refreshes due events without contract-proof fallback, and returns the cache invalidation contract for live-detail, event, chart, and orderbook routes.
+- The scheduler calls `refreshMobileLiveProviderQuoteSnapshots()` so Polymarket Gamma quotes, CLOB depth, and CLOB price history refresh together for mapped compact markets.
+- `prove_mobile_scheduled_provider_refresh.ts` expires provider quote snapshots, probes live-detail stale/refresh-due counts, runs the scheduler, and asserts the route returns to ready.
+
+User interactions supported:
+
+- None directly. This is a backend lifecycle/scheduler proof for the existing mobile live-detail route contract.
+
+State transitions:
+
+- Proof event `mobile-provider-refresh-proof-live` starts with one compact provider market and two expired snapshots.
+- Before scheduler: live-detail reports `batchedProviderQuoteSnapshotReadyCount=0`, `batchedProviderQuoteSnapshotStaleCount=1`, and `batchedProviderQuoteSnapshotRefreshDueCount=1`.
+- Scheduler: `dueEventCount=1`, `refreshedEventCount=1`, Polymarket provider updates 2 quote rows, CLOB depth updates 96 rows, and CLOB history writes route-readable chart snapshots.
+- After scheduler: live-detail reports `batchedProviderQuoteSnapshotReadyCount=1`, `batchedProviderQuoteSnapshotStaleCount=0`, `batchedProviderQuoteSnapshotRefreshDueCount=0`, `batchedProviderOrderbookDepthReadyCount=1`, and `chartHistorySource=market-outcome-snapshot`.
+
+Known limitations:
+
+- This is a callable scheduler service/proof harness, not a deployed cron/queue worker.
+- The focused Android tablet proof did not complete in this Agent A pass; backend proof is passing and visual harness repair remains outside this owned scope.
+- `lineProvider.status=skipped` with `skippedReason=missing_provider_fixture` is expected for this Polymarket-only proof and does not block Polymarket Gamma/CLOB parity.
+
 ## Cycle DF - Provider Mapping Operator UI
 
 Feature/page worked on:

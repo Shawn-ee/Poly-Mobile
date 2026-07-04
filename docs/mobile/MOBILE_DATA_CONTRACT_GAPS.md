@@ -2,6 +2,37 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle DQ-A - Scheduled Provider Refresh Lifecycle
+
+Closed or narrowed:
+
+- Scheduled refresh orchestration is now proven at the backend service level for a mapped Polymarket provider event.
+- The live-detail contract is proven to move from stale/refresh-due to ready after the scheduler refreshes provider quotes, CLOB depth, and chart history.
+- Polymarket-first parity no longer depends on an OpticOdds credential for this path; optional line enrichment can be skipped while Gamma/CLOB refresh succeeds.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- A production scheduler/worker registration with cadence, retry, and alerting configuration.
+- Durable run history if operations needs audit visibility beyond JSON proof artifacts.
+- Broader production provider identity coverage for line-family markets when real provider markets or optional enrichment are available.
+
+Schema mismatch:
+
+- No schema change was required. Existing provider identity fields and `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot` tables cover the proof.
+
+Route mismatch:
+
+- None for the backend contract. `/api/mobile/events/:slug/live-detail` reports the before/after readiness fields used by the proof.
+- Android tablet smoke did not complete provider assertions because the current visual hierarchy missed `event-detail-group-prop`; no route contract mismatch was found from that failed smoke.
+
+Temporary mock/static data:
+
+- The proof uses disposable local event `mobile-provider-refresh-proof-live` with real Polymarket market/outcome identity. It ages existing quote snapshots to force refresh-due state, then refreshes through real provider services without contract-proof fallback.
+
+Future migration concern:
+
+- Keep scheduled provider refresh separate from visual parity. The scheduler should remain a backend lifecycle service with fallback disabled for Polymarket parity proof, and deployment should add worker-level observability before production reliance.
+
 ## Cycle DF - Provider Mapping Operator UI
 
 Closed or narrowed:

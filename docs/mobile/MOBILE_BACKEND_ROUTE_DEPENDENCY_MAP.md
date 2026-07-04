@@ -2,6 +2,21 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle DQ-A - Scheduled Provider Refresh Lifecycle
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Scheduled provider refresh assessment | `runScheduledMobileLiveProviderRefresh()` | Local scheduler service | Backend-only trusted caller | Optional `eventSlugs`, `maxEvents`, `refreshTtlSeconds`, `dryRun` | `candidateCount`, `dueEventCount`, `candidates[].dueMarketIds`, missing/stale outcome counts, `nextAction` | Reads `Event`, `Market`, `Outcome`, and `ReferenceQuoteSnapshot` | None. The service only marks a market due when provider snapshots are missing or stale | Deploying this service behind a cron/queue worker remains future infrastructure work. |
+| Scheduled provider refresh execution | `refreshMobileLiveProviderQuoteSnapshots()` via scheduler | Local scheduler service | Backend-only trusted caller | Due event slug; `allowContractProofFallback=false` | `provider.snapshotsUpdated`, `providerDepth.depthRowsUpdated`, `providerHistory.snapshotsCreated`, `lineProvider.status`, `postRefresh`, `postRefreshHistory` | Writes/reads `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot` for mapped compact markets | Contract-proof fallback is disabled in the scheduled path | Production error taxonomy/retry policy is still light; line-provider enrichment can remain skipped without blocking Polymarket parity. |
+| Mobile live-detail readiness after schedule | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile route | Event slug | `contract.batchedProviderQuoteSnapshotReadyCount`, `batchedProviderQuoteSnapshotStaleCount`, `batchedProviderQuoteSnapshotRefreshDueCount`, `batchedProviderOrderbookDepthReadyCount`, `chartHistorySource` | Reads compact live event, provider quote snapshots, depth snapshots, and chart history | None for the proof event; stale state is reported truthfully before refresh | Android smoke failed before provider assertions in this pass, so the route proof is the authoritative DQ-A evidence. |
+| Scheduled refresh proof harness | `scripts/prove_mobile_scheduled_provider_refresh.ts` | Local script | Local development only | Optional `--eventSlug`, `--output`, `--staleSeconds` | JSON artifact with `expired`, `before`, `scheduler`, `after`, `assertions`, and `pass` | Ages `ReferenceQuoteSnapshot.fetchedAt`, then refreshes through the scheduler service | None. The script fails if stale-to-ready does not happen | Keep the harness as a backend proof until a deployed scheduler cadence exists. |
+
+Cycle DQ-A implementation notes:
+
+- `docs/mobile/harness/cycle-DQ-A-mobile-scheduled-provider-refresh.json` proves stale/refresh-due -> scheduler refresh -> ready for `mobile-provider-refresh-proof-live`.
+- Missing `OPTIC_ODDS_API_KEY` is not required for this Polymarket-first path. The proof event has no line-provider fixture, so `lineProvider.status=skipped` is expected while Gamma/CLOB quote, depth, and history refresh still pass.
+- The scheduler returns cache invalidation paths for live-detail, event, chart, and orderbook consumers so mobile routes know which provider-backed surfaces changed.
+
 ## Cycle DF - Provider Mapping Operator UI
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
