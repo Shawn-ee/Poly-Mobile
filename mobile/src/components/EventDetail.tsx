@@ -202,6 +202,8 @@ const awayChartPoints = [29, 28, 28, 29, 30, 30, 31, 31, 32, 32, 33, 34, 34, 35,
 const chartFilters = ["All", "Game", "Live"] as const;
 
 type ChartFilter = (typeof chartFilters)[number];
+type ChartPointKey = "latest" | "mid" | "target";
+type ChartContractKey = "moneyline" | "spread" | "totals";
 
 type DisplayOutcome = {
   id: string;
@@ -288,7 +290,9 @@ export function EventDetail({
   const [activeHeaderTab, setActiveHeaderTab] = useState<"game" | "chat">("game");
   const [activeBodyTab, setActiveBodyTab] = useState<"market" | "live-stats">("market");
   const [chartFilter, setChartFilter] = useState<ChartFilter>("Game");
-  const [selectedChartPoint, setSelectedChartPoint] = useState<"latest" | "mid" | "target">("latest");
+  const [selectedChartPoint, setSelectedChartPoint] = useState<ChartPointKey>("latest");
+  const [selectedChartOutcomeId, setSelectedChartOutcomeId] = useState<string | null>(null);
+  const [selectedChartContract, setSelectedChartContract] = useState<ChartContractKey>("moneyline");
   const [spreadPeriod, setSpreadPeriod] = useState<LinePeriod>("Reg. Time");
   const [spreadLine, setSpreadLine] = useState("1.5");
   const [totalsPeriod, setTotalsPeriod] = useState<LinePeriod>("Reg. Time");
@@ -327,7 +331,8 @@ export function EventDetail({
   const teamB = event.teams[1];
   const leftOutcome = primaryOutcomes[0];
   const rightOutcome = primaryOutcomes[1];
-  const selectedChartOutcome = isLiveEvent || chartFilter === "Live" ? rightOutcome ?? leftOutcome : leftOutcome ?? rightOutcome;
+  const selectedChartOutcome = primaryOutcomes.find((outcome) => outcome.id === selectedChartOutcomeId)
+    ?? (isLiveEvent || chartFilter === "Live" ? rightOutcome ?? leftOutcome : leftOutcome ?? rightOutcome);
   const selectedChartColor = selectedChartOutcome?.color ?? "#22c55e";
   const selectedChartProbability = selectedChartOutcome?.probability ?? 0;
   const homeChartSeries = event.chartHistory?.filter((point) => point.outcomeId === leftOutcome?.id).map((point) => point.probability) ?? homeChartPoints;
@@ -433,6 +438,14 @@ export function EventDetail({
     setOrderBookOutcomeId(market.outcomes[0]?.id ?? null);
     setOrderBookSelectorVisible(false);
     requestMarketDepth?.(market.id);
+  };
+  const selectChartOutcome = (outcome: Outcome) => {
+    setSelectedChartOutcomeId(outcome.id);
+    setSelectedPrimaryOutcomeId(outcome.id);
+    setChartFilter(outcome.id === rightOutcome?.id ? "Live" : "Game");
+  };
+  const selectChartPoint = (point: ChartPointKey) => {
+    setSelectedChartPoint(point);
   };
   const liveStatRows = event.liveStats ?? [
     { label: "Possession", home: "54%", away: "46%" },
@@ -579,6 +592,40 @@ export function EventDetail({
     color: "#64748b",
   });
   totalsMarket.outcomes = [totalsOverOutcome, totalsUnderOutcome];
+  const selectedChartMarket = selectedChartContract === "spread"
+    ? backendSpreadMarket ?? primaryMarket
+    : selectedChartContract === "totals"
+      ? backendTotalsMarket ?? primaryMarket
+      : primaryMarket;
+  const selectedChartContractLabel = selectedChartContract === "spread"
+    ? `${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`
+    : selectedChartContract === "totals"
+      ? `O/U ${totalsLine} ${linePeriodCode(totalsPeriod)}`
+      : (selectedChartOutcome ? label(locale, selectedChartOutcome) : "Moneyline");
+  const selectedChartTicketOutcome = selectedChartContract === "spread"
+    ? backendSpreadMarket?.outcomes[0] ?? spreadYesOutcome
+    : selectedChartContract === "totals"
+      ? backendTotalsMarket?.outcomes[0] ?? totalsOverOutcome
+      : selectedChartOutcome;
+  const selectedChartTicketSelection: TicketSelection | undefined = selectedChartContract === "spread"
+    ? backendSpreadMarket && backendSpreadMarket.outcomes[0]
+      ? orderBookTicketSelection(backendSpreadMarket, backendSpreadMarket.outcomes[0], 0, label(locale, backendSpreadMarket))
+      : { marketType: "spread", line: spreadLine, period: spreadPeriod, displayLabel: selectedChartContractLabel }
+    : selectedChartContract === "totals"
+      ? backendTotalsMarket && backendTotalsMarket.outcomes[0]
+        ? orderBookTicketSelection(backendTotalsMarket, backendTotalsMarket.outcomes[0], 0, label(locale, backendTotalsMarket))
+        : { marketType: "totals", line: totalsLine, period: totalsPeriod, displayLabel: selectedChartContractLabel }
+      : selectedChartOutcome && primaryMarket
+        ? orderBookTicketSelection(primaryMarket, selectedChartOutcome, primaryMarket.outcomes.findIndex((outcome) => outcome.id === selectedChartOutcome.id), "Match winner")
+        : undefined;
+  const openSelectedChartBook = () => {
+    if (!selectedChartMarket) return;
+    openOrderBookForMarket(selectedChartMarket);
+  };
+  const openSelectedChartTicket = () => {
+    if (!selectedChartMarket || !selectedChartTicketOutcome) return;
+    openTicket(selectedChartMarket, selectedChartTicketOutcome, event, defaultSide, selectedChartTicketSelection);
+  };
   const gameLineGroups: GameLineGroup[] = [
     {
       id: "totals",
@@ -1176,9 +1223,12 @@ export function EventDetail({
             <View style={styles.subSegmentRow}>
               {linePeriods.map((period) => (
                 <Pressable
-                  accessibilityLabel={`event-detail-${group.id}-period-${period}`}
+                  accessibilityLabel={`event-detail-${group.id}-period-${period} chart-contract-${group.id} ${group.selectedPeriod === period ? "selected-line-period" : "inactive-line-period"}`}
                   key={period}
-                  onPress={() => group.onSelectPeriod?.(period)}
+                  onPress={() => {
+                    if (group.id === "totals") setSelectedChartContract("totals");
+                    group.onSelectPeriod?.(period);
+                  }}
                   style={[styles.subSegment, group.selectedPeriod === period && styles.subSegmentActive]}
                   testID={`event-detail-${group.id}-period-${period.replace(/[^A-Za-z0-9]/g, "-").toLowerCase()}`}
                 >
@@ -1191,9 +1241,12 @@ export function EventDetail({
             <View style={styles.lineRailRow}>
               {group.lineOptions.map((line) => (
                 <Pressable
-                  accessibilityLabel={`event-detail-${group.id}-line-${line}`}
+                  accessibilityLabel={`event-detail-${group.id}-line-${line} chart-contract-${group.id} ${group.lineValue === line ? "selected-line-value" : "inactive-line-value"}`}
                   key={line}
-                  onPress={() => group.onSelectLine?.(line)}
+                  onPress={() => {
+                    if (group.id === "totals") setSelectedChartContract("totals");
+                    group.onSelectLine?.(line);
+                  }}
                   style={[styles.lineRailOption, group.lineValue === line && styles.lineRailOptionActive]}
                   testID={`event-detail-${group.id}-line-${line.replace(".", "-")}`}
                 >
@@ -1515,9 +1568,8 @@ export function EventDetail({
             </View>
           </View>
         )}
-        <Pressable
-          accessibilityLabel={`event-detail-price-chart chart-source-${event.chartHistorySource ?? "fallback"} chart-status-${chartRouteStatus} chart-range-${event.chartHistoryRange ?? "none"} chart-empty-${event.chartHistoryEmptyState ?? "none"} chart-filter-${chartFilter} chart-selected-point-${selectedChartPoint} two outcome traces ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartProbability}% ${chartPointMeta.label} ${chartPointMeta.value} +$9 +$39 +$479 All Game Live`}
-          onPress={() => setSelectedChartPoint((current) => current === "latest" ? "mid" : current === "mid" ? "target" : "latest")}
+        <View
+          accessibilityLabel={`event-detail-price-chart chart-source-${event.chartHistorySource ?? "fallback"} chart-status-${chartRouteStatus} chart-range-${event.chartHistoryRange ?? "none"} chart-empty-${event.chartHistoryEmptyState ?? "none"} chart-filter-${chartFilter} chart-selected-point-${selectedChartPoint} chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"} two outcome traces ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartProbability}% ${chartPointMeta.label} ${chartPointMeta.value} +$9 +$39 +$479 All Game Live`}
           style={[styles.chartBlock, isLiveEvent && styles.liveChartBlock]}
           testID="event-detail-price-chart"
         >
@@ -1542,6 +1594,23 @@ export function EventDetail({
           </View>
           <View style={styles.chartReferenceLine}>
             <Text style={styles.chartReferenceText}>Target</Text>
+          </View>
+          <View accessibilityLabel={`event-detail-chart-outcome-selector selected-chart-outcome-${selectedChartOutcome?.id ?? "none"}`} style={styles.chartOutcomeSelector} testID="event-detail-chart-outcome-selector">
+            {primaryOutcomes.map((outcome) => {
+              const isSelected = selectedChartOutcome?.id === outcome.id;
+              return (
+                <Pressable
+                  accessibilityLabel={`event-detail-chart-outcome-${outcome.id} ${isSelected ? "selected-chart-outcome" : "inactive-chart-outcome"} ${label(locale, outcome)} ${outcome.probability}%`}
+                  key={outcome.id}
+                  onPress={() => selectChartOutcome(outcome)}
+                  style={[styles.chartOutcomeChip, isSelected && styles.chartOutcomeChipActive]}
+                  testID={`event-detail-chart-outcome-${outcome.id}`}
+                >
+                  <View style={[styles.chartOutcomeDot, { backgroundColor: outcome.color }]} />
+                  <Text style={[styles.chartOutcomeText, isSelected && styles.chartOutcomeTextActive]}>{teamCode(outcome.label)} {outcome.probability}%</Text>
+                </Pressable>
+              );
+            })}
           </View>
           <View style={styles.dualChart}>
             <View style={styles.chartTrace}>
@@ -1590,12 +1659,33 @@ export function EventDetail({
             <Text style={[styles.chartTooltipValue, { color: selectedChartColor }]}>{chartPointMeta.value}</Text>
             <Text style={styles.chartTooltipTime}>{chartPointMeta.time}</Text>
           </View>
+          <View accessibilityLabel={`event-detail-chart-point-selector chart-selected-point-${selectedChartPoint}`} style={styles.chartPointSelector} testID="event-detail-chart-point-selector">
+            {[
+              { id: "latest" as const, label: "Now" },
+              { id: "mid" as const, label: "2H" },
+              { id: "target" as const, label: "Target" },
+            ].map((point) => (
+              <Pressable
+                accessibilityLabel={`event-detail-chart-point-${point.id} ${selectedChartPoint === point.id ? "selected-chart-point" : "inactive-chart-point"}`}
+                key={point.id}
+                onPress={() => selectChartPoint(point.id)}
+                style={[styles.chartPointChip, selectedChartPoint === point.id && styles.chartPointChipActive]}
+                testID={`event-detail-chart-point-${point.id}`}
+              >
+                <Text style={[styles.chartPointText, selectedChartPoint === point.id && styles.chartPointTextActive]}>{point.label}</Text>
+              </Pressable>
+            ))}
+          </View>
           <View style={styles.chartFilterRow}>
             {chartFilters.map((filter) => (
               <Pressable
                 accessibilityLabel={`event-detail-chart-filter-${filter}`}
                 key={filter}
-                onPress={() => setChartFilter(filter)}
+                onPress={() => {
+                  setChartFilter(filter);
+                  if (filter === "Game" && leftOutcome) setSelectedChartOutcomeId(leftOutcome.id);
+                  if (filter === "Live" && rightOutcome) setSelectedChartOutcomeId(rightOutcome.id);
+                }}
                 style={[styles.chartFilterPill, chartFilter === filter && styles.chartFilterPillActive]}
                 testID={`event-detail-chart-filter-${filter.toLowerCase()}`}
               >
@@ -1603,7 +1693,36 @@ export function EventDetail({
               </Pressable>
             ))}
           </View>
-        </Pressable>
+          <View
+            accessibilityLabel={`event-detail-chart-contract-rail chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-outcome-${selectedChartTicketOutcome?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"} ${selectedChartContractLabel}`}
+            style={styles.chartContractRail}
+            testID="event-detail-chart-contract-rail"
+          >
+            <View style={styles.chartContractTextBlock}>
+              <Text style={styles.chartContractEyebrow}>{selectedChartContract === "moneyline" ? "Selected outcome" : "Selected line"}</Text>
+              <Text numberOfLines={1} style={styles.chartContractTitle}>{selectedChartContractLabel}</Text>
+            </View>
+            <View style={styles.chartContractActions}>
+              <Pressable
+                accessibilityLabel={`event-detail-chart-open-book chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"}`}
+                onPress={openSelectedChartBook}
+                style={styles.chartContractButton}
+                testID="event-detail-chart-open-book"
+              >
+                <Ionicons name="book-outline" color="#dbeafe" size={16} />
+                <Text style={styles.chartContractButtonText}>Book</Text>
+              </Pressable>
+              <Pressable
+                accessibilityLabel={`event-detail-chart-open-ticket chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-outcome-${selectedChartTicketOutcome?.id ?? "none"} ${ticketSelectionIdentityLabel(selectedChartTicketSelection)}`}
+                onPress={openSelectedChartTicket}
+                style={[styles.chartTradeButton, { backgroundColor: selectedChartColor }]}
+                testID="event-detail-chart-open-ticket"
+              >
+                <Text style={styles.chartTradeButtonText}>Trade</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
 
         <Pressable accessibilityLabel="event-detail-chat-preview" style={styles.chatPreview} testID="event-detail-chat-preview">
           <View style={styles.chatPreviewTop}>
@@ -1782,9 +1901,12 @@ export function EventDetail({
                   <View style={styles.subSegmentRow}>
                     {linePeriods.map((period) => (
                       <Pressable
-                        accessibilityLabel={`event-detail-spread-period-${period}`}
+                        accessibilityLabel={`event-detail-spread-period-${period} chart-contract-spread ${spreadPeriod === period ? "selected-line-period" : "inactive-line-period"}`}
                         key={period}
-                        onPress={() => setSpreadPeriod(period)}
+                        onPress={() => {
+                          setSelectedChartContract("spread");
+                          setSpreadPeriod(period);
+                        }}
                         style={[styles.subSegment, spreadPeriod === period && styles.subSegmentActive]}
                         testID={`event-detail-spread-period-${period.replace(/[^A-Za-z0-9]/g, "-").toLowerCase()}`}
                       >
@@ -1795,9 +1917,12 @@ export function EventDetail({
                   <View style={styles.lineRailRow}>
                     {spreadLineOptions.map((line) => (
                       <Pressable
-                        accessibilityLabel={`event-detail-spread-line-${line}`}
+                        accessibilityLabel={`event-detail-spread-line-${line} chart-contract-spread ${spreadLine === line ? "selected-line-value" : "inactive-line-value"}`}
                         key={line}
-                        onPress={() => setSpreadLine(line)}
+                        onPress={() => {
+                          setSelectedChartContract("spread");
+                          setSpreadLine(line);
+                        }}
                         style={[styles.lineRailOption, spreadLine === line && styles.lineRailOptionActive]}
                         testID={`event-detail-spread-line-${line.replace(".", "-")}`}
                       >
@@ -1953,7 +2078,7 @@ const styles = StyleSheet.create({
   liveStatsTimeline: { marginTop: 14, paddingTop: 12, borderTopWidth: 1, borderTopColor: "#26313f" },
   liveStatsTimelineTitle: { color: "#f8fafc", fontSize: 15, fontWeight: "900", marginBottom: 8 },
   liveStatsTimelineText: { color: "#94a3b8", fontSize: 13, fontWeight: "800", marginTop: 4 },
-  chartBlock: { minHeight: 190, paddingHorizontal: 0, paddingTop: 32, paddingBottom: 12 },
+  chartBlock: { minHeight: 250, paddingHorizontal: 0, paddingTop: 32, paddingBottom: 12 },
   liveChartBlock: { minHeight: 300, paddingTop: 48 },
   liveMatchStrip: { minHeight: 64, marginHorizontal: 24, marginTop: 10, padding: 12, borderRadius: 14, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   liveStripLabel: { color: "#ef4444", fontSize: 11, fontWeight: "900" },
@@ -1972,6 +2097,12 @@ const styles = StyleSheet.create({
   chartRouteStateTextError: { color: "#fecaca" },
   chartReferenceLine: { position: "absolute", left: 0, right: 42, top: 63, borderTopWidth: 1, borderStyle: "dashed", borderColor: "#64748b", opacity: 0.65 },
   chartReferenceText: { position: "absolute", right: -2, top: -15, overflow: "hidden", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 4, color: "#dbeafe", backgroundColor: "#475569", fontSize: 12, fontWeight: "900" },
+  chartOutcomeSelector: { minHeight: 36, flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: 8, marginRight: 22, marginBottom: 8 },
+  chartOutcomeChip: { minHeight: 32, flexDirection: "row", alignItems: "center", gap: 6, borderRadius: 999, paddingHorizontal: 10, backgroundColor: "#111827", borderWidth: 1, borderColor: "#1f2937" },
+  chartOutcomeChipActive: { backgroundColor: "#172033", borderColor: "#94a3b8" },
+  chartOutcomeDot: { width: 8, height: 8, borderRadius: 999 },
+  chartOutcomeText: { color: "#94a3b8", fontSize: 12, fontWeight: "900" },
+  chartOutcomeTextActive: { color: "#f8fafc" },
   dualChart: { width: "70%", height: 92, marginLeft: 0 },
   chartTrace: { position: "absolute", left: 0, right: 0, top: 0, height: 86, flexDirection: "row", alignItems: "flex-start" },
   chartTraceOverlay: { top: 28 },
@@ -1987,11 +2118,25 @@ const styles = StyleSheet.create({
   chartTooltipLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "900" },
   chartTooltipValue: { fontSize: 17, fontWeight: "900", marginTop: 1 },
   chartTooltipTime: { color: "#cbd5e1", fontSize: 11, fontWeight: "800", marginTop: 1 },
+  chartPointSelector: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 8 },
+  chartPointChip: { minWidth: 74, minHeight: 32, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#111827", borderWidth: 1, borderColor: "#1f2937" },
+  chartPointChipActive: { backgroundColor: "#dbeafe", borderColor: "#f8fafc" },
+  chartPointText: { color: "#94a3b8", fontSize: 12, fontWeight: "900" },
+  chartPointTextActive: { color: "#0b1220" },
   chartFilterRow: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 18 },
   chartFilterPill: { minWidth: 62, minHeight: 32, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#111827" },
   chartFilterPillActive: { backgroundColor: "#273244" },
   chartFilterText: { color: "#8b93a3", fontSize: 13, fontWeight: "900" },
   chartFilterTextActive: { color: "#f8fafc" },
+  chartContractRail: { minHeight: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10, marginHorizontal: 24, marginTop: 12, paddingHorizontal: 12, paddingVertical: 9, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#243244" },
+  chartContractTextBlock: { flex: 1, minWidth: 0 },
+  chartContractEyebrow: { color: "#7dd3fc", fontSize: 10, fontWeight: "900", textTransform: "uppercase" },
+  chartContractTitle: { color: "#f8fafc", fontSize: 15, fontWeight: "900", marginTop: 3 },
+  chartContractActions: { flexDirection: "row", alignItems: "center", gap: 8 },
+  chartContractButton: { minHeight: 36, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5, borderRadius: 8, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247", paddingHorizontal: 10 },
+  chartContractButtonText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
+  chartTradeButton: { minHeight: 36, alignItems: "center", justifyContent: "center", borderRadius: 8, paddingHorizontal: 14 },
+  chartTradeButtonText: { color: "#ffffff", fontSize: 12, fontWeight: "900" },
   chatPreview: { marginHorizontal: 24, marginTop: 8, padding: 14, borderRadius: 18, backgroundColor: "#181f2d" },
   chatPreviewTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   chatCount: { color: "#f8fafc", fontSize: 16, fontWeight: "800" },
