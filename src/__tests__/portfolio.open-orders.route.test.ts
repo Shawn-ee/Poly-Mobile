@@ -404,6 +404,83 @@ describe("GET /api/portfolio open order display data", () => {
     expect(body.openOrders[0].selection.limitShares).toBe(125.5);
   });
 
+  test("keeps bid-side Sell totals limit identity in open orders", async () => {
+    getUserId.mockResolvedValue("user-1");
+    const sellBidTotalsSelection = {
+      marketId: "market-eo-totals",
+      outcomeId: "outcome-eo-over",
+      marketGroupId: "totals",
+      marketType: "total_goals",
+      line: "3.5",
+      period: "2H",
+      side: "over",
+      displayLabel: "Over 3.5 2H",
+      contractSide: "yes",
+      referenceSource: "polymarket",
+      providerSource: "polymarket",
+      externalSlug: "eo-route-breadth-total-35",
+      externalMarketId: "gamma-eo-route-breadth-total-35",
+      conditionId: "condition-eo-route-breadth-total-35",
+      referenceTokenId: "token-eo-over-35",
+      tokenId: "token-eo-over-35",
+      referenceOutcomeLabel: "Over 3.5",
+      limitPrice: 0.59,
+      limitSide: "bid",
+      limitShares: 480,
+    };
+
+    prismaMock.order.findMany
+      .mockResolvedValueOnce([
+        {
+          id: "order-eo-open-sell",
+          market: {
+            id: "market-eo-totals",
+            title: "Route Home vs Route Away total goals",
+            status: "LIVE",
+            marketGroupKey: "totals",
+            marketType: "total_goals",
+            line: { toString: () => "3.5" },
+            period: "2H",
+            referenceSource: "polymarket",
+            externalSlug: "eo-route-breadth-total-35",
+            externalMarketId: "gamma-eo-route-breadth-total-35",
+            conditionId: "condition-eo-route-breadth-total-35",
+          },
+          outcome: {
+            id: "outcome-eo-over",
+            name: "Over",
+            label: "Over 3.5 2H",
+            side: "over",
+            referenceTokenId: "token-eo-over-35",
+            referenceOutcomeLabel: "Over 3.5",
+          },
+          apiOrderRequest: { requestBody: { selection: sellBidTotalsSelection } },
+          side: "SELL",
+          status: "OPEN",
+          price: 0.59,
+          amount: 10,
+          remaining: 10,
+          reservedNotional: 0,
+          createdAt: new Date("2026-07-04T13:00:00Z"),
+          updatedAt: new Date("2026-07-04T13:00:00Z"),
+        },
+      ]);
+
+    const { GET } = await import("@/app/api/portfolio/route");
+    const response = await GET(new NextRequest("http://localhost/api/portfolio"));
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.openOrders[0]).toEqual(expect.objectContaining({
+      id: "order-eo-open-sell",
+      side: "SELL",
+      selection: sellBidTotalsSelection,
+    }));
+    expect(body.openOrders[0].selection.marketGroupId).toBe("totals");
+    expect(body.openOrders[0].selection.limitSide).toBe("bid");
+    expect(body.openOrders[0].selection.tokenId).toBe("token-eo-over-35");
+  });
+
   test("returns sanitized current-user open combo orders", async () => {
     getUserId.mockResolvedValue("user-1");
     prismaMock.comboOrder.findMany.mockResolvedValue([

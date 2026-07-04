@@ -359,6 +359,114 @@ describe("GET /api/portfolio/history canceled orders", () => {
     expect(body.recentTrades[0].selection.limitShares).toBe(125.5);
   });
 
+  test("keeps bid-side Sell totals limit identity in canceled and recent trade history", async () => {
+    mockPrisma.trade.findMany.mockReset();
+    mockPrisma.order.findMany.mockReset();
+    mockPrisma.ledgerEntry.findMany.mockResolvedValue([]);
+
+    const sellBidTotalsSelection = {
+      marketId: "market-eo-totals",
+      outcomeId: "outcome-eo-over",
+      marketGroupId: "totals",
+      marketType: "total_goals",
+      line: "3.5",
+      period: "2H",
+      side: "over",
+      displayLabel: "Over 3.5 2H",
+      contractSide: "yes",
+      referenceSource: "polymarket",
+      providerSource: "polymarket",
+      externalSlug: "eo-route-breadth-total-35",
+      externalMarketId: "gamma-eo-route-breadth-total-35",
+      conditionId: "condition-eo-route-breadth-total-35",
+      referenceTokenId: "token-eo-over-35",
+      tokenId: "token-eo-over-35",
+      referenceOutcomeLabel: "Over 3.5",
+      limitPrice: 0.59,
+      limitSide: "bid",
+      limitShares: 480,
+    };
+    const totalsMarket = {
+      id: "market-eo-totals",
+      title: "Route Home vs Route Away total goals",
+      status: "LIVE",
+      marketGroupKey: "totals",
+      marketType: "total_goals",
+      line: { toString: () => "3.5" },
+      period: "2H",
+      referenceSource: "polymarket",
+      externalSlug: "eo-route-breadth-total-35",
+      externalMarketId: "gamma-eo-route-breadth-total-35",
+      conditionId: "condition-eo-route-breadth-total-35",
+    };
+    const totalsOutcome = {
+      id: "outcome-eo-over",
+      name: "Over",
+      label: "Over 3.5 2H",
+      side: "over",
+      referenceTokenId: "token-eo-over-35",
+      referenceOutcomeLabel: "Over 3.5",
+    };
+
+    mockPrisma.trade.findMany
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([
+        {
+          id: "trade-eo-sell-filled",
+          marketId: "market-eo-totals",
+          outcomeId: "outcome-eo-over",
+          side: "SELL",
+          shares: 12,
+          cost: 7.08,
+          fee: 0,
+          createdAt: new Date("2026-07-04T13:10:00.000Z"),
+          market: totalsMarket,
+          outcome: totalsOutcome,
+        },
+      ]);
+    mockPrisma.order.findMany
+      .mockResolvedValueOnce([
+        {
+          id: "order-eo-canceled-sell",
+          side: "SELL",
+          status: "CANCELED",
+          price: 0.59,
+          amount: 10,
+          remaining: 10,
+          updatedAt: new Date("2026-07-04T13:06:00.000Z"),
+          market: totalsMarket,
+          outcome: totalsOutcome,
+          apiOrderRequest: { requestBody: { selection: sellBidTotalsSelection } },
+        },
+      ])
+      .mockResolvedValueOnce([
+        {
+          marketId: "market-eo-totals",
+          outcomeId: "outcome-eo-over",
+          apiOrderRequest: { requestBody: { selection: sellBidTotalsSelection } },
+        },
+      ]);
+
+    const { GET } = await import("@/app/api/portfolio/history/route");
+    const response = await GET(new NextRequest("http://localhost/api/portfolio/history"));
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.canceledOrders[0]).toEqual(expect.objectContaining({
+      id: "order-eo-canceled-sell",
+      side: "SELL",
+      selection: sellBidTotalsSelection,
+    }));
+    expect(body.recentTrades[0]).toEqual(expect.objectContaining({
+      id: "trade-eo-sell-filled",
+      side: "SELL",
+      selection: sellBidTotalsSelection,
+    }));
+    expect(body.canceledOrders[0].selection.marketGroupId).toBe("totals");
+    expect(body.recentTrades[0].selection.limitSide).toBe("bid");
+    expect(body.recentTrades[0].selection.tokenId).toBe("token-eo-over-35");
+  });
+
   test("blocks anonymous history reads before canceled-order lookup", async () => {
     mockGetUserId.mockResolvedValue(null);
 

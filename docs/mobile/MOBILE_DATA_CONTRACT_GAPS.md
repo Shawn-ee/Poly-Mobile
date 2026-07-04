@@ -2,6 +2,29 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EO-A - Route-Backed Lifecycle Breadth
+
+Closed or narrowed:
+
+- `docs/mobile/harness/cycle-EO-A-route-breadth/proof.json` proves a second provider-depth lifecycle path beyond the prior ask/Buy selected path: a totals `total_goals` market, `2H`, line `3.5`, selected from `/api/mobile/events/:slug/live-detail` and `/api/orderbook/:marketId/book`.
+- The selected limit is born from the Book route provider bid row (`limitSide=bid`) and is submitted as `side=SELL`, preserving `marketId`, `outcomeId`, market group/type/family, line, period, side/contract side, provider source, external slug/market/condition ids, provider token ids, `limitPrice`, `limitSide`, and `limitShares` through order response, `/api/portfolio`, and `/api/portfolio/history`.
+- Focused portfolio and history route tests now cover bid-side Sell totals snapshots in addition to the existing ask-side snapshot drift tests.
+- `OPTIC_ODDS_API_KEY` remains optional/non-blocking; the proof uses Polymarket-first quote/depth rows and does not require line-provider enrichment.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Order creation still uses the canonical service backing `POST /api/orders` to avoid local trading-beta route flags; portfolio and history reads use route handlers.
+- A production real-live Polymarket replay and S23 official recapture remain open.
+- First-class immutable selection snapshots on `Order`, `Fill`, `Trade`, and/or `Position` remain future hardening for repeated same-market/outcome selections at different Book levels.
+
+Schema mismatch:
+
+- No schema migration was made. The selected provider and bid limit identity continues to ride the existing order request JSON selection snapshot.
+
+Temporary mock/static data:
+
+- No frontend mock/static data was added. The proof creates disposable backend rows with Polymarket/Gamma/CLOB-shaped provider data and fails unless live-detail and Book report provider-backed depth readiness.
+
 ## Cycle EN Integrated - Route-Backed Provider-Depth Limit Lifecycle
 
 Closed or narrowed:
