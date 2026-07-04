@@ -1,0 +1,97 @@
+{
+    "cycle":  "EA-integrated",
+    "issue":  "PM-GAP-073",
+    "scope":  "Samsung tablet full live football World Cup game page structure",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -DyAGamePageStructure -Port 8294 -OutputDir docs/mobile/screenshots/cycle-EA-integrated-game-page -HierarchyOutputDir docs/mobile/harness/cycle-EA-integrated-game-page",
+    "eventIdentity":  "Australia vs. Egypt",
+    "result":  "pass",
+    "assertions":  {
+                       "headerActions":  [
+                                             "event-detail-back",
+                                             "event-detail-top-order-book",
+                                             "event-detail-share"
+                                         ],
+                       "gameChatSegment":  [
+                                               "event-detail-tab-game",
+                                               "event-detail-tab-chat"
+                                           ],
+                       "topMatchContext":  [
+                                               "AUS 40%",
+                                               "EGY 61%",
+                                               "0 - 1",
+                                               "63\u0027",
+                                               "LIVE WORLD CUP"
+                                           ],
+                       "chart":  [
+                                     "event-detail-price-chart",
+                                     "event-detail-chart-tooltip",
+                                     "Game",
+                                     "Live"
+                                 ],
+                       "chat":  [
+                                    "event-detail-chat-preview",
+                                    "event-detail-chat-page",
+                                    "event-detail-chat-feed"
+                                ],
+                       "primaryOutcomes":  [
+                                               "event-detail-team-advance-australia",
+                                               "event-detail-team-advance-egypt"
+                                           ],
+                       "compactPinnedContext":  [
+                                                    "event-detail-compact-game-header",
+                                                    "event-detail-sticky-market-shell",
+                                                    "event-detail-sticky-market-tabs"
+                                                ],
+                       "groupedMarkets":  [
+                                              "Live Winner",
+                                              "Spread",
+                                              "Totals",
+                                              "1st Half Winner",
+                                              "2nd Half Winner",
+                                              "Full Game Team Total Goals"
+                                          ],
+                       "playerPropsBlankState":  [
+                                                     "event-detail-player-props-empty",
+                                                     "Player Props unavailable for this match"
+                                                 ],
+                       "lowerContent":  [
+                                            "Market Rules",
+                                            "View Full Rules",
+                                            "More Events"
+                                        ],
+                       "ticket":  [
+                                      "trade-ticket",
+                                      "Live winner",
+                                      "event-detail-primary-outcome-france-argentina-live-australia",
+                                      "event-detail-team-advance-australia",
+                                      "Australia vs. Egypt",
+                                      "Australia"
+                                  ],
+                       "actions":  [
+                                       "event-detail-order-book-screen",
+                                       "event-detail-share-sheet"
+                                   ]
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-top.png",
+                      "docs/mobile/harness/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-top.xml",
+                      "docs/mobile/screenshots/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-top-book.png",
+                      "docs/mobile/harness/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-top-book.xml",
+                      "docs/mobile/screenshots/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-share-sheet.png",
+                      "docs/mobile/harness/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-share-sheet.xml",
+                      "docs/mobile/screenshots/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-chat.png",
+                      "docs/mobile/harness/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-chat.xml",
+                      "docs/mobile/screenshots/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-primary-ticket.png",
+                      "docs/mobile/harness/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-primary-ticket.xml",
+                      "docs/mobile/screenshots/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-ticket.png",
+                      "docs/mobile/harness/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-ticket.xml",
+                      "docs/mobile/screenshots/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-markets.png",
+                      "docs/mobile/harness/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-markets.xml",
+                      "docs/mobile/screenshots/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-pinned-context.png",
+                      "docs/mobile/harness/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-pinned-context.xml",
+                      "docs/mobile/screenshots/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-sticky-props.png",
+                      "docs/mobile/harness/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-sticky-props.xml",
+                      "docs/mobile/screenshots/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-rules-more.png",
+                      "docs/mobile/harness/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-rules-more.xml"
+                  ]
+}

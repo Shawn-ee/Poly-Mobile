@@ -1718,6 +1718,48 @@ Decision:
 - Remaining P1/P2 gaps: ticket amount/swipe confirmation recapture remains P1 because DQ-C reference was location-gated; final phone-density/motion/visual polish remains P2.
 - Next cycle required: yes. Implementation must fix the ticket tap path first, then rerun full Samsung tablet proof.
 
+## Cycle EA Integrated Game Page Proof Addendum
+
+Result: Pass for integrated PM-GAP-073 full-page structure and ticket-open smoke.
+
+Lead integration:
+
+- Agent A backend/provider: `370be8a Add live detail per-market chart contract`
+- Agent B visible UI: `0995abd Add visible ticket entry rail for live game page`
+- Agent C audit/docs: `0230d68 Tighten game page audit gate after DY proof`
+- Lead merges: EA-A, EA-B, EA-C in that order.
+
+Validation:
+
+- `npm --prefix mobile run typecheck`
+- `npm run test:jest -- src/__tests__/mobile-live-event-detail.test.ts`
+- Samsung tablet proof: `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -DyAGamePageStructure -Port 8294 -OutputDir docs/mobile/screenshots/cycle-EA-integrated-game-page -HierarchyOutputDir docs/mobile/harness/cycle-EA-integrated-game-page`
+
+Evidence:
+
+- Proof JSON: `docs/mobile/harness/cycle-EA-integrated-game-page/cycle-DY-A-holiwyn-game-page-structure-proof.json`
+- Screenshots: `docs/mobile/screenshots/cycle-EA-integrated-game-page/`
+- XML: `docs/mobile/harness/cycle-EA-integrated-game-page/`
+
+Criteria updates:
+
+| Criterion area | Priority | Result | Evidence | Remaining work |
+| --- | --- | --- | --- | --- |
+| Primary outcome opens correct ticket | P0 | Pass | EA integrated proof includes `event-detail-primary-outcome-france-argentina-live-australia` and `trade-ticket` with Australia/Australia vs. Egypt. | Keep as regression. |
+| Lower card outcome opens correct ticket | P0 | Pass | EA integrated proof includes `event-detail-team-advance-australia` and `trade-ticket`. | Keep as regression. |
+| Full scroll/lower market completeness | P0 | Pass for structure smoke | EA integrated proof includes Live Winner, Spread, Totals, 1st Half Winner, 2nd Half Winner, Full Game Team Total Goals, sticky context, Market Rules, and More Events. | Richer market breadth remains P1 as real provider-backed line markets expand. |
+| Player Props blank/unavailable state | P0 | Pass for requested scope | EA integrated proof includes `event-detail-player-props-empty` and `Player Props unavailable for this match`. | Player Props content remains intentionally blank for this milestone. |
+| Book, Share, Chat | P0 | Pass | EA integrated proof opens top Book, Android share sheet, Chat feed/input/reactions, then returns to Game proof path. | Keep same-run proof in future regressions. |
+| Chart touch/press behavior | P1 after EA structure pass | Partial | EA proof asserts chart and tooltip markers, but does not newly recapture press/touch on the current live page. | Run a focused current-page chart-touch proof before declaring chart parity refreshed. |
+| Full-page line selector change behavior | P1 after EA structure pass | Partial | Existing DV/DW/DX focused proofs cover selector/orderbook/lifecycle behavior; EA full-page proof covers grouped market presence. | Add same-run full-page selector open/change proof in a later structural cycle. |
+
+Decision:
+
+- Pass/fail: Pass for integrated full-page structure and ticket-open smoke.
+- Unresolved P0 gaps for this focused gate: 0.
+- Remaining P1/P2 gaps: current-page chart-touch recapture, richer in-page line selector changes, more real provider-backed line families, ticket amount/swipe recapture when Polymarket reference is not location-gated, and final visual density/motion polish.
+- Next cycle required: yes for broader parity, but not to re-prove the fixed DY/DZ primary ticket failure unless regression appears.
+
 Use this template for every feature gate:
 
 ```md
