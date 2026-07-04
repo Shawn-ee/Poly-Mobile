@@ -461,3 +461,11 @@ For every UI element or interaction, answer:
 - Samsung tablet proof passes for Home route-backed card -> Event Detail -> Spread row -> ticket, with market type `spread`, line `1.5`, period `Reg. Time`, side `yes`, provider source `polymarket`, and provider token preserved.
 - Default Book/orderbook UI remains hidden and is not a blocker for Local MVP completion.
 - Remaining P1: submit the Home-opened ticket as a fake-token order, prove Portfolio/history from that same entry path, production active Polymarket World Cup provider breadth, and non-disposable liquidity/source breadth.
+
+## Cycle FF Gap Tracker Update
+
+- PM-GAP-101 is opened and verified for the Home-opened route event completing the local fake-token order and Portfolio/history path.
+- FF closes FE's remaining P0 user-flow gap: the Home-opened Spread ticket can enter `$25`, submit a fake-token buy, and show Portfolio latest order, latest activity, and position/history with order-time selected identity preserved.
+- Samsung tablet proof passes for Home route-backed card -> Event Detail -> Spread row -> ticket -> fake-token order -> Portfolio/history.
+- Default Book/orderbook UI remains hidden and is not a blocker for Local MVP completion.
+- Remaining P1: repeat the same Home-opened flow in server order mode, production active Polymarket World Cup provider breadth, and non-disposable liquidity/source breadth.

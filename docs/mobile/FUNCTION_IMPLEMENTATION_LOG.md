@@ -5180,3 +5180,59 @@ Known limitations:
 
 - FE stops at ticket-open proof. Fake-token submit and Portfolio/history from the Home-opened event remain the next Local MVP steps.
 - FE uses disposable provider-shaped data. Production active Polymarket World Cup breadth remains P1.
+
+## Cycle FF - Home Route Ticket Submit And Portfolio History
+
+Feature/page worked on:
+
+- Local MVP Home -> route-backed Event Detail -> Spread ticket -> fake-token order -> Portfolio/history.
+
+Frontend/harness/backend files touched:
+
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `docs/mobile/audits/cycle-ff-home-route-order.md`
+
+Important functions/services touched:
+
+- Added `LocalMvpHomeRouteOrderFlow` harness support.
+- Reused existing mobile event-card opening, Event Detail line target resolution, TradeTicket fake-token submit, and Portfolio order-time snapshot markers.
+- No backend route, schema, or service code was changed.
+
+User interactions supported/proven:
+
+- Open Holiwyn on the Samsung tablet in server market-data mode.
+- Tap a route-backed Home event card.
+- Open the same Event Detail with chart/probability and Game Lines.
+- Tap the route-backed Spread outcome.
+- Add `$25` using ticket presets and submit the fake-token buy.
+- Verify Portfolio latest order, latest activity, and position/history preserve selected spread line, period, side, provider source, and provider token.
+- Default orderbook UI remains hidden.
+
+Validation:
+
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+- `npm --prefix mobile run typecheck`
+- `npx tsx scripts/prove_mobile_el_a_provider_breadth.ts --output=docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-event.json`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpHomeRouteOrderFlow -Port 8275 -BackendBaseUrl http://172.16.200.14:3002 -OutputDir docs/mobile/screenshots/cycle-FF-home-route-order -HierarchyOutputDir docs/mobile/harness/cycle-FF-home-route-order`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-event.json`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-proof.json`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-home.xml`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-detail-top.xml`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-line-markets.xml`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-portfolio.xml`
+- `docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-home.png`
+- `docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-detail-top.png`
+- `docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-line-markets.png`
+- `docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-portfolio.png`
+
+Known limitations:
+
+- FF runs in local mock/fake-token order mode. Server order mode for the same Home-opened flow remains P1.
+- FF uses disposable provider-shaped data. Production active Polymarket World Cup breadth remains P1.

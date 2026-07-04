@@ -1568,3 +1568,16 @@ Cycle FE implementation notes:
 - No route or schema changes were made.
 - The same backend contract from FD now proves the next visible user step: selected Spread outcome -> simple ticket.
 - Tablet proof slug: `mobile-el-a-provider-breadth-3eeba606`.
+
+## Cycle FF - Home Route Ticket Submit And Portfolio History
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home card entry to fake-token order | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1`, `/api/mobile/events/:slug/live-detail` | GET | Public viewing | None for event list; event id/slug for detail | Event title/status, chart/probability, Game Lines, selected Spread market/outcome identity, provider source/token | `Event`, `Market`, `Outcome`, provider quote/read-model fields | FE/FF use local mock fake-token order state after route-backed market selection. | Production active Polymarket event breadth remains P1. |
+| Fake-token order and Portfolio/history from Home-opened ticket | Mobile local mock order path | Client state | No auth for MVP fake-token order | Ticket amount `$25`, side `buy`, contract side `yes`, and selected Spread identity | Portfolio/latest order/latest activity/position consume order-time selected identity and fake-token status | Mobile local state only for FF order/Portfolio proof | Intentional Local MVP mock mode. | Server order mode for this exact Home-opened path remains follow-up. |
+
+Cycle FF implementation notes:
+
+- No route or schema changes were made.
+- FF uses route-backed market data, then local fake-token order state.
+- Tablet proof slug: `mobile-el-a-provider-breadth-ad48c541`.

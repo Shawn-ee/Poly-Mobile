@@ -1,0 +1,47 @@
+﻿{
+    "cycle":  "FF",
+    "scenario":  "Home route-backed event opens spread ticket, submits fake-token order, and shows Portfolio history",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpHomeRouteOrderFlow -Port 8275 -BackendBaseUrl http://172.16.200.14:3002 -OutputDir docs/mobile/screenshots/cycle-FF-home-route-order -HierarchyOutputDir docs/mobile/harness/cycle-FF-home-route-order",
+    "backendBaseUrl":  "http://172.16.200.14:3002",
+    "orderbookDebug":  "unset",
+    "marketDataMode":  "server",
+    "orderMode":  "mock",
+    "result":  "pass",
+    "assertions":  {
+                       "homeDiscovery":  [
+                                             "route-backed event card",
+                                             "compact outcomes"
+                                         ],
+                       "detailHydration":  [
+                                               "same route-backed event",
+                                               "price chart",
+                                               "Game Lines"
+                                           ],
+                       "ticket":  [
+                                      "spread ticket opens from Home-opened detail",
+                                      "amount set to 25",
+                                      "provider token/source visible"
+                                  ],
+                       "portfolio":  [
+                                         "fake-token order submitted",
+                                         "Portfolio latest order/activity/position visible",
+                                         "order-time selected identity preserved"
+                                     ],
+                       "noFallback":  [
+                                          "no Mexico/Ecuador fallback",
+                                          "no default orderbook UI"
+                                      ]
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-home.png",
+                      "docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-home.xml",
+                      "docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-detail-top.png",
+                      "docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-detail-top.xml",
+                      "docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-line-markets.png",
+                      "docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-line-markets.xml",
+                      "docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-spread-ticket-ready.png",
+                      "docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-spread-ticket-ready.xml",
+                      "docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-portfolio.png",
+                      "docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-portfolio.xml"
+                  ]
+}

@@ -395,3 +395,40 @@ Pass for selected Home -> Event Detail -> Spread ticket flow with orderbook hidd
 
 Remaining gaps:
 Submit the Home-opened ticket as a fake-token order, then prove Portfolio/history. Production active Polymarket World Cup provider breadth remains P1.
+
+### 2026-07-04 - Cycle FF - Home route ticket submit and Portfolio history
+
+Reference device:
+Product steering plus existing Polymarket sports audits. Fresh S23 proof was not required for this local fake-token order gate.
+
+Holiwyn device:
+Samsung tablet / Holiwyn Expo Go / local Expo port `8275`.
+
+Holiwyn app mode:
+`EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE` unset, `EXPO_PUBLIC_SHOW_ORDERBOOK` unset, backend `http://172.16.200.14:3002`.
+
+Holiwyn actions:
+Opened Home, tapped a route-backed disposable World Cup live event card, verified the same Event Detail opened, selected the Spread outcome, entered `$25` in the ticket, submitted the fake-token buy, and verified Portfolio latest order, latest activity, and position/history.
+
+Holiwyn evidence:
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-event.json`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-proof.json`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-home.xml`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-detail-top.xml`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-line-markets.xml`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-FF-home-route-order/cycle-FF-home-route-order-portfolio.xml`
+- `docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-home.png`
+- `docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-detail-top.png`
+- `docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-line-markets.png`
+- `docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-FF-home-route-order/cycle-FF-home-route-order-portfolio.png`
+
+Smoke/tests:
+PowerShell parser checks, mobile typecheck, provider breadth route proof, backend health, and tablet proof wrapper passed.
+
+Result:
+Pass for selected Home -> Event Detail -> Spread ticket -> fake-token order -> Portfolio/history flow with orderbook hidden by default.
+
+Remaining gaps:
+Repeat this exact Home-opened flow in server order mode and replace disposable provider-shaped proof events with production active Polymarket event breadth.

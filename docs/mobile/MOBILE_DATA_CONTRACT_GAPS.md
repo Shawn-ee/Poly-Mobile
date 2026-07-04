@@ -3545,3 +3545,34 @@ Temporary mock/static data:
 Future migration concern:
 
 - When the next cycle submits the Home-opened ticket, order request selection snapshots must preserve the same Home-selected market/outcome/provider identity.
+
+## Cycle FF - Home Route Ticket Submit And Portfolio History
+
+Closed or narrowed:
+
+- Home-opened route-backed Event Detail now has Android proof through fake-token order submission and Portfolio/history.
+- Portfolio latest order, latest activity, and position preserve order-time selected identity: market type `spread`, line `1.5`, period `Reg. Time`, side `buy`, contract side `yes`, provider source `polymarket`, and provider token.
+- Default orderbook UI remains hidden through Home -> Detail -> Ticket -> Portfolio.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Server order mode for this exact Home-opened path remains P1.
+- Production active Polymarket World Cup event breadth remains P1.
+
+Schema mismatch:
+
+- No schema migration was required. Existing mobile local order/Portfolio snapshot fields carry the selected identity for fake-token proof.
+
+Route mismatch:
+
+- `/api/events?includeMobileMarkets=1` and `/api/mobile/events/:slug/live-detail` are enough for route-backed market data.
+- `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` are not exercised by FF because the selected milestone is local fake-token order mode.
+
+Temporary mock/static data:
+
+- The order is intentionally local fake-token state for the MVP.
+- The market data is not arbitrary frontend-only data; it comes from disposable backend provider-shaped proof data.
+
+Future migration concern:
+
+- The server-mode version of this Home-opened flow must send the same selected identity through `/api/orders` and then verify `/api/portfolio` plus `/api/portfolio/history`.
