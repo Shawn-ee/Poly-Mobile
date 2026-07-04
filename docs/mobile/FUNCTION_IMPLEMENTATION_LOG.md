@@ -2,6 +2,44 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CZ - Line Slug Family Gate
+
+Feature/page worked on:
+
+- PM-GAP-067B exact-slug review safety for future provider line-market mappings.
+- Manual provider slug preview now distinguishes winner slugs from spreads/totals/team-total/corners/halves family targets.
+
+Frontend/harness components touched:
+
+- No visual UI code changed. Samsung tablet regression proof refreshed the server-backed Colombia vs. Ghana live-detail Book path.
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `src/__tests__/mobile-live-provider-candidates.service.test.ts`
+- `scripts/prove_mobile_provider_line_slug_family_gate.ts`
+
+Important functions/services touched:
+
+- `expectedProviderMarketFamily()` derives the expected provider family from Holiwyn market type/title/period/group.
+- `evaluateCandidateAttachReadiness()` now adds `provider_family_mismatch` when an exact slug belongs to the wrong market family.
+- Line-family relevance can pass for generic Over/Under outcomes only when provider family matches and important team/title tokens match.
+
+User interactions supported:
+
+- No new end-user interaction. Future operator exact-slug review is safer before any line-market provider identity can be attached.
+
+State transitions:
+
+- A synthetic total-goals target accepts a same-family total-goals provider candidate with complete tokens.
+- The same target rejects a match-winner slug with `provider_family_mismatch` and `insufficient_market_relevance`.
+- Tablet proof confirms the existing provider-backed live-detail Book remains usable.
+
+Known limitations:
+
+- This cycle does not find real Polymarket line slugs.
+- Real line-market parity still requires a stronger provider source or operator-reviewed exact line slugs.
+
 ## Cycle CY - Provider Line Market Availability Diagnostic
 
 Feature/page worked on:

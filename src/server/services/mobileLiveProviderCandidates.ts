@@ -146,6 +146,7 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
       queries,
       providerSearchMode,
       providerFetchAttempted: fetchProvider,
+      expectedProviderFamily: expectedProviderMarketFamily(market),
       providerError,
       providerSportsEventError,
       candidateCount: candidates.length,
@@ -204,6 +205,23 @@ export function classifyProviderMarketFamily(candidate: Pick<ProviderMarketCandi
   return "other";
 }
 
+export function expectedProviderMarketFamily(
+  market: Pick<CompactMarketForCandidates, "marketType" | "title" | "period" | "marketGroupKey" | "marketGroupTitle">,
+): ProviderMarketFamily {
+  const text = normalizeText(`${market.marketType} ${market.title} ${market.period ?? ""} ${market.marketGroupKey ?? ""} ${market.marketGroupTitle ?? ""}`);
+  if (/\bcorner|corners\b/.test(text)) return "corners";
+  if (/\bcorrect score|final score\b/.test(text)) return "correct_score";
+  if (market.marketType === "team_total_goals" || /\bteam total|team goals\b/.test(text)) return "team_total_goals";
+  if (market.marketType === "total_goals" || /\btotal goals|over under\b/.test(text)) return "total_goals";
+  if (market.marketType === "spread" || /\bspread|handicap\b/.test(text)) return "spread";
+  if (/\bsecond half|2nd half|2h\b/.test(text)) return "second_half";
+  if (/\bfirst half|1st half|1h\b/.test(text)) return "first_half";
+  if (market.marketType === "match_winner_1x2" || market.marketType === "moneyline" || market.marketType === "draw_no_bet") {
+    return "match_winner";
+  }
+  return "other";
+}
+
 function emptyProviderCandidateFamilySummary(): Record<ProviderMarketFamily, number> {
   return {
     match_winner: 0,
@@ -253,6 +271,7 @@ export async function previewMobileLiveProviderCandidatesBySlug(options: Provide
     mode: "manual-slug-preview",
     marketId: market.id,
     title: market.title,
+    expectedProviderFamily: expectedProviderMarketFamily(market),
     requestedSlugs,
     providerError,
     candidateCount: candidates.length,
@@ -582,6 +601,11 @@ function evaluateCandidateAttachReadiness(
   if (!candidate.slug) reasons.push("missing_external_slug");
   if (candidate.outcomes.length !== market.outcomes.length) reasons.push("outcome_count_mismatch");
   if (candidate.outcomes.some((outcome) => !outcome.tokenId)) reasons.push("missing_reference_token_id");
+  const expectedFamily = expectedProviderMarketFamily(market);
+  const candidateFamily = classifyProviderMarketFamily(candidate);
+  if (expectedFamily !== "other" && candidateFamily !== expectedFamily) {
+    reasons.push("provider_family_mismatch");
+  }
   const relevance = assessCandidateRelevance(market, candidate, candidateScore);
   if (!relevance.relevant) {
     reasons.push("insufficient_market_relevance");
@@ -589,6 +613,8 @@ function evaluateCandidateAttachReadiness(
   return {
     attachReady: reasons.length === 0,
     reasons,
+    expectedFamily,
+    candidateFamily,
     relevance,
   };
 }
@@ -633,12 +659,21 @@ function assessCandidateRelevance(
   const matchedImportantTokens = marketTokens.filter((token) => candidateTokens.has(token));
   const outcomeNameMatches = countOutcomeNameMatches(market, candidate, candidateText);
   const requiredOutcomeMatches = market.outcomes.length >= 3 ? 2 : 1;
+  const expectedFamily = expectedProviderMarketFamily(market);
+  const candidateFamily = classifyProviderMarketFamily(candidate);
+  const lineFamilyRelevant =
+    expectedFamily !== "other" &&
+    expectedFamily !== "match_winner" &&
+    candidateFamily === expectedFamily &&
+    matchedImportantTokens.length >= Math.min(2, marketTokens.length) &&
+    candidateScore >= 30;
   const binaryQuestionRelevant =
     isGenericBinaryMarket(market) &&
     isGenericBinaryCandidate(candidate) &&
     matchedImportantTokens.length >= Math.min(3, marketTokens.length) &&
     candidateScore >= 30;
   const relevant =
+    lineFamilyRelevant ||
     binaryQuestionRelevant ||
     (
       matchedImportantTokens.length >= MIN_RELEVANT_TOKEN_MATCHES &&
@@ -648,7 +683,10 @@ function assessCandidateRelevance(
 
   return {
     relevant,
+    lineFamilyRelevant,
     binaryQuestionRelevant,
+    expectedFamily,
+    candidateFamily,
     matchedImportantTokens,
     importantTokenCount: marketTokens.length,
     outcomeNameMatches,

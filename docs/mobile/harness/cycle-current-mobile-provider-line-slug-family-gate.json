@@ -1,0 +1,60 @@
+{
+  "generatedAt": "2026-07-04T07:08:45.957Z",
+  "target": {
+    "title": "Colombia vs Ghana total goals 2.5",
+    "marketType": "total_goals",
+    "line": "2.5"
+  },
+  "candidates": [
+    {
+      "slug": "fifwc-col-gha-2026-07-03-total-goals-25",
+      "question": "Colombia vs Ghana total goals over 2.5?",
+      "attachReady": true,
+      "reasons": [],
+      "expectedFamily": "total_goals",
+      "candidateFamily": "total_goals",
+      "relevance": {
+        "relevant": true,
+        "lineFamilyRelevant": true,
+        "binaryQuestionRelevant": false,
+        "expectedFamily": "total_goals",
+        "candidateFamily": "total_goals",
+        "matchedImportantTokens": [
+          "colombia",
+          "ghana"
+        ],
+        "importantTokenCount": 2,
+        "outcomeNameMatches": 0,
+        "requiredOutcomeMatches": 1,
+        "score": 111
+      }
+    },
+    {
+      "slug": "fifwc-col-gha-2026-07-03-col",
+      "question": "Will Colombia win on 2026-07-03?",
+      "attachReady": false,
+      "reasons": [
+        "provider_family_mismatch",
+        "insufficient_market_relevance"
+      ],
+      "expectedFamily": "total_goals",
+      "candidateFamily": "match_winner",
+      "relevance": {
+        "relevant": false,
+        "lineFamilyRelevant": false,
+        "binaryQuestionRelevant": false,
+        "expectedFamily": "total_goals",
+        "candidateFamily": "match_winner",
+        "matchedImportantTokens": [
+          "colombia",
+          "ghana"
+        ],
+        "importantTokenCount": 2,
+        "outcomeNameMatches": 0,
+        "requiredOutcomeMatches": 1,
+        "score": 89
+      }
+    }
+  ],
+  "pass": true
+}

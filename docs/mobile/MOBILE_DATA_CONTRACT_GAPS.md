@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CZ - Line Slug Family Gate
+
+Closed or narrowed:
+
+- Exact slug preview now records expected provider family and candidate provider family.
+- Wrong-family exact slugs are rejected with `provider_family_mismatch` before any attach proposal can be used.
+- Line-family relevance now has a guarded path for generic Over/Under labels: family must match and important match tokens must overlap.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider exact slugs for spreads, totals, team totals, halves, corners, props, and correct score.
+- Production/operator review UI for exact slug preview and confirmed attach.
+- Device proof for ticket/order/portfolio/history after a real provider-backed line market exists.
+
+Schema mismatch:
+
+- No schema change was required. Existing market identity fields can store the result after a preview passes.
+
+Route mismatch:
+
+- The POST preview route can validate exact slugs, but no operator UI currently exposes this workflow.
+
+Temporary mock/static data:
+
+- The CZ proof uses synthetic provider candidates to prove the gate. It does not write or attach provider IDs.
+
+Future migration concern:
+
+- Keep `provider_family_mismatch` in every exact-slug and candidate-discovery attach path so manually supplied winner slugs cannot be used to satisfy totals/spreads/team-total markets.
+
 ## Cycle CY - Provider Line Market Availability Diagnostic
 
 Closed or narrowed:
