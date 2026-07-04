@@ -1232,6 +1232,41 @@ Remaining P1/P2 gaps:
 - Create an end-to-end filled-order/history proof for an active provider-backed market.
 - Normalize immutable order/trade selection identity before production real-money audit requirements.
 
+## Super Round DN Integrated Audit
+
+Result: Pass for audit-gated provider chart cache lifecycle plus visible route-backed orderbook ladder and ticket carry-through; partial for filled provider lifecycle and scheduled refresh.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence |
+| --- | --- | --- | --- |
+| LD-DN-P0-01 | P0 | Pass | Polymarket-first provider path remains the default; missing OpticOdds is not required. |
+| LD-DN-P0-03 | P0 | Pass | `cycle-DN-mobile-provider-chart-lifecycle-contract.json` proves chart paths are invalidated with live-detail/event/orderbook paths. |
+| LD-DN-P0-04 | P0 | Pass | Samsung tablet XML shows route-backed orderbook with `route-depth-ladder`, bid levels, ask levels, Buy, and Sell. |
+| LD-DN-P0-05 | P0 | Pass | Samsung tablet ticket XML preserves provider source, market, condition, and token markers after tapping Buy from the orderbook. |
+| LD-DN-P0-07 | P0 | Pass for selected proof | Final proof uses provider-backed match-winner/depth route; unavailable line-family provider parity remains documented P1, not hidden as complete. |
+| LD-DN-P1-01 | P1 | Open | Filled provider-backed order/history proof remains future work. |
+| LD-DN-P1-03 | P1 | Open | Scheduled/background provider refresh remains future work. |
+
+Evidence:
+
+- `docs/mobile/audits/live-event-detail-super-round-dm.md`
+- `docs/mobile/harness/cycle-DN-mobile-provider-chart-lifecycle-contract.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book-ticket.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book-ticket.png`
+
+Unresolved P0 gaps: 0 for the Super Round DN selected scope.
+
+Remaining P1/P2 gaps:
+
+- Filled provider-backed lifecycle proof through order, position, and history.
+- Scheduled provider refresh and durable freshness state.
+- Exact provider-backed line-family markets when Polymarket exposes them or a scoped enrichment source is approved.
+
 Use this template for every feature gate:
 
 ```md

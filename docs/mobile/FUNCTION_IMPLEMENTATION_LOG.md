@@ -3137,3 +3137,36 @@ Known limitations:
 
 - Cycle DM proves provider token identity through the ticket/order metadata contract and Android ticket proof. It does not create a new matched fill or resolved history row on device for the closed Colombia/Ghana provider event.
 - First-class normalized `Order.selection`/`Trade.selection` columns remain a future production hardening option; current preservation uses existing `ApiOrderRequest.requestBody.selection` plus market/outcome fallback metadata.
+
+## Super Round DN - Audit-Gated Provider + Visible Orderbook Parity
+
+Feature/page worked on:
+
+- Live event detail provider lifecycle and visible orderbook parity after Cycle DM.
+- Parallel lanes completed in separate worktrees: Agent C audit/criteria, Agent A backend/provider chart cache lifecycle, and Agent B mobile orderbook ladder UI.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+
+Backend/API components touched:
+
+- `src/server/services/mobileLiveProviderRefresh.ts`
+- `src/server/services/mobileLiveProviderRefreshCache.ts`
+- `src/app/api/mobile/events/[slug]/provider-refresh/route.ts`
+- `scripts/prove_mobile_provider_chart_lifecycle_contract.ts`
+
+User interactions supported:
+
+- Samsung tablet opens a Polymarket-backed live event detail page, opens the route-backed Order Book, sees multi-level bid/ask ladders with depth bars, taps Buy from the ladder, and verifies the ticket preserves provider market/condition/token identity.
+
+State transitions:
+
+- Provider refresh now invalidates live-detail, event, chart, and orderbook route caches for the same compact provider market set.
+- Route-backed `orderbookDepth` levels now render as visible bid/ask ladders. If route levels are missing, the UI shows deterministic quote-shaped fallback levels and labels that state the fallback source.
+
+Known limitations:
+
+- This round proves chart-route cache invalidation and visible route-depth ladder behavior, not a new scheduled refresh worker.
+- Filled provider-backed order/history lifecycle remains P1 until an active provider-backed market can be traded through the full fake-token path.

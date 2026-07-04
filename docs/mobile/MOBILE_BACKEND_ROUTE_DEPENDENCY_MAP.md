@@ -936,3 +936,15 @@ Cycle DM implementation notes:
 - Provider lifecycle proof is Polymarket-first and does not depend on `OPTIC_ODDS_API_KEY`.
 - Android proof uses accessibility markers only; provider IDs are not visible UI copy.
 - `mobile/scripts/smoke.ps1` now honors `-BackendBaseUrl` for server live-detail proof and asserts provider identity on the server-backed page and ticket.
+
+## Super Round DN - Provider Chart Cache + Visible Orderbook
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider refresh cache lifecycle | `/api/mobile/events/:slug/provider-refresh` | POST | Provider refresh admin/internal guard | Optional refresh execution options | `cacheInvalidation.chartPaths`, `cacheInvalidation.orderbookPaths`, `postRefreshHistory` | `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `MarketOutcomeSnapshot`, orderbook depth rows | None | Scheduled/background refresh remains future work. |
+| Visible orderbook ladder | `/api/orderbook/:marketId/book?maxLevels=...` through live-detail hydration | GET | Public viewing | Market id and max levels | `market.orderbookDepth[]`, `orderbookDepthStatus`, `orderbookDepthSource`, bid/ask price, shares, total | Orderbook depth snapshots keyed by market/outcome/side | Deterministic quote-shaped UI fallback when route levels are absent | Full provider-owned line-family depth remains unavailable unless Polymarket exposes matching line markets. |
+
+Super Round DN implementation notes:
+
+- Cache invalidation now includes `/api/markets/:marketId/chart` for every compact provider market, using the same market set as orderbook invalidation.
+- Samsung tablet proof asserts `route-depth-ladder`, bid/ask level labels, provider source, provider market, provider condition, and provider token markers.

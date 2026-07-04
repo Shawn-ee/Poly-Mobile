@@ -1933,7 +1933,7 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-server-live-order-book.png"
       $serverOrderBookHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-live-order-book.xml"
       if ($ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25") {
-        Assert-HierarchyContains -Path $serverOrderBookHierarchy -Expected @("event-detail-order-book-screen", "orderbook-source-orderbook-route", "orderbook-status-ready", "event-detail-order-book-depth-state", "Route depth", "Order Book", "Best bid", "Best ask", "Buy", "Sell")
+        Assert-HierarchyContains -Path $serverOrderBookHierarchy -Expected @("event-detail-order-book-screen", "orderbook-source-orderbook-route", "orderbook-status-ready", "event-detail-order-book-depth-state", "Route depth", "Order Book", "Best bid", "Best ask", "route-depth-ladder", "bid-levels", "ask-levels", "order-book-bid-level-", "order-book-ask-level-", "Buy", "Sell")
         Invoke-TapHierarchyNode -Path $serverOrderBookHierarchy -Identifier "order-book-buy-" -StartsWith
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "cycle-current-holiwyn-server-live-order-book-ticket.png"

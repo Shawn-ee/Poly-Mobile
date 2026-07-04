@@ -2233,3 +2233,30 @@ Temporary mock/static data:
 Future migration concern:
 
 - When real-money trading is in scope, store provider selection identity on immutable order/trade records, not only via the original API request body.
+
+## Super Round DN - Provider Chart Cache + Visible Orderbook
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Scheduled/background provider refresh status is still not a durable mobile-facing contract.
+- Filled provider-backed order/history rows with immutable provider selection fields remain unproven.
+
+Fields backend provides but mobile ignores:
+
+- Mobile does not expose raw cache invalidation paths to users. They are documented/proven for backend lifecycle correctness only.
+
+Schema mismatch:
+
+- Orderbook ladder UI can consume shared market-level depth or outcome-specific depth. Production provider depth should normalize exact outcome/token ownership whenever available.
+
+Route mismatch:
+
+- Provider refresh now invalidates chart and orderbook paths for the same market set. A future scheduler should expose the same freshness state to `/api/mobile/events/:slug/live-detail`.
+
+Temporary mock/static data:
+
+- Visible ladder fallback is deterministic and contract-shaped from existing quote/probability fields. It is labeled `quote-fallback-ladder` and must not be treated as provider-backed route depth.
+
+Future migration concern:
+
+- When line-family markets become provider-backed, ladder depth must carry provider token/outcome IDs through line selectors, ticket, orders, portfolio, and history.

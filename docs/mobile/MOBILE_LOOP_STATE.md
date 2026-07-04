@@ -12660,3 +12660,13 @@ Holiwyn/mobile changed: Mobile event types, adapter normalization, order service
 Verification: Provider token lifecycle proof passed, focused portfolio route tests passed, focused mobile API tests passed, root build passed, and Samsung tablet server-mode proof opened the provider-backed event, orderbook, and ticket with provider markers present.
 
 Audit Gate: Pass for focused provider token lifecycle with 0 unresolved P0 gaps. Remaining P1 work is a filled-order/history proof on an active provider-backed market and production hardening of immutable order/trade selection identity.
+
+### Super Round DN - Parallel Audit-Gated Provider + Visible UI
+
+Goal: Run a true parallel super round with isolated worktrees for reference audit/docs, backend/provider lifecycle, and visible mobile UI parity.
+
+Agent split: Agent C produced DN live-detail criteria and gaps first. Agent A added provider chart-route cache invalidation and post-refresh history summary. Agent B added a visible route-backed orderbook ladder on the mobile event detail page.
+
+Verification: Backend provider refresh tests passed, provider chart lifecycle proof passed, mobile API tests passed, root build passed, and Samsung tablet server-mode proof passed for event detail -> route-backed orderbook ladder -> Buy ticket with provider token identity.
+
+Audit Gate: Pass for selected Super Round DN scope with 0 unresolved P0 gaps. Remaining P1 gaps are filled provider lifecycle proof, scheduled provider refresh, and exact line-family provider parity when real provider markets exist.

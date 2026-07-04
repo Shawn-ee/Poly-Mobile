@@ -132,6 +132,12 @@ Rule: a feature cannot be marked complete while it has unresolved P0 gaps. P1/P2
 - PM-GAP-068 remains Verified. Cycle DM completed the server-hydrated live-device repeat requested after provider/depth wiring: Samsung tablet proof opened the provider-backed live-detail page, route-backed orderbook, and ticket while preserving `polymarket` source plus provider market, condition, and outcome token identity.
 - Remaining P1 for PM-GAP-068: prove a filled order and resolved history row for an active provider-backed market, then consider first-class immutable `Order.selection`/`Trade.selection` fields before production.
 
+## Super Round DN Gap Tracker Update
+
+- PM-GAP-067 remains In progress but has a new verified sub-scope: provider refresh now invalidates chart and orderbook route caches for the same compact provider market set, with `postRefreshHistory` proof.
+- PM-GAP-069 remains Open/P2 for full visual polish, but selected orderbook parity improved materially: Samsung tablet proof now asserts route-backed bid/ask ladders, depth-level rows, Buy/Sell, and provider-token ticket carry-through.
+- Remaining P1 debt promoted for next structural cycles: filled provider-backed order/history lifecycle, scheduled provider refresh/freshness state, and exact provider-backed line-family markets when available.
+
 ## Audit Questions For Every Gap
 
 For every UI element or interaction, answer:
