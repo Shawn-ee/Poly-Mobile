@@ -1,0 +1,26 @@
+{
+  "cycle": "DQ-B",
+  "scope": "visible-mobile-ui-parity",
+  "featureGapClosed": "Line-market ticket targets now prefer matching backend-shaped spread/totals/team-total markets and fall back to deterministic selected-line fixtures when backend line data is unavailable or mismatched.",
+  "unitProof": {
+    "command": "npm run test:mobile-api -- mobile/src/__tests__/eventDetailLineTicketService.test.ts mobile/src/__tests__/orderService.test.ts",
+    "result": "pass",
+    "tests": 12
+  },
+  "typecheck": {
+    "command": "npm --prefix mobile run typecheck",
+    "result": "pass"
+  },
+  "deviceProof": {
+    "command": "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailLineAdjustment -Port 8225",
+    "device": "adb-R5GYA13X7NJ-4O0ADU._adb-tls-connect._tcp",
+    "result": "pass",
+    "failure": null,
+    "artifacts": [
+      "docs/mobile/screenshots/cycle-DQ-B-line-adjustment-spread-ticket.png",
+      "docs/mobile/screenshots/cycle-DQ-B-line-adjustment-totals-ticket.png",
+      "docs/mobile/harness/cycle-DQ-B-line-adjustment-spread-ticket.xml",
+      "docs/mobile/harness/cycle-DQ-B-line-adjustment-totals-ticket.xml"
+    ]
+  }
+}

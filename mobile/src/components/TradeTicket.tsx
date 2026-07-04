@@ -394,36 +394,36 @@ export function TradeTicket({
                 </Pressable>
               ))}
             </View>
+            <View accessibilityLabel="ticket-odds-available" testID="ticket-odds-available" style={styles.oddsAvailableLine}>
+              <Text style={styles.oddsAvailableText}>Odds {contractProbability}% | {money(balance)} available</Text>
+            </View>
+            <View style={styles.amountHeader}>
+              <Text accessibilityLabel="ticket-balance-inline" testID="ticket-balance-inline" style={styles.balanceText}>
+                {t.balance} {money(balance)}
+              </Text>
+              <Pressable accessibilityLabel="ticket-max-amount" testID="ticket-max-amount" onPress={() => setAmount(String(Math.floor(balance)))}>
+                <Text style={styles.maxText}>{t.max}</Text>
+              </Pressable>
+            </View>
+            <View accessibilityLabel="ticket-amount-keypad" testID="ticket-amount-keypad" style={styles.keypadGrid}>
+              {keypadKeys.map((key) => (
+                <Pressable
+                  accessibilityLabel={`ticket-keypad-${key}`}
+                  key={key}
+                  onPress={() => applyKeypadInput(key)}
+                  style={styles.keypadButton}
+                  testID={`ticket-keypad-${key}`}
+                >
+                  {key === "backspace" ? (
+                    <Ionicons name="backspace-outline" color="#dbeafe" size={20} />
+                  ) : (
+                    <Text style={styles.keypadText}>{key}</Text>
+                  )}
+                </Pressable>
+              ))}
+            </View>
             {showDetails && (
               <>
-                <View accessibilityLabel="ticket-odds-available" testID="ticket-odds-available" style={styles.oddsAvailableLine}>
-                  <Text style={styles.oddsAvailableText}>Odds {contractProbability}% | {money(balance)} available</Text>
-                </View>
-                <View style={styles.amountHeader}>
-                  <Text accessibilityLabel="ticket-balance-inline" testID="ticket-balance-inline" style={styles.balanceText}>
-                    {t.balance} {money(balance)}
-                  </Text>
-                  <Pressable accessibilityLabel="ticket-max-amount" testID="ticket-max-amount" onPress={() => setAmount(String(Math.floor(balance)))}>
-                    <Text style={styles.maxText}>{t.max}</Text>
-                  </Pressable>
-                </View>
-                <View accessibilityLabel="ticket-amount-keypad" testID="ticket-amount-keypad" style={styles.keypadGrid}>
-                  {keypadKeys.map((key) => (
-                    <Pressable
-                      accessibilityLabel={`ticket-keypad-${key}`}
-                      key={key}
-                      onPress={() => applyKeypadInput(key)}
-                      style={styles.keypadButton}
-                      testID={`ticket-keypad-${key}`}
-                    >
-                      {key === "backspace" ? (
-                        <Ionicons name="backspace-outline" color="#dbeafe" size={20} />
-                      ) : (
-                        <Text style={styles.keypadText}>{key}</Text>
-                      )}
-                    </Pressable>
-                  ))}
-                </View>
                 <View accessibilityLabel="ticket-slippage" testID="ticket-slippage" style={styles.slippageSection}>
                   <Text style={styles.estimateLabel}>{t.slippage}</Text>
                   <View style={styles.slippageControls}>
