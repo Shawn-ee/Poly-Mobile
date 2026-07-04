@@ -2,6 +2,37 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle DC - Bulk Manual Slug Review Contract
+
+Closed or narrowed:
+
+- Exact-slug review is no longer limited to one market per request.
+- Bulk preview returns attach-ready mappings only for candidates that pass family, relevance, token, and outcome-shape checks.
+- Wrong-family line mappings are rejected in bulk proof with explicit `provider_family_mismatch` and `insufficient_market_relevance`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider exact slugs/token IDs for spreads, totals, team totals, halves, corners, props, and correct score.
+- Operator/admin UI for collecting slugs from the Polymarket reference app and submitting bulk review payloads.
+- Bulk apply workflow that requires all P0 reviews to pass before applying production mappings.
+
+Schema mismatch:
+
+- No schema change was required. Existing provider identity fields remain sufficient for reviewed mappings.
+
+Route mismatch:
+
+- `/provider-candidates` can now bulk-preview slugs, but there is still no first-class admin UI to invoke it.
+- `/provider-mapping` can apply mappings, but no combined review-and-apply orchestration route exists yet.
+
+Temporary mock/static data:
+
+- The proof creates a local totals guard market and preview reviews real match-winner slugs against it. It does not mark the totals market provider-backed.
+
+Future migration concern:
+
+- Keep preview and apply separate unless a future operator flow includes an explicit all-pass confirmation. Partial bulk review success must not silently map only the passing subset in production.
+
 ## Cycle DB - Provider Line Source Probe
 
 Closed or narrowed:
