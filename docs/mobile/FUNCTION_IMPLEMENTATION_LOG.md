@@ -2,6 +2,54 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CV - Provider Candidate Relevance Gate
+
+Feature/page worked on:
+
+- PM-GAP-067B provider identity mapping safety for compact World Cup live event markets.
+- This cycle prevents unrelated Polymarket markets from becoming attach-ready just because they have condition IDs and CLOB token IDs.
+
+Frontend components touched:
+
+- No visual UI code changed. Samsung tablet regression proof confirms the World Cup live-detail second-half Book flow still works.
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `src/__tests__/mobile-live-provider-candidates.service.test.ts`
+- `scripts/prove_mobile_provider_candidate_relevance_gate.ts`
+
+Important functions/services touched:
+
+- `rankProviderCandidates()` now computes a relevance-aware `attachReadiness` report.
+- `evaluateCandidateAttachReadiness()` now rejects candidates with `insufficient_market_relevance`.
+- `assessCandidateRelevance()` checks important market tokens and outcome-name matches before a candidate can be attached.
+
+User interactions supported:
+
+- Samsung tablet proof still opens the World Cup live-detail page, scrolls to second-half market groups, opens the selected Book, and renders route-backed depth after the backend candidate guard.
+
+State transitions:
+
+- Real provider search for the local World Cup compact event now returns candidates with `providerErrorCount=0`.
+- The proof saw 42 provider candidates across 14 compact markets, but 0 attach-ready candidates because all top candidates failed relevance.
+- No database mapping mutation occurs in this cycle.
+
+Known limitations:
+
+- The local World Cup compact event still needs real matching provider slugs/token IDs. This cycle makes the mapping gate safer; it does not invent or attach mappings.
+- Provider search quality is still noisy for future soccer fixture terms, so the next useful mapping cycle should improve provider discovery or use reviewed exact slugs.
+
+Verification:
+
+- Provider proof: `docs/mobile/harness/cycle-current-mobile-provider-candidate-relevance-gate.json`
+- Tablet XML proof: `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`
+- Tablet screenshot proof: `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-candidates.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts src/__tests__/mobile-live-provider-mapping.route.test.ts src/__tests__/mobile-live-provider-refresh.route.test.ts src/__tests__/polymarket-orderbook-depth-snapshots.test.ts`
+- `cmd /c npm.cmd run build`
+- mobile `cmd /c npm.cmd run typecheck`
+- Samsung tablet proof via `mobile/scripts/smoke.ps1 -Deep -ServerLiveDetailSecondHalfOrderBook`
+
 ## Cycle CU - Provider CLOB Depth Fetcher
 
 Feature/page worked on:

@@ -5,6 +5,28 @@ import { selectCompactLiveMarkets } from "@/server/services/mobileLiveEventDetai
 const GAMMA_BASE_URL = "https://gamma-api.polymarket.com";
 const DEFAULT_LIMIT_PER_QUERY = 20;
 const MAX_MARKETS = 14;
+const MIN_RELEVANT_TOKEN_MATCHES = 2;
+const GENERIC_RELEVANCE_TOKENS = new Set([
+  "and",
+  "bet",
+  "both",
+  "draw",
+  "first",
+  "goals",
+  "half",
+  "match",
+  "no",
+  "over",
+  "score",
+  "second",
+  "team",
+  "the",
+  "total",
+  "under",
+  "winner",
+  "will",
+  "yes",
+]);
 
 type GammaWire = Record<string, unknown>;
 
@@ -251,11 +273,14 @@ export function rankProviderCandidates(
   candidates: ProviderMarketCandidate[],
 ) {
   return candidates
-    .map((candidate) => ({
-      ...candidate,
-      score: scoreProviderCandidate(market, candidate),
-      attachReadiness: evaluateCandidateAttachReadiness(market, candidate),
-    }))
+    .map((candidate) => {
+      const score = scoreProviderCandidate(market, candidate);
+      return {
+        ...candidate,
+        score,
+        attachReadiness: evaluateCandidateAttachReadiness(market, candidate, score),
+      };
+    })
     .sort((left, right) => right.score - left.score);
 }
 
@@ -323,6 +348,7 @@ function scoreProviderCandidate(market: CompactMarketForCandidates, candidate: N
 function evaluateCandidateAttachReadiness(
   market: CompactMarketForCandidates,
   candidate: NonNullable<ProviderMarketCandidate>,
+  candidateScore = candidate.score,
 ) {
   const reasons: string[] = [];
   if (!candidate.conditionId) reasons.push("missing_condition_id");
@@ -330,9 +356,14 @@ function evaluateCandidateAttachReadiness(
   if (!candidate.slug) reasons.push("missing_external_slug");
   if (candidate.outcomes.length !== market.outcomes.length) reasons.push("outcome_count_mismatch");
   if (candidate.outcomes.some((outcome) => !outcome.tokenId)) reasons.push("missing_reference_token_id");
+  const relevance = assessCandidateRelevance(market, candidate, candidateScore);
+  if (!relevance.relevant) {
+    reasons.push("insufficient_market_relevance");
+  }
   return {
     attachReady: reasons.length === 0,
     reasons,
+    relevance,
   };
 }
 
@@ -340,7 +371,9 @@ function buildAttachProposal(
   market: CompactMarketForCandidates,
   candidate: NonNullable<ProviderMarketCandidate>,
 ) {
-  const attachReadiness = evaluateCandidateAttachReadiness(market, candidate);
+  const attachReadiness = candidate.attachReadiness.reasons.includes("not_ranked")
+    ? evaluateCandidateAttachReadiness(market, candidate)
+    : candidate.attachReadiness;
   return {
     attachReady: attachReadiness.attachReady,
     reasons: attachReadiness.reasons,
@@ -359,6 +392,57 @@ function buildAttachProposal(
         }
       : null,
   };
+}
+
+function assessCandidateRelevance(
+  market: CompactMarketForCandidates,
+  candidate: NonNullable<ProviderMarketCandidate>,
+  candidateScore: number,
+) {
+  const candidateText = normalizeText(
+    `${candidate.question} ${candidate.eventTitle ?? ""} ${candidate.category ?? ""} ${candidate.tags.join(" ")} ${candidate.slug}`,
+  );
+  const candidateTokens = new Set(candidateText.split(" ").filter(Boolean));
+  const marketTokens = relevantMarketTokens(market);
+  const matchedImportantTokens = marketTokens.filter((token) => candidateTokens.has(token));
+  const outcomeNameMatches = countOutcomeNameMatches(market, candidate, candidateText);
+  const requiredOutcomeMatches = market.outcomes.length >= 3 ? 2 : 1;
+  const relevant =
+    matchedImportantTokens.length >= MIN_RELEVANT_TOKEN_MATCHES &&
+    outcomeNameMatches >= requiredOutcomeMatches &&
+    candidateScore >= 30;
+
+  return {
+    relevant,
+    matchedImportantTokens,
+    importantTokenCount: marketTokens.length,
+    outcomeNameMatches,
+    requiredOutcomeMatches,
+    score: Number(candidateScore.toFixed(2)),
+  };
+}
+
+function relevantMarketTokens(market: CompactMarketForCandidates) {
+  const text = normalizeText(`${market.title} ${market.outcomes.map((outcome) => outcome.name).join(" ")}`);
+  return Array.from(new Set(text.split(" ").filter((token) =>
+    token.length > 2 && !GENERIC_RELEVANCE_TOKENS.has(token) && !/^\d+$/.test(token)
+  )));
+}
+
+function countOutcomeNameMatches(
+  market: CompactMarketForCandidates,
+  candidate: NonNullable<ProviderMarketCandidate>,
+  candidateText: string,
+) {
+  const candidateOutcomeText = normalizeText(candidate.outcomes.map((outcome) => outcome.name).join(" "));
+  const fullCandidateText = `${candidateText} ${candidateOutcomeText}`;
+  return market.outcomes.filter((outcome) => {
+    if (GENERIC_RELEVANCE_TOKENS.has(normalizeText(outcome.name))) return false;
+    const outcomeTokens = normalizeText(outcome.name)
+      .split(" ")
+      .filter((token) => token.length > 2 && !GENERIC_RELEVANCE_TOKENS.has(token));
+    return outcomeTokens.length > 0 && outcomeTokens.every((token) => fullCandidateText.includes(token));
+  }).length;
 }
 
 async function loadCompactLiveMarkets(eventSlug: string) {
@@ -387,6 +471,8 @@ async function loadCompactLiveMarkets(eventSlug: string) {
 
 function normalizeText(value: string) {
   return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/[^a-z0-9\s]+/g, " ")
     .replace(/\s+/g, " ")

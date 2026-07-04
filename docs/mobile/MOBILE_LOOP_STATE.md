@@ -6,6 +6,30 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle CV
+
+Date: 2026-07-04
+Branch: `mobile/cycle-CV-provider-candidate-relevance-gate`
+Goal: Continue PM-GAP-067B by preventing unrelated provider candidates from becoming attach-ready and proving the local World Cup compact event remains safely unmapped.
+Reference app screens observed: Continued from Cycle CH Samsung S23 Polymarket official app live game page evidence; no new visual UI parity area was opened. Real Gamma provider search was used for backend evidence.
+Holiwyn screens changed: No intended visual changes. Existing World Cup live-detail second-half Book flow was re-proven on Samsung tablet.
+Backend/API changed: Provider candidate ranking now includes relevance-aware attach readiness. Candidates must match important market/outcome tokens before `/provider-candidates` can produce an attach-ready proposal.
+Database/schema changed: None.
+Files changed: provider candidate service, candidate service tests, provider relevance proof harness, docs/proof artifacts, tablet regression proof artifacts.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-candidates.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts src/__tests__/mobile-live-provider-mapping.route.test.ts src/__tests__/mobile-live-provider-refresh.route.test.ts src/__tests__/polymarket-orderbook-depth-snapshots.test.ts`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` from `mobile/`
+- `cmd /c npx.cmd tsx scripts/prove_mobile_provider_candidate_relevance_gate.ts`
+- Samsung tablet proof via `mobile/scripts/smoke.ps1 -Deep -ServerLiveDetailSecondHalfOrderBook`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-provider-candidate-relevance-gate.json`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`
+Result: Pass for provider candidate relevance safety. Real provider search returned 42 candidates across 14 compact markets with 0 provider errors, but 0 attach-ready candidates because unrelated World Cup futures/pop-culture candidates failed relevance. Tablet regression proof passed.
+Next focus: improve provider discovery or use reviewed exact soccer slugs so the real World Cup compact event can progress from safely-unmatched to mapped and refreshable.
+
 ## Cycle CU
 
 Date: 2026-07-04

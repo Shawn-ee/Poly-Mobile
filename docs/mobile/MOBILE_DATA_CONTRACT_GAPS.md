@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CV - Provider Candidate Relevance Gate
+
+Closed or narrowed:
+
+- Provider candidate discovery now exposes a relevance report before a candidate can be attached.
+- Unrelated but token-complete provider candidates are rejected with `insufficient_market_relevance`.
+- Real provider search is reachable in the proof environment and no longer fails with only `fetch failed`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider slugs/token IDs for the compact World Cup soccer event and its line markets.
+- Better provider search strategy for future fixture names, because Gamma search may return unrelated high-liquidity markets.
+- Optional operator-reviewed exact slug import flow for verified soccer markets.
+
+Schema mismatch:
+
+- No schema change was required. This cycle protects the existing attach contract before it writes `Market.referenceSource`, `Market.externalSlug`, `Market.conditionId`, or `Outcome.referenceTokenId`.
+
+Route mismatch:
+
+- `/provider-candidates` can now prove “provider reachable but no safe attach candidate” instead of conflating provider fetch failure with no mapping.
+
+Temporary mock/static data:
+
+- None. The proof uses real provider search responses and does not mutate mappings.
+
+Future migration concern:
+
+- Do not auto-attach provider candidates unless `attachReadiness.attachReady=true` and the relevance report matches the selected market/outcomes.
+
 ## Cycle CU - Provider CLOB Depth Fetcher
 
 Closed or narrowed:

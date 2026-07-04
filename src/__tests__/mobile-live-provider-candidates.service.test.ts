@@ -64,7 +64,11 @@ describe("mobile live provider candidates", () => {
       slug: "curacao-cote-divoire-match-winner",
       externalMarketId: "gamma-market-1",
       conditionId: "condition-1",
-      attachReadiness: { attachReady: true, reasons: [] },
+      attachReadiness: expect.objectContaining({ attachReady: true, reasons: [] }),
+    }));
+    expect(ranked[0].attachReadiness.relevance).toEqual(expect.objectContaining({
+      relevant: true,
+      outcomeNameMatches: 2,
     }));
     expect(ranked[0].outcomes.map((outcome) => outcome.tokenId)).toEqual([
       "token-home",
@@ -104,10 +108,51 @@ describe("mobile live provider candidates", () => {
       },
     ]);
 
-    expect(ranked[0].attachReadiness).toEqual({
+    expect(ranked[0].attachReadiness).toEqual(expect.objectContaining({
       attachReady: false,
       reasons: ["missing_reference_token_id"],
-    });
+    }));
+  });
+
+  test("rejects token-complete unrelated provider candidates as not attach-ready", () => {
+    const ranked = rankProviderCandidates(compactMarket, [
+      {
+        slug: "new-rhianna-album-before-gta-vi-926",
+        question: "New Rihanna Album before GTA VI?",
+        externalMarketId: "540817",
+        conditionId: "0xcondition",
+        eventTitle: "What will happen before GTA VI?",
+        active: true,
+        closed: false,
+        archived: false,
+        acceptingOrders: true,
+        bestBid: 0.51,
+        bestAsk: 0.52,
+        spread: 0.01,
+        lastTradePrice: null,
+        volume: 847445,
+        volume24hr: 2000,
+        liquidity: 15894,
+        outcomes: [
+          { name: "Yes", tokenId: "token-yes", outcomePrice: 0.51, displayOrder: 0 },
+          { name: "No", tokenId: "token-no", outcomePrice: 0.49, displayOrder: 1 },
+          { name: "Maybe", tokenId: "token-maybe", outcomePrice: 0.0, displayOrder: 2 },
+        ],
+        tags: ["Music"],
+        category: "Pop culture",
+        score: 0,
+        attachReadiness: { attachReady: false, reasons: ["not_ranked"] },
+      },
+    ]);
+
+    expect(ranked[0].attachReadiness).toEqual(expect.objectContaining({
+      attachReady: false,
+      reasons: expect.arrayContaining(["insufficient_market_relevance"]),
+    }));
+    expect(ranked[0].attachReadiness.relevance).toEqual(expect.objectContaining({
+      relevant: false,
+      outcomeNameMatches: 0,
+    }));
   });
 
   test("fetches exact manual slug previews from Gamma-style responses", async () => {
