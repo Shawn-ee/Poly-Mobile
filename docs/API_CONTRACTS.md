@@ -85,6 +85,8 @@ Cycle GF changes only ticket presentation and proof expectations. It does not ch
 
 Cycle GG changes only game-card presentation in discovery. It does not change event discovery payloads, route-backed event IDs, market/outcome fields, `openEvent`, `openTicket`, or downstream ticket/order/Portfolio contracts.
 
+Cycle GH changes only discovery-card rail behavior/proof and hides the old row fallback from rendering. It does not change event discovery payloads, market/outcome fields, ticket request fields, order routes, or Portfolio contracts.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

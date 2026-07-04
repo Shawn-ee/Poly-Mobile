@@ -186,3 +186,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Home/Live discovery cards still looked like generic data cards instead of simple retail prediction cards. | P0 | Passed | Added a two-button outcome rail; route-backed Android proof passed. |
 | Visible Volume/Liquidity stats distracted from the Local MVP retail path. | P0 | Passed | Stats moved to hidden proof metadata; Android proof no longer requires visible `Volume:` or `Liquidity:`. |
 | Route-backed card must still open Event Detail and the simple ticket path after the visual card change. | P0 | Passed | Samsung tablet proof opened Event Detail and a simple spread ticket from the updated discovery card. |
+
+## Cycle GH - Discovery Rail Direct Ticket Proof
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Outcome rail needed proof that it opens the ticket directly, not only that it renders on the card. | P0 | Passed | Smoke taps `event-outcome-retail-*`; Samsung tablet proof passed. |
+| Old hidden row-style outcome layout should not remain in the rendered MVP card hierarchy. | P0 | Passed | Old row style changed to `display: none`; tablet proof used the rail path. |
+| Card tap still needs to open Event Detail after direct rail ticket close. | P0 | Passed | Smoke closes the rail ticket and continues through card-to-detail; Android proof passed. |
