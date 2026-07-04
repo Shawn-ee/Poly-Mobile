@@ -91,9 +91,12 @@ describe("mobile live provider refresh route", () => {
         source: "next-revalidate-path",
         eventSlug: "world-cup-live",
         marketCount: 1,
+        chartMarketCount: 1,
+        orderbookMarketCount: 1,
         invalidated: expect.arrayContaining([
           "/api/mobile/events/world-cup-live/live-detail",
           "/api/events/world-cup-live",
+          "/api/markets/market-world-cup-live/chart",
           "/api/orderbook/market-world-cup-live/book",
         ]),
         errors: [],
@@ -101,6 +104,7 @@ describe("mobile live provider refresh route", () => {
     });
     expect(revalidatePath).toHaveBeenCalledWith("/api/mobile/events/world-cup-live/live-detail");
     expect(revalidatePath).toHaveBeenCalledWith("/api/events/world-cup-live");
+    expect(revalidatePath).toHaveBeenCalledWith("/api/markets/market-world-cup-live/chart");
     expect(revalidatePath).toHaveBeenCalledWith("/api/orderbook/market-world-cup-live/book");
   });
 
@@ -177,6 +181,14 @@ function refreshMobileProvider() {
       latestFetchedAt: "2026-07-03T22:01:00.000Z",
       oldestFetchedAt: "2026-07-03T22:01:00.000Z",
       sourceCount: 1,
+    },
+    postRefreshHistory: {
+      marketCount: 1,
+      snapshotCount: 24,
+      latestSnapshotAt: "2026-07-03T22:01:00.000Z",
+      oldestSnapshotAt: "2026-07-03T20:01:00.000Z",
+      outcomeCount: 2,
+      source: "market-outcome-snapshot",
     },
   });
 }

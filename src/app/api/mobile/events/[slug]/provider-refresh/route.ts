@@ -6,6 +6,7 @@ import {
   expireMobileLiveProviderQuoteSnapshots,
   refreshMobileLiveProviderQuoteSnapshots,
 } from "@/server/services/mobileLiveProviderRefresh";
+import { buildMobileLiveProviderRefreshCachePaths } from "@/server/services/mobileLiveProviderRefreshCache";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -52,11 +53,12 @@ export async function POST(request: NextRequest, context: Params) {
 }
 
 function invalidateMobileLiveProviderRefreshCache(eventSlug: string, marketIds: string[]) {
-  const encodedSlug = encodeURIComponent(eventSlug);
+  const cachePaths = buildMobileLiveProviderRefreshCachePaths({ eventSlug, marketIds });
   const paths = [
-    `/api/mobile/events/${encodedSlug}/live-detail`,
-    `/api/events/${encodedSlug}`,
-    ...marketIds.map((marketId) => `/api/orderbook/${encodeURIComponent(marketId)}/book`),
+    cachePaths.liveDetailPath,
+    cachePaths.eventPath,
+    ...cachePaths.chartPaths,
+    ...cachePaths.orderbookPaths,
   ];
   const invalidated: string[] = [];
   const errors: Array<{ path: string; error: string }> = [];
@@ -78,6 +80,8 @@ function invalidateMobileLiveProviderRefreshCache(eventSlug: string, marketIds: 
     generatedAt: new Date().toISOString(),
     eventSlug,
     marketCount: marketIds.length,
+    chartMarketCount: marketIds.length,
+    orderbookMarketCount: marketIds.length,
     invalidated,
     errors,
   };
