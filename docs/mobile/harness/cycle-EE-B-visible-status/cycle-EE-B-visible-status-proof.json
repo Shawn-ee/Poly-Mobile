@@ -1,0 +1,35 @@
+{
+    "cycle":  "EE-B",
+    "scope":  "Visible Book-selected fake-token open/cancel/fill status breadth",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBookLifecycle -Port 8309 -OutputDir docs/mobile/screenshots/cycle-EE-B-visible-status -HierarchyOutputDir docs/mobile/harness/cycle-EE-B-visible-status",
+    "eventIdentity":  "Mexico vs. Ecuador",
+    "result":  "pass",
+    "assertions":  {
+                       "bookSelection":  "Book selector changes from Moneyline to Spreads with selected-market-mexico-ecuador-spread selected-line-1.5 selected-period-regulation selected-outcome-yes selected-side-yes",
+                       "providerToken":  "provider-source-polymarket-fixture provider-market-gamma-mexico-ecuador-spread-15 provider-condition-condition-mexico-ecuador-spread-15 provider-token-token-spread-yes-15",
+                       "ticketReady":  "trade-ticket keeps ticket-market-id-mexico-ecuador-spread ticket-outcome-id-yes ticket-line-1.5 ticket-period-regulation and enables place-mock-order at $25",
+                       "openStatus":  "latest-order-card and open-order-row expose fake-token-test order-status-open for the same Book-selected Spread identity",
+                       "cancelStatus":  "cancel-open-order removes the open branch and latest-activity-card/activity-row expose fake-token-test activity-canceled status-canceled",
+                       "filledStatus":  "position-card plus filled activity-row expose fake-token-test activity-opened status-filled for the same Book-selected identity",
+                       "fallbackGuard":  "No Team to Advance or Mexico moneyline fallback appears after the Book-selected order"
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-moneyline-book.png",
+                      "docs/mobile/harness/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-moneyline-book.xml",
+                      "docs/mobile/harness/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-selector.xml",
+                      "docs/mobile/screenshots/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-spread-selected.png",
+                      "docs/mobile/harness/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-spread-selected.xml",
+                      "docs/mobile/screenshots/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-ticket-empty.png",
+                      "docs/mobile/harness/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-ticket-empty.xml",
+                      "docs/mobile/screenshots/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-ticket-ready.png",
+                      "docs/mobile/harness/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-ticket-ready.xml",
+                      "docs/mobile/screenshots/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-portfolio-open-filled.png",
+                      "docs/mobile/harness/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-portfolio-open-filled.xml",
+                      "docs/mobile/screenshots/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-portfolio-canceled-activity.png",
+                      "docs/mobile/harness/cycle-EE-B-visible-status/cycle-EE-B-holiwyn-book-status-portfolio-canceled-activity.xml"
+                  ],
+    "remainingGaps":  [
+                          "This proof uses the deterministic backend-shaped local Book/order service in mock mode, not a real wallet signature.",
+                          "Broader real provider-backed line-family lifecycle breadth remains P1 until backend/provider line families are ready."
+                      ]
+}

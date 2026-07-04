@@ -220,6 +220,11 @@ const hasActivityExecutionDetails = (activity: PortfolioActivity) =>
   (activity.action === "closed" && typeof activity.entryAmount === "number") ||
   (activity.action === "canceled" && typeof activity.shares === "number");
 
+const lifecycleStatusLabel = (status?: string) => (status ? status.charAt(0).toUpperCase() + status.slice(1).toLowerCase() : "Filled");
+
+const activityStatusLabel = (activity: PortfolioActivity) =>
+  activity.action === "canceled" ? "Canceled" : activity.action === "opened" || activity.action === "sold" ? "Filled" : "Closed";
+
 export function Portfolio({
   locale,
   t,
@@ -277,6 +282,14 @@ export function Portfolio({
                 <Text style={styles.openOrderMeta}>
                   {order.side === "buy" ? t.buy : t.sell} - {displayOutcome(order)} - {order.status}
                 </Text>
+                <View
+                  accessibilityLabel={`open-order-status-${order.id} fake-token-test order-status-${order.status.toLowerCase()}`}
+                  style={styles.statusPillRow}
+                  testID={`open-order-status-${order.id}`}
+                >
+                  <Text style={styles.statusPill}>Fake-token test</Text>
+                  <Text style={styles.statusPill}>{lifecycleStatusLabel(order.status)}</Text>
+                </View>
               </View>
               <Pressable
                 accessibilityLabel={`cancel-open-order-${order.id}`}
@@ -382,6 +395,14 @@ export function Portfolio({
             <Text style={styles.latestActivityAmount}>{money(latestActivity.amount)}</Text>
           </View>
           <Text style={styles.latestActivityAction}>{activityActionLabel(latestActivity, t)}</Text>
+          <View
+            accessibilityLabel={`latest-activity-status-${latestActivity.id} fake-token-test activity-${latestActivity.action} status-${activityStatusLabel(latestActivity).toLowerCase()}`}
+            style={styles.statusPillRow}
+            testID={`latest-activity-status-${latestActivity.id}`}
+          >
+            <Text style={styles.statusPill}>Fake-token test</Text>
+            <Text style={styles.statusPill}>{activityStatusLabel(latestActivity)}</Text>
+          </View>
           {latestActivity.timestamp && (
             <Text accessibilityLabel={`latest-activity-time-${latestActivity.id}`} style={styles.activityTime}>
               {latestActivity.timestamp}
@@ -419,6 +440,14 @@ export function Portfolio({
             {latestOrder.mode.toUpperCase()} - {latestOrder.side === "buy" ? t.buy : t.sell} - {displayOutcome(latestOrder)}
             {latestOrder.status ? ` - ${latestOrder.status}` : ""}
           </Text>
+          <View
+            accessibilityLabel={`latest-order-status fake-token-test order-status-${(latestOrder.status ?? "filled").toLowerCase()}`}
+            style={styles.statusPillRow}
+            testID="latest-order-status"
+          >
+            <Text style={styles.statusPill}>Fake-token test</Text>
+            <Text style={styles.statusPill}>{lifecycleStatusLabel(latestOrder.status)}</Text>
+          </View>
           <Text style={styles.confirmationMarket}>{latestOrder.title}</Text>
           {typeof latestOrder.probability === "number" && (
             <View accessibilityLabel="latest-order-execution-details" testID="latest-order-execution-details" style={styles.confirmationDetailGrid}>
@@ -605,6 +634,14 @@ export function Portfolio({
                 <Text style={styles.activityAction}>
                   {activityActionLabel(activity, t)}
                 </Text>
+                <View
+                  accessibilityLabel={`activity-status-${activity.id} fake-token-test activity-${activity.action} status-${activityStatusLabel(activity).toLowerCase()}`}
+                  style={styles.statusPillRow}
+                  testID={`activity-status-${activity.id}`}
+                >
+                  <Text style={styles.statusPill}>Fake-token test</Text>
+                  <Text style={styles.statusPill}>{activityStatusLabel(activity)}</Text>
+                </View>
                 {activity.timestamp && (
                   <Text accessibilityLabel={`activity-time-${activity.id}`} style={styles.activityTime}>
                     {activity.timestamp}
@@ -720,6 +757,8 @@ const styles = StyleSheet.create({
   openOrderMain: { flex: 1 },
   openOrderTitle: { color: "#f8fafc", fontWeight: "900" },
   openOrderMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "700", marginTop: 3 },
+  statusPillRow: { flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 6 },
+  statusPill: { alignSelf: "flex-start", paddingHorizontal: 7, paddingVertical: 3, borderRadius: 999, overflow: "hidden", backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#29476d", color: "#bfdbfe", fontSize: 10, fontWeight: "900" },
   openOrderPrice: { color: "#dbeafe", fontWeight: "900" },
   openOrderMetricGrid: { flexDirection: "row", gap: 6 },
   openOrderMetricBox: { flex: 1, minHeight: 50, padding: 8, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
