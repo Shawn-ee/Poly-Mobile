@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle DF - Provider Mapping Operator UI
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Operator readiness review | `/api/mobile/events/:slug/provider-mapping` | GET | Internal admin key or admin session | None | `compactMarketCount`, `providerRefreshableMarketCount`, `providerRefreshableOutcomeCount`, `totalOutcomeCount`, missing field counts, `markets[]`, `markets[].outcomes[]`, `nextRequiredAction` | Reads compact `Event`, `Market`, and active `Outcome` provider identity fields | None | Need real provider line-market slug source to reduce remaining missing mappings. |
+| Operator dry-run review/apply | `/api/mobile/events/:slug/provider-mapping` | POST | Internal admin key or admin session | `reviews[]`, `dryRun`, `confirmApply` generated from parsed operator input | `blocked`, `blockReason`, `preview.failedReviews[]`, `preview.attachReadyReviewCount`, `attach.validation`, `nextRequiredAction` | On confirmed all-pass apply, writes existing provider identity fields on `Market` and `Outcome` | None. UI dry-run and apply both use the protected route; failed reviews block in backend | Durable operator review audit log/table remains future work. |
+| Operator input parser | `parseProviderSlugReviewInput()` | Local UI helper | Admin page only | JSON array/object or `marketId=slug1,slug2` lines | Normalized `{ marketId, slugs[] }[]` | None | None | No persistence of draft review input yet. |
+
+Cycle DF implementation notes:
+
+- The UI does not bypass the backend review gate. It only packages operator input for the protected `/provider-mapping` workflow.
+- Confirmed apply is disabled until the operator checks `Confirm apply`.
+- The UI is intentionally admin-only and separate from Holiwyn user mobile surfaces.
+
 ## Cycle DE - Bulk Review Apply Workflow
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
