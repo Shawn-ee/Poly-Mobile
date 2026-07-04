@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Route-backed provider status breadth after EI | Cycle EJ-C docs gate | Fail until Agent A/B/Lead integrated breadth proof; EI selected pass remains verified | 0 new implementation P0 evaluated by Agent C; 10 EJ breadth P0 proof rows fail until evidence | P1 real provider-backed family breadth, route-backed stale/refresh-due state, route-backed unavailable/not-ready state, full stale -> refreshing/loading -> ready transition; P2 status/density polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence plus EH/EI checked-in progress; gate: `docs/mobile/audits/cycle-ej-c-provider-status-breadth-gate.md` | No fresh EJ Holiwyn proof captured by Agent C; required future proof must pair Agent A backend route proof with Agent B Samsung tablet screenshots/XML/proof JSON for the same selected identities | EJ does not pretend fresh S23 reference was captured and does not reopen EI's selected ready/Book/ticket pass. It defines the remaining breadth bar: real provider-backed family coverage, route-backed stale/refresh-due, route-backed unavailable/not-ready, full transition, and explicit no-fallback assertions. |
 | Current live event detail route-backed provider lifecycle/status parity | Cycle EI integrated | Pass for selected route-backed tablet status gate; PM-GAP-084 verified for selected path | 0 for selected EI gate | P1 fresh S23 recapture, broader real provider-backed family status matrix, actual route-backed stale -> refreshing/loading -> ready transition; P2 status visual polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence plus EH progress; gate: `docs/mobile/audits/cycle-ei-c-route-backed-status-gate.md` | Backend proof: `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-A-route-backed-status.json`; Samsung tablet proof: `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EI-integrated-route-backed-status/` and `docs/mobile/harness/cycle-EI-integrated-route-backed-status/` | EI closes the remaining PM-GAP-084 blocker for the selected path: tablet launch requires backend health, consumes live route status, shows `live-data-source-polymarket-gamma`, preserves selected provider identity through Book/orderbook and ticket, opens ticket settings to prove `Trading mode: Server mode`, and rejects fixture/mock/default fallback markers. |
 | Current live event detail visible provider lifecycle/status parity | Cycle EH integrated | Partial; PM-GAP-084 remains open for route-backed tablet status rendering | 2 P0 integration proof areas remain | P1 fresh S23 recapture, broader real provider-backed family status matrix, actual stale -> refreshing/loading -> ready transition; P2 status visual polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence; gate: `docs/mobile/audits/cycle-eh-c-provider-status-gate.md` | Backend status proof: `docs/mobile/harness/cycle-EH-A-provider-status-surface.json`; Samsung tablet visible proof: `docs/mobile/harness/cycle-EH-integrated-provider-status/cycle-EH-integrated-provider-status-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EH-integrated-provider-status/` and `docs/mobile/harness/cycle-EH-integrated-provider-status/` | EH proves Android-visible ready, refresh-due, refreshing, and not-ready status badges through live page, chart, Book/orderbook, and ticket handoff, while backend route proof separately proves status fields. It remains partial because the tablet launch still used deterministic contract-shaped fixture status UI instead of live backend route data. |
 | Current live event detail visible provider behavior and structural parity | Cycle EG integrated | Partial; PM-GAP-084 remains open | 4 P0 status/provider-lifecycle proof areas remain | P1 fresh S23 recapture, broader real provider-backed family breadth, visible provider refresh lifecycle; P2 density/chart/orderbook/status polish | Reused stale/reference-only DQ-C Samsung S23 official Polymarket evidence; gate: `docs/mobile/audits/cycle-eg-c-live-event-visible-provider-gate.md` | Backend refresh lifecycle proof: `docs/mobile/harness/cycle-EG-A-provider-refresh-lifecycle.json`; Samsung tablet visible proof: `docs/mobile/harness/cycle-EG-B-visible-live-parity/cycle-EG-B-visible-live-parity-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-EG-B-visible-live-parity/` and `docs/mobile/harness/cycle-EG-B-visible-live-parity/` | EG materially closes chart, line-selector, Book ladder, and ticket carry-through gaps for the selected Mexico/Ecuador Spread path. It remains partial because the Android run used contract-shaped fallback data and did not visibly prove ready/stale/refreshing/unavailable provider lifecycle states tied to the backend route in one run. |
@@ -2164,6 +2165,72 @@ Decision:
 - Unresolved P0 gaps: 2 route-backed integration areas remain plus same-build regression breadth.
 - Remaining P1/P2 gaps: fresh official S23 recapture, broader real provider-backed line-family status matrix, actual stale -> refreshing/loading -> ready transition proof, and status visual polish.
 - Next cycle required: yes. Lead must make the tablet consume live backend route status data before Audit Gate can fully pass PM-GAP-084.
+
+## Cycle EJ-C Provider Status Breadth Gate
+
+Result: Fail until Agent A/B/Lead integrated breadth proof. EI remains verified for the selected route-backed ready/Book/ticket path, but EJ does not pass broader provider-status breadth.
+
+Lead Agent target:
+
+- Preserve EI selected-route proof as regression coverage.
+- Prove route-backed provider status breadth across real provider-backed families after EI.
+- Required states: stale or refresh-due, refreshing or loading, ready, and unavailable or not-ready.
+- Required transition: stale -> refreshing/loading -> ready for the same selected market identity.
+- Backend-only proof, fixture-visible EH status proof, the EI selected ready path alone, fallback/default rows, and stale/reference-only S23 evidence described as fresh fail this gate.
+
+Reference Audit Agent: Agent C.
+
+Implementation Agent: not applicable in EJ-C docs-only lane.
+
+Audit Gate Agent: Agent C.
+
+Reference device:
+
+- Reused stale/reference-only Samsung S23 official Polymarket Android evidence from DQ-C.
+- No fresh EJ reference capture by Agent C.
+
+Holiwyn device:
+
+- No EJ Holiwyn device proof collected by Agent C.
+- Required future proof device: Samsung tablet or assigned Holiwyn Android device.
+
+Reference evidence:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/audits/cycle-eh-c-provider-status-gate.md`
+- `docs/mobile/audits/cycle-ei-c-route-backed-status-gate.md`
+- `docs/mobile/harness/cycle-EH-integrated-provider-status/cycle-EH-integrated-provider-status-proof.json`
+- `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-A-route-backed-status.json`
+- `docs/mobile/harness/cycle-EI-integrated-route-backed-status/cycle-EI-B-route-backed-status-proof.json`
+
+Holiwyn evidence required before pass:
+
+- Agent A backend route proof for selected provider-backed families, stale/refresh-due, unavailable/not-ready, ready depth, and full transition.
+- Agent B Samsung tablet screenshots/XML/proof JSON for the same selected identities.
+- Lead-integrated proof summary pairing backend route fields to Android-visible markers.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EJ-BREADTH-P0-01 | P0 | Fail until proof | No same-build integrated EJ backend plus Android proof bundle exists. | Lead must pair Agent A route proof with Agent B Android proof for the same identities. |
+| EJ-BREADTH-P0-02 | P0 | Fail until proof | EI covers one selected disposable route-backed ready path, not real provider-backed family breadth. | Prove at least two real provider-backed families when available, including Spread and one other family. |
+| EJ-BREADTH-P0-03 | P0 | Fail until proof | No EJ route-backed stale/refresh-due Android-visible state exists. | Agent A/B must pair backend stale/refresh-due fields to visible Android markers. |
+| EJ-BREADTH-P0-04 | P0 | Fail until proof | No EJ route-backed unavailable/not-ready Android-visible state exists. | Agent A/B must pair backend unavailable/not-ready reason to visible Android state. |
+| EJ-BREADTH-P0-05 | P0 | Fail until proof | No full route-backed stale -> refreshing/loading -> ready transition is proven after EI. | Capture the transition for the same selected market identity. |
+| EJ-BREADTH-P0-06 | P0 | Fail until proof | No EJ identity matrix maps status through live page, chart, Book/orderbook, and ticket. | Add a proof matrix keyed by event, family/type, line, period, side/outcome, provider/source, market id or selector key, and status. |
+| EJ-BREADTH-P0-07 | P0 | Fail until proof | Book/orderbook ready and non-ready breadth is not proven route-backed after EI. | Prove route-backed ready depth and explicit non-ready Book states with no fallback depth counted as ready. |
+| EJ-BREADTH-P0-08 | P0 | Fail until proof | Ticket handoff/blocking for route-backed non-ready states is not proven. | Prove ready ticket identity and honest disabled/loading/unavailable behavior for non-ready states. |
+| EJ-BREADTH-P0-09 | P0 | Fail until proof | EJ negative assertions are not yet present in integrated proof. | Reject fixture, mock-ready, backend-unreachable fallback, stale-as-ready, default/first-row/event-only, fallback depth, and backend-only pass conditions. |
+| EJ-BREADTH-P0-10 | P0 | Pass for docs gate | The EJ gate labels DQ-C/S23 evidence stale/reference-only and does not claim fresh S23 capture. | Keep this limitation visible until fresh reference proof exists. |
+| EJ-BREADTH-P0-11 | P0 | Fail until proof | EI selected pass is documented, but no EJ breadth proof exists beyond it. | Lead must keep EI as regression coverage while collecting separate EJ breadth evidence. |
+
+Decision:
+
+- Pass/fail: Fail until integrated breadth proof.
+- Unresolved P0 gaps: 10 proof rows remain open; stale-reference disclosure passes for docs.
+- Remaining P1/P2 gaps: all real provider-backed family breadth, fresh S23 recapture when available, repeated transition breadth, and status/density polish.
+- Next cycle required: yes. Agent A/B/Lead must provide the integrated proof described in `docs/mobile/audits/cycle-ej-c-provider-status-breadth-gate.md`.
 
 ## Cycle EI-C Route-Backed Provider Status Gate
 
