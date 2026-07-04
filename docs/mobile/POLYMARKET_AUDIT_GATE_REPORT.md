@@ -1109,6 +1109,48 @@ Decision:
 - Remaining P1/P2 gaps: Polymarket-first Gamma/CLOB provider proof expansion, provider line ladder/depth where Polymarket exposes it, and ticket/order/portfolio/history lifecycle proof. OpticOdds is optional enrichment.
 - Next cycle required: yes, continue PM-GAP-067 with Polymarket Gamma/CLOB as the default provider source.
 
+## Cycle DK Polymarket-First Provider Path Audit
+
+Result: Pass for focused Polymarket-first provider path and Android route proof; partial for full live-detail parity.
+
+What became materially closer to Polymarket:
+
+- Holiwyn now treats Polymarket Gamma/CLOB as the default provider source for markets that exist on Polymarket.
+- With `OPTIC_ODDS_API_KEY` unset, the proof still discovers the exact real Polymarket Colombia vs Ghana event, maps 3 tokenized match-winner markets, refreshes Gamma/CLOB quote/depth data, and exposes the result through the mobile live-detail/orderbook routes.
+- The wrong-team binary winner attachment bug is blocked by a stricter subject relevance check.
+
+Acceptance criteria:
+
+| Criterion ID | Priority | Status | Verification |
+| --- | --- | --- | --- |
+| LD-DK-P0-01 | P0 | Pass | Proof ran with `OPTIC_ODDS_API_KEY` unset and `pass=true`; OpticOdds is optional/unconfigured. |
+| LD-DK-P0-02 | P0 | Pass | Provider source is Gamma exact event plus manual slug fallback for `fifwc-col-gha-2026-07-03`. |
+| LD-DK-P0-03 | P0 | Pass | Discovery maps 3 real Polymarket markets: Colombia win, draw, and Ghana win. |
+| LD-DK-P0-04 | P0 | Pass | Refresh writes 6 quote snapshots and 96 CLOB depth rows with `contractProofFallback=null`. |
+| LD-DK-P0-05 | P0 | Pass | Samsung tablet XML shows `live-data-source-polymarket-gamma`, `live-data-status-ready`, `orderbook-source-orderbook-route`, and `orderbook-status-ready`. |
+| LD-DK-P1-01 | P1 | Partial | Tablet XML still shows `chart-source-fallback`; chart/history is not yet Polymarket-backed. |
+
+Evidence:
+
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `docs/mobile/harness/cycle-current-mobile-polymarket-first-provider-path.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-candidates.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts`
+- `cmd /c npm.cmd run build`
+- Samsung tablet server-mode smoke against `world-cup-2026-colombia-vs-ghana-2026-07-03`.
+
+Unresolved P0 gaps: 0 for this focused Polymarket-first provider cycle.
+
+Remaining P1/P2 gaps:
+
+- Exact line-family provider markets remain unavailable for this Polymarket event through the current Gamma/CLOB discovery path.
+- Chart/history still needs Polymarket-backed data.
+- Ticket/order/portfolio/history lifecycle proof for the mapped Polymarket token identities remains open.
+- Scheduled/background refresh orchestration remains open.
+
 Use this template for every feature gate:
 
 ```md

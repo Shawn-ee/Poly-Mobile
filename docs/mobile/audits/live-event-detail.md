@@ -1803,3 +1803,39 @@ Remaining P1 gaps:
 - Move the proof harness into an operator/admin mapping workflow if mappings should be reviewed outside scripts.
 - Prove selected provider market/line/outcome through ticket, order, portfolio, and history for the exact mapped event.
 - Add provider-owned scheduled refresh/ingestion beyond manual proof execution.
+
+## Cycle DK Polymarket-First Provider Path Audit
+
+Result: Pass for focused Polymarket-first provider discovery/refresh and Samsung tablet proof; partial for full live-detail parity.
+
+Reference behavior:
+
+- The real Polymarket Colombia vs Ghana event is available through Gamma as `fifwc-col-gha-2026-07-03`.
+- Public Polymarket markets for this exact event include tokenized binary match-winner markets for Colombia, draw, and Ghana.
+- Line-family markets were not discovered for this event through current Gamma/CLOB discovery and must not be invented as Polymarket-backed data.
+
+Holiwyn criteria:
+
+| Criterion ID | Priority | Result | Evidence |
+| --- | --- | --- | --- |
+| LD-DK-P0-01 | P0 | Pass | `cycle-current-mobile-polymarket-first-provider-path.json` was generated with `OPTIC_ODDS_API_KEY` unset and `pass=true`. |
+| LD-DK-P0-02 | P0 | Pass | Exact Gamma event plus manual slug fallback discovered 3 attach-ready match-winner candidates. |
+| LD-DK-P0-03 | P0 | Pass | Ghana local winner market attaches to the Ghana provider slug, not the Colombia slug, because `binaryQuestionSubjectRelevant=true` is required. |
+| LD-DK-P0-04 | P0 | Pass | Provider refresh wrote 6 quote snapshots and 96 CLOB depth rows with `contractProofFallback=null`. |
+| LD-DK-P0-05 | P0 | Pass | Samsung tablet XML shows `live-data-source-polymarket-gamma`, `live-data-status-ready`, `orderbook-source-orderbook-route`, and `orderbook-status-ready`. |
+| LD-DK-P1-01 | P1 | Partial | Tablet XML still shows `chart-source-fallback`, so chart/history parity remains open. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-current-mobile-polymarket-first-provider-path.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+
+Remaining gaps:
+
+- P1: Polymarket-backed chart/history route for selected outcome/range.
+- P1: Ticket/order/portfolio/history lifecycle proof for mapped Polymarket token identity.
+- P1: Scheduled provider refresh orchestration.
+- P1: Exact line-family markets remain unavailable unless discovered through Polymarket or explicitly added through optional enrichment.

@@ -12620,3 +12620,15 @@ Holiwyn/backend changed: Provider candidate discovery now supports exact sports 
 Verification: `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-candidates.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts` passed. `cmd /c npx.cmd tsx scripts/prove_mobile_provider_sports_event_discovery.ts` passed with 3 attach-ready exact markets, 3 provider-refreshable markets, 6 quote snapshots, and 262 CLOB depth rows. `cmd /c npx.cmd tsx scripts/probe_mobile_live_detail_route.ts` passed with 3 ready provider quote/depth markets. Samsung tablet smoke passed with server-mode Colombia/Ghana Book proof.
 
 Audit Gate: Pass for focused PM-GAP-067 provider sports-event discovery expansion. Remaining work is not visual polish: add exact/provider-owned mappings for line markets and prove selected market/line/outcome identity through ticket, order, portfolio, and history.
+
+### Cycle DK - Polymarket-First Provider Path
+
+Goal: Replace the OpticOdds-blocking path with a Polymarket-first provider path for the live Colombia vs Ghana World Cup event.
+
+Reference audit: The exact Gamma event `fifwc-col-gha-2026-07-03` provides real Polymarket match-winner markets for Colombia, draw, and Ghana. OpticOdds is optional external enrichment and missing credentials are not a P0 blocker.
+
+Holiwyn/backend changed: Provider candidate relevance now requires generic binary winner candidates to match the local question subject, preventing wrong-team same-event attachments. The provider discovery expansion proof ran with `OPTIC_ODDS_API_KEY` unset, attached 3 real Polymarket markets, refreshed Gamma/CLOB quote/depth data, and disabled contract fallback.
+
+Verification: Focused provider candidate tests passed. The Polymarket-first proof passed with 6 quote snapshots, 96 CLOB depth rows, and `pass=true`. Root build passed. Samsung tablet server-mode proof shows `live-data-source-polymarket-gamma`, `live-data-status-ready`, `orderbook-source-orderbook-route`, and `orderbook-status-ready`.
+
+Audit Gate: Pass for focused Polymarket-first provider path and Android route proof, with 0 unresolved P0 gaps. P1 gaps remain for Polymarket-backed chart/history, exact line-family availability, scheduled refresh orchestration, and ticket/order/portfolio/history identity lifecycle proof.
