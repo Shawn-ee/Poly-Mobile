@@ -38,6 +38,17 @@ export type Event = {
   zhTag: string;
   teams: Array<{ name: string; zhName: string; flag: string }>;
   liveStats?: Array<{ statId: string; label: string; home: string; away: string }>;
+  liveDataStatus?: {
+    source: string;
+    status: "ready" | "stale" | "suspended" | "delayed" | "unavailable";
+    lastUpdated: string | null;
+    stalenessSeconds: number | null;
+    staleAfterSeconds: number;
+    isStale: boolean;
+    isSuspended: boolean;
+    isDelayed: boolean;
+    reason: string;
+  };
   chartHistory?: Array<{ outcomeId: string; timestamp: string; probability: number }>;
   chartHistorySource?: "embedded" | "market-chart-route";
   chartHistoryStatus?: "idle" | "loading" | "ready" | "empty" | "error";

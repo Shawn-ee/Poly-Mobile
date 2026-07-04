@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle BC - Live Provider Freshness Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live event provider freshness | `/api/mobile/events/:slug/live-detail` | GET | Optional public viewing | None | `event.liveDataStatus.source`, `status`, `lastUpdated`, `stalenessSeconds`, `staleAfterSeconds`, `isStale`, `isSuspended`, `isDelayed`, `reason`; `contract.liveDataStatus` | `MarketOutcomeSnapshot` rows provide proof timestamps; `Event.metadata.mobileLiveDetail.liveDataStatus` can override provider state | If no timestamp or metadata exists, route returns `status: unavailable` instead of inventing fresh data | Real provider heartbeat/ingestion route and per-market/per-line availability fields remain missing. |
+| Live game UI freshness proof | Server-backed mobile event detail | Client render | Optional viewing | None | Mobile `Event.liveDataStatus` displayed as `event-detail-live-data-inline live-data-status-* live-data-source-*` | Same route contract | Local event fixtures only omit this field; server mode displays it when present | Per-market status beside each adjustable line remains future work. |
+
+Cycle BC implementation notes:
+
+- This cycle closes the repeated unknown-contract part of provider freshness for live event detail.
+- The contract is future-backend-shaped and uses stable fields that can be replaced by provider ingestion later.
+- PM-GAP-067 remains in progress for real provider ingestion, provider-owned live stats, per-line freshness, and all-line liquidity.
+
 ## Cycle BB - Selected Team Totals Ready Depth
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

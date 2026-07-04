@@ -71,7 +71,16 @@ describe("mobile live event detail contract", () => {
         homeScore: null,
         awayScore: null,
         imageUrl: null,
-        metadata: {},
+        metadata: {
+          mobileLiveDetail: {
+            liveDataStatus: {
+              source: "provider-feed",
+              status: "ready",
+              lastUpdated: "2026-07-03T22:00:10.000Z",
+              reason: "Provider heartbeat accepted.",
+            },
+          },
+        },
         markets: [
           market({ id: "market-main", displayOrder: 0 }),
           ...Array.from({ length: 20 }, (_, index) =>
@@ -97,6 +106,17 @@ describe("mobile live event detail contract", () => {
       primaryMarketId: "market-main",
       orderbookDepthSource: "orderbook-route",
       chartHistorySource: "market-outcome-snapshot",
+      liveDataStatus: "ready",
+    });
+    expect(payload.event.liveDataStatus).toMatchObject({
+      source: "provider-feed",
+      status: "ready",
+      lastUpdated: "2026-07-03T22:00:10.000Z",
+      staleAfterSeconds: 90,
+      isStale: false,
+      isSuspended: false,
+      isDelayed: false,
+      reason: "Provider heartbeat accepted.",
     });
     expect(payload.event.chartHistory).toEqual([
       { outcomeId: "home", timestamp: "2026-07-03T22:00:00.000Z", probability: 59 },
@@ -111,6 +131,47 @@ describe("mobile live event detail contract", () => {
       ],
     });
     expect(buildPublicOrderbookSnapshot).toHaveBeenCalledWith({ marketId: "market-main", maxLevels: 24 });
+  });
+
+  test("marks live detail unavailable when no provider timestamp is available", async () => {
+    const payload = await serializeMobileLiveEventDetail({
+      event: {
+        id: "event-1",
+        slug: "world-cup-match",
+        title: "Curacao vs Cote d'Ivoire",
+        description: "M55",
+        category: "sports",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        eventType: "match",
+        homeTeamName: "Curacao",
+        awayTeamName: "Cote d'Ivoire",
+        startTime: new Date("2026-06-25T20:00:00.000Z"),
+        status: "LIVE",
+        liveStatus: "in_progress",
+        period: "2H",
+        clock: "67'",
+        homeScore: 0,
+        awayScore: 1,
+        imageUrl: null,
+        metadata: {},
+        markets: [market({ id: "market-main", displayOrder: 0 })],
+      },
+      chartSnapshots: [],
+    });
+
+    expect(payload.contract.liveDataStatus).toBe("unavailable");
+    expect(payload.event.liveDataStatus).toMatchObject({
+      source: "unknown",
+      status: "unavailable",
+      lastUpdated: null,
+      stalenessSeconds: null,
+      staleAfterSeconds: 90,
+      isStale: false,
+      isSuspended: false,
+      isDelayed: false,
+      reason: "No provider timestamp available.",
+    });
   });
 
   test("reserves compact payload slots for rendered line market groups", () => {

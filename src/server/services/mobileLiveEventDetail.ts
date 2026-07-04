@@ -58,6 +58,9 @@ type SnapshotInput = {
 
 const MAX_MARKETS = 14;
 const MAX_DEPTH_LEVELS = 24;
+const STALE_AFTER_SECONDS = 90;
+
+type LiveAvailabilityStatus = "ready" | "stale" | "suspended" | "delayed" | "unavailable";
 
 const metadataObject = (value: Prisma.JsonValue | null): Record<string, unknown> =>
   value && typeof value === "object" && !Array.isArray(value) ? (value as Record<string, unknown>) : {};
@@ -72,6 +75,30 @@ const probabilityFromPrice = (value: Prisma.Decimal) => {
   if (!Number.isFinite(price)) return null;
   if (price > 1) return Math.max(1, Math.min(99, Math.round(price)));
   return Math.max(1, Math.min(99, Math.round(price * 100)));
+};
+
+const stringFromMetadata = (metadata: Record<string, unknown>, key: string) => {
+  const value = metadata[key];
+  return typeof value === "string" && value.trim() ? value.trim() : null;
+};
+
+const booleanFromMetadata = (metadata: Record<string, unknown>, key: string) =>
+  typeof metadata[key] === "boolean" ? metadata[key] as boolean : null;
+
+const isoFromMetadata = (metadata: Record<string, unknown>, key: string) => {
+  const raw = stringFromMetadata(metadata, key);
+  if (!raw) return null;
+  const parsed = new Date(raw);
+  return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString();
+};
+
+const liveStatusFromMetadata = (value: string | null): LiveAvailabilityStatus | null => {
+  if (!value) return null;
+  const normalized = value.toLowerCase();
+  if (["ready", "stale", "suspended", "delayed", "unavailable"].includes(normalized)) {
+    return normalized as LiveAvailabilityStatus;
+  }
+  return null;
 };
 
 const groupRank = (market: MarketInput) => {
@@ -125,6 +152,7 @@ export async function serializeMobileLiveEventDetail(input: {
   const liveStats = arrayFromMetadata(metadata, "liveStats").length
     ? arrayFromMetadata(metadata, "liveStats")
     : arrayFromMetadata(mobileLiveDetail, "liveStats");
+  const liveDataMetadata = metadataObject(mobileLiveDetail.liveDataStatus as Prisma.JsonValue | null);
 
   const primaryDepth = primaryMarket
     ? await buildPublicOrderbookSnapshot({ marketId: primaryMarket.id, maxLevels: MAX_DEPTH_LEVELS })
@@ -202,6 +230,31 @@ export async function serializeMobileLiveEventDetail(input: {
       probability,
     }];
   });
+  const latestSnapshotTs = input.chartSnapshots.reduce<Date | null>(
+    (latest, snapshot) => !latest || snapshot.ts > latest ? snapshot.ts : latest,
+    null,
+  );
+  const metadataLastUpdated = isoFromMetadata(liveDataMetadata, "lastUpdated");
+  const lastUpdated = metadataLastUpdated ?? latestSnapshotTs?.toISOString() ?? null;
+  const stalenessSeconds = lastUpdated
+    ? Math.max(0, Math.round((Date.now() - new Date(lastUpdated).getTime()) / 1000))
+    : null;
+  const metadataStatus = liveStatusFromMetadata(stringFromMetadata(liveDataMetadata, "status"));
+  const isSuspended = booleanFromMetadata(liveDataMetadata, "isSuspended") ?? input.event.markets.every((market) => market.status === "SUSPENDED");
+  const isDelayed = booleanFromMetadata(liveDataMetadata, "isDelayed") ?? false;
+  const isStale = booleanFromMetadata(liveDataMetadata, "isStale") ?? (stalenessSeconds != null && stalenessSeconds > STALE_AFTER_SECONDS);
+  const liveDataStatus: LiveAvailabilityStatus = metadataStatus
+    ?? (isSuspended ? "suspended" : isDelayed ? "delayed" : !lastUpdated ? "unavailable" : isStale ? "stale" : "ready");
+  const liveDataReason = stringFromMetadata(liveDataMetadata, "reason")
+    ?? (liveDataStatus === "unavailable"
+      ? "No provider timestamp available."
+      : liveDataStatus === "stale"
+        ? `Latest provider update is older than ${STALE_AFTER_SECONDS} seconds.`
+        : liveDataStatus === "suspended"
+          ? "Provider or market has suspended live trading."
+          : liveDataStatus === "delayed"
+            ? "Provider marks this live feed as delayed."
+            : "Provider data is fresh.");
 
   return {
     event: {
@@ -226,6 +279,17 @@ export async function serializeMobileLiveEventDetail(input: {
       marketCount: input.event.markets.length,
       activeMarketCount: input.event.markets.filter((market) => market.status === "LIVE").length,
       liveStats,
+      liveDataStatus: {
+        source: stringFromMetadata(liveDataMetadata, "source") ?? (lastUpdated ? "market-outcome-snapshot" : "unknown"),
+        status: liveDataStatus,
+        lastUpdated,
+        stalenessSeconds,
+        staleAfterSeconds: STALE_AFTER_SECONDS,
+        isStale: liveDataStatus === "stale",
+        isSuspended: liveDataStatus === "suspended",
+        isDelayed: liveDataStatus === "delayed",
+        reason: liveDataReason,
+      },
       chartHistory,
     },
     markets: serializedMarkets,
@@ -235,6 +299,7 @@ export async function serializeMobileLiveEventDetail(input: {
       primaryMarketId: primaryMarket?.id ?? null,
       orderbookDepthSource: primaryDepthLevels.length ? "orderbook-route" : "empty",
       chartHistorySource: chartHistory.length ? "market-outcome-snapshot" : "empty",
+      liveDataStatus,
     },
   };
 }

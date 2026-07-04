@@ -24,6 +24,18 @@ export type EventChartPoint = {
   probability: number;
 };
 
+export type EventLiveDataStatus = {
+  source: string;
+  status: "ready" | "stale" | "suspended" | "delayed" | "unavailable";
+  lastUpdated: string | null;
+  stalenessSeconds: number | null;
+  staleAfterSeconds: number;
+  isStale: boolean;
+  isSuspended: boolean;
+  isDelayed: boolean;
+  reason: string;
+};
+
 export type MarketChartRange = "1D" | "1W" | "1M" | "MAX";
 
 export type MarketChartHistoryPoint = {
@@ -92,6 +104,7 @@ export type EventSummary = {
   marketCount: number;
   activeMarketCount: number;
   liveStats?: EventLiveStat[];
+  liveDataStatus?: EventLiveDataStatus;
   chartHistory?: EventChartPoint[];
   topOutcomes?: string[];
 };

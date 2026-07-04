@@ -1666,7 +1666,7 @@ try {
     Save-Screenshot -Name "cycle-current-holiwyn-event-detail.png"
     $eventDetailHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail.xml"
     $eventDetailBaseExpected = if ($ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook) {
-      @("Volume", "Liquidity", "Traders", "Best bid", "Best ask", "Spread", "Markets", "Game Lines", "Player Props")
+      @("Volume", "Liquidity", "Traders", "Best bid", "Best ask", "Spread", "Markets", "Game Lines", "Player Props", "event-detail-live-data-inline", "live-data-status-", "live-data-source-")
     } elseif ($EventDetailPosition) {
       @("Mexico vs. Ecuador", "Volume", "Liquidity", "Traders", "Best bid", "Best ask", "Spread", "Markets", "Your position")
     } else {
