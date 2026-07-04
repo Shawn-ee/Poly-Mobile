@@ -2,6 +2,40 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EK Integrated - Visible Provider Transition Proof
+
+Closed or narrowed:
+
+- The selected EK provider transition is now proven end-to-end on the Samsung tablet: stale/refresh-due live-detail state, visible refresh/loading state, provider refresh execution, route-backed ready live-detail state, Book/orderbook ready state, and ticket handoff for the selected market/line/outcome.
+- `/api/mobile/events/:slug/live-detail` now derives mobile-visible live status from provider lifecycle for live events instead of allowing old top-level event metadata to stay visually ready while the provider contract is stale or unavailable.
+- Selected compact market availability can move from stale to ready after a provider refresh when the provider lifecycle is ready, so live-detail and Book do not contradict each other for the selected route-backed market.
+- `/api/orderbook/:marketId/book` can report ready availability from fresh provider quote and provider depth snapshots, and mobile `getOrderbook()` sends a timestamp query value to avoid stale device-side Book responses during refresh proof.
+- `docs/mobile/harness/cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-proof.json` and `docs/mobile/harness/cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-refresh-route.json` record the visible proof and refresh summary.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Production provider scheduling is still separate from the proof helper. The integrated proof executes the real route refresh body against the disposable EK event, but it does not prove background refresh cadence for all live events.
+- Real provider-backed breadth across every World Cup line family remains P1. The pass is scoped to one selected provider transition path, not all spreads, totals, team totals, halves, corners, and props.
+- Fresh S23 Polymarket recapture remains useful for the next visible parity round, especially around the exact refresh/loading wording and Book/ticket transition behavior.
+
+Schema mismatch:
+
+- No schema migration was required. Existing `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot` rows support the proven state transitions.
+
+Route mismatch:
+
+- The main selected-path mismatch is closed: live-detail, Book availability, and mobile ticket handoff now share provider-ready/stale status more consistently after refresh.
+- Remaining mismatch is coverage and scheduling, not the route shape for the selected EK transition.
+
+Temporary mock/static data:
+
+- No arbitrary frontend-only local structures were added. The proof helper installs scoped Polymarket Gamma/CLOB-shaped provider responses for the disposable event and asserts `fallbackApplied=false`.
+- The tablet proof requires route-backed labels after refresh and does not accept fixture/default-ready labels for the selected path.
+
+Future migration concern:
+
+- Keep provider lifecycle as the source of truth for live-event freshness. Future UI cycles should avoid marking a line ready unless selected market identity, provider quote/depth/chart status, orderbook identity, ticket state, and portfolio/order identity can all preserve the same market/outcome/line ids.
+
 ## Cycle EK-A - Provider Transition Route Proof
 
 Closed or narrowed:

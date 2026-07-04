@@ -118,7 +118,10 @@ describe("Holiwyn mobile API client", () => {
 
     const [url, init] = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
     const headers = init.headers as Headers;
-    expect(url).toBe("https://api.example.test/api/orderbook/market%2F1/book?maxLevels=12");
+    const parsedUrl = new URL(url);
+    expect(`${parsedUrl.origin}${parsedUrl.pathname}`).toBe("https://api.example.test/api/orderbook/market%2F1/book");
+    expect(parsedUrl.searchParams.get("maxLevels")).toBe("12");
+    expect(parsedUrl.searchParams.get("_ts")).toEqual(expect.any(String));
     expect(headers.get("Authorization")).toBe("Bearer pk_live_test.secret");
     expect(book.levels[0]).toEqual({ outcomeId: "yes", side: "bid", price: 0.57, shares: 120, total: 68.4 });
   });

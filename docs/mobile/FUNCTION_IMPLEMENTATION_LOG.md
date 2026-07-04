@@ -39,6 +39,45 @@ Known limitations:
 - Production breadth still depends on currently available real Polymarket line-family mappings beyond disposable proof rows.
 - Missing `OPTIC_ODDS_API_KEY` is optional and non-blocking for this Polymarket Gamma/CLOB transition proof.
 
+## Cycle EK Integrated - Visible Provider Transition
+
+Feature/page worked on:
+
+- Lead-integrated route-backed provider transition proof for live event detail, Book/orderbook, and ticket handoff.
+- Converts EK from backend-only proof plus blocked visible harness into Samsung tablet proof for the selected unavailable -> loading/refresh -> ready path.
+
+Frontend/backend/harness components touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/app/api/orderbook/[marketId]/book/route.ts`
+- `mobile/src/api.ts`
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+- `scripts/refresh_mobile_ek_provider_transition.ts`
+- `docs/mobile/harness/cycle-EK-integrated-provider-transition/`
+- `docs/mobile/screenshots/cycle-EK-integrated-provider-transition/`
+
+Important functions/interactions/state transitions touched:
+
+- Live-detail now lets computed provider lifecycle downgrade mobile-visible `event.liveDataStatus` when a live event has stale or unavailable provider rows, so the app no longer shows stale provider data as ready.
+- Live-detail and orderbook routes can promote selected market availability to ready when provider quote and orderbook depth snapshots are fresh, preventing Book depth ready / ticket refresh-due contradictions.
+- Mobile orderbook requests include a timestamp cache-buster so a reopened Book fetches the current route state after provider refresh.
+- EventDetail reconciles selected Book availability with ready route-backed depth to avoid stale market timestamp residue in the active Book/ticket surface.
+- EK smoke captures live not-ready, Book loading, backend provider refresh, reopened Book ready state, Book settings, ticket handoff, and ticket settings.
+
+Verified:
+
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleStatusTransition -Port 8328 -Device "172.16.200.30:41299" -BackendBaseUrl "http://127.0.0.1:3002" -ServerEventSlug "mobile-ek-a-provider-transition-602165df" -OutputDir docs/mobile/screenshots/cycle-EK-integrated-provider-transition -HierarchyOutputDir docs/mobile/harness/cycle-EK-integrated-provider-transition`
+- `npm --prefix mobile run typecheck`
+- `npm run test:mobile-api -- mobile/src/__tests__/api.test.ts mobile/src/__tests__/worldCupAdapter.test.ts`
+- `npm run test:jest -- src/__tests__/public.orderbook-book.no-leak.test.ts src/__tests__/mobile-live-event-detail.test.ts src/__tests__/mobile-live-provider-refresh.route.test.ts src/__tests__/mobile-live-provider-refresh.service.test.ts`
+
+Known limitations:
+
+- This is a selected disposable-event transition pass, not proof across every real provider-backed Polymarket family.
+- Fresh S23 reference was not captured in EK; DQ-C remains stale/reference-only.
+- The helper script is proof-only for the disposable EK event and should not be treated as production provider scheduling.
+
 ## Cycle EJ-A - Backend Provider Status Breadth
 
 Feature/page worked on:

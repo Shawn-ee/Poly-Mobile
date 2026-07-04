@@ -143,6 +143,46 @@ const availabilityForMarket = (market: {
   };
 };
 
+const availabilityFromProviderSnapshot = (
+  market: {
+    status: string;
+    sourceUpdatedAt: Date | null;
+    updatedAt: Date;
+  },
+  snapshot: Awaited<ReturnType<typeof buildPublicOrderbookSnapshot>>,
+) => {
+  const marketAvailability = availabilityForMarket(market);
+  if (marketAvailability.status === "ready") return marketAvailability;
+
+  const providerReady =
+    snapshot.providerQuoteSnapshot?.status === "ready" &&
+    snapshot.providerQuoteSnapshot?.shouldRefresh === false &&
+    snapshot.providerOrderbookDepth?.status === "ready" &&
+    snapshot.providerOrderbookDepth?.shouldRefresh === false;
+
+  if (!providerReady) return marketAvailability;
+
+  const lastUpdated =
+    snapshot.providerOrderbookDepth.latestFetchedAt ??
+    snapshot.providerQuoteSnapshot.latestFetchedAt ??
+    marketAvailability.lastUpdated;
+  const stalenessSeconds = lastUpdated
+    ? Math.max(0, Math.round((Date.now() - new Date(lastUpdated).getTime()) / 1000))
+    : marketAvailability.stalenessSeconds;
+
+  return {
+    ...marketAvailability,
+    source: "provider-lifecycle",
+    status: "ready" as const,
+    lastUpdated,
+    stalenessSeconds,
+    isStale: false,
+    isSuspended: false,
+    isDelayed: false,
+    reason: "Provider quote and orderbook depth snapshots are fresh.",
+  };
+};
+
 export async function GET(request: NextRequest, context: Ctx) {
   const { marketId } = await context.params;
   const userId = await getUserId();
@@ -209,7 +249,7 @@ export async function GET(request: NextRequest, context: Ctx) {
       outcomeId,
       generatedAt: new Date().toISOString(),
       marketIdentity: marketIdentityForSelector(market),
-      availability: availabilityForMarket(market),
+      availability: availabilityFromProviderSnapshot(market, snapshot),
       emptyState: levels.length === 0 ? "no-depth" : null,
       levels,
       ...snapshot,

@@ -89,6 +89,7 @@ export class PolyApi {
     const params = new URLSearchParams();
     if (input.outcomeId) params.set("outcomeId", input.outcomeId);
     if (input.maxLevels) params.set("maxLevels", String(input.maxLevels));
+    params.set("_ts", String(Date.now()));
     const suffix = params.toString() ? `?${params.toString()}` : "";
     return this.request<OrderbookBook>(`/api/orderbook/${encodeURIComponent(marketId)}/book${suffix}`);
   }

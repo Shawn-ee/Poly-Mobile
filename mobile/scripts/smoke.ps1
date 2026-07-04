@@ -1372,13 +1372,14 @@ try {
           "live-data-status-unavailable",
           "provider-lifecycle-not-ready",
           "live-data-source-polymarket-gamma",
-          "Live provider not ready",
+          "Live not ready",
           "event-detail-price-chart",
           "event-detail-chart-route-state",
           "chart-status-",
           "event-detail-chart-ticket-handoff-status",
           "provider-source-polymarket",
-          "Ticket not ready",
+          "provider-lifecycle-refresh-due",
+          "Ticket refresh due",
           "event-detail-chart-open-book"
         )
       } else {
@@ -1437,6 +1438,23 @@ try {
         "order-book-ticket-handoff-status"
       )
       Assert-HierarchyDoesNotContain -Path $providerStatusBookRefreshingHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready")
+
+      if ($EventDetailVisibleStatusTransition) {
+        $transitionRefreshSummary = Join-Path $ResolvedHierarchyOutputDir "$ProviderStatusArtifactPrefix-refresh-route.json"
+        $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
+        Push-Location $repoRoot
+        try {
+          & npx tsx scripts/refresh_mobile_ek_provider_transition.ts "--eventSlug=$ServerEventSlug" "--summaryPath=$transitionRefreshSummary"
+        } finally {
+          Pop-Location
+        }
+        Invoke-TapHierarchyNode -Path $providerStatusBookRefreshingHierarchy -Identifier "event-detail-order-book-close"
+        Start-Sleep -Milliseconds 500
+        $providerStatusAfterRefreshHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-after-refresh-live.xml"
+        Assert-HierarchyContains -Path $providerStatusAfterRefreshHierarchy -Expected @("event-detail-chart-open-book", "live-data-source-polymarket-gamma")
+        Invoke-TapHierarchyNode -Path $providerStatusAfterRefreshHierarchy -Identifier "event-detail-chart-open-book"
+        Start-Sleep -Milliseconds 750
+      }
 
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "$ProviderStatusArtifactPrefix-book-resolved.png"
@@ -1527,7 +1545,7 @@ try {
         assertions = [ordered]@{
           backendHealth = "Backend /api/health was required before launch; the proof aborts instead of falling back when unavailable."
           liveRouteStatusReady = if ($EventDetailVisibleStatusTransition) { "Live detail consumed route-backed liveDataStatus with live-data-status-unavailable, provider-lifecycle-not-ready, and live-data-source-polymarket-gamma." } else { "Live detail consumed route-backed liveDataStatus with live-data-status-ready and live-data-source-polymarket-gamma." }
-          chartRouteStatusReady = if ($EventDetailVisibleStatusTransition) { "Initial route-backed live/chart state exposes unavailable/not-ready markers with explicit Ticket not ready messaging instead of a ready fallback." } elseif ($EventDetailVisibleStatusBreadth) { "Chart route state exposes chart-status-ready plus a visible Ticket refresh due handoff for the mixed provider lifecycle event." } else { "Chart route state exposes chart-status-ready, provider-lifecycle-ready, and Ticket provider ready for the selected route-backed market." }
+          chartRouteStatusReady = if ($EventDetailVisibleStatusTransition) { "Initial route-backed live state exposes unavailable/not-ready markers while the selected stale provider-backed chart ticket exposes refresh-due instead of a ready fallback." } elseif ($EventDetailVisibleStatusBreadth) { "Chart route state exposes chart-status-ready plus a visible Ticket refresh due handoff for the mixed provider lifecycle event." } else { "Chart route state exposes chart-status-ready, provider-lifecycle-ready, and Ticket provider ready for the selected route-backed market." }
           serverRuntime = "Expo launched with EXPO_PUBLIC_ORDER_MODE=server and EXPO_PUBLIC_API_BASE_URL set to the supplied BackendBaseUrl."
           bookRefreshing = "Opening Book produces a visible provider-lifecycle-refreshing Book depth refreshing state before the resolved depth state."
           bookRouteDepthReady = if ($EventDetailVisibleStatusTransition) { "Resolved Book depth uses orderbook-source-orderbook-route, orderbook-status-ready, orderbook-availability-ready, selected provider identity, and Ticket provider ready after the visible loading state." } elseif ($EventDetailVisibleStatusBreadth) { "Resolved Book depth uses orderbook-source-orderbook-route and orderbook-status-ready while the selected market availability remains visibly refresh-due/stale rather than fixture/default ready." } else { "Resolved Book depth uses orderbook-source-orderbook-route, orderbook-status-ready, orderbook-availability-ready, and selected-provider-source-polymarket rather than fixture depth." }

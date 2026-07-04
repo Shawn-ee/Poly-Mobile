@@ -436,7 +436,19 @@ export function EventDetail({
       ? "ready"
       : "idle";
   const depthRouteStatus = refreshingDepthMarketId === orderBookMarket?.id ? "loading" : resolvedDepthRouteStatus;
-  const selectedOrderbookAvailability = depthMarketMatches ? event.orderbookAvailability : orderBookMarket?.availability;
+  const selectedOrderbookAvailabilityBase = depthMarketMatches ? event.orderbookAvailability : orderBookMarket?.availability;
+  const selectedOrderbookAvailability =
+    depthRouteStatus === "ready" && selectedDepthSource === "orderbook-route" && selectedOrderbookAvailabilityBase && selectedOrderbookAvailabilityBase.status !== "ready"
+      ? {
+          ...selectedOrderbookAvailabilityBase,
+          source: "orderbook-route",
+          status: "ready" as const,
+          isStale: false,
+          isSuspended: false,
+          isDelayed: false,
+          reason: "Route-backed orderbook depth is ready.",
+        }
+      : selectedOrderbookAvailabilityBase;
   const orderbookAvailabilityStatus = selectedOrderbookAvailability?.status ?? "unavailable";
   const orderbookAvailabilityBadge = providerBadgeFromAvailability("Book", selectedOrderbookAvailability, "unavailable");
   const orderbookAvailabilitySourceText =

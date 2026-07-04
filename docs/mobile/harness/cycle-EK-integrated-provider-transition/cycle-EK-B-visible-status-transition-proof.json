@@ -1,0 +1,41 @@
+{
+    "cycle":  "EK-B",
+    "scope":  "Route-backed visible Android unavailable/not-ready and stale-refreshing-ready transition proof across live detail, Book/orderbook, and ticket handoff",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleStatusTransition -Port 8328 -BackendBaseUrl http://127.0.0.1:3002 -ServerEventSlug mobile-ek-a-provider-transition-602165df -OutputDir docs\\mobile\\screenshots\\cycle-EK-integrated-provider-transition -HierarchyOutputDir docs\\mobile\\harness\\cycle-EK-integrated-provider-transition",
+    "backendBaseUrl":  "http://127.0.0.1:3002",
+    "serverMode":  "server",
+    "apiBaseUrl":  "http://127.0.0.1:3002",
+    "adbReverse":  "tcp:3002 tcp:3002",
+    "serverEventSlug":  "mobile-ek-a-provider-transition-602165df",
+    "eventIdentity":  "backend live detail route",
+    "routeBackedStatusConsumed":  true,
+    "routeBackedStatusSource":  "polymarket-gamma",
+    "result":  "pass",
+    "assertions":  {
+                       "backendHealth":  "Backend /api/health was required before launch; the proof aborts instead of falling back when unavailable.",
+                       "liveRouteStatusReady":  "Live detail consumed route-backed liveDataStatus with live-data-status-unavailable, provider-lifecycle-not-ready, and live-data-source-polymarket-gamma.",
+                       "chartRouteStatusReady":  "Initial route-backed live state exposes unavailable/not-ready markers while the selected stale provider-backed chart ticket exposes refresh-due instead of a ready fallback.",
+                       "serverRuntime":  "Expo launched with EXPO_PUBLIC_ORDER_MODE=server and EXPO_PUBLIC_API_BASE_URL set to the supplied BackendBaseUrl.",
+                       "bookRefreshing":  "Opening Book produces a visible provider-lifecycle-refreshing Book depth refreshing state before the resolved depth state.",
+                       "bookRouteDepthReady":  "Resolved Book depth uses orderbook-source-orderbook-route, orderbook-status-ready, orderbook-availability-ready, selected provider identity, and Ticket provider ready after the visible loading state.",
+                       "bookSettings":  "Book settings toggles book-display-mode-cents to book-display-mode-decimal while preserving selected-provider-source-polymarket.",
+                       "ticketServerMode":  "Ticket settings exposes Trading mode: Server mode while preserving provider-source-polymarket and ticket-provider-source-polymarket selection identity.",
+                       "fallbackGuard":  "The top, Book, and ticket hierarchies reject deterministic-status-fixture, fixture-ready, mock-ready, and default-ready markers."
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-live-top.png",
+                      "docs\\mobile\\harness\\cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-live-top.xml",
+                      "docs\\mobile\\screenshots\\cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-book-refreshing.png",
+                      "docs\\mobile\\harness\\cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-book-refreshing.xml",
+                      "docs\\mobile\\screenshots\\cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-book-resolved.png",
+                      "docs\\mobile\\harness\\cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-book-resolved.xml",
+                      "docs\\mobile\\screenshots\\cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-book-settings-cents.png",
+                      "docs\\mobile\\harness\\cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-book-settings-cents.xml",
+                      "docs\\mobile\\screenshots\\cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-book-settings-decimal.png",
+                      "docs\\mobile\\harness\\cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-book-settings-decimal.xml",
+                      "docs\\mobile\\screenshots\\cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-ticket-handoff.png",
+                      "docs\\mobile\\harness\\cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-ticket-handoff.xml",
+                      "docs\\mobile\\screenshots\\cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-ticket-settings.png",
+                      "docs\\mobile\\harness\\cycle-EK-integrated-provider-transition/cycle-EK-B-visible-status-transition-ticket-settings.xml"
+                  ]
+}

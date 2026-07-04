@@ -632,6 +632,25 @@ export async function serializeMobileLiveEventDetail(input: {
         orderbookDepth: providerSegmentFromDepthSnapshot(depth.snapshot.providerOrderbookDepth),
         chartHistory: providerSegmentFromChartStatus(chartHistoryStatus),
       });
+      const marketAvailability = availabilityForMarket(market);
+      const providerLastFetchedAt = providerLifecycle.lastFetchedAt ?? marketAvailability.lastUpdated;
+      const providerStalenessSeconds = providerLastFetchedAt
+        ? Math.max(0, Math.round((Date.now() - new Date(providerLastFetchedAt).getTime()) / 1000))
+        : null;
+      const effectiveAvailability = providerLifecycle.ready
+        && marketAvailability.status !== "ready"
+        ? {
+            ...marketAvailability,
+            source: "provider-lifecycle",
+            status: "ready" as const,
+            lastUpdated: providerLastFetchedAt,
+            stalenessSeconds: providerStalenessSeconds,
+            isStale: false,
+            isSuspended: false,
+            isDelayed: false,
+            reason: providerLifecycle.reason,
+          }
+        : marketAvailability;
       const bidByOutcome = new Map(depth.snapshot.bids.map((level) => [level.outcomeId, level]));
       const askByOutcome = new Map(depth.snapshot.asks.map((level) => [level.outcomeId, level]));
       return {
@@ -652,7 +671,7 @@ export async function serializeMobileLiveEventDetail(input: {
         externalMarketId: market.externalMarketId,
         conditionId: market.conditionId,
         propCategory: market.propCategory,
-        availability: availabilityForMarket(market),
+        availability: effectiveAvailability,
         liquidity: depth.levels.length ? depth.levels.reduce((sum, level) => sum + level.total, 0) : null,
         chartHistory: chartHistoryFromSnapshots(marketChartSnapshots),
         chartHistoryStatus,
@@ -733,6 +752,18 @@ export async function serializeMobileLiveEventDetail(input: {
     orderbookDepth: eventProviderDepth,
     chartHistory: eventProviderChart,
   });
+  const routeLifecycleLiveStatus: LiveAvailabilityStatus = providerLifecycle.status === "ready"
+    ? liveDataStatus
+    : providerLifecycle.unavailable
+      ? "unavailable"
+      : "stale";
+  const shouldUseRouteLifecycleLiveStatus = (input.event.status ?? "").toLowerCase() === "live" && routeLifecycleLiveStatus !== liveDataStatus;
+  const effectiveLiveDataStatus = shouldUseRouteLifecycleLiveStatus ? routeLifecycleLiveStatus : liveDataStatus;
+  const effectiveLiveDataReason = shouldUseRouteLifecycleLiveStatus ? providerLifecycle.reason : liveDataReason;
+  const effectiveLastUpdated = shouldUseRouteLifecycleLiveStatus ? providerLifecycle.lastFetchedAt ?? lastUpdated : lastUpdated;
+  const effectiveStalenessSeconds = effectiveLastUpdated
+    ? Math.max(0, Math.round((Date.now() - new Date(effectiveLastUpdated).getTime()) / 1000))
+    : stalenessSeconds;
 
   return {
     event: {
@@ -759,14 +790,14 @@ export async function serializeMobileLiveEventDetail(input: {
       liveStats,
       liveDataStatus: {
         source: stringFromMetadata(liveDataMetadata, "source") ?? (lastUpdated ? "market-outcome-snapshot" : "unknown"),
-        status: liveDataStatus,
-        lastUpdated,
-        stalenessSeconds,
+        status: effectiveLiveDataStatus,
+        lastUpdated: effectiveLastUpdated,
+        stalenessSeconds: effectiveStalenessSeconds,
         staleAfterSeconds: STALE_AFTER_SECONDS,
-        isStale: liveDataStatus === "stale",
-        isSuspended: liveDataStatus === "suspended",
-        isDelayed: liveDataStatus === "delayed",
-        reason: liveDataReason,
+        isStale: effectiveLiveDataStatus === "stale",
+        isSuspended: effectiveLiveDataStatus === "suspended",
+        isDelayed: effectiveLiveDataStatus === "delayed",
+        reason: effectiveLiveDataReason,
       },
       providerLifecycle,
       chartHistory,
