@@ -130,6 +130,40 @@ const orderBookGroupLabel = (market: Market) => {
   return "Other";
 };
 
+const orderBookMarketType = (market: Market): TicketSelection["marketType"] => {
+  if (market.marketType === "spread" || market.marketType === "totals" || market.marketType === "team-total" || market.marketType === "prop" || market.marketType === "future") {
+    return market.marketType;
+  }
+  if (market.type === "live") return "live";
+  if (market.type === "future") return "future";
+  if (market.type === "prop") return "prop";
+  return "winner";
+};
+
+const orderBookOutcomeSide = (market: Market, outcome: Outcome, index: number): "yes" | "no" => (
+  outcome.side === "no" || label("en", outcome).toLowerCase().startsWith("no") || (market.outcomes.length === 2 && index === 1)
+    ? "no"
+    : "yes"
+);
+
+const orderBookTicketSelection = (market: Market, outcome: Outcome, outcomeIndex: number, displayLabel: string): TicketSelection => ({
+  marketType: orderBookMarketType(market),
+  marketId: market.id,
+  outcomeId: outcome.id,
+  marketGroupId: market.marketGroupId,
+  line: market.line ?? undefined,
+  period: market.period,
+  side: outcome.side,
+  displayLabel,
+  contractSide: orderBookOutcomeSide(market, outcome, outcomeIndex),
+  referenceSource: market.referenceSource ?? undefined,
+  externalSlug: market.externalSlug ?? undefined,
+  externalMarketId: market.externalMarketId ?? undefined,
+  conditionId: market.conditionId ?? undefined,
+  referenceTokenId: outcome.referenceTokenId ?? undefined,
+  referenceOutcomeLabel: outcome.referenceOutcomeLabel ?? undefined,
+});
+
 const marketStats = (event: Event) => {
   const outcomeCount = event.markets.reduce((total, market) => total + market.outcomes.length, 0);
   const volume = event.markets.length * 18250 + outcomeCount * 750;
@@ -713,8 +747,14 @@ export function EventDetail({
     const spreadCents = bestBid && bestAsk ? Math.max(0, levelProbability(bestAsk.price) - levelProbability(bestBid.price)) : null;
     const largest = Math.max(...bidLevels.map((level) => level.shares), ...askLevels.map((level) => level.shares), 1);
     const depthSourceLabel = (orderBookMarket.orderbookDepth?.length ?? 0) > 0 ? "route-depth-ladder" : "quote-fallback-ladder";
+    const selectedOutcomeIndex = orderBookMarket.outcomes.findIndex((outcome) => outcome.id === orderBookSelectedOutcome.id);
+    const selectedContractSide = orderBookOutcomeSide(orderBookMarket, orderBookSelectedOutcome, selectedOutcomeIndex);
+    const selectedMarketFamily = orderBookGroupLabel(orderBookMarket);
+    const selectedTicketLabel = label(locale, orderBookMarket);
+    const selectedTicketSelection = orderBookTicketSelection(orderBookMarket, orderBookSelectedOutcome, selectedOutcomeIndex, selectedTicketLabel);
+    const selectedIdentityLabel = `selected-market-${orderBookMarket.id} selected-family-${selectedMarketFamily} selected-outcome-${orderBookSelectedOutcome.id} selected-side-${selectedContractSide} selected-market-type-${selectedTicketSelection.marketType} selected-line-${selectedTicketSelection.line ?? "none"} selected-period-${selectedTicketSelection.period ?? "none"}`;
     return (
-      <View accessibilityLabel={`event-detail-order-book-screen event-detail-order-book-market-${orderBookMarket.id} orderbook-source-${selectedDepthSource ?? "fallback"} orderbook-status-${depthRouteStatus} orderbook-empty-${depthMarketMatches ? event.orderbookDepthEmptyState ?? "none" : "not-selected"} orderbook-availability-${orderbookAvailabilityStatus} orderbook-market-status-${selectedOrderbookAvailability?.marketStatus ?? "unknown"}`} style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
+      <View accessibilityLabel={`event-detail-order-book-screen event-detail-order-book-market-${orderBookMarket.id} ${selectedIdentityLabel} orderbook-source-${selectedDepthSource ?? "fallback"} orderbook-status-${depthRouteStatus} orderbook-empty-${depthMarketMatches ? event.orderbookDepthEmptyState ?? "none" : "not-selected"} orderbook-availability-${orderbookAvailabilityStatus} orderbook-market-status-${selectedOrderbookAvailability?.marketStatus ?? "unknown"}`} style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
         <View style={styles.orderBookHeader}>
           <View>
             <Text style={styles.orderBookTitle}>Order Book</Text>
@@ -744,7 +784,7 @@ export function EventDetail({
                 const isActive = market.id === orderBookMarket.id;
                 return (
                   <Pressable
-                    accessibilityLabel={`order-book-market-choice-${market.id} ${group.title} ${label(locale, market)}`}
+                    accessibilityLabel={`order-book-market-choice-${market.id} ${group.title} ${label(locale, market)} ${isActive ? "selected-market-choice" : "inactive-market-choice"} market-type-${orderBookMarketType(market)} line-${market.line ?? "none"} period-${market.period ?? "none"}`}
                     key={market.id}
                     onPress={() => {
                       setOrderBookMarketId(market.id);
@@ -764,10 +804,11 @@ export function EventDetail({
         <View accessibilityLabel="order-book-outcome-tabs Yes No" style={styles.orderBookOutcomeTabs} testID="order-book-outcome-tabs">
           {orderBookMarket.outcomes.map((outcome, index) => {
             const isActive = outcome.id === orderBookSelectedOutcome.id;
-            const sideLabel = outcome.side === "no" || label(locale, outcome).toLowerCase().startsWith("no") || (orderBookMarket.outcomes.length === 2 && index === 1) ? "No" : "Yes";
+            const contractSide = orderBookOutcomeSide(orderBookMarket, outcome, index);
+            const sideLabel = contractSide === "no" ? "No" : "Yes";
             return (
               <Pressable
-                accessibilityLabel={`order-book-outcome-tab-${outcome.id} ${sideLabel} ${label(locale, outcome)}`}
+                accessibilityLabel={`order-book-outcome-tab-${outcome.id} ${sideLabel} ${label(locale, outcome)} ${isActive ? `selected-side-${contractSide}` : `inactive-side-${contractSide}`} selected-market-${orderBookMarket.id}`}
                 key={outcome.id}
                 onPress={() => setOrderBookOutcomeId(outcome.id)}
                 style={[styles.orderBookOutcomeTab, isActive && styles.orderBookOutcomeTabActive]}
@@ -801,7 +842,7 @@ export function EventDetail({
         </View>
         <ScrollView style={styles.orderBookScroll} contentContainerStyle={styles.orderBookPad}>
           <View
-            accessibilityLabel={`order-book-outcome-${orderBookSelectedOutcome.id} ${depthSourceLabel} ${bidLevels.length} bid-levels ${askLevels.length} ask-levels best-bid-${bestBid ? levelProbability(bestBid.price) : "none"} best-ask-${bestAsk ? levelProbability(bestAsk.price) : "none"} Price Shares Value ${bestBid ? formatLevelPrice(bestBid.price) : ""} ${bestAsk ? formatLevelPrice(bestAsk.price) : ""} ${formatSize(bidLevels.reduce((total, level) => total + level.shares, 0))} shares ${formatSize(askLevels.reduce((total, level) => total + level.shares, 0))} shares`}
+            accessibilityLabel={`order-book-outcome-${orderBookSelectedOutcome.id} ${selectedIdentityLabel} ${depthSourceLabel} ${bidLevels.length} bid-levels ${askLevels.length} ask-levels best-bid-${bestBid ? levelProbability(bestBid.price) : "none"} best-ask-${bestAsk ? levelProbability(bestAsk.price) : "none"} Price Shares Value ${bestBid ? formatLevelPrice(bestBid.price) : ""} ${bestAsk ? formatLevelPrice(bestAsk.price) : ""} ${formatSize(bidLevels.reduce((total, level) => total + level.shares, 0))} shares ${formatSize(askLevels.reduce((total, level) => total + level.shares, 0))} shares`}
             style={styles.orderBookOutcome}
             testID={`order-book-outcome-${orderBookSelectedOutcome.id}`}
           >
@@ -811,10 +852,10 @@ export function EventDetail({
                 <Text style={styles.orderBookOutcomeMeta}>{orderBookSelectedOutcome.probability}% - {outcomeOdds(orderBookSelectedOutcome)}x</Text>
               </View>
               <View style={styles.orderBookActionRow}>
-                <Pressable accessibilityLabel={`order-book-buy-${orderBookSelectedOutcome.id}`} onPress={() => openTicket(orderBookMarket, orderBookSelectedOutcome, event, "buy")} style={[styles.orderBookTradeButton, { backgroundColor: orderBookSelectedOutcome.color }]} testID={`order-book-buy-${orderBookSelectedOutcome.id}`}>
+                <Pressable accessibilityLabel={`order-book-buy-${orderBookSelectedOutcome.id} ${selectedIdentityLabel}`} onPress={() => openTicket(orderBookMarket, orderBookSelectedOutcome, event, "buy", selectedTicketSelection)} style={[styles.orderBookTradeButton, { backgroundColor: orderBookSelectedOutcome.color }]} testID={`order-book-buy-${orderBookSelectedOutcome.id}`}>
                   <Text style={styles.orderBookTradeText}>{t.buy}</Text>
                 </Pressable>
-                <Pressable accessibilityLabel={`order-book-sell-${orderBookSelectedOutcome.id}`} onPress={() => openTicket(orderBookMarket, orderBookSelectedOutcome, event, "sell")} style={styles.orderBookSellButton} testID={`order-book-sell-${orderBookSelectedOutcome.id}`}>
+                <Pressable accessibilityLabel={`order-book-sell-${orderBookSelectedOutcome.id} ${selectedIdentityLabel}`} onPress={() => openTicket(orderBookMarket, orderBookSelectedOutcome, event, "sell", selectedTicketSelection)} style={styles.orderBookSellButton} testID={`order-book-sell-${orderBookSelectedOutcome.id}`}>
                   <Text style={styles.orderBookSellText}>{t.sell}</Text>
                 </Pressable>
               </View>

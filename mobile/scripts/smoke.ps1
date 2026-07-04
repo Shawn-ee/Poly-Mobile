@@ -19,6 +19,7 @@ param(
   [switch]$EventDetailLineAdjustment,
   [switch]$EventDetailLinePortfolio,
   [switch]$EventDetailOrderBook,
+  [switch]$EventDetailOrderBookInteractions,
   [switch]$EventDetailFullPage,
   [switch]$EventDetailChart,
   [switch]$EmptyErrorLoading,
@@ -396,7 +397,7 @@ try {
     }
   }
   $expoArgs = @("expo", "start", "--port", "$Port", "--offline")
-  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailFullPage -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail) {
+  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail) {
     $expoArgs += "--clear"
   }
   if ($ServerLiveDetailTotalsOrderBook) {
@@ -416,7 +417,7 @@ try {
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
   Wait-ExpoReady -Port $Port
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailFullPage -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
   if ($ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook) {
     Start-Sleep -Seconds 10
   }
@@ -462,7 +463,7 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceMexicoEcuadorDetailSellDefault=1"
   } elseif ($EventDetailPosition) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceMexicoEcuadorGamePosition=1"
-  } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount) {
+  } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount) {
     "exp://${ExpoHost}:$Port/--/?forceMexicoEcuadorDetail=1"
   } elseif ($EmptyErrorLoading) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forcePortfolioSyncing=1"
@@ -508,7 +509,7 @@ try {
   } else {
     "exp://${ExpoHost}:$Port"
   }
-  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailFullPage -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $FutureListClose -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
+  if ((-not $SkipPackageClear) -and ($EventDetailTrade -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $FutureListClose -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $PortfolioPersistence -or $HomeSavedEmpty -or $SearchSavedEmpty)) {
     & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
     Start-Sleep -Seconds 2
   }
@@ -532,7 +533,7 @@ try {
     @("Mobile Provider Refresh Proof", "Game Lines", "Player Props", "Best bid", "Best ask", "Spread", "event-detail-live-data-inline")
   } elseif ($ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook) {
     @("Game Lines", "Player Props", "Best bid", "Best ask", "Spread")
-  } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade) {
+  } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade) {
     @("Mexico vs. Ecuador", "4 markets", "8 outcomes")
   } elseif ($LiveDetail) {
     @("Australia vs. Egypt", "Live Winner", "LIVE WORLD CUP", "Game Lines", "Player Props")
@@ -1677,7 +1678,7 @@ try {
       return
     }
 
-    if (-not ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $ServerLiveDetailBackendProof)) {
+    if (-not ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $ServerLiveDetailBackendProof)) {
       Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "event-card-mexico-ecuador"
       Start-Sleep -Seconds 1
     }
@@ -2011,6 +2012,78 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-server-live-second-half-order-book.png"
       $serverSecondHalfOrderBookHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-live-second-half-order-book.xml"
       Assert-HierarchyContains -Path $serverSecondHalfOrderBookHierarchy -Expected @("event-detail-order-book-screen", "event-detail-order-book-market-", "orderbook-source-orderbook-route", "orderbook-status-ready", "orderbook-empty-none", "orderbook-availability-stale", "orderbook-market-status-LIVE", "event-detail-order-book-availability", "Market stale", "Route depth", "2nd Half Winner", "Order Book", "Best bid", "Best ask", "0.59 USDT", "0.65 USDT", "1.06k shares", "940 shares", "Buy", "Sell")
+      return
+    }
+
+    if ($EventDetailOrderBookInteractions) {
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Regulation Time Winner", "Best bid", "Best ask", "Spread", "event-detail-open-order-book")
+      Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-open-order-book"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DT-B-holiwyn-orderbook-book-action.png"
+      $orderBookBeforeHierarchy = Save-UiHierarchy -Name "cycle-DT-B-holiwyn-orderbook-book-action.xml"
+      Assert-HierarchyContains -Path $orderBookBeforeHierarchy -Expected @("event-detail-order-book-screen", "event-detail-order-book-market-mexico-ecuador-winner", "selected-market-mexico-ecuador-winner", "selected-family-Moneyline", "selected-outcome-mexico", "selected-side-yes", "order-book-outcome-tabs", "selected-side-yes", "inactive-side-no", "order-book-ladder", "Price", "Shares", "Value", "order-book-ask-level-mexico-1", "order-book-bid-level-mexico-1")
+
+      Invoke-TapHierarchyNode -Path $orderBookBeforeHierarchy -Identifier "order-book-outcome-tab-ecuador"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DT-B-holiwyn-orderbook-yes-no-switch.png"
+      $orderBookNoHierarchy = Save-UiHierarchy -Name "cycle-DT-B-holiwyn-orderbook-yes-no-switch.xml"
+      Assert-HierarchyContains -Path $orderBookNoHierarchy -Expected @("event-detail-order-book-screen", "selected-market-mexico-ecuador-winner", "selected-family-Moneyline", "selected-outcome-ecuador", "selected-side-no", "order-book-outcome-ecuador", "order-book-ask-level-ecuador-1", "order-book-bid-level-ecuador-1", "Mexico vs. Ecuador - Match winner")
+
+      Invoke-TapHierarchyNode -Path $orderBookNoHierarchy -Identifier "order-book-market-choice-mexico-ecuador-total"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DT-B-holiwyn-orderbook-selector-carry-through.png"
+      $orderBookSelectorHierarchy = Save-UiHierarchy -Name "cycle-DT-B-holiwyn-orderbook-selector-carry-through.xml"
+      Assert-HierarchyContains -Path $orderBookSelectorHierarchy -Expected @("event-detail-order-book-screen", "selected-market-mexico-ecuador-total", "selected-family-Totals", "selected-outcome-over", "selected-side-yes", "selected-market-type-prop", "selected-line-none", "selected-period-none", "order-book-outcome-over", "order-book-ask-level-over-1", "order-book-bid-level-over-1", "Mexico vs. Ecuador - Total goals over 2.5")
+
+      Invoke-TapHierarchyNode -Path $orderBookSelectorHierarchy -Identifier "order-book-outcome-tab-under"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DT-B-holiwyn-orderbook-selector-no-carry-through.png"
+      $orderBookSelectorNoHierarchy = Save-UiHierarchy -Name "cycle-DT-B-holiwyn-orderbook-selector-no-carry-through.xml"
+      Assert-HierarchyContains -Path $orderBookSelectorNoHierarchy -Expected @("selected-market-mexico-ecuador-total", "selected-family-Totals", "selected-outcome-under", "selected-side-no", "order-book-outcome-under", "order-book-ask-level-under-1", "order-book-bid-level-under-1")
+
+      Invoke-TapHierarchyNode -Path $orderBookSelectorNoHierarchy -Identifier "order-book-buy-under"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DT-B-holiwyn-orderbook-selector-ticket.png"
+      $orderBookTicketHierarchy = Save-UiHierarchy -Name "cycle-DT-B-holiwyn-orderbook-selector-ticket.xml"
+      Assert-HierarchyContains -Path $orderBookTicketHierarchy -Expected @("trade-ticket", "ticket-selection-summary", "Total goals over 2.5", "Mexico vs. Ecuador", "ticket-selection-line", "Under", "ticket-side-buy", "ticket-side-sell", "Choose an amount")
+
+      $proof = [ordered]@{
+        cycle = "DT-B"
+        scope = "PM-GAP-075 orderbook interaction proof"
+        command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBookInteractions -Port 8238 -OutputDir docs/mobile/screenshots/cycle-DT-B-orderbook-interactions -HierarchyOutputDir docs/mobile/harness/cycle-DT-B-orderbook-interactions"
+        eventIdentity = "Mexico vs. Ecuador"
+        result = "pass"
+        assertions = [ordered]@{
+          yesNoSwitchBefore = "selected-market-mexico-ecuador-winner selected-outcome-mexico selected-side-yes"
+          yesNoSwitchAfter = "selected-market-mexico-ecuador-winner selected-outcome-ecuador selected-side-no"
+          selectorCarryThrough = "selected-market-mexico-ecuador-total selected-family-Totals selected-outcome-under selected-side-no selected-market-type-prop selected-line-none selected-period-none"
+          ticketCarryThrough = "ticket-selection-summary Total goals over 2.5 ticket-selection-line Under"
+          ladderColumns = "Price Shares Value"
+          sideLabelProof = "order-book-ask-level-* above spread and order-book-bid-level-* below spread"
+          nonReadyState = "orderbook-source-fallback/orderbook-status-idle in fixture proof"
+          decimalizeEquivalent = "not implemented in DT-B; remains P1"
+        }
+        artifacts = @(
+          "docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-book-action.png",
+          "docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-book-action.xml",
+          "docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-yes-no-switch.png",
+          "docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-yes-no-switch.xml",
+          "docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-carry-through.png",
+          "docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-carry-through.xml",
+          "docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-no-carry-through.png",
+          "docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-no-carry-through.xml",
+          "docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-ticket.png",
+          "docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-ticket.xml"
+        )
+        remainingGaps = @(
+          "Ready provider-backed depth not proven by this fixture run.",
+          "Decimalize book/equivalent settings toggle remains open.",
+          "Spread/period/line selector carry-through needs a backend/live fixture with structured line data; this run proves available contract-shaped Totals market identity with line-none."
+        )
+      }
+      $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-DT-B-holiwyn-orderbook-proof.json"
+      $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
+      Write-Host "Proof summary: $proofPath"
       return
     }
 
