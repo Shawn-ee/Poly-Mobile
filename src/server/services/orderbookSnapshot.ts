@@ -2,6 +2,7 @@ import { OrderStatus, Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 
 const OPEN_STATUSES: OrderStatus[] = ["OPEN", "PARTIAL"];
+const PROVIDER_SNAPSHOT_STALE_AFTER_SECONDS = 90;
 
 type LevelRow = {
   outcomeId: string;
@@ -32,6 +33,20 @@ export type PublicOrderbookSnapshot = {
     price: number;
     size: number;
   }>;
+  providerQuoteSnapshot: {
+    source: "reference-quote-snapshot";
+    status: "ready" | "stale" | "unavailable";
+    snapshotCount: number;
+    latestFetchedAt: string | null;
+    latestUpdatedAt: string | null;
+    stalenessSeconds: number | null;
+    staleAfterSeconds: number;
+    isStale: boolean;
+    acceptingOrders: boolean;
+    outcomeIds: string[];
+    sources: string[];
+    reason: string;
+  };
 };
 
 export async function buildPublicOrderbookSnapshot(params: {
@@ -49,7 +64,7 @@ export async function buildPublicOrderbookSnapshot(params: {
   };
 
   return prisma.$transaction(async (tx) => {
-    const [bids, asks, topOrders] = await Promise.all([
+    const [bids, asks, topOrders, providerSnapshots] = await Promise.all([
       tx.order.groupBy({
         by: ["outcomeId", "price"],
         where: { ...whereBase, side: "BUY" },
@@ -77,6 +92,20 @@ export async function buildPublicOrderbookSnapshot(params: {
         },
         orderBy: [{ outcomeId: "asc" }, { side: "asc" }, { price: "asc" }, { createdAt: "asc" }],
       }),
+      tx.referenceQuoteSnapshot.findMany({
+        where: {
+          marketId: params.marketId,
+          ...(outcomeId ? { outcomeId } : {}),
+        },
+        select: {
+          outcomeId: true,
+          source: true,
+          fetchedAt: true,
+          updatedAt: true,
+          acceptingOrders: true,
+        },
+        orderBy: [{ fetchedAt: "desc" }, { updatedAt: "desc" }],
+      }),
     ]);
 
     logCrossedOutcomeDiagnostics(params.marketId, bids, asks, topOrders);
@@ -92,8 +121,64 @@ export async function buildPublicOrderbookSnapshot(params: {
         price: Number(row.price),
         size: Number(row._sum.remaining ?? 0),
       })),
+      providerQuoteSnapshot: summarizeProviderSnapshots(providerSnapshots),
     } satisfies PublicOrderbookSnapshot;
   });
+}
+
+function summarizeProviderSnapshots(snapshots: Array<{
+  outcomeId: string;
+  source: string;
+  fetchedAt: Date;
+  updatedAt: Date;
+  acceptingOrders: boolean;
+}>): PublicOrderbookSnapshot["providerQuoteSnapshot"] {
+  if (snapshots.length === 0) {
+    return {
+      source: "reference-quote-snapshot",
+      status: "unavailable",
+      snapshotCount: 0,
+      latestFetchedAt: null,
+      latestUpdatedAt: null,
+      stalenessSeconds: null,
+      staleAfterSeconds: PROVIDER_SNAPSHOT_STALE_AFTER_SECONDS,
+      isStale: false,
+      acceptingOrders: false,
+      outcomeIds: [],
+      sources: [],
+      reason: "No provider quote snapshot is available for this market.",
+    };
+  }
+
+  const latestFetchedAt = snapshots.reduce(
+    (latest, snapshot) => snapshot.fetchedAt > latest ? snapshot.fetchedAt : latest,
+    snapshots[0]!.fetchedAt,
+  );
+  const latestUpdatedAt = snapshots.reduce(
+    (latest, snapshot) => snapshot.updatedAt > latest ? snapshot.updatedAt : latest,
+    snapshots[0]!.updatedAt,
+  );
+  const stalenessSeconds = Math.max(0, Math.round((Date.now() - latestFetchedAt.getTime()) / 1000));
+  const isStale = stalenessSeconds > PROVIDER_SNAPSHOT_STALE_AFTER_SECONDS;
+  const acceptingOrders = snapshots.some((snapshot) => snapshot.acceptingOrders);
+  const status = isStale ? "stale" : "ready";
+
+  return {
+    source: "reference-quote-snapshot",
+    status,
+    snapshotCount: snapshots.length,
+    latestFetchedAt: latestFetchedAt.toISOString(),
+    latestUpdatedAt: latestUpdatedAt.toISOString(),
+    stalenessSeconds,
+    staleAfterSeconds: PROVIDER_SNAPSHOT_STALE_AFTER_SECONDS,
+    isStale,
+    acceptingOrders,
+    outcomeIds: [...new Set(snapshots.map((snapshot) => snapshot.outcomeId))].sort(),
+    sources: [...new Set(snapshots.map((snapshot) => snapshot.source))].sort(),
+    reason: status === "ready"
+      ? "Provider quote snapshot is fresh."
+      : `Provider quote snapshot is older than ${PROVIDER_SNAPSHOT_STALE_AFTER_SECONDS} seconds.`,
+  };
 }
 
 function logCrossedOutcomeDiagnostics(

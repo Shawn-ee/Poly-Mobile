@@ -97,6 +97,27 @@ const depthLevelsFromSnapshot = (snapshot: Awaited<ReturnType<typeof buildPublic
   })),
 ];
 
+const emptyProviderQuoteSnapshot: Awaited<ReturnType<typeof buildPublicOrderbookSnapshot>>["providerQuoteSnapshot"] = {
+  source: "reference-quote-snapshot",
+  status: "unavailable",
+  snapshotCount: 0,
+  latestFetchedAt: null,
+  latestUpdatedAt: null,
+  stalenessSeconds: null,
+  staleAfterSeconds: STALE_AFTER_SECONDS,
+  isStale: false,
+  acceptingOrders: false,
+  outcomeIds: [],
+  sources: [],
+  reason: "No provider quote snapshot is available for this market.",
+};
+
+const emptyOrderbookSnapshot: Awaited<ReturnType<typeof buildPublicOrderbookSnapshot>> = {
+  bids: [],
+  asks: [],
+  providerQuoteSnapshot: emptyProviderQuoteSnapshot,
+};
+
 const stringFromMetadata = (metadata: Record<string, unknown>, key: string) => {
   const value = metadata[key];
   return typeof value === "string" && value.trim() ? value.trim() : null;
@@ -231,10 +252,13 @@ export async function serializeMobileLiveEventDetail(input: {
   const depthByMarketId = new Map(depthEntries);
   const primaryDepthLevels = primaryMarket ? depthByMarketId.get(primaryMarket.id)?.levels ?? [] : [];
   const batchedOrderbookDepthMarketCount = Array.from(depthByMarketId.values()).filter((entry) => entry.levels.length > 0).length;
+  const batchedProviderQuoteSnapshotMarketCount = Array.from(depthByMarketId.values()).filter(
+    (entry) => entry.snapshot.providerQuoteSnapshot.status !== "unavailable",
+  ).length;
 
   const serializedMarkets = await Promise.all(
     markets.map(async (market) => {
-      const depth = depthByMarketId.get(market.id) ?? { snapshot: { bids: [], asks: [] }, levels: [] };
+      const depth = depthByMarketId.get(market.id) ?? { snapshot: emptyOrderbookSnapshot, levels: [] };
       const bidByOutcome = new Map(depth.snapshot.bids.map((level) => [level.outcomeId, level]));
       const askByOutcome = new Map(depth.snapshot.asks.map((level) => [level.outcomeId, level]));
       return {
@@ -254,6 +278,7 @@ export async function serializeMobileLiveEventDetail(input: {
         availability: availabilityForMarket(market),
         liquidity: depth.levels.length ? depth.levels.reduce((sum, level) => sum + level.total, 0) : null,
         orderbookDepth: depth.levels,
+        providerQuoteSnapshot: depth.snapshot.providerQuoteSnapshot,
         rulesText: market.rulesText,
         event: null,
         outcomes: market.outcomes.map((outcome) => {
@@ -364,6 +389,8 @@ export async function serializeMobileLiveEventDetail(input: {
       batchedOrderbookDepthRequestedMarketIds: markets.map((market) => market.id),
       batchedOrderbookDepthMaxLevels: MAX_DEPTH_LEVELS,
       batchedOrderbookDepthCacheTtlSeconds: DEPTH_BATCH_CACHE_TTL_SECONDS,
+      batchedProviderQuoteSnapshotSource: batchedProviderQuoteSnapshotMarketCount ? "reference-quote-snapshot" : "empty",
+      batchedProviderQuoteSnapshotMarketCount,
       chartHistorySource: chartHistory.length ? "market-outcome-snapshot" : "empty",
       liveDataStatus,
     },

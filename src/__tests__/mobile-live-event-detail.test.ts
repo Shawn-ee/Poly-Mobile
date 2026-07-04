@@ -49,6 +49,20 @@ describe("mobile live event detail contract", () => {
     buildPublicOrderbookSnapshot.mockResolvedValue({
       bids: [{ outcomeId: "home", price: 0.59, size: 1060 }],
       asks: [{ outcomeId: "home", price: 0.65, size: 940 }],
+      providerQuoteSnapshot: {
+        source: "reference-quote-snapshot",
+        status: "ready",
+        snapshotCount: 2,
+        latestFetchedAt: "2026-07-03T22:00:10.000Z",
+        latestUpdatedAt: "2026-07-03T22:00:11.000Z",
+        stalenessSeconds: 10,
+        staleAfterSeconds: 90,
+        isStale: false,
+        acceptingOrders: true,
+        outcomeIds: ["away", "home"],
+        sources: ["polymarket"],
+        reason: "Provider quote snapshot is fresh.",
+      },
     });
   });
 
@@ -113,6 +127,8 @@ describe("mobile live event detail contract", () => {
       batchedOrderbookDepthRequestedMarketCount: 14,
       batchedOrderbookDepthMaxLevels: 24,
       batchedOrderbookDepthCacheTtlSeconds: 3,
+      batchedProviderQuoteSnapshotSource: "reference-quote-snapshot",
+      batchedProviderQuoteSnapshotMarketCount: 14,
       chartHistorySource: "market-outcome-snapshot",
       liveDataStatus: "ready",
     });
@@ -153,6 +169,14 @@ describe("mobile live event detail contract", () => {
         { outcomeId: "home", side: "bid", price: 0.59, shares: 1060, total: 625.4 },
         { outcomeId: "home", side: "ask", price: 0.65, shares: 940, total: 611 },
       ],
+      providerQuoteSnapshot: {
+        source: "reference-quote-snapshot",
+        status: "ready",
+        snapshotCount: 2,
+        acceptingOrders: true,
+        outcomeIds: ["away", "home"],
+        sources: ["polymarket"],
+      },
     });
     expect(payload.markets[1]).toMatchObject({
       id: "market-0",

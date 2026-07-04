@@ -2,6 +2,52 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CJ - Provider Quote Snapshot Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 provider quote snapshot status for live event detail and selected orderbook routes.
+- This cycle addresses deferred provider-cache debt from Cycle CI using the existing backend `ReferenceQuoteSnapshot` model.
+
+Frontend components touched:
+
+- None. Samsung tablet proof was rerun to confirm the existing live event detail and selected Book flow still work with the expanded backend contract.
+
+Backend/components touched:
+
+- `src/server/services/orderbookSnapshot.ts`
+- `src/app/api/orderbook/[marketId]/book/route.ts`
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/__tests__/public.orderbook-book.no-leak.test.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+
+Important functions/services touched:
+
+- `buildPublicOrderbookSnapshot()` now reads safe provider snapshot metadata from `ReferenceQuoteSnapshot` and returns `providerQuoteSnapshot` with source, status, count, latest fetch/update times, staleness, accepting-orders flag, outcome IDs, and provider sources.
+- `/api/orderbook/:marketId/book` now exposes this provider snapshot status without leaking token IDs, external market IDs, credentials, or owner/user fields.
+- `/api/mobile/events/:slug/live-detail` now forwards `markets[].providerQuoteSnapshot` and contract-level `batchedProviderQuoteSnapshotSource` / `batchedProviderQuoteSnapshotMarketCount`.
+
+User interactions supported:
+
+- No new UI control was added. The user-visible proof remains the live football game detail row and selected second-half orderbook flow on Samsung tablet.
+
+State transitions:
+
+- Selected market/orderbook request -> local orderbook depth snapshot -> `ReferenceQuoteSnapshot` status summary -> public orderbook route response -> compact live-detail route -> mobile-visible market identity/depth flow.
+
+Known limitations:
+
+- The local World Cup match currently has no `ReferenceQuoteSnapshot` rows, so route proof correctly reports `status: unavailable` and `batchedProviderQuoteSnapshotSource: empty`.
+- This does not complete provider ingestion or provider-owned liquidity. It creates the backend contract the mobile app can consume once ingestion is wired.
+
+Verification:
+
+- Direct route probe saved to `docs/mobile/harness/cycle-current-mobile-live-provider-quote-snapshot-probe.json`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-event-detail.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+
 ## Cycle CI - Depth Batching Policy Contract
 
 Feature/page worked on:

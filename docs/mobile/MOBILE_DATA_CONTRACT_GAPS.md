@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CJ - Provider Quote Snapshot Contract
+
+Fields now provided or wired:
+
+- `buildPublicOrderbookSnapshot()` returns `providerQuoteSnapshot` using existing `ReferenceQuoteSnapshot` rows.
+- `/api/orderbook/:marketId/book` exposes safe provider snapshot status and keeps no-leak tests around the public payload.
+- `/api/mobile/events/:slug/live-detail` exposes `markets[].providerQuoteSnapshot`, `contract.batchedProviderQuoteSnapshotSource`, and `contract.batchedProviderQuoteSnapshotMarketCount`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Actual provider ingestion for World Cup live events so `ReferenceQuoteSnapshot` rows exist for every visible market/outcome.
+- Provider cache invalidation/update sequence and snapshot identifiers if the provider feed supports them.
+- Provider depth ladders beyond top quote snapshots if Polymarket parity requires full market-depth data separate from local orders.
+
+Schema mismatch:
+
+- `ReferenceQuoteSnapshot` is enough for top quote/freshness metadata. If future provider depth includes multiple bid/ask levels per outcome, a dedicated provider orderbook snapshot table may still be needed.
+
+Route mismatch:
+
+- Selected orderbook and compact live-detail routes now expose provider snapshot status, but no ingestion/admin refresh route is part of this mobile cycle.
+
+Temporary mock/static data:
+
+- No new frontend dummy data was added. Local proof has no provider snapshot rows, so the route truthfully returns `status: unavailable`.
+
+Future migration concern:
+
+- Keep provider snapshot status separate from local orderbook depth status so Holiwyn can show "depth exists but provider feed is stale/unavailable" without confusing the trading surface.
+
 ## Cycle CI - Depth Batching Policy Contract
 
 Fields now provided or wired:
