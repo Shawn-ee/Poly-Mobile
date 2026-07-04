@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle EH-A - Provider Status Surface Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live-detail provider lifecycle status | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile route | Event slug | Top-level/event/contract `providerLifecycle.status/ready/stale/refreshDue/refreshing/refreshStarted/unavailable/empty/notReady/source/reason/nextRefreshAt/lastFetchedAt/fallback/fallbackApplied/fallbackReason`, plus `markets[].providerLifecycle.quote/orderbookDepth/chartHistory` with the same status/freshness vocabulary | Reads compact live `Event`, mapped `Market`, active `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot` | None in the route. Empty provider rows remain explicit as `status=unavailable`, `empty=true`, `notReady=true` | Real provider coverage for every production line-family compact market still depends on mapping and scheduled refresh coverage. |
+| Provider refresh status transition | `/api/mobile/events/:slug/provider-refresh` then `/api/mobile/events/:slug/live-detail` | POST / GET | Provider refresh uses internal admin guard; live-detail is public/mobile | Optional `expireFirst`, `staleSeconds`, `allowContractProofFallback` | Refresh route `providerLifecycle.status`, `refreshStartedAt`, `refreshCompletedAt`, `refreshStarted`, `refreshing`, `refreshStatus`, `lastFetchedAt`, `fallbackApplied`, `fallbackReason`, and optional `lineProvider.status=unconfigured` when `OPTIC_ODDS_API_KEY` is absent | Writes/reads `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot`; refreshes Polymarket Gamma/CLOB for mapped markets | Contract-proof fallback remains opt-in and is labelled through `fallbackApplied/fallbackReason`; missing Optic Odds is optional/unconfigured, not blocking | Visible mobile rendering of the new status surface remains Agent B scope. |
+| Focused EH-A proof harness | `scripts/prove_mobile_eh_a_provider_status_surface.ts` | Local script | Local development database only | Optional `--output` / `--summaryPath` | JSON artifact with before stale/refresh-due market lifecycle, refresh-start/completion lifecycle, optional/unconfigured line-provider state, after ready market lifecycle, and unavailable control market lifecycle | Creates a disposable provider-backed event with one mapped market and one intentionally empty compact market; seeds provider quote/depth/chart rows for state transition | Deterministic CLOB-shaped proof fetches are explicit; quote fallback is marked when used | Requires local database. It is backend proof only and does not replace Android UI proof. |
+
+Cycle EH-A implementation notes:
+
+- `docs/mobile/harness/cycle-EH-A-provider-status-surface.json` records the focused backend proof.
+- PM-GAP-084 backend surface is closed for route shape: mobile can render ready, refresh-due, stale, refresh-started/completed, unavailable/empty, source, reason, next refresh, last fetch, fallback, and not-ready flags from backend responses.
+- No mobile visible UI, mobile scripts, Prisma schema, or global audit docs were changed.
+
 ## Cycle EG-A - Provider Refresh Lifecycle Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

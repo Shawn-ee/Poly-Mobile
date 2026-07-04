@@ -172,6 +172,18 @@ describe("mobile live event detail contract", () => {
       batchedChartHistoryPointCount: 2,
       batchedChartHistoryRequestedMarketCount: 14,
       liveDataStatus: "ready",
+      providerLifecycle: {
+        source: "mobile-live-detail",
+        status: "unavailable",
+        ready: false,
+        notReady: true,
+        stale: false,
+        refreshDue: false,
+        unavailable: true,
+        fallbackApplied: false,
+        nextRefreshAt: "2026-07-03T22:01:00.000Z",
+        lastFetchedAt: "2026-07-03T22:00:30.000Z",
+      },
     });
     expect(payload.contract.generatedAt).toEqual(expect.any(String));
     expect(new Date(payload.contract.generatedAt).toString()).not.toBe("Invalid Date");
@@ -226,6 +238,39 @@ describe("mobile live event detail contract", () => {
         emptyState: null,
         range: "1D",
         ranges: ["1D", "1W", "1M", "MAX"],
+      },
+      providerLifecycle: {
+        source: "mobile-live-detail-market",
+        status: "ready",
+        ready: true,
+        notReady: false,
+        stale: false,
+        refreshDue: false,
+        unavailable: false,
+        empty: false,
+        nextRefreshAt: "2026-07-03T22:01:00.000Z",
+        lastFetchedAt: "2026-07-03T22:00:10.000Z",
+        quote: {
+          source: "polymarket",
+          status: "ready",
+          lastFetchedAt: "2026-07-03T22:00:10.000Z",
+          ready: true,
+          notReady: false,
+        },
+        orderbookDepth: {
+          source: "polymarket-clob",
+          status: "ready",
+          lastFetchedAt: "2026-07-03T22:00:09.000Z",
+          ready: true,
+          notReady: false,
+        },
+        chartHistory: {
+          source: "market-outcome-snapshot",
+          status: "ready",
+          lastFetchedAt: "2026-07-03T22:00:00.000Z",
+          ready: true,
+          notReady: false,
+        },
       },
       selection: {
         selectorKey: "main:full-game:default",
@@ -335,6 +380,46 @@ describe("mobile live event detail contract", () => {
   });
 
   test("marks live detail unavailable when no provider timestamp is available", async () => {
+    buildPublicOrderbookSnapshot.mockResolvedValueOnce({
+      bids: [],
+      asks: [],
+      depthSource: "empty",
+      depthReason: "No local depth, provider orderbook ladder depth, or provider top-of-book depth is available.",
+      providerOrderbookDepth: {
+        source: "reference-orderbook-depth-snapshot",
+        status: "unavailable",
+        levelCount: 0,
+        snapshotCount: 0,
+        latestFetchedAt: null,
+        latestUpdatedAt: null,
+        stalenessSeconds: null,
+        staleAfterSeconds: 90,
+        refreshTtlSeconds: 60,
+        nextRefreshAt: null,
+        shouldRefresh: true,
+        isStale: false,
+        sources: [],
+        reason: "No provider orderbook depth snapshot is available.",
+      },
+      providerQuoteSnapshot: {
+        source: "reference-quote-snapshot",
+        status: "unavailable",
+        snapshotCount: 0,
+        latestFetchedAt: null,
+        latestUpdatedAt: null,
+        stalenessSeconds: null,
+        staleAfterSeconds: 90,
+        refreshTtlSeconds: 60,
+        nextRefreshAt: null,
+        shouldRefresh: true,
+        refreshKey: null,
+        isStale: false,
+        acceptingOrders: false,
+        outcomeIds: [],
+        sources: [],
+        reason: "No provider quote snapshot is available for this market.",
+      },
+    });
     const payload = await serializeMobileLiveEventDetail({
       event: {
         id: "event-1",
@@ -372,6 +457,129 @@ describe("mobile live event detail contract", () => {
       isSuspended: false,
       isDelayed: false,
       reason: "No provider timestamp available.",
+    });
+    expect(payload.providerLifecycle).toMatchObject({
+      source: "mobile-live-detail",
+      status: "unavailable",
+      ready: false,
+      notReady: true,
+      unavailable: true,
+      empty: true,
+      nextRefreshAt: null,
+      lastFetchedAt: null,
+    });
+    expect(payload.markets[0].providerLifecycle).toMatchObject({
+      source: "mobile-live-detail-market",
+      status: "unavailable",
+      ready: false,
+      notReady: true,
+      unavailable: true,
+      empty: true,
+      quote: {
+        status: "unavailable",
+        empty: true,
+        notReady: true,
+      },
+      orderbookDepth: {
+        status: "unavailable",
+        empty: true,
+        notReady: true,
+      },
+      chartHistory: {
+        status: "unavailable",
+        empty: true,
+        notReady: true,
+      },
+    });
+  });
+
+  test("surfaces refresh-due provider lifecycle before stale threshold", async () => {
+    buildPublicOrderbookSnapshot.mockResolvedValueOnce({
+      bids: [{ outcomeId: "home", price: 0.59, size: 1060 }],
+      asks: [{ outcomeId: "home", price: 0.65, size: 940 }],
+      depthSource: "provider-orderbook-depth",
+      depthReason: "Depth comes from provider orderbook ladder snapshots.",
+      providerOrderbookDepth: {
+        source: "reference-orderbook-depth-snapshot",
+        status: "ready",
+        levelCount: 2,
+        snapshotCount: 2,
+        latestFetchedAt: "2026-07-03T21:59:40.000Z",
+        latestUpdatedAt: "2026-07-03T21:59:40.000Z",
+        stalenessSeconds: 60,
+        staleAfterSeconds: 90,
+        refreshTtlSeconds: 60,
+        nextRefreshAt: "2026-07-03T22:00:40.000Z",
+        shouldRefresh: true,
+        isStale: false,
+        sources: ["polymarket-clob"],
+        reason: "Provider orderbook depth snapshot is refresh-due.",
+      },
+      providerQuoteSnapshot: {
+        source: "reference-quote-snapshot",
+        status: "ready",
+        snapshotCount: 2,
+        latestFetchedAt: "2026-07-03T21:59:40.000Z",
+        latestUpdatedAt: "2026-07-03T21:59:40.000Z",
+        stalenessSeconds: 60,
+        staleAfterSeconds: 90,
+        refreshTtlSeconds: 60,
+        nextRefreshAt: "2026-07-03T22:00:40.000Z",
+        shouldRefresh: true,
+        refreshKey: "polymarket:2026-07-03T21:59:40.000Z",
+        isStale: false,
+        acceptingOrders: true,
+        outcomeIds: ["home", "away"],
+        sources: ["polymarket"],
+        reason: "Provider quote snapshot is refresh-due.",
+      },
+    });
+
+    const payload = await serializeMobileLiveEventDetail({
+      event: {
+        id: "event-1",
+        slug: "world-cup-match",
+        title: "Curacao vs Cote d'Ivoire",
+        description: "M55",
+        category: "sports",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        eventType: "match",
+        homeTeamName: "Curacao",
+        awayTeamName: "Cote d'Ivoire",
+        startTime: new Date("2026-06-25T20:00:00.000Z"),
+        status: "LIVE",
+        liveStatus: "in_progress",
+        period: "2H",
+        clock: "67'",
+        homeScore: 0,
+        awayScore: 1,
+        imageUrl: null,
+        metadata: {},
+        markets: [market({ id: "market-main", displayOrder: 0 })],
+      },
+      chartSnapshots: [
+        { marketId: "market-main", outcomeId: "home", ts: new Date("2026-07-03T21:59:40.000Z"), price: new Prisma.Decimal("0.59") },
+      ],
+    });
+
+    expect(payload.markets[0].providerLifecycle).toMatchObject({
+      status: "refresh_due",
+      ready: false,
+      notReady: true,
+      refreshDue: true,
+      stale: false,
+      unavailable: false,
+      nextRefreshAt: "2026-07-03T22:00:40.000Z",
+      lastFetchedAt: "2026-07-03T21:59:40.000Z",
+      quote: { status: "refresh_due", refreshDue: true },
+      orderbookDepth: { status: "refresh_due", refreshDue: true },
+      chartHistory: { status: "refresh_due", refreshDue: true },
+    });
+    expect(payload.providerLifecycle).toMatchObject({
+      status: "refresh_due",
+      refreshDue: true,
+      notReady: true,
     });
   });
 

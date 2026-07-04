@@ -130,9 +130,10 @@ describe("mobile live provider refresh service", () => {
       skipped: [],
     });
     mockRefreshOpticOddsLineQuoteSnapshots.mockResolvedValue({
-      source: "optic-odds",
+      source: "optic_odds",
       attempted: false,
-      skippedReason: "missing_api_key",
+      status: "skipped",
+      skippedReason: "missing_optic_odds_api_key",
       refreshedCount: 0,
       snapshotsUpdated: 0,
       skippedCount: 0,
@@ -190,26 +191,56 @@ describe("mobile live provider refresh service", () => {
     });
     expect(report.providerLifecycle).toMatchObject({
       source: "mobile-live-provider-refresh",
+      status: "ready",
       ready: true,
+      notReady: false,
       refreshDue: false,
       stale: false,
+      unavailable: false,
+      empty: false,
+      refreshStarted: true,
+      refreshing: false,
+      refreshStatus: "completed",
+      fallbackApplied: false,
+      reason: "Provider lifecycle surfaces are ready after refresh.",
+      lastFetchedAt: "2026-07-04T12:00:05.000Z",
       quote: {
         source: "reference-quote-snapshot",
         status: "ready",
+        lastFetchedAt: "2026-07-04T12:00:05.000Z",
+        ready: true,
+        notReady: false,
         nextRefreshAt: "2026-07-04T12:01:05.000Z",
       },
       orderbookDepth: {
         source: "reference-orderbook-depth-snapshot",
         status: "ready",
+        lastFetchedAt: "2026-07-04T12:00:00.000Z",
+        ready: true,
+        notReady: false,
         nextRefreshAt: "2026-07-04T12:01:00.000Z",
       },
       chartHistory: {
         source: "market-outcome-snapshot",
         status: "ready",
+        lastFetchedAt: "2026-07-04T12:00:00.000Z",
+        ready: true,
+        notReady: false,
         nextRefreshAt: "2026-07-04T12:01:00.000Z",
+      },
+      lineProvider: {
+        source: "optic_odds",
+        status: "unconfigured",
+        attempted: false,
+        optional: true,
+        blocking: false,
+        skippedReason: "missing_optic_odds_api_key",
+        reason: "OPTIC_ODDS_API_KEY is optional enrichment and is not configured.",
       },
       nextRefreshAt: "2026-07-04T12:01:00.000Z",
     });
+    expect(report.providerLifecycle.refreshStartedAt).toEqual(expect.any(String));
+    expect(report.providerLifecycle.refreshCompletedAt).toEqual(expect.any(String));
     expect(report.postRefreshDepth).toMatchObject({
       marketCount: 1,
       snapshotCount: 2,
@@ -255,12 +286,68 @@ describe("mobile live provider refresh service", () => {
     });
 
     expect(report.providerLifecycle).toMatchObject({
+      status: "stale",
       ready: false,
+      notReady: true,
       refreshDue: true,
       stale: true,
+      unavailable: false,
       quote: expect.objectContaining({ status: "refresh_due", shouldRefresh: true }),
       orderbookDepth: expect.objectContaining({ status: "stale", shouldRefresh: true }),
       chartHistory: expect.objectContaining({ status: "refresh_due", shouldRefresh: true }),
+    });
+  });
+
+  test("keeps empty provider surfaces explicitly unavailable", async () => {
+    mockReferenceQuoteSnapshotFindMany.mockResolvedValue([]);
+    mockReferenceOrderbookDepthSnapshotFindMany.mockResolvedValue([]);
+    mockMarketOutcomeSnapshotFindMany.mockResolvedValue([]);
+
+    const report = await refreshMobileLiveProviderQuoteSnapshots({
+      eventSlug: "world-cup-live",
+      allowContractProofFallback: false,
+    });
+
+    expect(report.providerLifecycle).toMatchObject({
+      status: "unavailable",
+      ready: false,
+      notReady: true,
+      refreshDue: false,
+      stale: false,
+      unavailable: true,
+      empty: true,
+      nextRefreshAt: null,
+      lastFetchedAt: null,
+      quote: {
+        source: "empty",
+        status: "unavailable",
+        lastFetchedAt: null,
+        shouldRefresh: true,
+        unavailable: true,
+        empty: true,
+        notReady: true,
+        reason: "No provider quote snapshot is available for compact markets.",
+      },
+      orderbookDepth: {
+        source: "empty",
+        status: "unavailable",
+        lastFetchedAt: null,
+        shouldRefresh: true,
+        unavailable: true,
+        empty: true,
+        notReady: true,
+        reason: "No provider orderbook depth snapshot is available for compact markets.",
+      },
+      chartHistory: {
+        source: "empty",
+        status: "unavailable",
+        lastFetchedAt: null,
+        shouldRefresh: true,
+        unavailable: true,
+        empty: true,
+        notReady: true,
+        reason: "No chart history snapshot is available for compact markets.",
+      },
     });
   });
 });

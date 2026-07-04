@@ -77,6 +77,22 @@ const CHART_REFRESH_TTL_SECONDS = 60;
 const DEPTH_BATCH_CACHE_TTL_SECONDS = 3;
 
 type LiveAvailabilityStatus = "ready" | "stale" | "suspended" | "delayed" | "unavailable";
+type ProviderLifecycleStatus = "ready" | "refresh_due" | "stale" | "unavailable";
+type ProviderLifecycleSegment = {
+  source: string;
+  status: ProviderLifecycleStatus;
+  reason: string;
+  nextRefreshAt: string | null;
+  lastFetchedAt: string | null;
+  stalenessSeconds: number | null;
+  shouldRefresh: boolean;
+  ready: boolean;
+  stale: boolean;
+  refreshDue: boolean;
+  unavailable: boolean;
+  empty: boolean;
+  notReady: boolean;
+};
 
 const metadataObject = (value: Prisma.JsonValue | null): Record<string, unknown> =>
   value && typeof value === "object" && !Array.isArray(value) ? (value as Record<string, unknown>) : {};
@@ -238,6 +254,119 @@ const chartHistoryStatusForMarket = (params: {
     emptyState: history.length === 0 ? "no-history" : null,
     range: "1D",
     ranges: ["1D", "1W", "1M", "MAX"],
+  };
+};
+
+const providerSegmentFromQuoteSnapshot = (
+  snapshot: Awaited<ReturnType<typeof buildPublicOrderbookSnapshot>>["providerQuoteSnapshot"],
+): ProviderLifecycleSegment => ({
+  source: snapshot.sources[0] ?? snapshot.source,
+  status: providerLifecycleStatusFromSnapshot(snapshot.status, snapshot.shouldRefresh),
+  reason: snapshot.reason,
+  nextRefreshAt: snapshot.nextRefreshAt,
+  lastFetchedAt: snapshot.latestFetchedAt,
+  stalenessSeconds: snapshot.stalenessSeconds,
+  shouldRefresh: snapshot.shouldRefresh,
+  ready: snapshot.status === "ready" && !snapshot.shouldRefresh,
+  stale: snapshot.status === "stale" || snapshot.isStale,
+  refreshDue: snapshot.status !== "stale" && snapshot.shouldRefresh,
+  unavailable: snapshot.status === "unavailable",
+  empty: snapshot.snapshotCount === 0,
+  notReady: snapshot.status !== "ready" || snapshot.shouldRefresh,
+});
+
+const providerSegmentFromDepthSnapshot = (
+  snapshot: Awaited<ReturnType<typeof buildPublicOrderbookSnapshot>>["providerOrderbookDepth"],
+): ProviderLifecycleSegment => ({
+  source: snapshot.sources[0] ?? snapshot.source,
+  status: providerLifecycleStatusFromSnapshot(snapshot.status, snapshot.shouldRefresh),
+  reason: snapshot.reason,
+  nextRefreshAt: snapshot.nextRefreshAt,
+  lastFetchedAt: snapshot.latestFetchedAt,
+  stalenessSeconds: snapshot.stalenessSeconds,
+  shouldRefresh: snapshot.shouldRefresh,
+  ready: snapshot.status === "ready" && !snapshot.shouldRefresh,
+  stale: snapshot.status === "stale" || snapshot.isStale,
+  refreshDue: snapshot.status !== "stale" && snapshot.shouldRefresh,
+  unavailable: snapshot.status === "unavailable",
+  empty: snapshot.snapshotCount === 0 || snapshot.levelCount === 0,
+  notReady: snapshot.status !== "ready" || snapshot.shouldRefresh,
+});
+
+const providerSegmentFromChartStatus = (
+  status: ReturnType<typeof chartHistoryStatusForMarket>,
+): ProviderLifecycleSegment => ({
+  source: status.source,
+  status: status.status as ProviderLifecycleStatus,
+  reason: status.emptyState === "no-history"
+    ? "No provider chart history snapshot is available for this market."
+    : status.status === "ready"
+      ? "Provider chart history is fresh."
+      : status.status === "refresh_due"
+        ? `Provider chart history is at least ${CHART_REFRESH_TTL_SECONDS} seconds old and should be refreshed.`
+        : `Provider chart history is older than ${STALE_AFTER_SECONDS} seconds.`,
+  nextRefreshAt: status.nextRefreshAt,
+  lastFetchedAt: status.lastUpdated,
+  stalenessSeconds: status.stalenessSeconds,
+  shouldRefresh: status.shouldRefresh,
+  ready: status.status === "ready" && !status.shouldRefresh,
+  stale: status.status === "stale" || status.isStale,
+  refreshDue: status.status === "refresh_due" || (status.status !== "stale" && status.shouldRefresh),
+  unavailable: status.status === "unavailable",
+  empty: status.pointCount === 0,
+  notReady: status.status !== "ready" || status.shouldRefresh,
+});
+
+const providerLifecycleStatusFromSnapshot = (status: string, shouldRefresh: boolean): ProviderLifecycleStatus => {
+  if (status === "ready" && shouldRefresh) return "refresh_due";
+  if (status === "ready" || status === "refresh_due" || status === "stale" || status === "unavailable") {
+    return status as ProviderLifecycleStatus;
+  }
+  return "unavailable";
+};
+
+const combineProviderLifecycleSegments = (params: {
+  source: string;
+  quote: ProviderLifecycleSegment;
+  orderbookDepth: ProviderLifecycleSegment;
+  chartHistory: ProviderLifecycleSegment;
+  fallbackApplied?: boolean;
+  fallbackReason?: string | null;
+}) => {
+  const segments = [params.quote, params.orderbookDepth, params.chartHistory];
+  const ready = segments.every((segment) => segment.ready);
+  const stale = segments.some((segment) => segment.stale);
+  const unavailable = segments.some((segment) => segment.unavailable);
+  const refreshDue = !stale && !unavailable && segments.some((segment) => segment.refreshDue);
+  const empty = segments.every((segment) => segment.empty || segment.unavailable);
+  const status: ProviderLifecycleStatus = ready
+    ? "ready"
+    : stale
+      ? "stale"
+      : unavailable
+        ? "unavailable"
+        : "refresh_due";
+  const blocker = blockingProviderSegment(segments);
+  return {
+    source: params.source,
+    status,
+    ready,
+    stale,
+    refreshDue,
+    refreshing: false,
+    refreshStarted: false,
+    unavailable,
+    empty,
+    notReady: !ready,
+    fallback: params.fallbackApplied === true,
+    fallbackApplied: params.fallbackApplied === true,
+    fallbackReason: params.fallbackReason ?? null,
+    reason: ready ? "Provider lifecycle surfaces are ready." : blocker?.reason ?? "Provider lifecycle is not ready.",
+    nextRefreshAt: earliestIso(segments.map((segment) => segment.nextRefreshAt)),
+    lastFetchedAt: latestIso(segments.map((segment) => segment.lastFetchedAt)),
+    quote: params.quote,
+    orderbookDepth: params.orderbookDepth,
+    chartHistory: params.chartHistory,
   };
 };
 
@@ -497,6 +626,12 @@ export async function serializeMobileLiveEventDetail(input: {
       const depth = depthByMarketId.get(market.id) ?? emptyDepthEntry;
       const marketChartSnapshots = chartSnapshotsByMarketId.get(market.id) ?? [];
       const chartHistoryStatus = chartHistoryStatusForMarket({ market, snapshots: marketChartSnapshots });
+      const providerLifecycle = combineProviderLifecycleSegments({
+        source: "mobile-live-detail-market",
+        quote: providerSegmentFromQuoteSnapshot(depth.snapshot.providerQuoteSnapshot),
+        orderbookDepth: providerSegmentFromDepthSnapshot(depth.snapshot.providerOrderbookDepth),
+        chartHistory: providerSegmentFromChartStatus(chartHistoryStatus),
+      });
       const bidByOutcome = new Map(depth.snapshot.bids.map((level) => [level.outcomeId, level]));
       const askByOutcome = new Map(depth.snapshot.asks.map((level) => [level.outcomeId, level]));
       return {
@@ -521,6 +656,7 @@ export async function serializeMobileLiveEventDetail(input: {
         liquidity: depth.levels.length ? depth.levels.reduce((sum, level) => sum + level.total, 0) : null,
         chartHistory: chartHistoryFromSnapshots(marketChartSnapshots),
         chartHistoryStatus,
+        providerLifecycle,
         selection: selectionContractForMarket(market, chartHistoryStatus),
         orderbookIdentity: orderbookIdentityForMarket({ market, depth, chartStatus: chartHistoryStatus }),
         orderbookDepth: depth.levels,
@@ -586,7 +722,17 @@ export async function serializeMobileLiveEventDetail(input: {
           ? "Provider or market has suspended live trading."
           : liveDataStatus === "delayed"
             ? "Provider marks this live feed as delayed."
-            : "Provider data is fresh.");
+          : "Provider data is fresh.");
+  const providerLifecycleSegments = serializedMarkets.map((market) => market.providerLifecycle);
+  const eventProviderQuote = combineProviderSegments(providerLifecycleSegments.map((market) => market.quote), "reference-quote-snapshot");
+  const eventProviderDepth = combineProviderSegments(providerLifecycleSegments.map((market) => market.orderbookDepth), "reference-orderbook-depth-snapshot");
+  const eventProviderChart = combineProviderSegments(providerLifecycleSegments.map((market) => market.chartHistory), "market-outcome-snapshot");
+  const providerLifecycle = combineProviderLifecycleSegments({
+    source: "mobile-live-detail",
+    quote: eventProviderQuote,
+    orderbookDepth: eventProviderDepth,
+    chartHistory: eventProviderChart,
+  });
 
   return {
     event: {
@@ -622,9 +768,11 @@ export async function serializeMobileLiveEventDetail(input: {
         isDelayed: liveDataStatus === "delayed",
         reason: liveDataReason,
       },
+      providerLifecycle,
       chartHistory,
     },
     markets: serializedMarkets,
+    providerLifecycle,
     contract: {
       route: "mobile-live-detail",
       generatedAt,
@@ -663,6 +811,84 @@ export async function serializeMobileLiveEventDetail(input: {
       batchedChartHistoryRequestedMarketCount: markets.length,
       batchedChartHistoryRequestedMarketIds: markets.map((market) => market.id),
       liveDataStatus,
+      providerLifecycle,
     },
   };
+}
+
+function combineProviderSegments(segments: ProviderLifecycleSegment[], fallbackSource: string): ProviderLifecycleSegment {
+  if (segments.length === 0) {
+    return {
+      source: fallbackSource,
+      status: "unavailable",
+      reason: "No compact provider lifecycle surfaces were requested.",
+      nextRefreshAt: null,
+      lastFetchedAt: null,
+      stalenessSeconds: null,
+      shouldRefresh: true,
+      ready: false,
+      stale: false,
+      refreshDue: false,
+      unavailable: true,
+      empty: true,
+      notReady: true,
+    };
+  }
+  const ready = segments.every((segment) => segment.ready);
+  const stale = segments.some((segment) => segment.stale);
+  const unavailable = segments.some((segment) => segment.unavailable);
+  const refreshDue = !stale && !unavailable && segments.some((segment) => segment.refreshDue);
+  const empty = segments.every((segment) => segment.empty || segment.unavailable);
+  const status: ProviderLifecycleStatus = ready
+    ? "ready"
+    : stale
+      ? "stale"
+      : unavailable
+        ? "unavailable"
+        : "refresh_due";
+  const blocker = blockingProviderSegment(segments);
+  return {
+    source: firstNonEmpty(segments.map((segment) => segment.source)) ?? fallbackSource,
+    status,
+    reason: ready ? "Provider lifecycle segment is ready across compact markets." : blocker?.reason ?? "Provider lifecycle segment is not ready.",
+    nextRefreshAt: earliestIso(segments.map((segment) => segment.nextRefreshAt)),
+    lastFetchedAt: latestIso(segments.map((segment) => segment.lastFetchedAt)),
+    stalenessSeconds: maxNumber(segments.map((segment) => segment.stalenessSeconds)),
+    shouldRefresh: segments.some((segment) => segment.shouldRefresh),
+    ready,
+    stale,
+    refreshDue,
+    unavailable,
+    empty,
+    notReady: !ready,
+  };
+}
+
+function earliestIso(values: Array<string | null>) {
+  return values
+    .filter((value): value is string => typeof value === "string")
+    .sort()[0] ?? null;
+}
+
+function latestIso(values: Array<string | null>) {
+  const sorted = values
+    .filter((value): value is string => typeof value === "string")
+    .sort();
+  return sorted[sorted.length - 1] ?? null;
+}
+
+function firstNonEmpty(values: Array<string | null>) {
+  return values.find((value): value is string => typeof value === "string" && value.trim().length > 0) ?? null;
+}
+
+function maxNumber(values: Array<number | null>) {
+  const finite = values.filter((value): value is number => typeof value === "number" && Number.isFinite(value));
+  return finite.length ? Math.max(...finite) : null;
+}
+
+function blockingProviderSegment(segments: ProviderLifecycleSegment[]) {
+  return segments.find((segment) => segment.stale)
+    ?? segments.find((segment) => segment.unavailable)
+    ?? segments.find((segment) => segment.refreshDue)
+    ?? null;
 }
