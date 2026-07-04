@@ -2,6 +2,38 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle DF - Provider Mapping Operator UI
+
+Closed or narrowed:
+
+- Operator/admin UI now exists for the Cycle DE review-first bulk apply route.
+- Operator input can be pasted as JSON or line-based market/slug pairs and normalized before route submission.
+- Readiness and failed-review reasons are visible without reading raw proof artifacts.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider exact slugs/token IDs for spreads, totals, team totals, halves, corners, props, and correct score.
+- A reliable production source/importer for line-market provider identities.
+- Durable audit persistence for who reviewed/applied each exact slug set.
+
+Schema mismatch:
+
+- No schema change was required for the UI.
+- If operator review becomes production-critical, add a review-attempt table rather than relying only on route responses.
+
+Route mismatch:
+
+- None for the selected workflow: the UI uses the existing protected readiness and review/apply route.
+- Direct `mappings[]` apply remains available to tooling, but this UI intentionally uses `reviews[]`.
+
+Temporary mock/static data:
+
+- The UI includes sample Colombia/Ghana slugs as editable placeholder text only. It does not count sample input as mapped data.
+
+Future migration concern:
+
+- Keep real line-market source work separate from UI convenience. The UI makes reviewed slugs operable, but it does not solve provider discovery for missing line families.
+
 ## Cycle DE - Bulk Review Apply Workflow
 
 Closed or narrowed:

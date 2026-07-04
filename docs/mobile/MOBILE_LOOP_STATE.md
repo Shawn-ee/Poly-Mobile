@@ -6,6 +6,30 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle DF
+
+Date: 2026-07-04
+Branch: `mobile/cycle-DF-provider-mapping-operator-ui`
+Goal: Add an operator/admin UI for the protected review-first provider mapping workflow so captured Polymarket slugs can be reviewed, dry-run, and applied without direct script use.
+Reference app screens observed: Continued from Cycle CW/CX/CY Samsung S23 Polymarket official app Colombia vs Ghana game page and exact Gamma event `fifwc-col-gha-2026-07-03`.
+Holiwyn screens changed: No user mobile UI changes. Existing server-backed Colombia vs Ghana live-detail Book flow was re-proven on Samsung tablet.
+Admin/backend UI changed: Added `/admin/mobile-provider-mapping` and linked it from `/admin`. The page loads provider mapping readiness, accepts JSON or line-based review input, dry-runs `reviews[]`, requires a confirmation checkbox for apply, and displays failed review reasons plus attach validation.
+Backend/API changed: No route behavior changed. The page uses existing protected `GET` and `POST /api/mobile/events/:slug/provider-mapping`.
+Database/schema changed: None.
+Files changed: admin provider mapping component/page, admin dashboard link, provider review input parser, parser tests, docs/proof artifacts, tablet proof artifacts.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-provider-review-input.test.ts src/__tests__/mobile-live-provider-bulk-slug-review.service.test.ts src/__tests__/mobile-live-provider-mapping.route.test.ts`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` from `mobile/`
+- Samsung tablet proof via `mobile/scripts/smoke.ps1 -Deep -ServerLiveDetailOrderBook -ServerEventSlug world-cup-2026-colombia-vs-ghana-2026-07-03`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+Result: Pass for operator UI access to the protected review-first provider mapping workflow and tablet regression. The remaining P1 provider parity gap is real line-market slug/source discovery, not UI access.
+Next focus: source real provider line-market slugs/data for spreads, totals, team totals, halves, corners, and props, then use the new UI or route workflow to review/apply them.
+
 ## Cycle DE
 
 Date: 2026-07-04

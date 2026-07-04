@@ -2,6 +2,53 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle DF - Provider Mapping Operator UI
+
+Feature/page worked on:
+
+- PM-GAP-067B operator-reviewed provider mapping workflow.
+- Admin UI for entering captured Polymarket market slugs, dry-running review-first mapping, and applying only all-pass review sets.
+
+Frontend/harness components touched:
+
+- `src/components/admin/MobileProviderMappingTool.tsx`
+- `src/app/admin/mobile-provider-mapping/page.tsx`
+- `src/app/admin/page.tsx`
+- `src/lib/mobileProviderReviewInput.ts`
+- Samsung tablet regression proof refreshed the server-backed Colombia vs Ghana live-detail Book path.
+
+Backend/components touched:
+
+- No provider API route behavior changed.
+- The admin page calls existing protected `GET` and `POST /api/mobile/events/:slug/provider-mapping`.
+- Parser tests added in `src/__tests__/mobile-provider-review-input.test.ts`.
+
+Important functions/services touched:
+
+- `parseProviderSlugReviewInput()` accepts JSON review arrays or line-based `marketId=slug1,slug2` input before the route is called.
+- `MobileProviderMappingTool` loads mapping readiness, displays missing market/outcome fields, runs dry-run reviews, and blocks confirmed apply until the operator checks `Confirm apply`.
+- Existing `reviewMobileLiveProviderBulkSlugMappings()` remains the backend authority for all-pass review/apply behavior.
+
+User interactions supported:
+
+- Operator can open `/admin/mobile-provider-mapping`.
+- Operator can paste exact provider slug reviews collected from the Polymarket reference app.
+- Operator can refresh readiness, dry-run review, inspect failed review reasons, and apply all-pass mappings with explicit confirmation.
+
+State transitions:
+
+- UI parse error prevents route calls.
+- Dry-run sends `dryRun=true` and `confirmApply=false`.
+- Apply sends `dryRun=false` and `confirmApply=true` only after the local confirmation checkbox is set.
+- Readiness reloads after workflow completion.
+- Samsung tablet proof confirms the existing provider-backed live-detail Book path still works.
+
+Known limitations:
+
+- This cycle does not discover new line-market slugs.
+- The admin UI is a tooling surface, not a mobile user feature.
+- A durable audit table for review attempts remains future work.
+
 ## Cycle DE - Bulk Review Apply Workflow
 
 Feature/page worked on:
