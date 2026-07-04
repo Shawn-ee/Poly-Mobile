@@ -101,3 +101,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Portfolio chart still looked like a static placeholder after backend wiring. | P1 | Passed | `PortfolioSparkline` now plots returned value-history points and exposes `portfolio-chart-data-driven`. |
 | Server-backed range change needs visible Android proof. | P1 | Passed | Samsung tablet proof taps `1W` and verifies `portfolio-performance-chart-range-1W`, `portfolio-chart-source-portfolio-value-history-route`, `portfolio-chart-status-ready`, and `portfolio-chart-point-count-7`. |
 | Press tooltip / exact Polymarket chart interaction. | P2 | Open | This cycle improves the visible line and data source. Tooltip/touch readout remains future chart polish. |
+
+## Cycle FX - Portfolio Chart Touch Readout
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio chart had no user inspection behavior after becoming data-driven. | P1 | Passed | Tapping the chart selects a point and displays `portfolio-chart-readout` with selected index/value. |
+| Server-backed chart touch needs Android proof. | P1 | Passed | Samsung tablet proof taps `1W`, then taps the chart and verifies `portfolio-chart-touchable`, `portfolio-chart-selected-index-3`, `portfolio-chart-selected-value-10000`, and backend route source. |
+| Continuous drag tooltip and exact Polymarket chart gesture physics. | P2 | Open | Current MVP supports tap-to-select; drag gesture polish remains future work. |

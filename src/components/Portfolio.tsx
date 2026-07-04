@@ -282,6 +282,7 @@ function PortfolioSparkline({
   status: string;
   points: PortfolioValueHistoryPoint[];
 }) {
+  const [selectedIndexOverride, setSelectedIndexOverride] = useState<number | null>(null);
   const values = points.map((point) => point.value);
   const min = Math.min(...values, 0);
   const max = Math.max(...values, 1);
@@ -294,13 +295,29 @@ function PortfolioSparkline({
   }));
   const trend = points.length >= 2 && points[points.length - 1].value >= points[0].value ? "up" : "down";
   const pointCount = points.length;
+  const selectedIndex = Math.min(selectedIndexOverride ?? Math.max(pointCount - 1, 0), Math.max(pointCount - 1, 0));
+  const selectedPoint = points[selectedIndex];
+  const selectedValue = selectedPoint?.value ?? 0;
+
+  useEffect(() => {
+    setSelectedIndexOverride(null);
+  }, [range, source, status, pointCount]);
 
   return (
-    <View
-      accessibilityLabel={`portfolio-performance-chart portfolio-chart-data-driven portfolio-performance-chart-range-${range} portfolio-chart-source-${source} portfolio-chart-status-${status} portfolio-chart-point-count-${pointCount} portfolio-chart-trend-${trend}`}
+    <Pressable
+      accessibilityLabel={`portfolio-performance-chart portfolio-chart-data-driven portfolio-chart-touchable portfolio-performance-chart-range-${range} portfolio-chart-source-${source} portfolio-chart-status-${status} portfolio-chart-point-count-${pointCount} portfolio-chart-trend-${trend} portfolio-chart-selected-index-${selectedIndex} portfolio-chart-selected-value-${Math.round(selectedValue)}`}
+      onPress={() => setSelectedIndexOverride(pointCount > 2 ? Math.floor(pointCount / 2) : Math.max(pointCount - 1, 0))}
       testID="portfolio-performance-chart"
       style={styles.chartArea}
     >
+      <View
+        accessibilityLabel={`portfolio-chart-readout portfolio-chart-selected-index-${selectedIndex} portfolio-chart-selected-value-${Math.round(selectedValue)}`}
+        style={styles.chartReadout}
+        testID="portfolio-chart-readout"
+      >
+        <Text style={styles.chartReadoutValue}>{money(selectedValue)}</Text>
+        <Text style={styles.chartReadoutLabel}>{range}</Text>
+      </View>
       {plotted.slice(0, -1).map((point, index) => {
         const next = plotted[index + 1];
         return (
@@ -322,15 +339,16 @@ function PortfolioSparkline({
           key={`point-${point.key}`}
           style={[
             styles.chartPoint,
+            index === selectedIndex && styles.chartPointSelected,
             {
               left: `${point.left}%`,
               top: point.top - 5,
-              opacity: index === plotted.length - 1 ? 1 : 0.55,
+              opacity: index === selectedIndex || index === plotted.length - 1 ? 1 : 0.55,
             },
           ]}
         />
       ))}
-    </View>
+    </Pressable>
   );
 }
 
@@ -958,6 +976,10 @@ const styles = StyleSheet.create({
   chartSegmentSix: { left: "91%", top: 78, width: "9%", transform: [{ rotate: "-10deg" }] },
   chartDot: { position: "absolute", right: 2, top: 70, width: 14, height: 14, borderRadius: 999, backgroundColor: "#22c55e", shadowColor: "#22c55e", shadowOpacity: 0.45, shadowRadius: 8 },
   chartPoint: { position: "absolute", width: 13, height: 13, marginLeft: -6, borderRadius: 999, backgroundColor: "#22c55e", shadowColor: "#22c55e", shadowOpacity: 0.45, shadowRadius: 8 },
+  chartPointSelected: { width: 19, height: 19, marginLeft: -9, borderWidth: 3, borderColor: "#bbf7d0" },
+  chartReadout: { position: "absolute", top: 0, left: 0, minWidth: 124, minHeight: 58, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937", zIndex: 2 },
+  chartReadoutValue: { color: "#f8fafc", fontSize: 17, fontWeight: "700" },
+  chartReadoutLabel: { color: "#22c55e", fontSize: 12, fontWeight: "700", marginTop: 2 },
   rangeRow: { alignSelf: "flex-start", flexDirection: "row", marginLeft: 24, marginTop: 6, padding: 4, borderRadius: 999, backgroundColor: "#202633" },
   rangePill: { minWidth: 58, minHeight: 44, alignItems: "center", justifyContent: "center", borderRadius: 999 },
   rangePillActive: { backgroundColor: "#0c111d" },
