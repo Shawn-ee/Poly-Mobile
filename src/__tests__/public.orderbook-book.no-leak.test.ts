@@ -195,8 +195,8 @@ describe("public orderbook book API no-leak checks", () => {
       bids: [{ outcomeId: "home", price: 0.57, size: 120 }],
       asks: [{ outcomeId: "home", price: 0.6, size: 90 }],
       levels: [
-        { outcomeId: "home", side: "bid", price: 0.57, shares: 120, total: 68.4 },
-        { outcomeId: "home", side: "ask", price: 0.6, shares: 90, total: 54 },
+        { outcomeId: "home", side: "bid", price: 0.57, shares: 120, total: 68.4, value: 68.4 },
+        { outcomeId: "home", side: "ask", price: 0.6, shares: 90, total: 54, value: 54 },
       ],
     });
     expect(body.generatedAt).toEqual(expect.any(String));
@@ -284,10 +284,10 @@ describe("public orderbook book API no-leak checks", () => {
       },
       emptyState: null,
       levels: [
-        { outcomeId: "home", side: "bid", price: 0.57, shares: 1200, total: 684 },
-        { outcomeId: "away", side: "bid", price: 0.41, shares: 900, total: 369 },
-        { outcomeId: "home", side: "ask", price: 0.6, shares: 1100, total: 660 },
-        { outcomeId: "away", side: "ask", price: 0.44, shares: 850, total: 374 },
+        { outcomeId: "home", side: "bid", price: 0.57, shares: 1200, total: 684, value: 684 },
+        { outcomeId: "away", side: "bid", price: 0.41, shares: 900, total: 369, value: 369 },
+        { outcomeId: "home", side: "ask", price: 0.6, shares: 1100, total: 660, value: 660 },
+        { outcomeId: "away", side: "ask", price: 0.44, shares: 850, total: 374, value: 374 },
       ],
     });
     expect(body.levels).toHaveLength(4);
@@ -296,6 +296,7 @@ describe("public orderbook book API no-leak checks", () => {
         price: expect.any(Number),
         shares: expect.any(Number),
         total: expect.any(Number),
+        value: expect.any(Number),
       }));
     }
     const keys = collectKeys(body);

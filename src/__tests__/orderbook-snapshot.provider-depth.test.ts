@@ -4,7 +4,13 @@ import { buildProviderOrderbookDepth, buildProviderQuoteDepth } from "@/server/s
 const decimal = (value: number) => new Prisma.Decimal(value);
 
 describe("provider quote depth bridge", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   test("builds provider ladder depth from latest orderbook depth snapshot rows", () => {
+    jest.spyOn(Date, "now").mockReturnValue(new Date("2026-07-04T06:10:05.000Z").getTime());
+
     const depth = buildProviderOrderbookDepth([
       {
         outcomeId: "yes",
