@@ -2974,3 +2974,45 @@ Decision:
 - Unresolved P0 gaps: 0 for selected feature.
 - Remaining P1/P2 gaps: production active provider breadth and legacy broad nav smoke expectations that are still fixture-specific.
 - Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Route Discovery Opens Route-Backed Event Detail
+
+Cycle: FD
+
+Lead Agent target: Close the Local MVP entry-flow gap where a route-backed Home card could render correctly but opening it could still land on an older fixture detail.
+
+Reference Audit Agent: Product steering audit from current Local MVP retail-flow direction. For this cycle, the pass condition is not full Polymarket parity; it is the correct visible entry path toward the simple retail trade flow.
+
+Implementation Agent: Centralized Home/Live/Search event-card opening through `openEventDetail`, with server-mode hydration through `PolyApi.getEvent`.
+
+Audit Gate Agent: Focused mobile typecheck, mobile API tests, provider-shaped route event setup, and Samsung tablet Android proof.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8273`.
+
+Holiwyn evidence:
+
+- `docs/mobile/audits/cycle-fd-route-discovery-detail.md`
+- `docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-event.json`
+- `docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-proof.json`
+- `docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-home.xml`
+- `docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-open.xml`
+- `docs/mobile/screenshots/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-home.png`
+- `docs/mobile/screenshots/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-open.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FD-DISC-P0-01 | P0 | Pass | Tablet Home hierarchy shows route-backed event, compact outcomes, Volume/Liquidity, and route-backed card marker. | N/A |
+| FD-DISC-P0-02 | P0 | Pass | Tapping the card opens `EL-A Provider Breadth World Cup Live`, not the older Mexico/Ecuador fixture. | N/A |
+| FD-DISC-P0-03 | P0 | Pass | Opened detail shows Event Detail chart/probability marker, Game Lines, route outcomes, and provider source. | N/A |
+| FD-DISC-P0-04 | P0 | Pass | Default orderbook markers remain absent in Home and opened detail proof. | N/A |
+| FD-DISC-P1-01 | P1 | Open | Production active Polymarket event breadth is not covered by the disposable proof. | Map/import more real active provider events. |
+| FD-DISC-P1-02 | P1 | Open | Full Home -> Event Detail -> ticket -> fake-token order -> Portfolio/history proof is not part of FD. | Continue the Local MVP flow from this entry path. |
+
+Decision:
+
+- Pass/fail: Pass for selected Local MVP route-discovery-to-detail feature.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: production active provider breadth and the next full retail-flow proof from Home-opened event.
+- Next cycle required: yes, continue Local MVP user-flow breadth.

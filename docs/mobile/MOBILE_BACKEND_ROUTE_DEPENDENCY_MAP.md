@@ -1542,3 +1542,16 @@ Cycle FC implementation notes:
 
 - Mobile discovery no longer sends a default text search for `World Cup`; structured `sportKey=soccer` and `leagueKey=world_cup` prevent valid team-titled World Cup events from being hidden.
 - Tablet evidence proves the route-backed disposable event `mobile-el-a-provider-breadth-e0acffe0` appears on Home with compact outcomes and no default orderbook UI.
+
+## Cycle FD - Route Discovery Opens Route-Backed Event Detail
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home/Search/Live discovery card entry | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1` | GET | Public viewing | None | `events[].slug`, `events[].id`, `events[].title`, status/live clock fields, compact `events[].markets[]`, outcome labels/prices, provider source markers | `Event`, `Market`, `Outcome`, provider quote/read-model fields | If the event list route fails or has no usable markets, mobile still has local fixtures as fallback. FD proof requires the route-backed card. | Production active Polymarket World Cup breadth remains P1. |
+| Event Detail hydration from discovery card | `/api/mobile/events/:slug/live-detail` | GET | Public viewing | Event id/slug from the selected discovery event | Full event title/status, chart/probability fields, Game Lines market groups, market/outcome identity, provider source/market/condition/token fields | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, chart history snapshots | If hydration fails, the compact event remains selected; FD proof requires successful same-event route hydration. | A later cycle should prove the same Home-opened event through Buy/Sell ticket, server fake-token order, and Portfolio/history. |
+
+Cycle FD implementation notes:
+
+- `openEventDetail` uses the compact discovery event for instant navigation, then hydrates the same event through the live-detail route when server market-data mode is active.
+- This cycle does not add or expose orderbook, chat, live stats, deposit, location, or social routes.
+- Tablet proof slug: `mobile-el-a-provider-breadth-de83f85d`.

@@ -329,3 +329,34 @@ Pass for selected route-backed retail status flow with orderbook hidden by defau
 
 Remaining gaps:
 Production active-event status breadth, server-side unavailable-market order guard, and fresh S23 status recapture.
+
+### 2026-07-04 - Cycle FD - Route-backed discovery opens Event Detail
+
+Reference device:
+Product steering plus existing Polymarket sports audits. Fresh S23 proof was not required for this local entry-flow routing gate.
+
+Holiwyn device:
+Samsung tablet / Holiwyn Expo Go / local Expo port `8273`.
+
+Holiwyn app mode:
+`EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE` unset, `EXPO_PUBLIC_SHOW_ORDERBOOK` unset, backend `http://172.16.200.14:3002`.
+
+Holiwyn actions:
+Opened Home, verified a route-backed disposable World Cup live event card with compact outcomes, tapped the event card, and verified the same route-backed Event Detail page opened with chart/probability surface, Game Lines, provider-backed outcomes, and no default orderbook UI.
+
+Holiwyn evidence:
+- `docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-event.json`
+- `docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-proof.json`
+- `docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-home.xml`
+- `docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-open.xml`
+- `docs/mobile/screenshots/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-home.png`
+- `docs/mobile/screenshots/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-open.png`
+
+Smoke/tests:
+PowerShell parser checks, mobile typecheck, focused mobile API tests, provider breadth route proof, backend health, and tablet proof wrapper passed.
+
+Result:
+Pass for selected Local MVP discovery-to-detail flow with orderbook hidden by default.
+
+Remaining gaps:
+Production active Polymarket World Cup provider breadth and full Home-opened route event proof through Buy/Sell ticket, fake-token order, and Portfolio/history.

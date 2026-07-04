@@ -445,3 +445,11 @@ For every UI element or interaction, answer:
 - `/api/events?includeMobileMarkets=1` now returns compact backend-shaped markets for mobile discovery, and mobile consumes them before falling back to detail fetches.
 - Samsung tablet Home hierarchy proof passes for a route-backed disposable World Cup live event with compact outcomes and hidden default orderbook controls.
 - Remaining P1: production active Polymarket World Cup provider breadth, and updating the older broad `WholeAppNavDiscovery` smoke path so it can accept route-backed event identities instead of only Mexico/Ecuador.
+
+## Cycle FD Gap Tracker Update
+
+- PM-GAP-099 is opened and verified for Local MVP route discovery opening the route-backed Event Detail page.
+- FD closes the P0 entry-flow gap left by FC where the Home card could be route-backed but the opened detail could still fall back to the older fixture detail.
+- Samsung tablet proof passes for Home route-backed card -> tap -> same route-backed Event Detail with chart/probability surface, Game Lines, provider-backed outcomes, and no default orderbook UI.
+- `openEventDetail` now centralizes Home, Live, and Search event-card navigation and hydrates selected events through `/api/mobile/events/:slug/live-detail` in server market-data mode.
+- Remaining P1: production active Polymarket World Cup provider breadth and a full Home-opened route event proof through Buy/Sell ticket, fake-token order, Portfolio/history.

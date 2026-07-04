@@ -12826,3 +12826,21 @@ Open blockers: None for continued Local MVP user-flow work.
 Risks: EV/EW still use disposable Polymarket-shaped proof events rather than guaranteed active production line-family breadth. Filled trade history, totals/team-total lifecycle breadth, and fresh S23 retail lifecycle recapture remain P1.
 
 Next three likely cycles: route-backed filled trade/history proof, totals/team-total lifecycle breadth, and a full Home -> live event -> ticket -> Portfolio journey proof using the retail default UI.
+
+### Heartbeat After Cycle FD
+
+Completed recent cycles: FB, FC, FD.
+
+Verified progress: The Local MVP entry flow is now more coherent. FB hardened server-side unavailable provider orders, FC made Home/Search discovery consume route-backed compact World Cup events, and FD proved on the Samsung tablet that tapping a route-backed Home card opens the same route-backed Event Detail instead of the older fixture page.
+
+Current app state: The default mobile path stays retail-first and orderbook-hidden. A user can open Holiwyn, see a server-backed World Cup event card, tap it, and land on the matching Event Detail with chart/probability surface, Game Lines, provider-backed outcomes, and provider source markers.
+
+Current backend state: `/api/events?includeMobileMarkets=1` owns compact discovery, while `/api/mobile/events/:slug/live-detail` owns richer event detail hydration. FD did not add backend routes or schema.
+
+Device strategy: Samsung tablet remains the Holiwyn proof device. Samsung S23 remains reference device only when a fresh Polymarket interaction audit is required.
+
+Open blockers: None for continued Local MVP visible user-flow work.
+
+Risks: The proof event is disposable provider-shaped data, not production active Polymarket event breadth. The next cycles should avoid nonessential UI areas and continue the visible flow into ticket submission and Portfolio/history from the Home-opened event.
+
+Next three likely cycles: Home-opened Event Detail -> Buy/Sell ticket proof, Home-opened ticket -> fake-token order proof, and Home-opened order -> Portfolio/history proof.

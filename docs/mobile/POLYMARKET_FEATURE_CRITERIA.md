@@ -410,3 +410,17 @@ The focused DU-C gate in `docs/mobile/audits/cycle-du-c-orderbook-final-gate.md`
 | OB-DU-C-P0-07 | P0 | DT-passed Yes/No switching and side-labelled ladder behavior must not regress. | Same integrated bundle includes tab switch before/after and ask/bid row-side markers above/below spread. |
 | OB-DU-C-P0-08 | P0 | Non-ready states must remain honest and visually distinct from provider-ready depth. | Integrated proof includes a non-ready state or documented skip reason; fallback/idle/unavailable rows cannot be used as ready evidence. |
 | OB-DU-C-P0-09 | P0 | Final evidence must be integrated, Android-visible, and committed under DU-owned proof paths. | Passing smoke/test summary plus committed screenshots/XML/proof JSON from the integrated DU build. |
+
+## Cycle FD Route Discovery To Event Detail Criteria
+
+The focused FD gate in `docs/mobile/audits/cycle-fd-route-discovery-detail.md` converts the Local MVP entry-flow steering into pass/fail criteria. This is not a full Polymarket parity claim; it verifies the visible route-backed Home -> Event Detail handoff required before continuing to ticket/order/Portfolio proof.
+
+| ID | Priority | Criterion | Required proof |
+| --- | --- | --- | --- |
+| FD-DISC-P0-01 | P0 | Home discovery must show a route-backed World Cup event with compact tradeable outcomes from `/api/events?includeMobileMarkets=1`. | Samsung tablet screenshot/XML showing event title, outcome labels, Volume/Liquidity, and route-backed card marker. |
+| FD-DISC-P0-02 | P0 | Tapping the route-backed discovery card must open the same event detail, not the older local fixture. | Android proof after tap showing the same event title and explicit absence of Mexico/Ecuador fallback markers. |
+| FD-DISC-P0-03 | P0 | Server market-data mode must hydrate the opened detail through `/api/mobile/events/:slug/live-detail`. | Android XML showing detail-only chart/probability and provider markers from the live-detail payload. |
+| FD-DISC-P0-04 | P0 | The opened detail must expose the local MVP retail surface: chart/probability, Game Lines, and tradeable outcomes. | Screenshot/XML with `event-detail-price-chart`, `Game Lines`, provider-backed outcome labels, and provider source marker. |
+| FD-DISC-P0-05 | P0 | Default orderbook UI must remain hidden for the Local MVP retail path. | Android assertions reject top/inline/open orderbook markers in Home and opened detail evidence. |
+| FD-DISC-P1-01 | P1 | Production active Polymarket World Cup event breadth should replace disposable proof events. | Future provider mapping proof for active production events. |
+| FD-DISC-P1-02 | P1 | The same Home-opened event should continue through Buy/Sell ticket, fake-token order, and Portfolio/history. | Future Android proof for the full retail path from discovery entry. |

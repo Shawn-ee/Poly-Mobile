@@ -1387,6 +1387,19 @@ export default function App() {
     openTicket(target.market, target.outcome, target.event, side);
   };
 
+  const openEventDetail = useCallback((event: Event) => {
+    setEventDetailForcedSide(null);
+    setSelectedEvent(event);
+    if (MARKET_DATA_MODE !== "server") return;
+    api.getEvent(event.id)
+      .then((detail) => normalizeEventDetail(detail))
+      .then((hydrated) => {
+        if (!hydrated || !mounted.current) return;
+        setSelectedEvent((current) => current?.id === event.id ? hydrated : current);
+      })
+      .catch(() => undefined);
+  }, [api]);
+
   const cancelOpenOrder = (order: OpenOrder) => {
     setOpenOrders((current) => current.filter((item) => item.id !== order.id));
     const canceledActivity = openOrderCanceledActivity(order, t.justNow);
@@ -1449,7 +1462,7 @@ export default function App() {
                 events={filteredEvents}
                 query={query}
                 setQuery={setQuery}
-                openEvent={setSelectedEvent}
+                openEvent={openEventDetail}
                 openTicket={openTicket}
                 futures={futures}
                 savedEventIds={savedEventIds}
@@ -1464,7 +1477,7 @@ export default function App() {
                 isRefreshing={isRefreshingLive}
                 refreshTick={liveRefreshTick}
                 onRefresh={refreshLiveMarkets}
-                openEvent={setSelectedEvent}
+                openEvent={openEventDetail}
                 openTicket={openTicket}
               />
             )}
@@ -1497,7 +1510,7 @@ export default function App() {
                 query={query}
                 setQuery={setQuery}
                 events={filteredEvents}
-                openEvent={setSelectedEvent}
+                openEvent={openEventDetail}
                 openTicket={openTicket}
                 savedEventIds={savedEventIds}
                 toggleSavedEvent={toggleSavedEvent}

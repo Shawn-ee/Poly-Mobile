@@ -38,6 +38,7 @@ param(
   [switch]$LiveDetail,
   [switch]$EmptyErrorLoading,
   [switch]$WholeAppNavDiscovery,
+  [switch]$LocalMvpRouteDiscoveryDetail,
   [switch]$FutureCardStats,
   [switch]$FutureChartRange,
   [switch]$FutureCatalogExpand,
@@ -180,6 +181,8 @@ if ($LocalMvpRouteStatusFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EmptyErrorLoading -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($WholeAppNavDiscovery) {
   & "$PSScriptRoot\smoke.ps1" -Deep -WholeAppNavDiscovery -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
+} elseif ($LocalMvpRouteDiscoveryDetail) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteDiscoveryDetail -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($FutureCardStats) {
   & "$PSScriptRoot\smoke.ps1" -Deep -FutureCardStats -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($FutureChartRange) {

@@ -3482,3 +3482,35 @@ Temporary mock/static data:
 Future migration concern:
 
 - If production event discovery grows beyond compact cards, add pagination/status/source controls rather than overloading the first-screen payload with full event detail.
+
+## Cycle FD - Route Discovery Opens Route-Backed Event Detail
+
+Closed or narrowed:
+
+- Route-backed discovery cards now open the same event detail instead of falling back to the older local Mexico/Ecuador fixture.
+- The compact discovery event can be used immediately for responsive navigation, then replaced by `/api/mobile/events/:slug/live-detail` hydration when server market-data mode is active.
+- Tablet proof confirms the opened detail page shows the same route-backed event, chart/probability surface, Game Lines, provider-backed outcomes, and hidden default orderbook UI.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Production active Polymarket World Cup event breadth remains P1.
+- A full Home-opened route event still needs an integrated proof through Buy/Sell ticket, fake-token order, and Portfolio/history.
+
+Schema mismatch:
+
+- No schema migration was required. Existing event slug/id, compact market payload, live-detail market/outcome identity, and provider snapshot fields cover FD.
+
+Route mismatch:
+
+- `/api/events?includeMobileMarkets=1` is enough for first-screen discovery.
+- `/api/mobile/events/:slug/live-detail` is still required for chart/probability and richer event detail.
+- FD closes the route handoff gap between those two routes.
+
+Temporary mock/static data:
+
+- No arbitrary frontend-only market data was added.
+- The proof event is disposable backend provider-shaped data created by the existing provider breadth harness.
+
+Future migration concern:
+
+- Keep discovery payload compact. Add richer event-detail behavior to the detail route or a dedicated retail-flow route instead of bloating `/api/events`.

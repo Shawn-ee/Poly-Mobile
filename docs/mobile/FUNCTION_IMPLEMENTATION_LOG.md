@@ -5076,3 +5076,53 @@ Known limitations:
 
 - The broad `WholeAppNavDiscovery` smoke path remains fixture-specific and expects the older Mexico/Ecuador mock card. FC added a focused route-backed discovery artifact gate instead of changing that legacy fixture proof.
 - FC proves disposable provider-shaped event discovery; production active Polymarket provider breadth remains P1.
+
+## Cycle FD - Route Discovery Opens Route-Backed Event Detail
+
+Feature/page worked on:
+
+- Local MVP Home/Search/Live card entry into Event Detail.
+
+Frontend/harness/backend files touched:
+
+- `mobile/App.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `docs/mobile/audits/cycle-fd-route-discovery-detail.md`
+
+Important functions/services touched:
+
+- `openEventDetail` now centralizes event-card navigation.
+- In server market-data mode, `openEventDetail` immediately opens the selected compact discovery event and hydrates it through `PolyApi.getEvent(event.id)`.
+- Home, Live, and Search screens now use the same event-open path, avoiding the older fixture-only detail fallback.
+
+User interactions supported/proven:
+
+- Open Holiwyn on the Samsung tablet in server market-data mode.
+- See a route-backed World Cup live event on Home with compact outcome buttons and Volume/Liquidity labels.
+- Tap the route-backed event card.
+- Land on the same event's route-backed Event Detail with chart/probability surface, Game Lines, provider-backed outcomes, and provider source markers.
+- Default orderbook UI remains hidden.
+
+Validation:
+
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+- `npm --prefix mobile run typecheck`
+- `npm run test:mobile-api -- api.test.ts worldCupAdapter.test.ts`
+- `npx tsx scripts/prove_mobile_el_a_provider_breadth.ts --output=docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-event.json`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpRouteDiscoveryDetail -Port 8273 -BackendBaseUrl http://172.16.200.14:3002 -OutputDir docs/mobile/screenshots/cycle-FD-route-discovery-detail -HierarchyOutputDir docs/mobile/harness/cycle-FD-route-discovery-detail`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-event.json`
+- `docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-proof.json`
+- `docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-home.xml`
+- `docs/mobile/harness/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-open.xml`
+- `docs/mobile/screenshots/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-home.png`
+- `docs/mobile/screenshots/cycle-FD-route-discovery-detail/cycle-FD-route-discovery-detail-open.png`
+
+Known limitations:
+
+- FD proves the entry-to-detail hop using disposable provider-shaped data. Production active Polymarket World Cup breadth remains P1.
+- The next Local MVP cycles should continue from this entry path into Buy/Sell ticket, fake-token order, and Portfolio/history instead of opening new nonessential feature areas.
