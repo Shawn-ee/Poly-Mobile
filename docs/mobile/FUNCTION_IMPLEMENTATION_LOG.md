@@ -3836,3 +3836,34 @@ Known limitations:
 
 - EB-A is a backend contract proof only. Agent B still needs Android proof that the visible chart and selector consume `markets[].selection`.
 - Real Polymarket/CLOB line-family chart history is still limited by provider-mapped line markets. Missing `OPTIC_ODDS_API_KEY` is not a blocker for this Polymarket-first route.
+
+## Cycle EC-B - Visible Order Book Ladder And Ticket Carry-Through
+
+Feature/page worked on:
+
+- Mobile live game EventDetail Book overlay and Android smoke proof.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+
+User interactions supported/proven:
+
+- Open Book from the visible top game-page Book action on Android.
+- Switch selected Yes/No outcome and keep selected market/outcome/side visible in the Book strip.
+- Open grouped Book selector, switch Totals then Spread, and keep line/period/outcome identity visible.
+- Toggle Book price display from cents to decimal without resetting selected market/outcome.
+- Launch the trade ticket from the selected Spread contract with provider source, market, condition, token, line, and side carried through.
+
+Validation:
+
+- `npm run typecheck` from `mobile/`
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke.ps1 -Deep -EventDetailOrderBookInteractions -Port 8268 -Device "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp" -ExpoHost 127.0.0.1 -OutputDir docs/mobile/screenshots/cycle-EC-B-orderbook-depth-ticket -HierarchyOutputDir docs/mobile/harness/cycle-EC-B-orderbook-depth-ticket`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-proof.json`
+- `docs/mobile/harness/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-*.xml`
+- `docs/mobile/screenshots/cycle-EC-B-orderbook-depth-ticket/cycle-EC-B-holiwyn-orderbook-*.png`
