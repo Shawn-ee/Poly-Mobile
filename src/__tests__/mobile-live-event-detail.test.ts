@@ -134,7 +134,8 @@ describe("mobile live event detail contract", () => {
         ],
       },
       chartSnapshots: [
-        { outcomeId: "home", ts: new Date("2026-07-03T22:00:00.000Z"), price: new Prisma.Decimal("0.59") },
+        { marketId: "market-main", outcomeId: "home", ts: new Date("2026-07-03T22:00:00.000Z"), price: new Prisma.Decimal("0.59") },
+        { marketId: "market-0", outcomeId: "away", ts: new Date("2026-07-03T22:00:30.000Z"), price: new Prisma.Decimal("0.41") },
       ],
     });
 
@@ -161,11 +162,19 @@ describe("mobile live event detail contract", () => {
       batchedProviderQuoteSnapshotRefreshDueCount: 0,
       batchedProviderQuoteSnapshotNextRefreshAt: "2026-07-03T22:01:10.000Z",
       chartHistorySource: "market-outcome-snapshot",
+      batchedChartHistorySource: "market-outcome-snapshot",
+      batchedChartHistoryMarketCount: 2,
+      batchedChartHistoryPointCount: 2,
+      batchedChartHistoryRequestedMarketCount: 14,
       liveDataStatus: "ready",
     });
     expect(payload.contract.generatedAt).toEqual(expect.any(String));
     expect(new Date(payload.contract.generatedAt).toString()).not.toBe("Invalid Date");
     expect(payload.contract.batchedOrderbookDepthRequestedMarketIds).toEqual([
+      "market-main",
+      ...Array.from({ length: 13 }, (_, index) => `market-${index}`),
+    ]);
+    expect(payload.contract.batchedChartHistoryRequestedMarketIds).toEqual([
       "market-main",
       ...Array.from({ length: 13 }, (_, index) => `market-${index}`),
     ]);
@@ -200,6 +209,19 @@ describe("mobile live event detail contract", () => {
         { outcomeId: "home", side: "bid", price: 0.59, shares: 1060, total: 625.4 },
         { outcomeId: "home", side: "ask", price: 0.65, shares: 940, total: 611 },
       ],
+      chartHistory: [
+        { outcomeId: "home", timestamp: "2026-07-03T22:00:00.000Z", probability: 59 },
+      ],
+      chartHistoryStatus: {
+        source: "market-outcome-snapshot",
+        status: "ready",
+        pointCount: 1,
+        outcomeCount: 1,
+        lastUpdated: "2026-07-03T22:00:00.000Z",
+        emptyState: null,
+        range: "1D",
+        ranges: ["1D", "1W", "1M", "MAX"],
+      },
       orderbookDepthSource: "provider-orderbook-depth",
       providerOrderbookDepth: {
         source: "reference-orderbook-depth-snapshot",
@@ -224,6 +246,17 @@ describe("mobile live event detail contract", () => {
     expect(payload.markets[1]).toMatchObject({
       id: "market-0",
       liquidity: 1236.4,
+      chartHistory: [
+        { outcomeId: "away", timestamp: "2026-07-03T22:00:30.000Z", probability: 41 },
+      ],
+      chartHistoryStatus: {
+        source: "market-outcome-snapshot",
+        status: "ready",
+        pointCount: 1,
+        outcomeCount: 1,
+        lastUpdated: "2026-07-03T22:00:30.000Z",
+        emptyState: null,
+      },
       orderbookDepth: [
         { outcomeId: "home", side: "bid", price: 0.59, shares: 1060, total: 625.4 },
         { outcomeId: "home", side: "ask", price: 0.65, shares: 940, total: 611 },
@@ -336,6 +369,75 @@ describe("mobile live event detail contract", () => {
       },
     });
     expect(payload.markets[0].availability.stalenessSeconds).toBeGreaterThan(90);
+  });
+
+  test("keeps selected-market chart readiness separate from primary chart history", async () => {
+    const payload = await serializeMobileLiveEventDetail({
+      event: {
+        id: "event-1",
+        slug: "world-cup-match",
+        title: "Curacao vs Cote d'Ivoire",
+        description: "M55",
+        category: "sports",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        eventType: "match",
+        homeTeamName: "Curacao",
+        awayTeamName: "Cote d'Ivoire",
+        startTime: new Date("2026-06-25T20:00:00.000Z"),
+        status: "LIVE",
+        liveStatus: "in_progress",
+        period: "2H",
+        clock: "67'",
+        homeScore: 0,
+        awayScore: 1,
+        imageUrl: null,
+        metadata: {},
+        markets: [
+          market({ id: "market-main", displayOrder: 0 }),
+          market({
+            id: "spread-15",
+            title: "Curacao -1.5",
+            marketGroupKey: "spreads",
+            marketGroupTitle: "Spreads",
+            displayOrder: 1,
+            marketType: "spread",
+            line: new Prisma.Decimal("1.5"),
+          }),
+        ],
+      },
+      chartSnapshots: [
+        { marketId: "spread-15", outcomeId: "home", ts: new Date("2026-07-03T22:05:00.000Z"), price: new Prisma.Decimal("0.52") },
+      ],
+    });
+
+    expect(payload.event.chartHistory).toEqual([]);
+    expect(payload.contract).toMatchObject({
+      chartHistorySource: "empty",
+      batchedChartHistorySource: "market-outcome-snapshot",
+      batchedChartHistoryMarketCount: 1,
+      batchedChartHistoryPointCount: 1,
+    });
+    expect(payload.markets.find((item) => item.id === "market-main")).toMatchObject({
+      chartHistory: [],
+      chartHistoryStatus: {
+        source: "empty",
+        status: "unavailable",
+        emptyState: "no-history",
+      },
+    });
+    expect(payload.markets.find((item) => item.id === "spread-15")).toMatchObject({
+      chartHistory: [
+        { outcomeId: "home", timestamp: "2026-07-03T22:05:00.000Z", probability: 52 },
+      ],
+      chartHistoryStatus: {
+        source: "market-outcome-snapshot",
+        status: "ready",
+        pointCount: 1,
+        outcomeCount: 1,
+        lastUpdated: "2026-07-03T22:05:00.000Z",
+      },
+    });
   });
 
   test("reserves compact payload slots for rendered line market groups", () => {

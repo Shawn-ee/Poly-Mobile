@@ -59,9 +59,15 @@ type OutcomeInput = {
 };
 
 type SnapshotInput = {
+  marketId?: string;
   outcomeId: string;
   ts: Date;
   price: Prisma.Decimal;
+};
+type OrderbookSnapshot = Awaited<ReturnType<typeof buildPublicOrderbookSnapshot>>;
+type OrderbookDepthEntry = {
+  snapshot: OrderbookSnapshot;
+  levels: ReturnType<typeof depthLevelsFromSnapshot>;
 };
 
 const MAX_MARKETS = 14;
@@ -177,6 +183,43 @@ const liveStatusFromMetadata = (value: string | null): LiveAvailabilityStatus | 
   return null;
 };
 
+const chartHistoryFromSnapshots = (snapshots: SnapshotInput[]) =>
+  snapshots.flatMap((snapshot) => {
+    const probability = probabilityFromPrice(snapshot.price);
+    if (probability == null) return [];
+    return [{
+      outcomeId: snapshot.outcomeId,
+      timestamp: snapshot.ts.toISOString(),
+      probability,
+    }];
+  });
+
+const chartHistoryStatusForMarket = (params: {
+  market: MarketInput;
+  snapshots: SnapshotInput[];
+}) => {
+  const history = chartHistoryFromSnapshots(params.snapshots);
+  const latestSnapshotTs = params.snapshots.reduce<Date | null>(
+    (latest, snapshot) => !latest || snapshot.ts > latest ? snapshot.ts : latest,
+    null,
+  );
+  const lastUpdated = latestSnapshotTs?.toISOString() ?? null;
+  return {
+    source: history.length > 0 && params.market.referenceSource === "polymarket"
+      ? "polymarket-clob-prices-history"
+      : history.length > 0
+        ? "market-outcome-snapshot"
+        : "empty",
+    status: history.length > 0 ? "ready" : "unavailable",
+    pointCount: history.length,
+    outcomeCount: new Set(history.map((point) => point.outcomeId)).size,
+    lastUpdated,
+    emptyState: history.length === 0 ? "no-history" : null,
+    range: "1D",
+    ranges: ["1D", "1W", "1M", "MAX"],
+  };
+};
+
 const availabilityForMarket = (market: MarketInput) => {
   const normalizedStatus = market.status.toUpperCase();
   const sourceDate = market.sourceUpdatedAt ?? market.updatedAt ?? null;
@@ -271,6 +314,15 @@ export async function serializeMobileLiveEventDetail(input: {
   const generatedAt = new Date().toISOString();
   const markets = selectCompactLiveMarkets(input.event.markets);
   const primaryMarket = markets.find((market) => groupRank(market) === 0) ?? markets[0] ?? null;
+  const primaryMarketId = primaryMarket?.id ?? null;
+  const chartSnapshotsByMarketId = new Map<string, SnapshotInput[]>();
+  for (const snapshot of input.chartSnapshots) {
+    const marketId = snapshot.marketId ?? primaryMarketId;
+    if (!marketId) continue;
+    const existing = chartSnapshotsByMarketId.get(marketId) ?? [];
+    existing.push(snapshot);
+    chartSnapshotsByMarketId.set(marketId, existing);
+  }
   const metadata = metadataObject(input.event.metadata);
   const mobileLiveDetail = metadataObject(metadata.mobileLiveDetail as Prisma.JsonValue | null);
   const liveStats = arrayFromMetadata(metadata, "liveStats").length
@@ -302,9 +354,11 @@ export async function serializeMobileLiveEventDetail(input: {
   const batchedProviderOrderbookDepthStaleCount = providerDepthSnapshots.filter((snapshot) => snapshot.status === "stale").length;
   const batchedProviderOrderbookDepthRefreshDueCount = providerDepthSnapshots.filter((snapshot) => snapshot.shouldRefresh).length;
 
+  const emptyDepthEntry: OrderbookDepthEntry = { snapshot: emptyOrderbookSnapshot, levels: [] };
   const serializedMarkets = await Promise.all(
     markets.map(async (market) => {
-      const depth = depthByMarketId.get(market.id) ?? { snapshot: emptyOrderbookSnapshot, levels: [] };
+      const depth = depthByMarketId.get(market.id) ?? emptyDepthEntry;
+      const marketChartSnapshots = chartSnapshotsByMarketId.get(market.id) ?? [];
       const bidByOutcome = new Map(depth.snapshot.bids.map((level) => [level.outcomeId, level]));
       const askByOutcome = new Map(depth.snapshot.asks.map((level) => [level.outcomeId, level]));
       return {
@@ -327,6 +381,8 @@ export async function serializeMobileLiveEventDetail(input: {
         propCategory: market.propCategory,
         availability: availabilityForMarket(market),
         liquidity: depth.levels.length ? depth.levels.reduce((sum, level) => sum + level.total, 0) : null,
+        chartHistory: chartHistoryFromSnapshots(marketChartSnapshots),
+        chartHistoryStatus: chartHistoryStatusForMarket({ market, snapshots: marketChartSnapshots }),
         orderbookDepth: depth.levels,
         orderbookDepthSource: depth.snapshot.depthSource,
         providerOrderbookDepth: depth.snapshot.providerOrderbookDepth,
@@ -358,16 +414,9 @@ export async function serializeMobileLiveEventDetail(input: {
     }),
   );
 
-  const chartHistory = input.chartSnapshots.flatMap((snapshot) => {
-    const probability = probabilityFromPrice(snapshot.price);
-    if (probability == null) return [];
-    return [{
-      outcomeId: snapshot.outcomeId,
-      timestamp: snapshot.ts.toISOString(),
-      probability,
-    }];
-  });
-  const latestSnapshotTs = input.chartSnapshots.reduce<Date | null>(
+  const primaryChartSnapshots = primaryMarketId ? chartSnapshotsByMarketId.get(primaryMarketId) ?? [] : [];
+  const chartHistory = chartHistoryFromSnapshots(primaryChartSnapshots);
+  const latestSnapshotTs = primaryChartSnapshots.reduce<Date | null>(
     (latest, snapshot) => !latest || snapshot.ts > latest ? snapshot.ts : latest,
     null,
   );
@@ -455,6 +504,11 @@ export async function serializeMobileLiveEventDetail(input: {
       batchedProviderQuoteSnapshotRefreshDueCount,
       batchedProviderQuoteSnapshotNextRefreshAt,
       chartHistorySource: chartHistory.length ? "market-outcome-snapshot" : "empty",
+      batchedChartHistorySource: input.chartSnapshots.length ? "market-outcome-snapshot" : "empty",
+      batchedChartHistoryMarketCount: Array.from(chartSnapshotsByMarketId.values()).filter((snapshots) => snapshots.length > 0).length,
+      batchedChartHistoryPointCount: input.chartSnapshots.length,
+      batchedChartHistoryRequestedMarketCount: markets.length,
+      batchedChartHistoryRequestedMarketIds: markets.map((market) => market.id),
       liveDataStatus,
     },
   };

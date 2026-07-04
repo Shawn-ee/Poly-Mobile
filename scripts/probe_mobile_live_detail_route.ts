@@ -32,12 +32,12 @@ async function main() {
   if (!event) throw new Error(`Event not found: ${eventSlug}`);
 
   const compactMarkets = selectCompactLiveMarkets(event.markets);
-  const primaryMarketId = compactMarkets[0]?.id ?? null;
-  const chartSnapshots = primaryMarketId
+  const compactMarketIds = compactMarkets.map((market) => market.id);
+  const chartSnapshots = compactMarketIds.length
     ? await prisma.marketOutcomeSnapshot.findMany({
-        where: { marketId: primaryMarketId },
-        orderBy: { ts: "asc" },
-        take: 240,
+        where: { marketId: { in: compactMarketIds } },
+        orderBy: [{ marketId: "asc" }, { ts: "asc" }],
+        take: compactMarketIds.length * 240,
       })
     : [];
   const started = Date.now();
@@ -53,10 +53,16 @@ async function main() {
     batchedProviderOrderbookDepthMarketCount: detail.contract.batchedProviderOrderbookDepthMarketCount,
     orderbookDepthSource: detail.contract.batchedOrderbookDepthSource,
     providerOrderbookDepthSource: detail.contract.batchedProviderOrderbookDepthSource,
+    batchedChartHistoryMarketCount: detail.contract.batchedChartHistoryMarketCount,
+    batchedChartHistoryPointCount: detail.contract.batchedChartHistoryPointCount,
+    chartReadyMarketIds: detail.markets
+      .filter((market) => market.chartHistoryStatus.status === "ready")
+      .map((market) => market.id),
     pass:
       detail.contract.marketCount >= 3 &&
       detail.contract.batchedProviderQuoteSnapshotReadyCount >= 3 &&
       detail.contract.batchedProviderOrderbookDepthReadyCount >= 3 &&
+      detail.contract.batchedChartHistoryMarketCount >= 1 &&
       Date.now() - started < 5000,
   };
 

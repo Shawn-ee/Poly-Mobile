@@ -2,6 +2,37 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EA-A - Live Detail Per-Market Chart Contract
+
+Closed or narrowed:
+
+- `/api/mobile/events/:slug/live-detail` no longer treats chart history as only a primary-market event-level field.
+- Each compact live market now has `chartHistory[]` and `chartHistoryStatus`, so selected market/line chart behavior can be driven by backend `marketId` instead of frontend inference.
+- The contract now reports batched chart history counts and requested compact market ids for Audit Gate evidence.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket/CLOB chart history for all live line-family markets requires provider token mapping for those markets.
+- The current contract exposes 1D-style rows in live-detail; richer range-specific chart calls can still use `/api/markets/:id/chart?range=...`.
+- The mobile app still needs visible Android proof that chart selection uses the selected market's `chartHistoryStatus` rather than static placeholder data.
+
+Schema mismatch:
+
+- No schema change was required. Existing `MarketOutcomeSnapshot.marketId`, `outcomeId`, `ts`, and `price` cover the contract.
+
+Route mismatch:
+
+- The live-detail route now carries per-market chart readiness. Remaining mismatch is provider coverage and visible UI consumption, not route shape.
+
+Temporary mock/static data:
+
+- No frontend mock data was added. Unit proof uses deterministic service inputs only.
+
+Future migration concern:
+
+- Keep event-level `chartHistory` primary-market scoped for backwards compatibility, and use `markets[].chartHistoryStatus` for selected market chart UI.
+- Do not mark chart parity complete for line markets until real mapped provider history or an explicitly documented unavailable state is visible on Android.
+
 ## Cycle DU-A - Provider Ready Line Orderbook Depth Proof
 
 Closed or narrowed:
