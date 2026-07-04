@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
   a11yOnly: { height: 1, opacity: 0.01, overflow: "hidden" },
   statsRow: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 4 },
   statsText: { color: "#93c5fd", fontSize: 12, fontWeight: "900" },
-  teamRow: { height: 1, opacity: 0.01, overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 10, marginTop: 0 },
+  teamRow: { display: "none", height: 0, opacity: 0, overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 10, marginTop: 0 },
   teamName: { flex: 1, color: "#f8fafc", fontSize: 18, fontWeight: "800" },
   oddsText: { color: "#a7b1c2", width: 48, textAlign: "right", fontSize: 17, fontWeight: "800" },
   probButton: { minWidth: 86, alignItems: "center", paddingVertical: 12, paddingHorizontal: 14, borderRadius: 12 },

@@ -816,6 +816,23 @@ try {
       Assert-HierarchyContains -Path $homeRouteTicketHomeHierarchy -Expected @("live-world-cup-games-focus", "prediction-only-live", "World Cup", "Live World Cup", "EL-A Provider Breadth World Cup Live", "Breadth Home", "Breadth Away", "event-card-mobile-el-a-provider-breadth", "event-card-retail-outcome-rail-mobile-el-a-provider-breadth")
       Assert-HierarchyDoesNotContain -Path $homeRouteTicketHomeHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
+      Invoke-TapHierarchyNode -Path $homeRouteTicketHomeHierarchy -Identifier "event-outcome-retail-mobile-el-a-provider-breadth" -StartsWith
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-FE-home-route-ticket-retail-outcome-ticket.png"
+      $homeRouteTicketRetailOutcomeHierarchy = Save-UiHierarchy -Name "cycle-FE-home-route-ticket-retail-outcome-ticket.xml"
+      Assert-HierarchyContains -Path $homeRouteTicketRetailOutcomeHierarchy -Expected @(
+        "trade-ticket",
+        "EL-A Provider Breadth World Cup Live",
+        "ticket-side-buy",
+        "ticket-side-sell",
+        "Choose an amount",
+        "swipe-to-submit-order"
+      )
+      Assert-HierarchyDoesNotContain -Path $homeRouteTicketRetailOutcomeHierarchy -Unexpected $mvpHiddenOrderBookExpected
+      Invoke-TapHierarchyNode -Path $homeRouteTicketRetailOutcomeHierarchy -Identifier "ticket-close"
+      Start-Sleep -Seconds 1
+      $homeRouteTicketHomeHierarchy = Save-UiHierarchy -Name "cycle-FE-home-route-ticket-home-after-rail-ticket.xml"
+
       Invoke-TapHierarchyNode -Path $homeRouteTicketHomeHierarchy -Identifier "event-card-mobile-el-a-provider-breadth" -StartsWith
       Start-Sleep -Seconds 4
       Save-Screenshot -Name "cycle-FE-home-route-ticket-detail-top.png"
@@ -894,7 +911,7 @@ try {
         orderMode = if ($env:EXPO_PUBLIC_ORDER_MODE) { $env:EXPO_PUBLIC_ORDER_MODE } else { "mock" }
         result = "pass"
         assertions = [ordered]@{
-          homeDiscovery = @("World Cup live games-focused header", "route-backed event card", "retail outcome rail", "no non-MVP sport/futures promo")
+          homeDiscovery = @("World Cup live games-focused header", "route-backed event card", "retail outcome rail", "direct rail-to-ticket proof", "no non-MVP sport/futures promo")
           detailHydration = @("same route-backed event", "price chart", "Game Lines")
           ticket = @("spread ticket opens from Home-opened detail", "line/period/side/provider token identity preserved", "Buy/Sell controls visible")
           noFallback = @("no Mexico/Ecuador fallback", "no default orderbook UI")
@@ -902,6 +919,8 @@ try {
         artifacts = @(
           "$OutputDir/cycle-FE-home-route-ticket-home.png",
           "$HierarchyOutputDir/cycle-FE-home-route-ticket-home.xml",
+          "$OutputDir/cycle-FE-home-route-ticket-retail-outcome-ticket.png",
+          "$HierarchyOutputDir/cycle-FE-home-route-ticket-retail-outcome-ticket.xml",
           "$OutputDir/cycle-FE-home-route-ticket-detail-top.png",
           "$HierarchyOutputDir/cycle-FE-home-route-ticket-detail-top.xml",
           "$OutputDir/cycle-FE-home-route-ticket-line-markets.png",
