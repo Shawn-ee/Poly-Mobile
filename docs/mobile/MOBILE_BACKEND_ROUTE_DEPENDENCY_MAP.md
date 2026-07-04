@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle BB - Selected Team Totals Ready Depth
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Selected Team Totals orderbook with ready depth | `/api/orderbook/:marketId/book?maxLevels=24` for market `408ffb79-3492-4fd0-b31b-87a26f8b9dd5` | GET | Optional public viewing | None | `marketId`, `emptyState: null`, `levels[].outcomeId`, `levels[].side`, `levels[].price`, `levels[].shares`, `levels[].total` | Open `Order` rows for selected `team_total_goals` market through `buildPublicOrderbookSnapshot()` | Local Team Total rows remain fallback only when server mode is unavailable | Real provider liquidity ingestion and freshness/stale/suspended metadata remain missing. |
+| Team Totals market-type normalization | Compact live event markets from `/api/mobile/events/:slug/live-detail` | GET | Optional public viewing | None | backend `marketType: team_total_goals`, `line: 1.5`, outcome ids/sides/prices | `Market`, `Outcome` | Adapter aliases backend type to mobile `team-total` contract | Canonical market-type alias list should be documented before production ingestion. |
+| Targeted Team Totals depth seed harness | `mobile:live-team-totals-orderbook-depth-seed` | Local script | Local development only | `--eventSlug`, `--marketType=team_total_goals`, `--line=1.5`, `--summaryPath`, `--apply` | Summary artifact records event, market id/type/group/line, outcome ids, created order count, and preview rows | `User`, `Order`, `Market`, `Outcome` | N/A | Provider-owned live liquidity remains required for production parity. |
+
+Cycle BB implementation notes:
+
+- This cycle closes selected Team Totals ready-depth proof after Cycle BA reserved Team Totals in the compact route.
+- The proof uses stable backend market/outcome ids and public orderbook route fields, not frontend-only mock data.
+- PM-GAP-067 remains in progress for provider ingestion, Halves selected depth, and freshness/stale/suspended states.
+
 ## Cycle BA - Compact Line Group Coverage And Totals Ready Depth
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

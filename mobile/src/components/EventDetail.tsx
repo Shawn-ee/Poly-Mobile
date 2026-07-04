@@ -310,12 +310,17 @@ export function EventDetail({
   const matchingBackendLineMarket = (type: string, line: string) => {
     const target = Number(line);
     if (!Number.isFinite(target)) return undefined;
-    const matchingTypes = type === "totals" ? ["totals", "total_goals"] : [type];
+    const matchingTypes = type === "totals"
+      ? ["totals", "total_goals"]
+      : type === "team-total"
+        ? ["team-total", "team_total", "team_totals", "team_total_goals"]
+        : [type];
     return event.markets.find((market) => matchingTypes.includes(market.marketType ?? "") && Math.abs(lineAsNumber(market.line) ?? Number.NaN) === target)
       ?? event.markets.find((market) => matchingTypes.includes(market.marketType ?? ""));
   };
   const backendSpreadMarket = matchingBackendLineMarket("spread", spreadLine);
   const backendTotalsMarket = matchingBackendLineMarket("totals", totalsLine);
+  const backendTeamTotalMarket = matchingBackendLineMarket("team-total", "1.5");
   const spreadMarket = makeLineMarket(`${event.id}-spread-${spreadLine}-${linePeriodCode(spreadPeriod)}`, `Spread ${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`, []);
   const spreadYesOutcome = withLineOutcome({
     id: `${spreadMarket.id}-yes`,
@@ -436,6 +441,8 @@ export function EventDetail({
       id: "team-total-goals",
       title: "Full Game Team Total Goals (Reg. Time)",
       subtitle: `${teamCode(teamA?.name ?? "Home")} goals over 1.5`,
+      backendMarket: backendTeamTotalMarket,
+      lineValue: "1.5",
       rows: [
         { id: "team-total-over", label: `${teamCode(teamA?.name ?? "Home")} Over 1.5`, color: leftOutcome?.color ?? "#22c55e", probability: 57, odds: "1.8x", icon: teamA?.flag ?? "", miniLine: 57 },
         { id: "team-total-under", label: `${teamCode(teamA?.name ?? "Home")} Under 1.5`, color: "#64748b", probability: 44, odds: "2.3x", icon: "U", miniLine: 44 },

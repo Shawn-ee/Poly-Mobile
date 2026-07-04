@@ -61,7 +61,7 @@ const asMarketContractType = (value: string | null | undefined): Market["marketT
   if (["moneyline", "match_winner", "match_winner_1x2", "winner"].includes(normalized)) return "moneyline";
   if (["spread", "handicap", "asian_handicap"].includes(normalized)) return "spread";
   if (["totals", "total", "total_goals"].includes(normalized)) return "totals";
-  if (["team-total", "team_total", "team_totals"].includes(normalized)) return "team-total";
+  if (["team-total", "team_total", "team_totals", "team_total_goals"].includes(normalized)) return "team-total";
   if (["next-goal", "next_goal"].includes(normalized)) return "next-goal";
   if (["future", "outright"].includes(normalized)) return "future";
   if (normalized) return "prop";
