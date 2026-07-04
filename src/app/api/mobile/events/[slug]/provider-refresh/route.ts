@@ -9,6 +9,11 @@ import {
 import { buildMobileLiveProviderRefreshCachePaths } from "@/server/services/mobileLiveProviderRefreshCache";
 
 type Params = { params: Promise<{ slug: string }> };
+type ProviderRefreshBody = {
+  expireFirst?: boolean;
+  staleSeconds?: number;
+  allowContractProofFallback?: boolean;
+} | null;
 
 export async function POST(request: NextRequest, context: Params) {
   try {
@@ -19,14 +24,18 @@ export async function POST(request: NextRequest, context: Params) {
   }
 
   const { slug } = await context.params;
-  const body = (await request.json().catch(() => null)) as
-    | {
-        expireFirst?: boolean;
-        staleSeconds?: number;
-        allowContractProofFallback?: boolean;
-      }
-    | null;
+  const body = (await request.json().catch(() => null)) as ProviderRefreshBody;
 
+  const payload = await executeMobileLiveProviderRefreshRoute(slug, body);
+
+  return NextResponse.json(payload, {
+    headers: {
+      "Cache-Control": "no-store, max-age=0",
+    },
+  });
+}
+
+export async function executeMobileLiveProviderRefreshRoute(slug: string, body: ProviderRefreshBody) {
   const expired = body?.expireFirst
     ? await expireMobileLiveProviderQuoteSnapshots({
         eventSlug: slug,
@@ -42,17 +51,13 @@ export async function POST(request: NextRequest, context: Params) {
   });
   const cacheInvalidation = invalidateMobileLiveProviderRefreshCache(slug, refresh.mappingReadiness.markets.map((market) => market.marketId));
 
-  return NextResponse.json({
+  return {
     ok: true,
     expired,
     providerLifecycle: refresh.providerLifecycle,
     refresh,
     cacheInvalidation,
-  }, {
-    headers: {
-      "Cache-Control": "no-store, max-age=0",
-    },
-  });
+  };
 }
 
 function invalidateMobileLiveProviderRefreshCache(eventSlug: string, marketIds: string[]) {

@@ -2,6 +2,37 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EK-A - Provider Transition Route Proof
+
+Closed or narrowed:
+
+- PM-GAP-084 backend transition breadth is now proven for `/api/mobile/events/:slug/live-detail` plus `/api/mobile/events/:slug/provider-refresh`: one disposable route-backed matrix carries ready, selected stale/refresh-due, unavailable/not-ready, and a no-fallback route refresh transition to ready.
+- `docs/mobile/harness/cycle-EK-A-provider-transition/cycle-EK-A-provider-transition.json` records before/after live-detail route fields, provider-refresh `providerLifecycle`, `refresh.provider`, `refresh.providerDepth`, `refresh.providerHistory`, `refresh.mappingReadiness`, cache invalidation, and selected identity preservation.
+- `allowContractProofFallback=false` is asserted through `refresh.contractProofFallback=null` and `providerLifecycle.fallbackApplied=false`.
+- Missing `OPTIC_ODDS_API_KEY` remains non-blocking. The proof uses Polymarket Gamma/CLOB-shaped provider responses for mapped disposable markets and keeps OpticOdds as optional enrichment.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Android-visible pairing for stale/loading/ready/unavailable states remains outside Agent A ownership.
+- Production line-family breadth still depends on real provider mappings and currently available Polymarket markets beyond disposable proof rows.
+
+Schema mismatch:
+
+- No schema change was required. Existing `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot` rows represent the transition.
+
+Route mismatch:
+
+- No new route-shape mismatch was found. Live-detail and provider-refresh now provide the route fields needed to distinguish ready, refresh-due, stale, unavailable/not-ready, refresh-started/completed, fallback-disabled, and selected identity preservation.
+
+Temporary mock/static data:
+
+- No frontend mock/static data was added. The proof creates disposable backend rows and installs a scoped deterministic provider fetch stub only while executing provider-refresh.
+- The proof fails if route output contains `mock-ready`, `fixture-ready`, `frontend-fixture`, `default-ready`, fallback depth, or first-row fallback markers.
+
+Future migration concern:
+
+- Keep route refresh transitions tied to selected market identity and keep unavailable/not-ready rows out of ready counts so mobile cannot silently replace missing provider data with first-row/default market evidence.
+
 ## Cycle EJ-A - Provider Status Breadth Route Proof
 
 Closed or narrowed:
