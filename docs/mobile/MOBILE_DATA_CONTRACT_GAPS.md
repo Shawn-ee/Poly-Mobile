@@ -2,6 +2,38 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EL-A - Provider Line-Family Breadth Route Proof
+
+Closed or narrowed:
+
+- `/api/mobile/events/:slug/provider-refresh` now returns backend-owned `lineFamilyCoverage`, grouping compact markets by family/period/line and preserving per-market quote, orderbook depth, and chart history lifecycle status.
+- `docs/mobile/harness/cycle-EL-A-provider-breadth/cycle-EL-A-provider-breadth.json` proves route-backed provider breadth across three Polymarket-mapped compact families: moneyline, spread, and totals.
+- The EL-A proof refreshes through existing Polymarket Gamma quote, CLOB orderbook depth, and CLOB prices-history paths, then verifies live-detail keeps each market ready with source/status preserved.
+- `allowContractProofFallback=false` is asserted through `refresh.contractProofFallback=null` and `providerLifecycle.fallbackApplied=false`.
+- Missing `OPTIC_ODDS_API_KEY` remains non-blocking. The proof records optional line-provider state while Polymarket quote/depth/chart readiness stays ready.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Production breadth still depends on currently available real Polymarket mappings for live World Cup events; EL-A proves the backend route contract with disposable Polymarket-shaped provider responses.
+- Visible Android pairing and screenshots remain outside Agent A ownership for this cycle.
+
+Schema mismatch:
+
+- No schema change was required. Existing `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot` rows carry the line-family proof.
+
+Route mismatch:
+
+- The single selected-transition gap is narrowed: provider-refresh now reports family-level and per-market provider readiness for all compact mapped markets, not only the selected line.
+- Remaining route risk is production data availability and scheduler coverage, not response shape.
+
+Temporary mock/static data:
+
+- No frontend mock/static data was added. The proof installs scoped Polymarket Gamma/CLOB-shaped responses only while executing the backend provider-refresh route helper.
+
+Future migration concern:
+
+- Keep unavailable/not-ready markets out of provider-ready breadth counts. Future production proofs should repeat EL-A against live mapped Polymarket events and continue preserving market id, selector key, family, period, line, and token ids through live-detail, Book, ticket, orders, portfolio, and history.
+
 ## Cycle EK Integrated - Visible Provider Transition Proof
 
 Closed or narrowed:

@@ -93,6 +93,47 @@ describe("mobile live provider refresh service", () => {
                 },
               ],
             },
+            {
+              id: "market-world-cup-spread",
+              title: "World Cup Live Spread 1.5",
+              description: null,
+              status: "LIVE",
+              referenceSource: "polymarket",
+              externalSlug: "world-cup-live-spread",
+              externalMarketId: "gamma-market-spread",
+              conditionId: "condition-spread",
+              marketGroupKey: "spread",
+              marketGroupTitle: "Spread",
+              displayOrder: 1,
+              line: { toString: () => "1.5" },
+              unit: "goals",
+              period: "full-game",
+              marketType: "spread",
+              propCategory: null,
+              rulesText: null,
+              outcomes: [
+                {
+                  id: "outcome-home-spread",
+                  name: "Home +1.5",
+                  label: "Home +1.5",
+                  side: "home",
+                  displayOrder: 0,
+                  isTradable: true,
+                  referenceTokenId: "token-home-spread",
+                  referenceOutcomeLabel: "Home +1.5",
+                },
+                {
+                  id: "outcome-away-spread",
+                  name: "Away -1.5",
+                  label: "Away -1.5",
+                  side: "away",
+                  displayOrder: 1,
+                  isTradable: true,
+                  referenceTokenId: "token-away-spread",
+                  referenceOutcomeLabel: "Away -1.5",
+                },
+              ],
+            },
           ],
         };
       }
@@ -100,21 +141,24 @@ describe("mobile live provider refresh service", () => {
     });
     mockRefreshPolymarketReferenceSnapshots.mockResolvedValue({
       generatedAt: "2026-07-04T12:00:00.000Z",
-      refreshedCount: 1,
+      refreshedCount: 2,
       snapshotsUpdated: 2,
       skippedCount: 0,
-      refreshed: [{ marketId: "market-world-cup-live" }],
+      refreshed: [{ marketId: "market-world-cup-live" }, { marketId: "market-world-cup-spread" }],
       skipped: [],
     });
     mockRefreshPolymarketOrderbookDepthSnapshots.mockResolvedValue({
       generatedAt: "2026-07-04T12:00:00.000Z",
       source: "polymarket-clob",
       maxLevels: 24,
-      requestedMarketCount: 1,
-      refreshedCount: 1,
-      depthRowsUpdated: 8,
+      requestedMarketCount: 2,
+      refreshedCount: 2,
+      depthRowsUpdated: 16,
       skippedCount: 0,
-      refreshed: [{ marketId: "market-world-cup-live", depthRowsUpdated: 8 }],
+      refreshed: [
+        { marketId: "market-world-cup-live", depthRowsUpdated: 8 },
+        { marketId: "market-world-cup-spread", depthRowsUpdated: 8 },
+      ],
       skipped: [],
     });
     mockRefreshPolymarketPriceHistorySnapshots.mockResolvedValue({
@@ -122,11 +166,14 @@ describe("mobile live provider refresh service", () => {
       source: "polymarket-clob-prices-history",
       interval: "1d",
       fidelityMinutes: 5,
-      requestedMarketCount: 1,
-      refreshedCount: 1,
-      snapshotsCreated: 24,
+      requestedMarketCount: 2,
+      refreshedCount: 2,
+      snapshotsCreated: 48,
       skippedCount: 0,
-      refreshed: [{ marketId: "market-world-cup-live", snapshotsCreated: 24 }],
+      refreshed: [
+        { marketId: "market-world-cup-live", snapshotsCreated: 24 },
+        { marketId: "market-world-cup-spread", snapshotsCreated: 24 },
+      ],
       skipped: [],
     });
     mockRefreshOpticOddsLineQuoteSnapshots.mockResolvedValue({
@@ -141,17 +188,20 @@ describe("mobile live provider refresh service", () => {
       skipped: [],
     });
     mockReferenceQuoteSnapshotFindMany.mockResolvedValue([
-      { source: "polymarket", fetchedAt: new Date("2026-07-04T12:00:00.000Z") },
-      { source: "polymarket", fetchedAt: new Date("2026-07-04T12:00:05.000Z") },
+      { marketId: "market-world-cup-live", source: "polymarket", fetchedAt: new Date("2026-07-04T12:00:00.000Z") },
+      { marketId: "market-world-cup-live", source: "polymarket", fetchedAt: new Date("2026-07-04T12:00:05.000Z") },
+      { marketId: "market-world-cup-spread", source: "polymarket", fetchedAt: new Date("2026-07-04T12:00:05.000Z") },
     ]);
     mockReferenceOrderbookDepthSnapshotFindMany.mockResolvedValue([
-      { source: "polymarket-clob", fetchedAt: new Date("2026-07-04T12:00:00.000Z") },
-      { source: "polymarket-clob", fetchedAt: new Date("2026-07-04T12:00:00.000Z") },
+      { marketId: "market-world-cup-live", source: "polymarket-clob", fetchedAt: new Date("2026-07-04T12:00:00.000Z") },
+      { marketId: "market-world-cup-live", source: "polymarket-clob", fetchedAt: new Date("2026-07-04T12:00:00.000Z") },
+      { marketId: "market-world-cup-spread", source: "polymarket-clob", fetchedAt: new Date("2026-07-04T12:00:00.000Z") },
     ]);
     mockMarketOutcomeSnapshotFindMany.mockResolvedValue([
-      { outcomeId: "outcome-home", ts: new Date("2026-07-04T11:55:00.000Z") },
-      { outcomeId: "outcome-away", ts: new Date("2026-07-04T11:55:00.000Z") },
-      { outcomeId: "outcome-home", ts: new Date("2026-07-04T12:00:00.000Z") },
+      { marketId: "market-world-cup-live", outcomeId: "outcome-home", ts: new Date("2026-07-04T11:55:00.000Z") },
+      { marketId: "market-world-cup-live", outcomeId: "outcome-away", ts: new Date("2026-07-04T11:55:00.000Z") },
+      { marketId: "market-world-cup-live", outcomeId: "outcome-home", ts: new Date("2026-07-04T12:00:00.000Z") },
+      { marketId: "market-world-cup-spread", outcomeId: "outcome-home-spread", ts: new Date("2026-07-04T12:00:00.000Z") },
     ]);
   });
 
@@ -166,28 +216,28 @@ describe("mobile live provider refresh service", () => {
     });
 
     expect(mockRefreshPolymarketOrderbookDepthSnapshots).toHaveBeenCalledWith({
-      marketIds: ["market-world-cup-live"],
+      marketIds: ["market-world-cup-live", "market-world-cup-spread"],
       fetchImpl: undefined,
     });
     expect(mockRefreshPolymarketPriceHistorySnapshots).toHaveBeenCalledWith({
-      marketIds: ["market-world-cup-live"],
+      marketIds: ["market-world-cup-live", "market-world-cup-spread"],
       interval: "1d",
       fidelityMinutes: 5,
       fetchImpl: undefined,
     });
     expect(mockMarketOutcomeSnapshotFindMany).toHaveBeenCalledWith({
-      where: { marketId: { in: ["market-world-cup-live"] } },
+      where: { marketId: { in: ["market-world-cup-live", "market-world-cup-spread"] } },
       select: { outcomeId: true, ts: true },
     });
     expect(mockReferenceOrderbookDepthSnapshotFindMany).toHaveBeenCalledWith({
-      where: { marketId: { in: ["market-world-cup-live"] } },
+      where: { marketId: { in: ["market-world-cup-live", "market-world-cup-spread"] } },
       select: { source: true, fetchedAt: true },
     });
     expect(report.providerHistory).toMatchObject({
       source: "polymarket-clob-prices-history",
-      requestedMarketCount: 1,
-      refreshedCount: 1,
-      snapshotsCreated: 24,
+      requestedMarketCount: 2,
+      refreshedCount: 2,
+      snapshotsCreated: 48,
     });
     expect(report.providerLifecycle).toMatchObject({
       source: "mobile-live-provider-refresh",
@@ -241,9 +291,58 @@ describe("mobile live provider refresh service", () => {
     });
     expect(report.providerLifecycle.refreshStartedAt).toEqual(expect.any(String));
     expect(report.providerLifecycle.refreshCompletedAt).toEqual(expect.any(String));
+    expect(report.lineFamilyCoverage).toMatchObject({
+      source: "mobile-live-provider-refresh-line-family-coverage",
+      compactMarketCount: 2,
+      familyCount: 2,
+      providerRefreshableFamilyCount: 2,
+      providerRefreshableMarketCount: 2,
+      readyProviderRefreshableMarketCount: 2,
+      hasProviderMappedBreadth: true,
+      hasReadyProviderMappedBreadth: true,
+      optionalLineProviderBlocking: false,
+      families: expect.arrayContaining([
+        expect.objectContaining({
+          family: "moneyline",
+          providerRefreshableMarketCount: 1,
+          readyMarketCount: 1,
+          statuses: ["ready"],
+        }),
+        expect.objectContaining({
+          family: "spread",
+          providerRefreshableMarketCount: 1,
+          readyMarketCount: 1,
+          statuses: ["ready"],
+        }),
+      ]),
+      markets: expect.arrayContaining([
+        expect.objectContaining({
+          marketId: "market-world-cup-live",
+          selectorKey: "main:full-game:default",
+          marketFamily: "moneyline",
+          providerRefreshable: true,
+          ready: true,
+          quote: expect.objectContaining({ source: "polymarket", status: "ready" }),
+          orderbookDepth: expect.objectContaining({ source: "polymarket-clob", status: "ready" }),
+          chartHistory: expect.objectContaining({ source: "polymarket-clob-prices-history", status: "ready" }),
+        }),
+        expect.objectContaining({
+          marketId: "market-world-cup-spread",
+          selectorKey: "spread:full-game:1.5",
+          marketFamily: "spread",
+          line: "1.5",
+          lineValue: 1.5,
+          providerRefreshable: true,
+          ready: true,
+          quote: expect.objectContaining({ source: "polymarket", status: "ready" }),
+          orderbookDepth: expect.objectContaining({ source: "polymarket-clob", status: "ready" }),
+          chartHistory: expect.objectContaining({ source: "polymarket-clob-prices-history", status: "ready" }),
+        }),
+      ]),
+    });
     expect(report.postRefreshDepth).toMatchObject({
-      marketCount: 1,
-      snapshotCount: 2,
+      marketCount: 2,
+      snapshotCount: 3,
       sourceCount: 1,
       latestFetchedAt: "2026-07-04T12:00:00.000Z",
       lifecycle: expect.objectContaining({
@@ -252,11 +351,11 @@ describe("mobile live provider refresh service", () => {
       }),
     });
     expect(report.postRefreshHistory).toEqual({
-      marketCount: 1,
-      snapshotCount: 3,
+      marketCount: 2,
+      snapshotCount: 4,
       latestSnapshotAt: "2026-07-04T12:00:00.000Z",
       oldestSnapshotAt: "2026-07-04T11:55:00.000Z",
-      outcomeCount: 2,
+      outcomeCount: 3,
       source: "market-outcome-snapshot",
       lifecycle: expect.objectContaining({
         source: "market-outcome-snapshot",
@@ -271,13 +370,13 @@ describe("mobile live provider refresh service", () => {
   test("distinguishes refresh-due lifecycle snapshots from stale snapshots", async () => {
     jest.spyOn(Date, "now").mockReturnValue(new Date("2026-07-04T12:01:05.000Z").getTime());
     mockReferenceQuoteSnapshotFindMany.mockResolvedValue([
-      { source: "polymarket", fetchedAt: new Date("2026-07-04T12:00:00.000Z") },
+      { marketId: "market-world-cup-live", source: "polymarket", fetchedAt: new Date("2026-07-04T12:00:00.000Z") },
     ]);
     mockReferenceOrderbookDepthSnapshotFindMany.mockResolvedValue([
-      { source: "polymarket-clob", fetchedAt: new Date("2026-07-04T11:59:00.000Z") },
+      { marketId: "market-world-cup-live", source: "polymarket-clob", fetchedAt: new Date("2026-07-04T11:59:00.000Z") },
     ]);
     mockMarketOutcomeSnapshotFindMany.mockResolvedValue([
-      { outcomeId: "outcome-home", ts: new Date("2026-07-04T12:00:00.000Z") },
+      { marketId: "market-world-cup-live", outcomeId: "outcome-home", ts: new Date("2026-07-04T12:00:00.000Z") },
     ]);
 
     const report = await refreshMobileLiveProviderQuoteSnapshots({
