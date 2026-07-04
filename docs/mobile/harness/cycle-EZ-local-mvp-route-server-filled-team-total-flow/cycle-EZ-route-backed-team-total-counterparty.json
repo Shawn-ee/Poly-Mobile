@@ -1,0 +1,43 @@
+{
+    "pass":  true,
+    "eventSlug":  "mobile-el-a-provider-breadth-477e6b35",
+    "market":  {
+                   "id":  "b0593ab6-d719-4371-8177-97fbb913c7d9",
+                   "title":  "Breadth Home - Team Total Goals 1.5",
+                   "marketType":  "team_total_goals",
+                   "marketGroupKey":  "team-totals",
+                   "period":  "full-game",
+                   "line":  "1.5",
+                   "referenceSource":  "polymarket",
+                   "externalMarketId":  "gamma-el-a-team-total-477e6b35",
+                   "conditionId":  "condition-el-a-team-total-477e6b35"
+               },
+    "outcome":  {
+                    "id":  "278f0453-b967-4755-8cbb-24dcb509e130",
+                    "name":  "Over",
+                    "side":  "over",
+                    "referenceTokenId":  "token-el-a-team-total-over-477e6b35",
+                    "referenceOutcomeLabel":  "Breadth Home Over 1.5"
+                },
+    "maker":  {
+                  "id":  "24f79d14-f179-4199-84dc-2abddfafdcd7",
+                  "username":  "mobile_route_fill_maker_5ab20048"
+              },
+    "makerOrder":  {
+                       "id":  "2df4b7a9-8218-48c3-b66c-f700aa0c7532",
+                       "marketId":  "b0593ab6-d719-4371-8177-97fbb913c7d9",
+                       "outcomeId":  "278f0453-b967-4755-8cbb-24dcb509e130",
+                       "side":  "SELL",
+                       "price":  "0.52",
+                       "size":  "60",
+                       "remaining":  "60",
+                       "reservedNotional":  "0",
+                       "status":  "OPEN"
+                   },
+    "seededAsk":  {
+                      "side":  "SELL",
+                      "price":  "0.52",
+                      "size":  "60",
+                      "intendedMobileTaker":  "BUY $25 route-backed team-totals ticket"
+                  }
+}

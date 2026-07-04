@@ -120,7 +120,8 @@ param(
   [switch]$LocalMvpRouteServerOrderFlow,
   [switch]$LocalMvpRouteServerCancelFlow,
   [switch]$LocalMvpRouteServerFilledFlow,
-  [switch]$LocalMvpRouteServerFilledTotalsFlow
+  [switch]$LocalMvpRouteServerFilledTotalsFlow,
+  [switch]$LocalMvpRouteServerFilledTeamTotalFlow
 )
 
 $ErrorActionPreference = "Stop"
@@ -129,10 +130,10 @@ $ServerLiveDetailHalvesOrderBook = $ServerLiveDetailFirstHalfOrderBook -or $Serv
 $EventDetailProviderRouteStatusProof = $EventDetailProviderStatus -or $EventDetailVisibleStatusBreadth -or $EventDetailVisibleStatusTransition
 $EventDetailVisibleLiveDepthBackendProof = $EventDetailVisibleLiveDepth -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25"
 $EventDetailVisibleLimitLifecycleBackendProof = ($EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth) -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25"
-$ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook -or $ServerLiveProviderRefreshProof -or $EventDetailProviderRouteStatusProof -or $EventDetailVisibleLiveDepthBackendProof -or $EventDetailVisibleLimitLifecycleBackendProof -or $LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow
+$ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook -or $ServerLiveProviderRefreshProof -or $EventDetailProviderRouteStatusProof -or $EventDetailVisibleLiveDepthBackendProof -or $EventDetailVisibleLimitLifecycleBackendProof -or $LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow
 $OrderBookDebugProof = $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $EventDetailMarketTabs -or $EventDetailChart -or $EventDetailProviderRouteStatusProof -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $ServerLiveDetailBackendProof
-$OrderBookDebugProof = $OrderBookDebugProof -and -not ($LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow)
-$LocalMvpSimpleTradeFlow = $LocalMvpTradeFlow -or $LocalMvpSellFlow -or $LocalMvpStatusFlow -or $LocalMvpLineFamilyBreadth -or $LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow
+$OrderBookDebugProof = $OrderBookDebugProof -and -not ($LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow)
+$LocalMvpSimpleTradeFlow = $LocalMvpTradeFlow -or $LocalMvpSellFlow -or $LocalMvpStatusFlow -or $LocalMvpLineFamilyBreadth -or $LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow
 
 $MobileRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $RepoRoot = Resolve-Path (Join-Path $MobileRoot "..")
@@ -496,7 +497,7 @@ try {
       $env:EXPO_PUBLIC_API_KEY = "pk_test_mobile_harness"
     }
   }
-  if ($LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow) {
+  if ($LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) {
     $env:EXPO_PUBLIC_API_BASE_URL = $BackendBaseUrl
     $env:EXPO_PUBLIC_MARKET_DATA_MODE = "server"
     $env:EXPO_PUBLIC_ORDER_MODE = "server"
@@ -504,7 +505,7 @@ try {
       throw "Local MVP route server order proof requires EXPO_PUBLIC_API_KEY. Use mobile/scripts/local-mvp-route-server-order-proof.ps1 to create an in-process mobile dev credential."
     }
   }
-  if ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPositionFallbackOrder -or ($ServerLiveDetailBackendProof -and -not $EventDetailVisibleLimitLifecycleBackendProof -and -not $LocalMvpRouteTicketFlow -and -not $LocalMvpRouteServerOrderFlow -and -not $LocalMvpRouteServerCancelFlow -and -not $LocalMvpRouteServerFilledFlow -and -not $LocalMvpRouteServerFilledTotalsFlow)) {
+  if ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPositionFallbackOrder -or ($ServerLiveDetailBackendProof -and -not $EventDetailVisibleLimitLifecycleBackendProof -and -not $LocalMvpRouteTicketFlow -and -not $LocalMvpRouteServerOrderFlow -and -not $LocalMvpRouteServerCancelFlow -and -not $LocalMvpRouteServerFilledFlow -and -not $LocalMvpRouteServerFilledTotalsFlow -and -not $LocalMvpRouteServerFilledTeamTotalFlow)) {
     if (-not $env:EXPO_PUBLIC_API_KEY) {
       $env:EXPO_PUBLIC_API_KEY = "pk_test_mobile_harness"
     }
@@ -573,7 +574,7 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerPortfolioFixture=1"
   } elseif ($ServerLiveDetailBackendProof) {
     $encodedSlug = [uri]::EscapeDataString($ServerEventSlug)
-    if ($LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow) {
+    if ($LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) {
       $encodedApiKey = [uri]::EscapeDataString($env:EXPO_PUBLIC_API_KEY)
       "exp://${ExpoHost}:$Port/--/?forceResetState=1&forceBackendEventSlug=$encodedSlug&apiKey=$encodedApiKey"
     } else {
@@ -668,7 +669,7 @@ try {
     @("Game Lines", "Player Props", "Best bid", "Best ask", "Spread")
   } elseif ($EventDetailProviderRouteStatusProof) {
     @("Game Lines", "Player Props", "event-detail-live-data-inline", "live-data-source-polymarket-gamma")
-  } elseif ($LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow) {
+  } elseif ($LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) {
     @("EL-A Provider Breadth World Cup Live", "event-detail-live-data-inline", "live-data-source-polymarket-gamma")
   } elseif ($EventDetailVisibleLimitLifecycleBackendProof) {
     @("EL-A Provider Breadth World Cup Live", "Game Lines", "Best bid", "Best ask")
@@ -4388,10 +4389,12 @@ try {
     }
 
     if ($LocalMvpSimpleTradeFlow) {
-      if ($LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow) {
-        $mvpRouteServerFilledFamily = if ($LocalMvpRouteServerFilledTotalsFlow) { "totals" } else { "spread" }
-        $mvpRouteServerCycle = if ($LocalMvpRouteServerFilledTotalsFlow) { "EY" } elseif ($LocalMvpRouteServerFilledFlow) { "EX" } elseif ($LocalMvpRouteServerCancelFlow) { "EW" } else { "EV" }
-        $mvpRouteServerScenario = if ($LocalMvpRouteServerFilledTotalsFlow) {
+      if ($LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) {
+        $mvpRouteServerFilledFamily = if ($LocalMvpRouteServerFilledTeamTotalFlow) { "team-total" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "totals" } else { "spread" }
+        $mvpRouteServerCycle = if ($LocalMvpRouteServerFilledTeamTotalFlow) { "EZ" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "EY" } elseif ($LocalMvpRouteServerFilledFlow) { "EX" } elseif ($LocalMvpRouteServerCancelFlow) { "EW" } else { "EV" }
+        $mvpRouteServerScenario = if ($LocalMvpRouteServerFilledTeamTotalFlow) {
+          "Local MVP Android route-backed server fake-token team-total filled trade/history flow with orderbook hidden by default"
+        } elseif ($LocalMvpRouteServerFilledTotalsFlow) {
           "Local MVP Android route-backed server fake-token totals filled trade/history flow with orderbook hidden by default"
         } elseif ($LocalMvpRouteServerFilledFlow) {
           "Local MVP Android route-backed server fake-token filled trade/history flow with orderbook hidden by default"
@@ -4400,8 +4403,10 @@ try {
         } else {
           "Local MVP Android route-backed server fake-token order flow with orderbook hidden by default"
         }
-        $mvpRouteServerScript = if ($LocalMvpRouteServerFilledTotalsFlow) { "local-mvp-route-server-filled-totals-proof.ps1" } elseif ($LocalMvpRouteServerFilledFlow) { "local-mvp-route-server-filled-proof.ps1" } elseif ($LocalMvpRouteServerCancelFlow) { "local-mvp-route-server-cancel-proof.ps1" } else { "local-mvp-route-server-order-proof.ps1" }
-        $mvpRouteServerProofName = if ($LocalMvpRouteServerFilledTotalsFlow) {
+        $mvpRouteServerScript = if ($LocalMvpRouteServerFilledTeamTotalFlow) { "local-mvp-route-server-filled-team-total-proof.ps1" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "local-mvp-route-server-filled-totals-proof.ps1" } elseif ($LocalMvpRouteServerFilledFlow) { "local-mvp-route-server-filled-proof.ps1" } elseif ($LocalMvpRouteServerCancelFlow) { "local-mvp-route-server-cancel-proof.ps1" } else { "local-mvp-route-server-order-proof.ps1" }
+        $mvpRouteServerProofName = if ($LocalMvpRouteServerFilledTeamTotalFlow) {
+          "cycle-EZ-local-mvp-route-server-filled-team-total-flow-proof.json"
+        } elseif ($LocalMvpRouteServerFilledTotalsFlow) {
           "cycle-EY-local-mvp-route-server-filled-totals-flow-proof.json"
         } elseif ($LocalMvpRouteServerFilledFlow) {
           "cycle-EX-local-mvp-route-server-filled-flow-proof.json"
@@ -4426,10 +4431,10 @@ try {
         Assert-HierarchyContains -Path $mvpRouteTopHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "event-detail-chart-route-state", "live-data-source-polymarket-gamma")
         Assert-HierarchyDoesNotContain -Path $mvpRouteTopHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
-        $mvpRouteTargetOutcomeId = if ($LocalMvpRouteServerFilledTotalsFlow) { "event-detail-outcome-totals-totals-over" } else { "event-detail-outcome-spread-spread-yes" }
-        $mvpRouteTargetTicketMarketType = if ($LocalMvpRouteServerFilledTotalsFlow) { "totals" } else { "spread" }
+        $mvpRouteTargetOutcomeId = if ($LocalMvpRouteServerFilledTeamTotalFlow) { "event-detail-outcome-team-total-goals-team-total-over" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "event-detail-outcome-totals-totals-over" } else { "event-detail-outcome-spread-spread-yes" }
+        $mvpRouteTargetTicketMarketType = if ($LocalMvpRouteServerFilledTeamTotalFlow) { "team-total" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "totals" } else { "spread" }
         $mvpRouteTargetLine = if ($LocalMvpRouteServerFilledTotalsFlow) { "2.5" } else { "1.5" }
-        $mvpRouteTargetToken = if ($LocalMvpRouteServerFilledTotalsFlow) { "token-el-a-totals-over" } else { "token-el-a-spread-home" }
+        $mvpRouteTargetToken = if ($LocalMvpRouteServerFilledTeamTotalFlow) { "token-el-a-team-total-over" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "token-el-a-totals-over" } else { "token-el-a-spread-home" }
         $mvpRouteLineExpected = @(
           "Game Lines",
           $mvpRouteTargetOutcomeId,
@@ -4496,7 +4501,7 @@ try {
         Start-Sleep -Seconds 5
         Save-Screenshot -Name "$mvpRouteServerPrefix-portfolio.png"
         $mvpRoutePortfolioHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-portfolio.xml"
-        $mvpRoutePortfolioExpected = if ($LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow) {
+        $mvpRoutePortfolioExpected = if ($LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) {
           @(
             "Portfolio",
             "Server portfolio synced",
@@ -4560,8 +4565,8 @@ try {
             routeBackedEvent = @("live-detail loaded through forceBackendEventSlug", "live-data-source-polymarket-gamma")
             retailRows = @("$mvpRouteServerFilledFamily row uses ticket-source-backend-line-market", "provider-source-polymarket visible", "no default Book/orderbook entry points")
             ticket = @("simple ticket opens from route-backed $mvpRouteServerFilledFamily", "provider token/source visible", "server fake-token buy uses swipe-style submit")
-            serverPortfolio = if ($LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow) { @("POST /api/orders succeeds through mobile", "Portfolio sync returns server filled position and recent activity", "selected line/provider identity preserved") } else { @("POST /api/orders succeeds through mobile", "Portfolio sync returns server open order", "selected line/provider identity preserved") }
-            serverHistory = if ($LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow) { @("seeded counterparty fills the mobile order", "Portfolio sync returns position and recent trade activity", "filled activity/history preserves selected line/provider identity") } elseif ($LocalMvpRouteServerCancelFlow) { @("DELETE /api/orders/:id succeeds through mobile", "Portfolio sync returns canceled activity", "activity/history preserves selected line/provider identity") } else { @("not in scope") }
+            serverPortfolio = if ($LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) { @("POST /api/orders succeeds through mobile", "Portfolio sync returns server filled position and recent activity", "selected line/provider identity preserved") } else { @("POST /api/orders succeeds through mobile", "Portfolio sync returns server open order", "selected line/provider identity preserved") }
+            serverHistory = if ($LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) { @("seeded counterparty fills the mobile order", "Portfolio sync returns position and recent trade activity", "filled activity/history preserves selected line/provider identity") } elseif ($LocalMvpRouteServerCancelFlow) { @("DELETE /api/orders/:id succeeds through mobile", "Portfolio sync returns canceled activity", "activity/history preserves selected line/provider identity") } else { @("not in scope") }
           }
           artifacts = @(
             "$OutputDir/$mvpRouteServerPrefix-line-markets.png",

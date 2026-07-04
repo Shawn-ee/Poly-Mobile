@@ -2819,3 +2819,47 @@ Decision:
 - Unresolved P0 gaps: 0 for selected feature.
 - Remaining P1/P2 gaps: team-total filled breadth, production active-event provider breadth, fresh S23 retail lifecycle proof, and non-disposable liquidity source.
 - Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Route-Backed Retail Server Filled Team Total Trade And Activity Flow
+
+Cycle: EZ
+
+Lead Agent target: Prove the route-backed server-order Local MVP filled lifecycle on a Team Total market, closing the remaining line-family breadth gap from EY.
+
+Reference Audit Agent: Product steering audit from current Local MVP policy.
+
+Implementation Agent: Team Total provider fixture, tablet harness team-total-filled variant, and local wrapper for disposable backend event, mobile dev credential, server order mode, and tablet proof.
+
+Audit Gate Agent: Same-cycle tablet proof.
+
+Reference device: Not refreshed in EZ; this is a Holiwyn contract/user-flow gate based on existing Polymarket retail interaction direction and the latest Local MVP orderbook policy.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8267`.
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-local-mvp-route-server-filled-team-total-flow-proof.json`
+- `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-route-backed-retail-event.json`
+- `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-route-backed-team-total-counterparty.json`
+- `docs/mobile/screenshots/cycle-EZ-local-mvp-route-server-filled-team-total-flow/`
+- Tablet proof slug: `mobile-el-a-provider-breadth-477e6b35`.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EZ-TEAMTOTAL-P0-01 | P0 | Pass | Provider breadth route proof creates Team Total with provider quote/depth/history ready. | N/A |
+| EZ-TEAMTOTAL-P0-02 | P0 | Pass | Route-backed Team Total row opens with provider source/token identity. | N/A |
+| EZ-TEAMTOTAL-P0-03 | P0 | Pass | Counterparty proof seeds matching SELL liquidity for the same route-backed Team Total outcome. | N/A |
+| EZ-TEAMTOTAL-P0-04 | P0 | Pass | Android submit fills and Portfolio shows open positions `1`, open orders `0`, recent activity `1`. | N/A |
+| EZ-TEAMTOTAL-P0-05 | P0 | Pass | Activity card shows `Bought`, `status-filled`, filled shares, execution price, and provider identity. | N/A |
+| EZ-TEAMTOTAL-P0-06 | P0 | Pass | Position card preserves team-total line, period, provider source, and provider token. | N/A |
+| EZ-TEAMTOTAL-P0-07 | P0 | Pass | Orderbook markers remain absent from default UI proof. | N/A |
+| EZ-TEAMTOTAL-P1-01 | P1 | Open | Production active-event provider mapping and non-disposable liquidity remain outside this disposable proof. | Continue production provider mapping breadth later. |
+
+Decision:
+
+- Pass/fail: Pass for selected EZ route-backed Team Total filled-trade Local MVP flow.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: production active-event provider breadth, fresh S23 retail lifecycle proof, and non-disposable liquidity source.
+- Next cycle required: yes, continue Local MVP user-flow breadth.

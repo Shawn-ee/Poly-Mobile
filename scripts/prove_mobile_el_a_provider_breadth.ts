@@ -56,7 +56,7 @@ async function createProofEvent() {
             intendedProvider: "optic_odds",
             fixtureKey: `optic-fixture-el-a-${suffix}`,
             missingFields: [],
-            requiredForFamilies: ["spread", "total_goals"],
+            requiredForFamilies: ["spread", "total_goals", "team_total_goals"],
           },
           opticOddsApiKeyRequired: false,
         },
@@ -121,6 +121,24 @@ async function createProofEvent() {
             outcomes: [
               ["Over", "Over 2.5", "over"],
               ["Under", "Under 2.5", "under"],
+            ],
+          }),
+          marketInput({
+            suffix,
+            slugPart: "team-total",
+            title: "Breadth Home - Team Total Goals 1.5",
+            marketType: "team_total_goals",
+            marketGroupKey: "team-totals",
+            marketGroupTitle: "Team Total Goals",
+            displayOrder: 3,
+            line: "1.5",
+            unit: "goals",
+            externalSlug: `el-a-team-total-${suffix}`,
+            externalMarketId: `gamma-el-a-team-total-${suffix}`,
+            conditionId: `condition-el-a-team-total-${suffix}`,
+            outcomes: [
+              ["Over", "Breadth Home Over 1.5", "over"],
+              ["Under", "Breadth Home Under 1.5", "under"],
             ],
           }),
         ],
@@ -310,7 +328,7 @@ async function main() {
   const opticOddsCredential = process.env.OPTIC_ODDS_API_KEY ? "configured" : "missing_non_blocking";
   const event = await createProofEvent();
   const markets = event.markets;
-  assert(markets.length === 3, "Proof event did not create all three compact markets.");
+  assert(markets.length === 4, "Proof event did not create all four compact markets.");
 
   const beforePayload = await readLiveDetailRoute(event.slug!);
   const restoreFetch = installProviderFetchStub(markets);
@@ -337,17 +355,17 @@ async function main() {
       refreshPayload.providerLifecycle.fallbackApplied === false,
     gammaAndClobAttemptedAllMappedCompactMarkets:
       refreshPayload.refresh.provider.attempted === true &&
-      refreshPayload.refresh.provider.refreshedCount === 3 &&
-      refreshPayload.refresh.providerDepth.refreshedCount === 3 &&
-      refreshPayload.refresh.providerHistory.refreshedCount === 3,
+      refreshPayload.refresh.provider.refreshedCount === 4 &&
+      refreshPayload.refresh.providerDepth.refreshedCount === 4 &&
+      refreshPayload.refresh.providerHistory.refreshedCount === 4,
     lineFamilyCoverageProvesBreadth:
-      coverage.providerRefreshableFamilyCount >= 3 &&
-      coverage.providerRefreshableMarketCount === 3 &&
-      coverage.readyProviderRefreshableMarketCount === 3 &&
+      coverage.providerRefreshableFamilyCount >= 4 &&
+      coverage.providerRefreshableMarketCount === 4 &&
+      coverage.readyProviderRefreshableMarketCount === 4 &&
       coverage.hasProviderMappedBreadth === true &&
       coverage.hasReadyProviderMappedBreadth === true,
-    moneylineSpreadTotalsReady:
-      ["moneyline", "spread", "total"].every((family) =>
+    moneylineSpreadTotalsTeamTotalReady:
+      ["moneyline", "spread", "total", "team_total"].every((family) =>
         coverage.markets.some((market: any) =>
           market.marketFamily === family &&
           market.ready === true &&
@@ -384,7 +402,7 @@ async function main() {
   const summary = {
     pass: Object.values(assertions).every(Boolean),
     generatedAt: new Date().toISOString(),
-    proof: "EL-A proves provider-backed compact market breadth across moneyline, spread, and totals using Polymarket Gamma/CLOB-shaped route refresh.",
+    proof: "EL-A proves provider-backed compact market breadth across moneyline, spread, totals, and team totals using Polymarket Gamma/CLOB-shaped route refresh.",
     opticOddsCredential,
     eventSlug: event.slug,
     routes: {

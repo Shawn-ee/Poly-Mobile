@@ -269,3 +269,33 @@ Pass for selected route-backed totals server filled trade/activity flow with ord
 
 Remaining gaps:
 Team-total route-backed filled breadth, production active-event provider breadth, fresh S23 retail lifecycle recapture, and non-disposable liquidity source.
+
+### 2026-07-04 - Cycle EZ - Route-backed server filled team-total trade/activity Local MVP flow
+
+Reference device:
+Product steering plus existing Polymarket sports audits. Fresh S23 proof was not required for this local line-family lifecycle breadth gate.
+
+Holiwyn device:
+Samsung tablet / Holiwyn Expo Go / local Expo port `8267`.
+
+Holiwyn app mode:
+`EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE=server`, API key created by mobile dev credential helper, backend `http://172.16.200.14:3002`.
+
+Holiwyn actions:
+Opened disposable route-backed live event, selected the Team Total `Over 1.5` row, submitted `$25` server-mode fake-token buy into seeded maker liquidity, and verified filled position plus recent activity.
+
+Holiwyn evidence:
+- `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-local-mvp-route-server-filled-team-total-flow-proof.json`
+- `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-route-backed-retail-event.json`
+- `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-route-backed-team-total-counterparty.json`
+- `docs/mobile/screenshots/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-holiwyn-route-server-mvp-team-total-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-holiwyn-route-server-mvp-portfolio.png`
+
+Smoke/tests:
+PowerShell parser checks, mobile typecheck from the proof wrapper, backend health, provider breadth route proof, and tablet proof wrapper passed.
+
+Result:
+Pass for selected route-backed Team Total server filled trade/activity flow with orderbook hidden by default.
+
+Remaining gaps:
+Production active-event provider breadth, fresh S23 retail lifecycle recapture, and non-disposable liquidity source.

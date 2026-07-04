@@ -3349,6 +3349,39 @@ Future migration concern:
 
 - Production trading should persist immutable normalized selection snapshots directly on fill/trade lifecycle rows and replace disposable liquidity with real market-maker or user liquidity.
 
+## Cycle EZ - Route-Backed Server Filled Team Total Trade And Activity Flow
+
+Closed or narrowed:
+
+- The disposable provider breadth event now includes Team Total contract-shaped data: `marketType=team_total_goals`, `marketGroupKey=team-totals`, `marketFamily=team_total`, line `1.5`, period `full-game`, provider market id, condition id, and outcome token ids.
+- Server filled trade lifecycle is now proven from Android for a selected route-backed Team Total ticket.
+- `/api/portfolio` returns a position carrying selected team-total line `1.5`, period, provider source, and token identity.
+- `/api/portfolio/history` recent trade data maps into Android-visible Portfolio activity with selected team-total/provider identity.
+- The Local MVP user journey now covers server-filled route-backed Spread, Totals, and Team Total tickets with orderbook hidden by default.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Production active-event provider mappings and real liquidity source.
+- Fresh S23 retail lifecycle recapture when Polymarket gates allow it.
+
+Schema mismatch:
+
+- No schema migration was required for EZ. Existing `Market`, `Outcome`, provider snapshot tables, order request JSON, and portfolio/history selection serialization carry the selected team-total identity.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` are enough for the selected Team Total filled trade/activity path.
+
+Temporary mock/static data:
+
+- No arbitrary frontend data was added.
+- The new Team Total market is disposable backend proof data shaped like the intended provider/live-detail contract.
+- The counterparty seed is disposable backend proof liquidity shaped like real orderbook liquidity.
+
+Future migration concern:
+
+- Production trading should persist immutable normalized selection snapshots directly on fill/trade lifecycle rows and replace disposable liquidity with real market-maker or user liquidity.
+
 ## Cycle EB-A - Live Detail Selected-Market Selector Contract
 
 Closed or narrowed:

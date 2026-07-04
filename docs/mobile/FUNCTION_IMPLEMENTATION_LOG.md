@@ -4886,3 +4886,52 @@ Known limitations:
 
 - EY proves filled totals lifecycle only. Team-total route-backed filled breadth remains follow-up work because the disposable provider event does not yet create a team-total market.
 - Liquidity is seeded as disposable provider-shaped proof data, not production user liquidity.
+
+## Cycle EZ - Route-Backed Server Filled Team Total Trade And Activity Flow
+
+Feature/page worked on:
+
+- Mobile EventDetail and Portfolio Local MVP server filled trade/history proof for a route-backed Team Total ticket.
+
+Frontend/harness/backend files touched:
+
+- `scripts/prove_mobile_el_a_provider_breadth.ts`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/scripts/local-mvp-route-server-filled-team-total-proof.ps1`
+
+Important functions/services touched:
+
+- Existing mobile order/portfolio/history services were not changed.
+- `prove_mobile_el_a_provider_breadth.ts` now creates a fourth compact provider-backed market: `marketType=team_total_goals`, `marketGroupKey=team-totals`, line `1.5`, period `full-game`.
+- `smoke.ps1` route-backed server proof now supports EZ team-total filled-trade assertions in addition to EV/EW/EX/EY.
+
+User interactions supported/proven:
+
+- Open backend live-detail event on Samsung tablet through `forceBackendEventSlug`.
+- Open a provider-backed Team Total `Over 1.5` ticket and submit a `$25` server fake-token buy.
+- Fill against seeded provider-shaped maker liquidity.
+- See Portfolio show one open position, zero open orders, one recent activity row, and a filled latest activity card.
+- See both recent activity and position preserve selected team-total line/provider identity.
+- Default Book/orderbook UI stays hidden.
+
+Validation:
+
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+- PowerShell parser check for `mobile/scripts/local-mvp-route-server-filled-team-total-proof.ps1`
+- Mobile typecheck
+- `npx tsx scripts/prove_mobile_el_a_provider_breadth.ts --output=...`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/local-mvp-route-server-filled-team-total-proof.ps1 -Port 8267 -BackendBaseUrl http://172.16.200.14:3002`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-route-backed-retail-event.json`
+- `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-route-backed-team-total-counterparty.json`
+- `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-local-mvp-route-server-filled-team-total-flow-proof.json`
+- `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-holiwyn-route-server-mvp-*.xml`
+- `docs/mobile/screenshots/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-holiwyn-route-server-mvp-*.png`
+
+Known limitations:
+
+- EZ proves Team Total against disposable provider-shaped data. Production active Polymarket event mapping and non-disposable liquidity remain follow-up work.

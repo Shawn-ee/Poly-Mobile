@@ -1493,3 +1493,19 @@ Cycle EY implementation notes:
 - Counterparty liquidity proof: `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/cycle-EY-route-backed-totals-counterparty.json`.
 - Tablet proof slug: `mobile-el-a-provider-breadth-62990515`.
 - Mobile launched against `EXPO_PUBLIC_MARKET_DATA_MODE=server` and `EXPO_PUBLIC_ORDER_MODE=server`, then filled the visible simple retail Totals ticket against the seeded maker ask.
+
+## Cycle EZ - Route-Backed Server Filled Team Total Trade And Activity Flow
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Route-backed Team Total provider fixture | `/api/mobile/events/:slug/live-detail`, `/api/mobile/events/:slug/provider-refresh` | GET / refresh helper | Public viewing for live-detail; local proof helper for refresh | Event slug from deep link `forceBackendEventSlug`; provider refresh uses event slug | Compact `markets[]` now includes `marketGroupKey=team-totals`, `marketType=team_total_goals`, `marketFamily=team_total`, line `1.5`, provider market/condition/token fields, quote/depth/history ready states | `Event`, `Market`, active `Outcome`, provider quote/depth/history snapshots | None for EZ proof. Team Total is route-backed provider-shaped data. | Production active-event provider mapping still depends on real Gamma/CLOB event matching. |
+| Route-backed filled Team Total retail order | `/api/orders` | POST | Mobile dev API key with order write scope; backend local flags `INTERNAL_TRADING_BETA_ENABLED=true` and `TRADING_KILL_SWITCH=false` | `marketId`, `outcomeId`, `side=BUY`, `type=LIMIT`, price near `0.52`, size from `$25`, `contractSide=YES`, and selected team-total/provider metadata | Order response status `FILLED`, filled shares, execution price, selection identity | `ApiKey`, `ApiOrderRequest`, `Order`, `Fill`, `Trade`, `Position`, `Market`, `Outcome` | None. EZ runs with `EXPO_PUBLIC_ORDER_MODE=server`. | Production non-disposable liquidity remains follow-up. |
+| Counterparty liquidity seed for Team Total | `scripts/seed_mobile_route_spread_counterparty.ts` using `mintCompleteSetForPublicOrderbook` and `placeOrderAndMatch` | Local script/service | Local development/server only | Event slug, `marketGroupKey=team-totals`, `outcomeSide=over`, `askPrice=0.52`, `askSize=60` | Writes seeded maker order, market id, outcome id, provider source/condition/token | `User`, `UserBalance`, `Position`, `Order`, `Market`, `Outcome` | None. The seed is proof liquidity, not UI fallback. | Production liquidity provider strategy remains separate. |
+| Server Portfolio/history sync after Team Total fill | `/api/portfolio`, `/api/portfolio/history` | GET | Same mobile dev API key with account read scope | None | `positions[]`, `recentTrades[]`, `latest-activity-card`, position and activity selection metadata for team-total line `1.5` | `Position`, `Trade`, `ApiOrderRequest`, `Market`, `Outcome` | None. EZ requires Android-visible position and recent activity. | Production active-event provider liquidity remains follow-up. |
+
+Cycle EZ implementation notes:
+
+- The backend route event was created by `scripts/prove_mobile_el_a_provider_breadth.ts` into `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-route-backed-retail-event.json`.
+- Counterparty liquidity proof: `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-route-backed-team-total-counterparty.json`.
+- Tablet proof slug: `mobile-el-a-provider-breadth-477e6b35`.
+- Mobile launched against `EXPO_PUBLIC_MARKET_DATA_MODE=server` and `EXPO_PUBLIC_ORDER_MODE=server`, then filled the visible simple retail Team Total ticket against the seeded maker ask.

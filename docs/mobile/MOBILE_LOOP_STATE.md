@@ -28,6 +28,35 @@ Current implementation:
 Next focus:
 - Continue Local MVP user-flow breadth instead of orderbook breadth: real provider-backed spread/totals/team-total route data and loading/stale/unavailable states that keep users in the retail ticket flow.
 
+## Heartbeat: Local MVP Route-Backed Filled Cycles EX-EZ
+
+Date: 2026-07-04
+Completed cycles: EX, EY, EZ.
+
+What materially improved:
+- EX proved the route-backed simple retail Spread ticket can fill against seeded provider-shaped liquidity and appear as a Portfolio position plus recent activity.
+- EY repeated the same server-filled lifecycle for Totals `Over 2.5`, narrowing line-family debt beyond a single Spread path.
+- EZ added a route-backed Team Total provider fixture and proved Team Total `Over 1.5` through ticket, server fill, Portfolio position, and recent activity.
+
+Evidence:
+- `docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/`
+- `docs/mobile/harness/cycle-EY-local-mvp-route-server-filled-totals-flow/`
+- `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/`
+
+Validation:
+- Samsung tablet proofs passed for EX, EY, and EZ.
+- Mobile typecheck passed during each proof wrapper.
+- Focused mobile order/portfolio/history service tests and backend portfolio/history tests passed after EX and EY; EZ reused the same route/service path and adds provider breadth proof for all four compact families.
+- Default Book/orderbook UI remained hidden in all three proofs.
+
+Remaining structural debt:
+- Production active Polymarket provider mapping breadth is still P1.
+- Fresh S23 retail lifecycle recapture remains reference debt when gates allow it.
+- Non-disposable liquidity source remains backend/product work for later.
+
+Next focus:
+- Continue Local MVP user-flow breadth around event discovery/home, loading/stale/unavailable states, and Portfolio/history polish, while keeping the default experience retail-ticket first.
+
 ## Heartbeat: Local MVP Retail Flow Cycles EP-ER
 
 Date: 2026-07-04
