@@ -7,6 +7,7 @@ import {
 } from "../domain/portfolioPositionMetrics";
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { label, money } from "../presentation/formatters";
+import { resolveLineTicketTarget } from "../services/eventDetailLineTicketService";
 import type { Position } from "./Portfolio";
 import type { TicketSelection } from "./TradeTicket";
 
@@ -389,8 +390,7 @@ export function EventDetail({
       : type === "team-total"
         ? ["team-total", "team_total", "team_totals", "team_total_goals"]
         : [type];
-    return event.markets.find((market) => matchingTypes.includes(market.marketType ?? "") && Math.abs(lineAsNumber(market.line) ?? Number.NaN) === target)
-      ?? event.markets.find((market) => matchingTypes.includes(market.marketType ?? ""));
+    return event.markets.find((market) => matchingTypes.includes(market.marketType ?? "") && Math.abs(lineAsNumber(market.line) ?? Number.NaN) === target);
   };
   const backendSpreadMarket = matchingBackendLineMarket("spread", spreadLine);
   const backendTotalsMarket = matchingBackendLineMarket("totals", totalsLine);
@@ -788,7 +788,20 @@ export function EventDetail({
       </View>
     );
   };
-  const renderParityOutcomeRow = (outcome: DisplayOutcome, marketId: string, matchingOutcome?: Outcome, groupMarket?: Market) => (
+  const renderParityOutcomeRow = (outcome: DisplayOutcome, marketId: string, matchingOutcome?: Outcome, groupMarket?: Market) => {
+    const ticketTarget = resolveLineTicketTarget({
+      selection: outcome.ticketSelection,
+      backendMarket: groupMarket,
+      backendOutcome: matchingOutcome,
+      syntheticOutcome: outcome.ticketOutcome ?? matchingOutcome,
+      syntheticMarkets: {
+        spread: spreadMarket,
+        totals: totalsMarket,
+        teamTotal: backendTeamTotalMarket,
+      },
+      fallbackMarket: groupMarket ?? primaryMarket,
+    });
+    return (
     <View key={outcome.id} style={styles.parityOutcomeRow}>
       <View style={styles.parityOutcomeIcon}>
         <Text style={styles.parityOutcomeIconText}>{outcome.icon}</Text>
@@ -801,12 +814,10 @@ export function EventDetail({
       </View>
       <Text style={styles.oddsMultiplier}>{outcome.odds}</Text>
       <Pressable
-        accessibilityLabel={`event-detail-outcome-${marketId}-${outcome.id} ${providerIdentityLabel(groupMarket, outcome.ticketOutcome ?? matchingOutcome)}`}
+        accessibilityLabel={`event-detail-outcome-${marketId}-${outcome.id} ticket-source-${ticketTarget?.source ?? "unavailable"} ticket-market-${ticketTarget?.market.id ?? "none"} ticket-outcome-${ticketTarget?.outcome.id ?? "none"} ${providerIdentityLabel(ticketTarget?.market ?? groupMarket, ticketTarget?.outcome ?? outcome.ticketOutcome ?? matchingOutcome)}`}
         onPress={() => {
-          const ticketOutcome = outcome.ticketOutcome ?? matchingOutcome;
-          if (!ticketOutcome) return;
-          const ticketMarket = outcome.ticketSelection?.marketType === "spread" ? spreadMarket : outcome.ticketSelection?.marketType === "totals" ? totalsMarket : groupMarket ?? primaryMarket;
-          if (ticketMarket) openTicket(ticketMarket, ticketOutcome, event, defaultSide, outcome.ticketSelection);
+          if (!ticketTarget) return;
+          openTicket(ticketTarget.market, ticketTarget.outcome, event, defaultSide, outcome.ticketSelection);
         }}
         style={[styles.parityProbButton, { backgroundColor: outcome.color }]}
         testID={`event-detail-outcome-${marketId}-${outcome.id}`}
@@ -814,7 +825,8 @@ export function EventDetail({
         <Text style={styles.parityProbText}>{outcome.probability}%</Text>
       </Pressable>
     </View>
-  );
+    );
+  };
   const marketAvailabilityLabel = (market?: Market) => {
     const status = market?.availability?.status;
     if (status === "ready") return "Market live";
