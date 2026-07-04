@@ -85,6 +85,7 @@
     "smoke:tablet:event-detail-line-adjustment": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailLineAdjustment -Port 8185",
     "smoke:tablet:event-detail-line-portfolio": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailLinePortfolio -Port 8186",
     "smoke:tablet:event-detail-order-book": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailOrderBook -Port 8187",
+    "smoke:tablet:server-live-order-book": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -ServerLiveDetailOrderBook -Port 8197",
     "smoke:tablet:event-detail-full-page": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EventDetailFullPage -Port 8190",
     "smoke:tablet:live-detail": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -LiveDetail -Port 8217",
     "smoke:tablet:empty-error-loading": "powershell -ExecutionPolicy Bypass -File ./scripts/smoke-tablet.ps1 -EmptyErrorLoading -Port 8188",

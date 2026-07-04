@@ -361,6 +361,7 @@ export default function App() {
     const shouldForcePortfolioSyncError = url.includes("forcePortfolioSyncError=1");
     const shouldForceAccountProfileSyncError = url.includes("forceAccountProfileSyncError=1");
     const shouldForceMexicoEcuadorDetail = url.includes("forceMexicoEcuadorDetail=1");
+    const forceBackendEventSlugMatch = url.match(/[?&,]forceBackendEventSlug=([^&,]+)/);
     const forcedOpenOrder = url.includes("forceOpenOrderSide=sell") ? SMOKE_OPEN_SELL_ORDER : SMOKE_OPEN_ORDER;
     const apiKeyMatch = url.match(/[?&,]apiKey=([^&,]+)/);
     const shouldForceRuntimePortfolioSync =
@@ -419,6 +420,7 @@ export default function App() {
         !shouldForcePortfolioSyncError &&
         !shouldForceAccountProfileSyncError &&
         !shouldForceMexicoEcuadorDetail &&
+        !forceBackendEventSlugMatch?.[1] &&
         !forceServerOrderProof.current &&
         !shouldForceLive &&
         !shouldForceLiveDetail &&
@@ -444,6 +446,17 @@ export default function App() {
         setSelectedEvent(liveEvent);
       }
       setMainTab("live");
+    }
+    if (forceBackendEventSlugMatch?.[1]) {
+      const slug = decodeURIComponent(forceBackendEventSlugMatch[1]);
+      setMainTab("live");
+      api.getEvent(slug)
+        .then((detail) => normalizeEventDetail(detail))
+        .then((event) => {
+          if (!event || !mounted.current) return;
+          setSelectedEvent(event);
+        })
+        .catch(() => undefined);
     }
     if (shouldForceNoLive) {
       setEvents(worldCupEvents.filter((item) => item.status !== "live"));
@@ -680,7 +693,7 @@ export default function App() {
       setOpenOrders([SMOKE_OPEN_ORDER]);
       setMainTab("account");
     }
-  }, []);
+  }, [api]);
 
   useEffect(() => {
     if (!forceServerOrderProof.current || ORDER_MODE !== "server") return;

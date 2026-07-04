@@ -12,6 +12,7 @@ param(
   [switch]$EventDetailOrderBook,
   [switch]$EventDetailFullPage,
   [switch]$EventDetailChart,
+  [switch]$ServerLiveDetailOrderBook,
   [switch]$LiveDetail,
   [switch]$EmptyErrorLoading,
   [switch]$WholeAppNavDiscovery,
@@ -80,6 +81,8 @@ if ($EventDetailTrade) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailFullPage -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($EventDetailChart) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EventDetailChart -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
+} elseif ($ServerLiveDetailOrderBook) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -ServerLiveDetailOrderBook -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl "http://127.0.0.1:3002"
 } elseif ($LiveDetail) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LiveDetail -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($EmptyErrorLoading) {

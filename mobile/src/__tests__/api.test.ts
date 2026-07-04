@@ -123,6 +123,20 @@ describe("Holiwyn mobile API client", () => {
     expect(book.levels[0]).toEqual({ outcomeId: "yes", side: "bid", price: 0.57, shares: 120, total: 68.4 });
   });
 
+  test("prefers compact mobile event detail and falls back to legacy event route", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify({ error: "not found" }), { status: 404 }))
+      .mockResolvedValueOnce(jsonResponse({ event: { slug: "match-1" }, markets: [] }));
+    vi.stubGlobal("fetch", fetchImpl);
+
+    const event = await new PolyApi("https://api.example.test", "pk_live_test.secret").getEvent("match/1");
+
+    expect(event).toEqual({ event: { slug: "match-1" }, markets: [] });
+    expect(fetchImpl.mock.calls[0]?.[0]).toBe("https://api.example.test/api/mobile/events/match%2F1/live-detail");
+    expect(fetchImpl.mock.calls[1]?.[0]).toBe("https://api.example.test/api/events/match%2F1");
+  });
+
   test("saves authenticated profile preferences with canonical local settings", async () => {
     const fetchImpl = vi.fn(async () =>
       jsonResponse({

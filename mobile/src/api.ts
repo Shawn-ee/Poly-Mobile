@@ -56,8 +56,13 @@ export class PolyApi {
     return this.request<{ events: EventSummary[] }>(`/api/events?${params.toString()}`);
   }
 
-  getEvent(slug: string) {
-    return this.request<EventDetail>(`/api/events/${encodeURIComponent(slug)}`);
+  async getEvent(slug: string) {
+    const encodedSlug = encodeURIComponent(slug);
+    try {
+      return await this.request<EventDetail>(`/api/mobile/events/${encodedSlug}/live-detail`);
+    } catch {
+      return this.request<EventDetail>(`/api/events/${encodedSlug}`);
+    }
   }
 
   getMarket(id: string) {
