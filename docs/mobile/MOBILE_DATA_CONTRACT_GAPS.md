@@ -2547,3 +2547,31 @@ Temporary mock/static data:
 Future migration concern:
 
 - Keep readiness decisions keyed to `providerOrderbookDepth.status=ready` rather than `levels[]` alone, because stale provider ladder rows may still produce levels while correctly reporting non-ready freshness.
+
+## Cycle DX-A - Selected Line Order, Portfolio, And History Lifecycle
+
+Closed or narrowed:
+
+- `docs/mobile/harness/cycle-DX-A-line-order-portfolio-history.json` proves a selected World Cup Spread line market keeps the same market/outcome/family/line/period/side/display/provider identity through order request, order response, portfolio open order, canceled activity, filled portfolio position, and recent trade activity.
+- Canonical order responses now echo the sanitized `selection` object and top-level `contractSide`, so the immediate order response is part of the same lifecycle proof instead of relying only on later portfolio reads.
+- `buildTicketSelectionMetadata` now infers `contractSide` from YES/NO outcome sides when no original order request is joined, allowing filled position and recent trade rows to preserve binary line identity from market/outcome records.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- A first-class immutable selection snapshot on `Order`, `Trade`, and/or `Position` remains future hardening; DX-A uses existing `ApiOrderRequest.requestBody.selection` for open/canceled orders and market/outcome rows for positions/recent trades.
+
+Schema mismatch:
+
+- No schema change was made. The lifecycle proof intentionally stays within the existing `ApiOrderRequest`, `Order`, `Trade`, `Position`, `Market`, and `Outcome` model boundaries.
+
+Route mismatch:
+
+- No new mobile route was required. Existing `/api/portfolio` and `/api/portfolio/history` responses now have proof coverage for selected line lifecycle identity.
+
+Temporary mock/static data:
+
+- No frontend mock/static data was added. The proof uses a disposable backend World Cup Spread market and real canonical order/portfolio/history service paths.
+
+Future migration concern:
+
+- If production trading needs historical reconstruction after market/outcome edits, persist immutable selection metadata directly on order/fill/trade lifecycle rows rather than deriving filled activity from current market/outcome rows.

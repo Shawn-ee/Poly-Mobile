@@ -40,6 +40,8 @@ type StoredOrderResponse = {
     type: CanonicalOrderType;
     clientOrderId: string | null;
     apiKeyId: string | null;
+    contractSide: "YES" | "NO" | null;
+    selection: Record<string, unknown> | null;
     price: string;
     size: string;
     remaining: string;
@@ -494,6 +496,8 @@ export const submitCanonicalOrder = async (params: {
         type: normalized.type,
         clientOrderId: normalized.clientOrderId,
         apiKeyId: params.apiKeyId,
+        contractSide: normalized.requestBody.contractSide as "YES" | "NO" | null,
+        selection: normalized.requestBody.selection as Record<string, unknown> | null,
       },
       fills: result.fills,
       balance: result.balance,

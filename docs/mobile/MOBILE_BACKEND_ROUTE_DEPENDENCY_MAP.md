@@ -1083,3 +1083,17 @@ Cycle DW-A implementation notes:
 - The DW-A matrix closes the DV harness gap by proving one provider-shaped selected market can report unavailable/empty, stale, and ready provider ladder states through the same Book route contract.
 - Ready evidence is accepted only when `depthSource=provider-orderbook-depth` and `providerOrderbookDepth.status=ready`; the unavailable state clears quote snapshots so fallback quote rows cannot satisfy the ready assertion.
 - The artifact records selector identity (`totals:regulation:2.5`), period, line, selected market id, and outcome ids in each matrix state.
+
+## Cycle DX-A - Selected Line Order, Portfolio, And History Lifecycle
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Selected World Cup line order creation | Canonical order service backing `/api/orders` | POST | Canonical API key with `orders:write` | `marketId`, `outcomeId`, `side`, `type`, `price`, `size`, `contractSide`, and `selection` containing `marketType`, `marketGroupId`, `line`, `period`, `side`, `displayLabel`, provider source/market/condition/token ids | Order response now echoes `order.contractSide` and `order.selection` | `ApiOrderRequest`, `Order`, `Market`, `Outcome` | None in backend proof | First-class immutable `Order.selection` column remains future hardening. |
+| Selected line open order and position snapshot | `/api/portfolio` | GET | Session user or canonical API key with `account:read` | None | `openOrders[].selection`, `positions[].selection` with selected line and provider identity | `Order`, `ApiOrderRequest`, `Position`, `Market`, `Outcome` | Mobile fallback fixtures are separate and not used in DX-A proof | Positions infer display label/contract side from market/outcome rows when original order request is not directly joined. |
+| Selected line history activity | `/api/portfolio/history` | GET | Session user or canonical API key with `account:read` | None | `canceledOrders[].selection`, `recentTrades[].selection` with selected line and provider identity | `Order`, `ApiOrderRequest`, `Trade`, `Market`, `Outcome` | None in backend proof | Trade rows still rely on market/outcome metadata rather than an immutable trade selection snapshot. |
+
+Cycle DX-A implementation notes:
+
+- Proof artifact: `docs/mobile/harness/cycle-DX-A-line-order-portfolio-history.json`.
+- The proof creates a disposable World Cup Spread line market and verifies the same `marketId`, `outcomeId`, `marketType`, `marketGroupId`, `line`, `period`, `side`, `displayLabel`, `contractSide`, `referenceSource`, `externalMarketId`, `conditionId`, and `referenceTokenId` through request, order response, portfolio open order, canceled activity, portfolio position, and recent trade activity.
+- No visible UI, smoke script, Prisma schema, or central tracker edits were required.

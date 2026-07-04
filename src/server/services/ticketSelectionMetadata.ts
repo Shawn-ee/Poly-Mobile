@@ -51,13 +51,15 @@ const contractSideFromRequest = (requestBody: unknown, selection: SelectionSourc
   return normalizedContractSide((requestBody as Record<string, unknown>).contractSide);
 };
 
+const contractSideFromOutcome = (outcome: SelectionOutcome) => normalizedContractSide(outcome.side);
+
 export function buildTicketSelectionMetadata(params: {
   requestBody?: unknown;
   market: SelectionMarket;
   outcome: SelectionOutcome;
 }) {
   const selection = cleanSelectionSource(params.requestBody);
-  const contractSide = contractSideFromRequest(params.requestBody, selection);
+  const contractSide = contractSideFromRequest(params.requestBody, selection) ?? contractSideFromOutcome(params.outcome);
   const displayLabel =
     stringValue(selection?.displayLabel) ??
     [params.outcome.label ?? params.outcome.name, lineValue(params.market.line), params.market.period]

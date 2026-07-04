@@ -3582,3 +3582,46 @@ Known limitations:
 - The visible selector proof uses deterministic backend-contract-shaped fixture markets; real provider-backed selector breadth remains dependent on available Polymarket line-family markets.
 - Full settings sheet parity and visual density/motion polish remain P1/P2.
 - Order/portfolio/history coupling for every selector family remains future lifecycle scope.
+
+## Cycle DX-A - Backend Line Order, Portfolio, And History Lifecycle
+
+Feature/page worked on:
+
+- PM-GAP-074 backend structural contract proof for selected World Cup line lifecycle.
+
+Backend/proof components touched:
+
+- `src/server/services/canonicalOrderSubmission.ts`
+- `src/server/services/ticketSelectionMetadata.ts`
+- `scripts/prove_mobile_dx_a_line_order_portfolio_history.ts`
+- `src/server/services/__tests__/canonical_order_submission.phase5.test.ts`
+- `src/__tests__/ticketSelectionMetadata.test.ts`
+- `package.json`
+
+User interactions supported/proven:
+
+- Submit a selected Spread line order with `marketType=spread`, `marketGroupId=spreads`, `line=-1.5`, `period=1H`, `side=yes`, `displayLabel=Japan -1.5 1H`, `contractSide=yes`, and provider source/market/condition/token identity.
+- Read the same identity back from immediate order response, portfolio open order, canceled portfolio activity, filled portfolio position, and recent trade activity.
+
+State transitions:
+
+- Selected ticket/order request -> canonical order response with echoed selection.
+- Open order -> `/api/portfolio` `openOrders[].selection`.
+- Canceled order -> `/api/portfolio/history` `canceledOrders[].selection`.
+- Filled order -> `/api/portfolio` `positions[].selection`.
+- Filled order -> `/api/portfolio/history` `recentTrades[].selection`.
+
+Validation:
+
+- `DATABASE_URL=postgresql://postgres:postgres@localhost:5432/polymarket npm run test:jest -- src/server/services/__tests__/canonical_order_submission.phase5.test.ts src/__tests__/ticketSelectionMetadata.test.ts src/__tests__/portfolio.open-orders.route.test.ts src/__tests__/portfolio.history.route.test.ts`
+- `npm run test:mobile-api -- portfolioSnapshotService.test.ts portfolioHistoryService.test.ts orderService.test.ts openOrderService.test.ts api.test.ts`
+- `DATABASE_URL=postgresql://postgres:postgres@localhost:5432/polymarket npm run mobile:dx-a-line-order-portfolio-history`
+
+Proof artifact:
+
+- `docs/mobile/harness/cycle-DX-A-line-order-portfolio-history.json` with `pass=true`.
+
+Known limitations:
+
+- DX-A is a backend lifecycle proof, not a visible UI proof.
+- Filled positions/recent trades still derive selected line metadata from current market/outcome rows; immutable trade selection snapshots remain future hardening.
