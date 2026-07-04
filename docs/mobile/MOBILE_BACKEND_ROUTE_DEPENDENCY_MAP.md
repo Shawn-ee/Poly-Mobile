@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle EA-A - Live Detail Per-Market Chart Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live event page selected-market chart behavior | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile route | Event slug | Top-level `event.chartHistory` remains primary-market scoped. Each compact `markets[]` row now includes `chartHistory[]` and `chartHistoryStatus.source/status/pointCount/outcomeCount/lastUpdated/emptyState/range/ranges`. `contract` now includes `batchedChartHistorySource`, `batchedChartHistoryMarketCount`, `batchedChartHistoryPointCount`, `batchedChartHistoryRequestedMarketCount`, and `batchedChartHistoryRequestedMarketIds`. | Reads compact live `Event`, `Market`, active `Outcome`, provider quote/depth snapshots through existing Book snapshot service, and `MarketOutcomeSnapshot` rows for every compact market id. | None in backend. Markets with no history return `chartHistory=[]` and `chartHistoryStatus.emptyState=no-history`. | Real Polymarket/CLOB history ingestion for mapped Spread/Totals/Team Total line markets still depends on provider token mapping and refresh coverage. |
+| Focused backend unit proof | `src/__tests__/mobile-live-event-detail.test.ts` | Jest service test | Local development only | Mocked event/market/snapshot inputs | Proves primary `event.chartHistory` remains separate from non-primary `market.chartHistory`, and proves selected line-market chart readiness can be audited by `marketId`. | No DB writes; orderbook snapshot service is mocked. | None | DB-backed route probe needs a seeded World Cup proof event in the active local database. |
+
+Cycle EA-A implementation notes:
+
+- The route now fetches chart snapshots for all `selectCompactLiveMarkets()` market ids with a bounded `compactMarketIds.length * 240` cap.
+- Per-market chart status is backend-shaped and replaceable by real provider history: it carries source, status, point count, outcome count, last update, range, and empty state.
+- This narrows the chart parity gap for line selector work because mobile no longer has to assume the primary market chart applies to the selected line market.
+
 ## Cycle DU-A - Provider Ready Line Orderbook Depth Proof
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

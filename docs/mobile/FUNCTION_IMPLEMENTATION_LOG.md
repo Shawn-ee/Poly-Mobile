@@ -2,6 +2,51 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle EA-A - Live Detail Per-Market Chart Contract
+
+Feature/page worked on:
+
+- Backend/provider lifecycle support for live World Cup event detail parity.
+- Closed a structural data-contract gap for selected market/line chart behavior: `/api/mobile/events/:slug/live-detail` now exposes chart readiness per compact market, not only a top-level primary event chart.
+
+Backend/components touched:
+
+- `src/app/api/mobile/events/[slug]/live-detail/route.ts`
+- `src/server/services/mobileLiveEventDetail.ts`
+- `scripts/probe_mobile_live_detail_route.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+
+Important functions/services touched:
+
+- `GET /api/mobile/events/:slug/live-detail` now queries `MarketOutcomeSnapshot` for all selected compact live markets instead of only the primary market.
+- `serializeMobileLiveEventDetail()` groups chart snapshots by `marketId`, keeps top-level `event.chartHistory` scoped to the primary market, and adds `market.chartHistory` plus `market.chartHistoryStatus` for every compact market.
+- The live-detail probe script now reports `batchedChartHistoryMarketCount`, `batchedChartHistoryPointCount`, and `chartReadyMarketIds`.
+
+User interactions supported:
+
+- Future visible chart selector work can switch from Moneyline to Spread/Totals/Team Totals while preserving selected `marketId` and showing whether that exact market has chart history.
+- Mobile can distinguish a selected line market with `chartHistoryStatus.status=ready` from one with `emptyState=no-history` without inventing local UI-only state.
+
+State transitions:
+
+- Primary market chart history still drives `event.chartHistory` and `contract.chartHistorySource`.
+- Non-primary market chart snapshots now produce per-market `chartHistoryStatus.status=ready` while the primary chart can remain `empty` if it has no snapshots.
+
+Verified:
+
+- `npm run test:jest -- src/__tests__/mobile-live-event-detail.test.ts`
+
+Validation notes:
+
+- Worktree-local Jest initially could not run because this separate worktree has no `node_modules`; a temporary local dependency junction to the main checkout was used for validation and removed afterward.
+- A route probe was attempted, but the local database in this worktree did not contain the expected World Cup proof event, so no DB-backed proof artifact was created in this cycle.
+
+Known limitations:
+
+- This does not fetch new Polymarket history by itself; it exposes already-ingested `MarketOutcomeSnapshot` rows across all compact markets.
+- Real provider-backed chart parity for line markets still depends on mapped Polymarket/CLOB token IDs and refresh coverage for those markets.
+- No visible mobile UI was changed in this backend/provider lane.
+
 ## Cycle DU-B - Visible Book Settings And Selector Carry-Through
 
 Feature/page worked on:

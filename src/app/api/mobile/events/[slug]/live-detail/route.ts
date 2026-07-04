@@ -32,12 +32,12 @@ export async function GET(_request: Request, context: Ctx) {
   }
 
   const compactMarkets = selectCompactLiveMarkets(event.markets);
-  const primaryMarketId = compactMarkets[0]?.id ?? null;
-  const chartSnapshots = primaryMarketId
+  const compactMarketIds = compactMarkets.map((market) => market.id);
+  const chartSnapshots = compactMarketIds.length
     ? await prisma.marketOutcomeSnapshot.findMany({
-        where: { marketId: primaryMarketId },
-        orderBy: { ts: "asc" },
-        take: 240,
+        where: { marketId: { in: compactMarketIds } },
+        orderBy: [{ marketId: "asc" }, { ts: "asc" }],
+        take: compactMarketIds.length * 240,
       })
     : [];
 
