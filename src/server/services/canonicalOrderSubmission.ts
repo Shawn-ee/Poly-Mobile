@@ -154,6 +154,12 @@ const sanitizeTicketSelection = (value: unknown) => {
     side: sanitizeOptionalStringField(input.side),
     displayLabel: sanitizeOptionalStringField(input.displayLabel),
     contractSide: sanitizeOptionalStringField(input.contractSide),
+    referenceSource: sanitizeOptionalStringField(input.referenceSource),
+    externalSlug: sanitizeOptionalStringField(input.externalSlug),
+    externalMarketId: sanitizeOptionalStringField(input.externalMarketId),
+    conditionId: sanitizeOptionalStringField(input.conditionId),
+    referenceTokenId: sanitizeOptionalStringField(input.referenceTokenId),
+    referenceOutcomeLabel: sanitizeOptionalStringField(input.referenceOutcomeLabel),
   };
   return Object.fromEntries(Object.entries(selection).filter(([, field]) => field !== null));
 };

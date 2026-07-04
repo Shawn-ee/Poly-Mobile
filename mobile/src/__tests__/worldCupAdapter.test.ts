@@ -63,6 +63,10 @@ describe("world cup adapter", () => {
       marketType: "spread",
       period: "regulation",
       line: "+0.5",
+      referenceSource: "polymarket",
+      externalSlug: "australia-egypt-spread",
+      externalMarketId: "gamma-spread-1",
+      conditionId: "condition-spread-1",
       liquidity: "4500",
       orderbookDepth: [{ outcomeId: "aus", side: "bid", price: 0.58, shares: 100, total: 58 }],
       availability: {
@@ -83,6 +87,8 @@ describe("world cup adapter", () => {
           name: "Australia +0.5",
           label: "Australia +0.5",
           side: "home",
+          referenceTokenId: "token-aus-spread",
+          referenceOutcomeLabel: "Australia +0.5",
           price: 0.6,
           bestBid: 0.58,
           bestAsk: 0.62,
@@ -96,6 +102,10 @@ describe("world cup adapter", () => {
       marketType: "spread",
       period: "regulation",
       line: "+0.5",
+      referenceSource: "polymarket",
+      externalSlug: "australia-egypt-spread",
+      externalMarketId: "gamma-spread-1",
+      conditionId: "condition-spread-1",
       liquidity: 4500,
       orderbookDepth: [{ outcomeId: "aus", side: "bid", price: 0.58, shares: 100, total: 58 }],
       availability: {
@@ -106,7 +116,14 @@ describe("world cup adapter", () => {
         staleAfterSeconds: 90,
         isStale: true,
       },
-      outcomes: [{ id: "aus", side: "home", bestBid: 0.58, bestAsk: 0.62 }],
+      outcomes: [{
+        id: "aus",
+        side: "home",
+        referenceTokenId: "token-aus-spread",
+        referenceOutcomeLabel: "Australia +0.5",
+        bestBid: 0.58,
+        bestAsk: 0.62,
+      }],
     });
   });
 

@@ -3087,3 +3087,53 @@ Known limitations:
 - The reference provider event is now closed/resolved, so this cycle proves real CLOB chart history and stale provider labeling, not current live order entry.
 - Chart history snapshots do not yet store a first-class source column; the chart route infers provider source from Polymarket market identity plus existing history rows.
 - Line-family chart/history parity remains unavailable until real line-family Polymarket markets or explicitly optional enrichment exist.
+
+## Cycle DM - Provider Token Lifecycle
+
+Feature/page worked on:
+
+- PM-GAP-068 provider identity lifecycle for the Polymarket-backed Colombia vs Ghana live-detail page.
+- The selected market/outcome identity now carries Polymarket market/source/token fields from backend live-detail into the Android ticket, canonical order request metadata, portfolio open orders/positions, and portfolio history mapping.
+- Added Android-only proof markers through accessibility labels so the harness can verify provider identity without showing debug text to users.
+
+Backend/API components touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/server/services/canonicalOrderSubmission.ts`
+- `src/server/services/ticketSelectionMetadata.ts`
+- `src/app/api/portfolio/route.ts`
+- `src/app/api/portfolio/history/route.ts`
+- `scripts/prove_mobile_provider_token_lifecycle.ts`
+
+Mobile components/services touched:
+
+- `mobile/src/types.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/services/orderService.ts`
+- `mobile/src/services/portfolioSnapshotService.ts`
+- `mobile/src/services/portfolioHistoryService.ts`
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/scripts/smoke.ps1`
+
+Important functions/services touched:
+
+- `serializeMobileLiveEventDetail()` now serializes `referenceSource`, `externalSlug`, `externalMarketId`, `conditionId`, `referenceTokenId`, and `referenceOutcomeLabel`.
+- `normalizeMarket()` and `normalizeOutcome()` preserve those fields on the mobile event model.
+- `selectionForOrder()` adds provider source/market/condition/token fields to the ticket order payload.
+- `sanitizeTicketSelection()` and `buildTicketSelectionMetadata()` preserve provider fields in `ApiOrderRequest.requestBody.selection` and portfolio response selection metadata.
+
+User interactions supported:
+
+- Samsung tablet opens the server-backed Colombia vs Ghana game page, sees provider identity markers on the market page, opens the route-backed orderbook, taps a Buy row, and sees the trade ticket preserve the same Polymarket provider source/market/condition/token identity.
+
+State transitions:
+
+- Polymarket Gamma/CLOB market identity -> `/api/mobile/events/:slug/live-detail` -> mobile EventDetail model -> ticket selection -> `/api/orders` request body -> `/api/portfolio` open order/position selection -> `/api/portfolio/history` activity selection.
+- `docs/mobile/harness/cycle-current-mobile-provider-token-lifecycle.json` proves the local selected market has `referenceSource=polymarket`, a Gamma external market id, a CLOB condition id, and an outcome token id.
+
+Known limitations:
+
+- Cycle DM proves provider token identity through the ticket/order metadata contract and Android ticket proof. It does not create a new matched fill or resolved history row on device for the closed Colombia/Ghana provider event.
+- First-class normalized `Order.selection`/`Trade.selection` columns remain a future production hardening option; current preservation uses existing `ApiOrderRequest.requestBody.selection` plus market/outcome fallback metadata.

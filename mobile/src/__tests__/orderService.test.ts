@@ -18,6 +18,12 @@ const outcome = {
   color: "#2563eb",
 };
 
+const providerOutcome = {
+  ...outcome,
+  referenceTokenId: "token-france",
+  referenceOutcomeLabel: "France",
+};
+
 const event = {
   id: "mexico-ecuador",
   title: "Mexico vs. Ecuador",
@@ -45,6 +51,14 @@ const propOutcome = {
   zhLabel: "Yes",
   probability: 51,
   color: "#0a8f61",
+};
+
+const providerMarket = {
+  ...market,
+  referenceSource: "polymarket",
+  externalSlug: "world-cup-2026-france-winner",
+  externalMarketId: "gamma-market-france",
+  conditionId: "condition-france",
 };
 
 describe("ticket order service", () => {
@@ -104,6 +118,41 @@ describe("ticket order service", () => {
       amount: 100,
       probability: 34,
       contractSide: "yes",
+    });
+  });
+
+  test("carries Polymarket provider identity through the ticket order payload", async () => {
+    const placeLimitOrder = vi.fn(async () => ({ order: { id: "server-provider-order-1" } }));
+    const api = { placeLimitOrder } as unknown as PolyApi;
+
+    const result = await submitTicketOrder({
+      mode: "server",
+      api,
+      market: providerMarket,
+      outcome: providerOutcome,
+      side: "buy",
+      amount: 100,
+    });
+
+    expect(placeLimitOrder).toHaveBeenCalledWith(
+      expect.objectContaining({
+        marketId: "world-cup-winner",
+        outcomeId: "france",
+        selection: expect.objectContaining({
+          referenceSource: "polymarket",
+          externalSlug: "world-cup-2026-france-winner",
+          externalMarketId: "gamma-market-france",
+          conditionId: "condition-france",
+          referenceTokenId: "token-france",
+          referenceOutcomeLabel: "France",
+        }),
+      }),
+    );
+    expect(result.selection).toMatchObject({
+      referenceSource: "polymarket",
+      externalMarketId: "gamma-market-france",
+      conditionId: "condition-france",
+      referenceTokenId: "token-france",
     });
   });
 

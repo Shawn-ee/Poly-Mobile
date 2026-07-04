@@ -12646,3 +12646,17 @@ Holiwyn/mobile changed: EventDetail chart hydration now carries the provider cha
 Verification: Provider history proof created 1,708 real CLOB price-history snapshots across 3 mapped markets and passed. Backend tests, mobile API tests, and root build passed. Samsung tablet proof shows `chart-source-polymarket-clob-prices-history`, `chart-status-ready`, `chart-range-1D`, `live-data-source-polymarket-gamma`, `live-data-status-stale`, and route-backed ready orderbook.
 
 Audit Gate: Pass for focused provider-backed chart/history baseline, with 0 unresolved P0 gaps. P1 gaps remain for first-class snapshot provenance, scheduled refresh, line-family history, and lifecycle proof through ticket/order/portfolio/history.
+
+### Cycle DM - Provider Token Lifecycle
+
+Goal: Prove real Polymarket provider market/outcome token identity survives from live-detail discovery through Android ticket opening and backend order/portfolio/history selection contracts.
+
+Reference audit: The provider-backed Colombia vs Ghana event still exposes real Gamma/CLOB market identity even though the event is closed. This cycle used those real provider fields as the identity source instead of OpticOdds or arbitrary local fixture data.
+
+Holiwyn/backend changed: Live-detail now serializes provider market and outcome token fields. Canonical order submission, ticket selection metadata, portfolio, and portfolio history preserve provider fields from the original selection or market/outcome fallback metadata.
+
+Holiwyn/mobile changed: Mobile event types, adapter normalization, order service selection, portfolio mapping, EventDetail orderbook rows, and TradeTicket selection markers now carry provider source, market, condition, and token identity.
+
+Verification: Provider token lifecycle proof passed, focused portfolio route tests passed, focused mobile API tests passed, root build passed, and Samsung tablet server-mode proof opened the provider-backed event, orderbook, and ticket with provider markers present.
+
+Audit Gate: Pass for focused provider token lifecycle with 0 unresolved P0 gaps. Remaining P1 work is a filled-order/history proof on an active provider-backed market and production hardening of immutable order/trade selection identity.

@@ -1875,3 +1875,38 @@ Remaining gaps:
 - P1: Scheduled refresh orchestration.
 - P1: Exact line-family chart/history when provider markets exist.
 - P1: Ticket/order/portfolio/history proof for mapped provider token identity.
+
+## Cycle DM Provider Token Lifecycle Audit
+
+Result: Pass for provider identity carry-through from live-detail to ticket/order metadata and portfolio/history mapping contracts.
+
+Reference behavior:
+
+- Polymarket markets are tokenized. A selected outcome must keep market, condition, and outcome-token identity through chart/book/ticket/trading surfaces.
+- The Colombia vs Ghana reference event provides real Gamma market IDs, CLOB condition IDs, and outcome token IDs for match-winner markets.
+
+Holiwyn criteria:
+
+| Criterion ID | Priority | Result | Evidence |
+| --- | --- | --- | --- |
+| LD-DM-P0-01 | P0 | Pass | `/api/mobile/events/:slug/live-detail` returns market provider fields and outcome token fields. |
+| LD-DM-P0-02 | P0 | Pass | `worldCupAdapter`, `EventDetail`, and `TradeTicket` preserve provider fields through visible selection and ticket opening. |
+| LD-DM-P0-03 | P0 | Pass | `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` preserve provider fields in selection metadata. |
+| LD-DM-P0-04 | P0 | Pass | Backend proof uses a real local Polymarket-mapped Colombia/Ghana market and token IDs without OpticOdds. |
+| LD-DM-P0-05 | P0 | Pass | Samsung tablet proof sees `provider-source-polymarket`, provider market, condition, and token markers on page and ticket. |
+| LD-DM-P1-01 | P1 | Partial | Filled trade/history proof remains future work because the reference provider event is closed. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-current-mobile-provider-token-lifecycle.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book-ticket.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book-ticket.png`
+
+Remaining gaps:
+
+- P1: Filled order and resolved history proof for an active provider-backed market.
+- P1: First-class immutable order/trade selection columns before production-grade trading audit.

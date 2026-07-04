@@ -84,6 +84,13 @@ const selectionForOrder = (input: TicketOrderInput): TicketSelection => {
     side: input.selection?.side ?? input.outcome.side,
     displayLabel: input.selection?.displayLabel ?? label(input.outcome),
     contractSide: contractSideForOrder(input),
+    referenceSource: input.selection?.referenceSource ?? input.market.referenceSource ?? undefined,
+    externalSlug: input.selection?.externalSlug ?? input.market.externalSlug ?? undefined,
+    externalMarketId: input.selection?.externalMarketId ?? input.market.externalMarketId ?? undefined,
+    conditionId: input.selection?.conditionId ?? input.market.conditionId ?? undefined,
+    referenceTokenId: input.selection?.referenceTokenId ?? input.outcome.referenceTokenId ?? undefined,
+    referenceOutcomeLabel:
+      input.selection?.referenceOutcomeLabel ?? input.outcome.referenceOutcomeLabel ?? undefined,
   };
   return Object.fromEntries(
     Object.entries(selection).filter(([, value]) => value !== undefined),

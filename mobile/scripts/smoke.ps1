@@ -390,7 +390,7 @@ try {
     }
     $env:EXPO_PUBLIC_ORDER_MODE = "server"
     if ($ServerLiveDetailBackendProof) {
-      $env:EXPO_PUBLIC_API_BASE_URL = "http://127.0.0.1:3002"
+      $env:EXPO_PUBLIC_API_BASE_URL = $BackendBaseUrl
     } elseif (-not $env:EXPO_PUBLIC_API_BASE_URL) {
       $env:EXPO_PUBLIC_API_BASE_URL = "http://${ExpoHost}:3002"
     }
@@ -1927,13 +1927,18 @@ try {
     }
 
     if ($ServerLiveDetailOrderBook) {
-      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-open-order-book", "Best bid", "Best ask", "Spread")
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-open-order-book", "provider-source-polymarket", "Best bid", "Best ask", "Spread")
       Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-open-order-book"
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-server-live-order-book.png"
       $serverOrderBookHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-live-order-book.xml"
       if ($ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25") {
         Assert-HierarchyContains -Path $serverOrderBookHierarchy -Expected @("event-detail-order-book-screen", "orderbook-source-orderbook-route", "orderbook-status-ready", "event-detail-order-book-depth-state", "Route depth", "Order Book", "Best bid", "Best ask", "Buy", "Sell")
+        Invoke-TapHierarchyNode -Path $serverOrderBookHierarchy -Identifier "order-book-buy-" -StartsWith
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "cycle-current-holiwyn-server-live-order-book-ticket.png"
+        $serverOrderBookTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-live-order-book-ticket.xml"
+        Assert-HierarchyContains -Path $serverOrderBookTicketHierarchy -Expected @("trade-ticket", "ticket-selection-summary", "provider-source-polymarket", "provider-market-", "provider-condition-", "provider-token-", "ticket-selection-line", "Choose an amount")
         return
       }
       Assert-HierarchyContains -Path $serverOrderBookHierarchy -Expected @("event-detail-order-book-screen", "orderbook-source-orderbook-route", "orderbook-status-ready", "event-detail-order-book-depth-state", "Route depth", "Order Book", "Best bid", "Best ask", "0.59 USDT", "0.65 USDT", "1.06k shares", "940 shares", "Buy", "Sell")

@@ -25,6 +25,12 @@ export type TicketSelection = {
   side?: string;
   displayLabel: string;
   contractSide?: BinaryContractSide;
+  referenceSource?: string;
+  externalSlug?: string;
+  externalMarketId?: string;
+  conditionId?: string;
+  referenceTokenId?: string;
+  referenceOutcomeLabel?: string;
 };
 
 type TradeTicketCopy = {
@@ -257,6 +263,23 @@ export function TradeTicket({
   const amountDisplay = numericAmount > 0 ? compactCash(numericAmount) : "$0";
   const submitLabel = numericAmount <= 0 ? "Choose an amount" : swipeLabel;
   const priceDisplay = `${contractProbability}c`;
+  const providerIdentityLabel = [
+    ticket.selection?.referenceSource ?? ticket.market.referenceSource
+      ? `provider-source-${ticket.selection?.referenceSource ?? ticket.market.referenceSource}`
+      : null,
+    ticket.selection?.externalMarketId ?? ticket.market.externalMarketId
+      ? `provider-market-${ticket.selection?.externalMarketId ?? ticket.market.externalMarketId}`
+      : null,
+    ticket.selection?.conditionId ?? ticket.market.conditionId
+      ? `provider-condition-${ticket.selection?.conditionId ?? ticket.market.conditionId}`
+      : null,
+    ticket.selection?.referenceTokenId ?? ticket.outcome.referenceTokenId
+      ? `provider-token-${ticket.selection?.referenceTokenId ?? ticket.outcome.referenceTokenId}`
+      : null,
+    ticket.selection?.referenceOutcomeLabel ?? ticket.outcome.referenceOutcomeLabel
+      ? `provider-outcome-${ticket.selection?.referenceOutcomeLabel ?? ticket.outcome.referenceOutcomeLabel}`
+      : null,
+  ].filter(Boolean).join(" ");
 
   return (
     <Modal visible transparent animationType="slide">
@@ -286,7 +309,7 @@ export function TradeTicket({
                 <Ionicons name="options-outline" color="#f8fafc" size={22} />
               </Pressable>
             </View>
-            <View accessibilityLabel="ticket-selection-summary" testID="ticket-selection-summary" style={styles.selectionSummary}>
+            <View accessibilityLabel={`ticket-selection-summary ${providerIdentityLabel}`} testID="ticket-selection-summary" style={styles.selectionSummary}>
               <View style={[styles.outcomeFlag, { backgroundColor: ticket.outcome.color }]} />
               <View style={styles.selectionTextBlock}>
                 <Text style={styles.ticketTitle}>{marketLabel}</Text>
