@@ -2490,3 +2490,30 @@ Temporary mock/static data:
 Future migration concern:
 
 - Book selection identity must stay stable through selector -> ladder -> ticket -> order -> portfolio -> history, including provider token/outcome IDs when provider depth is active.
+
+## Cycle DV - Same-Market Provider-Ready Book UI
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- A first-class event-level Book selector/options contract is still missing. DV proves one selected provider-backed Spread market; full Polymarket selector parity will need sibling market groups, periods, lines, and outcomes from the backend rather than local sibling discovery.
+- A provider-specific non-ready/stale/unavailable proof route is not yet part of the DV harness. Earlier fallback evidence is distinct, but future route hardening should expose easy test controls for ready vs stale vs unavailable states.
+
+Fields backend provides but mobile ignores:
+
+- Mobile does not display raw provider market ids, condition ids, or token ids to users. DV consumes them as selection identity and exposes them only in accessibility markers for audit proof.
+
+Schema mismatch:
+
+- `ReferenceOrderbookDepthSnapshot` owns provider ladder rows while the Book selector state is still primarily client-owned in EventDetail. DV proves the selected-market path, but a backend-owned selector/options payload would reduce local coupling.
+
+Route mismatch:
+
+- `/api/orderbook/:marketId/book` returns one selected market's depth and identity. Polymarket's Book page behaves like a market-family browser, so a future route may need to return sibling choices for Moneyline/Spreads/Totals/periods around the selected market.
+
+Temporary mock/static data:
+
+- DV did not use arbitrary frontend-only mock data for the provider-ready path. The proof seeds contract-shaped provider depth rows and uses the live-detail/orderbook routes to hydrate the tablet UI.
+
+Future migration concern:
+
+- Repeat selector -> ladder -> ticket -> order -> portfolio -> history proof for a real active provider-backed market when available, and store immutable order/trade selection snapshots before production trading.

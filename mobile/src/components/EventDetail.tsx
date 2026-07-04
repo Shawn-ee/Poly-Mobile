@@ -135,6 +135,11 @@ const orderBookGroupLabel = (market: Market) => {
   return "Other";
 };
 
+const orderBookSelectorKey = (market: Market) => {
+  const family = market.marketGroupId ?? orderBookGroupLabel(market).toLowerCase().replace(/\s+/g, "-");
+  return `${family}:${market.period ?? "full-game"}:${market.line ?? "default"}`;
+};
+
 const orderBookMarketType = (market: Market): TicketSelection["marketType"] => {
   if (market.marketType === "spread" || market.marketType === "totals" || market.marketType === "team-total" || market.marketType === "prop" || market.marketType === "future") {
     return market.marketType;
@@ -768,7 +773,8 @@ export function EventDetail({
     const selectedMarketFamily = orderBookGroupLabel(orderBookMarket);
     const selectedTicketLabel = label(locale, orderBookMarket);
     const selectedTicketSelection = orderBookTicketSelection(orderBookMarket, orderBookSelectedOutcome, selectedOutcomeIndex, selectedTicketLabel);
-    const selectedIdentityLabel = `selected-market-${orderBookMarket.id} selected-family-${selectedMarketFamily} selected-outcome-${orderBookSelectedOutcome.id} selected-side-${selectedContractSide} selected-market-type-${selectedTicketSelection.marketType} selected-line-${selectedTicketSelection.line ?? "none"} selected-period-${selectedTicketSelection.period ?? "none"}`;
+    const selectedSelectorKey = orderBookSelectorKey(orderBookMarket);
+    const selectedIdentityLabel = `selected-market-${orderBookMarket.id} selected-selector-key-${selectedSelectorKey} selected-family-${selectedMarketFamily} selected-outcome-${orderBookSelectedOutcome.id} selected-side-${selectedContractSide} selected-market-type-${selectedTicketSelection.marketType} selected-line-${selectedTicketSelection.line ?? "none"} selected-period-${selectedTicketSelection.period ?? "none"}`;
     const displayModeLabel = orderBookDisplayMode === "decimal" ? "Decimal" : "Cents";
     const priceHeaderLabel = orderBookDisplayMode === "decimal" ? "Price (USDT)" : "Price";
     return (

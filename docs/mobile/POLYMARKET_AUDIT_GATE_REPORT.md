@@ -1544,6 +1544,64 @@ Decision:
 - Remaining P1/P2 gaps: ticket amount/swipe confirmation recapture remains P1 because DQ-C Polymarket reference is location-gated.
 - Next cycle required: no for this focused gate. Continue PM-GAP-074 for Book selector, order, portfolio, and history coupling; continue PM-GAP-076 for amount/swipe confirmation when the Polymarket reference is not location-gated.
 
+## Cycle DV Provider-Ready Book UI Audit Gate
+
+Result: Pass for the focused PM-GAP-075 same-market provider-ready Book UI path.
+
+Lead Agent target: close the DU-C blocker requiring backend provider-ready orderbook JSON to be visible in the same Android Book UI run.
+
+Reference Audit Agent: reused DQ-C Samsung S23 official Polymarket Book/orderbook evidence.
+
+Implementation Agent: Lead/DV focused harness and UI identity marker work.
+
+Audit Gate Agent: Lead audit gate using DU-C criteria.
+
+Reference device:
+
+- Samsung S23, official Polymarket Android app, reused from DQ-C.
+
+Holiwyn device:
+
+- Samsung tablet, Holiwyn Expo Go.
+
+Backend evidence:
+
+- `docs/mobile/harness/cycle-DV-provider-line-orderbook-depth-proof.json`
+- Route `/api/orderbook/d08da13e-80b8-4452-9067-f91d08f6fba4/book?maxLevels=24`
+- Event `cycle-du-a-world-cup-provider-line-depth`, `Japan vs Morocco`
+- Market selector key `spreads:first-half:1.5`
+- `depthSource=provider-orderbook-depth`, `availability.status=ready`, `providerOrderbookDepth.status=ready`
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-DV-provider-line-orderbook/cycle-DV-provider-line-orderbook-proof.json`
+- `docs/mobile/screenshots/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book.png`
+- `docs/mobile/harness/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book.xml`
+- `docs/mobile/screenshots/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-settings-cents.png`
+- `docs/mobile/screenshots/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-settings-decimal.png`
+- `docs/mobile/screenshots/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-ticket.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OB-DU-C-P0-01 | P0 | Pass | Android Book XML shows the backend market id, route-backed orderbook source, ready status, Price/Shares/Value columns, and bid/ask rows. | Keep DV smoke as regression. |
+| OB-DU-C-P0-02 | P0 | Pass | Backend proof and Android XML share market `d08da13e-80b8-4452-9067-f91d08f6fba4` and selector `spreads:first-half:1.5`. | Keep same-market assertions in `smoke.ps1`. |
+| OB-DU-C-P0-03 | P0 | Pass | Android XML carries `selected-family-Spreads`, `selected-market-type-spread`, `selected-line-1.5`, `selected-period-first-half`, and provider identity into ladder/ticket. | Broaden to more line families as P1 when real provider markets exist. |
+| OB-DU-C-P0-04 | P0 | Pass | Line and period are non-`none` in the Book and settings states. | Keep selector key accessibility marker. |
+| OB-DU-C-P0-05 | P0 | Pass | Cents/Decimal equivalent setting toggles without resetting selected market/line/period. | Full Polymarket settings sheet remains P1/P2 polish. |
+| OB-DU-C-P0-06 | P0 | Pass | Ticket XML preserves event, `Japan -1.5`, Spread line, provider source/market/condition, and provider token marker. | Extend to order/portfolio/history in the next lifecycle scope if required. |
+| OB-DU-C-P0-07 | P0 | Pass via DT/DU regression evidence | DT/DU evidence already proves Yes/No switching and side-labelled ladder; DV did not regress side-labelled bid/ask row markers. | Add a combined all-interactions Book smoke later if harness time allows. |
+| OB-DU-C-P0-08 | P0 | Pass by documented distinct evidence | DU-B/DS evidence covers fallback/unavailable state and DV uses ready route state only; DV does not claim fallback rows as provider-ready. | Recapture non-ready state in provider-specific server run as P1 harness hardening. |
+| OB-DU-C-P0-09 | P0 | Pass | DV has committed Android screenshots/XML/proof JSON plus passing focused smoke/tests. | Keep scoped artifacts committed. |
+
+Decision:
+
+- Pass/fail: Pass for the focused same-market provider-ready Book UI path.
+- Unresolved P0 gaps: 0 for PM-GAP-075 focused path.
+- Remaining P1/P2 gaps: broader Book selector sheet parity, richer settings sheet, same-harness non-ready recapture, and phone-density/red-green visual polish.
+- Next cycle required: not for this focused gate. Continue higher-priority live event structural parity without reopening PM-GAP-075 unless regression appears.
+
 Use this template for every feature gate:
 
 ```md

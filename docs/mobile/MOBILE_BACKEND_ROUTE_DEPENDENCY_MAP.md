@@ -1056,3 +1056,17 @@ DT integrated implementation notes:
 - Backend proof `docs/mobile/harness/cycle-DT-integrated-ready-orderbook-depth-proof.json` shows `provider-orderbook-depth`, `availability.status=ready`, `providerOrderbookDepth.status=ready`, and 12 Price/Shares/Value rows.
 - Tablet proof `docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-proof.json` shows Yes/No side switching, selector carry-through into ticket, and side-labelled bid/ask ladder markers.
 - The backend contract is ahead of the visible UI proof. Do not mark PM-GAP-075 complete until the same tablet UI run consumes provider-backed ready depth and proves Spread/period/line carry-through.
+
+## Cycle DV - Same-Market Provider-Ready Book UI
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider-backed live detail market hydration | `/api/mobile/events/:slug/live-detail` | GET | Public viewing | Event slug `cycle-du-a-world-cup-provider-line-depth` launched through the mobile deep link | Event title, markets, market group/type, period, line, outcome ids/labels, provider source, external market id, condition id, outcome token id, orderbook route status/source | `Event`, `Market`, `Outcome`, `ReferenceOrderbookDepthSnapshot` | None in DV proof. The route uses the seeded provider-backed disposable event. | Broader sibling selector/options route is still useful for full Polymarket Book selector parity. |
+| Provider-ready Book ladder | `/api/orderbook/:marketId/book?maxLevels=24` | GET | Public viewing | Market id `d08da13e-80b8-4452-9067-f91d08f6fba4` and max levels | `marketId`, `depthSource=provider-orderbook-depth`, `availability.status=ready`, `marketIdentity.selectorKey=spreads:first-half:1.5`, `marketIdentity.marketType=spread`, `marketIdentity.period=first-half`, `marketIdentity.line=1.5`, `levels[].side`, `price`, `shares`, `value`, `providerOrderbookDepth.status=ready` | `Market`, `Outcome`, `ReferenceOrderbookDepthSnapshot` | None for DV route proof. | Current route is selected-market focused; full Polymarket selector sheet may need event/family sibling market data. |
+| Ticket identity from provider-backed Book | Existing mobile ticket state and order service contract | Client state -> future `/api/orders` | Fake-token trading only for current milestone | `TicketSelection` built from selected provider-backed market/outcome | Event, market id, outcome id, side, market type, line, period, provider source, external market id, condition id, provider token marker | Existing mobile ticket/order service types and eventual `ApiOrderRequest.requestBody.selection` | None in DV proof. | Submit/order/portfolio/history lifecycle for this exact provider-ready Spread path remains future scope if required. |
+
+Cycle DV implementation notes:
+
+- The focused smoke command first runs the backend provider depth proof and then the Samsung tablet proof, so the app-visible markers are tied to the same seeded market id and selector key as the route JSON.
+- The mobile UI now exposes `selected-selector-key-*` accessibility metadata for audit proof only; provider ids are not user-facing copy.
+- DV closes the previous backend-only evidence gap for PM-GAP-075 without weakening the requirement that provider-backed ready depth must be Android-visible.

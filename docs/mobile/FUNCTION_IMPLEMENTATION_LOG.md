@@ -3500,3 +3500,45 @@ Known limitations:
 - Provider-backed ready depth has route proof but not the same visible tablet UI proof.
 - Spread/period/line selector carry-through is still incomplete; DT proves a Totals fixture with `line-none`/`period-none`.
 - Decimalize/equivalent Book setting is not implemented or proven.
+
+## Cycle DV - Same-Market Provider-Ready Book UI Proof
+
+Feature/page worked on:
+
+- PM-GAP-075 focused same-market provider-ready Book/orderbook path for the live football game detail.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/package.json`
+
+Important functions/services touched:
+
+- EventDetail Book overlay selected identity accessibility marker.
+- EventDetail selector key construction for family/period/line proof.
+- Tablet smoke path for provider-backed Spread Book proof.
+- Existing provider depth proof script through `npm run mobile:du-provider-line-orderbook-depth-proof`.
+
+User interactions supported/proven:
+
+- Open the server-backed `Japan vs Morocco` event.
+- Tap Book for a provider-backed first-half Spread market.
+- View route-backed ready Book ladder with Price/Shares/Value rows.
+- Open settings and toggle Cents/Decimal display without resetting selected market state.
+- Open a ticket from the provider-backed ladder while preserving `Japan -1.5`, provider source, provider market, condition, and token identity.
+
+State transitions:
+
+- Backend seeded provider depth -> `/api/orderbook/:marketId/book` ready response.
+- Server live-detail adapter -> EventDetail primary Book market.
+- EventDetail selected market -> Book selected identity marker with selector key `spreads:first-half:1.5`.
+- Book settings display mode changes from cents to decimal while preserving selected market, line, period, and ready source.
+- Book ticket action -> trade ticket with provider token marker.
+
+Known limitations:
+
+- The proof is focused on one provider-ready first-half Spread market, not every Polymarket selector family.
+- Non-ready provider server state is documented by earlier fallback/unavailable evidence, not recaptured in the DV ready-only server run.
+- Full Polymarket settings sheet and phone-density visual polish remain P1/P2.

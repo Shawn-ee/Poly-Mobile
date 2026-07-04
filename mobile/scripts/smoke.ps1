@@ -55,6 +55,7 @@ param(
   [switch]$ServerLiveDetailTeamTotalsOrderBook,
   [switch]$ServerLiveDetailFirstHalfOrderBook,
   [switch]$ServerLiveDetailSecondHalfOrderBook,
+  [switch]$ServerLiveDetailProviderLineOrderBook,
   [switch]$ServerLiveProviderRefreshProof,
   [switch]$SellTicket,
   [switch]$Account,
@@ -105,7 +106,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 $ServerLiveDetailHalvesOrderBook = $ServerLiveDetailFirstHalfOrderBook -or $ServerLiveDetailSecondHalfOrderBook
-$ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof
+$ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook -or $ServerLiveProviderRefreshProof
 
 $MobileRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $RepoRoot = Resolve-Path (Join-Path $MobileRoot "..")
@@ -418,7 +419,7 @@ try {
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
   Wait-ExpoReady -Port $Port
   Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) { 18 } else { 8 })
-  if ($ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook) {
+  if ($ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook) {
     Start-Sleep -Seconds 10
   }
 
@@ -531,6 +532,8 @@ try {
     @("Holiwyn", "World Cup", "Games", "Futures", "Mexico vs. Ecuador")
   } elseif ($ServerLiveProviderRefreshProof) {
     @("Mobile Provider Refresh Proof", "Game Lines", "Player Props", "Best bid", "Best ask", "Spread", "event-detail-live-data-inline")
+  } elseif ($ServerLiveDetailProviderLineOrderBook) {
+    @("Japan vs Morocco", "Game Lines", "Spread", "event-detail-open-order-book")
   } elseif ($ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook) {
     @("Game Lines", "Player Props", "Best bid", "Best ask", "Spread")
   } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookInteractions -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade) {
@@ -2012,6 +2015,95 @@ try {
       Save-Screenshot -Name "cycle-current-holiwyn-server-live-second-half-order-book.png"
       $serverSecondHalfOrderBookHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-live-second-half-order-book.xml"
       Assert-HierarchyContains -Path $serverSecondHalfOrderBookHierarchy -Expected @("event-detail-order-book-screen", "event-detail-order-book-market-", "orderbook-source-orderbook-route", "orderbook-status-ready", "orderbook-empty-none", "orderbook-availability-stale", "orderbook-market-status-LIVE", "event-detail-order-book-availability", "Market stale", "Route depth", "2nd Half Winner", "Order Book", "Best bid", "Best ask", "0.59 USDT", "0.65 USDT", "1.06k shares", "940 shares", "Buy", "Sell")
+      return
+    }
+
+    if ($ServerLiveDetailProviderLineOrderBook) {
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("Japan vs Morocco", "event-detail-open-order-book", "Spread", "provider-source-polymarket", "du-a-provider-line-depth-market", "du-a-provider-line-depth-condition")
+      Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-open-order-book"
+      Start-Sleep -Seconds 2
+      Save-Screenshot -Name "cycle-DV-holiwyn-provider-line-order-book.png"
+      $providerLineOrderBookHierarchy = Save-UiHierarchy -Name "cycle-DV-holiwyn-provider-line-order-book.xml"
+      Assert-HierarchyContains -Path $providerLineOrderBookHierarchy -Expected @(
+        "event-detail-order-book-screen",
+        "event-detail-order-book-market-d08da13e-80b8-4452-9067-f91d08f6fba4",
+        "selected-market-d08da13e-80b8-4452-9067-f91d08f6fba4",
+        "selected-selector-key-spreads:first-half:1.5",
+        "selected-family-Spreads",
+        "selected-market-type-spread",
+        "selected-line-1.5",
+        "selected-period-first-half",
+        "provider-source-polymarket",
+        "provider-market-du-a-provider-line-depth-market",
+        "provider-condition-du-a-provider-line-depth-condition",
+        "orderbook-source-orderbook-route",
+        "orderbook-status-ready",
+        "orderbook-empty-none",
+        "orderbook-availability-ready",
+        "Route depth",
+        "Price",
+        "Shares",
+        "Value",
+        "order-book-ask-level-361d2e0b-5043-4fc9-93d3-150a98adfc00-1",
+        "order-book-bid-level-361d2e0b-5043-4fc9-93d3-150a98adfc00-1",
+        "46c",
+        "42c",
+        "19k shares",
+        "Buy",
+        "Sell"
+      )
+      Invoke-TapHierarchyNode -Path $providerLineOrderBookHierarchy -Identifier "order-book-settings-open"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DV-holiwyn-provider-line-order-book-settings-cents.png"
+      $providerLineSettingsCentsHierarchy = Save-UiHierarchy -Name "cycle-DV-holiwyn-provider-line-order-book-settings-cents.xml"
+      Assert-HierarchyContains -Path $providerLineSettingsCentsHierarchy -Expected @("order-book-settings-sheet", "book-display-mode-cents", "decimalize-off", "selected-market-d08da13e-80b8-4452-9067-f91d08f6fba4", "selected-selector-key-spreads:first-half:1.5", "selected-period-first-half", "selected-line-1.5", "46c")
+      Invoke-TapHierarchyNode -Path $providerLineSettingsCentsHierarchy -Identifier "order-book-display-mode-toggle"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DV-holiwyn-provider-line-order-book-settings-decimal.png"
+      $providerLineSettingsDecimalHierarchy = Save-UiHierarchy -Name "cycle-DV-holiwyn-provider-line-order-book-settings-decimal.xml"
+      Assert-HierarchyContains -Path $providerLineSettingsDecimalHierarchy -Expected @("order-book-settings-sheet", "book-display-mode-decimal", "decimalize-on", "selected-market-d08da13e-80b8-4452-9067-f91d08f6fba4", "selected-selector-key-spreads:first-half:1.5", "selected-period-first-half", "selected-line-1.5", "0.46 USDT", "0.42 USDT")
+      Invoke-TapHierarchyNode -Path $providerLineSettingsDecimalHierarchy -Identifier "order-book-buy-361d2e0b-5043-4fc9-93d3-150a98adfc00"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-DV-holiwyn-provider-line-order-book-ticket.png"
+      $providerLineTicketHierarchy = Save-UiHierarchy -Name "cycle-DV-holiwyn-provider-line-order-book-ticket.xml"
+      Assert-HierarchyContains -Path $providerLineTicketHierarchy -Expected @("trade-ticket", "ticket-selection-summary", "Japan vs Morocco", "Japan -1.5", "ticket-selection-line", "provider-source-polymarket", "provider-market-du-a-provider-line-depth-market", "provider-condition-du-a-provider-line-depth-condition", "provider-token-du-a-token-japan-minus-1-5", "ticket-side-buy", "ticket-side-sell", "Choose an amount")
+
+      $proof = [ordered]@{
+        cycle = "DV"
+        scope = "PM-GAP-075 same-market provider-ready Book UI proof"
+        command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -ServerLiveDetailProviderLineOrderBook -Port 8250 -OutputDir docs/mobile/screenshots/cycle-DV-provider-line-orderbook -HierarchyOutputDir docs/mobile/harness/cycle-DV-provider-line-orderbook"
+        eventSlug = $ServerEventSlug
+        eventIdentity = "Japan vs Morocco"
+        result = "pass"
+        assertions = [ordered]@{
+          backendMarketId = "d08da13e-80b8-4452-9067-f91d08f6fba4"
+          visibleMarket = "event-detail-order-book-market-d08da13e-80b8-4452-9067-f91d08f6fba4"
+          selectorKey = "selected-selector-key-spreads:first-half:1.5"
+          providerReadyUiState = "orderbook-source-orderbook-route/orderbook-status-ready/orderbook-availability-ready"
+          spreadCarryThrough = "selected-family-Spreads selected-market-type-spread selected-line-1.5 selected-period-first-half"
+          decimalizeBeforeAfter = "book-display-mode-cents to book-display-mode-decimal without resetting selected market/selector/line/period"
+          ticketCarryThrough = "ticket-selection-summary Japan -1.5 with provider-source-polymarket provider-token-du-a-token-japan-minus-1-5"
+          ladderColumns = "Price Shares Value"
+          sideLabelProof = "ask and bid rows visible for outcome 361d2e0b-5043-4fc9-93d3-150a98adfc00"
+        }
+        artifacts = @(
+          "docs/mobile/screenshots/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book.png",
+          "docs/mobile/harness/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book.xml",
+          "docs/mobile/screenshots/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-settings-cents.png",
+          "docs/mobile/harness/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-settings-cents.xml",
+          "docs/mobile/screenshots/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-settings-decimal.png",
+          "docs/mobile/harness/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-settings-decimal.xml",
+          "docs/mobile/screenshots/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-ticket.png",
+          "docs/mobile/harness/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-ticket.xml"
+        )
+        remainingGaps = @(
+          "Non-ready fallback state remains documented by DU-B fixture proof, not recaptured in this provider-ready server run.",
+          "Full Polymarket settings sheet remains richer than the Cents/Decimal equivalent toggle."
+        )
+      }
+      $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-DV-provider-line-orderbook-proof.json"
+      $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
+      Write-Host "Proof summary: $proofPath"
       return
     }
 

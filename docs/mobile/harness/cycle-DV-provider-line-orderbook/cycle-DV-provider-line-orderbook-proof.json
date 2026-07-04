@@ -1,0 +1,33 @@
+{
+    "cycle":  "DV",
+    "scope":  "PM-GAP-075 same-market provider-ready Book UI proof",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -ServerLiveDetailProviderLineOrderBook -Port 8250 -OutputDir docs/mobile/screenshots/cycle-DV-provider-line-orderbook -HierarchyOutputDir docs/mobile/harness/cycle-DV-provider-line-orderbook",
+    "eventSlug":  "cycle-du-a-world-cup-provider-line-depth",
+    "eventIdentity":  "Japan vs Morocco",
+    "result":  "pass",
+    "assertions":  {
+                       "backendMarketId":  "d08da13e-80b8-4452-9067-f91d08f6fba4",
+                       "visibleMarket":  "event-detail-order-book-market-d08da13e-80b8-4452-9067-f91d08f6fba4",
+                       "selectorKey":  "selected-selector-key-spreads:first-half:1.5",
+                       "providerReadyUiState":  "orderbook-source-orderbook-route/orderbook-status-ready/orderbook-availability-ready",
+                       "spreadCarryThrough":  "selected-family-Spreads selected-market-type-spread selected-line-1.5 selected-period-first-half",
+                       "decimalizeBeforeAfter":  "book-display-mode-cents to book-display-mode-decimal without resetting selected market/selector/line/period",
+                       "ticketCarryThrough":  "ticket-selection-summary Japan -1.5 with provider-source-polymarket provider-token-du-a-token-japan-minus-1-5",
+                       "ladderColumns":  "Price Shares Value",
+                       "sideLabelProof":  "ask and bid rows visible for outcome 361d2e0b-5043-4fc9-93d3-150a98adfc00"
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book.png",
+                      "docs/mobile/harness/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book.xml",
+                      "docs/mobile/screenshots/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-settings-cents.png",
+                      "docs/mobile/harness/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-settings-cents.xml",
+                      "docs/mobile/screenshots/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-settings-decimal.png",
+                      "docs/mobile/harness/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-settings-decimal.xml",
+                      "docs/mobile/screenshots/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-ticket.png",
+                      "docs/mobile/harness/cycle-DV-provider-line-orderbook/cycle-DV-holiwyn-provider-line-order-book-ticket.xml"
+                  ],
+    "remainingGaps":  [
+                          "Non-ready fallback state remains documented by DU-B fixture proof, not recaptured in this provider-ready server run.",
+                          "Full Polymarket settings sheet remains richer than the Cents/Decimal equivalent toggle."
+                      ]
+}
