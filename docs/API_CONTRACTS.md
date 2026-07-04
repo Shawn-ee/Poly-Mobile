@@ -48,6 +48,8 @@ Local mock mode uses the same contract-shaped `selection` payload as server mode
 
 Cycle FO changes only the ticket presentation. It does not change the order request body or route expectations; `selection`, `contractSide`, market, outcome, price, and size are still the contract fields needed by `POST /api/orders`.
 
+Cycle FP changes only the ticket modal presentation from bottom sheet to full-screen order surface. It does not change the order request body, Portfolio handoff, or backend route expectations.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

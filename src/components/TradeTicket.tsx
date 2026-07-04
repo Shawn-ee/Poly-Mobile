@@ -346,7 +346,7 @@ export function TradeTicket({
   const reviewPayout = compactCash(estimatedPayout);
 
   return (
-    <Modal visible transparent animationType="slide">
+    <Modal visible transparent animationType="slide" statusBarTranslucent>
       <View style={styles.modalShade}>
         <View style={styles.ticket}>
           <ScrollView
@@ -587,10 +587,10 @@ export function TradeTicket({
 }
 
 const styles = StyleSheet.create({
-  modalShade: { flex: 1, justifyContent: "flex-end", backgroundColor: "rgba(0,0,0,0.5)" },
-  ticket: { height: "88%", maxHeight: "94%", borderTopLeftRadius: 28, borderTopRightRadius: 28, backgroundColor: "#070b12", overflow: "hidden" },
-  ticketContent: { flexGrow: 1, paddingHorizontal: 24, paddingTop: 12, paddingBottom: 22 },
-  dragHandle: { alignSelf: "center", width: 92, height: 6, borderRadius: 999, backgroundColor: "#293141", marginBottom: 10 },
+  modalShade: { flex: 1, justifyContent: "flex-end", backgroundColor: "#070b12" },
+  ticket: { flex: 1, height: "100%", backgroundColor: "#070b12", overflow: "hidden" },
+  ticketContent: { flexGrow: 1, paddingHorizontal: 24, paddingTop: 40, paddingBottom: 18 },
+  dragHandle: { alignSelf: "center", width: 92, height: 1, borderRadius: 999, backgroundColor: "#293141", marginBottom: 2, opacity: 0.01 },
   ticketTop: { minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   ticketHeading: { flex: 1, alignItems: "center" },
   ticketTitle: { color: "#cbd5e1", fontSize: 17, fontWeight: "700" },
@@ -620,7 +620,7 @@ const styles = StyleSheet.create({
   marketStatusText: { color: "#bbf7d0", fontSize: 12, fontWeight: "900" },
   marketStatusTextWarning: { color: "#fde68a" },
   marketStatusTextBlocked: { color: "#fecaca" },
-  amountDisplayBlock: { minHeight: 190, alignItems: "center", justifyContent: "center", marginTop: 8 },
+  amountDisplayBlock: { minHeight: 174, alignItems: "center", justifyContent: "center", marginTop: 4 },
   amountDisplayText: { color: "#f8fafc", fontSize: 74, fontWeight: "500" },
   amountDisplayTextEmpty: { color: "#1b2230" },
   ticketOutcomeRow: { alignSelf: "center", flexDirection: "row", alignItems: "center", gap: 4, minHeight: 56, padding: 5, borderRadius: 999, backgroundColor: "#1c2330" },
@@ -641,7 +641,7 @@ const styles = StyleSheet.create({
   orderReviewLabel: { color: "#64748b", fontSize: 10, fontWeight: "900", textTransform: "uppercase" },
   orderReviewValue: { color: "#e2e8f0", fontSize: 12, fontWeight: "900", marginTop: 3 },
   orderReviewValueStrong: { color: "#22c55e", fontSize: 15, fontWeight: "900", marginTop: 3 },
-  ticketSideRow: { alignSelf: "center", width: 142, flexDirection: "row", gap: 3, marginTop: 18, padding: 4, borderRadius: 999, backgroundColor: "#1d2431" },
+  ticketSideRow: { alignSelf: "center", width: 142, flexDirection: "row", gap: 3, marginTop: 12, padding: 4, borderRadius: 999, backgroundColor: "#1d2431" },
   sideButton: { flex: 1, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "transparent" },
   sideButtonActive: { backgroundColor: "#0b111d" },
   sideText: { color: "#8b94a5", fontSize: 15, fontWeight: "700" },
@@ -675,8 +675,8 @@ const styles = StyleSheet.create({
   errorTextBlock: { flex: 1, gap: 3 },
   errorText: { color: "#fde68a", fontWeight: "800" },
   errorDetailText: { color: "#fcd34d", fontSize: 12, fontWeight: "700" },
-  ticketFooter: { minHeight: 176, paddingHorizontal: 18, paddingTop: 22, paddingBottom: 28, backgroundColor: "#1e5eff" },
-  swipeSubmit: { flex: 1, minHeight: 124, alignItems: "center", justifyContent: "center", gap: 16, paddingHorizontal: 14, borderRadius: 24, backgroundColor: "transparent" },
+  ticketFooter: { minHeight: 210, paddingHorizontal: 18, paddingTop: 18, paddingBottom: 34, backgroundColor: "#1e5eff" },
+  swipeSubmit: { flex: 1, minHeight: 154, alignItems: "center", justifyContent: "center", gap: 16, paddingHorizontal: 14, borderRadius: 24, backgroundColor: "transparent" },
   swipeSubmitArmed: { backgroundColor: "rgba(255,255,255,0.10)" },
   swipeSubmitDisabled: { opacity: 0.55 },
   swipeIcon: { width: 56, height: 42, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "transparent" },
