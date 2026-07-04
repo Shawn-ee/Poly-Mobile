@@ -1,0 +1,63 @@
+{
+  "applied": true,
+  "event": {
+    "id": "4a9eb675-cfa6-4873-93f9-1a4ffb8e45eb",
+    "slug": "world-cup-2026-curacao-vs-cote-divoire-2026-06-25",
+    "title": "Curaçao vs Côte d'Ivoire",
+    "liveStatus": "pre_match"
+  },
+  "compactMarketCount": 14,
+  "providerSnapshotRows": 31,
+  "upsertedSnapshots": 31,
+  "fetchedAt": "2026-07-04T03:08:34.318Z",
+  "preview": [
+    {
+      "marketId": "aca976d2-2bad-416c-b010-c874c0ee493f",
+      "title": "Curaçao vs Côte d'Ivoire: Match Winner",
+      "marketType": "match_winner_1x2",
+      "period": null,
+      "line": null,
+      "outcomeCount": 3
+    },
+    {
+      "marketId": "ac527022-07f3-4abb-90f0-b291466e8459",
+      "title": "Curaçao vs Côte d'Ivoire: Curaçao +1.5",
+      "marketType": "spread",
+      "period": null,
+      "line": "1.5",
+      "outcomeCount": 2
+    },
+    {
+      "marketId": "a552efe6-3147-4573-be95-8fe15c068c08",
+      "title": "Curaçao vs Côte d'Ivoire: Total goals 2.5",
+      "marketType": "total_goals",
+      "period": null,
+      "line": "2.5",
+      "outcomeCount": 2
+    },
+    {
+      "marketId": "408ffb79-3492-4fd0-b31b-87a26f8b9dd5",
+      "title": "Curaçao vs Côte d'Ivoire: Curaçao goals 1.5",
+      "marketType": "team_total_goals",
+      "period": null,
+      "line": "1.5",
+      "outcomeCount": 2
+    },
+    {
+      "marketId": "be4ab6f8-c054-4f6b-a6d9-7d857f7655ca",
+      "title": "1st Half Winner",
+      "marketType": "match_winner_1x2",
+      "period": "first-half",
+      "line": null,
+      "outcomeCount": 3
+    },
+    {
+      "marketId": "ed121b08-88bd-4735-9793-64a0022e9696",
+      "title": "2nd Half Winner",
+      "marketType": "match_winner_1x2",
+      "period": "second-half",
+      "line": null,
+      "outcomeCount": 3
+    }
+  ]
+}

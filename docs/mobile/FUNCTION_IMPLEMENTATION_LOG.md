@@ -2,6 +2,51 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CK - Live Provider Quote Snapshot Ready Proof
+
+Feature/page worked on:
+
+- PM-GAP-067 provider-shaped quote snapshot readiness for compact live event detail.
+- This cycle converts the Cycle CJ provider metadata contract from truthful `unavailable` local proof state to a repeatable ready-state proof using real `ReferenceQuoteSnapshot` rows.
+
+Frontend components touched:
+
+- None. Samsung tablet proof was rerun to confirm the existing live event detail and selected second-half Book flow still work after provider-shaped snapshot rows are present.
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveProviderQuoteSnapshotSeeding.ts`
+- `scripts/seed_mobile_live_provider_quote_snapshots.ts`
+- `src/__tests__/mobile-live-provider-quote-snapshot-seeding.test.ts`
+- `package.json`
+
+Important functions/services touched:
+
+- `buildMobileLiveProviderQuoteSnapshotRows()` creates backend-shaped `ReferenceQuoteSnapshot` input rows for every outcome in the compact live-detail market set.
+- `mobile:live-provider-quote-snapshot-seed` applies those rows for the World Cup live event and writes `docs/mobile/harness/cycle-current-mobile-live-provider-quote-snapshot-seed.json`.
+- Existing `/api/mobile/events/:slug/live-detail` and `/api/orderbook/:marketId/book` routes now prove `providerQuoteSnapshot.status: ready` when snapshot rows exist.
+
+User interactions supported:
+
+- No new button or UI surface was added. The user-visible flow remains: open live football game detail, scroll to `2nd Half Winner`, tap Book, and see the selected route-backed orderbook on Samsung tablet.
+
+State transitions:
+
+- Compact live markets selected -> provider-shaped snapshot rows upserted by `marketId`/`outcomeId`/`source` -> live-detail route reports `batchedProviderQuoteSnapshotSource: reference-quote-snapshot` and count `14` -> selected second-half orderbook reports `providerQuoteSnapshot.status: ready`.
+
+Known limitations:
+
+- This is a deterministic local provider-shaped proof, not live external Polymarket ingestion.
+- Real provider refresh, invalidation/update sequence, and provider-owned depth/liquidity across every live World Cup market remain open.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-quote-snapshot-seeding.test.ts src/__tests__/mobile-live-event-detail.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts`
+- `cmd /c npm.cmd run mobile:live-provider-quote-snapshot-seed`
+- Direct route probe saved to `docs/mobile/harness/cycle-current-mobile-live-provider-quote-snapshot-ready-probe.json`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+- `cmd /c npm.cmd run build`
+
 ## Cycle CJ - Provider Quote Snapshot Contract
 
 Feature/page worked on:
