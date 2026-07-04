@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { refreshPolymarketReferenceSnapshots } from "@/server/services/polymarketReferenceSnapshots";
+import { refreshPolymarketOrderbookDepthSnapshots } from "@/server/services/polymarketOrderbookDepthSnapshots";
 import { upsertReferenceQuoteSnapshots } from "@/server/services/referenceQuoteSnapshots";
 import { buildMobileLiveProviderQuoteSnapshotRows } from "@/server/services/mobileLiveProviderQuoteSnapshotSeeding";
 import { selectCompactLiveMarkets } from "@/server/services/mobileLiveEventDetail";
@@ -76,6 +77,21 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
         refreshed: [],
         skipped: [],
       };
+  const providerDepthReport = polymarketMappedMarkets.length
+    ? await refreshPolymarketOrderbookDepthSnapshots({
+        marketIds: polymarketMappedMarkets.map((market) => market.id),
+      })
+    : {
+        generatedAt: new Date().toISOString(),
+        source: "polymarket-clob",
+        maxLevels: 24,
+        requestedMarketCount: 0,
+        refreshedCount: 0,
+        depthRowsUpdated: 0,
+        skippedCount: 0,
+        refreshed: [],
+        skipped: [],
+      };
 
   let contractProofFallback:
     | {
@@ -114,6 +130,7 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
       refreshed: providerReport.refreshed,
       skipped: providerReport.skipped,
     },
+    providerDepth: providerDepthReport,
     contractProofFallback,
     postRefresh,
   };

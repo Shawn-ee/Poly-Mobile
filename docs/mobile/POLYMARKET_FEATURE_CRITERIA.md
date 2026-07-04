@@ -31,7 +31,7 @@ These apply to every page, feature, button, and interaction:
 
 | Feature | Criteria owner file | P0 status | P1/P2 status | Latest gate |
 | --- | --- | --- | --- | --- |
-| Live event detail | `docs/mobile/audits/live-event-detail.md` | Verified through Cycle CT provider orderbook depth snapshot contract, including route proof and Samsung tablet proof | P1 real provider CLOB/depth fetcher and real World Cup provider mapping remain active structural work | Pass for Cycle CT scope |
+| Live event detail | `docs/mobile/audits/live-event-detail.md` | Verified through Cycle CU provider CLOB depth fetcher, including real route proof and Samsung tablet proof | P1 real World Cup provider mapping remains active structural work; P2 provider-specific source label remains tracked | Pass for Cycle CU scope |
 | Game page | `docs/mobile/audits/game-page.md` | Verified for Cycle AJ focused logged-in game-page P0; Cycle AL sticky market-tab criterion passed; Cycle AM Player Props unavailable-state criterion passed | P1/P2 phone density and backend-backed market data remain tracked | Pass |
 | Trade ticket | `docs/mobile/audits/trade-ticket.md` | Verified for Cycle AI focused logged-in/tall ticket-surface P0 | P1/P2 deferred in focused audit; production eligibility/location gates remain deferred for fake-token mode | Pass |
 | Binary side ticket | `docs/mobile/audits/binary-side.md` | Verified for Cycle AH focused Buy No contract-side P0 | P1 full-page/native swipe confirmation deferred | Pass |

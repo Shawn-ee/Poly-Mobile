@@ -2,6 +2,37 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CU - Provider CLOB Depth Fetcher
+
+Closed or narrowed:
+
+- Added a real Polymarket CLOB orderbook fetcher for mapped compact markets with active `Outcome.referenceTokenId` values.
+- `POST /api/mobile/events/:slug/provider-refresh` now reports `providerDepth` alongside quote refresh output.
+- `/api/orderbook/:marketId/book` is proven to move from `depthSource=provider-quote-snapshot` before refresh to `depthSource=provider-orderbook-depth` after real CLOB refresh.
+- Samsung tablet proof shows the refreshed provider depth path on the Holiwyn Book surface.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider identity mapping for every compact World Cup soccer market.
+- Production retention/cleanup policy for old provider ladder rows.
+- Provider retry/error taxonomy if the CLOB endpoint is slow, partial, or unavailable.
+
+Schema mismatch:
+
+- No schema change was required. Cycle CU uses the `ReferenceOrderbookDepthSnapshot` table added in Cycle CT.
+
+Route mismatch:
+
+- The provider refresh route now includes the depth fetcher for mapped markets. The local World Cup compact event remains partially unmapped, so full live-game provider depth coverage is still open.
+
+Temporary mock/static data:
+
+- None in mobile UI. The disposable proof event uses provider-contract-shaped local rows and real CLOB data.
+
+Future migration concern:
+
+- Once real soccer market mappings exist, the same fetcher should run for those markets and the disposable proof event should remain only a harness fixture.
+
 ## Cycle CT - Provider Orderbook Depth Snapshot Contract
 
 Closed or narrowed:
