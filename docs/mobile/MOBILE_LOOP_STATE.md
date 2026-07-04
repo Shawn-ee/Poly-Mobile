@@ -21,10 +21,31 @@ Current implementation:
 - Event detail defaults the line detail area to Graph.
 - Samsung tablet proof passed for the selected default Buy path with `orderbookDebug=unset`: `docs/mobile/harness/cycle-EP-local-mvp-trade-flow/cycle-EP-local-mvp-trade-flow-proof.json`.
 - Samsung tablet proof passed for the selected default Sell path with `orderbookDebug=unset`: `docs/mobile/harness/cycle-EQ-local-mvp-sell-flow/cycle-EQ-local-mvp-trade-flow-proof.json`.
+- Samsung tablet proof passed for the selected retail status path with `orderbookDebug=unset`: `docs/mobile/harness/cycle-ER-local-mvp-status-flow/cycle-ER-local-mvp-status-flow-proof.json`.
 - `mobile/src/components/TradeTicket.tsx` now updates ticket identity metadata when the user switches from Buy/Yes to Sell/No, so the auditable contract side matches the visible ticket and Portfolio order.
 
 Next focus:
 - Continue Local MVP user-flow breadth instead of orderbook breadth: provider-backed spreads/totals/team totals when available, and loading/stale/unavailable states that keep users in the retail ticket flow.
+
+## Heartbeat: Local MVP Retail Flow Cycles EP-ER
+
+Date: 2026-07-04
+Completed cycles: EP, EQ, ER.
+
+What materially improved:
+- EP moved the default mobile experience away from orderbook-first and proved the selected Buy path through event detail, line selection, ticket, fake-token submit, and Portfolio/activity.
+- EQ proved the matching Sell path and fixed ticket identity metadata so visible Sell/No and auditable `contractSide=no` agree before order submission.
+- ER proved chart/ticket status markers and selected line access remain visible in the retail path while default Book/orderbook controls stay hidden.
+
+Evidence:
+- `docs/mobile/harness/cycle-EP-local-mvp-trade-flow/`
+- `docs/mobile/harness/cycle-EQ-local-mvp-sell-flow/`
+- `docs/mobile/harness/cycle-ER-local-mvp-status-flow/`
+
+Remaining structural debt:
+- Provider-backed spread/totals/team-total breadth for the simple retail ticket path.
+- Route-backed loading/stale/unavailable state breadth without sending users into Book.
+- Better Sell ticket proceeds/copy polish.
 
 ## Heartbeat: Route-Backed Live Detail Cycles EL-EN
 

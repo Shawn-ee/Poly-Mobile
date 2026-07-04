@@ -1,0 +1,30 @@
+{
+    "cycle":  "ER",
+    "scenario":  "Local MVP Android retail status proof with orderbook hidden by default",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpStatusFlow -Port 8376 -OutputDir docs\\mobile\\screenshots\\cycle-ER-local-mvp-status-flow -HierarchyOutputDir docs\\mobile\\harness\\cycle-ER-local-mvp-status-flow",
+    "orderbookDebug":  "unset",
+    "result":  "pass",
+    "assertions":  {
+                       "defaultEventDetail":  [
+                                                  "chart route state",
+                                                  "ticket handoff status",
+                                                  "no visible Book/orderbook entry points"
+                                              ],
+                       "marketLines":  [
+                                           "spread and totals selectors remain reachable without Book"
+                                       ],
+                       "selectedLine":  [
+                                            "spread 2.5",
+                                            "contract-shaped ticket source",
+                                            "no visible Book/orderbook entry points"
+                                        ]
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-top.png",
+                      "docs/mobile/harness/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-top.xml",
+                      "docs/mobile/screenshots/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-market-lines.png",
+                      "docs/mobile/harness/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-market-lines.xml",
+                      "docs/mobile/screenshots/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-selected-line.png",
+                      "docs/mobile/harness/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-selected-line.xml"
+                  ]
+}

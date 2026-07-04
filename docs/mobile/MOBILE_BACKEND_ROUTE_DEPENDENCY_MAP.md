@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ER - Local MVP Retail Status Flow
+
+Cycle ER changes proof coverage, not backend schema/routes:
+
+- Android proof: `docs/mobile/harness/cycle-ER-local-mvp-status-flow/cycle-ER-local-mvp-status-flow-proof.json`.
+- Visible Book/orderbook controls remain hidden by default and debug/internal via `EXPO_PUBLIC_SHOW_ORDERBOOK=1`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Default local MVP retail status surface | No new endpoint; proof exercises existing mobile event-detail fallback/status state | N/A for ER proof | N/A for ER proof | N/A | Mobile renders chart route status, ticket handoff provider lifecycle, selected line identity, and hidden orderbook state markers | Future provider-backed route should continue using `Event.liveDataStatus`, `Market.availability`, chart history status/source, and selected market/outcome identity fields | Deterministic line/status fixture is accepted only for local UI proof | P1: route-backed loading/stale/unavailable status breadth for provider-backed retail tickets, without requiring users to open Book. |
+
 ## Cycle EQ - Local MVP Sell Flow
 
 Cycle EQ changes mobile ticket identity and proof coverage, not backend schema/routes:

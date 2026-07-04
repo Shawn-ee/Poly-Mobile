@@ -113,7 +113,8 @@ param(
   [switch]$LivePortfolioBadge,
   [switch]$LivePortfolioBadgeDeep,
   [switch]$LocalMvpTradeFlow,
-  [switch]$LocalMvpSellFlow
+  [switch]$LocalMvpSellFlow,
+  [switch]$LocalMvpStatusFlow
 )
 
 $ErrorActionPreference = "Stop"
@@ -124,7 +125,7 @@ $EventDetailVisibleLiveDepthBackendProof = $EventDetailVisibleLiveDepth -and $Se
 $EventDetailVisibleLimitLifecycleBackendProof = ($EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth) -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25"
 $ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook -or $ServerLiveProviderRefreshProof -or $EventDetailProviderRouteStatusProof -or $EventDetailVisibleLiveDepthBackendProof -or $EventDetailVisibleLimitLifecycleBackendProof
 $OrderBookDebugProof = $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $EventDetailMarketTabs -or $EventDetailChart -or $EventDetailProviderRouteStatusProof -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $ServerLiveDetailBackendProof
-$LocalMvpSimpleTradeFlow = $LocalMvpTradeFlow -or $LocalMvpSellFlow
+$LocalMvpSimpleTradeFlow = $LocalMvpTradeFlow -or $LocalMvpSellFlow -or $LocalMvpStatusFlow
 
 $MobileRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $RepoRoot = Resolve-Path (Join-Path $MobileRoot "..")
@@ -4357,6 +4358,85 @@ try {
     }
 
     if ($LocalMvpSimpleTradeFlow) {
+      if ($LocalMvpStatusFlow) {
+        $mvpHiddenOrderBookExpected = @(
+          "event-detail-top-order-book",
+          "event-detail-chart-open-book",
+          "event-detail-open-order-book",
+          "event-detail-line-detail-order-book",
+          "event-detail-inline-order-book",
+          "orderbook-source-",
+          "Route depth"
+        )
+        Save-Screenshot -Name "cycle-ER-holiwyn-local-mvp-status-top.png"
+        $mvpStatusTopHierarchy = Save-UiHierarchy -Name "cycle-ER-holiwyn-local-mvp-status-top.xml"
+        Assert-HierarchyContains -Path $mvpStatusTopHierarchy -Expected @(
+          "event-detail-price-chart",
+          "event-detail-chart-route-state",
+          "chart-status-idle",
+          "provider-lifecycle-refresh-due",
+          "event-detail-chart-ticket-handoff-status",
+          "provider-lifecycle-ready",
+          "event-detail-chart-open-ticket"
+        )
+        Assert-HierarchyDoesNotContain -Path $mvpStatusTopHierarchy -Unexpected $mvpHiddenOrderBookExpected
+
+        & $adb -s $Device shell input swipe 540 520 540 1900 450 | Out-Null
+        Start-Sleep -Milliseconds 500
+        & $adb -s $Device shell input swipe 540 520 540 1900 450 | Out-Null
+        Start-Sleep -Seconds 1
+        & $adb -s $Device shell input swipe 540 1800 540 1220 350 | Out-Null
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "cycle-ER-holiwyn-local-mvp-status-market-lines.png"
+        $mvpStatusMarketHierarchy = Save-UiHierarchy -Name "cycle-ER-holiwyn-local-mvp-status-market-lines.xml"
+        Assert-HierarchyContains -Path $mvpStatusMarketHierarchy -Expected @("Game Lines", "Spread", "Totals", "event-detail-sticky-game-lines-tab", "event-detail-spread-line-1-5", "event-detail-totals-line-2-5")
+        Assert-HierarchyDoesNotContain -Path $mvpStatusMarketHierarchy -Unexpected $mvpHiddenOrderBookExpected
+
+        Invoke-TapHierarchyNode -Path $mvpStatusMarketHierarchy -Identifier "event-detail-spread-line-2-5"
+        Start-Sleep -Seconds 1
+        $mvpStatusSpreadHierarchy = Save-UiHierarchy -Name "cycle-ER-holiwyn-local-mvp-status-spread-25.xml"
+        Invoke-TapHierarchyNode -Path $mvpStatusSpreadHierarchy -Identifier "event-detail-spread-period-1st-half"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "cycle-ER-holiwyn-local-mvp-status-selected-line.png"
+        $mvpStatusSelectedHierarchy = Save-UiHierarchy -Name "cycle-ER-holiwyn-local-mvp-status-selected-line.xml"
+        Assert-HierarchyContains -Path $mvpStatusSelectedHierarchy -Expected @(
+          "Spread",
+          "MEX to win by over 2.5 goals",
+          "Yes, MEX -2.5",
+          "No",
+          "ticket-source-deterministic-line-fixture",
+          "selection-market-family-spread",
+          "selection-line-2.5",
+          "selection-display-label-MEX -2.5"
+        )
+        Assert-HierarchyDoesNotContain -Path $mvpStatusSelectedHierarchy -Unexpected $mvpHiddenOrderBookExpected
+
+        $proof = [ordered]@{
+          cycle = "ER"
+          scenario = "Local MVP Android retail status proof with orderbook hidden by default"
+          command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpStatusFlow -Port $Port -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir"
+          orderbookDebug = if ($env:EXPO_PUBLIC_SHOW_ORDERBOOK) { $env:EXPO_PUBLIC_SHOW_ORDERBOOK } else { "unset" }
+          result = "pass"
+          assertions = [ordered]@{
+            defaultEventDetail = @("chart route state", "ticket handoff status", "no visible Book/orderbook entry points")
+            marketLines = @("spread and totals selectors remain reachable without Book")
+            selectedLine = @("spread 2.5", "contract-shaped ticket source", "no visible Book/orderbook entry points")
+          }
+          artifacts = @(
+            "docs/mobile/screenshots/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-top.png",
+            "docs/mobile/harness/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-top.xml",
+            "docs/mobile/screenshots/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-market-lines.png",
+            "docs/mobile/harness/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-market-lines.xml",
+            "docs/mobile/screenshots/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-selected-line.png",
+            "docs/mobile/harness/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-selected-line.xml"
+          )
+        }
+        $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-ER-local-mvp-status-flow-proof.json"
+        $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
+        Write-Host "Proof summary: $proofPath"
+        return
+      }
+
       $mvpCycle = if ($LocalMvpSellFlow) { "EQ" } else { "EP" }
       $mvpArtifactDir = if ($LocalMvpSellFlow) { "cycle-EQ-local-mvp-sell-flow" } else { "cycle-EP-local-mvp-trade-flow" }
       $mvpSideLabel = if ($LocalMvpSellFlow) { "Sell" } else { "Buy" }

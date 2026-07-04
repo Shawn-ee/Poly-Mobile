@@ -2,6 +2,25 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle ER - Local MVP Retail Status Flow
+
+Closed or narrowed:
+
+- `docs/mobile/harness/cycle-ER-local-mvp-status-flow/cycle-ER-local-mvp-status-flow-proof.json` proves chart route state, ticket handoff provider status, selected line source, and hidden orderbook controls in the default retail flow.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real route-backed loading/stale/unavailable status breadth for provider-backed spread, totals, and team-total retail tickets.
+- A unified route contract that lets the simple ticket decide whether a selected market is ready, refresh-due, unavailable, or suspended without opening Book.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- ER uses existing deterministic contract-shaped local event/line/status data only for Android UI proof.
+
 ## Cycle EQ - Local MVP Sell Flow
 
 Closed or narrowed:

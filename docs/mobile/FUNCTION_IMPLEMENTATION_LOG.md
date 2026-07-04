@@ -2,6 +2,32 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ER - Local MVP Retail Status Flow
+
+Feature/page worked on:
+
+- Added an Android proof path for retail event-detail status visibility with default orderbook hidden.
+- This cycle does not add new user-facing UI; it closes an audit/proof gap for existing chart/ticket status markers in the Local MVP flow.
+
+Frontend/harness touched:
+
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+User interactions supported/proven:
+
+- Open event detail, view chart route state and ticket handoff status, scroll to Game Lines, select a Spread `2.5` line, and confirm the contract-shaped ticket source remains available without exposing Book/orderbook controls.
+
+Verified:
+
+- PowerShell smoke script parser check passed.
+- Samsung tablet proof passed: `docs/mobile/harness/cycle-ER-local-mvp-status-flow/cycle-ER-local-mvp-status-flow-proof.json`.
+- The tablet proof's Expo launch also ran mobile typecheck successfully.
+
+Known limitations:
+
+- ER proves existing idle/refresh-due/ready status markers in the local fixture path. Full route-backed loading/stale/unavailable state breadth for provider-backed retail tickets remains P1.
+
 ## Cycle EQ - Local MVP Sell Flow
 
 Feature/page worked on:
