@@ -853,3 +853,16 @@ Cycle DG implementation notes:
 - No public user route changed.
 - The provider mapping readiness route now surfaces stored fixture metadata so future admin/operator and ingestion cycles can target the correct provider fixture instead of repeating broad Gamma line searches.
 - The intended line-market source is recorded as `optic_odds`; this is a contract definition, not proof that line odds have been ingested.
+
+## Cycle DH - OpticOdds Line Ingestion Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Line provider refresh report | `/api/mobile/events/:slug/provider-refresh` | POST | Internal admin guard | Existing body: optional `expireFirst`, `staleSeconds`, `allowContractProofFallback` | Existing refresh report plus `lineProvider.source`, `attempted`, `status`, `fixtureId`, `matchedMarketCount`, `snapshotRowsBuilt`, `snapshotsUpdated`, `skippedReason` | `Event.metadata.providerFixture`, `Market`, `Outcome`, `ReferenceQuoteSnapshot` | None. Missing credentials return `skippedReason=missing_optic_odds_api_key`. | Real OpticOdds credentials and reviewed per-line identity before applying live line rows. |
+| OpticOdds fixture odds fetch | Official OpticOdds `https://api.opticodds.com/api/v3/fixtures/odds` | GET | `X-Api-Key: OPTIC_ODDS_API_KEY` | Query: repeated `sportsbook`, repeated `market`, `fixture_id`, `odds_format=PROBABILITY` | Fixture `id`, `game_id`, competitors, odds `id`, `sportsbook`, `market_id`, `selection`, `selection_line`, `team_id`, `price`, `points`, `is_main` | `ReferenceQuoteSnapshot` rows with `source=optic_odds`; eventual first-class provider line mapping table if line identity review becomes durable | Contract proof uses official-response-shaped fixture data only; it does not write fake live rows | OpticOdds orderbook/depth support is not implemented; quote snapshots only. |
+
+Cycle DH implementation notes:
+
+- The endpoint contract follows the official OpticOdds docs for `/fixtures/odds`, including repeated sportsbook/market query params and API-key header auth.
+- The current event diagnostic intentionally reports `readyForLiveProviderApply=false` until credentials and reviewed per-line provider market identity exist.
+- This cycle moves the backend closer to real line ingestion without weakening the provider relevance gate.

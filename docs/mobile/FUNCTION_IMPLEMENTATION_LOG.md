@@ -2876,3 +2876,42 @@ Known limitations:
 
 - This does not ingest OpticOdds line prices yet.
 - Polymarket/Gamma still exposes only 3 match-winner markets for the checked exact event; spreads, totals, team totals, halves, corners, and correct-score markets remain open until a real provider route/source is integrated.
+
+## Cycle DH - OpticOdds Line Ingestion Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 structural provider ingestion for live soccer line markets.
+- OpticOdds `/fixtures/odds` client and response normalizer.
+- Provider refresh report extension for `lineProvider: optic_odds`.
+
+Backend/API components touched:
+
+- `src/server/services/mobileLiveOpticOddsLineIngestion.ts`
+- `src/server/services/mobileLiveProviderRefresh.ts`
+- `scripts/prove_mobile_optic_odds_line_ingestion_contract.ts`
+- `src/__tests__/mobile-live-optic-odds-line-ingestion.test.ts`
+
+Important functions/services touched:
+
+- `fetchOpticOddsFixtureOdds()` builds the official `GET /fixtures/odds` request with `X-Api-Key`, repeated `sportsbook` params, repeated `market` params, `fixture_id`, and `odds_format=PROBABILITY`.
+- `buildOpticOddsReferenceQuoteRows()` converts OpticOdds fixture odds into Holiwyn `ReferenceQuoteSnapshot` rows with `source=optic_odds`.
+- `refreshOpticOddsLineQuoteSnapshots()` is credential-gated and reports `missing_optic_odds_api_key` instead of silently faking live provider data.
+- `refreshMobileLiveProviderQuoteSnapshots()` now includes a `lineProvider` report alongside existing Polymarket Gamma quote/CLOB refresh reports.
+
+User interactions supported:
+
+- No new visible mobile control was added.
+- Existing Samsung tablet server-mode Colombia vs Ghana live-detail Book proof was re-smoked to ensure the provider refresh service change did not regress the user-facing route-backed flow.
+
+State transitions:
+
+- With `OPTIC_ODDS_API_KEY` and configured sportsbooks, provider refresh can now fetch fixture odds using `Event.metadata.providerFixture.opticOddsFixtureId` and upsert matching line odds into `ReferenceQuoteSnapshot`.
+- Without credentials, refresh returns an explicit skipped line-provider report rather than using dummy line prices.
+- Contract proof converts official-response-shaped spread, total, and team-total lines into snapshot rows while marking the current event not ready for live provider apply.
+
+Known limitations:
+
+- `OPTIC_ODDS_API_KEY` is not configured in the local environment, so no live OpticOdds request was executed.
+- The current Colombia/Ghana event still needs reviewed per-line provider identity before applying live line rows; otherwise same-family lines can be ambiguous.
+- The cycle does not add provider orderbook depth for OpticOdds lines, only quote snapshots.

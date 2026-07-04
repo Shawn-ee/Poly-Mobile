@@ -5,6 +5,8 @@ import { upsertReferenceQuoteSnapshots } from "@/server/services/referenceQuoteS
 import { buildMobileLiveProviderQuoteSnapshotRows } from "@/server/services/mobileLiveProviderQuoteSnapshotSeeding";
 import { selectCompactLiveMarkets } from "@/server/services/mobileLiveEventDetail";
 import { assessMobileLiveProviderMappingReadiness } from "@/server/services/mobileLiveProviderMapping";
+import { extractProviderFixtureMetadataFromEventMetadata } from "@/server/services/mobileLiveProviderFixtureMetadata";
+import { refreshOpticOddsLineQuoteSnapshots } from "@/server/services/mobileLiveOpticOddsLineIngestion";
 
 export type MobileLiveProviderRefreshOptions = {
   eventSlug: string;
@@ -42,9 +44,11 @@ export async function expireMobileLiveProviderQuoteSnapshots(params: {
 
 export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiveProviderRefreshOptions) {
   const compactMarkets = await loadCompactLiveMarkets(options.eventSlug);
+  const providerFixture = await loadProviderFixtureMetadata(options.eventSlug);
   const compactMarketIds = compactMarkets.map((market) => market.id);
   const mappingReadiness = assessMobileLiveProviderMappingReadiness({
     eventSlug: options.eventSlug,
+    providerFixture,
     compactMarkets,
   });
   const polymarketMappedMarkets = compactMarkets.filter((market) =>
@@ -92,6 +96,11 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
         refreshed: [],
         skipped: [],
       };
+  const lineProviderReport = await refreshOpticOddsLineQuoteSnapshots({
+    eventSlug: options.eventSlug,
+    providerFixture,
+    compactMarkets,
+  });
 
   let contractProofFallback:
     | {
@@ -131,9 +140,18 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
       skipped: providerReport.skipped,
     },
     providerDepth: providerDepthReport,
+    lineProvider: lineProviderReport,
     contractProofFallback,
     postRefresh,
   };
+}
+
+async function loadProviderFixtureMetadata(eventSlug: string) {
+  const event = await prisma.event.findFirst({
+    where: { slug: eventSlug },
+    select: { metadata: true },
+  });
+  return extractProviderFixtureMetadataFromEventMetadata(event?.metadata);
 }
 
 async function loadCompactLiveMarkets(eventSlug: string) {

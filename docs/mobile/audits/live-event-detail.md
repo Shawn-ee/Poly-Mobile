@@ -1633,6 +1633,47 @@ Remaining P1 gaps:
 - Persist provider fixture metadata automatically during World Cup event import.
 - Prove selected provider line/outcome identity through ticket, order, portfolio, and history once line markets exist.
 
+## Cycle DH OpticOdds Line Ingestion Contract Audit
+
+Result: Pass for backend line-ingestion contract; partial for live line-market provider parity.
+
+What became materially closer to Polymarket:
+
+- Polymarket live game pages expose line markets that need provider-owned odds, not frontend fixtures. Holiwyn now has a backend lane for OpticOdds fixture odds keyed by the real fixture ID extracted in Cycle DG.
+- Provider refresh can now report an `optic_odds` line-provider state instead of treating line-market ingestion as an undefined future task.
+- The normalizer maps spread, total, and team-total odds into the existing `ReferenceQuoteSnapshot` contract used by mobile live detail and orderbook surfaces.
+
+Acceptance criteria:
+
+| Criterion ID | Priority | Status | Verification |
+| --- | --- | --- | --- |
+| LD-DH-P1-01 | P1 | Pass | `fetchOpticOddsFixtureOdds()` builds `GET /fixtures/odds` with `X-Api-Key`, repeated `sportsbook`, repeated `market`, `fixture_id`, and `odds_format=PROBABILITY`. |
+| LD-DH-P1-02 | P1 | Pass | Contract proof maps 3 line families and 6 outcomes into `source=optic_odds` `ReferenceQuoteSnapshot` rows. |
+| LD-DH-P1-03 | P1 | Pass | Provider refresh report includes `lineProvider` and reports skipped state when credentials are absent. |
+| LD-DH-P1-04 | P1 | Pass | Current event diagnostic explicitly sets `readyForLiveProviderApply=false` until credentials and reviewed line identity exist. |
+| LD-DH-P1-05 | P1 | Pass | Samsung tablet server-mode live-detail Book proof still shows route-backed ready state after the service change. |
+
+Evidence:
+
+- `src/server/services/mobileLiveOpticOddsLineIngestion.ts`
+- `src/server/services/mobileLiveProviderRefresh.ts`
+- `src/__tests__/mobile-live-optic-odds-line-ingestion.test.ts`
+- `scripts/prove_mobile_optic_odds_line_ingestion_contract.ts`
+- `docs/mobile/harness/cycle-current-mobile-optic-odds-line-ingestion-contract.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+
+Unresolved P0 gaps: 0 for this focused contract cycle.
+
+Remaining P1 gaps:
+
+- Configure `OPTIC_ODDS_API_KEY` and approved sportsbooks.
+- Add reviewed per-line provider identity persistence before applying current-event line rows.
+- Prove live OpticOdds refresh writes real provider rows for the current event.
+- Add provider-owned orderbook/depth for line markets if visual/orderbook parity requires it.
+
 ## Cycle CW Provider Sports Event Discovery Expansion Audit
 
 Result: Pass for focused exact provider sports-event discovery and route-backed tablet Book proof.

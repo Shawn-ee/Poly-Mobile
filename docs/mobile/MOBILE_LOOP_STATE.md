@@ -6,6 +6,31 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle DH
+
+Date: 2026-07-04
+Branch: `mobile/cycle-DH-optic-odds-line-ingestion-contract`
+Goal: Add a credential-gated OpticOdds line-provider ingestion contract for live soccer line markets using the fixture identity from Cycle DG.
+Reference app screens observed: Continued from Cycle CW/CX/CY/DG Samsung S23 Polymarket official app Colombia vs Ghana game page and exact Gamma fixture metadata; official OpticOdds `/fixtures/odds` docs checked for endpoint shape.
+Holiwyn screens changed: No visible mobile UI change. Existing server-backed Colombia vs Ghana live-detail Book flow was re-proven on Samsung tablet.
+Backend/API changed: `refreshMobileLiveProviderQuoteSnapshots()` now includes `lineProvider` status from the OpticOdds line refresh lane. New client builds `GET /fixtures/odds` with `X-Api-Key`, repeated sportsbooks/markets, `fixture_id`, and `odds_format=PROBABILITY`. New normalizer maps line odds into `ReferenceQuoteSnapshot` rows with `source=optic_odds`.
+Database/schema changed: No schema migration. Existing `ReferenceQuoteSnapshot` supports the new source. Future durable per-line provider mapping may need first-class schema.
+Files changed: OpticOdds line ingestion service, provider refresh service, ingestion contract proof script, focused tests, docs/proof artifacts, tablet proof artifacts.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-optic-odds-line-ingestion.test.ts src/__tests__/mobile-live-provider-refresh.route.test.ts`
+- `cmd /c npx.cmd tsx scripts/prove_mobile_optic_odds_line_ingestion_contract.ts --output docs/mobile/harness/cycle-current-mobile-optic-odds-line-ingestion-contract.json`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` from `mobile/`
+- Samsung tablet proof via `mobile/scripts/smoke.ps1 -Deep -ServerLiveDetailOrderBook -ServerEventSlug world-cup-2026-colombia-vs-ghana-2026-07-03`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-optic-odds-line-ingestion-contract.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+Result: Pass for OpticOdds line ingestion contract and tablet regression. Remaining P1 parity gaps are real OpticOdds credentials, reviewed per-line provider identity, live apply proof, and provider depth/orderbook for line markets.
+Next focus: add reviewed per-line provider identity persistence/operator workflow, then run the live OpticOdds refresh when credentials are available.
+
 ## Cycle DG
 
 Date: 2026-07-04
