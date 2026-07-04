@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { normalizeMarket } from "../adapters/worldCupAdapter";
-import type { Market } from "../types";
+import { normalizeEventDetail, normalizeMarket } from "../adapters/worldCupAdapter";
+import type { EventDetail, Market } from "../types";
 
 const baseMarket: Market = {
   id: "world-cup-futures",
@@ -116,6 +116,66 @@ describe("world cup adapter", () => {
       marketType: "team-total",
       line: "1.5",
       outcomes: [{ id: "over", side: "over", bestBid: 0.57, bestAsk: 0.65 }],
+    });
+  });
+
+  test("preserves live data freshness contract from backend event detail", () => {
+    const detail: EventDetail = {
+      event: {
+        id: "event-1",
+        slug: "world-cup-live",
+        title: "Curacao vs Cote d'Ivoire",
+        description: null,
+        category: "sports",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        homeTeamName: "Curacao",
+        awayTeamName: "Cote d'Ivoire",
+        startTime: "2026-06-25T20:00:00.000Z",
+        status: "LIVE",
+        liveStatus: "in_progress",
+        period: "2H",
+        clock: "67'",
+        homeScore: 0,
+        awayScore: 1,
+        imageUrl: null,
+        marketCount: 1,
+        activeMarketCount: 1,
+        liveDataStatus: {
+          source: "provider-feed",
+          status: "stale",
+          lastUpdated: "2026-07-03T22:00:10.000Z",
+          stalenessSeconds: 121,
+          staleAfterSeconds: 90,
+          isStale: true,
+          isSuspended: false,
+          isDelayed: false,
+          reason: "Latest provider update is older than 90 seconds.",
+        },
+      },
+      markets: [{
+        ...baseMarket,
+        id: "market-main",
+        marketGroupTitle: "Match Winner",
+        outcomes: [{
+          id: "home",
+          name: "Curacao",
+          label: "Curacao",
+          side: "home",
+          price: 0.58,
+          bestBid: 0.57,
+          bestAsk: 0.61,
+          isTradable: true,
+        }],
+      }],
+    };
+
+    expect(normalizeEventDetail(detail)?.liveDataStatus).toMatchObject({
+      source: "provider-feed",
+      status: "stale",
+      stalenessSeconds: 121,
+      staleAfterSeconds: 90,
+      isStale: true,
     });
   });
 });

@@ -2,6 +2,56 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle BC - Live Provider Freshness Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 provider freshness/stale/suspended availability state for the live event detail page.
+- Backend-shaped `liveDataStatus` contract carried through route, mobile adapter, and visible UI proof labels.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/src/types.ts`
+- `mobile/src/mocks/worldCup.ts`
+- `mobile/src/__tests__/worldCupAdapter.test.ts`
+- `mobile/scripts/smoke.ps1`
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+
+Important functions/services touched:
+
+- `serializeMobileLiveEventDetail()` now emits `event.liveDataStatus` and `contract.liveDataStatus`.
+- `normalizeEventSummary()` preserves `liveDataStatus` into the mobile `Event`.
+- `EventDetail` renders auditable live-data status labels in the always-visible market header and live match strip.
+
+User interactions supported:
+
+- User can see whether the server-backed live game page is using fresh, stale, delayed, suspended, or unavailable live data before interacting with markets.
+
+State transitions:
+
+- `MarketOutcomeSnapshot` seed rows -> `/api/mobile/events/:slug/live-detail` derives `liveDataStatus` -> mobile adapter preserves the status -> EventDetail displays `event-detail-live-data-inline live-data-status-ready live-data-source-market-outcome-snapshot` -> order book interaction still opens selected Team Totals route-backed depth.
+
+Known limitations:
+
+- Freshness is derived from proof `MarketOutcomeSnapshot` timestamps or metadata overrides; real provider ingestion and provider-owned per-market availability state remain future backend work.
+- The status is event-level in this cycle. Per-market/per-line freshness is still open PM-GAP-067 work.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-event-detail.test.ts`
+- `cmd /c npm.cmd run test:mobile-api -- mobile/src/__tests__/worldCupAdapter.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run mobile:live-chart-snapshot-seed`
+- `cmd /c npm.cmd run mobile:live-team-totals-orderbook-depth-seed`
+- `cmd /c npm.cmd run smoke:tablet:server-live-team-totals-order-book`
+
 ## Cycle BB - Selected Team Totals Ready Depth
 
 Feature/page worked on:

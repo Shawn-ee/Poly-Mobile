@@ -210,6 +210,23 @@ export function EventDetail({
   const homeChartSeries = event.chartHistory?.filter((point) => point.outcomeId === leftOutcome?.id).map((point) => point.probability) ?? homeChartPoints;
   const awayChartSeries = event.chartHistory?.filter((point) => point.outcomeId === rightOutcome?.id).map((point) => point.probability) ?? awayChartPoints;
   const chartRouteStatus = event.chartHistoryStatus ?? (event.chartHistorySource === "market-chart-route" ? "ready" : "idle");
+  const liveDataStatus = event.liveDataStatus;
+  const liveDataState = liveDataStatus?.status ?? (isLiveEvent ? "unavailable" : "ready");
+  const liveDataText =
+    liveDataState === "ready"
+      ? "Live data fresh"
+      : liveDataState === "stale"
+        ? "Live data stale"
+        : liveDataState === "suspended"
+          ? "Markets suspended"
+          : liveDataState === "delayed"
+            ? "Feed delayed"
+            : "Live data unavailable";
+  const liveDataMeta = liveDataStatus?.stalenessSeconds != null
+    ? `${liveDataStatus.stalenessSeconds}s old`
+    : liveDataStatus?.lastUpdated
+      ? "Timestamped"
+      : "No timestamp";
   const depthMarketMatches = Boolean(orderBookMarket && event.orderbookDepthMarketId === orderBookMarket.id);
   const selectedDepthSource = depthMarketMatches ? event.orderbookDepthSource : undefined;
   const depthRouteStatus = depthMarketMatches
@@ -977,6 +994,15 @@ export function EventDetail({
           <View style={styles.bodySwitchMeta}>
             <Text style={styles.bodySwitchVolume}>{stats.volume} Vol.</Text>
             <Text style={styles.bodySwitchSource}>{isLiveEvent ? "Live World Cup" : "Holiwyn"}</Text>
+            {liveDataStatus && (
+              <Text
+                accessibilityLabel={`event-detail-live-data-inline live-data-status-${liveDataState} live-data-source-${liveDataStatus.source} ${liveDataText}`}
+                style={[styles.bodySwitchFreshness, liveDataState !== "ready" && styles.bodySwitchFreshnessWarning]}
+                testID="event-detail-live-data-inline"
+              >
+                {liveDataText} · {liveDataMeta}
+              </Text>
+            )}
           </View>
           <View style={styles.bodySwitchTabs}>
             <Pressable
@@ -1004,7 +1030,14 @@ export function EventDetail({
           <View accessibilityLabel="event-detail-live-stats-panel" style={styles.liveStatsPanel} testID="event-detail-live-stats-panel">
             <View style={styles.liveStatsHeader}>
               <Text style={styles.liveStatsTitle}>Live stats</Text>
-              <Text style={styles.liveStatsStatus}>{event.status === "live" ? liveClock : "Pregame preview"}</Text>
+              <View
+                accessibilityLabel={`event-detail-live-data-status live-data-status-${liveDataState} live-data-source-${liveDataStatus?.source ?? "unknown"} live-data-stale-after-${liveDataStatus?.staleAfterSeconds ?? "none"} ${liveDataText} ${liveDataMeta}`}
+                style={[styles.liveDataPill, liveDataState !== "ready" && styles.liveDataPillWarning, liveDataState === "suspended" && styles.liveDataPillSuspended]}
+                testID="event-detail-live-data-status"
+              >
+                <Text style={[styles.liveDataText, liveDataState !== "ready" && styles.liveDataTextWarning]}>{event.status === "live" ? liveDataText : "Pregame preview"}</Text>
+                <Text style={styles.liveDataMeta}>{liveDataMeta}</Text>
+              </View>
             </View>
             {liveStatRows.map((row) => (
               <View accessibilityLabel={`event-detail-live-stat-${row.label}`} key={row.label} style={styles.liveStatRow} testID={`event-detail-live-stat-${row.label.replace(/[^A-Za-z0-9]/g, "-").toLowerCase()}`}>
@@ -1032,6 +1065,13 @@ export function EventDetail({
             <View>
               <Text style={styles.liveStripLabel}>LIVE WORLD CUP</Text>
               <Text style={styles.liveStripScore}>{scoreboard} · {liveClock}</Text>
+              <Text
+                accessibilityLabel={`event-detail-live-data-inline live-data-status-${liveDataState} live-data-source-${liveDataStatus?.source ?? "unknown"} ${liveDataText}`}
+                style={[styles.liveStripFreshness, liveDataState !== "ready" && styles.liveStripFreshnessWarning]}
+                testID="event-detail-live-data-inline"
+              >
+                {liveDataText} · {liveDataMeta}
+              </Text>
             </View>
             <View style={styles.liveStripPriceRow}>
               {primaryOutcomes.map((outcome) => (
@@ -1427,9 +1467,11 @@ const styles = StyleSheet.create({
   liveClock: { color: "#ef4444", fontSize: 14, fontWeight: "900", marginTop: 3 },
   rightTeamText: { alignItems: "flex-end" },
   bodySwitchSection: { paddingHorizontal: 24, paddingTop: 18, paddingBottom: 8 },
-  bodySwitchMeta: { minHeight: 28, flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 },
+  bodySwitchMeta: { minHeight: 28, flexDirection: "row", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8, marginBottom: 10 },
   bodySwitchVolume: { color: "#8b93a3", fontSize: 15, fontWeight: "800" },
   bodySwitchSource: { color: "#64748b", fontSize: 15, fontWeight: "900" },
+  bodySwitchFreshness: { color: "#7dd3fc", fontSize: 12, fontWeight: "900" },
+  bodySwitchFreshnessWarning: { color: "#fde68a" },
   bodySwitchTabs: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 12 },
   bodySwitchTab: { minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 7, borderRadius: 12, paddingHorizontal: 16, backgroundColor: "transparent" },
   bodySwitchTabActive: { backgroundColor: "#082f49" },
@@ -1439,6 +1481,12 @@ const styles = StyleSheet.create({
   liveStatsHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 12 },
   liveStatsTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "900" },
   liveStatsStatus: { overflow: "hidden", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 5, color: "#93c5fd", backgroundColor: "#0b2440", fontSize: 12, fontWeight: "900" },
+  liveDataPill: { minHeight: 34, borderRadius: 999, paddingHorizontal: 10, paddingVertical: 5, backgroundColor: "#0b2440", borderWidth: 1, borderColor: "rgba(56, 189, 248, 0.35)", alignItems: "flex-end", justifyContent: "center" },
+  liveDataPillWarning: { backgroundColor: "rgba(53, 43, 20, 0.84)", borderColor: "rgba(251, 191, 36, 0.45)" },
+  liveDataPillSuspended: { backgroundColor: "rgba(58, 24, 31, 0.84)", borderColor: "rgba(248, 113, 113, 0.45)" },
+  liveDataText: { color: "#93c5fd", fontSize: 12, fontWeight: "900" },
+  liveDataTextWarning: { color: "#fde68a" },
+  liveDataMeta: { color: "#94a3b8", fontSize: 10, fontWeight: "800" },
   liveStatRow: { minHeight: 54, flexDirection: "row", alignItems: "center", gap: 12, borderTopWidth: 1, borderTopColor: "#1f2937" },
   liveStatValue: { width: 52, color: "#f8fafc", fontSize: 17, fontWeight: "900", textAlign: "center" },
   liveStatMiddle: { flex: 1, minWidth: 0 },
@@ -1453,6 +1501,8 @@ const styles = StyleSheet.create({
   liveMatchStrip: { minHeight: 64, marginHorizontal: 24, marginTop: 10, padding: 12, borderRadius: 14, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   liveStripLabel: { color: "#ef4444", fontSize: 11, fontWeight: "900" },
   liveStripScore: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginTop: 2 },
+  liveStripFreshness: { color: "#7dd3fc", fontSize: 11, fontWeight: "800", marginTop: 3 },
+  liveStripFreshnessWarning: { color: "#fde68a" },
   liveStripPriceRow: { alignItems: "flex-end", gap: 3 },
   liveStripPrice: { fontSize: 14, fontWeight: "900" },
   chartMarkers: { position: "absolute", left: 14, top: 34, gap: 20 },

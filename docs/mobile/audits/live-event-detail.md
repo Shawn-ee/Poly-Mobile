@@ -1,6 +1,6 @@
 # Live Event Detail Audit
 
-Status: Cycle BB passed selected Team Totals seeded ready-depth proof. Cycle BA passed compact line-group coverage and selected Totals seeded ready-depth proof. Cycle AZ passed selected Spread line-market seeded ready-depth proof. Cycle AY passed selected line-market depth identity proof. Cycle AX passed the compact mobile live-detail route and route-backed primary orderbook-depth tablet proof. Cycle AN passed structural live event detail UI with backend-shaped fixture data and tablet proof; Cycle AO added the real `/api/events/:slug` contract for market identity, line identity, compact depth, and optional chart/live-stat arrays. Cycle AQ sources embedded chart history from `MarketOutcomeSnapshot` rows when available and preserves depth outcome identity in mobile. Cycle AR adds the dedicated `/api/markets/:marketId/chart?range=...` route/client contract. Cycle AS wires EventDetail to consume that chart route in server mode. Cycle AT adds deterministic `MarketOutcomeSnapshot` seeding for local/server proof. Cycle AU exposes chart loading/empty/error route states in the game chart. Cycle AW seeded route-readable orderbook depth. This is still not full backend parity because real provider ingestion, richer delayed/suspended states, all-line-market liquidity, and provider-owned live stats remain open.
+Status: Cycle BC passed the live provider freshness contract and tablet proof. Cycle BB passed selected Team Totals seeded ready-depth proof. Cycle BA passed compact line-group coverage and selected Totals seeded ready-depth proof. Cycle AZ passed selected Spread line-market seeded ready-depth proof. Cycle AY passed selected line-market depth identity proof. Cycle AX passed the compact mobile live-detail route and route-backed primary orderbook-depth tablet proof. Cycle AN passed structural live event detail UI with backend-shaped fixture data and tablet proof; Cycle AO added the real `/api/events/:slug` contract for market identity, line identity, compact depth, and optional chart/live-stat arrays. Cycle AQ sources embedded chart history from `MarketOutcomeSnapshot` rows when available and preserves depth outcome identity in mobile. Cycle AR adds the dedicated `/api/markets/:marketId/chart?range=...` route/client contract. Cycle AS wires EventDetail to consume that chart route in server mode. Cycle AT adds deterministic `MarketOutcomeSnapshot` seeding for local/server proof. Cycle AU exposes chart loading/empty/error route states in the game chart. Cycle AW seeded route-readable orderbook depth. This is still not full backend parity because real provider ingestion, per-line delayed/suspended states, all-line-market liquidity, and provider-owned live stats remain open.
 
 ## Scope
 
@@ -9,6 +9,44 @@ Status: Cycle BB passed selected Team Totals seeded ready-depth proof. Cycle BA 
 - Holiwyn proof device: Samsung tablet running Holiwyn through Expo Go.
 - Cycle branch name: `mobile/cycle-AN-saved-watchlist-parity`, re-scoped honestly to live event detail after product steering changed.
 - Out of scope: deposit, location verification, notifications, non-football live markets, World Cup informational ad/detail pages.
+
+## Cycle BC Live Provider Freshness Contract Audit
+
+Result: Pass for event-level live provider freshness contract and visible tablet proof.
+
+What became materially closer to Polymarket:
+
+- Polymarket live markets communicate when prices and market availability are live/current versus blocked, delayed, or unavailable. Holiwyn now has a backend-shaped freshness status instead of silently assuming all server data is fresh.
+- The game page exposes route-derived freshness state in the market header while preserving selected Team Totals orderbook interaction.
+
+Acceptance criteria:
+
+| ID | Priority | Criterion | Audit method | Result |
+| --- | --- | --- | --- | --- |
+| LED-BC-P0-01 | P0 | `/api/mobile/events/:slug/live-detail` returns `event.liveDataStatus` with source, status, timestamps, stale threshold, booleans, and reason. | Backend unit test and route probe | Pass |
+| LED-BC-P0-02 | P0 | Mobile adapter preserves `liveDataStatus` into the normalized Event consumed by EventDetail. | Mobile adapter unit test | Pass |
+| LED-BC-P0-03 | P0 | EventDetail renders an auditable visible label `event-detail-live-data-inline live-data-status-* live-data-source-*` on server-backed event detail. | Samsung tablet XML | Pass |
+| LED-BC-P0-04 | P0 | Existing selected Team Totals route-backed order book still opens after freshness contract rendering. | Samsung tablet XML/screenshot | Pass |
+| LED-BC-P1-01 | P1 | Real provider heartbeat/ingestion sets the freshness state without deterministic seed scripts. | Future provider proof | Open |
+| LED-BC-P1-02 | P1 | Freshness/availability is per market or per line, not only event-level. | Future route/schema proof | Open |
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-current-mobile-live-chart-snapshot-seed.json`
+- `docs/mobile/harness/cycle-current-mobile-live-team-totals-orderbook-depth-seed.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-team-totals-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-team-totals-order-book.png`
+- Proof command: `cmd /c npm.cmd run smoke:tablet:server-live-team-totals-order-book`
+
+Unresolved P0 gaps: 0 for event-level freshness contract scope.
+
+Remaining P1/P2 gaps:
+
+- Real provider ingestion/heartbeat.
+- Per-market/per-line freshness, delayed, suspended, and unavailable states.
+- Provider-owned live stats and all-line liquidity.
 
 ## Cycle BB Selected Team Totals Ready Depth Audit
 

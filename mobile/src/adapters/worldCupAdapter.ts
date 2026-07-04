@@ -170,6 +170,7 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
       { name: away, zhName: zhPassthrough(away), flag: "•" },
     ],
     liveStats: event.liveStats,
+    liveDataStatus: event.liveDataStatus,
     chartHistory: event.chartHistory,
     chartHistorySource: event.chartHistory?.length ? "embedded" : undefined,
     chartHistoryStatus: event.chartHistory?.length ? "ready" : undefined,

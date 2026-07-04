@@ -2,6 +2,38 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle BC - Live Provider Freshness Contract
+
+Fields now provided or wired:
+
+- `/api/mobile/events/:slug/live-detail` now returns `event.liveDataStatus` with `source`, `status`, `lastUpdated`, `stalenessSeconds`, `staleAfterSeconds`, `isStale`, `isSuspended`, `isDelayed`, and `reason`.
+- The compact route also exposes `contract.liveDataStatus` for audit and harness checks.
+- Mobile adapter and EventDetail preserve and display the status with `event-detail-live-data-inline live-data-status-* live-data-source-*`.
+- Samsung tablet proof confirms the server-backed live game page displays the route-derived freshness state while the selected Team Totals order book still opens route-backed ready depth.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider heartbeat or ingestion source for live soccer matches.
+- Per-market/per-line freshness and suspended/delayed status, especially for adjustable Spread, Totals, Team Totals, and Halves lines.
+- Provider-owned live stats and market availability transitions.
+
+Schema mismatch:
+
+- The current cycle uses `MarketOutcomeSnapshot` timestamps and optional `Event.metadata.mobileLiveDetail.liveDataStatus` overrides. A future production schema should decide whether freshness belongs on `Event`, `Market`, provider snapshot tables, or all three.
+
+Route mismatch:
+
+- The event-level compact route is sufficient for first visible freshness proof.
+- A future line-market route should expose per-selected-market freshness beside orderbook depth.
+
+Temporary mock/static data:
+
+- Freshness proof uses seeded `MarketOutcomeSnapshot` rows, not frontend-only local strings.
+
+Future migration concern:
+
+- Replace deterministic snapshot seeding with provider ingestion before marking PM-GAP-067 backend parity complete.
+
 ## Cycle BB - Selected Team Totals Ready Depth
 
 Fields now provided or wired:
