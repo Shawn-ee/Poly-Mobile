@@ -2,6 +2,22 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle EN-A - Route-Backed Provider-Depth Limit Lifecycle
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider-depth Book selection source | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile route | Event slug | `markets[].selection`, `markets[].outcomes[]`, `markets[].orderbookDepth[]`, `markets[].orderbookIdentity`, `markets[].providerLifecycle`, and `markets[].providerOrderbookDepth` provide the selected `marketId`, `outcomeId`, market group/type, line, period, side, provider source, external market/condition ids, token ids, and tapped Book ask/bid price/share level | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, `MarketOutcomeSnapshot` | No frontend-only fixture is accepted by the proof; disposable provider rows are backend-shaped Polymarket/Gamma/CLOB data | Production replay on a real live Polymarket event remains future coverage. |
+| Book-staged limit order creation | Canonical order service backing `POST /api/orders` | POST | Canonical API key/idempotency flow in production; EN-A uses the route-backed service entry to avoid local trading-beta env flags | `marketId`, `outcomeId`, `side`, `type`, `price`, `size`, `contractSide`, and `selection` born from live-detail provider depth, including `limitPrice`, `limitSide`, and `limitShares` | Order response echoes `order.selection` and `order.contractSide` with selected provider and limit identity intact | `ApiOrderRequest`, `Order`, `Market`, `Outcome` | None. Limit fields are sanitized into existing request JSON. | First-class immutable order/fill/trade/position selection columns remain future hardening. |
+| Route-backed limit portfolio/history lifecycle | `/api/portfolio` and `/api/portfolio/history` | GET / GET | Session user or canonical API key with `account:read` | None | `openOrders[].selection`, `positions[].selection`, `canceledOrders[].selection`, and `recentTrades[].selection` preserve selected market/outcome/type/group/line/period/side/contract side/provider ids/tokens plus `limitPrice`, `limitSide`, and `limitShares` | `Order`, `ApiOrderRequest`, `Position`, `Trade`, `Market`, `Outcome` with the guarded request snapshot bridge | None in backend proof. Mobile fixtures are not used for EN-A identity. | Same-market/outcome multi-selection history still depends on the latest matching request snapshot until durable trade/position snapshots are approved. |
+
+Cycle EN-A implementation notes:
+
+- Proof script: `scripts/prove_mobile_en_a_route_limit_lifecycle.ts`.
+- Proof artifact: `docs/mobile/harness/cycle-EN-A-route-limit-lifecycle/proof.json`.
+- The proof starts from `/api/mobile/events/:slug/live-detail` provider orderbook depth, selects an ask ladder level, and derives the order `selection` from that route payload before open/cancel/fill lifecycle assertions.
+- Focused route tests now assert `/api/portfolio` and `/api/portfolio/history` preserve `limitPrice`, `limitSide`, and `limitShares` with provider token identity after current market metadata drift.
+- `OPTIC_ODDS_API_KEY` remains optional/unconfigured and non-blocking; the proven path uses existing Polymarket-first quote, CLOB depth, and CLOB chart rows.
+
 ## Cycle EM Integrated - Book-Staged Limit Lifecycle Proof Pairing
 
 Cycle EM integrated pairs two evidence types:
