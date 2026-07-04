@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { assertReferenceBotAdmin } from "@/lib/internalAdminAuth";
 import { toGuardResponse } from "@/lib/marketGuards";
 import {
@@ -35,10 +36,48 @@ export async function POST(request: NextRequest, context: Params) {
     eventSlug: slug,
     allowContractProofFallback: body?.allowContractProofFallback === true,
   });
+  const cacheInvalidation = invalidateMobileLiveProviderRefreshCache(slug, refresh.mappingReadiness.markets.map((market) => market.marketId));
 
   return NextResponse.json({
     ok: true,
     expired,
     refresh,
+    cacheInvalidation,
+  }, {
+    headers: {
+      "Cache-Control": "no-store, max-age=0",
+    },
   });
+}
+
+function invalidateMobileLiveProviderRefreshCache(eventSlug: string, marketIds: string[]) {
+  const encodedSlug = encodeURIComponent(eventSlug);
+  const paths = [
+    `/api/mobile/events/${encodedSlug}/live-detail`,
+    `/api/events/${encodedSlug}`,
+    ...marketIds.map((marketId) => `/api/orderbook/${encodeURIComponent(marketId)}/book`),
+  ];
+  const invalidated: string[] = [];
+  const errors: Array<{ path: string; error: string }> = [];
+
+  for (const path of paths) {
+    try {
+      revalidatePath(path);
+      invalidated.push(path);
+    } catch (error) {
+      errors.push({
+        path,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+
+  return {
+    source: "next-revalidate-path",
+    generatedAt: new Date().toISOString(),
+    eventSlug,
+    marketCount: marketIds.length,
+    invalidated,
+    errors,
+  };
 }

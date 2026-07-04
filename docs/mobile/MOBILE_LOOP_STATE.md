@@ -6,6 +6,31 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle CR
+
+Date: 2026-07-04
+Branch: `mobile/cycle-CR-provider-owned-refresh-cache-invalidation`
+Goal: Keep PM-GAP-067 focused on provider ingestion by proving real provider-owned refresh execution and cache invalidation for compact live markets.
+Reference app screens observed: Continued from Cycle CH Samsung S23 Polymarket official app live game page evidence; no new visual UI parity area was opened.
+Holiwyn screens changed: None. Harness-only proof opens a disposable backend event on the Samsung tablet and verifies refreshed provider quote state.
+Backend/API changed: `POST /api/mobile/events/:slug/provider-refresh` now returns cache invalidation metadata, sets `Cache-Control: no-store`, and revalidates live-detail, public event, and affected orderbook route paths after refresh.
+Database/schema changed: None. Disposable proof setup uses existing `Event`, `Market`, `Outcome`, and `ReferenceQuoteSnapshot` models with real provider identity from Gamma.
+Files changed: provider-refresh route/test, `scripts/prepare_mobile_provider_refresh_proof_event.ts`, tablet smoke harness, and mobile docs/proof artifacts.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-refresh.route.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts src/__tests__/mobile-live-provider-mapping.route.test.ts`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` from `mobile/`
+- Samsung tablet provider refresh proof via `mobile/scripts/smoke.ps1 -ServerLiveProviderRefreshProof -ServerEventSlug mobile-provider-refresh-proof-live`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-live-provider-refresh-proof-prep.json`
+- `docs/mobile/harness/cycle-current-mobile-live-provider-refresh-real-provider-proof.json`
+- `docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-summary.json`
+- `docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-order-book.png`
+- `docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-order-book.xml`
+Result: Pass for the provider-owned stale/refresh-due to ready route transition and cache invalidation on a disposable mapped provider event. Partial for full World Cup provider parity because real World Cup compact soccer mapping and provider-owned depth remain open.
+Next focus: map real World Cup compact soccer markets or build the provider-depth bridge before opening any new visual UI parity work.
+
 ## Cycle CQ
 
 Date: 2026-07-03

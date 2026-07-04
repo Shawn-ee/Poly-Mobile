@@ -2,6 +2,58 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CR - Provider-Owned Refresh And Cache Invalidation
+
+Feature/page worked on:
+
+- PM-GAP-067 provider-owned refresh execution for compact live event detail.
+- This cycle proves a real provider-mapped disposable event can move from stale/refresh-due to ready through the protected refresh route without using the local contract-proof fallback.
+
+Frontend components touched:
+
+- `mobile/scripts/smoke.ps1`
+- No visual UI parity work was started. The harness was extended only to prove the refreshed backend event on the Holiwyn Android tablet.
+
+Backend/components touched:
+
+- `src/app/api/mobile/events/[slug]/provider-refresh/route.ts`
+- `src/__tests__/mobile-live-provider-refresh.route.test.ts`
+- `scripts/prepare_mobile_provider_refresh_proof_event.ts`
+
+Important functions/services touched:
+
+- `POST /api/mobile/events/:slug/provider-refresh` now returns explicit `cacheInvalidation` metadata and sets `Cache-Control: no-store, max-age=0`.
+- `invalidateMobileLiveProviderRefreshCache()` revalidates the compact live-detail route, public event route, and each affected orderbook route.
+- `prepare_mobile_provider_refresh_proof_event.ts` imports one real Gamma market by slug, writes provider-owned market/outcome identity, and seeds intentionally stale `ReferenceQuoteSnapshot` rows for proof.
+- The existing `refreshMobileLiveProviderQuoteSnapshots()` path executes the real Polymarket Gamma refresh and updates provider snapshot rows.
+
+User interactions supported:
+
+- Holiwyn tablet opens the refreshed disposable backend event through `forceBackendEventSlug`.
+- Event detail renders `event-detail-live-data-inline`, `live-data-status-ready`, and `live-data-source-polymarket-gamma`.
+- The Book action opens the selected orderbook and renders provider best bid/ask from refreshed snapshots while truthfully showing that no local order depth exists.
+
+State transitions:
+
+- Proof event `mobile-provider-refresh-proof-live` starts with one provider-refreshable market, stale snapshots, `status=stale`, and `shouldRefresh=true`.
+- `POST /api/mobile/events/mobile-provider-refresh-proof-live/provider-refresh` with `allowContractProofFallback=false` executes a real provider refresh, updates two snapshots, and invalidates three cache paths.
+- Follow-up live-detail route reports `readyCount=1`, `staleCount=0`, `refreshDueCount=0`, selected `status=ready`, and `shouldRefresh=false`.
+
+Known limitations:
+
+- The disposable proof market has no local orderbook ladder; the orderbook overlay therefore shows `orderbook-source-fallback`, `orderbook-status-empty`, and provider best bid/ask only.
+- The real World Cup compact event still needs provider identity mapping for every compact soccer market before this can be marked full World Cup provider parity.
+
+Verification:
+
+- Route proof: `docs/mobile/harness/cycle-current-mobile-live-provider-refresh-real-provider-proof.json`
+- Proof prep: `docs/mobile/harness/cycle-current-mobile-live-provider-refresh-proof-prep.json`
+- Tablet proof summary: `docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-summary.json`
+- Tablet screenshots/XML: `docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-event-detail.png`, `docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-order-book.png`, `docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-order-book.xml`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-refresh.route.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts src/__tests__/mobile-live-provider-mapping.route.test.ts`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` from `mobile/`
+
 ## Cycle CQ - Manual Provider Slug Preview Contract
 
 Feature/page worked on:
