@@ -1,0 +1,91 @@
+{
+  "generatedAt": "2026-07-04T08:10:36.005Z",
+  "eventSlug": "world-cup-2026-colombia-vs-ghana-2026-07-03",
+  "providerEventSlug": "fifwc-col-gha-2026-07-03",
+  "providerFixture": {
+    "providerEventSlug": "fifwc-col-gha-2026-07-03",
+    "providerEventId": "643888",
+    "seriesSlug": "soccer-fifwc",
+    "sport": "fifwc",
+    "live": true,
+    "score": "1-0",
+    "elapsed": "74",
+    "period": "2H",
+    "opticOddsFixtureId": "2026070464F44C1E",
+    "opticOddsGameId": "27043-35049-2026-07-03",
+    "opticOddsNumericalId": 956965,
+    "sportradarGameId": "sr:sport_event:53452507",
+    "teamCount": 2,
+    "teams": [
+      {
+        "name": "Colombia",
+        "abbreviation": "col",
+        "ordering": "home",
+        "providerId": 863
+      },
+      {
+        "name": "Ghana",
+        "abbreviation": "gha",
+        "ordering": "away",
+        "providerId": 1061
+      }
+    ],
+    "moneylineMarketCount": 3,
+    "moneylineMarkets": [
+      {
+        "slug": "fifwc-col-gha-2026-07-03-col",
+        "externalMarketId": "2718931",
+        "conditionId": "0xc4a26ee77fc5777d5036854f3835bf7ce44b42a61e3c6325c22b444627757eca",
+        "sportsMarketType": "moneyline",
+        "opticOddsMarketId": "moneyline_3-way",
+        "opticOddsMarketName": "Moneyline 3-Way",
+        "opticOddsSelection": "Colombia",
+        "opticOddsSelectionLine": "home",
+        "opticOddsTeamId": "A96127C0FBBAE86D"
+      },
+      {
+        "slug": "fifwc-col-gha-2026-07-03-draw",
+        "externalMarketId": "2718932",
+        "conditionId": "0x8ab8461b23e508d2469fb8c56919e6f26845ddc9082c2cad904f10a1df441cc1",
+        "sportsMarketType": "moneyline",
+        "opticOddsMarketId": "moneyline_3-way",
+        "opticOddsMarketName": "Moneyline 3-Way",
+        "opticOddsSelection": "Draw",
+        "opticOddsSelectionLine": "draw",
+        "opticOddsTeamId": null
+      },
+      {
+        "slug": "fifwc-col-gha-2026-07-03-gha",
+        "externalMarketId": "2718933",
+        "conditionId": "0xfc35bff2ad7d9edefa77d1df366161a4aebebed33e5dda6ff932ce7c8e00edfb",
+        "sportsMarketType": "moneyline",
+        "opticOddsMarketId": "moneyline_3-way",
+        "opticOddsMarketName": "Moneyline 3-Way",
+        "opticOddsSelection": "Ghana",
+        "opticOddsSelectionLine": "away",
+        "opticOddsTeamId": "DA6CEC3464CBD0B4"
+      }
+    ],
+    "lineMarketSourceContract": {
+      "intendedProvider": "optic_odds",
+      "fixtureKey": "2026070464F44C1E",
+      "missingFields": [],
+      "requiredForFamilies": [
+        "spread",
+        "total_goals",
+        "team_total_goals",
+        "first_half",
+        "second_half",
+        "corners",
+        "correct_score"
+      ]
+    }
+  },
+  "readiness": {
+    "compactMarketCount": 5,
+    "providerRefreshableMarketCount": 3,
+    "providerRefreshableOutcomeCount": 6,
+    "nextRequiredAction": "map_compact_markets_to_polymarket_provider_identity"
+  },
+  "pass": true
+}

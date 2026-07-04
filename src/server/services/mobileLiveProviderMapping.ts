@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { selectCompactLiveMarkets } from "@/server/services/mobileLiveEventDetail";
+import { extractProviderFixtureMetadataFromEventMetadata } from "@/server/services/mobileLiveProviderFixtureMetadata";
 
 type MappingMarketInput = {
   id: string;
@@ -54,12 +55,14 @@ export async function getMobileLiveProviderMappingReadiness(eventSlug: string) {
 
   return assessMobileLiveProviderMappingReadiness({
     eventSlug,
+    providerFixture: extractProviderFixtureMetadataFromEventMetadata(event.metadata),
     compactMarkets: selectCompactLiveMarkets(event.markets),
   });
 }
 
 export function assessMobileLiveProviderMappingReadiness(params: {
   eventSlug: string;
+  providerFixture?: ReturnType<typeof extractProviderFixtureMetadataFromEventMetadata>;
   compactMarkets: MappingMarketInput[];
 }) {
   const markets = params.compactMarkets.map((market) => {
@@ -121,6 +124,7 @@ export function assessMobileLiveProviderMappingReadiness(params: {
   return {
     eventSlug: params.eventSlug,
     generatedAt: new Date().toISOString(),
+    providerFixture: params.providerFixture ?? null,
     compactMarketCount: markets.length,
     providerRefreshableMarketCount: refreshableMarkets.length,
     providerRefreshableOutcomeCount: refreshableOutcomes.length,

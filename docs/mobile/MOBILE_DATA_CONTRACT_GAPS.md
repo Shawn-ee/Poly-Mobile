@@ -2027,3 +2027,32 @@ Temporary mock/static data:
 Future migration concern:
 
 - Keep the relevance gate strict: exact live match markets must beat high-volume but irrelevant World Cup futures. Do not count provider mapping complete for line markets until each selected line/outcome preserves provider identity through ticket, order, portfolio, and history.
+
+## Cycle DG - Provider Fixture Metadata Contract
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- Automatic importer persistence for real provider fixture metadata on every World Cup event.
+- A real OpticOdds or equivalent provider ingestion route keyed by `opticOddsFixtureId` / `opticOddsGameId`.
+- Provider line-market payloads for spreads, totals, team totals, halves, corners, correct score, and other discovered families.
+- A durable schema column or normalized provider-fixture table if `Event.metadata.providerFixture` becomes too important to remain metadata-only.
+
+Fields backend provides but mobile ignores:
+
+- `providerFixture` is currently exposed through provider mapping readiness for admin/operator and harness use. The mobile user UI does not yet render these fields directly.
+
+Schema mismatch:
+
+- The extracted provider fixture object is stored in `Event.metadata`, which is acceptable for this contract cycle but may need first-class schema support before production ingestion.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/provider-mapping` can report the fixture contract, but no route yet fetches line-market odds/depth from the intended `optic_odds` source.
+
+Temporary mock/static data:
+
+- None added. The proof artifact is generated from the real Gamma event and written in future-backend-shaped form.
+
+Future migration concern:
+
+- Do not count line-market provider parity complete until the real provider route/schema exists and selected line/outcome IDs preserve identity through ticket, order, portfolio, and history.

@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Provider fixture metadata contract | Cycle DG | Pass for provider fixture identity/data contract; partial for actual line-market provider parity | 0 | P1 real OpticOdds/API ingestion for spreads/totals/team totals/halves/corners/correct-score; P1 importer persistence for every fixture | Cycle CW/CX/CY Colombia vs Ghana Polymarket reference plus exact Gamma event `fifwc-col-gha-2026-07-03` with `eventMetadata` fixture IDs | Backend: `docs/mobile/harness/cycle-current-mobile-provider-fixture-metadata-contract.json`; Holiwyn regression: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: Holiwyn now exposes real provider fixture/team identity in readiness, including `opticOddsFixtureId`, `opticOddsGameId`, team provider IDs, and a line-market source contract. This stops the loop from treating line-market discovery as broad search, without claiming line odds are ingested. |
 | Provider mapping operator UI | Cycle DF | Pass for admin/operator access to protected review-first workflow; partial for actual line-market provider parity | 0 | P1 real line-market slugs/source; P1 durable review audit persistence | Cycle CW/CX/CY Colombia vs Ghana Polymarket reference and exact Gamma event diagnostics | Admin build route: `/admin/mobile-provider-mapping`; Parser/backend tests; Holiwyn regression: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: operator no longer needs direct scripts to use the protected review/apply workflow. The UI loads readiness, normalizes pasted reviews, dry-runs, requires explicit confirm apply, and shows failed review reasons. |
 | Bulk review apply workflow | Cycle DE | Pass for protected review-first bulk apply workflow; partial for actual line-market provider parity | 0 | P1 operator/admin UI for capture/review/apply; P1 real line-market slugs/source | Cycle CW/CX/CY Colombia vs Ghana Polymarket reference and exact Gamma event diagnostics | Backend: `docs/mobile/harness/cycle-current-mobile-provider-bulk-review-apply-workflow.json`; Holiwyn: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: operator-collected slugs can now be reviewed and applied through one protected all-pass workflow. Mixed proof blocks apply and leaves readiness unchanged; all-valid proof applies 3 real match-winner mappings and 6 token IDs. |
 | Bulk manual slug review contract | Cycle DC | Pass for protected bulk exact-slug review contract; partial for actual line-market provider parity | 0 | P1 operator/admin UI for capture/review/apply; P1 real line-market slugs/source | Cycle CW/CX/CY Colombia vs Ghana Polymarket reference and exact Gamma event diagnostics | Backend: `docs/mobile/harness/cycle-current-mobile-provider-bulk-slug-review.json`; Holiwyn: `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png` | Material behavior closer: operator-collected slugs can now be reviewed in bulk before attach. Proof returns 3 attach-ready match-winner mappings while rejecting a wrong-family totals review with `provider_family_mismatch`. |
@@ -947,6 +948,58 @@ Decision:
 - Unresolved P0 gaps: 0 for this focused cycle.
 - Remaining P1/P2 gaps: exact mappings for spreads/totals/team totals/halves/props, provider-owned scheduled ingestion, and full ticket/order/portfolio/history proof for these mapped binary match markets.
 - Next cycle required: yes, continue structural PM-GAP-067 for line-market provider mapping and lifecycle coverage.
+
+## Feature: Provider Fixture Metadata Contract
+
+Cycle: DG
+Lead Agent target: Promote real provider fixture identity into Holiwyn mapping readiness so future line-market work has the correct source key.
+Reference Audit Agent: Continued S23 Colombia vs Ghana Polymarket reference and exact Gamma event `fifwc-col-gha-2026-07-03`.
+Implementation Agent: Added provider fixture extraction, metadata persistence helper, readiness exposure, tests, and proof harness.
+Audit Gate Agent: Passed focused data-contract gate; did not pass or claim actual line-market ingestion parity.
+
+Reference device:
+Samsung S23.
+
+Reference app/browser:
+Official Polymarket Android app plus exact Gamma event payload.
+
+Reference route/URL:
+`https://polymarket.com/sports/world-cup/fifwc-col-gha-2026-07-03`; provider data from `https://gamma-api.polymarket.com/events?slug=fifwc-col-gha-2026-07-03`.
+
+Holiwyn device:
+Samsung tablet.
+
+Holiwyn app mode:
+Expo Go with server mode and backend `http://127.0.0.1:3002`.
+
+Reference evidence:
+
+- `docs/mobile/reference/screenshots/cycle-CW-polymarket-s23-window.xml`
+- `docs/mobile/harness/cycle-current-mobile-provider-fixture-metadata-contract.json`
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LD-DG-P1-01 | P1 | Pass | Proof extracts `opticOddsFixtureId=2026070464F44C1E`, `opticOddsGameId=27043-35049-2026-07-03`, `opticOddsNumericalId=956965`, and `sportradarGameId=sr:sport_event:53452507`. | None |
+| LD-DG-P1-02 | P1 | Pass | Proof extracts Colombia/Ghana provider team IDs and 3 moneyline metadata rows. | None |
+| LD-DG-P1-03 | P1 | Pass | Readiness exposes `providerFixture` after metadata merge. | None |
+| LD-DG-P1-04 | P1 | Pass | `lineMarketSourceContract` names `optic_odds` and lists required line families without fabricating line prices. | None |
+| LD-DG-P1-05 | P1 | Pass | Samsung tablet server-mode Book proof passed after implementation. | None |
+
+Decision:
+
+- Pass/fail: Pass for focused provider fixture identity/data contract.
+- Unresolved P0 gaps: 0 for this focused cycle.
+- Remaining P1/P2 gaps: real OpticOdds/API ingestion, automatic fixture metadata persistence during import, and line-market ticket/order/portfolio/history proof.
+- Next cycle required: yes, implement or integrate the provider route/schema that can consume `opticOddsFixtureId`/`opticOddsGameId` for line-market odds and depth.
 
 Use this template for every feature gate:
 

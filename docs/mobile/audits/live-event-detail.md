@@ -1593,6 +1593,46 @@ Remaining P1 gaps:
 
 The next cycle should continue PM-GAP-067 by adding a compact mobile live detail/depth/chart endpoint or proof harness that lets the Samsung tablet capture route-backed chart/depth status without waiting on the full 37-market event payload.
 
+## Cycle DG Provider Fixture Metadata Contract Audit
+
+Result: Pass for provider fixture identity/data contract; partial for actual line-market provider parity.
+
+What became materially closer to Polymarket:
+
+- Polymarket's exact live event carries provider fixture IDs and provider team IDs that explain where soccer line markets should come from.
+- Holiwyn now extracts and stores those real identifiers instead of relying on repeated broad Gamma searches for spreads, totals, team totals, halves, corners, and correct-score markets.
+- Provider mapping readiness can now report a future line-market source contract: `intendedProvider=optic_odds`, fixture key `2026070464F44C1E`, and the Colombia/Ghana provider team identities.
+
+Acceptance criteria:
+
+| Criterion ID | Priority | Status | Verification |
+| --- | --- | --- | --- |
+| LD-DG-P1-01 | P1 | Pass | Real Gamma event `fifwc-col-gha-2026-07-03` exposes `opticOddsFixtureId`, `opticOddsGameId`, `opticOddsNumericalId`, and `sportradarGameId`. |
+| LD-DG-P1-02 | P1 | Pass | Fixture extraction returns Colombia and Ghana provider team IDs plus 3 moneyline market metadata rows. |
+| LD-DG-P1-03 | P1 | Pass | Local event metadata can persist and re-expose the extracted `providerFixture` through mapping readiness. |
+| LD-DG-P1-04 | P1 | Pass | The line-market source contract is backend-shaped and identifies `optic_odds` as the intended source without fabricating line prices. |
+| LD-DG-P1-05 | P1 | Pass | Samsung tablet server-mode live-detail Book proof still shows route-backed ready state after the contract change. |
+
+Evidence:
+
+- `src/server/services/mobileLiveProviderFixtureMetadata.ts`
+- `src/server/services/mobileLiveProviderMapping.ts`
+- `src/__tests__/mobile-live-provider-fixture-metadata.test.ts`
+- `scripts/prove_mobile_provider_fixture_metadata_contract.ts`
+- `docs/mobile/harness/cycle-current-mobile-provider-fixture-metadata-contract.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+
+Unresolved P0 gaps: 0 for this focused data-contract cycle.
+
+Remaining P1 gaps:
+
+- Add real OpticOdds or equivalent provider ingestion for line-market prices/depth.
+- Persist provider fixture metadata automatically during World Cup event import.
+- Prove selected provider line/outcome identity through ticket, order, portfolio, and history once line markets exist.
+
 ## Cycle CW Provider Sports Event Discovery Expansion Audit
 
 Result: Pass for focused exact provider sports-event discovery and route-backed tablet Book proof.
