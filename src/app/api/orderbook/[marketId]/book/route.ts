@@ -40,6 +40,8 @@ const marketIdentityForSelector = (market: {
     side: string | null;
     displayOrder: number;
     isTradable: boolean;
+    referenceTokenId: string | null;
+    referenceOutcomeLabel: string | null;
   }>;
 }) => {
   const marketFamily = marketFamilyForSelector(market);
@@ -77,6 +79,9 @@ const marketIdentityForSelector = (market: {
       side: outcome.side,
       displayOrder: outcome.displayOrder,
       isTradable: outcome.isTradable,
+      outcomeId: outcome.id,
+      tokenId: outcome.referenceTokenId ?? null,
+      referenceOutcomeLabel: outcome.referenceOutcomeLabel ?? null,
     })),
   };
 };
@@ -175,6 +180,8 @@ export async function GET(request: NextRequest, context: Ctx) {
           side: true,
           displayOrder: true,
           isTradable: true,
+          referenceTokenId: true,
+          referenceOutcomeLabel: true,
         },
       },
     },

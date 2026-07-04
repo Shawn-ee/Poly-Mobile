@@ -2,6 +2,39 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EC-A - Provider Orderbook Identity Parity
+
+Closed or narrowed:
+
+- `/api/mobile/events/:slug/live-detail` compact markets now expose `orderbookIdentity`, tying the displayed compact market to the provider/orderbook route identity: `marketId`, `marketGroupId`, compact `selectorKey`, family, period, line, outcome ids, provider token ids, provider source/status, depth source/status, freshness timestamps, refresh flags, ready boolean, and reason.
+- Live-detail `selection.selectorKey` now uses the same compact key shape as `/api/orderbook/:marketId/book`: `marketGroupKey:period:line-or-default`. This keeps selector identity comparable while `marketId` remains the unique route target.
+- `/api/orderbook/:marketId/book` now exposes public provider `tokenId` on `marketIdentity.outcomes[]` alongside local `id/outcomeId`, label, side, and display metadata, allowing a direct live-detail-to-Book outcome/token proof.
+- `docs/mobile/harness/cycle-EC-A-provider-orderbook-identity.json` proves a provider-backed compact match-winner market selected from live-detail matches the Book route on market id, selector key, market group, family/period/line, outcome ids, token ids, provider source, ready depth source/status, and freshness.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Production Spread/Totals/Team Total line-family markets still need real provider mapping and recurring provider refresh coverage before line orderbook parity can be claimed outside disposable proof rows.
+- The EC-A proof includes a compact Totals line market and records it as `depthSource=empty`, `depthProviderStatus=unavailable`; this documents the line-market provider gap instead of treating fallback depth as provider-backed.
+- Visible mobile proof still needs to consume the new `orderbookIdentity`/Book token identity fields on device.
+
+Schema mismatch:
+
+- No schema change was required. Existing `Market`, `Outcome.referenceTokenId`, `ReferenceQuoteSnapshot`, and `ReferenceOrderbookDepthSnapshot` fields cover this contract.
+
+Route mismatch:
+
+- The live-detail and Book selector identity mismatch is narrowed by using the same compact selector key and explicit `marketId` on both surfaces.
+- Remaining mismatch is provider coverage for real line markets, not the backend shape for proving a selected provider-backed market.
+
+Temporary mock/static data:
+
+- No frontend mock data was added. The EC proof script writes disposable backend rows to the same provider snapshot tables consumed by production refresh services and clears local open orders so provider depth is the route source.
+
+Future migration concern:
+
+- Treat Book `marketIdentity.outcomes[].tokenId` as public provider contract identity. It should remain separate from auth/session tokens and credentials, and no-leak tests should continue blocking private user/order/account fields.
+- Keep `selection.selectorKey` and `orderbookIdentity.selectorKey` stable across live-detail and Book so tickets, orders, portfolio, and history can carry the same compact market identity.
+
 ## Cycle EA-A - Live Detail Per-Market Chart Contract
 
 Closed or narrowed:
@@ -92,7 +125,7 @@ Temporary mock/static data:
 
 Future migration concern:
 
-- Keep provider identity and depth evidence out of mobile fallback fixtures. The route should remain the source of truth for `marketIdentity`, availability, and Price/Shares/Value ladder rows.
+- Keep provider identity and depth evidence out of mobile fallback fixtures. The route should remain the source of truth for `marketIdentity`, public provider `tokenId`, availability, and Price/Shares/Value ladder rows.
 
 ## Cycle DS-A - Orderbook Selector Identity Contract
 
@@ -122,7 +155,7 @@ Temporary mock/static data:
 
 Future migration concern:
 
-- Keep `marketIdentity` free of provider tokens, credential fields, owner fields, and private trading state. Provider token/condition identity should remain on the existing provider/ticket metadata paths that already have no-leak coverage.
+- After Cycle EC-A, keep public provider `tokenId` available on Book `marketIdentity.outcomes[]` for cross-route identity proof, while keeping credential fields, owner fields, condition IDs, and private trading state out of the public route.
 
 ## Cycle DS-B/Integrated - Orderbook UI Contract Gaps
 

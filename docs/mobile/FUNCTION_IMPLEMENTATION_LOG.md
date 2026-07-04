@@ -2,6 +2,40 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle EC-A - Provider Orderbook Identity Parity
+
+Feature/page worked on:
+
+- Backend/provider lifecycle support for live event detail Book/orderbook parity.
+- Closed the structural gap where `/api/mobile/events/:slug/live-detail` compact markets and `/api/orderbook/:marketId/book` could not be proven to describe the same provider-backed market/selector identity.
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/app/api/orderbook/[marketId]/book/route.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+- `src/__tests__/public.orderbook-book.no-leak.test.ts`
+- `scripts/prove_mobile_ec_provider_orderbook_identity.ts`
+- `docs/mobile/harness/cycle-EC-A-provider-orderbook-identity.json`
+
+Important functions/services touched:
+
+- `serializeMobileLiveEventDetail()` now emits compact `selection.selectorKey` in the same `group:period:line/default` form as the Book route, with `marketId` kept as the separate disambiguator.
+- Each compact market now carries `orderbookIdentity` with route path, `marketId`, `marketGroupId`, `selectorKey`, family/period/line, outcome ids, provider token ids, provider source/status, depth source/status, freshness timestamps, refresh flags, ready boolean, and reason.
+- The public Book route `marketIdentity.outcomes[]` now includes `outcomeId`, public provider `tokenId`, and `referenceOutcomeLabel` so backend proof can match live-detail compact outcome/token identity to the selected Book route.
+- `prove_mobile_ec_provider_orderbook_identity.ts` starts from a live-detail response, selects a provider-backed compact market, calls the matching Book route, and asserts identity/source/status/freshness equality.
+
+Verified:
+
+- `npx jest --runInBand --detectOpenHandles src/__tests__/mobile-live-event-detail.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts`
+- `DATABASE_URL=postgresql://postgres:postgres@localhost:5432/polymarket npx tsx scripts/prove_mobile_ec_provider_orderbook_identity.ts --baseUrl http://127.0.0.1:3012 --output docs/mobile/harness/cycle-EC-A-provider-orderbook-identity.json`
+
+Known limitations:
+
+- The EC proof intentionally proves match-winner provider-backed identity. Its disposable Totals compact line market is present but unseeded for provider depth, and the artifact documents that line-market gap instead of counting fallback rows as provider parity.
+- Production line-family provider parity still depends on real mapped provider line markets and recurring refresh coverage.
+- No visible mobile UI files were changed in this backend/provider lane.
+
 ## Cycle EB-B - Full Game Page Chart And Line Selector Proof
 
 Feature/page worked on:

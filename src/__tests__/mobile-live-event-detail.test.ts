@@ -223,7 +223,7 @@ describe("mobile live event detail contract", () => {
         ranges: ["1D", "1W", "1M", "MAX"],
       },
       selection: {
-        selectorKey: "main:full-game:none:market-main",
+        selectorKey: "main:full-game:default",
         marketId: "market-main",
         marketGroupKey: "main",
         marketGroupId: "main",
@@ -250,7 +250,32 @@ describe("mobile live event detail contract", () => {
           { outcomeId: "away", side: "away", label: "Cote d'Ivoire", isTradable: true },
         ],
       },
+      orderbookIdentity: {
+        route: "/api/orderbook/market-main/book",
+        marketId: "market-main",
+        marketGroupId: "main",
+        selectorKey: "main:full-game:default",
+        marketFamily: "moneyline",
+        period: "full-game",
+        line: null,
+        providerSource: "polymarket",
+        providerStatus: "ready",
+        depthSource: "provider-orderbook-depth",
+        depthStatus: "ready",
+        depthProviderSource: "reference-orderbook-depth-snapshot",
+        depthProviderStatus: "ready",
+        depthProviderSources: ["polymarket-clob"],
+        refreshedAt: "2026-07-03T22:00:09.000Z",
+        staleAfterSeconds: 90,
+        refreshTtlSeconds: 60,
+        nextRefreshAt: "2026-07-03T22:01:09.000Z",
+        shouldRefresh: false,
+        isStale: false,
+        ready: true,
+        reason: "Depth comes from provider orderbook ladder snapshots.",
+      },
       orderbookDepthSource: "provider-orderbook-depth",
+      orderbookDepthStatus: "ready",
       providerOrderbookDepth: {
         source: "reference-orderbook-depth-snapshot",
         status: "ready",
@@ -466,7 +491,7 @@ describe("mobile live event detail contract", () => {
         lastUpdated: "2026-07-03T22:05:00.000Z",
       },
       selection: {
-        selectorKey: "spreads:full-game:1.5:spread-15",
+        selectorKey: "spreads:full-game:1.5",
         marketId: "spread-15",
         marketGroupKey: "spreads",
         marketGroupId: "spreads",
@@ -555,7 +580,7 @@ describe("mobile live event detail contract", () => {
 
     expect(payload.markets.find((item) => item.id === "total-25-1h")).toMatchObject({
       selection: {
-        selectorKey: "totals:first-half:2.5:total-25-1h",
+        selectorKey: "totals:first-half:2.5",
         marketId: "total-25-1h",
         marketGroupKey: "totals",
         marketGroupId: "totals",
@@ -578,16 +603,20 @@ describe("mobile live event detail contract", () => {
         outcomes: [
           {
             outcomeId: "over-25",
+            id: "over-25",
             side: "over",
             label: "Over 2.5",
+            tokenId: "token-over",
             referenceTokenId: "token-over",
             referenceOutcomeLabel: "Over",
             isTradable: true,
           },
           {
             outcomeId: "under-25",
+            id: "under-25",
             side: "under",
             label: "Under 2.5",
+            tokenId: "token-under",
             referenceTokenId: "token-under",
             referenceOutcomeLabel: "Under",
             isTradable: true,
@@ -597,7 +626,7 @@ describe("mobile live event detail contract", () => {
     });
     expect(payload.markets.find((item) => item.id === "team-total-15-2h")).toMatchObject({
       selection: {
-        selectorKey: "team-totals:second-half:1.5:team-total-15-2h",
+        selectorKey: "team-totals:second-half:1.5",
         marketFamily: "team_total",
         displayLabel: "Team totals second-half 1.5",
         period: "second-half",
