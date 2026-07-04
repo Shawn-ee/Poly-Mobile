@@ -2,6 +2,44 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle DT-A - Provider Ready Orderbook Depth Proof
+
+Feature/page worked on:
+
+- PM-GAP-075 backend Book route ready-depth proof for Holiwyn Super Round DT.
+- Backend/provider proof only; no visible mobile UI, mobile smoke, Prisma schema, or audit docs changed.
+
+Frontend/harness components touched:
+
+- No mobile UI code changed.
+- Backend proof artifact path: `docs/mobile/harness/cycle-DT-A-ready-orderbook-depth-proof.json`.
+
+Backend/components touched:
+
+- `scripts/prove_mobile_dt_ready_orderbook_depth.ts`
+- `src/__tests__/public.orderbook-book.no-leak.test.ts`
+
+Data/API contract notes:
+
+- `/api/orderbook/:marketId/book?maxLevels=24` is now covered by a focused provider-backed ready-depth assertion that combines `marketIdentity` with `depthSource=provider-orderbook-depth`.
+- The DT proof script creates a disposable compact World Cup-style orderbook market, seeds `ReferenceOrderbookDepthSnapshot` rows with source `polymarket-clob-dt-proof`, calls the public Book route, and records Price/Shares/Value rows from `levels[]`.
+- The route still prefers local open orders first; provider ladder snapshots are used only when local depth is absent.
+
+Verified:
+
+- `npx jest --runInBand --detectOpenHandles src/__tests__/public.orderbook-book.no-leak.test.ts`
+- `DATABASE_URL=postgresql://postgres:postgres@localhost:5432/polymarket npm run mobile:dt-ready-orderbook-depth-proof -- --baseUrl http://127.0.0.1:3002 --output docs/mobile/harness/cycle-DT-A-ready-orderbook-depth-proof.json`
+
+Proof notes:
+
+- The route test asserts `marketIdentity.selectorKey=main:full-game:default`, `marketFamily=moneyline`, provider depth status `ready`, and multiple `levels[]` rows carrying numeric `price`, `shares`, and `total`.
+- The proof artifact is intended to show the same fields from a real `/api/orderbook/:marketId/book` response, not a frontend fallback payload.
+
+Known limitations:
+
+- Production World Cup line-family markets still need real provider mapping/refresh coverage beyond the disposable DT proof market.
+- Event-level sibling selector payload remains optional future backend work if mobile wants all selector choices without opening each Book route.
+
 ## Cycle DR-A - Scheduled Provider Refresh Run Reporting
 
 Feature/page worked on:

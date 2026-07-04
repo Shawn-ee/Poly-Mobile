@@ -2,6 +2,35 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle DT-A - Provider Ready Orderbook Depth Proof
+
+Closed or narrowed:
+
+- PM-GAP-075 backend proof now covers `marketIdentity` and provider-backed ready ladder depth on the same Book route response.
+- The focused route test proves multiple `levels[]` rows with numeric `price`, `shares`, and `total` values while `depthSource=provider-orderbook-depth` and `providerOrderbookDepth.status=ready`.
+- Added a backend proof harness that seeds disposable `ReferenceOrderbookDepthSnapshot` rows for a compact World Cup-style market and records the actual `/api/orderbook/:marketId/book?maxLevels=24` response.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Production-mapped World Cup line-family markets still need recurring provider depth refresh coverage for non-disposable live events.
+- Event-level sibling selector payload remains optional future support if mobile needs all Book selector options without one route call per market.
+
+Schema mismatch:
+
+- No schema change was required. Existing `Market`, `Outcome`, and `ReferenceOrderbookDepthSnapshot` fields cover the proof.
+
+Route mismatch:
+
+- The Book route can return the needed ready provider state. Remaining mismatch is proof/environment coverage for production-like provider mappings, not the route payload shape.
+
+Temporary mock/static data:
+
+- No frontend mock data was added. The DT script uses disposable backend rows with the same provider ladder table shape consumed by production refresh code.
+
+Future migration concern:
+
+- Keep provider identity and depth evidence out of mobile fallback fixtures. The route should remain the source of truth for `marketIdentity`, availability, and Price/Shares/Value ladder rows.
+
 ## Cycle DS-A - Orderbook Selector Identity Contract
 
 Closed or narrowed:
