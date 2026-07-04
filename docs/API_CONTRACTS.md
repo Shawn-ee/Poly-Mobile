@@ -87,6 +87,8 @@ Cycle GG changes only game-card presentation in discovery. It does not change ev
 
 Cycle GH changes only discovery-card rail behavior/proof and hides the old row fallback from rendering. It does not change event discovery payloads, market/outcome fields, ticket request fields, order routes, or Portfolio contracts.
 
+Cycle GI changes only Live page presentation by hiding market/outcome summary pills from the default MVP view. It does not change live event discovery payloads, refresh behavior, market/outcome fields, ticket request fields, order routes, or Portfolio contracts.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

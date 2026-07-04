@@ -813,8 +813,8 @@ try {
 
       Save-Screenshot -Name "cycle-FE-home-route-ticket-home.png"
       $homeRouteTicketHomeHierarchy = Save-UiHierarchy -Name "cycle-FE-home-route-ticket-home.xml"
-      Assert-HierarchyContains -Path $homeRouteTicketHomeHierarchy -Expected @("live-world-cup-games-focus", "prediction-only-live", "World Cup", "Live World Cup", "EL-A Provider Breadth World Cup Live", "Breadth Home", "Breadth Away", "event-card-mobile-el-a-provider-breadth", "event-card-retail-outcome-rail-mobile-el-a-provider-breadth")
-      Assert-HierarchyDoesNotContain -Path $homeRouteTicketHomeHierarchy -Unexpected $mvpHiddenOrderBookExpected
+      Assert-HierarchyContains -Path $homeRouteTicketHomeHierarchy -Expected @("live-world-cup-games-focus", "prediction-only-live", "World Cup", "Live World Cup", "live-counts-hidden-local-mvp", "EL-A Provider Breadth World Cup Live", "Breadth Home", "Breadth Away", "event-card-mobile-el-a-provider-breadth", "event-card-retail-outcome-rail-mobile-el-a-provider-breadth")
+      Assert-HierarchyDoesNotContain -Path $homeRouteTicketHomeHierarchy -Unexpected ($mvpHiddenOrderBookExpected + @("live-market-summary", "5 markets", "11 outcomes"))
 
       Invoke-TapHierarchyNode -Path $homeRouteTicketHomeHierarchy -Identifier "event-outcome-retail-mobile-el-a-provider-breadth" -StartsWith
       Start-Sleep -Seconds 1
