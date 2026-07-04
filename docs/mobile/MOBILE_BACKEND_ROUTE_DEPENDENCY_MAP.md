@@ -1125,6 +1125,21 @@ Cycle DX-A implementation notes:
 - The proof creates a disposable World Cup Spread line market and verifies the same `marketId`, `outcomeId`, `marketType`, `marketGroupId`, `line`, `period`, `side`, `displayLabel`, `contractSide`, `referenceSource`, `externalMarketId`, `conditionId`, and `referenceTokenId` through request, order response, portfolio open order, canceled activity, portfolio position, and recent trade activity.
 - No visible UI, smoke script, Prisma schema, or central tracker edits were required.
 
+## Cycle ED-A - Book Provider Identity Through Order, Portfolio, And History
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Selected provider-backed Book line order creation | `/api/orderbook/:marketId/book?maxLevels=24` for selected identity, then canonical order service backing `/api/orders` | GET, POST | Book route uses public visibility guard; order submit uses canonical API key with `orders:write` | `marketId`, `outcomeId`, `side`, `type`, `price`, `size`, `contractSide`, and `selection` containing Book/provider identity: `marketType`, `marketGroupId`, `line`, `period`, `side`, `displayLabel`, `providerSource`/`referenceSource`, `externalSlug`, `externalMarketId`, `conditionId`, `tokenId`/`referenceTokenId` | Book `marketIdentity.outcomes[].tokenId`; order response `order.contractSide` and `order.selection` with both provider and reference source/token aliases | `Market`, `Outcome`, `ReferenceOrderbookDepthSnapshot`, `ApiOrderRequest`, `Order` | None in backend proof | First-class immutable `Order.selection` column remains future hardening. |
+| Selected Book open order and position snapshot | `/api/portfolio` | GET | Session user or canonical API key with `account:read` | None | `openOrders[].selection` and `positions[].selection` preserve provider source, external market id, condition id, token id, line, period, side, and contract side | `Order`, `ApiOrderRequest`, `Position`, `Market`, `Outcome` | None in backend proof | Positions still infer identity from current market/outcome rows when original request metadata is not joined. |
+| Selected Book history activity | `/api/portfolio/history` | GET | Session user or canonical API key with `account:read` | None | `canceledOrders[].selection` and `recentTrades[].selection` preserve provider source, external market id, condition id, token id, line, period, side, and contract side | `Order`, `ApiOrderRequest`, `Trade`, `Market`, `Outcome` | None in backend proof | Trade rows still rely on market/outcome metadata rather than an immutable trade selection snapshot. |
+
+Cycle ED-A implementation notes:
+
+- Proof artifact: `docs/mobile/harness/cycle-ED-A-book-order-portfolio-history.json`.
+- The proof creates a disposable provider-backed Spread Book market, seeds provider ladder rows, reads `/api/orderbook/:marketId/book`, and verifies the selected outcome token survives through order request, order response, portfolio open order, canceled activity, portfolio position, and recent trade activity.
+- `selection.providerSource`/`selection.tokenId` are now preserved alongside existing `selection.referenceSource`/`selection.referenceTokenId`, so Book-style and current mobile-style names can round-trip without a schema migration.
+- No visible UI, smoke script, Prisma schema, or audit/tracker files were changed.
+
 ## Cycle EB-A - Live Detail Selector And Selected Chart Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
