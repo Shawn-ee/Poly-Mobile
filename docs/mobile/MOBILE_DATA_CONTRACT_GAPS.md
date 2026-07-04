@@ -2640,6 +2640,34 @@ Future migration concern:
 
 - If production trading needs historical reconstruction after market/outcome edits, persist immutable selection metadata directly on order/fill/trade lifecycle rows rather than deriving filled activity from current market/outcome rows.
 
+## Cycle ED-A - Book Provider Identity Through Order, Portfolio, And History
+
+Closed or narrowed:
+
+- `docs/mobile/harness/cycle-ED-A-book-order-portfolio-history.json` proves a selected provider-backed Book Spread outcome keeps the same `marketId`, `outcomeId`, `marketType`, `marketGroupId`, `line`, `period`, `side`, `displayLabel`, `contractSide`, provider source, external slug, external market id, condition id, and provider token id through order request, order response, portfolio open order, canceled activity, filled portfolio position, and recent trade activity.
+- Canonical order request sanitization now preserves Book-style aliases (`providerSource`, `tokenId`) and normalizes them alongside current mobile aliases (`referenceSource`, `referenceTokenId`).
+- Portfolio and history selection metadata now echoes both source/token naming styles from original request metadata or from market/outcome fallback rows, so Book identity no longer stops at ticket/order creation.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- A first-class immutable selection snapshot on `Order`, `Trade`, and/or `Position` remains future hardening. ED-A still uses `ApiOrderRequest.requestBody.selection` for open/canceled orders and current `Market`/`Outcome` rows for filled positions and recent trades.
+
+Schema mismatch:
+
+- No schema migration was made. The proof intentionally stays within `ApiOrderRequest`, `Order`, `Trade`, `Position`, `Market`, `Outcome`, and `ReferenceOrderbookDepthSnapshot`.
+
+Route mismatch:
+
+- No new mobile route was required. The Book HTTP route supplies the selected token identity, while existing `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` now have focused proof coverage for provider alias echo.
+
+Temporary mock/static data:
+
+- No frontend mock/static data was added. The proof uses a disposable backend provider-backed Spread market and local provider ladder rows.
+
+Future migration concern:
+
+- If production order/history reconstruction must survive provider remaps or market/outcome edits, persist immutable normalized selection metadata directly on order/fill/trade lifecycle rows rather than relying on request JSON plus current market/outcome fallback metadata.
+
 ## Cycle EB-A - Live Detail Selected-Market Selector Contract
 
 Closed or narrowed:

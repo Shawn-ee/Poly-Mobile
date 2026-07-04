@@ -2,6 +2,40 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ED-A - Book Order Portfolio History Provider Identity
+
+Feature/page worked on:
+
+- Backend/order/portfolio lifecycle support after EC Book identity parity.
+- Closed the structural gap where selected Book-style provider identity could stop at the ticket/order request instead of being proven through order response, Portfolio, and history/recent activity echoes.
+
+Backend/components touched:
+
+- `src/server/services/canonicalOrderSubmission.ts`
+- `src/server/services/ticketSelectionMetadata.ts`
+- `src/server/services/__tests__/canonical_order_submission.phase5.test.ts`
+- `src/__tests__/portfolio.open-orders.route.test.ts`
+- `src/__tests__/portfolio.history.route.test.ts`
+- `scripts/prove_mobile_ed_a_book_order_portfolio_history.ts`
+- `docs/mobile/harness/cycle-ED-A-book-order-portfolio-history.json`
+
+Important functions/services touched:
+
+- `sanitizeTicketSelection()` now preserves Book/provider aliases such as `providerSource` and `tokenId`, while also normalizing them into existing `referenceSource` and `referenceTokenId` fields for current mobile consumers.
+- `buildTicketSelectionMetadata()` now echoes both provider-style and reference-style source/token fields from request metadata or from `Market`/`Outcome` fallback rows.
+- The ED proof starts from `/api/orderbook/:marketId/book`, selects a provider-backed Spread outcome token, submits an order, cancels one open order, fills a second order, and verifies order response, portfolio open order, canceled activity, portfolio position, and recent trade all carry the same identity.
+
+Verified:
+
+- `DATABASE_URL=postgresql://postgres:postgres@localhost:5432/polymarket npm run test:jest -- src/server/services/__tests__/canonical_order_submission.phase5.test.ts src/__tests__/portfolio.open-orders.route.test.ts src/__tests__/portfolio.history.route.test.ts`
+- `DATABASE_URL=postgresql://postgres:postgres@localhost:5432/polymarket npx tsx scripts/prove_mobile_ed_a_book_order_portfolio_history.ts --baseUrl=http://127.0.0.1:3012 --summaryPath=docs/mobile/harness/cycle-ED-A-book-order-portfolio-history.json`
+
+Known limitations:
+
+- Identity persistence still uses `ApiOrderRequest.requestBody.selection` for order/open/canceled echoes and market/outcome fallback metadata for positions/recent trades; no schema migration or immutable trade selection snapshot was added.
+- The proof uses a disposable provider-backed Book line market on local Postgres and a local Next server for the Book HTTP route.
+- No visible mobile UI files were changed in this backend/order lane.
+
 ## Cycle EC-A - Provider Orderbook Identity Parity
 
 Feature/page worked on:

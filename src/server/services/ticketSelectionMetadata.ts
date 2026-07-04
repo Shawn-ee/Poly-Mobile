@@ -60,6 +60,23 @@ export function buildTicketSelectionMetadata(params: {
 }) {
   const selection = cleanSelectionSource(params.requestBody);
   const contractSide = contractSideFromRequest(params.requestBody, selection) ?? contractSideFromOutcome(params.outcome);
+  const providerSource =
+    stringValue(selection?.providerSource) ?? stringValue(selection?.referenceSource) ?? params.market.referenceSource ?? undefined;
+  const externalMarketId =
+    stringValue(selection?.externalMarketId) ??
+    stringValue(selection?.providerMarketId) ??
+    params.market.externalMarketId ??
+    undefined;
+  const conditionId =
+    stringValue(selection?.conditionId) ??
+    stringValue(selection?.providerConditionId) ??
+    params.market.conditionId ??
+    undefined;
+  const tokenId =
+    stringValue(selection?.tokenId) ??
+    stringValue(selection?.referenceTokenId) ??
+    params.outcome.referenceTokenId ??
+    undefined;
   const displayLabel =
     stringValue(selection?.displayLabel) ??
     [params.outcome.label ?? params.outcome.name, lineValue(params.market.line), params.market.period]
@@ -76,11 +93,13 @@ export function buildTicketSelectionMetadata(params: {
     side: stringValue(selection?.side) ?? params.outcome.side ?? undefined,
     displayLabel,
     ...(contractSide ? { contractSide } : {}),
-    referenceSource: stringValue(selection?.referenceSource) ?? params.market.referenceSource ?? undefined,
+    referenceSource: providerSource,
+    providerSource,
     externalSlug: stringValue(selection?.externalSlug) ?? params.market.externalSlug ?? undefined,
-    externalMarketId: stringValue(selection?.externalMarketId) ?? params.market.externalMarketId ?? undefined,
-    conditionId: stringValue(selection?.conditionId) ?? params.market.conditionId ?? undefined,
-    referenceTokenId: stringValue(selection?.referenceTokenId) ?? params.outcome.referenceTokenId ?? undefined,
+    externalMarketId,
+    conditionId,
+    referenceTokenId: tokenId,
+    tokenId,
     referenceOutcomeLabel:
       stringValue(selection?.referenceOutcomeLabel) ?? params.outcome.referenceOutcomeLabel ?? undefined,
   };

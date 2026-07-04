@@ -146,6 +146,14 @@ const sanitizeOptionalStringField = (value: unknown) =>
 const sanitizeTicketSelection = (value: unknown) => {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   const input = value as Record<string, unknown>;
+  const referenceSource =
+    sanitizeOptionalStringField(input.referenceSource) ?? sanitizeOptionalStringField(input.providerSource);
+  const externalMarketId =
+    sanitizeOptionalStringField(input.externalMarketId) ?? sanitizeOptionalStringField(input.providerMarketId);
+  const conditionId =
+    sanitizeOptionalStringField(input.conditionId) ?? sanitizeOptionalStringField(input.providerConditionId);
+  const referenceTokenId =
+    sanitizeOptionalStringField(input.referenceTokenId) ?? sanitizeOptionalStringField(input.tokenId);
   const selection = {
     marketId: sanitizeOptionalStringField(input.marketId),
     outcomeId: sanitizeOptionalStringField(input.outcomeId),
@@ -156,11 +164,13 @@ const sanitizeTicketSelection = (value: unknown) => {
     side: sanitizeOptionalStringField(input.side),
     displayLabel: sanitizeOptionalStringField(input.displayLabel),
     contractSide: sanitizeOptionalStringField(input.contractSide),
-    referenceSource: sanitizeOptionalStringField(input.referenceSource),
+    referenceSource,
+    providerSource: sanitizeOptionalStringField(input.providerSource) ?? referenceSource,
     externalSlug: sanitizeOptionalStringField(input.externalSlug),
-    externalMarketId: sanitizeOptionalStringField(input.externalMarketId),
-    conditionId: sanitizeOptionalStringField(input.conditionId),
-    referenceTokenId: sanitizeOptionalStringField(input.referenceTokenId),
+    externalMarketId,
+    conditionId,
+    referenceTokenId,
+    tokenId: sanitizeOptionalStringField(input.tokenId) ?? referenceTokenId,
     referenceOutcomeLabel: sanitizeOptionalStringField(input.referenceOutcomeLabel),
   };
   return Object.fromEntries(Object.entries(selection).filter(([, field]) => field !== null));

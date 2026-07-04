@@ -245,9 +245,14 @@ describe("Phase 5 canonical order submission", () => {
       side: "yes",
       displayLabel: "Japan -1.5 1H",
       contractSide: "yes",
-      referenceSource: "polymarket",
+      providerSource: "polymarket",
       externalMarketId: "gamma-line-selection",
       conditionId: "condition-line-selection",
+      tokenId: "token-line-selection-yes",
+    };
+    const expectedSelection = {
+      ...selection,
+      referenceSource: "polymarket",
       referenceTokenId: "token-line-selection-yes",
     };
 
@@ -274,7 +279,7 @@ describe("Phase 5 canonical order submission", () => {
       expect.objectContaining({
         order: expect.objectContaining({
           contractSide: "YES",
-          selection,
+          selection: expectedSelection,
         }),
       }),
     );
