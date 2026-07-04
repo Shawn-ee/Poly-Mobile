@@ -42,6 +42,9 @@ async function ensureSeedUsers() {
 async function main() {
   const apply = hasFlag("apply");
   const eventSlug = argValue("eventSlug");
+  const marketId = argValue("marketId");
+  const marketType = argValue("marketType");
+  const line = argValue("line");
   const summaryPath = argValue("summaryPath") ?? DEFAULT_SUMMARY_PATH;
 
   const event = await prisma.event.findFirst({
@@ -73,6 +76,13 @@ async function main() {
   }
 
   const market =
+    (marketId ? event.markets.find((candidate) => candidate.id === marketId) : undefined) ??
+    (marketType || line
+      ? event.markets.find((candidate) =>
+          (!marketType || candidate.marketType === marketType) &&
+          (!line || candidate.line?.toString() === line) &&
+          candidate.outcomes.length > 0)
+      : undefined) ??
     event.markets.find((candidate) => candidate.marketType !== "prop" && candidate.outcomes.length > 0) ??
     event.markets[0];
   if (!market) throw new Error(`Event ${event.slug} has no live public orderbook markets.`);
@@ -124,6 +134,7 @@ async function main() {
       title: market.title,
       marketType: market.marketType,
       marketGroupKey: market.marketGroupKey,
+      line: market.line?.toString() ?? null,
       outcomeCount: market.outcomes.length,
     },
     users: users

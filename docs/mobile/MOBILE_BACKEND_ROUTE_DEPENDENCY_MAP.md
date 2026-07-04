@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle AZ - Selected Line Market Seeded Ready Depth
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Selected Spread line orderbook with ready depth | `/api/orderbook/:marketId/book?maxLevels=24` for market `ac527022-07f3-4abb-90f0-b291466e8459` | GET | Optional for public viewing; bearer token may be sent by runtime client | None | `marketId`, `generatedAt`, `emptyState: null`, `levels[].outcomeId`, `levels[].side`, `levels[].price`, `levels[].shares`, `levels[].total` | `Market`, `Outcome`, open `Order` rows created by the deterministic seed harness and read through `buildPublicOrderbookSnapshot()` | Existing local/embedded depth remains fallback only when server mode or route depth is unavailable | Real provider liquidity ingestion and freshness/stale/suspended metadata for all line markets remain missing. |
+| Targeted line-depth seed harness | `mobile:live-spread-orderbook-depth-seed` running `scripts/seed_mobile_live_orderbook_depth.ts --marketType=spread --line=1.5` | Local script | Local development only | Optional `--eventSlug`, `--marketId`, `--marketType`, `--line`, `--summaryPath`, `--apply` | Summary artifact records event id/slug/title, selected market id/title/type/group/line, outcome ids, created/deleted order counts, and preview bid/ask rows | `User`, `Order`, `Market`, `Outcome` | N/A | Provider-owned orderbook ingestion remains required before backend parity can be marked complete. |
+
+Cycle AZ implementation notes:
+
+- This cycle uses backend-shaped proof liquidity: every displayed bid/ask row maps to stable `marketId`, `outcomeId`, `side`, `price`, `shares`, and `total` fields from the public orderbook route.
+- The tablet proof moves the selected Spread line market from `empty/no-depth` to `ready` route-backed depth while preserving selected market identity.
+- PM-GAP-067 remains in progress because the real route/schema/provider pipeline still needs continuous live liquidity and availability state across all line-market groups.
+
 ## Cycle AY - Selected Line Market Depth Identity
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

@@ -1,6 +1,6 @@
 # Live Event Detail Audit
 
-Status: Cycle AY passed selected line-market depth identity proof. Cycle AX passed the compact mobile live-detail route and route-backed primary orderbook-depth tablet proof. Cycle AN passed structural live event detail UI with backend-shaped fixture data and tablet proof; Cycle AO added the real `/api/events/:slug` contract for market identity, line identity, compact depth, and optional chart/live-stat arrays. Cycle AQ sources embedded chart history from `MarketOutcomeSnapshot` rows when available and preserves depth outcome identity in mobile. Cycle AR adds the dedicated `/api/markets/:marketId/chart?range=...` route/client contract. Cycle AS wires EventDetail to consume that chart route in server mode. Cycle AT adds deterministic `MarketOutcomeSnapshot` seeding for local/server proof. Cycle AU exposes chart loading/empty/error route states in the game chart. Cycle AW seeded route-readable orderbook depth. This is still not full backend parity because real provider ingestion, richer delayed/suspended states, line-market liquidity, and provider-owned live stats remain open.
+Status: Cycle AZ passed selected Spread line-market seeded ready-depth proof. Cycle AY passed selected line-market depth identity proof. Cycle AX passed the compact mobile live-detail route and route-backed primary orderbook-depth tablet proof. Cycle AN passed structural live event detail UI with backend-shaped fixture data and tablet proof; Cycle AO added the real `/api/events/:slug` contract for market identity, line identity, compact depth, and optional chart/live-stat arrays. Cycle AQ sources embedded chart history from `MarketOutcomeSnapshot` rows when available and preserves depth outcome identity in mobile. Cycle AR adds the dedicated `/api/markets/:marketId/chart?range=...` route/client contract. Cycle AS wires EventDetail to consume that chart route in server mode. Cycle AT adds deterministic `MarketOutcomeSnapshot` seeding for local/server proof. Cycle AU exposes chart loading/empty/error route states in the game chart. Cycle AW seeded route-readable orderbook depth. This is still not full backend parity because real provider ingestion, richer delayed/suspended states, all-line-market liquidity, and provider-owned live stats remain open.
 
 ## Scope
 
@@ -9,6 +9,40 @@ Status: Cycle AY passed selected line-market depth identity proof. Cycle AX pass
 - Holiwyn proof device: Samsung tablet running Holiwyn through Expo Go.
 - Cycle branch name: `mobile/cycle-AN-saved-watchlist-parity`, re-scoped honestly to live event detail after product steering changed.
 - Out of scope: deposit, location verification, notifications, non-football live markets, World Cup informational ad/detail pages.
+
+## Cycle AZ Selected Spread Line Ready Depth Audit
+
+Result: Pass for selected Spread line-market seeded route-backed ready depth.
+
+What became materially closer to Polymarket:
+
+- Polymarket line-market order books show concrete bid/ask depth for the selected market. Holiwyn now proves that behavior for a selected Spread line using backend-shaped `Order` rows and the public orderbook route.
+- The selected Spread book no longer stops at a truthful empty state from Cycle AY; it now reaches `ready` with concrete price and share rows while preserving the selected market id.
+
+Acceptance criteria:
+
+| ID | Priority | Criterion | Audit method | Result |
+| --- | --- | --- | --- | --- |
+| LED-AZ-P0-01 | P0 | Seed harness can target the selected Spread market by backend-shaped `marketType=spread` and `line=1.5`. | Seed summary artifact | Pass |
+| LED-AZ-P0-02 | P0 | `/api/orderbook/:marketId/book?maxLevels=24` returns ready depth for Spread market `ac527022-07f3-4abb-90f0-b291466e8459`. | Tablet smoke XML plus backend route tests | Pass |
+| LED-AZ-P0-03 | P0 | EventDetail order-book overlay labels the selected Spread market id and route-backed ready state. | Tablet smoke XML | Pass |
+| LED-AZ-P0-04 | P0 | The visible order book shows bid/ask prices and share sizes from the route, including `0.59 USDT`, `0.65 USDT`, `1.06k shares`, and `940 shares`. | Tablet smoke XML/screenshot | Pass |
+| LED-AZ-P1-01 | P1 | All Spread/Totals/Team Totals/Halves line markets have provider-backed or continuously seeded live depth. | Future provider/route proof | Open |
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-current-mobile-live-spread-orderbook-depth-seed.json`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-spread-order-book.png`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-spread-order-book.xml`
+- Proof command: `cmd /c npm.cmd run smoke:tablet:server-live-line-order-book`
+
+Unresolved P0 gaps: 0 for this selected Spread line seeded-depth scope.
+
+Remaining P1/P2 gaps:
+
+- Real provider/liquidity ingestion for every line market group.
+- Provider freshness, stale, suspended, and delayed states per selected line market.
+- A production batching/prefetch strategy if selected-market depth route fan-out becomes too slow.
 
 ## Cycle AY Selected Line Market Depth Audit
 

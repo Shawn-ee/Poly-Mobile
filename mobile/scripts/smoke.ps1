@@ -1907,7 +1907,7 @@ try {
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-server-live-spread-order-book.png"
       $serverSpreadOrderBookHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-live-spread-order-book.xml"
-      Assert-HierarchyContains -Path $serverSpreadOrderBookHierarchy -Expected @("event-detail-order-book-screen", "event-detail-order-book-market-ac527022-07f3-4abb-90f0-b291466e8459", "orderbook-status-empty", "orderbook-empty-no-depth", "Spreads", "Order Book", "No depth", "Buy", "Sell")
+      Assert-HierarchyContains -Path $serverSpreadOrderBookHierarchy -Expected @("event-detail-order-book-screen", "event-detail-order-book-market-ac527022-07f3-4abb-90f0-b291466e8459", "orderbook-source-orderbook-route", "orderbook-status-ready", "orderbook-empty-none", "Route depth", "Spreads", "Order Book", "Best bid", "Best ask", "0.59 USDT", "0.65 USDT", "1.06k shares", "940 shares", "Buy", "Sell")
       return
     }
 
