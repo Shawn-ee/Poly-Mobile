@@ -302,6 +302,7 @@ export function EventDetail({
   const [orderBookSelectorVisible, setOrderBookSelectorVisible] = useState(false);
   const [orderBookDisplayMode, setOrderBookDisplayMode] = useState<BookDisplayMode>("cents");
   const [compactHeaderVisible, setCompactHeaderVisible] = useState(false);
+  const [selectedPrimaryOutcomeId, setSelectedPrimaryOutcomeId] = useState<string | null>(null);
   const isLiveEvent = event.status === "live";
   const gameLineMarkets = useMemo(() => event.markets.filter((market) => market.type !== "prop" && market.type !== "future"), [event.markets]);
   const propMarkets = useMemo(() => event.markets.filter((market) => market.type === "prop"), [event.markets]);
@@ -309,6 +310,7 @@ export function EventDetail({
   const orderBookMarket = event.markets.find((market) => market.id === orderBookMarketId) ?? primaryMarket;
   const orderBookSelectedOutcome = orderBookMarket.outcomes.find((outcome) => outcome.id === orderBookOutcomeId) ?? orderBookMarket.outcomes[0];
   const primaryOutcomes = primaryMarket?.outcomes.slice(0, 2) ?? [];
+  const selectedPrimaryOutcome = primaryOutcomes.find((outcome) => outcome.id === selectedPrimaryOutcomeId) ?? primaryOutcomes[0];
   const [expandedMarketIds, setExpandedMarketIds] = useState<Record<string, boolean>>({
     "regulation-time-winner": true,
     spread: true,
@@ -401,6 +403,30 @@ export function EventDetail({
     setOrderBookOutcomeId(market.outcomes[0]?.id ?? null);
     requestMarketDepth?.(market.id);
     setOrderBookVisible(true);
+  };
+  const openPrimaryOutcomeTicket = (outcome: Outcome) => {
+    if (!primaryMarket) return;
+    setSelectedPrimaryOutcomeId(outcome.id);
+    setShareSheetVisible(false);
+    setOrderBookVisible(false);
+    const outcomeIndex = primaryMarket.outcomes.findIndex((item) => item.id === outcome.id);
+    const contractSide = orderBookOutcomeSide(primaryMarket, outcome, outcomeIndex);
+    openTicket(primaryMarket, outcome, event, defaultSide, {
+      marketType: isLiveEvent ? "live" : "winner",
+      marketId: primaryMarket.id,
+      outcomeId: outcome.id,
+      marketGroupId: primaryMarket.marketGroupId,
+      period: primaryMarket.period,
+      side: outcome.side,
+      displayLabel: isLiveEvent ? "Live Winner" : "Team to Advance",
+      contractSide,
+      referenceSource: primaryMarket.referenceSource ?? undefined,
+      externalSlug: primaryMarket.externalSlug ?? undefined,
+      externalMarketId: primaryMarket.externalMarketId ?? undefined,
+      conditionId: primaryMarket.conditionId ?? undefined,
+      referenceTokenId: outcome.referenceTokenId ?? undefined,
+      referenceOutcomeLabel: outcome.referenceOutcomeLabel ?? undefined,
+    });
   };
   const selectOrderBookMarket = (market: Market) => {
     setOrderBookMarketId(market.id);
@@ -678,8 +704,8 @@ export function EventDetail({
             <Pressable
               accessibilityLabel={`event-detail-team-advance-${outcome.id}`}
               key={outcome.id}
-              onPress={() => openTicket(primaryMarket, outcome, event, defaultSide, { marketType: isLiveEvent ? "live" : "winner", displayLabel: isLiveEvent ? "Live Winner" : "Team to Advance" })}
-              style={styles.lineOutcomeButton}
+              onPress={() => openPrimaryOutcomeTicket(outcome)}
+              style={[styles.lineOutcomeButton, selectedPrimaryOutcome?.id === outcome.id && styles.lineOutcomeButtonSelected]}
               testID={`event-detail-team-advance-${outcome.id}`}
             >
               <Text style={styles.lineOutcomeButtonText}>{teamCode(outcome.label)} {isLiveEvent ? `${outcome.probability}%` : index === 0 ? "52¢" : "49¢"}</Text>
@@ -1352,8 +1378,8 @@ export function EventDetail({
                 <Pressable
                   accessibilityLabel={`event-detail-chat-sticky-outcome-${primaryMarket.id}-${outcome.id}`}
                   key={outcome.id}
-                  onPress={() => openTicket(primaryMarket, outcome, event, defaultSide)}
-                  style={[styles.chatStickyButton, { backgroundColor: outcome.color }]}
+                  onPress={() => openPrimaryOutcomeTicket(outcome)}
+                  style={[styles.chatStickyButton, { backgroundColor: outcome.color }, selectedPrimaryOutcome?.id === outcome.id && styles.chatStickyButtonSelected]}
                   testID={`event-detail-chat-sticky-outcome-${primaryMarket.id}-${outcome.id}`}
                 >
                   <Text style={styles.chatStickyButtonText}>{teamCode(outcome.label)} {outcome.probability}%</Text>
@@ -1615,8 +1641,8 @@ export function EventDetail({
             <Pressable
               accessibilityLabel={`event-detail-outcome-${primaryMarket.id}-${outcome.id}`}
               key={outcome.id}
-              onPress={() => openTicket(primaryMarket, outcome, event, defaultSide)}
-              style={[styles.primaryOutcomeButton, { backgroundColor: outcome.color }]}
+              onPress={() => openPrimaryOutcomeTicket(outcome)}
+              style={[styles.primaryOutcomeButton, { backgroundColor: outcome.color }, selectedPrimaryOutcome?.id === outcome.id && styles.primaryOutcomeButtonSelected]}
               testID={`event-detail-primary-outcome-${primaryMarket.id}-${outcome.id}`}
             >
               <Text style={styles.primaryOutcomeText}>
@@ -1785,6 +1811,30 @@ export function EventDetail({
           </>
         )}
       </ScrollView>
+      {activeHeaderTab === "game" && primaryMarket && selectedPrimaryOutcomeId && selectedPrimaryOutcome && !orderBookVisible && (
+        <View
+          accessibilityLabel={`event-detail-selected-outcome-trade-rail selected-market-${primaryMarket.id} selected-outcome-${selectedPrimaryOutcome.id} selected-probability-${selectedPrimaryOutcome.probability} selected-ticket-ready`}
+          style={styles.selectedTradeRail}
+          testID="event-detail-selected-outcome-trade-rail"
+        >
+          <View style={styles.selectedTradeSummary}>
+            <View style={[styles.selectedOutcomeDot, { backgroundColor: selectedPrimaryOutcome.color }]} />
+            <View style={styles.selectedTradeTextBlock}>
+              <Text numberOfLines={1} style={styles.selectedTradeTitle}>{teamCode(selectedPrimaryOutcome.label)} {selectedPrimaryOutcome.probability}%</Text>
+              <Text numberOfLines={1} style={styles.selectedTradeMeta}>{isLiveEvent ? "Live Winner" : "Team to Advance"} - {marketDepth(primaryMarket).spread} spread</Text>
+            </View>
+          </View>
+          <Pressable
+            accessibilityLabel={`event-detail-selected-outcome-open-ticket selected-market-${primaryMarket.id} selected-outcome-${selectedPrimaryOutcome.id} ticket-entry-stable`}
+            onPress={() => openPrimaryOutcomeTicket(selectedPrimaryOutcome)}
+            style={styles.selectedTradeButton}
+            testID="event-detail-selected-outcome-open-ticket"
+          >
+            <Text style={styles.selectedTradeButtonText}>Trade</Text>
+            <Ionicons name="chevron-up" color="#06110b" size={18} />
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 }
@@ -1941,6 +1991,7 @@ const styles = StyleSheet.create({
   emojiText: { color: "#f8fafc", fontSize: 21, fontWeight: "900" },
   chatStickyOutcomes: { flexDirection: "row", gap: 12, marginTop: 4 },
   chatStickyButton: { flex: 1, minHeight: 52, alignItems: "center", justifyContent: "center", borderRadius: 15 },
+  chatStickyButtonSelected: { borderWidth: 2, borderColor: "#f8fafc" },
   chatStickyButtonText: { color: "#ffffff", fontSize: 16, fontWeight: "900" },
   positionSection: { marginTop: 20, paddingHorizontal: 24 },
   positionHeading: { color: "#f8fafc", fontSize: 17, fontWeight: "800", marginBottom: 10 },
@@ -1964,8 +2015,17 @@ const styles = StyleSheet.create({
   cashOutText: { color: "#f8fafc", fontSize: 16, fontWeight: "800" },
   primaryOutcomeRow: { flexDirection: "row", gap: 14, paddingHorizontal: 24, marginTop: 24, paddingTop: 18, borderTopWidth: 1, borderTopColor: "#1f2937" },
   primaryOutcomeButton: { flex: 1, minHeight: 64, alignItems: "center", justifyContent: "center", borderRadius: 16, shadowColor: "#000", shadowOpacity: 0.35, shadowRadius: 8, elevation: 3 },
+  primaryOutcomeButtonSelected: { borderWidth: 2, borderColor: "#f8fafc", transform: [{ translateY: -2 }] },
   primaryOutcomeText: { color: "rgba(255,255,255,0.72)", fontSize: 17, fontWeight: "900" },
   primaryOutcomePercent: { color: "#ffffff", fontSize: 20, fontWeight: "900" },
+  selectedTradeRail: { position: "absolute", left: 12, right: 12, bottom: 12, minHeight: 74, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12, paddingHorizontal: 14, paddingVertical: 12, borderRadius: 18, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#2d3b52", shadowColor: "#000", shadowOpacity: 0.38, shadowRadius: 12, elevation: 9 },
+  selectedTradeSummary: { flex: 1, minWidth: 0, flexDirection: "row", alignItems: "center", gap: 10 },
+  selectedOutcomeDot: { width: 36, height: 36, borderRadius: 999, borderWidth: 2, borderColor: "rgba(255,255,255,0.42)" },
+  selectedTradeTextBlock: { flex: 1, minWidth: 0 },
+  selectedTradeTitle: { color: "#f8fafc", fontSize: 17, fontWeight: "900" },
+  selectedTradeMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "800", marginTop: 3 },
+  selectedTradeButton: { minWidth: 116, minHeight: 50, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 4, borderRadius: 14, backgroundColor: "#d9f99d" },
+  selectedTradeButtonText: { color: "#06110b", fontSize: 16, fontWeight: "900" },
   marketTabs: { flexDirection: "row", gap: 24, paddingHorizontal: 24, marginTop: 22, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   stickyMarketTabs: { marginTop: 0, paddingHorizontal: 20, borderBottomWidth: 0, backgroundColor: "#060b14" },
   marketTab: { minHeight: 46, justifyContent: "center", borderBottomWidth: 3, borderBottomColor: "transparent" },
@@ -1986,6 +2046,7 @@ const styles = StyleSheet.create({
   lineCardTitleRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   lineOutcomeButtonRow: { flexDirection: "row", gap: 12, marginTop: 16 },
   lineOutcomeButton: { flex: 1, minHeight: 62, alignItems: "center", justifyContent: "center", borderRadius: 13, backgroundColor: "#25303a", borderBottomWidth: 5, borderBottomColor: "#1c2630" },
+  lineOutcomeButtonSelected: { borderWidth: 2, borderColor: "#dbeafe", borderBottomColor: "#dbeafe" },
   lineOutcomeButtonText: { color: "#d1d5db", fontSize: 18, fontWeight: "900" },
   lineDetailTabs: { flexDirection: "row", alignItems: "center", gap: 14, marginTop: 20, paddingTop: 16, borderTopWidth: 1, borderTopColor: "#26313f" },
   lineDetailTab: { minHeight: 34, justifyContent: "center" },
