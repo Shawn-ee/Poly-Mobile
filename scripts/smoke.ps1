@@ -5528,6 +5528,35 @@ try {
         )
         Assert-HierarchyDoesNotContain -Path $mvpStatusTopHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
+        Invoke-TapHierarchyNode -Path $mvpStatusTopHierarchy -Identifier "event-detail-chart-point-target"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "cycle-GB-holiwyn-event-detail-chart-target.png"
+        $mvpStatusChartTargetHierarchy = Save-UiHierarchy -Name "cycle-GB-holiwyn-event-detail-chart-target.xml"
+        Assert-HierarchyContains -Path $mvpStatusChartTargetHierarchy -Expected @(
+          "event-detail-price-chart",
+          "event-detail-chart-selected-point-target",
+          "event-detail-chart-contract-point",
+          "chart-selected-point-target",
+          "Target line",
+          "event-detail-chart-open-ticket"
+        )
+        Assert-HierarchyDoesNotContain -Path $mvpStatusChartTargetHierarchy -Unexpected $mvpHiddenOrderBookExpected
+
+        Invoke-TapHierarchyNode -Path $mvpStatusChartTargetHierarchy -Identifier "event-detail-chart-open-ticket"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "cycle-GB-holiwyn-event-detail-chart-ticket.png"
+        $mvpStatusChartTicketHierarchy = Save-UiHierarchy -Name "cycle-GB-holiwyn-event-detail-chart-ticket.xml"
+        Assert-HierarchyContains -Path $mvpStatusChartTicketHierarchy -Expected @(
+          "trade-ticket",
+          "ticket-selection-summary",
+          "ticket-order-review",
+          "ticket-side-buy",
+          "ticket-side-sell",
+          "swipe-to-submit-order"
+        )
+        Invoke-TapHierarchyNode -Path $mvpStatusChartTicketHierarchy -Identifier "ticket-close"
+        Start-Sleep -Seconds 1
+
         & $adb -s $Device shell input swipe 540 520 540 1900 450 | Out-Null
         Start-Sleep -Milliseconds 500
         & $adb -s $Device shell input swipe 540 520 540 1900 450 | Out-Null
@@ -5559,26 +5588,31 @@ try {
         Assert-HierarchyDoesNotContain -Path $mvpStatusSelectedHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
         $proof = [ordered]@{
-          cycle = "ER"
-          scenario = "Local MVP Android retail status proof with orderbook hidden by default"
+          cycle = "GB"
+          scenario = "Local MVP Android Event Detail chart ticket handoff proof with orderbook hidden by default"
           command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpStatusFlow -Port $Port -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir"
           orderbookDebug = if ($env:EXPO_PUBLIC_SHOW_ORDERBOOK) { $env:EXPO_PUBLIC_SHOW_ORDERBOOK } else { "unset" }
           result = "pass"
           assertions = [ordered]@{
             defaultEventDetail = @("chart route state", "ticket handoff status", "no visible Book/orderbook entry points")
+            chartHandoff = @("target chart point updates visible readout", "chart Trade opens full-screen simple ticket")
             marketLines = @("spread and totals selectors remain reachable without Book")
             selectedLine = @("spread 2.5", "contract-shaped ticket source", "no visible Book/orderbook entry points")
           }
           artifacts = @(
-            "docs/mobile/screenshots/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-top.png",
-            "docs/mobile/harness/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-top.xml",
-            "docs/mobile/screenshots/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-market-lines.png",
-            "docs/mobile/harness/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-market-lines.xml",
-            "docs/mobile/screenshots/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-selected-line.png",
-            "docs/mobile/harness/cycle-ER-local-mvp-status-flow/cycle-ER-holiwyn-local-mvp-status-selected-line.xml"
+            "$OutputDir/cycle-ER-holiwyn-local-mvp-status-top.png",
+            "$HierarchyOutputDir/cycle-ER-holiwyn-local-mvp-status-top.xml",
+            "$OutputDir/cycle-GB-holiwyn-event-detail-chart-target.png",
+            "$HierarchyOutputDir/cycle-GB-holiwyn-event-detail-chart-target.xml",
+            "$OutputDir/cycle-GB-holiwyn-event-detail-chart-ticket.png",
+            "$HierarchyOutputDir/cycle-GB-holiwyn-event-detail-chart-ticket.xml",
+            "$OutputDir/cycle-ER-holiwyn-local-mvp-status-market-lines.png",
+            "$HierarchyOutputDir/cycle-ER-holiwyn-local-mvp-status-market-lines.xml",
+            "$OutputDir/cycle-ER-holiwyn-local-mvp-status-selected-line.png",
+            "$HierarchyOutputDir/cycle-ER-holiwyn-local-mvp-status-selected-line.xml"
           )
         }
-        $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-ER-local-mvp-status-flow-proof.json"
+        $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-GB-event-detail-chart-ticket-handoff-proof.json"
         $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
         Write-Host "Proof summary: $proofPath"
         return

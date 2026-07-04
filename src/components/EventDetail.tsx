@@ -1955,6 +1955,13 @@ export function EventDetail({
               >
                 {selectedChartTicketStatusBadge.text}
               </Text>
+              <Text
+                accessibilityLabel={`event-detail-chart-contract-point chart-selected-point-${selectedChartPoint} ${chartPointMeta.label} ${chartPointMeta.value}`}
+                style={styles.chartContractPoint}
+                testID="event-detail-chart-contract-point"
+              >
+                Point {chartPointMeta.label} · {chartPointMeta.value}
+              </Text>
             </View>
             <View style={styles.chartContractActions}>
               {showOrderBookDebug && (
@@ -1969,7 +1976,7 @@ export function EventDetail({
                 </Pressable>
               )}
               <Pressable
-                accessibilityLabel={`event-detail-chart-open-ticket chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-outcome-${selectedChartTicketOutcome?.id ?? "none"} provider-lifecycle-${selectedChartTicketStatusBadge.lifecycle} ${ticketSelectionIdentityLabel(selectedChartTicketSelection)}`}
+                accessibilityLabel={`event-detail-chart-open-ticket chart-selected-point-${selectedChartPoint} chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-outcome-${selectedChartTicketOutcome?.id ?? "none"} provider-lifecycle-${selectedChartTicketStatusBadge.lifecycle} ${ticketSelectionIdentityLabel(selectedChartTicketSelection)}`}
                 onPress={openSelectedChartTicket}
                 style={[styles.chartTradeButton, { backgroundColor: selectedChartColor }]}
                 testID="event-detail-chart-open-ticket"
@@ -2401,6 +2408,7 @@ const styles = StyleSheet.create({
   chartContractTitle: { color: "#f8fafc", fontSize: 15, fontWeight: "900", marginTop: 3 },
   chartContractStatus: { color: "#93c5fd", fontSize: 10, fontWeight: "900", marginTop: 4 },
   chartContractStatusWarning: { color: "#fde68a" },
+  chartContractPoint: { color: "#e5e7eb", fontSize: 11, fontWeight: "800", marginTop: 5 },
   chartContractActions: { flexDirection: "row", alignItems: "center", gap: 8 },
   chartContractButton: { minHeight: 36, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5, borderRadius: 8, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247", paddingHorizontal: 10 },
   chartContractButtonText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
