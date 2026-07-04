@@ -31,6 +31,7 @@ These apply to every page, feature, button, and interaction:
 
 | Feature | Criteria owner file | P0 status | P1/P2 status | Latest gate |
 | --- | --- | --- | --- | --- |
+| Line-market ticket target parity DR-C | `docs/mobile/audits/cycle-dr-c-line-market-ticket-target-gate.md` | Pending/fail until Agent B provides clean DR-C Android proof for selected market family, line, period, side/outcome, odds/probability, and ticket target identity | DQ-C production ticket amount/swipe recapture remains P1 due to location gate | Fail until proof |
 | Live football / World Cup game detail DQ-C | `docs/mobile/audits/live-football-world-cup-dq-c.md` | Fresh S23 reference P0 criteria added for full page hierarchy, chart press, line-state coupling, Book/depth ladder, active buttons/actions, tab behavior, and scroll behavior; Holiwyn not marked complete | P1 ticket amount/swipe confirmation recapture remains blocked by Polymarket location gate; P1 full Book market-selector parity and P2 visual/motion polish remain open | Reference audit only |
 | Live event detail | `docs/mobile/audits/live-event-detail.md`; `docs/mobile/audits/live-event-detail-super-round-dm.md` | DN super-round P0 criteria are documented for Polymarket-first match-winner provider mapping, CLOB chart history, route-backed depth, Buy/Sell ticket identity, and honest stale/closed state handling | P1 exact line-family provider markets, filled-order/history lifecycle proof, and scheduled refresh remain open; P2 visual density/motion polish remains deferred | Pass for Cycles DK-DM evidence; Agent A/B must re-run final device proof against implementation build |
 | Game page | `docs/mobile/audits/game-page.md` | Verified for Cycle AJ focused logged-in game-page P0; Cycle AL sticky market-tab criterion passed; Cycle AM Player Props unavailable-state criterion passed | P1/P2 phone density and backend-backed market data remain tracked | Pass |
@@ -124,3 +125,17 @@ The focused DQ-C S23 reference audit adds these criteria from `docs/mobile/audit
 | LD-DQ-C-P1-01 | P1 | Ticket amount entry and swipe-like confirmation should be recaptured when the Polymarket location gate is unblocked. | Current DQ-C proof only reaches `pm-dq-c-11-ticket-sheet-settled.*`. |
 | LD-DQ-C-P1-02 | P1 | Book market selector should support every visible family/period exposed in reference, including Moneyline and Spreads. | Holiwyn Book selector proof against `pm-dq-c-13-orderbook-market-selector.*`. |
 | LD-DQ-C-P2-01 | P2 | Match native motion, density, red/green depth visualization, and chart touch feel after structural parity. | Side-by-side visual QA. |
+
+## Cycle DR-C Line-Market Ticket Target Gate Criteria
+
+The focused DR-C gate in `docs/mobile/audits/cycle-dr-c-line-market-ticket-target-gate.md` converts DQ-C line-selector behavior into pass/fail criteria for Agent B's ticket target work. The feature is not passed until clean Android evidence exists.
+
+| ID | Priority | Criterion | Required proof |
+| --- | --- | --- | --- |
+| LD-DR-C-P0-01 | P0 | Selected market family must match the tapped family: Spread taps open a Spread ticket, Totals taps open a Totals ticket, and lower-period rows do not fall back to a primary moneyline/fallback target. | Android screenshot/XML for at least one Spread and one Totals ticket opened from the DQ-C-style game detail after selection changes. |
+| LD-DR-C-P0-02 | P0 | Selected line must match the user-selected row/selector value. | Before/after selector proof plus ticket XML showing the same selected line in `ticket-selection-line` and selected outcome label. |
+| LD-DR-C-P0-03 | P0 | Selected period must carry through from row to ticket, including at least one non-default period. | Row proof and ticket proof both showing the selected period. |
+| LD-DR-C-P0-04 | P0 | Selected side/outcome must carry through, including Yes/No or Over/Under/team subject changes caused by line selection. | Ticket XML showing side and outcome in `ticket-contract-outcome-row` and `ticket-selected-outcome-choice`, with screenshot agreement. |
+| LD-DR-C-P0-05 | P0 | Odds/probability must come from the selected market/line/period/outcome, not stale row state. | Row odds/probability before tap and ticket odds/probability after tap for Spread and Totals. |
+| LD-DR-C-P0-06 | P0 | Ticket target identity must preserve selected market family, line, period, side/outcome, event, provider/source identity where available, and order target through amount entry/ready state. | Clean Android ticket proof after entering amount, plus XML/proof JSON showing the selection fields used by the order payload or service layer. |
+| LD-DR-C-P0-07 | P0 | Android visible proof must be clean and DR-C-owned. | Passing smoke/test summary plus committed `docs/mobile/screenshots/cycle-DR-C-*` and `docs/mobile/harness/cycle-DR-C-*` artifacts. |

@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Line-market ticket target parity | Cycle DR-C | Fail until proof | 7 pending P0 proof criteria | P1 ticket amount/swipe recapture remains location-gated in DQ-C reference | `docs/mobile/audits/live-football-world-cup-dq-c.md`; `docs/mobile/audits/cycle-dr-c-line-market-ticket-target-gate.md`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-08-spread-line-dropdown.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-10-spread-ticket.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-16-markets-scroll-2.png` | Not yet provided by Agent B for DR-C. Read-only DQ-B background at commit `bd62c9b` had failed Android smoke. | Agent B must provide DR-C-owned clean Android proof for selected market family, line, period, side/outcome, odds/probability, ticket target, and amount/ready-state identity before pass. |
 | Live football / World Cup game detail DQ-C reference audit | Cycle DQ-C | Reference criteria complete; Holiwyn parity not passed | Not evaluated against Holiwyn by Agent C | P1 ticket amount/swipe confirmation recapture; P1 Book selector proof across families; P2 visual/motion polish | `docs/mobile/audits/live-football-world-cup-dq-c.md`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-03-world-cup-game-top.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-12-top-book-action.png`; `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-17-share-sheet.png` | Not run by Agent C in this docs/reference worktree | Fresh S23 official app audit captured Canada vs Morocco World Cup detail, chart press, Chat tab, line selector, spread/totals/halves, orderbook/depth, market selector, location-gated ticket, share sheet, and scroll behavior. |
 | Scheduled provider refresh lifecycle | Cycle DQ-A | Pass for backend provider scheduler stale-to-ready lifecycle; partial for deployed worker/device visual proof | 0 | P1 deployed cron/queue cadence and run history; P1 exact line-family provider parity; P2 visual density/motion | Existing Polymarket-first provider evidence from Cycle DK-DN plus mapped disposable Polymarket proof event | Backend: `docs/mobile/harness/cycle-DQ-A-mobile-scheduled-provider-refresh.json`; tests: provider scheduler/refresh route/service Jest set; Holiwyn smoke attempted via `mobile/scripts/smoke-tablet.ps1 -ServerLiveProviderRefreshProof -Port 8218` | Material behavior closer: scheduler finds stale provider snapshots, refreshes without contract fallback, and live-detail returns ready. OpticOdds is skipped for this proof and does not block Polymarket Gamma/CLOB parity. Tablet smoke failed before provider assertions on missing `event-detail-group-prop`, so backend proof is the accepted DQ-A evidence. |
 | Live event detail DN super-round criteria | Cycle DN audit over Cycle DM evidence | Criteria pass for current evidence; final implementation still needs Agent A/B device proof | 0 documented | P1 exact line-family provider parity; P1 active filled-order/history lifecycle; P1 scheduled refresh; P2 visual density/motion | `docs/mobile/audits/live-event-detail-super-round-dm.md`; `docs/mobile/reference/screenshots/cycle-CW-polymarket-s23-window.xml`; `docs/mobile/harness/cycle-current-mobile-polymarket-first-provider-path.json`; `docs/mobile/harness/cycle-current-mobile-polymarket-chart-history.json`; `docs/mobile/harness/cycle-current-mobile-provider-token-lifecycle.json` | `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`; `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book-ticket.xml`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`; `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book-ticket.png` | Agent C did not run fresh device control. The audit converts existing Cycle DK-DM proof into explicit DN pass/fail criteria for chart, line selectors, orderbook/depth, Buy/Sell ticket, stale/unavailable states, and provider identity carry-through. |
@@ -1343,6 +1344,62 @@ Decision:
 - Unresolved P0 gaps: new Holiwyn-facing P0 proof gaps are tracked in `POLYMARKET_PARITY_GAP_TRACKER.md`; Agent C did not evaluate the implementation.
 - Remaining P1/P2 gaps: ticket amount/swipe recapture after location gate, Book selector coverage, visual/motion polish.
 - Next cycle required: yes, implementation/device agents must run Holiwyn proof against DQ-C criteria before any parity-complete claim.
+
+## Cycle DR-C Line-Market Ticket Target Audit Gate
+
+Result: Fail until Agent B provides clean DR-C Android proof.
+
+Lead Agent target: Agent B line selector/ticket target parity against the fresh DQ-C Polymarket reference.
+
+Reference Audit Agent: DQ-C Samsung S23 Polymarket reference audit.
+
+Implementation Agent: Agent B. Read-only context inspected from `mobile/super-DQ-agent-B-visible-parity` at commit `bd62c9b`.
+
+Audit Gate Agent: Agent C2.
+
+Reference device:
+
+- Samsung S23, official Polymarket Android app.
+
+Reference route/URL:
+
+- Canada vs Morocco World Cup game page; observed share URL `https://polymarket.us/events/fwc-can-mar-2026-07-04`.
+
+Holiwyn device:
+
+- Not yet provided for DR-C.
+
+Reference evidence:
+
+- `docs/mobile/audits/live-football-world-cup-dq-c.md`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-08-spread-line-dropdown.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-09-spread-line-25.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-10-spread-ticket.png`
+- `docs/mobile/screenshots/cycle-DQ-C-polymarket-reference/pm-dq-c-16-markets-scroll-2.png`
+
+Holiwyn evidence:
+
+- None sufficient for DR-C.
+- Background only: B's DQ-B proof at commit `bd62c9b` captured Spread/Totals ticket XML/screenshots, but its proof summary says the Android smoke failed after missing expected `Odds 22%` visible hierarchy text.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LD-DR-C-P0-01 | P0 | Pending/fail | No DR-C clean Android proof for selected market family. | Provide Spread and Totals ticket screenshots/XML from DR-C proof. |
+| LD-DR-C-P0-02 | P0 | Pending/fail | No DR-C clean before/after selected-line proof. | Show selected row line and matching `ticket-selection-line`. |
+| LD-DR-C-P0-03 | P0 | Pending/fail | No DR-C non-default period carry-through proof. | Show period in row and ticket, including 1H or 2H. |
+| LD-DR-C-P0-04 | P0 | Pending/fail | No DR-C side/outcome carry-through proof. | Show side/outcome in ticket row and selected outcome label. |
+| LD-DR-C-P0-05 | P0 | Pending/fail | No DR-C row-to-ticket odds/probability proof. | Show row odds/probability and matching ticket odds/probability. |
+| LD-DR-C-P0-06 | P0 | Pending/fail | No DR-C amount/ready-state target identity proof. | Enter amount and prove order/ticket target identity. |
+| LD-DR-C-P0-07 | P0 | Pending/fail | No DR-C-owned passing device proof artifacts. | Commit `cycle-DR-C-*` screenshots/XML/proof summary with passing smoke/test result. |
+
+Decision:
+
+- Pass/fail: Fail until proof.
+- Unresolved P0 gaps: 7 pending proof criteria.
+- Remaining P1/P2 gaps: ticket amount/swipe confirmation recapture remains P1 because DQ-C Polymarket reference is location-gated.
+- Next cycle required: yes, Agent B must provide clean DR-C Android proof before Audit Gate can pass line-market ticket target parity.
 
 Use this template for every feature gate:
 
