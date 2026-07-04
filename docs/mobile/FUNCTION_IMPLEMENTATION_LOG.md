@@ -2,6 +2,44 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle DB - Provider Line Source Probe
+
+Feature/page worked on:
+
+- PM-GAP-067B provider source discovery for World Cup live-event line markets.
+- Focused on whether current public Polymarket/Gamma surfaces expose attach-ready spreads, totals, team totals, halves, corners, or correct-score provider markets.
+
+Frontend/harness components touched:
+
+- No visual UI code changed.
+- Samsung tablet regression proof refreshed the server-backed Colombia vs Ghana live-detail Book path.
+
+Backend/components touched:
+
+- `scripts/prove_mobile_provider_line_source_probe.ts`
+
+Important functions/services touched:
+
+- The harness uses existing provider candidate functions only: `fetchProviderCandidatesFromSportsEvents()`, `fetchProviderCandidatesForSlugs()`, `fetchProviderCandidatesForQueries()`, `rankProviderCandidates()`, and `summarizeProviderCandidateFamilies()`.
+- No production attach logic was weakened or changed.
+
+User interactions supported:
+
+- No new end-user interaction.
+- The live game page remains backed by the already mapped match-winner provider data.
+
+State transitions:
+
+- Exact event surface remains 3 match-winner candidates and 0 line-family candidates.
+- Exact line-slug guesses checked 23 provider slug patterns and returned 0 candidates.
+- Broad line-oriented searches checked 8 backend-shaped line targets and 96 provider candidates, producing 0 attach-ready line targets.
+- Samsung tablet proof confirms the existing server-backed live-detail Book still works.
+
+Known limitations:
+
+- This cycle proves the current checked provider surfaces do not expose attach-ready line markets for Colombia vs Ghana.
+- Next line-market work needs operator-reviewed real slugs from the Polymarket app, a different provider source, or a new ingestion path; repeating broad Gamma search is unlikely to help.
+
 ## Cycle DA - Provider Discovery Expansion
 
 Feature/page worked on:
