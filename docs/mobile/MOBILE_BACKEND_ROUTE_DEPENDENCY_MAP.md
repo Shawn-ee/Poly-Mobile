@@ -1555,3 +1555,16 @@ Cycle FD implementation notes:
 - `openEventDetail` uses the compact discovery event for instant navigation, then hydrates the same event through the live-detail route when server market-data mode is active.
 - This cycle does not add or expose orderbook, chat, live stats, deposit, location, or social routes.
 - Tablet proof slug: `mobile-el-a-provider-breadth-de83f85d`.
+
+## Cycle FE - Home Route Event Opens Simple Ticket
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home card entry to ticket-ready Event Detail | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1` | GET | Public viewing | None | Event slug/id/title/status, compact markets/outcomes, provider source markers | `Event`, `Market`, `Outcome`, provider quote/read-model fields | FE proof requires the route-backed card. Local fixtures remain only as app fallback. | Production active Polymarket World Cup breadth remains P1. |
+| Spread ticket opened from Home-opened detail | `/api/mobile/events/:slug/live-detail` | GET | Public viewing | Event id/slug from Home card | Chart/probability fields, Game Lines, `marketType=spread`, line `1.5`, period mapped to `Reg. Time`, outcome id, provider source, provider token | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, chart history snapshots | No arbitrary frontend-only data. The ticket consumes route-shaped market/outcome identity. | Submit/Portfolio proof from this Home-opened path remains follow-up. |
+
+Cycle FE implementation notes:
+
+- No route or schema changes were made.
+- The same backend contract from FD now proves the next visible user step: selected Spread outcome -> simple ticket.
+- Tablet proof slug: `mobile-el-a-provider-breadth-3eeba606`.

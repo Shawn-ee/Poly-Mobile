@@ -3514,3 +3514,34 @@ Temporary mock/static data:
 Future migration concern:
 
 - Keep discovery payload compact. Add richer event-detail behavior to the detail route or a dedicated retail-flow route instead of bloating `/api/events`.
+
+## Cycle FE - Home Route Event Opens Simple Ticket
+
+Closed or narrowed:
+
+- Home-opened route-backed Event Detail now has Android proof through the next visible step: a selected Spread outcome opens the simple ticket.
+- Ticket proof preserves backend-shaped selected identity: market type `spread`, line `1.5`, period `Reg. Time`, side `yes`, provider source `polymarket`, and provider token.
+- Default orderbook UI remains hidden through Home -> Detail -> Ticket.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- A full Home-opened path through fake-token submit and Portfolio/history is still open.
+- Production active Polymarket World Cup event breadth remains P1.
+
+Schema mismatch:
+
+- No schema migration was required. Existing live-detail market/outcome identity and ticket selection metadata are enough for FE.
+
+Route mismatch:
+
+- `/api/events?includeMobileMarkets=1` plus `/api/mobile/events/:slug/live-detail` are enough for Home -> Detail -> Ticket-open.
+- `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` are not exercised by FE and remain the next path segment.
+
+Temporary mock/static data:
+
+- No arbitrary frontend-only market data was added.
+- The proof event is disposable backend provider-shaped data created by the existing provider breadth harness.
+
+Future migration concern:
+
+- When the next cycle submits the Home-opened ticket, order request selection snapshots must preserve the same Home-selected market/outcome/provider identity.

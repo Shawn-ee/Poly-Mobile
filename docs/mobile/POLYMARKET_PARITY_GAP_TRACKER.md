@@ -453,3 +453,11 @@ For every UI element or interaction, answer:
 - Samsung tablet proof passes for Home route-backed card -> tap -> same route-backed Event Detail with chart/probability surface, Game Lines, provider-backed outcomes, and no default orderbook UI.
 - `openEventDetail` now centralizes Home, Live, and Search event-card navigation and hydrates selected events through `/api/mobile/events/:slug/live-detail` in server market-data mode.
 - Remaining P1: production active Polymarket World Cup provider breadth and a full Home-opened route event proof through Buy/Sell ticket, fake-token order, Portfolio/history.
+
+## Cycle FE Gap Tracker Update
+
+- PM-GAP-100 is opened and verified for the Home-opened route event reaching the simple Buy/Sell ticket.
+- FE closes FD's next P0 user-flow gap: the Home-opened Event Detail can scroll to Game Lines, tap a route-backed Spread outcome, and open a ticket without losing selected identity.
+- Samsung tablet proof passes for Home route-backed card -> Event Detail -> Spread row -> ticket, with market type `spread`, line `1.5`, period `Reg. Time`, side `yes`, provider source `polymarket`, and provider token preserved.
+- Default Book/orderbook UI remains hidden and is not a blocker for Local MVP completion.
+- Remaining P1: submit the Home-opened ticket as a fake-token order, prove Portfolio/history from that same entry path, production active Polymarket World Cup provider breadth, and non-disposable liquidity/source breadth.

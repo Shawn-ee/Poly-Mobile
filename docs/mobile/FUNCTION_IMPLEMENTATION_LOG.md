@@ -5126,3 +5126,57 @@ Known limitations:
 
 - FD proves the entry-to-detail hop using disposable provider-shaped data. Production active Polymarket World Cup breadth remains P1.
 - The next Local MVP cycles should continue from this entry path into Buy/Sell ticket, fake-token order, and Portfolio/history instead of opening new nonessential feature areas.
+
+## Cycle FE - Home Route Event Opens Simple Ticket
+
+Feature/page worked on:
+
+- Local MVP Home -> route-backed Event Detail -> Game Lines -> simple Buy/Sell ticket.
+
+Frontend/harness/backend files touched:
+
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `docs/mobile/audits/cycle-fe-home-route-ticket.md`
+
+Important functions/services touched:
+
+- Added `LocalMvpHomeRouteTicketFlow` harness support.
+- Reused existing mobile event-card opening, Event Detail line target resolution, and TradeTicket identity markers.
+- No backend route, schema, or service code was changed.
+
+User interactions supported/proven:
+
+- Open Holiwyn on the Samsung tablet in server market-data mode.
+- Tap a route-backed Home event card.
+- Land on the same Event Detail with chart/probability and Game Lines.
+- Scroll to the route-backed Spread row.
+- Tap the Spread outcome and open the simple ticket.
+- Verify ticket market type, line, period, side, provider source, and provider token.
+- Default orderbook UI remains hidden.
+
+Validation:
+
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+- `npm --prefix mobile run typecheck`
+- `npx tsx scripts/prove_mobile_el_a_provider_breadth.ts --output=docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-event.json`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpHomeRouteTicketFlow -Port 8274 -BackendBaseUrl http://172.16.200.14:3002 -OutputDir docs/mobile/screenshots/cycle-FE-home-route-ticket -HierarchyOutputDir docs/mobile/harness/cycle-FE-home-route-ticket`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-event.json`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-proof.json`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-home.xml`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-detail-top.xml`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-line-markets.xml`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-spread-ticket.xml`
+- `docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-home.png`
+- `docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-detail-top.png`
+- `docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-line-markets.png`
+- `docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-spread-ticket.png`
+
+Known limitations:
+
+- FE stops at ticket-open proof. Fake-token submit and Portfolio/history from the Home-opened event remain the next Local MVP steps.
+- FE uses disposable provider-shaped data. Production active Polymarket World Cup breadth remains P1.

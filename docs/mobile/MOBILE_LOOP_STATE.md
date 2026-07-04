@@ -12844,3 +12844,21 @@ Open blockers: None for continued Local MVP visible user-flow work.
 Risks: The proof event is disposable provider-shaped data, not production active Polymarket event breadth. The next cycles should avoid nonessential UI areas and continue the visible flow into ticket submission and Portfolio/history from the Home-opened event.
 
 Next three likely cycles: Home-opened Event Detail -> Buy/Sell ticket proof, Home-opened ticket -> fake-token order proof, and Home-opened order -> Portfolio/history proof.
+
+### Cycle FE Update
+
+Completed cycle: FE.
+
+Verified progress: The Local MVP Home-entry path now reaches the first trading surface. Samsung tablet proof opens a route-backed Home event card, lands on the same Event Detail, scrolls to Game Lines, taps a route-backed Spread outcome, and verifies the simple ticket preserves market type, line, period, side, provider source, and provider token.
+
+Current app state: Home -> Event Detail -> chart/probability -> line selector/Spread row -> Buy/Sell ticket is proven with default orderbook UI hidden.
+
+Current backend state: No backend route or schema changes were made. FE uses the existing `/api/events?includeMobileMarkets=1` compact discovery contract and `/api/mobile/events/:slug/live-detail` detail contract.
+
+Device strategy: Samsung tablet remains the Holiwyn proof device. Samsung S23 remains reference device only when a fresh Polymarket interaction audit is required.
+
+Open blockers: None for continued Local MVP visible user-flow work.
+
+Risks: FE still uses disposable provider-shaped data. The Home-opened ticket has not yet been submitted in this specific flow.
+
+Next three likely cycles: Home-opened ticket -> fake-token order, Home-opened order -> Portfolio/history, and production active event breadth hardening.

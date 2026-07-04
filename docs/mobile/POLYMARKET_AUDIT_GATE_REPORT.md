@@ -3016,3 +3016,51 @@ Decision:
 - Unresolved P0 gaps: 0 for selected feature.
 - Remaining P1/P2 gaps: production active provider breadth and the next full retail-flow proof from Home-opened event.
 - Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Home Route Event Opens Simple Ticket
+
+Cycle: FE
+
+Lead Agent target: Continue the Local MVP route-backed entry flow from FD into the first trading surface: a simple Buy/Sell ticket from a Home-opened Event Detail.
+
+Reference Audit Agent: Product steering audit from current Local MVP retail-flow direction. This cycle verifies the Holiwyn user-flow step and does not claim full Polymarket parity.
+
+Implementation Agent: Added focused `LocalMvpHomeRouteTicketFlow` Android harness path.
+
+Audit Gate Agent: PowerShell parser checks, mobile typecheck, provider-shaped route event setup, and Samsung tablet proof.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8274`.
+
+Holiwyn evidence:
+
+- `docs/mobile/audits/cycle-fe-home-route-ticket.md`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-event.json`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-proof.json`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-home.xml`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-detail-top.xml`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-line-markets.xml`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-spread-ticket.xml`
+- `docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-home.png`
+- `docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-detail-top.png`
+- `docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-line-markets.png`
+- `docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-spread-ticket.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FE-TICKET-P0-01 | P0 | Pass | Tablet Home hierarchy shows route-backed event card and compact outcomes. | N/A |
+| FE-TICKET-P0-02 | P0 | Pass | Tapping the Home card opens same route event detail with chart/probability and Game Lines. | N/A |
+| FE-TICKET-P0-03 | P0 | Pass | Line-market hierarchy shows Spread row with backend line-market source, line `1.5`, period `Reg. Time`, and provider source. | N/A |
+| FE-TICKET-P0-04 | P0 | Pass | Spread outcome tap opens `trade-ticket`. | N/A |
+| FE-TICKET-P0-05 | P0 | Pass | Ticket XML includes `ticket-market-type-spread`, `ticket-line-1.5`, `ticket-period-Reg. Time`, `ticket-selection-side-yes`, provider source, and provider token. | N/A |
+| FE-TICKET-P0-06 | P0 | Pass | Default orderbook markers are absent from Home, Detail, line, and ticket evidence. | N/A |
+| FE-TICKET-P1-01 | P1 | Open | The Home-opened ticket is not submitted in FE. | Next cycle should submit fake-token order from this same entry path. |
+| FE-TICKET-P1-02 | P1 | Open | Production active Polymarket event breadth is not covered by disposable proof. | Map/import more real active provider events. |
+
+Decision:
+
+- Pass/fail: Pass for selected Home -> Event Detail -> Spread ticket feature.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: submit/Portfolio/history from the same Home-opened path and production active provider breadth.
+- Next cycle required: yes, continue Local MVP user-flow breadth.

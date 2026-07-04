@@ -424,3 +424,18 @@ The focused FD gate in `docs/mobile/audits/cycle-fd-route-discovery-detail.md` c
 | FD-DISC-P0-05 | P0 | Default orderbook UI must remain hidden for the Local MVP retail path. | Android assertions reject top/inline/open orderbook markers in Home and opened detail evidence. |
 | FD-DISC-P1-01 | P1 | Production active Polymarket World Cup event breadth should replace disposable proof events. | Future provider mapping proof for active production events. |
 | FD-DISC-P1-02 | P1 | The same Home-opened event should continue through Buy/Sell ticket, fake-token order, and Portfolio/history. | Future Android proof for the full retail path from discovery entry. |
+
+## Cycle FE Home Route Event Ticket Criteria
+
+The focused FE gate in `docs/mobile/audits/cycle-fe-home-route-ticket.md` verifies the next Local MVP visible step after FD: a Home-opened route-backed event can reach the simple ticket with selected identity preserved.
+
+| ID | Priority | Criterion | Required proof |
+| --- | --- | --- | --- |
+| FE-TICKET-P0-01 | P0 | Home must show a route-backed World Cup event card with compact outcomes. | Samsung tablet screenshot/XML with route-backed event title, outcome labels, and event-card marker. |
+| FE-TICKET-P0-02 | P0 | Tapping the Home card must open the same route-backed Event Detail. | Android screenshot/XML after tap showing same event title, chart/probability marker, and Game Lines. |
+| FE-TICKET-P0-03 | P0 | Event Detail must expose a route-backed Spread row using backend line-market identity. | Android XML with `ticket-source-backend-line-market`, `selection-market-family-spread`, `selection-line-1.5`, `selection-period-Reg. Time`, and provider source. |
+| FE-TICKET-P0-04 | P0 | Tapping the Spread outcome must open the simple ticket. | Android screenshot/XML with `trade-ticket`. |
+| FE-TICKET-P0-05 | P0 | Ticket must preserve selected market type, line, period, side, provider source, and provider token. | Ticket XML with `ticket-market-type-spread`, `ticket-line-1.5`, `ticket-period-Reg. Time`, `ticket-selection-side-yes`, `provider-source-polymarket`, and provider token. |
+| FE-TICKET-P0-06 | P0 | Default orderbook UI must remain hidden for this retail path. | Android assertions reject orderbook markers in Home, Detail, line, and ticket evidence. |
+| FE-TICKET-P1-01 | P1 | Submit the Home-opened ticket as a fake-token order and prove Portfolio/history. | Future Android proof continuing from the Home-opened event. |
+| FE-TICKET-P1-02 | P1 | Replace disposable proof event with production active Polymarket-backed event breadth. | Future provider mapping and Android proof against active production events. |

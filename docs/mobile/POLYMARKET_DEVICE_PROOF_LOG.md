@@ -360,3 +360,38 @@ Pass for selected Local MVP discovery-to-detail flow with orderbook hidden by de
 
 Remaining gaps:
 Production active Polymarket World Cup provider breadth and full Home-opened route event proof through Buy/Sell ticket, fake-token order, and Portfolio/history.
+
+### 2026-07-04 - Cycle FE - Home route event opens simple ticket
+
+Reference device:
+Product steering plus existing Polymarket sports audits. Fresh S23 proof was not required for this local Home-entry ticket gate.
+
+Holiwyn device:
+Samsung tablet / Holiwyn Expo Go / local Expo port `8274`.
+
+Holiwyn app mode:
+`EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE` unset, `EXPO_PUBLIC_SHOW_ORDERBOOK` unset, backend `http://172.16.200.14:3002`.
+
+Holiwyn actions:
+Opened Home, tapped a route-backed disposable World Cup live event card, verified the same Event Detail opened, scrolled to Game Lines, tapped the Spread outcome, and verified the simple ticket preserved line, period, side, provider source, and provider token.
+
+Holiwyn evidence:
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-event.json`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-proof.json`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-home.xml`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-detail-top.xml`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-line-markets.xml`
+- `docs/mobile/harness/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-spread-ticket.xml`
+- `docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-home.png`
+- `docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-detail-top.png`
+- `docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-line-markets.png`
+- `docs/mobile/screenshots/cycle-FE-home-route-ticket/cycle-FE-home-route-ticket-spread-ticket.png`
+
+Smoke/tests:
+PowerShell parser checks, mobile typecheck, provider breadth route proof, backend health, and tablet proof wrapper passed.
+
+Result:
+Pass for selected Home -> Event Detail -> Spread ticket flow with orderbook hidden by default.
+
+Remaining gaps:
+Submit the Home-opened ticket as a fake-token order, then prove Portfolio/history. Production active Polymarket World Cup provider breadth remains P1.
