@@ -2,6 +2,38 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EH-A - Provider Status Surface Contract
+
+Closed or narrowed:
+
+- PM-GAP-084 backend side is narrowed: `/api/mobile/events/:slug/live-detail` now exposes `providerLifecycle` at the top level, under `event`, in `contract`, and per compact `markets[]` row.
+- `providerLifecycle` gives mobile one route-backed surface for `status`, `ready`, `stale`, `refreshDue`, `refreshing`, `refreshStarted`, `unavailable`, `empty`, `notReady`, `source`, `reason`, `nextRefreshAt`, `lastFetchedAt`, `fallback`, `fallbackApplied`, and `fallbackReason`.
+- `markets[].providerLifecycle.quote/orderbookDepth/chartHistory` preserve source-specific status and freshness, so mobile can render ready, refresh-due, stale, and unavailable without deriving state from scattered quote/depth/chart fields.
+- `POST /api/mobile/events/:slug/provider-refresh` now reports aggregate `providerLifecycle.status`, `refreshStartedAt`, `refreshCompletedAt`, refresh-start/completed flags, `lastFetchedAt`, fallback flags, and optional `lineProvider` state.
+- Missing `OPTIC_ODDS_API_KEY` is surfaced as optional/unconfigured line-provider enrichment when fixture metadata exists; it does not block the Polymarket Gamma/CLOB quote, depth, or chart lifecycle.
+- `docs/mobile/harness/cycle-EH-A-provider-status-surface.json` proves stale/refresh-due -> ready for the provider-backed market and proves an intentionally empty compact market remains explicitly `unavailable`, `empty`, and `notReady`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Production line-family provider coverage still depends on real provider mappings and scheduled refresh coverage; EH-A proves the status surface shape, not universal provider availability.
+- A mobile visible proof still needs to consume `providerLifecycle` once Agent B wires rendering; this lane intentionally did not edit visible mobile UI.
+
+Schema mismatch:
+
+- No schema change was required. The status surface is derived from existing provider quote, provider orderbook depth, and chart snapshot timestamps.
+
+Route mismatch:
+
+- Live-detail and provider-refresh now share the same lifecycle vocabulary. Remaining mismatch is data coverage for every compact market, not route shape.
+
+Temporary mock/static data:
+
+- No frontend mock/static data was added. The EH-A proof script creates disposable backend rows and labels contract fallback explicitly when used for local proof quotes.
+
+Future migration concern:
+
+- Keep `refresh_due` separate from `stale`, and keep `unavailable/empty/notReady` explicit so mobile does not present fallback or missing provider data as ready.
+
 ## Cycle EG-A - Provider Refresh Lifecycle Contract
 
 Closed or narrowed:

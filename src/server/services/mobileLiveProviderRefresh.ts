@@ -50,6 +50,7 @@ export async function expireMobileLiveProviderQuoteSnapshots(params: {
 }
 
 export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiveProviderRefreshOptions) {
+  const refreshStartedAt = new Date().toISOString();
   const compactMarkets = await loadCompactLiveMarkets(options.eventSlug);
   const providerFixture = await loadProviderFixtureMetadata(options.eventSlug);
   const compactMarketIds = compactMarkets.map((market) => market.id);
@@ -151,9 +152,21 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
   const postRefresh = await summarizeCompactProviderSnapshots(compactMarketIds);
   const postRefreshDepth = await summarizeCompactDepthSnapshots(compactMarketIds);
   const postRefreshHistory = await summarizeCompactChartHistory(compactMarketIds);
+  const aggregateStatus = aggregateLifecycleStatus([
+    postRefresh.lifecycle.status,
+    postRefreshDepth.lifecycle.status,
+    postRefreshHistory.lifecycle.status,
+  ]);
+  const refreshCompletedAt = new Date().toISOString();
   const providerLifecycle = {
     source: "mobile-live-provider-refresh",
-    generatedAt: new Date().toISOString(),
+    status: aggregateStatus,
+    generatedAt: refreshCompletedAt,
+    refreshStartedAt,
+    refreshCompletedAt,
+    refreshStarted: true,
+    refreshing: false,
+    refreshStatus: "completed" as const,
     quote: postRefresh.lifecycle,
     orderbookDepth: postRefreshDepth.lifecycle,
     chartHistory: postRefreshHistory.lifecycle,
@@ -169,11 +182,44 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
       postRefresh.lifecycle.status === "stale" ||
       postRefreshDepth.lifecycle.status === "stale" ||
       postRefreshHistory.lifecycle.status === "stale",
+    unavailable:
+      postRefresh.lifecycle.status === "unavailable" ||
+      postRefreshDepth.lifecycle.status === "unavailable" ||
+      postRefreshHistory.lifecycle.status === "unavailable",
+    empty:
+      postRefresh.lifecycle.empty &&
+      postRefreshDepth.lifecycle.empty &&
+      postRefreshHistory.lifecycle.empty,
+    notReady: aggregateStatus !== "ready",
+    fallback: contractProofFallback?.applied === true,
+    fallbackApplied: contractProofFallback?.applied === true,
+    fallbackReason: contractProofFallback?.reason ?? null,
+    reason: aggregateStatus === "ready"
+      ? "Provider lifecycle surfaces are ready after refresh."
+      : firstLifecycleReason([postRefresh.lifecycle, postRefreshDepth.lifecycle, postRefreshHistory.lifecycle]),
     nextRefreshAt: earliestIso([
       postRefresh.lifecycle.nextRefreshAt,
       postRefreshDepth.lifecycle.nextRefreshAt,
       postRefreshHistory.lifecycle.nextRefreshAt,
     ]),
+    lastFetchedAt: latestIso([
+      postRefresh.lifecycle.lastFetchedAt,
+      postRefreshDepth.lifecycle.lastFetchedAt,
+      postRefreshHistory.lifecycle.lastFetchedAt,
+    ]),
+    lineProvider: {
+      source: lineProviderReport.source,
+      status: lineProviderReport.status === "skipped" && lineProviderReport.skippedReason === "missing_optic_odds_api_key"
+        ? "unconfigured"
+        : lineProviderReport.status,
+      attempted: lineProviderReport.attempted,
+      optional: true,
+      blocking: false,
+      skippedReason: lineProviderReport.skippedReason ?? null,
+      reason: lineProviderReport.skippedReason === "missing_optic_odds_api_key"
+        ? "OPTIC_ODDS_API_KEY is optional enrichment and is not configured."
+        : lineProviderReport.skippedReason ?? null,
+    },
   };
 
   return {
@@ -369,11 +415,19 @@ function lifecycleSummary(params: {
       source: params.source,
       status: "unavailable" as const,
       latestAt: null,
+      lastFetchedAt: null,
       stalenessSeconds: null,
       readyAfterSeconds: READY_AFTER_SECONDS,
       staleAfterSeconds: STALE_AFTER_SECONDS,
       nextRefreshAt: null,
       shouldRefresh: true,
+      ready: false,
+      refreshDue: false,
+      stale: false,
+      unavailable: true,
+      empty: true,
+      notReady: true,
+      fallback: false,
       reason: params.unavailableReason,
     };
   }
@@ -391,11 +445,19 @@ function lifecycleSummary(params: {
     source: params.source,
     status,
     latestAt: params.latestAt,
+    lastFetchedAt: params.latestAt,
     stalenessSeconds,
     readyAfterSeconds: READY_AFTER_SECONDS,
     staleAfterSeconds: STALE_AFTER_SECONDS,
     nextRefreshAt,
     shouldRefresh: status !== "ready",
+    ready: status === "ready",
+    refreshDue: status === "refresh_due",
+    stale: status === "stale",
+    unavailable: false,
+    empty: false,
+    notReady: status !== "ready",
+    fallback: false,
     reason: status === "ready"
       ? "Provider snapshot is fresh."
       : status === "refresh_due"
@@ -408,4 +470,22 @@ function earliestIso(values: Array<string | null>) {
   return values
     .filter((value): value is string => typeof value === "string")
     .sort()[0] ?? null;
+}
+
+function latestIso(values: Array<string | null>) {
+  const sorted = values
+    .filter((value): value is string => typeof value === "string")
+    .sort();
+  return sorted[sorted.length - 1] ?? null;
+}
+
+function aggregateLifecycleStatus(statuses: string[]) {
+  if (statuses.every((status) => status === "ready")) return "ready" as const;
+  if (statuses.some((status) => status === "stale")) return "stale" as const;
+  if (statuses.some((status) => status === "unavailable")) return "unavailable" as const;
+  return "refresh_due" as const;
+}
+
+function firstLifecycleReason(lifecycles: Array<{ status: string; reason: string }>) {
+  return lifecycles.find((lifecycle) => lifecycle.status !== "ready")?.reason ?? "Provider lifecycle is not ready after refresh.";
 }
