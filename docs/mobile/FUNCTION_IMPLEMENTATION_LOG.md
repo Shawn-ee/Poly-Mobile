@@ -2,6 +2,54 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle DE - Bulk Review Apply Workflow
+
+Feature/page worked on:
+
+- PM-GAP-067B operator-reviewed provider mapping workflow.
+- Review-first bulk exact-slug apply path for real Polymarket soccer market identities.
+
+Frontend/harness components touched:
+
+- No visual UI code changed.
+- Samsung tablet regression proof refreshed the server-backed Colombia vs Ghana live-detail Book path.
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveProviderBulkSlugReview.ts`
+- `src/server/services/mobileLiveProviderCandidates.ts`
+- `src/app/api/mobile/events/[slug]/provider-mapping/route.ts`
+- `src/__tests__/mobile-live-provider-bulk-slug-review.service.test.ts`
+- `src/__tests__/mobile-live-provider-mapping.route.test.ts`
+- `scripts/prove_mobile_provider_bulk_review_apply_workflow.ts`
+
+Important functions/services touched:
+
+- `reviewMobileLiveProviderBulkSlugMappings()` first runs the bulk exact-slug review contract, then blocks apply if any review fails.
+- `POST /api/mobile/events/:slug/provider-mapping` now accepts `reviews[]` in addition to the existing direct `mappings[]` attach body.
+- `previewMobileLiveProviderCandidatesBulkBySlug()` now returns a non-null mapping list suitable for attach only after individual reviews pass.
+- Existing provider family, relevance, token completeness, outcome-shape, dry-run, and `confirmApply` gates remain required.
+
+User interactions supported:
+
+- No direct end-user UI yet.
+- Future operator/admin workflow can submit reviewed exact provider slugs, inspect failed reviews, dry-run all-pass mappings, and only then apply them with explicit confirmation.
+
+State transitions:
+
+- Mixed review proof submits 4 entries: 3 real match-winner markets and 1 totals guard market using a wrong-family Colombia winner slug.
+- The wrong-family totals review fails with `provider_family_mismatch` and `insufficient_market_relevance`.
+- Because one review fails, the route returns `blocked=true`, does not call attach, and provider refreshable readiness remains unchanged at 0 markets.
+- All-valid reviews dry-run successfully with 3 attach-ready mappings.
+- All-valid reviews with `confirmApply=true` apply 3 real provider markets and 6 outcome token mappings.
+- Samsung tablet proof confirms the existing provider-backed live-detail Book path still works after the workflow change.
+
+Known limitations:
+
+- This cycle does not create the operator UI for collecting slugs from the Polymarket reference app.
+- Real provider line-market slugs/source remain missing.
+- The local proof event still has 2 unmapped compact/guard markets after applying the 3 match-winner mappings.
+
 ## Cycle DC - Bulk Manual Slug Review Contract
 
 Feature/page worked on:

@@ -2,6 +2,38 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle DE - Bulk Review Apply Workflow
+
+Closed or narrowed:
+
+- Bulk review and bulk apply are now joined behind a protected all-pass workflow.
+- A failed review blocks the whole apply attempt and leaves provider mapping readiness unchanged.
+- All-valid reviews can first dry-run attach validation, then apply the exact same reviewed mappings when `confirmApply=true`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider exact slugs/token IDs for spreads, totals, team totals, halves, corners, props, and correct score.
+- Operator/admin UI for collecting slugs from the Polymarket reference app and submitting review/apply payloads.
+- Production importer/source strategy for trusted provider event slugs and line-market slugs.
+
+Schema mismatch:
+
+- No schema change was required. Existing provider identity fields remain sufficient for reviewed mappings.
+- Long term, an audit table for operator review attempts could preserve who reviewed/applied which provider slugs.
+
+Route mismatch:
+
+- `/provider-mapping` can now perform review-first apply with `reviews[]`, but the app/admin surface still has no UI around it.
+- Direct `mappings[]` apply remains available for tooling; production operator workflows should avoid bypassing review criteria.
+
+Temporary mock/static data:
+
+- The proof creates a local proof event and totals guard market. The applied 3 match-winner mappings use real Polymarket slugs, condition IDs, and CLOB token IDs; the guard market remains unmapped.
+
+Future migration concern:
+
+- Keep the all-or-nothing block behavior. Partial bulk apply would make live-detail, ticket, order, portfolio, and history identity harder to reason about.
+
 ## Cycle DC - Bulk Manual Slug Review Contract
 
 Closed or narrowed:

@@ -3,6 +3,7 @@ import { assertReferenceBotAdmin } from "@/lib/internalAdminAuth";
 import { toGuardResponse } from "@/lib/marketGuards";
 import { getMobileLiveProviderMappingReadiness } from "@/server/services/mobileLiveProviderMapping";
 import { attachMobileLiveProviderIdentities } from "@/server/services/mobileLiveProviderIdentityAttach";
+import { reviewMobileLiveProviderBulkSlugMappings } from "@/server/services/mobileLiveProviderBulkSlugReview";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -37,8 +38,23 @@ export async function POST(request: Request, context: Params) {
         dryRun?: boolean;
         confirmApply?: boolean;
         mappings?: Parameters<typeof attachMobileLiveProviderIdentities>[0]["mappings"];
+        reviews?: Parameters<typeof reviewMobileLiveProviderBulkSlugMappings>[0]["reviews"];
       }
     | null;
+
+  if (Array.isArray(body?.reviews)) {
+    const result = await reviewMobileLiveProviderBulkSlugMappings({
+      eventSlug: slug,
+      dryRun: body?.dryRun !== false,
+      confirmApply: body?.confirmApply === true,
+      reviews: body.reviews,
+    });
+
+    return NextResponse.json({
+      ok: true,
+      result,
+    });
+  }
 
   const result = await attachMobileLiveProviderIdentities({
     eventSlug: slug,
