@@ -1,6 +1,6 @@
 # Live Event Detail Audit
 
-Status: Cycle CN added protected provider mapping readiness for compact live detail and passed Samsung tablet regression proof. Cycle CM added protected provider refresh execution/invalidation for compact live detail and passed Samsung tablet proof after refresh. Cycle CL passed provider refresh policy contract proof for compact live detail and selected second-half orderbook. Cycle CK passed provider quote snapshot ready-state proof for compact live detail and selected second-half orderbook. Cycle CJ passed provider quote snapshot metadata contract and tablet regression proof. Cycle CI passed compact depth batching policy metadata and preserved tablet route-depth proof. Cycle CH passed batched compact-market route-backed depth proof. Cycle CG passed selected second-half orderbook depth proof. Cycle CF passed selected first-half orderbook depth proof. Cycle CE passed compact per-visible-market availability contract proof. Cycle CD passed selected orderbook availability contract proof. Cycle BC passed the live provider freshness contract and tablet proof. Cycle BB passed selected Team Totals seeded ready-depth proof. Cycle BA passed compact line-group coverage and selected Totals seeded ready-depth proof. Cycle AZ passed selected Spread line-market seeded ready-depth proof. Cycle AY passed selected line-market depth identity proof. Cycle AX passed the compact mobile live-detail route and route-backed primary orderbook-depth tablet proof. Cycle AN passed structural live event detail UI with backend-shaped fixture data and tablet proof; Cycle AO added the real `/api/events/:slug` contract for market identity, line identity, compact depth, and optional chart/live-stat arrays. Cycle AQ sources embedded chart history from `MarketOutcomeSnapshot` rows when available and preserves depth outcome identity in mobile. Cycle AR adds the dedicated `/api/markets/:marketId/chart?range=...` route/client contract. Cycle AS wires EventDetail to consume that chart route in server mode. Cycle AT adds deterministic `MarketOutcomeSnapshot` seeding for local/server proof. Cycle AU exposes chart loading/empty/error route states in the game chart. Cycle AW seeded route-readable orderbook depth. This is still not full backend parity because the local compact World Cup event is not mapped to real Polymarket markets, provider-owned liquidity for all live markets remains open, and provider-owned live stats if product keeps that tab remain open.
+Status: Cycle CO added protected provider identity attach dry-run/apply behavior and passed Samsung tablet regression proof. Cycle CN added protected provider mapping readiness for compact live detail and passed Samsung tablet regression proof. Cycle CM added protected provider refresh execution/invalidation for compact live detail and passed Samsung tablet proof after refresh. Cycle CL passed provider refresh policy contract proof for compact live detail and selected second-half orderbook. Cycle CK passed provider quote snapshot ready-state proof for compact live detail and selected second-half orderbook. Cycle CJ passed provider quote snapshot metadata contract and tablet regression proof. Cycle CI passed compact depth batching policy metadata and preserved tablet route-depth proof. Cycle CH passed batched compact-market route-backed depth proof. Cycle CG passed selected second-half orderbook depth proof. Cycle CF passed selected first-half orderbook depth proof. Cycle CE passed compact per-visible-market availability contract proof. Cycle CD passed selected orderbook availability contract proof. Cycle BC passed the live provider freshness contract and tablet proof. Cycle BB passed selected Team Totals seeded ready-depth proof. Cycle BA passed compact line-group coverage and selected Totals seeded ready-depth proof. Cycle AZ passed selected Spread line-market seeded ready-depth proof. Cycle AY passed selected line-market depth identity proof. Cycle AX passed the compact mobile live-detail route and route-backed primary orderbook-depth tablet proof. Cycle AN passed structural live event detail UI with backend-shaped fixture data and tablet proof; Cycle AO added the real `/api/events/:slug` contract for market identity, line identity, compact depth, and optional chart/live-stat arrays. Cycle AQ sources embedded chart history from `MarketOutcomeSnapshot` rows when available and preserves depth outcome identity in mobile. Cycle AR adds the dedicated `/api/markets/:marketId/chart?range=...` route/client contract. Cycle AS wires EventDetail to consume that chart route in server mode. Cycle AT adds deterministic `MarketOutcomeSnapshot` seeding for local/server proof. Cycle AU exposes chart loading/empty/error route states in the game chart. Cycle AW seeded route-readable orderbook depth. This is still not full backend parity because the local compact World Cup event is not mapped to real Polymarket markets, provider-owned liquidity for all live markets remains open, and provider-owned live stats if product keeps that tab remain open.
 
 ## Scope
 
@@ -9,6 +9,47 @@ Status: Cycle CN added protected provider mapping readiness for compact live det
 - Holiwyn proof device: Samsung tablet running Holiwyn through Expo Go.
 - Cycle branch name: `mobile/cycle-AN-saved-watchlist-parity`, re-scoped honestly to live event detail after product steering changed.
 - Out of scope: deposit, location verification, notifications, non-football live markets, World Cup informational ad/detail pages.
+
+## Cycle CO Provider Identity Attach Audit
+
+Result: Partial pass for provider identity attach dry-run contract and Samsung tablet regression proof. Not full provider parity because real provider IDs have not been discovered/applied yet.
+
+Reference audit:
+
+- Continues the S23 Polymarket live-game reference used in Cycle CH: logged-in official Android app, predicting-focused game page with tradable rows, chart, chat preview, outcome buttons, Game Lines, and expandable market rows.
+
+What became materially closer to Polymarket:
+
+- Holiwyn now has a protected backend path for attaching provider-owned market and outcome identity to compact live markets, which is required before provider refresh can update live market rows from a real feed.
+- The attach route projects readiness in dry-run mode, so an import/mapping cycle can be audited before mutating local market identity.
+
+Acceptance criteria:
+
+| ID | Priority | Criterion | Audit method | Result |
+| --- | --- | --- | --- | --- |
+| LED-CO-P0-01 | P0 | Protected provider mapping POST exists and requires internal/admin auth. | Route test | Pass |
+| LED-CO-P0-02 | P0 | Attach validation rejects non-compact markets, unsupported sources, missing condition IDs, and incomplete outcome mappings. | Unit test | Pass |
+| LED-CO-P0-03 | P0 | Dry-run attach projects provider readiness without writing fake IDs. | Route proof | Pass |
+| LED-CO-P0-04 | P0 | Samsung tablet live-detail second-half Book flow still passes after backend contract change. | Samsung tablet XML/screenshot | Pass |
+| LED-CO-P1-01 | P1 | Real provider candidate discovery/import supplies IDs for compact World Cup match markets. | Future provider proof | Open |
+| LED-CO-P1-02 | P1 | Confirmed apply with real IDs moves all compact markets to provider-refreshable. | Future provider proof | Open |
+| LED-CO-P1-03 | P1 | No-fallback provider refresh moves stale/refresh-due to ready after real identity apply. | Future provider refresh proof | Open |
+
+Holiwyn evidence:
+
+- Dry-run attach proof: `docs/mobile/harness/cycle-current-mobile-live-provider-identity-attach-dry-run.json`
+- Device proof: `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`, `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`, `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`
+- Unit/route proof: `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-mapping.route.test.ts src/__tests__/mobile-live-provider-mapping.service.test.ts src/__tests__/mobile-live-provider-identity-attach.service.test.ts src/__tests__/mobile-live-provider-refresh.route.test.ts`
+- Build proof: `cmd /c npm.cmd run build`
+- Proof command: `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+
+Unresolved P0 gaps: 0 for provider identity attach route and Android regression proof scope.
+
+Remaining P1/P2 gaps:
+
+- Real provider candidate discovery/import.
+- Confirmed apply with real provider IDs for all compact World Cup live markets.
+- Real provider refresh without contract-proof fallback.
 
 ## Cycle CN Provider Mapping Readiness Audit
 
