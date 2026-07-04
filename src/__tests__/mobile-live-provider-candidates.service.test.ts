@@ -2,6 +2,7 @@ import {
   buildProviderCandidateSearchQueries,
   classifyProviderMarketFamily,
   deriveProviderEventSlugHints,
+  expectedProviderMarketFamily,
   fetchProviderCandidatesFromSportsEvents,
   fetchProviderCandidatesForQueries,
   fetchProviderCandidatesForSlugs,
@@ -81,6 +82,123 @@ describe("mobile live provider candidates", () => {
       slug: "colombia-ghana-corners",
       question: "Colombia vs Ghana corners over 8.5?",
     })).toBe("corners");
+  });
+
+  test("derives expected provider family from Holiwyn line market shape", () => {
+    expect(expectedProviderMarketFamily({
+      title: "Total goals 2.5",
+      marketType: "total_goals",
+      period: null,
+      marketGroupKey: "totals",
+      marketGroupTitle: "Totals",
+    })).toBe("total_goals");
+    expect(expectedProviderMarketFamily({
+      title: "Colombia +1.5",
+      marketType: "spread",
+      period: null,
+      marketGroupKey: "spreads",
+      marketGroupTitle: "Spreads",
+    })).toBe("spread");
+  });
+
+  test("rejects exact winner slugs for Holiwyn line markets with provider family mismatch", () => {
+    const totalMarket = {
+      ...compactMarket,
+      id: "market-total",
+      title: "Colombia vs Ghana total goals 2.5",
+      marketType: "total_goals",
+      line: { toString: () => "2.5" },
+      outcomes: [
+        { id: "over", name: "Over 2.5", side: "over", displayOrder: 0, referenceOutcomeLabel: "Over 2.5" },
+        { id: "under", name: "Under 2.5", side: "under", displayOrder: 1, referenceOutcomeLabel: "Under 2.5" },
+      ],
+    };
+
+    const ranked = rankProviderCandidates(totalMarket, [
+      {
+        slug: "fifwc-col-gha-2026-07-03-col",
+        question: "Will Colombia win on 2026-07-03?",
+        externalMarketId: "gamma-market-col",
+        conditionId: "condition-col",
+        eventTitle: "Colombia vs. Ghana",
+        active: true,
+        closed: false,
+        archived: false,
+        acceptingOrders: true,
+        bestBid: 0.8,
+        bestAsk: 0.82,
+        spread: 0.02,
+        lastTradePrice: null,
+        volume: null,
+        volume24hr: null,
+        liquidity: null,
+        outcomes: [
+          { name: "Yes", tokenId: "token-yes", outcomePrice: 0.8, displayOrder: 0 },
+          { name: "No", tokenId: "token-no", outcomePrice: 0.2, displayOrder: 1 },
+        ],
+        tags: ["soccer"],
+        category: "Sports / Soccer",
+        score: 0,
+        attachReadiness: { attachReady: false, reasons: ["not_ranked"] },
+      },
+    ]);
+
+    expect(ranked[0].attachReadiness).toEqual(expect.objectContaining({
+      attachReady: false,
+      expectedFamily: "total_goals",
+      candidateFamily: "match_winner",
+      reasons: expect.arrayContaining(["provider_family_mismatch"]),
+    }));
+  });
+
+  test("allows exact line-family slugs when token shape and relevance match", () => {
+    const totalMarket = {
+      ...compactMarket,
+      id: "market-total",
+      title: "Colombia vs Ghana total goals 2.5",
+      marketType: "total_goals",
+      line: { toString: () => "2.5" },
+      outcomes: [
+        { id: "over", name: "Over 2.5", side: "over", displayOrder: 0, referenceOutcomeLabel: "Over 2.5" },
+        { id: "under", name: "Under 2.5", side: "under", displayOrder: 1, referenceOutcomeLabel: "Under 2.5" },
+      ],
+    };
+
+    const ranked = rankProviderCandidates(totalMarket, [
+      {
+        slug: "fifwc-col-gha-2026-07-03-total-goals-25",
+        question: "Colombia vs Ghana total goals over 2.5?",
+        externalMarketId: "gamma-market-total",
+        conditionId: "condition-total",
+        eventTitle: "Colombia vs. Ghana",
+        active: true,
+        closed: false,
+        archived: false,
+        acceptingOrders: true,
+        bestBid: 0.48,
+        bestAsk: 0.52,
+        spread: 0.04,
+        lastTradePrice: null,
+        volume: null,
+        volume24hr: null,
+        liquidity: null,
+        outcomes: [
+          { name: "Over 2.5", tokenId: "token-over", outcomePrice: 0.5, displayOrder: 0 },
+          { name: "Under 2.5", tokenId: "token-under", outcomePrice: 0.5, displayOrder: 1 },
+        ],
+        tags: ["soccer"],
+        category: "Sports / Soccer",
+        score: 0,
+        attachReadiness: { attachReady: false, reasons: ["not_ranked"] },
+      },
+    ]);
+
+    expect(ranked[0].attachReadiness).toEqual(expect.objectContaining({
+      attachReady: true,
+      expectedFamily: "total_goals",
+      candidateFamily: "total_goals",
+      reasons: [],
+    }));
   });
 
   test("summarizes exact event provider families with explicit zero line buckets", () => {

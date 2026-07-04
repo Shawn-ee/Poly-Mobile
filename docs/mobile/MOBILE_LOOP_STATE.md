@@ -6,6 +6,29 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle CZ
+
+Date: 2026-07-04
+Branch: `mobile/cycle-CZ-line-slug-family-gate`
+Goal: Continue PM-GAP-067B by making exact line-market slug review family-aware before any provider identity attach can be considered safe.
+Reference app screens observed: Continued from Cycle CW/CX/CY Samsung S23 Polymarket official app Colombia vs Ghana game page and provider diagnostics.
+Holiwyn screens changed: No intended visual changes. Existing server-backed Colombia vs Ghana live-detail Book flow was re-proven on Samsung tablet.
+Backend/API changed: Provider attach readiness now reports `expectedFamily`, `candidateFamily`, and `provider_family_mismatch`. Manual preview exposes `expectedProviderFamily`. Line-family relevance can pass only when provider family matches and important match tokens overlap.
+Database/schema changed: None.
+Files changed: provider candidate service, provider candidate service tests, line slug family proof harness, docs/proof artifacts, tablet proof artifacts.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-candidates.service.test.ts src/__tests__/mobile-live-provider-candidates.route.test.ts`
+- `cmd /c npx.cmd tsx scripts/prove_mobile_provider_line_slug_family_gate.ts --output docs/mobile/harness/cycle-current-mobile-provider-line-slug-family-gate.json`
+- Samsung tablet proof via `mobile/scripts/smoke.ps1 -Deep -ServerLiveDetailOrderBook -ServerEventSlug world-cup-2026-colombia-vs-ghana-2026-07-03`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-provider-line-slug-family-gate.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+Result: Pass for exact-slug safety gate. A total-goals target accepts a same-family total-goals candidate and rejects a match-winner slug with `provider_family_mismatch`. Real line-market provider mapping remains open because no real line slugs are available yet.
+Next focus: find/import real exact provider line slugs or a stronger provider endpoint, then run this preview gate against real provider data.
+
 ## Cycle CY
 
 Date: 2026-07-04

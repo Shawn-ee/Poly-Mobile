@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CZ - Line Slug Family Gate
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Manual exact provider slug review for line markets | `/api/mobile/events/:slug/provider-candidates` | POST | Internal admin key or admin session | `marketId`, `slugs[]` | `expectedProviderFamily`, `bestCandidate.attachReadiness.expectedFamily`, `candidateFamily`, `reasons[]`, `attachReadyCandidateCount`, `attachProposal` | Reads compact `Event`, `Market`, and active `Outcome`; exact slug data comes from Gamma `/markets?slug=...` | None. Wrong-family exact slugs are rejected before attach; no local fixture counts as provider-backed | Need actual exact provider line slugs or another provider source for production line markets. |
+| Line slug family gate proof | `scripts/prove_mobile_provider_line_slug_family_gate.ts` | Local script | Local development only | `--output` | Proof artifact showing accepted same-family total-goals candidate and rejected match-winner candidate for a totals target | In-memory market-shaped target only; does not write DB | No provider identity mutation | Replace synthetic candidate proof with real exact line slug preview when a provider line slug exists. |
+
+Cycle CZ implementation notes:
+
+- The route contract remains protected and read-only for previews.
+- `provider_family_mismatch` is additive; relevance and token completeness remain required.
+- Generic Over/Under line markets can pass only when the expected family matches and important match tokens overlap.
+
 ## Cycle CY - Provider Line Market Availability Diagnostic
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
