@@ -77,6 +77,20 @@ describe("public orderbook book API no-leak checks", () => {
     buildPublicOrderbookSnapshot.mockResolvedValue({
       bids: [{ outcomeId: "home", price: 0.57, size: 120 }],
       asks: [{ outcomeId: "home", price: 0.6, size: 90 }],
+      providerQuoteSnapshot: {
+        source: "reference-quote-snapshot",
+        status: "ready",
+        snapshotCount: 2,
+        latestFetchedAt: "2026-07-03T22:00:10.000Z",
+        latestUpdatedAt: "2026-07-03T22:00:11.000Z",
+        stalenessSeconds: 10,
+        staleAfterSeconds: 90,
+        isStale: false,
+        acceptingOrders: true,
+        outcomeIds: ["away", "home"],
+        sources: ["polymarket"],
+        reason: "Provider quote snapshot is fresh.",
+      },
     });
   });
 
@@ -112,6 +126,19 @@ describe("public orderbook book API no-leak checks", () => {
         isSuspended: false,
         isDelayed: false,
         reason: "Selected market is live and fresh.",
+      },
+      providerQuoteSnapshot: {
+        source: "reference-quote-snapshot",
+        status: "ready",
+        snapshotCount: 2,
+        latestFetchedAt: "2026-07-03T22:00:10.000Z",
+        latestUpdatedAt: "2026-07-03T22:00:11.000Z",
+        staleAfterSeconds: 90,
+        isStale: false,
+        acceptingOrders: true,
+        outcomeIds: ["away", "home"],
+        sources: ["polymarket"],
+        reason: "Provider quote snapshot is fresh.",
       },
       emptyState: null,
       bids: [{ outcomeId: "home", price: 0.57, size: 120 }],

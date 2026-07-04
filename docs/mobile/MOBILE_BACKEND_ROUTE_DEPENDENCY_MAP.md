@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CJ - Provider Quote Snapshot Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Selected orderbook provider snapshot status | `/api/orderbook/:marketId/book?maxLevels=...` | GET | Optional public viewing | None | `providerQuoteSnapshot.source`, `status`, `snapshotCount`, `latestFetchedAt`, `latestUpdatedAt`, `stalenessSeconds`, `staleAfterSeconds`, `isStale`, `acceptingOrders`, `outcomeIds`, `sources`, `reason` | `ReferenceQuoteSnapshot` joined by `marketId` and optional `outcomeId`; existing open `Order` rows for depth | If no provider rows exist, route returns `status: unavailable` rather than fake readiness | Provider ingestion must write current World Cup live quote snapshots. |
+| Compact live-detail provider snapshot status | `/api/mobile/events/:slug/live-detail` | GET | Optional public viewing | None | `markets[].providerQuoteSnapshot`, `contract.batchedProviderQuoteSnapshotSource`, `contract.batchedProviderQuoteSnapshotMarketCount` | Compact `Market` rows, active `Outcome` rows, open `Order` rows, optional `ReferenceQuoteSnapshot` rows | Existing local/proof depth still renders; provider snapshot metadata can be unavailable | Provider-owned cache/invalidation and live liquidity remain missing. |
+
+Cycle CJ implementation notes:
+
+- This cycle uses the existing `ReferenceQuoteSnapshot` schema instead of inventing frontend-only provider state.
+- The public route intentionally excludes sensitive/provider-internal fields such as token IDs, external market IDs, condition IDs, credentials, owners, and users.
+
 ## Cycle CI - Depth Batching Policy Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
