@@ -65,6 +65,8 @@ Cycle FV wires the standalone mobile Portfolio to this route in server mode. The
 
 Cycle FW makes the Portfolio chart visually consume `PortfolioValueHistory.points`. Android proof now expects `portfolio-chart-data-driven` plus a server-backed `1W` range with seven points.
 
+Cycle FX adds a mobile-only selected chart point/readout interaction. It does not change backend contracts; the readout is derived from the same `PortfolioValueHistory.points` payload.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

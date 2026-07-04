@@ -1299,6 +1299,17 @@ try {
         "portfolio-chart-status-ready",
         "portfolio-chart-point-count-7"
       )
+      Invoke-TapHierarchyNode -Path $homeRouteServerPortfolioRangeHierarchy -Identifier "portfolio-performance-chart"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "$homeRouteServerArtifact-portfolio-chart-touch.png"
+      $homeRouteServerPortfolioChartTouchHierarchy = Save-UiHierarchy -Name "$homeRouteServerArtifact-portfolio-chart-touch.xml"
+      Assert-HierarchyContains -Path $homeRouteServerPortfolioChartTouchHierarchy -Expected @(
+        "portfolio-chart-touchable",
+        "portfolio-chart-readout",
+        "portfolio-chart-selected-index-3",
+        "portfolio-chart-selected-value-10000",
+        "portfolio-chart-source-portfolio-value-history-route"
+      )
 
       $homeRouteServerCanceledHierarchy = $null
       if ($LocalMvpHomeRouteServerCancelFlow) {

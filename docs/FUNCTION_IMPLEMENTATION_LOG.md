@@ -102,3 +102,14 @@
 - Validation: `npm run typecheck`; `npx vitest run src/__tests__/api.test.ts src/__tests__/portfolioValueHistoryService.test.ts`; PowerShell parser check for `scripts/smoke.ps1`; Samsung tablet proof `powershell -ExecutionPolicy Bypass -File scripts\local-mvp-home-route-server-filled-proof.ps1 -Port 8233 -BackendBaseUrl http://172.16.200.14:3002`.
 - Proof artifacts: `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-portfolio-range-1w.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-portfolio-range-1w.xml`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-proof.json`.
 - Known limitations: the line is still a lightweight React Native approximation, not a high-fidelity native chart with press tooltip behavior.
+
+## Cycle FX - Portfolio Chart Touch Readout
+
+- Feature/page: Portfolio performance chart interaction.
+- Frontend components touched: `src/components/Portfolio.tsx`, `scripts/smoke.ps1`.
+- Important functions/services touched: no backend/API changes. The interaction reads the active `PortfolioValueHistory.points` already supplied by route or fallback.
+- User interactions supported: tapping the Portfolio chart selects a mid-series point and shows a compact value/range readout. The chart proof label exposes `portfolio-chart-touchable`, `portfolio-chart-readout`, selected index, and selected value.
+- State transitions: `PortfolioSparkline` keeps local `selectedIndexOverride`; it resets when range/source/status/point count changes.
+- Validation: `npm run typecheck`; `npx vitest run src/__tests__/api.test.ts src/__tests__/portfolioValueHistoryService.test.ts`; PowerShell parser check for `scripts/smoke.ps1`; Samsung tablet proof `powershell -ExecutionPolicy Bypass -File scripts\local-mvp-home-route-server-filled-proof.ps1 -Port 8234 -BackendBaseUrl http://172.16.200.14:3002`.
+- Proof artifacts: `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-portfolio-chart-touch.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-portfolio-chart-touch.xml`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-FI-home-route-server-filled\cycle-FI-home-route-server-filled-proof.json`.
+- Known limitations: this is a tap-to-select readout, not a continuous drag/press tooltip.
