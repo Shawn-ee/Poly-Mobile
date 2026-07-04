@@ -12,10 +12,10 @@
     "result": "pass"
   },
   "deviceProof": {
-    "command": "npm --prefix mobile run smoke:tablet:event-detail-line-adjustment",
+    "command": "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailLineAdjustment -Port 8225",
     "device": "adb-R5GYA13X7NJ-4O0ADU._adb-tls-connect._tcp",
-    "result": "fail",
-    "failure": "Harness captured spread/totals ticket screenshots and XML, then failed because visible hierarchy did not include expected text 'Odds 22%' before the scrollable ticket section.",
+    "result": "pass",
+    "failure": null,
     "artifacts": [
       "docs/mobile/screenshots/cycle-DQ-B-line-adjustment-spread-ticket.png",
       "docs/mobile/screenshots/cycle-DQ-B-line-adjustment-totals-ticket.png",
