@@ -88,4 +88,21 @@ describe("event detail line ticket resolver", () => {
       outcome: { id: "display-over-35" },
     });
   });
+
+  test("falls back to deterministic team-total fixture when backend team total is unavailable", () => {
+    const syntheticOutcome = outcome("display-team-total-over", "MEX Over 1.5");
+    const syntheticMarket = market("display-team-total-market", "team-total", [syntheticOutcome]);
+
+    const target = resolveLineTicketTarget({
+      selection: { marketType: "team-total", line: "1.5", period: "Reg. Time", displayLabel: "MEX Over 1.5 RT" },
+      syntheticOutcome,
+      syntheticMarkets: { teamTotal: syntheticMarket },
+    });
+
+    expect(target).toMatchObject({
+      source: "deterministic-line-fixture",
+      market: { id: "display-team-total-market", marketType: "team-total" },
+      outcome: { id: "display-team-total-over" },
+    });
+  });
 });

@@ -1,0 +1,35 @@
+{
+    "cycle":  "ES",
+    "scenario":  "Local MVP Android line-family ticket breadth with orderbook hidden by default",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpLineFamilyBreadth -Port 8379 -OutputDir docs\\mobile\\screenshots\\cycle-ES-local-mvp-line-family-breadth -HierarchyOutputDir docs\\mobile\\harness\\cycle-ES-local-mvp-line-family-breadth",
+    "orderbookDebug":  "unset",
+    "result":  "pass",
+    "assertions":  {
+                       "marketLines":  [
+                                           "spread",
+                                           "totals",
+                                           "team total",
+                                           "no visible Book/orderbook entry points"
+                                       ],
+                       "totalsTicket":  [
+                                            "Over 3.5",
+                                            "2nd Half",
+                                            "ticket-market-type-totals",
+                                            "contract-shaped ticket source"
+                                        ],
+                       "teamTotalTicket":  [
+                                               "Over 1.5",
+                                               "Reg. Time",
+                                               "ticket-market-type-team-total",
+                                               "contract-shaped ticket source"
+                                           ]
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-ES-local-mvp-line-family-breadth/cycle-ES-holiwyn-local-mvp-line-families.png",
+                      "docs/mobile/harness/cycle-ES-local-mvp-line-family-breadth/cycle-ES-holiwyn-local-mvp-line-families.xml",
+                      "docs/mobile/screenshots/cycle-ES-local-mvp-line-family-breadth/cycle-ES-holiwyn-local-mvp-totals-ticket.png",
+                      "docs/mobile/harness/cycle-ES-local-mvp-line-family-breadth/cycle-ES-holiwyn-local-mvp-totals-ticket.xml",
+                      "docs/mobile/screenshots/cycle-ES-local-mvp-line-family-breadth/cycle-ES-holiwyn-local-mvp-team-total-ticket.png",
+                      "docs/mobile/harness/cycle-ES-local-mvp-line-family-breadth/cycle-ES-holiwyn-local-mvp-team-total-ticket.xml"
+                  ]
+}

@@ -22,10 +22,11 @@ Current implementation:
 - Samsung tablet proof passed for the selected default Buy path with `orderbookDebug=unset`: `docs/mobile/harness/cycle-EP-local-mvp-trade-flow/cycle-EP-local-mvp-trade-flow-proof.json`.
 - Samsung tablet proof passed for the selected default Sell path with `orderbookDebug=unset`: `docs/mobile/harness/cycle-EQ-local-mvp-sell-flow/cycle-EQ-local-mvp-trade-flow-proof.json`.
 - Samsung tablet proof passed for the selected retail status path with `orderbookDebug=unset`: `docs/mobile/harness/cycle-ER-local-mvp-status-flow/cycle-ER-local-mvp-status-flow-proof.json`.
+- Samsung tablet proof passed for selected Totals and Team Total simple tickets with `orderbookDebug=unset`: `docs/mobile/harness/cycle-ES-local-mvp-line-family-breadth/cycle-ES-local-mvp-line-family-breadth-proof.json`.
 - `mobile/src/components/TradeTicket.tsx` now updates ticket identity metadata when the user switches from Buy/Yes to Sell/No, so the auditable contract side matches the visible ticket and Portfolio order.
 
 Next focus:
-- Continue Local MVP user-flow breadth instead of orderbook breadth: provider-backed spreads/totals/team totals when available, and loading/stale/unavailable states that keep users in the retail ticket flow.
+- Continue Local MVP user-flow breadth instead of orderbook breadth: real provider-backed spread/totals/team-total route data and loading/stale/unavailable states that keep users in the retail ticket flow.
 
 ## Heartbeat: Local MVP Retail Flow Cycles EP-ER
 

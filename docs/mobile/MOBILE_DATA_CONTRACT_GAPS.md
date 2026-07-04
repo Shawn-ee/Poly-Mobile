@@ -2,6 +2,26 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle ES - Local MVP Line-Family Ticket Breadth
+
+Closed or narrowed:
+
+- `docs/mobile/harness/cycle-ES-local-mvp-line-family-breadth/cycle-ES-local-mvp-line-family-breadth-proof.json` proves Totals and Team Total simple-ticket handoff with default orderbook hidden.
+- Team Total rows now have contract-shaped synthetic market/outcome data and `TicketSelection` fields so the simple retail ticket can open before provider-backed route data is available.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed route data for spread/totals/team-total markets where Polymarket exposes them.
+- Explicit route-backed unavailable/stale status for line-family markets that Polymarket does not expose, instead of relying on deterministic local fixture pricing.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- ES uses deterministic contract-shaped Team Total fixture data for local UI proof. It must not be claimed as provider parity until backend route data or explicit unavailable status exists.
+
 ## Cycle ER - Local MVP Retail Status Flow
 
 Closed or narrowed:

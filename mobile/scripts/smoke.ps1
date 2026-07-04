@@ -114,7 +114,8 @@ param(
   [switch]$LivePortfolioBadgeDeep,
   [switch]$LocalMvpTradeFlow,
   [switch]$LocalMvpSellFlow,
-  [switch]$LocalMvpStatusFlow
+  [switch]$LocalMvpStatusFlow,
+  [switch]$LocalMvpLineFamilyBreadth
 )
 
 $ErrorActionPreference = "Stop"
@@ -125,7 +126,7 @@ $EventDetailVisibleLiveDepthBackendProof = $EventDetailVisibleLiveDepth -and $Se
 $EventDetailVisibleLimitLifecycleBackendProof = ($EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth) -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25"
 $ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook -or $ServerLiveProviderRefreshProof -or $EventDetailProviderRouteStatusProof -or $EventDetailVisibleLiveDepthBackendProof -or $EventDetailVisibleLimitLifecycleBackendProof
 $OrderBookDebugProof = $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $EventDetailMarketTabs -or $EventDetailChart -or $EventDetailProviderRouteStatusProof -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $ServerLiveDetailBackendProof
-$LocalMvpSimpleTradeFlow = $LocalMvpTradeFlow -or $LocalMvpSellFlow -or $LocalMvpStatusFlow
+$LocalMvpSimpleTradeFlow = $LocalMvpTradeFlow -or $LocalMvpSellFlow -or $LocalMvpStatusFlow -or $LocalMvpLineFamilyBreadth
 
 $MobileRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $RepoRoot = Resolve-Path (Join-Path $MobileRoot "..")
@@ -4358,6 +4359,85 @@ try {
     }
 
     if ($LocalMvpSimpleTradeFlow) {
+      if ($LocalMvpLineFamilyBreadth) {
+        $mvpHiddenOrderBookExpected = @(
+          "event-detail-top-order-book",
+          "event-detail-chart-open-book",
+          "event-detail-open-order-book",
+          "event-detail-line-detail-order-book",
+          "event-detail-inline-order-book",
+          "orderbook-source-",
+          "Route depth"
+        )
+
+        & $adb -s $Device shell input swipe 540 520 540 1900 450 | Out-Null
+        Start-Sleep -Milliseconds 500
+        & $adb -s $Device shell input swipe 540 520 540 1900 450 | Out-Null
+        Start-Sleep -Seconds 1
+        & $adb -s $Device shell input swipe 540 1800 540 1220 350 | Out-Null
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "cycle-ES-holiwyn-local-mvp-line-families.png"
+        $mvpLineFamilyHierarchy = Save-UiHierarchy -Name "cycle-ES-holiwyn-local-mvp-line-families.xml"
+        Assert-HierarchyContains -Path $mvpLineFamilyHierarchy -Expected @("Game Lines", "Spread", "Totals", "event-detail-sticky-game-lines-tab", "event-detail-totals-line-2-5")
+        Assert-HierarchyDoesNotContain -Path $mvpLineFamilyHierarchy -Unexpected $mvpHiddenOrderBookExpected
+
+        Invoke-TapHierarchyNode -Path $mvpLineFamilyHierarchy -Identifier "event-detail-totals-line-3-5"
+        Start-Sleep -Milliseconds 500
+        $mvpTotalsLineHierarchy = Save-UiHierarchy -Name "cycle-ES-holiwyn-local-mvp-totals-35.xml"
+        Invoke-TapHierarchyNode -Path $mvpTotalsLineHierarchy -Identifier "event-detail-totals-period-2nd-half"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "cycle-ES-holiwyn-local-mvp-totals-selected.png"
+        $mvpTotalsSelectedHierarchy = Save-UiHierarchy -Name "cycle-ES-holiwyn-local-mvp-totals-selected.xml"
+        Assert-HierarchyContains -Path $mvpTotalsSelectedHierarchy -Expected @("Totals", "Over 3.5", "Under 3.5", "ticket-source-deterministic-line-fixture", "selection-market-family-totals", "selection-line-3.5")
+        Assert-HierarchyDoesNotContain -Path $mvpTotalsSelectedHierarchy -Unexpected $mvpHiddenOrderBookExpected
+        Invoke-TapHierarchyNode -Path $mvpTotalsSelectedHierarchy -Identifier "event-detail-outcome-totals-totals-over"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "cycle-ES-holiwyn-local-mvp-totals-ticket.png"
+        $mvpTotalsTicketHierarchy = Save-UiHierarchy -Name "cycle-ES-holiwyn-local-mvp-totals-ticket.xml"
+        Assert-HierarchyContains -Path $mvpTotalsTicketHierarchy -Expected @("trade-ticket", "Over 3.5", "ticket-market-type-totals", "ticket-line-3.5", "ticket-period-2nd Half", "ticket-display-label-Over 3.5 2H", "Choose an amount")
+        Assert-HierarchyDoesNotContain -Path $mvpTotalsTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
+        Invoke-TapHierarchyNode -Path $mvpTotalsTicketHierarchy -Identifier "ticket-close"
+        Start-Sleep -Seconds 1
+
+        & $adb -s $Device shell input swipe 540 1800 540 1020 350 | Out-Null
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "cycle-ES-holiwyn-local-mvp-team-total-row.png"
+        $mvpTeamTotalHierarchy = Save-UiHierarchy -Name "cycle-ES-holiwyn-local-mvp-team-total-row.xml"
+        Assert-HierarchyContains -Path $mvpTeamTotalHierarchy -Expected @("Full Game Team Total Goals", "event-detail-market-toggle-team-total-goals")
+        Assert-HierarchyDoesNotContain -Path $mvpTeamTotalHierarchy -Unexpected $mvpHiddenOrderBookExpected
+        Invoke-TapHierarchyNode -Path $mvpTeamTotalHierarchy -Identifier "event-detail-outcome-team-total-goals-team-total-over"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "cycle-ES-holiwyn-local-mvp-team-total-ticket.png"
+        $mvpTeamTotalTicketHierarchy = Save-UiHierarchy -Name "cycle-ES-holiwyn-local-mvp-team-total-ticket.xml"
+        Assert-HierarchyContains -Path $mvpTeamTotalTicketHierarchy -Expected @("trade-ticket", "Over 1.5", "ticket-market-type-team-total", "ticket-line-1.5", "ticket-period-Reg. Time", "ticket-display-label-MEX Over 1.5 RT", "Choose an amount")
+        Assert-HierarchyDoesNotContain -Path $mvpTeamTotalTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
+
+        $proof = [ordered]@{
+          cycle = "ES"
+          scenario = "Local MVP Android line-family ticket breadth with orderbook hidden by default"
+          command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -LocalMvpLineFamilyBreadth -Port $Port -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir"
+          orderbookDebug = if ($env:EXPO_PUBLIC_SHOW_ORDERBOOK) { $env:EXPO_PUBLIC_SHOW_ORDERBOOK } else { "unset" }
+          result = "pass"
+          assertions = [ordered]@{
+            marketLines = @("spread", "totals", "team total", "no visible Book/orderbook entry points")
+            totalsTicket = @("Over 3.5", "2nd Half", "ticket-market-type-totals", "contract-shaped ticket source")
+            teamTotalTicket = @("Over 1.5", "Reg. Time", "ticket-market-type-team-total", "contract-shaped ticket source")
+          }
+          artifacts = @(
+            "docs/mobile/screenshots/cycle-ES-local-mvp-line-family-breadth/cycle-ES-holiwyn-local-mvp-line-families.png",
+            "docs/mobile/harness/cycle-ES-local-mvp-line-family-breadth/cycle-ES-holiwyn-local-mvp-line-families.xml",
+            "docs/mobile/screenshots/cycle-ES-local-mvp-line-family-breadth/cycle-ES-holiwyn-local-mvp-totals-ticket.png",
+            "docs/mobile/harness/cycle-ES-local-mvp-line-family-breadth/cycle-ES-holiwyn-local-mvp-totals-ticket.xml",
+            "docs/mobile/screenshots/cycle-ES-local-mvp-line-family-breadth/cycle-ES-holiwyn-local-mvp-team-total-ticket.png",
+            "docs/mobile/harness/cycle-ES-local-mvp-line-family-breadth/cycle-ES-holiwyn-local-mvp-team-total-ticket.xml"
+          )
+        }
+        $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-ES-local-mvp-line-family-breadth-proof.json"
+        $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
+        Write-Host "Proof summary: $proofPath"
+        return
+      }
+
       if ($LocalMvpStatusFlow) {
         $mvpHiddenOrderBookExpected = @(
           "event-detail-top-order-book",

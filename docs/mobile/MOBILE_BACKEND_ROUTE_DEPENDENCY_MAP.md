@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ES - Local MVP Line-Family Ticket Breadth
+
+Cycle ES changes mobile contract-shaped fallback coverage and Android proof, not backend schema/routes:
+
+- Android proof: `docs/mobile/harness/cycle-ES-local-mvp-line-family-breadth/cycle-ES-local-mvp-line-family-breadth-proof.json`.
+- Visible Book/orderbook controls remain hidden by default and debug/internal via `EXPO_PUBLIC_SHOW_ORDERBOOK=1`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Default Local MVP Totals and Team Total tickets | No new endpoint; proof exercises existing mobile fake-token ticket state and line-ticket resolver | N/A for ES proof | N/A for ES proof | N/A until submit; ticket opens with selected market family/type, line, period, display label, and contract side | Mobile consumes line-family ticket fields for `totals` and `team-total`, including `ticket-line`, `ticket-period`, `ticket-display-label`, and outcome identity | Future backend route should provide provider-backed `Market`/`Outcome` rows for spread/totals/team-total with `marketType`, `line`, `period`, provider ids/tokens, availability, and price fields | Deterministic Team Total fallback is contract-shaped and used only when backend team-total line market is absent | P1: replace deterministic Team Total fallback with real Polymarket-backed route data where available, or explicit unavailable/stale route status where Polymarket does not expose that market. |
+
 ## Cycle ER - Local MVP Retail Status Flow
 
 Cycle ER changes proof coverage, not backend schema/routes:

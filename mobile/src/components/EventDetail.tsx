@@ -609,11 +609,14 @@ export function EventDetail({
     + (totalsLine === "1.5" ? 18 : totalsLine === "3.5" ? -17 : 0)
     + (totalsPeriod === "1st Half" ? -20 : totalsPeriod === "2nd Half" ? -13 : 0),
   );
-  const makeLineMarket = (id: string, title: string, outcomes: Outcome[]): Market => ({
+  const makeLineMarket = (id: string, title: string, outcomes: Outcome[], marketType?: Market["marketType"], line?: string, period?: Market["period"]): Market => ({
     id,
     title,
     zhTitle: title,
     type: "game-line",
+    marketType,
+    line,
+    period,
     outcomes,
   });
   const lineAsNumber = (value: string | null | undefined) => {
@@ -640,7 +643,7 @@ export function EventDetail({
       market.outcomes.length > 0);
   const backendFirstHalfMarket = matchingBackendPeriodWinnerMarket("first-half");
   const backendSecondHalfMarket = matchingBackendPeriodWinnerMarket("second-half");
-  const spreadMarket = makeLineMarket(`${event.id}-spread-${spreadLine}-${linePeriodCode(spreadPeriod)}`, `Spread ${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`, []);
+  const spreadMarket = makeLineMarket(`${event.id}-spread-${spreadLine}-${linePeriodCode(spreadPeriod)}`, `Spread ${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`, [], "spread", spreadLine, spreadPeriod === "Reg. Time" ? "regulation" : spreadPeriod === "1st Half" ? "first-half" : "second-half");
   const spreadYesOutcome = withLineOutcome({
     id: `${spreadMarket.id}-yes`,
     label: `${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`,
@@ -682,7 +685,7 @@ export function EventDetail({
       ticketSelection: { marketType: "spread", line: spreadLine, period: spreadPeriod, displayLabel: `No ${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}` },
     },
   ];
-  const totalsMarket = makeLineMarket(`${event.id}-totals-${totalsLine}-${linePeriodCode(totalsPeriod)}`, `Totals ${totalsLine} ${linePeriodCode(totalsPeriod)}`, []);
+  const totalsMarket = makeLineMarket(`${event.id}-totals-${totalsLine}-${linePeriodCode(totalsPeriod)}`, `Totals ${totalsLine} ${linePeriodCode(totalsPeriod)}`, [], "totals", totalsLine, totalsPeriod === "Reg. Time" ? "regulation" : totalsPeriod === "1st Half" ? "first-half" : "second-half");
   const totalsOverOutcome = withLineOutcome({
     id: `${totalsMarket.id}-over`,
     label: `Over ${totalsLine} ${linePeriodCode(totalsPeriod)}`,
@@ -700,6 +703,26 @@ export function EventDetail({
     color: "#64748b",
   });
   totalsMarket.outcomes = [totalsOverOutcome, totalsUnderOutcome];
+  const teamTotalLine = "1.5";
+  const teamTotalCode = teamCode(teamA?.name ?? "Home");
+  const teamTotalMarket = makeLineMarket(`${event.id}-team-total-${teamTotalLine}-RT`, `${teamTotalCode} team total ${teamTotalLine} RT`, [], "team-total", teamTotalLine, "regulation");
+  const teamTotalOverOutcome = withLineOutcome({
+    id: `${teamTotalMarket.id}-over`,
+    label: `${teamTotalCode} Over ${teamTotalLine}`,
+    probability: 57,
+    bestBid: 0.54,
+    bestAsk: 0.61,
+    color: leftOutcome?.color ?? "#22c55e",
+  });
+  const teamTotalUnderOutcome = withLineOutcome({
+    id: `${teamTotalMarket.id}-under`,
+    label: `${teamTotalCode} Under ${teamTotalLine}`,
+    probability: 44,
+    bestBid: 0.41,
+    bestAsk: 0.48,
+    color: "#64748b",
+  });
+  teamTotalMarket.outcomes = [teamTotalOverOutcome, teamTotalUnderOutcome];
   const selectedChartMarket = selectedChartContract === "spread"
     ? backendSpreadMarket ?? primaryMarket
     : selectedChartContract === "totals"
@@ -801,8 +824,28 @@ export function EventDetail({
       backendMarket: backendTeamTotalMarket,
       lineValue: "1.5",
       rows: [
-        { id: "team-total-over", label: `${teamCode(teamA?.name ?? "Home")} Over 1.5`, color: leftOutcome?.color ?? "#22c55e", probability: 57, odds: "1.8x", icon: teamA?.flag ?? "", miniLine: 57 },
-        { id: "team-total-under", label: `${teamCode(teamA?.name ?? "Home")} Under 1.5`, color: "#64748b", probability: 44, odds: "2.3x", icon: "U", miniLine: 44 },
+        {
+          id: "team-total-over",
+          label: `${teamTotalCode} Over ${teamTotalLine}`,
+          color: leftOutcome?.color ?? "#22c55e",
+          probability: teamTotalOverOutcome.probability,
+          odds: `${outcomeOdds(teamTotalOverOutcome)}x`,
+          icon: teamA?.flag ?? "",
+          miniLine: teamTotalOverOutcome.probability,
+          ticketOutcome: teamTotalOverOutcome,
+          ticketSelection: { marketType: "team-total", line: teamTotalLine, period: "Reg. Time", displayLabel: `${teamTotalCode} Over ${teamTotalLine} RT` },
+        },
+        {
+          id: "team-total-under",
+          label: `${teamTotalCode} Under ${teamTotalLine}`,
+          color: "#64748b",
+          probability: teamTotalUnderOutcome.probability,
+          odds: `${outcomeOdds(teamTotalUnderOutcome)}x`,
+          icon: "U",
+          miniLine: teamTotalUnderOutcome.probability,
+          ticketOutcome: teamTotalUnderOutcome,
+          ticketSelection: { marketType: "team-total", line: teamTotalLine, period: "Reg. Time", displayLabel: `${teamTotalCode} Under ${teamTotalLine} RT` },
+        },
       ],
     },
   ];
@@ -1311,7 +1354,7 @@ export function EventDetail({
       syntheticMarkets: {
         spread: spreadMarket,
         totals: totalsMarket,
-        teamTotal: backendTeamTotalMarket,
+        teamTotal: backendTeamTotalMarket ?? teamTotalMarket,
       },
       fallbackMarket: groupMarket ?? primaryMarket,
     });

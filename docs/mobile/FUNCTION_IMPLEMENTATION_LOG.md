@@ -2,6 +2,36 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ES - Local MVP Line-Family Ticket Breadth
+
+Feature/page worked on:
+
+- Expanded the default Local MVP retail ticket path beyond Spread by proving Totals and Team Total tickets with visible orderbook hidden.
+- Added contract-shaped Team Total synthetic market/outcome fallback so Team Total rows can open a simple ticket before real provider-backed route data is available.
+
+Frontend components/functions touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/services/eventDetailLineTicketService.ts` test coverage
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+User interactions supported:
+
+- Open event detail, scroll to Game Lines, change Totals to `3.5` / `2nd Half`, open `Over 3.5` ticket.
+- Close ticket, scroll to Team Total, open `MEX Over 1.5` ticket.
+- Both ticket paths preserve market family/type, line, period, display label, and contract side without exposing default Book/orderbook controls.
+
+Verified:
+
+- Mobile typecheck passed.
+- Focused mobile line-ticket/order/open-order tests passed: 18 tests.
+- Samsung tablet proof passed: `docs/mobile/harness/cycle-ES-local-mvp-line-family-breadth/cycle-ES-local-mvp-line-family-breadth-proof.json`.
+
+Known limitations:
+
+- ES uses deterministic contract-shaped local data for Team Total UI proof. Real provider-backed spread/totals/team-total route breadth remains P1.
+
 ## Cycle ER - Local MVP Retail Status Flow
 
 Feature/page worked on:

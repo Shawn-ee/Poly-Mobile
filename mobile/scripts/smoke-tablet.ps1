@@ -46,7 +46,8 @@ param(
   [switch]$SearchSort,
   [switch]$LocalMvpTradeFlow,
   [switch]$LocalMvpSellFlow,
-  [switch]$LocalMvpStatusFlow
+  [switch]$LocalMvpStatusFlow,
+  [switch]$LocalMvpLineFamilyBreadth
 )
 
 $ErrorActionPreference = "Stop"
@@ -86,7 +87,9 @@ Write-Host "Tablet smoke target: $Device"
 Write-Host "Expo host: $resolvedExpoHost"
 Write-Host "Expo port: $Port"
 
-if ($LocalMvpStatusFlow) {
+if ($LocalMvpLineFamilyBreadth) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpLineFamilyBreadth -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($LocalMvpStatusFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpStatusFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpSellFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpSellFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
