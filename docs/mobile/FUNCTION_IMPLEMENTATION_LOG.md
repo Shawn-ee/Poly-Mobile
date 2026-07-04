@@ -3719,3 +3719,41 @@ Known limitations:
 
 - DX-A is a backend lifecycle proof, not a visible UI proof.
 - Filled positions/recent trades still derive selected line metadata from current market/outcome rows; immutable trade selection snapshots remain future hardening.
+
+## Cycle EB-A - Live Detail Selected-Market Selector Contract
+
+Feature/page worked on:
+
+- Backend/provider data contract for live World Cup game page chart and line selector parity.
+
+Frontend components touched:
+
+- None. Agent A stayed in backend/provider ownership.
+
+Backend/proof components touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `scripts/probe_mobile_live_detail_route.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+
+User interactions supported/proven:
+
+- Mobile can switch between compact live markets using backend-owned `selection.selectorKey` rather than rebuilding selector identity from display strings.
+- Mobile can switch selected chart state by reading `market.selection.chart.targetMarketId`, `status`, `source`, `pointCount`, `outcomeCount`, `range`, and `emptyState`.
+- Mobile can preserve selected market, group, family, period, line, unit, and outcome identity through line selector -> chart -> ticket handoff without ad hoc UI-only structures.
+
+State transitions:
+
+- Compact market row -> `selection` contract for the same `marketId`.
+- Selected market -> selected chart metadata for the same `targetMarketId`.
+- Selected market -> outcome identity list with `outcomeId`, `side`, label, optional provider token, optional reference outcome label, and tradability.
+
+Validation:
+
+- `npm run test:jest -- src/__tests__/mobile-live-event-detail.test.ts` passed with 6 tests.
+- Project-level `npx tsc --noEmit --pretty false --project tsconfig.json` remains blocked in this isolated worktree by pre-existing mobile dependency/type errors for Expo/React Native modules.
+
+Known limitations:
+
+- EB-A is a backend contract proof only. Agent B still needs Android proof that the visible chart and selector consume `markets[].selection`.
+- Real Polymarket/CLOB line-family chart history is still limited by provider-mapped line markets. Missing `OPTIC_ODDS_API_KEY` is not a blocker for this Polymarket-first route.
