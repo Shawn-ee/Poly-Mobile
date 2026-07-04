@@ -1363,7 +1363,7 @@ try {
     if ($EventDetailProviderRouteStatusProof) {
       Save-Screenshot -Name "$ProviderStatusArtifactPrefix-live-top.png"
       $providerStatusTopHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-live-top.xml"
-      Assert-HierarchyContains -Path $providerStatusTopHierarchy -Expected @(
+      $providerStatusTopExpected = @(
         "event-detail-live-data-inline",
         "live-data-status-ready",
         "provider-lifecycle-ready",
@@ -1376,9 +1376,17 @@ try {
         "Chart provider ready",
         "event-detail-chart-ticket-handoff-status",
         "provider-source-polymarket",
-        "Ticket provider ready",
         "event-detail-chart-open-book"
       )
+      if ($EventDetailVisibleStatusBreadth) {
+        $providerStatusTopExpected += @(
+          "provider-lifecycle-refresh-due",
+          "Ticket refresh due"
+        )
+      } else {
+        $providerStatusTopExpected += @("Ticket provider ready")
+      }
+      Assert-HierarchyContains -Path $providerStatusTopHierarchy -Expected $providerStatusTopExpected
 
       Assert-HierarchyDoesNotContain -Path $providerStatusTopHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Live refresh due")
 
@@ -1399,7 +1407,7 @@ try {
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "$ProviderStatusArtifactPrefix-book-resolved.png"
       $providerStatusBookResolvedHierarchy = Save-UiHierarchy -Name "$ProviderStatusArtifactPrefix-book-resolved.xml"
-      Assert-HierarchyContains -Path $providerStatusBookResolvedHierarchy -Expected @(
+      $providerStatusBookResolvedExpected = @(
         "event-detail-order-book-screen",
         "event-detail-order-book-depth-state",
         "provider-lifecycle-ready",
@@ -1408,12 +1416,24 @@ try {
         "orderbook-source-orderbook-route",
         "orderbook-status-ready",
         "event-detail-order-book-availability",
-        "orderbook-availability-ready",
         "selected-provider-source-polymarket",
         "order-book-ticket-handoff-status",
-        "Ticket provider ready",
         "order-book-buy-"
       )
+      if ($EventDetailVisibleStatusBreadth) {
+        $providerStatusBookResolvedExpected += @(
+          "orderbook-availability-stale",
+          "provider-lifecycle-refresh-due",
+          "Book refresh due",
+          "Ticket refresh due"
+        )
+      } else {
+        $providerStatusBookResolvedExpected += @(
+          "orderbook-availability-ready",
+          "Ticket provider ready"
+        )
+      }
+      Assert-HierarchyContains -Path $providerStatusBookResolvedHierarchy -Expected $providerStatusBookResolvedExpected
       Assert-HierarchyDoesNotContain -Path $providerStatusBookResolvedHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Fixture depth", "selected-market-mexico-ecuador-winner", "Team to Advance")
 
       Invoke-TapHierarchyNode -Path $providerStatusBookResolvedHierarchy -Identifier "order-book-settings-open"
@@ -1459,10 +1479,10 @@ try {
         assertions = [ordered]@{
           backendHealth = "Backend /api/health was required before launch; the proof aborts instead of falling back when unavailable."
           liveRouteStatusReady = "Live detail consumed route-backed liveDataStatus with live-data-status-ready and live-data-source-polymarket-gamma."
-          chartRouteStatusReady = "Chart route state exposes chart-status-ready, provider-lifecycle-ready, and Ticket provider ready for the selected route-backed market."
+          chartRouteStatusReady = if ($EventDetailVisibleStatusBreadth) { "Chart route state exposes chart-status-ready plus a visible Ticket refresh due handoff for the mixed provider lifecycle event." } else { "Chart route state exposes chart-status-ready, provider-lifecycle-ready, and Ticket provider ready for the selected route-backed market." }
           serverRuntime = "Expo launched with EXPO_PUBLIC_ORDER_MODE=server and EXPO_PUBLIC_API_BASE_URL set to the supplied BackendBaseUrl."
           bookRefreshing = "Opening Book produces a visible provider-lifecycle-refreshing Book depth refreshing state before the resolved depth state."
-          bookRouteDepthReady = "Resolved Book depth uses orderbook-source-orderbook-route, orderbook-status-ready, orderbook-availability-ready, and selected-provider-source-polymarket rather than fixture depth."
+          bookRouteDepthReady = if ($EventDetailVisibleStatusBreadth) { "Resolved Book depth uses orderbook-source-orderbook-route and orderbook-status-ready while the selected market availability remains visibly refresh-due/stale rather than fixture/default ready." } else { "Resolved Book depth uses orderbook-source-orderbook-route, orderbook-status-ready, orderbook-availability-ready, and selected-provider-source-polymarket rather than fixture depth." }
           bookSettings = "Book settings toggles book-display-mode-cents to book-display-mode-decimal while preserving selected-provider-source-polymarket."
           ticketServerMode = "Ticket settings exposes Trading mode: Server mode while preserving provider-source-polymarket and ticket-provider-source-polymarket selection identity."
           fallbackGuard = "The top, Book, and ticket hierarchies reject deterministic-status-fixture, fixture-ready, mock-ready, and default-ready markers."

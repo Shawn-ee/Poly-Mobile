@@ -36,6 +36,37 @@ Known limitations:
 - Production breadth still depends on mapped provider markets and recurring refresh coverage for active events.
 - Missing `OPTIC_ODDS_API_KEY` is optional and non-blocking for this Polymarket-first/CLOB-shaped proof.
 
+## Cycle EJ Integrated - Route-Backed Mixed Status Tablet Proof
+
+Feature/page worked on:
+
+- Lead-integrated live event route-backed provider status breadth after Agent A/B/C merge.
+- Converts the EJ-B proof from blocked to a Samsung tablet pass against the Agent A disposable backend event.
+
+Frontend/harness components touched:
+
+- `mobile/scripts/smoke.ps1`
+- `docs/mobile/harness/cycle-EJ-integrated-status-breadth/`
+- `docs/mobile/screenshots/cycle-EJ-integrated-status-breadth/`
+
+Important functions/interactions/state transitions touched:
+
+- `-EventDetailVisibleStatusBreadth` now accepts the EJ mixed-status route shape instead of incorrectly requiring the older EI ready-only ticket label.
+- Tablet proof asserts route-backed live data ready/source markers, chart ready state, visible `Ticket refresh due`, Book refreshing/loading, route-backed Book depth ready, selected Book availability refresh-due/stale, Book display settings toggle, ticket provider identity, ticket settings `Trading mode: Server mode`, and negative fallback guards.
+- The generated proof remains separate from EI so the selected EI ready path still keeps its stricter ready-only assertions.
+
+Verified:
+
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- Backend `/api/health` at `http://127.0.0.1:3002`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleStatusBreadth -Port 8325 -Device "172.16.200.30:41299" -BackendBaseUrl "http://127.0.0.1:3002" -ServerEventSlug "mobile-ej-a-provider-status-breadth-757c94ec" -OutputDir docs/mobile/screenshots/cycle-EJ-integrated-status-breadth -HierarchyOutputDir docs/mobile/harness/cycle-EJ-integrated-status-breadth`
+
+Known limitations:
+
+- This is a selected mixed route-backed path pass, not final EJ breadth parity.
+- Visible unavailable/not-ready state, broader real provider-backed family breadth, and a full route-backed stale -> refreshing/loading -> ready transition remain open P0 breadth work.
+- No fresh EJ S23 Polymarket reference was captured; DQ-C S23 evidence remains stale/reference-only.
+
 ## Cycle EJ-B - Visible Route-Backed Status Breadth
 
 Feature/page worked on:

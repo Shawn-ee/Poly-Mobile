@@ -1,6 +1,6 @@
 # Cycle EJ-C Provider Status Breadth Gate
 
-Status: docs gate prepared; breadth proof remains open after EI. EI stays verified for the selected route-backed ready/Book/ticket path, but EJ does not pass broader provider-status breadth until new integrated proof exists.
+Status: integrated selected-path proof exists, but broader breadth proof remains open after EI. EI stays verified for the selected route-backed ready/Book/ticket path. EJ now proves one route-backed mixed ready/refresh-due Android path, but it does not pass broader provider-status breadth until unavailable/not-ready, real family breadth, and full transition proof exist.
 
 Audit Gate Agent: Agent C.
 
@@ -107,20 +107,22 @@ Block EJ breadth pass if any of these occur:
 
 ## Audit Gate Decision
 
-Current result: fail until integrated breadth proof.
+Current result: partial/pass for the selected integrated mixed-status path; fail for final breadth parity.
 
 What is already accepted:
 
 - EI remains verified for the selected route-backed tablet status path.
 - EI proves backend health/reachability, route-backed ready live page, Book refreshing/loading, route-backed ready depth, ticket provider identity, server mode, and fallback/mock/default rejection for the selected disposable path.
+- EJ Lead integration pairs Agent A backend route proof with Samsung tablet proof for event `mobile-ej-a-provider-status-breadth-757c94ec`.
+- EJ proves route-backed live data ready/source markers, chart ready, visible `Ticket refresh due`, Book refreshing/loading, route-backed Book depth ready, selected Book availability refresh-due/stale, Book display setting persistence, ticket provider identity, ticket settings `Trading mode: Server mode`, and fallback/mock/default rejection.
+- EJ evidence: `docs/mobile/harness/cycle-EJ-A-provider-status-breadth.json`, `docs/mobile/harness/cycle-EJ-integrated-status-breadth/cycle-EJ-B-visible-status-breadth-proof.json`, `docs/mobile/screenshots/cycle-EJ-integrated-status-breadth/`, and `docs/mobile/harness/cycle-EJ-integrated-status-breadth/`.
 
 What EJ still requires:
 
 - Real provider-backed family breadth beyond EI.
-- Route-backed stale/refresh-due state.
-- Route-backed unavailable/not-ready state.
+- Visible route-backed unavailable/not-ready state.
 - Full stale -> refreshing/loading -> ready transition.
-- Lead-integrated pairing of Agent A backend proof and Agent B Android-visible proof.
+- Broader selected-identity pairing beyond the one integrated mixed-status path.
 - Honest reference labeling: no fresh S23 reference claim unless fresh S23 evidence is captured.
 
-Tracked status: PM-GAP-084 stays verified for the selected EI route-backed gate, while the new post-EI breadth debt is tracked as open P1/P2 work under EJ until integrated proof exists.
+Tracked status: PM-GAP-084 stays verified for the selected EI route-backed gate, while the new post-EI breadth debt remains partially open under EJ until final breadth proof exists.
