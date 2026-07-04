@@ -3284,6 +3284,38 @@ Future migration concern:
 
 - Filled trade history should use immutable normalized selection snapshots before production-like trading depends on route-backed line lifecycle reconstruction.
 
+## Cycle EX - Route-Backed Server Filled Trade And Activity Flow
+
+Closed or narrowed:
+
+- Server filled trade lifecycle is now proven from Android for the selected route-backed spread ticket.
+- `/api/portfolio` returns a position carrying selected spread line, period, provider source, and token identity.
+- `/api/portfolio/history` recent trade data maps into Android-visible Portfolio activity with selected spread/provider identity.
+- The Local MVP user journey now covers order submission, open order, cancel activity, filled position, and recent trade activity for the selected spread path.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Totals/team-total filled lifecycle breadth.
+- Production active-event provider mappings and real liquidity source.
+- Fresh S23 retail lifecycle recapture when Polymarket gates allow it.
+
+Schema mismatch:
+
+- No schema migration was required for EX. Existing order request JSON and portfolio/history selection serialization carry the selected spread identity.
+
+Route mismatch:
+
+- `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` are enough for the selected filled trade/activity path.
+
+Temporary mock/static data:
+
+- No arbitrary frontend data was added.
+- The counterparty seed is disposable backend proof liquidity shaped like real orderbook liquidity.
+
+Future migration concern:
+
+- Production trading should persist immutable normalized selection snapshots directly on fill/trade lifecycle rows and replace disposable liquidity with real market-maker or user liquidity.
+
 ## Cycle EB-A - Live Detail Selected-Market Selector Contract
 
 Closed or narrowed:

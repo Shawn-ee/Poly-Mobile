@@ -1,0 +1,43 @@
+{
+    "pass":  true,
+    "eventSlug":  "mobile-el-a-provider-breadth-9bd275c5",
+    "market":  {
+                   "id":  "95b42b41-0f26-45d9-b7be-4be33920eb30",
+                   "title":  "Breadth Home vs Breadth Away - Spread 1.5",
+                   "marketType":  "spread",
+                   "marketGroupKey":  "spread",
+                   "period":  "full-game",
+                   "line":  "1.5",
+                   "referenceSource":  "polymarket",
+                   "externalMarketId":  "gamma-el-a-spread-9bd275c5",
+                   "conditionId":  "condition-el-a-spread-9bd275c5"
+               },
+    "outcome":  {
+                    "id":  "c1b67a4d-3a9a-46f6-bcf4-63979da7c0c4",
+                    "name":  "Home",
+                    "side":  "home",
+                    "referenceTokenId":  "token-el-a-spread-home-9bd275c5",
+                    "referenceOutcomeLabel":  "Breadth Home +1.5"
+                },
+    "maker":  {
+                  "id":  "998cf2bf-3a91-4f4e-9c26-1710a623c74c",
+                  "username":  "mobile_route_fill_maker_a8d74efd"
+              },
+    "makerOrder":  {
+                       "id":  "f295a601-3ce1-4122-9c60-2455b41925c2",
+                       "marketId":  "95b42b41-0f26-45d9-b7be-4be33920eb30",
+                       "outcomeId":  "c1b67a4d-3a9a-46f6-bcf4-63979da7c0c4",
+                       "side":  "SELL",
+                       "price":  "0.52",
+                       "size":  "60",
+                       "remaining":  "60",
+                       "reservedNotional":  "0",
+                       "status":  "OPEN"
+                   },
+    "seededAsk":  {
+                      "side":  "SELL",
+                      "price":  "0.52",
+                      "size":  "60",
+                      "intendedMobileTaker":  "BUY $25 route-backed spread ticket at 52%"
+                  }
+}

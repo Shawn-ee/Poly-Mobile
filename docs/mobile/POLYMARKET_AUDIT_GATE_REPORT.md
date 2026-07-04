@@ -2733,3 +2733,46 @@ Decision:
 - Unresolved P0 gaps: 0 for selected feature.
 - Remaining P1/P2 gaps: filled trade history, totals/team-total lifecycle breadth, production active-event provider breadth, and fresh S23 retail lifecycle proof.
 - Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Route-Backed Retail Server Filled Trade And Activity Flow
+
+Cycle: EX
+
+Lead Agent target: Prove the route-backed server-order Local MVP path can fill against seeded liquidity and appear as a Portfolio position plus recent activity with selected provider identity.
+
+Reference Audit Agent: Product steering audit from current Local MVP policy.
+
+Implementation Agent: Counterparty seed script, tablet harness filled variant, and local wrapper for disposable backend event, mobile dev credential, server order mode, and tablet proof.
+
+Audit Gate Agent: Same-cycle tablet proof.
+
+Reference device: Not refreshed in EX; this is a Holiwyn contract/user-flow gate based on existing Polymarket retail interaction direction and the latest Local MVP orderbook policy.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8265`.
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-local-mvp-route-server-filled-flow-proof.json`
+- `docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-route-backed-retail-event.json`
+- `docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-route-backed-counterparty.json`
+- `docs/mobile/screenshots/cycle-EX-local-mvp-route-server-filled-flow/`
+- Tablet proof slug: `mobile-el-a-provider-breadth-9bd275c5`.
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| EX-FILLED-P0-01 | P0 | Pass | Route-backed spread ticket opens with provider source/token identity. | N/A |
+| EX-FILLED-P0-02 | P0 | Pass | Counterparty proof seeds matching SELL liquidity for the same route-backed spread outcome. | N/A |
+| EX-FILLED-P0-03 | P0 | Pass | Android submit fills and Portfolio shows open positions `1`, open orders `0`, recent activity `1`. | N/A |
+| EX-FILLED-P0-04 | P0 | Pass | Activity card shows `Bought`, `status-filled`, filled shares, execution price, and provider identity. | N/A |
+| EX-FILLED-P0-05 | P0 | Pass | Position card preserves spread line, period, provider source, and provider token. | N/A |
+| EX-FILLED-P0-06 | P0 | Pass | Orderbook markers remain absent from default UI proof. | N/A |
+| EX-FILLED-P1-01 | P1 | Open | Filled lifecycle covers spread only. | Add totals/team-total lifecycle breadth later. |
+
+Decision:
+
+- Pass/fail: Pass for selected EX route-backed spread filled-trade Local MVP flow.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: totals/team-total filled breadth, production active-event provider breadth, fresh S23 retail lifecycle proof, and non-disposable liquidity source.
+- Next cycle required: yes, continue Local MVP user-flow breadth.

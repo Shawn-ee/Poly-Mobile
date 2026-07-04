@@ -1463,3 +1463,18 @@ Cycle EW implementation notes:
 - Tablet proof slug: `mobile-el-a-provider-breadth-35441a1a`.
 - Mobile launched against `EXPO_PUBLIC_MARKET_DATA_MODE=server` and `EXPO_PUBLIC_ORDER_MODE=server`, then used the visible Portfolio Cancel control to hit server cancel.
 - The proof uses LAN backend URL `http://172.16.200.14:3002`.
+
+## Cycle EX - Route-Backed Server Filled Trade And Activity Flow
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Route-backed filled retail order | `/api/orders` | POST | Mobile dev API key with order write scope; backend local flags `INTERNAL_TRADING_BETA_ENABLED=true` and `TRADING_KILL_SWITCH=false` | `marketId`, `outcomeId`, `side=BUY`, `type=LIMIT`, price near `0.52`, size from `$25`, `contractSide=YES`, and selected spread/provider metadata | Order response status `FILLED`, filled shares, execution price, selection identity | `ApiKey`, `ApiOrderRequest`, `Order`, `Fill`, `Trade`, `Position`, `Market`, `Outcome` | None. EX runs with `EXPO_PUBLIC_ORDER_MODE=server`. | Production non-disposable liquidity and line-family breadth are still follow-up. |
+| Counterparty liquidity seed | `scripts/seed_mobile_route_spread_counterparty.ts` using `mintCompleteSetForPublicOrderbook` and `placeOrderAndMatch` | Local script/service | Local development/server only | Event slug; selects spread/home outcome and seeds SELL `0.52` size `60` | Writes seeded maker order, market id, outcome id, provider source/condition/token | `User`, `UserBalance`, `Position`, `Order`, `Market`, `Outcome` | None. The seed is proof liquidity, not UI fallback. | Production liquidity provider strategy remains separate. |
+| Server Portfolio/history sync after fill | `/api/portfolio`, `/api/portfolio/history` | GET | Same mobile dev API key with account read scope | None | `positions[]`, `recentTrades[]`, `latest-activity-card`, position and activity selection metadata | `Position`, `Trade`, `ApiOrderRequest`, `Market`, `Outcome` | None. EX requires Android-visible position and recent activity. | Totals/team-total filled lifecycle is not covered in EX. |
+
+Cycle EX implementation notes:
+
+- The backend route event was created by `scripts/prove_mobile_el_a_provider_breadth.ts` into `docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-route-backed-retail-event.json`.
+- Counterparty liquidity proof: `docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-route-backed-counterparty.json`.
+- Tablet proof slug: `mobile-el-a-provider-breadth-9bd275c5`.
+- Mobile launched against `EXPO_PUBLIC_MARKET_DATA_MODE=server` and `EXPO_PUBLIC_ORDER_MODE=server`, then filled the visible simple retail spread ticket against the seeded maker ask.

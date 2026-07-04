@@ -4789,3 +4789,51 @@ Known limitations:
 
 - EW proves canceled activity/history, not a filled trade history path.
 - The local backend must run with internal trading beta enabled and kill switch disabled for this proof path.
+
+## Cycle EX - Route-Backed Server Filled Trade And Activity Flow
+
+Feature/page worked on:
+
+- Mobile EventDetail and Portfolio Local MVP server filled trade/history proof for a route-backed spread ticket.
+
+Frontend/harness files touched:
+
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/scripts/local-mvp-route-server-filled-proof.ps1`
+- `scripts/seed_mobile_route_spread_counterparty.ts`
+
+Important functions/services touched:
+
+- Existing mobile order/portfolio/history services were not changed.
+- `seed_mobile_route_spread_counterparty.ts` seeds a maker SELL order for the same route-backed spread market/outcome created by the provider breadth proof.
+- `smoke.ps1` route-backed server proof now supports EX filled-trade assertions in addition to EV order-only and EW cancel/history variants.
+
+User interactions supported/proven:
+
+- Open backend live-detail event on Samsung tablet through `forceBackendEventSlug`.
+- Open a provider-backed spread ticket and submit a `$25` server fake-token buy.
+- Fill against seeded provider-shaped maker liquidity.
+- See Portfolio show one open position, zero open orders, one recent activity row, and a filled latest activity card.
+- See both recent activity and position preserve selected spread line/provider identity.
+- Default Book/orderbook UI stays hidden.
+
+Validation:
+
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+- PowerShell parser check for `mobile/scripts/local-mvp-route-server-filled-proof.ps1`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/local-mvp-route-server-filled-proof.ps1 -Port 8265 -BackendBaseUrl http://172.16.200.14:3002`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-route-backed-retail-event.json`
+- `docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-route-backed-counterparty.json`
+- `docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-local-mvp-route-server-filled-flow-proof.json`
+- `docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-holiwyn-route-server-mvp-*.xml`
+- `docs/mobile/screenshots/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-holiwyn-route-server-mvp-*.png`
+
+Known limitations:
+
+- EX proves filled spread lifecycle only. Totals/team-total filled breadth remains follow-up work.
+- Liquidity is seeded as disposable provider-shaped proof data, not production user liquidity.
