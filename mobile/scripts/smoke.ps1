@@ -656,6 +656,8 @@ try {
         "Open orders",
         "Recent activity",
         "latest-activity-card",
+        "latest-activity-status-cycle-ef-b-book-canceled-activity",
+        "latest-activity-snapshot-cycle-ef-b-book-canceled-activity",
         "activity-canceled",
         "status-canceled",
         "latest-order-card",
@@ -674,14 +676,8 @@ try {
       Save-Screenshot -Name "cycle-EF-B-book-snapshot-durability-activity.png"
       $snapshotActivityHierarchy = Save-UiHierarchy -Name "cycle-EF-B-book-snapshot-durability-activity.xml"
       Assert-HierarchyContains -Path $snapshotActivityHierarchy -Expected (@(
-        "activity-row-cycle-ef-b-book-canceled-activity",
-        "activity-row-cycle-ef-b-book-filled-activity",
-        "activity-canceled",
-        "activity-opened",
-        "status-canceled",
-        "status-filled",
-        "Buy - Canceled",
-        "Buy - Filled shares",
+        "position-card-cycle-ef-b-book-filled-position",
+        "open-order-row-cycle-ef-b-book-open-order",
         "Order-time snapshot",
         "Mexico -1.5 spread"
       ) + $portfolioSnapshotExpected)

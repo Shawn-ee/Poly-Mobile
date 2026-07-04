@@ -1,6 +1,6 @@
 # Cycle EF-C Snapshot Durability Gate
 
-Status: fail until integrated proof. This gate opens PM-GAP-083 for metadata-drift durability after the EE Book-origin status and snapshot pass.
+Status: passed for the selected EF integrated gate. PM-GAP-083 is verified for the selected fake-token metadata-drift durability path after the EE Book-origin status and snapshot pass.
 
 Audit Gate Agent: Agent C.
 
@@ -45,13 +45,13 @@ All P0 rows must pass before PM-GAP-083 can be verified.
 
 | ID | Priority | Criterion | Required proof | Current EF status |
 | --- | --- | --- | --- | --- |
-| EF-SD-P0-01 | P0 | Backend proof must create or select a Book-origin fake-token order and fill with a complete order-time/fill-time selected snapshot before drift. | Backend proof JSON showing event, market family/type, market id or selector key, line, period, side/outcome, provider/source, provider market/condition/token identity, amount, order id, fill id, and fake-token/test labels. | Fail until integrated proof |
-| EF-SD-P0-02 | P0 | The proof must mutate current market, outcome, selector, and provider metadata after the order/fill exists. | Backend proof JSON listing every drift mutation, including at least labels/default selector/provider freshness or source-display changes, without changing the historical snapshot. | Fail until integrated proof |
-| EF-SD-P0-03 | P0 | Backend Portfolio/history/order routes must still return the original Book identity from order-time/fill-time selected snapshots after drift. | Before/after route proof showing historical rows unchanged for selected fields and explicit assertions that no current market/outcome/provider fallback supplied the display identity. | Fail until integrated proof |
-| EF-SD-P0-04 | P0 | Android Portfolio and history/activity must render the original selected Book identity after drift. | Android screenshots/XML/proof JSON after drift showing the same Book identity as the pre-drift order/fill snapshot. | Fail until integrated proof |
-| EF-SD-P0-05 | P0 | No fallback/default reconstruction may be counted as pass evidence. | Proof assertions must reject moneyline fallback, event-only labels, first-row/default selector identity, stale provider label substitution, missing snapshot fields, and fixture-only display reconstruction. | Fail until integrated proof |
-| EF-SD-P0-06 | P0 | Fake-token/test labeling must survive drift in backend and Android evidence. | Backend and Android evidence showing fake-token/test labels on order, position, and history/activity rows after metadata drift. | Fail until integrated proof |
-| EF-SD-P0-07 | P0 | Agent A backend evidence and Agent B Android evidence must be integrated by Lead for the same selected identity and same drift scenario. | Lead-integrated bundle pairing backend before/after proof with Android post-drift recapture, including matching order/fill ids or deterministic proof ids. | Fail until integrated proof |
+| EF-SD-P0-01 | P0 | Backend proof must create or select a Book-origin fake-token order and fill with a complete order-time/fill-time selected snapshot before drift. | Backend proof JSON showing event, market family/type, market id or selector key, line, period, side/outcome, provider/source, provider market/condition/token identity, amount, order id, fill id, and fake-token/test labels. | Pass for selected EF proof |
+| EF-SD-P0-02 | P0 | The proof must mutate current market, outcome, selector, and provider metadata after the order/fill exists. | Backend proof JSON listing every drift mutation, including at least labels/default selector/provider freshness or source-display changes, without changing the historical snapshot. | Pass for selected EF proof |
+| EF-SD-P0-03 | P0 | Backend Portfolio/history/order routes must still return the original Book identity from order-time/fill-time selected snapshots after drift. | Before/after route proof showing historical rows unchanged for selected fields and explicit assertions that no current market/outcome/provider fallback supplied the display identity. | Pass for selected EF proof |
+| EF-SD-P0-04 | P0 | Android Portfolio and history/activity must render the original selected Book identity after drift. | Android screenshots/XML/proof JSON after drift showing the same Book identity as the pre-drift order/fill snapshot. | Pass for selected EF proof |
+| EF-SD-P0-05 | P0 | No fallback/default reconstruction may be counted as pass evidence. | Proof assertions must reject moneyline fallback, event-only labels, first-row/default selector identity, stale provider label substitution, missing snapshot fields, and fixture-only display reconstruction. | Pass for selected EF proof |
+| EF-SD-P0-06 | P0 | Fake-token/test labeling must survive drift in backend and Android evidence. | Backend and Android evidence showing fake-token/test labels on order, position, and history/activity rows after metadata drift. | Pass for selected EF proof |
+| EF-SD-P0-07 | P0 | Agent A backend evidence and Agent B Android evidence must be integrated by Lead for the same selected identity and same drift scenario. | Lead-integrated bundle pairing backend before/after proof with Android post-drift recapture, including matching order/fill ids or deterministic proof ids. | Pass for selected EF proof |
 
 ## P1 Criteria
 
@@ -95,8 +95,8 @@ Block EF pass if any of these occur:
 
 ## Audit Gate Decision
 
-Current result: fail until integrated proof.
+Current result: pass for the selected EF integrated gate.
 
-Tracked gap: PM-GAP-083 is open for Book-origin snapshot durability after mutable metadata drift.
+Tracked gap: PM-GAP-083 is verified for the selected EF metadata-drift durability path.
 
 PM-GAP-082 remains verified for the selected EE status breadth path, but it is not sufficient to pass EF until the metadata-drift proof above exists.
