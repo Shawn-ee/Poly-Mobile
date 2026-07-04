@@ -6,6 +6,28 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle CO
+
+Date: 2026-07-03
+Branch: `mobile/cycle-CO-provider-identity-attach-contract`
+Goal: Keep PM-GAP-067 on provider ingestion/refresh by adding the protected attach bridge needed to move compact live markets from unmapped to provider-refreshable.
+Reference app screens observed: Continued from Cycle CH Samsung S23 Polymarket official app live game page evidence.
+Holiwyn screens changed: None.
+Backend/API changed: Added `POST /api/mobile/events/:slug/provider-mapping` dry-run/apply behavior for provider identity attach.
+Database/schema changed: None.
+Files changed: `src/server/services/mobileLiveProviderIdentityAttach.ts`, `src/app/api/mobile/events/[slug]/provider-mapping/route.ts`, provider mapping route/service tests, and mobile docs.
+Tests run:
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-mapping.route.test.ts src/__tests__/mobile-live-provider-mapping.service.test.ts src/__tests__/mobile-live-provider-identity-attach.service.test.ts src/__tests__/mobile-live-provider-refresh.route.test.ts`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-live-provider-identity-attach-dry-run.json`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-line-groups.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-second-half-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-second-half-order-book.png`
+Result: Partial pass for provider identity attach contract. Dry-run validated one complete compact market mapping and projected provider-refreshable compact market count from 0 to 1 without mutating the database.
+Next focus: discover/import real provider identities for compact World Cup live markets and use this attach route with real IDs, then prove no-fallback provider refresh.
+
 ## Cycle CN
 
 Date: 2026-07-03

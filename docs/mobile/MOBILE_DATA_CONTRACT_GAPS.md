@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CO - Provider Identity Attach Contract
+
+Fields now provided or wired:
+
+- Protected `POST /api/mobile/events/:slug/provider-mapping` can validate and dry-run provider identity attach requests for compact live markets.
+- The attach contract accepts provider-owned market fields and outcome token labels in the same shape required by the readiness and refresh services.
+- Dry-run proof shows one complete compact market mapping would move projected readiness from 0 to 1 refreshable compact market without mutating the database.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket/provider candidate discovery for compact World Cup live markets.
+- Real provider-owned IDs for every compact market/outcome.
+- A confirmed apply proof using real provider IDs, followed by no-fallback provider refresh proof.
+
+Schema mismatch:
+
+- No schema change was needed; `Market` and `Outcome` already hold the required provider identity fields.
+
+Route mismatch:
+
+- The attach route exists, but current local data still has no real provider IDs to apply. No-fallback refresh remains blocked until real mappings are attached.
+
+Temporary mock/static data:
+
+- The proof uses future-shaped dry-run IDs only. It does not write fake IDs to `Market` or `Outcome`.
+
+Future migration concern:
+
+- The next structural cycle should discover real provider candidates or import actual provider identities, then call the same POST route with confirmed mappings and prove readiness increases using real IDs.
+
 ## Cycle CN - Provider Mapping Readiness Contract
 
 Fields now provided or wired:

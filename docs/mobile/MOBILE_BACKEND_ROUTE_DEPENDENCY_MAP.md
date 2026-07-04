@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CO - Provider Identity Attach Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Compact live provider identity attach | `/api/mobile/events/:slug/provider-mapping` | POST | Internal admin key or admin session | `dryRun`, `confirmApply`, `mappings[].marketId`, `referenceSource`, `externalSlug`, `externalMarketId`, `conditionId`, `mappings[].outcomes[].outcomeId`, `referenceTokenId`, `referenceOutcomeLabel` | `result.validation.valid`, `errors[]`, `before.providerRefreshableMarketCount`, `after.providerRefreshableMarketCount`, `applied` | `Event`, compact `Market`, active `Outcome`; writes `Market.referenceSource`, `externalSlug`, `externalMarketId`, `conditionId`, `Outcome.referenceTokenId`, `referenceOutcomeLabel` only when confirmed | Dry-run projection uses future-backend-shaped IDs and does not mutate local DB | Real provider candidate discovery/import for every compact World Cup live market remains missing. |
+
+Cycle CO implementation notes:
+
+- POST defaults to dry-run to prevent accidental fake provider mapping.
+- A real write requires `dryRun=false` plus `confirmApply=true`, and each mapped compact market must include every active compact outcome.
+
 ## Cycle CN - Provider Mapping Readiness Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

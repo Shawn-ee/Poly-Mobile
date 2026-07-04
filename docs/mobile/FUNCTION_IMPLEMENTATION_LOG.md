@@ -2,6 +2,53 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CO - Provider Identity Attach Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 provider identity attach bridge for compact live event detail.
+- This cycle creates the protected dry-run/apply path needed to connect a compact Holiwyn market/outcome to provider-owned market and token identity before no-fallback refresh can pass.
+
+Frontend components touched:
+
+- None. Samsung tablet proof was rerun against the existing live event detail and selected second-half Book flow after backend route changes.
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveProviderIdentityAttach.ts`
+- `src/app/api/mobile/events/[slug]/provider-mapping/route.ts`
+- `src/__tests__/mobile-live-provider-identity-attach.service.test.ts`
+- `src/__tests__/mobile-live-provider-mapping.route.test.ts`
+
+Important functions/services touched:
+
+- `attachMobileLiveProviderIdentities()` validates compact market/provider mappings, dry-runs projected readiness by default, and only writes to `Market`/`Outcome` provider fields when `dryRun=false` and `confirmApply=true`.
+- `validateMobileLiveProviderIdentityMappings()` rejects non-compact markets, unsupported provider sources, duplicate provider IDs, incomplete market fields, and partial outcome mappings.
+- `POST /api/mobile/events/:slug/provider-mapping` now supports protected identity attach requests.
+
+User interactions supported:
+
+- No new visual interaction. This is a backend contract that makes the future provider-import workflow able to move a market from unmapped to provider-refreshable without UI-only mock data.
+- Existing Samsung tablet live detail and selected second-half Book flow still work after the backend contract change.
+
+State transitions:
+
+- Current event readiness before dry-run: `providerRefreshableMarketCount=0`, `isProviderRefreshReady=false`.
+- Dry-run attaching one complete compact market mapping validates successfully, does not write to the database, and projects `providerRefreshableMarketCount=1`.
+- Whole-event readiness remains false because the other compact markets still need real provider identity.
+
+Known limitations:
+
+- The proof uses future-shaped dry-run IDs and does not apply fake provider identity to the database.
+- Real Polymarket/provider candidate discovery and actual identity apply for all compact markets remain open before no-fallback provider refresh can pass.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-provider-mapping.route.test.ts src/__tests__/mobile-live-provider-mapping.service.test.ts src/__tests__/mobile-live-provider-identity-attach.service.test.ts src/__tests__/mobile-live-provider-refresh.route.test.ts`
+- `cmd /c npm.cmd run build`
+- Dry-run attach proof: `docs/mobile/harness/cycle-current-mobile-live-provider-identity-attach-dry-run.json`
+- `cmd /c npm.cmd run smoke:tablet:server-live-second-half-order-book`
+
 ## Cycle CN - Provider Mapping Readiness Contract
 
 Feature/page worked on:
