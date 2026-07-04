@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle DR-A - Scheduled Provider Refresh Run Reporting
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Scheduled provider refresh run report | `runScheduledMobileLiveProviderRefresh()` | Local scheduler service | Backend-only trusted caller | Optional `eventSlugs`, `maxEvents`, `refreshTtlSeconds`, `dryRun` | Backend operator/worker fields: `runId`, `startedAt`, `completedAt`, `durationMs`, `status`, `attemptedEventCount`, `successfulEventCount`, `failedEventCount`, `dryRunEventCount`, `refreshed[].status`, `refreshed[].error` | Reads `Event`, `Market`, `Outcome`, and `ReferenceQuoteSnapshot`; scheduled execution writes provider quote/depth/history through existing refresh services | None. Scheduled execution keeps `allowContractProofFallback=false`; failed refresh attempts are reported, not filled with proof data | Durable run-history table, production retry/alert policy, and cron/queue registration remain future infrastructure work. |
+| Scheduled provider refresh proof harness | `scripts/prove_mobile_scheduled_provider_refresh.ts` | Local script | Local development only | Optional `--eventSlug`, `--output`, `--staleSeconds` | JSON artifact with `expired`, `before`, `scheduler`, `after`, run-status assertions, and `pass` | Ages `ReferenceQuoteSnapshot.fetchedAt`, then refreshes through the scheduler service | None. The script fails if stale-to-ready or run reporting assertions do not pass | Keep the harness as backend evidence until deployed worker observability exists. |
+
+Cycle DR-A implementation notes:
+
+- `docs/mobile/harness/cycle-DR-A-mobile-scheduled-provider-refresh-run-report.json` proves stale/refresh-due -> scheduler run report `status=completed` -> ready for `mobile-provider-refresh-proof-live`.
+- The refreshed item reports `status=completed` with cache invalidation paths for live-detail, event, chart, and orderbook surfaces.
+- The failure contract is unit-tested: provider refresh exceptions produce `status=completed_with_errors`, `failedEventCount=1`, and a sanitized per-event error while keeping contract-proof fallback disabled.
+
 ## Cycle DQ-A - Scheduled Provider Refresh Lifecycle
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

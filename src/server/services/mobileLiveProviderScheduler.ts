@@ -26,6 +26,7 @@ export async function runScheduledMobileLiveProviderRefresh(
   options: ScheduledMobileLiveProviderRefreshOptions = {},
 ) {
   const generatedAt = new Date();
+  const runId = `mobile-live-provider-scheduler:${generatedAt.toISOString()}`;
   const refreshTtlSeconds = options.refreshTtlSeconds ?? DEFAULT_REFRESH_TTL_SECONDS;
   const candidates = await loadProviderRefreshCandidates({
     eventSlugs: options.eventSlugs,
@@ -43,6 +44,7 @@ export async function runScheduledMobileLiveProviderRefresh(
     if (options.dryRun) {
       refreshed.push({
         eventSlug: candidate.eventSlug,
+        status: "dry_run",
         dryRun: true,
         dueMarketCount: candidate.dueMarketIds.length,
         refresh: null,
@@ -54,31 +56,68 @@ export async function runScheduledMobileLiveProviderRefresh(
       continue;
     }
 
-    const refresh = await refreshMobileLiveProviderQuoteSnapshots({
-      eventSlug: candidate.eventSlug,
-      allowContractProofFallback: false,
-    });
-    const refreshedMarketIds = refresh.mappingReadiness.markets.map((market) => market.marketId);
-    refreshed.push({
-      eventSlug: candidate.eventSlug,
-      dryRun: false,
-      dueMarketCount: candidate.dueMarketIds.length,
-      refresh,
-      cacheInvalidationContract: buildMobileLiveProviderRefreshCachePaths({
+    try {
+      const refresh = await refreshMobileLiveProviderQuoteSnapshots({
         eventSlug: candidate.eventSlug,
-        marketIds: refreshedMarketIds,
-      }),
-    });
+        allowContractProofFallback: false,
+      });
+      const refreshedMarketIds = refresh.mappingReadiness.markets.map((market) => market.marketId);
+      refreshed.push({
+        eventSlug: candidate.eventSlug,
+        status: "completed",
+        dryRun: false,
+        dueMarketCount: candidate.dueMarketIds.length,
+        refresh,
+        cacheInvalidationContract: buildMobileLiveProviderRefreshCachePaths({
+          eventSlug: candidate.eventSlug,
+          marketIds: refreshedMarketIds,
+        }),
+      });
+    } catch (error) {
+      refreshed.push({
+        eventSlug: candidate.eventSlug,
+        status: "failed",
+        dryRun: false,
+        dueMarketCount: candidate.dueMarketIds.length,
+        refresh: null,
+        error: {
+          name: error instanceof Error ? error.name : "Error",
+          message: error instanceof Error ? error.message : String(error),
+        },
+        cacheInvalidationContract: buildMobileLiveProviderRefreshCachePaths({
+          eventSlug: candidate.eventSlug,
+          marketIds: candidate.dueMarketIds,
+        }),
+      });
+    }
   }
 
+  const completedAt = new Date();
+  const successfulEventCount = refreshed.filter((item) => item.status === "completed").length;
+  const failedEventCount = refreshed.filter((item) => item.status === "failed").length;
+  const dryRunEventCount = refreshed.filter((item) => item.status === "dry_run").length;
+
   return {
+    runId,
     generatedAt: generatedAt.toISOString(),
+    startedAt: generatedAt.toISOString(),
+    completedAt: completedAt.toISOString(),
+    durationMs: Math.max(0, completedAt.getTime() - generatedAt.getTime()),
     source: "mobile-live-provider-scheduler",
+    status: options.dryRun
+      ? "dry_run"
+      : failedEventCount > 0
+        ? "completed_with_errors"
+        : "completed",
     refreshTtlSeconds,
     dryRun: options.dryRun === true,
     candidateCount: assessed.length,
     dueEventCount: due.length,
-    refreshedEventCount: refreshed.filter((item) => !item.dryRun).length,
+    attemptedEventCount: refreshed.length,
+    refreshedEventCount: successfulEventCount,
+    successfulEventCount,
+    failedEventCount,
+    dryRunEventCount,
     candidates: assessed,
     refreshed,
   };
