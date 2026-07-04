@@ -760,8 +760,8 @@ try {
     if ($LocalMvpRouteDiscoveryDetail) {
       Save-Screenshot -Name "cycle-FD-route-discovery-detail-home.png"
       $routeDiscoveryHomeHierarchy = Save-UiHierarchy -Name "cycle-FD-route-discovery-detail-home.xml"
-      Assert-HierarchyContains -Path $routeDiscoveryHomeHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "Breadth Home", "Breadth Away", "Volume:", "Liquidity:", "event-card-mobile-el-a-provider-breadth")
-      Assert-HierarchyDoesNotContain -Path $routeDiscoveryHomeHierarchy -Unexpected @("event-detail-top-order-book", "event-detail-chart-open-book", "event-detail-inline-order-book", "orderbook-source-", "Route depth")
+      Assert-HierarchyContains -Path $routeDiscoveryHomeHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "Breadth Home", "Breadth Away", "event-card-mobile-el-a-provider-breadth", "event-card-retail-outcome-rail-mobile-el-a-provider-breadth", "event-card-stats-hidden-local-mvp")
+      Assert-HierarchyDoesNotContain -Path $routeDiscoveryHomeHierarchy -Unexpected @("Volume:", "Liquidity:", "event-detail-top-order-book", "event-detail-chart-open-book", "event-detail-inline-order-book", "orderbook-source-", "Route depth")
 
       Invoke-TapHierarchyNode -Path $routeDiscoveryHomeHierarchy -Identifier "event-card-mobile-el-a-provider-breadth" -StartsWith
       Start-Sleep -Seconds 4
@@ -777,7 +777,7 @@ try {
         orderbookDebug = if ($env:EXPO_PUBLIC_SHOW_ORDERBOOK) { $env:EXPO_PUBLIC_SHOW_ORDERBOOK } else { "unset" }
         result = "pass"
         assertions = [ordered]@{
-          homeDiscovery = @("route-backed event card", "compact outcomes", "Volume/Liquidity")
+          homeDiscovery = @("route-backed event card", "retail outcome rail", "hidden stats metadata")
           detailHydration = @("same route-backed event", "price chart", "game lines", "tradeable outcomes")
           noFallback = @("no Mexico/Ecuador fallback", "no default orderbook UI")
         }
@@ -813,7 +813,7 @@ try {
 
       Save-Screenshot -Name "cycle-FE-home-route-ticket-home.png"
       $homeRouteTicketHomeHierarchy = Save-UiHierarchy -Name "cycle-FE-home-route-ticket-home.xml"
-      Assert-HierarchyContains -Path $homeRouteTicketHomeHierarchy -Expected @("live-world-cup-games-focus", "prediction-only-live", "World Cup", "Live World Cup", "EL-A Provider Breadth World Cup Live", "Breadth Home", "Breadth Away", "event-card-mobile-el-a-provider-breadth")
+      Assert-HierarchyContains -Path $homeRouteTicketHomeHierarchy -Expected @("live-world-cup-games-focus", "prediction-only-live", "World Cup", "Live World Cup", "EL-A Provider Breadth World Cup Live", "Breadth Home", "Breadth Away", "event-card-mobile-el-a-provider-breadth", "event-card-retail-outcome-rail-mobile-el-a-provider-breadth")
       Assert-HierarchyDoesNotContain -Path $homeRouteTicketHomeHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
       Invoke-TapHierarchyNode -Path $homeRouteTicketHomeHierarchy -Identifier "event-card-mobile-el-a-provider-breadth" -StartsWith
@@ -894,7 +894,7 @@ try {
         orderMode = if ($env:EXPO_PUBLIC_ORDER_MODE) { $env:EXPO_PUBLIC_ORDER_MODE } else { "mock" }
         result = "pass"
         assertions = [ordered]@{
-          homeDiscovery = @("World Cup live games-focused header", "route-backed event card", "compact outcomes", "no non-MVP sport/futures promo")
+          homeDiscovery = @("World Cup live games-focused header", "route-backed event card", "retail outcome rail", "no non-MVP sport/futures promo")
           detailHydration = @("same route-backed event", "price chart", "Game Lines")
           ticket = @("spread ticket opens from Home-opened detail", "line/period/side/provider token identity preserved", "Buy/Sell controls visible")
           noFallback = @("no Mexico/Ecuador fallback", "no default orderbook UI")
@@ -930,7 +930,7 @@ try {
 
       Save-Screenshot -Name "cycle-FF-home-route-order-home.png"
       $homeRouteOrderHomeHierarchy = Save-UiHierarchy -Name "cycle-FF-home-route-order-home.xml"
-      Assert-HierarchyContains -Path $homeRouteOrderHomeHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "Breadth Home", "Breadth Away", "event-card-mobile-el-a-provider-breadth")
+      Assert-HierarchyContains -Path $homeRouteOrderHomeHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "Breadth Home", "Breadth Away", "event-card-mobile-el-a-provider-breadth", "event-card-retail-outcome-rail-mobile-el-a-provider-breadth")
       Assert-HierarchyDoesNotContain -Path $homeRouteOrderHomeHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
       Invoke-TapHierarchyNode -Path $homeRouteOrderHomeHierarchy -Identifier "event-card-mobile-el-a-provider-breadth" -StartsWith

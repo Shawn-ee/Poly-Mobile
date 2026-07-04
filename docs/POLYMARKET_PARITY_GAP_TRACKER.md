@@ -178,3 +178,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The Local MVP ticket proof still normalized old `Order review / LINE / PERIOD / SHARES / TO WIN` wording despite the Polymarket reference being a simple amount sheet. | P0 | Passed | Ticket hierarchy text and smoke gate updated; Samsung tablet proof passed with absence checks. |
 | Ticket outcome separator could render poorly on Android paths because the source used a bullet separator. | P0 | Passed | Separator changed to ASCII hyphen; Android proof captured the updated ticket. |
 | Ticket must keep selected market/line/outcome identity after removing review wording. | P0 | Passed | Machine-readable identity labels were preserved and submit-to-Portfolio proof passed. |
+
+## Cycle GG - Discovery Card Retail Outcome Rail
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Home/Live discovery cards still looked like generic data cards instead of simple retail prediction cards. | P0 | Passed | Added a two-button outcome rail; route-backed Android proof passed. |
+| Visible Volume/Liquidity stats distracted from the Local MVP retail path. | P0 | Passed | Stats moved to hidden proof metadata; Android proof no longer requires visible `Volume:` or `Liquidity:`. |
+| Route-backed card must still open Event Detail and the simple ticket path after the visual card change. | P0 | Passed | Samsung tablet proof opened Event Detail and a simple spread ticket from the updated discovery card. |

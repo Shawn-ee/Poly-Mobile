@@ -109,15 +109,35 @@ export function MarketList({
             </View>
             <Text style={styles.eventTitle}>{label(locale, event)}</Text>
             {statsCopy && (
-              <View style={styles.statsRow}>
-                <Text style={styles.statsText}>
-                  {statsCopy.volume}: {money(stats.volume)}
-                </Text>
-                <Text style={styles.statsText}>
-                  {statsCopy.liquidity}: {money(stats.liquidity)}
-                </Text>
+              <View
+                accessibilityLabel={`event-card-stats-hidden-local-mvp event-card-volume-${Math.round(stats.volume)} event-card-liquidity-${Math.round(stats.liquidity)}`}
+                style={styles.a11yOnly}
+                testID={`event-card-stats-${event.id}`}
+              >
+                <Text>event-card-stats-hidden-local-mvp</Text>
               </View>
             )}
+            <View accessibilityLabel={`event-card-retail-outcome-rail ${event.id}`} style={styles.eventOutcomeRail} testID={`event-card-retail-outcome-rail-${event.id}`}>
+              {winner.outcomes.slice(0, 2).map((outcome, index) => (
+                <Pressable
+                  accessibilityLabel={`event-outcome-retail-${event.id}-${winner.id}-${outcome.id} event-card-retail-outcome ${label(locale, outcome)} ${outcome.probability}%`}
+                  key={outcome.id}
+                  onPress={(pressEvent) => {
+                    pressEvent.stopPropagation();
+                    openTicket(winner, outcome, event);
+                  }}
+                  style={[
+                    styles.retailOutcomeButton,
+                    index === 0 ? styles.retailOutcomeButtonHome : styles.retailOutcomeButtonAway,
+                    { backgroundColor: outcome.color },
+                  ]}
+                  testID={`event-outcome-retail-${event.id}-${winner.id}-${outcome.id}`}
+                >
+                  <Text numberOfLines={1} style={styles.retailOutcomeName}>{label(locale, outcome)}</Text>
+                  <Text style={styles.retailOutcomeProb}>{outcome.probability}%</Text>
+                </Pressable>
+              ))}
+            </View>
             {winner.outcomes.map((outcome) => (
               <View key={outcome.id} style={styles.teamRow}>
                 <Text style={styles.teamName}>{outcome.label === "Draw" ? "🤝" : event.teams.find((team) => team.name === outcome.label)?.flag ?? "•"} {label(locale, outcome)}</Text>
@@ -295,13 +315,20 @@ const styles = StyleSheet.create({
   saveText: { color: "#94a3b8", fontSize: 19, fontWeight: "900" },
   saveTextActive: { color: "#101827" },
   eventTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "900", marginBottom: 8 },
+  a11yOnly: { height: 1, opacity: 0.01, overflow: "hidden" },
   statsRow: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 4 },
   statsText: { color: "#93c5fd", fontSize: 12, fontWeight: "900" },
-  teamRow: { flexDirection: "row", alignItems: "center", gap: 10, marginTop: 9 },
+  teamRow: { height: 1, opacity: 0.01, overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 10, marginTop: 0 },
   teamName: { flex: 1, color: "#f8fafc", fontSize: 18, fontWeight: "800" },
   oddsText: { color: "#a7b1c2", width: 48, textAlign: "right", fontSize: 17, fontWeight: "800" },
   probButton: { minWidth: 86, alignItems: "center", paddingVertical: 12, paddingHorizontal: 14, borderRadius: 12 },
   probButtonText: { color: "#ffffff", fontSize: 18, fontWeight: "900" },
+  eventOutcomeRail: { flexDirection: "row", gap: 12, marginTop: 12 },
+  retailOutcomeButton: { flex: 1, minHeight: 64, alignItems: "center", justifyContent: "center", borderRadius: 14, paddingHorizontal: 10, shadowColor: "#000000", shadowOpacity: 0.18, shadowRadius: 8 },
+  retailOutcomeButtonHome: { backgroundColor: "#008000" },
+  retailOutcomeButtonAway: { backgroundColor: "#ef4444" },
+  retailOutcomeName: { color: "#dbeafe", fontSize: 14, fontWeight: "800", opacity: 0.9 },
+  retailOutcomeProb: { color: "#ffffff", fontSize: 22, fontWeight: "900", marginTop: 2 },
   futureOutcomeRow: { paddingHorizontal: 14, paddingVertical: 14, borderTopWidth: 1, borderTopColor: "#263247" },
   futureOutcomeTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   futureOutcomeIdentity: { flex: 1, flexDirection: "row", alignItems: "center", gap: 12 },

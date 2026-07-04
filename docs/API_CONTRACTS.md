@@ -83,6 +83,8 @@ Cycle GE changes only Portfolio presentation. It does not change `GET /api/portf
 
 Cycle GF changes only ticket presentation and proof expectations. It does not change `POST /api/orders`, local fake-token order handling, `TicketSelection`, selected line/outcome/provider identity fields, or Portfolio handoff contracts.
 
+Cycle GG changes only game-card presentation in discovery. It does not change event discovery payloads, route-backed event IDs, market/outcome fields, `openEvent`, `openTicket`, or downstream ticket/order/Portfolio contracts.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
