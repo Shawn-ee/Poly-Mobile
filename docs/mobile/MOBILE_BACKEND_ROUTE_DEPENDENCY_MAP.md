@@ -1110,3 +1110,16 @@ Cycle DX-A implementation notes:
 - Proof artifact: `docs/mobile/harness/cycle-DX-A-line-order-portfolio-history.json`.
 - The proof creates a disposable World Cup Spread line market and verifies the same `marketId`, `outcomeId`, `marketType`, `marketGroupId`, `line`, `period`, `side`, `displayLabel`, `contractSide`, `referenceSource`, `externalMarketId`, `conditionId`, and `referenceTokenId` through request, order response, portfolio open order, canceled activity, portfolio position, and recent trade activity.
 - No visible UI, smoke script, Prisma schema, or central tracker edits were required.
+
+## Cycle EB-A - Live Detail Selector And Selected Chart Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Live game selected market/line selector | `/api/mobile/events/:slug/live-detail` | GET | Public viewing | Event slug | `markets[].selection.selectorKey`, `marketId`, `marketGroupKey`, `marketGroupId`, `marketGroupTitle`, `marketType`, `marketFamily`, `displayLabel`, `period`, `line`, `lineValue`, `unit`, `outcomes[]` | `Event`, `Market`, active `Outcome` | None in the route contract. UI fixtures, when used, should match this shape exactly. | Event-level sibling selector breadth is still limited to compact markets returned by the route. |
+| Selected market chart state | `/api/mobile/events/:slug/live-detail` | GET | Public viewing | Event slug | `markets[].chartHistory[]`, `markets[].chartHistoryStatus`, `markets[].selection.chart.targetMarketId`, `status`, `source`, `pointCount`, `outcomeCount`, `range`, `ranges`, `emptyState` | `MarketOutcomeSnapshot` keyed by compact `marketId`/`outcomeId` | None. Empty history is represented as `selection.chart.status=unavailable` and `emptyState=no-history`. | Real CLOB history for line-family markets requires mapped Polymarket token IDs or an explicitly optional enrichment source. |
+
+Cycle EB-A implementation notes:
+
+- The live-detail response now carries a backend-owned `selection` block per compact market so mobile can change selected market, period, line, and chart state without constructing UI-only selector structures.
+- `scripts/probe_mobile_live_detail_route.ts` now fails its route proof if any compact market lacks a matching `selection.marketId`, selector key containing the market id, or chart target matching the market id.
+- No schema change was required. Existing `Market` fields (`marketGroupKey`, `marketGroupTitle`, `marketType`, `period`, `line`, `unit`), active `Outcome` rows, provider outcome fields, and `MarketOutcomeSnapshot` rows cover the contract.

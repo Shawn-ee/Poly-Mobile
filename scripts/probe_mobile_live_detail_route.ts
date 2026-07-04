@@ -58,11 +58,31 @@ async function main() {
     chartReadyMarketIds: detail.markets
       .filter((market) => market.chartHistoryStatus.status === "ready")
       .map((market) => market.id),
+    selectorContractMarketCount: detail.markets.filter((market) =>
+      market.selection?.marketId === market.id &&
+      typeof market.selection.selectorKey === "string" &&
+      market.selection.selectorKey.includes(market.id) &&
+      market.selection.chart?.targetMarketId === market.id,
+    ).length,
+    selectorContractKeys: detail.markets.map((market) => ({
+      marketId: market.id,
+      selectorKey: market.selection?.selectorKey ?? null,
+      marketFamily: market.selection?.marketFamily ?? null,
+      period: market.selection?.period ?? null,
+      line: market.selection?.line ?? null,
+      chartStatus: market.selection?.chart?.status ?? null,
+    })),
     pass:
       detail.contract.marketCount >= 3 &&
       detail.contract.batchedProviderQuoteSnapshotReadyCount >= 3 &&
       detail.contract.batchedProviderOrderbookDepthReadyCount >= 3 &&
       detail.contract.batchedChartHistoryMarketCount >= 1 &&
+      detail.markets.every((market) =>
+        market.selection?.marketId === market.id &&
+        typeof market.selection.selectorKey === "string" &&
+        market.selection.selectorKey.includes(market.id) &&
+        market.selection.chart?.targetMarketId === market.id,
+      ) &&
       Date.now() - started < 5000,
   };
 

@@ -220,6 +220,73 @@ const chartHistoryStatusForMarket = (params: {
   };
 };
 
+const marketFamilyForMarket = (market: MarketInput) => {
+  const key = `${market.marketGroupKey ?? ""} ${market.marketType ?? ""} ${market.marketGroupTitle ?? ""}`.toLowerCase();
+  if (key.includes("spread") || key.includes("handicap")) return "spread";
+  if (key.includes("team") && key.includes("total")) return "team_total";
+  if (key.includes("total")) return "total";
+  if (key.includes("half")) return "half";
+  if (key.includes("correct")) return "correct_score";
+  if (key.includes("prop")) return "prop";
+  if (key.includes("winner") || key.includes("moneyline") || key.includes("main")) return "moneyline";
+  return market.marketType;
+};
+
+const marketLineValue = (market: MarketInput) => {
+  if (!market.line) return null;
+  const value = Number(market.line.toString());
+  return Number.isFinite(value) ? value : null;
+};
+
+const compactSelectorKeyForMarket = (market: MarketInput) => [
+  market.marketGroupKey ?? marketFamilyForMarket(market),
+  market.period ?? "full-game",
+  market.line?.toString() ?? "none",
+  market.id,
+].join(":");
+
+const compactDisplayLabelForMarket = (market: MarketInput) => {
+  const parts = [
+    market.marketGroupTitle ?? market.marketType,
+    market.period && market.period !== "full-game" ? market.period : null,
+    market.line?.toString() ?? null,
+  ].filter((value): value is string => Boolean(value));
+  return parts.length ? parts.join(" ") : market.title;
+};
+
+const selectionContractForMarket = (market: MarketInput, chartStatus: ReturnType<typeof chartHistoryStatusForMarket>) => ({
+  selectorKey: compactSelectorKeyForMarket(market),
+  marketId: market.id,
+  marketGroupKey: market.marketGroupKey,
+  marketGroupId: market.marketGroupKey,
+  marketGroupTitle: market.marketGroupTitle,
+  marketType: market.marketType,
+  marketFamily: marketFamilyForMarket(market),
+  displayLabel: compactDisplayLabelForMarket(market),
+  period: market.period ?? "full-game",
+  line: market.line?.toString() ?? null,
+  lineValue: marketLineValue(market),
+  unit: market.unit,
+  chart: {
+    targetMarketId: market.id,
+    status: chartStatus.status,
+    source: chartStatus.source,
+    pointCount: chartStatus.pointCount,
+    outcomeCount: chartStatus.outcomeCount,
+    range: chartStatus.range,
+    ranges: chartStatus.ranges,
+    emptyState: chartStatus.emptyState,
+  },
+  outcomes: market.outcomes.map((outcome) => ({
+    outcomeId: outcome.id,
+    side: outcome.side,
+    label: outcome.label ?? outcome.name,
+    referenceTokenId: outcome.referenceTokenId,
+    referenceOutcomeLabel: outcome.referenceOutcomeLabel,
+    isTradable: outcome.isTradable,
+  })),
+});
+
 const availabilityForMarket = (market: MarketInput) => {
   const normalizedStatus = market.status.toUpperCase();
   const sourceDate = market.sourceUpdatedAt ?? market.updatedAt ?? null;
@@ -359,6 +426,7 @@ export async function serializeMobileLiveEventDetail(input: {
     markets.map(async (market) => {
       const depth = depthByMarketId.get(market.id) ?? emptyDepthEntry;
       const marketChartSnapshots = chartSnapshotsByMarketId.get(market.id) ?? [];
+      const chartHistoryStatus = chartHistoryStatusForMarket({ market, snapshots: marketChartSnapshots });
       const bidByOutcome = new Map(depth.snapshot.bids.map((level) => [level.outcomeId, level]));
       const askByOutcome = new Map(depth.snapshot.asks.map((level) => [level.outcomeId, level]));
       return {
@@ -382,7 +450,8 @@ export async function serializeMobileLiveEventDetail(input: {
         availability: availabilityForMarket(market),
         liquidity: depth.levels.length ? depth.levels.reduce((sum, level) => sum + level.total, 0) : null,
         chartHistory: chartHistoryFromSnapshots(marketChartSnapshots),
-        chartHistoryStatus: chartHistoryStatusForMarket({ market, snapshots: marketChartSnapshots }),
+        chartHistoryStatus,
+        selection: selectionContractForMarket(market, chartHistoryStatus),
         orderbookDepth: depth.levels,
         orderbookDepthSource: depth.snapshot.depthSource,
         providerOrderbookDepth: depth.snapshot.providerOrderbookDepth,

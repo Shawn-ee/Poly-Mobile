@@ -2606,3 +2606,33 @@ Temporary mock/static data:
 Future migration concern:
 
 - If production trading needs historical reconstruction after market/outcome edits, persist immutable selection metadata directly on order/fill/trade lifecycle rows rather than deriving filled activity from current market/outcome rows.
+
+## Cycle EB-A - Live Detail Selected-Market Selector Contract
+
+Closed or narrowed:
+
+- The live-detail route now exposes a backend-shaped `markets[].selection` object for every compact live market.
+- The `selection` object includes stable selector and identity fields: `selectorKey`, `marketId`, `marketGroupKey`, `marketGroupId`, `marketGroupTitle`, `marketType`, `marketFamily`, `displayLabel`, `period`, `line`, `lineValue`, `unit`, selected-chart metadata, and outcome identity.
+- Selected chart state no longer requires the UI to infer which market owns the chart. `selection.chart.targetMarketId` is the same compact `marketId`, and `selection.chart.status/source/pointCount/outcomeCount/range/emptyState` mirrors the market's chart status.
+- The route proof script now records selector-contract coverage through `selectorContractMarketCount` and per-market selector keys.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket/CLOB history for line-family markets still depends on provider-mapped token IDs for those line markets.
+- The current route returns the compact market set, not a complete event-wide selector tree for every sibling line/period offered by Polymarket.
+
+Schema mismatch:
+
+- No schema change was required. Existing `Market`, `Outcome`, and `MarketOutcomeSnapshot` fields cover the EB-A selector/chart contract.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/live-detail` is now sufficient for compact selected-market switching on the game page. A future dedicated selector/options route may still be useful if Polymarket parity requires more sibling markets than the compact payload should carry.
+
+Temporary mock/static data:
+
+- No frontend mock/static data was added by EB-A. If Agent B needs temporary fixtures before provider data is fully available, they should match `markets[].selection` exactly.
+
+Future migration concern:
+
+- Agent B needs Android proof that visible chart, line selector, orderbook, and ticket handoff consume `markets[].selection` rather than local display-only structures.
