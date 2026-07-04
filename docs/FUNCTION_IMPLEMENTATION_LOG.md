@@ -26,3 +26,12 @@
 - User interactions supported: close/settings, selected event/outcome header, large amount display, compact Yes/No toggle, odds/balance line, +5/+10/Max presets, sparse numeric keypad, and blue swipe-up submit area.
 - State transitions: unchanged from the existing ticket flow. The visible order review card was removed from the user-facing layout, but contract-shaped line/period/shares/payout identity remains in the accessibility hierarchy for proof and downstream Portfolio handoff.
 - Known limitations: the current blue submit area is a flat color instead of Polymarket's exact blue gradient.
+
+## Cycle FP - Full-Screen Place Order Sheet
+
+- Feature/page: Event Detail place-order screen.
+- Frontend components touched: `src/components/TradeTicket.tsx`.
+- Important functions/services touched: no backend/provider service changes. The ticket still calls `placeOrder(amount, side, contractSide)` and keeps the same selection/order identity.
+- User interactions supported: the order ticket now presents as a full-screen mobile order surface with no Event Detail content peeking behind it, while preserving close/settings, event/outcome header, amount keypad, Yes/No selector, presets, odds/balance line, and swipe-up submit.
+- State transitions: unchanged from Cycle FO. The modal presentation changed from bottom-sheet height to full-screen; `amount`, `side`, `activeContractSide`, details expansion, order error, and submit behavior remain local ticket state.
+- Known limitations: exact Polymarket blur/gradient transition polish remains P2; this cycle closes the P0 issue that the order page still looked like a partial sheet instead of a dedicated place-order page.
