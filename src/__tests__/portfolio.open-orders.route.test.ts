@@ -187,6 +187,34 @@ describe("GET /api/portfolio open order display data", () => {
 
   test("returns position market and outcome identifiers needed for server-side close orders", async () => {
     getUserId.mockResolvedValue("user-1");
+    prismaMock.order.findMany
+      .mockResolvedValueOnce([
+        {
+          marketId: "market-world-cup-winner",
+          outcomeId: "outcome-france",
+          apiOrderRequest: {
+            requestBody: {
+              selection: {
+                marketId: "market-world-cup-winner",
+                outcomeId: "outcome-france",
+                marketGroupId: "spreads",
+                marketType: "spread",
+                line: "+1.5",
+                period: "regulation",
+                side: "yes",
+                displayLabel: "France +1.5 regulation",
+                contractSide: "yes",
+                providerSource: "polymarket",
+                externalMarketId: "gamma-market-france-spread",
+                conditionId: "condition-france-spread",
+                tokenId: "token-france-spread",
+                referenceOutcomeLabel: "France +1.5",
+              },
+            },
+          },
+        },
+      ])
+      .mockResolvedValueOnce([]);
     getOutcomeQuotes.mockResolvedValue(
       new Map([
         [
@@ -246,19 +274,21 @@ describe("GET /api/portfolio open order display data", () => {
         selection: {
           marketId: "market-world-cup-winner",
           outcomeId: "outcome-france",
-          marketGroupId: "live-game-lines",
-          marketType: "match_winner_1x2",
+          marketGroupId: "spreads",
+          marketType: "spread",
+          line: "+1.5",
           period: "regulation",
-          side: "home",
-          displayLabel: "France regulation",
+          side: "yes",
+          displayLabel: "France +1.5 regulation",
+          contractSide: "yes",
           referenceSource: "polymarket",
           providerSource: "polymarket",
           externalSlug: "world-cup-2026-france-winner",
-          externalMarketId: "gamma-market-france",
-          conditionId: "condition-france",
-          referenceTokenId: "token-france",
-          tokenId: "token-france",
-          referenceOutcomeLabel: "France",
+          externalMarketId: "gamma-market-france-spread",
+          conditionId: "condition-france-spread",
+          referenceTokenId: "token-france-spread",
+          tokenId: "token-france-spread",
+          referenceOutcomeLabel: "France +1.5",
         },
         shares: 25,
         avgCost: 0.42,
@@ -272,6 +302,7 @@ describe("GET /api/portfolio open order display data", () => {
         pnlTokens: 4.75,
       }),
     ]);
+    expect(JSON.stringify(body.positions)).not.toContain("match_winner_1x2");
     expect(JSON.stringify(body.positions)).not.toContain("private-position-credential");
   });
 

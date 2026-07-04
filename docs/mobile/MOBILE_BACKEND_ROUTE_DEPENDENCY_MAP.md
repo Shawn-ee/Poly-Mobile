@@ -1140,6 +1140,20 @@ Cycle ED-A implementation notes:
 - `selection.providerSource`/`selection.tokenId` are now preserved alongside existing `selection.referenceSource`/`selection.referenceTokenId`, so Book-style and current mobile-style names can round-trip without a schema migration.
 - No visible UI, smoke script, Prisma schema, or audit/tracker files were changed.
 
+## Cycle EE-A - Book Lifecycle Selection Snapshots
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Selected Book order response/open order/cancel lifecycle | `/api/orders` backed by canonical order service, `/api/portfolio`, `/api/portfolio/history` | POST, GET | Canonical API key with `orders:write` for submit and `account:read` for portfolio reads | Order submit includes normalized `selection` from Book: `marketId`, `outcomeId`, `marketType`, `marketGroupId`, `line`, `period`, `side`, provider source/market/condition/token, and `contractSide` | `order.selection`, `openOrders[].selection`, `canceledOrders[].selection` are normalized by the shared ticket selection snapshot helper | `ApiOrderRequest`, `Order`, `Market`, `Outcome` | None in backend proof | First-class order selection columns remain future production hardening. |
+| Selected Book filled position and recent trade snapshot | `/api/portfolio`, `/api/portfolio/history` | GET | Session user or canonical API key with `account:read` | None | `positions[].selection` and `recentTrades[].selection` prefer the latest matching same-user/same-market/same-outcome `ApiOrderRequest.requestBody.selection`, guarded by matching `marketId` and `outcomeId`, then fall back to current `Market`/`Outcome` metadata | `Position`, `Trade`, `Order`, `ApiOrderRequest`, `Market`, `Outcome` | None in backend proof | There is still no immutable `Trade`/`Position` selection snapshot column; same market/outcome multiple-selection history can only use the latest matching request snapshot until schema work is approved. |
+
+Cycle EE-A implementation notes:
+
+- Proof artifact: `docs/mobile/harness/cycle-EE-A-lifecycle-snapshots.json`.
+- `sanitizeTicketSelectionSnapshot()` is now shared by canonical order submission and portfolio metadata serialization, so Book aliases (`providerSource`, `tokenId`) and reference aliases (`referenceSource`, `referenceTokenId`) normalize identically.
+- Filled position and recent trade routes now avoid moneyline/default fallback for a selected Spread/line/period/provider token when a matching order request snapshot exists.
+- No visible mobile UI, mobile scripts, Prisma schema, migrations, audit-gate docs, or Polymarket gate/index files were changed.
+
 ## Cycle EB-A - Live Detail Selector And Selected Chart Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
