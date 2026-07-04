@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-07-04T05:24:51.291Z",
+  "eventSlug": "mobile-provider-refresh-proof-live",
+  "providerSlug": "new-rhianna-album-before-gta-vi-926",
+  "providerSource": "https://gamma-api.polymarket.com",
+  "staleFetchedAt": "2026-07-04T05:19:51.114Z",
+  "eventId": "dc5975ba-79c1-4205-bf4c-cd519d31d273",
+  "marketId": "40f86f7b-1c5f-4853-abd4-379f08ce9bf0",
+  "marketSlug": "mobile-provider-refresh-proof-live-new-rhianna-album-before-gta-vi-926",
+  "conditionId": "0x1fad72fae204143ff1c3035e99e7c0f65ea8d5cd9bd1070987bd1a3316f772be",
+  "outcomeCount": 2,
+  "snapshotCount": 2,
+  "nextProofSteps": [
+    "GET /api/mobile/events/mobile-provider-refresh-proof-live/live-detail should show stale/refresh-due provider snapshots.",
+    "POST /api/mobile/events/mobile-provider-refresh-proof-live/provider-refresh with allowContractProofFallback=false should execute Gamma refresh.",
+    "GET /api/mobile/events/mobile-provider-refresh-proof-live/live-detail should then show ready and refresh-due=false."
+  ]
+}

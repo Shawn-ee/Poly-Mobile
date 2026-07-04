@@ -175,9 +175,11 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
     chartHistory: event.chartHistory,
     chartHistorySource: event.chartHistory?.length ? "embedded" : undefined,
     chartHistoryStatus: event.chartHistory?.length ? "ready" : undefined,
-    orderbookDepthSource: depthMarket ? "embedded" : undefined,
+    orderbookDepthSource: depthMarket ? "orderbook-route" : undefined,
     orderbookDepthStatus: depthMarket ? "ready" : undefined,
     orderbookDepthMarketId: depthMarket?.id,
+    orderbookDepthEmptyState: depthMarket ? null : undefined,
+    orderbookAvailability: depthMarket?.availability,
     markets: normalizedMarkets,
   };
 };

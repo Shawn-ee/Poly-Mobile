@@ -125,6 +125,15 @@ const emptyProviderQuoteSnapshot: Awaited<ReturnType<typeof buildPublicOrderbook
 const emptyOrderbookSnapshot: Awaited<ReturnType<typeof buildPublicOrderbookSnapshot>> = {
   bids: [],
   asks: [],
+  depthSource: "empty",
+  depthReason: "No local depth or provider top-of-book depth is available.",
+  providerQuoteDepth: {
+    source: "reference-quote-snapshot",
+    levelCount: 0,
+    sizeSource: null,
+    isEstimatedSize: false,
+    reason: "No provider quote snapshot is available.",
+  },
   providerQuoteSnapshot: emptyProviderQuoteSnapshot,
 };
 

@@ -2,6 +2,57 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CS - Provider Quote Top-Of-Book Depth Bridge
+
+Feature/page worked on:
+
+- PM-GAP-067 provider-owned depth bridge for compact live event detail and selected Book.
+- This cycle converts refreshed provider quote snapshots into explicit top-of-book depth levels when no local orderbook ladder exists.
+
+Frontend components touched:
+
+- `mobile/src/adapters/worldCupAdapter.ts`
+- `mobile/scripts/smoke.ps1`
+
+Backend/components touched:
+
+- `src/server/services/orderbookSnapshot.ts`
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/__tests__/orderbook-snapshot.provider-depth.test.ts`
+
+Important functions/services touched:
+
+- `buildPublicOrderbookSnapshot()` now reports `depthSource`, `depthReason`, and `providerQuoteDepth`.
+- `buildProviderQuoteDepth()` builds provider-derived bid/ask top levels from `ReferenceQuoteSnapshot.bestBid`, `bestAsk`, and provider liquidity/volume fields.
+- `normalizeEventSummary()` preserves server-hydrated backend depth as `orderbook-route` so EventDetail can open the Book overlay in a ready route-depth state.
+
+User interactions supported:
+
+- Backend route proof shows the selected Book route no longer returns `emptyState=no-depth` for the provider proof event after refresh.
+- Samsung tablet proof shows the selected Book screen after provider refresh with route-backed ready depth, best bid/ask prices, and provider-derived share sizes.
+
+State transitions:
+
+- Proof event starts stale/refresh-due, then `POST /api/mobile/events/mobile-provider-refresh-proof-live/provider-refresh` refreshes provider snapshots.
+- `/api/orderbook/:marketId/book?maxLevels=2` returns `depthSource=provider-quote-snapshot`, `emptyState=null`, `providerQuoteDepth.levelCount=4`, and four levels derived from refreshed provider quote snapshots.
+
+Known limitations:
+
+- This is top-of-book provider quote depth, not a full provider CLOB ladder. Sizes are explicitly marked estimated from provider liquidity fields.
+- Cycle CS is merge-ready for the scoped provider quote bridge. Full provider CLOB depth and real World Cup provider mapping remain P1 structural debt.
+
+Verification:
+
+- Route proof: `docs/mobile/harness/cycle-current-mobile-provider-quote-depth-route-proof.json`
+- Proof prep: `docs/mobile/harness/cycle-current-mobile-provider-quote-depth-proof-prep.json`
+- Device proof summary: `docs/mobile/harness/cycle-current-holiwyn-provider-quote-depth-proof-summary.json`
+- Device XML proof: `docs/mobile/harness/cycle-current-holiwyn-provider-refresh-proof-order-book.xml`
+- Device screenshot proof: `docs/mobile/screenshots/cycle-current-holiwyn-provider-refresh-proof-order-book.png`
+- Samsung tablet provider refresh proof via `mobile/scripts/smoke.ps1 -ServerLiveProviderRefreshProof -ServerEventSlug mobile-provider-refresh-proof-live`
+- `cmd /c npm.cmd run test:ci -- src/__tests__/orderbook-snapshot.provider-depth.test.ts src/__tests__/public.orderbook-book.no-leak.test.ts src/__tests__/mobile-live-event-detail.test.ts`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` from `mobile/`
+
 ## Cycle CR - Provider-Owned Refresh And Cache Invalidation
 
 Feature/page worked on:

@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CS - Provider Quote Top-Of-Book Depth Bridge
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider quote top-of-book depth bridge | `/api/orderbook/:marketId/book?maxLevels=...` | GET | Optional public viewing | None | `depthSource`, `depthReason`, `providerQuoteDepth.levelCount`, `providerQuoteDepth.sizeSource`, `providerQuoteDepth.isEstimatedSize`, `emptyState`, `levels[]`, `bids[]`, `asks[]`, `providerQuoteSnapshot.status` | Reads local open `Order` rows first; if no local ladder exists, reads `ReferenceQuoteSnapshot.bestBid`, `bestAsk`, `liquidityClob`, `liquidity`, `volume24hr`, and `volume` | No frontend-only mock. Provider top levels are generated only when provider snapshots expose prices plus liquidity/volume basis; otherwise the route keeps `emptyState=no-depth` | Full provider CLOB depth ladder is still missing. Cycle CS exposes truthful top-of-book provider quote depth only. |
+| Server-hydrated EventDetail depth state | `/api/mobile/events/:slug/live-detail` | GET | Optional public viewing | None | `markets[].orderbookDepth[]`, `markets[].outcomes[].bestBidSize`, `bestAskSize`, selected event `orderbookDepthSource=orderbook-route`, `orderbookDepthStatus=ready`, `orderbookAvailability` | Same selected `Market`, `Outcome`, `ReferenceQuoteSnapshot`, and local `Order` rows | No mobile local fixture. Adapter preserves backend route depth when route returns it | Samsung tablet proof passed for the scoped provider quote bridge after reconnect. |
+
+Cycle CS implementation notes:
+
+- The provider quote depth bridge is intentionally labeled `provider-quote-snapshot`, not full provider orderbook depth.
+- Size is estimated from provider liquidity fields and exposed through `providerQuoteDepth.isEstimatedSize=true`.
+- Route proof and Samsung tablet proof passed for the scoped provider quote bridge.
+
 ## Cycle CR - Provider-Owned Refresh And Cache Invalidation
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

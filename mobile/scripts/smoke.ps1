@@ -1699,7 +1699,7 @@ try {
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-provider-refresh-proof-order-book.png"
       $providerRefreshOrderBookHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-provider-refresh-proof-order-book.xml"
-      Assert-HierarchyContains -Path $providerRefreshOrderBookHierarchy -Expected @("event-detail-order-book-screen", "orderbook-source-fallback", "orderbook-status-empty", "No depth", "Best bid 0.48 USDT", "Best ask 0.52 USDT", "Order Book")
+      Assert-HierarchyContains -Path $providerRefreshOrderBookHierarchy -Expected @("event-detail-order-book-screen", "orderbook-source-orderbook-route", "orderbook-status-ready", "Best bid", "Best ask", "Order Book")
       return
     }
 

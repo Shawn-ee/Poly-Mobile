@@ -2,6 +2,37 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CS - Provider Quote Top-Of-Book Depth Bridge
+
+Fields now provided or wired:
+
+- `/api/orderbook/:marketId/book` now distinguishes `depthSource=local-orderbook`, `provider-quote-snapshot`, or `empty`.
+- Provider quote depth metadata is explicit: `providerQuoteDepth.source`, `levelCount`, `sizeSource`, `isEstimatedSize`, and `reason`.
+- When local order rows are absent but refreshed provider quote snapshots include best bid/ask plus liquidity/volume, the route returns provider-derived top bid/ask levels instead of `no-depth`.
+- Mobile adapter preserves server-hydrated depth as `orderbook-route` so the Book overlay can show route-backed depth without waiting for a secondary request.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Full provider orderbook depth ladders, if product parity requires more than top bid/ask.
+- Real World Cup compact soccer provider mappings for every live market.
+- Android device proof for this cycle after wireless debugging is reconnected.
+
+Schema mismatch:
+
+- No schema change was required. The bridge uses existing `ReferenceQuoteSnapshot` price and liquidity fields.
+
+Route mismatch:
+
+- Route proof and Samsung tablet proof passed for the disposable provider proof event after the tablet reconnected.
+
+Temporary mock/static data:
+
+- None in the mobile UI. The disposable proof event is provider-contract-shaped and seeded from a real Gamma market.
+
+Future migration concern:
+
+- Do not market this as full provider depth. It is top-of-book provider quote depth with estimated size; a future provider-specific depth route/schema is still needed for full Polymarket orderbook parity.
+
 ## Cycle CR - Provider-Owned Refresh And Cache Invalidation
 
 Fields now provided or wired:
@@ -32,7 +63,7 @@ Temporary mock/static data:
 
 Future migration concern:
 
-- Next structural work should either import/map real World Cup soccer markets or add the provider-depth bridge needed for full orderbook parity. Visual UI work should remain blocked until one of those provider data debts is closed.
+- Next structural work should either import/map real World Cup soccer markets or add the full provider CLOB/depth route needed for complete orderbook parity. Visual UI work should remain blocked until one of those provider data debts is closed.
 
 ## Cycle CQ - Manual Provider Slug Preview Contract
 
