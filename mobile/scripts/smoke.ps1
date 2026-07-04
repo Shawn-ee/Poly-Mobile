@@ -112,7 +112,8 @@ param(
 $ErrorActionPreference = "Stop"
 
 $ServerLiveDetailHalvesOrderBook = $ServerLiveDetailFirstHalfOrderBook -or $ServerLiveDetailSecondHalfOrderBook
-$ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook -or $ServerLiveProviderRefreshProof
+$EventDetailProviderRouteStatusProof = $EventDetailProviderStatus
+$ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook -or $ServerLiveProviderRefreshProof -or $EventDetailProviderRouteStatusProof
 
 $MobileRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $RepoRoot = Resolve-Path (Join-Path $MobileRoot "..")
@@ -373,13 +374,6 @@ Push-Location $MobileRoot
 try {
   npm run typecheck
 
-  try {
-    $health = Invoke-RestMethod -Uri "$BackendBaseUrl/api/health" -TimeoutSec 4
-    Write-Host "Backend health: $($health.status)"
-  } catch {
-    Write-Host "Backend health: unavailable, continuing with app mock fallback."
-  }
-
   $adb = Join-Path $env:LOCALAPPDATA "Android\Sdk\platform-tools\adb.exe"
   if (-not (Test-Path $adb)) {
     throw "ADB not found at $adb"
@@ -389,6 +383,34 @@ try {
   & $adb -s $Device reverse "tcp:$Port" "tcp:$Port" | Out-Null
   if ($ServerLiveDetailBackendProof) {
     & $adb -s $Device reverse "tcp:3002" "tcp:3002" | Out-Null
+  }
+  try {
+    $health = Invoke-RestMethod -Uri "$BackendBaseUrl/api/health" -TimeoutSec 4
+    Write-Host "Backend health: $($health.status)"
+  } catch {
+    if ($ServerLiveDetailBackendProof) {
+      if ($EventDetailProviderStatus) {
+        $blockedProof = [ordered]@{
+          cycle = "EI-B"
+          scope = "Route-backed provider lifecycle/status badges on live detail, chart, Book/orderbook, and ticket handoff"
+          command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailProviderStatus -Port $Port -BackendBaseUrl $BackendBaseUrl -OutputDir docs/mobile/screenshots/cycle-EI-B-route-backed-status -HierarchyOutputDir docs/mobile/harness/cycle-EI-B-route-backed-status"
+          backendBaseUrl = $BackendBaseUrl
+          serverMode = "server"
+          apiBaseUrl = $BackendBaseUrl
+          adbReverse = "tcp:3002 tcp:3002"
+          serverEventSlug = $ServerEventSlug
+          result = "blocked"
+          routeBackedStatusConsumed = $false
+          blockedReason = "Backend health unavailable at $BackendBaseUrl/api/health after ADB reverse tcp:3002."
+          fallbackGuard = "Proof aborts before Expo launch instead of using fixture, mock-ready, or default-ready status."
+        }
+        $blockedProofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-EI-B-route-backed-status-proof.json"
+        $blockedProof | ConvertTo-Json -Depth 6 | Set-Content -Path $blockedProofPath
+        Write-Host "Blocked proof summary: $blockedProofPath"
+      }
+      throw "Backend health unavailable at $BackendBaseUrl/api/health after ADB reverse tcp:3002. Route-backed proof cannot run."
+    }
+    Write-Host "Backend health: unavailable, continuing with app mock fallback."
   }
   & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
 
@@ -1327,13 +1349,14 @@ try {
     }
 
     if ($EventDetailProviderStatus) {
-      Save-Screenshot -Name "cycle-EH-B-provider-status-live-top.png"
-      $providerStatusTopHierarchy = Save-UiHierarchy -Name "cycle-EH-B-provider-status-live-top.xml"
+      Save-Screenshot -Name "cycle-EI-B-route-backed-status-live-top.png"
+      $providerStatusTopHierarchy = Save-UiHierarchy -Name "cycle-EI-B-route-backed-status-live-top.xml"
       Assert-HierarchyContains -Path $providerStatusTopHierarchy -Expected @(
-        "Australia vs. Egypt",
         "event-detail-live-data-inline",
-        "provider-lifecycle-refresh-due",
-        "Live refresh due",
+        "live-data-status-ready",
+        "provider-lifecycle-ready",
+        "live-data-source-polymarket-gamma",
+        "Live provider ready",
         "event-detail-price-chart",
         "event-detail-chart-route-state",
         "provider-lifecycle-ready",
@@ -1343,77 +1366,80 @@ try {
         "event-detail-chart-open-book"
       )
 
+      Assert-HierarchyDoesNotContain -Path $providerStatusTopHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Live refresh due")
+
       Invoke-TapHierarchyNode -Path $providerStatusTopHierarchy -Identifier "event-detail-chart-open-book"
       Start-Sleep -Milliseconds 250
-      Save-Screenshot -Name "cycle-EH-B-provider-status-book-refreshing.png"
-      $providerStatusBookRefreshingHierarchy = Save-UiHierarchy -Name "cycle-EH-B-provider-status-book-refreshing.xml"
+      Save-Screenshot -Name "cycle-EI-B-route-backed-status-book-refreshing.png"
+      $providerStatusBookRefreshingHierarchy = Save-UiHierarchy -Name "cycle-EI-B-route-backed-status-book-refreshing.xml"
       Assert-HierarchyContains -Path $providerStatusBookRefreshingHierarchy -Expected @(
         "event-detail-order-book-screen",
         "event-detail-order-book-depth-state",
         "provider-lifecycle-refreshing",
         "Book depth refreshing",
         "Loading depth",
-        "event-detail-order-book-availability",
-        "provider-lifecycle-not-ready",
-        "Book not ready",
-        "Market unavailable",
         "order-book-ticket-handoff-status"
       )
+      Assert-HierarchyDoesNotContain -Path $providerStatusBookRefreshingHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready")
 
       Start-Sleep -Seconds 2
-      Save-Screenshot -Name "cycle-EH-B-provider-status-book-resolved.png"
-      $providerStatusBookResolvedHierarchy = Save-UiHierarchy -Name "cycle-EH-B-provider-status-book-resolved.xml"
+      Save-Screenshot -Name "cycle-EI-B-route-backed-status-book-resolved.png"
+      $providerStatusBookResolvedHierarchy = Save-UiHierarchy -Name "cycle-EI-B-route-backed-status-book-resolved.xml"
       Assert-HierarchyContains -Path $providerStatusBookResolvedHierarchy -Expected @(
         "event-detail-order-book-screen",
         "event-detail-order-book-depth-state",
         "provider-lifecycle-ready",
         "Book depth provider ready",
-        "Fixture depth",
+        "Route depth",
+        "orderbook-source-orderbook-route",
+        "orderbook-status-ready",
         "event-detail-order-book-availability",
-        "provider-lifecycle-not-ready",
-        "Book not ready",
         "order-book-ticket-handoff-status",
-        "Ticket not ready",
-        "order-book-buy-australia"
+        "Ticket provider ready",
+        "order-book-buy-"
       )
-      Assert-HierarchyDoesNotContain -Path $providerStatusBookResolvedHierarchy -Unexpected @("mock-ready", "default-ready", "selected-market-mexico-ecuador-winner", "Team to Advance")
+      Assert-HierarchyDoesNotContain -Path $providerStatusBookResolvedHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Fixture depth", "selected-market-mexico-ecuador-winner", "Team to Advance")
 
-      Invoke-TapHierarchyNode -Path $providerStatusBookResolvedHierarchy -Identifier "order-book-buy-australia"
+      Invoke-TapHierarchyNode -Path $providerStatusBookResolvedHierarchy -Identifier "order-book-buy-" -StartsWith
       Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-EH-B-provider-status-ticket-handoff.png"
-      $providerStatusTicketHierarchy = Save-UiHierarchy -Name "cycle-EH-B-provider-status-ticket-handoff.xml"
-      Assert-HierarchyContains -Path $providerStatusTicketHierarchy -Expected @("trade-ticket", "Live winner", "Australia vs. Egypt", "Australia", "ticket-side-buy", "ticket-side-sell")
-      Assert-HierarchyDoesNotContain -Path $providerStatusTicketHierarchy -Unexpected @("mock-ready", "default-ready", "Team to Advance", "Mexico vs. Ecuador")
+      Save-Screenshot -Name "cycle-EI-B-route-backed-status-ticket-handoff.png"
+      $providerStatusTicketHierarchy = Save-UiHierarchy -Name "cycle-EI-B-route-backed-status-ticket-handoff.xml"
+      Assert-HierarchyContains -Path $providerStatusTicketHierarchy -Expected @("trade-ticket", "ticket-side-buy", "ticket-side-sell", "Trading mode: Server mode")
+      Assert-HierarchyDoesNotContain -Path $providerStatusTicketHierarchy -Unexpected @("deterministic-status-fixture", "mock-ready", "default-ready", "fixture-ready", "Team to Advance", "Mexico vs. Ecuador")
 
       $proof = [ordered]@{
-        cycle = "EH-B"
-        scope = "Visible provider lifecycle/status badges on live detail, chart, Book/orderbook, and ticket handoff"
-        command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailProviderStatus -Port $Port -OutputDir docs/mobile/screenshots/cycle-EH-B-provider-status -HierarchyOutputDir docs/mobile/harness/cycle-EH-B-provider-status"
-        eventIdentity = "Australia vs. Egypt"
+        cycle = "EI-B"
+        scope = "Route-backed provider lifecycle/status badges on live detail, chart, Book/orderbook, and ticket handoff"
+        command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailProviderStatus -Port $Port -BackendBaseUrl $BackendBaseUrl -OutputDir docs/mobile/screenshots/cycle-EI-B-route-backed-status -HierarchyOutputDir docs/mobile/harness/cycle-EI-B-route-backed-status"
+        backendBaseUrl = $BackendBaseUrl
+        serverMode = $env:EXPO_PUBLIC_ORDER_MODE
+        apiBaseUrl = $env:EXPO_PUBLIC_API_BASE_URL
+        adbReverse = "tcp:3002 tcp:3002"
+        serverEventSlug = $ServerEventSlug
+        eventIdentity = "backend live detail route"
+        routeBackedStatusConsumed = $true
+        routeBackedStatusSource = "polymarket-gamma"
         result = "pass"
         assertions = [ordered]@{
-          liveRefreshDue = "Live detail exposes provider-lifecycle-refresh-due with visible Live refresh due text when backend liveDataStatus is absent."
-          chartReady = "Chart context exposes provider-lifecycle-ready with visible Chart provider ready text from deterministic embedded history."
+          backendHealth = "Backend /api/health was required before launch; the proof aborts instead of falling back when unavailable."
+          liveRouteStatusReady = "Live detail consumed route-backed liveDataStatus with live-data-status-ready and live-data-source-polymarket-gamma."
+          serverRuntime = "Expo launched with EXPO_PUBLIC_ORDER_MODE=server and EXPO_PUBLIC_API_BASE_URL set to the supplied BackendBaseUrl."
           bookRefreshing = "Opening Book produces a visible provider-lifecycle-refreshing Book depth refreshing state before the resolved depth state."
-          bookNotReady = "Book availability and Book ticket handoff expose provider-lifecycle-not-ready rather than silently becoming provider-ready."
-          fallbackGuard = "Ticket handoff avoids mock-ready/default-ready and Mexico moneyline fallback markers."
+          bookRouteDepthReady = "Resolved Book depth uses orderbook-source-orderbook-route and orderbook-status-ready rather than fixture depth."
+          fallbackGuard = "The top, Book, and ticket hierarchies reject deterministic-status-fixture, fixture-ready, mock-ready, and default-ready markers."
         }
         artifacts = @(
-          "docs/mobile/screenshots/cycle-EH-B-provider-status/cycle-EH-B-provider-status-live-top.png",
-          "docs/mobile/harness/cycle-EH-B-provider-status/cycle-EH-B-provider-status-live-top.xml",
-          "docs/mobile/screenshots/cycle-EH-B-provider-status/cycle-EH-B-provider-status-book-refreshing.png",
-          "docs/mobile/harness/cycle-EH-B-provider-status/cycle-EH-B-provider-status-book-refreshing.xml",
-          "docs/mobile/screenshots/cycle-EH-B-provider-status/cycle-EH-B-provider-status-book-resolved.png",
-          "docs/mobile/harness/cycle-EH-B-provider-status/cycle-EH-B-provider-status-book-resolved.xml",
-          "docs/mobile/screenshots/cycle-EH-B-provider-status/cycle-EH-B-provider-status-ticket-handoff.png",
-          "docs/mobile/harness/cycle-EH-B-provider-status/cycle-EH-B-provider-status-ticket-handoff.xml"
-        )
-        remainingGaps = @(
-          "Live mock status is deterministic backend-contract-shaped fixture UI because backend liveDataStatus is absent in this branch.",
-          "Real provider status freshness remains dependent on backend/provider contract fields."
+          "docs/mobile/screenshots/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-live-top.png",
+          "docs/mobile/harness/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-live-top.xml",
+          "docs/mobile/screenshots/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-book-refreshing.png",
+          "docs/mobile/harness/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-book-refreshing.xml",
+          "docs/mobile/screenshots/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-book-resolved.png",
+          "docs/mobile/harness/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-book-resolved.xml",
+          "docs/mobile/screenshots/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-ticket-handoff.png",
+          "docs/mobile/harness/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-ticket-handoff.xml"
         )
       }
-      $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-EH-B-provider-status-proof.json"
+      $proofPath = Join-Path $ResolvedHierarchyOutputDir "cycle-EI-B-route-backed-status-proof.json"
       $proof | ConvertTo-Json -Depth 6 | Set-Content -Path $proofPath
       Write-Host "Proof summary: $proofPath"
       return

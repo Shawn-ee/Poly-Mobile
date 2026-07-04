@@ -3908,6 +3908,44 @@ Known limitations:
 - DX-A is a backend lifecycle proof, not a visible UI proof.
 - Filled positions/recent trades still derive selected line metadata from current market/outcome rows; immutable trade selection snapshots remain future hardening.
 
+## Cycle EI-B - Tablet Route-Backed Provider Status
+
+Feature/page worked on:
+
+- Mobile EventDetail provider-status smoke proof now runs against the live backend detail route on a physical tablet.
+
+Frontend components touched:
+
+- None. Existing EventDetail route-backed status markers are consumed by the stricter harness path.
+
+Mobile/proof components touched:
+
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+
+User interactions supported/proven:
+
+- Tablet launches EventDetail in server mode with `EXPO_PUBLIC_ORDER_MODE=server` and `EXPO_PUBLIC_API_BASE_URL` set from `-BackendBaseUrl`.
+- Harness reverses `tcp:3002` for the tablet, requires backend `/api/health`, and opens the backend event slug instead of local live fixtures.
+- Provider-status proof fails if backend health is unavailable or if deterministic fixture/mock-ready/default-ready status markers appear.
+- Passing proof JSON records `routeBackedStatusConsumed=true`, the route status source, server mode, API base URL, backend slug, and ADB reverse; blocked proof JSON records `routeBackedStatusConsumed=false` with the health failure.
+
+Validation:
+
+- `npm ci` in `mobile/` to restore local dependencies.
+- `npm run typecheck` from `mobile/`
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailProviderStatus -Port 8317 -BackendBaseUrl http://127.0.0.1:3002 -OutputDir docs/mobile/screenshots/cycle-EI-B-route-backed-status -HierarchyOutputDir docs/mobile/harness/cycle-EI-B-route-backed-status` blocked as intended because backend `/api/health` was unavailable after `adb reverse tcp:3002 tcp:3002`.
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-proof.json`
+
+Known limitations:
+
+- `docs/mobile/harness/cycle-EI-B-route-backed-status/cycle-EI-B-route-backed-status-proof.json` records `result=blocked` and `routeBackedStatusConsumed=false` because backend health was unavailable. No fixture/mock-ready fallback was accepted.
+
 ## Cycle EB-A - Live Detail Selected-Market Selector Contract
 
 Feature/page worked on:
