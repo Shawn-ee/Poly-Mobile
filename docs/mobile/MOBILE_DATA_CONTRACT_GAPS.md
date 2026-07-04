@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle DB - Provider Line Source Probe
+
+Closed or narrowed:
+
+- Line-market provider source ambiguity is narrowed: exact event payload, 23 exact slug guesses, and 96 broad line-query candidates produced 0 attach-ready line targets.
+- The proof records rejection reasons per backend-shaped line target instead of only saying line data is missing.
+- The existing relevance/family gate is proven to keep broad search from mapping match-winner or unrelated candidates into line markets.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider exact slugs/token IDs for spreads, totals, team totals, halves, corners, props, and correct score.
+- A source discovery/import path beyond current Gamma exact event/search surfaces.
+- Operator-reviewed slug capture from the Polymarket app if provider APIs do not expose line markets directly.
+
+Schema mismatch:
+
+- No schema change was required. Existing fields can store line provider mappings if a real candidate is found.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/provider-candidates` can validate provider candidates, but there is no operator workflow for pasting/reviewing exact line slugs in bulk.
+
+Temporary mock/static data:
+
+- The proof uses in-memory line targets only as contract-shaped diagnostics; it does not write DB rows and does not count them as provider-backed data.
+
+Future migration concern:
+
+- Do not keep spending cycles on broad Gamma line searches unless a new provider query surface is identified. Current evidence says the next useful step is a different source or real slugs collected from the reference app.
+
 ## Cycle DA - Provider Discovery Expansion
 
 Closed or narrowed:

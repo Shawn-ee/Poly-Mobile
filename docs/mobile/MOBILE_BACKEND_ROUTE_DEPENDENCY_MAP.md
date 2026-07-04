@@ -2,6 +2,21 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle DB - Provider Line Source Probe
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Line-market provider source probe | `scripts/prove_mobile_provider_line_source_probe.ts` | Local script | Local development only | `--providerEventSlug`, `--output` | Exact event family summary, exact slug guess results, broad line-query ranked candidates, attach-ready counts, rejection reasons, `nextRequiredAction` | No DB writes. In-memory targets are shaped like compact `Market.marketType`, `Market.line`, `Market.period`, and active `Outcome` identity | None. The script does not attach provider identity or count local mock data as provider-backed | Need an actual provider source or operator-reviewed real exact slugs for line markets. |
+| Exact provider event source | `https://gamma-api.polymarket.com/events?slug=...` | GET | Public provider endpoint | Query `slug=fifwc-col-gha-2026-07-03` | Provider event markets with `slug`, `question`, `id`, `conditionId`, `outcomes`, `clobTokenIds` | Would map into `Market.externalSlug`, `Market.externalMarketId`, `Market.conditionId`, and `Outcome.referenceTokenId` if a line family candidate existed | None. Current exact event exposes only match-winner candidates | Line-family markets are absent from the exact event payload for this checked event. |
+| Exact line slug guesses | `https://gamma-api.polymarket.com/markets?slug=...` | GET | Public provider endpoint | 23 generated line slug guesses for spread, totals, team totals, first half, corners, and correct score | Exact market preview fields if a guessed slug exists | Same provider identity fields as above | None. Missing slugs return no candidates and are not treated as mappings | Need real slugs from reference app/operator review or another source; guessed patterns did not resolve. |
+| Broad line search probe | `https://gamma-api.polymarket.com/markets?search=...` | GET | Public provider endpoint | Normalized line-market search queries per backend-shaped target | Ranked candidate `attachReadiness.reasons`, family, relevance report | None unless a candidate passes attach gates; none did | None. Broad candidates are rejected by family/relevance gates | Broad search still returns unrelated markets and is not a safe line mapping source. |
+
+Cycle DB implementation notes:
+
+- This cycle is read-only for provider mapping and DB state.
+- The checked surfaces yielded 0 attach-ready line targets; this is documented as a source gap, not a feature-complete line-market claim.
+- The existing match-winner provider mapping from Cycle DA remains healthy on Samsung tablet proof.
+
 ## Cycle DA - Provider Discovery Expansion
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

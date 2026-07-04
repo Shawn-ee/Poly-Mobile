@@ -6,6 +6,30 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Cycle DB
+
+Date: 2026-07-04
+Branch: `mobile/cycle-DB-provider-line-source-probe`
+Goal: Probe current provider surfaces for real attach-ready Polymarket line-market candidates without weakening the family/relevance gate.
+Reference app screens observed: Continued from Cycle CW/CX/CY Samsung S23 Polymarket official app Colombia vs Ghana game page and exact Gamma event `fifwc-col-gha-2026-07-03`.
+Holiwyn screens changed: No intended visual changes. Existing server-backed Colombia vs Ghana live-detail Book flow was re-proven on Samsung tablet.
+Backend/API changed: No production API changed. Added a read-only line-source proof harness that checks exact event markets, exact line-slug guesses, and broad line-oriented provider search against backend-shaped line targets.
+Database/schema changed: None.
+Files changed: provider line source proof harness, docs/proof artifacts, tablet proof artifacts.
+Tests run:
+- `cmd /c npx.cmd tsx scripts/prove_mobile_provider_line_source_probe.ts --output docs/mobile/harness/cycle-current-mobile-provider-line-source-probe.json`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run typecheck` from `mobile/`
+- Samsung tablet proof via `mobile/scripts/smoke.ps1 -Deep -ServerLiveDetailOrderBook -ServerEventSlug world-cup-2026-colombia-vs-ghana-2026-07-03`
+Evidence captured:
+- `docs/mobile/harness/cycle-current-mobile-provider-line-source-probe.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+Result: Pass for line-source probe and safety. Exact event still has 3 match-winner and 0 line-family candidates; 23 exact line slug guesses returned 0 candidates; 8 line targets and 96 broad candidates produced 0 attach-ready line mappings. Existing match-winner provider-backed Book proof passed on Samsung tablet.
+Next focus: do not repeat broad Gamma line search. Get real line-market slugs from the reference app/operator review or add a different provider source/ingestion path.
+
 ## Cycle DA
 
 Date: 2026-07-04
