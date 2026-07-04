@@ -991,6 +991,26 @@ try {
         "Player Props"
       )
 
+      Invoke-TapHierarchyNode -Path $dyTopHierarchy -Identifier "event-detail-price-chart"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-EB-B-holiwyn-game-page-chart-mid.png"
+      $ebChartMidHierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-chart-mid.xml"
+      Assert-HierarchyContains -Path $ebChartMidHierarchy -Expected @("event-detail-price-chart", "event-detail-chart-tooltip", "chart-selected-point-mid", "2H", "Mid chart")
+      Invoke-TapHierarchyNode -Path $ebChartMidHierarchy -Identifier "event-detail-price-chart"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-EB-B-holiwyn-game-page-chart-target.png"
+      $ebChartTargetHierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-chart-target.xml"
+      Assert-HierarchyContains -Path $ebChartTargetHierarchy -Expected @("event-detail-price-chart", "event-detail-chart-tooltip", "chart-selected-point-target", "Target", "Target line")
+      Invoke-TapHierarchyNode -Path $ebChartTargetHierarchy -Identifier "event-detail-chart-filter-All"
+      Start-Sleep -Seconds 1
+      $ebChartAllHierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-chart-filter-all.xml"
+      Assert-HierarchyContains -Path $ebChartAllHierarchy -Expected @("event-detail-price-chart", "chart-filter-All", "All", "Game", "Live")
+      Invoke-TapHierarchyNode -Path $ebChartAllHierarchy -Identifier "event-detail-chart-filter-Live"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-EB-B-holiwyn-game-page-chart-filter-live.png"
+      $ebChartLiveHierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-chart-filter-live.xml"
+      Assert-HierarchyContains -Path $ebChartLiveHierarchy -Expected @("event-detail-price-chart", "chart-filter-Live", "event-detail-chart-tooltip")
+
       Invoke-TapHierarchyNode -Path $dyTopHierarchy -Identifier "event-detail-top-order-book"
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-top-book.png"
@@ -1064,6 +1084,44 @@ try {
       Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-markets-lower.png"
       $dyMarketsLowerHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-markets-lower.xml"
       Assert-HierarchyContains -Path $dyMarketsLowerHierarchy -Expected @("event-detail-sticky-market-tabs", "Spread", "Totals")
+
+      Invoke-TapHierarchyNode -Path $dyMarketsLowerHierarchy -Identifier "event-detail-spread-line-2-5"
+      Start-Sleep -Milliseconds 700
+      $ebSpread25Hierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-spread-line-25.xml"
+      Invoke-TapHierarchyNode -Path $ebSpread25Hierarchy -Identifier "event-detail-spread-period-1st-half"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-EB-B-holiwyn-game-page-spread-line-25-1h.png"
+      $ebSpreadChangedHierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-spread-line-25-1h.xml"
+      Assert-HierarchyContains -Path $ebSpreadChangedHierarchy -Expected @("Spread", "AUS to win by over 2.5 goals", "event-detail-spread-line-2.5", "event-detail-spread-period-1st Half", "Yes, AUS -2.5", "33.3x", "3%", "selection-line-2.5", "selection-period-1st Half")
+      Invoke-TapHierarchyNode -Path $ebSpreadChangedHierarchy -Identifier "event-detail-outcome-spread-spread-yes"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-EB-B-holiwyn-game-page-spread-ticket.png"
+      $ebSpreadTicketHierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-spread-ticket.xml"
+      Assert-HierarchyContains -Path $ebSpreadTicketHierarchy -Expected @("trade-ticket", "Australia vs. Egypt", "ticket-selection-line", "Yes - AUS -2.5 1H", "ticket-market-family-spread", "ticket-line-2.5", "ticket-period-1st Half", "ticket-selected-outcome-choice", "Choose an amount")
+      Invoke-TapHierarchyNode -Path $ebSpreadTicketHierarchy -Identifier "ticket-close"
+      Start-Sleep -Seconds 1
+
+      & $adb -s $Device shell input swipe 720 1700 720 1250 350 | Out-Null
+      Start-Sleep -Seconds 1
+      $ebTotalsReadyHierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-totals-ready.xml"
+      Assert-HierarchyContains -Path $ebTotalsReadyHierarchy -Expected @("Totals", "event-detail-totals-line-3.5", "event-detail-totals-period-2nd Half")
+      Invoke-TapHierarchyNode -Path $ebTotalsReadyHierarchy -Identifier "event-detail-totals-period-2nd-half"
+      Start-Sleep -Milliseconds 700
+      $ebTotals2hHierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-totals-2h.xml"
+      Invoke-TapHierarchyNode -Path $ebTotals2hHierarchy -Identifier "event-detail-totals-line-3-5"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-EB-B-holiwyn-game-page-totals-35-2h.png"
+      $ebTotalsChangedHierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-totals-35-2h.xml"
+      Assert-HierarchyContains -Path $ebTotalsChangedHierarchy -Expected @("Totals", "Total goals over 3.5", "event-detail-totals-line-3.5", "event-detail-totals-period-2nd Half", "Over 3.5", "4.5x", "22%", "selection-line-3.5", "selection-period-2nd Half")
+      Invoke-TapHierarchyNode -Path $ebTotalsChangedHierarchy -Identifier "event-detail-outcome-totals-totals-over"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-EB-B-holiwyn-game-page-totals-ticket.png"
+      $ebTotalsTicketHierarchy = Save-UiHierarchy -Name "cycle-EB-B-holiwyn-game-page-totals-ticket.xml"
+      Assert-HierarchyContains -Path $ebTotalsTicketHierarchy -Expected @("trade-ticket", "Australia vs. Egypt", "ticket-selection-line", "Yes - Over 3.5 2H", "ticket-market-family-totals", "ticket-line-3.5", "ticket-period-2nd Half", "ticket-selected-outcome-choice", "Choose an amount")
+      Invoke-TapHierarchyNode -Path $ebTotalsTicketHierarchy -Identifier "ticket-close"
+      Start-Sleep -Seconds 1
+
+      $dyMarketsLowerHierarchy = Save-UiHierarchy -Name "cycle-DY-A-holiwyn-game-page-structure-markets-lower-after-line-proof.xml"
       Invoke-TapHierarchyNode -Path $dyMarketsLowerHierarchy -Identifier "event-detail-sticky-player-props-tab"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-DY-A-holiwyn-game-page-structure-sticky-props.png"
@@ -1095,9 +1153,9 @@ try {
       Assert-HierarchyContains -Path $dyRulesHierarchy -Expected @("Market Rules", "AUS to advance", "View Full Rules", "More Events", "Portugal vs. Croatia", "England vs. Congo DR")
 
       $proof = [ordered]@{
-        cycle = "DY-A"
+        cycle = "DY-A/EB-B"
         issue = "PM-GAP-073"
-        scope = "Samsung tablet full live football World Cup game page structure"
+        scope = "Samsung tablet full live football World Cup game page structure plus chart touch and in-page line selector ticket carry-through"
         command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -DyAGamePageStructure -Port 8256 -OutputDir docs/mobile/screenshots/cycle-DY-A-game-page-structure -HierarchyOutputDir docs/mobile/harness/cycle-DY-A-game-page-structure"
         eventIdentity = "Australia vs. Egypt"
         result = "pass"
@@ -1105,11 +1163,13 @@ try {
           headerActions = @("event-detail-back", "event-detail-top-order-book", "event-detail-share")
           gameChatSegment = @("event-detail-tab-game", "event-detail-tab-chat")
           topMatchContext = @("AUS 40%", "EGY 61%", "0 - 1", "63'", "LIVE WORLD CUP")
-          chart = @("event-detail-price-chart", "event-detail-chart-tooltip", "Game", "Live")
+          chart = @("event-detail-price-chart", "event-detail-chart-tooltip", "chart-selected-point-mid", "chart-selected-point-target", "chart-filter-All", "chart-filter-Live")
           chat = @("event-detail-chat-preview", "event-detail-chat-page", "event-detail-chat-feed")
           primaryOutcomes = @("event-detail-team-advance-australia", "event-detail-team-advance-egypt")
           compactPinnedContext = @("event-detail-compact-game-header", "event-detail-sticky-market-shell", "event-detail-sticky-market-tabs")
           groupedMarkets = @("Live Winner", "Spread", "Totals", "1st Half Winner", "2nd Half Winner", "Full Game Team Total Goals")
+          lineSelectors = @("event-detail-spread-line-2.5", "event-detail-spread-period-1st Half", "selection-line-2.5", "event-detail-totals-line-3.5", "event-detail-totals-period-2nd Half", "selection-line-3.5")
+          lineTickets = @("ticket-market-family-spread", "ticket-line-2.5", "ticket-period-1st Half", "Yes - AUS -2.5 1H", "ticket-market-family-totals", "ticket-line-3.5", "ticket-period-2nd Half", "Yes - Over 3.5 2H")
           playerPropsBlankState = @("event-detail-player-props-empty", "Player Props unavailable for this match")
           lowerContent = @("Market Rules", "View Full Rules", "More Events")
           ticket = @("trade-ticket", "Live winner", "event-detail-primary-outcome-france-argentina-live-australia", "event-detail-team-advance-australia", "Australia vs. Egypt", "Australia")
@@ -1118,6 +1178,12 @@ try {
         artifacts = @(
           "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-top.png",
           "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-top.xml",
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-EB-B-holiwyn-game-page-chart-mid.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-EB-B-holiwyn-game-page-chart-mid.xml",
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-EB-B-holiwyn-game-page-chart-target.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-EB-B-holiwyn-game-page-chart-target.xml",
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-EB-B-holiwyn-game-page-chart-filter-live.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-EB-B-holiwyn-game-page-chart-filter-live.xml",
           "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-top-book.png",
           "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-top-book.xml",
           "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-share-sheet.png",
@@ -1132,6 +1198,14 @@ try {
           "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-markets.xml",
           "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-pinned-context.png",
           "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-pinned-context.xml",
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-EB-B-holiwyn-game-page-spread-line-25-1h.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-EB-B-holiwyn-game-page-spread-line-25-1h.xml",
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-EB-B-holiwyn-game-page-spread-ticket.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-EB-B-holiwyn-game-page-spread-ticket.xml",
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-EB-B-holiwyn-game-page-totals-35-2h.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-EB-B-holiwyn-game-page-totals-35-2h.xml",
+          "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-EB-B-holiwyn-game-page-totals-ticket.png",
+          "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-EB-B-holiwyn-game-page-totals-ticket.xml",
           "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-sticky-props.png",
           "docs/mobile/harness/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-sticky-props.xml",
           "docs/mobile/screenshots/cycle-DY-A-game-page-structure/cycle-DY-A-holiwyn-game-page-structure-rules-more.png",
