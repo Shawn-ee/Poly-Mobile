@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CK - Live Provider Quote Snapshot Ready Proof
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Compact live-detail provider snapshot ready proof | `/api/mobile/events/:slug/live-detail` | GET | Optional public viewing | None | `contract.batchedProviderQuoteSnapshotSource`, `contract.batchedProviderQuoteSnapshotMarketCount`, `markets[].providerQuoteSnapshot.status`, `snapshotCount`, `acceptingOrders` | `ReferenceQuoteSnapshot` rows seeded for compact `Market`/`Outcome` pairs | Deterministic local rows are future-backend-shaped and keyed by `marketId`, `outcomeId`, and `source` | Real external provider ingestion/refresh still missing. |
+| Selected second-half orderbook provider snapshot ready proof | `/api/orderbook/:marketId/book?maxLevels=2` | GET | Optional public viewing | None | `providerQuoteSnapshot.source`, `status`, `snapshotCount`, `latestFetchedAt`, `acceptingOrders`, `levels[]` | Same `ReferenceQuoteSnapshot` rows plus open `Order` rows for depth | If snapshot rows are absent, route truthfully reports `unavailable`; Cycle CK proves the ready path | Provider cache invalidation/update sequence and provider-owned depth ladders remain missing. |
+| Provider-shaped proof seed | `mobile:live-provider-quote-snapshot-seed` | Local script | Local development only | `--eventSlug`, `--summaryPath`, `--apply` | Summary artifact: compact market count, provider snapshot row count, upsert count, market preview | `ReferenceQuoteSnapshot`, compact live `Market`, active `Outcome` | N/A | Replace deterministic proof rows with real provider refresh when external ingestion is in scope. |
+
+Cycle CK implementation notes:
+
+- This cycle proves the same contract added in Cycle CJ can move into a ready state for all 14 compact live markets.
+- It does not mark backend provider parity complete because the rows are deterministic local proof data.
+
 ## Cycle CJ - Provider Quote Snapshot Contract
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

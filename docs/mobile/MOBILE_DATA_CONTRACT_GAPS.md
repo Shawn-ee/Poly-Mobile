@@ -2,6 +2,36 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CK - Live Provider Quote Snapshot Ready Proof
+
+Fields now provided or wired:
+
+- `mobile:live-provider-quote-snapshot-seed` writes 31 provider-shaped `ReferenceQuoteSnapshot` rows across 14 compact World Cup live markets.
+- `/api/mobile/events/:slug/live-detail` now proves `contract.batchedProviderQuoteSnapshotSource=reference-quote-snapshot` and `batchedProviderQuoteSnapshotMarketCount=14` when provider rows exist.
+- `/api/orderbook/:marketId/book` now proves selected second-half `providerQuoteSnapshot.status=ready`, `snapshotCount=3`, and `acceptingOrders=true`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real external provider ingestion for current World Cup live markets.
+- Provider refresh/invalidation sequence, provider response timestamps, and stale/error classification from the actual feed.
+- Provider-owned multi-level depth if top quote snapshots are not enough for Polymarket parity.
+
+Schema mismatch:
+
+- Current `ReferenceQuoteSnapshot` supports top quote readiness. Full provider depth ladders may need a dedicated provider orderbook-depth snapshot table.
+
+Route mismatch:
+
+- Ready-state provider proof is now available through existing public routes, but there is no public/admin event-level provider refresh route dedicated to mobile live-detail QA.
+
+Temporary mock/static data:
+
+- Cycle CK uses deterministic local proof rows in the real `ReferenceQuoteSnapshot` table. The rows are future-backend-shaped and keyed by `marketId`, `outcomeId`, and `source`.
+
+Future migration concern:
+
+- Real provider ingestion should write the same fields so the mobile routes can replace proof rows without UI or API contract changes.
+
 ## Cycle CJ - Provider Quote Snapshot Contract
 
 Fields now provided or wired:

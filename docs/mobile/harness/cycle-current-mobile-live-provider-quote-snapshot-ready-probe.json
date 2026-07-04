@@ -1,0 +1,40 @@
+{
+  "cycle": "CK",
+  "feature": "Live event provider quote snapshot ready proof",
+  "capturedAt": "2026-07-04T03:08:50.4524096Z",
+  "seedArtifact": "docs/mobile/harness/cycle-current-mobile-live-provider-quote-snapshot-seed.json",
+  "routes": [
+    "GET /api/mobile/events/world-cup-2026-curacao-vs-cote-divoire-2026-06-25/live-detail",
+    "GET /api/orderbook/ed121b08-88bd-4735-9793-64a0022e9696/book?maxLevels=2"
+  ],
+  "liveDetailContract": {
+    "batchedProviderQuoteSnapshotSource": "reference-quote-snapshot",
+    "batchedProviderQuoteSnapshotMarketCount": 14
+  },
+  "firstMarket": {
+    "marketId": "aca976d2-2bad-416c-b010-c874c0ee493f",
+    "providerQuoteSnapshot": {
+      "status": "ready",
+      "snapshotCount": 3,
+      "acceptingOrders": true
+    }
+  },
+  "secondHalfMarket": {
+    "marketId": "ed121b08-88bd-4735-9793-64a0022e9696",
+    "providerQuoteSnapshot": {
+      "status": "ready",
+      "snapshotCount": 3
+    }
+  },
+  "selectedOrderbook": {
+    "providerQuoteSnapshot": {
+      "source": "reference-quote-snapshot",
+      "status": "ready",
+      "snapshotCount": 3,
+      "latestFetchedAt": "2026-07-04T03:08:34.318Z",
+      "acceptingOrders": true
+    },
+    "levelCount": 4
+  },
+  "result": "pass for provider-shaped snapshot ready route proof; real external provider ingestion remains open"
+}
