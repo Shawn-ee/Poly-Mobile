@@ -107,6 +107,8 @@ describe("mobile live event detail contract", () => {
       route: "mobile-live-detail",
       primaryMarketId: "market-main",
       orderbookDepthSource: "orderbook-route",
+      batchedOrderbookDepthSource: "orderbook-route",
+      batchedOrderbookDepthMarketCount: 14,
       chartHistorySource: "market-outcome-snapshot",
       liveDataStatus: "ready",
     });
@@ -142,7 +144,26 @@ describe("mobile live event detail contract", () => {
         { outcomeId: "home", side: "ask", price: 0.65, shares: 940, total: 611 },
       ],
     });
+    expect(payload.markets[1]).toMatchObject({
+      id: "market-0",
+      liquidity: 1236.4,
+      orderbookDepth: [
+        { outcomeId: "home", side: "bid", price: 0.59, shares: 1060, total: 625.4 },
+        { outcomeId: "home", side: "ask", price: 0.65, shares: 940, total: 611 },
+      ],
+      outcomes: expect.arrayContaining([
+        expect.objectContaining({
+          id: "home",
+          bestBid: 0.59,
+          bestAsk: 0.65,
+          bestBidSize: 1060,
+          bestAskSize: 940,
+        }),
+      ]),
+    });
     expect(buildPublicOrderbookSnapshot).toHaveBeenCalledWith({ marketId: "market-main", maxLevels: 24 });
+    expect(buildPublicOrderbookSnapshot).toHaveBeenCalledWith({ marketId: "market-0", maxLevels: 24 });
+    expect(buildPublicOrderbookSnapshot).toHaveBeenCalledTimes(14);
   });
 
   test("marks live detail unavailable when no provider timestamp is available", async () => {

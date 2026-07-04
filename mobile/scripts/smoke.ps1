@@ -1971,7 +1971,7 @@ try {
       & $adb -s $Device shell input swipe 540 1800 540 760 600 | Out-Null
       Start-Sleep -Seconds 1
       $eventDetailSecondHalfHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-live-second-half-line-groups.xml"
-      Assert-HierarchyContains -Path $eventDetailSecondHalfHierarchy -Expected @("event-detail-open-order-book-second-half-winner", "event-detail-market-availability-second-half-winner", "market-availability-stale", "market-status-LIVE", "2nd Half Winner", "Who wins the second half?")
+      Assert-HierarchyContains -Path $eventDetailSecondHalfHierarchy -Expected @("event-detail-open-order-book-second-half-winner", "event-detail-market-availability-second-half-winner", "event-detail-market-depth-second-half-winner", "market-depth-batched", "Route depth", "market-availability-stale", "market-status-LIVE", "2nd Half Winner", "Who wins the second half?")
       Invoke-TapHierarchyNode -Path $eventDetailSecondHalfHierarchy -Identifier "event-detail-open-order-book-second-half-winner"
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-server-live-second-half-order-book.png"

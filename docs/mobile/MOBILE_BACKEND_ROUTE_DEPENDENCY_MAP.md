@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle CH - Batched Live Market Depth Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Compact live market depth batching | `/api/mobile/events/:slug/live-detail` | GET | Optional public viewing | None | `contract.batchedOrderbookDepthSource`, `contract.batchedOrderbookDepthMarketCount`, `markets[].liquidity`, `markets[].orderbookDepth[]`, `markets[].outcomes[].bestBid`, `bestAsk`, `bestBidSize`, `bestAskSize` | Selected compact `Market` rows, active `Outcome` rows, open `Order` rows through `buildPublicOrderbookSnapshot()` | Local rows still render without `Route depth` when no server depth exists | Provider-owned liquidity ingestion and production-scale batching/prefetch policy remain missing. |
+| Visible row batched-depth proof | Samsung tablet smoke against server-backed live detail | GET / device proof | Optional public viewing | None | `event-detail-market-depth-second-half-winner`, `market-depth-batched`, selected orderbook `orderbook-source-orderbook-route` | Same as above, with selected second-half market `ed121b08-88bd-4735-9793-64a0022e9696` | N/A | Need all visible provider markets to have live provider liquidity, not only seeded proof markets. |
+
+Cycle CH implementation notes:
+
+- This cycle closes a structural gap: compact live-detail no longer limits route-backed depth to the primary market.
+- Direct route probe showed 14 compact markets and 6 markets with batched route-backed depth in local proof data.
+- PM-GAP-067 remains open for real provider ingestion, provider-owned live stats only if product keeps that tab, production batching/prefetch, and provider-wide liquidity for all line markets.
+
 ## Cycle CG - Second-Half Orderbook Depth Proof
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |

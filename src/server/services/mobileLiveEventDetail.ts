@@ -79,6 +79,23 @@ const probabilityFromPrice = (value: Prisma.Decimal) => {
   return Math.max(1, Math.min(99, Math.round(price * 100)));
 };
 
+const depthLevelsFromSnapshot = (snapshot: Awaited<ReturnType<typeof buildPublicOrderbookSnapshot>>) => [
+  ...snapshot.bids.map((level) => ({
+    outcomeId: level.outcomeId,
+    side: "bid" as const,
+    price: level.price,
+    shares: level.size,
+    total: Number((level.price * level.size).toFixed(6)),
+  })),
+  ...snapshot.asks.map((level) => ({
+    outcomeId: level.outcomeId,
+    side: "ask" as const,
+    price: level.price,
+    shares: level.size,
+    total: Number((level.price * level.size).toFixed(6)),
+  })),
+];
+
 const stringFromMetadata = (metadata: Record<string, unknown>, key: string) => {
   const value = metadata[key];
   return typeof value === "string" && value.trim() ? value.trim() : null;
@@ -203,30 +220,22 @@ export async function serializeMobileLiveEventDetail(input: {
     : arrayFromMetadata(mobileLiveDetail, "liveStats");
   const liveDataMetadata = metadataObject(mobileLiveDetail.liveDataStatus as Prisma.JsonValue | null);
 
-  const primaryDepth = primaryMarket
-    ? await buildPublicOrderbookSnapshot({ marketId: primaryMarket.id, maxLevels: MAX_DEPTH_LEVELS })
-    : { bids: [], asks: [] };
-  const primaryBidByOutcome = new Map(primaryDepth.bids.map((level) => [level.outcomeId, level]));
-  const primaryAskByOutcome = new Map(primaryDepth.asks.map((level) => [level.outcomeId, level]));
-  const primaryDepthLevels = [
-    ...primaryDepth.bids.map((level) => ({
-      outcomeId: level.outcomeId,
-      side: "bid" as const,
-      price: level.price,
-      shares: level.size,
-      total: Number((level.price * level.size).toFixed(6)),
-    })),
-    ...primaryDepth.asks.map((level) => ({
-      outcomeId: level.outcomeId,
-      side: "ask" as const,
-      price: level.price,
-      shares: level.size,
-      total: Number((level.price * level.size).toFixed(6)),
-    })),
-  ];
+  const depthEntries = await Promise.all(
+    markets.map(async (market) => {
+      const snapshot = await buildPublicOrderbookSnapshot({ marketId: market.id, maxLevels: MAX_DEPTH_LEVELS });
+      return [market.id, { snapshot, levels: depthLevelsFromSnapshot(snapshot) }] as const;
+    }),
+  );
+  const depthByMarketId = new Map(depthEntries);
+  const primaryDepthLevels = primaryMarket ? depthByMarketId.get(primaryMarket.id)?.levels ?? [] : [];
+  const batchedOrderbookDepthMarketCount = Array.from(depthByMarketId.values()).filter((entry) => entry.levels.length > 0).length;
 
   const serializedMarkets = await Promise.all(
-    markets.map(async (market) => ({
+    markets.map(async (market) => {
+      const depth = depthByMarketId.get(market.id) ?? { snapshot: { bids: [], asks: [] }, levels: [] };
+      const bidByOutcome = new Map(depth.snapshot.bids.map((level) => [level.outcomeId, level]));
+      const askByOutcome = new Map(depth.snapshot.asks.map((level) => [level.outcomeId, level]));
+      return {
         id: market.id,
         title: market.title,
         description: market.description,
@@ -241,16 +250,13 @@ export async function serializeMobileLiveEventDetail(input: {
         unit: market.unit,
         propCategory: market.propCategory,
         availability: availabilityForMarket(market),
-        liquidity:
-          market.id === primaryMarket?.id && primaryDepthLevels.length
-            ? primaryDepthLevels.reduce((sum, level) => sum + level.total, 0)
-            : null,
-        orderbookDepth: market.id === primaryMarket?.id ? primaryDepthLevels : [],
+        liquidity: depth.levels.length ? depth.levels.reduce((sum, level) => sum + level.total, 0) : null,
+        orderbookDepth: depth.levels,
         rulesText: market.rulesText,
         event: null,
         outcomes: market.outcomes.map((outcome) => {
-          const bid = market.id === primaryMarket?.id ? primaryBidByOutcome.get(outcome.id) : null;
-          const ask = market.id === primaryMarket?.id ? primaryAskByOutcome.get(outcome.id) : null;
+          const bid = bidByOutcome.get(outcome.id) ?? null;
+          const ask = askByOutcome.get(outcome.id) ?? null;
           const bestBid = bid?.price ?? null;
           const bestAsk = ask?.price ?? null;
           const price = bestBid != null && bestAsk != null ? (bestBid + bestAsk) / 2 : bestAsk ?? bestBid ?? 0.5;
@@ -267,8 +273,8 @@ export async function serializeMobileLiveEventDetail(input: {
             isTradable: outcome.isTradable,
           };
         }),
-      }),
-    ),
+      };
+    }),
   );
 
   const chartHistory = input.chartSnapshots.flatMap((snapshot) => {
@@ -348,6 +354,8 @@ export async function serializeMobileLiveEventDetail(input: {
       marketCount: serializedMarkets.length,
       primaryMarketId: primaryMarket?.id ?? null,
       orderbookDepthSource: primaryDepthLevels.length ? "orderbook-route" : "empty",
+      batchedOrderbookDepthSource: batchedOrderbookDepthMarketCount ? "orderbook-route" : "empty",
+      batchedOrderbookDepthMarketCount,
       chartHistorySource: chartHistory.length ? "market-outcome-snapshot" : "empty",
       liveDataStatus,
     },

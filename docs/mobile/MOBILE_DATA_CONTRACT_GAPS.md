@@ -2,6 +2,37 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CH - Batched Live Market Depth Contract
+
+Fields now provided or wired:
+
+- `/api/mobile/events/:slug/live-detail` now returns batched route-backed depth for every compact visible market that has open orderbook rows.
+- The contract includes `contract.batchedOrderbookDepthSource` and `contract.batchedOrderbookDepthMarketCount`.
+- Each compact market can now carry `liquidity`, `orderbookDepth[]`, and outcome-level `bestBid`, `bestAsk`, `bestBidSize`, and `bestAskSize`.
+- EventDetail exposes visible `event-detail-market-depth-* market-depth-batched Route depth` chips before the selected Book overlay opens.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Provider-owned liquidity ingestion for every visible World Cup live market, including all selectable lines and discovered market groups.
+- Production batching/prefetch policy for high-market-count live events.
+- Provider freshness/status tied to each depth snapshot, not only the current market timestamp availability fields.
+
+Schema mismatch:
+
+- Existing open `Order` rows are enough for proof depth. Production provider liquidity may need a quote/orderbook snapshot table to avoid recalculating all visible books from local orders on every compact route request.
+
+Route mismatch:
+
+- Compact live-detail now batches current route-backed depth, but there is no dedicated provider-scale batch depth route with pagination, max market count, cache policy, or invalidation metadata.
+
+Temporary mock/static data:
+
+- Cycle CH uses deterministic local proof orders in real backend tables. The fixture shape is future-backend-shaped: `marketId`, `outcomeId`, side, price, shares, total, and liquidity.
+
+Future migration concern:
+
+- If provider data becomes the source of truth, keep the compact market depth shape stable so EventDetail rows, ticket selection, orderbook, portfolio, and history can preserve selected market/outcome identity without a mobile rewrite.
+
 ## Cycle CG - Second-Half Orderbook Depth Proof
 
 Fields now provided or wired:

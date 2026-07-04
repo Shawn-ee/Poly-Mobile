@@ -746,10 +746,12 @@ export function EventDetail({
     if (status === "unavailable") return "Market unavailable";
     return null;
   };
+  const marketDepthBatchLabel = (market?: Market) =>
+    (market?.orderbookDepth?.length ?? 0) > 0 ? "Route depth" : null;
   const renderGroup = (group: GameLineGroup) => (
     <View key={group.id} style={styles.marketBlock}>
       <Pressable
-        accessibilityLabel={`event-detail-market-toggle-${group.id} ${group.title} ${group.subtitle ?? ""} market-availability-${group.backendMarket?.availability?.status ?? "unknown"}`}
+        accessibilityLabel={`event-detail-market-toggle-${group.id} ${group.title} ${group.subtitle ?? ""} market-availability-${group.backendMarket?.availability?.status ?? "unknown"} market-depth-${marketDepthBatchLabel(group.backendMarket) ? "batched" : "empty"}`}
         onPress={() => toggleGroup(group.id)}
         style={styles.marketHeaderRow}
         testID={`event-detail-market-toggle-${group.id}`}
@@ -766,6 +768,15 @@ export function EventDetail({
               testID={`event-detail-market-availability-${group.id}`}
             >
               <Text style={[styles.marketAvailabilityText, group.backendMarket.availability.status !== "ready" && styles.marketAvailabilityTextWarning]}>{marketAvailabilityLabel(group.backendMarket)}</Text>
+            </View>
+          )}
+          {marketDepthBatchLabel(group.backendMarket) && (
+            <View
+              accessibilityLabel={`event-detail-market-depth-${group.id} market-depth-batched ${group.backendMarket?.orderbookDepth?.length ?? 0} levels Route depth`}
+              style={styles.marketDepthPill}
+              testID={`event-detail-market-depth-${group.id}`}
+            >
+              <Text style={styles.marketDepthText}>Route depth</Text>
             </View>
           )}
           {group.backendMarket && (
@@ -1690,6 +1701,8 @@ const styles = StyleSheet.create({
   marketAvailabilityPillSuspended: { backgroundColor: "rgba(58, 24, 31, 0.78)", borderColor: "rgba(248, 113, 113, 0.38)" },
   marketAvailabilityText: { color: "#bfdbfe", fontSize: 10, fontWeight: "900" },
   marketAvailabilityTextWarning: { color: "#fde68a" },
+  marketDepthPill: { minHeight: 28, justifyContent: "center", paddingHorizontal: 8, borderRadius: 999, backgroundColor: "rgba(14, 165, 233, 0.12)", borderWidth: 1, borderColor: "rgba(125, 211, 252, 0.28)" },
+  marketDepthText: { color: "#bfdbfe", fontSize: 10, fontWeight: "900" },
   lineValuePill: { minWidth: 58, minHeight: 32, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 2, borderRadius: 999, backgroundColor: "#052e1b", paddingHorizontal: 10 },
   lineValueText: { color: "#86efac", fontSize: 14, fontWeight: "900" },
   subSegmentRow: { flexDirection: "row", alignItems: "center", gap: 8, marginTop: 12, marginBottom: 4 },
