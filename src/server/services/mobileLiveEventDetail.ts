@@ -73,6 +73,7 @@ type OrderbookDepthEntry = {
 const MAX_MARKETS = 14;
 const MAX_DEPTH_LEVELS = 24;
 const STALE_AFTER_SECONDS = 90;
+const CHART_REFRESH_TTL_SECONDS = 60;
 const DEPTH_BATCH_CACHE_TTL_SECONDS = 3;
 
 type LiveAvailabilityStatus = "ready" | "stale" | "suspended" | "delayed" | "unavailable";
@@ -204,16 +205,36 @@ const chartHistoryStatusForMarket = (params: {
     null,
   );
   const lastUpdated = latestSnapshotTs?.toISOString() ?? null;
+  const stalenessSeconds = latestSnapshotTs
+    ? Math.max(0, Math.round((Date.now() - latestSnapshotTs.getTime()) / 1000))
+    : null;
+  const isStale = stalenessSeconds != null && stalenessSeconds > STALE_AFTER_SECONDS;
+  const shouldRefresh = stalenessSeconds == null || stalenessSeconds >= CHART_REFRESH_TTL_SECONDS;
+  const lifecycleStatus = history.length === 0
+    ? "unavailable"
+    : isStale
+      ? "stale"
+      : shouldRefresh
+        ? "refresh_due"
+        : "ready";
   return {
     source: history.length > 0 && params.market.referenceSource === "polymarket"
       ? "polymarket-clob-prices-history"
       : history.length > 0
         ? "market-outcome-snapshot"
         : "empty",
-    status: history.length > 0 ? "ready" : "unavailable",
+    status: lifecycleStatus,
     pointCount: history.length,
     outcomeCount: new Set(history.map((point) => point.outcomeId)).size,
     lastUpdated,
+    stalenessSeconds,
+    staleAfterSeconds: STALE_AFTER_SECONDS,
+    refreshTtlSeconds: CHART_REFRESH_TTL_SECONDS,
+    nextRefreshAt: latestSnapshotTs
+      ? new Date(latestSnapshotTs.getTime() + CHART_REFRESH_TTL_SECONDS * 1000).toISOString()
+      : null,
+    shouldRefresh,
+    isStale,
     emptyState: history.length === 0 ? "no-history" : null,
     range: "1D",
     ranges: ["1D", "1W", "1M", "MAX"],
@@ -632,6 +653,13 @@ export async function serializeMobileLiveEventDetail(input: {
       batchedChartHistorySource: input.chartSnapshots.length ? "market-outcome-snapshot" : "empty",
       batchedChartHistoryMarketCount: Array.from(chartSnapshotsByMarketId.values()).filter((snapshots) => snapshots.length > 0).length,
       batchedChartHistoryPointCount: input.chartSnapshots.length,
+      batchedChartHistoryReadyCount: serializedMarkets.filter((market) => market.chartHistoryStatus.status === "ready").length,
+      batchedChartHistoryStaleCount: serializedMarkets.filter((market) => market.chartHistoryStatus.status === "stale").length,
+      batchedChartHistoryRefreshDueCount: serializedMarkets.filter((market) => market.chartHistoryStatus.shouldRefresh).length,
+      batchedChartHistoryNextRefreshAt: serializedMarkets
+        .map((market) => market.chartHistoryStatus.nextRefreshAt)
+        .filter((value): value is string => typeof value === "string")
+        .sort()[0] ?? null,
       batchedChartHistoryRequestedMarketCount: markets.length,
       batchedChartHistoryRequestedMarketIds: markets.map((market) => market.id),
       liveDataStatus,

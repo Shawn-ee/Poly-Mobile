@@ -1,5 +1,6 @@
 const mockEventFindFirst = jest.fn();
 const mockReferenceQuoteSnapshotFindMany = jest.fn();
+const mockReferenceOrderbookDepthSnapshotFindMany = jest.fn();
 const mockMarketOutcomeSnapshotFindMany = jest.fn();
 const mockRefreshPolymarketReferenceSnapshots = jest.fn();
 const mockRefreshPolymarketOrderbookDepthSnapshots = jest.fn();
@@ -14,6 +15,9 @@ jest.mock("@/lib/db", () => ({
     referenceQuoteSnapshot: {
       findMany: (...args: unknown[]) => mockReferenceQuoteSnapshotFindMany(...args),
       updateMany: jest.fn(),
+    },
+    referenceOrderbookDepthSnapshot: {
+      findMany: (...args: unknown[]) => mockReferenceOrderbookDepthSnapshotFindMany(...args),
     },
     marketOutcomeSnapshot: {
       findMany: (...args: unknown[]) => mockMarketOutcomeSnapshotFindMany(...args),
@@ -42,6 +46,7 @@ import { refreshMobileLiveProviderQuoteSnapshots } from "@/server/services/mobil
 describe("mobile live provider refresh service", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.spyOn(Date, "now").mockReturnValue(new Date("2026-07-04T12:00:30.000Z").getTime());
     mockEventFindFirst.mockImplementation(async (args) => {
       if (args?.include?.markets) {
         return {
@@ -138,11 +143,19 @@ describe("mobile live provider refresh service", () => {
       { source: "polymarket", fetchedAt: new Date("2026-07-04T12:00:00.000Z") },
       { source: "polymarket", fetchedAt: new Date("2026-07-04T12:00:05.000Z") },
     ]);
+    mockReferenceOrderbookDepthSnapshotFindMany.mockResolvedValue([
+      { source: "polymarket-clob", fetchedAt: new Date("2026-07-04T12:00:00.000Z") },
+      { source: "polymarket-clob", fetchedAt: new Date("2026-07-04T12:00:00.000Z") },
+    ]);
     mockMarketOutcomeSnapshotFindMany.mockResolvedValue([
       { outcomeId: "outcome-home", ts: new Date("2026-07-04T11:55:00.000Z") },
       { outcomeId: "outcome-away", ts: new Date("2026-07-04T11:55:00.000Z") },
       { outcomeId: "outcome-home", ts: new Date("2026-07-04T12:00:00.000Z") },
     ]);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   test("summarizes chart history after provider refresh for compact markets", async () => {
@@ -151,20 +164,61 @@ describe("mobile live provider refresh service", () => {
       allowContractProofFallback: false,
     });
 
+    expect(mockRefreshPolymarketOrderbookDepthSnapshots).toHaveBeenCalledWith({
+      marketIds: ["market-world-cup-live"],
+      fetchImpl: undefined,
+    });
     expect(mockRefreshPolymarketPriceHistorySnapshots).toHaveBeenCalledWith({
       marketIds: ["market-world-cup-live"],
       interval: "1d",
       fidelityMinutes: 5,
+      fetchImpl: undefined,
     });
     expect(mockMarketOutcomeSnapshotFindMany).toHaveBeenCalledWith({
       where: { marketId: { in: ["market-world-cup-live"] } },
       select: { outcomeId: true, ts: true },
+    });
+    expect(mockReferenceOrderbookDepthSnapshotFindMany).toHaveBeenCalledWith({
+      where: { marketId: { in: ["market-world-cup-live"] } },
+      select: { source: true, fetchedAt: true },
     });
     expect(report.providerHistory).toMatchObject({
       source: "polymarket-clob-prices-history",
       requestedMarketCount: 1,
       refreshedCount: 1,
       snapshotsCreated: 24,
+    });
+    expect(report.providerLifecycle).toMatchObject({
+      source: "mobile-live-provider-refresh",
+      ready: true,
+      refreshDue: false,
+      stale: false,
+      quote: {
+        source: "reference-quote-snapshot",
+        status: "ready",
+        nextRefreshAt: "2026-07-04T12:01:05.000Z",
+      },
+      orderbookDepth: {
+        source: "reference-orderbook-depth-snapshot",
+        status: "ready",
+        nextRefreshAt: "2026-07-04T12:01:00.000Z",
+      },
+      chartHistory: {
+        source: "market-outcome-snapshot",
+        status: "ready",
+        nextRefreshAt: "2026-07-04T12:01:00.000Z",
+      },
+      nextRefreshAt: "2026-07-04T12:01:00.000Z",
+    });
+    expect(report.postRefreshDepth).toMatchObject({
+      marketCount: 1,
+      snapshotCount: 2,
+      sourceCount: 1,
+      latestFetchedAt: "2026-07-04T12:00:00.000Z",
+      lifecycle: expect.objectContaining({
+        status: "ready",
+        shouldRefresh: false,
+      }),
     });
     expect(report.postRefreshHistory).toEqual({
       marketCount: 1,
@@ -173,6 +227,40 @@ describe("mobile live provider refresh service", () => {
       oldestSnapshotAt: "2026-07-04T11:55:00.000Z",
       outcomeCount: 2,
       source: "market-outcome-snapshot",
+      lifecycle: expect.objectContaining({
+        source: "market-outcome-snapshot",
+        status: "ready",
+        latestAt: "2026-07-04T12:00:00.000Z",
+        nextRefreshAt: "2026-07-04T12:01:00.000Z",
+        shouldRefresh: false,
+      }),
+    });
+  });
+
+  test("distinguishes refresh-due lifecycle snapshots from stale snapshots", async () => {
+    jest.spyOn(Date, "now").mockReturnValue(new Date("2026-07-04T12:01:05.000Z").getTime());
+    mockReferenceQuoteSnapshotFindMany.mockResolvedValue([
+      { source: "polymarket", fetchedAt: new Date("2026-07-04T12:00:00.000Z") },
+    ]);
+    mockReferenceOrderbookDepthSnapshotFindMany.mockResolvedValue([
+      { source: "polymarket-clob", fetchedAt: new Date("2026-07-04T11:59:00.000Z") },
+    ]);
+    mockMarketOutcomeSnapshotFindMany.mockResolvedValue([
+      { outcomeId: "outcome-home", ts: new Date("2026-07-04T12:00:00.000Z") },
+    ]);
+
+    const report = await refreshMobileLiveProviderQuoteSnapshots({
+      eventSlug: "world-cup-live",
+      allowContractProofFallback: false,
+    });
+
+    expect(report.providerLifecycle).toMatchObject({
+      ready: false,
+      refreshDue: true,
+      stale: true,
+      quote: expect.objectContaining({ status: "refresh_due", shouldRefresh: true }),
+      orderbookDepth: expect.objectContaining({ status: "stale", shouldRefresh: true }),
+      chartHistory: expect.objectContaining({ status: "refresh_due", shouldRefresh: true }),
     });
   });
 });

@@ -13,7 +13,12 @@ export type MobileLiveProviderRefreshOptions = {
   eventSlug: string;
   allowContractProofFallback?: boolean;
   lineProviderFetchImpl?: typeof fetch;
+  providerDepthFetchImpl?: typeof fetch;
+  providerHistoryFetchImpl?: typeof fetch;
 };
+
+const READY_AFTER_SECONDS = 60;
+const STALE_AFTER_SECONDS = 90;
 
 export async function expireMobileLiveProviderQuoteSnapshots(params: {
   eventSlug: string;
@@ -86,6 +91,7 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
   const providerDepthReport = polymarketMappedMarkets.length
     ? await refreshPolymarketOrderbookDepthSnapshots({
         marketIds: polymarketMappedMarkets.map((market) => market.id),
+        fetchImpl: options.providerDepthFetchImpl,
       })
     : {
         generatedAt: new Date().toISOString(),
@@ -103,6 +109,7 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
         marketIds: polymarketMappedMarkets.map((market) => market.id),
         interval: "1d",
         fidelityMinutes: 5,
+        fetchImpl: options.providerHistoryFetchImpl,
       })
     : {
         generatedAt: new Date().toISOString(),
@@ -142,7 +149,32 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
   }
 
   const postRefresh = await summarizeCompactProviderSnapshots(compactMarketIds);
+  const postRefreshDepth = await summarizeCompactDepthSnapshots(compactMarketIds);
   const postRefreshHistory = await summarizeCompactChartHistory(compactMarketIds);
+  const providerLifecycle = {
+    source: "mobile-live-provider-refresh",
+    generatedAt: new Date().toISOString(),
+    quote: postRefresh.lifecycle,
+    orderbookDepth: postRefreshDepth.lifecycle,
+    chartHistory: postRefreshHistory.lifecycle,
+    ready:
+      postRefresh.lifecycle.status === "ready" &&
+      postRefreshDepth.lifecycle.status === "ready" &&
+      postRefreshHistory.lifecycle.status === "ready",
+    refreshDue:
+      postRefresh.lifecycle.status === "refresh_due" ||
+      postRefreshDepth.lifecycle.status === "refresh_due" ||
+      postRefreshHistory.lifecycle.status === "refresh_due",
+    stale:
+      postRefresh.lifecycle.status === "stale" ||
+      postRefreshDepth.lifecycle.status === "stale" ||
+      postRefreshHistory.lifecycle.status === "stale",
+    nextRefreshAt: earliestIso([
+      postRefresh.lifecycle.nextRefreshAt,
+      postRefreshDepth.lifecycle.nextRefreshAt,
+      postRefreshHistory.lifecycle.nextRefreshAt,
+    ]),
+  };
 
   return {
     eventSlug: options.eventSlug,
@@ -165,7 +197,9 @@ export async function refreshMobileLiveProviderQuoteSnapshots(options: MobileLiv
     providerHistory: providerHistoryReport,
     lineProvider: lineProviderReport,
     contractProofFallback,
+    providerLifecycle,
     postRefresh,
+    postRefreshDepth,
     postRefreshHistory,
   };
 }
@@ -210,6 +244,12 @@ async function summarizeCompactProviderSnapshots(marketIds: string[]) {
       latestFetchedAt: null,
       oldestFetchedAt: null,
       sourceCount: 0,
+      lifecycle: lifecycleSummary({
+        source: "reference-quote-snapshot",
+        latestAt: null,
+        count: 0,
+        unavailableReason: "No compact provider quote snapshots were requested.",
+      }),
     };
   }
 
@@ -227,6 +267,52 @@ async function summarizeCompactProviderSnapshots(marketIds: string[]) {
     latestFetchedAt: latest,
     oldestFetchedAt: oldest,
     sourceCount: new Set(snapshots.map((snapshot) => snapshot.source)).size,
+    lifecycle: lifecycleSummary({
+      source: snapshots.length > 0 ? "reference-quote-snapshot" : "empty",
+      latestAt: latest,
+      count: snapshots.length,
+      unavailableReason: "No provider quote snapshot is available for compact markets.",
+    }),
+  };
+}
+
+async function summarizeCompactDepthSnapshots(marketIds: string[]) {
+  if (marketIds.length === 0) {
+    return {
+      marketCount: 0,
+      snapshotCount: 0,
+      latestFetchedAt: null,
+      oldestFetchedAt: null,
+      sourceCount: 0,
+      lifecycle: lifecycleSummary({
+        source: "reference-orderbook-depth-snapshot",
+        latestAt: null,
+        count: 0,
+        unavailableReason: "No compact provider orderbook depth snapshots were requested.",
+      }),
+    };
+  }
+
+  const snapshots = await prisma.referenceOrderbookDepthSnapshot.findMany({
+    where: { marketId: { in: marketIds } },
+    select: { source: true, fetchedAt: true },
+  });
+  const fetchedTimes = snapshots.map((snapshot) => snapshot.fetchedAt.getTime()).sort((a, b) => a - b);
+  const oldest = fetchedTimes[0] != null ? new Date(fetchedTimes[0]).toISOString() : null;
+  const latest = fetchedTimes[fetchedTimes.length - 1] != null ? new Date(fetchedTimes[fetchedTimes.length - 1]).toISOString() : null;
+
+  return {
+    marketCount: marketIds.length,
+    snapshotCount: snapshots.length,
+    latestFetchedAt: latest,
+    oldestFetchedAt: oldest,
+    sourceCount: new Set(snapshots.map((snapshot) => snapshot.source)).size,
+    lifecycle: lifecycleSummary({
+      source: snapshots.length > 0 ? "reference-orderbook-depth-snapshot" : "empty",
+      latestAt: latest,
+      count: snapshots.length,
+      unavailableReason: "No provider orderbook depth snapshot is available for compact markets.",
+    }),
   };
 }
 
@@ -239,6 +325,12 @@ async function summarizeCompactChartHistory(marketIds: string[]) {
       oldestSnapshotAt: null,
       outcomeCount: 0,
       source: "empty",
+      lifecycle: lifecycleSummary({
+        source: "market-outcome-snapshot",
+        latestAt: null,
+        count: 0,
+        unavailableReason: "No compact chart history snapshots were requested.",
+      }),
     };
   }
 
@@ -257,5 +349,63 @@ async function summarizeCompactChartHistory(marketIds: string[]) {
     oldestSnapshotAt: oldest,
     outcomeCount: new Set(snapshots.map((snapshot) => snapshot.outcomeId)).size,
     source: snapshots.length > 0 ? "market-outcome-snapshot" : "empty",
+    lifecycle: lifecycleSummary({
+      source: snapshots.length > 0 ? "market-outcome-snapshot" : "empty",
+      latestAt: latest,
+      count: snapshots.length,
+      unavailableReason: "No chart history snapshot is available for compact markets.",
+    }),
   };
+}
+
+function lifecycleSummary(params: {
+  source: string;
+  latestAt: string | null;
+  count: number;
+  unavailableReason: string;
+}) {
+  if (!params.latestAt || params.count === 0) {
+    return {
+      source: params.source,
+      status: "unavailable" as const,
+      latestAt: null,
+      stalenessSeconds: null,
+      readyAfterSeconds: READY_AFTER_SECONDS,
+      staleAfterSeconds: STALE_AFTER_SECONDS,
+      nextRefreshAt: null,
+      shouldRefresh: true,
+      reason: params.unavailableReason,
+    };
+  }
+
+  const latestTime = new Date(params.latestAt).getTime();
+  const stalenessSeconds = Math.max(0, Math.round((Date.now() - latestTime) / 1000));
+  const status = stalenessSeconds > STALE_AFTER_SECONDS
+    ? "stale"
+    : stalenessSeconds >= READY_AFTER_SECONDS
+      ? "refresh_due"
+      : "ready";
+  const nextRefreshAt = new Date(latestTime + READY_AFTER_SECONDS * 1000).toISOString();
+
+  return {
+    source: params.source,
+    status,
+    latestAt: params.latestAt,
+    stalenessSeconds,
+    readyAfterSeconds: READY_AFTER_SECONDS,
+    staleAfterSeconds: STALE_AFTER_SECONDS,
+    nextRefreshAt,
+    shouldRefresh: status !== "ready",
+    reason: status === "ready"
+      ? "Provider snapshot is fresh."
+      : status === "refresh_due"
+        ? `Provider snapshot is at least ${READY_AFTER_SECONDS} seconds old and should be refreshed.`
+        : `Provider snapshot is older than ${STALE_AFTER_SECONDS} seconds.`,
+  };
+}
+
+function earliestIso(values: Array<string | null>) {
+  return values
+    .filter((value): value is string => typeof value === "string")
+    .sort()[0] ?? null;
 }

@@ -2,6 +2,37 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EG-A - Provider Refresh Lifecycle Contract
+
+Closed or narrowed:
+
+- `POST /api/mobile/events/:slug/provider-refresh` now exposes a top-level `providerLifecycle` envelope with quote, orderbook depth, and chart history `source/status/latestAt/stalenessSeconds/nextRefreshAt/shouldRefresh` fields, plus aggregate `ready`, `refreshDue`, and `stale` booleans.
+- Provider refresh now summarizes post-refresh depth snapshots separately as `refresh.postRefreshDepth.lifecycle` and chart snapshots as `refresh.postRefreshHistory.lifecycle`, so a refreshed route can distinguish `ready`, `refresh_due`, `stale`, and `unavailable` instead of only reporting row counts.
+- `/api/mobile/events/:slug/live-detail` compact markets now include chart lifecycle fields on `chartHistoryStatus`: `stalenessSeconds`, `staleAfterSeconds`, `refreshTtlSeconds`, `nextRefreshAt`, `shouldRefresh`, and `isStale`. The live-detail contract adds batched chart ready/stale/refresh-due counts and the earliest chart `nextRefreshAt`.
+- `docs/mobile/harness/cycle-EG-A-provider-refresh-lifecycle.json` proves a disposable provider-backed event starts stale/refresh-due for depth and chart history, refreshes through the Polymarket-first provider path, and returns to ready with `nextRefreshAt` populated. Missing Optic Odds credentials are reported as skipped and do not block the proof.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real production line-family markets still need mapped Polymarket provider identities and recurring refresh coverage before every live game can rely on this path without disposable proof state.
+- Gamma quote refresh can still skip for proof-only slugs; EG-A allows an explicit contract-proof fallback for quote rows while CLOB-shaped depth/history refresh remains source/status-labelled. Production no-fallback proofs should use real mapped Polymarket slugs.
+
+Schema mismatch:
+
+- No schema change was required. Existing `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot` timestamps are enough to calculate lifecycle status.
+
+Route mismatch:
+
+- The repeated deferred mismatch is narrowed: provider refresh, live-detail, orderbook depth, and chart history now speak the same source/status/next-refresh language. Remaining mismatch is provider coverage and scheduler deployment, not response shape.
+
+Temporary mock/static data:
+
+- No frontend mock data was added. The EG-A proof script uses a disposable local event and labels deterministic CLOB-shaped fixture usage explicitly in the proof JSON.
+
+Future migration concern:
+
+- Keep `refresh_due` distinct from `stale`: mobile can trigger or schedule refresh at the TTL boundary without presenting the market as stale until the stale threshold is crossed.
+- Keep Optic Odds line-provider status non-blocking for Polymarket parity unless product requirements make line-provider enrichment mandatory for a specific market family.
+
 ## Cycle EC-A - Provider Orderbook Identity Parity
 
 Closed or narrowed:
