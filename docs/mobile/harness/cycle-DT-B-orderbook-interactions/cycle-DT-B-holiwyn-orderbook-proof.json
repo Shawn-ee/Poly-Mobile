@@ -1,0 +1,34 @@
+{
+    "cycle":  "DT-B",
+    "scope":  "PM-GAP-075 orderbook interaction proof",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailOrderBookInteractions -Port 8238 -OutputDir docs/mobile/screenshots/cycle-DT-B-orderbook-interactions -HierarchyOutputDir docs/mobile/harness/cycle-DT-B-orderbook-interactions",
+    "eventIdentity":  "Mexico vs. Ecuador",
+    "result":  "pass",
+    "assertions":  {
+                       "yesNoSwitchBefore":  "selected-market-mexico-ecuador-winner selected-outcome-mexico selected-side-yes",
+                       "yesNoSwitchAfter":  "selected-market-mexico-ecuador-winner selected-outcome-ecuador selected-side-no",
+                       "selectorCarryThrough":  "selected-market-mexico-ecuador-total selected-family-Totals selected-outcome-under selected-side-no selected-market-type-prop selected-line-none selected-period-none",
+                       "ticketCarryThrough":  "ticket-selection-summary Total goals over 2.5 ticket-selection-line Under",
+                       "ladderColumns":  "Price Shares Value",
+                       "sideLabelProof":  "order-book-ask-level-* above spread and order-book-bid-level-* below spread",
+                       "nonReadyState":  "orderbook-source-fallback/orderbook-status-idle in fixture proof",
+                       "decimalizeEquivalent":  "not implemented in DT-B; remains P1"
+                   },
+    "artifacts":  [
+                      "docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-book-action.png",
+                      "docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-book-action.xml",
+                      "docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-yes-no-switch.png",
+                      "docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-yes-no-switch.xml",
+                      "docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-carry-through.png",
+                      "docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-carry-through.xml",
+                      "docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-no-carry-through.png",
+                      "docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-no-carry-through.xml",
+                      "docs/mobile/screenshots/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-ticket.png",
+                      "docs/mobile/harness/cycle-DT-B-orderbook-interactions/cycle-DT-B-holiwyn-orderbook-selector-ticket.xml"
+                  ],
+    "remainingGaps":  [
+                          "Ready provider-backed depth not proven by this fixture run.",
+                          "Decimalize book/equivalent settings toggle remains open.",
+                          "Spread/period/line selector carry-through needs a backend/live fixture with structured line data; this run proves available contract-shaped Totals market identity with line-none."
+                      ]
+}
