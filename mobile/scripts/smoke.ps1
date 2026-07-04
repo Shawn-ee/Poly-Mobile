@@ -40,6 +40,7 @@ param(
   [switch]$LocalMvpHomeRouteOrderFlow,
   [switch]$LocalMvpHomeRouteServerOrderFlow,
   [switch]$LocalMvpHomeRouteServerCancelFlow,
+  [switch]$LocalMvpHomeRouteServerFilledFlow,
   [switch]$EventDetailPosition,
   [switch]$EventDetailProps,
   [switch]$EventDetailPropTicket,
@@ -136,10 +137,10 @@ $ServerLiveDetailHalvesOrderBook = $ServerLiveDetailFirstHalfOrderBook -or $Serv
 $EventDetailProviderRouteStatusProof = $EventDetailProviderStatus -or $EventDetailVisibleStatusBreadth -or $EventDetailVisibleStatusTransition
 $EventDetailVisibleLiveDepthBackendProof = $EventDetailVisibleLiveDepth -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25"
 $EventDetailVisibleLimitLifecycleBackendProof = ($EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth) -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25"
-$ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook -or $ServerLiveProviderRefreshProof -or $EventDetailProviderRouteStatusProof -or $EventDetailVisibleLiveDepthBackendProof -or $EventDetailVisibleLimitLifecycleBackendProof -or $LocalMvpRouteStatusFlow -or $LocalMvpHomeRouteTicketFlow -or $LocalMvpHomeRouteOrderFlow -or $LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow
+$ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook -or $ServerLiveProviderRefreshProof -or $EventDetailProviderRouteStatusProof -or $EventDetailVisibleLiveDepthBackendProof -or $EventDetailVisibleLimitLifecycleBackendProof -or $LocalMvpRouteStatusFlow -or $LocalMvpHomeRouteTicketFlow -or $LocalMvpHomeRouteOrderFlow -or $LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpHomeRouteServerFilledFlow -or $LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow
 $OrderBookDebugProof = $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $EventDetailMarketTabs -or $EventDetailChart -or $EventDetailProviderRouteStatusProof -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $ServerLiveDetailBackendProof
-$OrderBookDebugProof = $OrderBookDebugProof -and -not ($LocalMvpRouteStatusFlow -or $LocalMvpHomeRouteTicketFlow -or $LocalMvpHomeRouteOrderFlow -or $LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow)
-$LocalMvpSimpleTradeFlow = $LocalMvpTradeFlow -or $LocalMvpSellFlow -or $LocalMvpStatusFlow -or $LocalMvpRouteStatusFlow -or $LocalMvpHomeRouteTicketFlow -or $LocalMvpHomeRouteOrderFlow -or $LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpLineFamilyBreadth -or $LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow
+$OrderBookDebugProof = $OrderBookDebugProof -and -not ($LocalMvpRouteStatusFlow -or $LocalMvpHomeRouteTicketFlow -or $LocalMvpHomeRouteOrderFlow -or $LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpHomeRouteServerFilledFlow -or $LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow)
+$LocalMvpSimpleTradeFlow = $LocalMvpTradeFlow -or $LocalMvpSellFlow -or $LocalMvpStatusFlow -or $LocalMvpRouteStatusFlow -or $LocalMvpHomeRouteTicketFlow -or $LocalMvpHomeRouteOrderFlow -or $LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpHomeRouteServerFilledFlow -or $LocalMvpLineFamilyBreadth -or $LocalMvpRouteTicketFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow
 
 $MobileRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $RepoRoot = Resolve-Path (Join-Path $MobileRoot "..")
@@ -503,7 +504,7 @@ try {
       $env:EXPO_PUBLIC_API_KEY = "pk_test_mobile_harness"
     }
   }
-  if ($LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) {
+  if ($LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpHomeRouteServerFilledFlow -or $LocalMvpRouteServerOrderFlow -or $LocalMvpRouteServerCancelFlow -or $LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) {
     $env:EXPO_PUBLIC_API_BASE_URL = $BackendBaseUrl
     $env:EXPO_PUBLIC_MARKET_DATA_MODE = "server"
     $env:EXPO_PUBLIC_ORDER_MODE = "server"
@@ -511,7 +512,7 @@ try {
       throw "Local MVP route server order proof requires EXPO_PUBLIC_API_KEY. Use mobile/scripts/local-mvp-route-server-order-proof.ps1 to create an in-process mobile dev credential."
     }
   }
-  if ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPositionFallbackOrder -or ($ServerLiveDetailBackendProof -and -not $EventDetailVisibleLimitLifecycleBackendProof -and -not $LocalMvpRouteStatusFlow -and -not $LocalMvpHomeRouteTicketFlow -and -not $LocalMvpHomeRouteOrderFlow -and -not $LocalMvpHomeRouteServerOrderFlow -and -not $LocalMvpHomeRouteServerCancelFlow -and -not $LocalMvpRouteTicketFlow -and -not $LocalMvpRouteServerOrderFlow -and -not $LocalMvpRouteServerCancelFlow -and -not $LocalMvpRouteServerFilledFlow -and -not $LocalMvpRouteServerFilledTotalsFlow -and -not $LocalMvpRouteServerFilledTeamTotalFlow)) {
+  if ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPositionFallbackOrder -or ($ServerLiveDetailBackendProof -and -not $EventDetailVisibleLimitLifecycleBackendProof -and -not $LocalMvpRouteStatusFlow -and -not $LocalMvpHomeRouteTicketFlow -and -not $LocalMvpHomeRouteOrderFlow -and -not $LocalMvpHomeRouteServerOrderFlow -and -not $LocalMvpHomeRouteServerCancelFlow -and -not $LocalMvpHomeRouteServerFilledFlow -and -not $LocalMvpRouteTicketFlow -and -not $LocalMvpRouteServerOrderFlow -and -not $LocalMvpRouteServerCancelFlow -and -not $LocalMvpRouteServerFilledFlow -and -not $LocalMvpRouteServerFilledTotalsFlow -and -not $LocalMvpRouteServerFilledTeamTotalFlow)) {
     if (-not $env:EXPO_PUBLIC_API_KEY) {
       $env:EXPO_PUBLIC_API_KEY = "pk_test_mobile_harness"
     }
@@ -523,7 +524,7 @@ try {
     }
   }
   $expoArgs = @("expo", "start", "--port", "$Port", "--offline")
-  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $EventDetailProviderRouteStatusProof -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $LocalMvpRouteDiscoveryDetail -or $LocalMvpHomeRouteTicketFlow -or $LocalMvpHomeRouteOrderFlow -or $LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail -or $LocalMvpSimpleTradeFlow) {
+  if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $EventDetailProviderRouteStatusProof -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $LocalMvpRouteDiscoveryDetail -or $LocalMvpHomeRouteTicketFlow -or $LocalMvpHomeRouteOrderFlow -or $LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpHomeRouteServerFilledFlow -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $HomeFilter -or $HomeSaved -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail -or $LocalMvpSimpleTradeFlow) {
     $expoArgs += "--clear"
   }
   if ($ServerLiveDetailTotalsOrderBook) {
@@ -543,7 +544,7 @@ try {
   }
   $expo = Start-Process -FilePath "npx.cmd" -ArgumentList $expoArgs -WorkingDirectory $MobileRoot -RedirectStandardOutput $expoLog -RedirectStandardError $expoErrorLog -WindowStyle Hidden -PassThru
   Wait-ExpoReady -Port $Port
-  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $EventDetailProviderRouteStatusProof -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $LocalMvpRouteDiscoveryDetail -or $LocalMvpHomeRouteTicketFlow -or $LocalMvpHomeRouteOrderFlow -or $LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep -or $LocalMvpSimpleTradeFlow) { 18 } else { 8 })
+  Start-Sleep -Seconds $(if ($OrderFailure -or $OpenOrderCancel -or $OpenSellOrderCancel -or $EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $DyAGamePageStructure -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $EventDetailProviderRouteStatusProof -or $EmptyErrorLoading -or $WholeAppNavDiscovery -or $LocalMvpRouteDiscoveryDetail -or $LocalMvpHomeRouteTicketFlow -or $LocalMvpHomeRouteOrderFlow -or $LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpHomeRouteServerFilledFlow -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade -or $SearchQuery -or $SearchClearQuery -or $ServerUnavailable -or $ServerOrderFailure -or $ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPortfolioFixture -or $ServerCloseFixture -or $ServerPositionTrade -or $ServerPositionBuyTrade -or $ServerPositionFallbackTrade -or $ServerPositionFallbackOrder -or $ServerPositionDetails -or $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveProviderRefreshProof -or $SellTicket -or $Account -or $AccountLogin -or $AccountPersistence -or $AccountPreferences -or $AccountLanguageSummary -or $AccountProfileSyncError -or $AccountSavedSummary -or $AccountPositionSummary -or $AccountPortfolioValue -or $LanguagePersistence -or $TicketDefaultsPersistence -or $SavedPersistence -or $HomeSavedEmpty -or $HomeSearchQuery -or $HomeClearSearch -or $HomeCardStats -or $FutureCardStats -or $FutureCatalogExpand -or $FutureListTrade -or $FutureListBuyNo -or $FutureListOrder -or $FutureListSell -or $FutureListClose -or $PortfolioPositionCount -or $PortfolioActivityCount -or $PortfolioClosedCount -or $PortfolioPersistence -or $SavedSearch -or $SearchCardStats -or $SearchSavedEmpty -or $EventDetailSave -or $SearchSort -or $LiveSummary -or $LiveDetail -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep -or $LocalMvpSimpleTradeFlow) { 18 } else { 8 })
   if ($ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook) {
     Start-Sleep -Seconds 10
   }
@@ -578,7 +579,7 @@ try {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forcePortfolio=1,forceRuntimePortfolioSync=1,apiKey=$encodedApiKey"
   } elseif ($ServerPositionDetails) {
     "exp://${ExpoHost}:$Port/--/?forceResetState=1,forceServerPortfolioFixture=1"
-  } elseif ($LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow) {
+  } elseif ($LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpHomeRouteServerFilledFlow) {
     $encodedApiKey = [uri]::EscapeDataString($env:EXPO_PUBLIC_API_KEY)
     "exp://${ExpoHost}:$Port/--/?forceResetState=1&apiKey=$encodedApiKey"
   } elseif ($ServerLiveDetailBackendProof) {
@@ -672,7 +673,7 @@ try {
     @("Holiwyn", "World Cup", "Games", "Futures", "Mexico vs. Ecuador")
   } elseif ($LocalMvpRouteDiscoveryDetail) {
     @("Holiwyn", "World Cup", "Games", "Futures", "EL-A Provider Breadth World Cup Live", "Breadth Home")
-  } elseif ($LocalMvpHomeRouteTicketFlow -or $LocalMvpHomeRouteOrderFlow -or $LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow) {
+  } elseif ($LocalMvpHomeRouteTicketFlow -or $LocalMvpHomeRouteOrderFlow -or $LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpHomeRouteServerFilledFlow) {
     @("Holiwyn", "EL-A Provider Breadth World Cup Live", "Breadth Home")
   } elseif ($ServerLiveProviderRefreshProof) {
     @("Mobile Provider Refresh Proof", "Game Lines", "Player Props", "Best bid", "Best ask", "Spread", "event-detail-live-data-inline")
@@ -1062,7 +1063,7 @@ try {
       return
     }
 
-    if ($LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow) {
+    if ($LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpHomeRouteServerFilledFlow) {
       $mvpHiddenOrderBookExpected = @(
         "event-detail-top-order-book",
         "event-detail-chart-open-book",
@@ -1073,10 +1074,12 @@ try {
         "Route depth"
       )
       $homeRouteServerCardId = if ($ServerEventSlug -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25") { "event-card-$ServerEventSlug" } else { "event-card-mobile-el-a-provider-breadth" }
-      $homeRouteServerCycle = if ($LocalMvpHomeRouteServerCancelFlow) { "FH" } else { "FG" }
-      $homeRouteServerArtifact = if ($LocalMvpHomeRouteServerCancelFlow) { "cycle-FH-home-route-server-cancel" } else { "cycle-FG-home-route-server-order" }
-      $homeRouteServerScript = if ($LocalMvpHomeRouteServerCancelFlow) { "local-mvp-home-route-server-cancel-proof.ps1" } else { "local-mvp-home-route-server-order-proof.ps1" }
-      $homeRouteServerScenario = if ($LocalMvpHomeRouteServerCancelFlow) {
+      $homeRouteServerCycle = if ($LocalMvpHomeRouteServerFilledFlow) { "FI" } elseif ($LocalMvpHomeRouteServerCancelFlow) { "FH" } else { "FG" }
+      $homeRouteServerArtifact = if ($LocalMvpHomeRouteServerFilledFlow) { "cycle-FI-home-route-server-filled" } elseif ($LocalMvpHomeRouteServerCancelFlow) { "cycle-FH-home-route-server-cancel" } else { "cycle-FG-home-route-server-order" }
+      $homeRouteServerScript = if ($LocalMvpHomeRouteServerFilledFlow) { "local-mvp-home-route-server-filled-proof.ps1" } elseif ($LocalMvpHomeRouteServerCancelFlow) { "local-mvp-home-route-server-cancel-proof.ps1" } else { "local-mvp-home-route-server-order-proof.ps1" }
+      $homeRouteServerScenario = if ($LocalMvpHomeRouteServerFilledFlow) {
+        "Home route-backed event opens spread ticket, submits server fake-token order, fills it, and shows server Portfolio filled activity"
+      } elseif ($LocalMvpHomeRouteServerCancelFlow) {
         "Home route-backed event opens spread ticket, submits server fake-token order, cancels it, and shows server Portfolio canceled activity"
       } else {
         "Home route-backed event opens spread ticket, submits server fake-token order, and shows server Portfolio open order"
@@ -1172,20 +1175,43 @@ try {
       Start-Sleep -Seconds 5
       Save-Screenshot -Name "$homeRouteServerArtifact-portfolio.png"
       $homeRouteServerPortfolioHierarchy = Save-UiHierarchy -Name "$homeRouteServerArtifact-portfolio.xml"
-      Assert-HierarchyContains -Path $homeRouteServerPortfolioHierarchy -Expected @(
-        "Portfolio",
-        "Server portfolio synced",
-        "Order placed",
-        "SERVER - Buy",
-        "latest-order-card",
-        "portfolio-open-order-count",
-        "open-order-row-",
-        "portfolio-market-type-spread",
-        "portfolio-line-1.5",
-        "portfolio-period-Reg. Time",
-        "portfolio-provider-source-polymarket",
-        "portfolio-provider-token-token-el-a-spread-home"
-      )
+      $homeRouteServerPortfolioExpected = if ($LocalMvpHomeRouteServerFilledFlow) {
+        @(
+          "Portfolio",
+          "Server portfolio synced",
+          "Order placed",
+          "SERVER - Buy",
+          "FILLED",
+          "latest-order-card",
+          "latest-activity-card",
+          "position-card-",
+          "Bought",
+          "Filled shares",
+          "Exec price",
+          "status-filled",
+          "portfolio-market-type-spread",
+          "portfolio-line-1.5",
+          "portfolio-period-Reg. Time",
+          "portfolio-provider-source-polymarket",
+          "portfolio-provider-token-token-el-a-spread-home"
+        )
+      } else {
+        @(
+          "Portfolio",
+          "Server portfolio synced",
+          "Order placed",
+          "SERVER - Buy",
+          "latest-order-card",
+          "portfolio-open-order-count",
+          "open-order-row-",
+          "portfolio-market-type-spread",
+          "portfolio-line-1.5",
+          "portfolio-period-Reg. Time",
+          "portfolio-provider-source-polymarket",
+          "portfolio-provider-token-token-el-a-spread-home"
+        )
+      }
+      Assert-HierarchyContains -Path $homeRouteServerPortfolioHierarchy -Expected $homeRouteServerPortfolioExpected
       Assert-HierarchyDoesNotContain -Path $homeRouteServerPortfolioHierarchy -Unexpected @("event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth")
 
       $homeRouteServerCanceledHierarchy = $null
@@ -1226,7 +1252,7 @@ try {
           homeDiscovery = @("route-backed event card", "fresh seeded event card tapped from Home")
           detailHydration = @("same route-backed event", "price chart", "Game Lines")
           ticket = @("spread ticket opens from Home-opened detail", "amount set to 25", "provider token/source visible", "server order mode active")
-          serverPortfolio = if ($LocalMvpHomeRouteServerCancelFlow) { @("POST /api/orders succeeds through mobile", "Portfolio sync returns server open order before cancel", "DELETE /api/orders/:id succeeds through mobile", "Portfolio/history returns canceled activity", "selected line/provider identity preserved") } else { @("POST /api/orders succeeds through mobile", "Portfolio sync returns server open order", "selected line/provider identity preserved") }
+          serverPortfolio = if ($LocalMvpHomeRouteServerFilledFlow) { @("seeded counterparty fills the mobile order", "POST /api/orders succeeds through mobile", "Portfolio sync returns server filled position and recent activity", "selected line/provider identity preserved") } elseif ($LocalMvpHomeRouteServerCancelFlow) { @("POST /api/orders succeeds through mobile", "Portfolio sync returns server open order before cancel", "DELETE /api/orders/:id succeeds through mobile", "Portfolio/history returns canceled activity", "selected line/provider identity preserved") } else { @("POST /api/orders succeeds through mobile", "Portfolio sync returns server open order", "selected line/provider identity preserved") }
           noFallback = @("no Mexico/Ecuador fallback", "no default orderbook UI")
         }
         artifacts = @(

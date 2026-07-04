@@ -510,3 +510,42 @@ Pass for selected Home -> Event Detail -> Spread ticket -> server fake-token ord
 
 Remaining gaps:
 Filled lifecycle from the exact Home-opened path and production active Polymarket World Cup provider breadth.
+
+### 2026-07-04 - Cycle FI - Home route server filled position and activity
+
+Reference device:
+Product steering plus existing Polymarket sports audits. Fresh S23 proof was not required for this local server-filled gate.
+
+Holiwyn device:
+Samsung tablet / Holiwyn Expo Go / local Expo port `8278`.
+
+Holiwyn app mode:
+`EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE=server`, `EXPO_PUBLIC_SHOW_ORDERBOOK` unset, backend `http://172.16.200.14:3002`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, tapped the freshly seeded route-backed disposable World Cup live event card, verified the same Event Detail opened, selected the Spread outcome, entered `$25` in the ticket, submitted the server fake-token buy, filled against seeded backend-shaped counterparty liquidity, and verified server-synced Portfolio filled position/latest activity.
+
+Holiwyn evidence:
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-event.json`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-counterparty.json`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-wrapper.json`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-proof.json`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-home.xml`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-detail-top.xml`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-line-markets.xml`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-portfolio.xml`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-home.png`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-detail-top.png`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-line-markets.png`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-portfolio.png`
+
+Smoke/tests:
+PowerShell parser checks, mobile typecheck, provider breadth route proof, counterparty liquidity seed, mobile dev credential setup, backend health, and tablet proof wrapper passed.
+
+Result:
+Pass for selected Home -> Event Detail -> Spread ticket -> server fake-token order -> filled Portfolio position/activity flow with orderbook hidden by default.
+
+Remaining gaps:
+Production active Polymarket World Cup provider breadth and non-disposable liquidity/source breadth.

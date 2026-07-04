@@ -3226,3 +3226,58 @@ Decision:
 - Unresolved P0 gaps: 0 for selected feature.
 - Remaining P1/P2 gaps: filled lifecycle from the exact Home-opened path and production active provider breadth.
 - Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Home Route Server Filled Position And Activity
+
+Cycle: FI
+
+Lead Agent target: Continue the Local MVP route-backed Home flow from FH through server filled position and recent activity/history.
+
+Reference Audit Agent: Product steering audit from current Local MVP retail-flow direction. This cycle verifies the Holiwyn server-filled user-flow step and does not claim full production Polymarket parity.
+
+Implementation Agent: Added focused `LocalMvpHomeRouteServerFilledFlow` Android harness path and wrapper.
+
+Audit Gate Agent: PowerShell parser checks, mobile typecheck, provider-shaped route event setup, backend-shaped counterparty seed, temporary mobile dev credential, backend health, and Samsung tablet proof.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8278`.
+
+Holiwyn evidence:
+
+- `docs/mobile/audits/cycle-fi-home-route-server-filled.md`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-event.json`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-counterparty.json`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-wrapper.json`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-proof.json`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-home.xml`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-detail-top.xml`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-line-markets.xml`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-portfolio.xml`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-home.png`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-detail-top.png`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-line-markets.png`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-portfolio.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FI-FILLED-P0-01 | P0 | Pass | Tablet Home hierarchy shows the freshly seeded route-backed event card and compact outcomes. | N/A |
+| FI-FILLED-P0-02 | P0 | Pass | Tapping the Home card opens same route event detail with chart/probability and Game Lines. | N/A |
+| FI-FILLED-P0-03 | P0 | Pass | Line-market hierarchy shows Spread row with backend line-market source, line `1.5`, period `Reg. Time`, and provider source. | N/A |
+| FI-FILLED-P0-04 | P0 | Pass | Counterparty proof seeds a resting SELL order at `0.52` for the same spread market/outcome. | N/A |
+| FI-FILLED-P0-05 | P0 | Pass | Spread outcome opens ticket with selected market type, line, period, side, provider source, and provider token. | N/A |
+| FI-FILLED-P0-06 | P0 | Pass | Amount presets produce `$25` and `Swipe up to buy`. | N/A |
+| FI-FILLED-P0-07 | P0 | Pass | Submit posts a server fake-token order through `/api/orders` and fills against seeded liquidity. | N/A |
+| FI-FILLED-P0-08 | P0 | Pass | Server Portfolio sync shows filled order, position, and latest activity. | N/A |
+| FI-FILLED-P0-09 | P0 | Pass | Filled position/activity preserves selected line, period, provider source, and provider token. | N/A |
+| FI-FILLED-P0-10 | P0 | Pass | Default orderbook markers are absent from evidence. | N/A |
+| FI-FILLED-P1-01 | P1 | Open | Production active Polymarket event breadth is not covered by disposable proof. | Map/import more real active provider events. |
+
+Decision:
+
+- Pass/fail: Pass for selected Home -> Event Detail -> Spread ticket -> server fake-token order -> filled Portfolio position/activity feature.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: production active provider breadth and non-disposable liquidity/source breadth.
+- Next cycle required: yes, continue Local MVP user-flow breadth or production provider breadth.

@@ -492,3 +492,21 @@ The focused FH gate in `docs/mobile/audits/cycle-fh-home-route-server-cancel.md`
 | FH-CANCEL-P0-10 | P0 | Default orderbook UI must remain hidden for this retail path. | Android assertions reject orderbook markers across evidence. |
 | FH-CANCEL-P1-01 | P1 | Prove filled lifecycle from the exact Home-opened path. | Future Android proof continuing from Home through fill and Portfolio/history. |
 | FH-CANCEL-P1-02 | P1 | Replace disposable proof event with production active Polymarket-backed event breadth. | Future provider mapping and Android proof against active production events. |
+
+## Cycle FI Home Route Server Filled Criteria
+
+The focused FI gate in `docs/mobile/audits/cycle-fi-home-route-server-filled.md` verifies the Local MVP retail lifecycle from Home-opened route-backed event through server fake-token filled order and server Portfolio position/activity/history.
+
+| ID | Priority | Criterion | Required proof |
+| --- | --- | --- | --- |
+| FI-FILLED-P0-01 | P0 | Home must show the freshly seeded route-backed World Cup event card with compact outcomes. | Samsung tablet screenshot/XML with route-backed event title, outcome labels, and event-card marker. |
+| FI-FILLED-P0-02 | P0 | Tapping the Home card must open the same route-backed Event Detail. | Android screenshot/XML after tap showing same event title, chart/probability marker, and Game Lines. |
+| FI-FILLED-P0-03 | P0 | Event Detail must expose a route-backed Spread row using backend line-market identity. | Android XML with `ticket-source-backend-line-market`, `selection-market-family-spread`, `selection-line-1.5`, `selection-period-Reg. Time`, and provider source. |
+| FI-FILLED-P0-04 | P0 | Counterparty proof must seed a resting SELL order for the same spread market/outcome. | Counterparty JSON with same event slug, spread market id, outcome id, SELL side, price, and size. |
+| FI-FILLED-P0-05 | P0 | Spread ticket must open with selected market type, line, period, side, provider source, and provider token. | Ticket XML with selected identity markers. |
+| FI-FILLED-P0-06 | P0 | Amount presets must create a `$25` ready state with `Swipe up to buy`. | Ticket-ready screenshot/XML with amount and submit marker. |
+| FI-FILLED-P0-07 | P0 | Submit must post a server fake-token order through `/api/orders` and fill against seeded liquidity. | Proof JSON plus Portfolio screenshot/XML after submit. |
+| FI-FILLED-P0-08 | P0 | Server Portfolio sync must show filled order, position, and latest activity. | Portfolio XML with `latest-order-card`, `latest-activity-card`, `position-card-`, and `status-filled`. |
+| FI-FILLED-P0-09 | P0 | Filled position/activity must preserve selected line, period, provider source, and provider token. | Portfolio XML with provider/line/period markers. |
+| FI-FILLED-P0-10 | P0 | Default orderbook UI must remain hidden for this retail path. | Android assertions reject orderbook markers across evidence. |
+| FI-FILLED-P1-01 | P1 | Replace disposable proof event with production active Polymarket-backed event breadth. | Future provider mapping and Android proof against active production events. |

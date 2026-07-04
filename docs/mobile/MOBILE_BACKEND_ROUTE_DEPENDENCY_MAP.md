@@ -1612,3 +1612,20 @@ Cycle FH implementation notes:
 - A temporary mobile dev credential was created by `npm run mobile:dev-credential`.
 - Tablet proof slug: `mobile-el-a-provider-breadth-4f7f2397`.
 - Mobile launched with `EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE=server`, and a real in-process mobile API key.
+
+## Cycle FI - Home Route Server Filled Position And Activity
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home card entry to fillable server order | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1`, `/api/mobile/events/:slug/live-detail` | GET | Public viewing | None for event list; event id/slug for detail | Event title/status, chart/probability, Game Lines, selected Spread market/outcome identity, provider source/token | `Event`, `Market`, `Outcome`, provider quote/read-model fields | FI proof requires the route-backed card. Local fixtures remain only as app fallback. | Production active Polymarket event breadth remains P1. |
+| Server fake-token order submit from Home-opened ticket | `/api/orders` | POST | Temporary mobile dev API credential with order scope | Ticket amount `$25`, side `buy`, order type/price/size, selected `marketId`, `outcomeId`, contract side `yes`, and selected Spread metadata | Filled order state and Portfolio navigation after submit | `ApiOrderRequest`, `Order`, `Trade`, `Position`, `Market`, `Outcome`, provider snapshot/read-model fields | None for FI. The order submit uses server mode and fills against seeded liquidity. | Production active-event provider liquidity remains follow-up. |
+| Counterparty liquidity seed for fill proof | `scripts/seed_mobile_route_spread_counterparty.ts` | Local script/Prisma write | Local development only | Event slug, optional market group/outcome/price/size | Creates a maker SELL order at `0.52` for the selected route-backed spread outcome | `User`, `Order`, `Market`, `Outcome` | None. This is deterministic backend-shaped proof liquidity. | Replace with real production liquidity/provider depth when active event breadth is ready. |
+| Server Portfolio/history sync after fill | `/api/portfolio`, `/api/portfolio/history` | GET | Same mobile dev API key with account read scope | None | `latest-order-card`, `latest-activity-card`, `position-card-`, `status-filled`, filled shares, exec price, market type `spread`, line `1.5`, period `Reg. Time`, provider source/token | `Order`, `Trade`, `Position`, `ApiOrderRequest`, `Market`, `Outcome`, portfolio/history read models | None for FI. Portfolio/history is server-synced. | Production active-event provider liquidity remains follow-up. |
+
+Cycle FI implementation notes:
+
+- The backend route event was created by `scripts/prove_mobile_el_a_provider_breadth.ts` into `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-event.json`.
+- Counterparty liquidity was created by `scripts/seed_mobile_route_spread_counterparty.ts` into `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-counterparty.json`.
+- A temporary mobile dev credential was created by `npm run mobile:dev-credential`.
+- Tablet proof slug: `mobile-el-a-provider-breadth-0ca8dfb3`.
+- Mobile launched with `EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE=server`, and a real in-process mobile API key.

@@ -12916,3 +12916,21 @@ Open blockers: None for continued Local MVP visible user-flow work.
 Risks: FH still uses disposable provider-shaped data. Filled lifecycle from the exact Home-opened path and production active Polymarket World Cup provider breadth remain P1.
 
 Next three likely cycles: filled lifecycle from the Home-opened server order path, production active event breadth hardening, and broader Home-opened line family proof only if it closes a material flow gap.
+
+### Cycle FI Update
+
+Completed cycle: FI.
+
+Verified progress: The Local MVP Home-entry path now covers the visible server filled lifecycle. Samsung tablet proof opens a freshly seeded route-backed Home event card, lands on Event Detail, selects a route-backed Spread outcome, enters `$25`, submits through `/api/orders`, fills against backend-shaped counterparty liquidity, and verifies `/api/portfolio` plus `/api/portfolio/history` show filled position/activity while preserving spread line, period, provider source, and provider token.
+
+Current app state: Home -> Event Detail -> chart/probability -> Spread line selector -> Buy/Sell ticket -> server fake-token order -> filled Portfolio position/activity is proven with default orderbook UI hidden.
+
+Current backend state: No backend route or schema changes were made. FI uses the existing `/api/events?includeMobileMarkets=1` discovery contract, `/api/mobile/events/:slug/live-detail` detail contract, `/api/orders` submit route, `/api/portfolio` plus `/api/portfolio/history` sync routes, and deterministic backend-shaped counterparty liquidity from `scripts/seed_mobile_route_spread_counterparty.ts`.
+
+Device strategy: Samsung tablet remains the Holiwyn proof device. Samsung S23 remains reference device only when a fresh Polymarket interaction audit is required.
+
+Open blockers: None for continued Local MVP visible user-flow work.
+
+Risks: FI still uses disposable provider-shaped data and seeded counterparty liquidity. Production active Polymarket World Cup provider breadth remains P1.
+
+Next three likely cycles: production active event breadth hardening, non-disposable liquidity/source breadth, and broader Home-opened line family proof only if it closes a material flow gap.

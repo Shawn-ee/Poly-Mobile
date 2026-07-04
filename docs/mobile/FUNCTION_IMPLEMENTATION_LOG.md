@@ -5355,3 +5355,62 @@ Known limitations:
 
 - FH proves cancel lifecycle from the exact Home-opened path, not filled lifecycle from that path.
 - FH uses disposable provider-shaped data. Production active Polymarket World Cup breadth remains P1.
+
+## Cycle FI - Home Route Server Filled Position And Activity
+
+Feature/page worked on:
+
+- Local MVP Home -> route-backed Event Detail -> Spread ticket -> server fake-token order -> filled Portfolio position/activity/history.
+
+Frontend/harness/backend files touched:
+
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/scripts/local-mvp-home-route-server-filled-proof.ps1`
+- `docs/mobile/audits/cycle-fi-home-route-server-filled.md`
+
+Important functions/services touched:
+
+- Added `LocalMvpHomeRouteServerFilledFlow` harness support.
+- Reused and parameterized the FG/FH Home route server proof path so FI can assert a visible filled lifecycle.
+- Reused existing `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` mobile flows plus `scripts/seed_mobile_route_spread_counterparty.ts` for backend-shaped liquidity. No backend route, schema, or service code was changed.
+
+User interactions supported/proven:
+
+- Open Holiwyn on the Samsung tablet in server market-data and server order mode.
+- Tap the freshly seeded route-backed Home event card.
+- Open the same Event Detail with chart/probability and Game Lines.
+- Tap the route-backed Spread outcome.
+- Add `$25` using ticket presets and submit the fake-token buy through the backend.
+- Verify the order fills against seeded counterparty liquidity.
+- Verify server-synced Portfolio shows the filled latest order, filled position, and latest activity with spread line, period, provider source, and provider token preserved.
+- Default orderbook UI remains hidden.
+
+Validation:
+
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+- PowerShell parser check for `mobile/scripts/local-mvp-home-route-server-filled-proof.ps1`
+- `npm --prefix mobile run typecheck`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/local-mvp-home-route-server-filled-proof.ps1 -Port 8278 -BackendBaseUrl http://172.16.200.14:3002`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-event.json`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-counterparty.json`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-wrapper.json`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-proof.json`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-home.xml`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-detail-top.xml`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-line-markets.xml`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-spread-ticket-ready.xml`
+- `docs/mobile/harness/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-portfolio.xml`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-home.png`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-detail-top.png`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-line-markets.png`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-FI-home-route-server-filled/cycle-FI-home-route-server-filled-portfolio.png`
+
+Known limitations:
+
+- FI uses disposable provider-shaped data and seeded counterparty liquidity. Production active Polymarket World Cup breadth remains P1.
