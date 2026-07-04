@@ -47,6 +47,7 @@ param(
   [switch]$LocalMvpTradeFlow,
   [switch]$LocalMvpSellFlow,
   [switch]$LocalMvpStatusFlow,
+  [switch]$LocalMvpRouteStatusFlow,
   [switch]$LocalMvpLineFamilyBreadth,
   [switch]$LocalMvpRouteTicketFlow,
   [switch]$LocalMvpRouteServerOrderFlow,
@@ -93,7 +94,9 @@ Write-Host "Tablet smoke target: $Device"
 Write-Host "Expo host: $resolvedExpoHost"
 Write-Host "Expo port: $Port"
 
-if ($LocalMvpRouteTicketFlow) {
+if ($LocalMvpRouteStatusFlow) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteStatusFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($LocalMvpRouteTicketFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteTicketFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpRouteServerOrderFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerOrderFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir

@@ -2863,3 +2863,43 @@ Decision:
 - Unresolved P0 gaps: 0 for selected feature.
 - Remaining P1/P2 gaps: production active-event provider breadth, fresh S23 retail lifecycle proof, and non-disposable liquidity source.
 - Next cycle required: yes, continue Local MVP user-flow breadth.
+
+## Feature: Route-Backed Retail Status States
+
+Cycle: FA
+
+Lead Agent target: Close the repeated Local MVP gap where route-backed loading/stale/unavailable states were deferred or only visible through Book/orderbook.
+
+Reference Audit Agent: Product steering audit from current Local MVP policy and existing Polymarket sports retail-status behavior: status must be visible in the retail event/ticket path.
+
+Implementation Agent: Provider lifecycle availability mapping, EventDetail Spread availability pill, TradeTicket market-status pill, and tablet route-status proof harness.
+
+Audit Gate Agent: Same-cycle backend route proof plus Samsung tablet proof.
+
+Reference device: Not refreshed in FA; this is a Holiwyn route contract/status gate based on current Local MVP policy.
+
+Holiwyn device: Samsung tablet, Expo Go, port `8268`.
+
+Holiwyn evidence:
+
+- `docs/mobile/harness/cycle-FA-local-mvp-route-status-flow/cycle-FA-A-provider-status-breadth.json`
+- `docs/mobile/harness/cycle-FA-local-mvp-route-status-flow/cycle-FA-local-mvp-route-status-flow-proof.json`
+- `docs/mobile/screenshots/cycle-FA-local-mvp-route-status-flow/`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| FA-STATUS-P0-01 | P0 | Pass | Route proof emits provider-backed ready, stale, and unavailable compact markets. | N/A |
+| FA-STATUS-P0-02 | P0 | Pass | Game Lines show Spread `Market stale` and Totals `Market unavailable`. | N/A |
+| FA-STATUS-P0-03 | P0 | Pass | Stale Spread ticket exposes `ticket-market-status ticket-availability-stale`. | N/A |
+| FA-STATUS-P0-04 | P0 | Pass | Unavailable Totals ticket exposes `ticket-market-status ticket-availability-unavailable` and disabled submit. | N/A |
+| FA-STATUS-P0-05 | P0 | Pass | Default Book/orderbook markers remain absent. | N/A |
+| FA-STATUS-P1-01 | P1 | Open | Production active Polymarket stale/unavailable recapture is not covered. | Re-run against a real active mapped event later. |
+
+Decision:
+
+- Pass/fail: Pass for selected FA route-backed retail status flow.
+- Unresolved P0 gaps: 0 for selected feature.
+- Remaining P1/P2 gaps: production active-event status breadth, server-side unavailable-market order guard, and fresh S23 status recapture.
+- Next cycle required: yes, continue Local MVP user-flow breadth.

@@ -4935,3 +4935,54 @@ Proof artifacts:
 Known limitations:
 
 - EZ proves Team Total against disposable provider-shaped data. Production active Polymarket event mapping and non-disposable liquidity remain follow-up work.
+
+## Cycle FA - Route-Backed Retail Status States
+
+Feature/page worked on:
+
+- Mobile EventDetail and TradeTicket Local MVP route-backed stale/unavailable status proof with orderbook hidden by default.
+
+Frontend/harness/backend files touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/scripts/local-mvp-route-status-proof.ps1`
+
+Important functions/services touched:
+
+- `serializeMobileLiveEventDetail` now emits provider-lifecycle-backed `availability` for provider-backed compact markets when quote/depth/chart lifecycle is stale or unavailable.
+- EventDetail Spread rows now expose the same route-backed availability pill already used by grouped market rows.
+- TradeTicket now exposes `ticket-market-status` and disables submit for unavailable/suspended markets.
+- The FA harness creates a disposable ready/stale/unavailable event through the existing provider-status proof script and drives the tablet retail flow.
+
+User interactions supported/proven:
+
+- Open a route-backed provider-status live event on Samsung tablet through `forceBackendEventSlug`.
+- See Game Lines show `Market stale` on Spread and `Market unavailable` on Totals.
+- Open the stale Spread ticket and see `ticket-market-status ticket-availability-stale`.
+- Open the unavailable Totals ticket and see `ticket-market-status ticket-availability-unavailable` with the submit control disabled.
+- Default Book/orderbook UI stays hidden.
+
+Validation:
+
+- PowerShell parser check for `mobile/scripts/smoke.ps1`
+- PowerShell parser check for `mobile/scripts/smoke-tablet.ps1`
+- PowerShell parser check for `mobile/scripts/local-mvp-route-status-proof.ps1`
+- Mobile typecheck
+- `npm run test:jest -- src/__tests__/mobile-live-event-detail.test.ts`
+- `npx tsx scripts/prove_mobile_ej_a_provider_status_breadth.ts --output=...`
+- `powershell -ExecutionPolicy Bypass -File mobile/scripts/local-mvp-route-status-proof.ps1 -Port 8268 -BackendBaseUrl http://172.16.200.14:3002`
+
+Proof artifacts:
+
+- `docs/mobile/harness/cycle-FA-local-mvp-route-status-flow/cycle-FA-A-provider-status-breadth.json`
+- `docs/mobile/harness/cycle-FA-local-mvp-route-status-flow/cycle-FA-local-mvp-route-status-flow-proof.json`
+- `docs/mobile/harness/cycle-FA-local-mvp-route-status-flow/cycle-FA-holiwyn-route-status-*.xml`
+- `docs/mobile/screenshots/cycle-FA-local-mvp-route-status-flow/cycle-FA-holiwyn-route-status-*.png`
+
+Known limitations:
+
+- FA proves disposable provider-backed status breadth. Production active-event status breadth and fresh S23 status recapture remain P1.

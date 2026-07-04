@@ -637,7 +637,21 @@ export async function serializeMobileLiveEventDetail(input: {
       const providerStalenessSeconds = providerLastFetchedAt
         ? Math.max(0, Math.round((Date.now() - new Date(providerLastFetchedAt).getTime()) / 1000))
         : null;
-      const effectiveAvailability = providerLifecycle.ready
+      const providerBackedMarket = Boolean(market.referenceSource || market.externalMarketId || market.conditionId);
+      const effectiveAvailability = providerBackedMarket
+        && !providerLifecycle.ready
+        ? {
+            ...marketAvailability,
+            source: "provider-lifecycle",
+            status: providerLifecycle.unavailable ? "unavailable" as const : "stale" as const,
+            lastUpdated: providerLastFetchedAt,
+            stalenessSeconds: providerStalenessSeconds,
+            isStale: providerLifecycle.stale || providerLifecycle.refreshDue,
+            isSuspended: false,
+            isDelayed: false,
+            reason: providerLifecycle.reason,
+          }
+        : providerLifecycle.ready
         && marketAvailability.status !== "ready"
         ? {
             ...marketAvailability,

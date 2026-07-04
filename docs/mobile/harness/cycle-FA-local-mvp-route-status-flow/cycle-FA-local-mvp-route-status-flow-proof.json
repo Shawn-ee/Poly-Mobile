@@ -1,0 +1,36 @@
+{
+    "cycle":  "FA",
+    "scenario":  "Local MVP Android route-backed retail status states with orderbook hidden by default",
+    "command":  "powershell -ExecutionPolicy Bypass -File mobile/scripts/local-mvp-route-status-proof.ps1 -Port 8268 -BackendBaseUrl http://172.16.200.14:3002 -OutputDir docs\\mobile\\screenshots\\cycle-FA-local-mvp-route-status-flow -HierarchyOutputDir docs\\mobile\\harness\\cycle-FA-local-mvp-route-status-flow",
+    "backendBaseUrl":  "http://172.16.200.14:3002",
+    "serverEventSlug":  "mobile-ej-a-provider-status-breadth-6b9b3845",
+    "orderbookDebug":  "unset",
+    "marketDataMode":  "server",
+    "orderMode":  "mock",
+    "result":  "pass",
+    "assertions":  {
+                       "routeBackedEvent":  [
+                                                "live-detail loaded through forceBackendEventSlug",
+                                                "live-data-source-polymarket-gamma"
+                                            ],
+                       "retailStatusRows":  [
+                                                "spread row exposes Market stale",
+                                                "totals row exposes Market unavailable",
+                                                "no visible Book/orderbook entry points"
+                                            ],
+                       "ticketStatus":  [
+                                            "stale spread ticket exposes ticket-market-status",
+                                            "unavailable totals ticket exposes ticket-market-status and disabled submit state"
+                                        ]
+                   },
+    "artifacts":  [
+                      "docs\\mobile\\screenshots\\cycle-FA-local-mvp-route-status-flow/cycle-FA-holiwyn-route-status-top.png",
+                      "docs\\mobile\\harness\\cycle-FA-local-mvp-route-status-flow/cycle-FA-holiwyn-route-status-top.xml",
+                      "docs\\mobile\\screenshots\\cycle-FA-local-mvp-route-status-flow/cycle-FA-holiwyn-route-status-lines.png",
+                      "docs\\mobile\\harness\\cycle-FA-local-mvp-route-status-flow/cycle-FA-holiwyn-route-status-lines.xml",
+                      "docs\\mobile\\screenshots\\cycle-FA-local-mvp-route-status-flow/cycle-FA-holiwyn-route-status-stale-ticket.png",
+                      "docs\\mobile\\harness\\cycle-FA-local-mvp-route-status-flow/cycle-FA-holiwyn-route-status-stale-ticket.xml",
+                      "docs\\mobile\\screenshots\\cycle-FA-local-mvp-route-status-flow/cycle-FA-holiwyn-route-status-unavailable-ticket.png",
+                      "docs\\mobile\\harness\\cycle-FA-local-mvp-route-status-flow/cycle-FA-holiwyn-route-status-unavailable-ticket.xml"
+                  ]
+}

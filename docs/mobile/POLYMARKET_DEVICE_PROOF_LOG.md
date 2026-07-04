@@ -299,3 +299,33 @@ Pass for selected route-backed Team Total server filled trade/activity flow with
 
 Remaining gaps:
 Production active-event provider breadth, fresh S23 retail lifecycle recapture, and non-disposable liquidity source.
+
+### 2026-07-04 - Cycle FA - Route-backed retail status states
+
+Reference device:
+Product steering plus existing Polymarket sports audits. Fresh S23 proof was not required for this local provider-status contract gate.
+
+Holiwyn device:
+Samsung tablet / Holiwyn Expo Go / local Expo port `8268`.
+
+Holiwyn app mode:
+`EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE` unset, `EXPO_PUBLIC_SHOW_ORDERBOOK` unset, backend `http://172.16.200.14:3002`.
+
+Holiwyn actions:
+Opened disposable route-backed provider-status event, scrolled to Game Lines, verified Spread `Market stale` and Totals `Market unavailable`, opened the stale Spread ticket, then opened the unavailable Totals ticket.
+
+Holiwyn evidence:
+- `docs/mobile/harness/cycle-FA-local-mvp-route-status-flow/cycle-FA-A-provider-status-breadth.json`
+- `docs/mobile/harness/cycle-FA-local-mvp-route-status-flow/cycle-FA-local-mvp-route-status-flow-proof.json`
+- `docs/mobile/screenshots/cycle-FA-local-mvp-route-status-flow/cycle-FA-holiwyn-route-status-lines.png`
+- `docs/mobile/screenshots/cycle-FA-local-mvp-route-status-flow/cycle-FA-holiwyn-route-status-stale-ticket.png`
+- `docs/mobile/screenshots/cycle-FA-local-mvp-route-status-flow/cycle-FA-holiwyn-route-status-unavailable-ticket.png`
+
+Smoke/tests:
+PowerShell parser checks, mobile typecheck, focused mobile live-detail route test, provider status route proof, backend health, and tablet proof wrapper passed.
+
+Result:
+Pass for selected route-backed retail status flow with orderbook hidden by default.
+
+Remaining gaps:
+Production active-event status breadth, server-side unavailable-market order guard, and fresh S23 status recapture.

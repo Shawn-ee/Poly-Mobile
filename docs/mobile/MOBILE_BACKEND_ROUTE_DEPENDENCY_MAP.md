@@ -1509,3 +1509,17 @@ Cycle EZ implementation notes:
 - Counterparty liquidity proof: `docs/mobile/harness/cycle-EZ-local-mvp-route-server-filled-team-total-flow/cycle-EZ-route-backed-team-total-counterparty.json`.
 - Tablet proof slug: `mobile-el-a-provider-breadth-477e6b35`.
 - Mobile launched against `EXPO_PUBLIC_MARKET_DATA_MODE=server` and `EXPO_PUBLIC_ORDER_MODE=server`, then filled the visible simple retail Team Total ticket against the seeded maker ask.
+
+## Cycle FA - Route-Backed Retail Status States
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Route-backed retail status event | `/api/mobile/events/:slug/live-detail` | GET | Public viewing | Event slug from deep link `forceBackendEventSlug` | `event.liveDataStatus`, `markets[].availability.source/status/marketStatus/reason`, `marketType`, `period`, `line`, provider source/market/condition/token fields, outcome prices | `Event`, `Market`, active `Outcome`, provider quote/depth/history snapshots | None for FA proof. The route creates provider-backed ready/stale/unavailable states. | Production active-event stale/unavailable status breadth still needs real mapped Polymarket data. |
+| Provider-status disposable setup | `scripts/prove_mobile_ej_a_provider_status_breadth.ts` | Local script/route handler call | Local development only | Output path | Creates disposable live event and reads `/api/mobile/events/:slug/live-detail` to verify ready, stale, unavailable route states | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, `MarketOutcomeSnapshot` | None. Disposable provider-shaped data is used as contract proof data. | This is not production provider ingestion. |
+| Simple TradeTicket status rendering | Mobile local component state from selected route market | N/A | N/A | Selected market/outcome from EventDetail | `ticket.market.availability.status`, `reason`, provider identity, line/period/marketType | No additional backend model | None. The ticket reads route-shaped selected market data. | Backend order rejection for unavailable provider markets should be hardened separately. |
+
+Cycle FA implementation notes:
+
+- `availability.source=provider-lifecycle` is now emitted for provider-backed stale/unavailable compact markets.
+- Mobile launched with `EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_ORDER_MODE` unset, and `EXPO_PUBLIC_SHOW_ORDERBOOK` unset.
+- Tablet proof slug: `mobile-ej-a-provider-status-breadth-6b9b3845`.

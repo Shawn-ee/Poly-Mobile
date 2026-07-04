@@ -2136,6 +2136,15 @@ export function EventDetail({
                   <Text style={styles.marketSubcopy}>{homeCode} to win by over {spreadLine} goals</Text>
                 </View>
                 <View style={styles.headerRightCluster}>
+                  {backendSpreadMarket?.availability && (
+                    <View
+                      accessibilityLabel={`event-detail-market-availability-spread market-availability-${backendSpreadMarket.availability.status} market-status-${backendSpreadMarket.availability.marketStatus ?? "unknown"} ${marketAvailabilityLabel(backendSpreadMarket) ?? ""}`}
+                      style={[styles.marketAvailabilityPill, backendSpreadMarket.availability.status !== "ready" && styles.marketAvailabilityPillWarning, backendSpreadMarket.availability.status === "suspended" && styles.marketAvailabilityPillSuspended]}
+                      testID="event-detail-market-availability-spread"
+                    >
+                      <Text style={[styles.marketAvailabilityText, backendSpreadMarket.availability.status !== "ready" && styles.marketAvailabilityTextWarning]}>{marketAvailabilityLabel(backendSpreadMarket)}</Text>
+                    </View>
+                  )}
                   {showOrderBookDebug && backendSpreadMarket && (
                     <Pressable
                       accessibilityLabel={`event-detail-open-order-book-spread ${backendSpreadMarket.id}`}

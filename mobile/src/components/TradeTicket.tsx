@@ -168,6 +168,23 @@ function compactCash(value: number) {
   return `$${value.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
 }
 
+function marketAvailabilityLabel(market: Market) {
+  const status = market.availability?.status;
+  if (status === "ready") return "Market live";
+  if (status === "stale") return "Market stale";
+  if (status === "suspended") return "Market suspended";
+  if (status === "delayed") return "Market delayed";
+  if (status === "unavailable") return "Market unavailable";
+  return null;
+}
+
+function marketAvailabilityTone(market: Market) {
+  const status = market.availability?.status;
+  if (status === "suspended" || status === "unavailable") return "blocked";
+  if (status === "stale" || status === "delayed") return "warning";
+  return "ready";
+}
+
 const limitIdentityLabel = (selection?: TicketSelection) =>
   selection?.limitPrice
     ? `ticket-limit-side-${selection.limitSide ?? "none"} ticket-limit-price-${Math.round(selection.limitPrice * 100)} ticket-limit-decimal-${selection.limitPrice.toFixed(2)} ticket-limit-shares-${selection.limitShares ?? "none"}`
@@ -274,7 +291,11 @@ export function TradeTicket({
   const selectionLabel = ticket.selection?.displayLabel ?? outcomeLabel;
   const marketLabel = ticket.selection?.displayLabel ?? label(locale, ticket.market);
   const amountDisplay = numericAmount > 0 ? compactCash(numericAmount) : "$0";
-  const submitLabel = numericAmount <= 0 ? "Choose an amount" : swipeLabel;
+  const availabilityLabel = marketAvailabilityLabel(ticket.market);
+  const availabilityTone = marketAvailabilityTone(ticket.market);
+  const availabilityStatus = ticket.market.availability?.status ?? "unknown";
+  const marketTradable = availabilityTone !== "blocked";
+  const submitLabel = !marketTradable ? availabilityLabel ?? "Market unavailable" : numericAmount <= 0 ? "Choose an amount" : swipeLabel;
   const priceDisplay = `${contractProbability}c`;
   const providerIdentityLabel = [
     ticket.selection?.referenceSource ?? ticket.market.referenceSource
@@ -333,6 +354,22 @@ export function TradeTicket({
                 <Text style={styles.ticketSub}>{eventLabel}</Text>
               </View>
             </View>
+            {availabilityLabel && (
+              <View
+                accessibilityLabel={`ticket-market-status ticket-availability-${availabilityStatus} ticket-market-status-${ticket.market.availability?.marketStatus ?? "unknown"} ${providerIdentityLabel} ${availabilityLabel}`}
+                style={[styles.marketStatusPill, availabilityTone === "warning" && styles.marketStatusPillWarning, availabilityTone === "blocked" && styles.marketStatusPillBlocked]}
+                testID="ticket-market-status"
+              >
+                <Ionicons
+                  name={availabilityTone === "blocked" ? "alert-circle-outline" : availabilityTone === "warning" ? "time-outline" : "checkmark-circle-outline"}
+                  color={availabilityTone === "blocked" ? "#fecaca" : availabilityTone === "warning" ? "#fde68a" : "#bbf7d0"}
+                  size={15}
+                />
+                <Text style={[styles.marketStatusText, availabilityTone === "warning" && styles.marketStatusTextWarning, availabilityTone === "blocked" && styles.marketStatusTextBlocked]}>
+                  {availabilityLabel}
+                </Text>
+              </View>
+            )}
             {showDetails && (
               <View accessibilityLabel="ticket-advanced-details" testID="ticket-advanced-details" style={styles.ticketMetaBlock}>
                 <View accessibilityLabel="ticket-trading-mode" testID="ticket-trading-mode" style={styles.modePill}>
@@ -504,7 +541,7 @@ export function TradeTicket({
           </ScrollView>
           <View style={styles.ticketFooter}>
             <SwipeSubmitControl
-              disabled={numericAmount <= 0}
+              disabled={numericAmount <= 0 || !marketTradable}
               helper={t.finalCostMayVary}
               label={submitLabel}
               onSubmit={() => placeOrder(numericAmount, side, contractSide)}
@@ -542,6 +579,12 @@ const styles = StyleSheet.create({
   selectionSummary: { flexDirection: "row", alignItems: "center", gap: 14, marginTop: 20, minHeight: 82 },
   outcomeFlag: { width: 72, height: 72, borderRadius: 14, borderWidth: 1, borderColor: "#263247" },
   selectionTextBlock: { flex: 1 },
+  marketStatusPill: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 999, backgroundColor: "#052e1b", borderWidth: 1, borderColor: "#166534" },
+  marketStatusPillWarning: { backgroundColor: "#2b2106", borderColor: "#854d0e" },
+  marketStatusPillBlocked: { backgroundColor: "#2a0d0d", borderColor: "#7f1d1d" },
+  marketStatusText: { color: "#bbf7d0", fontSize: 12, fontWeight: "900" },
+  marketStatusTextWarning: { color: "#fde68a" },
+  marketStatusTextBlocked: { color: "#fecaca" },
   amountDisplayBlock: { minHeight: 154, alignItems: "center", justifyContent: "center", marginTop: 14 },
   amountDisplayText: { color: "#f8fafc", fontSize: 64, fontWeight: "900" },
   ticketOutcomeRow: { alignSelf: "center", flexDirection: "row", alignItems: "center", gap: 4, minHeight: 54, padding: 5, borderRadius: 999, backgroundColor: "#111827" },

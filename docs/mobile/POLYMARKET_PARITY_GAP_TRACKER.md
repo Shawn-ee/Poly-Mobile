@@ -422,3 +422,11 @@ For every UI element or interaction, answer:
 - Samsung tablet proof passes for route-backed Team Total row, seeded provider-shaped maker liquidity, server filled buy through `/api/orders`, Portfolio position, recent activity, and provider identity preservation.
 - Default Book/orderbook UI remains hidden and is not a blocker for Local MVP completion.
 - Remaining P1: active production Polymarket provider breadth, fresh S23 retail lifecycle recapture, and non-disposable liquidity source.
+
+## Cycle FA Gap Tracker Update
+
+- PM-GAP-096 is opened and verified for Local MVP route-backed retail status states.
+- FA closes the repeated P0 gap where loading/stale/unavailable provider status could be proved only through backend JSON or Book/orderbook instead of the default retail flow.
+- Samsung tablet proof passes for route-backed event load, Game Lines `Market stale` and `Market unavailable`, stale Spread ticket status, unavailable Totals ticket status, and hidden default orderbook controls.
+- The backend live-detail route now emits provider-lifecycle-backed `availability` for provider-backed compact markets.
+- Remaining P1: production active Polymarket status breadth, fresh S23 status recapture, and server-side unavailable-market order rejection beyond the mobile disabled submit guard.

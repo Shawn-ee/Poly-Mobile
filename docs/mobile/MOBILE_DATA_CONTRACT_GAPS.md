@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle FA - Route-Backed Retail Status States
+
+Closed or narrowed:
+
+- `/api/mobile/events/:slug/live-detail` now maps provider-backed compact market `availability` from provider lifecycle when quote/depth/chart status is stale or unavailable.
+- The simple retail UI no longer needs Book/orderbook to reveal stale/unavailable provider status. EventDetail and TradeTicket both consume `market.availability`.
+- Android proof confirms Spread stale and Totals unavailable status with `EXPO_PUBLIC_SHOW_ORDERBOOK` unset.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Production active Polymarket event mapping with real stale/unavailable provider states.
+- Server-side order rejection/guardrails for unavailable provider markets beyond the current mobile disabled submit state.
+
+Schema mismatch:
+
+- No schema migration was made. Existing provider snapshot and market identity fields support the FA route contract.
+
+Temporary mock/static data:
+
+- FA uses disposable provider-shaped rows created by `scripts/prove_mobile_ej_a_provider_status_breadth.ts`; this is contract proof data, not arbitrary UI-only data.
+
 ## Cycle ET - Period-Safe Retail Line Matching
 
 Closed or narrowed:
