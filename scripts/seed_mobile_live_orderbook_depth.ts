@@ -45,6 +45,7 @@ async function main() {
   const marketId = argValue("marketId");
   const marketType = argValue("marketType");
   const line = argValue("line");
+  const period = argValue("period");
   const summaryPath = argValue("summaryPath") ?? DEFAULT_SUMMARY_PATH;
 
   const event = await prisma.event.findFirst({
@@ -77,9 +78,10 @@ async function main() {
 
   const market =
     (marketId ? event.markets.find((candidate) => candidate.id === marketId) : undefined) ??
-    (marketType || line
+    (marketType || line || period
       ? event.markets.find((candidate) =>
           (!marketType || candidate.marketType === marketType) &&
+          (!period || candidate.period === period) &&
           (!line || candidate.line?.toString() === line) &&
           candidate.outcomes.length > 0)
       : undefined) ??
@@ -134,6 +136,7 @@ async function main() {
       title: market.title,
       marketType: market.marketType,
       marketGroupKey: market.marketGroupKey,
+      period: market.period,
       line: market.line?.toString() ?? null,
       outcomeCount: market.outcomes.length,
     },

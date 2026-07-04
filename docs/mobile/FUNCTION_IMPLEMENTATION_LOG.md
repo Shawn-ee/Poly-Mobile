@@ -2,6 +2,58 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle CF - Halves Orderbook Depth Contract
+
+Feature/page worked on:
+
+- PM-GAP-067 selected Halves route-backed orderbook depth for the live event detail page.
+- First-half and second-half winner rows are no longer local-only when backend markets exist.
+
+Frontend components touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- `mobile/scripts/smoke.ps1`
+- `mobile/scripts/smoke-tablet.ps1`
+- `mobile/package.json`
+
+Backend/components touched:
+
+- `src/server/services/mobileLiveEventDetail.ts`
+- `src/__tests__/mobile-live-event-detail.test.ts`
+- `scripts/seed_mobile_live_halves_markets.ts`
+- `scripts/seed_mobile_live_orderbook_depth.ts`
+- `package.json`
+
+Important functions/services touched:
+
+- `selectCompactLiveMarkets()` now reserves first-half and second-half winner markets in the compact live-detail payload.
+- `seed_mobile_live_halves_markets.ts` creates deterministic backend-shaped half-period winner markets with stable slugs, period fields, outcomes, availability timestamps, and orderbook visibility.
+- `seed_mobile_live_orderbook_depth.ts` can target `--period=first-half` so seeded depth attaches to the selected half market.
+- EventDetail matches backend `period: first-half/second-half` markets and opens their selected order books/tickets instead of falling back to the primary winner market.
+
+User interactions supported:
+
+- User scrolls to `1st Half Winner`, sees backend availability, taps Book, and opens the selected first-half orderbook with route-backed bid/ask depth.
+
+State transitions:
+
+- Halves seed creates `Market(period=first-half, marketType=match_winner_1x2)` -> compact live-detail route reserves it -> mobile adapter normalizes it to `marketType=moneyline, period=first-half` -> EventDetail attaches it to `event-detail-open-order-book-first-half-winner` -> orderbook route returns depth and stale selected-market availability.
+
+Known limitations:
+
+- Halves markets/depth are deterministic local proof data, not provider-ingested live liquidity.
+- First-half selected depth is proven; second-half market identity is present but second-half orderbook depth is not separately proven in this cycle.
+
+Verification:
+
+- `cmd /c npm.cmd run test:ci -- src/__tests__/mobile-live-event-detail.test.ts`
+- `cmd /c npm.cmd run typecheck` in `mobile/`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run mobile:live-chart-snapshot-seed`
+- `cmd /c npm.cmd run mobile:live-halves-markets-seed`
+- `cmd /c npm.cmd run mobile:live-first-half-orderbook-depth-seed`
+- `cmd /c npm.cmd run smoke:tablet:server-live-first-half-order-book`
+
 ## Cycle CE - Compact Market Availability Contract
 
 Feature/page worked on:

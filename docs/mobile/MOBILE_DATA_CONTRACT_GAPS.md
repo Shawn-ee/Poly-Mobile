@@ -2,6 +2,38 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle CF - Halves Orderbook Depth Contract
+
+Fields now provided or wired:
+
+- Compact live-detail route now reserves backend first-half and second-half winner markets when present.
+- Seeded Halves markets use stable backend fields: `marketId`, `marketType`, `marketGroupKey`, `period`, `outcomeId`, `side`, `status`, and `availability`.
+- EventDetail preserves first-half market identity into Book and ticket interactions instead of falling back to the primary full-game winner market.
+- Samsung tablet proof confirms first-half row availability and selected first-half orderbook route depth.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Provider-ingested half-period market discovery, pricing, liquidity, and freshness.
+- Second-half selected route-depth proof.
+- Settlement data contract for half-period markets.
+
+Schema mismatch:
+
+- The Prisma schema declares `@@unique([marketId, code])` on `Outcome`, but the current database rejected `ON CONFLICT` for that target. The seed harness uses find-then-update; migration hygiene should be checked before production.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/live-detail` and `/api/orderbook/:marketId/book` can now serve the first-half proof path.
+- There is still no provider feed route/schema that continuously refreshes half-period markets.
+
+Temporary mock/static data:
+
+- The first-half market and orderbook depth are deterministic local proof rows in real backend tables, not frontend-only mock strings.
+
+Future migration concern:
+
+- Provider ingestion should write the same `period` and `marketType` shape so mobile can replace proof markets without changing UI logic.
+
 ## Cycle CE - Compact Market Availability Contract
 
 Fields now provided or wired:

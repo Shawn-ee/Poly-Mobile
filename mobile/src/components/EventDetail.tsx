@@ -350,6 +350,13 @@ export function EventDetail({
   const backendSpreadMarket = matchingBackendLineMarket("spread", spreadLine);
   const backendTotalsMarket = matchingBackendLineMarket("totals", totalsLine);
   const backendTeamTotalMarket = matchingBackendLineMarket("team-total", "1.5");
+  const matchingBackendPeriodWinnerMarket = (period: Market["period"]) =>
+    event.markets.find((market) =>
+      market.period === period &&
+      ["moneyline", "match_winner_1x2", "winner"].includes(market.marketType ?? "") &&
+      market.outcomes.length > 0);
+  const backendFirstHalfMarket = matchingBackendPeriodWinnerMarket("first-half");
+  const backendSecondHalfMarket = matchingBackendPeriodWinnerMarket("second-half");
   const spreadMarket = makeLineMarket(`${event.id}-spread-${spreadLine}-${linePeriodCode(spreadPeriod)}`, `Spread ${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`, []);
   const spreadYesOutcome = withLineOutcome({
     id: `${spreadMarket.id}-yes`,
@@ -450,6 +457,7 @@ export function EventDetail({
       id: "first-half-winner",
       title: "1st Half Winner",
       subtitle: "Who wins the first half?",
+      backendMarket: backendFirstHalfMarket,
       rows: [
         { id: "first-home", label: `${leftOutcome ? label(locale, leftOutcome) : teamA?.name ?? "Home"} 1H`, color: leftOutcome?.color ?? "#22c55e", probability: 44, odds: "2.3x", icon: teamA?.flag ?? "", miniLine: 44 },
         { id: "first-tie", label: "Tie 1H", color: "#38bdf8", probability: 45, odds: "2.2x", icon: "%", miniLine: 45 },
@@ -460,6 +468,7 @@ export function EventDetail({
       id: "second-half-winner",
       title: "2nd Half Winner",
       subtitle: "Who wins the second half?",
+      backendMarket: backendSecondHalfMarket,
       rows: [
         { id: "second-home", label: `${leftOutcome ? label(locale, leftOutcome) : teamA?.name ?? "Home"} 2H`, color: leftOutcome?.color ?? "#22c55e", probability: 54, odds: "1.9x", icon: teamA?.flag ?? "", miniLine: 54 },
         { id: "second-tie", label: "Tie 2H", color: "#38bdf8", probability: 33, odds: "3.0x", icon: "%", miniLine: 33 },
@@ -701,7 +710,7 @@ export function EventDetail({
       </View>
     );
   };
-  const renderParityOutcomeRow = (outcome: DisplayOutcome, marketId: string, matchingOutcome?: Outcome) => (
+  const renderParityOutcomeRow = (outcome: DisplayOutcome, marketId: string, matchingOutcome?: Outcome, groupMarket?: Market) => (
     <View key={outcome.id} style={styles.parityOutcomeRow}>
       <View style={styles.parityOutcomeIcon}>
         <Text style={styles.parityOutcomeIconText}>{outcome.icon}</Text>
@@ -718,7 +727,7 @@ export function EventDetail({
         onPress={() => {
           const ticketOutcome = outcome.ticketOutcome ?? matchingOutcome;
           if (!ticketOutcome) return;
-          const ticketMarket = outcome.ticketSelection?.marketType === "spread" ? spreadMarket : outcome.ticketSelection?.marketType === "totals" ? totalsMarket : primaryMarket;
+          const ticketMarket = outcome.ticketSelection?.marketType === "spread" ? spreadMarket : outcome.ticketSelection?.marketType === "totals" ? totalsMarket : groupMarket ?? primaryMarket;
           if (ticketMarket) openTicket(ticketMarket, ticketOutcome, event, defaultSide, outcome.ticketSelection);
         }}
         style={[styles.parityProbButton, { backgroundColor: outcome.color }]}
@@ -811,7 +820,7 @@ export function EventDetail({
               ))}
             </View>
           )}
-          {group.rows.map((outcome) => renderParityOutcomeRow(outcome, group.id))}
+          {group.rows.map((outcome, index) => renderParityOutcomeRow(outcome, group.id, group.backendMarket?.outcomes[index], group.backendMarket))}
         </>
       )}
     </View>
