@@ -198,4 +198,61 @@ describe("world cup adapter", () => {
       isStale: true,
     });
   });
+
+  test("keeps backend live-detail page live when provider status is ended or stale", () => {
+    const detail: EventDetail = {
+      event: {
+        id: "event-1",
+        slug: "world-cup-provider-ended",
+        title: "Colombia vs. Ghana",
+        description: null,
+        category: "Sports / Soccer",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        homeTeamName: "Colombia",
+        awayTeamName: "Ghana",
+        startTime: null,
+        status: "live",
+        liveStatus: "ENDED",
+        period: "Final",
+        clock: "FT",
+        homeScore: 1,
+        awayScore: 0,
+        imageUrl: null,
+        marketCount: 1,
+        activeMarketCount: 1,
+        liveDataStatus: {
+          source: "polymarket-gamma",
+          status: "stale",
+          lastUpdated: "2026-07-04T03:50:04.000Z",
+          stalenessSeconds: 900,
+          staleAfterSeconds: 90,
+          isStale: true,
+          isSuspended: false,
+          isDelayed: false,
+          reason: "Provider event is closed/resolved.",
+        },
+      },
+      markets: [{
+        ...baseMarket,
+        id: "market-main",
+        marketGroupTitle: "Match Winner",
+        outcomes: [{
+          id: "home",
+          name: "Colombia",
+          label: "Colombia",
+          side: "home",
+          price: 0.99,
+          bestBid: 0.99,
+          bestAsk: 1,
+          isTradable: true,
+        }],
+      }],
+    };
+
+    const normalized = normalizeEventDetail(detail);
+
+    expect(normalized?.status).toBe("live");
+    expect(normalized?.liveDataStatus?.status).toBe("stale");
+  });
 });

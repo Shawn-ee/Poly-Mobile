@@ -1839,3 +1839,39 @@ Remaining gaps:
 - P1: Ticket/order/portfolio/history lifecycle proof for mapped Polymarket token identity.
 - P1: Scheduled provider refresh orchestration.
 - P1: Exact line-family markets remain unavailable unless discovered through Polymarket or explicitly added through optional enrichment.
+
+## Cycle DL Polymarket CLOB Chart History Audit
+
+Result: Pass for focused provider-backed chart/history baseline; partial for current-live provider availability.
+
+Reference behavior:
+
+- Polymarket CLOB exposes `/prices-history` for historical token price data.
+- The query parameter is named `market`, but it takes the outcome token ID.
+- Gamma now reports the Colombia vs Ghana event as closed/resolved, so the correct provider state is stale/ended while historical chart data remains available.
+
+Holiwyn criteria:
+
+| Criterion ID | Priority | Result | Evidence |
+| --- | --- | --- | --- |
+| LD-DL-P0-01 | P0 | Pass | `refreshPolymarketPriceHistorySnapshots()` fetches token history from CLOB and writes `MarketOutcomeSnapshot`. |
+| LD-DL-P0-02 | P0 | Pass | Proof created 1,708 snapshots across Colombia, draw, and Ghana markets. |
+| LD-DL-P0-03 | P0 | Pass | Chart route/source contract reports `polymarket-clob-prices-history`. |
+| LD-DL-P0-04 | P0 | Pass | Samsung tablet XML shows `chart-source-polymarket-clob-prices-history chart-status-ready chart-range-1D`. |
+| LD-DL-P0-05 | P0 | Pass | Orderbook route proof remains ready after chart changes. |
+| LD-DL-P1-01 | P1 | Partial | Provider event is closed/resolved, so live data is stale rather than ready. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-current-mobile-polymarket-chart-history.json`
+- `docs/mobile/harness/cycle-current-holiwyn-event-detail.xml`
+- `docs/mobile/harness/cycle-current-holiwyn-server-live-order-book.xml`
+- `docs/mobile/screenshots/cycle-current-holiwyn-event-detail.png`
+- `docs/mobile/screenshots/cycle-current-holiwyn-server-live-order-book.png`
+
+Remaining gaps:
+
+- P1: First-class chart snapshot provenance.
+- P1: Scheduled refresh orchestration.
+- P1: Exact line-family chart/history when provider markets exist.
+- P1: Ticket/order/portfolio/history proof for mapped provider token identity.

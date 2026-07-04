@@ -907,3 +907,17 @@ Cycle DK implementation notes:
 - Polymarket Gamma/CLOB is the default provider source for markets that exist on Polymarket.
 - Missing OpticOdds credentials are optional/unconfigured and must not block this parity milestone.
 - The relevance gate now blocks wrong-team binary winner attachment before provider identity is applied.
+
+## Cycle DL - Polymarket CLOB Chart History
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider chart history ingestion | Polymarket CLOB `https://clob.polymarket.com/prices-history?market=:tokenId&interval=1d&fidelity=5` | GET/service | Public provider API | Token ID in `market` query param, interval, fidelity | Provider points `{ t, p }` converted to timestamp, price, probability | `Market`, `Outcome.referenceTokenId`, `MarketOutcomeSnapshot` | None in Cycle DL proof; empty history is recorded as skipped | First-class snapshot source column is still missing. |
+| Mobile market chart route | `/api/markets/:id/chart?range=1D` | GET | Public viewing with existing market visibility guard | Market id and range | `source`, `history[]`, `lastUpdated`, `emptyState`, `range`, `series` | `MarketOutcomeSnapshot`, `Market.referenceSource`, `Outcome` | If no rows exist, route returns `source=empty` and `emptyState=no-history` | Range downsampling/pagination can be added later if history grows. |
+| Provider refresh orchestration | `/api/mobile/events/:slug/provider-refresh` service path | POST/service | Internal admin guard through route | Existing refresh request | New `providerHistory` report with source, interval, fidelity, refreshed count, snapshots created, skipped rows | `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, `MarketOutcomeSnapshot` | Contract fallback still applies only to quote snapshots, not chart history | Background scheduler remains open. |
+| Samsung tablet live-detail proof | `/api/mobile/events/:slug/live-detail` plus `/api/markets/:id/chart` from the mobile app | GET | Public viewing | Event slug and selected primary market id | EventDetail XML marker `chart-source-polymarket-clob-prices-history chart-status-ready chart-range-1D` | `Event`, `Market`, `Outcome`, `MarketOutcomeSnapshot` | None for the chart marker in Cycle DL | Provider event is closed/resolved, so live-data status is stale by design. |
+
+Cycle DL implementation notes:
+
+- Official Polymarket docs name the CLOB price-history query parameter `market`, but it takes the outcome token ID.
+- The current Colombia vs Ghana provider event is closed/resolved. Holiwyn keeps a live-detail proof page for parity work, while the provider freshness label remains stale.

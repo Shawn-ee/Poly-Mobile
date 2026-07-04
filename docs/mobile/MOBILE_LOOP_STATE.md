@@ -12632,3 +12632,17 @@ Holiwyn/backend changed: Provider candidate relevance now requires generic binar
 Verification: Focused provider candidate tests passed. The Polymarket-first proof passed with 6 quote snapshots, 96 CLOB depth rows, and `pass=true`. Root build passed. Samsung tablet server-mode proof shows `live-data-source-polymarket-gamma`, `live-data-status-ready`, `orderbook-source-orderbook-route`, and `orderbook-status-ready`.
 
 Audit Gate: Pass for focused Polymarket-first provider path and Android route proof, with 0 unresolved P0 gaps. P1 gaps remain for Polymarket-backed chart/history, exact line-family availability, scheduled refresh orchestration, and ticket/order/portfolio/history identity lifecycle proof.
+
+### Cycle DL - Polymarket CLOB Chart History
+
+Goal: Replace live-detail fallback chart history with real Polymarket CLOB price-history data for mapped World Cup markets.
+
+Reference audit: Official Polymarket CLOB docs expose `/prices-history` for historical token prices. Gamma confirms `fifwc-col-gha-2026-07-03` is now closed/resolved, but still provides real token IDs and CLOB price history for Colombia, draw, and Ghana match-winner markets.
+
+Holiwyn/backend changed: Added `refreshPolymarketPriceHistorySnapshots()`, wired it into provider refresh as `providerHistory`, and updated `/api/markets/:id/chart` to report `source=polymarket-clob-prices-history` for Polymarket-backed snapshot history.
+
+Holiwyn/mobile changed: EventDetail chart hydration now carries the provider chart source into the visible mobile accessibility marker. The adapter keeps backend `status=live` on the live-detail page even when provider freshness is stale/ended.
+
+Verification: Provider history proof created 1,708 real CLOB price-history snapshots across 3 mapped markets and passed. Backend tests, mobile API tests, and root build passed. Samsung tablet proof shows `chart-source-polymarket-clob-prices-history`, `chart-status-ready`, `chart-range-1D`, `live-data-source-polymarket-gamma`, `live-data-status-stale`, and route-backed ready orderbook.
+
+Audit Gate: Pass for focused provider-backed chart/history baseline, with 0 unresolved P0 gaps. P1 gaps remain for first-class snapshot provenance, scheduled refresh, line-family history, and lifecycle proof through ticket/order/portfolio/history.

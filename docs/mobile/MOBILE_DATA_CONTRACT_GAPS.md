@@ -2176,3 +2176,33 @@ Temporary mock/static data:
 Future migration concern:
 
 - Keep Polymarket Gamma/CLOB as P0 for parity. OpticOdds or any other external provider should only enrich gaps that Polymarket public data cannot cover and must never weaken the Polymarket relevance gate.
+
+## Cycle DL - Polymarket CLOB Chart History
+
+Fields Holiwyn needs but backend does not provide consistently yet:
+
+- A durable source/provenance column on `MarketOutcomeSnapshot`. Cycle DL infers `polymarket-clob-prices-history` from market identity plus route context.
+- A scheduler or refresh queue for CLOB price-history ingestion across active World Cup markets.
+- Downsampling policy for large chart ranges so mobile can request dense history without slow payloads.
+
+Fields backend provides but mobile ignores:
+
+- The chart route exposes `series` for compatibility, but mobile EventDetail consumes `history[]`, `source`, `range`, `lastUpdated`, and `emptyState`.
+
+Schema mismatch:
+
+- `MarketOutcomeSnapshot` can store price history but cannot distinguish CLOB history from deterministic proof snapshots at row level.
+- Provider event state and Holiwyn proof event state can diverge. In Cycle DL the provider event is closed/resolved, while the local page remains a live-detail proof route with stale provider status.
+
+Route mismatch:
+
+- `/api/mobile/events/:slug/provider-refresh` now returns `providerHistory`, but no operator UI shows history ingestion status yet.
+- `/api/mobile/events/:slug/live-detail` embeds chart snapshots, while the mobile app also calls `/api/markets/:id/chart`; both need to remain source-consistent.
+
+Temporary mock/static data:
+
+- No local fake chart points are used for the Cycle DL provider proof. The proof writes real CLOB price-history points from Polymarket token IDs.
+
+Future migration concern:
+
+- Before production, add snapshot provenance and retention/downsampling so chart rows can be audited, refreshed, and expired independently from local test fixtures.

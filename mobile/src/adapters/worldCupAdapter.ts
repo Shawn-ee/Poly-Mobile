@@ -77,8 +77,9 @@ const asPeriod = (value: string | null | undefined): Market["period"] | undefine
 };
 
 const eventStatus = (event: BackendEventSummary): Event["status"] => {
-  const status = `${event.liveStatus ?? event.status ?? ""}`.toLowerCase();
-  if (status.includes("live") || status === "in_progress") return "live";
+  const liveStatus = `${event.liveStatus ?? ""}`.toLowerCase();
+  const status = `${event.status ?? ""}`.toLowerCase();
+  if (liveStatus.includes("live") || liveStatus === "in_progress" || status === "live") return "live";
   if (!event.startTime) return "future";
   const start = new Date(event.startTime);
   if (Number.isNaN(start.getTime())) return "future";
