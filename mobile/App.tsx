@@ -54,6 +54,8 @@ import {
 const DEFAULT_API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || "http://10.0.2.2:3000";
 const DEFAULT_API_KEY = process.env.EXPO_PUBLIC_API_KEY || "";
 const ORDER_MODE: OrderMode = process.env.EXPO_PUBLIC_ORDER_MODE === "server" ? "server" : "mock";
+const MARKET_DATA_MODE: "mock" | "server" =
+  ORDER_MODE === "server" || process.env.EXPO_PUBLIC_MARKET_DATA_MODE === "server" ? "server" : "mock";
 const SMOKE_OPEN_SERVER_ORDER_PRICE = 1;
 const SMOKE_OPEN_SERVER_ORDER_AMOUNT = "1";
 const SAVED_EVENTS_STORAGE_KEY = "holiwyn.savedEventIds.v1";
@@ -238,10 +240,10 @@ const bookSnapshotDurabilityPortfolio = (timestamp: string): StoredPortfolio => 
 
 const isBookSpreadLifecycleSelection = (selection?: TicketSelection) =>
   selection?.marketType === "spread" &&
-  selection.marketId === "mexico-ecuador-spread" &&
-  selection.outcomeId === "yes" &&
   selection.line === "1.5" &&
-  selection.period === "regulation";
+  (selection.period === "regulation" || selection.period === "full-game") &&
+  typeof selection.limitPrice === "number" &&
+  selection.limitPrice > 0;
 
 const mexicoEcuadorGamePositionFixture = (): Position | undefined => {
   const event = worldCupEvents.find((item) => item.id === "mexico-ecuador");
@@ -1094,7 +1096,7 @@ export default function App() {
   }, [api, ticket?.market.id, ticket?.outcome.id]);
 
   useEffect(() => {
-    if (ORDER_MODE !== "server" || !selectedEvent) return undefined;
+    if (MARKET_DATA_MODE !== "server" || !selectedEvent) return undefined;
     let cancelled = false;
     const eventId = selectedEvent.id;
     const marketIds = selectedEvent.markets.map((market) => market.id);
@@ -1125,7 +1127,7 @@ export default function App() {
   }, [api, selectedEvent?.id]);
 
   useEffect(() => {
-    if (ORDER_MODE !== "server" || !selectedEvent) return undefined;
+    if (MARKET_DATA_MODE !== "server" || !selectedEvent) return undefined;
     let cancelled = false;
     const eventId = selectedEvent.id;
     setSelectedEvent((current) => {
@@ -1153,7 +1155,7 @@ export default function App() {
   }, [api, selectedEvent?.id, selectedDepthMarketId]);
 
   useEffect(() => {
-    if (ORDER_MODE !== "server" || !selectedEvent) return undefined;
+    if (MARKET_DATA_MODE !== "server" || !selectedEvent) return undefined;
     let cancelled = false;
     const eventId = selectedEvent.id;
     setSelectedEvent((current) => {

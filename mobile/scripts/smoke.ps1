@@ -118,7 +118,8 @@ $ErrorActionPreference = "Stop"
 $ServerLiveDetailHalvesOrderBook = $ServerLiveDetailFirstHalfOrderBook -or $ServerLiveDetailSecondHalfOrderBook
 $EventDetailProviderRouteStatusProof = $EventDetailProviderStatus -or $EventDetailVisibleStatusBreadth -or $EventDetailVisibleStatusTransition
 $EventDetailVisibleLiveDepthBackendProof = $EventDetailVisibleLiveDepth -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25"
-$ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook -or $ServerLiveProviderRefreshProof -or $EventDetailProviderRouteStatusProof -or $EventDetailVisibleLiveDepthBackendProof
+$EventDetailVisibleLimitLifecycleBackendProof = $EventDetailVisibleLimitLifecycle -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25"
+$ServerLiveDetailBackendProof = $ServerLiveDetailOrderBook -or $ServerLiveDetailLineOrderBook -or $ServerLiveDetailTotalsOrderBook -or $ServerLiveDetailTeamTotalsOrderBook -or $ServerLiveDetailHalvesOrderBook -or $ServerLiveDetailProviderLineOrderBook -or $ServerLiveProviderRefreshProof -or $EventDetailProviderRouteStatusProof -or $EventDetailVisibleLiveDepthBackendProof -or $EventDetailVisibleLimitLifecycleBackendProof
 
 $MobileRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $RepoRoot = Resolve-Path (Join-Path $MobileRoot "..")
@@ -434,6 +435,7 @@ try {
   $expoErrorLog = Join-Path $MobileRoot "mobile-smoke-expo-error.log"
   $previousSmokeInputFlag = $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT
   $previousOrderMode = $env:EXPO_PUBLIC_ORDER_MODE
+  $previousMarketDataMode = $env:EXPO_PUBLIC_MARKET_DATA_MODE
   $previousApiBaseUrl = $env:EXPO_PUBLIC_API_BASE_URL
   $previousApiKey = $env:EXPO_PUBLIC_API_KEY
   $env:EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT = "1"
@@ -442,7 +444,12 @@ try {
     $env:EXPO_PUBLIC_API_BASE_URL = "http://10.0.2.2:39999"
     $env:EXPO_PUBLIC_API_KEY = "pk_test_mobile_harness"
   }
-  if ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPositionFallbackOrder -or $ServerLiveDetailBackendProof) {
+  if ($EventDetailVisibleLimitLifecycleBackendProof) {
+    $env:EXPO_PUBLIC_API_BASE_URL = $BackendBaseUrl
+    $env:EXPO_PUBLIC_MARKET_DATA_MODE = "server"
+    Remove-Item Env:\EXPO_PUBLIC_ORDER_MODE -ErrorAction SilentlyContinue
+  }
+  if ($ServerOrderSuccess -or $ServerOrderFilled -or $ServerSellOrderFilled -or $ServerOpenOrderCancel -or $ServerFilledTradeHistory -or $ServerApiKeyDiagnostic -or $ServerPositionFallbackOrder -or ($ServerLiveDetailBackendProof -and -not $EventDetailVisibleLimitLifecycleBackendProof)) {
     if (-not $env:EXPO_PUBLIC_API_KEY) {
       $env:EXPO_PUBLIC_API_KEY = "pk_test_mobile_harness"
     }
@@ -601,6 +608,8 @@ try {
     @("Game Lines", "Player Props", "Best bid", "Best ask", "Spread")
   } elseif ($EventDetailProviderRouteStatusProof) {
     @("Game Lines", "Player Props", "event-detail-live-data-inline", "live-data-source-polymarket-gamma")
+  } elseif ($EventDetailVisibleLimitLifecycleBackendProof) {
+    @("EL-A Provider Breadth World Cup Live", "Game Lines", "Best bid", "Best ask")
   } elseif ($EventDetailVisibleLiveDepth -and $ServerEventSlug -ne "world-cup-2026-curacao-vs-cote-divoire-2026-06-25") {
     @("EL-A Provider Breadth World Cup Live", "Game Lines", "Best bid", "Best ask")
   } elseif ($EventDetailTrade -or $EventDetailSummary -or $EventDetailChat -or $EventDetailActions -or $EventDetailMarketTabs -or $EventDetailLineAdjustment -or $EventDetailLinePortfolio -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailFullPage -or $EventDetailChart -or $EventDetailVisibleLiveParity -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailPosition -or $EventDetailProps -or $EventDetailPropTicket -or $EventDetailPropOrder -or $EventDetailPropClose -or $EventDetailMarketOutcomeCount -or $EventDetailSellDefault -or $EventDetailSellDefaultTrade) {
@@ -2444,6 +2453,269 @@ try {
     }
 
     if ($EventDetailVisibleLimitLifecycle) {
+      if ($EventDetailVisibleLimitLifecycleBackendProof) {
+        $enPrefix = "cycle-EN-B-visible-route-limit-lifecycle"
+        $enEventTitle = "EL-A Provider Breadth World Cup Live"
+        $enNoFallback = @("Mexico -1.5 spread", "Mexico vs. Ecuador", "Team to Advance", "portfolio-display-label-Match Winner")
+
+        Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @($enEventTitle, "event-detail-top-order-book", "event-detail-price-chart", "event-detail-game-lines", "live-data-source-polymarket-gamma")
+        Invoke-TapHierarchyNode -Path $eventDetailHierarchy -Identifier "event-detail-top-order-book"
+        $enBookBaselineHierarchy = Wait-HierarchyContains -Name "$enPrefix-book-baseline.xml" -Expected @("event-detail-order-book-screen", "order-book-grouped-market-selector", "order-book-ladder", "orderbook-source-orderbook-route", "orderbook-status-ready") -Attempts 8 -DelaySeconds 1
+        Save-Screenshot -Name "$enPrefix-book-baseline.png"
+
+        Invoke-TapHierarchyNode -Path $enBookBaselineHierarchy -Identifier "order-book-grouped-market-selector"
+        Start-Sleep -Seconds 1
+        $enBookSelectorHierarchy = Save-UiHierarchy -Name "$enPrefix-selector.xml"
+        Assert-HierarchyContains -Path $enBookSelectorHierarchy -Expected @("order-book-market-selector-sheet", "market-type-spread", "line-1.5", "period-full-game", "selector-key-spread:full-game:1.5")
+        $enBookSelectorContent = Get-Content -Raw -Path $enBookSelectorHierarchy
+        if ($enBookSelectorContent -notmatch "order-book-market-choice-([0-9a-f-]{36})[^\`"]*?market-type-spread line-1\.5 period-full-game") {
+          throw "Unable to extract provider-backed spread market id from selector hierarchy."
+        }
+        $enSpreadMarketId = $matches[1]
+        Invoke-TapHierarchyNode -Path $enBookSelectorHierarchy -Identifier "order-book-market-choice-$enSpreadMarketId"
+        $enSpreadBookHierarchy = Wait-HierarchyContains -Name "$enPrefix-spread-book.xml" -Expected @("event-detail-order-book-screen", "orderbook-source-orderbook-route", "orderbook-status-ready", "selected-market-$enSpreadMarketId", "selected-market-type-spread", "selected-line-1.5", "selected-period-full-game") -Attempts 8 -DelaySeconds 1
+        Save-Screenshot -Name "$enPrefix-spread-book.png"
+
+        $enSpreadBookContent = Get-Content -Raw -Path $enSpreadBookHierarchy
+        if ($enSpreadBookContent -notmatch "selected-outcome-([0-9a-f-]{36})") {
+          throw "Unable to extract provider-backed spread outcome id from Book hierarchy."
+        }
+        $enSpreadOutcomeId = $matches[1]
+        if ($enSpreadBookContent -notmatch "selected-provider-market-([^ ]+)") {
+          throw "Unable to extract provider market id from Book hierarchy."
+        }
+        $enProviderMarket = $matches[1]
+        if ($enSpreadBookContent -notmatch "selected-provider-condition-([^ ]+)") {
+          throw "Unable to extract provider condition id from Book hierarchy."
+        }
+        $enProviderCondition = $matches[1]
+        if ($enSpreadBookContent -notmatch "selected-provider-token-([^ ]+)") {
+          throw "Unable to extract provider token id from Book hierarchy."
+        }
+        $enProviderToken = $matches[1]
+        if ($enSpreadBookContent -notmatch "selected-provider-outcome-([^\`"]+?) book-display-mode") {
+          throw "Unable to extract provider outcome label from Book hierarchy."
+        }
+        $enProviderOutcome = $matches[1]
+        $enSelectionExpected = @(
+          "selected-market-$enSpreadMarketId",
+          "selected-family-Spreads",
+          "selected-outcome-$enSpreadOutcomeId",
+          "selected-side-yes",
+          "selected-market-type-spread",
+          "selected-line-1.5",
+          "selected-period-full-game",
+          "selected-provider-source-polymarket",
+          "selected-provider-market-$enProviderMarket",
+          "selected-provider-condition-$enProviderCondition",
+          "selected-provider-token-$enProviderToken",
+          "selected-provider-outcome-$enProviderOutcome"
+        )
+        $enTicketSelectionExpected = @(
+          "ticket-market-family-spread",
+          "ticket-market-type-spread",
+          "ticket-market-id-$enSpreadMarketId",
+          "ticket-outcome-id-$enSpreadOutcomeId",
+          "ticket-market-group-spread",
+          "ticket-line-1.5",
+          "ticket-period-full-game",
+          "ticket-selection-side-home",
+          "ticket-display-label-Spread",
+          "ticket-contract-side-yes",
+          "ticket-provider-source-polymarket",
+          "ticket-provider-market-$enProviderMarket",
+          "ticket-provider-condition-$enProviderCondition",
+          "ticket-provider-token-$enProviderToken",
+          "ticket-provider-outcome-$enProviderOutcome"
+        )
+        $enPortfolioSelectionExpected = @(
+          "portfolio-snapshot-source-order-time",
+          "portfolio-market-family-spread",
+          "portfolio-market-type-spread",
+          "portfolio-market-id-$enSpreadMarketId",
+          "portfolio-outcome-id-$enSpreadOutcomeId",
+          "portfolio-market-group-spread",
+          "portfolio-line-1.5",
+          "portfolio-period-full-game",
+          "portfolio-side-buy",
+          "portfolio-display-label-Spread",
+          "portfolio-contract-side-yes",
+          "portfolio-provider-source-polymarket",
+          "portfolio-provider-market-$enProviderMarket",
+          "portfolio-provider-condition-$enProviderCondition",
+          "portfolio-provider-token-$enProviderToken",
+          "portfolio-provider-outcome-$enProviderOutcome"
+        )
+        Assert-HierarchyContains -Path $enSpreadBookHierarchy -Expected (@("order-book-ask-level-$enSpreadOutcomeId-1", "order-book-bid-level-$enSpreadOutcomeId-1") + $enSelectionExpected)
+        if ($enSpreadBookContent -notmatch "order-book-ask-level-$enSpreadOutcomeId-1[^\`"]*?([0-9]+)c ([0-9]+\.[0-9]{2}) USDT ([0-9.,k]+) shares") {
+          throw "Unable to extract route-backed ask limit from spread Book hierarchy."
+        }
+        $enAskCents = $matches[1]
+        $enAskDecimal = $matches[2]
+        $enAskShares = $matches[3]
+        $enAskProbability = [int]$enAskCents
+        Assert-HierarchyContains -Path $enSpreadBookHierarchy -Expected @("order-book-selected-contract", "selected-provider-source-polymarket", "selected-provider-market-$enProviderMarket", "selected-provider-token-$enProviderToken", "$($enAskCents)c", "$enAskDecimal USDT")
+        Assert-HierarchyDoesNotContain -Path $enSpreadBookHierarchy -Unexpected @("orderbook-source-contract-fixture", "polymarket-fixture", "deterministic-contract-fixture")
+
+        Invoke-TapHierarchyNode -Path $enSpreadBookHierarchy -Identifier "order-book-ask-level-$enSpreadOutcomeId-1"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "$enPrefix-ask-staged.png"
+        $enAskStagedHierarchy = Save-UiHierarchy -Name "$enPrefix-ask-staged.xml"
+        Assert-HierarchyContains -Path $enAskStagedHierarchy -Expected (@(
+          "order-book-staged-order",
+          "staged-level-ask-$enAskCents",
+          "staged-ticket-side-buy",
+          "staged-price-$enAskDecimal USDT",
+          "Buy ask",
+          "$($enAskCents)c",
+          "staged-level-selected"
+        ) + $enSelectionExpected)
+
+        Invoke-TapHierarchyNode -Path $enAskStagedHierarchy -Identifier "order-book-staged-open-ticket"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "$enPrefix-ticket-empty.png"
+        $enTicketEmptyHierarchy = Save-UiHierarchy -Name "$enPrefix-ticket-empty.xml"
+        Assert-HierarchyContains -Path $enTicketEmptyHierarchy -Expected (@(
+          "trade-ticket",
+          "ticket-side-pill",
+          "Buy",
+          "ticket-selection-summary",
+          "Spread",
+          $enProviderOutcome,
+          "ticket-limit-side-ask",
+          "ticket-limit-price-$enAskCents",
+          "ticket-limit-decimal-$enAskDecimal"
+        ) + $enTicketSelectionExpected)
+        Assert-HierarchyDoesNotContain -Path $enTicketEmptyHierarchy -Unexpected $enNoFallback
+
+        Invoke-TapHierarchyNode -Path $enTicketEmptyHierarchy -Identifier "ticket-preset-10"
+        Start-Sleep -Milliseconds 500
+        $enTicketAmount10Hierarchy = Save-UiHierarchy -Name "$enPrefix-ticket-amount-10.xml"
+        Invoke-TapHierarchyNode -Path $enTicketAmount10Hierarchy -Identifier "ticket-preset-10"
+        Start-Sleep -Milliseconds 500
+        $enTicketAmount20Hierarchy = Save-UiHierarchy -Name "$enPrefix-ticket-amount-20.xml"
+        Invoke-TapHierarchyNode -Path $enTicketAmount20Hierarchy -Identifier "ticket-preset-5"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "$enPrefix-ticket-ready.png"
+        $enTicketReadyHierarchy = Save-UiHierarchy -Name "$enPrefix-ticket-ready.xml"
+        Assert-HierarchyContains -Path $enTicketReadyHierarchy -Expected (@('$25', "ticket-price-line", "$($enAskCents)c", "To win", "Swipe up to buy", "place-mock-order", "ticket-limit-side-ask", "ticket-limit-price-$enAskCents", "ticket-limit-decimal-$enAskDecimal") + $enTicketSelectionExpected)
+        Assert-HierarchyDoesNotContain -Path $enTicketReadyHierarchy -Unexpected ($enNoFallback + @("Odds $($enAskProbability - 1)%", "Odds $($enAskProbability + 1)%"))
+
+        Invoke-TapHierarchyNode -Path $enTicketReadyHierarchy -Identifier "place-mock-order"
+        Start-Sleep -Seconds 2
+        Save-Screenshot -Name "$enPrefix-portfolio-open.png"
+        $enPortfolioOpenHierarchy = Save-UiHierarchy -Name "$enPrefix-portfolio-open.xml"
+        Assert-HierarchyContains -Path $enPortfolioOpenHierarchy -Expected (@(
+          "Portfolio",
+          "Open positions",
+          "Open orders",
+          "Recent activity",
+          "Order placed",
+          "latest-order-card",
+          "latest-order-status",
+          "order-status-open",
+          "latest-order-snapshot",
+          "latest-activity-card",
+          "activity-opened",
+          "open-order-row-",
+          "open-order-status-",
+          "Limit",
+          "$enAskCents%",
+          "portfolio-limit-side-ask",
+          "portfolio-limit-price-$enAskCents",
+          "portfolio-limit-decimal-$enAskDecimal",
+          "portfolio-provider-source-polymarket",
+          "portfolio-provider-market-$enProviderMarket",
+          "portfolio-provider-token-$enProviderToken"
+        ) + $enPortfolioSelectionExpected)
+        Assert-HierarchyDoesNotContain -Path $enPortfolioOpenHierarchy -Unexpected $enNoFallback
+
+        Invoke-TapHierarchyNode -Path $enPortfolioOpenHierarchy -Identifier "cancel-open-order-" -StartsWith
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "$enPrefix-portfolio-canceled.png"
+        $enPortfolioCanceledHierarchy = Save-UiHierarchy -Name "$enPrefix-portfolio-canceled.xml"
+        Assert-HierarchyContains -Path $enPortfolioCanceledHierarchy -Expected (@(
+          "Portfolio",
+          "portfolio-open-order-count",
+          "0",
+          "latest-activity-card",
+          "latest-activity-status-",
+          "Canceled",
+          "activity-canceled",
+          "latest-activity-snapshot",
+          "portfolio-limit-side-ask",
+          "portfolio-limit-price-$enAskCents",
+          "portfolio-limit-decimal-$enAskDecimal",
+          "portfolio-provider-source-polymarket",
+          "portfolio-provider-market-$enProviderMarket",
+          "portfolio-provider-token-$enProviderToken"
+        ) + $enPortfolioSelectionExpected)
+        Assert-HierarchyDoesNotContain -Path $enPortfolioCanceledHierarchy -Unexpected $enNoFallback
+
+        $proof = [ordered]@{
+          cycle = "EN-B"
+          scope = "Visible Android route-backed Book-staged limit lifecycle"
+          command = "powershell -ExecutionPolicy Bypass -File mobile/scripts/smoke-tablet.ps1 -EventDetailVisibleLimitLifecycle -Port $Port -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir"
+          backendBaseUrl = $BackendBaseUrl
+          orderMode = "mock"
+          marketDataMode = $env:EXPO_PUBLIC_MARKET_DATA_MODE
+          apiBaseUrl = $env:EXPO_PUBLIC_API_BASE_URL
+          adbReverse = "tcp:3002 tcp:3002"
+          eventIdentity = $enEventTitle
+          serverEventSlug = $ServerEventSlug
+          selectedMarketId = $enSpreadMarketId
+          selectedOutcomeId = $enSpreadOutcomeId
+          selectedProviderMarket = $enProviderMarket
+          selectedProviderToken = $enProviderToken
+          routeBackedProviderDepth = $true
+          result = "pass"
+          selectedLimit = [ordered]@{
+            side = "ask"
+            cents = [int]$enAskCents
+            decimal = $enAskDecimal
+            shares = $enAskShares
+          }
+          assertions = [ordered]@{
+            backendHealth = "Backend /api/health was required before launch; the proof aborts instead of falling back when unavailable."
+            bookSelection = "Live event Book opens from route-backed live detail with mock trading plus server market-data mode, switches to provider-backed Spread 1.5, and exposes orderbook-source-orderbook-route/orderbook-status-ready."
+            stagedAsk = "Tapping order-book-ask-level-$enSpreadOutcomeId-1 stages Buy ask at $enAskDecimal USDT / $($enAskCents)c."
+            ticketLimit = "Trade ticket exposes ticket-limit-side-ask ticket-limit-price-$enAskCents ticket-limit-decimal-$enAskDecimal and submits at ticket-price-line $($enAskCents)c."
+            latestOrder = "Latest order card exposes order-status-open and the same portfolio limit/source/market/outcome/line/period/provider tokens."
+            openOrder = "Open order row shows Limit $enAskCents% and the same order-time snapshot identity."
+            activityHistory = "Opened and canceled activity cards retain portfolio-limit-side-ask portfolio-limit-price-$enAskCents and the same selected route-backed Book identity."
+            fallbackGuard = "Portfolio and activity reject Mexico fixture labels, Team to Advance, and generic Match Winner fallback labels for the selected spread lifecycle."
+          }
+          artifacts = @(
+            "$OutputDir/$enPrefix-book-baseline.png",
+            "$HierarchyOutputDir/$enPrefix-book-baseline.xml",
+            "$HierarchyOutputDir/$enPrefix-selector.xml",
+            "$OutputDir/$enPrefix-spread-book.png",
+            "$HierarchyOutputDir/$enPrefix-spread-book.xml",
+            "$OutputDir/$enPrefix-ask-staged.png",
+            "$HierarchyOutputDir/$enPrefix-ask-staged.xml",
+            "$OutputDir/$enPrefix-ticket-empty.png",
+            "$HierarchyOutputDir/$enPrefix-ticket-empty.xml",
+            "$HierarchyOutputDir/$enPrefix-ticket-amount-10.xml",
+            "$HierarchyOutputDir/$enPrefix-ticket-amount-20.xml",
+            "$OutputDir/$enPrefix-ticket-ready.png",
+            "$HierarchyOutputDir/$enPrefix-ticket-ready.xml",
+            "$OutputDir/$enPrefix-portfolio-open.png",
+            "$HierarchyOutputDir/$enPrefix-portfolio-open.xml",
+            "$OutputDir/$enPrefix-portfolio-canceled.png",
+            "$HierarchyOutputDir/$enPrefix-portfolio-canceled.xml"
+          )
+          remainingGaps = @(
+            "This visible proof uses the selected disposable EL-A provider-backed route event supplied by the backend route proof lineage.",
+            "Broader future hardening remains for multiple market families, bid-side order lifecycle, and immutable first-class backend selection snapshots."
+          )
+        }
+        $proofPath = Join-Path $ResolvedHierarchyOutputDir "$enPrefix-proof.json"
+        $proofJson = ($proof | ConvertTo-Json -Depth 6) -replace "`r`n", "`n"
+        [System.IO.File]::WriteAllText($proofPath, "$proofJson`n", [System.Text.UTF8Encoding]::new($false))
+        Write-Host "Proof summary: $proofPath"
+        return
+      }
+
       $emBookSelectionExpected = @(
         "selected-market-mexico-ecuador-spread",
         "selected-family-Spreads",
@@ -3997,6 +4269,11 @@ finally {
     Remove-Item Env:\EXPO_PUBLIC_ORDER_MODE -ErrorAction SilentlyContinue
   } else {
     $env:EXPO_PUBLIC_ORDER_MODE = $previousOrderMode
+  }
+  if ($null -eq $previousMarketDataMode) {
+    Remove-Item Env:\EXPO_PUBLIC_MARKET_DATA_MODE -ErrorAction SilentlyContinue
+  } else {
+    $env:EXPO_PUBLIC_MARKET_DATA_MODE = $previousMarketDataMode
   }
   if ($null -eq $previousApiBaseUrl) {
     Remove-Item Env:\EXPO_PUBLIC_API_BASE_URL -ErrorAction SilentlyContinue
