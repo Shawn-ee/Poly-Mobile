@@ -805,7 +805,11 @@ export function EventDetail({
     const bestAsk = askLevels[0];
     const spreadCents = bestBid && bestAsk ? Math.max(0, levelProbability(bestAsk.price) - levelProbability(bestBid.price)) : null;
     const largest = Math.max(...bidLevels.map((level) => level.shares), ...askLevels.map((level) => level.shares), 1);
-    const depthSourceLabel = (orderBookMarket.orderbookDepth?.length ?? 0) > 0 ? "route-depth-ladder" : "quote-fallback-ladder";
+    const depthSourceLabel = selectedDepthSource === "orderbook-route"
+      ? "route-depth-ladder"
+      : selectedDepthSource === "contract-fixture"
+        ? "contract-fixture-depth-ladder"
+        : "quote-fallback-ladder";
     const selectedOutcomeIndex = orderBookMarket.outcomes.findIndex((outcome) => outcome.id === orderBookSelectedOutcome.id);
     const selectedContractSide = orderBookOutcomeSide(orderBookMarket, orderBookSelectedOutcome, selectedOutcomeIndex);
     const selectedMarketFamily = orderBookGroupLabel(orderBookMarket);
@@ -816,6 +820,14 @@ export function EventDetail({
     const displayModeLabel = orderBookDisplayMode === "decimal" ? "Decimal" : "Cents";
     const priceHeaderLabel = orderBookDisplayMode === "decimal" ? "Price (USDT)" : "Price";
     const groupNamesLabel = marketGroups.map((group) => group.title).join(" ");
+    const selectedLineText = selectedTicketSelection.line ? `Line ${selectedTicketSelection.line}` : "No line";
+    const selectedPeriodText = selectedTicketSelection.period ?? "full game";
+    const selectedContractText = `${selectedContractSide.toUpperCase()} - ${label(locale, orderBookSelectedOutcome)}`;
+    const selectedBidPriceText = bestBid ? formatLevelPrice(bestBid.price) : "No bid";
+    const selectedAskPriceText = bestAsk ? formatLevelPrice(bestAsk.price) : "No ask";
+    const selectedBidSizeText = bestBid ? `${formatSize(bestBid.shares)} ${t.shares}` : `0 ${t.shares}`;
+    const selectedAskSizeText = bestAsk ? `${formatSize(bestAsk.shares)} ${t.shares}` : `0 ${t.shares}`;
+    const selectedSpreadText = spreadCents == null ? "-" : `${spreadCents}c`;
     return (
       <View accessibilityLabel={`event-detail-order-book-screen event-detail-order-book-market-${orderBookMarket.id} ${selectedIdentityLabel} book-display-mode-${orderBookDisplayMode} orderbook-source-${selectedDepthSource ?? "fallback"} orderbook-status-${depthRouteStatus} orderbook-empty-${depthMarketMatches || hasSelectedMarketDepth ? event.orderbookDepthEmptyState ?? "none" : "not-selected"} orderbook-availability-${orderbookAvailabilityStatus} orderbook-market-status-${selectedOrderbookAvailability?.marketStatus ?? "unknown"}`} style={styles.orderBookOverlay} testID="event-detail-order-book-screen">
         <View style={styles.orderBookHeader}>
@@ -839,9 +851,9 @@ export function EventDetail({
           </View>
         </View>
         <View style={styles.orderBookSummary}>
-          <Text style={styles.orderBookSummaryText}>{t.bestBid} {marketDepth(orderBookMarket).bid}</Text>
-          <Text style={styles.orderBookSummaryText}>{t.bestAsk} {marketDepth(orderBookMarket).ask}</Text>
-          <Text style={styles.orderBookSummaryText}>{t.spread} {marketDepth(orderBookMarket).spread}</Text>
+          <Text style={styles.orderBookSummaryText}>{t.bestBid} {selectedBidPriceText} {selectedBidSizeText}</Text>
+          <Text style={styles.orderBookSummaryText}>{t.bestAsk} {selectedAskPriceText} {selectedAskSizeText}</Text>
+          <Text style={styles.orderBookSummaryText}>{t.spread} {selectedSpreadText}</Text>
         </View>
         {orderBookSettingsVisible && (
           <View
@@ -940,6 +952,26 @@ export function EventDetail({
             );
           })}
         </View>
+        <View
+          accessibilityLabel={`order-book-selected-contract ${selectedIdentityLabel} selected-contract-${selectedContractSide} ${selectedContractText} ${selectedLineText} ${selectedPeriodText} bid ${selectedBidPriceText} ask ${selectedAskPriceText} spread ${selectedSpreadText}`}
+          style={styles.orderBookContractStrip}
+          testID="order-book-selected-contract"
+        >
+          <View style={styles.orderBookContractTextBlock}>
+            <Text style={styles.orderBookContractEyebrow}>{selectedMarketFamily} - {selectedPeriodText} - {selectedLineText}</Text>
+            <Text style={styles.orderBookContractTitle}>{selectedContractText}</Text>
+          </View>
+          <View style={styles.orderBookQuoteRail}>
+            <View style={styles.orderBookQuotePill}>
+              <Text style={styles.orderBookQuoteLabel}>{t.bestBid}</Text>
+              <Text style={styles.orderBookQuoteValue}>{selectedBidPriceText}</Text>
+            </View>
+            <View style={styles.orderBookQuotePill}>
+              <Text style={styles.orderBookQuoteLabel}>{t.bestAsk}</Text>
+              <Text style={styles.orderBookQuoteValue}>{selectedAskPriceText}</Text>
+            </View>
+          </View>
+        </View>
         <View accessibilityLabel={`event-detail-order-book-depth-state orderbook-status-${depthRouteStatus} ${depthStateText}`} style={[styles.orderBookStatePill, depthRouteStatus === "error" && styles.orderBookStatePillError, depthRouteStatus === "empty" && styles.orderBookStatePillEmpty]} testID="event-detail-order-book-depth-state">
           <Ionicons
             name={depthRouteStatus === "error" ? "warning-outline" : depthRouteStatus === "loading" ? "sync-outline" : depthRouteStatus === "empty" ? "layers-outline" : "server-outline"}
@@ -974,9 +1006,11 @@ export function EventDetail({
               <View style={styles.orderBookActionRow}>
                 <Pressable accessibilityLabel={`order-book-buy-${orderBookSelectedOutcome.id} ${selectedIdentityLabel}`} onPress={() => openTicket(orderBookMarket, orderBookSelectedOutcome, event, "buy", selectedTicketSelection)} style={[styles.orderBookTradeButton, { backgroundColor: orderBookSelectedOutcome.color }]} testID={`order-book-buy-${orderBookSelectedOutcome.id}`}>
                   <Text style={styles.orderBookTradeText}>{t.buy}</Text>
+                  <Text style={styles.orderBookTradeSubtext}>{selectedContractSide.toUpperCase()}</Text>
                 </Pressable>
                 <Pressable accessibilityLabel={`order-book-sell-${orderBookSelectedOutcome.id} ${selectedIdentityLabel}`} onPress={() => openTicket(orderBookMarket, orderBookSelectedOutcome, event, "sell", selectedTicketSelection)} style={styles.orderBookSellButton} testID={`order-book-sell-${orderBookSelectedOutcome.id}`}>
                   <Text style={styles.orderBookSellText}>{t.sell}</Text>
+                  <Text style={styles.orderBookTradeSubtext}>{selectedContractSide.toUpperCase()}</Text>
                 </Pressable>
               </View>
             </View>
@@ -2176,6 +2210,14 @@ const styles = StyleSheet.create({
   orderBookOutcomeTabTextActive: { color: "#0b1220" },
   orderBookOutcomeTabMeta: { color: "#64748b", fontSize: 10, fontWeight: "900", marginTop: 2 },
   orderBookOutcomeTabMetaActive: { color: "#334155" },
+  orderBookContractStrip: { minHeight: 74, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10, marginHorizontal: 16, marginTop: 10, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#243244" },
+  orderBookContractTextBlock: { flex: 1, minWidth: 0 },
+  orderBookContractEyebrow: { color: "#7dd3fc", fontSize: 10, fontWeight: "900", textTransform: "uppercase" },
+  orderBookContractTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginTop: 4 },
+  orderBookQuoteRail: { width: 132, gap: 6 },
+  orderBookQuotePill: { minHeight: 28, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 6, borderRadius: 6, backgroundColor: "#111827", paddingHorizontal: 8 },
+  orderBookQuoteLabel: { color: "#64748b", fontSize: 9, fontWeight: "900" },
+  orderBookQuoteValue: { color: "#dbeafe", fontSize: 11, fontWeight: "900" },
   orderBookStatePill: { minHeight: 32, marginHorizontal: 16, marginTop: 10, alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 10, borderRadius: 999, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#243244" },
   orderBookStatePillEmpty: { borderColor: "rgba(251, 191, 36, 0.35)", backgroundColor: "rgba(53, 43, 20, 0.82)" },
   orderBookStatePillError: { borderColor: "rgba(248, 113, 113, 0.38)", backgroundColor: "rgba(58, 24, 31, 0.82)" },
@@ -2199,6 +2241,7 @@ const styles = StyleSheet.create({
   orderBookTradeText: { color: "#ffffff", fontSize: 13, fontWeight: "900" },
   orderBookSellButton: { minWidth: 74, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
   orderBookSellText: { color: "#dbeafe", fontSize: 13, fontWeight: "900" },
+  orderBookTradeSubtext: { color: "rgba(255,255,255,0.72)", fontSize: 9, fontWeight: "900", marginTop: 1 },
   orderBookColumns: { flexDirection: "row", gap: 10, marginTop: 12 },
   orderBookColumn: { flex: 1, gap: 8, padding: 10, borderRadius: 9, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937" },
   orderBookColumnHeader: { minHeight: 18, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 6 },
