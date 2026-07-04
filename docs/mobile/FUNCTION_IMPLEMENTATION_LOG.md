@@ -2,6 +2,40 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle EJ-A - Backend Provider Status Breadth
+
+Feature/page worked on:
+
+- Backend/provider proof for route-backed provider status breadth after EI.
+- Proves live-detail can return ready, refresh-due/stale, and unavailable/not-ready shapes from disposable backend rows without fixture/mock/default-ready labels.
+
+Backend/proof components touched:
+
+- `scripts/prove_mobile_ej_a_provider_status_breadth.ts`
+- `docs/mobile/harness/cycle-EJ-A-provider-status-breadth.json`
+
+Important functions/services touched:
+
+- The proof script creates one disposable live event with three compact markets selected by live-detail: moneyline ready, spread refresh-due/stale, and totals unavailable.
+- It seeds `ReferenceQuoteSnapshot`, `ReferenceOrderbookDepthSnapshot`, and `MarketOutcomeSnapshot` timestamps to drive the existing `/api/mobile/events/:slug/live-detail` status calculations.
+- It calls the live-detail route module and asserts route-backed `providerLifecycle`, `providerOrderbookDepth`, `chartHistoryStatus`, `selection`, `orderbookIdentity`, and aggregate contract counts.
+
+State transitions:
+
+- Fresh Polymarket quote/depth/chart rows return `providerLifecycle.status=ready`.
+- A 65-second quote returns `quote.status=refresh_due`, while 5-minute CLOB depth/chart rows return `stale` and aggregate market status `stale`.
+- Missing provider snapshot rows return `providerLifecycle.status=unavailable`, `empty=true`, `notReady=true`, with no ready fallback.
+
+Verified:
+
+- `npx tsx scripts/prove_mobile_ej_a_provider_status_breadth.ts --summaryPath=docs/mobile/harness/cycle-EJ-A-provider-status-breadth.json`
+
+Known limitations:
+
+- This is backend route proof only; no mobile UI files or mobile smoke scripts were edited.
+- Production breadth still depends on mapped provider markets and recurring refresh coverage for active events.
+- Missing `OPTIC_ODDS_API_KEY` is optional and non-blocking for this Polymarket-first/CLOB-shaped proof.
+
 ## Cycle EI Integrated - Route-Backed Tablet Provider Status
 
 Feature/page worked on:
