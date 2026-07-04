@@ -9,6 +9,36 @@ const DEFAULT_PROVIDER_SEARCH_MODE: ProviderSearchMode = "combined";
 const SPORTS_EVENT_TAG_SLUGS = ["fifa-world-cup", "2026-fifa-world-cup", "soccer"];
 const DEFAULT_SPORTS_EVENT_LIMIT = 12;
 const MIN_RELEVANT_TOKEN_MATCHES = 2;
+const PROVIDER_MARKET_SLUG_CODE_BY_NAME: Record<string, string> = {
+  argentina: "arg",
+  australia: "aus",
+  belgium: "bel",
+  brazil: "bra",
+  canada: "can",
+  chile: "chi",
+  colombia: "col",
+  croatia: "cro",
+  denmark: "den",
+  ecuador: "ecu",
+  england: "eng",
+  france: "fra",
+  germany: "ger",
+  ghana: "gha",
+  italy: "ita",
+  japan: "jpn",
+  mexico: "mex",
+  morocco: "mar",
+  netherlands: "ned",
+  portugal: "por",
+  qatar: "qat",
+  senegal: "sen",
+  spain: "esp",
+  switzerland: "sui",
+  uruguay: "uru",
+  usa: "usa",
+  "united states": "usa",
+  "united states of america": "usa",
+};
 const GENERIC_RELEVANCE_TOKENS = new Set([
   "and",
   "bet",
@@ -98,6 +128,7 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
   const providerEventSlugs = deriveProviderEventSlugHints(compactEvent.event, options.providerEventSlugs);
   let providerSportsEventErrorGlobal: string | null = null;
   let sportsEventCandidates: ProviderMarketCandidate[] = [];
+  let manualSlugFallbackCandidates: ProviderMarketCandidate[] = [];
   if (fetchProvider && providerSearchMode !== "market-search") {
     try {
       sportsEventCandidates = await fetchProviderCandidatesFromSportsEvents({
@@ -105,6 +136,14 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
         tagSlugs: providerEventSlugs.length ? [] : undefined,
         fetchImpl: options.fetchImpl ?? fetch,
       });
+      const manualSlugs = Array.from(new Set(selectedMarkets.flatMap((market) =>
+        buildProviderCandidateManualSlugFallbacks(market, providerEventSlugs)
+      )));
+      if (manualSlugs.length > 0) {
+        manualSlugFallbackCandidates = await fetchProviderCandidatesForSlugs(manualSlugs, {
+          fetchImpl: options.fetchImpl ?? fetch,
+        });
+      }
     } catch (error) {
       providerSportsEventErrorGlobal = error instanceof Error ? error.message : String(error);
     }
@@ -127,6 +166,7 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
               })
             : []),
           ...sportsEventCandidates,
+          ...manualSlugFallbackCandidates,
         ]);
         candidates = rankProviderCandidates(market, raw).slice(0, maxCandidatesPerMarket);
       } catch (error) {
@@ -169,6 +209,10 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
           ? "request"
           : "event"
         : "none",
+    manualSlugFallbacks: providerEventSlugs.length > 0
+      ? Array.from(new Set(selectedMarkets.flatMap((market) => buildProviderCandidateManualSlugFallbacks(market, providerEventSlugs))))
+      : [],
+    manualSlugFallbackCandidateCount: manualSlugFallbackCandidates.length,
     providerCandidateFamilySummary: summarizeProviderCandidateFamilies(sportsEventCandidates),
     targetMarketCount: providerTargets.length,
     attachReadyCandidateCount: providerTargets.filter((target) => target.attachProposal?.attachReady).length,
@@ -181,6 +225,27 @@ export async function discoverMobileLiveProviderCandidates(options: ProviderCand
           : "run_provider_candidate_discovery_with_fetch_enabled",
     targets: providerTargets,
   };
+}
+
+export function buildProviderCandidateManualSlugFallbacks(
+  market: Pick<CompactMarketForCandidates, "title" | "marketType" | "outcomes">,
+  providerEventSlugs: string[],
+) {
+  const exactEventSlugs = Array.from(new Set(providerEventSlugs.map(sanitizeSlug).filter(Boolean)));
+  if (exactEventSlugs.length === 0) return [];
+  if (expectedProviderMarketFamily({
+    title: market.title,
+    marketType: market.marketType,
+    period: null,
+    marketGroupKey: null,
+    marketGroupTitle: null,
+  }) !== "match_winner") {
+    return [];
+  }
+
+  const suffix = inferMatchWinnerSlugSuffix(market);
+  if (!suffix) return [];
+  return exactEventSlugs.map((eventSlug) => `${eventSlug}-${suffix}`);
 }
 
 export function summarizeProviderCandidateFamilies(candidates: ProviderMarketCandidate[]) {
@@ -341,8 +406,9 @@ export function buildProviderCandidateSearchQueries(market: CompactMarketForCand
     market.marketGroupTitle ? `${normalizedWithoutLine} ${normalizeProviderSearchPhrase(market.marketGroupTitle)}` : null,
     market.period ? `${withoutLine} ${market.period.replace(/-/g, " ")}` : null,
     market.period ? `${normalizedWithoutLine} ${market.period.replace(/-/g, " ")}` : null,
+    ...buildProviderEventSearchPhrases(market),
   ].filter((query): query is string => Boolean(query && query.length > 2));
-  return Array.from(new Set(terms)).slice(0, 5);
+  return Array.from(new Set(terms)).slice(0, 12);
 }
 
 export async function fetchProviderCandidatesForQueries(
@@ -825,6 +891,39 @@ function marketTypeSearchAlias(marketType: string) {
   if (marketType === "spread") return "spread";
   if (marketType === "draw_no_bet") return "draw no bet";
   return marketType.replace(/_/g, " ");
+}
+
+function buildProviderEventSearchPhrases(market: CompactMarketForCandidates) {
+  const normalizedTitle = normalizeText(market.title);
+  const teams = Array.from(new Set([
+    ...market.outcomes.map((outcome) => outcome.name),
+    ...Object.keys(PROVIDER_MARKET_SLUG_CODE_BY_NAME).filter((name) => normalizedTitle.includes(name)),
+  ]
+    .map((name) => normalizeProviderSearchPhrase(name))
+    .filter((name) => name.length > 2 && !GENERIC_RELEVANCE_TOKENS.has(normalizeText(name)))));
+  if (teams.length < 2) return [];
+  const pair = `${teams[0]} ${teams[teams.length - 1]}`;
+  return [
+    pair,
+    `${pair} soccer`,
+    `${pair} world cup`,
+    `${pair} ${marketTypeSearchAlias(market.marketType)}`,
+  ];
+}
+
+function inferMatchWinnerSlugSuffix(market: Pick<CompactMarketForCandidates, "title" | "outcomes">) {
+  const text = normalizeText(`${market.title} ${market.outcomes.map((outcome) => outcome.name).join(" ")}`);
+  if (/\bdraw\b|end in a draw/.test(text)) return "draw";
+  for (const [name, code] of Object.entries(PROVIDER_MARKET_SLUG_CODE_BY_NAME)) {
+    if (new RegExp(`\\b${escapeRegExp(name)}\\b`).test(text)) {
+      return code;
+    }
+  }
+  return null;
+}
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function sanitizeSlug(value: string | null | undefined) {
