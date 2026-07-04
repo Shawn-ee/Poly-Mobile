@@ -369,7 +369,8 @@ export function EventDetail({
   openPositionTrade?: (position: Position, side: "buy" | "sell") => void;
 }) {
   const [activeTab, setActiveTab] = useState<"game-lines" | "exact-score" | "halves" | "player-props">("game-lines");
-  const [activeLineDetailTab, setActiveLineDetailTab] = useState<"order-book" | "graph" | "about">("order-book");
+  const showOrderBookDebug = process.env.EXPO_PUBLIC_SHOW_ORDERBOOK === "1";
+  const [activeLineDetailTab, setActiveLineDetailTab] = useState<"order-book" | "graph" | "about">("graph");
   const [activeHeaderTab, setActiveHeaderTab] = useState<"game" | "chat">("game");
   const [activeBodyTab, setActiveBodyTab] = useState<"market" | "live-stats">("market");
   const [chartFilter, setChartFilter] = useState<ChartFilter>("Game");
@@ -506,6 +507,7 @@ export function EventDetail({
               : "Fallback depth";
   const depthStateText = `${depthStatusBadge.text} - ${depthSourceText}`;
   const openOrderBookForMarket = (market: Market) => {
+    if (!showOrderBookDebug) return;
     setOrderBookMarketId(market.id);
     setOrderBookOutcomeId(market.outcomes[0]?.id ?? null);
     setStagedOrderBookLevel(null);
@@ -726,6 +728,7 @@ export function EventDetail({
         : undefined;
   const selectedChartTicketStatusBadge = providerBadgeFromAvailability("Ticket", selectedChartMarket?.availability, selectedChartMarket ? "ready" : "unavailable");
   const openSelectedChartBook = () => {
+    if (!showOrderBookDebug) return;
     if (!selectedChartMarket) return;
     openOrderBookForMarket(selectedChartMarket);
   };
@@ -868,7 +871,7 @@ export function EventDetail({
         </View>
         <View accessibilityLabel="event-detail-line-detail-tabs" style={styles.lineDetailTabs} testID="event-detail-line-detail-tabs">
           {[
-            { id: "order-book", label: "Order Book" },
+            ...(showOrderBookDebug ? [{ id: "order-book", label: "Order Book" }] : []),
             { id: "graph", label: "Graph" },
             { id: "about", label: "About" },
           ].map((tab) => (
@@ -1379,7 +1382,7 @@ export function EventDetail({
               <Text style={[styles.marketAvailabilityText, group.backendMarket.availability.status !== "ready" && styles.marketAvailabilityTextWarning]}>{marketAvailabilityLabel(group.backendMarket)}</Text>
             </View>
           )}
-          {marketDepthBatchLabel(group.backendMarket) && (
+          {showOrderBookDebug && marketDepthBatchLabel(group.backendMarket) && (
             <View
               accessibilityLabel={`event-detail-market-depth-${group.id} market-depth-batched ${group.backendMarket?.orderbookDepth?.length ?? 0} levels Route depth`}
               style={styles.marketDepthPill}
@@ -1388,7 +1391,7 @@ export function EventDetail({
               <Text style={styles.marketDepthText}>Route depth</Text>
             </View>
           )}
-          {group.backendMarket && (
+          {showOrderBookDebug && group.backendMarket && (
             <Pressable
               accessibilityLabel={`event-detail-open-order-book-${group.id} ${group.backendMarket.id} market-availability-${group.backendMarket.availability?.status ?? "unknown"} ${providerIdentityLabel(group.backendMarket)}`}
               onPress={() => openOrderBookForMarket(group.backendMarket!)}
@@ -1479,17 +1482,19 @@ export function EventDetail({
           </Pressable>
         </View>
         <View style={styles.topActions}>
-          <Pressable
-            accessibilityLabel="event-detail-top-order-book"
-            onPress={() => {
-              setOrderBookVisible(true);
-              setShareSheetVisible(false);
-            }}
-            style={styles.iconButton}
-            testID="event-detail-top-order-book"
-          >
-            <Ionicons name="book-outline" size={22} color="#f8fafc" />
-          </Pressable>
+          {showOrderBookDebug && (
+            <Pressable
+              accessibilityLabel="event-detail-top-order-book"
+              onPress={() => {
+                setOrderBookVisible(true);
+                setShareSheetVisible(false);
+              }}
+              style={styles.iconButton}
+              testID="event-detail-top-order-book"
+            >
+              <Ionicons name="book-outline" size={22} color="#f8fafc" />
+            </Pressable>
+          )}
           <Pressable
             accessibilityLabel="event-detail-share"
             onPress={() => {
@@ -1530,7 +1535,7 @@ export function EventDetail({
           </View>
         </View>
       )}
-      {orderBookVisible && renderOrderBook()}
+      {showOrderBookDebug && orderBookVisible && renderOrderBook()}
       {compactHeaderVisible && activeHeaderTab === "game" && (
         <View accessibilityLabel="event-detail-sticky-market-shell" style={styles.stickyMarketShell} testID="event-detail-sticky-market-shell">
           <View
@@ -1901,15 +1906,17 @@ export function EventDetail({
               </Text>
             </View>
             <View style={styles.chartContractActions}>
-              <Pressable
-                accessibilityLabel={`event-detail-chart-open-book chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"}`}
-                onPress={openSelectedChartBook}
-                style={styles.chartContractButton}
-                testID="event-detail-chart-open-book"
-              >
-                <Ionicons name="book-outline" color="#dbeafe" size={16} />
-                <Text style={styles.chartContractButtonText}>Book</Text>
-              </Pressable>
+              {showOrderBookDebug && (
+                <Pressable
+                  accessibilityLabel={`event-detail-chart-open-book chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"}`}
+                  onPress={openSelectedChartBook}
+                  style={styles.chartContractButton}
+                  testID="event-detail-chart-open-book"
+                >
+                  <Ionicons name="book-outline" color="#dbeafe" size={16} />
+                  <Text style={styles.chartContractButtonText}>Book</Text>
+                </Pressable>
+              )}
               <Pressable
                 accessibilityLabel={`event-detail-chart-open-ticket chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-outcome-${selectedChartTicketOutcome?.id ?? "none"} provider-lifecycle-${selectedChartTicketStatusBadge.lifecycle} ${ticketSelectionIdentityLabel(selectedChartTicketSelection)}`}
                 onPress={openSelectedChartTicket}
@@ -2047,15 +2054,17 @@ export function EventDetail({
                 </Pressable>
                 {expandedMarketIds["regulation-time-winner"] && (
                   <>
-                    <View accessibilityLabel={`market-depth-${primaryMarket.id}`} style={styles.depthRow} testID={`market-depth-${primaryMarket.id}`}>
-                      <Text style={styles.depthText}>{t.bestBid} {marketDepth(primaryMarket).bid}</Text>
-                      <Text style={styles.depthText}>{t.bestAsk} {marketDepth(primaryMarket).ask}</Text>
-                      <Text style={styles.depthText}>{t.spread} {marketDepth(primaryMarket).spread}</Text>
-                      <Pressable accessibilityLabel={`event-detail-open-order-book ${providerIdentityLabel(primaryMarket)}`} onPress={() => openOrderBookForMarket(primaryMarket)} style={styles.depthBookButton} testID="event-detail-open-order-book">
-                        <Ionicons name="book-outline" color="#dbeafe" size={14} />
-                        <Text style={styles.depthBookText}>Book</Text>
-                      </Pressable>
-                    </View>
+                    {showOrderBookDebug && (
+                      <View accessibilityLabel={`market-depth-${primaryMarket.id}`} style={styles.depthRow} testID={`market-depth-${primaryMarket.id}`}>
+                        <Text style={styles.depthText}>{t.bestBid} {marketDepth(primaryMarket).bid}</Text>
+                        <Text style={styles.depthText}>{t.bestAsk} {marketDepth(primaryMarket).ask}</Text>
+                        <Text style={styles.depthText}>{t.spread} {marketDepth(primaryMarket).spread}</Text>
+                        <Pressable accessibilityLabel={`event-detail-open-order-book ${providerIdentityLabel(primaryMarket)}`} onPress={() => openOrderBookForMarket(primaryMarket)} style={styles.depthBookButton} testID="event-detail-open-order-book">
+                          <Ionicons name="book-outline" color="#dbeafe" size={14} />
+                          <Text style={styles.depthBookText}>Book</Text>
+                        </Pressable>
+                      </View>
+                    )}
                     {regulationWinnerRows.map((outcome) => {
                       const matchingOutcome = primaryMarket.outcomes.find((item) => item.id === outcome.id);
                       return renderParityOutcomeRow(outcome, primaryMarket.id, matchingOutcome, primaryMarket);
@@ -2076,7 +2085,7 @@ export function EventDetail({
                   <Text style={styles.marketSubcopy}>{homeCode} to win by over {spreadLine} goals</Text>
                 </View>
                 <View style={styles.headerRightCluster}>
-                  {backendSpreadMarket && (
+                  {showOrderBookDebug && backendSpreadMarket && (
                     <Pressable
                       accessibilityLabel={`event-detail-open-order-book-spread ${backendSpreadMarket.id}`}
                       onPress={() => openOrderBookForMarket(backendSpreadMarket)}

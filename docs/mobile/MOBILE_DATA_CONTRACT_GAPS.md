@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle EP - Local MVP Trade Flow Steering
+
+Closed or narrowed:
+
+- Default Android user flow no longer depends on visible orderbook controls. `docs/mobile/harness/cycle-EP-local-mvp-trade-flow/cycle-EP-local-mvp-trade-flow-proof.json` proves the selected Buy journey with `orderbookDebug=unset`.
+- The deterministic line fixture used for the UI proof preserves backend-shaped selection fields through ticket/order/Portfolio: market family/type, line, period, side, contract side, display label, and fake-token lifecycle state.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed simple-ticket breadth for spreads, totals, and team totals without exposing Book as the primary user action.
+- Sell-side simple-ticket route proof for the same selection envelope.
+- Loading/stale/unavailable route state fields that can render in event detail/ticket without sending users to Book.
+
+Schema mismatch:
+
+- No schema migration was made. EP keeps using the existing selection snapshot envelope and mobile fake-token local state.
+
+Temporary mock/static data:
+
+- EP uses deterministic contract-shaped line fixture data only for local UI proof. It must be replaced by provider-backed routes before provider/data parity is claimed.
+
 ## Cycle EO-A - Route-Backed Lifecycle Breadth
 
 Closed or narrowed:

@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle EP - Local MVP Trade Flow Steering
+
+Cycle EP changes the default mobile surface, not backend schema/routes:
+
+- Android proof: `docs/mobile/harness/cycle-EP-local-mvp-trade-flow/cycle-EP-local-mvp-trade-flow-proof.json`.
+- Visible Book/orderbook controls are hidden by default and remain debug/internal via `EXPO_PUBLIC_SHOW_ORDERBOOK=1`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Default local MVP event detail and simple ticket | No new endpoint; fixture proof exercises existing mobile mock trading state and existing selected-ticket/portfolio mappers | N/A for EP proof | N/A for EP proof | Ticket submit uses existing mobile fake-token order shape with selected `marketId`/`outcomeId` where available, market family/type, line, period, side, contract side, probability/price, and display label | Mobile consumes the same selection envelope in ticket, latest order, activity, and position rows | Future backend route remains existing `Event`, `Market`, `Outcome`, `Order`, `Position`, `Trade`, and selection snapshot fields; no new schema | Deterministic line fixture is accepted only for UI proof and is shaped like backend selection data, not arbitrary display-only strings | P1: repeat the same simple-ticket flow with real provider-backed spread/totals/team-total routes and Sell-side order/portfolio history. Loading/stale/unavailable states should stay visible in the retail flow without forcing Book. |
+
 ## Cycle EO-A - Route-Backed Lifecycle Breadth
 
 Cycle EO-A extends backend/provider route proof beyond the prior selected ask/Buy lifecycle:

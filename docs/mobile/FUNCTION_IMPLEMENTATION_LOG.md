@@ -2,6 +2,37 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle EP - Local MVP Trading Flow Steering
+
+Feature/page worked on:
+
+- Re-scoped the mobile event-detail default experience away from orderbook-first interaction and toward the Local MVP retail flow.
+- Orderbook backend/routes/tests remain internal infrastructure and regression support.
+
+Frontend components/functions touched:
+
+- `mobile/src/components/EventDetail.tsx`
+- Added `EXPO_PUBLIC_SHOW_ORDERBOOK=1` as the explicit debug/advanced gate for visible orderbook surfaces.
+- Default line-detail panel now opens on `Graph`, not `Order Book`.
+- Default UI hides the top Book icon, chart Book action, line/group Book actions, inline Order Book tab, technical route-depth pills, and the orderbook overlay unless the debug flag is enabled.
+
+User interactions supported:
+
+- Default user path remains: open event, choose outcome/line, use chart/price/probability context, open simple Trade ticket, submit fake-token buy/sell, then review Portfolio/activity.
+- Advanced/debug path can still be enabled locally with `EXPO_PUBLIC_SHOW_ORDERBOOK=1` for regression proofs and internal route checks.
+
+Verified:
+
+- Mobile typecheck passed.
+- Focused mobile line-ticket/order/open-order tests passed.
+- Samsung tablet proof passed: `docs/mobile/harness/cycle-EP-local-mvp-trade-flow/cycle-EP-local-mvp-trade-flow-proof.json`.
+- Android proof captured default orderbook hidden (`orderbookDebug=unset`), spread `2.5` / `1st Half` selection, simple fake-token Buy ticket, submit, and Portfolio/latest order/activity/position identity preservation.
+
+Known limitations:
+
+- This cycle intentionally does not delete orderbook code or backend routes.
+- Sell-side simple-ticket proof, provider-backed line-family breadth, and loading/stale/unavailable visual states remain P1 for the Local MVP milestone.
+
 ## Cycle EN Integrated - Route-Backed Book-Staged Limit Lifecycle
 
 Feature/page worked on:

@@ -6,6 +6,24 @@ Current phase: Autonomous mobile product development in verified cycles.
 
 Latest audit: `docs/mobile/WHOLE_APP_PARITY_FINAL_AUDIT.md` records 0 unresolved P0 gaps for the current whole-app parity gate.
 
+## Steering Update: Local MVP Trading Flow
+
+Date: 2026-07-04
+
+Direction:
+- Orderbook is no longer a primary user-facing feature for the local MVP.
+- Keep orderbook backend/routes/tests as internal infrastructure and regression support.
+- Default mobile UI should focus on event discovery, event detail, chart/probability, line selectors, simple ticket, fake-token order placement, and Portfolio/history.
+- Visible orderbook/depth controls are debug-only via `EXPO_PUBLIC_SHOW_ORDERBOOK=1`.
+
+Current implementation:
+- `mobile/src/components/EventDetail.tsx` hides the top Book icon, chart Book action, market Book actions, inline Order Book tab, technical route-depth labels, and the orderbook overlay unless debug mode is enabled.
+- Event detail defaults the line detail area to Graph.
+- Samsung tablet proof passed for the selected default Buy path with `orderbookDebug=unset`: `docs/mobile/harness/cycle-EP-local-mvp-trade-flow/cycle-EP-local-mvp-trade-flow-proof.json`.
+
+Next focus:
+- Continue Local MVP user-flow breadth instead of orderbook breadth: Sell-side simple ticket, provider-backed spreads/totals/team totals when available, and loading/stale/unavailable states that keep users in the retail ticket flow.
+
 ## Heartbeat: Route-Backed Live Detail Cycles EL-EN
 
 Date: 2026-07-04
