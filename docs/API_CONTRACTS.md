@@ -103,6 +103,8 @@ Cycle GO changes only mobile ticket header icon derivation. No backend route, re
 
 Cycle GP changes only mobile Portfolio History presentation and local activity creation. No backend route, request body, response field, or schema changes are required. Locally submitted fake-token trades set `PortfolioActivity.timestamp` to `t.justNow`, and the History row renders that field next to the amount. Server-backed history still consumes backend-provided activity timestamps.
 
+Cycle GQ changes only mobile Event Detail presentation. No backend route, request body, response field, or schema changes are required. Existing chart/provider status fields remain available as accessibility/proof metadata, while visible retail UI uses the existing selected contract, current probability, and ticket handoff state.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

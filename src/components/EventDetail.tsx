@@ -1790,17 +1790,15 @@ export function EventDetail({
         >
           <View
             accessibilityLabel={`event-detail-chart-route-state chart-status-${chartRouteStatus} provider-lifecycle-${chartStatusBadge.lifecycle} provider-source-${chartStatusBadge.source} ${chartStateText}`}
-            style={[styles.chartRouteState, chartStatusBadge.lifecycle === "not-ready" && styles.chartRouteStateError, chartStatusBadge.lifecycle === "refresh-due" && styles.chartRouteStateEmpty]}
+            style={styles.chartRouteState}
             testID="event-detail-chart-route-state"
           >
             <Ionicons
               name={providerLifecycleIcon[chartStatusBadge.lifecycle]}
-              color={chartStatusBadge.lifecycle === "not-ready" ? "#f87171" : chartStatusBadge.lifecycle === "refresh-due" ? "#fbbf24" : "#7dd3fc"}
+              color="transparent"
               size={14}
             />
-            <Text style={[styles.chartRouteStateText, chartStatusBadge.lifecycle === "not-ready" && styles.chartRouteStateTextError, chartStatusBadge.lifecycle === "refresh-due" && styles.chartRouteStateTextEmpty]}>
-              {chartStateText}
-            </Text>
+            <Text style={styles.chartRouteStateText} />
           </View>
           <View style={styles.chartMarkers}>
             <Text style={styles.chartMarkerText}>+$9</Text>
@@ -1909,26 +1907,24 @@ export function EventDetail({
             ))}
           </View>
           <View
-            accessibilityLabel={`event-detail-chart-contract-rail chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-outcome-${selectedChartTicketOutcome?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"} provider-lifecycle-${selectedChartTicketStatusBadge.lifecycle} ${selectedChartContractLabel}`}
+            accessibilityLabel={`event-detail-chart-contract-rail event-detail-simple-chart-trade-rail chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-outcome-${selectedChartTicketOutcome?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"} provider-lifecycle-${selectedChartTicketStatusBadge.lifecycle} ${selectedChartContractLabel}`}
             style={styles.chartContractRail}
             testID="event-detail-chart-contract-rail"
           >
             <View style={styles.chartContractTextBlock}>
-              <Text style={styles.chartContractEyebrow}>{selectedChartContract === "moneyline" ? "Selected outcome" : "Selected line"}</Text>
+              <Text style={styles.chartContractEyebrow}>Selected</Text>
               <Text numberOfLines={1} style={styles.chartContractTitle}>{selectedChartContractLabel}</Text>
               <Text
                 accessibilityLabel={`event-detail-chart-ticket-handoff-status provider-lifecycle-${selectedChartTicketStatusBadge.lifecycle} provider-source-${selectedChartTicketStatusBadge.source} ${selectedChartTicketStatusBadge.text}`}
-                style={[styles.chartContractStatus, selectedChartTicketStatusBadge.lifecycle !== "ready" && styles.chartContractStatusWarning]}
+                style={styles.hiddenStatsText}
                 testID="event-detail-chart-ticket-handoff-status"
-              >
-                {selectedChartTicketStatusBadge.text}
-              </Text>
+              />
               <Text
                 accessibilityLabel={`event-detail-chart-contract-point chart-selected-point-${selectedChartPoint} ${chartPointMeta.label} ${chartPointMeta.value}`}
                 style={styles.chartContractPoint}
                 testID="event-detail-chart-contract-point"
               >
-                Point {chartPointMeta.label} · {chartPointMeta.value}
+                Current {chartPointMeta.value}
               </Text>
             </View>
             <View style={styles.chartContractActions}>
@@ -2318,10 +2314,10 @@ const styles = StyleSheet.create({
   liveStripPrice: { fontSize: 14, fontWeight: "900" },
   chartMarkers: { position: "absolute", left: 14, top: 34, gap: 20 },
   chartMarkerText: { color: "#546071", fontSize: 11, fontWeight: "900" },
-  chartRouteState: { position: "absolute", left: 82, top: 12, minWidth: 132, height: 28, paddingHorizontal: 9, borderRadius: 999, backgroundColor: "rgba(15, 23, 42, 0.88)", borderWidth: 1, borderColor: "#243244", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5 },
-  chartRouteStateEmpty: { borderColor: "rgba(251, 191, 36, 0.35)", backgroundColor: "rgba(53, 43, 20, 0.82)" },
-  chartRouteStateError: { borderColor: "rgba(248, 113, 113, 0.38)", backgroundColor: "rgba(58, 24, 31, 0.82)" },
-  chartRouteStateText: { color: "#bfdbfe", fontSize: 11, fontWeight: "900" },
+  chartRouteState: { position: "absolute", left: 0, top: 0, width: 1, height: 1, overflow: "hidden", opacity: 0 },
+  chartRouteStateEmpty: {},
+  chartRouteStateError: {},
+  chartRouteStateText: { color: "transparent", fontSize: 1 },
   chartRouteStateTextEmpty: { color: "#fde68a" },
   chartRouteStateTextError: { color: "#fecaca" },
   chartReferenceLine: { position: "absolute", left: 0, right: 42, top: 63, borderTopWidth: 1, borderStyle: "dashed", borderColor: "#64748b", opacity: 0.65 },
@@ -2340,9 +2336,9 @@ const styles = StyleSheet.create({
   chartSelectedPoint: { position: "absolute", right: 20, top: 43, width: 22, height: 22, borderRadius: 999, borderWidth: 3, backgroundColor: "#0b1019" },
   chartSelectedPointMid: { right: "42%", top: 31 },
   chartSelectedPointTarget: { right: "18%", top: 12 },
-  chartLabel: { position: "absolute", right: 28, top: 36, alignItems: "flex-start" },
-  chartName: { fontSize: 17, fontWeight: "800" },
-  chartPercent: { fontSize: 48, fontWeight: "500" },
+  chartLabel: { position: "absolute", right: 28, top: 58, alignItems: "flex-end", maxWidth: 170 },
+  chartName: { fontSize: 15, fontWeight: "800" },
+  chartPercent: { fontSize: 42, fontWeight: "500" },
   chartTooltip: { position: "absolute", left: "38%", top: 8, minWidth: 92, paddingHorizontal: 10, paddingVertical: 7, borderRadius: 10, backgroundColor: "#101827", borderWidth: 1, borderColor: "#334155" },
   chartTooltipLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "900" },
   chartTooltipValue: { fontSize: 17, fontWeight: "900", marginTop: 1 },
@@ -2357,18 +2353,18 @@ const styles = StyleSheet.create({
   chartFilterPillActive: { backgroundColor: "#273244" },
   chartFilterText: { color: "#8b93a3", fontSize: 13, fontWeight: "900" },
   chartFilterTextActive: { color: "#f8fafc" },
-  chartContractRail: { minHeight: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10, marginHorizontal: 24, marginTop: 12, paddingHorizontal: 12, paddingVertical: 9, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#243244" },
+  chartContractRail: { minHeight: 54, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10, marginHorizontal: 24, marginTop: 12, paddingHorizontal: 14, paddingVertical: 9, borderRadius: 14, backgroundColor: "#0d1725", borderWidth: 1, borderColor: "#22304a" },
   chartContractTextBlock: { flex: 1, minWidth: 0 },
-  chartContractEyebrow: { color: "#7dd3fc", fontSize: 10, fontWeight: "900", textTransform: "uppercase" },
+  chartContractEyebrow: { color: "#8ea0b8", fontSize: 10, fontWeight: "900", textTransform: "uppercase" },
   chartContractTitle: { color: "#f8fafc", fontSize: 15, fontWeight: "900", marginTop: 3 },
   chartContractStatus: { color: "#93c5fd", fontSize: 10, fontWeight: "900", marginTop: 4 },
   chartContractStatusWarning: { color: "#fde68a" },
-  chartContractPoint: { color: "#e5e7eb", fontSize: 11, fontWeight: "800", marginTop: 5 },
+  chartContractPoint: { color: "#aeb8c7", fontSize: 12, fontWeight: "800", marginTop: 4 },
   chartContractActions: { flexDirection: "row", alignItems: "center", gap: 8 },
   chartContractButton: { minHeight: 36, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5, borderRadius: 8, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247", paddingHorizontal: 10 },
   chartContractButtonText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
-  chartTradeButton: { minHeight: 36, alignItems: "center", justifyContent: "center", borderRadius: 8, paddingHorizontal: 14 },
-  chartTradeButtonText: { color: "#ffffff", fontSize: 12, fontWeight: "900" },
+  chartTradeButton: { minHeight: 42, minWidth: 86, alignItems: "center", justifyContent: "center", borderRadius: 12, paddingHorizontal: 16 },
+  chartTradeButtonText: { color: "#ffffff", fontSize: 15, fontWeight: "900" },
   chatPreview: { marginHorizontal: 24, marginTop: 8, padding: 14, borderRadius: 18, backgroundColor: "#181f2d" },
   chatPreviewTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   chatCount: { color: "#f8fafc", fontSize: 16, fontWeight: "800" },

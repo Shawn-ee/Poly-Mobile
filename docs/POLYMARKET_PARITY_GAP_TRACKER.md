@@ -260,3 +260,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | History row showed amount but did not present the activity timestamp in the right-side meta stack like the Polymarket reference. | P0 | Passed | `Portfolio` renders `PortfolioActivity.timestamp` beside the amount; Samsung tablet proof shows `portfolio-history-time Just now`. |
 | History timestamp fix must preserve the full local MVP order-to-history path. | P0 | Passed | Local MVP trade-flow smoke passed through Home/Event Detail, selected line, ticket, fake-token order, Portfolio, Orders, and History. |
 | Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
+
+## Cycle GQ - Event Detail Simple Chart Trade Rail
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Event Detail chart area still showed operational provider/fallback status as prominent visible text instead of simple retail trading information. | P0 | Passed | Samsung tablet screenshot shows simplified `Selected / Mexico / Current 64% / Trade`; chart route state remains hidden proof metadata. |
+| Chart selected team/probability label could overlap outcome chips on the Event Detail screenshot. | P0 | Passed | Chart label moved lower/right with constrained width; tablet screenshot no longer shows the previous fallback warning pill and keeps the selected label separated from the rail. |
+| Simplifying the chart rail must preserve ticket open and Portfolio/history flow. | P0 | Passed | Local MVP trade-flow smoke asserted `event-detail-simple-chart-trade-rail`, then passed through ticket, fake-token order, Portfolio, Orders, and History. |
+| Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |

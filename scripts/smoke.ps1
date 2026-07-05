@@ -3073,6 +3073,9 @@ try {
       @("Mexico vs. Ecuador", "Volume", "Liquidity", "Traders", "Best bid", "Best ask", "Spread", "Markets", "Game Lines", "Player Props")
     }
     Assert-HierarchyContains -Path $eventDetailHierarchy -Expected $eventDetailBaseExpected
+    if ($LocalMvpSimpleTradeFlow) {
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-simple-chart-trade-rail", "event-detail-chart-open-ticket", "Current 64%")
+    }
 
     if ($ServerLiveProviderRefreshProof) {
       Save-Screenshot -Name "cycle-current-holiwyn-provider-refresh-proof-event-detail.png"
