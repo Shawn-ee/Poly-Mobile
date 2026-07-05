@@ -1333,6 +1333,7 @@ export default function App() {
         probability: result.probability,
         isLive: isLiveOrder,
         liveClock,
+        timestamp: t.justNow,
       },
       ...current,
     ]);

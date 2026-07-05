@@ -252,3 +252,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Ticket header still used a generic color square while Polymarket's order page shows the selected team flag/icon. | P0 | Passed | `TradeTicket` now derives `MEX` from existing ticket identity fields and renders `ticket-outcome-flag-MEX`; Samsung tablet proof passed. |
 | Ticket flag fix must preserve amount entry, swipe-submit, Portfolio, Orders, and History behavior. | P0 | Passed | Local MVP trade-flow smoke passed through initial ticket, amount entry, submit, Portfolio action tickets, Orders, and History. |
 | Backend/API route should not change for this visual identity correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
+
+## Cycle GP - Portfolio History Time Meta
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| History row showed amount but did not present the activity timestamp in the right-side meta stack like the Polymarket reference. | P0 | Passed | `Portfolio` renders `PortfolioActivity.timestamp` beside the amount; Samsung tablet proof shows `portfolio-history-time Just now`. |
+| History timestamp fix must preserve the full local MVP order-to-history path. | P0 | Passed | Local MVP trade-flow smoke passed through Home/Event Detail, selected line, ticket, fake-token order, Portfolio, Orders, and History. |
+| Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
