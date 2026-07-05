@@ -537,3 +537,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Cash out and buy-more actions must remain visible and tappable after compacting the row. | P0 | Passed | S23 proof still verifies `portfolio-position-actions-fit-phone` and the action buttons are visible in the Portfolio screenshot. |
 | Backend/API route should not change for this visible row correction. | P0 | Passed | No backend files changed; `npm run typecheck`, `scripts/smoke.ps1` parser check, and S23 server-filled proof passed. |
 | Overall Portfolio header/chart parity remains future work. | P1 | Tracked | This cycle targets the filled position row, not the account header. |
+
+## Cycle HW - Event Detail Player Props Blank MVP Gate
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Player Props was visible as a tab but not proven as a deliberate blank MVP state. | P0 | Passed | S23 proof taps Player Props and verifies `event-detail-player-props-blank-local-mvp`. |
+| Tapping Player Props must not expose fake/unbuilt markets or ticket/order affordances. | P0 | Passed | Smoke proof rejects route-backed line outcome/ticket markers and order-book UI while on the Player Props blank state. |
+| Returning to Game Lines must preserve the line-market ticket/order path. | P0 | Passed | S23 proof returns to Game Lines, rescans to Totals, opens the ticket, swipe-submits, and reaches Portfolio History. |
+| Backend/API route should not change for this blank-state proof gate. | P0 | Passed | No backend files changed; `npm run typecheck`, `scripts/smoke.ps1` parser check, and S23 server-filled proof passed. |

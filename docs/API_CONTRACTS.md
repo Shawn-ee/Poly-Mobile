@@ -165,6 +165,8 @@ Cycle HU changes only mobile Event Detail chart/probability presentation and pro
 
 Cycle HV changes only mobile Portfolio Positions row presentation and proof gates. No backend route, request body, response field, or schema changes are required. Mobile continues to consume the same `GET /api/portfolio` position fields: title, outcome, selection, contract side, amount, probability/current price, current value, PnL, live state, live clock, provider source/token, market type, line, and period.
 
+Cycle HW changes only mobile Event Detail tab proof and Player Props empty-state metadata. No backend route, request body, response field, or schema changes are required. Player Props remains intentionally unavailable for the current soccer MVP and does not call order, portfolio, market, or provider routes.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

@@ -5302,6 +5302,34 @@ try {
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
         Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected ($mvpHiddenOrderBookExpected + @("Market Rules", "View Full Rules", "More Events", "Portugal vs. Croatia", "England vs. Congo DR"))
+        Invoke-TapHierarchyNode -Path $mvpRouteLineHierarchy -Identifier "event-detail-player-props-tab"
+        Start-Sleep -Milliseconds 600
+        Save-Screenshot -Name "$mvpRouteServerPrefix-player-props-blank.png"
+        $mvpRoutePlayerPropsHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-player-props-blank.xml"
+        Assert-HierarchyContains -Path $mvpRoutePlayerPropsHierarchy -Expected @("event-detail-player-props-blank-local-mvp", "Player Props unavailable for this match")
+        Assert-HierarchyDoesNotContain -Path $mvpRoutePlayerPropsHierarchy -Unexpected ($mvpHiddenOrderBookExpected + @("ticket-source-backend-line-market", "event-detail-outcome-totals-totals-over"))
+        Invoke-TapHierarchyNode -Path $mvpRoutePlayerPropsHierarchy -Identifier "event-detail-game-lines-tab"
+        Start-Sleep -Milliseconds 600
+        $mvpRouteLineHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-line-markets-returned-from-player-props.xml"
+        $mvpRouteReturnedXml = Get-Content -Raw -Path $mvpRouteLineHierarchy
+        if ($mvpRouteReturnedXml -notmatch [regex]::Escape($mvpRouteTargetOutcomeId)) {
+          $returnFineSwipes = @(
+            @{ x1 = 540; y1 = 2100; x2 = 540; y2 = 760; ms = 450 },
+            @{ x1 = 540; y1 = 2100; x2 = 540; y2 = 760; ms = 450 },
+            @{ x1 = 540; y1 = 2100; x2 = 540; y2 = 760; ms = 450 }
+          )
+          for ($attempt = 0; $attempt -lt $returnFineSwipes.Count; $attempt++) {
+            $swipe = $returnFineSwipes[$attempt]
+            & $adb -s $Device shell input swipe $swipe.x1 $swipe.y1 $swipe.x2 $swipe.y2 $swipe.ms | Out-Null
+            Start-Sleep -Milliseconds 700
+            $mvpRouteLineHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-line-markets-returned-from-player-props-scan-$($attempt + 1).xml"
+            $mvpRouteReturnedXml = Get-Content -Raw -Path $mvpRouteLineHierarchy
+            if ($mvpRouteReturnedXml -match [regex]::Escape($mvpRouteTargetOutcomeId)) {
+              break
+            }
+          }
+        }
+        Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
         $mvpRouteLineReadyXml = Get-Content -Raw -Path $mvpRouteLineHierarchy
         if ($mvpRouteLineReadyXml -notmatch [regex]::Escape($mvpRouteTargetOutcomeId)) {
           & $adb -s $Device shell input swipe 540 2100 540 1700 300 | Out-Null

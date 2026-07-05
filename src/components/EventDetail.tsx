@@ -2037,7 +2037,7 @@ export function EventDetail({
 
         {activeTab === "player-props" ? (
           <View
-            accessibilityLabel="event-detail-player-props event-detail-player-props-empty Player Props unavailable for this match"
+            accessibilityLabel="event-detail-player-props event-detail-player-props-empty event-detail-player-props-blank-local-mvp Player Props unavailable for this match"
             style={styles.emptyProps}
             testID="event-detail-player-props"
           >
