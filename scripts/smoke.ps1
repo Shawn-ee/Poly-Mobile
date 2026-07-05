@@ -5301,6 +5301,7 @@ try {
           $mvpRouteLineHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-line-markets.xml"
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
+        Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected @("Breadth Home 1H", "Tie 1H", "Breadth Away 1H", "Breadth Home 2H", "Tie 2H")
         Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected ($mvpHiddenOrderBookExpected + @("Market Rules", "View Full Rules", "More Events", "Portugal vs. Croatia", "England vs. Congo DR"))
         Invoke-TapHierarchyNode -Path $mvpRouteLineHierarchy -Identifier "event-detail-player-props-tab"
         Start-Sleep -Milliseconds 600
@@ -5330,6 +5331,7 @@ try {
           }
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
+        Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected @("Breadth Home 1H", "Tie 1H", "Breadth Away 1H", "Breadth Home 2H", "Tie 2H")
         $mvpRouteLineReadyXml = Get-Content -Raw -Path $mvpRouteLineHierarchy
         if ($mvpRouteLineReadyXml -notmatch [regex]::Escape($mvpRouteTargetOutcomeId)) {
           & $adb -s $Device shell input swipe 540 2100 540 1700 300 | Out-Null

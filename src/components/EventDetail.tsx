@@ -430,8 +430,8 @@ export function EventDetail({
     "regulation-time-winner": true,
     spread: true,
     totals: true,
-    "first-half-winner": true,
-    "second-half-winner": true,
+    "first-half-winner": false,
+    "second-half-winner": false,
     "team-total-goals": true,
   });
   useEffect(() => {
@@ -1774,7 +1774,7 @@ export function EventDetail({
           <View accessibilityLabel="event-detail-live-match-strip event-detail-live-match-strip-hidden-local-mvp" style={styles.hiddenStats} testID="event-detail-live-match-strip">
             <View>
               <Text style={styles.liveStripLabel}>LIVE WORLD CUP</Text>
-              <Text style={styles.liveStripScore}>{scoreboard} · {liveClock}</Text>
+              <Text style={styles.liveStripScore}>{scoreboard} - {liveClock}</Text>
               <Text
                 accessibilityLabel={`event-detail-live-data-inline event-detail-live-provider-copy-hidden-local-mvp live-data-status-${liveDataState} provider-lifecycle-${liveDataBadge.lifecycle} live-data-source-${liveDataBadge.source}`}
                 style={styles.hiddenStatsText}
@@ -2071,7 +2071,7 @@ export function EventDetail({
                 >
                   <View style={styles.marketTitleBlock}>
                     <Text style={styles.marketTitle}>{isLiveEvent ? "Live Winner" : "Moneyline"}</Text>
-                    <Text style={styles.marketSubcopy}>{isLiveEvent ? `${scoreboard} · ${liveClock} · In-game winner` : "Regulation Time Winner · 90 Minutes Plus Stoppage Time"}</Text>
+                    <Text style={styles.marketSubcopy}>{isLiveEvent ? `${scoreboard} - ${liveClock} - In-game winner` : "Regulation Time Winner - 90 Minutes Plus Stoppage Time"}</Text>
                   </View>
                   <Ionicons name={expandedMarketIds["regulation-time-winner"] ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
                 </Pressable>

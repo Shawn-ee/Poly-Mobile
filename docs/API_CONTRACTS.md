@@ -177,6 +177,8 @@ Cycle IA changes mobile Portfolio History aggregation for recent trade fills. No
 
 Cycle IB changes only mobile Portfolio header/chart/range spacing and proof coverage. No backend route, request body, response field, or schema changes are required. Mobile continues to consume the same `GET /api/portfolio` balance/positions/orders data and `GET /api/portfolio/value-history` range, source, status, points, and generated/updated fields. Funding remains hidden in the Local MVP route.
 
+Cycle IC changes only Event Detail default market-group expansion and visible subtitle separators. No backend route, request body, response field, or schema changes are required. Mobile continues to consume the same event markets/outcomes, line-market fields, provider source/token identity, and `POST /api/orders` ticket handoff contract.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

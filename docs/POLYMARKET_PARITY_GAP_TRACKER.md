@@ -591,3 +591,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Deposit/Withdraw must stay hidden from the Local MVP Portfolio surface. | P0 | Passed | The new S23 top proof requires `portfolio-funding-hidden-local-mvp` and rejects visible `Deposit` / `Withdraw`. |
 | The full trade path must still reach Portfolio History after the header density change. | P0 | Passed | Same S23 proof completes route-backed line ticket, upward swipe buy, Portfolio, and History with selected line/provider identity. |
 | Exact Polymarket Portfolio typography/watermark composition remains future visual polish. | P2 | Tracked | This cycle addresses S23 density and proof coverage, not final account-page art direction. |
+
+## Cycle IC - Event Detail Core Lines First
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Expanded half-winner markets could dominate the Game Lines area before the user reached the core line-market ticket path. | P0 | Passed | S23 line-market proof shows `1st Half Winner` and `2nd Half Winner` as collapsed headers; smoke rejects expanded half rows such as `Breadth Home 1H` and `Tie 1H`. |
+| The route-backed totals line ticket path must remain reachable after reducing half-market clutter. | P0 | Passed | Same S23 proof verifies `ticket-source-backend-line-market`, totals line `2.5`, provider source/token identity, and opens the totals ticket. |
+| The full Local MVP trade path must still pass. | P0 | Passed | S23 proof completes totals ticket, upward swipe buy, Portfolio, Portfolio top, and grouped History. |
+| Exact Polymarket market ordering and collapse animation remain future polish. | P2 | Tracked | This cycle changes default expansion state only; it does not implement native collapse animation. |
