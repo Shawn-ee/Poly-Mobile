@@ -737,13 +737,13 @@ try {
   } elseif ($LanguagePersistence) {
     @("Holiwyn", "EN")
   } elseif ($PortfolioPersistence) {
-    @("World Cup winner", "France", "Swipe up to buy")
+    @("World Cup winner", "France", "Swipe to buy")
   } elseif ($TicketDefaultsPersistence) {
-    @("World Cup winner", "France", "500", "Swipe up to sell")
+    @("World Cup winner", "France", "500", "Swipe to sell")
   } elseif ($FutureListClose) {
     @("Portfolio", "Fake balance", "10,008.82 USDT", "Recent activity", "Closed", "World Cup winner")
   } elseif ($FutureListOrder) {
-    @("World Cup winner", "France", "Trading mode: Fake-token mock", "Best bid", "Best ask", "Spread", "Fake balance", "Swipe up to buy")
+    @("World Cup winner", "France", "Trading mode: Fake-token mock", "Best bid", "Best ask", "Spread", "Fake balance", "Swipe to buy")
   } elseif ($Account -or $AccountLogin) {
     @("Holiwyn", "Account", "Signed out", "Demo balance")
   } else {
@@ -1048,7 +1048,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-FF-home-route-order-spread-ticket-ready.png"
       $homeRouteOrderReadyHierarchy = Save-UiHierarchy -Name "cycle-FF-home-route-order-spread-ticket-ready.xml"
-      Assert-HierarchyContains -Path $homeRouteOrderReadyHierarchy -Expected @('$25', "Swipe up to buy", "place-mock-order", "ticket-market-type-spread", "ticket-line-1.5", "ticket-period-Reg. Time", "provider-source-polymarket", "provider-token-token-el-a-spread-home")
+      Assert-HierarchyContains -Path $homeRouteOrderReadyHierarchy -Expected @('$25', "Swipe to buy", "place-mock-order", "ticket-market-type-spread", "ticket-line-1.5", "ticket-period-Reg. Time", "provider-source-polymarket", "provider-token-token-el-a-spread-home")
       Assert-HierarchyDoesNotContain -Path $homeRouteOrderReadyHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
       Invoke-TapHierarchyNode -Path $homeRouteOrderReadyHierarchy -Identifier "place-mock-order"
@@ -1263,9 +1263,9 @@ try {
       Save-Screenshot -Name "$homeRouteServerArtifact-$homeRouteServerTicketLabel-ticket-ready.png"
       $homeRouteServerReadyHierarchy = Save-UiHierarchy -Name "$homeRouteServerArtifact-$homeRouteServerTicketLabel-ticket-ready.xml"
       $homeRouteServerReadyExpected = if ($LocalMvpHomeRealProviderServerOrderFlow) {
-        @('$25', "Swipe up to buy", "place-mock-order", "ticket-market-type-live", "provider-source-polymarket", "ticket-provider-token-")
+        @('$25', "Swipe to buy", "place-mock-order", "ticket-market-type-live", "provider-source-polymarket", "ticket-provider-token-")
       } else {
-        @('$25', "Swipe up to buy", "place-mock-order", "ticket-market-type-spread", "ticket-line-1.5", "ticket-period-Reg. Time", "provider-source-polymarket", "provider-token-token-el-a-spread-home")
+        @('$25', "Swipe to buy", "place-mock-order", "ticket-market-type-spread", "ticket-line-1.5", "ticket-period-Reg. Time", "provider-source-polymarket", "provider-token-token-el-a-spread-home")
       }
       Assert-HierarchyContains -Path $homeRouteServerReadyHierarchy -Expected $homeRouteServerReadyExpected
       Assert-HierarchyDoesNotContain -Path $homeRouteServerReadyHierarchy -Unexpected $mvpHiddenOrderBookExpected
@@ -1680,12 +1680,12 @@ try {
       & $adb -s $Device shell input swipe 540 1760 540 760 450 | Out-Null
       Start-Sleep -Seconds 1
       $serverTicketOrderReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-order-ticket-ready.xml"
-      Assert-HierarchyContains -Path $serverTicketOrderReadyHierarchy -Expected @("place-mock-order", "Swipe up to buy")
+      Assert-HierarchyContains -Path $serverTicketOrderReadyHierarchy -Expected @("place-mock-order", "Swipe to buy")
       Invoke-TapHierarchyNode -Path $serverTicketOrderReadyHierarchy -Identifier "place-mock-order"
-      Wait-HierarchyContains -Name "cycle-current-holiwyn-server-order-error.xml" -Expected @("Order failed. Try again.", "ticket-order-error", "ticket-order-error-detail", "Swipe up to buy") -Attempts 12 -DelaySeconds 2 | Out-Null
+      Wait-HierarchyContains -Name "cycle-current-holiwyn-server-order-error.xml" -Expected @("Order failed. Try again.", "ticket-order-error", "ticket-order-error-detail", "Swipe to buy") -Attempts 12 -DelaySeconds 2 | Out-Null
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-error.png"
       $serverOrderErrorHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-order-error.xml"
-      Assert-HierarchyContains -Path $serverOrderErrorHierarchy -Expected @("Order failed. Try again.", "ticket-order-error", "ticket-order-error-detail", "Swipe up to buy")
+      Assert-HierarchyContains -Path $serverOrderErrorHierarchy -Expected @("Order failed. Try again.", "ticket-order-error", "ticket-order-error-detail", "Swipe to buy")
       return
     }
 
@@ -1705,7 +1705,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-server-order-success-ticket-ready.png"
       $serverOrderSuccessTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-order-success-ticket-ready.xml"
-      $serverOrderButtonExpected = if ($ServerSellOrderFilled) { @("place-mock-order", "Swipe up to sell") } else { @("place-mock-order", "Swipe up to buy") }
+      $serverOrderButtonExpected = if ($ServerSellOrderFilled) { @("place-mock-order", "Swipe to sell") } else { @("place-mock-order", "Swipe to buy") }
       Assert-HierarchyContains -Path $serverOrderSuccessTicketReadyHierarchy -Expected $serverOrderButtonExpected
       Invoke-TapHierarchyNode -Path $serverOrderSuccessTicketReadyHierarchy -Identifier "place-mock-order"
       $serverOrderSuccessExpected = if ($ServerSellOrderFilled) {
@@ -1791,7 +1791,7 @@ try {
       & $adb -s $Device shell input swipe 540 1850 540 950 450 | Out-Null
       Start-Sleep -Seconds 1
       $serverPositionTradeButtonHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-trade-ticket-button.xml"
-      Assert-HierarchyContains -Path $serverPositionTradeButtonHierarchy -Expected @("place-mock-order", "Swipe up to sell")
+      Assert-HierarchyContains -Path $serverPositionTradeButtonHierarchy -Expected @("place-mock-order", "Swipe to sell")
       return
     }
 
@@ -1811,7 +1811,7 @@ try {
       & $adb -s $Device shell input swipe 540 1850 540 950 450 | Out-Null
       Start-Sleep -Seconds 1
       $serverPositionBuyTradeButtonHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-buy-trade-ticket-button.xml"
-      Assert-HierarchyContains -Path $serverPositionBuyTradeButtonHierarchy -Expected @("place-mock-order", "Swipe up to buy")
+      Assert-HierarchyContains -Path $serverPositionBuyTradeButtonHierarchy -Expected @("place-mock-order", "Swipe to buy")
       return
     }
 
@@ -1831,7 +1831,7 @@ try {
       & $adb -s $Device shell input swipe 540 1850 540 950 450 | Out-Null
       Start-Sleep -Seconds 1
       $serverPositionFallbackTradeButtonHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-fallback-trade-ticket-button.xml"
-      Assert-HierarchyContains -Path $serverPositionFallbackTradeButtonHierarchy -Expected @("place-mock-order", "Swipe up to buy")
+      Assert-HierarchyContains -Path $serverPositionFallbackTradeButtonHierarchy -Expected @("place-mock-order", "Swipe to buy")
       return
     }
 
@@ -1851,7 +1851,7 @@ try {
       & $adb -s $Device shell input swipe 540 1850 540 950 450 | Out-Null
       Start-Sleep -Seconds 1
       $serverPositionFallbackOrderButtonHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-server-position-fallback-order-ticket-button.xml"
-      Assert-HierarchyContains -Path $serverPositionFallbackOrderButtonHierarchy -Expected @("place-mock-order", "Swipe up to buy")
+      Assert-HierarchyContains -Path $serverPositionFallbackOrderButtonHierarchy -Expected @("place-mock-order", "Swipe to buy")
       Invoke-TapHierarchyNode -Path $serverPositionFallbackOrderButtonHierarchy -Identifier "place-mock-order"
       $serverPositionFallbackOrderPortfolioHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-server-position-fallback-order-portfolio.xml" -Expected @("Portfolio", "Order placed", "SERVER - Buy - YES - OPEN", "World Cup Backend Position Order Proof", "Remaining:", "Potential payout") -Attempts 14 -DelaySeconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-server-position-fallback-order-portfolio.png"
@@ -2420,7 +2420,7 @@ try {
           Save-Screenshot -Name "$liveOrderReadyName.png"
           $liveTicketOrderHierarchy = Save-UiHierarchy -Name "$liveOrderReadyName.xml"
         }
-        $liveOrderButtonLabel = if ($LiveSellOrder) { "Swipe up to sell" } else { "Swipe up to buy" }
+        $liveOrderButtonLabel = if ($LiveSellOrder) { "Swipe to sell" } else { "Swipe to buy" }
         Assert-HierarchyContains -Path $liveTicketOrderHierarchy -Expected @("place-mock-order", $liveOrderButtonLabel)
         Invoke-TapHierarchyNode -Path $liveTicketOrderHierarchy -Identifier "place-mock-order"
         Start-Sleep -Seconds 1
@@ -2740,7 +2740,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-ticket.png"
       $futureListTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-ticket.xml"
-      Assert-HierarchyContains -Path $futureListTicketHierarchy -Expected @("World Cup winner", "Yes - France", "Odds 34%", "Fake balance", "10,000 USDT", "ticket-amount-keypad", "Swipe up to buy")
+      Assert-HierarchyContains -Path $futureListTicketHierarchy -Expected @("World Cup winner", "Yes - France", "Odds 34%", "Fake balance", "10,000 USDT", "ticket-amount-keypad", "Swipe to buy")
       return
     }
 
@@ -2761,7 +2761,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-future-catalog-england-ticket.png"
       $futureCatalogTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-catalog-england-ticket.xml"
-      Assert-HierarchyContains -Path $futureCatalogTicketHierarchy -Expected @("trade-ticket", "World Cup winner", "Yes - England", "9c", "Swipe up to buy")
+      Assert-HierarchyContains -Path $futureCatalogTicketHierarchy -Expected @("trade-ticket", "World Cup winner", "Yes - England", "9c", "Swipe to buy")
       return
     }
 
@@ -2776,7 +2776,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-buy-no-ticket.png"
       $futureListBuyNoTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-buy-no-ticket.xml"
-      Assert-HierarchyContains -Path $futureListBuyNoTicketHierarchy -Expected @("trade-ticket", "World Cup winner", "No - France", "Buy", "ticket-price-line", "66c", "Swipe up to buy", "Final cost may vary.")
+      Assert-HierarchyContains -Path $futureListBuyNoTicketHierarchy -Expected @("trade-ticket", "World Cup winner", "No - France", "Buy", "ticket-price-line", "66c", "Swipe to buy", "Final cost may vary.")
       Invoke-TapHierarchyNode -Path $futureListBuyNoTicketHierarchy -Identifier "place-mock-order"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-buy-no-portfolio.png"
@@ -2787,10 +2787,10 @@ try {
 
     if ($FutureListOrder) {
       $futureListOrderTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-order-ticket.xml"
-      Assert-HierarchyContains -Path $futureListOrderTicketHierarchy -Expected @("World Cup winner", "France", "ticket-trading-mode", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "ticket-amount-keypad", "Fake balance", "10,000 USDT", "Swipe up to buy")
+      Assert-HierarchyContains -Path $futureListOrderTicketHierarchy -Expected @("World Cup winner", "France", "ticket-trading-mode", "Trading mode: Fake-token mock", "ticket-market-depth", "Best bid", "Best ask", "Spread", "ticket-amount-keypad", "Fake balance", "10,000 USDT", "Swipe to buy")
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-order-ticket.png"
       $futureListOrderTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-order-ticket.xml"
-      Assert-HierarchyContains -Path $futureListOrderTicketHierarchy -Expected @("place-mock-order", "Swipe up to buy", "Final cost may vary.")
+      Assert-HierarchyContains -Path $futureListOrderTicketHierarchy -Expected @("place-mock-order", "Swipe to buy", "Final cost may vary.")
       Invoke-TapHierarchyNode -Path $futureListOrderTicketHierarchy -Identifier "place-mock-order"
       Start-Sleep -Seconds 1
       Dismiss-ExpoDeveloperMenuIfPresent | Out-Null
@@ -2824,12 +2824,12 @@ try {
       Invoke-TapHierarchyNode -Path $futureListSellListHierarchy -Identifier "future-outcome-world-cup-winner-france"
       Start-Sleep -Seconds 1
       $futureListSellTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-sell-ticket.xml"
-      Assert-HierarchyContains -Path $futureListSellTicketHierarchy -Expected @("World Cup winner", "France", "Buy", "Sell", "Swipe up to buy")
+      Assert-HierarchyContains -Path $futureListSellTicketHierarchy -Expected @("World Cup winner", "France", "Buy", "Sell", "Swipe to buy")
       Invoke-TapHierarchyNode -Path $futureListSellTicketHierarchy -Identifier "ticket-side-sell"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-future-list-sell-ticket.png"
       $futureListSellActiveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-future-list-sell-active.xml"
-      Assert-HierarchyContains -Path $futureListSellActiveHierarchy -Expected @("World Cup winner", "France", "Sell", "Estimated proceeds", "Est. shares", "Avg price", "Swipe up to sell")
+      Assert-HierarchyContains -Path $futureListSellActiveHierarchy -Expected @("World Cup winner", "France", "Sell", "Estimated proceeds", "Est. shares", "Avg price", "Swipe to sell")
       return
     }
 
@@ -2928,7 +2928,7 @@ try {
 
     if ($PortfolioPersistence) {
       $portfolioPersistenceTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-portfolio-persistence-ticket.xml"
-      Assert-HierarchyContains -Path $portfolioPersistenceTicketHierarchy -Expected @("World Cup winner", "France", "Swipe up to buy")
+      Assert-HierarchyContains -Path $portfolioPersistenceTicketHierarchy -Expected @("World Cup winner", "France", "Swipe to buy")
       Invoke-TapHierarchyNode -Path $portfolioPersistenceTicketHierarchy -Identifier "place-mock-order"
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-current-holiwyn-portfolio-persistence-open.png"
@@ -2949,7 +2949,7 @@ try {
     if ($TicketDefaultsPersistence) {
       Save-Screenshot -Name "cycle-current-holiwyn-ticket-defaults-seeded.png"
       $ticketDefaultsSeededHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket-defaults-seeded.xml"
-      Assert-HierarchyContains -Path $ticketDefaultsSeededHierarchy -Expected @("World Cup winner", "France", "500", "Swipe up to sell")
+      Assert-HierarchyContains -Path $ticketDefaultsSeededHierarchy -Expected @("World Cup winner", "France", "500", "Swipe to sell")
       Start-Sleep -Seconds 2
       & $adb -s $Device shell am force-stop host.exp.exponent | Out-Null
       Start-Sleep -Seconds 2
@@ -2958,7 +2958,7 @@ try {
       Start-Sleep -Seconds 10
       Save-Screenshot -Name "cycle-current-holiwyn-ticket-defaults-restored.png"
       $ticketDefaultsRestoredHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket-defaults-restored.xml"
-      Assert-HierarchyContains -Path $ticketDefaultsRestoredHierarchy -Expected @("World Cup winner", "France", "500", "Swipe up to sell")
+      Assert-HierarchyContains -Path $ticketDefaultsRestoredHierarchy -Expected @("World Cup winner", "France", "500", "Swipe to sell")
       return
     }
 
@@ -3364,7 +3364,7 @@ try {
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "$eoPrefix-sell-ticket-ready.png"
         $eoTicketReadyHierarchy = Save-UiHierarchy -Name "$eoPrefix-sell-ticket-ready.xml"
-        Assert-HierarchyContains -Path $eoTicketReadyHierarchy -Expected (@('$25', "ticket-price-line", "$($eoBidCents)c", "Swipe up to sell", "place-mock-order", "ticket-limit-side-bid", "ticket-limit-price-$eoBidCents", "ticket-limit-decimal-$eoBidDecimal") + $eoTicketSelectionExpected)
+        Assert-HierarchyContains -Path $eoTicketReadyHierarchy -Expected (@('$25', "ticket-price-line", "$($eoBidCents)c", "Swipe to sell", "place-mock-order", "ticket-limit-side-bid", "ticket-limit-price-$eoBidCents", "ticket-limit-decimal-$eoBidDecimal") + $eoTicketSelectionExpected)
         Assert-HierarchyDoesNotContain -Path $eoTicketReadyHierarchy -Unexpected ($eoNoFallback + @("Odds $($eoBidProbability - 1)%", "Odds $($eoBidProbability + 1)%"))
 
         Invoke-TapHierarchyNode -Path $eoTicketReadyHierarchy -Identifier "place-mock-order"
@@ -3671,7 +3671,7 @@ try {
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "$enPrefix-ticket-ready.png"
         $enTicketReadyHierarchy = Save-UiHierarchy -Name "$enPrefix-ticket-ready.xml"
-        Assert-HierarchyContains -Path $enTicketReadyHierarchy -Expected (@('$25', "ticket-price-line", "$($enAskCents)c", "To win", "Swipe up to buy", "place-mock-order", "ticket-limit-side-ask", "ticket-limit-price-$enAskCents", "ticket-limit-decimal-$enAskDecimal") + $enTicketSelectionExpected)
+        Assert-HierarchyContains -Path $enTicketReadyHierarchy -Expected (@('$25', "ticket-price-line", "$($enAskCents)c", "To win", "Swipe to buy", "place-mock-order", "ticket-limit-side-ask", "ticket-limit-price-$enAskCents", "ticket-limit-decimal-$enAskDecimal") + $enTicketSelectionExpected)
         Assert-HierarchyDoesNotContain -Path $enTicketReadyHierarchy -Unexpected ($enNoFallback + @("Odds $($enAskProbability - 1)%", "Odds $($enAskProbability + 1)%"))
 
         Invoke-TapHierarchyNode -Path $enTicketReadyHierarchy -Identifier "place-mock-order"
@@ -3905,7 +3905,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-EM-B-visible-limit-lifecycle-ticket-ready.png"
       $emTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-EM-B-visible-limit-lifecycle-ticket-ready.xml"
-      Assert-HierarchyContains -Path $emTicketReadyHierarchy -Expected (@('$25', "ticket-price-line", "41c", "To win", "Swipe up to buy", "place-mock-order") + $emTicketSelectionExpected)
+      Assert-HierarchyContains -Path $emTicketReadyHierarchy -Expected (@('$25', "ticket-price-line", "41c", "To win", "Swipe to buy", "place-mock-order") + $emTicketSelectionExpected)
       Assert-HierarchyDoesNotContain -Path $emTicketReadyHierarchy -Unexpected $emNoFallback
 
       Invoke-TapHierarchyNode -Path $emTicketReadyHierarchy -Identifier "place-mock-order"
@@ -4040,7 +4040,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-EL-B-visible-live-depth-ask-ticket-priced.png"
       $depthAskTicketPricedHierarchy = Save-UiHierarchy -Name "cycle-EL-B-visible-live-depth-ask-ticket-priced.xml"
-      Assert-HierarchyContains -Path $depthAskTicketPricedHierarchy -Expected @("trade-ticket", "ticket-side-pill", "Buy", "ticket-price-line", "$($depthAskCents)c", "To win", "Swipe up to buy")
+      Assert-HierarchyContains -Path $depthAskTicketPricedHierarchy -Expected @("trade-ticket", "ticket-side-pill", "Buy", "ticket-price-line", "$($depthAskCents)c", "To win", "Swipe to buy")
       Invoke-TapHierarchyNode -Path $depthAskTicketPricedHierarchy -Identifier "ticket-close"
       Start-Sleep -Seconds 1
       $depthAfterAskTicketHierarchy = Save-UiHierarchy -Name "cycle-EL-B-visible-live-depth-after-ask-ticket.xml"
@@ -4061,7 +4061,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-EL-B-visible-live-depth-bid-ticket-priced.png"
       $depthBidTicketPricedHierarchy = Save-UiHierarchy -Name "cycle-EL-B-visible-live-depth-bid-ticket-priced.xml"
-      Assert-HierarchyContains -Path $depthBidTicketPricedHierarchy -Expected @("trade-ticket", "ticket-side-pill", "Sell", "ticket-price-line", "$($depthBidCents)c", "Swipe up to sell")
+      Assert-HierarchyContains -Path $depthBidTicketPricedHierarchy -Expected @("trade-ticket", "ticket-side-pill", "Sell", "ticket-price-line", "$($depthBidCents)c", "Swipe to sell")
 
       $proof = [ordered]@{
         cycle = $depthProofCycle
@@ -4075,9 +4075,9 @@ try {
         assertions = [ordered]@{
           baseline = "Book opens on $depthOutcomeLabel winner with staged-level-none and visible ask/bid ladder rows."
           askStage = "Tapping order-book-ask-level-$depthOutcomeId-1 stages Buy ask at $depthAskDecimal USDT / $($depthAskCents)c for $depthAskShares shares."
-          askTicket = "Staged open-ticket launches a Buy ticket; after tapping +`$10 it shows ticket-price-line $($depthAskCents)c, To win, and Swipe up to buy."
+          askTicket = "Staged open-ticket launches a Buy ticket; after tapping +`$10 it shows ticket-price-line $($depthAskCents)c, To win, and Swipe to buy."
           bidStage = "Tapping order-book-bid-level-$depthOutcomeId-1 stages Sell bid at $depthBidDecimal USDT / $($depthBidCents)c for $depthBidShares shares."
-          bidTicket = "Staged open-ticket launches a Sell ticket; after tapping +`$10 it shows ticket-price-line $($depthBidCents)c and Swipe up to sell."
+          bidTicket = "Staged open-ticket launches a Sell ticket; after tapping +`$10 it shows ticket-price-line $($depthBidCents)c and Swipe to sell."
           contractShape = if ($usesServerLiveDepth) { "The proof uses route-backed provider orderbook depth from the integrated backend event." } else { "The proof uses deterministic backend-shaped Book depth already exposed to the mobile UI; no backend route or provider service was edited." }
         }
         artifacts = @(
@@ -4263,7 +4263,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-position-buy-ticket.png"
       $eventDetailPositionTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-position-buy-ticket.xml"
-      Assert-HierarchyContains -Path $eventDetailPositionTicketHierarchy -Expected @("Mexico", "Mexico vs. Ecuador", "Trading mode: Fake-token mock", "Estimated cost", "Est. shares", "Avg price", "Swipe up to buy")
+      Assert-HierarchyContains -Path $eventDetailPositionTicketHierarchy -Expected @("Mexico", "Mexico vs. Ecuador", "Trading mode: Fake-token mock", "Estimated cost", "Est. shares", "Avg price", "Swipe to buy")
       Start-DeepLink -Url $launchUrl
       Start-Sleep -Seconds 4
       $eventDetailPositionCashReadyHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-event-detail-position-cash-ready.xml" -Expected @("event-detail-position-card", "Cash out") -RestartUrl $launchUrl -Attempts 5 -DelaySeconds 2
@@ -4679,7 +4679,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-EE-B-holiwyn-book-status-ticket-ready.png"
       $ticketReadyHierarchy = Save-UiHierarchy -Name "cycle-EE-B-holiwyn-book-status-ticket-ready.xml"
-      Assert-HierarchyContains -Path $ticketReadyHierarchy -Expected (@('$25', "ticket-price-line", "Swipe up to buy", "place-mock-order", "Yes") + $ticketSelectionExpected)
+      Assert-HierarchyContains -Path $ticketReadyHierarchy -Expected (@('$25', "ticket-price-line", "Swipe to buy", "place-mock-order", "Yes") + $ticketSelectionExpected)
       Assert-HierarchyDoesNotContain -Path $ticketReadyHierarchy -Unexpected $noMoneylineFallback
 
       Invoke-TapHierarchyNode -Path $ticketReadyHierarchy -Identifier "place-mock-order"
@@ -5047,7 +5047,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-DX-B-holiwyn-line-lifecycle-ticket-ready.png"
       $linePortfolioTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-DX-B-holiwyn-line-lifecycle-ticket-ready.xml"
-      Assert-HierarchyContains -Path $linePortfolioTicketReadyHierarchy -Expected (@('$25', 'To win $833.33', "ticket-price-line", "Swipe up to buy", "place-mock-order", "Yes - MEX -2.5 1H") + $dxTicketExpected)
+      Assert-HierarchyContains -Path $linePortfolioTicketReadyHierarchy -Expected (@('$25', 'To win $833.33', "ticket-price-line", "Swipe to buy", "place-mock-order", "Yes - MEX -2.5 1H") + $dxTicketExpected)
       Invoke-TapHierarchyNode -Path $linePortfolioTicketReadyHierarchy -Identifier "place-mock-order"
       Start-Sleep -Seconds 2
       Save-Screenshot -Name "cycle-DX-B-holiwyn-line-lifecycle-after-order.png"
@@ -5387,9 +5387,12 @@ try {
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-ready.png"
         $mvpRouteSpreadReadyHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-ready.xml"
-        Assert-HierarchyContains -Path $mvpRouteSpreadReadyHierarchy -Expected @('$75', "Swipe up to buy", "swipe-submit-handle-translate-y-0", "Final cost may vary.", "place-mock-order", "ticket-market-type-$mvpRouteTargetTicketMarketType", "ticket-line-$mvpRouteTargetLine", "provider-source-polymarket")
+        Assert-HierarchyContains -Path $mvpRouteSpreadReadyHierarchy -Expected @('$75', "Swipe to buy", "ticket-s23-keypad-clearance", "swipe-submit-handle-progress-animated", "swipe-submit-handle-translate-y-0", "Final cost may vary.", "place-mock-order", "ticket-market-type-$mvpRouteTargetTicketMarketType", "ticket-line-$mvpRouteTargetLine", "provider-source-polymarket")
         Assert-HierarchyDoesNotContain -Path $mvpRouteSpreadReadyHierarchy -Unexpected $mvpHiddenOrderBookExpected
-        & $adb -s $Device shell input swipe 720 2190 720 1600 700 | Out-Null
+        $mvpRouteSwipeProcess = Start-Process -FilePath $adb -ArgumentList @("-s", $Device, "shell", "input", "swipe", "720", "2190", "720", "1600", "1800") -PassThru -WindowStyle Hidden
+        Start-Sleep -Milliseconds 650
+        Save-Screenshot -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-swipe-progress.png"
+        Wait-Process -Id $mvpRouteSwipeProcess.Id
         Start-Sleep -Seconds 5
         Save-Screenshot -Name "$mvpRouteServerPrefix-portfolio.png"
         $mvpRoutePortfolioHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-portfolio.xml"
@@ -5586,7 +5589,7 @@ try {
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "cycle-EU-holiwyn-route-mvp-spread-ticket-ready.png"
         $mvpRouteSpreadReadyHierarchy = Save-UiHierarchy -Name "cycle-EU-holiwyn-route-mvp-spread-ticket-ready.xml"
-        Assert-HierarchyContains -Path $mvpRouteSpreadReadyHierarchy -Expected @('$25', "Swipe up to buy", "place-mock-order", "ticket-market-type-spread", "ticket-line-1.5", "provider-source-polymarket")
+        Assert-HierarchyContains -Path $mvpRouteSpreadReadyHierarchy -Expected @('$25', "Swipe to buy", "place-mock-order", "ticket-market-type-spread", "ticket-line-1.5", "provider-source-polymarket")
         Assert-HierarchyDoesNotContain -Path $mvpRouteSpreadReadyHierarchy -Unexpected $mvpHiddenOrderBookExpected
         & $adb -s $Device shell input swipe 720 2190 720 1600 700 | Out-Null
         Start-Sleep -Seconds 2
@@ -5838,7 +5841,7 @@ try {
       $mvpArtifactDir = Split-Path -Path $OutputDir -Leaf
       $mvpSideLabel = if ($LocalMvpSellFlow) { "Sell" } else { "Buy" }
       $mvpPastTense = if ($LocalMvpSellFlow) { "Sold" } else { "Bought" }
-      $mvpSubmitText = if ($LocalMvpSellFlow) { "Swipe up to sell" } else { "Swipe up to buy" }
+      $mvpSubmitText = if ($LocalMvpSellFlow) { "Swipe to sell" } else { "Swipe to buy" }
       $mvpPortfolioSide = if ($LocalMvpSellFlow) { "portfolio-side-sell" } else { "portfolio-side-buy" }
       $mvpOrderLabel = if ($LocalMvpSellFlow) { "MOCK - Sell - No - MEX -2.5 1H" } else { "MOCK - Buy - MEX -2.5 1H" }
       $mvpSellTicketExpected = @(
@@ -5923,7 +5926,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-ticket.png"
       $mvpTicketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-ticket.xml"
-      Assert-HierarchyContains -Path $mvpTicketHierarchy -Expected (@("trade-ticket", "ticket-retail-reference-layout", "ticket-body-rounded-above-swipe", "ticket-keypad-swipe-separated", "ticket-swipe-area-fixed-bottom", "ticket-retail-order-header", "ticket-settings-state-closed", "Mexico vs. Ecuador", "ticket-selection-line", "Yes - MEX -2.5 1H", "ticket-selected-outcome-choice", "ticket-order-review", "ticket-identity-preserved", "ticket-line-2.5", "ticket-period-1st Half", "ticket-preset-25", "ticket-preset-50", "Choose an amount") + $mvpTicketExpected)
+      Assert-HierarchyContains -Path $mvpTicketHierarchy -Expected (@("trade-ticket", "ticket-retail-reference-layout", "ticket-body-rounded-above-swipe", "ticket-keypad-swipe-separated", "ticket-swipe-area-fixed-bottom", "ticket-s23-keypad-clearance", "ticket-retail-order-header", "ticket-settings-state-closed", "Mexico vs. Ecuador", "ticket-selection-line", "Yes - MEX -2.5 1H", "ticket-selected-outcome-choice", "ticket-order-review", "ticket-identity-preserved", "ticket-line-2.5", "ticket-period-1st Half", "ticket-preset-25", "ticket-preset-50", "Choose an amount") + $mvpTicketExpected)
       Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected @("Order review", "MARKET ", "LINE ", "PERIOD ", "SHARES ", "TO WIN ")
       Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected $mvpHiddenAdvancedTicketExpected
       Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
@@ -5932,7 +5935,7 @@ try {
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-sell-ticket.png"
         $mvpTicketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-sell-ticket.xml"
-        Assert-HierarchyContains -Path $mvpTicketHierarchy -Expected (@("trade-ticket", "ticket-retail-reference-layout", "ticket-swipe-area-fixed-bottom", "Sell", "No", "Odds 97%", "ticket-side-sell", "ticket-order-review", "ticket-identity-preserved", "ticket-line-2.5", "ticket-period-1st Half", "ticket-preset-25", "ticket-preset-50", "Choose an amount") + $mvpSellTicketExpected)
+        Assert-HierarchyContains -Path $mvpTicketHierarchy -Expected (@("trade-ticket", "ticket-retail-reference-layout", "ticket-swipe-area-fixed-bottom", "ticket-s23-keypad-clearance", "Sell", "No", "Odds 97%", "ticket-side-sell", "ticket-order-review", "ticket-identity-preserved", "ticket-line-2.5", "ticket-period-1st Half", "ticket-preset-25", "ticket-preset-50", "Choose an amount") + $mvpSellTicketExpected)
         Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected @("Order review", "MARKET ", "LINE ", "PERIOD ", "SHARES ", "TO WIN ")
         Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected $mvpHiddenAdvancedTicketExpected
         Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
@@ -5953,7 +5956,7 @@ try {
         @('$75', 'to win $2,500', "ticket-price-line", "Odds 3%", "ticket-order-review", "ticket-order-review-payout", "ticket-identity-preserved", $mvpSubmitText, "place-mock-order", "Yes - MEX -2.5 1H")
       }
       $mvpActiveTicketExpected = if ($LocalMvpSellFlow) { $mvpSellTicketExpected } else { $mvpTicketExpected }
-      Assert-HierarchyContains -Path $mvpTicketReadyHierarchy -Expected ($mvpReadyExpected + @("swipe-submit-gesture-required", "swipe-submit-tap-disabled", "swipe-submit-handle-progress-motion", "swipe-submit-state-idle", "swipe-submit-handle") + $mvpActiveTicketExpected)
+      Assert-HierarchyContains -Path $mvpTicketReadyHierarchy -Expected ($mvpReadyExpected + @("ticket-s23-keypad-clearance", "swipe-submit-gesture-required", "swipe-submit-tap-disabled", "swipe-submit-handle-progress-motion", "swipe-submit-handle-progress-animated", "swipe-submit-state-idle", "swipe-submit-handle") + $mvpActiveTicketExpected)
       Assert-HierarchyDoesNotContain -Path $mvpTicketReadyHierarchy -Unexpected $mvpHiddenAdvancedTicketExpected
       Assert-HierarchyDoesNotContain -Path $mvpTicketReadyHierarchy -Unexpected $mvpHiddenOrderBookExpected
       Invoke-TapHierarchyNode -Path $mvpTicketReadyHierarchy -Identifier "place-mock-order"
@@ -5972,7 +5975,7 @@ try {
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-buy-more-ticket.png"
       $mvpPortfolioBuyMoreTicketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-buy-more-ticket.xml"
       Assert-HierarchyContains -Path $mvpPortfolioBuyMoreTicketHierarchy -Expected (@("trade-ticket", "ticket-side-buy", "swipe-to-submit-order", "swipe-submit-tap-disabled", "Choose an amount", '$0') + $mvpTicketExpected)
-      Assert-HierarchyDoesNotContain -Path $mvpPortfolioBuyMoreTicketHierarchy -Unexpected @("Swipe up to buy")
+      Assert-HierarchyDoesNotContain -Path $mvpPortfolioBuyMoreTicketHierarchy -Unexpected @("Swipe to buy")
       Assert-HierarchyDoesNotContain -Path $mvpPortfolioBuyMoreTicketHierarchy -Unexpected $mvpHiddenAdvancedTicketExpected
       Assert-HierarchyDoesNotContain -Path $mvpPortfolioBuyMoreTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
       Invoke-TapHierarchyNode -Path $mvpPortfolioBuyMoreTicketHierarchy -Identifier "ticket-close"
@@ -5983,7 +5986,7 @@ try {
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-ticket.png"
       $mvpPortfolioCashOutTicketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-ticket.xml"
       Assert-HierarchyContains -Path $mvpPortfolioCashOutTicketHierarchy -Expected (@("trade-ticket", "ticket-side-sell", "swipe-to-submit-order", "Choose an amount", '$0') + $mvpSellTicketExpected)
-      Assert-HierarchyDoesNotContain -Path $mvpPortfolioCashOutTicketHierarchy -Unexpected @("Swipe up to sell")
+      Assert-HierarchyDoesNotContain -Path $mvpPortfolioCashOutTicketHierarchy -Unexpected @("Swipe to sell")
       Assert-HierarchyDoesNotContain -Path $mvpPortfolioCashOutTicketHierarchy -Unexpected $mvpHiddenAdvancedTicketExpected
       Assert-HierarchyDoesNotContain -Path $mvpPortfolioCashOutTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
       if ($mvpCycle -eq "GL") {
@@ -5991,7 +5994,7 @@ try {
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-ticket-ready.png"
         $mvpPortfolioCashOutTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-ticket-ready.xml"
-        Assert-HierarchyContains -Path $mvpPortfolioCashOutTicketReadyHierarchy -Expected (@("trade-ticket", "ticket-side-sell", "swipe-to-submit-order", "Swipe up to sell", '$10') + $mvpSellTicketExpected)
+        Assert-HierarchyContains -Path $mvpPortfolioCashOutTicketReadyHierarchy -Expected (@("trade-ticket", "ticket-side-sell", "swipe-to-submit-order", "Swipe to sell", '$10') + $mvpSellTicketExpected)
         & $adb -s $Device shell input swipe 720 2190 720 1600 700 | Out-Null
         Start-Sleep -Seconds 2
         Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-submitted.png"
@@ -6100,7 +6103,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-prop-ticket-order-ready.png"
       $eventDetailPropTicketOrderReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-prop-ticket-order-ready.xml"
-      Assert-HierarchyContains -Path $eventDetailPropTicketOrderReadyHierarchy -Expected @("place-mock-order", "Swipe up to buy")
+      Assert-HierarchyContains -Path $eventDetailPropTicketOrderReadyHierarchy -Expected @("place-mock-order", "Swipe to buy")
       return
     }
 
@@ -6125,7 +6128,7 @@ try {
       Invoke-TapHierarchyNode -Path $eventDetailPropOrderPropsHierarchy -Identifier "event-detail-outcome-mexico-ecuador-both-score-yes"
       Start-Sleep -Seconds 1
       $eventDetailPropOrderTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-prop-order-ticket.xml"
-      Assert-HierarchyContains -Path $eventDetailPropOrderTicketHierarchy -Expected @("Yes", "Mexico vs. Ecuador", "Estimated cost", "196.08 shares", "0.51 USDT", "Swipe up to buy")
+      Assert-HierarchyContains -Path $eventDetailPropOrderTicketHierarchy -Expected @("Yes", "Mexico vs. Ecuador", "Estimated cost", "196.08 shares", "0.51 USDT", "Swipe to buy")
       Invoke-TapHierarchyNode -Path $eventDetailPropOrderTicketHierarchy -Identifier "place-mock-order"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-prop-order-portfolio.png"
@@ -6182,7 +6185,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-sell-ticket.png"
       $eventDetailSellTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-sell-ticket.xml"
-      Assert-HierarchyContains -Path $eventDetailSellTicketHierarchy -Expected @("Mexico", "Mexico vs. Ecuador", "Trading mode: Fake-token mock", "ticket-market-depth", "Estimated proceeds", "Swipe up to sell")
+      Assert-HierarchyContains -Path $eventDetailSellTicketHierarchy -Expected @("Mexico", "Mexico vs. Ecuador", "Trading mode: Fake-token mock", "ticket-market-depth", "Estimated proceeds", "Swipe to sell")
       return
     }
 
@@ -6203,7 +6206,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-event-detail-ticket-amount.png"
       $eventDetailTicketAmountHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-ticket-amount.xml"
-      Assert-HierarchyContains -Path $eventDetailTicketAmountHierarchy -Expected @("$10", "ticket-to-win-line", "To win", "ticket-price-line", "64c", "ticket-order-review", "ticket-order-review-payout", "Swipe up to buy")
+      Assert-HierarchyContains -Path $eventDetailTicketAmountHierarchy -Expected @("$10", "ticket-to-win-line", "To win", "ticket-price-line", "64c", "ticket-order-review", "ticket-order-review-payout", "Swipe to buy")
       Invoke-TapHierarchyNode -Path $eventDetailTicketAmountHierarchy -Identifier "ticket-settings"
       Start-Sleep -Seconds 1
       $eventDetailTicketDetailsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-event-detail-ticket-details.xml"
@@ -6235,14 +6238,14 @@ try {
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-current-holiwyn-ticket.png"
     $ticketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket.xml"
-    Assert-HierarchyContains -Path $ticketHierarchy -Expected @("Fake balance", "10,000 USDT", "Max", "500 USDT", "1,000 USDT", "Estimated cost", "Est. shares", "Avg price", "Implied odds", "2.9x", "Estimated payout", "Potential profit", "Swipe up to buy")
+    Assert-HierarchyContains -Path $ticketHierarchy -Expected @("Fake balance", "10,000 USDT", "Max", "500 USDT", "1,000 USDT", "Estimated cost", "Est. shares", "Avg price", "Implied odds", "2.9x", "Estimated payout", "Potential profit", "Swipe to buy")
 
     if ($SellTicket) {
       Invoke-TapHierarchyNode -Path $ticketHierarchy -Identifier "ticket-side-sell"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-sell-ticket.png"
       $sellTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-sell-ticket.xml"
-      Assert-HierarchyContains -Path $sellTicketHierarchy -Expected @("Sell", "Estimated proceeds", "Est. shares", "Avg price", "Implied odds", "Swipe up to sell")
+      Assert-HierarchyContains -Path $sellTicketHierarchy -Expected @("Sell", "Estimated proceeds", "Est. shares", "Avg price", "Implied odds", "Swipe to sell")
       return
     }
 
@@ -6251,7 +6254,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-ticket-order-error.png"
       $ticketOrderErrorHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-ticket-order-error.xml"
-      Assert-HierarchyContains -Path $ticketOrderErrorHierarchy -Expected @("Order failed. Try again.", "Swipe up to buy", "ticket-order-error")
+      Assert-HierarchyContains -Path $ticketOrderErrorHierarchy -Expected @("Order failed. Try again.", "Swipe to buy", "ticket-order-error")
       return
     }
 
@@ -6278,7 +6281,7 @@ try {
     Save-Screenshot -Name "cycle-current-holiwyn-live.png"
     $liveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live.xml"
     Assert-HierarchyContains -Path $liveHierarchy -Expected @("Live World Cup", "Updated just now", "Refresh")
-    Assert-HierarchyContainsAny -Path $liveHierarchy -ExpectedAny @("No live markets right now.", "Live Â·")
+    Assert-HierarchyContainsAny -Path $liveHierarchy -ExpectedAny @("No live markets right now.", "Live Ã‚Â·")
 
     Invoke-TapHierarchyNode -Path $liveHierarchy -Identifier "refresh-live-markets"
     $liveRefreshHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-live-refresh.xml" -Expected @("Updated just now", "refreshed", "Refresh") -Attempts 8 -DelaySeconds 1

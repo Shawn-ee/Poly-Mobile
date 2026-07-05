@@ -600,3 +600,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The route-backed totals line ticket path must remain reachable after reducing half-market clutter. | P0 | Passed | Same S23 proof verifies `ticket-source-backend-line-market`, totals line `2.5`, provider source/token identity, and opens the totals ticket. |
 | The full Local MVP trade path must still pass. | P0 | Passed | S23 proof completes totals ticket, upward swipe buy, Portfolio, Portfolio top, and grouped History. |
 | Exact Polymarket market ordering and collapse animation remain future polish. | P2 | Tracked | This cycle changes default expansion state only; it does not implement native collapse animation. |
+
+## Cycle IJ - Trade Ticket S23 Swipe Reference
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| The ticket amount-entry screen needed a stronger Polymarket-like full-screen split between the dark amount/keypad body and fixed pink swipe area. | P0 | Passed | S23 ticket-ready screenshot in `cycle-IJ-trade-ticket-s23-swipe-reference-proof-final` shows the dark body with rounded lower corners above the pink footer. |
+| The S23 screen must show amount, `to win`, odds/balance, presets, and every keypad row without overlap from the swipe area. | P0 | Passed | S23 XML verifies `ticket-s23-keypad-clearance`; screenshot `cycle-EY-holiwyn-route-server-mvp-totals-ticket-ready.png` shows `.`, `0`, and backspace fully above the footer. |
+| Swipe handle should visibly move with upward gesture progress and submit only past threshold. | P0 | Passed | `SwipeSubmitControl` translates the handle from gesture progress, exposes `swipe-submit-handle-progress-animated`, and S23 proof captures `cycle-EY-holiwyn-route-server-mvp-totals-ticket-swipe-progress.png` before the order lands in Portfolio History. |
+| Backend/order logic should not change for this ticket layout correction. | P0 | Passed | No backend route/schema changed; `POST /api/orders`, `GET /api/portfolio`, and Portfolio History proof still pass. |
+| Exact Polymarket native physics and real team flag artwork remain future polish. | P2 | Tracked | This cycle improves S23 layout, copy, spacing, and gesture feedback without implementing native physics parity. |
