@@ -225,6 +225,8 @@ Cycle JF changes only mobile Event Detail primary outcome color presentation. No
 
 Cycle JG changes only mobile Portfolio position payout presentation. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Mobile continues to consume the same position `amount`, `probability`, and optional `shares` fields from `GET /api/portfolio`; the UI derives payout-style `To win` locally from shares or entry cost/probability.
 
+Cycle JH changes only mobile Trade Ticket presentation and swipe gesture affordance. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Mobile continues to submit the same selected market/outcome/line/order body through the existing fake-token/server-backed order path.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

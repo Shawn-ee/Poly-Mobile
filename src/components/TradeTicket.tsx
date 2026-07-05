@@ -70,8 +70,8 @@ type TradeTicketCopy = {
   finalCostMayVary: string;
 };
 
-const SWIPE_SUBMIT_THRESHOLD = 96;
-const SWIPE_HANDLE_TRAVEL = 58;
+const SWIPE_SUBMIT_THRESHOLD = 124;
+const SWIPE_HANDLE_TRAVEL = 92;
 
 function SwipeSubmitControl({
   disabled,
@@ -138,13 +138,13 @@ function SwipeSubmitControl({
         accessibilityRole="button"
         accessibilityState={{ disabled: disabled || isSubmitting }}
         accessibilityHint={helper}
-      accessibilityLabel={`swipe-to-submit-order swipe-submit-gesture-required swipe-submit-threshold-clear swipe-submit-tap-disabled swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-state-${progressBucket} swipe-submit-progress-${Math.round(swipeProgress * 100)}`}
+      accessibilityLabel={`swipe-to-submit-order swipe-submit-gesture-required swipe-submit-threshold-clear swipe-submit-tap-disabled swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-handle-long-travel swipe-submit-state-${progressBucket} swipe-submit-progress-${Math.round(swipeProgress * 100)}`}
       style={[styles.swipeSubmit, disabled && styles.swipeSubmitDisabled]}
       testID="place-mock-order"
       {...panResponder.panHandlers}
     >
       <View
-        accessibilityLabel={`swipe-submit-handle swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-state-${progressBucket} swipe-submit-handle-translate-y-${Math.round(handleLift)}`}
+        accessibilityLabel={`swipe-submit-handle swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-handle-s23-visible-travel swipe-submit-state-${progressBucket} swipe-submit-handle-translate-y-${Math.round(handleLift)}`}
         style={[styles.swipeIcon, isArmed && styles.swipeIconArmed, { transform: [{ translateY: handleLift }] }]}
         testID="swipe-submit-handle"
       >
@@ -476,7 +476,7 @@ export function TradeTicket({
       <View style={styles.modalShade}>
         <View style={styles.ticket}>
           <View
-            accessibilityLabel="trade-ticket ticket-retail-reference-layout ticket-body-rounded-above-swipe ticket-keypad-swipe-separated ticket-s23-keypad-clearance ticket-s23-safe-vertical-fit ticket-dark-panel-above-red-swipe"
+            accessibilityLabel="trade-ticket ticket-retail-reference-layout ticket-body-rounded-above-swipe ticket-keypad-swipe-separated ticket-s23-keypad-clearance ticket-s23-safe-vertical-fit ticket-dark-panel-above-red-swipe ticket-dark-keypad-panel-fixed-clearance"
             style={[styles.ticketBodyPanel, usePhoneTicketFit && styles.ticketBodyPanelPhone]}
             testID="trade-ticket"
           >
@@ -658,7 +658,7 @@ export function TradeTicket({
             )}
             </View>
           </View>
-          <View accessibilityLabel="ticket-swipe-area-fixed-bottom ticket-swipe-footer-fixed-separate ticket-keypad-swipe-separated ticket-s23-keypad-clearance ticket-s23-keypad-footer-gap ticket-red-swipe-area-fixed-bottom ticket-polymarket-style-swipe-zone" testID="ticket-swipe-area-fixed-bottom" style={[styles.ticketFooter, usePhoneTicketFit && styles.ticketFooterPhone]}>
+          <View accessibilityLabel="ticket-swipe-area-fixed-bottom ticket-swipe-footer-fixed-separate ticket-keypad-swipe-separated ticket-s23-keypad-clearance ticket-s23-keypad-footer-gap ticket-red-swipe-area-fixed-bottom ticket-polymarket-style-swipe-zone ticket-red-footer-s23-reference-tightened" testID="ticket-swipe-area-fixed-bottom" style={[styles.ticketFooter, usePhoneTicketFit && styles.ticketFooterPhone]}>
             <View style={styles.ticketFooterLightBand} />
             <View style={styles.ticketFooterDarkBand} />
             <SwipeSubmitControl
@@ -677,10 +677,10 @@ export function TradeTicket({
 const styles = StyleSheet.create({
   modalShade: { flex: 1, justifyContent: "flex-end", backgroundColor: "#070b12" },
   ticket: { flex: 1, height: "100%", backgroundColor: "#f72d72", overflow: "hidden" },
-  ticketBodyPanel: { flex: 1, backgroundColor: "#070b12", borderBottomLeftRadius: 40, borderBottomRightRadius: 40, overflow: "hidden", zIndex: 2 },
-  ticketBodyPanelPhone: { borderBottomLeftRadius: 34, borderBottomRightRadius: 34 },
+  ticketBodyPanel: { flex: 1, backgroundColor: "#070b12", borderBottomLeftRadius: 42, borderBottomRightRadius: 42, overflow: "hidden", zIndex: 2 },
+  ticketBodyPanelPhone: { borderBottomLeftRadius: 36, borderBottomRightRadius: 36 },
   ticketContent: { flex: 1, width: "100%", maxWidth: 430, alignSelf: "center", paddingHorizontal: 24, paddingTop: 18, paddingBottom: 16 },
-  ticketContentPhone: { paddingHorizontal: 22, paddingTop: 10, paddingBottom: 10 },
+  ticketContentPhone: { paddingHorizontal: 22, paddingTop: 10, paddingBottom: 18 },
   dragHandle: { alignSelf: "center", width: 92, height: 1, borderRadius: 999, backgroundColor: "#293141", marginBottom: 2, opacity: 0.01 },
   ticketTop: { minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   ticketHeading: { flex: 1, alignItems: "center" },
@@ -710,7 +710,7 @@ const styles = StyleSheet.create({
   marketStatusTextWarning: { color: "#fde68a" },
   marketStatusTextBlocked: { color: "#fecaca" },
   amountDisplayBlock: { minHeight: 82, alignItems: "center", justifyContent: "flex-end", marginTop: 6 },
-  amountDisplayBlockPhone: { minHeight: 64, marginTop: 0 },
+  amountDisplayBlockPhone: { minHeight: 68, marginTop: 0 },
   amountDisplayText: { color: "#f8fafc", fontSize: 68, fontWeight: "500", lineHeight: 76 },
   amountDisplayTextPhone: { fontSize: 60, lineHeight: 68 },
   amountDisplayTextEmpty: { color: "#1b2230" },
@@ -754,7 +754,7 @@ const styles = StyleSheet.create({
   presetButton: { flex: 1, minHeight: 40, alignItems: "center", justifyContent: "center" },
   presetText: { color: "#d7dce6", fontSize: 23, fontWeight: "500" },
   keypadGrid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: 8, marginTop: 10, paddingBottom: 20 },
-  keypadGridPhone: { rowGap: 5, marginTop: 6, paddingBottom: 14 },
+  keypadGridPhone: { rowGap: 6, marginTop: 8, paddingBottom: 26 },
   keypadButton: { width: "31.5%", minHeight: 43, alignItems: "center", justifyContent: "center" },
   keypadButtonPhone: { minHeight: 37 },
   keypadText: { color: "#f8fafc", fontSize: 29, fontWeight: "500" },
@@ -762,14 +762,14 @@ const styles = StyleSheet.create({
   errorTextBlock: { flex: 1, gap: 3 },
   errorText: { color: "#fde68a", fontWeight: "800" },
   errorDetailText: { color: "#fcd34d", fontSize: 12, fontWeight: "700" },
-  ticketFooter: { minHeight: 228, paddingHorizontal: 18, paddingTop: 10, paddingBottom: 34, backgroundColor: "#f72d72", position: "relative", overflow: "hidden" },
-  ticketFooterPhone: { minHeight: 222, paddingTop: 8, paddingBottom: 30 },
-  ticketFooterLightBand: { position: "absolute", top: -24, left: -70, right: -20, height: 116, backgroundColor: "#ff93b7", opacity: 0.58, transform: [{ rotate: "-8deg" }] },
-  ticketFooterDarkBand: { position: "absolute", left: -40, right: -40, bottom: -78, height: 132, backgroundColor: "#c40d58", opacity: 0.72, transform: [{ rotate: "7deg" }] },
-  swipeSubmit: { flex: 1, minHeight: 138, alignItems: "center", justifyContent: "center", paddingHorizontal: 14, borderRadius: 24, backgroundColor: "transparent", position: "relative" },
+  ticketFooter: { minHeight: 246, paddingHorizontal: 18, paddingTop: 14, paddingBottom: 34, backgroundColor: "#f72d72", position: "relative", overflow: "hidden" },
+  ticketFooterPhone: { minHeight: 238, paddingTop: 12, paddingBottom: 30 },
+  ticketFooterLightBand: { position: "absolute", top: -18, left: -70, right: -20, height: 124, backgroundColor: "#ff9ac0", opacity: 0.58, transform: [{ rotate: "-8deg" }] },
+  ticketFooterDarkBand: { position: "absolute", left: -40, right: -40, bottom: -78, height: 140, backgroundColor: "#b80d52", opacity: 0.72, transform: [{ rotate: "7deg" }] },
+  swipeSubmit: { flex: 1, minHeight: 152, alignItems: "center", justifyContent: "center", paddingHorizontal: 14, borderRadius: 24, backgroundColor: "transparent", position: "relative" },
   swipeSubmitArmed: { backgroundColor: "transparent" },
   swipeSubmitDisabled: { opacity: 0.55 },
-  swipeIcon: { position: "absolute", top: 58, width: 56, height: 44, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: 2 },
+  swipeIcon: { position: "absolute", top: 78, width: 56, height: 44, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: 2 },
   swipeIconArmed: { backgroundColor: "rgba(255,255,255,0.16)" },
   swipeTextBlock: { alignItems: "center", transform: [{ translateY: 14 }], zIndex: 1 },
   swipeLabel: { color: "#ffffff", fontSize: 24, fontWeight: "500" },

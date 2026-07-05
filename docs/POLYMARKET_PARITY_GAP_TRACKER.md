@@ -831,3 +831,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The payout display change must not break the Local MVP trade path. | P0 | Passed | Same S23 proof completes Event Detail, line market, ticket, swipe submit, Portfolio, settings, and History. |
 | Backend/API routes should not change for this visible Portfolio correction. | P0 | Passed | No backend route/schema/order service changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 proof passed. |
 | Exact Polymarket Portfolio typography remains future polish. | P2 | Tracked | This cycle targets payout semantics only. |
+
+## Cycle JH - Trade Ticket S23 Red Swipe Footer
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Ticket amount/keypad panel and swipe submit area can visually compete on S23 when the footer is too close to the keypad. | P0 | Passed | S23 ticket-ready screenshot shows the keypad fully visible above the fixed red/pink footer with rounded dark-panel lower corners. XML verifies `ticket-dark-keypad-panel-fixed-clearance` and `ticket-red-footer-s23-reference-tightened`. |
+| Swipe handle needs clearly visible upward motion during the gesture. | P0 | Passed | S23 swipe-progress screenshot shows the handle lifted above the centered `Swipe to buy` text. XML verifies `swipe-submit-handle-long-travel` and `swipe-submit-handle-s23-visible-travel`. |
+| Swipe-to-buy must submit only after an upward threshold gesture. | P0 | Passed | S23 proof checks tap-disabled state, captures swipe progress, then completes the upward swipe to Portfolio/history. |
+| Backend/order logic should not change for this visual ticket tightening. | P0 | Passed | No backend route/schema/order service changed; the same S23 proof completes `POST /api/orders`, Portfolio, and History through the existing server-backed fake-token flow. |
+| Exact native Polymarket blur/armed transition remains future polish. | P2 | Tracked | This cycle targets layout separation and visible gesture travel, not native blur parity. |
