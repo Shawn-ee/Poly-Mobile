@@ -167,6 +167,8 @@ Cycle HV changes only mobile Portfolio Positions row presentation and proof gate
 
 Cycle HW changes only mobile Event Detail tab proof and Player Props empty-state metadata. No backend route, request body, response field, or schema changes are required. Player Props remains intentionally unavailable for the current soccer MVP and does not call order, portfolio, market, or provider routes.
 
+Cycle HX changes only mobile Trade Ticket header presentation and proof gates. No backend route, request body, response field, or schema changes are required. Mobile continues to consume the same ticket event, teams, market, outcome, selected line, selected period, provider source/token, amount, side, and server order fields.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

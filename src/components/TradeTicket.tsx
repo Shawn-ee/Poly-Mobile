@@ -257,6 +257,16 @@ const teamCodeForTicket = (ticket: Ticket) => {
   return undefined;
 };
 
+const retailEventLabel = (ticket: Ticket, locale: Locale) => {
+  if (ticket.event?.teams && ticket.event.teams.length >= 2) {
+    const [home, away] = ticket.event.teams;
+    const homeName = locale === "zh" ? home.zhName : home.name;
+    const awayName = locale === "zh" ? away.zhName : away.name;
+    if (homeName && awayName) return `${homeName} vs ${awayName}`;
+  }
+  return label(locale, ticket.event ?? ticket.market);
+};
+
 const limitIdentityLabel = (selection?: TicketSelection) =>
   selection?.limitPrice
     ? `ticket-limit-side-${selection.limitSide ?? "none"} ticket-limit-price-${Math.round(selection.limitPrice * 100)} ticket-limit-decimal-${selection.limitPrice.toFixed(2)} ticket-limit-shares-${selection.limitShares ?? "none"}`
@@ -358,7 +368,7 @@ export function TradeTicket({
     ? ticket.event?.startsAt.replace(/[^\x00-\x7F]+/g, "-").replace(/\s+-\s+/g, " - ")
     : null;
   const liveClockText = liveClock ? `${liveClock} - ${t.livePriceMovement}` : null;
-  const eventLabel = label(locale, ticket.event ?? ticket.market);
+  const eventLabel = retailEventLabel(ticket, locale);
   const outcomeLabel = label(locale, ticket.outcome);
   const sideLabel = contractSide === "yes" ? "Yes" : "No";
   const selectionLabel = ticket.selection?.displayLabel ?? outcomeLabel;
@@ -432,7 +442,7 @@ export function TradeTicket({
             testID="trade-ticket"
           >
             <View accessibilityLabel="ticket-drag-handle" testID="ticket-drag-handle" style={styles.dragHandle} />
-            <View accessibilityLabel={`ticket-selection-summary ticket-retail-order-header ${providerIdentityLabel}`} testID="ticket-selection-summary" style={styles.ticketHeader}>
+            <View accessibilityLabel={`ticket-selection-summary ticket-retail-order-header ticket-header-retail-readable ${providerIdentityLabel}`} testID="ticket-selection-summary" style={styles.ticketHeader}>
               <Pressable accessibilityLabel="ticket-close" onPress={close} style={styles.closeButton} testID="ticket-close">
                 <Ionicons name="close" color="#f8fafc" size={24} />
               </Pressable>
@@ -445,7 +455,7 @@ export function TradeTicket({
               </View>
               <View style={styles.selectionTextBlock}>
                 <Text numberOfLines={1} style={styles.ticketTitle}>{eventLabel}</Text>
-                <Text accessibilityLabel="ticket-selection-line" testID="ticket-selection-line" numberOfLines={1} style={styles.ticketOutcome}>
+                <Text accessibilityLabel="ticket-selection-line" testID="ticket-selection-line" numberOfLines={2} style={styles.ticketOutcome}>
                   <Text style={styles.ticketOutcomeSide}>{sideLabel}</Text> <Text style={styles.ticketOutcomeDot}>-</Text> {selectionLabel}
                 </Text>
               </View>
@@ -625,18 +635,18 @@ const styles = StyleSheet.create({
   dragHandle: { alignSelf: "center", width: 92, height: 1, borderRadius: 999, backgroundColor: "#293141", marginBottom: 2, opacity: 0.01 },
   ticketTop: { minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   ticketHeading: { flex: 1, alignItems: "center" },
-  ticketTitle: { color: "#cbd5e1", fontSize: 16, fontWeight: "700" },
-  ticketOutcome: { color: "#f8fafc", fontSize: 19, fontWeight: "800", marginTop: 4 },
+  ticketTitle: { color: "#cbd5e1", fontSize: 15, fontWeight: "700" },
+  ticketOutcome: { color: "#f8fafc", fontSize: 18, fontWeight: "800", marginTop: 3, lineHeight: 22 },
   ticketOutcomeSide: { color: "#22c55e" },
   ticketOutcomeDot: { color: "#64748b" },
   ticketSub: { color: "#64748b", fontSize: 12, fontWeight: "900", marginTop: 4 },
   closeButton: { width: 42, height: 56, borderRadius: 999, alignItems: "center", justifyContent: "center" },
   tradeSidePill: { minWidth: 42, minHeight: 42 },
   tradeSideText: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
-  ticketHeader: { flexDirection: "row", alignItems: "center", gap: 14, minHeight: 62 },
+  ticketHeader: { flexDirection: "row", alignItems: "center", gap: 12, minHeight: 68 },
   outcomeFlag: { width: 56, height: 56, borderRadius: 14, alignItems: "center", justifyContent: "center", backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", overflow: "hidden" },
   outcomeFlagEmoji: { fontSize: 34, lineHeight: 42 },
-  selectionTextBlock: { flex: 1 },
+  selectionTextBlock: { flex: 1, minWidth: 0 },
   ticketSettingsButton: { width: 42, height: 56, borderRadius: 999, alignItems: "center", justifyContent: "center" },
   settingsPanel: { marginTop: 8, paddingHorizontal: 14, paddingVertical: 10, borderRadius: 14, backgroundColor: "#0d1420", borderWidth: 1, borderColor: "#222d40", gap: 8 },
   settingsPanelRow: { minHeight: 24, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },

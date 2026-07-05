@@ -546,3 +546,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Tapping Player Props must not expose fake/unbuilt markets or ticket/order affordances. | P0 | Passed | Smoke proof rejects route-backed line outcome/ticket markers and order-book UI while on the Player Props blank state. |
 | Returning to Game Lines must preserve the line-market ticket/order path. | P0 | Passed | S23 proof returns to Game Lines, rescans to Totals, opens the ticket, swipe-submits, and reaches Portfolio History. |
 | Backend/API route should not change for this blank-state proof gate. | P0 | Passed | No backend files changed; `npm run typecheck`, `scripts/smoke.ps1` parser check, and S23 server-filled proof passed. |
+
+## Cycle HX - Ticket Header Retail Readability
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Ticket header used provider-like/truncated event text instead of a readable event matchup when opening route-backed line tickets. | P0 | Passed | S23 ticket screenshot/XML show `ticket-header-retail-readable` and matchup-style `Breadth Home vs ...` copy instead of the provider slug. |
+| Selected outcome/line text should not immediately truncate on S23. | P0 | Passed | S23 ticket screenshot shows `Yes - Over 2.5 RT` wrapped and readable. |
+| Backend/API route should not change for this ticket-header correction. | P0 | Passed | No backend files changed; `npm run typecheck`, `scripts/smoke.ps1` parser check, and S23 server-filled proof passed. |

@@ -5365,7 +5365,7 @@ try {
           Save-Screenshot -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-retry.png"
           $mvpRouteSpreadTicketHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-retry.xml"
         }
-        Assert-HierarchyContains -Path $mvpRouteSpreadTicketHierarchy -Expected @("trade-ticket", "ticket-retail-order-header", "ticket-settings-state-closed", "ticket-market-type-$mvpRouteTargetTicketMarketType", "ticket-line-$mvpRouteTargetLine", "ticket-period-Reg. Time", "provider-source-polymarket", "provider-token-$mvpRouteTargetToken", "Choose an amount")
+        Assert-HierarchyContains -Path $mvpRouteSpreadTicketHierarchy -Expected @("trade-ticket", "ticket-retail-order-header", "ticket-header-retail-readable", "ticket-settings-state-closed", "ticket-market-type-$mvpRouteTargetTicketMarketType", "ticket-line-$mvpRouteTargetLine", "ticket-period-Reg. Time", "provider-source-polymarket", "provider-token-$mvpRouteTargetToken", "Choose an amount")
         Assert-HierarchyDoesNotContain -Path $mvpRouteSpreadTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
         Invoke-TapHierarchyNode -Path $mvpRouteSpreadTicketHierarchy -Identifier "ticket-settings"
         Start-Sleep -Milliseconds 500
