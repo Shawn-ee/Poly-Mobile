@@ -171,6 +171,8 @@ Cycle HX changes only mobile Trade Ticket header presentation and proof gates. N
 
 Cycle HY changes only mobile Trade Ticket amount-entry presentation, fixed swipe-zone layout, and proof gates. No backend route, request body, response field, or schema changes are required. Mobile continues to submit the same amount, side, contract side, market/outcome identity, line, period, provider source/token, and payout context through the existing server-backed fake-token order flow.
 
+Cycle HZ changes only mobile proof liquidity setup and Portfolio amount assertions. No backend route, request body, response field, or schema changes are required. The existing `POST /api/orders` request still sends price and share size derived from the ticket amount, and `GET /api/portfolio` still returns filled position `costBasisTokens`, `valueTokens`, shares, average cost, current price, and provider/line identity. The proof now seeds enough deterministic asks for the `$75` ticket to fully fill, so the Portfolio row's `costBasisTokens` matches the submitted ticket amount.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

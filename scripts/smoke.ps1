@@ -5404,7 +5404,8 @@ try {
             "portfolio-line-$mvpRouteTargetLine",
             "portfolio-period-Reg. Time",
             "portfolio-provider-source-polymarket",
-            "portfolio-provider-token-$mvpRouteTargetToken"
+            "portfolio-provider-token-$mvpRouteTargetToken",
+            "Cost 75 USDT"
           )
         } else {
           @(

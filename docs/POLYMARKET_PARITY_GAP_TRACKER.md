@@ -564,3 +564,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Swipe icon should move with gesture progress and submit only after a threshold. | P0 | Passed | `SwipeSubmitControl` translates the handle from `swipeProgress`, exposes `swipe-submit-handle-progress-motion`, keeps tap disabled, and the S23 proof submits only after the upward swipe command. |
 | Backend/order logic should not change for this ticket layout correction. | P0 | Passed | No backend files changed; `npm run typecheck`, `scripts/smoke.ps1` parser check, and S23 server-filled proof passed. |
 | Exact native Polymarket blur/physics and final flag artwork remain future polish. | P2 | Tracked | This cycle targets layout, keypad visibility, and threshold swipe interaction. |
+
+## Cycle HZ - Portfolio Ticket Amount Integrity
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| After the reference-style `$75` ticket, the server-filled Portfolio proof could show only a partial filled cost such as `27.6 USDT`. | P0 | Passed | Mobile proof wrappers now seed enough deterministic counterparty asks for the `$75` order to fully fill. |
+| Portfolio Positions must show the same user-submitted ticket amount after the server-backed fake-token fill. | P0 | Passed | S23 proof requires `Cost 75 USDT`; final screenshot shows `Cost 75 USDT` and `75 USDT +0 USDT`. |
+| Selected market/line/provider identity must still survive the full route-backed ticket/order/Portfolio/history path. | P0 | Passed | Final S23 proof still verifies totals `portfolio-market-type`, `portfolio-line-2.5`, `portfolio-period-Reg. Time`, and Polymarket provider token/source markers. |
+| Backend/API routes should not change for this proof-data integrity correction. | P0 | Passed | No backend route/schema changed; `POST /api/orders` and `GET /api/portfolio` contracts remain the same. |
