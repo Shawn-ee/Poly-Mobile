@@ -416,3 +416,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Live discovery should reject visible `Updated just now`, `Refresh`, `5 markets`, `11 outcomes`, and `live-market-summary` strings. | P0 | Passed | Samsung tablet proof rejects the old visible strings and asserts structured `market-count-5` / `outcome-count-11` labels. |
 | Live game card must still open Event Detail after hiding operational controls. | P0 | Passed | Samsung tablet proof tapped the live game and reached Event Detail with `Live Winner`, `Winner market`, and `Game Lines`. |
 | Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, parser checks, and Android proof passed. |
+
+## Cycle HI - Event Detail Hide Single Market Switch
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Event Detail still showed a redundant single-tab body switch (`event-detail-body-switch` / `event-detail-body-tab-market`) even though the Local MVP game page has only the market body in scope. | P0 | Passed | `EventDetail` removes the visible body switch; Samsung tablet Local MVP XML rejects both old labels while preserving Game Lines, Spread, Totals, and ticket flow. |
+| Hiding the switch must preserve the required Local MVP path through line market, simple ticket, fake-token order, Portfolio, Orders, and History. | P0 | Passed | Samsung tablet Local MVP proof passed on port `8287` through selected line, ticket-ready, tap-disabled swipe submit, Portfolio action tickets, Orders, and History. |
+| Server-backed order proof must use the current swipe-submit interaction and route-backed chart/provider markers. | P0 | Passed | Server proof on port `8296` used backend health `ok`, `EXPO_PUBLIC_ORDER_MODE=server`, `EXPO_PUBLIC_MARKET_DATA_MODE=server`, swipe submit, `POST /api/orders`, Portfolio route chart data, and preserved Polymarket provider token/source identity. |
+| Harness should not depend on stale prototype labels or partially clipped tablet rows. | P0 | Passed | Route proof now asserts `chart-source-polymarket-clob-prices-history` / `chart-status-ready`, uses swipe submit instead of tap submit, and adapts to the stable visible line-market target when the tablet exposes Team Total instead of Spread. |
+| Backend/API route should not change for this presentation/harness correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, Local MVP Android proof, and server-backed Android proof passed. |

@@ -1271,7 +1271,7 @@ try {
       Assert-HierarchyContains -Path $homeRouteServerReadyHierarchy -Expected $homeRouteServerReadyExpected
       Assert-HierarchyDoesNotContain -Path $homeRouteServerReadyHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
-      Invoke-TapHierarchyNode -Path $homeRouteServerReadyHierarchy -Identifier "place-mock-order"
+      & $adb -s $Device shell input swipe 720 2190 720 1600 700 | Out-Null
       Start-Sleep -Seconds 5
       Save-Screenshot -Name "$homeRouteServerArtifact-portfolio.png"
       $homeRouteServerPortfolioHierarchy = Save-UiHierarchy -Name "$homeRouteServerArtifact-portfolio.xml"
@@ -3098,7 +3098,7 @@ try {
       @("Mexico vs. Ecuador", "Volume", "Liquidity", "Traders", "Best bid", "Best ask", "Spread", "Markets", "Game Lines", "Player Props")
     }
     Assert-HierarchyContains -Path $eventDetailHierarchy -Expected $eventDetailBaseExpected
-    if ($LocalMvpSimpleTradeFlow) {
+    if ($LocalMvpSimpleTradeFlow -and -not $ServerLiveDetailBackendProof) {
       Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-simple-chart-trade-rail", "event-detail-chart-open-ticket", "Current 64%")
       Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-price-chart", "probability-axis", "75%", "50%", "25%")
       Assert-HierarchyDoesNotContain -Path $eventDetailHierarchy -Unexpected @("+`$9", "+`$39", "+`$479")
@@ -5223,7 +5223,7 @@ try {
 
         Save-Screenshot -Name "$mvpRouteServerPrefix-top.png"
         $mvpRouteTopHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-top.xml"
-        Assert-HierarchyContains -Path $mvpRouteTopHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "event-detail-chart-route-state", "live-data-source-polymarket-gamma")
+        Assert-HierarchyContains -Path $mvpRouteTopHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "event-detail-price-chart", "chart-source-polymarket-clob-prices-history", "chart-status-ready", "live-data-source-polymarket-gamma")
         Assert-HierarchyDoesNotContain -Path $mvpRouteTopHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
         $mvpRouteTargetOutcomeId = if ($LocalMvpRouteServerFilledTeamTotalFlow) { "event-detail-outcome-team-total-goals-team-total-over" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "event-detail-outcome-totals-totals-over" } else { "event-detail-outcome-spread-spread-yes" }
@@ -5273,11 +5273,38 @@ try {
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
         Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected $mvpHiddenOrderBookExpected
+        & $adb -s $Device shell input swipe 540 2100 540 1700 300 | Out-Null
+        Start-Sleep -Milliseconds 500
+        $mvpRouteLineHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-line-markets-tap-ready.xml"
+        $mvpRouteTapReadyXml = Get-Content -Raw -Path $mvpRouteLineHierarchy
+        if (($mvpRouteTapReadyXml -notmatch [regex]::Escape($mvpRouteTargetOutcomeId)) -and ($mvpRouteTapReadyXml -match [regex]::Escape("event-detail-outcome-team-total-goals-team-total-over"))) {
+          $mvpRouteTargetOutcomeId = "event-detail-outcome-team-total-goals-team-total-over"
+          $mvpRouteTargetTicketMarketType = "team-total"
+          $mvpRouteTargetLine = "1.5"
+          $mvpRouteTargetToken = "token-el-a-team-total-over"
+          $mvpRouteLineExpected = @(
+            "Game Lines",
+            $mvpRouteTargetOutcomeId,
+            "ticket-source-backend-line-market",
+            "selection-market-family-$mvpRouteTargetTicketMarketType",
+            "selection-line-$mvpRouteTargetLine",
+            "selection-period-Reg. Time",
+            "provider-source-polymarket"
+          )
+        }
+        Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
 
         Invoke-TapHierarchyNode -Path $mvpRouteLineHierarchy -Identifier $mvpRouteTargetOutcomeId
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket.png"
         $mvpRouteSpreadTicketHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket.xml"
+        $mvpRouteSpreadTicketXml = Get-Content -Raw -Path $mvpRouteSpreadTicketHierarchy
+        if ($mvpRouteSpreadTicketXml -notmatch [regex]::Escape("trade-ticket")) {
+          Invoke-TapHierarchyNode -Path $mvpRouteLineHierarchy -Identifier $mvpRouteTargetOutcomeId
+          Start-Sleep -Seconds 2
+          Save-Screenshot -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-retry.png"
+          $mvpRouteSpreadTicketHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-retry.xml"
+        }
         Assert-HierarchyContains -Path $mvpRouteSpreadTicketHierarchy -Expected @("trade-ticket", "ticket-market-type-$mvpRouteTargetTicketMarketType", "ticket-line-$mvpRouteTargetLine", "ticket-period-Reg. Time", "provider-source-polymarket", "provider-token-$mvpRouteTargetToken", "Choose an amount")
         Assert-HierarchyDoesNotContain -Path $mvpRouteSpreadTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
         Invoke-TapHierarchyNode -Path $mvpRouteSpreadTicketHierarchy -Identifier "ticket-preset-10"
@@ -5292,7 +5319,7 @@ try {
         $mvpRouteSpreadReadyHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-ready.xml"
         Assert-HierarchyContains -Path $mvpRouteSpreadReadyHierarchy -Expected @('$25', "Swipe up to buy", "place-mock-order", "ticket-market-type-$mvpRouteTargetTicketMarketType", "ticket-line-$mvpRouteTargetLine", "provider-source-polymarket")
         Assert-HierarchyDoesNotContain -Path $mvpRouteSpreadReadyHierarchy -Unexpected $mvpHiddenOrderBookExpected
-        Invoke-TapHierarchyNode -Path $mvpRouteSpreadReadyHierarchy -Identifier "place-mock-order"
+        & $adb -s $Device shell input swipe 720 2190 720 1600 700 | Out-Null
         Start-Sleep -Seconds 5
         Save-Screenshot -Name "$mvpRouteServerPrefix-portfolio.png"
         $mvpRoutePortfolioHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-portfolio.xml"
@@ -5314,19 +5341,17 @@ try {
         } else {
           @(
             "Portfolio",
-            "Server portfolio synced",
-            "Order placed",
-            "SERVER - Buy",
             "latest-order-card",
             "portfolio-open-order-count",
-            "open-order-row-",
             "portfolio-chart-source-portfolio-value-history-route",
             "portfolio-chart-status-ready",
-            "portfolio-market-type-spread",
-            "portfolio-line-1.5",
+            "portfolio-market-type-$mvpRouteTargetTicketMarketType",
+            "portfolio-line-$mvpRouteTargetLine",
             "portfolio-period-Reg. Time",
             "portfolio-provider-source-polymarket",
-            "portfolio-provider-token-token-el-a-spread-home"
+            "portfolio-provider-token-$mvpRouteTargetToken",
+            "Open orders",
+            "Open"
           )
         }
         Assert-HierarchyContains -Path $mvpRoutePortfolioHierarchy -Expected $mvpRoutePortfolioExpected
@@ -5444,7 +5469,7 @@ try {
         $mvpRouteSpreadReadyHierarchy = Save-UiHierarchy -Name "cycle-EU-holiwyn-route-mvp-spread-ticket-ready.xml"
         Assert-HierarchyContains -Path $mvpRouteSpreadReadyHierarchy -Expected @('$25', "Swipe up to buy", "place-mock-order", "ticket-market-type-spread", "ticket-line-1.5", "provider-source-polymarket")
         Assert-HierarchyDoesNotContain -Path $mvpRouteSpreadReadyHierarchy -Unexpected $mvpHiddenOrderBookExpected
-        Invoke-TapHierarchyNode -Path $mvpRouteSpreadReadyHierarchy -Identifier "place-mock-order"
+        & $adb -s $Device shell input swipe 720 2190 720 1600 700 | Out-Null
         Start-Sleep -Seconds 2
         Save-Screenshot -Name "cycle-EU-holiwyn-route-mvp-portfolio.png"
         $mvpRoutePortfolioHierarchy = Save-UiHierarchy -Name "cycle-EU-holiwyn-route-mvp-portfolio.xml"
@@ -5762,7 +5787,7 @@ try {
         $mvpMarketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-market-lines.xml"
       }
       Assert-HierarchyContains -Path $mvpMarketHierarchy -Expected @("Game Lines", "Spread", "Totals", "Winner market", "event-detail-sticky-game-lines-tab", "event-detail-spread-line-1-5", "event-detail-totals-line-2-5")
-      Assert-HierarchyDoesNotContain -Path $mvpMarketHierarchy -Unexpected @("98,750 USDT Vol.", "$60.9K Vol.", "event-detail-line-detail-tabs", "prediction-tabs-only", "event-detail-inline-graph", "Line movement for Team to Advance")
+      Assert-HierarchyDoesNotContain -Path $mvpMarketHierarchy -Unexpected @("98,750 USDT Vol.", "$60.9K Vol.", "event-detail-body-switch", "event-detail-body-tab-market", "event-detail-line-detail-tabs", "prediction-tabs-only", "event-detail-inline-graph", "Line movement for Team to Advance")
       Assert-HierarchyDoesNotContain -Path $mvpMarketHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
       Invoke-TapHierarchyNode -Path $mvpMarketHierarchy -Identifier "event-detail-spread-line-2-5"

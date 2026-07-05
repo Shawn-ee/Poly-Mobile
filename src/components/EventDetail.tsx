@@ -374,7 +374,7 @@ export function EventDetail({
   const showOrderBookDebug = process.env.EXPO_PUBLIC_SHOW_ORDERBOOK === "1";
   const [activeLineDetailTab, setActiveLineDetailTab] = useState<"order-book" | "graph" | "about">("graph");
   const [activeHeaderTab, setActiveHeaderTab] = useState<"game" | "chat">("game");
-  const [activeBodyTab, setActiveBodyTab] = useState<"market" | "live-stats">("market");
+  const [activeBodyTab] = useState<"market" | "live-stats">("market");
   const [chartFilter, setChartFilter] = useState<ChartFilter>("Game");
   const [selectedChartPoint, setSelectedChartPoint] = useState<ChartPointKey>("latest");
   const [selectedChartOutcomeId, setSelectedChartOutcomeId] = useState<string | null>(null);
@@ -1696,31 +1696,16 @@ export function EventDetail({
           </View>
         ) : (
           <>
-        <View accessibilityLabel="event-detail-body-switch" style={styles.bodySwitchSection} testID="event-detail-body-switch">
-          <View style={styles.bodySwitchMeta}>
-            <Text accessibilityLabel={`event-detail-volume-hidden-local-mvp ${stats.volume}`} style={styles.hiddenStatsText}>volume hidden</Text>
-            <Text style={styles.bodySwitchSource}>{isLiveEvent ? "Live World Cup" : "Holiwyn"}</Text>
-            {liveDataStatus && (
-              <Text
-                accessibilityLabel={`event-detail-live-data-inline event-detail-live-provider-copy-hidden-local-mvp live-data-status-${liveDataState} provider-lifecycle-${liveDataBadge.lifecycle} live-data-source-${liveDataBadge.source}`}
-                style={styles.hiddenStatsText}
-                testID="event-detail-live-data-inline"
-              >
-                live provider hidden
-              </Text>
-            )}
-          </View>
-          <View style={styles.bodySwitchTabs}>
-            <Pressable
-              accessibilityLabel="event-detail-body-tab-market"
-              onPress={() => setActiveBodyTab("market")}
-              style={[styles.bodySwitchTab, activeBodyTab === "market" && styles.bodySwitchTabActive]}
-              testID="event-detail-body-tab-market"
+        <View accessible accessibilityLabel={`event-detail-market-switch-hidden-local-mvp event-detail-volume-hidden-local-mvp ${stats.volume} event-detail-market-body-default ${isLiveEvent ? "live-world-cup-context-hidden" : "holiwyn-context-hidden"}`} style={styles.hiddenStats} testID="event-detail-market-switch-hidden-local-mvp">
+          {liveDataStatus && (
+            <Text
+              accessibilityLabel={`event-detail-live-data-inline event-detail-live-provider-copy-hidden-local-mvp live-data-status-${liveDataState} provider-lifecycle-${liveDataBadge.lifecycle} live-data-source-${liveDataBadge.source}`}
+              style={styles.hiddenStatsText}
+              testID="event-detail-live-data-inline"
             >
-              <Ionicons name="analytics-outline" color={activeBodyTab === "market" ? "#38bdf8" : "#8b93a3"} size={18} />
-              <Text style={[styles.bodySwitchTabText, activeBodyTab === "market" && styles.bodySwitchTabTextActive]}>Market</Text>
-            </Pressable>
-          </View>
+              live provider hidden
+            </Text>
+          )}
         </View>
 
         {activeBodyTab === "live-stats" ? (
@@ -2434,7 +2419,7 @@ const styles = StyleSheet.create({
   marketTabTextActive: { color: "#f8fafc" },
   emptyProps: { minHeight: 280, alignItems: "center", justifyContent: "center" },
   emptyPropsText: { color: "#6b7280", fontSize: 18, fontWeight: "800" },
-  hiddenStats: { height: 1, overflow: "hidden", opacity: 0 },
+  hiddenStats: { height: 1, overflow: "hidden", opacity: 0.01 },
   hiddenStatsText: { color: "#060b14", fontSize: 1 },
   marketBlock: { borderBottomWidth: 1, borderBottomColor: "#172033", paddingHorizontal: 24, paddingVertical: 16 },
   marketHeaderRow: { minHeight: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },

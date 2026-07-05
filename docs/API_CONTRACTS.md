@@ -139,6 +139,8 @@ Cycle HG changes only visible mobile Event Detail copy. No backend route, reques
 
 Cycle HH changes only visible mobile Live discovery presentation and proof gates. No backend route, request body, response field, or schema changes are required. Live events still consume the same `events`, `markets`, `outcomes`, `refreshTick`, and `isRefreshing` props; refresh/count state is now hidden structured metadata in the default Local MVP UI.
 
+Cycle HI changes only visible mobile Event Detail presentation and proof gates. No backend route, request body, response field, or schema changes are required. The server-backed proof still uses `POST /api/orders`, `GET /api/portfolio`, and `GET /api/portfolio/value-history` through an in-process mobile dev credential. The submitted ticket preserves `marketType`, `line`, `period`, `contractSide`, `referenceSource`, provider market/condition/token IDs, and selected outcome metadata. The harness now asserts durable route-backed markers such as `chart-source-polymarket-clob-prices-history`, `chart-status-ready`, `portfolio-chart-source-portfolio-value-history-route`, `portfolio-provider-source-polymarket`, and `portfolio-provider-token-*` instead of stale visible sync labels.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
