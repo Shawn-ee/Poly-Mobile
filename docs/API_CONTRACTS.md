@@ -113,6 +113,8 @@ Cycle GT changes only mobile ticket layout presentation on wide Android screens.
 
 Cycle GU changes only mobile Portfolio layout presentation on wide Android screens. No backend route, request body, response field, or schema changes are required. Portfolio continues to consume the same balance, positions, open orders, activities, value history, and ticket handoff fields.
 
+Cycle GV changes only mobile Event Detail layout presentation on wide Android screens. No backend route, request body, response field, or schema changes are required. Event Detail continues to consume the same event, chart, market, outcome, line selector, ticket handoff, and order/Portfolio identity fields.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

@@ -2250,7 +2250,7 @@ const styles = StyleSheet.create({
   compactTime: { color: "#cbd5e1", fontSize: 15, fontWeight: "800", marginTop: 3 },
   compactRightText: { alignItems: "flex-end" },
   scroller: { flex: 1 },
-  scrollPad: { paddingBottom: 110 },
+  scrollPad: { width: "100%", maxWidth: 480, alignSelf: "center", paddingBottom: 110 },
   legacySummary: { height: 1, overflow: "hidden", opacity: 0 },
   legacySummaryText: { color: "#060b14", fontSize: 1 },
   matchHeader: { minHeight: 96, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 28, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
