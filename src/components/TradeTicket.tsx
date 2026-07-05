@@ -127,6 +127,7 @@ function SwipeSubmitControl({
     [disabled, isSubmitting, onSubmit],
   );
   const progressBucket = disabled ? "disabled" : isSubmitting ? "submitting" : isArmed ? "armed" : swipeProgress > 0 ? "dragging" : "idle";
+  const handleLift = -58 * swipeProgress;
 
   return (
     <View
@@ -140,8 +141,8 @@ function SwipeSubmitControl({
       {...panResponder.panHandlers}
     >
       <View
-        accessibilityLabel={`swipe-submit-handle swipe-submit-state-${progressBucket}`}
-        style={[styles.swipeIcon, isArmed && styles.swipeIconArmed]}
+        accessibilityLabel={`swipe-submit-handle swipe-submit-state-${progressBucket} swipe-submit-handle-translate-y-${Math.round(handleLift)}`}
+        style={[styles.swipeIcon, isArmed && styles.swipeIconArmed, { transform: [{ translateY: handleLift }] }]}
         testID="swipe-submit-handle"
       >
         <Ionicons name={isSubmitting ? "hourglass-outline" : "chevron-up"} color="#ffffff" size={22} />
@@ -348,7 +349,7 @@ export function TradeTicket({
   const estimatedShares = averagePrice > 0 ? numericAmount / averagePrice : 0;
   const estimatedPayout = contractProbability > 0 ? numericAmount * (100 / contractProbability) : 0;
   const swipeLabel = side === "buy" ? t.swipeBuyOrder : t.swipeSellOrder;
-  const amountPresets = [5, 10];
+  const amountPresets = [25, 50];
   const keypadKeys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "backspace"];
   const isLiveTicket = ticket.event?.status === "live";
   const tradingModeValue = tradingMode === "server" ? t.tradingModeServer : t.tradingModeMock;
@@ -427,6 +428,7 @@ export function TradeTicket({
             accessibilityLabel="trade-ticket"
             contentContainerStyle={styles.ticketContent}
             keyboardShouldPersistTaps="handled"
+            style={styles.ticketBodyPanel}
             testID="trade-ticket"
           >
             <View accessibilityLabel="ticket-drag-handle" testID="ticket-drag-handle" style={styles.dragHandle} />
@@ -617,8 +619,9 @@ export function TradeTicket({
 
 const styles = StyleSheet.create({
   modalShade: { flex: 1, justifyContent: "flex-end", backgroundColor: "#070b12" },
-  ticket: { flex: 1, height: "100%", backgroundColor: "#070b12", overflow: "hidden" },
-  ticketContent: { flexGrow: 1, width: "100%", maxWidth: 480, alignSelf: "center", paddingHorizontal: 24, paddingTop: 34, paddingBottom: 18 },
+  ticket: { flex: 1, height: "100%", backgroundColor: "#fb2f6f", overflow: "hidden" },
+  ticketBodyPanel: { flex: 1, backgroundColor: "#070b12", borderBottomLeftRadius: 34, borderBottomRightRadius: 34 },
+  ticketContent: { flexGrow: 1, width: "100%", maxWidth: 480, alignSelf: "center", paddingHorizontal: 24, paddingTop: 28, paddingBottom: 10 },
   dragHandle: { alignSelf: "center", width: 92, height: 1, borderRadius: 999, backgroundColor: "#293141", marginBottom: 2, opacity: 0.01 },
   ticketTop: { minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   ticketHeading: { flex: 1, alignItems: "center" },
@@ -630,7 +633,7 @@ const styles = StyleSheet.create({
   closeButton: { width: 42, height: 56, borderRadius: 999, alignItems: "center", justifyContent: "center" },
   tradeSidePill: { minWidth: 42, minHeight: 42 },
   tradeSideText: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
-  ticketHeader: { flexDirection: "row", alignItems: "center", gap: 14, minHeight: 66 },
+  ticketHeader: { flexDirection: "row", alignItems: "center", gap: 14, minHeight: 62 },
   outcomeFlag: { width: 56, height: 56, borderRadius: 14, alignItems: "center", justifyContent: "center", backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", overflow: "hidden" },
   outcomeFlagEmoji: { fontSize: 34, lineHeight: 42 },
   selectionTextBlock: { flex: 1 },
@@ -645,13 +648,13 @@ const styles = StyleSheet.create({
   marketStatusText: { color: "#bbf7d0", fontSize: 12, fontWeight: "900" },
   marketStatusTextWarning: { color: "#fde68a" },
   marketStatusTextBlocked: { color: "#fecaca" },
-  amountDisplayBlock: { minHeight: 126, alignItems: "center", justifyContent: "center", marginTop: 0 },
-  amountDisplayText: { color: "#f8fafc", fontSize: 68, fontWeight: "500" },
+  amountDisplayBlock: { minHeight: 112, alignItems: "center", justifyContent: "center", marginTop: 0 },
+  amountDisplayText: { color: "#f8fafc", fontSize: 70, fontWeight: "500" },
   amountDisplayTextEmpty: { color: "#1b2230" },
   ticketOutcomeRow: { alignSelf: "center", flexDirection: "row", alignItems: "center", gap: 4, minHeight: 56, padding: 5, borderRadius: 999, backgroundColor: "#1c2330" },
   outcomeChoiceMuted: { minWidth: 86, textAlign: "center", color: "#8b94a5", fontSize: 17, fontWeight: "700", paddingHorizontal: 14 },
   outcomeChoiceActive: { minWidth: 86, textAlign: "center", overflow: "hidden", color: "#f8fafc", fontSize: 17, fontWeight: "800", paddingHorizontal: 14, paddingVertical: 12, borderRadius: 999, backgroundColor: "#0d1422" },
-  toWinBlock: { alignItems: "center", justifyContent: "center", minHeight: 44, marginTop: 2 },
+  toWinBlock: { alignItems: "center", justifyContent: "center", minHeight: 40, marginTop: -6 },
   toWinText: { color: "#d1d5db", fontSize: 20, fontWeight: "800" },
   toWinValue: { color: "#22c55e", fontSize: 22, fontWeight: "900" },
   priceText: { color: "#8b94a5", fontSize: 15, fontWeight: "800", marginTop: 3 },
@@ -666,12 +669,12 @@ const styles = StyleSheet.create({
   orderReviewLabel: { color: "#64748b", fontSize: 10, fontWeight: "900", textTransform: "uppercase" },
   orderReviewValue: { color: "#e2e8f0", fontSize: 12, fontWeight: "900", marginTop: 3 },
   orderReviewValueStrong: { color: "#22c55e", fontSize: 15, fontWeight: "900", marginTop: 3 },
-  ticketSideRow: { alignSelf: "center", width: 142, flexDirection: "row", gap: 3, marginTop: 8, padding: 4, borderRadius: 999, backgroundColor: "#1d2431" },
-  sideButton: { flex: 1, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "transparent" },
+  ticketSideRow: { alignSelf: "center", width: 142, flexDirection: "row", gap: 3, marginTop: 5, padding: 4, borderRadius: 999, backgroundColor: "#1d2431" },
+  sideButton: { flex: 1, minHeight: 34, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "transparent" },
   sideButtonActive: { backgroundColor: "#0b111d" },
   sideText: { color: "#8b94a5", fontSize: 15, fontWeight: "700" },
   sideTextActive: { color: "#ffffff" },
-  oddsAvailableLine: { alignItems: "center", justifyContent: "center", minHeight: 28, marginTop: 10 },
+  oddsAvailableLine: { alignItems: "center", justifyContent: "center", minHeight: 26, marginTop: 6 },
   oddsAvailableText: { color: "#a8b0bf", fontSize: 15, fontWeight: "500" },
   amountHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8, marginTop: 6, marginBottom: 3 },
   amountMeta: { flexDirection: "row", alignItems: "center", gap: 8, flexShrink: 1 },
@@ -679,25 +682,25 @@ const styles = StyleSheet.create({
   balanceText: { color: "#cbd5e1", fontSize: 12, fontWeight: "900", flexShrink: 1 },
   maxText: { color: "#93c5fd", fontWeight: "900" },
   amountInput: { height: 42, borderRadius: 12, paddingHorizontal: 12, backgroundColor: "#070c14", borderWidth: 1, borderColor: "#263247", color: "#f8fafc", fontSize: 21, fontWeight: "900" },
-  presetRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 8, marginTop: 12 },
-  presetButton: { flex: 1, minHeight: 44, alignItems: "center", justifyContent: "center" },
+  presetRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 8, marginTop: 8 },
+  presetButton: { flex: 1, minHeight: 40, alignItems: "center", justifyContent: "center" },
   presetText: { color: "#d7dce6", fontSize: 23, fontWeight: "500" },
-  keypadGrid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: 10, marginTop: 12 },
-  keypadButton: { width: "31.5%", minHeight: 44, alignItems: "center", justifyContent: "center" },
-  keypadText: { color: "#f8fafc", fontSize: 26, fontWeight: "500" },
+  keypadGrid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: 6, marginTop: 8, paddingBottom: 4 },
+  keypadButton: { width: "31.5%", minHeight: 42, alignItems: "center", justifyContent: "center" },
+  keypadText: { color: "#f8fafc", fontSize: 28, fontWeight: "500" },
   errorCard: { flexDirection: "row", alignItems: "center", gap: 8, padding: 10, borderRadius: 10, backgroundColor: "#1f1a0b", borderWidth: 1, borderColor: "#854d0e", marginTop: 12 },
   errorTextBlock: { flex: 1, gap: 3 },
   errorText: { color: "#fde68a", fontWeight: "800" },
   errorDetailText: { color: "#fcd34d", fontSize: 12, fontWeight: "700" },
-  ticketFooter: { minHeight: 156, paddingHorizontal: 18, paddingTop: 8, paddingBottom: 18, backgroundColor: "#1d4ed8", position: "relative", overflow: "hidden" },
-  ticketFooterLightBand: { position: "absolute", top: 0, left: -60, right: -20, height: 92, backgroundColor: "#5c94ff", opacity: 0.72, transform: [{ rotate: "-10deg" }] },
-  ticketFooterDarkBand: { position: "absolute", left: -40, right: -40, bottom: -50, height: 112, backgroundColor: "#1648bd", opacity: 0.86, transform: [{ rotate: "8deg" }] },
-  swipeSubmit: { flex: 1, minHeight: 116, alignItems: "center", justifyContent: "center", gap: 10, paddingHorizontal: 14, borderRadius: 24, backgroundColor: "transparent" },
-  swipeSubmitArmed: { backgroundColor: "rgba(255,255,255,0.14)" },
+  ticketFooter: { minHeight: 148, paddingHorizontal: 18, paddingTop: 4, paddingBottom: 18, backgroundColor: "#fb2f6f", position: "relative", overflow: "hidden" },
+  ticketFooterLightBand: { position: "absolute", top: -18, left: -70, right: -20, height: 92, backgroundColor: "#ff79a5", opacity: 0.5, transform: [{ rotate: "-8deg" }] },
+  ticketFooterDarkBand: { position: "absolute", left: -40, right: -40, bottom: -52, height: 118, backgroundColor: "#d4145f", opacity: 0.78, transform: [{ rotate: "7deg" }] },
+  swipeSubmit: { flex: 1, minHeight: 108, alignItems: "center", justifyContent: "center", gap: 7, paddingHorizontal: 14, borderRadius: 24, backgroundColor: "transparent" },
+  swipeSubmitArmed: { backgroundColor: "rgba(255,255,255,0.08)" },
   swipeSubmitDisabled: { opacity: 0.55 },
   swipeIcon: { width: 56, height: 42, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "transparent" },
-  swipeIconArmed: { backgroundColor: "rgba(255,255,255,0.18)", transform: [{ translateY: -8 }] },
-  swipeTextBlock: { alignItems: "center", transform: [{ translateY: -14 }] },
+  swipeIconArmed: { backgroundColor: "rgba(255,255,255,0.16)" },
+  swipeTextBlock: { alignItems: "center", transform: [{ translateY: -18 }] },
   swipeLabel: { color: "#ffffff", fontSize: 24, fontWeight: "500" },
-  swipeHelper: { display: "none" },
+  swipeHelper: { color: "rgba(255,255,255,0.58)", fontSize: 12, fontWeight: "700", marginTop: 6 },
 });

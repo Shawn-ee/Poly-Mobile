@@ -499,3 +499,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The proof should recover when the S23 lands on nearby Spread rows before Totals. | P0 | Passed | `scripts/smoke.ps1` now performs a fine-scroll scan before asserting the route-backed Totals row. |
 | Backend/API route should not change for this Local MVP presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android server-filled proof passed. |
 | Future rules/compliance UX remains separate from the Local MVP betting path. | P2 | Tracked | The content is hidden by default, not replaced with a production rules system. |
+
+## Cycle HS - Ticket Swipe Screen Parity
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Ticket amount screen looked messy compared with Polymarket and did not clearly separate dark keypad body from the swipe submit zone. | P0 | Passed | `TradeTicket` now uses a dark rounded body panel and fixed red/pink footer; S23 screenshots show the separated sections. |
+| The keypad bottom row and red swipe area could overlap on S23. | P0 | Passed | S23 ticket-ready screenshot shows amount, payout, odds, presets, and all keypad rows visible above the footer. |
+| Swipe icon should visibly track upward gesture progress, not only jump after threshold. | P0 | Passed | `SwipeSubmitControl` computes `handleLift` from `swipeProgress` and exposes progress/translate markers while retaining threshold-only submit. |
+| Backend/order logic should not change for this visual/interaction correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and S23 server-filled proof passed. |
+| Exact native Polymarket drag physics and blur treatment remain future polish. | P2 | Tracked | This cycle implements progress-based handle movement and matched screen structure, not native app physics parity. |
