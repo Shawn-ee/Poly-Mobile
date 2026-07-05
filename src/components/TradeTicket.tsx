@@ -253,12 +253,25 @@ export function TradeTicket({
 
   useEffect(() => {
     if (!ticket) return;
-    setAmountState(ticket.event ? "0" : defaultAmount);
+    const opensFromRetailFlow = Boolean(ticket.event || ticket.sourcePositionId);
+    setAmountState(opensFromRetailFlow ? "0" : defaultAmount);
     setSideState(ticket.side);
     setActiveContractSide(ticket.contractSide ?? ticket.selection?.contractSide ?? "yes");
     setSlippageState(defaultSlippage);
     setShowDetails(false);
-  }, [ticket?.market.id, ticket?.outcome.id, ticket?.side, ticket?.contractSide, ticket?.selection?.contractSide]);
+  }, [
+    ticket?.market.id,
+    ticket?.outcome.id,
+    ticket?.side,
+    ticket?.contractSide,
+    ticket?.sourcePositionId,
+    ticket?.selection?.marketId,
+    ticket?.selection?.outcomeId,
+    ticket?.selection?.contractSide,
+    ticket?.selection?.line,
+    ticket?.selection?.period,
+    ticket?.selection?.displayLabel,
+  ]);
 
   if (!ticket) return null;
   const setAmount = (nextAmount: string) => {

@@ -228,3 +228,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Local mock cash-out sell would otherwise behave like a new sell position instead of removing the source position. | P0 | Passed | `sourcePositionId + sell` removes the original local position; Android proof verifies `No positions yet` and no `position-card-`. |
 | Latest order and History need to preserve Sell/No line-market identity after cash-out submit. | P0 | Passed | Smoke checks latest order/history `portfolio-side-sell`, `portfolio-contract-side-no`, line `2.5`, period `1st Half`, and display label `MEX -2.5 1H`. |
 | Backend/API route should not change for this local fake-token cycle. | P0 | Passed | No backend route, request body, response field, or schema changed. |
+
+## Cycle GM - Portfolio Action Ticket Amount Reset
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio action tickets could inherit a stale nonzero amount from a prior ticket. | P0 | Passed | `TradeTicket` reset dependencies now include `sourcePositionId` and selected line identity; Samsung tablet proof passed. |
+| Buy more and Cash out tickets should show `Choose an amount` until the user enters a fresh amount. | P0 | Passed | Smoke proof verifies both Portfolio action tickets show `$0`/`Choose an amount` and fail if either immediately shows `Swipe up to buy/sell`. |
+| Backend/API route should not change for this mobile-only state reset. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
