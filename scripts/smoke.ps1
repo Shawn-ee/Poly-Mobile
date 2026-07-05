@@ -5786,7 +5786,8 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-buy-more-ticket.png"
       $mvpPortfolioBuyMoreTicketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-buy-more-ticket.xml"
-      Assert-HierarchyContains -Path $mvpPortfolioBuyMoreTicketHierarchy -Expected (@("trade-ticket", "ticket-side-buy", "swipe-to-submit-order", "Swipe up to buy") + $mvpTicketExpected)
+      Assert-HierarchyContains -Path $mvpPortfolioBuyMoreTicketHierarchy -Expected (@("trade-ticket", "ticket-side-buy", "swipe-to-submit-order", "Choose an amount", '$0') + $mvpTicketExpected)
+      Assert-HierarchyDoesNotContain -Path $mvpPortfolioBuyMoreTicketHierarchy -Unexpected @("Swipe up to buy")
       Assert-HierarchyDoesNotContain -Path $mvpPortfolioBuyMoreTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
       Invoke-TapHierarchyNode -Path $mvpPortfolioBuyMoreTicketHierarchy -Identifier "ticket-close"
       Start-Sleep -Seconds 1
@@ -5795,9 +5796,15 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-ticket.png"
       $mvpPortfolioCashOutTicketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-ticket.xml"
-      Assert-HierarchyContains -Path $mvpPortfolioCashOutTicketHierarchy -Expected (@("trade-ticket", "ticket-side-sell", "swipe-to-submit-order", "Swipe up to sell") + $mvpSellTicketExpected)
+      Assert-HierarchyContains -Path $mvpPortfolioCashOutTicketHierarchy -Expected (@("trade-ticket", "ticket-side-sell", "swipe-to-submit-order", "Choose an amount", '$0') + $mvpSellTicketExpected)
+      Assert-HierarchyDoesNotContain -Path $mvpPortfolioCashOutTicketHierarchy -Unexpected @("Swipe up to sell")
       Assert-HierarchyDoesNotContain -Path $mvpPortfolioCashOutTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
       if ($mvpCycle -eq "GL") {
+        Invoke-TapHierarchyNode -Path $mvpPortfolioCashOutTicketHierarchy -Identifier "ticket-preset-10"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-ticket-ready.png"
+        $mvpPortfolioCashOutTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-ticket-ready.xml"
+        Assert-HierarchyContains -Path $mvpPortfolioCashOutTicketReadyHierarchy -Expected (@("trade-ticket", "ticket-side-sell", "swipe-to-submit-order", "Swipe up to sell", '$10') + $mvpSellTicketExpected)
         & $adb -s $Device shell input swipe 720 2185 720 2035 900 | Out-Null
         Start-Sleep -Seconds 2
         Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-submitted.png"

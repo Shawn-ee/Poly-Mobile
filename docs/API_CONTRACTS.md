@@ -95,6 +95,8 @@ Cycle GK changes the mobile-side ticket handoff for Portfolio actions. No backen
 
 Cycle GL changes only local fake-token cash-out handling. No backend route or schema changes are required. In server mode, submitted Sell tickets still use `POST /api/orders`; true server-backed close/position netting is outside this local MVP cycle. Mobile now carries `sourcePositionId` only as local UI state so a mock cash-out sell can remove the original local position after submit.
 
+Cycle GM changes only mobile ticket state reset behavior for Portfolio action tickets. No backend route, request body, response field, or schema changes are required. The existing `POST /api/orders` payload is unchanged after the user enters an amount; `sourcePositionId` remains local UI state for mock cash-out handling.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
