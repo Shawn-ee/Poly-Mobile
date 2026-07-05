@@ -640,3 +640,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Closing settings must return Portfolio to the normal trade-result flow. | P0 | Passed | S23 proof closes `portfolio-settings-close`, verifies `portfolio-settings-state-closed`, then continues to Portfolio History. |
 | Backend/API routes should not change for this visible action correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
 | Full account/settings parity remains future work. | P2 | Tracked | This cycle removes the dead button while keeping the Local MVP scope focused on fake-token betting flow. |
+
+## Cycle IN - Portfolio Header Dollar Value
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio top account value looked like an internal token ledger (`10,000 USDT`) instead of the Polymarket-style portfolio value header. | P0 | Passed | `Portfolio` now renders the top account value/cash line with `portfolio-header-dollar-value`; S23 screenshot shows `$10,000`, `+$0`, and `$9,925 cash`. |
+| The fake-token/order rows must keep their existing USDT/order identity after changing only the account header. | P0 | Passed | Same S23 proof still completes route-backed ticket, `Cost 75 USDT` position/history expectations, and Portfolio History. |
+| Settings action must remain functional after header formatting changes. | P0 | Passed | Same S23 proof opens and closes the Portfolio settings sheet. |
+| Backend/API routes should not change for this visible formatting correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
+| Full Portfolio typography/chart/row parity remains future work. | P2 | Tracked | This cycle narrows the account value header only. |

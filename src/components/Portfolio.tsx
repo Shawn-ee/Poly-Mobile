@@ -314,6 +314,15 @@ const investedTotal = (positions: Position[]) => positions.reduce((total, positi
 const currentValueTotal = (positions: Position[]) =>
   positions.reduce((total, position) => total + portfolioPositionValue(position), 0);
 
+const portfolioHeaderMoney = (value: number) => {
+  const absolute = Math.abs(value);
+  const formatted = absolute.toLocaleString(undefined, {
+    maximumFractionDigits: absolute >= 1000 ? 0 : 2,
+    minimumFractionDigits: absolute > 0 && absolute < 1000 ? 2 : 0,
+  });
+  return `${value < 0 ? "-" : ""}$${formatted}`;
+};
+
 const pnlTotal = (positions: Position[]) =>
   positions.reduce((total, position) => total + estimatedPnl(position), 0);
 
@@ -709,11 +718,11 @@ export function Portfolio({
           </View>
         </View>
       )}
-      <View accessibilityLabel="fake-balance-card portfolio-value-retail-density" testID="fake-balance-card" style={styles.valueBlock}>
-        <Text style={styles.portfolioValue}>{money(portfolioValue)}</Text>
+      <View accessibilityLabel="fake-balance-card portfolio-value-retail-density portfolio-header-dollar-value" testID="fake-balance-card" style={styles.valueBlock}>
+        <Text style={styles.portfolioValue}>{portfolioHeaderMoney(portfolioValue)}</Text>
         <Text style={[styles.portfolioPnlLine, portfolioPnl >= 0 ? styles.pnlPositive : styles.pnlNegative]}>
           {portfolioPnl >= 0 ? "+" : ""}
-          {money(portfolioPnl)} ({portfolioPnlPercent >= 0 ? "+" : ""}{portfolioPnlPercent.toFixed(1)}%) <Text style={styles.cashText}>{money(balance)} {pageCopy.cash}</Text>
+          {portfolioHeaderMoney(portfolioPnl)} ({portfolioPnlPercent >= 0 ? "+" : ""}{portfolioPnlPercent.toFixed(1)}%) <Text style={styles.cashText}>{portfolioHeaderMoney(balance)} {pageCopy.cash}</Text>
         </Text>
       </View>
       <PortfolioSparkline

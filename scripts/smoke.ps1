@@ -5458,6 +5458,7 @@ try {
           "portfolio-header-retail-density",
           "portfolio-settings portfolio-settings-state-closed",
           "portfolio-value-retail-density",
+          "portfolio-header-dollar-value",
           "portfolio-performance-chart",
           "portfolio-range-tabs-first-screen-fit",
           "portfolio-section-tabs",
