@@ -326,6 +326,7 @@ type DisplayOutcome = {
 type GameLineGroup = {
   id: string;
   title: string;
+  displayTitle?: string;
   subtitle?: string;
   backendMarket?: Market;
   rows: DisplayOutcome[];
@@ -834,7 +835,8 @@ export function EventDetail({
     {
       id: "team-total-goals",
       title: "Full Game Team Total Goals (Reg. Time)",
-      subtitle: `${teamCode(teamA?.name ?? "Home")} goals over 1.5`,
+      displayTitle: "Team Total Goals",
+      subtitle: `${teamCode(teamA?.name ?? "Home")} goals over 1.5 - Reg. Time`,
       backendMarket: backendTeamTotalMarket,
       lineValue: "1.5",
       rows: [
@@ -1429,16 +1431,20 @@ export function EventDetail({
       outcome?.referenceTokenId ? `provider-token-${outcome.referenceTokenId}` : null,
       outcome?.referenceOutcomeLabel ? `provider-outcome-${outcome.referenceOutcomeLabel}` : null,
     ].filter(Boolean).join(" ");
-  const renderGroup = (group: GameLineGroup) => (
+  const renderGroup = (group: GameLineGroup) => {
+    const visibleTitle = group.displayTitle ?? group.title;
+    const compactHeaderLabel = group.displayTitle ? "event-detail-line-header-compact-retail" : "";
+
+    return (
     <View key={group.id} style={styles.marketBlock}>
       <Pressable
-        accessibilityLabel={`event-detail-market-toggle-${group.id} ${group.title} ${group.subtitle ?? ""} market-availability-${group.backendMarket?.availability?.status ?? "unknown"} market-depth-${marketDepthBatchLabel(group.backendMarket) ? "batched" : "empty"} ${providerIdentityLabel(group.backendMarket)}`}
+        accessibilityLabel={`event-detail-market-toggle-${group.id} ${compactHeaderLabel} ${group.title} visible-title-${visibleTitle} ${group.subtitle ?? ""} market-availability-${group.backendMarket?.availability?.status ?? "unknown"} market-depth-${marketDepthBatchLabel(group.backendMarket) ? "batched" : "empty"} ${providerIdentityLabel(group.backendMarket)}`}
         onPress={() => toggleGroup(group.id)}
         style={styles.marketHeaderRow}
         testID={`event-detail-market-toggle-${group.id}`}
       >
         <View style={styles.marketTitleBlock}>
-          <Text style={styles.marketTitle}>{group.title}</Text>
+          <Text numberOfLines={2} style={styles.marketTitle}>{visibleTitle}</Text>
           {group.subtitle && <Text style={styles.marketSubcopy}>{group.subtitle}</Text>}
         </View>
         <View style={styles.headerRightCluster}>
@@ -1520,7 +1526,8 @@ export function EventDetail({
         </>
       )}
     </View>
-  );
+    );
+  };
   return (
     <View style={styles.screen}>
       <View style={styles.topBar}>

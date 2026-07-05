@@ -709,3 +709,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Event Detail spacing change must not break the route-backed ticket/order/Portfolio path. | P0 | Passed | Same S23 proof completes route-backed totals ticket, visible swipe-progress capture, server-backed fake-token order, Portfolio, settings, and History. |
 | Backend/API routes should not change for this visible layout correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
 | Exact native sticky-header scroll physics remain future work. | P2 | Tracked | This cycle closes the obvious clipped-fragment issue in the current Local MVP Game Lines screen. |
+
+## Cycle IU - Event Detail Line Header Density
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Team-total line-market header was too long and wrapped like an internal backend label instead of a compact Polymarket-style market title. | P0 | Passed | `EventDetail` now renders `Team Total Goals`; S23 team-total XML verifies `event-detail-line-header-compact-retail`, `visible-title-Team Total Goals`, and `BHO goals over 1.5 - Reg. Time`. |
+| Compact visible title must preserve the full market identity used by ordering/proof and ticket handoff. | P0 | Passed | The same XML still includes `Full Game Team Total Goals (Reg. Time)`, selected line `1.5`, provider source, and provider market/condition IDs. |
+| Header density change must not break the route-backed ticket/order/Portfolio path. | P0 | Passed | S23 full-flow totals proof completes ticket, visible swipe-progress capture, server-backed fake-token order, Portfolio, settings, and History. |
+| Backend/API routes should not change for this visible naming correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 proof passed. |
+| Exact market naming for every Polymarket soccer line remains future work. | P2 | Tracked | This cycle targets the most visibly bulky team-total header only. |

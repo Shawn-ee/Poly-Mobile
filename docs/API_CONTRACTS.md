@@ -201,6 +201,8 @@ Cycle IS changes only mobile Portfolio History icon presentation and proof gates
 
 Cycle IT changes only mobile Event Detail spacing and proof gates. No backend route, request body, response field, auth requirement, or schema changes are required. Event Detail continues to consume the same event markets/outcomes, line-market fields, provider source/token identity, selected line/period, and `POST /api/orders` / `GET /api/portfolio` contracts for the route-backed Local MVP trade path.
 
+Cycle IU changes only mobile Event Detail line-market header presentation and proof gates. No backend route, request body, response field, auth requirement, or schema changes are required. The compact team-total title is derived from existing market type, team code, line, and period fields; mobile still preserves the full market title, selected line/period, provider source/token identity, `POST /api/orders`, `GET /api/portfolio`, and Portfolio History contracts.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
