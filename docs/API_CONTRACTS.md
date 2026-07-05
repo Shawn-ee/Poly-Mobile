@@ -191,6 +191,8 @@ Cycle IN changes only mobile Portfolio header formatting and proof gates. No bac
 
 Cycle IO changes only mobile Portfolio layout density and proof gates. No backend route, request body, response field, auth requirement, or schema changes are required. The app continues to consume the same Portfolio account value, value-history points, position, order, activity, selected line/provider identity, and ticket/order contracts.
 
+Cycle IP changes only mobile Event Detail sticky-tab spacing and proof gates. No backend route, request body, response field, auth requirement, or schema changes are required. Event Detail continues to consume the same event markets/outcomes, line-market fields, provider source/token identity, selected line/period, and `POST /api/orders` / `GET /api/portfolio` contracts.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

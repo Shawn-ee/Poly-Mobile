@@ -5301,7 +5301,7 @@ try {
           $mvpRouteLineHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-line-markets.xml"
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
-        Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-market-tabs-local-mvp", "event-detail-core-full-game-lines-before-halves-local-mvp", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
+        Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-market-tabs-local-mvp", "event-detail-core-full-game-lines-before-halves-local-mvp", "event-detail-sticky-tab-content-clearance", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
         $mvpRouteLineOrderXml = Get-Content -Raw -Path $mvpRouteLineHierarchy
         $mvpTeamTotalIndex = $mvpRouteLineOrderXml.IndexOf("Full Game Team Total Goals")
         $mvpFirstHalfIndex = $mvpRouteLineOrderXml.IndexOf("1st Half Winner")
@@ -5339,7 +5339,7 @@ try {
           }
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
-        Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-market-tabs-local-mvp", "event-detail-core-full-game-lines-before-halves-local-mvp", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
+        Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-market-tabs-local-mvp", "event-detail-core-full-game-lines-before-halves-local-mvp", "event-detail-sticky-tab-content-clearance", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
         $mvpRouteReturnedOrderXml = Get-Content -Raw -Path $mvpRouteLineHierarchy
         $mvpReturnedTeamTotalIndex = $mvpRouteReturnedOrderXml.IndexOf("Full Game Team Total Goals")
         $mvpReturnedFirstHalfIndex = $mvpRouteReturnedOrderXml.IndexOf("1st Half Winner")
@@ -5945,7 +5945,7 @@ try {
         Start-Sleep -Seconds 1
         $mvpMarketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-market-lines.xml"
       }
-      Assert-HierarchyContains -Path $mvpMarketHierarchy -Expected @("Game Lines", "Spread", "Totals", "Winner market", "event-detail-sticky-game-lines-tab", "event-detail-spread-line-1-5", "event-detail-totals-line-2-5", "event-detail-market-tabs-local-mvp", "event-detail-core-full-game-lines-before-halves-local-mvp", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
+      Assert-HierarchyContains -Path $mvpMarketHierarchy -Expected @("Game Lines", "Spread", "Totals", "Winner market", "event-detail-sticky-game-lines-tab", "event-detail-spread-line-1-5", "event-detail-totals-line-2-5", "event-detail-market-tabs-local-mvp", "event-detail-core-full-game-lines-before-halves-local-mvp", "event-detail-sticky-tab-content-clearance", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
       $mvpMarketOrderXml = Get-Content -Raw -Path $mvpMarketHierarchy
       $mvpMarketTeamTotalIndex = $mvpMarketOrderXml.IndexOf("Full Game Team Total Goals")
       $mvpMarketFirstHalfIndex = $mvpMarketOrderXml.IndexOf("1st Half Winner")

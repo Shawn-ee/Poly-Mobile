@@ -659,3 +659,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Density change must preserve account value, chart, range selector, settings action, position identity, and History. | P0 | Passed | Same S23 proof verifies Portfolio header, settings open/close, selected totals line/provider identity, and History. |
 | Backend/API routes should not change for this visible density correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
 | Exact native Portfolio chart curve and final pixel polish remain future work. | P2 | Tracked | This cycle specifically closes post-trade first-screen result visibility. |
+
+## Cycle IP - Event Detail Sticky Tab Clearance
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| The sticky Game Lines tab rail could visually cut into market content while the user scrolled through line markets. | P0 | Passed | `EventDetail` now adds sticky shell clearance and the S23 line-market screenshot shows the Spread group starting cleanly below the sticky rail. |
+| Sticky-tab spacing change must preserve Player Props blank state, totals ticket, swipe submit, Portfolio, and History. | P0 | Passed | Same S23 proof verifies Player Props blank, route-backed totals ticket, upward swipe buy, Portfolio settings, and History. |
+| Backend/API routes should not change for this visible layout correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
+| Exact native sticky-header scroll physics remain future work. | P2 | Tracked | This cycle closes visible clearance in the line-market scroll proof. |

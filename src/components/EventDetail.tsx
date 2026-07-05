@@ -897,7 +897,7 @@ export function EventDetail({
 
     return (
       <View
-        accessibilityLabel={`${mode === "sticky" ? "event-detail-sticky-market-tabs" : "event-detail-market-tabs"} event-detail-market-tabs-local-mvp Game Lines Player Props exact-score-hidden-local-mvp half-tabs-hidden-local-mvp`}
+        accessibilityLabel={`${mode === "sticky" ? "event-detail-sticky-market-tabs event-detail-sticky-tab-content-clearance" : "event-detail-market-tabs"} event-detail-market-tabs-local-mvp Game Lines Player Props exact-score-hidden-local-mvp half-tabs-hidden-local-mvp`}
         style={[styles.marketTabs, mode === "sticky" && styles.stickyMarketTabs]}
         testID={mode === "sticky" ? "event-detail-sticky-market-tabs" : "event-detail-market-tabs"}
       >
@@ -2227,7 +2227,7 @@ const styles = StyleSheet.create({
   shareActionsRow: { flexDirection: "row", gap: 8, marginTop: 12 },
   shareActionButton: { flex: 1, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#172033", borderWidth: 1, borderColor: "#293548" },
   shareActionText: { color: "#e5e7eb", fontSize: 12, fontWeight: "900" },
-  stickyMarketShell: { backgroundColor: "#060b14", borderBottomWidth: 1, borderBottomColor: "#1f2937" },
+  stickyMarketShell: { backgroundColor: "#060b14", borderBottomWidth: 1, borderBottomColor: "#1f2937", paddingBottom: 8 },
   compactGameHeader: { minHeight: 78, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, backgroundColor: "#060b14", borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   compactTeamSide: { width: 132, flexDirection: "row", alignItems: "center", gap: 8 },
   compactTeamRight: { justifyContent: "flex-end" },
