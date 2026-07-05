@@ -93,6 +93,8 @@ Cycle GJ changes only Home discovery presentation by removing default Saved/watc
 
 Cycle GK changes the mobile-side ticket handoff for Portfolio actions. No backend route changes are required. The same `POST /api/orders` contract applies when the user submits from the Buy more or Cash out ticket; the mobile payload must preserve `side`, `contractSide`, market/outcome identity, and any selection fields such as `marketType`, `line`, `period`, and `displayLabel`.
 
+Cycle GL changes only local fake-token cash-out handling. No backend route or schema changes are required. In server mode, submitted Sell tickets still use `POST /api/orders`; true server-backed close/position netting is outside this local MVP cycle. Mobile now carries `sourcePositionId` only as local UI state so a mock cash-out sell can remove the original local position after submit.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

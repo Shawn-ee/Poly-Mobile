@@ -219,3 +219,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Visible Portfolio Cash out closed the position directly instead of routing through the Sell ticket. | P0 | Passed | Cash out now calls `openPositionTrade(position, "sell")`; Samsung tablet proof verifies the Sell ticket opens. |
 | Sell ticket handoff could lose No-side contract identity when the caller passed only `side="sell"`. | P0 | Passed | `openTicket` resolves missing `contractSide` from explicit side, and `openPositionTrade` forwards stored position selection; proof verifies `ticket-contract-side-no`. |
 | Backend/API route should not change for this handoff cycle. | P0 | Passed | Existing order route/data contract remains unchanged. |
+
+## Cycle GL - Portfolio Cash-Out Sell Submit
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio Cash out could open a Sell ticket, but submit behavior was not proven from that visible path. | P0 | Passed | Samsung tablet proof submits the Portfolio Cash out ticket with swipe. |
+| Local mock cash-out sell would otherwise behave like a new sell position instead of removing the source position. | P0 | Passed | `sourcePositionId + sell` removes the original local position; Android proof verifies `No positions yet` and no `position-card-`. |
+| Latest order and History need to preserve Sell/No line-market identity after cash-out submit. | P0 | Passed | Smoke checks latest order/history `portfolio-side-sell`, `portfolio-contract-side-no`, line `2.5`, period `1st Half`, and display label `MEX -2.5 1H`. |
+| Backend/API route should not change for this local fake-token cycle. | P0 | Passed | No backend route, request body, response field, or schema changed. |
