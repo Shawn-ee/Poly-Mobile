@@ -690,7 +690,7 @@ export function Portfolio({
       activities.length > 0;
     if (!hasVisibleResult) return undefined;
     const handle = setTimeout(() => {
-      scrollRef.current?.scrollTo({ y: 1240, animated: true });
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
     }, 650);
     return () => clearTimeout(handle);
   }, [latestOrder?.id, latestOrder?.status, positions.length, openOrders.length, activities.length]);
@@ -786,7 +786,7 @@ export function Portfolio({
   ];
 
   return (
-    <ScrollView ref={scrollRef} accessibilityLabel={`portfolio-screen ${latestOrder ? "portfolio-result-content-landing" : "portfolio-normal-browse"}`} testID="portfolio-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
+    <ScrollView ref={scrollRef} accessibilityLabel={`portfolio-screen ${latestOrder ? "portfolio-result-content-landing portfolio-result-lands-at-account-header" : "portfolio-normal-browse"}`} testID="portfolio-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
       <View accessibilityLabel="portfolio-profile-header portfolio-header-retail-density" testID="portfolio-profile-header" style={styles.profileHeader}>
         <View style={styles.profileLeft}>
           <PortfolioAvatar />

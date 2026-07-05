@@ -5422,6 +5422,12 @@ try {
           @(
             "Portfolio",
             "portfolio-result-content-landing",
+            "portfolio-result-lands-at-account-header",
+            "portfolio-profile-header",
+            "portfolio-header-retail-density",
+            "fake-balance-card",
+            "portfolio-performance-chart",
+            "portfolio-range-selector",
             "position-card-",
             "portfolio-position-retail-density-fit",
             "portfolio-position-tabs-gap-closed-s23",

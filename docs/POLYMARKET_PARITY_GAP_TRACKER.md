@@ -841,3 +841,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Swipe-to-buy must submit only after an upward threshold gesture. | P0 | Passed | S23 proof checks tap-disabled state, captures swipe progress, then completes the upward swipe to Portfolio/history. |
 | Backend/order logic should not change for this visual ticket tightening. | P0 | Passed | No backend route/schema/order service changed; the same S23 proof completes `POST /api/orders`, Portfolio, and History through the existing server-backed fake-token flow. |
 | Exact native Polymarket blur/armed transition remains future polish. | P2 | Tracked | This cycle targets layout separation and visible gesture travel, not native blur parity. |
+
+## Cycle JI - Portfolio Result Landing Header
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| After a successful trade, Portfolio jumped to a deep scroll offset and the S23 screenshot cut off the account avatar/value header, unlike the Polymarket Portfolio reference. | P0 | Passed | S23 screenshot in `cycle-JI-portfolio-result-landing-header-s23-proof` starts at avatar, username, large value, cash line, chart, range tabs, and tabs. XML verifies `portfolio-result-lands-at-account-header`. |
+| The result landing still needs to show the position row and preserve Portfolio/history flow. | P0 | Passed | Same S23 screenshot shows the created position row below the tabs, and the proof reaches Portfolio History. |
+| Backend/order logic should not change for this Portfolio landing correction. | P0 | Passed | No backend route/schema/order service changed; the same proof completes existing `POST /api/orders`, `GET /api/portfolio`, and Portfolio History flow. |
+| Exact Portfolio pixel polish remains future work. | P2 | Tracked | This cycle targets the result landing position only. |
