@@ -370,3 +370,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Team to Advance card still showed non-functional `Graph / About` and `Line movement` placeholder content in the default Local MVP path. | P0 | Passed | Samsung tablet screenshot shows the simplified card with outcome buttons only; XML rejects `event-detail-line-detail-tabs`, `prediction-tabs-only`, `event-detail-inline-graph`, and `Line movement for Team to Advance`. |
 | Simplifying the card must preserve outcome choices and downstream line-market/ticket/order/Portfolio flow. | P0 | Passed | Samsung tablet Local MVP proof passed through selected spread line, ticket submit, Portfolio action tickets, Orders, and History on port 8270. |
 | Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
+
+## Cycle HD - Home Games-Only Retail Flow
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Home still exposed a Games/Futures switch even though the current Local MVP user path is game predictions only. | P0 | Passed | `HomeScreen` now renders a single Games header and game list; Samsung tablet XML rejects `world-cup-futures-tab`, `Futures`, and `World Cup winner`. |
+| Home filters must continue to work after removing the default Futures branch. | P0 | Passed | Samsung tablet HomeFilter proof passed All, Live, and Today states on port 8273. |
+| The proof folder/script naming must match the active branch and actual work. | P0 | Passed | `scripts/smoke-tablet.ps1 -HomeFilter` now forwards `OutputDir` and `HierarchyOutputDir`, writing evidence to `cycle-HD-home-games-only-retail-flow`. |
+| Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, parser checks, and Android proof passed. |

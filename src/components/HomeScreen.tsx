@@ -2,8 +2,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useMemo, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
-import { FutureList, MarketList } from "./MarketLists";
-import { WorldCupSegmented, WorldCupTab } from "./WorldCupSegmented";
+import { MarketList } from "./MarketLists";
+import type { WorldCupTab } from "./WorldCupSegmented";
 
 type HomeFilter = "all" | "live" | "today";
 
@@ -26,14 +26,11 @@ type HomeScreenCopy = {
 export function HomeScreen({
   locale,
   t,
-  worldCupTab,
-  setWorldCupTab,
   events,
   query,
   setQuery,
   openEvent,
   openTicket,
-  futures,
 }: {
   locale: Locale;
   t: HomeScreenCopy;
@@ -112,8 +109,15 @@ export function HomeScreen({
           </Pressable>
         ))}
       </View>
-      <WorldCupSegmented left={t.games} right={t.futures} value={worldCupTab} setValue={setWorldCupTab} />
-      {worldCupTab === "games" ? (
+      <View
+        accessible
+        accessibilityLabel="home-secondary-markets-hidden-local-mvp home-games-only-retail-flow"
+        style={styles.mvpHiddenState}
+        testID="home-secondary-markets-hidden-local-mvp"
+      />
+      <View accessibilityLabel="world-cup-games-only-tab Games prediction-only-home" style={styles.gamesOnlyTab} testID="world-cup-games-only-tab">
+        <Text style={styles.gamesOnlyTabText}>{t.games}</Text>
+      </View>
         <MarketList
           locale={locale}
           events={visibleEvents}
@@ -122,9 +126,6 @@ export function HomeScreen({
           openTicket={openTicket}
           statsCopy={{ volume: t.volume, liquidity: t.liquidity }}
         />
-      ) : (
-        <FutureList locale={locale} futures={futures} openTicket={openTicket} statsCopy={{ volume: t.volume, liquidity: t.liquidity }} />
-      )}
     </ScrollView>
   );
 }
@@ -148,5 +149,8 @@ const styles = StyleSheet.create({
   filterChipActive: { backgroundColor: "#1d6dff", borderColor: "#1d6dff" },
   filterText: { color: "#8ea0b8", fontWeight: "900" },
   filterTextActive: { color: "#ffffff" },
+  gamesOnlyTab: { borderBottomWidth: 3, borderBottomColor: "#f8fafc", marginBottom: 10, paddingVertical: 14 },
+  gamesOnlyTabText: { color: "#f8fafc", fontSize: 18, fontWeight: "800", textAlign: "center" },
+  mvpHiddenState: { width: 1, height: 1, opacity: 0.01 },
   savedEmptyText: { color: "#94a3b8", fontWeight: "900", textAlign: "center", marginTop: 2, marginBottom: 14 },
 });

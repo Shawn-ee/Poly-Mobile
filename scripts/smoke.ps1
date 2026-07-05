@@ -673,7 +673,7 @@ try {
   } elseif ($EmptyErrorLoading) {
     @("Portfolio", "Syncing server portfolio", "No positions yet")
   } elseif ($WholeAppNavDiscovery) {
-    @("Holiwyn", "World Cup", "Games", "Futures", "Mexico vs. Ecuador")
+    @("Holiwyn", "World Cup", "Games", "home-secondary-markets-hidden-local-mvp", "Mexico vs. Ecuador")
   } elseif ($LocalMvpRouteDiscoveryDetail) {
     @("Holiwyn", "World Cup", "Games", "Futures", "EL-A Provider Breadth World Cup Live", "Breadth Home")
   } elseif ($LocalMvpHomeRouteTicketFlow -or $LocalMvpHomeRouteOrderFlow -or $LocalMvpHomeRouteServerOrderFlow -or $LocalMvpHomeRouteServerCancelFlow -or $LocalMvpHomeRouteServerFilledFlow) {
@@ -747,7 +747,7 @@ try {
   } elseif ($Account -or $AccountLogin) {
     @("Holiwyn", "Account", "Signed out", "Demo balance")
   } else {
-    @("Holiwyn", "World Cup", "Games", "Futures")
+    @("Holiwyn", "World Cup", "Games", "home-secondary-markets-hidden-local-mvp")
   }
   $launchAttempts = if ($LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep -or $EventDetailOrderBook -or $EventDetailOrderBookLifecycle -or $BookSnapshotDurability -or $EventDetailOrderBookInteractions -or $EventDetailOrderBookSelector -or $EventDetailVisibleLiveDepth -or $EventDetailVisibleLimitLifecycle -or $EventDetailVisibleLifecycleBreadth -or $LocalMvpSimpleTradeFlow) { 14 } else { 8 }
   $homeHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-home.xml" -Expected $launchExpected -RestartUrl $launchUrl -Attempts $launchAttempts
@@ -2597,16 +2597,20 @@ try {
     }
 
     if ($HomeFilter) {
+      Assert-HierarchyContains -Path $homeHierarchy -Expected @("home-world-cup-games-focus", "home-secondary-markets-hidden-local-mvp", "world-cup-games-only-tab", "Games")
+      Assert-HierarchyDoesNotContain -Path $homeHierarchy -Unexpected @("world-cup-futures-tab", "Futures", "World Cup winner")
       Invoke-TapHierarchyNode -Path $homeHierarchy -Identifier "home-filter-live"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-home-filter-live.png"
       $homeLiveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-home-filter-live.xml"
       Assert-HierarchyContains -Path $homeLiveHierarchy -Expected @("Live", "Australia vs. Egypt", "Games")
+      Assert-HierarchyDoesNotContain -Path $homeLiveHierarchy -Unexpected @("world-cup-futures-tab", "Futures", "World Cup winner")
       Invoke-TapHierarchyNode -Path $homeLiveHierarchy -Identifier "home-filter-today"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-home-filter-today.png"
       $homeTodayHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-home-filter-today.xml"
       Assert-HierarchyContains -Path $homeTodayHierarchy -Expected @("Today", "Mexico vs. Ecuador", "Games")
+      Assert-HierarchyDoesNotContain -Path $homeTodayHierarchy -Unexpected @("world-cup-futures-tab", "Futures", "World Cup winner")
       return
     }
 
