@@ -99,6 +99,8 @@ Cycle GM changes only mobile ticket state reset behavior for Portfolio action ti
 
 Cycle GN changes only mobile Portfolio icon derivation. No backend route, request body, response field, or schema changes are required. The UI derives a team flag from existing `selection.displayLabel`, `selection.referenceOutcomeLabel`, `outcome`, and `title` fields already present in local/server Portfolio state.
 
+Cycle GO changes only mobile ticket header icon derivation. No backend route, request body, response field, or schema changes are required. The UI derives a team flag from existing `selection.displayLabel`, `selection.referenceOutcomeLabel`, `outcome.label`, event title, and market label fields already present in the ticket state.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

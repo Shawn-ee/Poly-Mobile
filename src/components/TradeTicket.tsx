@@ -206,6 +206,55 @@ function marketAvailabilityTone(market: Market) {
   return "ready";
 }
 
+const teamFlags: Record<string, string> = {
+  ARG: "\ud83c\udde6\ud83c\uddf7",
+  AUS: "\ud83c\udde6\ud83c\uddfa",
+  BRA: "\ud83c\udde7\ud83c\uddf7",
+  CRO: "\ud83c\udded\ud83c\uddf7",
+  ECU: "\ud83c\uddea\ud83c\udde8",
+  EGY: "\ud83c\uddea\ud83c\uddec",
+  ENG: "\ud83c\udff4",
+  FRA: "\ud83c\uddeb\ud83c\uddf7",
+  MEX: "\ud83c\uddf2\ud83c\uddfd",
+  POR: "\ud83c\uddf5\ud83c\uddf9",
+  USA: "\ud83c\uddfa\ud83c\uddf8",
+};
+
+const codeAliases: Record<string, string> = {
+  ARGENTINA: "ARG",
+  AUSTRALIA: "AUS",
+  BRAZIL: "BRA",
+  CROATIA: "CRO",
+  ECUADOR: "ECU",
+  EGYPT: "EGY",
+  ENGLAND: "ENG",
+  FRANCE: "FRA",
+  MEXICO: "MEX",
+  PORTUGAL: "POR",
+  USA: "USA",
+};
+
+const teamCodeForTicket = (ticket: Ticket) => {
+  const candidates = [
+    ticket.selection?.displayLabel,
+    ticket.selection?.referenceOutcomeLabel,
+    ticket.outcome.label,
+    ticket.event ? label("en", ticket.event) : undefined,
+    label("en", ticket.market),
+  ]
+    .filter(Boolean)
+    .map((value) => String(value).toUpperCase());
+
+  for (const value of candidates) {
+    const codeMatch = value.match(/\b(ARG|AUS|BRA|CRO|ECU|EGY|ENG|FRA|MEX|POR|USA)\b/);
+    if (codeMatch) return codeMatch[1];
+    const alias = Object.keys(codeAliases).find((name) => value.includes(name));
+    if (alias) return codeAliases[alias];
+  }
+
+  return undefined;
+};
+
 const limitIdentityLabel = (selection?: TicketSelection) =>
   selection?.limitPrice
     ? `ticket-limit-side-${selection.limitSide ?? "none"} ticket-limit-price-${Math.round(selection.limitPrice * 100)} ticket-limit-decimal-${selection.limitPrice.toFixed(2)} ticket-limit-shares-${selection.limitShares ?? "none"}`
@@ -324,6 +373,8 @@ export function TradeTicket({
   const sideLabel = contractSide === "yes" ? "Yes" : "No";
   const selectionLabel = ticket.selection?.displayLabel ?? outcomeLabel;
   const marketLabel = ticket.selection?.displayLabel ?? label(locale, ticket.market);
+  const teamCode = teamCodeForTicket(ticket);
+  const teamFlag = teamCode ? teamFlags[teamCode] : undefined;
   const amountDisplay = numericAmount > 0 ? compactCash(numericAmount) : "$0";
   const availabilityLabel = marketAvailabilityLabel(ticket.market);
   const availabilityTone = marketAvailabilityTone(ticket.market);
@@ -406,7 +457,13 @@ export function TradeTicket({
               </Pressable>
             </View>
             <View accessibilityLabel={`ticket-selection-summary ${providerIdentityLabel}`} testID="ticket-selection-summary" style={styles.selectionSummary}>
-              <View style={[styles.outcomeFlag, { backgroundColor: ticket.outcome.color }]} />
+              <View
+                accessibilityLabel={`ticket-outcome-flag ${teamCode ? `ticket-outcome-flag-${teamCode}` : "ticket-outcome-flag-generic"}`}
+                testID="ticket-outcome-flag"
+                style={[styles.outcomeFlag, !teamFlag && { backgroundColor: ticket.outcome.color }]}
+              >
+                {teamFlag && <Text style={styles.outcomeFlagEmoji}>{teamFlag}</Text>}
+              </View>
               <View style={styles.selectionTextBlock}>
                 <Text numberOfLines={1} style={styles.ticketTitle}>{eventLabel}</Text>
                 <Text accessibilityLabel="ticket-selection-line" testID="ticket-selection-line" numberOfLines={1} style={styles.ticketOutcome}>
@@ -648,7 +705,8 @@ const styles = StyleSheet.create({
   tradeSidePill: { minWidth: 42, minHeight: 42 },
   tradeSideText: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
   selectionSummary: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 14, marginTop: 8, minHeight: 62 },
-  outcomeFlag: { width: 56, height: 56, borderRadius: 14 },
+  outcomeFlag: { width: 56, height: 56, borderRadius: 14, alignItems: "center", justifyContent: "center", backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", overflow: "hidden" },
+  outcomeFlagEmoji: { fontSize: 34, lineHeight: 42 },
   selectionTextBlock: { flex: 1 },
   marketStatusPill: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 999, backgroundColor: "#052e1b", borderWidth: 1, borderColor: "#166534" },
   marketStatusPillWarning: { backgroundColor: "#2b2106", borderColor: "#854d0e" },
