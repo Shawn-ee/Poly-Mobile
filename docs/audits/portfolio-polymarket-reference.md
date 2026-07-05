@@ -88,3 +88,21 @@ User-provided Polymarket Portfolio screenshots on July 4, 2026 show the MVP Port
 - Backend/API impact: none. Portfolio still consumes the existing balance, position, order, activity, and value-history props.
 - Android proof: passed on Samsung tablet with `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -LocalMvpTradeFlow -Port 8244 -OutputDir docs/mobile/screenshots/cycle-GE-portfolio-retail-tightening -HierarchyOutputDir docs/mobile/harness/cycle-GE-portfolio-retail-tightening`.
 - Audit status: P0 pass for the Local MVP Portfolio retail surface. Remaining P2 gaps are exact native chart curve/drag physics and final pixel polish.
+
+## Cycle GU - Wide Android Portfolio Column Acceptance Criteria
+
+| Criteria | Priority | Verification |
+| --- | --- | --- |
+| On a wide Android proof device, Portfolio keeps a phone-like centered content column instead of stretching value, chart, tabs, positions, and history across the full tablet width. | P0 | Samsung tablet screenshot/XML. |
+| Positions, Orders, and History tabs remain tappable and keep the selected line-market trade visible after submit. | P0 | Local MVP trade-flow smoke proof. |
+| Portfolio Buy more and Cash out tickets still open from the position row after the layout constraint. | P0 | Local MVP trade-flow smoke proof. |
+| Backend/API route changes are not required. | P0 | Code/docs review. |
+| Exact native chart curve, avatar gradient, and final pixel polish remain P2. | P2 | Deferred. |
+
+## Cycle GU Result
+
+- Status: pass.
+- Implementation: `Portfolio` constrains its scroll content to a centered phone-width column on wide Android screens.
+- Backend/API impact: none. Existing balance, positions, open orders, activities, value history, and ticket handoff contracts are unchanged.
+- Android proof: passed on Samsung tablet with `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -LocalMvpTradeFlow -Port 8260 -OutputDir docs/mobile/screenshots/cycle-GU-portfolio-phone-width-retail-flow -HierarchyOutputDir docs/mobile/harness/cycle-GU-portfolio-phone-width-retail-flow`.
+- Audit status: P0 pass for the wide Android Portfolio column. Remaining P2 gaps are exact native chart curve, avatar gradient, and final pixel polish.

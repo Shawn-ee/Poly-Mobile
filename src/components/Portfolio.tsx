@@ -1065,7 +1065,7 @@ export function Portfolio({
 
 const styles = StyleSheet.create({
   content: { flex: 1 },
-  scrollPad: { paddingHorizontal: 0, paddingBottom: 110 },
+  scrollPad: { width: "100%", maxWidth: 480, alignSelf: "center", paddingHorizontal: 0, paddingBottom: 110 },
   profileHeader: { minHeight: 72, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingTop: 12 },
   profileLeft: { flexDirection: "row", alignItems: "center", gap: 14, flex: 1 },
   avatarGradient: { width: 50, height: 50, borderRadius: 999, overflow: "hidden", backgroundColor: "#f43f5e", position: "relative" },

@@ -293,3 +293,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | On the Samsung tablet proof device, the place-order keypad and amount controls stretched too wide compared with the phone-style Polymarket reference sheet. | P0 | Passed | Samsung tablet screenshot shows the ticket amount controls constrained to a centered phone-width column. |
 | The swipe-up submit footer must remain full-width, dominant, and functional after the layout constraint. | P0 | Passed | Local MVP proof verified amount entry, `Swipe up to buy`, fake-token submit, and Portfolio/history. |
 | Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
+
+## Cycle GU - Portfolio Phone-Width Retail Flow
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| On the Samsung tablet proof device, Portfolio value/chart/tabs/rows stretched too wide compared with the phone-style Polymarket Portfolio reference. | P0 | Passed | Samsung tablet screenshot shows Portfolio content constrained to a centered phone-width column. |
+| Portfolio Positions, Orders, History, Buy more, and Cash out must still work after the layout constraint. | P0 | Passed | Local MVP proof verified Portfolio position row, Buy more ticket, Cash out ticket, Orders empty state, and History row. |
+| Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
