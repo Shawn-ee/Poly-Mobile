@@ -155,6 +155,8 @@ Cycle HO changes only mobile Portfolio position-row layout and proof marker plac
 
 Cycle HP changes only mobile Event Detail header formatting and proof recovery. No backend route, request body, response field, or schema changes are required. Mobile continues to consume the existing event fields: `teams[]`, `status`, `startsAt`, outcomes/probabilities, chart metadata, line-market identity, and provider source/token fields. The header derives display codes and a live clock label from those existing fields.
 
+Cycle HQ changes only mobile Event Detail lower-page presentation and proof scanning. No backend route, request body, response field, or schema changes are required. Mobile continues to consume the same event, market, outcome, line, period, provider source/token, chart metadata, order, and portfolio contracts. Removed lower-page `Market Rules` / `More Events` content was static frontend-only display copy and not backed by a mobile API contract.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

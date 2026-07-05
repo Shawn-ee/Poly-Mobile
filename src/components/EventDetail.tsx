@@ -1631,7 +1631,7 @@ export function EventDetail({
           <Text style={styles.legacySummaryText}>{t.markets}</Text>
         </View>
         <View
-          accessibilityLabel={`event-detail-summary event-detail-header-team-identity-fit event-detail-stats event-detail-market-summary ${homeCode} ${awayCode} ${matchDateLabel} ${compactTimeLabel} ${label(locale, event)} ${stats.marketCount} ${t.marketCount} ${stats.outcomeCount} ${t.outcomeCount} Game lines ${gameLineMarkets.length === 1 ? "1 market" : `${gameLineMarkets.length} ${t.marketCount}`} Props ${propMarkets.length} ${t.marketCount} ${primaryMarket ? label(locale, primaryMarket) : ""} ${t.markets} ${t.volume} ${stats.volume} ${t.liquidity} ${stats.liquidity} ${t.traders} ${stats.traders} ${t.bestBid} ${t.bestAsk} ${t.spread}`}
+          accessibilityLabel={`event-detail-summary event-detail-header-team-identity-fit event-detail-non-prediction-lower-content-hidden-local-mvp market-rules-hidden-local-mvp more-events-hidden-local-mvp event-detail-stats event-detail-market-summary ${homeCode} ${awayCode} ${matchDateLabel} ${compactTimeLabel} ${label(locale, event)} ${stats.marketCount} ${t.marketCount} ${stats.outcomeCount} ${t.outcomeCount} Game lines ${gameLineMarkets.length === 1 ? "1 market" : `${gameLineMarkets.length} ${t.marketCount}`} Props ${propMarkets.length} ${t.marketCount} ${primaryMarket ? label(locale, primaryMarket) : ""} ${t.markets} ${t.volume} ${stats.volume} ${t.liquidity} ${stats.liquidity} ${t.traders} ${stats.traders} ${t.bestBid} ${t.bestAsk} ${t.spread}`}
           style={styles.matchHeader}
           testID="event-detail-summary"
         >
@@ -2169,34 +2169,11 @@ export function EventDetail({
             {gameLineGroups.map((group) => renderGroup(group))}
           </View>
         )}
-        <View accessibilityLabel="event-detail-market-rules" style={styles.rulesSection} testID="event-detail-market-rules">
-          <View style={styles.marketHeaderRow}>
-            <Text style={styles.marketTitle}>Market Rules</Text>
-            <Ionicons name="chevron-up" color="#9ca3af" size={26} />
-          </View>
-          <View style={styles.ruleSelector}>
-            <Text style={styles.ruleSelectorText}>{teamCode(teamA?.name ?? "MEX")} to advance</Text>
-            <Ionicons name="chevron-down" color="#cbd5e1" size={16} />
-          </View>
-          <Text style={styles.ruleText}>This market settles based on the official match result and regulation-time market rules for the selected World Cup game.</Text>
-          <Text style={styles.fullRulesText}>View Full Rules</Text>
-        </View>
-        <View accessibilityLabel="event-detail-more-events" style={styles.moreEventsSection} testID="event-detail-more-events">
-          <Text style={styles.marketTitle}>More Events</Text>
-          {[
-            { time: "Today 10:00 PM", title: "Portugal vs. Croatia", home: "POR 72%", away: "CRO 29%" },
-            { time: "Tomorrow 11:00 AM", title: "England vs. Congo DR", home: "ENG 88%", away: "COD 12%" },
-          ].map((item) => (
-            <View key={item.title} style={styles.moreEventRow}>
-              <View style={styles.moreEventTextBlock}>
-                <Text style={styles.moreEventTime}>{item.time}</Text>
-                <Text style={styles.moreEventTitle}>{item.title}</Text>
-              </View>
-              <Text style={styles.moreEventPrice}>{item.home}</Text>
-              <Text style={styles.moreEventPrice}>{item.away}</Text>
-            </View>
-          ))}
-        </View>
+        <View
+          accessibilityLabel="event-detail-non-prediction-lower-content-hidden-local-mvp market-rules-hidden-local-mvp more-events-hidden-local-mvp"
+          style={styles.hiddenStats}
+          testID="event-detail-non-prediction-lower-content-hidden-local-mvp"
+        />
           </>
         )}
           </>
@@ -2524,17 +2501,6 @@ const styles = StyleSheet.create({
   statPillText: { color: "#f8fafc", fontSize: 13, fontWeight: "900" },
   showAllRow: { minHeight: 42, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5, marginTop: 4 },
   showAllText: { color: "#cbd5e1", fontSize: 14, fontWeight: "900" },
-  rulesSection: { borderTopWidth: 1, borderTopColor: "#172033", paddingHorizontal: 24, paddingVertical: 16 },
-  ruleSelector: { alignSelf: "flex-start", minHeight: 36, flexDirection: "row", alignItems: "center", gap: 6, borderRadius: 10, backgroundColor: "#111827", paddingHorizontal: 12, marginTop: 10 },
-  ruleSelectorText: { color: "#f8fafc", fontSize: 13, fontWeight: "900" },
-  ruleText: { color: "#9ca3af", fontSize: 13, fontWeight: "700", lineHeight: 19, marginTop: 12 },
-  fullRulesText: { color: "#e5e7eb", fontSize: 14, fontWeight: "900", marginTop: 12 },
-  moreEventsSection: { borderTopWidth: 1, borderTopColor: "#172033", paddingHorizontal: 24, paddingVertical: 16 },
-  moreEventRow: { minHeight: 58, flexDirection: "row", alignItems: "center", gap: 10, borderBottomWidth: 1, borderBottomColor: "#111827" },
-  moreEventTextBlock: { flex: 1, minWidth: 0 },
-  moreEventTime: { color: "#6b7280", fontSize: 11, fontWeight: "900" },
-  moreEventTitle: { color: "#f8fafc", fontSize: 14, fontWeight: "900", marginTop: 3 },
-  moreEventPrice: { color: "#cbd5e1", fontSize: 12, fontWeight: "900" },
   detailOutcome: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12 },
   outcomeTextBlock: { flex: 1 },
   teamName: { color: "#f8fafc", fontSize: 17, fontWeight: "800" },

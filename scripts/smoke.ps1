@@ -5222,7 +5222,7 @@ try {
 
         Save-Screenshot -Name "$mvpRouteServerPrefix-top.png"
         $mvpRouteTopHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-top.xml"
-        Assert-HierarchyContains -Path $mvpRouteTopHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "event-detail-header-team-identity-fit", "BHO", "BAW", "event-detail-price-chart", "chart-source-polymarket-clob-prices-history", "chart-status-ready", "live-data-source-polymarket-gamma")
+        Assert-HierarchyContains -Path $mvpRouteTopHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "event-detail-header-team-identity-fit", "BHO", "BAW", "event-detail-price-chart", "chart-source-polymarket-clob-prices-history", "chart-status-ready", "live-data-source-polymarket-gamma", "event-detail-non-prediction-lower-content-hidden-local-mvp")
         Assert-HierarchyDoesNotContain -Path $mvpRouteTopHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
         $mvpRouteTargetOutcomeId = if ($LocalMvpRouteServerFilledTeamTotalFlow) { "event-detail-outcome-team-total-goals-team-total-over" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "event-detail-outcome-totals-totals-over" } else { "event-detail-outcome-spread-spread-yes" }
@@ -5264,6 +5264,32 @@ try {
           }
         }
         if (-not $mvpRouteLineHierarchy) {
+          $mvpRouteFineSwipes = @(
+            @{ x1 = 540; y1 = 1880; x2 = 540; y2 = 1040; ms = 350 },
+            @{ x1 = 540; y1 = 1880; x2 = 540; y2 = 1260; ms = 320 },
+            @{ x1 = 540; y1 = 760; x2 = 540; y2 = 1680; ms = 320 },
+            @{ x1 = 540; y1 = 1880; x2 = 540; y2 = 1180; ms = 320 }
+          )
+          for ($attempt = 0; $attempt -lt $mvpRouteFineSwipes.Count; $attempt++) {
+            $swipe = $mvpRouteFineSwipes[$attempt]
+            & $adb -s $Device shell input swipe $swipe.x1 $swipe.y1 $swipe.x2 $swipe.y2 $swipe.ms | Out-Null
+            Start-Sleep -Milliseconds 700
+            $attemptHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-line-markets-fine-attempt-$($attempt + 1).xml"
+            $attemptXml = Get-Content -Raw -Path $attemptHierarchy
+            $attemptPassed = $true
+            foreach ($expectedValue in $mvpRouteLineExpected) {
+              if ($attemptXml -notmatch [regex]::Escape($expectedValue)) {
+                $attemptPassed = $false
+                break
+              }
+            }
+            if ($attemptPassed) {
+              $mvpRouteLineHierarchy = $attemptHierarchy
+              break
+            }
+          }
+        }
+        if (-not $mvpRouteLineHierarchy) {
           & $adb -s $Device shell input swipe 540 720 540 1760 350 | Out-Null
           Start-Sleep -Milliseconds 500
           & $adb -s $Device shell input swipe 540 720 540 1500 300 | Out-Null
@@ -5275,7 +5301,7 @@ try {
           $mvpRouteLineHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-line-markets.xml"
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
-        Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected $mvpHiddenOrderBookExpected
+        Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected ($mvpHiddenOrderBookExpected + @("Market Rules", "View Full Rules", "More Events", "Portugal vs. Croatia", "England vs. Congo DR"))
         $mvpRouteLineReadyXml = Get-Content -Raw -Path $mvpRouteLineHierarchy
         if ($mvpRouteLineReadyXml -notmatch [regex]::Escape($mvpRouteTargetOutcomeId)) {
           & $adb -s $Device shell input swipe 540 2100 540 1700 300 | Out-Null

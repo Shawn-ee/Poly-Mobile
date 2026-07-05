@@ -489,3 +489,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Header identity proof must run inside the same server-backed Local MVP trade path. | P0 | Passed | S23 proof on port `8318` verifies `event-detail-header-team-identity-fit`, opens the Totals ticket, submits with swipe, and reaches Portfolio History. |
 | Backend/API route should not change for this header correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android server-filled proof passed. |
 | Exact Polymarket flags/team artwork remain future visual polish. | P2 | Tracked | This cycle focused on clear side identity and live-time readability. |
+
+## Cycle HQ - Event Detail Prediction-Only Lower Page
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Event Detail still exposed lower-page non-MVP sections (`Market Rules`, `More Events`) while the current product path should focus on prediction and trading only. | P0 | Passed | `EventDetail` now hides those sections and exposes `event-detail-non-prediction-lower-content-hidden-local-mvp`; S23 XML rejects the old lower-page copy. |
+| Removing lower-page content must not break the line-market ticket path. | P0 | Passed | S23 proof on port `8321` still reaches the Totals row, opens the simple ticket, submits by swipe, and reaches Portfolio History. |
+| The proof should recover when the S23 lands on nearby Spread rows before Totals. | P0 | Passed | `scripts/smoke.ps1` now performs a fine-scroll scan before asserting the route-backed Totals row. |
+| Backend/API route should not change for this Local MVP presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android server-filled proof passed. |
+| Future rules/compliance UX remains separate from the Local MVP betting path. | P2 | Tracked | The content is hidden by default, not replaced with a production rules system. |
