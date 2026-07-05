@@ -236,3 +236,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Portfolio action tickets could inherit a stale nonzero amount from a prior ticket. | P0 | Passed | `TradeTicket` reset dependencies now include `sourcePositionId` and selected line identity; Samsung tablet proof passed. |
 | Buy more and Cash out tickets should show `Choose an amount` until the user enters a fresh amount. | P0 | Passed | Smoke proof verifies both Portfolio action tickets show `$0`/`Choose an amount` and fail if either immediately shows `Swipe up to buy/sell`. |
 | Backend/API route should not change for this mobile-only state reset. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
+
+## Cycle GN - Portfolio Team Flag Identity
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio position row used a hard-coded France-style flag even when the selected position was `MEX -2.5 1H`. | P0 | Passed | `Portfolio` now derives `MEX` from the selected line/title and renders `portfolio-position-flag-MEX`; Samsung tablet proof passed. |
+| Position icon fix must not break Cash out, Buy more, Orders, or History proof. | P0 | Passed | Local MVP trade-flow smoke passed through Portfolio action tickets, Orders, and History. |
+| Backend/API route should not change for this visual identity correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
