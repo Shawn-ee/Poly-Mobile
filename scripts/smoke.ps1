@@ -5456,6 +5456,7 @@ try {
         Assert-HierarchyContains -Path $mvpRoutePortfolioTopHierarchy -Expected @(
           "Portfolio",
           "portfolio-header-retail-density",
+          "portfolio-settings portfolio-settings-state-closed",
           "portfolio-value-retail-density",
           "portfolio-performance-chart",
           "portfolio-range-tabs-first-screen-fit",
@@ -5463,6 +5464,24 @@ try {
           "portfolio-funding-hidden-local-mvp"
         )
         Assert-HierarchyDoesNotContain -Path $mvpRoutePortfolioTopHierarchy -Unexpected @("Deposit", "Withdraw", "event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth")
+        Invoke-TapHierarchyNode -Path $mvpRoutePortfolioTopHierarchy -Identifier "portfolio-settings"
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "$mvpRouteServerPrefix-portfolio-settings.png"
+        $mvpRoutePortfolioSettingsHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-portfolio-settings.xml"
+        Assert-HierarchyContains -Path $mvpRoutePortfolioSettingsHierarchy -Expected @(
+          "portfolio-settings-sheet",
+          "portfolio-settings-state-open",
+          "local-mvp-account-sheet",
+          "portfolio-settings-language",
+          "portfolio-settings-fake-token-mode",
+          "portfolio-settings-funding-disabled-local-mvp"
+        )
+        Assert-HierarchyDoesNotContain -Path $mvpRoutePortfolioSettingsHierarchy -Unexpected @("Deposit", "Withdraw", "event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth")
+        Invoke-TapHierarchyNode -Path $mvpRoutePortfolioSettingsHierarchy -Identifier "portfolio-settings-close"
+        Start-Sleep -Seconds 1
+        $mvpRoutePortfolioTopHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-portfolio-settings-closed.xml"
+        Assert-HierarchyContains -Path $mvpRoutePortfolioTopHierarchy -Expected @("portfolio-settings portfolio-settings-state-closed")
+        Assert-HierarchyDoesNotContain -Path $mvpRoutePortfolioTopHierarchy -Unexpected @("portfolio-settings-sheet")
         $mvpRoutePortfolioHierarchy = $mvpRoutePortfolioTopHierarchy
 
         $mvpRouteFilledHistoryHierarchy = $null

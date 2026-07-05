@@ -185,6 +185,8 @@ Cycle IK changes only mobile Event Detail tab rail presentation and proof gates.
 
 Cycle IL changes only mobile Event Detail market-group ordering and proof gates. No backend route, request body, response field, or schema changes are required. Mobile continues to consume the same event markets/outcomes, line-market fields, provider source/token identity, selected line/period, and `POST /api/orders` / `GET /api/portfolio` contracts for the route-backed Local MVP trade path.
 
+Cycle IM changes only mobile Portfolio settings presentation and proof gates. No backend route, request body, response field, auth requirement, or schema changes are required. The settings sheet uses existing local Portfolio/account state: profile display name, locale, fake-token trading mode, and Local MVP funding-disabled status. The route-backed trade path still consumes the same `POST /api/orders`, `GET /api/portfolio`, Portfolio value-history, and Portfolio History contracts.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

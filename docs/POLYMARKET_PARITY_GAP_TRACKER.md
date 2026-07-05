@@ -630,3 +630,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Reordering market groups must not break the route-backed ticket/order/Portfolio path. | P0 | Passed | Same S23 proof opens the totals ticket, captures swipe progress, submits the fake-token buy, and reaches Portfolio History. |
 | Backend/API routes should not change for this visible ordering correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
 | Exact Polymarket ordering for all lower-priority soccer market sections and native collapse animation remain future polish. | P2 | Tracked | This cycle specifically closes full-game-before-half hierarchy in the current MVP Game Lines surface. |
+
+## Cycle IM - Portfolio Settings Action
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio header showed a visible settings gear that did not perform a user-visible action. | P0 | Passed | `Portfolio` now opens `portfolio-settings-sheet portfolio-settings-state-open local-mvp-account-sheet` from the gear. |
+| The settings action must stay Local MVP scoped and must not expose deposit/withdraw, location, social, or notification work. | P0 | Passed | S23 proof verifies language, fake-token mode, and funding-disabled rows while absence checks still reject visible `Deposit` and `Withdraw`. |
+| Closing settings must return Portfolio to the normal trade-result flow. | P0 | Passed | S23 proof closes `portfolio-settings-close`, verifies `portfolio-settings-state-closed`, then continues to Portfolio History. |
+| Backend/API routes should not change for this visible action correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
+| Full account/settings parity remains future work. | P2 | Tracked | This cycle removes the dead button while keeping the Local MVP scope focused on fake-token betting flow. |
