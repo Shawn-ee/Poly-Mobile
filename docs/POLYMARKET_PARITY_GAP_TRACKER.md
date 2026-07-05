@@ -740,3 +740,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Swipe submit should remain threshold-gated and not become a normal tap button. | P0 | Passed | Existing `swipe-submit-gesture-required` / `swipe-submit-tap-disabled` labels remain, and the same S23 proof completes only after the scripted upward swipe. |
 | Backend/order logic should not change for this ticket layout correction. | P0 | Passed | No backend route/schema/order logic changed; `npm run typecheck`, `git diff --check`, and S23 server-filled proof passed through `POST /api/orders`, Portfolio, and History. |
 | Exact native Polymarket blur/physics and production artwork remain future polish. | P2 | Tracked | This cycle targets visible layout, spacing, and gesture motion only. |
+
+## Cycle IX - Portfolio Compact Outcome Label
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio position rows exposed ticket shorthand such as `Over 2.5 RT` as visible text, making the row feel more internal than Polymarket-style. | P0 | Passed | `Portfolio` now renders visible `Yes Over 2.5`; S23 position screenshot and XML verify `portfolio-position-outcome-compact-label`. |
+| Portfolio History rows should use the same cleaner visible outcome title while preserving full order-time identity. | P0 | Passed | S23 History screenshot shows `Bought Yes Over 2.5`; XML verifies `portfolio-history-outcome-compact-label` plus hidden `portfolio-display-label-Over 2.5 RT` and `portfolio-period-Reg. Time`. |
+| Compact visible labels must not drop selected line, period, provider, token, amount, or timestamp identity. | P0 | Passed | Same S23 proof still verifies totals market type, line `2.5`, `Reg. Time`, Polymarket provider source/token, `75 USDT`, and timestamp in Portfolio History. |
+| Backend/API routes should not change for this visible Portfolio label correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
+| Exact final Portfolio typography/pixel polish remains future work. | P2 | Tracked | This cycle targets visible outcome-title cleanup only. |

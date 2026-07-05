@@ -151,8 +151,13 @@ const displayOutcome = (item: { outcome: string; selection?: TicketSelection; co
   return contractSide === "no" ? `No - ${display}` : display;
 };
 
+const compactVisibleOutcomeLabel = (item: { outcome: string; selection?: TicketSelection }) => {
+  const display = item.selection?.displayLabel ?? item.outcome;
+  return display.replace(/\s+(RT|1H|2H)$/i, "");
+};
+
 const displayPositionChoice = (item: { outcome: string; selection?: TicketSelection }) =>
-  item.selection?.displayLabel ?? item.outcome;
+  compactVisibleOutcomeLabel(item);
 
 const teamAbbrev = (team: string) => {
   const clean = team
@@ -408,7 +413,7 @@ const activitySideLabel = (activity: PortfolioActivity) =>
   (activity.contractSide ?? activity.selection?.contractSide) === "no" || activity.side === "sell" ? "No" : "Yes";
 
 const activityDisplayTitle = (activity: PortfolioActivity) =>
-  displayOutcome(activity).replace(/^(Yes|No)\s*-\s*/i, "");
+  compactVisibleOutcomeLabel(activity).replace(/^(Yes|No)\s*-\s*/i, "");
 
 const activityMarketSubline = (activity: PortfolioActivity) => {
   const line = activity.selection?.line;
@@ -956,7 +961,7 @@ export function Portfolio({
             </View>
           </View>
           {positions.map((position) => (
-            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-first-position-first-screen-fit ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
+            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-first-position-first-screen-fit portfolio-position-outcome-compact-label portfolio-outcome-compact-${compactVisibleOutcomeLabel(position)} ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
               <View style={styles.positionEventLine}>
                 <Text style={styles.positionScoreLine}>{compactPortfolioScoreLine(position)}</Text>
                 {(position.isLive || position.liveClock) && (
@@ -1119,7 +1124,7 @@ export function Portfolio({
         <View style={styles.activityBlock}>
           {activities.slice(0, 5).map((activity) => (
             <Pressable
-              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-fill-count-${activity.fillCount ?? 1} ${providerBreadthCodes(activity) ? "portfolio-history-event-title-compact-provider" : ""} ${selectionIdentityLabel(activity)}`}
+              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-outcome-compact-label portfolio-history-outcome-compact-${compactVisibleOutcomeLabel(activity)} portfolio-history-fill-count-${activity.fillCount ?? 1} ${providerBreadthCodes(activity) ? "portfolio-history-event-title-compact-provider" : ""} ${selectionIdentityLabel(activity)}`}
               key={activity.id}
               onPress={() => setExpandedActivityId((current) => (current === activity.id ? null : activity.id))}
               style={[styles.activityItem, expandedActivityId === activity.id && styles.rowExpanded]}

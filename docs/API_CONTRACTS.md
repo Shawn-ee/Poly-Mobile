@@ -207,6 +207,8 @@ Cycle IV changes only mobile Portfolio event-title presentation and proof gates.
 
 Cycle IW changes only mobile Trade Ticket amount-entry layout, fixed swipe-footer geometry, and swipe-handle presentation. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Ticket submit continues to use the same selected market/outcome/line/period/provider identity, amount, side, contract side, payout context, `POST /api/orders`, `GET /api/portfolio`, and Portfolio History contracts.
 
+Cycle IX changes only mobile Portfolio position/history visible labels. No backend route, request body, response field, auth requirement, order service, or schema changes are required. The UI derives compact visible labels from existing `selection.displayLabel`, while hidden proof/accessibility metadata continues to preserve the full display label, line, period, provider source/token, amount, and timestamp consumed from `GET /api/portfolio` and Portfolio History state.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
