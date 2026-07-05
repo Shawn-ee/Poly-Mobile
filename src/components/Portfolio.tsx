@@ -381,6 +381,52 @@ const portfolioRowMoney = (value: number) => {
   return `${value < 0 ? "-" : ""}$${formatted}`;
 };
 
+const monthIndexByShortName: Record<string, number> = {
+  Jan: 0,
+  Feb: 1,
+  Mar: 2,
+  Apr: 3,
+  May: 4,
+  Jun: 5,
+  Jul: 6,
+  Aug: 7,
+  Sep: 8,
+  Oct: 9,
+  Nov: 10,
+  Dec: 11,
+};
+
+const parseActivityTimestamp = (timestamp: string) => {
+  const match = timestamp.match(/^([A-Z][a-z]{2})\s+(\d{1,2}),\s+(\d{1,2}):(\d{2})\s+(AM|PM)$/);
+  if (!match) return null;
+  const [, monthName, dayText, hourText, minuteText, meridiem] = match;
+  const month = monthIndexByShortName[monthName];
+  if (typeof month !== "number") return null;
+  const now = new Date();
+  let hour = Number(hourText);
+  if (meridiem === "PM" && hour < 12) hour += 12;
+  if (meridiem === "AM" && hour === 12) hour = 0;
+  const parsed = new Date(now.getFullYear(), month, Number(dayText), hour, Number(minuteText));
+  if (parsed.getTime() - now.getTime() > 12 * 60 * 60 * 1000) {
+    parsed.setFullYear(parsed.getFullYear() - 1);
+  }
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+};
+
+const activityRelativeTime = (timestamp?: string) => {
+  if (!timestamp) return "";
+  if (/ago$/i.test(timestamp) || /^Just now$/i.test(timestamp)) return timestamp;
+  const parsed = parseActivityTimestamp(timestamp);
+  if (!parsed) return timestamp;
+  const elapsedMs = Math.max(0, Date.now() - parsed.getTime());
+  const elapsedMinutes = Math.floor(elapsedMs / 60000);
+  if (elapsedMinutes < 2) return "Just now";
+  if (elapsedMinutes < 60) return `${elapsedMinutes} min. ago`;
+  const elapsedHours = Math.floor(elapsedMinutes / 60);
+  if (elapsedHours < 24) return `${elapsedHours} hr. ago`;
+  return `${Math.floor(elapsedHours / 24)} d. ago`;
+};
+
 const pnlTotal = (positions: Position[]) =>
   positions.reduce((total, position) => total + estimatedPnl(position), 0);
 
@@ -1089,14 +1135,14 @@ export function Portfolio({
                 )}
               </View>
               <View
-                accessibilityLabel={`portfolio-history-side-meta ${activity.timestamp ? "portfolio-history-time" : "portfolio-history-time-none"} ${activity.timestamp ?? ""}`}
+                accessibilityLabel={`portfolio-history-side-meta ${activity.timestamp ? "portfolio-history-time portfolio-history-relative-time" : "portfolio-history-time-none"} ${activity.timestamp ?? ""} ${activityRelativeTime(activity.timestamp)}`}
                 style={styles.activitySideMeta}
                 testID={`portfolio-history-side-meta-${activity.id}`}
               >
                 <Text style={styles.activityAmount}>{portfolioRowMoney(activity.amount)}</Text>
                 {activity.timestamp && (
-                  <Text accessibilityLabel={`activity-time-${activity.id}`} style={styles.activityTime}>
-                    {activity.timestamp}
+                  <Text accessibilityLabel={`activity-time-${activity.id} activity-time-relative portfolio-history-relative-time-format activity-time-raw-${activity.timestamp}`} style={styles.activityTime}>
+                    {activityRelativeTime(activity.timestamp)}
                   </Text>
                 )}
               </View>

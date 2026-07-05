@@ -217,6 +217,8 @@ Cycle JA changes only mobile Portfolio visual layout and proof-node placement. N
 
 Cycle JC changes only mobile Trade Ticket amount-entry layout and swipe gesture presentation. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Ticket submit continues to use the same selected market/outcome/line/period/provider identity, amount, side, contract side, payout context, `POST /api/orders`, `GET /api/portfolio`, and Portfolio History contracts.
 
+Cycle JD changes only mobile Portfolio History timestamp presentation. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Mobile continues to consume the same Portfolio History activity timestamp field; the UI derives relative display text locally while preserving the raw timestamp in accessibility/proof metadata.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

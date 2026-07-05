@@ -5514,6 +5514,8 @@ try {
             "activity-row-",
             "portfolio-history-retail-row-parity",
             "portfolio-history-dollar-amounts",
+            "portfolio-history-relative-time",
+            "portfolio-history-relative-time-format",
             "portfolio-history-outcome-compact-label",
             "portfolio-history-outcome-compact-",
             "portfolio-history-event-title-compact-provider",

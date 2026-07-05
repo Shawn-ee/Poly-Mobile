@@ -791,3 +791,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | S23 amount/keypad and swipe footer must not overlap. | P0 | Passed | S23 ticket-ready screenshot shows `.`, `0`, and backspace fully visible above the rounded dark panel edge and fixed red footer. |
 | Backend/order logic should not change for this visible ticket correction. | P0 | Passed | No backend route/schema/order service changed; `npm run typecheck`, `git diff --check`, and S23 server-filled proof passed through `POST /api/orders`, Portfolio, and History. |
 | Exact native Polymarket blur/physics and production team artwork remain future polish. | P2 | Tracked | This cycle targets amount-entry layout, spacing, and swipe-progress behavior only. |
+
+## Cycle JD - Portfolio History Relative Time
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio History rows showed absolute timestamp text instead of compact Polymarket-style relative time. | P0 | Passed | `Portfolio` now renders recent history row time as `Just now` / `min. ago` / `hr. ago`; S23 History screenshot in `cycle-JD-portfolio-history-relative-time-s23-proof` shows `Just now`. |
+| Raw timestamp identity should remain available for proof/debugging. | P0 | Passed | S23 XML verifies `activity-time-raw-...` metadata next to the visible relative time. |
+| Android proof should not depend on an exact minute string during a long proof run. | P0 | Passed | `scripts/smoke.ps1` now checks `portfolio-history-relative-time-format` instead of exact `Just now`; the visible screenshot still captured `Just now`. |
+| Backend/API routes should not change for this visible Portfolio History correction. | P0 | Passed | No backend route/schema/order service changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed through `POST /api/orders`, Portfolio, and History. |
+| Exact Polymarket Portfolio typography and older-history grouping remain future polish. | P2 | Tracked | This cycle targets visible timestamp formatting only. |
