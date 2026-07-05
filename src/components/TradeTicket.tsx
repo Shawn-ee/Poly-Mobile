@@ -70,6 +70,9 @@ type TradeTicketCopy = {
   finalCostMayVary: string;
 };
 
+const SWIPE_SUBMIT_THRESHOLD = 96;
+const SWIPE_HANDLE_TRAVEL = 58;
+
 function SwipeSubmitControl({
   disabled,
   label,
@@ -107,12 +110,12 @@ function SwipeSubmitControl({
           setSwipeProgress(0);
         },
         onPanResponderMove: (_, gesture) => {
-          const progress = gesture.dy < 0 ? Math.min(Math.abs(gesture.dy) / 90, 1) : 0;
+          const progress = gesture.dy < 0 ? Math.min(Math.abs(gesture.dy) / SWIPE_SUBMIT_THRESHOLD, 1) : 0;
           setSwipeProgress(progress);
-          setIsArmed(progress >= 0.58);
+          setIsArmed(progress >= 0.72);
         },
         onPanResponderRelease: (_, gesture) => {
-          if (gesture.dy < -70) {
+          if (gesture.dy < -SWIPE_SUBMIT_THRESHOLD) {
             void triggerSubmit();
             return;
           }
@@ -127,7 +130,7 @@ function SwipeSubmitControl({
     [disabled, isSubmitting, onSubmit],
   );
   const progressBucket = disabled ? "disabled" : isSubmitting ? "submitting" : isArmed ? "armed" : swipeProgress > 0 ? "dragging" : "idle";
-  const handleLift = -48 * swipeProgress;
+  const handleLift = -SWIPE_HANDLE_TRAVEL * swipeProgress;
 
   return (
       <View
@@ -135,13 +138,13 @@ function SwipeSubmitControl({
         accessibilityRole="button"
         accessibilityState={{ disabled: disabled || isSubmitting }}
         accessibilityHint={helper}
-      accessibilityLabel={`swipe-to-submit-order swipe-submit-gesture-required swipe-submit-tap-disabled swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-state-${progressBucket} swipe-submit-progress-${Math.round(swipeProgress * 100)}`}
-      style={[styles.swipeSubmit, isArmed && styles.swipeSubmitArmed, disabled && styles.swipeSubmitDisabled]}
+      accessibilityLabel={`swipe-to-submit-order swipe-submit-gesture-required swipe-submit-threshold-clear swipe-submit-tap-disabled swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-state-${progressBucket} swipe-submit-progress-${Math.round(swipeProgress * 100)}`}
+      style={[styles.swipeSubmit, disabled && styles.swipeSubmitDisabled]}
       testID="place-mock-order"
       {...panResponder.panHandlers}
     >
       <View
-        accessibilityLabel={`swipe-submit-handle swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-state-${progressBucket} swipe-submit-handle-translate-y-${Math.round(handleLift)}`}
+        accessibilityLabel={`swipe-submit-handle swipe-submit-handle-progress-linked swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-state-${progressBucket} swipe-submit-handle-translate-y-${Math.round(handleLift)}`}
         style={[styles.swipeIcon, isArmed && styles.swipeIconArmed, { transform: [{ translateY: handleLift }] }]}
         testID="swipe-submit-handle"
       >
@@ -655,7 +658,7 @@ export function TradeTicket({
             )}
             </View>
           </View>
-          <View accessibilityLabel="ticket-swipe-area-fixed-bottom ticket-swipe-footer-fixed-separate ticket-keypad-swipe-separated ticket-s23-keypad-clearance ticket-s23-keypad-footer-gap ticket-red-swipe-area-fixed-bottom" testID="ticket-swipe-area-fixed-bottom" style={[styles.ticketFooter, usePhoneTicketFit && styles.ticketFooterPhone]}>
+          <View accessibilityLabel="ticket-swipe-area-fixed-bottom ticket-swipe-footer-fixed-separate ticket-keypad-swipe-separated ticket-s23-keypad-clearance ticket-s23-keypad-footer-gap ticket-red-swipe-area-fixed-bottom ticket-polymarket-style-swipe-zone" testID="ticket-swipe-area-fixed-bottom" style={[styles.ticketFooter, usePhoneTicketFit && styles.ticketFooterPhone]}>
             <View style={styles.ticketFooterLightBand} />
             <View style={styles.ticketFooterDarkBand} />
             <SwipeSubmitControl
@@ -676,8 +679,8 @@ const styles = StyleSheet.create({
   ticket: { flex: 1, height: "100%", backgroundColor: "#f72d72", overflow: "hidden" },
   ticketBodyPanel: { flex: 1, backgroundColor: "#070b12", borderBottomLeftRadius: 40, borderBottomRightRadius: 40, overflow: "hidden", zIndex: 2 },
   ticketBodyPanelPhone: { borderBottomLeftRadius: 34, borderBottomRightRadius: 34 },
-  ticketContent: { flex: 1, width: "100%", maxWidth: 430, alignSelf: "center", paddingHorizontal: 24, paddingTop: 18, paddingBottom: 18 },
-  ticketContentPhone: { paddingHorizontal: 22, paddingTop: 12, paddingBottom: 18 },
+  ticketContent: { flex: 1, width: "100%", maxWidth: 430, alignSelf: "center", paddingHorizontal: 24, paddingTop: 18, paddingBottom: 16 },
+  ticketContentPhone: { paddingHorizontal: 22, paddingTop: 10, paddingBottom: 10 },
   dragHandle: { alignSelf: "center", width: 92, height: 1, borderRadius: 999, backgroundColor: "#293141", marginBottom: 2, opacity: 0.01 },
   ticketTop: { minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   ticketHeading: { flex: 1, alignItems: "center" },
@@ -707,7 +710,7 @@ const styles = StyleSheet.create({
   marketStatusTextWarning: { color: "#fde68a" },
   marketStatusTextBlocked: { color: "#fecaca" },
   amountDisplayBlock: { minHeight: 82, alignItems: "center", justifyContent: "flex-end", marginTop: 6 },
-  amountDisplayBlockPhone: { minHeight: 68, marginTop: 0 },
+  amountDisplayBlockPhone: { minHeight: 64, marginTop: 0 },
   amountDisplayText: { color: "#f8fafc", fontSize: 68, fontWeight: "500", lineHeight: 76 },
   amountDisplayTextPhone: { fontSize: 60, lineHeight: 68 },
   amountDisplayTextEmpty: { color: "#1b2230" },
@@ -738,7 +741,7 @@ const styles = StyleSheet.create({
   sideText: { color: "#8b94a5", fontSize: 15, fontWeight: "700" },
   sideTextActive: { color: "#ffffff" },
   oddsAvailableLine: { alignItems: "center", justifyContent: "center", minHeight: 28, marginTop: 12 },
-  oddsAvailableLinePhone: { marginTop: 7 },
+  oddsAvailableLinePhone: { marginTop: 6 },
   oddsAvailableText: { color: "#a8b0bf", fontSize: 15, fontWeight: "500" },
   amountHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8, marginTop: 6, marginBottom: 3 },
   amountMeta: { flexDirection: "row", alignItems: "center", gap: 8, flexShrink: 1 },
@@ -750,25 +753,25 @@ const styles = StyleSheet.create({
   presetRowPhone: { marginTop: 7 },
   presetButton: { flex: 1, minHeight: 40, alignItems: "center", justifyContent: "center" },
   presetText: { color: "#d7dce6", fontSize: 23, fontWeight: "500" },
-  keypadGrid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: 8, marginTop: 10, paddingBottom: 18 },
-  keypadGridPhone: { rowGap: 6, marginTop: 6, paddingBottom: 22 },
+  keypadGrid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: 8, marginTop: 10, paddingBottom: 20 },
+  keypadGridPhone: { rowGap: 5, marginTop: 6, paddingBottom: 14 },
   keypadButton: { width: "31.5%", minHeight: 43, alignItems: "center", justifyContent: "center" },
-  keypadButtonPhone: { minHeight: 39 },
+  keypadButtonPhone: { minHeight: 37 },
   keypadText: { color: "#f8fafc", fontSize: 29, fontWeight: "500" },
   errorCard: { flexDirection: "row", alignItems: "center", gap: 8, padding: 10, borderRadius: 10, backgroundColor: "#1f1a0b", borderWidth: 1, borderColor: "#854d0e", marginTop: 12 },
   errorTextBlock: { flex: 1, gap: 3 },
   errorText: { color: "#fde68a", fontWeight: "800" },
   errorDetailText: { color: "#fcd34d", fontSize: 12, fontWeight: "700" },
-  ticketFooter: { minHeight: 208, paddingHorizontal: 18, paddingTop: 10, paddingBottom: 34, backgroundColor: "#f72d72", position: "relative", overflow: "hidden" },
-  ticketFooterPhone: { minHeight: 196, paddingTop: 8, paddingBottom: 28 },
+  ticketFooter: { minHeight: 228, paddingHorizontal: 18, paddingTop: 10, paddingBottom: 34, backgroundColor: "#f72d72", position: "relative", overflow: "hidden" },
+  ticketFooterPhone: { minHeight: 222, paddingTop: 8, paddingBottom: 30 },
   ticketFooterLightBand: { position: "absolute", top: -24, left: -70, right: -20, height: 116, backgroundColor: "#ff93b7", opacity: 0.58, transform: [{ rotate: "-8deg" }] },
-  ticketFooterDarkBand: { position: "absolute", left: -40, right: -40, bottom: -64, height: 132, backgroundColor: "#c40d58", opacity: 0.82, transform: [{ rotate: "7deg" }] },
+  ticketFooterDarkBand: { position: "absolute", left: -40, right: -40, bottom: -78, height: 132, backgroundColor: "#c40d58", opacity: 0.72, transform: [{ rotate: "7deg" }] },
   swipeSubmit: { flex: 1, minHeight: 138, alignItems: "center", justifyContent: "center", paddingHorizontal: 14, borderRadius: 24, backgroundColor: "transparent", position: "relative" },
-  swipeSubmitArmed: { backgroundColor: "rgba(255,255,255,0.08)" },
+  swipeSubmitArmed: { backgroundColor: "transparent" },
   swipeSubmitDisabled: { opacity: 0.55 },
-  swipeIcon: { position: "absolute", top: 42, width: 56, height: 44, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "transparent" },
+  swipeIcon: { position: "absolute", top: 58, width: 56, height: 44, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: 2 },
   swipeIconArmed: { backgroundColor: "rgba(255,255,255,0.16)" },
-  swipeTextBlock: { alignItems: "center", transform: [{ translateY: 12 }] },
+  swipeTextBlock: { alignItems: "center", transform: [{ translateY: 14 }], zIndex: 1 },
   swipeLabel: { color: "#ffffff", fontSize: 24, fontWeight: "500" },
   swipeHelper: { color: "rgba(255,255,255,0.42)", fontSize: 12, fontWeight: "700", marginTop: 8 },
 });

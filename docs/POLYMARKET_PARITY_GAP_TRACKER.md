@@ -780,3 +780,14 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The full route-backed ticket/order/Portfolio/History path must still pass after proof-node relocation. | P0 | Passed | S23 proof completes Event Detail, totals ticket, swipe submit, Portfolio, settings, and History. |
 | Backend/API routes should not change for this visible Portfolio layout correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
 | Exact Polymarket row spacing and typography remain future work. | P2 | Tracked | This cycle closes the obvious blank area only. |
+
+## Cycle JC - Trade Ticket Swipe Reference Tightening
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Place-order screen needed closer Polymarket-style separation between the dark amount/keypad body and bottom red/pink swipe area. | P0 | Passed | `TradeTicket` keeps the body and footer as separate panels with rounded lower dark corners; S23 ticket-ready screenshot in `cycle-JC-trade-ticket-swipe-s23-proof-final` shows full keypad and fixed red footer without overlap. |
+| Swipe handle movement needed to feel gesture-progress-linked, not like a static button state. | P0 | Passed | `SwipeSubmitControl` uses explicit threshold/progress constants and progress-linked `translateY`; S23 swipe-progress screenshot shows the arrow lifted upward while the label stays centered. |
+| Swipe-to-buy should submit only after a clear upward gesture threshold. | P0 | Passed | S23 proof completes the fake-token order only after the scripted upward swipe; XML verifies `swipe-submit-gesture-required`, `swipe-submit-tap-disabled`, and `swipe-submit-threshold-clear`. |
+| S23 amount/keypad and swipe footer must not overlap. | P0 | Passed | S23 ticket-ready screenshot shows `.`, `0`, and backspace fully visible above the rounded dark panel edge and fixed red footer. |
+| Backend/order logic should not change for this visible ticket correction. | P0 | Passed | No backend route/schema/order service changed; `npm run typecheck`, `git diff --check`, and S23 server-filled proof passed through `POST /api/orders`, Portfolio, and History. |
+| Exact native Polymarket blur/physics and production team artwork remain future polish. | P2 | Tracked | This cycle targets amount-entry layout, spacing, and swipe-progress behavior only. |

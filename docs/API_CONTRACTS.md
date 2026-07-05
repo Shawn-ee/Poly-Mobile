@@ -215,6 +215,8 @@ Cycle IZ changes only mobile Portfolio range-selector and brand-watermark layout
 
 Cycle JA changes only mobile Portfolio visual layout and proof-node placement. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Mobile continues to consume the same `GET /api/portfolio`, Portfolio value-history, order, position, activity, and selected market identity contracts.
 
+Cycle JC changes only mobile Trade Ticket amount-entry layout and swipe gesture presentation. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Ticket submit continues to use the same selected market/outcome/line/period/provider identity, amount, side, contract side, payout context, `POST /api/orders`, `GET /api/portfolio`, and Portfolio History contracts.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
