@@ -353,3 +353,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The chart-axis fix must preserve line market selection, ticket, fake-token order, Portfolio, Orders, and History. | P0 | Passed | Samsung tablet Local MVP proof passed through selected spread line, ticket submit, Portfolio action tickets, Orders, and History on port 8268. |
 | The proof folder/script naming must match the active branch and actual work. | P0 | Passed | Evidence was written to `cycle-HA-event-detail-chart-probability-axis` while on `feature/event-detail-chart-probability-axis-retail-flow`. |
 | Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
+
+## Cycle HB - Portfolio Value Curve Retail Flow
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio performance chart looked like a flat placeholder because account values were scaled against zero. | P0 | Passed | Chart now scales against the account-value range and exposes `portfolio-chart-scaled-account-range`; Samsung tablet screenshot shows visible green movement. |
+| The Portfolio curve fix must preserve the Local MVP order result page, tabs, action tickets, and history. | P0 | Passed | Samsung tablet Local MVP proof passed through Portfolio, Buy more, Cash out, Orders, and History on port 8269. |
+| Backend/API route should not change for this rendering correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
+| Real persisted Portfolio value-history route remains future backend work. | P1 | Tracked | Deterministic fallback still uses the backend-shaped value-history contract. |

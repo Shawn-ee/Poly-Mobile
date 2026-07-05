@@ -393,9 +393,10 @@ function PortfolioSparkline({
 }) {
   const [selectedIndexOverride, setSelectedIndexOverride] = useState<number | null>(null);
   const values = points.map((point) => point.value);
-  const min = Math.min(...values, 0);
-  const max = Math.max(...values, 1);
+  const min = values.length ? Math.min(...values) : 0;
+  const max = values.length ? Math.max(...values) : 1;
   const spread = Math.max(max - min, 1);
+  const rangeSpread = Math.round(spread);
   const plotted = points.map((point, index) => ({
     key: `${point.timestamp}-${index}`,
     left: points.length <= 1 ? 0 : (index / (points.length - 1)) * 100,
@@ -414,7 +415,7 @@ function PortfolioSparkline({
 
   return (
     <Pressable
-      accessibilityLabel={`portfolio-performance-chart portfolio-chart-data-driven portfolio-chart-touchable portfolio-performance-chart-range-${range} portfolio-chart-source-${source} portfolio-chart-status-${status} portfolio-chart-point-count-${pointCount} portfolio-chart-trend-${trend} portfolio-chart-selected-index-${selectedIndex} portfolio-chart-selected-value-${Math.round(selectedValue)}`}
+      accessibilityLabel={`portfolio-performance-chart portfolio-chart-data-driven portfolio-chart-scaled-account-range portfolio-chart-touchable portfolio-performance-chart-range-${range} portfolio-chart-source-${source} portfolio-chart-status-${status} portfolio-chart-point-count-${pointCount} portfolio-chart-trend-${trend} portfolio-chart-value-spread-${rangeSpread} portfolio-chart-selected-index-${selectedIndex} portfolio-chart-selected-value-${Math.round(selectedValue)}`}
       onPress={() => setSelectedIndexOverride(pointCount > 2 ? Math.floor(pointCount / 2) : Math.max(pointCount - 1, 0))}
       testID="portfolio-performance-chart"
       style={styles.chartArea}
@@ -440,6 +441,7 @@ function PortfolioSparkline({
                 left: `${point.left}%`,
                 top: (point.top + next.top) / 2,
                 width: `${Math.max(next.left - point.left, 4)}%`,
+                transform: [{ rotate: `${Math.atan2(next.top - point.top, 68) * (180 / Math.PI)}deg` }],
               },
             ]}
           />

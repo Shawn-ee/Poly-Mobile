@@ -125,6 +125,8 @@ Cycle GZ changes only mobile Event Detail presentation and proof gates. No backe
 
 Cycle HA changes only mobile Event Detail chart label presentation and proof gates. No backend route, request body, response field, or schema changes are required. Existing chart history, selected outcome, selected market, selected line, and ticket handoff contracts remain unchanged.
 
+Cycle HB changes only mobile Portfolio chart rendering and proof gates. No backend route, request body, response field, or schema changes are required. `Portfolio` continues to consume the same `PortfolioValueHistory` fields: `range`, `ranges`, `source`, `status`, `points`, `generatedAt`, `lastUpdated`, and `emptyState`; deterministic fallback data remains backend-shaped until the real persisted value-history route is available.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
