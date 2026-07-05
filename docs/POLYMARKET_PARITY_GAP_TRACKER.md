@@ -699,3 +699,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Full Local MVP trade path must still pass after the History row icon change. | P0 | Passed | S23 proof completes Event Detail, totals ticket, upward swipe buy, Portfolio, settings, and History. |
 | Backend/API routes should not change for this visible history-row correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, and S23 server-filled proof passed. |
 | Exact production market/team artwork remains future work. | P2 | Tracked | This cycle uses existing market-type icons until production artwork exists. |
+
+## Cycle IT - Event Detail Line Section Clean Start
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Event Detail could show a clipped leftover market fragment directly under the sticky Game Lines/Player Props rail, making the first visible section look broken. | P0 | Passed | `EventDetail` now adds a dark clean-start separator; S23 line-market screenshot in `cycle-IT-event-detail-line-section-clean-start-s23-proof-final2` shows the first market group starting cleanly below the sticky rail. |
+| The clean-start fix must remain proofable after switching to Player Props and returning to Game Lines. | P0 | Passed | S23 XML verifies `event-detail-line-section-clean-start`, `event-detail-no-clipped-market-fragment`, and `event-detail-sticky-tab-content-clearance` in both the initial and returned line-market checks. |
+| Event Detail spacing change must not break the route-backed ticket/order/Portfolio path. | P0 | Passed | Same S23 proof completes route-backed totals ticket, visible swipe-progress capture, server-backed fake-token order, Portfolio, settings, and History. |
+| Backend/API routes should not change for this visible layout correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
+| Exact native sticky-header scroll physics remain future work. | P2 | Tracked | This cycle closes the obvious clipped-fragment issue in the current Local MVP Game Lines screen. |

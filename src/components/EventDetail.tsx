@@ -2041,7 +2041,13 @@ export function EventDetail({
         ) : activeTab === "halves" ? (
           renderHalves()
         ) : (
-          <View accessibilityLabel="event-detail-game-lines event-detail-core-full-game-lines-before-halves-local-mvp" testID="event-detail-game-lines">
+          <View accessibilityLabel="event-detail-game-lines event-detail-core-full-game-lines-before-halves-local-mvp event-detail-line-section-clean-start event-detail-no-clipped-market-fragment" testID="event-detail-game-lines">
+            <View
+              accessible
+              accessibilityLabel="event-detail-line-section-clean-start event-detail-sticky-tab-content-clearance event-detail-no-clipped-market-fragment"
+              style={styles.lineSectionCleanStart}
+              testID="event-detail-line-section-clean-start"
+            />
             <View accessibilityLabel="event-detail-stats" style={styles.hiddenStats} testID="event-detail-stats">
               <Text style={styles.hiddenStatsText}>{stats.volume}</Text>
               <Text style={styles.hiddenStatsText}>{stats.liquidity}</Text>
@@ -2421,6 +2427,7 @@ const styles = StyleSheet.create({
   marketTabActive: { borderBottomColor: "#f8fafc" },
   marketTabText: { color: "#6b7280", fontSize: 18, fontWeight: "800" },
   marketTabTextActive: { color: "#f8fafc" },
+  lineSectionCleanStart: { height: 10, backgroundColor: "#060b14", borderTopWidth: 1, borderTopColor: "#172033" },
   emptyProps: { minHeight: 280, alignItems: "center", justifyContent: "center" },
   emptyPropsText: { color: "#6b7280", fontSize: 18, fontWeight: "800" },
   hiddenStats: { height: 1, overflow: "hidden", opacity: 0.01 },

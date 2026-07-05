@@ -199,6 +199,8 @@ Cycle IR changes only mobile Trade Ticket amount-entry layout, swipe-handle pres
 
 Cycle IS changes only mobile Portfolio History icon presentation and proof gates. No backend route, request body, response field, auth requirement, or schema changes are required. History rows continue to consume the same activity fields from `GET /api/portfolio` / Portfolio History sync: title, outcome, selection, contract side, side, amount, timestamp, market type, line, period, provider source, provider token, and fill count. The icon is derived from existing `selection.marketType` or team identity fields.
 
+Cycle IT changes only mobile Event Detail spacing and proof gates. No backend route, request body, response field, auth requirement, or schema changes are required. Event Detail continues to consume the same event markets/outcomes, line-market fields, provider source/token identity, selected line/period, and `POST /api/orders` / `GET /api/portfolio` contracts for the route-backed Local MVP trade path.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
