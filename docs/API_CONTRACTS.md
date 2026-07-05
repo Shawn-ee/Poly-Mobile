@@ -97,6 +97,8 @@ Cycle GL changes only local fake-token cash-out handling. No backend route or sc
 
 Cycle GM changes only mobile ticket state reset behavior for Portfolio action tickets. No backend route, request body, response field, or schema changes are required. The existing `POST /api/orders` payload is unchanged after the user enters an amount; `sourcePositionId` remains local UI state for mock cash-out handling.
 
+Cycle GN changes only mobile Portfolio icon derivation. No backend route, request body, response field, or schema changes are required. The UI derives a team flag from existing `selection.displayLabel`, `selection.referenceOutcomeLabel`, `outcome`, and `title` fields already present in local/server Portfolio state.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

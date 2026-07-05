@@ -170,6 +170,54 @@ const scoreLineForTitle = (title: string) => {
   return `${teamAbbrev(home)} 0 - ${teamAbbrev(away)} 0`;
 };
 
+const teamFlags: Record<string, string> = {
+  ARG: "\ud83c\udde6\ud83c\uddf7",
+  AUS: "\ud83c\udde6\ud83c\uddfa",
+  BRA: "\ud83c\udde7\ud83c\uddf7",
+  CRO: "\ud83c\udded\ud83c\uddf7",
+  ECU: "\ud83c\uddea\ud83c\udde8",
+  EGY: "\ud83c\uddea\ud83c\uddec",
+  ENG: "\ud83c\udff4",
+  FRA: "\ud83c\uddeb\ud83c\uddf7",
+  MEX: "\ud83c\uddf2\ud83c\uddfd",
+  POR: "\ud83c\uddf5\ud83c\uddf9",
+  USA: "\ud83c\uddfa\ud83c\uddf8",
+};
+
+const codeAliases: Record<string, string> = {
+  ARGENTINA: "ARG",
+  AUSTRALIA: "AUS",
+  BRAZIL: "BRA",
+  CROATIA: "CRO",
+  ECUADOR: "ECU",
+  EGYPT: "EGY",
+  ENGLAND: "ENG",
+  FRANCE: "FRA",
+  MEXICO: "MEX",
+  PORTUGAL: "POR",
+  USA: "USA",
+};
+
+const teamCodeForPortfolioItem = (item: { title: string; outcome: string; selection?: TicketSelection }) => {
+  const candidates = [
+    item.selection?.displayLabel,
+    item.selection?.referenceOutcomeLabel,
+    item.outcome,
+    item.title,
+  ]
+    .filter(Boolean)
+    .map((value) => String(value).toUpperCase());
+
+  for (const value of candidates) {
+    const codeMatch = value.match(/\b(ARG|AUS|BRA|CRO|ECU|EGY|ENG|FRA|MEX|POR|USA)\b/);
+    if (codeMatch) return codeMatch[1];
+    const alias = Object.keys(codeAliases).find((name) => value.includes(name));
+    if (alias) return codeAliases[alias];
+  }
+
+  return undefined;
+};
+
 function PortfolioAvatar() {
   return (
     <View accessibilityLabel="portfolio-gradient-avatar" style={styles.avatarGradient}>
@@ -180,19 +228,27 @@ function PortfolioAvatar() {
   );
 }
 
-function PositionFlag() {
+function PositionFlag({ item }: { item: { title: string; outcome: string; selection?: TicketSelection } }) {
+  const code = teamCodeForPortfolioItem(item);
+  const flag = code ? teamFlags[code] : undefined;
+  if (flag) {
+    return (
+      <View accessibilityLabel={`portfolio-position-flag portfolio-position-flag-${code}`} style={styles.positionFlag}>
+        <Text style={styles.positionFlagEmoji}>{flag}</Text>
+      </View>
+    );
+  }
+
   return (
-    <View accessibilityLabel="portfolio-position-flag" style={styles.positionFlag}>
-      <View style={[styles.flagStripe, styles.flagBlue]} />
-      <View style={[styles.flagStripe, styles.flagWhite]} />
-      <View style={[styles.flagStripe, styles.flagRed]} />
+    <View accessibilityLabel="portfolio-position-flag portfolio-position-flag-generic" style={styles.positionFlag}>
+      <Text style={styles.positionFlagGeneric}>%</Text>
     </View>
   );
 }
 
 function ActivityIcon({ activity }: { activity: PortfolioActivity }) {
-  if (activity.outcome.toLowerCase().includes("fra") || activity.title.toLowerCase().includes("france")) {
-    return <PositionFlag />;
+  if (teamCodeForPortfolioItem(activity)) {
+    return <PositionFlag item={activity} />;
   }
 
   return (
@@ -799,7 +855,7 @@ export function Portfolio({
                 )}
               </View>
               <View style={styles.positionRowTop}>
-                <PositionFlag />
+                <PositionFlag item={position} />
                 <View style={styles.positionTextColumn}>
                   <Text style={styles.positionTitle}><Text style={styles.yesBadge}>{position.contractSide === "no" ? "No" : "Yes"}</Text> {displayPositionChoice(position)}</Text>
                   <Text style={styles.positionMeta}>
@@ -1097,11 +1153,9 @@ const styles = StyleSheet.create({
   positionLiveText: { color: "#ef4444", fontSize: 13, fontWeight: "700" },
   positionLiveClock: { color: "#ef4444", fontSize: 15, fontWeight: "700" },
   positionRowTop: { flexDirection: "row", gap: 14, alignItems: "center" },
-  positionFlag: { width: 66, height: 66, borderRadius: 12, overflow: "hidden", flexDirection: "row", backgroundColor: "#f8fafc" },
-  flagStripe: { flex: 1 },
-  flagBlue: { backgroundColor: "#0055a4" },
-  flagWhite: { backgroundColor: "#f8fafc" },
-  flagRed: { backgroundColor: "#ef4135" },
+  positionFlag: { width: 66, height: 66, borderRadius: 12, overflow: "hidden", alignItems: "center", justifyContent: "center", backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  positionFlagEmoji: { fontSize: 38, lineHeight: 46 },
+  positionFlagGeneric: { color: "#dbeafe", fontSize: 34, fontWeight: "700" },
   positionTextColumn: { flex: 1 },
   positionScoreLine: { color: "#a8b0bf", fontSize: 15, fontWeight: "500" },
   yesBadge: { color: "#22c55e", backgroundColor: "#052e16" },
