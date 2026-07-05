@@ -135,6 +135,8 @@ Cycle HE changes only mobile live Event Detail presentation and proof gates. No 
 
 Cycle HF changes only the mobile ticket submit interaction and proof gate. No backend route, request body, response field, or schema changes are required. The same fake-token/server-backed order path is used after the upward swipe; `TicketSelection`, selected line/outcome/provider identity, amount, side, and Portfolio handoff contracts are unchanged.
 
+Cycle HG changes only visible mobile Event Detail copy. No backend route, request body, response field, or schema changes are required. Event, market, outcome, chart, provider, and ticket handoff contracts are unchanged.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

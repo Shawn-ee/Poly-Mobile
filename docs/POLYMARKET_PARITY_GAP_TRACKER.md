@@ -398,3 +398,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The proof folder/script naming must match the active branch and actual work. | P0 | Passed | Evidence was written to `cycle-HF-ticket-swipe-required-retail-flow-final` while on `feature/ticket-swipe-required-retail-flow`. |
 | Backend/API route should not change for this interaction correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
 | Exact Polymarket native drag physics and blur depth are not fully matched. | P2 | Tracked | Interaction parity is gated; final pixel/native physics remain future polish. |
+
+## Cycle HG - Event Detail Retail Market Copy
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Live Event Detail primary market card still showed demo/provider-like copy: `Live World Cup - prices moving`. | P0 | Passed | `EventDetail` now renders `Winner market`; Samsung tablet proof asserts `Winner market` and rejects the old copy. |
+| Live ticket and market-line reachability must remain intact after the copy change. | P0 | Passed | Samsung tablet proof opened the live outcome ticket and verified Game Lines, Spread, Totals, and First Half Winner. |
+| Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android proof passed. |
+| Exact Polymarket live chart/touch physics remain future polish. | P2 | Tracked | Current cycle only corrected visible market copy. |

@@ -905,7 +905,7 @@ export function EventDetail({
             <Text style={styles.marketTitle}>{isLiveEvent ? "Live Winner" : "Team to Advance"}</Text>
             <Ionicons name="information-circle-outline" color="#64748b" size={19} />
           </View>
-          <Text style={styles.marketSubcopy}>{isLiveEvent ? "Live World Cup - prices moving" : "Winner market"}</Text>
+          <Text style={styles.marketSubcopy}>Winner market</Text>
         </View>
         <View style={styles.lineOutcomeButtonRow}>
           {primaryOutcomes.map((outcome, index) => (

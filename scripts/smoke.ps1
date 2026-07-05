@@ -2344,8 +2344,8 @@ try {
     if ($LiveDetail) {
       Save-Screenshot -Name "cycle-current-holiwyn-live-detail-top.png"
       $liveDetailTopHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-detail-top.xml"
-      Assert-HierarchyContains -Path $liveDetailTopHierarchy -Expected @("Australia vs. Egypt", "AUS 40%", "EGY 61%", "0 - 1", "63'", "event-detail-live-match-strip", "LIVE WORLD CUP", "event-detail-live-provider-copy-hidden-local-mvp", "event-detail-price-chart", "Live Winner", "Game Lines", "Player Props")
-      Assert-HierarchyDoesNotContain -Path $liveDetailTopHierarchy -Unexpected @("Live provider ready", "Refresh due", "deterministic-status-fixture -", "polymarket-gamma -")
+      Assert-HierarchyContains -Path $liveDetailTopHierarchy -Expected @("Australia vs. Egypt", "AUS 40%", "EGY 61%", "0 - 1", "63'", "event-detail-live-match-strip", "LIVE WORLD CUP", "event-detail-live-provider-copy-hidden-local-mvp", "event-detail-price-chart", "Live Winner", "Winner market", "Game Lines", "Player Props")
+      Assert-HierarchyDoesNotContain -Path $liveDetailTopHierarchy -Unexpected @("Live provider ready", "Refresh due", "deterministic-status-fixture -", "polymarket-gamma -", "Live World Cup - prices moving")
       Invoke-TapHierarchyNode -Path $liveDetailTopHierarchy -Identifier "event-detail-team-advance-australia"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-live-detail-ticket.png"
