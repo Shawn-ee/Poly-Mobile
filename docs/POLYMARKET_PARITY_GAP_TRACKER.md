@@ -801,3 +801,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Android proof should not depend on an exact minute string during a long proof run. | P0 | Passed | `scripts/smoke.ps1` now checks `portfolio-history-relative-time-format` instead of exact `Just now`; the visible screenshot still captured `Just now`. |
 | Backend/API routes should not change for this visible Portfolio History correction. | P0 | Passed | No backend route/schema/order service changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed through `POST /api/orders`, Portfolio, and History. |
 | Exact Polymarket Portfolio typography and older-history grouping remain future polish. | P2 | Tracked | This cycle targets visible timestamp formatting only. |
+
+## Cycle JE - Event Detail Compact Chart Trade Rail
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Event Detail chart selected-market handoff used a large framed card, making the game page feel more like a dashboard than Polymarket's compact mobile game page. | P0 | Passed | `EventDetail` now renders a compact transparent chart trade strip; S23 top screenshot in `cycle-JE-event-detail-compact-chart-trade-rail-s23-proof` shows the card frame and `Selected market` eyebrow removed. |
+| Compact rail must still preserve selected market/outcome identity and ticket handoff. | P0 | Passed | S23 XML verifies `event-detail-chart-contract-compact-strip`, selected chart contract/market/outcome labels, and `event-detail-chart-open-ticket`. |
+| The chart rail change must not break the Local MVP trade path. | P0 | Passed | Same S23 server-filled proof completes Event Detail, line market, ticket, swipe submit, Portfolio, settings, and History. |
+| Backend/API routes should not change for this visible Event Detail correction. | P0 | Passed | No backend route/schema/order service changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 proof passed. |
+| Exact Polymarket chart physics and tooltip behavior remain future polish. | P2 | Tracked | This cycle targets the visible chart handoff density only. |

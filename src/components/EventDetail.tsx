@@ -1920,12 +1920,11 @@ export function EventDetail({
             ))}
           </View>
           <View
-            accessibilityLabel={`event-detail-chart-contract-rail event-detail-simple-chart-trade-rail chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-outcome-${selectedChartTicketOutcome?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"} provider-lifecycle-${selectedChartTicketStatusBadge.lifecycle} ${selectedChartContractLabel}`}
+            accessibilityLabel={`event-detail-chart-contract-rail event-detail-simple-chart-trade-rail event-detail-chart-contract-compact-strip event-detail-chart-contract-card-removed chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-outcome-${selectedChartTicketOutcome?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"} provider-lifecycle-${selectedChartTicketStatusBadge.lifecycle} ${selectedChartContractLabel}`}
             style={styles.chartContractRail}
             testID="event-detail-chart-contract-rail"
           >
             <View style={styles.chartContractTextBlock}>
-              <Text style={styles.chartContractEyebrow}>Selected market</Text>
               <Text numberOfLines={1} style={styles.chartContractTitle}>{selectedChartContractLabel}</Text>
               <Text
                 accessibilityLabel={`event-detail-chart-ticket-handoff-status provider-lifecycle-${selectedChartTicketStatusBadge.lifecycle} provider-source-${selectedChartTicketStatusBadge.source} ${selectedChartTicketStatusBadge.text}`}
@@ -1937,7 +1936,7 @@ export function EventDetail({
                 style={styles.chartContractPoint}
                 testID="event-detail-chart-contract-point"
               >
-                Current probability {chartPointMeta.value}
+                {chartPointMeta.label} {chartPointMeta.value}
               </Text>
             </View>
             <View style={styles.chartContractActions}>
@@ -2348,17 +2347,17 @@ const styles = StyleSheet.create({
   chartFilterText: { color: "#8b93a3", fontSize: 13, fontWeight: "900" },
   chartFilterTextActive: { color: "#f8fafc" },
   retailHiddenChartControl: { height: 1, maxHeight: 1, marginTop: 0, opacity: 0.01, overflow: "hidden" },
-  chartContractRail: { minHeight: 54, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10, marginHorizontal: 24, marginTop: 12, paddingHorizontal: 14, paddingVertical: 9, borderRadius: 14, backgroundColor: "#0d1725", borderWidth: 1, borderColor: "#22304a" },
+  chartContractRail: { minHeight: 46, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10, marginHorizontal: 24, marginTop: 4, paddingHorizontal: 0, paddingVertical: 4, borderRadius: 0, backgroundColor: "transparent", borderWidth: 0, borderColor: "transparent" },
   chartContractTextBlock: { flex: 1, minWidth: 0 },
   chartContractEyebrow: { color: "#8ea0b8", fontSize: 10, fontWeight: "900", textTransform: "uppercase" },
-  chartContractTitle: { color: "#f8fafc", fontSize: 15, fontWeight: "900", marginTop: 3 },
+  chartContractTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
   chartContractStatus: { color: "#93c5fd", fontSize: 10, fontWeight: "900", marginTop: 4 },
   chartContractStatusWarning: { color: "#fde68a" },
-  chartContractPoint: { color: "#aeb8c7", fontSize: 12, fontWeight: "800", marginTop: 4 },
+  chartContractPoint: { color: "#aeb8c7", fontSize: 13, fontWeight: "800", marginTop: 2 },
   chartContractActions: { flexDirection: "row", alignItems: "center", gap: 8 },
   chartContractButton: { minHeight: 36, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5, borderRadius: 8, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247", paddingHorizontal: 10 },
   chartContractButtonText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
-  chartTradeButton: { minHeight: 42, minWidth: 86, alignItems: "center", justifyContent: "center", borderRadius: 12, paddingHorizontal: 16 },
+  chartTradeButton: { minHeight: 38, minWidth: 92, alignItems: "center", justifyContent: "center", borderRadius: 999, paddingHorizontal: 16 },
   chartTradeButtonText: { color: "#ffffff", fontSize: 15, fontWeight: "900" },
   chatPreview: { marginHorizontal: 24, marginTop: 8, padding: 14, borderRadius: 18, backgroundColor: "#181f2d" },
   chatPreviewTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
