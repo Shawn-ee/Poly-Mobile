@@ -1013,11 +1013,6 @@ export function Portfolio({
                   <Text style={styles.statusPill}>{activityStatusLabel(activity)}</Text>
                   {activity.selection && <Text accessibilityLabel={`activity-snapshot-${activity.id} ${snapshotSourceLabel(activity.id, activity.selection)}`} style={styles.statusPill}>Order-time snapshot</Text>}
                 </View>
-                {activity.timestamp && (
-                  <Text accessibilityLabel={`activity-time-${activity.id}`} style={styles.activityTime}>
-                    {activity.timestamp}
-                  </Text>
-                )}
                 {activity.isLive && (
                   <Text accessibilityLabel="portfolio-activity-live-badge" style={styles.activityLiveText}>
                     {t.liveNow}
@@ -1037,7 +1032,18 @@ export function Portfolio({
                   </Text>
                 )}
               </View>
-              <Text style={styles.activityAmount}>{money(activity.amount)}</Text>
+              <View
+                accessibilityLabel={`portfolio-history-side-meta ${activity.timestamp ? "portfolio-history-time" : "portfolio-history-time-none"} ${activity.timestamp ?? ""}`}
+                style={styles.activitySideMeta}
+                testID={`portfolio-history-side-meta-${activity.id}`}
+              >
+                <Text style={styles.activityAmount}>{money(activity.amount)}</Text>
+                {activity.timestamp && (
+                  <Text accessibilityLabel={`activity-time-${activity.id}`} style={styles.activityTime}>
+                    {activity.timestamp}
+                  </Text>
+                )}
+              </View>
               {expandedActivityId === activity.id && (
                 <View accessibilityLabel={`activity-detail-${activity.id}`} testID={`activity-detail-${activity.id}`} style={styles.activityDetailPanel}>
                   <Text style={styles.detailPanelTitle}>{detailCopy.details}</Text>
@@ -1219,11 +1225,12 @@ const styles = StyleSheet.create({
   activityIcon: { width: 58, height: 58, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937" },
   activityMain: { flex: 1 },
   activityAction: { color: "#f8fafc", fontSize: 18, fontWeight: "500" },
-  activityTime: { color: "#64748b", fontSize: 11, fontWeight: "800", marginTop: 2 },
+  activitySideMeta: { minWidth: 92, alignItems: "flex-end", gap: 5 },
+  activityTime: { color: "#8b94a5", fontSize: 15, fontWeight: "500" },
   activityLiveText: { alignSelf: "flex-start", color: "#fecaca", fontSize: 11, fontWeight: "900", marginTop: 3, textTransform: "uppercase" },
   activityLiveClock: { alignSelf: "flex-start", color: "#fca5a5", fontSize: 11, fontWeight: "900", marginTop: 2 },
   activityMeta: { color: "#94a3b8", fontSize: 16, fontWeight: "500", marginTop: 3 },
   activityExecution: { color: "#93c5fd", fontSize: 11, fontWeight: "900", marginTop: 4 },
-  activityAmount: { color: "#dbeafe", fontSize: 18, fontWeight: "500" },
+  activityAmount: { color: "#dbeafe", fontSize: 18, fontWeight: "500", textAlign: "right" },
   activityDetailPanel: { width: "100%", gap: 4, marginTop: 2, marginLeft: 38, padding: 10, borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#29476d" },
 });

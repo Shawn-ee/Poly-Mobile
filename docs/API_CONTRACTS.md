@@ -101,6 +101,8 @@ Cycle GN changes only mobile Portfolio icon derivation. No backend route, reques
 
 Cycle GO changes only mobile ticket header icon derivation. No backend route, request body, response field, or schema changes are required. The UI derives a team flag from existing `selection.displayLabel`, `selection.referenceOutcomeLabel`, `outcome.label`, event title, and market label fields already present in the ticket state.
 
+Cycle GP changes only mobile Portfolio History presentation and local activity creation. No backend route, request body, response field, or schema changes are required. Locally submitted fake-token trades set `PortfolioActivity.timestamp` to `t.justNow`, and the History row renders that field next to the amount. Server-backed history still consumes backend-provided activity timestamps.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

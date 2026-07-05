@@ -5834,7 +5834,7 @@ try {
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-history.png"
       $mvpPortfolioHistoryHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-history.xml"
       $mvpHistoryExpected = if ($mvpCycle -eq "GL") { @("Sold") + $mvpSellPortfolioExpected + @("portfolio-side-sell") } else { @($mvpPastTense) + $mvpPortfolioExpected }
-      Assert-HierarchyContains -Path $mvpPortfolioHistoryHierarchy -Expected (@("portfolio-tab-history", "activity-row-", "Mexico vs. Ecuador") + $mvpHistoryExpected)
+      Assert-HierarchyContains -Path $mvpPortfolioHistoryHierarchy -Expected (@("portfolio-tab-history", "activity-row-", "portfolio-history-side-meta", "portfolio-history-time", "Just now", "Mexico vs. Ecuador") + $mvpHistoryExpected)
 
       $proof = [ordered]@{
         cycle = $mvpCycle
