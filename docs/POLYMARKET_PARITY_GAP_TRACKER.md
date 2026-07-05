@@ -244,3 +244,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Portfolio position row used a hard-coded France-style flag even when the selected position was `MEX -2.5 1H`. | P0 | Passed | `Portfolio` now derives `MEX` from the selected line/title and renders `portfolio-position-flag-MEX`; Samsung tablet proof passed. |
 | Position icon fix must not break Cash out, Buy more, Orders, or History proof. | P0 | Passed | Local MVP trade-flow smoke passed through Portfolio action tickets, Orders, and History. |
 | Backend/API route should not change for this visual identity correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
+
+## Cycle GO - Ticket Team Flag Identity
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Ticket header still used a generic color square while Polymarket's order page shows the selected team flag/icon. | P0 | Passed | `TradeTicket` now derives `MEX` from existing ticket identity fields and renders `ticket-outcome-flag-MEX`; Samsung tablet proof passed. |
+| Ticket flag fix must preserve amount entry, swipe-submit, Portfolio, Orders, and History behavior. | P0 | Passed | Local MVP trade-flow smoke passed through initial ticket, amount entry, submit, Portfolio action tickets, Orders, and History. |
+| Backend/API route should not change for this visual identity correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |

@@ -5668,6 +5668,7 @@ try {
       $mvpPortfolioSide = if ($LocalMvpSellFlow) { "portfolio-side-sell" } else { "portfolio-side-buy" }
       $mvpOrderLabel = if ($LocalMvpSellFlow) { "MOCK - Sell - No - MEX -2.5 1H" } else { "MOCK - Buy - MEX -2.5 1H" }
       $mvpSellTicketExpected = @(
+        "ticket-outcome-flag-MEX",
         "ticket-market-family-spread",
         "ticket-market-type-spread",
         "ticket-line-2.5",
@@ -5693,6 +5694,7 @@ try {
         "selection-display-label-MEX -2.5 1H"
       )
       $mvpTicketExpected = @(
+        "ticket-outcome-flag-MEX",
         "ticket-market-family-spread",
         "ticket-market-type-spread",
         "ticket-line-2.5",
