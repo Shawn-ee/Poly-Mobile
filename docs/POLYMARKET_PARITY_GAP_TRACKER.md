@@ -750,3 +750,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Compact visible labels must not drop selected line, period, provider, token, amount, or timestamp identity. | P0 | Passed | Same S23 proof still verifies totals market type, line `2.5`, `Reg. Time`, Polymarket provider source/token, `75 USDT`, and timestamp in Portfolio History. |
 | Backend/API routes should not change for this visible Portfolio label correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
 | Exact final Portfolio typography/pixel polish remains future work. | P2 | Tracked | This cycle targets visible outcome-title cleanup only. |
+
+## Cycle IY - Portfolio Dollar Row Amounts
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio position rows still showed fake-token `USDT` notation in the row body, which looked less like the Polymarket mobile Portfolio reference. | P0 | Passed | `Portfolio` now renders visible row cost/current value/PnL/to-win amounts with `$` notation; S23 XML verifies `portfolio-row-dollar-amounts` and visible `Cost $75`. |
+| Portfolio History amount should use the same simple dollar notation while preserving full order identity. | P0 | Passed | S23 History XML verifies `portfolio-history-dollar-amounts`, visible `$75`, hidden `portfolio-display-label-Over 2.5 RT`, `portfolio-period-Reg. Time`, and provider source/token metadata. |
+| Dollar formatting must not change order amount, selected line, period, provider token, or fake-token backend contracts. | P0 | Passed | The same S23 server-filled proof completes the `$75` ticket, server-backed order, Portfolio position, settings, and History while preserving hidden line/provider identity. |
+| Backend/API routes should not change for this visible Portfolio amount correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
+| Exact final Portfolio typography/pixel polish remains future work. | P2 | Tracked | This cycle targets visible amount notation only. |

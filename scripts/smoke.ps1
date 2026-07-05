@@ -5426,6 +5426,7 @@ try {
             "portfolio-position-retail-density-fit",
             "portfolio-first-position-first-screen-fit",
             "portfolio-position-actions-fit-phone",
+            "portfolio-row-dollar-amounts",
             "portfolio-position-outcome-compact-label",
             "portfolio-outcome-compact-",
             "portfolio-event-title-compact-provider",
@@ -5437,7 +5438,7 @@ try {
             "portfolio-period-Reg. Time",
             "portfolio-provider-source-polymarket",
             "portfolio-provider-token-$mvpRouteTargetToken",
-            "Cost 75 USDT"
+            'Cost $75'
           )
         } else {
           @(
@@ -5507,6 +5508,7 @@ try {
             "portfolio-tab-history portfolio-tab-selected",
             "activity-row-",
             "portfolio-history-retail-row-parity",
+            "portfolio-history-dollar-amounts",
             "portfolio-history-outcome-compact-label",
             "portfolio-history-outcome-compact-",
             "portfolio-history-event-title-compact-provider",
@@ -5519,7 +5521,8 @@ try {
             "portfolio-line-$mvpRouteTargetLine",
             "portfolio-period-Reg. Time",
             "portfolio-provider-source-polymarket",
-            "portfolio-provider-token-$mvpRouteTargetToken"
+            "portfolio-provider-token-$mvpRouteTargetToken",
+            '$75'
           )
           Assert-HierarchyDoesNotContain -Path $mvpRouteFilledHistoryHierarchy -Unexpected @("event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth")
         }

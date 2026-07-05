@@ -373,6 +373,14 @@ const portfolioHeaderMoney = (value: number) => {
   return `${value < 0 ? "-" : ""}$${formatted}`;
 };
 
+const portfolioRowMoney = (value: number) => {
+  const absolute = Math.abs(value);
+  const formatted = absolute.toLocaleString(undefined, {
+    maximumFractionDigits: absolute >= 1000 || Number.isInteger(absolute) ? 0 : 2,
+  });
+  return `${value < 0 ? "-" : ""}$${formatted}`;
+};
+
 const pnlTotal = (positions: Position[]) =>
   positions.reduce((total, position) => total + estimatedPnl(position), 0);
 
@@ -961,7 +969,7 @@ export function Portfolio({
             </View>
           </View>
           {positions.map((position) => (
-            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-first-position-first-screen-fit portfolio-position-outcome-compact-label portfolio-outcome-compact-${compactVisibleOutcomeLabel(position)} ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
+            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-first-position-first-screen-fit portfolio-row-dollar-amounts portfolio-position-outcome-compact-label portfolio-outcome-compact-${compactVisibleOutcomeLabel(position)} ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
               <View style={styles.positionEventLine}>
                 <Text style={styles.positionScoreLine}>{compactPortfolioScoreLine(position)}</Text>
                 {(position.isLive || position.liveClock) && (
@@ -981,7 +989,7 @@ export function Portfolio({
                 <View style={styles.positionTextColumn}>
                   <Text style={styles.positionTitle}><Text style={styles.yesBadge}>{position.contractSide === "no" ? "No" : "Yes"}</Text> {displayPositionChoice(position)}</Text>
                   <Text style={styles.positionMeta}>
-                    Cost {money(position.amount)} | To win {money(portfolioPositionValue(position) + Math.max(estimatedPnl(position), 0))} | Entry {position.probability}%
+                    Cost {portfolioRowMoney(position.amount)} | To win {portfolioRowMoney(portfolioPositionValue(position) + Math.max(estimatedPnl(position), 0))} | Entry {position.probability}%
                   </Text>
                 </View>
               </View>
@@ -1008,7 +1016,7 @@ export function Portfolio({
               </Pressable>
               <View accessibilityLabel="portfolio-position-actions-fit-phone" testID="portfolio-position-actions-fit-phone" style={styles.positionValueRow}>
                 <View style={styles.positionValueBlock}>
-                  <Text adjustsFontSizeToFit minimumFontScale={0.78} numberOfLines={1} style={styles.positionValue}>{money(portfolioPositionValue(position))} <Text style={estimatedPnl(position) >= 0 ? styles.pnlPositive : styles.pnlNegative}>{estimatedPnl(position) >= 0 ? "+" : ""}{money(estimatedPnl(position))}</Text></Text>
+                  <Text adjustsFontSizeToFit minimumFontScale={0.78} numberOfLines={1} style={styles.positionValue}>{portfolioRowMoney(portfolioPositionValue(position))} <Text style={estimatedPnl(position) >= 0 ? styles.pnlPositive : styles.pnlNegative}>{estimatedPnl(position) >= 0 ? "+" : ""}{portfolioRowMoney(estimatedPnl(position))}</Text></Text>
                   <Text style={styles.positionChance}>{Math.round(position.currentPrice ? position.currentPrice * 100 : position.probability)}% {pageCopy.chance}</Text>
                 </View>
                 <View style={styles.positionQuickActions}>
@@ -1124,7 +1132,7 @@ export function Portfolio({
         <View style={styles.activityBlock}>
           {activities.slice(0, 5).map((activity) => (
             <Pressable
-              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-outcome-compact-label portfolio-history-outcome-compact-${compactVisibleOutcomeLabel(activity)} portfolio-history-fill-count-${activity.fillCount ?? 1} ${providerBreadthCodes(activity) ? "portfolio-history-event-title-compact-provider" : ""} ${selectionIdentityLabel(activity)}`}
+              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-dollar-amounts portfolio-history-outcome-compact-label portfolio-history-outcome-compact-${compactVisibleOutcomeLabel(activity)} portfolio-history-fill-count-${activity.fillCount ?? 1} ${providerBreadthCodes(activity) ? "portfolio-history-event-title-compact-provider" : ""} ${selectionIdentityLabel(activity)}`}
               key={activity.id}
               onPress={() => setExpandedActivityId((current) => (current === activity.id ? null : activity.id))}
               style={[styles.activityItem, expandedActivityId === activity.id && styles.rowExpanded]}
@@ -1173,7 +1181,7 @@ export function Portfolio({
                 style={styles.activitySideMeta}
                 testID={`portfolio-history-side-meta-${activity.id}`}
               >
-                <Text style={styles.activityAmount}>{money(activity.amount)}</Text>
+                <Text style={styles.activityAmount}>{portfolioRowMoney(activity.amount)}</Text>
                 {activity.timestamp && (
                   <Text accessibilityLabel={`activity-time-${activity.id}`} style={styles.activityTime}>
                     {activity.timestamp}

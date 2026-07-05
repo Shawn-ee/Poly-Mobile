@@ -209,6 +209,8 @@ Cycle IW changes only mobile Trade Ticket amount-entry layout, fixed swipe-foote
 
 Cycle IX changes only mobile Portfolio position/history visible labels. No backend route, request body, response field, auth requirement, order service, or schema changes are required. The UI derives compact visible labels from existing `selection.displayLabel`, while hidden proof/accessibility metadata continues to preserve the full display label, line, period, provider source/token, amount, and timestamp consumed from `GET /api/portfolio` and Portfolio History state.
 
+Cycle IY changes only mobile Portfolio position/history visible amount formatting. No backend route, request body, response field, auth requirement, order service, or schema changes are required. The UI derives Polymarket-style `$` row strings from existing numeric fake-token amounts while hidden proof/accessibility metadata continues to preserve the full selected line, period, provider source/token, and order amount consumed from `GET /api/portfolio` and Portfolio History state.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
