@@ -137,6 +137,8 @@ Cycle HF changes only the mobile ticket submit interaction and proof gate. No ba
 
 Cycle HG changes only visible mobile Event Detail copy. No backend route, request body, response field, or schema changes are required. Event, market, outcome, chart, provider, and ticket handoff contracts are unchanged.
 
+Cycle HH changes only visible mobile Live discovery presentation and proof gates. No backend route, request body, response field, or schema changes are required. Live events still consume the same `events`, `markets`, `outcomes`, `refreshTick`, and `isRefreshing` props; refresh/count state is now hidden structured metadata in the default Local MVP UI.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

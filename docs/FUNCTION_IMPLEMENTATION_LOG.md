@@ -498,3 +498,14 @@
 - Validation: `npm run typecheck`; PowerShell parser check for `scripts/smoke.ps1`; Samsung tablet proof `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -LiveDetail -Port 8279 -OutputDir docs/mobile/screenshots/cycle-HG-event-detail-retail-market-copy -HierarchyOutputDir docs/mobile/harness/cycle-HG-event-detail-retail-market-copy`.
 - Proof artifacts: `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-HG-event-detail-retail-market-copy\cycle-current-holiwyn-live-detail-top.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-HG-event-detail-retail-market-copy\cycle-current-holiwyn-live-detail-ticket.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-HG-event-detail-retail-market-copy\cycle-current-holiwyn-live-detail-markets.png`.
 - Known limitations: exact Polymarket live chart/touch physics remain P2 polish.
+
+## Cycle HH - Live Discovery Games-Only Retail Flow
+
+- Feature/page: Live discovery.
+- Frontend components touched: `src/components/LiveScreen.tsx`, `scripts/smoke.ps1`, `scripts/smoke-tablet.ps1`.
+- Important functions/services touched: no service changes. Visible refresh/freshness controls were removed from the default Live page; structured hidden metadata keeps refresh/count proof state.
+- User interactions supported: user opens Live, sees live World Cup game cards without operational refresh clutter, taps the live game, and reaches Event Detail.
+- State transitions: unchanged for `live discovery -> event detail`; live event, market, outcome, chart, ticket, and downstream order state remain unchanged.
+- Validation: `npm run typecheck`; PowerShell parser check for `scripts/smoke.ps1` and `scripts/smoke-tablet.ps1`; Samsung tablet proof `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -LiveSummary -Port 8282 -OutputDir docs/mobile/screenshots/cycle-HH-live-discovery-games-only-retail-flow-final -HierarchyOutputDir docs/mobile/harness/cycle-HH-live-discovery-games-only-retail-flow-final`.
+- Proof artifacts: `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-HH-live-discovery-games-only-retail-flow-final\cycle-current-holiwyn-live-summary.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\harness\cycle-HH-live-discovery-games-only-retail-flow-final\cycle-current-holiwyn-live-summary.xml`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-HH-live-discovery-games-only-retail-flow-final\cycle-current-holiwyn-live-summary-detail.png`.
+- Known limitations: future provider-refresh UX should be designed as a deliberate backend/provider milestone, not default Local MVP clutter.

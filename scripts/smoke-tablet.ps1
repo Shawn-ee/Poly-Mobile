@@ -35,6 +35,7 @@ param(
   [switch]$ServerLiveDetailFirstHalfOrderBook,
   [switch]$ServerLiveDetailSecondHalfOrderBook,
   [switch]$ServerLiveDetailProviderLineOrderBook,
+  [switch]$LiveSummary,
   [switch]$LiveDetail,
   [switch]$EmptyErrorLoading,
   [switch]$WholeAppNavDiscovery,
@@ -192,6 +193,8 @@ if ($LocalMvpRouteStatusFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerLiveDetailSecondHalfOrderBook -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl "http://127.0.0.1:3002"
 } elseif ($ServerLiveDetailProviderLineOrderBook) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerLiveDetailProviderLineOrderBook -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl "http://127.0.0.1:3002" -ServerEventSlug "cycle-du-a-world-cup-provider-line-depth" -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($LiveSummary) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -LiveSummary -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LiveDetail) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LiveDetail -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EmptyErrorLoading) {

@@ -407,3 +407,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Live ticket and market-line reachability must remain intact after the copy change. | P0 | Passed | Samsung tablet proof opened the live outcome ticket and verified Game Lines, Spread, Totals, and First Half Winner. |
 | Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android proof passed. |
 | Exact Polymarket live chart/touch physics remain future polish. | P2 | Tracked | Current cycle only corrected visible market copy. |
+
+## Cycle HH - Live Discovery Games-Only Retail Flow
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Live discovery still showed visible operational refresh/freshness copy even though the Local MVP Live page should focus on live football games. | P0 | Passed | `LiveScreen` hides the visible status/refresh row and exposes `live-operational-controls-hidden-local-mvp` metadata instead. |
+| Live discovery should reject visible `Updated just now`, `Refresh`, `5 markets`, `11 outcomes`, and `live-market-summary` strings. | P0 | Passed | Samsung tablet proof rejects the old visible strings and asserts structured `market-count-5` / `outcome-count-11` labels. |
+| Live game card must still open Event Detail after hiding operational controls. | P0 | Passed | Samsung tablet proof tapped the live game and reached Event Detail with `Live Winner`, `Winner market`, and `Game Lines`. |
+| Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, parser checks, and Android proof passed. |

@@ -701,7 +701,7 @@ try {
   } elseif ($DyAGamePageStructure -or $LiveDetail -or $EventDetailProviderRouteStatusProof) {
     @("Australia vs. Egypt", "Live Winner", "LIVE WORLD CUP", "Game Lines", "Player Props")
   } elseif ($LiveSummary -or $LiveTicket -or $LiveOrder -or $LiveSellOrder -or $LiveOrderClose -or $LivePortfolioBadge -or $LivePortfolioBadgeDeep) {
-    @("Live World Cup", "5 markets", "11 outcomes", "Australia vs. Egypt")
+    @("Live World Cup", "market-count-5", "outcome-count-11", "Australia vs. Egypt")
   } elseif ($ServerOrderFailure) {
     @("World Cup winner", "France", "Trading mode: Server mode", "Best bid", "Best ask", "Spread", "Fake balance")
   } elseif ($ServerSellOrderFilled) {
@@ -1872,7 +1872,13 @@ try {
     if ($LiveSummary) {
       Save-Screenshot -Name "cycle-current-holiwyn-live-summary.png"
       $liveSummaryHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-summary.xml"
-      Assert-HierarchyContains -Path $liveSummaryHierarchy -Expected @("Live World Cup", "Updated just now", "Refresh", "live-market-summary", "5 markets", "11 outcomes", "Australia vs. Egypt", "Australia", "Egypt")
+      Assert-HierarchyContains -Path $liveSummaryHierarchy -Expected @("live-world-cup-games-focus", "prediction-only-live", "Live World Cup", "World Cup", "Australia vs. Egypt", "Australia", "Egypt", "live-operational-controls-hidden-local-mvp", "live-refresh-hidden", "market-count-5", "outcome-count-11")
+      Assert-HierarchyDoesNotContain -Path $liveSummaryHierarchy -Unexpected @("refresh-live-markets", "Updated just now", "Updated just now - refreshed", "live-market-summary", "5 markets", "11 outcomes")
+      Invoke-TapHierarchyNode -Path $liveSummaryHierarchy -Identifier "event-card-france-argentina-final"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-live-summary-detail.png"
+      $liveSummaryDetailHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-summary-detail.xml"
+      Assert-HierarchyContains -Path $liveSummaryDetailHierarchy -Expected @("Australia vs. Egypt", "event-detail-price-chart", "Live Winner", "Winner market", "Game Lines")
       return
     }
 

@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { MarketList } from "./MarketLists";
 
@@ -50,35 +50,16 @@ export function LiveScreen({
         </View>
         <Text style={styles.liveCount}>{events.length}</Text>
       </View>
-      <View style={styles.liveStatusRow}>
-        <Text style={styles.liveStatusText}>{refreshTick === 0 ? t.liveUpdated : `${t.liveUpdated} - refreshed`}</Text>
-        <Pressable
-          accessibilityLabel="refresh-live-markets"
-          disabled={isRefreshing}
-          onPress={onRefresh}
-          style={[styles.refreshButton, isRefreshing && styles.refreshButtonDisabled]}
-          testID="refresh-live-markets"
-        >
-          <Ionicons name="refresh" color="#dbeafe" size={16} />
-          <Text style={styles.refreshText}>{t.refreshLive}</Text>
-        </Pressable>
-      </View>
       <View
-        accessibilityLabel={`live-counts-hidden-local-mvp market-count-${liveMarketCount} outcome-count-${liveOutcomeCount}`}
+        accessibilityLabel={`live-operational-controls-hidden-local-mvp live-refresh-hidden refresh-tick-${refreshTick} is-refreshing-${isRefreshing ? "yes" : "no"} refresh-action-available market-count-${liveMarketCount} outcome-count-${liveOutcomeCount}`}
         style={styles.a11yOnly}
-        testID="live-counts-hidden-local-mvp"
+        testID="live-operational-controls-hidden-local-mvp"
       >
         <View style={styles.summaryPill}>
           <Ionicons name="layers-outline" color="#93c5fd" size={16} />
-          <Text style={styles.summaryText}>
-            {liveMarketCount} {t.marketCount}
-          </Text>
         </View>
         <View style={styles.summaryPill}>
           <Ionicons name="git-branch-outline" color="#93c5fd" size={16} />
-          <Text style={styles.summaryText}>
-            {liveOutcomeCount} {t.outcomeCount}
-          </Text>
         </View>
       </View>
       <MarketList locale={locale} events={events} empty={t.noLive} openEvent={openEvent} openTicket={openTicket} />
@@ -94,13 +75,7 @@ const styles = StyleSheet.create({
   liveHeaderText: { flex: 1, minWidth: 0 },
   liveEyebrow: { color: "#60a5fa", fontSize: 12, fontWeight: "900", textTransform: "uppercase" },
   liveCount: { minWidth: 34, textAlign: "center", color: "#ffffff", fontWeight: "900", backgroundColor: "#ef4444", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 6 },
-  liveStatusRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 14 },
-  liveStatusText: { color: "#8ea0b8", fontWeight: "800" },
-  refreshButton: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, backgroundColor: "#1f2937" },
-  refreshButtonDisabled: { opacity: 0.7 },
-  refreshText: { color: "#dbeafe", fontWeight: "900" },
   a11yOnly: { height: 1, opacity: 0.01, overflow: "hidden" },
   summaryRow: { flexDirection: "row", gap: 8, marginBottom: 14 },
   summaryPill: { flex: 1, minHeight: 42, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, borderRadius: 10, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
-  summaryText: { color: "#dbeafe", fontSize: 13, fontWeight: "900" },
 });
