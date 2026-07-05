@@ -692,7 +692,7 @@ const styles = StyleSheet.create({
   errorTextBlock: { flex: 1, gap: 3 },
   errorText: { color: "#fde68a", fontWeight: "800" },
   errorDetailText: { color: "#fcd34d", fontSize: 12, fontWeight: "700" },
-  ticketFooter: { minHeight: 148, paddingHorizontal: 18, paddingTop: 4, paddingBottom: 18, backgroundColor: "#fb2f6f", position: "relative", overflow: "hidden" },
+  ticketFooter: { minHeight: 148, paddingHorizontal: 18, paddingTop: 4, paddingBottom: 24, backgroundColor: "#fb2f6f", position: "relative", overflow: "hidden" },
   ticketFooterLightBand: { position: "absolute", top: -18, left: -70, right: -20, height: 92, backgroundColor: "#ff79a5", opacity: 0.5, transform: [{ rotate: "-8deg" }] },
   ticketFooterDarkBand: { position: "absolute", left: -40, right: -40, bottom: -52, height: 118, backgroundColor: "#d4145f", opacity: 0.78, transform: [{ rotate: "7deg" }] },
   swipeSubmit: { flex: 1, minHeight: 108, alignItems: "center", justifyContent: "center", gap: 7, paddingHorizontal: 14, borderRadius: 24, backgroundColor: "transparent" },
@@ -700,7 +700,7 @@ const styles = StyleSheet.create({
   swipeSubmitDisabled: { opacity: 0.55 },
   swipeIcon: { width: 56, height: 42, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "transparent" },
   swipeIconArmed: { backgroundColor: "rgba(255,255,255,0.16)" },
-  swipeTextBlock: { alignItems: "center", transform: [{ translateY: -18 }] },
+  swipeTextBlock: { alignItems: "center", transform: [{ translateY: -30 }] },
   swipeLabel: { color: "#ffffff", fontSize: 24, fontWeight: "500" },
   swipeHelper: { color: "rgba(255,255,255,0.58)", fontSize: 12, fontWeight: "700", marginTop: 6 },
 });
