@@ -189,6 +189,8 @@ Cycle IM changes only mobile Portfolio settings presentation and proof gates. No
 
 Cycle IN changes only mobile Portfolio header formatting and proof gates. No backend route, request body, response field, auth requirement, or schema changes are required. The app still receives and calculates numeric fake-token balances from the same Portfolio state; only the top account header formats value, PnL, and cash in Polymarket-style dollar notation. Ticket/order/position/history rows continue to preserve USDT-style fake-token identity where relevant.
 
+Cycle IO changes only mobile Portfolio layout density and proof gates. No backend route, request body, response field, auth requirement, or schema changes are required. The app continues to consume the same Portfolio account value, value-history points, position, order, activity, selected line/provider identity, and ticket/order contracts.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

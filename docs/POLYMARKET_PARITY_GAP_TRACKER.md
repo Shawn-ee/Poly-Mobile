@@ -650,3 +650,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Settings action must remain functional after header formatting changes. | P0 | Passed | Same S23 proof opens and closes the Portfolio settings sheet. |
 | Backend/API routes should not change for this visible formatting correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
 | Full Portfolio typography/chart/row parity remains future work. | P2 | Tracked | This cycle narrows the account value header only. |
+
+## Cycle IO - Portfolio First Position Visibility
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| After a trade, the Portfolio header/chart/tabs consumed too much S23 first-screen height, leaving the resulting position row mostly buried near the bottom navigation. | P0 | Passed | `Portfolio` now tightens header/chart/range/tab vertical spacing and exposes `portfolio-first-position-first-screen-fit`; S23 screenshot shows the first position row visible below tabs. |
+| Density change must preserve account value, chart, range selector, settings action, position identity, and History. | P0 | Passed | Same S23 proof verifies Portfolio header, settings open/close, selected totals line/provider identity, and History. |
+| Backend/API routes should not change for this visible density correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
+| Exact native Portfolio chart curve and final pixel polish remain future work. | P2 | Tracked | This cycle specifically closes post-trade first-screen result visibility. |
