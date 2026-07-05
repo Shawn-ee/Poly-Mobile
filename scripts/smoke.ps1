@@ -5222,7 +5222,7 @@ try {
 
         Save-Screenshot -Name "$mvpRouteServerPrefix-top.png"
         $mvpRouteTopHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-top.xml"
-        Assert-HierarchyContains -Path $mvpRouteTopHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "event-detail-price-chart", "chart-source-polymarket-clob-prices-history", "chart-status-ready", "live-data-source-polymarket-gamma")
+        Assert-HierarchyContains -Path $mvpRouteTopHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "event-detail-header-team-identity-fit", "BHO", "BAW", "event-detail-price-chart", "chart-source-polymarket-clob-prices-history", "chart-status-ready", "live-data-source-polymarket-gamma")
         Assert-HierarchyDoesNotContain -Path $mvpRouteTopHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
         $mvpRouteTargetOutcomeId = if ($LocalMvpRouteServerFilledTeamTotalFlow) { "event-detail-outcome-team-total-goals-team-total-over" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "event-detail-outcome-totals-totals-over" } else { "event-detail-outcome-spread-spread-yes" }
@@ -5264,6 +5264,10 @@ try {
           }
         }
         if (-not $mvpRouteLineHierarchy) {
+          & $adb -s $Device shell input swipe 540 720 540 1760 350 | Out-Null
+          Start-Sleep -Milliseconds 500
+          & $adb -s $Device shell input swipe 540 720 540 1500 300 | Out-Null
+          Start-Sleep -Milliseconds 500
           Save-Screenshot -Name "$mvpRouteServerPrefix-line-markets.png"
           $mvpRouteLineHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-line-markets.xml"
         } else {

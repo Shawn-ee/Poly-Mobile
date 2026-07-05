@@ -479,3 +479,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The Local MVP path must still preserve swipe ticket submit, server-backed fake-token fill, Portfolio position, and History activity. | P0 | Passed | S23 proof on port `8316` passed through the server-filled totals flow and verified `position-card-*` plus `activity-row-*`. |
 | Backend/API route should not change for this phone-width layout correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android server-filled proof passed. |
 | Exact Polymarket Portfolio typography remains future visual polish. | P2 | Tracked | This cycle focused on phone-width usability and action visibility. |
+
+## Cycle HP - Event Detail Header Team Identity
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Route-backed live Event Detail showed the same `BRE` code for both provider fixture teams, making side identity unclear. | P0 | Passed | `EventDetail` now derives distinct `BHO` and `BAW` codes; S23 top/line-market screenshots and XML show both codes. |
+| The live header repeated raw `Live` clock text instead of showing a clean status and clock. | P0 | Passed | S23 screenshot shows `Live` and `67:00` as separate readable lines without the repeated raw `Live · 67:00` string. |
+| Header identity proof must run inside the same server-backed Local MVP trade path. | P0 | Passed | S23 proof on port `8318` verifies `event-detail-header-team-identity-fit`, opens the Totals ticket, submits with swipe, and reaches Portfolio History. |
+| Backend/API route should not change for this header correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android server-filled proof passed. |
+| Exact Polymarket flags/team artwork remain future visual polish. | P2 | Tracked | This cycle focused on clear side identity and live-time readability. |

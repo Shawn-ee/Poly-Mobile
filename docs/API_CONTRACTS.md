@@ -153,6 +153,8 @@ Cycle HN changes only mobile Portfolio post-order scroll/landing behavior and pr
 
 Cycle HO changes only mobile Portfolio position-row layout and proof marker placement. No backend route, request body, response field, or schema changes are required. Mobile continues to consume the same position fields from `GET /api/portfolio` and the same value-history fields from `GET /api/portfolio/value-history`; the row-level route proof mirrors existing `displayedValueHistory.source` and `displayedValueHistory.status` so result-scrolled screenshots can still verify chart/value data state.
 
+Cycle HP changes only mobile Event Detail header formatting and proof recovery. No backend route, request body, response field, or schema changes are required. Mobile continues to consume the existing event fields: `teams[]`, `status`, `startsAt`, outcomes/probabilities, chart metadata, line-market identity, and provider source/token fields. The header derives display codes and a live clock label from those existing fields.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

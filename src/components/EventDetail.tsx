@@ -272,7 +272,30 @@ const providerBadgeFromRoute = (
   };
 };
 
-const teamCode = (name: string) => name.replace(/[^A-Za-z]/g, "").slice(0, 3).toUpperCase();
+const teamCode = (name: string) => {
+  const words = name
+    .replace(/[^A-Za-z\s]/g, " ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  if (words.length >= 2) {
+    const first = words[0].slice(0, 1).toUpperCase();
+    const last = words[words.length - 1].toUpperCase();
+    if (last === "HOME") return `${first}HO`;
+    if (last === "AWAY") return `${first}AW`;
+  }
+  return words.join("").slice(0, 3).toUpperCase();
+};
+
+const liveClockLabel = (startsAt: string) => {
+  const clock = startsAt.match(/\d{1,3}:\d{2}|\d{1,3}'/);
+  if (clock) return clock[0];
+  const compact = startsAt
+    .replace(/live/ig, "")
+    .replace(/[·•]/g, "")
+    .trim();
+  return compact || "Live";
+};
 
 const positionCurrentProbability = (position: Position) => {
   if (typeof position.currentPrice === "number") return Math.round(position.currentPrice * 100);
@@ -569,9 +592,13 @@ export function EventDetail({
     : selectedChartPoint === "mid"
       ? { label: "2H", value: `${Math.max(1, selectedChartProbability - 2)}%`, time: "Mid chart" }
       : { label: "Current", value: `${selectedChartProbability}%`, time: event.status === "live" ? "Live now" : event.startsAt };
-  const liveClock = event.status === "live"
-    ? event.startsAt.replace("Live", "").replace("·", "").trim()
-    : "15'";
+  const liveClock = event.status === "live" ? liveClockLabel(event.startsAt) : "15'";
+  const matchDateLabel = event.status === "live"
+    ? "Live"
+    : event.startsAt.split(" ")[0] === "Today"
+      ? "Today"
+      : event.startsAt;
+  const compactTimeLabel = event.status === "live" ? liveClock : event.startsAt.replace(/^Today\s*/, "");
   const scoreboard = event.status === "live" ? "0 - 1" : "0 - 0";
   const handleScroll = (eventScroll: NativeSyntheticEvent<NativeScrollEvent>) => {
     const shouldShow = eventScroll.nativeEvent.contentOffset.y > 500;
@@ -601,6 +628,7 @@ export function EventDetail({
   const spreadLineOptions = ["0.5", "1.5", "2.5"];
   const totalsLineOptions = ["1.5", "2.5", "3.5"];
   const homeCode = teamCode(teamA?.name ?? "Home");
+  const awayCode = teamCode(teamB?.name ?? "Away");
   const spreadProbability = boundedProbability(
     34
     - (spreadLine === "0.5" ? -14 : spreadLine === "2.5" ? 18 : 0)
@@ -1563,24 +1591,24 @@ export function EventDetail({
       {compactHeaderVisible && activeHeaderTab === "game" && (
         <View accessibilityLabel="event-detail-sticky-market-shell" style={styles.stickyMarketShell} testID="event-detail-sticky-market-shell">
           <View
-            accessibilityLabel={`event-detail-compact-game-header ${teamA ? teamCode(teamA.name) : ""} ${leftOutcome?.probability ?? 0}% ${event.startsAt} ${teamB ? teamCode(teamB.name) : ""} ${rightOutcome?.probability ?? 0}% Game Lines Player Props`}
+            accessibilityLabel={`event-detail-compact-game-header event-detail-header-team-identity-fit ${homeCode} ${leftOutcome?.probability ?? 0}% ${matchDateLabel} ${compactTimeLabel} ${awayCode} ${rightOutcome?.probability ?? 0}% Game Lines Player Props`}
             style={styles.compactGameHeader}
             testID="event-detail-compact-game-header"
           >
             <View style={styles.compactTeamSide}>
               <Text style={styles.compactFlag}>{teamA?.flag ?? ""}</Text>
               <View>
-                <Text style={styles.compactTeamCode}>{teamA ? teamCode(teamA.name) : ""}</Text>
+                <Text style={styles.compactTeamCode}>{homeCode}</Text>
                 <Text style={[styles.compactProbability, { color: leftOutcome?.color ?? "#22c55e" }]}>{leftOutcome?.probability ?? 0}%</Text>
               </View>
             </View>
             <View style={styles.compactMatchCenter}>
-              <Text style={styles.compactDate}>{event.startsAt.split(" ")[0] === "Today" ? "Today" : event.startsAt}</Text>
-              <Text style={styles.compactTime}>{event.status === "live" ? liveClock : event.startsAt.replace(/^Today\s*/, "")}</Text>
+              <Text style={styles.compactDate}>{matchDateLabel}</Text>
+              <Text style={styles.compactTime}>{compactTimeLabel}</Text>
             </View>
             <View style={[styles.compactTeamSide, styles.compactTeamRight]}>
               <View style={styles.compactRightText}>
-                <Text style={styles.compactTeamCode}>{teamB ? teamCode(teamB.name) : ""}</Text>
+                <Text style={styles.compactTeamCode}>{awayCode}</Text>
                 <Text style={[styles.compactProbability, { color: rightOutcome?.color ?? "#ef4444" }]}>{rightOutcome?.probability ?? 0}%</Text>
               </View>
               <Text style={styles.compactFlag}>{teamB?.flag ?? ""}</Text>
@@ -1603,25 +1631,25 @@ export function EventDetail({
           <Text style={styles.legacySummaryText}>{t.markets}</Text>
         </View>
         <View
-          accessibilityLabel={`event-detail-summary event-detail-stats event-detail-market-summary ${label(locale, event)} ${stats.marketCount} ${t.marketCount} ${stats.outcomeCount} ${t.outcomeCount} Game lines ${gameLineMarkets.length === 1 ? "1 market" : `${gameLineMarkets.length} ${t.marketCount}`} Props ${propMarkets.length} ${t.marketCount} ${primaryMarket ? label(locale, primaryMarket) : ""} ${t.markets} ${t.volume} ${stats.volume} ${t.liquidity} ${stats.liquidity} ${t.traders} ${stats.traders} ${t.bestBid} ${t.bestAsk} ${t.spread}`}
+          accessibilityLabel={`event-detail-summary event-detail-header-team-identity-fit event-detail-stats event-detail-market-summary ${homeCode} ${awayCode} ${matchDateLabel} ${compactTimeLabel} ${label(locale, event)} ${stats.marketCount} ${t.marketCount} ${stats.outcomeCount} ${t.outcomeCount} Game lines ${gameLineMarkets.length === 1 ? "1 market" : `${gameLineMarkets.length} ${t.marketCount}`} Props ${propMarkets.length} ${t.marketCount} ${primaryMarket ? label(locale, primaryMarket) : ""} ${t.markets} ${t.volume} ${stats.volume} ${t.liquidity} ${stats.liquidity} ${t.traders} ${stats.traders} ${t.bestBid} ${t.bestAsk} ${t.spread}`}
           style={styles.matchHeader}
           testID="event-detail-summary"
         >
           <View style={styles.teamSide}>
             <Text style={styles.flag}>{teamA?.flag ?? ""}</Text>
             <View>
-              <Text style={styles.teamCode}>{teamA ? teamCode(teamA.name) : ""}</Text>
+              <Text style={styles.teamCode}>{homeCode}</Text>
               <Text style={[styles.teamProbability, { color: leftOutcome?.color ?? "#22c55e" }]}>{leftOutcome?.probability ?? 0}%</Text>
             </View>
           </View>
           <View style={styles.matchTime}>
-            <Text style={styles.matchDate}>{event.startsAt.split(" ")[0] === "Today" ? "Today" : event.status === "live" ? "Live" : event.startsAt}</Text>
+            <Text style={styles.matchDate}>{matchDateLabel}</Text>
             <Text style={styles.scoreText}>{scoreboard}</Text>
             <Text style={styles.liveClock}>{liveClock}</Text>
           </View>
           <View style={[styles.teamSide, styles.teamSideRight]}>
             <View style={styles.rightTeamText}>
-              <Text style={styles.teamCode}>{teamB ? teamCode(teamB.name) : ""}</Text>
+              <Text style={styles.teamCode}>{awayCode}</Text>
               <Text style={[styles.teamProbability, { color: rightOutcome?.color ?? "#ef4444" }]}>{rightOutcome?.probability ?? 0}%</Text>
             </View>
             <Text style={styles.flag}>{teamB?.flag ?? ""}</Text>
