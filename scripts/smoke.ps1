@@ -5222,7 +5222,7 @@ try {
 
         Save-Screenshot -Name "$mvpRouteServerPrefix-top.png"
         $mvpRouteTopHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-top.xml"
-        Assert-HierarchyContains -Path $mvpRouteTopHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "event-detail-header-team-identity-fit", "BHO", "BAW", "event-detail-price-chart", "chart-source-polymarket-clob-prices-history", "chart-status-ready", "live-data-source-polymarket-gamma", "event-detail-non-prediction-lower-content-hidden-local-mvp")
+        Assert-HierarchyContains -Path $mvpRouteTopHierarchy -Expected @("EL-A Provider Breadth World Cup Live", "event-detail-header-team-identity-fit", "BHO", "BAW", "event-detail-price-chart", "event-detail-chart-retail-surface-fit", "chart-source-polymarket-clob-prices-history", "chart-status-ready", "live-data-source-polymarket-gamma", "event-detail-non-prediction-lower-content-hidden-local-mvp")
         Assert-HierarchyDoesNotContain -Path $mvpRouteTopHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
         $mvpRouteTargetOutcomeId = if ($LocalMvpRouteServerFilledTeamTotalFlow) { "event-detail-outcome-team-total-goals-team-total-over" } elseif ($LocalMvpRouteServerFilledTotalsFlow) { "event-detail-outcome-totals-totals-over" } else { "event-detail-outcome-spread-spread-yes" }
@@ -5345,7 +5345,9 @@ try {
         Assert-HierarchyContains -Path $mvpRouteSettingsHierarchy -Expected @("ticket-settings-panel", "ticket-settings-state-open", "Order type", "Market", "Odds", "Available")
         Invoke-TapHierarchyNode -Path $mvpRouteSettingsHierarchy -Identifier "ticket-settings"
         Start-Sleep -Milliseconds 500
-        Invoke-TapHierarchyNode -Path $mvpRouteSpreadTicketHierarchy -Identifier "ticket-preset-25"
+        $mvpRouteSpreadTicketClosedHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-settings-closed.xml"
+        Assert-HierarchyContains -Path $mvpRouteSpreadTicketClosedHierarchy -Expected @("trade-ticket", "ticket-settings-state-closed", "ticket-preset-25", "ticket-preset-50")
+        Invoke-TapHierarchyNode -Path $mvpRouteSpreadTicketClosedHierarchy -Identifier "ticket-preset-25"
         Start-Sleep -Milliseconds 500
         $mvpRouteSpreadAmount25Hierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-amount-25.xml"
         Invoke-TapHierarchyNode -Path $mvpRouteSpreadAmount25Hierarchy -Identifier "ticket-preset-50"

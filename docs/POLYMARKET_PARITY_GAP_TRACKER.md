@@ -518,3 +518,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Long provider fixture titles made History rows truncate important market/outcome information. | P0 | Passed | History rows now shorten event titles to team abbreviations such as `HOM vs GOA` and keep `Total Goals 2.5` as its own subtitle. |
 | Backend/API route should not change for this visible row correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and S23 server-filled proof passed. |
 | Overall Portfolio header/chart spacing is still not full Polymarket parity. | P1 | Tracked | This cycle only closes the post-trade History row readability gap. |
+
+## Cycle HU - Event Detail Retail Chart Surface
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Event Detail chart area still exposed chart outcome/point/filter controls and live-match strip clutter in the default Local MVP surface. | P0 | Passed | S23 top screenshot and XML in `cycle-HU-event-detail-retail-chart-surface-s23-proof-final-pass` show `event-detail-chart-retail-surface-fit` with the visible clutter removed. |
+| Chart interaction should feel more like pressing the chart to inspect probability movement, not tapping separate debug chips. | P0 | Passed | `event-detail-chart-touch-surface` is present in the S23 hierarchy and cycles selected chart points while keeping point/filter chips hidden from the visible default surface. |
+| The visible user path must remain Home/Event Detail/line market/ticket/order/Portfolio History with no order-book UI. | P0 | Passed | S23 proof passed through Totals ticket, swipe-submit, Portfolio, and History while asserting Local MVP order-book markers are absent. |
+| Backend/API route should not change for this visible chart correction. | P0 | Passed | No backend file changed; `npm run typecheck`, `scripts/smoke.ps1` parser check, and S23 server-filled proof passed. |
+| Exact Polymarket chart animation/time-range parity remains future work. | P1 | Tracked | This cycle removes structural clutter and adds chart-surface tap behavior, not full native charting parity. |
