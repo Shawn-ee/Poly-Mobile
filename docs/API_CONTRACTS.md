@@ -235,6 +235,8 @@ Cycle JK changes only mobile Portfolio History row label presentation. No backen
 
 Cycle JL changes only mobile Trade Ticket amount-entry layout, red/pink swipe-footer geometry, and swipe-handle presentation. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Ticket submit continues to use the same selected market/outcome/line/period/provider identity, amount, side, contract side, payout context, `POST /api/orders`, `GET /api/portfolio`, and Portfolio History contracts.
 
+Cycle JM changes only mobile Portfolio Orders empty-state presentation and proof coverage. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Mobile continues to consume the same `openOrders[]` array from `GET /api/portfolio`; when the filled route-backed order leaves no open orders, the Orders tab renders the centered empty state from the existing empty `openOrders[]` contract.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

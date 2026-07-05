@@ -1100,8 +1100,12 @@ export function Portfolio({
         </>
       ))}
       {activeTab === "orders" && (openOrders.length > 0 ? openOrdersSection : (
-        <View accessibilityLabel="portfolio-no-open-orders" testID="portfolio-no-open-orders" style={styles.emptyStatePlain}>
-          <Text style={styles.emptyPlainText}>{pageCopy.noOpenOrders}</Text>
+        <View
+          accessibilityLabel="portfolio-no-open-orders portfolio-orders-empty-state-centered portfolio-orders-empty-state-route-proof"
+          testID="portfolio-no-open-orders"
+          style={styles.ordersEmptyState}
+        >
+          <Text style={styles.ordersEmptyText}>{pageCopy.noOpenOrders}</Text>
         </View>
       ))}
       {activeTab === "history" && (activities.length > 0 ? (
@@ -1351,9 +1355,11 @@ const styles = StyleSheet.create({
   latestActivityMeta: { color: "#94a3b8", fontSize: 12, fontWeight: "800", marginTop: 4 },
   emptyCard: { alignItems: "center", padding: 28, borderRadius: 16, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginTop: 16 },
   emptyStatePlain: { minHeight: 280, alignItems: "center", justifyContent: "center", paddingHorizontal: 24, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
+  ordersEmptyState: { minHeight: 330, alignItems: "center", justifyContent: "center", paddingHorizontal: 24, borderBottomWidth: 1, borderBottomColor: "#101827" },
   emptyTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "900", marginTop: 10 },
   emptyText: { color: "#94a3b8", textAlign: "center", marginTop: 6, fontWeight: "700" },
   emptyPlainText: { color: "#8b94a5", fontSize: 19, fontWeight: "500" },
+  ordersEmptyText: { color: "#8b94a5", fontSize: 19, fontWeight: "500" },
   summaryGrid: { flexDirection: "row", gap: 8, marginTop: 12 },
   summaryItem: { flex: 1, minHeight: 92, padding: 10, borderRadius: 10, backgroundColor: "#111b2d", borderWidth: 1, borderColor: "#2b3b55" },
   summaryLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },

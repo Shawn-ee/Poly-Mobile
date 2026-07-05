@@ -5514,6 +5514,24 @@ try {
 
         $mvpRouteFilledHistoryHierarchy = $null
         if ($LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) {
+          Invoke-TapHierarchyNode -Path $mvpRoutePortfolioHierarchy -Identifier "portfolio-tab-orders"
+          Start-Sleep -Seconds 1
+          Save-Screenshot -Name "$mvpRouteServerPrefix-portfolio-orders.png"
+          $mvpRouteFilledOrdersHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-portfolio-orders.xml"
+          Assert-HierarchyContains -Path $mvpRouteFilledOrdersHierarchy -Expected @(
+            "Portfolio",
+            "portfolio-tab-orders portfolio-tab-selected",
+            "portfolio-no-open-orders",
+            "portfolio-orders-empty-state-centered",
+            "portfolio-orders-empty-state-route-proof",
+            "No open orders",
+            "portfolio-result-lands-at-account-header",
+            "portfolio-performance-chart",
+            "portfolio-range-selector"
+          )
+          Assert-HierarchyDoesNotContain -Path $mvpRouteFilledOrdersHierarchy -Unexpected @("open-order-row-", "event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth", "Deposit", "Withdraw")
+          $mvpRoutePortfolioHierarchy = $mvpRouteFilledOrdersHierarchy
+
           Invoke-TapHierarchyNode -Path $mvpRoutePortfolioHierarchy -Identifier "portfolio-tab-history"
           Start-Sleep -Seconds 1
           Save-Screenshot -Name "$mvpRouteServerPrefix-portfolio-history.png"
@@ -5587,6 +5605,8 @@ try {
         }
         if ($LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) {
           $proof.artifacts += @(
+            "$OutputDir/$mvpRouteServerPrefix-portfolio-orders.png",
+            "$HierarchyOutputDir/$mvpRouteServerPrefix-portfolio-orders.xml",
             "$OutputDir/$mvpRouteServerPrefix-portfolio-history.png",
             "$HierarchyOutputDir/$mvpRouteServerPrefix-portfolio-history.xml"
           )

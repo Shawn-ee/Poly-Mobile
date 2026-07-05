@@ -878,3 +878,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Swipe-to-buy must remain threshold-gated and cannot become a tap submit. | P0 | Passed | S23 route proof checks tap-disabled state, then completes the upward swipe to server-backed fake-token order, Portfolio, and History. |
 | Backend/order logic should not change for this visible ticket correction. | P0 | Passed | No backend route/schema/order service changed; `npm run typecheck`, parser check, `git diff --check`, and S23 route proof passed. |
 | Exact native Polymarket blur/physics remains future work. | P2 | Tracked | This cycle targets S23 layout separation and moving-handle affordance only. |
+
+## Cycle JM - Portfolio Orders Empty State Route Proof
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Route-backed filled-order proof did not visibly check the Portfolio Orders empty state before History. | P0 | Passed | S23 proof captures `cycle-EY-holiwyn-route-server-mvp-portfolio-orders.png` and XML verifies `portfolio-orders-empty-state-route-proof` before continuing to History. |
+| Orders empty state should be centered and quiet like the Polymarket Portfolio reference. | P0 | Passed | `Portfolio` now uses an Orders-specific centered empty-state style; S23 screenshot shows unboxed centered `No open orders` under the selected Orders tab. |
+| The route-backed flow must still preserve ticket/order/position/history identity. | P0 | Passed | Same S23 proof passes through route-backed totals ticket, `POST /api/orders`, Portfolio, Orders empty state, and History with selected provider/line identity. |
+| Backend/order logic should not change for this visible Portfolio correction. | P0 | Passed | No backend route/schema/order service changed; `npm run typecheck`, parser check, `git diff --check`, and S23 route proof passed. |
+| Exact Portfolio Orders typography remains future work. | P2 | Tracked | This cycle targets empty-state placement and route-backed proof coverage only. |
