@@ -229,6 +229,8 @@ Cycle JH changes only mobile Trade Ticket presentation and swipe gesture afforda
 
 Cycle JI changes only mobile Portfolio result landing presentation. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Mobile continues to consume the same `GET /api/portfolio` balance, positions, orders, activities, and value-history fields; the UI now lands at the account/value header after a result instead of jumping to a deep scroll offset.
 
+Cycle JJ changes only mobile Portfolio position label presentation. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Mobile continues to consume existing Portfolio selection fields such as `marketType`, `line`, `displayLabel`, provider source/token, and position economics; the UI derives a clearer visible label for totals and team-total positions from those existing fields.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

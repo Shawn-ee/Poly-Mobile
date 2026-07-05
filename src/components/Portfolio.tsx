@@ -156,8 +156,18 @@ const compactVisibleOutcomeLabel = (item: { outcome: string; selection?: TicketS
   return display.replace(/\s+(RT|1H|2H)$/i, "");
 };
 
-const displayPositionChoice = (item: { outcome: string; selection?: TicketSelection }) =>
-  compactVisibleOutcomeLabel(item);
+const displayPositionChoice = (item: { outcome: string; selection?: TicketSelection }) => {
+  const compact = compactVisibleOutcomeLabel(item);
+  const line = item.selection?.line;
+  if (item.selection?.marketType === "totals" && line) {
+    const side = /^under\b/i.test(compact) ? "Under" : "Over";
+    return `${side} ${line} total goals`;
+  }
+  if (item.selection?.marketType === "team-total" && line) {
+    return `${compact} team goals`;
+  }
+  return compact;
+};
 
 const teamAbbrev = (team: string) => {
   const clean = team
@@ -935,7 +945,7 @@ export function Portfolio({
             </View>
           </View>
           {positions.map((position) => (
-            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-position-tabs-gap-closed-s23 portfolio-first-position-first-screen-fit portfolio-row-dollar-amounts portfolio-position-to-win-payout portfolio-position-outcome-compact-label portfolio-outcome-compact-${compactVisibleOutcomeLabel(position)} ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
+            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-position-tabs-gap-closed-s23 portfolio-first-position-first-screen-fit portfolio-row-dollar-amounts portfolio-position-to-win-payout portfolio-position-outcome-compact-label portfolio-position-market-context-readable portfolio-outcome-compact-${compactVisibleOutcomeLabel(position)} portfolio-position-visible-label-${displayPositionChoice(position)} ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
               <View style={styles.positionEventLine}>
                 <Text style={styles.positionScoreLine}>{compactPortfolioScoreLine(position)}</Text>
                 {(position.isLive || position.liveClock) && (

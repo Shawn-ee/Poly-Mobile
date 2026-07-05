@@ -850,3 +850,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The result landing still needs to show the position row and preserve Portfolio/history flow. | P0 | Passed | Same S23 screenshot shows the created position row below the tabs, and the proof reaches Portfolio History. |
 | Backend/order logic should not change for this Portfolio landing correction. | P0 | Passed | No backend route/schema/order service changed; the same proof completes existing `POST /api/orders`, `GET /api/portfolio`, and Portfolio History flow. |
 | Exact Portfolio pixel polish remains future work. | P2 | Tracked | This cycle targets the result landing position only. |
+
+## Cycle JJ - Portfolio Position Market Context
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio totals position title was too terse after previous shorthand cleanup: `Yes Over 2.5` lacked the simple market context Polymarket shows in position rows. | P0 | Passed | S23 screenshot in `cycle-JJ-portfolio-position-market-context-s23-proof` shows `Yes Over 2.5 total goals`; XML verifies `portfolio-position-market-context-readable`. |
+| The clearer visible label must preserve hidden order-time identity and provider mapping. | P0 | Passed | S23 XML still includes `portfolio-display-label-Over 2.5 RT`, `portfolio-line-2.5`, `portfolio-period-Reg. Time`, provider source, and provider token. |
+| Backend/order logic should not change for this visible Portfolio row correction. | P0 | Passed | No backend route/schema/order service changed; the same proof completes existing `POST /api/orders`, `GET /api/portfolio`, and Portfolio History flow. |
+| Exact Portfolio row typography remains future work. | P2 | Tracked | This cycle targets row wording only. |
