@@ -5403,7 +5403,7 @@ try {
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-ready.png"
         $mvpRouteSpreadReadyHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-ready.xml"
-        Assert-HierarchyContains -Path $mvpRouteSpreadReadyHierarchy -Expected @('$75', "Swipe to buy", "ticket-s23-keypad-clearance", "swipe-submit-handle-progress-animated", "swipe-submit-handle-translate-y-0", "Final cost may vary.", "place-mock-order", "ticket-market-type-$mvpRouteTargetTicketMarketType", "ticket-line-$mvpRouteTargetLine", "provider-source-polymarket")
+        Assert-HierarchyContains -Path $mvpRouteSpreadReadyHierarchy -Expected @('$75', "Swipe to buy", "BHO vs BAW", "ticket-event-title-compact-matchup", "ticket-s23-keypad-clearance", "ticket-s23-safe-vertical-fit", "ticket-s23-keypad-footer-gap", "ticket-swipe-footer-fixed-separate", "swipe-submit-handle-progress-animated", "swipe-submit-handle-vertical-travel", "swipe-submit-handle-translate-y-0", "Final cost may vary.", "place-mock-order", "ticket-market-type-$mvpRouteTargetTicketMarketType", "ticket-line-$mvpRouteTargetLine", "provider-source-polymarket")
         Assert-HierarchyDoesNotContain -Path $mvpRouteSpreadReadyHierarchy -Unexpected $mvpHiddenOrderBookExpected
         $mvpRouteSwipeProcess = Start-Process -FilePath $adb -ArgumentList @("-s", $Device, "shell", "input", "swipe", "720", "2190", "720", "1600", "1800") -PassThru -WindowStyle Hidden
         Start-Sleep -Milliseconds 650

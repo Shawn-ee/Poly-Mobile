@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useMemo, useState } from "react";
-import { Modal, PanResponder, Pressable, StyleSheet, Text, View } from "react-native";
+import { Modal, PanResponder, Pressable, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import type { Locale, Event, Market, Outcome } from "../mocks/worldCup";
 import { label, money } from "../presentation/formatters";
 
@@ -127,7 +127,7 @@ function SwipeSubmitControl({
     [disabled, isSubmitting, onSubmit],
   );
   const progressBucket = disabled ? "disabled" : isSubmitting ? "submitting" : isArmed ? "armed" : swipeProgress > 0 ? "dragging" : "idle";
-  const handleLift = -88 * swipeProgress;
+  const handleLift = -72 * swipeProgress;
 
   return (
       <View
@@ -135,13 +135,13 @@ function SwipeSubmitControl({
         accessibilityRole="button"
         accessibilityState={{ disabled: disabled || isSubmitting }}
         accessibilityHint={helper}
-      accessibilityLabel={`swipe-to-submit-order swipe-submit-gesture-required swipe-submit-tap-disabled swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-state-${progressBucket} swipe-submit-progress-${Math.round(swipeProgress * 100)}`}
+      accessibilityLabel={`swipe-to-submit-order swipe-submit-gesture-required swipe-submit-tap-disabled swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-state-${progressBucket} swipe-submit-progress-${Math.round(swipeProgress * 100)}`}
       style={[styles.swipeSubmit, isArmed && styles.swipeSubmitArmed, disabled && styles.swipeSubmitDisabled]}
       testID="place-mock-order"
       {...panResponder.panHandlers}
     >
       <View
-        accessibilityLabel={`swipe-submit-handle swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-state-${progressBucket} swipe-submit-handle-translate-y-${Math.round(handleLift)}`}
+        accessibilityLabel={`swipe-submit-handle swipe-submit-handle-progress-motion swipe-submit-handle-progress-animated swipe-submit-handle-vertical-travel swipe-submit-state-${progressBucket} swipe-submit-handle-translate-y-${Math.round(handleLift)}`}
         style={[styles.swipeIcon, isArmed && styles.swipeIconArmed, { transform: [{ translateY: handleLift }] }]}
         testID="swipe-submit-handle"
       >
@@ -265,14 +265,38 @@ const marketIconForTicket = (ticket: Ticket) => {
   return "?";
 };
 
-const retailEventLabel = (ticket: Ticket, locale: Locale) => {
+const compactTeamAliases: Record<string, string> = {
+  "BREADTH HOME": "BHO",
+  "BREADTH AWAY": "BAW",
+};
+
+const compactTicketTeamName = (name: string) => {
+  const cleanName = name.replace(/\s+/g, " ").trim();
+  const alias = compactTeamAliases[cleanName.toUpperCase()];
+  if (alias) return alias;
+  if (cleanName.length <= 12) return cleanName;
+  const words = cleanName.split(" ").filter(Boolean);
+  if (words.length >= 2) {
+    return `${words[0].slice(0, 2)}${words[1][0] ?? ""}`.toUpperCase();
+  }
+  return cleanName.slice(0, 3).toUpperCase();
+};
+
+const retailEventTitle = (ticket: Ticket, locale: Locale) => {
   if (ticket.event?.teams && ticket.event.teams.length >= 2) {
     const [home, away] = ticket.event.teams;
     const homeName = locale === "zh" ? home.zhName : home.name;
     const awayName = locale === "zh" ? away.zhName : away.name;
-    if (homeName && awayName) return `${homeName} vs ${awayName}`;
+    if (homeName && awayName) {
+      const fullTitle = `${homeName} vs ${awayName}`;
+      const shouldCompact = fullTitle.length > 24 || /breadth|fixture|provider/i.test(fullTitle);
+      return {
+        compacted: shouldCompact,
+        text: shouldCompact ? `${compactTicketTeamName(homeName)} vs ${compactTicketTeamName(awayName)}` : fullTitle,
+      };
+    }
   }
-  return label(locale, ticket.event ?? ticket.market);
+  return { compacted: false, text: label(locale, ticket.event ?? ticket.market) };
 };
 
 const limitIdentityLabel = (selection?: TicketSelection) =>
@@ -319,6 +343,8 @@ export function TradeTicket({
   const [activeContractSide, setActiveContractSide] = useState<BinaryContractSide>("yes");
   const [slippage, setSlippageState] = useState(defaultSlippage);
   const [showOrderSettings, setShowOrderSettings] = useState(false);
+  const { height: viewportHeight } = useWindowDimensions();
+  const usePhoneTicketFit = viewportHeight <= 860;
 
   useEffect(() => {
     if (!ticket) return;
@@ -376,7 +402,8 @@ export function TradeTicket({
     ? ticket.event?.startsAt.replace(/[^\x00-\x7F]+/g, "-").replace(/\s+-\s+/g, " - ")
     : null;
   const liveClockText = liveClock ? `${liveClock} - ${t.livePriceMovement}` : null;
-  const eventLabel = retailEventLabel(ticket, locale);
+  const eventTitle = retailEventTitle(ticket, locale);
+  const eventLabel = eventTitle.text;
   const outcomeLabel = label(locale, ticket.outcome);
   const sideLabel = contractSide === "yes" ? "Yes" : "No";
   const selectionLabel = ticket.selection?.displayLabel ?? outcomeLabel;
@@ -446,11 +473,11 @@ export function TradeTicket({
       <View style={styles.modalShade}>
         <View style={styles.ticket}>
           <View
-            accessibilityLabel="trade-ticket ticket-retail-reference-layout ticket-body-rounded-above-swipe ticket-keypad-swipe-separated ticket-s23-keypad-clearance"
+            accessibilityLabel="trade-ticket ticket-retail-reference-layout ticket-body-rounded-above-swipe ticket-keypad-swipe-separated ticket-s23-keypad-clearance ticket-s23-safe-vertical-fit"
             style={styles.ticketBodyPanel}
             testID="trade-ticket"
           >
-            <View style={styles.ticketContent}>
+            <View style={[styles.ticketContent, usePhoneTicketFit && styles.ticketContentPhone]}>
             <View accessibilityLabel="ticket-drag-handle" testID="ticket-drag-handle" style={styles.dragHandle} />
             <View accessibilityLabel={`ticket-selection-summary ticket-retail-order-header ticket-header-retail-readable ${providerIdentityLabel}`} testID="ticket-selection-summary" style={styles.ticketHeader}>
               <Pressable accessibilityLabel="ticket-close" onPress={close} style={styles.closeButton} testID="ticket-close">
@@ -464,7 +491,7 @@ export function TradeTicket({
                 {teamFlag ? <Text style={styles.outcomeFlagEmoji}>{teamFlag}</Text> : <Text style={styles.marketIconText}>{fallbackMarketIcon}</Text>}
               </View>
               <View style={styles.selectionTextBlock}>
-                <Text numberOfLines={1} style={styles.ticketTitle}>{eventLabel}</Text>
+                <Text accessibilityLabel={`ticket-event-title ${eventTitle.compacted ? "ticket-event-title-compact-matchup" : "ticket-event-title-full-matchup"}`} numberOfLines={1} style={styles.ticketTitle}>{eventLabel}</Text>
                 <Text accessibilityLabel="ticket-selection-line" testID="ticket-selection-line" numberOfLines={2} style={styles.ticketOutcome}>
                   <Text style={styles.ticketOutcomeSide}>{sideLabel}</Text> <Text style={styles.ticketOutcomeDot}>-</Text> {selectionLabel}
                 </Text>
@@ -529,8 +556,8 @@ export function TradeTicket({
             >
               <Text>ticket-advanced-hidden-local-mvp</Text>
             </View>
-            <View accessibilityLabel="ticket-amount-display" testID="ticket-amount-display" style={styles.amountDisplayBlock}>
-              <Text style={[styles.amountDisplayText, numericAmount <= 0 && styles.amountDisplayTextEmpty]}>{amountDisplay}</Text>
+            <View accessibilityLabel="ticket-amount-display" testID="ticket-amount-display" style={[styles.amountDisplayBlock, usePhoneTicketFit && styles.amountDisplayBlockPhone]}>
+              <Text style={[styles.amountDisplayText, usePhoneTicketFit && styles.amountDisplayTextPhone, numericAmount <= 0 && styles.amountDisplayTextEmpty]}>{amountDisplay}</Text>
             </View>
             <View accessibilityLabel={`${sideLabel} - ${outcomeLabel}`} testID="ticket-contract-outcome-row" style={styles.orderReviewA11y}>
               <Text accessibilityLabel="ticket-selected-outcome-choice" testID="ticket-selected-outcome-choice">
@@ -549,7 +576,7 @@ export function TradeTicket({
               <Text accessibilityLabel="ticket-order-review-price" testID="ticket-order-review-price">{priceDisplay}</Text>
               <Text accessibilityLabel="ticket-order-review-payout" testID="ticket-order-review-payout">{reviewPayout}</Text>
             </View>
-            <View style={styles.ticketSideRow}>
+            <View style={[styles.ticketSideRow, usePhoneTicketFit && styles.ticketSideRowPhone]}>
               {(["buy", "sell"] as const).map((option) => {
                 const isContractActive = contractSide === "no" ? option === "sell" : side === option;
                 return (
@@ -576,11 +603,11 @@ export function TradeTicket({
             <View
               accessibilityLabel={`ticket-odds-available ticket-order-review market-${reviewMarketType} line-${reviewLine} period-${reviewPeriod} shares-${reviewShares} payout-${reviewPayout}`}
               testID="ticket-odds-available"
-              style={styles.oddsAvailableLine}
+              style={[styles.oddsAvailableLine, usePhoneTicketFit && styles.oddsAvailableLinePhone]}
             >
               <Text accessibilityLabel="ticket-price-line" testID="ticket-price-line" style={styles.oddsAvailableText}>Odds {contractProbability}% | {money(balance)} available</Text>
             </View>
-            <View style={styles.presetRow}>
+            <View style={[styles.presetRow, usePhoneTicketFit && styles.presetRowPhone]}>
               {amountPresets.map((preset) => (
                 <Pressable
                   accessibilityLabel={`ticket-preset-${preset}`}
@@ -596,13 +623,13 @@ export function TradeTicket({
                 <Text style={styles.presetText}>{t.max}</Text>
               </Pressable>
             </View>
-            <View accessibilityLabel="ticket-amount-keypad" testID="ticket-amount-keypad" style={styles.keypadGrid}>
+            <View accessibilityLabel="ticket-amount-keypad ticket-s23-keypad-footer-gap" testID="ticket-amount-keypad" style={[styles.keypadGrid, usePhoneTicketFit && styles.keypadGridPhone]}>
               {keypadKeys.map((key) => (
                 <Pressable
                   accessibilityLabel={`ticket-keypad-${key}`}
                   key={key}
                   onPress={() => applyKeypadInput(key)}
-                  style={styles.keypadButton}
+                  style={[styles.keypadButton, usePhoneTicketFit && styles.keypadButtonPhone]}
                   testID={`ticket-keypad-${key}`}
                 >
                   {key === "backspace" ? (
@@ -628,7 +655,7 @@ export function TradeTicket({
             )}
             </View>
           </View>
-          <View accessibilityLabel="ticket-swipe-area-fixed-bottom ticket-keypad-swipe-separated ticket-s23-keypad-clearance" testID="ticket-swipe-area-fixed-bottom" style={styles.ticketFooter}>
+          <View accessibilityLabel="ticket-swipe-area-fixed-bottom ticket-swipe-footer-fixed-separate ticket-keypad-swipe-separated ticket-s23-keypad-clearance ticket-s23-keypad-footer-gap" testID="ticket-swipe-area-fixed-bottom" style={[styles.ticketFooter, usePhoneTicketFit && styles.ticketFooterPhone]}>
             <View style={styles.ticketFooterLightBand} />
             <View style={styles.ticketFooterDarkBand} />
             <SwipeSubmitControl
@@ -648,7 +675,8 @@ const styles = StyleSheet.create({
   modalShade: { flex: 1, justifyContent: "flex-end", backgroundColor: "#070b12" },
   ticket: { flex: 1, height: "100%", backgroundColor: "#f82f74", overflow: "hidden" },
   ticketBodyPanel: { flex: 1, backgroundColor: "#070b12", borderBottomLeftRadius: 38, borderBottomRightRadius: 38, overflow: "hidden" },
-  ticketContent: { flex: 1, width: "100%", maxWidth: 430, alignSelf: "center", paddingHorizontal: 24, paddingTop: 20, paddingBottom: 18 },
+  ticketContent: { flex: 1, width: "100%", maxWidth: 430, alignSelf: "center", paddingHorizontal: 24, paddingTop: 18, paddingBottom: 14 },
+  ticketContentPhone: { paddingHorizontal: 22, paddingTop: 14, paddingBottom: 10 },
   dragHandle: { alignSelf: "center", width: 92, height: 1, borderRadius: 999, backgroundColor: "#293141", marginBottom: 2, opacity: 0.01 },
   ticketTop: { minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   ticketHeading: { flex: 1, alignItems: "center" },
@@ -677,8 +705,10 @@ const styles = StyleSheet.create({
   marketStatusText: { color: "#bbf7d0", fontSize: 12, fontWeight: "900" },
   marketStatusTextWarning: { color: "#fde68a" },
   marketStatusTextBlocked: { color: "#fecaca" },
-  amountDisplayBlock: { minHeight: 90, alignItems: "center", justifyContent: "flex-end", marginTop: 10 },
+  amountDisplayBlock: { minHeight: 82, alignItems: "center", justifyContent: "flex-end", marginTop: 6 },
+  amountDisplayBlockPhone: { minHeight: 72, marginTop: 2 },
   amountDisplayText: { color: "#f8fafc", fontSize: 68, fontWeight: "500", lineHeight: 76 },
+  amountDisplayTextPhone: { fontSize: 60, lineHeight: 68 },
   amountDisplayTextEmpty: { color: "#1b2230" },
   ticketOutcomeRow: { alignSelf: "center", flexDirection: "row", alignItems: "center", gap: 4, minHeight: 56, padding: 5, borderRadius: 999, backgroundColor: "#1c2330" },
   outcomeChoiceMuted: { minWidth: 86, textAlign: "center", color: "#8b94a5", fontSize: 17, fontWeight: "700", paddingHorizontal: 14 },
@@ -701,11 +731,13 @@ const styles = StyleSheet.create({
   orderReviewValue: { color: "#e2e8f0", fontSize: 12, fontWeight: "900", marginTop: 3 },
   orderReviewValueStrong: { color: "#22c55e", fontSize: 15, fontWeight: "900", marginTop: 3 },
   ticketSideRow: { alignSelf: "center", width: 142, flexDirection: "row", gap: 3, marginTop: 8, padding: 4, borderRadius: 999, backgroundColor: "#1d2431" },
+  ticketSideRowPhone: { marginTop: 6 },
   sideButton: { flex: 1, minHeight: 34, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "transparent" },
   sideButtonActive: { backgroundColor: "#0b111d" },
   sideText: { color: "#8b94a5", fontSize: 15, fontWeight: "700" },
   sideTextActive: { color: "#ffffff" },
-  oddsAvailableLine: { alignItems: "center", justifyContent: "center", minHeight: 28, marginTop: 16 },
+  oddsAvailableLine: { alignItems: "center", justifyContent: "center", minHeight: 28, marginTop: 12 },
+  oddsAvailableLinePhone: { marginTop: 8 },
   oddsAvailableText: { color: "#a8b0bf", fontSize: 15, fontWeight: "500" },
   amountHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8, marginTop: 6, marginBottom: 3 },
   amountMeta: { flexDirection: "row", alignItems: "center", gap: 8, flexShrink: 1 },
@@ -713,17 +745,21 @@ const styles = StyleSheet.create({
   balanceText: { color: "#cbd5e1", fontSize: 12, fontWeight: "900", flexShrink: 1 },
   maxText: { color: "#93c5fd", fontWeight: "900" },
   amountInput: { height: 42, borderRadius: 12, paddingHorizontal: 12, backgroundColor: "#070c14", borderWidth: 1, borderColor: "#263247", color: "#f8fafc", fontSize: 21, fontWeight: "900" },
-  presetRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 8, marginTop: 12 },
+  presetRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 8, marginTop: 10 },
+  presetRowPhone: { marginTop: 8 },
   presetButton: { flex: 1, minHeight: 40, alignItems: "center", justifyContent: "center" },
   presetText: { color: "#d7dce6", fontSize: 23, fontWeight: "500" },
-  keypadGrid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: 8, marginTop: 10, paddingBottom: 2 },
+  keypadGrid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: 7, marginTop: 8, paddingBottom: 10 },
+  keypadGridPhone: { rowGap: 6, marginTop: 6, paddingBottom: 14 },
   keypadButton: { width: "31.5%", minHeight: 43, alignItems: "center", justifyContent: "center" },
+  keypadButtonPhone: { minHeight: 39 },
   keypadText: { color: "#f8fafc", fontSize: 29, fontWeight: "500" },
   errorCard: { flexDirection: "row", alignItems: "center", gap: 8, padding: 10, borderRadius: 10, backgroundColor: "#1f1a0b", borderWidth: 1, borderColor: "#854d0e", marginTop: 12 },
   errorTextBlock: { flex: 1, gap: 3 },
   errorText: { color: "#fde68a", fontWeight: "800" },
   errorDetailText: { color: "#fcd34d", fontSize: 12, fontWeight: "700" },
-  ticketFooter: { minHeight: 188, paddingHorizontal: 18, paddingTop: 8, paddingBottom: 28, backgroundColor: "#f72d72", position: "relative", overflow: "hidden" },
+  ticketFooter: { minHeight: 198, paddingHorizontal: 18, paddingTop: 8, paddingBottom: 30, backgroundColor: "#f72d72", position: "relative", overflow: "hidden" },
+  ticketFooterPhone: { minHeight: 190, paddingBottom: 26 },
   ticketFooterLightBand: { position: "absolute", top: -20, left: -70, right: -20, height: 110, backgroundColor: "#ff8db2", opacity: 0.56, transform: [{ rotate: "-8deg" }] },
   ticketFooterDarkBand: { position: "absolute", left: -40, right: -40, bottom: -60, height: 128, backgroundColor: "#c51158", opacity: 0.8, transform: [{ rotate: "7deg" }] },
   swipeSubmit: { flex: 1, minHeight: 132, alignItems: "center", justifyContent: "center", gap: 10, paddingHorizontal: 14, borderRadius: 24, backgroundColor: "transparent" },

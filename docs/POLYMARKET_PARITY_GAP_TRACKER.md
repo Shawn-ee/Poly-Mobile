@@ -678,3 +678,14 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Header icon change must preserve amount entry, swipe submit, Portfolio, and History. | P0 | Passed | Same S23 proof completes route-backed totals ticket, upward swipe buy, Portfolio settings, and History. |
 | Backend/API routes should not change for this visible header identity correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
 | Exact production market/team artwork remains future work. | P2 | Tracked | This cycle removes the obvious generic placeholder for non-team line tickets. |
+
+## Cycle IR - Trade Ticket S23 Swipe Tightening
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Ticket amount-entry screen needed to more closely match the Polymarket reference with a dark body, clear amount/keypad, and separated red/pink swipe footer. | P0 | Passed | S23 ticket-ready screenshot in `cycle-IR-trade-ticket-s23-swipe-tightening-proof-final2` shows full keypad, rounded dark body, and separated footer. |
+| Swipe footer must not overlap the keypad or amount display on Samsung S23. | P0 | Passed | S23 XML verifies `ticket-s23-safe-vertical-fit`, `ticket-s23-keypad-footer-gap`, and `ticket-swipe-footer-fixed-separate`; screenshot shows `.`, `0`, and backspace above the footer. |
+| Swipe handle should visibly move upward with gesture progress and submit only after threshold. | P0 | Passed | `SwipeSubmitControl` exposes `swipe-submit-handle-vertical-travel`; S23 mid-swipe screenshot captures the handle lifted before the order lands in Portfolio History. |
+| Long fixture/provider event titles should not create a messy truncated ticket header. | P0 | Passed | `TradeTicket` compacts `Breadth Home vs Breadth Away` to `BHO vs BAW`; S23 XML verifies `ticket-event-title-compact-matchup`. |
+| Backend/order logic should not change for this ticket layout correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, and S23 server-filled proof passed through `POST /api/orders`, Portfolio, and History. |
+| Exact native Polymarket physics/blur and production artwork remain future polish. | P2 | Tracked | This cycle targets layout, spacing, header clarity, and visible gesture progress only. |

@@ -195,6 +195,8 @@ Cycle IP changes only mobile Event Detail sticky-tab spacing and proof gates. No
 
 Cycle IQ changes only mobile Trade Ticket header icon presentation and proof gates. No backend route, request body, response field, auth requirement, or schema changes are required. Ticket submit continues to use the same selected market/outcome/line/period/provider identity, amount, side, payout, `POST /api/orders`, `GET /api/portfolio`, and Portfolio History contracts.
 
+Cycle IR changes only mobile Trade Ticket amount-entry layout, swipe-handle presentation, compact ticket title formatting, and proof gates. No backend route, request body, response field, auth requirement, or schema changes are required. Ticket submit continues to use the same selected market/outcome/line/period/provider identity, amount, side, payout, `POST /api/orders`, `GET /api/portfolio`, and Portfolio History contracts. Compact title formatting is derived from existing `event.teams[]` names and does not require a new backend field.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
