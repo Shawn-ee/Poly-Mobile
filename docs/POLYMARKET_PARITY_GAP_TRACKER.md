@@ -770,3 +770,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Range/watermark layout must not break the route-backed ticket/order/Portfolio path. | P0 | Passed | Same S23 server-filled proof completes Event Detail, totals ticket, swipe submit, Portfolio, settings, and History. |
 | Backend/API routes should not change for this visible Portfolio layout correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
 | Exact watermark opacity and final chart physics remain future work. | P2 | Tracked | This cycle targets S23 clipping only. |
+
+## Cycle JA - Portfolio Position Gap S23 Fit
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Post-trade Portfolio landing had a large blank gap between the Positions tab rail and the first position row. | P0 | Passed | Hidden proof nodes now render after visible content; S23 XML shows `portfolio-section-tabs` ending at y=624 and `position-card` beginning at y=627. |
+| Harness-only sync/count/latest-order metadata must remain available after removing the visible gap. | P0 | Passed | S23 XML still includes `latest-order-card`, `portfolio-position-count`, and `portfolio-open-order-count` lower in the hierarchy. |
+| The full route-backed ticket/order/Portfolio/History path must still pass after proof-node relocation. | P0 | Passed | S23 proof completes Event Detail, totals ticket, swipe submit, Portfolio, settings, and History. |
+| Backend/API routes should not change for this visible Portfolio layout correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
+| Exact Polymarket row spacing and typography remain future work. | P2 | Tracked | This cycle closes the obvious blank area only. |

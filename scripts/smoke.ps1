@@ -5424,6 +5424,7 @@ try {
             "portfolio-result-content-landing",
             "position-card-",
             "portfolio-position-retail-density-fit",
+            "portfolio-position-tabs-gap-closed-s23",
             "portfolio-first-position-first-screen-fit",
             "portfolio-position-actions-fit-phone",
             "portfolio-range-watermark-s23-fit",

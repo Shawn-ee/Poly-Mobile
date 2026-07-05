@@ -823,37 +823,6 @@ export function Portfolio({
           </Pressable>
         ))}
       </View>
-      {syncStatus !== "hidden" && (
-        <View accessibilityLabel="portfolio-sync-status" testID="portfolio-sync-status" style={[styles.syncCard, styles.a11yOnly]}>
-          <Ionicons
-            name={syncStatus === "error" ? "cloud-offline-outline" : "cloud-done-outline"}
-            size={20}
-            color={syncStatus === "error" ? "#fbbf24" : "#93c5fd"}
-          />
-          <View style={styles.syncTextBlock}>
-            <Text style={styles.syncTitle}>{syncTitle}</Text>
-            {syncStatus === "error" && <Text style={styles.syncBody}>{t.portfolioSyncFallback}</Text>}
-          </View>
-        </View>
-      )}
-      <View style={styles.a11yOnly}>
-        <View accessibilityLabel="portfolio-position-count" testID="portfolio-position-count" style={styles.countTile}>
-          <Text style={styles.positionCountLabel}>{t.openPositions}</Text>
-          <Text style={styles.positionCountValue}>{positions.length}</Text>
-        </View>
-        <View accessibilityLabel="portfolio-open-order-count" testID="portfolio-open-order-count" style={styles.countTile}>
-          <Text style={styles.positionCountLabel}>{t.openOrders}</Text>
-          <Text style={styles.positionCountValue}>{openOrders.length}</Text>
-        </View>
-        <View accessibilityLabel="portfolio-activity-count" testID="portfolio-activity-count" style={styles.countTile}>
-          <Text style={styles.positionCountLabel}>{t.activityCount}</Text>
-          <Text style={styles.positionCountValue}>{activities.length}</Text>
-        </View>
-        <View accessibilityLabel="portfolio-closed-count" testID="portfolio-closed-count" style={styles.countTile}>
-          <Text style={styles.positionCountLabel}>{t.closedTrades}</Text>
-          <Text style={styles.positionCountValue}>{closedActivityCount}</Text>
-        </View>
-      </View>
       {false && latestActivity && (
         <View accessibilityLabel={`latest-activity-card ${selectionIdentityLabel(latestActivity)}`} testID="latest-activity-card" style={styles.latestActivityCard}>
           <View style={styles.latestActivityTop}>
@@ -886,63 +855,6 @@ export function Portfolio({
         </View>
       )}
       {false && openOrdersSection}
-      {latestOrder && (
-        <View accessibilityLabel={`latest-order-card ${selectionIdentityLabel(latestOrder)}`} testID="latest-order-card" style={[styles.confirmationCard, styles.a11yOnly]}>
-          {latestOrder.isLive && (
-            <View accessibilityLabel="latest-order-live-badge" testID="latest-order-live-badge" style={styles.liveBadge}>
-              <Ionicons name="radio" color="#fecaca" size={13} />
-              <Text style={styles.liveBadgeText}>{t.liveNow}</Text>
-            </View>
-          )}
-          {latestOrder.liveClock && (
-            <Text accessibilityLabel="latest-order-live-clock" testID="latest-order-live-clock" style={styles.liveClock}>
-              {latestOrder.liveClock}
-            </Text>
-          )}
-          <View style={styles.confirmationTop}>
-            <Text style={styles.confirmationTitle}>{t.orderPlaced}</Text>
-            <Text style={styles.confirmationAmount}>{money(latestOrder.amount)}</Text>
-          </View>
-          <Text style={styles.confirmationMeta}>
-            {latestOrder.mode.toUpperCase()} - {latestOrder.side === "buy" ? t.buy : t.sell} - {displayOutcome(latestOrder)}
-            {latestOrder.status ? ` - ${latestOrder.status}` : ""}
-          </Text>
-          <View
-            accessibilityLabel={`latest-order-status fake-token-test order-status-${(latestOrder.status ?? "filled").toLowerCase()}`}
-            style={styles.statusPillRow}
-            testID="latest-order-status"
-          >
-            <Text style={styles.statusPill}>Fake-token test</Text>
-            <Text style={styles.statusPill}>{lifecycleStatusLabel(latestOrder.status)}</Text>
-            {latestOrder.selection && <Text accessibilityLabel={`latest-order-snapshot ${snapshotSourceLabel(latestOrder.id, latestOrder.selection)}`} style={styles.statusPill}>Order-time snapshot</Text>}
-          </View>
-          <Text style={styles.confirmationMarket}>{latestOrder.title}</Text>
-          {typeof latestOrder.probability === "number" && (
-            <View accessibilityLabel="latest-order-execution-details" testID="latest-order-execution-details" style={styles.confirmationDetailGrid}>
-              <View style={styles.confirmationDetailItem}>
-                <Text style={styles.confirmationDetailLabel}>{t.filledShares}</Text>
-                <Text style={styles.confirmationDetailValue}>
-                  {(latestOrder.filledSize ?? activityShares(latestOrder)).toFixed(2)}
-                </Text>
-              </View>
-              <View style={styles.confirmationDetailItem}>
-                <Text style={styles.confirmationDetailLabel}>{t.executionPrice}</Text>
-                <Text style={styles.confirmationDetailValue}>{latestOrder.probability}%</Text>
-              </View>
-              <View style={styles.confirmationDetailItem}>
-                <Text style={styles.confirmationDetailLabel}>
-                  {typeof latestOrder.remainingSize === "number" ? t.remaining : t.impliedOdds}
-                </Text>
-                <Text style={styles.confirmationDetailValue}>
-                  {typeof latestOrder.remainingSize === "number"
-                    ? latestOrder.remainingSize.toFixed(2)
-                    : decimalOdds(latestOrder.probability / 100)}
-                </Text>
-              </View>
-            </View>
-          )}
-        </View>
-      )}
       {activeTab === "positions" && (positions.length === 0 ? (
         <View style={styles.emptyStatePlain}>
           <Ionicons name="wallet-outline" size={34} color="#64748b" />
@@ -969,7 +881,7 @@ export function Portfolio({
             </View>
           </View>
           {positions.map((position) => (
-            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-first-position-first-screen-fit portfolio-row-dollar-amounts portfolio-position-outcome-compact-label portfolio-outcome-compact-${compactVisibleOutcomeLabel(position)} ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
+            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-position-tabs-gap-closed-s23 portfolio-first-position-first-screen-fit portfolio-row-dollar-amounts portfolio-position-outcome-compact-label portfolio-outcome-compact-${compactVisibleOutcomeLabel(position)} ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
               <View style={styles.positionEventLine}>
                 <Text style={styles.positionScoreLine}>{compactPortfolioScoreLine(position)}</Text>
                 {(position.isLive || position.liveClock) && (
@@ -1203,6 +1115,94 @@ export function Portfolio({
           <Text style={styles.emptyPlainText}>{pageCopy.noHistory}</Text>
         </View>
       ))}
+      {syncStatus !== "hidden" && (
+        <View accessibilityLabel="portfolio-sync-status" testID="portfolio-sync-status" style={[styles.syncCard, styles.a11yOnly]}>
+          <Ionicons
+            name={syncStatus === "error" ? "cloud-offline-outline" : "cloud-done-outline"}
+            size={20}
+            color={syncStatus === "error" ? "#fbbf24" : "#93c5fd"}
+          />
+          <View style={styles.syncTextBlock}>
+            <Text style={styles.syncTitle}>{syncTitle}</Text>
+            {syncStatus === "error" && <Text style={styles.syncBody}>{t.portfolioSyncFallback}</Text>}
+          </View>
+        </View>
+      )}
+      <View style={styles.a11yOnly}>
+        <View accessibilityLabel="portfolio-position-count" testID="portfolio-position-count" style={styles.countTile}>
+          <Text style={styles.positionCountLabel}>{t.openPositions}</Text>
+          <Text style={styles.positionCountValue}>{positions.length}</Text>
+        </View>
+        <View accessibilityLabel="portfolio-open-order-count" testID="portfolio-open-order-count" style={styles.countTile}>
+          <Text style={styles.positionCountLabel}>{t.openOrders}</Text>
+          <Text style={styles.positionCountValue}>{openOrders.length}</Text>
+        </View>
+        <View accessibilityLabel="portfolio-activity-count" testID="portfolio-activity-count" style={styles.countTile}>
+          <Text style={styles.positionCountLabel}>{t.activityCount}</Text>
+          <Text style={styles.positionCountValue}>{activities.length}</Text>
+        </View>
+        <View accessibilityLabel="portfolio-closed-count" testID="portfolio-closed-count" style={styles.countTile}>
+          <Text style={styles.positionCountLabel}>{t.closedTrades}</Text>
+          <Text style={styles.positionCountValue}>{closedActivityCount}</Text>
+        </View>
+      </View>
+      {latestOrder && (
+        <View accessibilityLabel={`latest-order-card ${selectionIdentityLabel(latestOrder)}`} testID="latest-order-card" style={[styles.confirmationCard, styles.a11yOnly]}>
+          {latestOrder.isLive && (
+            <View accessibilityLabel="latest-order-live-badge" testID="latest-order-live-badge" style={styles.liveBadge}>
+              <Ionicons name="radio" color="#fecaca" size={13} />
+              <Text style={styles.liveBadgeText}>{t.liveNow}</Text>
+            </View>
+          )}
+          {latestOrder.liveClock && (
+            <Text accessibilityLabel="latest-order-live-clock" testID="latest-order-live-clock" style={styles.liveClock}>
+              {latestOrder.liveClock}
+            </Text>
+          )}
+          <View style={styles.confirmationTop}>
+            <Text style={styles.confirmationTitle}>{t.orderPlaced}</Text>
+            <Text style={styles.confirmationAmount}>{money(latestOrder.amount)}</Text>
+          </View>
+          <Text style={styles.confirmationMeta}>
+            {latestOrder.mode.toUpperCase()} - {latestOrder.side === "buy" ? t.buy : t.sell} - {displayOutcome(latestOrder)}
+            {latestOrder.status ? ` - ${latestOrder.status}` : ""}
+          </Text>
+          <View
+            accessibilityLabel={`latest-order-status fake-token-test order-status-${(latestOrder.status ?? "filled").toLowerCase()}`}
+            style={styles.statusPillRow}
+            testID="latest-order-status"
+          >
+            <Text style={styles.statusPill}>Fake-token test</Text>
+            <Text style={styles.statusPill}>{lifecycleStatusLabel(latestOrder.status)}</Text>
+            {latestOrder.selection && <Text accessibilityLabel={`latest-order-snapshot ${snapshotSourceLabel(latestOrder.id, latestOrder.selection)}`} style={styles.statusPill}>Order-time snapshot</Text>}
+          </View>
+          <Text style={styles.confirmationMarket}>{latestOrder.title}</Text>
+          {typeof latestOrder.probability === "number" && (
+            <View accessibilityLabel="latest-order-execution-details" testID="latest-order-execution-details" style={styles.confirmationDetailGrid}>
+              <View style={styles.confirmationDetailItem}>
+                <Text style={styles.confirmationDetailLabel}>{t.filledShares}</Text>
+                <Text style={styles.confirmationDetailValue}>
+                  {(latestOrder.filledSize ?? activityShares(latestOrder)).toFixed(2)}
+                </Text>
+              </View>
+              <View style={styles.confirmationDetailItem}>
+                <Text style={styles.confirmationDetailLabel}>{t.executionPrice}</Text>
+                <Text style={styles.confirmationDetailValue}>{latestOrder.probability}%</Text>
+              </View>
+              <View style={styles.confirmationDetailItem}>
+                <Text style={styles.confirmationDetailLabel}>
+                  {typeof latestOrder.remainingSize === "number" ? t.remaining : t.impliedOdds}
+                </Text>
+                <Text style={styles.confirmationDetailValue}>
+                  {typeof latestOrder.remainingSize === "number"
+                    ? latestOrder.remainingSize.toFixed(2)
+                    : decimalOdds(latestOrder.probability / 100)}
+                </Text>
+              </View>
+            </View>
+          )}
+        </View>
+      )}
     </ScrollView>
   );
 }

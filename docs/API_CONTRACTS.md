@@ -213,6 +213,8 @@ Cycle IY changes only mobile Portfolio position/history visible amount formattin
 
 Cycle IZ changes only mobile Portfolio range-selector and brand-watermark layout. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Mobile continues to consume the same `GET /api/portfolio`, Portfolio value-history, order, position, activity, and selected market identity contracts.
 
+Cycle JA changes only mobile Portfolio visual layout and proof-node placement. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Mobile continues to consume the same `GET /api/portfolio`, Portfolio value-history, order, position, activity, and selected market identity contracts.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
