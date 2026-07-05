@@ -131,7 +131,7 @@ export function HomeScreen({
 
 const styles = StyleSheet.create({
   content: { flex: 1 },
-  scrollPad: { paddingHorizontal: 16, paddingBottom: 110 },
+  scrollPad: { width: "100%", maxWidth: 480, alignSelf: "center", paddingHorizontal: 16, paddingBottom: 110 },
   gamesFocusHeader: { marginTop: 10, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: "#263247", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   gamesFocusText: { flex: 1, minWidth: 0 },
   gamesFocusEyebrow: { color: "#60a5fa", fontSize: 12, fontWeight: "900", textTransform: "uppercase" },

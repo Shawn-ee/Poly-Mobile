@@ -309,3 +309,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | On the Samsung tablet proof device, Event Detail chart, line cards, and market rows stretched too wide compared with the phone-style Polymarket game page reference. | P0 | Passed | Samsung tablet screenshots show Event Detail content constrained to a centered phone-width column. |
 | Event Detail must still preserve chart/probability, line selector, ticket handoff, fake-token order, Portfolio, Orders, and History flow. | P0 | Passed | Local MVP proof verified selected line, ticket, fake-token submit, Portfolio, Orders, and History. |
 | Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
+
+## Cycle GW - Home Phone-Width Retail Flow
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| On the Samsung tablet proof device, Home discovery still used full-width tablet layout while Event Detail, ticket, and Portfolio now use phone-width columns. | P0 | Passed | Route-backed Home/Live discovery proof screenshot/XML show content constrained to a centered phone-width column. |
+| Home must still open the Local MVP event flow through Event Detail, selected line, ticket, fake-token order, Portfolio, Orders, and History. | P0 | Passed | Samsung tablet full Local MVP proof and route-backed Home/Live discovery proof passed. |
+| Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proofs passed. |

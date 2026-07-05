@@ -115,6 +115,8 @@ Cycle GU changes only mobile Portfolio layout presentation on wide Android scree
 
 Cycle GV changes only mobile Event Detail layout presentation on wide Android screens. No backend route, request body, response field, or schema changes are required. Event Detail continues to consume the same event, chart, market, outcome, line selector, ticket handoff, and order/Portfolio identity fields.
 
+Cycle GW changes only mobile Home layout presentation on wide Android screens. No backend route, request body, response field, or schema changes are required. Home continues to consume the same event discovery data, event card handoff, ticket, order, and Portfolio identity fields.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
