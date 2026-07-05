@@ -5301,8 +5301,14 @@ try {
           $mvpRouteLineHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-line-markets.xml"
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
-        Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-market-tabs-local-mvp", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
-        Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected @("event-detail-exact-score-tab", "event-detail-halves-tab", "Exact Score", "Halves")
+        Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-market-tabs-local-mvp", "event-detail-core-full-game-lines-before-halves-local-mvp", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
+        $mvpRouteLineOrderXml = Get-Content -Raw -Path $mvpRouteLineHierarchy
+        $mvpTeamTotalIndex = $mvpRouteLineOrderXml.IndexOf("Full Game Team Total Goals")
+        $mvpFirstHalfIndex = $mvpRouteLineOrderXml.IndexOf("1st Half Winner")
+        if (($mvpTeamTotalIndex -ge 0) -and ($mvpFirstHalfIndex -ge 0) -and ($mvpTeamTotalIndex -gt $mvpFirstHalfIndex)) {
+          throw "Local MVP game-line order regression: half winner appears before full-game team total."
+        }
+        Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected @("event-detail-exact-score-tab", "event-detail-halves-tab", "Exact Score")
         Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected @("Breadth Home 1H", "Tie 1H", "Breadth Away 1H", "Breadth Home 2H", "Tie 2H")
         Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected ($mvpHiddenOrderBookExpected + @("Market Rules", "View Full Rules", "More Events", "Portugal vs. Croatia", "England vs. Congo DR"))
         Invoke-TapHierarchyNode -Path $mvpRouteLineHierarchy -Identifier "event-detail-player-props-tab"
@@ -5333,8 +5339,14 @@ try {
           }
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
-        Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-market-tabs-local-mvp", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
-        Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected @("event-detail-exact-score-tab", "event-detail-halves-tab", "Exact Score", "Halves")
+        Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-market-tabs-local-mvp", "event-detail-core-full-game-lines-before-halves-local-mvp", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
+        $mvpRouteReturnedOrderXml = Get-Content -Raw -Path $mvpRouteLineHierarchy
+        $mvpReturnedTeamTotalIndex = $mvpRouteReturnedOrderXml.IndexOf("Full Game Team Total Goals")
+        $mvpReturnedFirstHalfIndex = $mvpRouteReturnedOrderXml.IndexOf("1st Half Winner")
+        if (($mvpReturnedTeamTotalIndex -ge 0) -and ($mvpReturnedFirstHalfIndex -ge 0) -and ($mvpReturnedTeamTotalIndex -gt $mvpReturnedFirstHalfIndex)) {
+          throw "Local MVP game-line order regression after Player Props return: half winner appears before full-game team total."
+        }
+        Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected @("event-detail-exact-score-tab", "event-detail-halves-tab", "Exact Score")
         Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected @("Breadth Home 1H", "Tie 1H", "Breadth Away 1H", "Breadth Home 2H", "Tie 2H")
         $mvpRouteLineReadyXml = Get-Content -Raw -Path $mvpRouteLineHierarchy
         if ($mvpRouteLineReadyXml -notmatch [regex]::Escape($mvpRouteTargetOutcomeId)) {
@@ -5912,8 +5924,14 @@ try {
         Start-Sleep -Seconds 1
         $mvpMarketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-market-lines.xml"
       }
-      Assert-HierarchyContains -Path $mvpMarketHierarchy -Expected @("Game Lines", "Spread", "Totals", "Winner market", "event-detail-sticky-game-lines-tab", "event-detail-spread-line-1-5", "event-detail-totals-line-2-5", "event-detail-market-tabs-local-mvp", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
-      Assert-HierarchyDoesNotContain -Path $mvpMarketHierarchy -Unexpected @("98,750 USDT Vol.", "$60.9K Vol.", "event-detail-body-switch", "event-detail-body-tab-market", "event-detail-line-detail-tabs", "prediction-tabs-only", "event-detail-inline-graph", "Line movement for Team to Advance", "event-detail-exact-score-tab", "event-detail-halves-tab", "Exact Score", "Halves")
+      Assert-HierarchyContains -Path $mvpMarketHierarchy -Expected @("Game Lines", "Spread", "Totals", "Winner market", "event-detail-sticky-game-lines-tab", "event-detail-spread-line-1-5", "event-detail-totals-line-2-5", "event-detail-market-tabs-local-mvp", "event-detail-core-full-game-lines-before-halves-local-mvp", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
+      $mvpMarketOrderXml = Get-Content -Raw -Path $mvpMarketHierarchy
+      $mvpMarketTeamTotalIndex = $mvpMarketOrderXml.IndexOf("Full Game Team Total Goals")
+      $mvpMarketFirstHalfIndex = $mvpMarketOrderXml.IndexOf("1st Half Winner")
+      if (($mvpMarketTeamTotalIndex -ge 0) -and ($mvpMarketFirstHalfIndex -ge 0) -and ($mvpMarketTeamTotalIndex -gt $mvpMarketFirstHalfIndex)) {
+        throw "Local MVP game-line order regression: half winner appears before full-game team total."
+      }
+      Assert-HierarchyDoesNotContain -Path $mvpMarketHierarchy -Unexpected @("98,750 USDT Vol.", "$60.9K Vol.", "event-detail-body-switch", "event-detail-body-tab-market", "event-detail-line-detail-tabs", "prediction-tabs-only", "event-detail-inline-graph", "Line movement for Team to Advance", "event-detail-exact-score-tab", "event-detail-halves-tab", "Exact Score")
       Assert-HierarchyDoesNotContain -Path $mvpMarketHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
       Invoke-TapHierarchyNode -Path $mvpMarketHierarchy -Identifier "event-detail-spread-line-2-5"

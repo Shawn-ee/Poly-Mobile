@@ -620,3 +620,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Player Props blank state and return to Game Lines must still work. | P0 | Passed | S23 proof taps Player Props, captures `cycle-EY-holiwyn-route-server-mvp-player-props-blank.png`, returns to Game Lines, and opens the totals ticket. |
 | Full Local MVP trade path must still pass after the rail cleanup. | P0 | Passed | S23 proof completes totals ticket, swipe buy, Portfolio, Portfolio top, and History. |
 | Legacy exact-score/half-specific component branches remain for future non-MVP work. | P2 | Tracked | This cycle hides them from the default rail rather than deleting legacy paths. |
+
+## Cycle IL - Event Detail Core Lines Order
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Full-game line markets should appear before half-specific markets in the default Local MVP Game Lines flow. | P0 | Passed | S23 proof verifies `event-detail-core-full-game-lines-before-halves-local-mvp` and checks `Full Game Team Total Goals` appears before `1st Half Winner`. |
+| Reordering market groups must not break Player Props blank state or return-to-Game-Lines behavior. | P0 | Passed | Same proof taps Player Props, verifies the blank state, returns to Game Lines, and rechecks the line hierarchy. |
+| Reordering market groups must not break the route-backed ticket/order/Portfolio path. | P0 | Passed | Same S23 proof opens the totals ticket, captures swipe progress, submits the fake-token buy, and reaches Portfolio History. |
+| Backend/API routes should not change for this visible ordering correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
+| Exact Polymarket ordering for all lower-priority soccer market sections and native collapse animation remain future polish. | P2 | Tracked | This cycle specifically closes full-game-before-half hierarchy in the current MVP Game Lines surface. |

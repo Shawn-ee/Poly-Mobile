@@ -832,28 +832,6 @@ export function EventDetail({
       ],
     },
     {
-      id: "first-half-winner",
-      title: "1st Half Winner",
-      subtitle: "Who wins the first half?",
-      backendMarket: backendFirstHalfMarket,
-      rows: [
-        { id: "first-home", label: `${leftOutcome ? label(locale, leftOutcome) : teamA?.name ?? "Home"} 1H`, color: leftOutcome?.color ?? "#22c55e", probability: 44, odds: "2.3x", icon: teamA?.flag ?? "", miniLine: 44 },
-        { id: "first-tie", label: "Tie 1H", color: "#38bdf8", probability: 45, odds: "2.2x", icon: "%", miniLine: 45 },
-        { id: "first-away", label: `${rightOutcome ? label(locale, rightOutcome) : teamB?.name ?? "Away"} 1H`, color: rightOutcome?.color ?? "#ef4444", probability: 15, odds: "6.7x", icon: teamB?.flag ?? "", miniLine: 15 },
-      ],
-    },
-    {
-      id: "second-half-winner",
-      title: "2nd Half Winner",
-      subtitle: "Who wins the second half?",
-      backendMarket: backendSecondHalfMarket,
-      rows: [
-        { id: "second-home", label: `${leftOutcome ? label(locale, leftOutcome) : teamA?.name ?? "Home"} 2H`, color: leftOutcome?.color ?? "#22c55e", probability: 54, odds: "1.9x", icon: teamA?.flag ?? "", miniLine: 54 },
-        { id: "second-tie", label: "Tie 2H", color: "#38bdf8", probability: 33, odds: "3.0x", icon: "%", miniLine: 33 },
-        { id: "second-away", label: `${rightOutcome ? label(locale, rightOutcome) : teamB?.name ?? "Away"} 2H`, color: rightOutcome?.color ?? "#ef4444", probability: 19, odds: "5.3x", icon: teamB?.flag ?? "", miniLine: 19 },
-      ],
-    },
-    {
       id: "team-total-goals",
       title: "Full Game Team Total Goals (Reg. Time)",
       subtitle: `${teamCode(teamA?.name ?? "Home")} goals over 1.5`,
@@ -882,6 +860,28 @@ export function EventDetail({
           ticketOutcome: teamTotalUnderOutcome,
           ticketSelection: { marketType: "team-total", line: teamTotalLine, period: "Reg. Time", displayLabel: `${teamTotalCode} Under ${teamTotalLine} RT` },
         },
+      ],
+    },
+    {
+      id: "first-half-winner",
+      title: "1st Half Winner",
+      subtitle: "Who wins the first half?",
+      backendMarket: backendFirstHalfMarket,
+      rows: [
+        { id: "first-home", label: `${leftOutcome ? label(locale, leftOutcome) : teamA?.name ?? "Home"} 1H`, color: leftOutcome?.color ?? "#22c55e", probability: 44, odds: "2.3x", icon: teamA?.flag ?? "", miniLine: 44 },
+        { id: "first-tie", label: "Tie 1H", color: "#38bdf8", probability: 45, odds: "2.2x", icon: "%", miniLine: 45 },
+        { id: "first-away", label: `${rightOutcome ? label(locale, rightOutcome) : teamB?.name ?? "Away"} 1H`, color: rightOutcome?.color ?? "#ef4444", probability: 15, odds: "6.7x", icon: teamB?.flag ?? "", miniLine: 15 },
+      ],
+    },
+    {
+      id: "second-half-winner",
+      title: "2nd Half Winner",
+      subtitle: "Who wins the second half?",
+      backendMarket: backendSecondHalfMarket,
+      rows: [
+        { id: "second-home", label: `${leftOutcome ? label(locale, leftOutcome) : teamA?.name ?? "Home"} 2H`, color: leftOutcome?.color ?? "#22c55e", probability: 54, odds: "1.9x", icon: teamA?.flag ?? "", miniLine: 54 },
+        { id: "second-tie", label: "Tie 2H", color: "#38bdf8", probability: 33, odds: "3.0x", icon: "%", miniLine: 33 },
+        { id: "second-away", label: `${rightOutcome ? label(locale, rightOutcome) : teamB?.name ?? "Away"} 2H`, color: rightOutcome?.color ?? "#ef4444", probability: 19, odds: "5.3x", icon: teamB?.flag ?? "", miniLine: 19 },
       ],
     },
   ];
@@ -2041,7 +2041,7 @@ export function EventDetail({
         ) : activeTab === "halves" ? (
           renderHalves()
         ) : (
-          <View accessibilityLabel="event-detail-game-lines" testID="event-detail-game-lines">
+          <View accessibilityLabel="event-detail-game-lines event-detail-core-full-game-lines-before-halves-local-mvp" testID="event-detail-game-lines">
             <View accessibilityLabel="event-detail-stats" style={styles.hiddenStats} testID="event-detail-stats">
               <Text style={styles.hiddenStatsText}>{stats.volume}</Text>
               <Text style={styles.hiddenStatsText}>{stats.liquidity}</Text>
