@@ -5441,7 +5441,9 @@ try {
             "portfolio-period-Reg. Time",
             "portfolio-provider-source-polymarket",
             "portfolio-provider-token-$mvpRouteTargetToken",
-            'Cost $75'
+            "portfolio-position-to-win-payout",
+            'Cost $75',
+            'To win $163.04'
           )
         } else {
           @(

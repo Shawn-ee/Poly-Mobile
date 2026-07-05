@@ -381,6 +381,14 @@ const portfolioRowMoney = (value: number) => {
   return `${value < 0 ? "-" : ""}$${formatted}`;
 };
 
+const positionPotentialPayout = (position: Position) => {
+  if (typeof position.shares === "number" && Number.isFinite(position.shares) && position.shares > 0) {
+    return position.shares;
+  }
+  const entryPrice = Math.max(position.probability, 1) / 100;
+  return position.amount / entryPrice;
+};
+
 const monthIndexByShortName: Record<string, number> = {
   Jan: 0,
   Feb: 1,
@@ -927,7 +935,7 @@ export function Portfolio({
             </View>
           </View>
           {positions.map((position) => (
-            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-position-tabs-gap-closed-s23 portfolio-first-position-first-screen-fit portfolio-row-dollar-amounts portfolio-position-outcome-compact-label portfolio-outcome-compact-${compactVisibleOutcomeLabel(position)} ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
+            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-position-tabs-gap-closed-s23 portfolio-first-position-first-screen-fit portfolio-row-dollar-amounts portfolio-position-to-win-payout portfolio-position-outcome-compact-label portfolio-outcome-compact-${compactVisibleOutcomeLabel(position)} ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
               <View style={styles.positionEventLine}>
                 <Text style={styles.positionScoreLine}>{compactPortfolioScoreLine(position)}</Text>
                 {(position.isLive || position.liveClock) && (
@@ -947,7 +955,7 @@ export function Portfolio({
                 <View style={styles.positionTextColumn}>
                   <Text style={styles.positionTitle}><Text style={styles.yesBadge}>{position.contractSide === "no" ? "No" : "Yes"}</Text> {displayPositionChoice(position)}</Text>
                   <Text style={styles.positionMeta}>
-                    Cost {portfolioRowMoney(position.amount)} | To win {portfolioRowMoney(portfolioPositionValue(position) + Math.max(estimatedPnl(position), 0))} | Entry {position.probability}%
+                    Cost {portfolioRowMoney(position.amount)} | To win {portfolioRowMoney(positionPotentialPayout(position))} | Entry {position.probability}%
                   </Text>
                 </View>
               </View>

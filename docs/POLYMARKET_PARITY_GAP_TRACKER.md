@@ -821,3 +821,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The color change must not affect line-market row behavior. | P0 | Passed | Same S23 proof completes line-market navigation, totals ticket amount entry, server-backed fake-token order, Portfolio, settings, and History. |
 | Backend/API routes should not change for this visible Event Detail correction. | P0 | Passed | No backend route/schema/order service changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 proof passed. |
 | Exact team color sourcing and production artwork remain future polish. | P2 | Tracked | This cycle targets primary binary winner color semantics only. |
+
+## Cycle JG - Portfolio Position To-Win Payout
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio position row repeated current/cost value for `To win`, making a $75 buy at 46% show `To win $75` instead of payout-style economics. | P0 | Passed | `Portfolio` now derives `To win` from filled shares or entry cost/probability; S23 screenshot in `cycle-JG-portfolio-position-to-win-payout-s23-proof` shows `To win $163.04`. |
+| Payout display must preserve selected line, period, provider, and order identity. | P0 | Passed | S23 XML verifies `portfolio-position-to-win-payout`, market type, line `2.5`, `Reg. Time`, Polymarket provider source/token, and the position card. |
+| The payout display change must not break the Local MVP trade path. | P0 | Passed | Same S23 proof completes Event Detail, line market, ticket, swipe submit, Portfolio, settings, and History. |
+| Backend/API routes should not change for this visible Portfolio correction. | P0 | Passed | No backend route/schema/order service changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 proof passed. |
+| Exact Polymarket Portfolio typography remains future polish. | P2 | Tracked | This cycle targets payout semantics only. |
