@@ -231,6 +231,8 @@ Cycle JI changes only mobile Portfolio result landing presentation. No backend r
 
 Cycle JJ changes only mobile Portfolio position label presentation. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Mobile continues to consume existing Portfolio selection fields such as `marketType`, `line`, `displayLabel`, provider source/token, and position economics; the UI derives a clearer visible label for totals and team-total positions from those existing fields.
 
+Cycle JK changes only mobile Portfolio History row label presentation. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Mobile continues to consume existing activity selection fields such as `marketType`, `line`, `displayLabel`, provider source/token, amount, and timestamp; the UI derives a clearer visible activity title for totals and team-total rows from those existing fields.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

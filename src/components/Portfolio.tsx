@@ -485,7 +485,7 @@ const activitySideLabel = (activity: PortfolioActivity) =>
   (activity.contractSide ?? activity.selection?.contractSide) === "no" || activity.side === "sell" ? "No" : "Yes";
 
 const activityDisplayTitle = (activity: PortfolioActivity) =>
-  compactVisibleOutcomeLabel(activity).replace(/^(Yes|No)\s*-\s*/i, "");
+  displayPositionChoice(activity).replace(/^(Yes|No)\s*-\s*/i, "");
 
 const activityMarketSubline = (activity: PortfolioActivity) => {
   const line = activity.selection?.line;
@@ -1108,7 +1108,7 @@ export function Portfolio({
         <View style={styles.activityBlock}>
           {activities.slice(0, 5).map((activity) => (
             <Pressable
-              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-dollar-amounts portfolio-history-outcome-compact-label portfolio-history-outcome-compact-${compactVisibleOutcomeLabel(activity)} portfolio-history-fill-count-${activity.fillCount ?? 1} ${providerBreadthCodes(activity) ? "portfolio-history-event-title-compact-provider" : ""} ${selectionIdentityLabel(activity)}`}
+              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-dollar-amounts portfolio-history-outcome-compact-label portfolio-history-market-context-readable portfolio-history-outcome-compact-${compactVisibleOutcomeLabel(activity)} portfolio-history-visible-label-${activityDisplayTitle(activity)} portfolio-history-fill-count-${activity.fillCount ?? 1} ${providerBreadthCodes(activity) ? "portfolio-history-event-title-compact-provider" : ""} ${selectionIdentityLabel(activity)}`}
               key={activity.id}
               onPress={() => setExpandedActivityId((current) => (current === activity.id ? null : activity.id))}
               style={[styles.activityItem, expandedActivityId === activity.id && styles.rowExpanded]}

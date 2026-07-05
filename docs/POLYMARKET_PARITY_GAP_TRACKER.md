@@ -859,3 +859,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The clearer visible label must preserve hidden order-time identity and provider mapping. | P0 | Passed | S23 XML still includes `portfolio-display-label-Over 2.5 RT`, `portfolio-line-2.5`, `portfolio-period-Reg. Time`, provider source, and provider token. |
 | Backend/order logic should not change for this visible Portfolio row correction. | P0 | Passed | No backend route/schema/order service changed; the same proof completes existing `POST /api/orders`, `GET /api/portfolio`, and Portfolio History flow. |
 | Exact Portfolio row typography remains future work. | P2 | Tracked | This cycle targets row wording only. |
+
+## Cycle JK - Portfolio History Market Context
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio History totals row still used terse shorthand `Bought Yes Over 2.5` after the Positions row had been corrected. | P0 | Passed | S23 History screenshot in `cycle-JK-portfolio-history-market-context-s23-proof` shows `Bought Yes Over 2.5 total goals`; XML verifies `portfolio-history-market-context-readable`. |
+| The clearer History title must preserve hidden order-time identity, amount, timestamp, and provider mapping. | P0 | Passed | S23 XML still includes amount `$75`, `Just now`, `portfolio-display-label-Over 2.5 RT`, `portfolio-line-2.5`, `portfolio-period-Reg. Time`, provider source, and provider token. |
+| Backend/order logic should not change for this visible History row correction. | P0 | Passed | No backend route/schema/order service changed; the same proof completes existing `POST /api/orders`, `GET /api/portfolio`, and Portfolio History flow. |
+| Exact History row typography remains future work. | P2 | Tracked | This cycle targets row wording only. |
