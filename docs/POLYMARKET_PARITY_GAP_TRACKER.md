@@ -668,3 +668,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Sticky-tab spacing change must preserve Player Props blank state, totals ticket, swipe submit, Portfolio, and History. | P0 | Passed | Same S23 proof verifies Player Props blank, route-backed totals ticket, upward swipe buy, Portfolio settings, and History. |
 | Backend/API routes should not change for this visible layout correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
 | Exact native sticky-header scroll physics remain future work. | P2 | Tracked | This cycle closes visible clearance in the line-market scroll proof. |
+
+## Cycle IQ - Ticket Market Icon Identity
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Non-team line tickets could show a large generic color block in the order header, making the ticket feel unfinished. | P0 | Passed | `TradeTicket` now uses deliberate market-type fallback icons; S23 totals ticket shows `%` and XML verifies `ticket-market-icon-totals`. |
+| Team tickets should still preserve inferred team flag behavior. | P0 | Passed | The new helper only applies fallback icons when `teamCodeForTicket` does not infer a team flag; existing `ticket-outcome-flag-MEX` gates remain unchanged. |
+| Header icon change must preserve amount entry, swipe submit, Portfolio, and History. | P0 | Passed | Same S23 proof completes route-backed totals ticket, upward swipe buy, Portfolio settings, and History. |
+| Backend/API routes should not change for this visible header identity correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
+| Exact production market/team artwork remains future work. | P2 | Tracked | This cycle removes the obvious generic placeholder for non-team line tickets. |

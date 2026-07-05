@@ -257,6 +257,14 @@ const teamCodeForTicket = (ticket: Ticket) => {
   return undefined;
 };
 
+const marketIconForTicket = (ticket: Ticket) => {
+  const marketType = ticket.selection?.marketType ?? ticket.market.marketType ?? ticket.market.type;
+  if (marketType === "totals" || marketType === "team-total") return "%";
+  if (marketType === "spread") return "+/-";
+  if (marketType === "winner" || marketType === "live") return "1X2";
+  return "?";
+};
+
 const retailEventLabel = (ticket: Ticket, locale: Locale) => {
   if (ticket.event?.teams && ticket.event.teams.length >= 2) {
     const [home, away] = ticket.event.teams;
@@ -375,6 +383,8 @@ export function TradeTicket({
   const marketLabel = ticket.selection?.displayLabel ?? label(locale, ticket.market);
   const teamCode = teamCodeForTicket(ticket);
   const teamFlag = teamCode ? teamFlags[teamCode] : undefined;
+  const fallbackMarketIcon = marketIconForTicket(ticket);
+  const fallbackMarketType = ticket.selection?.marketType ?? ticket.market.marketType ?? ticket.market.type ?? "generic";
   const amountDisplay = numericAmount > 0 ? compactCash(numericAmount) : "$0";
   const toWinDisplay = compactCash(estimatedPayout);
   const availabilityLabel = marketAvailabilityLabel(ticket.market);
@@ -447,11 +457,11 @@ export function TradeTicket({
                 <Ionicons name="close" color="#f8fafc" size={24} />
               </Pressable>
               <View
-                accessibilityLabel={`ticket-outcome-flag ${teamCode ? `ticket-outcome-flag-${teamCode}` : "ticket-outcome-flag-generic"}`}
+                accessibilityLabel={`ticket-outcome-flag ${teamCode ? `ticket-outcome-flag-${teamCode}` : `ticket-market-icon ticket-market-icon-${fallbackMarketType}`}`}
                 testID="ticket-outcome-flag"
-                style={[styles.outcomeFlag, !teamFlag && { backgroundColor: ticket.outcome.color }]}
+                style={[styles.outcomeFlag, !teamFlag && styles.marketIconFlag]}
               >
-                {teamFlag && <Text style={styles.outcomeFlagEmoji}>{teamFlag}</Text>}
+                {teamFlag ? <Text style={styles.outcomeFlagEmoji}>{teamFlag}</Text> : <Text style={styles.marketIconText}>{fallbackMarketIcon}</Text>}
               </View>
               <View style={styles.selectionTextBlock}>
                 <Text numberOfLines={1} style={styles.ticketTitle}>{eventLabel}</Text>
@@ -653,6 +663,8 @@ const styles = StyleSheet.create({
   ticketHeader: { flexDirection: "row", alignItems: "center", gap: 12, minHeight: 56 },
   outcomeFlag: { width: 50, height: 50, borderRadius: 13, alignItems: "center", justifyContent: "center", backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", overflow: "hidden" },
   outcomeFlagEmoji: { fontSize: 30, lineHeight: 38 },
+  marketIconFlag: { backgroundColor: "#121a27", borderColor: "#334155" },
+  marketIconText: { color: "#dbeafe", fontSize: 20, fontWeight: "900" },
   selectionTextBlock: { flex: 1, minWidth: 0 },
   ticketSettingsButton: { width: 40, height: 48, borderRadius: 999, alignItems: "center", justifyContent: "center" },
   settingsPanel: { marginTop: 8, paddingHorizontal: 14, paddingVertical: 10, borderRadius: 14, backgroundColor: "#0d1420", borderWidth: 1, borderColor: "#222d40", gap: 8 },

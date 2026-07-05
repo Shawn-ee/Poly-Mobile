@@ -193,6 +193,8 @@ Cycle IO changes only mobile Portfolio layout density and proof gates. No backen
 
 Cycle IP changes only mobile Event Detail sticky-tab spacing and proof gates. No backend route, request body, response field, auth requirement, or schema changes are required. Event Detail continues to consume the same event markets/outcomes, line-market fields, provider source/token identity, selected line/period, and `POST /api/orders` / `GET /api/portfolio` contracts.
 
+Cycle IQ changes only mobile Trade Ticket header icon presentation and proof gates. No backend route, request body, response field, auth requirement, or schema changes are required. Ticket submit continues to use the same selected market/outcome/line/period/provider identity, amount, side, payout, `POST /api/orders`, `GET /api/portfolio`, and Portfolio History contracts.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
