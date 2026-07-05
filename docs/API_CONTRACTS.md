@@ -133,6 +133,8 @@ Cycle HD changes only mobile Home discovery presentation and proof gates. No bac
 
 Cycle HE changes only mobile live Event Detail presentation and proof gates. No backend route, request body, response field, or schema changes are required. Live `liveDataStatus`, provider lifecycle, and source fields remain available in hidden proof/accessibility metadata; they are no longer rendered as visible operational freshness copy in the default Local MVP game page.
 
+Cycle HF changes only the mobile ticket submit interaction and proof gate. No backend route, request body, response field, or schema changes are required. The same fake-token/server-backed order path is used after the upward swipe; `TicketSelection`, selected line/outcome/provider identity, amount, side, and Portfolio handoff contracts are unchanged.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

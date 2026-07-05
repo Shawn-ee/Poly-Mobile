@@ -129,11 +129,12 @@ function SwipeSubmitControl({
   const progressBucket = disabled ? "disabled" : isSubmitting ? "submitting" : isArmed ? "armed" : swipeProgress > 0 ? "dragging" : "idle";
 
   return (
-    <Pressable
+    <View
+      accessible
+      accessibilityRole="button"
+      accessibilityState={{ disabled: disabled || isSubmitting }}
       accessibilityHint={helper}
-      accessibilityLabel={`swipe-to-submit-order swipe-submit-gesture-required swipe-submit-state-${progressBucket} swipe-submit-progress-${Math.round(swipeProgress * 100)}`}
-      disabled={disabled || isSubmitting}
-      onPress={() => void triggerSubmit()}
+      accessibilityLabel={`swipe-to-submit-order swipe-submit-gesture-required swipe-submit-tap-disabled swipe-submit-state-${progressBucket} swipe-submit-progress-${Math.round(swipeProgress * 100)}`}
       style={[styles.swipeSubmit, isArmed && styles.swipeSubmitArmed, disabled && styles.swipeSubmitDisabled]}
       testID="place-mock-order"
       {...panResponder.panHandlers}
@@ -149,7 +150,7 @@ function SwipeSubmitControl({
         <Text style={styles.swipeLabel}>{isSubmitting ? label : label}</Text>
         <Text style={styles.swipeHelper}>{helper}</Text>
       </View>
-    </Pressable>
+    </View>
   );
 }
 

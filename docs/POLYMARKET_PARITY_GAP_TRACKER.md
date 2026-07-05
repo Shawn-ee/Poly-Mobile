@@ -388,3 +388,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The live page should reject visible provider/source freshness copy while preserving route/status metadata for future provider cycles. | P0 | Passed | LiveDetail proof rejects `Live provider ready`, `Refresh due`, `deterministic-status-fixture -`, and `polymarket-gamma -` on the top screen while preserving `live-data-status-*` and `live-data-source-*` labels. |
 | Live outcome ticket and market-line reachability must still work after hiding the provider copy. | P0 | Passed | Samsung tablet proof opened a simple ticket from the visible AUS outcome and then verified Game Lines, Spread, Totals, and First Half Winner. |
 | Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, parser checks, and Android proof passed. |
+
+## Cycle HF - Ticket Swipe Required Retail Flow
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| The ticket submit surface still allowed a normal tap even though the Polymarket-style retail flow requires an upward confirmation gesture. | P0 | Passed | `TradeTicket` uses a gesture-only submit surface and exposes `swipe-submit-tap-disabled`; Samsung tablet proof taps the surface and remains on the ticket. |
+| The upward swipe must still place the fake-token order and land on Portfolio. | P0 | Passed | Samsung tablet Local MVP proof on port `8278` swiped from the blue footer, reached Portfolio, and verified position, Buy more, Cash out, Orders, and History. |
+| The proof folder/script naming must match the active branch and actual work. | P0 | Passed | Evidence was written to `cycle-HF-ticket-swipe-required-retail-flow-final` while on `feature/ticket-swipe-required-retail-flow`. |
+| Backend/API route should not change for this interaction correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
+| Exact Polymarket native drag physics and blur depth are not fully matched. | P2 | Tracked | Interaction parity is gated; final pixel/native physics remain future polish. |
