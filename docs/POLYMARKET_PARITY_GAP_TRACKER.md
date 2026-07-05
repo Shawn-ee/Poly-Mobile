@@ -554,3 +554,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Ticket header used provider-like/truncated event text instead of a readable event matchup when opening route-backed line tickets. | P0 | Passed | S23 ticket screenshot/XML show `ticket-header-retail-readable` and matchup-style `Breadth Home vs ...` copy instead of the provider slug. |
 | Selected outcome/line text should not immediately truncate on S23. | P0 | Passed | S23 ticket screenshot shows `Yes - Over 2.5 RT` wrapped and readable. |
 | Backend/API route should not change for this ticket-header correction. | P0 | Passed | No backend files changed; `npm run typecheck`, `scripts/smoke.ps1` parser check, and S23 server-filled proof passed. |
+
+## Cycle HY - Ticket Swipe Reference Layout
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Ticket amount-entry screen needed a clearer Polymarket-like dark keypad body separated from the fixed red/pink swipe submit area. | P0 | Passed | S23 ticket-ready screenshot shows `ticket-retail-reference-layout`, `ticket-body-rounded-above-swipe`, `ticket-keypad-swipe-separated`, and `ticket-swipe-area-fixed-bottom`. |
+| The S23 screen must show the full keypad, including `.`, `0`, and backspace, without overlap from the swipe area. | P0 | Passed | Final S23 screenshot `cycle-HY-ticket-swipe-reference-layout-s23-proof-final\cycle-EY-holiwyn-route-server-mvp-totals-ticket-ready.png` shows all keypad rows above the pink swipe band. |
+| Swipe icon should move with gesture progress and submit only after a threshold. | P0 | Passed | `SwipeSubmitControl` translates the handle from `swipeProgress`, exposes `swipe-submit-handle-progress-motion`, keeps tap disabled, and the S23 proof submits only after the upward swipe command. |
+| Backend/order logic should not change for this ticket layout correction. | P0 | Passed | No backend files changed; `npm run typecheck`, `scripts/smoke.ps1` parser check, and S23 server-filled proof passed. |
+| Exact native Polymarket blur/physics and final flag artwork remain future polish. | P2 | Tracked | This cycle targets layout, keypad visibility, and threshold swipe interaction. |

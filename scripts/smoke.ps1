@@ -5902,7 +5902,7 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-ticket.png"
       $mvpTicketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-ticket.xml"
-      Assert-HierarchyContains -Path $mvpTicketHierarchy -Expected (@("trade-ticket", "ticket-retail-order-header", "ticket-settings-state-closed", "Mexico vs. Ecuador", "ticket-selection-line", "Yes - MEX -2.5 1H", "ticket-selected-outcome-choice", "ticket-order-review", "ticket-identity-preserved", "ticket-line-2.5", "ticket-period-1st Half", "ticket-preset-25", "Choose an amount") + $mvpTicketExpected)
+      Assert-HierarchyContains -Path $mvpTicketHierarchy -Expected (@("trade-ticket", "ticket-retail-reference-layout", "ticket-body-rounded-above-swipe", "ticket-keypad-swipe-separated", "ticket-swipe-area-fixed-bottom", "ticket-retail-order-header", "ticket-settings-state-closed", "Mexico vs. Ecuador", "ticket-selection-line", "Yes - MEX -2.5 1H", "ticket-selected-outcome-choice", "ticket-order-review", "ticket-identity-preserved", "ticket-line-2.5", "ticket-period-1st Half", "ticket-preset-25", "ticket-preset-50", "Choose an amount") + $mvpTicketExpected)
       Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected @("Order review", "MARKET ", "LINE ", "PERIOD ", "SHARES ", "TO WIN ")
       Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected $mvpHiddenAdvancedTicketExpected
       Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
@@ -5911,7 +5911,7 @@ try {
         Start-Sleep -Seconds 1
         Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-sell-ticket.png"
         $mvpTicketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-sell-ticket.xml"
-        Assert-HierarchyContains -Path $mvpTicketHierarchy -Expected (@("trade-ticket", "Sell", "No", "Odds 97%", "ticket-side-sell", "ticket-order-review", "ticket-identity-preserved", "ticket-line-2.5", "ticket-period-1st Half", "ticket-preset-25", "Choose an amount") + $mvpSellTicketExpected)
+        Assert-HierarchyContains -Path $mvpTicketHierarchy -Expected (@("trade-ticket", "ticket-retail-reference-layout", "ticket-swipe-area-fixed-bottom", "Sell", "No", "Odds 97%", "ticket-side-sell", "ticket-order-review", "ticket-identity-preserved", "ticket-line-2.5", "ticket-period-1st Half", "ticket-preset-25", "ticket-preset-50", "Choose an amount") + $mvpSellTicketExpected)
         Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected @("Order review", "MARKET ", "LINE ", "PERIOD ", "SHARES ", "TO WIN ")
         Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected $mvpHiddenAdvancedTicketExpected
         Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
@@ -5927,12 +5927,12 @@ try {
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-ticket-ready.png"
       $mvpTicketReadyHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-ticket-ready.xml"
       $mvpReadyExpected = if ($LocalMvpSellFlow) {
-        @('$75', "To win", "97c", "ticket-price-line", "ticket-order-review", "ticket-order-review-payout", "ticket-identity-preserved", $mvpSubmitText, "place-mock-order", "MEX -2.5 1H")
+        @('$75', "to win", "ticket-price-line", "Odds 97%", "ticket-order-review", "ticket-order-review-payout", "ticket-identity-preserved", $mvpSubmitText, "place-mock-order", "MEX -2.5 1H")
       } else {
-        @('$75', 'To win $2,500', "ticket-price-line", "ticket-order-review", "ticket-order-review-payout", "ticket-identity-preserved", $mvpSubmitText, "place-mock-order", "Yes - MEX -2.5 1H")
+        @('$75', 'to win $2,500', "ticket-price-line", "Odds 3%", "ticket-order-review", "ticket-order-review-payout", "ticket-identity-preserved", $mvpSubmitText, "place-mock-order", "Yes - MEX -2.5 1H")
       }
       $mvpActiveTicketExpected = if ($LocalMvpSellFlow) { $mvpSellTicketExpected } else { $mvpTicketExpected }
-      Assert-HierarchyContains -Path $mvpTicketReadyHierarchy -Expected ($mvpReadyExpected + @("swipe-submit-gesture-required", "swipe-submit-tap-disabled", "swipe-submit-state-idle", "swipe-submit-handle") + $mvpActiveTicketExpected)
+      Assert-HierarchyContains -Path $mvpTicketReadyHierarchy -Expected ($mvpReadyExpected + @("swipe-submit-gesture-required", "swipe-submit-tap-disabled", "swipe-submit-handle-progress-motion", "swipe-submit-state-idle", "swipe-submit-handle") + $mvpActiveTicketExpected)
       Assert-HierarchyDoesNotContain -Path $mvpTicketReadyHierarchy -Unexpected $mvpHiddenAdvancedTicketExpected
       Assert-HierarchyDoesNotContain -Path $mvpTicketReadyHierarchy -Unexpected $mvpHiddenOrderBookExpected
       Invoke-TapHierarchyNode -Path $mvpTicketReadyHierarchy -Identifier "place-mock-order"

@@ -169,6 +169,8 @@ Cycle HW changes only mobile Event Detail tab proof and Player Props empty-state
 
 Cycle HX changes only mobile Trade Ticket header presentation and proof gates. No backend route, request body, response field, or schema changes are required. Mobile continues to consume the same ticket event, teams, market, outcome, selected line, selected period, provider source/token, amount, side, and server order fields.
 
+Cycle HY changes only mobile Trade Ticket amount-entry presentation, fixed swipe-zone layout, and proof gates. No backend route, request body, response field, or schema changes are required. Mobile continues to submit the same amount, side, contract side, market/outcome identity, line, period, provider source/token, and payout context through the existing server-backed fake-token order flow.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
