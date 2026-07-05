@@ -163,6 +163,8 @@ Cycle HT changes only mobile Portfolio History row presentation and proof gates.
 
 Cycle HU changes only mobile Event Detail chart/probability presentation and proof gates. No backend route, request body, response field, or schema changes are required. Mobile continues to consume existing event fields, chart history/status/source fields, provider source/token identity, market type, line, period, outcome probability, and the existing `POST /api/orders` / Portfolio routes used by the Local MVP flow. The visible UI hides default order-book and live-stat-like chart clutter while preserving backend-shaped chart/ticket metadata in accessibility proof labels.
 
+Cycle HV changes only mobile Portfolio Positions row presentation and proof gates. No backend route, request body, response field, or schema changes are required. Mobile continues to consume the same `GET /api/portfolio` position fields: title, outcome, selection, contract side, amount, probability/current price, current value, PnL, live state, live clock, provider source/token, market type, line, and period.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

@@ -5368,6 +5368,7 @@ try {
             "Portfolio",
             "portfolio-result-content-landing",
             "position-card-",
+            "portfolio-position-retail-density-fit",
             "portfolio-position-actions-fit-phone",
             "portfolio-chart-source-portfolio-value-history-route",
             "portfolio-chart-status-ready",

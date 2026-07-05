@@ -528,3 +528,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The visible user path must remain Home/Event Detail/line market/ticket/order/Portfolio History with no order-book UI. | P0 | Passed | S23 proof passed through Totals ticket, swipe-submit, Portfolio, and History while asserting Local MVP order-book markers are absent. |
 | Backend/API route should not change for this visible chart correction. | P0 | Passed | No backend file changed; `npm run typecheck`, `scripts/smoke.ps1` parser check, and S23 server-filled proof passed. |
 | Exact Polymarket chart animation/time-range parity remains future work. | P1 | Tracked | This cycle removes structural clutter and adds chart-surface tap behavior, not full native charting parity. |
+
+## Cycle HV - Portfolio Position Row Retail Density
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio Positions row still used an oversized market icon and loose row spacing after filled-ticket proof. | P0 | Passed | S23 Portfolio screenshot/XML in `cycle-HV-portfolio-position-row-retail-density-s23-proof` show `portfolio-position-retail-density-fit` with tighter row sizing. |
+| Cash out and buy-more actions must remain visible and tappable after compacting the row. | P0 | Passed | S23 proof still verifies `portfolio-position-actions-fit-phone` and the action buttons are visible in the Portfolio screenshot. |
+| Backend/API route should not change for this visible row correction. | P0 | Passed | No backend files changed; `npm run typecheck`, `scripts/smoke.ps1` parser check, and S23 server-filled proof passed. |
+| Overall Portfolio header/chart parity remains future work. | P1 | Tracked | This cycle targets the filled position row, not the account header. |
