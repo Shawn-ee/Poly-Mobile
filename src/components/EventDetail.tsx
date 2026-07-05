@@ -426,6 +426,12 @@ export function EventDetail({
   const orderBookMarket = event.markets.find((market) => market.id === orderBookMarketId) ?? primaryMarket;
   const orderBookSelectedOutcome = orderBookMarket.outcomes.find((outcome) => outcome.id === orderBookOutcomeId) ?? orderBookMarket.outcomes[0];
   const primaryOutcomes = primaryMarket?.outcomes.slice(0, 2) ?? [];
+  const primaryOutcomeDisplayColor = (outcome?: Outcome) => {
+    const index = outcome ? primaryOutcomes.findIndex((item) => item.id === outcome.id) : -1;
+    if (index === 0) return "#008b10";
+    if (index === 1) return "#ff1f1f";
+    return outcome?.color ?? "#22c55e";
+  };
   const selectedPrimaryOutcome = primaryOutcomes.find((outcome) => outcome.id === selectedPrimaryOutcomeId) ?? primaryOutcomes[0];
   const [expandedMarketIds, setExpandedMarketIds] = useState<Record<string, boolean>>({
     "regulation-time-winner": true,
@@ -450,7 +456,9 @@ export function EventDetail({
   const rightOutcome = primaryOutcomes[1];
   const selectedChartOutcome = primaryOutcomes.find((outcome) => outcome.id === selectedChartOutcomeId)
     ?? (isLiveEvent || chartFilter === "Live" ? rightOutcome ?? leftOutcome : leftOutcome ?? rightOutcome);
-  const selectedChartColor = selectedChartOutcome?.color ?? "#22c55e";
+  const leftOutcomeColor = primaryOutcomeDisplayColor(leftOutcome);
+  const rightOutcomeColor = primaryOutcomeDisplayColor(rightOutcome);
+  const selectedChartColor = primaryOutcomeDisplayColor(selectedChartOutcome);
   const selectedChartProbability = selectedChartOutcome?.probability ?? 0;
   const homeChartSeries = event.chartHistory?.filter((point) => point.outcomeId === leftOutcome?.id).map((point) => point.probability) ?? homeChartPoints;
   const awayChartSeries = event.chartHistory?.filter((point) => point.outcomeId === rightOutcome?.id).map((point) => point.probability) ?? awayChartPoints;
@@ -1598,7 +1606,7 @@ export function EventDetail({
               <Text style={styles.compactFlag}>{teamA?.flag ?? ""}</Text>
               <View>
                 <Text style={styles.compactTeamCode}>{homeCode}</Text>
-                <Text style={[styles.compactProbability, { color: leftOutcome?.color ?? "#22c55e" }]}>{leftOutcome?.probability ?? 0}%</Text>
+                <Text style={[styles.compactProbability, { color: leftOutcomeColor }]}>{leftOutcome?.probability ?? 0}%</Text>
               </View>
             </View>
             <View style={styles.compactMatchCenter}>
@@ -1608,7 +1616,7 @@ export function EventDetail({
             <View style={[styles.compactTeamSide, styles.compactTeamRight]}>
               <View style={styles.compactRightText}>
                 <Text style={styles.compactTeamCode}>{awayCode}</Text>
-                <Text style={[styles.compactProbability, { color: rightOutcome?.color ?? "#ef4444" }]}>{rightOutcome?.probability ?? 0}%</Text>
+                <Text style={[styles.compactProbability, { color: rightOutcomeColor }]}>{rightOutcome?.probability ?? 0}%</Text>
               </View>
               <Text style={styles.compactFlag}>{teamB?.flag ?? ""}</Text>
             </View>
@@ -1638,7 +1646,7 @@ export function EventDetail({
             <Text style={styles.flag}>{teamA?.flag ?? ""}</Text>
             <View>
               <Text style={styles.teamCode}>{homeCode}</Text>
-              <Text style={[styles.teamProbability, { color: leftOutcome?.color ?? "#22c55e" }]}>{leftOutcome?.probability ?? 0}%</Text>
+              <Text style={[styles.teamProbability, { color: leftOutcomeColor }]}>{leftOutcome?.probability ?? 0}%</Text>
             </View>
           </View>
           <View style={styles.matchTime}>
@@ -1649,7 +1657,7 @@ export function EventDetail({
           <View style={[styles.teamSide, styles.teamSideRight]}>
             <View style={styles.rightTeamText}>
               <Text style={styles.teamCode}>{awayCode}</Text>
-              <Text style={[styles.teamProbability, { color: rightOutcome?.color ?? "#ef4444" }]}>{rightOutcome?.probability ?? 0}%</Text>
+              <Text style={[styles.teamProbability, { color: rightOutcomeColor }]}>{rightOutcome?.probability ?? 0}%</Text>
             </View>
             <Text style={styles.flag}>{teamB?.flag ?? ""}</Text>
           </View>
@@ -1713,7 +1721,7 @@ export function EventDetail({
                   accessibilityLabel={`event-detail-chat-sticky-outcome-${primaryMarket.id}-${outcome.id}`}
                   key={outcome.id}
                   onPress={() => openPrimaryOutcomeTicket(outcome)}
-                  style={[styles.chatStickyButton, { backgroundColor: outcome.color }, selectedPrimaryOutcome?.id === outcome.id && styles.chatStickyButtonSelected]}
+                  style={[styles.chatStickyButton, { backgroundColor: primaryOutcomeDisplayColor(outcome) }, selectedPrimaryOutcome?.id === outcome.id && styles.chatStickyButtonSelected]}
                   testID={`event-detail-chat-sticky-outcome-${primaryMarket.id}-${outcome.id}`}
                 >
                   <Text style={styles.chatStickyButtonText}>{teamCode(outcome.label)} {outcome.probability}%</Text>
@@ -1784,7 +1792,7 @@ export function EventDetail({
             </View>
             <View style={styles.liveStripPriceRow}>
               {primaryOutcomes.map((outcome) => (
-                <Text key={outcome.id} style={[styles.liveStripPrice, { color: outcome.color }]}>
+                <Text key={outcome.id} style={[styles.liveStripPrice, { color: primaryOutcomeDisplayColor(outcome) }]}>
                   {teamCode(outcome.label)} {outcome.probability}%
                 </Text>
               ))}
@@ -1792,7 +1800,7 @@ export function EventDetail({
           </View>
         )}
         <View
-          accessibilityLabel={`event-detail-price-chart event-detail-chart-retail-surface-fit chart-source-${event.chartHistorySource ?? "fallback"} chart-status-${chartRouteStatus} provider-lifecycle-${chartStatusBadge.lifecycle} chart-range-${event.chartHistoryRange ?? "none"} chart-empty-${event.chartHistoryEmptyState ?? "none"} chart-filter-${chartFilter} chart-selected-point-${selectedChartPoint} chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"} two outcome traces probability-axis 75% 50% 25% ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartProbability}% ${chartPointMeta.label} ${chartPointMeta.value} All Game Live`}
+          accessibilityLabel={`event-detail-price-chart event-detail-chart-retail-surface-fit event-detail-primary-outcome-retail-green-red event-detail-primary-outcome-colors-polymarket-like chart-source-${event.chartHistorySource ?? "fallback"} chart-status-${chartRouteStatus} provider-lifecycle-${chartStatusBadge.lifecycle} chart-range-${event.chartHistoryRange ?? "none"} chart-empty-${event.chartHistoryEmptyState ?? "none"} chart-filter-${chartFilter} chart-selected-point-${selectedChartPoint} chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"} two outcome traces probability-axis 75% 50% 25% ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartProbability}% ${chartPointMeta.label} ${chartPointMeta.value} All Game Live`}
           style={[styles.chartBlock, isLiveEvent && styles.liveChartBlock]}
           testID="event-detail-price-chart"
         >
@@ -1827,7 +1835,7 @@ export function EventDetail({
                   style={[styles.chartOutcomeChip, isSelected && styles.chartOutcomeChipActive]}
                   testID={`event-detail-chart-outcome-${outcome.id}`}
                 >
-                  <View style={[styles.chartOutcomeDot, { backgroundColor: outcome.color }]} />
+                  <View style={[styles.chartOutcomeDot, { backgroundColor: primaryOutcomeDisplayColor(outcome) }]} />
                   <Text style={[styles.chartOutcomeText, isSelected && styles.chartOutcomeTextActive]}>{teamCode(outcome.label)} {outcome.probability}%</Text>
                 </Pressable>
               );
@@ -1846,7 +1854,7 @@ export function EventDetail({
                   style={[
                     styles.chartStep,
                     {
-                      backgroundColor: leftOutcome?.color ?? "#22c55e",
+                      backgroundColor: leftOutcomeColor,
                       marginTop: Math.max(0, 72 - point),
                       opacity: 0.7 + index / 70,
                     },
@@ -1861,7 +1869,7 @@ export function EventDetail({
                   style={[
                     styles.chartStep,
                     {
-                      backgroundColor: rightOutcome?.color ?? "#ef4444",
+                      backgroundColor: rightOutcomeColor,
                       marginTop: Math.max(0, 72 - point),
                       opacity: 0.62 + index / 80,
                     },
@@ -2021,7 +2029,7 @@ export function EventDetail({
               accessibilityLabel={`event-detail-outcome-${primaryMarket.id}-${outcome.id}`}
               key={outcome.id}
               onPress={() => openPrimaryOutcomeTicket(outcome)}
-              style={[styles.primaryOutcomeButton, { backgroundColor: outcome.color }, selectedPrimaryOutcome?.id === outcome.id && styles.primaryOutcomeButtonSelected]}
+              style={[styles.primaryOutcomeButton, { backgroundColor: primaryOutcomeDisplayColor(outcome) }, selectedPrimaryOutcome?.id === outcome.id && styles.primaryOutcomeButtonSelected]}
               testID={`event-detail-primary-outcome-${primaryMarket.id}-${outcome.id}`}
             >
               <Text style={styles.primaryOutcomeText}>
@@ -2195,7 +2203,7 @@ export function EventDetail({
           testID="event-detail-selected-outcome-trade-rail"
         >
           <View style={styles.selectedTradeSummary}>
-            <View style={[styles.selectedOutcomeDot, { backgroundColor: selectedPrimaryOutcome.color }]} />
+            <View style={[styles.selectedOutcomeDot, { backgroundColor: primaryOutcomeDisplayColor(selectedPrimaryOutcome) }]} />
             <View style={styles.selectedTradeTextBlock}>
               <Text numberOfLines={1} style={styles.selectedTradeTitle}>{teamCode(selectedPrimaryOutcome.label)} {selectedPrimaryOutcome.probability}%</Text>
               <Text numberOfLines={1} style={styles.selectedTradeMeta}>{isLiveEvent ? "Live Winner" : "Team to Advance"} - {marketDepth(primaryMarket).spread} spread</Text>

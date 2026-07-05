@@ -811,3 +811,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The chart rail change must not break the Local MVP trade path. | P0 | Passed | Same S23 server-filled proof completes Event Detail, line market, ticket, swipe submit, Portfolio, settings, and History. |
 | Backend/API routes should not change for this visible Event Detail correction. | P0 | Passed | No backend route/schema/order service changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 proof passed. |
 | Exact Polymarket chart physics and tooltip behavior remain future polish. | P2 | Tracked | This cycle targets the visible chart handoff density only. |
+
+## Cycle JF - Event Detail Primary Outcome Colors
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Primary match-winner outcomes used two blue buttons/traces, while the Polymarket reference uses clear green/red trading colors for the opposing sides. | P0 | Passed | `EventDetail` now applies a green/red presentation pair for the first two primary outcomes; S23 top screenshot in `cycle-JF-event-detail-primary-outcome-colors-s23-proof` shows green BHO and red BAW across the header, chart, Trade button, and primary outcome buttons. |
+| Color presentation must not mutate selected market/outcome identity or ticket handoff. | P0 | Passed | S23 XML verifies `event-detail-primary-outcome-retail-green-red`, selected chart contract/market/outcome labels, and `event-detail-chart-open-ticket`; full ticket/order proof still preserves provider/line identity. |
+| The color change must not affect line-market row behavior. | P0 | Passed | Same S23 proof completes line-market navigation, totals ticket amount entry, server-backed fake-token order, Portfolio, settings, and History. |
+| Backend/API routes should not change for this visible Event Detail correction. | P0 | Passed | No backend route/schema/order service changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 proof passed. |
+| Exact team color sourcing and production artwork remain future polish. | P2 | Tracked | This cycle targets primary binary winner color semantics only. |

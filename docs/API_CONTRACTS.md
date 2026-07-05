@@ -221,6 +221,8 @@ Cycle JD changes only mobile Portfolio History timestamp presentation. No backen
 
 Cycle JE changes only mobile Event Detail chart-selected trade rail presentation. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Mobile continues to consume the same event market/outcome, chart selected outcome, selected line/period, provider identity, `POST /api/orders`, `GET /api/portfolio`, and Portfolio History contracts.
 
+Cycle JF changes only mobile Event Detail primary outcome color presentation. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Mobile continues to consume the same event market/outcome IDs, probabilities, provider identity, selected line/period, `POST /api/orders`, `GET /api/portfolio`, and Portfolio History contracts.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
