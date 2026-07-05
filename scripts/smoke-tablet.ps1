@@ -99,7 +99,7 @@ function Resolve-LanIpv4 {
 
 $resolvedExpoHost = if ($ExpoHost) { $ExpoHost } else { Resolve-LanIpv4 }
 
-Write-Host "Tablet smoke target: $Device"
+Write-Host "Android smoke target: $Device"
 Write-Host "Expo host: $resolvedExpoHost"
 Write-Host "Expo port: $Port"
 

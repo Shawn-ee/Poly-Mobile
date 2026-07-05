@@ -78,7 +78,7 @@ try {
       -HierarchyOutputDir $HierarchyOutputDir
 
     if ($LASTEXITCODE -ne 0) {
-      throw "Tablet route-backed server filled totals smoke failed."
+      throw "Android route-backed server filled totals smoke failed."
     }
 
     $summaryPath = Join-Path $repoRoot (Join-Path $HierarchyOutputDir "cycle-EY-local-mvp-route-server-filled-totals-flow-wrapper.json")

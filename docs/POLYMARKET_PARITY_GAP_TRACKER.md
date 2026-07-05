@@ -442,3 +442,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The server-backed open-order row showed test/debug details and dense execution fields that made the result page feel messy for the Local MVP retail flow. | P0 | Passed | Samsung tablet screenshot shows the simplified order row with `open-order-row-retail-simple`. |
 | The simplified row must still preserve order, provider, line, status, and cancel identity. | P0 | Passed | Server-backed proof on port `8298` verifies provider source/token, market type, line, period, open row, and cancel target identity. |
 | Backend/API route should not change for this row presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android server-backed proof passed. |
+
+## Cycle HL - Server Filled History Proof
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| The server-backed filled order proof claimed History coverage but only verified the Portfolio position screen. | P0 | Passed | Primary Samsung S23 Totals filled proof now taps History and verifies `portfolio-tab-history portfolio-tab-selected` plus `activity-row-*`. |
+| Filled trade History must preserve selected market, line, period, and Polymarket provider token/source identity. | P0 | Passed | Final S23 proof on port `8306` verifies totals market type, line `2.5`, period, provider source, and token through the History row. |
+| Backend/API route should not change for this proof-gate correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android server-filled proof passed. |
