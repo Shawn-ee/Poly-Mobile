@@ -689,3 +689,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Long fixture/provider event titles should not create a messy truncated ticket header. | P0 | Passed | `TradeTicket` compacts `Breadth Home vs Breadth Away` to `BHO vs BAW`; S23 XML verifies `ticket-event-title-compact-matchup`. |
 | Backend/order logic should not change for this ticket layout correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, and S23 server-filled proof passed through `POST /api/orders`, Portfolio, and History. |
 | Exact native Polymarket physics/blur and production artwork remain future polish. | P2 | Tracked | This cycle targets layout, spacing, header clarity, and visible gesture progress only. |
+
+## Cycle IS - Portfolio History Market Icon Identity
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio History rows for non-team line markets still used a generic action arrow, making the completed trade feel disconnected from ticket and position market identity. | P0 | Passed | `Portfolio` now renders `portfolio-history-market-icon-totals`; S23 screenshot shows `%` on the completed totals History row. |
+| History icon change must preserve selected market, line, period, provider, amount, and timestamp. | P0 | Passed | S23 XML verifies totals market type, line `2.5`, `Reg. Time`, Polymarket provider source/token, `75 USDT`, and timestamp in the same row. |
+| Full Local MVP trade path must still pass after the History row icon change. | P0 | Passed | S23 proof completes Event Detail, totals ticket, upward swipe buy, Portfolio, settings, and History. |
+| Backend/API routes should not change for this visible history-row correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, and S23 server-filled proof passed. |
+| Exact production market/team artwork remains future work. | P2 | Tracked | This cycle uses existing market-type icons until production artwork exists. |

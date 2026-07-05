@@ -229,31 +229,49 @@ function PortfolioAvatar() {
   );
 }
 
-function PositionFlag({ item }: { item: { title: string; outcome: string; selection?: TicketSelection } }) {
+const marketIconForPortfolioItem = (item: { selection?: TicketSelection }) => {
+  const marketType = item.selection?.marketType;
+  if (marketType === "spread") return "+/-";
+  if (marketType === "totals" || marketType === "team-total") return "%";
+  if (marketType === "winner" || marketType === "live") return "1X2";
+  return "%";
+};
+
+const marketTypeForPortfolioItem = (item: { selection?: TicketSelection }) => item.selection?.marketType ?? "generic";
+
+function PositionFlag({
+  item,
+  context = "position",
+}: {
+  item: { title: string; outcome: string; selection?: TicketSelection };
+  context?: "position" | "history";
+}) {
   const code = teamCodeForPortfolioItem(item);
   const flag = code ? teamFlags[code] : undefined;
+  const proofPrefix = context === "history" ? "portfolio-history-market-icon" : "portfolio-position-flag";
   if (flag) {
     return (
-      <View accessibilityLabel={`portfolio-position-flag portfolio-position-flag-${code}`} style={styles.positionFlag}>
+      <View accessibilityLabel={`${proofPrefix} ${proofPrefix}-${code}`} style={styles.positionFlag}>
         <Text style={styles.positionFlagEmoji}>{flag}</Text>
       </View>
     );
   }
 
+  const marketType = marketTypeForPortfolioItem(item);
   return (
-    <View accessibilityLabel="portfolio-position-flag portfolio-position-flag-generic" style={styles.positionFlag}>
-      <Text style={styles.positionFlagGeneric}>%</Text>
+    <View accessibilityLabel={`${proofPrefix} ${proofPrefix}-${marketType}`} style={styles.positionFlag}>
+      <Text style={styles.positionFlagGeneric}>{marketIconForPortfolioItem(item)}</Text>
     </View>
   );
 }
 
 function ActivityIcon({ activity }: { activity: PortfolioActivity }) {
-  if (teamCodeForPortfolioItem(activity)) {
-    return <PositionFlag item={activity} />;
+  if (teamCodeForPortfolioItem(activity) || activity.selection?.marketType) {
+    return <PositionFlag context="history" item={activity} />;
   }
 
   return (
-    <View style={styles.activityIcon}>
+    <View accessibilityLabel={`portfolio-history-action-icon portfolio-history-action-icon-${activity.action}`} style={styles.activityIcon}>
       <Ionicons
         name={activity.action === "opened" ? "arrow-down" : activity.action === "canceled" ? "close" : "checkmark"}
         size={18}

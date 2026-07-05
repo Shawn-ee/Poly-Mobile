@@ -5499,6 +5499,8 @@ try {
             "portfolio-history-retail-row-parity",
             "portfolio-history-fill-count-3",
             "portfolio-side-buy",
+            "portfolio-history-market-icon",
+            "portfolio-history-market-icon-$mvpRouteTargetTicketMarketType",
             "portfolio-market-type-$mvpRouteTargetTicketMarketType",
             "portfolio-line-$mvpRouteTargetLine",
             "portfolio-period-Reg. Time",
