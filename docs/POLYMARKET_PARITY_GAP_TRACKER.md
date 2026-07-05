@@ -277,3 +277,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Event Detail line-market headers still showed backend/provider availability text such as `Market live` in the default retail betting UI. | P0 | Passed | Samsung tablet screenshot shows Spread and Totals headers without the visible `Market live` pill; availability remains hidden proof metadata. |
 | Hiding availability status must preserve line selectors, outcome rows, and ticket flow. | P0 | Passed | Full Local MVP trade-flow proof passed through selected line, ticket, fake-token order, Portfolio, Orders, and History. |
 | Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
+
+## Cycle GS - Event Detail Line Card Actions
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Team to Advance line card still showed extra icon-only actions after Graph/About that are not part of the Local MVP betting path. | P0 | Passed | Samsung tablet screenshot shows only `Graph` and `About`; extra icon strip removed. |
+| The line card must still expose Graph/About context and downstream ticket flow. | P0 | Passed | Smoke asserted `prediction-tabs-only`; full Local MVP trade-flow proof passed through ticket, order, Portfolio, Orders, and History. |
+| Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |

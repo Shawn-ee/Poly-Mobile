@@ -107,6 +107,8 @@ Cycle GQ changes only mobile Event Detail presentation. No backend route, reques
 
 Cycle GR changes only mobile Event Detail presentation. No backend route, request body, response field, or schema changes are required. Market availability/status fields remain in accessibility/proof metadata and are no longer displayed as prominent default market-header pills.
 
+Cycle GS changes only mobile Event Detail presentation. No backend route, request body, response field, or schema changes are required. The line-card Graph/About action strip is UI-only and continues to use existing market/outcome data.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

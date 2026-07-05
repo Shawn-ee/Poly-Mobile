@@ -5734,7 +5734,7 @@ try {
         Start-Sleep -Seconds 1
         $mvpMarketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-market-lines.xml"
       }
-      Assert-HierarchyContains -Path $mvpMarketHierarchy -Expected @("Game Lines", "Spread", "Totals", "event-detail-sticky-game-lines-tab", "event-detail-spread-line-1-5", "event-detail-totals-line-2-5")
+      Assert-HierarchyContains -Path $mvpMarketHierarchy -Expected @("Game Lines", "Spread", "Totals", "event-detail-sticky-game-lines-tab", "event-detail-spread-line-1-5", "event-detail-totals-line-2-5", "event-detail-line-detail-tabs", "prediction-tabs-only")
       Assert-HierarchyDoesNotContain -Path $mvpMarketHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
       Invoke-TapHierarchyNode -Path $mvpMarketHierarchy -Identifier "event-detail-spread-line-2-5"
