@@ -48,7 +48,6 @@ export function SearchScreen({
   const [filter, setFilter] = useState<SearchFilter>("all");
   const [sort, setSort] = useState<SearchSort>("popular");
   const [isInputFocused, setIsInputFocused] = useState(false);
-  const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const disableSoftInputForSmoke = process.env.EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT === "1";
   const hasQuery = query.trim().length > 0;
   const filteredEvents =
@@ -229,53 +228,6 @@ export function SearchScreen({
           </View>
         )}
       </ScrollView>
-      <Pressable
-        accessibilityLabel="search-filter-sheet"
-        onPress={() => setIsFilterSheetOpen(true)}
-        style={styles.floatingFilter}
-        testID="search-filter-sheet"
-      >
-        <Ionicons name="filter" color="#f8fafc" size={20} />
-        <Text style={styles.floatingFilterText}>Filter</Text>
-      </Pressable>
-      {isFilterSheetOpen && (
-        <View accessibilityLabel="search-filter-panel" style={styles.filterPanel} testID="search-filter-panel">
-          <View style={styles.filterPanelHeader}>
-            <Text style={styles.filterPanelTitle}>Filter</Text>
-            <Pressable accessibilityLabel="close-search-filter-panel" onPress={() => setIsFilterSheetOpen(false)} testID="close-search-filter-panel">
-              <Ionicons name="close" color="#f8fafc" size={22} />
-            </Pressable>
-          </View>
-          <Text style={styles.filterPanelLabel}>Status</Text>
-          <View style={styles.sheetRow}>
-            {filters.map(([value, text]) => (
-              <Pressable
-                accessibilityLabel={`search-sheet-filter-${value}`}
-                key={value}
-                onPress={() => setFilter(value)}
-                style={[styles.sheetChip, filter === value && styles.sheetChipActive]}
-                testID={`search-sheet-filter-${value}`}
-              >
-                <Text style={[styles.sheetChipText, filter === value && styles.sheetChipTextActive]}>{text}</Text>
-              </Pressable>
-            ))}
-          </View>
-          <Text style={styles.filterPanelLabel}>Sort</Text>
-          <View style={styles.sheetRow}>
-            {sortOptions.map(([value, text]) => (
-              <Pressable
-                accessibilityLabel={`search-sheet-sort-${value}`}
-                key={value}
-                onPress={() => setSort(value)}
-                style={[styles.sheetChip, sort === value && styles.sheetChipActive]}
-                testID={`search-sheet-sort-${value}`}
-              >
-                <Text style={[styles.sheetChipText, sort === value && styles.sheetChipTextActive]}>{text}</Text>
-              </Pressable>
-            ))}
-          </View>
-        </View>
-      )}
     </View>
   );
 }
@@ -323,39 +275,5 @@ const styles = StyleSheet.create({
   resultOutcome: { color: "#8ea0b8", fontSize: 13, fontWeight: "900", marginTop: 2, textAlign: "right" },
   resultActions: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 12 },
   compactSaveButton: { width: 30, height: 30, alignItems: "center", justifyContent: "center" },
-  floatingFilter: {
-    position: "absolute",
-    right: 16,
-    bottom: 120,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    minHeight: 56,
-    paddingHorizontal: 18,
-    borderRadius: 28,
-    backgroundColor: "#0b1220",
-    borderWidth: 3,
-    borderColor: "#1d9bf0",
-  },
-  floatingFilterText: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
-  filterPanel: {
-    position: "absolute",
-    left: 12,
-    right: 12,
-    bottom: 108,
-    padding: 18,
-    borderRadius: 18,
-    backgroundColor: "#101827",
-    borderWidth: 1,
-    borderColor: "#334155",
-  },
-  filterPanelHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 14 },
-  filterPanelTitle: { color: "#f8fafc", fontSize: 22, fontWeight: "900" },
-  filterPanelLabel: { color: "#8ea0b8", fontSize: 13, fontWeight: "900", marginBottom: 8, marginTop: 4 },
-  sheetRow: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 12 },
-  sheetChip: { paddingHorizontal: 13, paddingVertical: 9, borderRadius: 999, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
-  sheetChipActive: { backgroundColor: "#12345f", borderColor: "#1d9bf0" },
-  sheetChipText: { color: "#8ea0b8", fontWeight: "900" },
-  sheetChipTextActive: { color: "#f8fafc" },
   empty: { color: "#94a3b8", textAlign: "center", marginTop: 30, fontWeight: "800" },
 });
