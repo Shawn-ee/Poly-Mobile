@@ -203,6 +203,8 @@ Cycle IT changes only mobile Event Detail spacing and proof gates. No backend ro
 
 Cycle IU changes only mobile Event Detail line-market header presentation and proof gates. No backend route, request body, response field, auth requirement, or schema changes are required. The compact team-total title is derived from existing market type, team code, line, and period fields; mobile still preserves the full market title, selected line/period, provider source/token identity, `POST /api/orders`, `GET /api/portfolio`, and Portfolio History contracts.
 
+Cycle IV changes only mobile Portfolio event-title presentation and proof gates. No backend route, request body, response field, auth requirement, or schema changes are required. Compact `BHO/BAW` identity is derived from existing Portfolio `title`, `outcome`, and `selection.referenceOutcomeLabel` fields. Mobile still consumes the same `GET /api/portfolio`, Portfolio History activity fields, selected line/period, provider source/token identity, and `POST /api/orders` contracts.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

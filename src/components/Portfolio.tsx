@@ -171,6 +171,33 @@ const scoreLineForTitle = (title: string) => {
   return `${teamAbbrev(home)} 0 - ${teamAbbrev(away)} 0`;
 };
 
+const providerBreadthCodes = (item: { title: string; outcome: string; selection?: TicketSelection }) => {
+  const source = [
+    item.title,
+    item.outcome,
+    item.selection?.displayLabel,
+    item.selection?.referenceOutcomeLabel,
+  ].filter(Boolean).join(" ").toUpperCase();
+  const hasHome = source.includes("BREADTH HOME") || /\bBHO\b/.test(source);
+  const hasAway = source.includes("BREADTH AWAY") || /\bBAW\b/.test(source);
+  const isProviderBreadth = source.includes("PROVIDER BREADTH") || source.includes("BREADTH WORLD CUP") || hasHome || hasAway;
+  return isProviderBreadth ? { home: "BHO", away: "BAW" } : null;
+};
+
+const compactPortfolioScoreLine = (item: { title: string; outcome: string; selection?: TicketSelection }) => {
+  const breadth = providerBreadthCodes(item);
+  if (breadth) return `${breadth.home} 0 - ${breadth.away} 0`;
+  return scoreLineForTitle(item.title);
+};
+
+const compactPortfolioEventSubline = (item: { title: string; outcome: string; selection?: TicketSelection }) => {
+  const breadth = providerBreadthCodes(item);
+  if (breadth) return `${breadth.home} vs ${breadth.away}`;
+  const [home, away] = item.title.split(/\s+v(?:s\.?|\.?)\s+/i).map((value) => value.trim());
+  if (!home || !away) return item.title;
+  return `${teamAbbrev(home)} vs ${teamAbbrev(away)}`;
+};
+
 const teamFlags: Record<string, string> = {
   ARG: "\ud83c\udde6\ud83c\uddf7",
   AUS: "\ud83c\udde6\ud83c\uddfa",
@@ -392,9 +419,7 @@ const activityMarketSubline = (activity: PortfolioActivity) => {
 };
 
 const activityEventSubline = (activity: PortfolioActivity) => {
-  const [home, away] = activity.title.split(/\s+v(?:s\.?|\.?)\s+/i).map((value) => value.trim());
-  if (!home || !away) return activity.title;
-  return `${teamAbbrev(home)} vs ${teamAbbrev(away)}`;
+  return compactPortfolioEventSubline(activity);
 };
 
 type PortfolioTab = "positions" | "orders" | "history";
@@ -931,9 +956,9 @@ export function Portfolio({
             </View>
           </View>
           {positions.map((position) => (
-            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-first-position-first-screen-fit ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
+            <View accessibilityLabel={`position-card-${position.id} portfolio-position-retail-density-fit portfolio-first-position-first-screen-fit ${providerBreadthCodes(position) ? "portfolio-event-title-compact-provider" : ""} ${selectionIdentityLabel(position)}`} key={position.id} style={styles.positionCard}>
               <View style={styles.positionEventLine}>
-                <Text style={styles.positionScoreLine}>{scoreLineForTitle(position.title)}</Text>
+                <Text style={styles.positionScoreLine}>{compactPortfolioScoreLine(position)}</Text>
                 {(position.isLive || position.liveClock) && (
                   <View style={styles.positionLiveInline}>
                     <View style={styles.liveDot} />
@@ -1094,7 +1119,7 @@ export function Portfolio({
         <View style={styles.activityBlock}>
           {activities.slice(0, 5).map((activity) => (
             <Pressable
-              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-fill-count-${activity.fillCount ?? 1} ${selectionIdentityLabel(activity)}`}
+              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-fill-count-${activity.fillCount ?? 1} ${providerBreadthCodes(activity) ? "portfolio-history-event-title-compact-provider" : ""} ${selectionIdentityLabel(activity)}`}
               key={activity.id}
               onPress={() => setExpandedActivityId((current) => (current === activity.id ? null : activity.id))}
               style={[styles.activityItem, expandedActivityId === activity.id && styles.rowExpanded]}

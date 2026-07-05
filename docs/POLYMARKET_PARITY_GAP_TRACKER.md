@@ -719,3 +719,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Header density change must not break the route-backed ticket/order/Portfolio path. | P0 | Passed | S23 full-flow totals proof completes ticket, visible swipe-progress capture, server-backed fake-token order, Portfolio, settings, and History. |
 | Backend/API routes should not change for this visible naming correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 proof passed. |
 | Exact market naming for every Polymarket soccer line remains future work. | P2 | Tracked | This cycle targets the most visibly bulky team-total header only. |
+
+## Cycle IV - Portfolio Compact Event Identity
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio result rows could inherit long provider fixture titles instead of compact event identity after a route-backed fake-token trade. | P0 | Passed | `Portfolio` now renders `BHO 0 - BAW 0` in the Positions row; S23 XML verifies `portfolio-event-title-compact-provider`. |
+| Portfolio History should use the same compact event identity as the position row. | P0 | Passed | S23 History XML verifies `portfolio-history-event-title-compact-provider` and visible `BHO vs BAW`. |
+| Compact visible labels must preserve selected market, line, period, provider, amount, and timestamp. | P0 | Passed | Same S23 proof still verifies totals market type, line `2.5`, `Reg. Time`, Polymarket provider source/token, `75 USDT`, and History timestamp. |
+| Backend/API routes should not change for this visible Portfolio identity correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
+| Production event/team artwork and exact live score formatting remain future work. | P2 | Tracked | This cycle targets the current provider-breadth MVP event identity only. |
