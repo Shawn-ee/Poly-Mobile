@@ -326,3 +326,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Advanced trading-mode, market-depth, slippage, and estimate controls should not appear in the default retail ticket. | P0 | Passed | Local MVP proof checks initial, ready, Buy more, and Cash out ticket hierarchies do not include advanced ticket controls. |
 | Simplifying the ticket must preserve event/outcome/line identity, amount entry, swipe submit, fake-token order, Portfolio, Orders, and History. | P0 | Passed | Samsung tablet Local MVP proof passed through selected line, ticket, fake-token submit, Portfolio action tickets, Orders, and History. |
 | Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
+
+## Cycle GY - Portfolio Tab Value And Label
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Bottom Portfolio tab showed only `$10K`, making the destination label less clear than the Polymarket-style value-plus-Portfolio tab. | P0 | Passed | `BottomTabs` now renders a two-line value plus `Portfolio` label; Samsung tablet screenshot/XML show `$10K` and `Portfolio`. |
+| The Portfolio tab must remain testable as the Portfolio destination after the visible text change. | P0 | Passed | Accessibility label preserves `holiwyn-portfolio-tab`, `Portfolio`, `portfolio-tab-value-$10K`, and adds `portfolio-tab-label-visible`. |
+| The nav label change must preserve ticket submit, Portfolio position, Buy more, Cash out, Orders, and History. | P0 | Passed | Samsung tablet Local MVP proof passed through the full end-to-end flow on port 8265. |
+| Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |

@@ -119,6 +119,8 @@ Cycle GW changes only mobile Home layout presentation on wide Android screens. N
 
 Cycle GX changes only mobile ticket presentation and proof gates. No backend route, request body, response field, or schema changes are required. Ticket submit continues to use the same fake-token/server-backed order contract, and hidden proof identity continues to carry market, line, period, provider token, side, payout, and Portfolio handoff fields.
 
+Cycle GY changes only the mobile Portfolio bottom-tab label presentation and proof gate. No backend route, request body, response field, or schema changes are required. The tab value continues to derive from existing local/server Portfolio value state.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
