@@ -2344,17 +2344,20 @@ try {
     if ($LiveDetail) {
       Save-Screenshot -Name "cycle-current-holiwyn-live-detail-top.png"
       $liveDetailTopHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-detail-top.xml"
-      Assert-HierarchyContains -Path $liveDetailTopHierarchy -Expected @("Australia vs. Egypt", "AUS 40%", "EGY 61%", "0 - 1", "63'", "event-detail-live-match-strip", "LIVE WORLD CUP", "event-detail-price-chart", "Live Winner", "Game Lines", "Player Props")
+      Assert-HierarchyContains -Path $liveDetailTopHierarchy -Expected @("Australia vs. Egypt", "AUS 40%", "EGY 61%", "0 - 1", "63'", "event-detail-live-match-strip", "LIVE WORLD CUP", "event-detail-live-provider-copy-hidden-local-mvp", "event-detail-price-chart", "Live Winner", "Game Lines", "Player Props")
+      Assert-HierarchyDoesNotContain -Path $liveDetailTopHierarchy -Unexpected @("Live provider ready", "Refresh due", "deterministic-status-fixture -", "polymarket-gamma -")
+      Invoke-TapHierarchyNode -Path $liveDetailTopHierarchy -Identifier "event-detail-team-advance-australia"
+      Start-Sleep -Seconds 1
+      Save-Screenshot -Name "cycle-current-holiwyn-live-detail-ticket.png"
+      $liveDetailTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-detail-ticket.xml"
+      Assert-HierarchyContains -Path $liveDetailTicketHierarchy -Expected @("trade-ticket", "Live winner", "Australia vs. Egypt", "Australia", "ticket-side-buy", "ticket-side-sell", "Choose an amount")
+      Invoke-TapHierarchyNode -Path $liveDetailTicketHierarchy -Identifier "ticket-close"
+      Start-Sleep -Seconds 1
       & $adb -s $Device shell input swipe 540 1760 540 760 450 | Out-Null
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-live-detail-markets.png"
       $liveDetailMarketsHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-detail-markets.xml"
       Assert-HierarchyContains -Path $liveDetailMarketsHierarchy -Expected @("event-detail-sticky-market-tabs", "Game Lines", "Player Props", "Live Winner", "Spread", "Totals", "1st Half Winner")
-      Invoke-TapHierarchyNode -Path $liveDetailMarketsHierarchy -Identifier "event-detail-outcome-france-argentina-live-australia"
-      Start-Sleep -Seconds 1
-      Save-Screenshot -Name "cycle-current-holiwyn-live-detail-ticket.png"
-      $liveDetailTicketHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live-detail-ticket.xml"
-      Assert-HierarchyContains -Path $liveDetailTicketHierarchy -Expected @("trade-ticket", "Live winner", "Australia vs. Egypt", "Australia", "ticket-side-buy", "ticket-side-sell", "place-mock-order", "Choose an amount")
       return
     }
 
@@ -6177,5 +6180,3 @@ finally {
   }
   Pop-Location
 }
-
-

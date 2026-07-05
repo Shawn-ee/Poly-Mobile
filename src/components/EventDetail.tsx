@@ -1702,11 +1702,11 @@ export function EventDetail({
             <Text style={styles.bodySwitchSource}>{isLiveEvent ? "Live World Cup" : "Holiwyn"}</Text>
             {liveDataStatus && (
               <Text
-                accessibilityLabel={`event-detail-live-data-inline live-data-status-${liveDataState} provider-lifecycle-${liveDataBadge.lifecycle} live-data-source-${liveDataBadge.source} ${liveDataText}`}
-                style={[styles.bodySwitchFreshness, liveDataState !== "ready" && styles.bodySwitchFreshnessWarning]}
+                accessibilityLabel={`event-detail-live-data-inline event-detail-live-provider-copy-hidden-local-mvp live-data-status-${liveDataState} provider-lifecycle-${liveDataBadge.lifecycle} live-data-source-${liveDataBadge.source}`}
+                style={styles.hiddenStatsText}
                 testID="event-detail-live-data-inline"
               >
-                {liveDataText} · {liveDataMeta}
+                live provider hidden
               </Text>
             )}
           </View>
@@ -1763,11 +1763,11 @@ export function EventDetail({
               <Text style={styles.liveStripLabel}>LIVE WORLD CUP</Text>
               <Text style={styles.liveStripScore}>{scoreboard} · {liveClock}</Text>
               <Text
-                accessibilityLabel={`event-detail-live-data-inline live-data-status-${liveDataState} provider-lifecycle-${liveDataBadge.lifecycle} live-data-source-${liveDataBadge.source} ${liveDataText}`}
-                style={[styles.liveStripFreshness, liveDataState !== "ready" && styles.liveStripFreshnessWarning]}
+                accessibilityLabel={`event-detail-live-data-inline event-detail-live-provider-copy-hidden-local-mvp live-data-status-${liveDataState} provider-lifecycle-${liveDataBadge.lifecycle} live-data-source-${liveDataBadge.source}`}
+                style={styles.hiddenStatsText}
                 testID="event-detail-live-data-inline"
               >
-                {liveDataText} · {liveDataMeta}
+                live provider hidden
               </Text>
             </View>
             <View style={styles.liveStripPriceRow}>

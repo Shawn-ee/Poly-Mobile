@@ -131,6 +131,8 @@ Cycle HC changes only mobile Event Detail card presentation and proof gates. No 
 
 Cycle HD changes only mobile Home discovery presentation and proof gates. No backend route, request body, response field, or schema changes are required. Home continues to consume the same game `events` array, market/outcome identity fields, `openEvent`, and `openTicket` handoff contracts; the default Local MVP path no longer exposes the `futures` list branch.
 
+Cycle HE changes only mobile live Event Detail presentation and proof gates. No backend route, request body, response field, or schema changes are required. Live `liveDataStatus`, provider lifecycle, and source fields remain available in hidden proof/accessibility metadata; they are no longer rendered as visible operational freshness copy in the default Local MVP game page.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

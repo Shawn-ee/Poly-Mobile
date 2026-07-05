@@ -465,3 +465,14 @@
 - Validation: `npm run typecheck`; PowerShell parser check for `scripts/smoke.ps1` and `scripts/smoke-tablet.ps1`; Samsung tablet proof `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -HomeFilter -Port 8273 -OutputDir docs/mobile/screenshots/cycle-HD-home-games-only-retail-flow -HierarchyOutputDir docs/mobile/harness/cycle-HD-home-games-only-retail-flow`.
 - Proof artifacts: `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-HD-home-games-only-retail-flow\cycle-current-holiwyn-smoke.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-HD-home-games-only-retail-flow\cycle-current-holiwyn-home-filter-live.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-HD-home-games-only-retail-flow\cycle-current-holiwyn-home-filter-today.png`.
 - Known limitations: Futures code remains available for future product decisions, but it is no longer visible in the default Local MVP Home flow.
+
+## Cycle HE - Event Detail Hide Live Provider Copy
+
+- Feature/page: live Event Detail.
+- Frontend components touched: `src/components/EventDetail.tsx`, `scripts/smoke.ps1`, `scripts/smoke-tablet.ps1`.
+- Important functions/services touched: no service changes. Live provider/source/status data remains in hidden proof labels, but the default live game page no longer renders provider freshness copy as visible text.
+- User interactions supported: user opens a live game page, sees score/time/probabilities/chart without operational provider copy, opens the simple ticket from the visible AUS outcome button, and can still reach Game Lines, Spread, Totals, and First Half Winner.
+- State transitions: unchanged for `live event detail -> ticket -> order/portfolio`; route/status metadata remains available for provider proof cycles.
+- Validation: `npm run typecheck`; PowerShell parser check for `scripts/smoke.ps1` and `scripts/smoke-tablet.ps1`; Samsung tablet proof `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -LiveDetail -Port 8275 -OutputDir docs/mobile/screenshots/cycle-HE-event-detail-hide-live-provider-copy -HierarchyOutputDir docs/mobile/harness/cycle-HE-event-detail-hide-live-provider-copy`.
+- Proof artifacts: `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-HE-event-detail-hide-live-provider-copy\cycle-current-holiwyn-live-detail-top.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-HE-event-detail-hide-live-provider-copy\cycle-current-holiwyn-live-detail-ticket.png`; `C:\Users\hecto\Desktop\projects\PolyProj\Poly\docs\mobile\screenshots\cycle-HE-event-detail-hide-live-provider-copy\cycle-current-holiwyn-live-detail-markets.png`.
+- Known limitations: exact native live chart gestures remain P2 polish.

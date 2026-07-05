@@ -379,3 +379,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Home filters must continue to work after removing the default Futures branch. | P0 | Passed | Samsung tablet HomeFilter proof passed All, Live, and Today states on port 8273. |
 | The proof folder/script naming must match the active branch and actual work. | P0 | Passed | `scripts/smoke-tablet.ps1 -HomeFilter` now forwards `OutputDir` and `HierarchyOutputDir`, writing evidence to `cycle-HD-home-games-only-retail-flow`. |
 | Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, parser checks, and Android proof passed. |
+
+## Cycle HE - Event Detail Hide Live Provider Copy
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Live Event Detail still rendered operational provider/source freshness copy in the default game page, outside the simple retail prediction path. | P0 | Passed | `EventDetail` now keeps provider status in hidden proof metadata and the Samsung tablet XML asserts `event-detail-live-provider-copy-hidden-local-mvp`. |
+| The live page should reject visible provider/source freshness copy while preserving route/status metadata for future provider cycles. | P0 | Passed | LiveDetail proof rejects `Live provider ready`, `Refresh due`, `deterministic-status-fixture -`, and `polymarket-gamma -` on the top screen while preserving `live-data-status-*` and `live-data-source-*` labels. |
+| Live outcome ticket and market-line reachability must still work after hiding the provider copy. | P0 | Passed | Samsung tablet proof opened a simple ticket from the visible AUS outcome and then verified Game Lines, Spread, Totals, and First Half Winner. |
+| Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, parser checks, and Android proof passed. |
