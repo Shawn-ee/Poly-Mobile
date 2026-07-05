@@ -920,6 +920,7 @@ export function EventDetail({
             </Pressable>
           ))}
         </View>
+        {showOrderBookDebug && <>
         <View accessibilityLabel="event-detail-line-detail-tabs prediction-tabs-only Graph About" style={styles.lineDetailTabs} testID="event-detail-line-detail-tabs">
           {[
             ...(showOrderBookDebug ? [{ id: "order-book", label: "Order Book" }] : []),
@@ -962,6 +963,7 @@ export function EventDetail({
             <Text style={styles.inlineAboutText}>{isLiveEvent ? "This live market resolves from the selected World Cup in-game contract at settlement." : "This market resolves to the team that advances from this World Cup matchup."}</Text>
           </View>
         )}
+        </>}
       </View>
     );
   };

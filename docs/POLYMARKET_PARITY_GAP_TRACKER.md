@@ -362,3 +362,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The Portfolio curve fix must preserve the Local MVP order result page, tabs, action tickets, and history. | P0 | Passed | Samsung tablet Local MVP proof passed through Portfolio, Buy more, Cash out, Orders, and History on port 8269. |
 | Backend/API route should not change for this rendering correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
 | Real persisted Portfolio value-history route remains future backend work. | P1 | Tracked | Deterministic fallback still uses the backend-shaped value-history contract. |
+
+## Cycle HC - Event Detail Card Simple Retail Flow
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Team to Advance card still showed non-functional `Graph / About` and `Line movement` placeholder content in the default Local MVP path. | P0 | Passed | Samsung tablet screenshot shows the simplified card with outcome buttons only; XML rejects `event-detail-line-detail-tabs`, `prediction-tabs-only`, `event-detail-inline-graph`, and `Line movement for Team to Advance`. |
+| Simplifying the card must preserve outcome choices and downstream line-market/ticket/order/Portfolio flow. | P0 | Passed | Samsung tablet Local MVP proof passed through selected spread line, ticket submit, Portfolio action tickets, Orders, and History on port 8270. |
+| Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
