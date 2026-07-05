@@ -459,3 +459,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The visible settings/filter icon must not be a dead button. | P0 | Passed | S23 proof taps `ticket-settings` and verifies `ticket-settings-panel ticket-settings-state-open` with Order type, Odds, and Available details. |
 | The amount-first keypad and swipe-submit flow must still work after the layout change. | P0 | Passed | S23 proof on port `8312` enters amount, shows `Swipe up to buy`, submits the server-backed fake-token order, and reaches Portfolio History. |
 | Backend/API route should not change for this ticket presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android server-filled proof passed. |
+
+## Cycle HN - Portfolio Result Content Landing
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| After a server-backed filled order, Portfolio could land at the account header/chart while the actual position or history row was below the fold. | P0 | Passed | `Portfolio` exposes `portfolio-result-content-landing` and scrolls post-order results into view; S23 screenshot shows the `position-card-*` row directly on screen. |
+| The filled order History tab must also show the completed trade row without forcing the user to hunt below the header. | P0 | Passed | S23 proof taps History and the screenshot/XML show `activity-row-*` on screen. |
+| The Local MVP path must still preserve the simple ticket, upward swipe, server-backed fake-token order, Portfolio, and History flow. | P0 | Passed | S23 proof on port `8313` passed through `POST /api/orders`, Portfolio position, and History activity with selected line/provider identity. |
+| Backend/API route should not change for this result-landing correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android server-filled proof passed. |
+| Exact Polymarket Portfolio header/chart spacing remains future visual polish. | P2 | Tracked | This cycle only fixes the P0 visibility issue after order completion. |

@@ -149,6 +149,8 @@ Cycle HL changes only the mobile server-filled proof gate. No backend route, req
 
 Cycle HM changes only mobile ticket presentation, the ticket settings toggle, and proof gates. No backend route, request body, response field, or schema changes are required. The ticket continues to consume existing event, market, outcome, balance, provider identity, selected line, selected period, price/probability, and server order fields. The settings panel displays values already present in the ticket state: order type, odds, and available balance.
 
+Cycle HN changes only mobile Portfolio post-order scroll/landing behavior and proof gates. No backend route, request body, response field, or schema changes are required. Mobile still consumes `POST /api/orders`, `GET /api/portfolio`, `GET /api/portfolio/history`, and `GET /api/portfolio/value-history`; the new landing behavior uses the existing `latestOrder`, `positions[]`, `openOrders[]`, and `activities[]` state already returned or derived by the current Portfolio flow.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

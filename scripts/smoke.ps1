@@ -5334,6 +5334,7 @@ try {
         $mvpRoutePortfolioExpected = if ($LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) {
           @(
             "Portfolio",
+            "portfolio-result-content-landing",
             "position-card-",
             "portfolio-chart-source-portfolio-value-history-route",
             "portfolio-chart-status-ready",

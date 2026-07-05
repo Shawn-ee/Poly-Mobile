@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { activityPnl, activityShares, decimalOdds } from "../domain/portfolioActivityMetrics";
 import {
@@ -492,6 +492,7 @@ export function Portfolio({
   cancelOpenOrder: (order: OpenOrder) => void;
   loadValueHistory?: (range: PortfolioValueHistoryRange) => Promise<PortfolioValueHistory>;
 }) {
+  const scrollRef = useRef<ScrollView | null>(null);
   const [expandedPositionId, setExpandedPositionId] = useState<string | null>(null);
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const [expandedActivityId, setExpandedActivityId] = useState<string | null>(null);
@@ -539,6 +540,19 @@ export function Portfolio({
       setActiveTab("orders");
     }
   }, [latestOrder?.id, latestOrder?.status, openOrders.length, positions.length]);
+
+  useEffect(() => {
+    if (!latestOrder) return undefined;
+    const hasVisibleResult =
+      positions.length > 0 ||
+      openOrders.length > 0 ||
+      activities.length > 0;
+    if (!hasVisibleResult) return undefined;
+    const handle = setTimeout(() => {
+      scrollRef.current?.scrollTo({ y: 1240, animated: true });
+    }, 650);
+    return () => clearTimeout(handle);
+  }, [latestOrder?.id, latestOrder?.status, positions.length, openOrders.length, activities.length]);
 
   const syncTitle =
     syncStatus === "syncing"
@@ -631,7 +645,7 @@ export function Portfolio({
   ];
 
   return (
-    <ScrollView accessibilityLabel="portfolio-screen" testID="portfolio-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
+    <ScrollView ref={scrollRef} accessibilityLabel={`portfolio-screen ${latestOrder ? "portfolio-result-content-landing" : "portfolio-normal-browse"}`} testID="portfolio-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
       <View accessibilityLabel="portfolio-profile-header" testID="portfolio-profile-header" style={styles.profileHeader}>
         <View style={styles.profileLeft}>
           <PortfolioAvatar />
