@@ -533,6 +533,13 @@ export function Portfolio({
       cancelled = true;
     };
   }, [activeRange, loadValueHistory]);
+
+  useEffect(() => {
+    if (latestOrder?.status?.toLowerCase() === "open" && openOrders.length > 0 && positions.length === 0) {
+      setActiveTab("orders");
+    }
+  }, [latestOrder?.id, latestOrder?.status, openOrders.length, positions.length]);
+
   const syncTitle =
     syncStatus === "syncing"
       ? t.portfolioSyncing
@@ -685,7 +692,7 @@ export function Portfolio({
       <View accessibilityLabel="portfolio-section-tabs" testID="portfolio-section-tabs" style={styles.portfolioTabs}>
         {tabs.map((item) => (
           <Pressable
-            accessibilityLabel={`portfolio-tab-${item.key}`}
+            accessibilityLabel={`portfolio-tab-${item.key} ${activeTab === item.key ? "portfolio-tab-selected" : "portfolio-tab-inactive"}`}
             key={item.key}
             onPress={() => setActiveTab(item.key)}
             style={[styles.portfolioTabButton, activeTab === item.key && styles.portfolioTabButtonActive]}

@@ -426,3 +426,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Server-backed order proof must use the current swipe-submit interaction and route-backed chart/provider markers. | P0 | Passed | Server proof on port `8296` used backend health `ok`, `EXPO_PUBLIC_ORDER_MODE=server`, `EXPO_PUBLIC_MARKET_DATA_MODE=server`, swipe submit, `POST /api/orders`, Portfolio route chart data, and preserved Polymarket provider token/source identity. |
 | Harness should not depend on stale prototype labels or partially clipped tablet rows. | P0 | Passed | Route proof now asserts `chart-source-polymarket-clob-prices-history` / `chart-status-ready`, uses swipe submit instead of tap submit, and adapts to the stable visible line-market target when the tablet exposes Team Total instead of Spread. |
 | Backend/API route should not change for this presentation/harness correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, Local MVP Android proof, and server-backed Android proof passed. |
+
+## Cycle HJ - Portfolio Open Order Landing
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| After a server-backed open order, Portfolio could show an empty Positions tab even though the user's new order existed under Orders. | P0 | Passed | Samsung tablet screenshot shows Orders selected with the open order row visible after swipe-submit server order. |
+| Server-backed proof must require the visible open-order row, not just hidden count/metadata labels. | P0 | Passed | `scripts/smoke.ps1` now expects `portfolio-tab-orders portfolio-tab-selected` and `open-order-row-*`; proof passed on port `8297`. |
+| Backend/API route should not change for this landing-state correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android server-backed proof passed. |

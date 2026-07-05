@@ -141,6 +141,8 @@ Cycle HH changes only visible mobile Live discovery presentation and proof gates
 
 Cycle HI changes only visible mobile Event Detail presentation and proof gates. No backend route, request body, response field, or schema changes are required. The server-backed proof still uses `POST /api/orders`, `GET /api/portfolio`, and `GET /api/portfolio/value-history` through an in-process mobile dev credential. The submitted ticket preserves `marketType`, `line`, `period`, `contractSide`, `referenceSource`, provider market/condition/token IDs, and selected outcome metadata. The harness now asserts durable route-backed markers such as `chart-source-polymarket-clob-prices-history`, `chart-status-ready`, `portfolio-chart-source-portfolio-value-history-route`, `portfolio-provider-source-polymarket`, and `portfolio-provider-token-*` instead of stale visible sync labels.
 
+Cycle HJ changes only mobile Portfolio tab landing behavior and proof gates. No backend route, request body, response field, or schema changes are required. Mobile continues to consume `POST /api/orders`, `GET /api/portfolio`, and `GET /api/portfolio/value-history`. When the Portfolio snapshot returns an open order and no filled position for the latest submitted ticket, the UI selects the Orders tab so the existing `openOrders[]` response is visible to the user. Filled position snapshots still land on Positions.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

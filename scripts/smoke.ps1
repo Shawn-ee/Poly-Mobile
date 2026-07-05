@@ -5342,6 +5342,8 @@ try {
           @(
             "Portfolio",
             "latest-order-card",
+            "portfolio-tab-orders portfolio-tab-selected",
+            "open-order-row-",
             "portfolio-open-order-count",
             "portfolio-chart-source-portfolio-value-history-route",
             "portfolio-chart-status-ready",
