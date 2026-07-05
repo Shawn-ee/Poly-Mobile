@@ -1778,7 +1778,7 @@ export function EventDetail({
           </View>
         )}
         <View
-          accessibilityLabel={`event-detail-price-chart chart-source-${event.chartHistorySource ?? "fallback"} chart-status-${chartRouteStatus} provider-lifecycle-${chartStatusBadge.lifecycle} chart-range-${event.chartHistoryRange ?? "none"} chart-empty-${event.chartHistoryEmptyState ?? "none"} chart-filter-${chartFilter} chart-selected-point-${selectedChartPoint} chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"} two outcome traces ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartProbability}% ${chartPointMeta.label} ${chartPointMeta.value} +$9 +$39 +$479 All Game Live`}
+          accessibilityLabel={`event-detail-price-chart chart-source-${event.chartHistorySource ?? "fallback"} chart-status-${chartRouteStatus} provider-lifecycle-${chartStatusBadge.lifecycle} chart-range-${event.chartHistoryRange ?? "none"} chart-empty-${event.chartHistoryEmptyState ?? "none"} chart-filter-${chartFilter} chart-selected-point-${selectedChartPoint} chart-selected-contract-${selectedChartContract} chart-selected-market-${selectedChartMarket?.id ?? "none"} chart-selected-line-${selectedChartTicketSelection?.line ?? "none"} chart-selected-period-${selectedChartTicketSelection?.period ?? "none"} two outcome traces probability-axis 75% 50% 25% ${chartFilter} ${label(locale, selectedChartOutcome ?? event)} ${selectedChartProbability}% ${chartPointMeta.label} ${chartPointMeta.value} All Game Live`}
           style={[styles.chartBlock, isLiveEvent && styles.liveChartBlock]}
           testID="event-detail-price-chart"
         >
@@ -1795,9 +1795,9 @@ export function EventDetail({
             <Text style={styles.chartRouteStateText} />
           </View>
           <View style={styles.chartMarkers}>
-            <Text style={styles.chartMarkerText}>+$9</Text>
-            <Text style={styles.chartMarkerText}>+$39</Text>
-            <Text style={styles.chartMarkerText}>+$479</Text>
+            <Text style={styles.chartMarkerText}>75%</Text>
+            <Text style={styles.chartMarkerText}>50%</Text>
+            <Text style={styles.chartMarkerText}>25%</Text>
           </View>
           <View style={styles.chartReferenceLine}>
             <Text style={styles.chartReferenceText}>Target</Text>

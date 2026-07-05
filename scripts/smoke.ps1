@@ -3087,6 +3087,8 @@ try {
     Assert-HierarchyContains -Path $eventDetailHierarchy -Expected $eventDetailBaseExpected
     if ($LocalMvpSimpleTradeFlow) {
       Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-simple-chart-trade-rail", "event-detail-chart-open-ticket", "Current 64%")
+      Assert-HierarchyContains -Path $eventDetailHierarchy -Expected @("event-detail-price-chart", "probability-axis", "75%", "50%", "25%")
+      Assert-HierarchyDoesNotContain -Path $eventDetailHierarchy -Unexpected @("+`$9", "+`$39", "+`$479")
     }
 
     if ($ServerLiveProviderRefreshProof) {

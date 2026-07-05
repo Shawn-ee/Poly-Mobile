@@ -344,3 +344,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Team to Advance card still showed `$60.9K Vol.` instead of simple prediction context. | P0 | Passed | Card now shows `Winner market`; Samsung tablet XML rejects `$60.9K Vol.`. |
 | Hiding volume must preserve line market selection, ticket, fake-token order, Portfolio, Orders, and History. | P0 | Passed | Samsung tablet Local MVP proof passed through selected spread line, ticket submit, Portfolio action tickets, Orders, and History on port 8267. |
 | Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
+
+## Cycle HA - Event Detail Chart Probability Axis
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Event Detail chart axis still used money-looking labels `+$9`, `+$39`, and `+$479` on a probability chart. | P0 | Passed | Chart now renders `75%`, `50%`, and `25%`; Samsung tablet XML asserts `probability-axis` and rejects the old `+$` labels. |
+| The chart-axis fix must preserve line market selection, ticket, fake-token order, Portfolio, Orders, and History. | P0 | Passed | Samsung tablet Local MVP proof passed through selected spread line, ticket submit, Portfolio action tickets, Orders, and History on port 8268. |
+| The proof folder/script naming must match the active branch and actual work. | P0 | Passed | Evidence was written to `cycle-HA-event-detail-chart-probability-axis` while on `feature/event-detail-chart-probability-axis-retail-flow`. |
+| Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |

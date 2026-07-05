@@ -123,6 +123,8 @@ Cycle GY changes only the mobile Portfolio bottom-tab label presentation and pro
 
 Cycle GZ changes only mobile Event Detail presentation and proof gates. No backend route, request body, response field, or schema changes are required. Event volume/liquidity fields remain available in existing summary/proof metadata, but default visible Event Detail now keeps that data out of the retail betting surface.
 
+Cycle HA changes only mobile Event Detail chart label presentation and proof gates. No backend route, request body, response field, or schema changes are required. Existing chart history, selected outcome, selected market, selected line, and ticket handoff contracts remain unchanged.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
