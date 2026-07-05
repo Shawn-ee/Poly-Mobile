@@ -729,3 +729,14 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Compact visible labels must preserve selected market, line, period, provider, amount, and timestamp. | P0 | Passed | Same S23 proof still verifies totals market type, line `2.5`, `Reg. Time`, Polymarket provider source/token, `75 USDT`, and History timestamp. |
 | Backend/API routes should not change for this visible Portfolio identity correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
 | Production event/team artwork and exact live score formatting remain future work. | P2 | Tracked | This cycle targets the current provider-breadth MVP event identity only. |
+
+## Cycle IW - Trade Ticket S23 Swipe Layout
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Place-order amount screen still needed stronger S23 separation between the dark keypad body and red swipe footer. | P0 | Passed | `TradeTicket` now applies a fixed red/pink footer below a rounded dark panel; S23 ticket-ready screenshot in `cycle-IW-trade-ticket-s23-swipe-layout-final` shows the full keypad above the footer. |
+| Keypad bottom row and swipe area must not overlap on Samsung S23. | P0 | Passed | S23 XML shows the dark ticket body ending at `[0,0][1080,1752]`, keypad ending at `[66,912][1014,1500]`, and swipe footer starting at `[0,1752][1080,2340]`; screenshot shows `.`, `0`, and backspace fully visible. |
+| Swipe handle should visibly move upward with gesture progress while text remains centered. | P0 | Passed | `SwipeSubmitControl` uses progress-linked `translateY`; S23 swipe-progress screenshot shows the handle lifted above the centered `Swipe to buy` label before threshold completion. |
+| Swipe submit should remain threshold-gated and not become a normal tap button. | P0 | Passed | Existing `swipe-submit-gesture-required` / `swipe-submit-tap-disabled` labels remain, and the same S23 proof completes only after the scripted upward swipe. |
+| Backend/order logic should not change for this ticket layout correction. | P0 | Passed | No backend route/schema/order logic changed; `npm run typecheck`, `git diff --check`, and S23 server-filled proof passed through `POST /api/orders`, Portfolio, and History. |
+| Exact native Polymarket blur/physics and production artwork remain future polish. | P2 | Tracked | This cycle targets visible layout, spacing, and gesture motion only. |

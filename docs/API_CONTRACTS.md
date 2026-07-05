@@ -205,6 +205,8 @@ Cycle IU changes only mobile Event Detail line-market header presentation and pr
 
 Cycle IV changes only mobile Portfolio event-title presentation and proof gates. No backend route, request body, response field, auth requirement, or schema changes are required. Compact `BHO/BAW` identity is derived from existing Portfolio `title`, `outcome`, and `selection.referenceOutcomeLabel` fields. Mobile still consumes the same `GET /api/portfolio`, Portfolio History activity fields, selected line/period, provider source/token identity, and `POST /api/orders` contracts.
 
+Cycle IW changes only mobile Trade Ticket amount-entry layout, fixed swipe-footer geometry, and swipe-handle presentation. No backend route, request body, response field, auth requirement, order service, or schema changes are required. Ticket submit continues to use the same selected market/outcome/line/period/provider identity, amount, side, contract side, payout context, `POST /api/orders`, `GET /api/portfolio`, and Portfolio History contracts.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
