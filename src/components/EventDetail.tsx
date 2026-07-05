@@ -920,7 +920,7 @@ export function EventDetail({
             </Pressable>
           ))}
         </View>
-        <View accessibilityLabel="event-detail-line-detail-tabs" style={styles.lineDetailTabs} testID="event-detail-line-detail-tabs">
+        <View accessibilityLabel="event-detail-line-detail-tabs prediction-tabs-only Graph About" style={styles.lineDetailTabs} testID="event-detail-line-detail-tabs">
           {[
             ...(showOrderBookDebug ? [{ id: "order-book", label: "Order Book" }] : []),
             { id: "graph", label: "Graph" },
@@ -936,10 +936,6 @@ export function EventDetail({
               <Text style={[styles.lineDetailTabText, activeLineDetailTab === tab.id && styles.lineDetailTabTextActive]}>{tab.label}</Text>
             </Pressable>
           ))}
-          <Ionicons name="cash-outline" color="#fbbf24" size={22} />
-          <Ionicons name="gift-outline" color="#94a3b8" size={22} />
-          <Ionicons name="swap-horizontal-outline" color="#94a3b8" size={22} />
-          <Ionicons name="refresh-outline" color="#94a3b8" size={22} />
         </View>
         {activeLineDetailTab === "order-book" ? (
           <View accessibilityLabel="event-detail-inline-order-book" style={styles.inlineOrderBook} testID="event-detail-inline-order-book">
