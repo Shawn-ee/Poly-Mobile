@@ -890,22 +890,14 @@ export function EventDetail({
   };
 
   const renderMarketTabs = (mode: "inline" | "sticky" = "inline") => {
-    const tabs =
-      mode === "sticky"
-        ? [
-            { id: "game-lines", label: "Game Lines" },
-            { id: "player-props", label: "Player Props" },
-          ]
-        : [
-            { id: "game-lines", label: "Game Lines" },
-            { id: "exact-score", label: "Exact Score" },
-            { id: "halves", label: "Halves" },
-            { id: "player-props", label: "Player Props" },
-          ];
+    const tabs = [
+      { id: "game-lines", label: "Game Lines" },
+      { id: "player-props", label: "Player Props" },
+    ];
 
     return (
       <View
-        accessibilityLabel={mode === "sticky" ? "event-detail-sticky-market-tabs Game Lines Player Props" : "event-detail-market-tabs"}
+        accessibilityLabel={`${mode === "sticky" ? "event-detail-sticky-market-tabs" : "event-detail-market-tabs"} event-detail-market-tabs-local-mvp Game Lines Player Props exact-score-hidden-local-mvp half-tabs-hidden-local-mvp`}
         style={[styles.marketTabs, mode === "sticky" && styles.stickyMarketTabs]}
         testID={mode === "sticky" ? "event-detail-sticky-market-tabs" : "event-detail-market-tabs"}
       >

@@ -181,6 +181,8 @@ Cycle IC changes only Event Detail default market-group expansion and visible su
 
 Cycle IJ changes only mobile Trade Ticket presentation, swipe-zone geometry, visible swipe copy, and proof capture. No backend route, request body, response field, or schema changes are required. Mobile continues to submit the same amount, side, contract side, market/outcome identity, line, period, provider source/token, and payout context through the existing `POST /api/orders` server-backed fake-token flow, then consumes the same `GET /api/portfolio` and Portfolio History state.
 
+Cycle IK changes only mobile Event Detail tab rail presentation and proof gates. No backend route, request body, response field, or schema changes are required. Mobile continues to consume the same event markets/outcomes, line-market fields, provider source/token identity, and `POST /api/orders` / `GET /api/portfolio` contracts for the route-backed Local MVP trade path.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

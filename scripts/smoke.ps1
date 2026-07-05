@@ -2626,12 +2626,12 @@ try {
       & $adb -s $Device shell input swipe 540 1480 540 980 300 | Out-Null
       Start-Sleep -Seconds 1
       $homeSavedReadyHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-home-saved-ready.xml"
-      Assert-HierarchyContains -Path $homeSavedReadyHierarchy -Expected @("Mexico vs. Ecuador", "Saved", "☆")
+      Assert-HierarchyContains -Path $homeSavedReadyHierarchy -Expected @("Mexico vs. Ecuador", "Saved", "â˜†")
       Invoke-TapHierarchyNode -Path $homeSavedReadyHierarchy -Identifier "save-event-mexico-ecuador"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-home-saved-star.png"
       $savedStarHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-home-saved-star.xml"
-      Assert-HierarchyContains -Path $savedStarHierarchy -Expected @("Mexico vs. Ecuador", "★", "Saved")
+      Assert-HierarchyContains -Path $savedStarHierarchy -Expected @("Mexico vs. Ecuador", "â˜…", "Saved")
       Invoke-TapHierarchyNode -Path $savedStarHierarchy -Identifier "home-filter-saved"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-home-saved-filter.png"
@@ -2966,12 +2966,12 @@ try {
       & $adb -s $Device shell input swipe 540 1480 540 980 300 | Out-Null
       Start-Sleep -Seconds 1
       $savedSearchHomeHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-saved-search-home-ready.xml"
-      Assert-HierarchyContains -Path $savedSearchHomeHierarchy -Expected @("Mexico vs. Ecuador", "Saved", "☆")
+      Assert-HierarchyContains -Path $savedSearchHomeHierarchy -Expected @("Mexico vs. Ecuador", "Saved", "â˜†")
       Invoke-TapHierarchyNode -Path $savedSearchHomeHierarchy -Identifier "save-event-mexico-ecuador"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-current-holiwyn-saved-search-star.png"
       $savedSearchStarHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-saved-search-star.xml"
-      Assert-HierarchyContains -Path $savedSearchStarHierarchy -Expected @("Mexico vs. Ecuador", "★")
+      Assert-HierarchyContains -Path $savedSearchStarHierarchy -Expected @("Mexico vs. Ecuador", "â˜…")
       Invoke-TapHierarchyNode -Path $savedSearchStarHierarchy -Identifier "holiwyn-search-tab"
       Start-Sleep -Seconds 1
       $savedSearchScreenHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-saved-search-screen.xml"
@@ -5301,6 +5301,8 @@ try {
           $mvpRouteLineHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-line-markets.xml"
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
+        Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-market-tabs-local-mvp", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
+        Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected @("event-detail-exact-score-tab", "event-detail-halves-tab", "Exact Score", "Halves")
         Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected @("Breadth Home 1H", "Tie 1H", "Breadth Away 1H", "Breadth Home 2H", "Tie 2H")
         Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected ($mvpHiddenOrderBookExpected + @("Market Rules", "View Full Rules", "More Events", "Portugal vs. Croatia", "England vs. Congo DR"))
         Invoke-TapHierarchyNode -Path $mvpRouteLineHierarchy -Identifier "event-detail-player-props-tab"
@@ -5331,6 +5333,8 @@ try {
           }
         }
         Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected $mvpRouteLineExpected
+        Assert-HierarchyContains -Path $mvpRouteLineHierarchy -Expected @("event-detail-market-tabs-local-mvp", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
+        Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected @("event-detail-exact-score-tab", "event-detail-halves-tab", "Exact Score", "Halves")
         Assert-HierarchyDoesNotContain -Path $mvpRouteLineHierarchy -Unexpected @("Breadth Home 1H", "Tie 1H", "Breadth Away 1H", "Breadth Home 2H", "Tie 2H")
         $mvpRouteLineReadyXml = Get-Content -Raw -Path $mvpRouteLineHierarchy
         if ($mvpRouteLineReadyXml -notmatch [regex]::Escape($mvpRouteTargetOutcomeId)) {
@@ -5908,8 +5912,8 @@ try {
         Start-Sleep -Seconds 1
         $mvpMarketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-market-lines.xml"
       }
-      Assert-HierarchyContains -Path $mvpMarketHierarchy -Expected @("Game Lines", "Spread", "Totals", "Winner market", "event-detail-sticky-game-lines-tab", "event-detail-spread-line-1-5", "event-detail-totals-line-2-5")
-      Assert-HierarchyDoesNotContain -Path $mvpMarketHierarchy -Unexpected @("98,750 USDT Vol.", "$60.9K Vol.", "event-detail-body-switch", "event-detail-body-tab-market", "event-detail-line-detail-tabs", "prediction-tabs-only", "event-detail-inline-graph", "Line movement for Team to Advance")
+      Assert-HierarchyContains -Path $mvpMarketHierarchy -Expected @("Game Lines", "Spread", "Totals", "Winner market", "event-detail-sticky-game-lines-tab", "event-detail-spread-line-1-5", "event-detail-totals-line-2-5", "event-detail-market-tabs-local-mvp", "exact-score-hidden-local-mvp", "half-tabs-hidden-local-mvp")
+      Assert-HierarchyDoesNotContain -Path $mvpMarketHierarchy -Unexpected @("98,750 USDT Vol.", "$60.9K Vol.", "event-detail-body-switch", "event-detail-body-tab-market", "event-detail-line-detail-tabs", "prediction-tabs-only", "event-detail-inline-graph", "Line movement for Team to Advance", "event-detail-exact-score-tab", "event-detail-halves-tab", "Exact Score", "Halves")
       Assert-HierarchyDoesNotContain -Path $mvpMarketHierarchy -Unexpected $mvpHiddenOrderBookExpected
 
       Invoke-TapHierarchyNode -Path $mvpMarketHierarchy -Identifier "event-detail-spread-line-2-5"
@@ -6281,7 +6285,7 @@ try {
     Save-Screenshot -Name "cycle-current-holiwyn-live.png"
     $liveHierarchy = Save-UiHierarchy -Name "cycle-current-holiwyn-live.xml"
     Assert-HierarchyContains -Path $liveHierarchy -Expected @("Live World Cup", "Updated just now", "Refresh")
-    Assert-HierarchyContainsAny -Path $liveHierarchy -ExpectedAny @("No live markets right now.", "Live Ã‚Â·")
+    Assert-HierarchyContainsAny -Path $liveHierarchy -ExpectedAny @("No live markets right now.", "Live Ãƒâ€šÃ‚Â·")
 
     Invoke-TapHierarchyNode -Path $liveHierarchy -Identifier "refresh-live-markets"
     $liveRefreshHierarchy = Wait-HierarchyContains -Name "cycle-current-holiwyn-live-refresh.xml" -Expected @("Updated just now", "refreshed", "Refresh") -Attempts 8 -DelaySeconds 1

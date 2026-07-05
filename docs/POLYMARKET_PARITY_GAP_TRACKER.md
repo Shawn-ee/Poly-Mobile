@@ -610,3 +610,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Swipe handle should visibly move with upward gesture progress and submit only past threshold. | P0 | Passed | `SwipeSubmitControl` translates the handle from gesture progress, exposes `swipe-submit-handle-progress-animated`, and S23 proof captures `cycle-EY-holiwyn-route-server-mvp-totals-ticket-swipe-progress.png` before the order lands in Portfolio History. |
 | Backend/order logic should not change for this ticket layout correction. | P0 | Passed | No backend route/schema changed; `POST /api/orders`, `GET /api/portfolio`, and Portfolio History proof still pass. |
 | Exact Polymarket native physics and real team flag artwork remain future polish. | P2 | Tracked | This cycle improves S23 layout, copy, spacing, and gesture feedback without implementing native physics parity. |
+
+## Cycle IK - Event Detail Local MVP Tab Rail
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Event Detail default market rail still advertised non-MVP tabs (`Exact Score`, `Halves`) even though the current user flow should focus on core line markets plus blank Player Props. | P0 | Passed | S23 line-market XML in `cycle-IK-event-detail-local-mvp-tab-rail-s23-proof` verifies `event-detail-market-tabs-local-mvp`, `exact-score-hidden-local-mvp`, and `half-tabs-hidden-local-mvp`. |
+| Default Local MVP rail must not expose `Exact Score` or `Halves` as tappable tabs. | P0 | Passed | Smoke gate rejects `event-detail-exact-score-tab`, `event-detail-halves-tab`, visible `Exact Score`, and visible `Halves` in the route-backed line-market proof. |
+| Player Props blank state and return to Game Lines must still work. | P0 | Passed | S23 proof taps Player Props, captures `cycle-EY-holiwyn-route-server-mvp-player-props-blank.png`, returns to Game Lines, and opens the totals ticket. |
+| Full Local MVP trade path must still pass after the rail cleanup. | P0 | Passed | S23 proof completes totals ticket, swipe buy, Portfolio, Portfolio top, and History. |
+| Legacy exact-score/half-specific component branches remain for future non-MVP work. | P2 | Tracked | This cycle hides them from the default rail rather than deleting legacy paths. |
