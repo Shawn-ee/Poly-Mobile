@@ -469,3 +469,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The Local MVP path must still preserve the simple ticket, upward swipe, server-backed fake-token order, Portfolio, and History flow. | P0 | Passed | S23 proof on port `8313` passed through `POST /api/orders`, Portfolio position, and History activity with selected line/provider identity. |
 | Backend/API route should not change for this result-landing correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android server-filled proof passed. |
 | Exact Polymarket Portfolio header/chart spacing remains future visual polish. | P2 | Tracked | This cycle only fixes the P0 visibility issue after order completion. |
+
+## Cycle HO - Portfolio Position Actions Phone Fit
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| The filled position row's Cash out and plus action area could clip on the S23 after result landing. | P0 | Passed | `Portfolio` now renders `portfolio-position-actions-fit-phone`; S23 screenshot shows the value, Cash out, and plus button fully inside the viewport. |
+| The result-scrolled proof must still verify route-backed portfolio value/chart state. | P0 | Passed | Row-level proof metadata exposes `portfolio-chart-source-portfolio-value-history-route` and `portfolio-chart-status-ready` in the same S23 hierarchy capture. |
+| The Local MVP path must still preserve swipe ticket submit, server-backed fake-token fill, Portfolio position, and History activity. | P0 | Passed | S23 proof on port `8316` passed through the server-filled totals flow and verified `position-card-*` plus `activity-row-*`. |
+| Backend/API route should not change for this phone-width layout correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android server-filled proof passed. |
+| Exact Polymarket Portfolio typography remains future visual polish. | P2 | Tracked | This cycle focused on phone-width usability and action visibility. |

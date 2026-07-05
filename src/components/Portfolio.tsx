@@ -879,6 +879,13 @@ export function Portfolio({
                   Order-time snapshot
                 </Text>
               )}
+              <Text
+                accessibilityLabel={`portfolio-result-route-proof portfolio-chart-source-${displayedValueHistory.source} portfolio-chart-status-${displayedValueHistory.status}`}
+                style={styles.a11yOnly}
+                testID={`portfolio-result-route-proof-${position.id}`}
+              >
+                Portfolio route proof
+              </Text>
               <Pressable
                 accessibilityLabel={`position-detail-toggle-${position.id}`}
                 onPress={() => setExpandedPositionId((current) => (current === position.id ? null : position.id))}
@@ -888,9 +895,9 @@ export function Portfolio({
                 <Ionicons name={expandedPositionId === position.id ? "chevron-up" : "chevron-down"} color="#93c5fd" size={16} />
                 <Text style={styles.detailToggleText}>{expandedPositionId === position.id ? detailCopy.hideDetails : detailCopy.actionHint}</Text>
               </Pressable>
-              <View style={styles.positionValueRow}>
-                <View>
-                  <Text style={styles.positionValue}>{money(portfolioPositionValue(position))} <Text style={estimatedPnl(position) >= 0 ? styles.pnlPositive : styles.pnlNegative}>{estimatedPnl(position) >= 0 ? "+" : ""}{money(estimatedPnl(position))}</Text></Text>
+              <View accessibilityLabel="portfolio-position-actions-fit-phone" testID="portfolio-position-actions-fit-phone" style={styles.positionValueRow}>
+                <View style={styles.positionValueBlock}>
+                  <Text adjustsFontSizeToFit minimumFontScale={0.78} numberOfLines={1} style={styles.positionValue}>{money(portfolioPositionValue(position))} <Text style={estimatedPnl(position) >= 0 ? styles.pnlPositive : styles.pnlNegative}>{estimatedPnl(position) >= 0 ? "+" : ""}{money(estimatedPnl(position))}</Text></Text>
                   <Text style={styles.positionChance}>{Math.round(position.currentPrice ? position.currentPrice * 100 : position.probability)}% {pageCopy.chance}</Text>
                 </View>
                 <View style={styles.positionQuickActions}>
@@ -1152,7 +1159,7 @@ const styles = StyleSheet.create({
   summaryItem: { flex: 1, minHeight: 92, padding: 10, borderRadius: 10, backgroundColor: "#111b2d", borderWidth: 1, borderColor: "#2b3b55" },
   summaryLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },
   summaryValue: { color: "#f8fafc", fontSize: 13, fontWeight: "900", marginTop: 8 },
-  positionCard: { paddingHorizontal: 24, paddingVertical: 22, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
+  positionCard: { paddingHorizontal: 20, paddingVertical: 22, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
   detailToggle: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, marginTop: 8, paddingHorizontal: 9, paddingVertical: 6, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
   detailToggleText: { color: "#93c5fd", fontSize: 11, fontWeight: "900" },
   rowHint: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, paddingHorizontal: 8, paddingVertical: 5, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
@@ -1178,13 +1185,14 @@ const styles = StyleSheet.create({
   yesBadge: { color: "#22c55e", backgroundColor: "#052e16" },
   positionTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "500" },
   positionMeta: { color: "#a8b0bf", marginTop: 5, fontSize: 16, fontWeight: "500" },
-  positionValueRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12, marginTop: 18 },
-  positionValue: { color: "#f8fafc", fontSize: 21, fontWeight: "500" },
+  positionValueRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8, marginTop: 18 },
+  positionValueBlock: { flex: 1, minWidth: 0 },
+  positionValue: { color: "#f8fafc", fontSize: 19, fontWeight: "500" },
   positionChance: { color: "#a8b0bf", fontSize: 15, fontWeight: "500", marginTop: 4 },
-  positionQuickActions: { flexDirection: "row", alignItems: "center", gap: 12 },
-  cashOutButton: { minWidth: 118, minHeight: 64, alignItems: "center", justifyContent: "center", paddingHorizontal: 18, borderRadius: 18, borderWidth: 1, borderColor: "#263247", backgroundColor: "#0b1220" },
-  cashOutText: { color: "#f8fafc", fontSize: 18, fontWeight: "500" },
-  addPositionButton: { width: 64, height: 64, alignItems: "center", justifyContent: "center", borderRadius: 18, backgroundColor: "#1238ff" },
+  positionQuickActions: { flexDirection: "row", alignItems: "center", gap: 8, flexShrink: 0 },
+  cashOutButton: { minWidth: 104, minHeight: 58, alignItems: "center", justifyContent: "center", paddingHorizontal: 14, borderRadius: 17, borderWidth: 1, borderColor: "#263247", backgroundColor: "#0b1220" },
+  cashOutText: { color: "#f8fafc", fontSize: 16, fontWeight: "500" },
+  addPositionButton: { width: 58, height: 58, alignItems: "center", justifyContent: "center", borderRadius: 17, backgroundColor: "#1238ff" },
   positionDetailGrid: { flexDirection: "row", gap: 8, marginTop: 12 },
   positionDetailItem: { flex: 1, padding: 10, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
   positionDetailLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },
