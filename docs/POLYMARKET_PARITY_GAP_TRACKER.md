@@ -868,3 +868,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The clearer History title must preserve hidden order-time identity, amount, timestamp, and provider mapping. | P0 | Passed | S23 XML still includes amount `$75`, `Just now`, `portfolio-display-label-Over 2.5 RT`, `portfolio-line-2.5`, `portfolio-period-Reg. Time`, provider source, and provider token. |
 | Backend/order logic should not change for this visible History row correction. | P0 | Passed | No backend route/schema/order service changed; the same proof completes existing `POST /api/orders`, `GET /api/portfolio`, and Portfolio History flow. |
 | Exact History row typography remains future work. | P2 | Tracked | This cycle targets row wording only. |
+
+## Cycle JL - Trade Ticket S23 Reference Tightening
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| The ticket amount/keypad section needs more S23-safe vertical room above the fixed red/pink submit area. | P0 | Passed | Final S23 screenshot in `cycle-JL-trade-ticket-s23-reference-tightening-proof-final2` shows the full keypad above the fixed red footer; XML verifies `ticket-s23-reference-no-overlap` and `ticket-red-footer-s23-reference-compact`. |
+| The swipe chevron should rest above the red footer label and visibly travel upward with the gesture. | P0 | Passed | `SwipeSubmitControl` exposes `swipe-submit-handle-starts-near-footer-top` and transform-linked gesture labels; final S23 proof captures the corrected footer layout and threshold swipe. |
+| Swipe-to-buy must remain threshold-gated and cannot become a tap submit. | P0 | Passed | S23 route proof checks tap-disabled state, then completes the upward swipe to server-backed fake-token order, Portfolio, and History. |
+| Backend/order logic should not change for this visible ticket correction. | P0 | Passed | No backend route/schema/order service changed; `npm run typecheck`, parser check, `git diff --check`, and S23 route proof passed. |
+| Exact native Polymarket blur/physics remains future work. | P2 | Tracked | This cycle targets S23 layout separation and moving-handle affordance only. |
