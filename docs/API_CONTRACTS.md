@@ -175,6 +175,8 @@ Cycle HZ changes only mobile proof liquidity setup and Portfolio amount assertio
 
 Cycle IA changes mobile Portfolio History aggregation for recent trade fills. No backend route or schema changed in this cycle. Mobile still consumes `GET /api/portfolio/history` fields: recent trade ID, market/outcome identity, selection/provider identity, side, shares, cost, fee, and created time. The desired route contract now includes optional `recentTrades[].orderId` or `recentTrades[].executionGroupId` so mobile can group multi-fill orders by durable backend identity. Until that route exists, mobile groups same-selection fills inside a short execution window and marks the visible row with `fillCount`.
 
+Cycle IB changes only mobile Portfolio header/chart/range spacing and proof coverage. No backend route, request body, response field, or schema changes are required. Mobile continues to consume the same `GET /api/portfolio` balance/positions/orders data and `GET /api/portfolio/value-history` range, source, status, points, and generated/updated fields. Funding remains hidden in the Local MVP route.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

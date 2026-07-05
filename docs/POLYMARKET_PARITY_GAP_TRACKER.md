@@ -582,3 +582,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Portfolio History proof should distinguish a grouped user action from a single raw fill. | P0 | Passed | S23 XML contains `portfolio-history-fill-count-3` on the single visible activity row. |
 | Selected line/provider identity must remain preserved after aggregation. | P0 | Passed | S23 XML still verifies totals market type, `line-2.5`, `Reg. Time`, Polymarket provider source, and provider token on the grouped row. |
 | Backend route should eventually provide durable order/execution grouping instead of requiring a mobile time-window fallback. | P1 | Tracked | `GET /api/portfolio/history` currently has recent trade IDs but no durable `orderId`/`executionGroupId`; mobile supports optional `orderId` when the backend adds it. |
+
+## Cycle IB - Portfolio Header Retail Density
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio top header/chart/range area consumed too much phone height and had weak S23 proof coverage. | P0 | Passed | S23 `portfolio-top` screenshot/XML in `cycle-IB-portfolio-header-retail-density-s23-proof-final` show `portfolio-header-retail-density`, value/cash line, chart, range selector, and tabs in one phone view. |
+| Deposit/Withdraw must stay hidden from the Local MVP Portfolio surface. | P0 | Passed | The new S23 top proof requires `portfolio-funding-hidden-local-mvp` and rejects visible `Deposit` / `Withdraw`. |
+| The full trade path must still reach Portfolio History after the header density change. | P0 | Passed | Same S23 proof completes route-backed line ticket, upward swipe buy, Portfolio, and History with selected line/provider identity. |
+| Exact Polymarket Portfolio typography/watermark composition remains future visual polish. | P2 | Tracked | This cycle addresses S23 density and proof coverage, not final account-page art direction. |

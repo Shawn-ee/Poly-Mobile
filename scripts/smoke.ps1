@@ -5428,6 +5428,21 @@ try {
         }
         Assert-HierarchyContains -Path $mvpRoutePortfolioHierarchy -Expected $mvpRoutePortfolioExpected
         Assert-HierarchyDoesNotContain -Path $mvpRoutePortfolioHierarchy -Unexpected @("event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth")
+        & $adb -s $Device shell input swipe 540 640 540 1920 700 | Out-Null
+        Start-Sleep -Seconds 1
+        Save-Screenshot -Name "$mvpRouteServerPrefix-portfolio-top.png"
+        $mvpRoutePortfolioTopHierarchy = Save-UiHierarchy -Name "$mvpRouteServerPrefix-portfolio-top.xml"
+        Assert-HierarchyContains -Path $mvpRoutePortfolioTopHierarchy -Expected @(
+          "Portfolio",
+          "portfolio-header-retail-density",
+          "portfolio-value-retail-density",
+          "portfolio-performance-chart",
+          "portfolio-range-tabs-first-screen-fit",
+          "portfolio-section-tabs",
+          "portfolio-funding-hidden-local-mvp"
+        )
+        Assert-HierarchyDoesNotContain -Path $mvpRoutePortfolioTopHierarchy -Unexpected @("Deposit", "Withdraw", "event-detail-top-order-book", "event-detail-open-order-book", "orderbook-source-", "Route depth")
+        $mvpRoutePortfolioHierarchy = $mvpRoutePortfolioTopHierarchy
 
         $mvpRouteFilledHistoryHierarchy = $null
         if ($LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) {
@@ -5485,7 +5500,9 @@ try {
             "$OutputDir/$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-ready.png",
             "$HierarchyOutputDir/$mvpRouteServerPrefix-$mvpRouteServerFilledFamily-ticket-ready.xml",
             "$OutputDir/$mvpRouteServerPrefix-portfolio.png",
-            "$HierarchyOutputDir/$mvpRouteServerPrefix-portfolio.xml"
+            "$HierarchyOutputDir/$mvpRouteServerPrefix-portfolio.xml",
+            "$OutputDir/$mvpRouteServerPrefix-portfolio-top.png",
+            "$HierarchyOutputDir/$mvpRouteServerPrefix-portfolio-top.xml"
           )
         }
         if ($LocalMvpRouteServerFilledFlow -or $LocalMvpRouteServerFilledTotalsFlow -or $LocalMvpRouteServerFilledTeamTotalFlow) {

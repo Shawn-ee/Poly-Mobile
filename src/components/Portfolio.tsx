@@ -667,7 +667,7 @@ export function Portfolio({
 
   return (
     <ScrollView ref={scrollRef} accessibilityLabel={`portfolio-screen ${latestOrder ? "portfolio-result-content-landing" : "portfolio-normal-browse"}`} testID="portfolio-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
-      <View accessibilityLabel="portfolio-profile-header" testID="portfolio-profile-header" style={styles.profileHeader}>
+      <View accessibilityLabel="portfolio-profile-header portfolio-header-retail-density" testID="portfolio-profile-header" style={styles.profileHeader}>
         <View style={styles.profileLeft}>
           <PortfolioAvatar />
           <Text style={styles.profileName}>{pageCopy.profile}</Text>
@@ -676,7 +676,7 @@ export function Portfolio({
           <Ionicons name="settings-outline" color="#f8fafc" size={25} />
         </Pressable>
       </View>
-      <View accessibilityLabel="fake-balance-card" testID="fake-balance-card" style={styles.valueBlock}>
+      <View accessibilityLabel="fake-balance-card portfolio-value-retail-density" testID="fake-balance-card" style={styles.valueBlock}>
         <Text style={styles.portfolioValue}>{money(portfolioValue)}</Text>
         <Text style={[styles.portfolioPnlLine, portfolioPnl >= 0 ? styles.pnlPositive : styles.pnlNegative]}>
           {portfolioPnl >= 0 ? "+" : ""}
@@ -689,7 +689,7 @@ export function Portfolio({
         source={displayedValueHistory.source}
         status={displayedValueHistory.status}
       />
-      <View style={styles.rangeBrandRow}>
+      <View accessibilityLabel="portfolio-range-brand-row portfolio-range-tabs-first-screen-fit" testID="portfolio-range-brand-row" style={styles.rangeBrandRow}>
         <View accessibilityLabel="portfolio-range-selector" testID="portfolio-range-selector" style={styles.rangeRow}>
           {(["1D", "1W", "1M", "All"] as const).map((range) => (
             <Pressable
@@ -706,7 +706,7 @@ export function Portfolio({
         </View>
         <View accessibilityLabel="portfolio-brand-watermark" testID="portfolio-brand-watermark" style={styles.brandWatermark}>
           <Ionicons name="cube-outline" color="#334155" size={25} />
-          <Text style={styles.brandWatermarkText}>Holiwyn</Text>
+          <Text numberOfLines={1} style={styles.brandWatermarkText}>Holiwyn</Text>
         </View>
       </View>
       <View accessibilityLabel="portfolio-funding-hidden-local-mvp" testID="portfolio-funding-hidden-local-mvp" style={styles.a11yOnly}>
@@ -1112,20 +1112,20 @@ export function Portfolio({
 const styles = StyleSheet.create({
   content: { flex: 1 },
   scrollPad: { width: "100%", maxWidth: 480, alignSelf: "center", paddingHorizontal: 0, paddingBottom: 110 },
-  profileHeader: { minHeight: 72, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingTop: 12 },
-  profileLeft: { flexDirection: "row", alignItems: "center", gap: 14, flex: 1 },
-  avatarGradient: { width: 50, height: 50, borderRadius: 999, overflow: "hidden", backgroundColor: "#f43f5e", position: "relative" },
+  profileHeader: { minHeight: 62, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingTop: 8 },
+  profileLeft: { flexDirection: "row", alignItems: "center", gap: 12, flex: 1 },
+  avatarGradient: { width: 46, height: 46, borderRadius: 999, overflow: "hidden", backgroundColor: "#f43f5e", position: "relative" },
   avatarColorStop: { position: "absolute", borderRadius: 999 },
   avatarColorStopPink: { left: -8, top: -5, width: 48, height: 48, backgroundColor: "#f43f5e" },
   avatarColorStopYellow: { right: -4, top: 2, width: 44, height: 44, backgroundColor: "#facc15" },
   avatarColorStopBlue: { left: 4, bottom: -12, width: 42, height: 42, backgroundColor: "#7c3aed" },
-  profileName: { color: "#e5e7eb", fontSize: 22, fontWeight: "500", flexShrink: 1 },
-  settingsIconButton: { width: 44, height: 44, alignItems: "center", justifyContent: "center" },
-  valueBlock: { paddingHorizontal: 24, paddingTop: 8 },
-  portfolioValue: { color: "#f8fafc", fontSize: 58, fontWeight: "300" },
-  portfolioPnlLine: { fontSize: 19, fontWeight: "500", marginTop: 4 },
+  profileName: { color: "#e5e7eb", fontSize: 20, fontWeight: "500", flexShrink: 1 },
+  settingsIconButton: { width: 42, height: 42, alignItems: "center", justifyContent: "center" },
+  valueBlock: { paddingHorizontal: 24, paddingTop: 4 },
+  portfolioValue: { color: "#f8fafc", fontSize: 52, fontWeight: "300" },
+  portfolioPnlLine: { fontSize: 18, fontWeight: "500", marginTop: 2 },
   cashText: { color: "#a8b0bf" },
-  chartArea: { height: 198, marginTop: 20, marginHorizontal: 22, position: "relative" },
+  chartArea: { height: 172, marginTop: 14, marginHorizontal: 22, position: "relative" },
   chartSegment: { position: "absolute", height: 6, borderRadius: 999, backgroundColor: "#22c55e" },
   chartSegmentOne: { left: "0%", top: 80, width: "17%" },
   chartSegmentTwo: { left: "16%", top: 84, width: "15%", transform: [{ rotate: "7deg" }] },
@@ -1142,21 +1142,21 @@ const styles = StyleSheet.create({
   chartReadout: { position: "absolute", top: 0, left: 0, minWidth: 124, minHeight: 58, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937", zIndex: 2 },
   chartReadoutValue: { color: "#f8fafc", fontSize: 17, fontWeight: "700" },
   chartReadoutLabel: { color: "#22c55e", fontSize: 12, fontWeight: "700", marginTop: 2 },
-  rangeBrandRow: { minHeight: 56, marginTop: 6, paddingHorizontal: 24, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 14 },
+  rangeBrandRow: { minHeight: 52, marginTop: 2, paddingHorizontal: 24, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 14 },
   rangeRow: { flexDirection: "row", padding: 4, borderRadius: 999, backgroundColor: "#202633" },
-  rangePill: { minWidth: 58, minHeight: 44, alignItems: "center", justifyContent: "center", borderRadius: 999 },
+  rangePill: { minWidth: 52, minHeight: 42, alignItems: "center", justifyContent: "center", borderRadius: 999 },
   rangePillActive: { backgroundColor: "#0c111d" },
   rangeText: { color: "#a8b0bf", fontSize: 16, fontWeight: "500" },
   rangeTextActive: { color: "#f8fafc" },
-  brandWatermark: { flexShrink: 1, minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: 7, opacity: 0.55 },
-  brandWatermarkText: { color: "#334155", fontSize: 21, fontWeight: "700" },
+  brandWatermark: { flexShrink: 0, width: 170, minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: 6, opacity: 0.55 },
+  brandWatermarkText: { color: "#334155", fontSize: 18, fontWeight: "700", flexShrink: 1 },
   walletActionRow: { flexDirection: "row", gap: 12, paddingHorizontal: 24, marginTop: 26 },
   depositButton: { flex: 1, minHeight: 80, borderRadius: 22, alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 10, backgroundColor: "#f1f5f9" },
   withdrawButton: { flex: 1, minHeight: 80, borderRadius: 22, alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 10, borderWidth: 1, borderColor: "#263247", backgroundColor: "#080d16" },
   depositText: { color: "#080d16", fontSize: 20, fontWeight: "500" },
   withdrawText: { color: "#f8fafc", fontSize: 20, fontWeight: "500" },
-  portfolioTabs: { flexDirection: "row", alignItems: "flex-end", marginTop: 26, borderBottomWidth: 1, borderBottomColor: "#e5e7eb" },
-  portfolioTabButton: { flex: 1, minHeight: 64, alignItems: "center", justifyContent: "center", borderBottomWidth: 3, borderBottomColor: "transparent" },
+  portfolioTabs: { flexDirection: "row", alignItems: "flex-end", marginTop: 18, borderBottomWidth: 1, borderBottomColor: "#e5e7eb" },
+  portfolioTabButton: { flex: 1, minHeight: 58, alignItems: "center", justifyContent: "center", borderBottomWidth: 3, borderBottomColor: "transparent" },
   portfolioTabButtonActive: { borderBottomColor: "#e5e7eb" },
   portfolioTabText: { color: "#8b94a5", fontSize: 21, fontWeight: "500" },
   portfolioTabTextActive: { color: "#f8fafc" },
