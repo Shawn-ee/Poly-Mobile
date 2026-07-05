@@ -953,6 +953,18 @@ try {
         "orderbook-source-",
         "Route depth"
       )
+      $mvpHiddenAdvancedTicketExpected = @(
+        "ticket-settings",
+        "ticket-advanced-details",
+        "ticket-trading-mode",
+        "ticket-market-depth",
+        "ticket-slippage",
+        "ticket-estimate-details",
+        "Trading mode:",
+        "Best bid",
+        "Best ask",
+        "Slippage"
+      )
 
       Save-Screenshot -Name "cycle-FF-home-route-order-home.png"
       $homeRouteOrderHomeHierarchy = Save-UiHierarchy -Name "cycle-FF-home-route-order-home.xml"
@@ -5753,6 +5765,7 @@ try {
       $mvpTicketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-ticket.xml"
       Assert-HierarchyContains -Path $mvpTicketHierarchy -Expected (@("trade-ticket", "Mexico vs. Ecuador", "ticket-selection-line", "Yes - MEX -2.5 1H", "ticket-selected-outcome-choice", "ticket-order-review", "ticket-identity-preserved", "ticket-line-2.5", "ticket-period-1st Half", "ticket-preset-10", "Choose an amount") + $mvpTicketExpected)
       Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected @("Order review", "MARKET ", "LINE ", "PERIOD ", "SHARES ", "TO WIN ")
+      Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected $mvpHiddenAdvancedTicketExpected
       Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
       if ($LocalMvpSellFlow) {
         Invoke-TapHierarchyNode -Path $mvpTicketHierarchy -Identifier "ticket-side-sell"
@@ -5761,6 +5774,7 @@ try {
         $mvpTicketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-sell-ticket.xml"
         Assert-HierarchyContains -Path $mvpTicketHierarchy -Expected (@("trade-ticket", "Sell", "No", "Odds 97%", "ticket-side-sell", "ticket-order-review", "ticket-identity-preserved", "ticket-line-2.5", "ticket-period-1st Half", "ticket-preset-10", "Choose an amount") + $mvpSellTicketExpected)
         Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected @("Order review", "MARKET ", "LINE ", "PERIOD ", "SHARES ", "TO WIN ")
+        Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected $mvpHiddenAdvancedTicketExpected
         Assert-HierarchyDoesNotContain -Path $mvpTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
       }
       Invoke-TapHierarchyNode -Path $mvpTicketHierarchy -Identifier "ticket-preset-10"
@@ -5780,6 +5794,7 @@ try {
       }
       $mvpActiveTicketExpected = if ($LocalMvpSellFlow) { $mvpSellTicketExpected } else { $mvpTicketExpected }
       Assert-HierarchyContains -Path $mvpTicketReadyHierarchy -Expected ($mvpReadyExpected + @("swipe-submit-gesture-required", "swipe-submit-state-idle", "swipe-submit-handle") + $mvpActiveTicketExpected)
+      Assert-HierarchyDoesNotContain -Path $mvpTicketReadyHierarchy -Unexpected $mvpHiddenAdvancedTicketExpected
       Assert-HierarchyDoesNotContain -Path $mvpTicketReadyHierarchy -Unexpected $mvpHiddenOrderBookExpected
       & $adb -s $Device shell input swipe 720 2185 720 2035 900 | Out-Null
       Start-Sleep -Seconds 2
@@ -5793,6 +5808,7 @@ try {
       $mvpPortfolioBuyMoreTicketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-buy-more-ticket.xml"
       Assert-HierarchyContains -Path $mvpPortfolioBuyMoreTicketHierarchy -Expected (@("trade-ticket", "ticket-side-buy", "swipe-to-submit-order", "Choose an amount", '$0') + $mvpTicketExpected)
       Assert-HierarchyDoesNotContain -Path $mvpPortfolioBuyMoreTicketHierarchy -Unexpected @("Swipe up to buy")
+      Assert-HierarchyDoesNotContain -Path $mvpPortfolioBuyMoreTicketHierarchy -Unexpected $mvpHiddenAdvancedTicketExpected
       Assert-HierarchyDoesNotContain -Path $mvpPortfolioBuyMoreTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
       Invoke-TapHierarchyNode -Path $mvpPortfolioBuyMoreTicketHierarchy -Identifier "ticket-close"
       Start-Sleep -Seconds 1
@@ -5803,6 +5819,7 @@ try {
       $mvpPortfolioCashOutTicketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-ticket.xml"
       Assert-HierarchyContains -Path $mvpPortfolioCashOutTicketHierarchy -Expected (@("trade-ticket", "ticket-side-sell", "swipe-to-submit-order", "Choose an amount", '$0') + $mvpSellTicketExpected)
       Assert-HierarchyDoesNotContain -Path $mvpPortfolioCashOutTicketHierarchy -Unexpected @("Swipe up to sell")
+      Assert-HierarchyDoesNotContain -Path $mvpPortfolioCashOutTicketHierarchy -Unexpected $mvpHiddenAdvancedTicketExpected
       Assert-HierarchyDoesNotContain -Path $mvpPortfolioCashOutTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
       if ($mvpCycle -eq "GL") {
         Invoke-TapHierarchyNode -Path $mvpPortfolioCashOutTicketHierarchy -Identifier "ticket-preset-10"

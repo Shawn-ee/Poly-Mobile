@@ -298,7 +298,6 @@ export function TradeTicket({
   const [side, setSideState] = useState<"buy" | "sell">(defaultSide);
   const [activeContractSide, setActiveContractSide] = useState<BinaryContractSide>("yes");
   const [slippage, setSlippageState] = useState(defaultSlippage);
-  const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
     if (!ticket) return;
@@ -307,7 +306,6 @@ export function TradeTicket({
     setSideState(ticket.side);
     setActiveContractSide(ticket.contractSide ?? ticket.selection?.contractSide ?? "yes");
     setSlippageState(defaultSlippage);
-    setShowDetails(false);
   }, [
     ticket?.market.id,
     ticket?.outcome.id,
@@ -331,10 +329,6 @@ export function TradeTicket({
     setSideState(nextSide);
     onPreferencesChange({ amount, side: nextSide, slippage });
   };
-  const setSlippage = (nextSlippage: string) => {
-    setSlippageState(nextSlippage);
-    onPreferencesChange({ amount, side, slippage: nextSlippage });
-  };
   const applyKeypadInput = (key: string) => {
     if (key === "backspace") {
       setAmount(amount.length > 1 ? amount.slice(0, -1) : "0");
@@ -348,19 +342,11 @@ export function TradeTicket({
   const contractSide = activeContractSide;
   const contractProbability = contractSide === "no" ? 100 - ticket.outcome.probability : ticket.outcome.probability;
   const averagePrice = contractProbability / 100;
-  const impliedOdds = contractProbability > 0 ? 100 / contractProbability : 0;
   const estimatedShares = averagePrice > 0 ? numericAmount / averagePrice : 0;
   const estimatedPayout = contractProbability > 0 ? numericAmount * (100 / contractProbability) : 0;
-  const potentialProfit = Math.max(estimatedPayout - Math.min(numericAmount, balance), 0);
   const swipeLabel = side === "buy" ? t.swipeBuyOrder : t.swipeSellOrder;
-  const costLabel = side === "buy" ? t.estimatedCost : t.estimatedProceeds;
   const amountPresets = [5, 10];
   const keypadKeys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "backspace"];
-  const slippageOptions = [
-    { key: "half", value: "0.5%" },
-    { key: "one", value: "1%" },
-    { key: "two", value: "2%" },
-  ];
   const isLiveTicket = ticket.event?.status === "live";
   const tradingModeValue = tradingMode === "server" ? t.tradingModeServer : t.tradingModeMock;
   const depth = marketDepth(ticket.outcome, t.shares);
@@ -446,15 +432,7 @@ export function TradeTicket({
                 <Ionicons name="close" color="#f8fafc" size={24} />
               </Pressable>
               <View accessibilityLabel="ticket-side-pill" testID="ticket-side-pill" style={styles.tradeSidePill} />
-              <Pressable
-                accessibilityLabel="ticket-settings"
-                accessibilityState={{ expanded: showDetails }}
-                onPress={() => setShowDetails((value) => !value)}
-                style={[styles.settingsButton, showDetails && styles.settingsButtonActive]}
-                testID="ticket-settings"
-              >
-                <Ionicons name="options-outline" color="#f8fafc" size={22} />
-              </Pressable>
+              <View accessibilityLabel="ticket-advanced-hidden-local-mvp" testID="ticket-advanced-hidden-local-mvp" style={styles.tradeSidePill} />
             </View>
             <View accessibilityLabel={`ticket-selection-summary ${providerIdentityLabel}`} testID="ticket-selection-summary" style={styles.selectionSummary}>
               <View
@@ -487,29 +465,13 @@ export function TradeTicket({
                 </Text>
               </View>
             )}
-            {showDetails && (
-              <View accessibilityLabel="ticket-advanced-details" testID="ticket-advanced-details" style={styles.ticketMetaBlock}>
-                <View accessibilityLabel="ticket-trading-mode" testID="ticket-trading-mode" style={styles.modePill}>
-                  <Text style={styles.modePillText}>{t.tradingMode}: {tradingModeValue}</Text>
-                </View>
-                <View accessibilityLabel="ticket-market-depth" testID="ticket-market-depth" style={styles.depthPill}>
-                  <Text style={styles.depthPillText}>
-                    {t.bestBid} {depth.bid} - {t.bestAsk} {depth.ask} - {t.spread} {depth.spread}
-                  </Text>
-                </View>
-                {isLiveTicket && (
-                  <View accessibilityLabel="ticket-live-badge" testID="ticket-live-badge" style={styles.liveBadge}>
-                    <Ionicons name="radio-outline" color="#fecaca" size={14} />
-                    <Text style={styles.liveBadgeText}>{t.liveNow}</Text>
-                  </View>
-                )}
-                {liveClockText && (
-                <Text accessibilityLabel="ticket-live-clock" testID="ticket-live-clock" style={styles.liveClock}>
-                  {liveClockText}
-                </Text>
-                )}
-              </View>
-            )}
+            <View
+              accessibilityLabel={`ticket-advanced-hidden-local-mvp internal-price-context-hidden mode-${tradingModeValue} bid-${depth.bid} ask-${depth.ask} width-${depth.spread} ${isLiveTicket ? "live-context-hidden" : "live-context-none"} ${liveClockText ?? ""}`}
+              style={styles.orderReviewA11y}
+              testID="ticket-advanced-proof-hidden"
+            >
+              <Text>ticket-advanced-hidden-local-mvp</Text>
+            </View>
             <View accessibilityLabel="ticket-amount-display" testID="ticket-amount-display" style={styles.amountDisplayBlock}>
               <Text style={[styles.amountDisplayText, numericAmount <= 0 && styles.amountDisplayTextEmpty]}>{amountDisplay}</Text>
             </View>
@@ -597,58 +559,6 @@ export function TradeTicket({
                 </Pressable>
               ))}
             </View>
-            {showDetails && (
-              <>
-                <View accessibilityLabel="ticket-slippage" testID="ticket-slippage" style={styles.slippageSection}>
-                  <Text style={styles.estimateLabel}>{t.slippage}</Text>
-                  <View style={styles.slippageControls}>
-                    {slippageOptions.map((option) => (
-                  <Pressable
-                    accessibilityLabel={`ticket-slippage-${option.key}${slippage === option.value ? "-selected" : ""}`}
-                    key={option.key}
-                    onPress={() => setSlippage(option.value)}
-                    style={[styles.slippageButton, slippage === option.value && styles.slippageButtonActive]}
-                    testID={`ticket-slippage-${option.key}${slippage === option.value ? "-selected" : ""}`}
-                  >
-                    <Text style={[styles.slippageText, slippage === option.value && styles.slippageTextActive]}>{option.value}</Text>
-                  </Pressable>
-                    ))}
-                  </View>
-                </View>
-              </>
-            )}
-            {showDetails && (
-              <View accessibilityLabel="ticket-estimate-details" testID="ticket-estimate-details" style={styles.estimateGrid}>
-                <View style={styles.estimateLineCompact}>
-                  <Text style={styles.estimateLabel}>{costLabel}</Text>
-                  <Text style={styles.estimateValue}>{money(Math.min(numericAmount, balance))}</Text>
-                </View>
-                <View style={styles.estimateLineCompact}>
-                  <Text style={styles.estimateLabel}>{t.estimatedShares}</Text>
-                  <Text style={styles.estimateValue}>{estimatedShares.toLocaleString(undefined, { maximumFractionDigits: 2 })}</Text>
-                </View>
-                <View style={styles.estimateLineCompact}>
-                  <Text style={styles.estimateLabel}>{t.averagePrice}</Text>
-                  <Text style={styles.estimateValue}>{averagePrice.toFixed(2)} USDT</Text>
-                </View>
-                <View accessibilityLabel="ticket-estimated-fee" testID="ticket-estimated-fee" style={styles.estimateLineCompact}>
-                  <Text style={styles.estimateLabel}>{t.estimatedFee}</Text>
-                  <Text style={styles.estimateValue}>{money(0)}</Text>
-                </View>
-                <View style={styles.estimateLineCompact}>
-                  <Text style={styles.estimateLabel}>{t.impliedOdds}</Text>
-                  <Text style={styles.estimateValue}>{impliedOdds.toFixed(1)}x</Text>
-                </View>
-                <View style={styles.estimateLineCompact}>
-                  <Text style={styles.estimateLabel}>{t.estimatedPayout}</Text>
-                  <Text style={styles.estimateValue}>{money(estimatedPayout)}</Text>
-                </View>
-                <View style={styles.estimateLineCompact}>
-                  <Text style={styles.estimateLabel}>{t.potentialProfit}</Text>
-                  <Text style={styles.estimateValue}>{money(potentialProfit)}</Text>
-                </View>
-              </View>
-            )}
             {orderError && (
               <View accessibilityLabel="ticket-order-error" testID="ticket-order-error" style={styles.errorCard}>
                 <Ionicons name="alert-circle-outline" color="#fbbf24" size={18} />
@@ -691,17 +601,7 @@ const styles = StyleSheet.create({
   ticketOutcomeSide: { color: "#22c55e" },
   ticketOutcomeDot: { color: "#64748b" },
   ticketSub: { color: "#64748b", fontSize: 12, fontWeight: "900", marginTop: 4 },
-  ticketMetaBlock: { gap: 5, marginTop: 8 },
-  modePill: { alignSelf: "center", marginTop: 0, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8, backgroundColor: "#172033", borderWidth: 1, borderColor: "#2d3a50" },
-  modePillText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
-  depthPill: { alignSelf: "center", maxWidth: "100%", marginTop: 4, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
-  depthPillText: { color: "#e0f2fe", fontSize: 11, fontWeight: "900" },
-  liveBadge: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 5, marginTop: 6, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 999, backgroundColor: "#451a1a", borderWidth: 1, borderColor: "#7f1d1d" },
-  liveBadgeText: { color: "#fecaca", fontSize: 11, fontWeight: "900", textTransform: "uppercase" },
-  liveClock: { marginTop: 4, color: "#fca5a5", fontSize: 12, fontWeight: "900" },
   closeButton: { width: 42, height: 42, borderRadius: 999, alignItems: "center", justifyContent: "center" },
-  settingsButton: { width: 42, height: 42, borderRadius: 999, alignItems: "center", justifyContent: "center" },
-  settingsButtonActive: { backgroundColor: "#1f2a3c", borderWidth: 1, borderColor: "#3b82f6" },
   tradeSidePill: { minWidth: 42, minHeight: 42 },
   tradeSideText: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
   selectionSummary: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 14, marginTop: 8, minHeight: 62 },
@@ -754,17 +654,6 @@ const styles = StyleSheet.create({
   keypadGrid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: 22, marginTop: 22 },
   keypadButton: { width: "31.5%", minHeight: 56, alignItems: "center", justifyContent: "center" },
   keypadText: { color: "#f8fafc", fontSize: 28, fontWeight: "500" },
-  estimateGrid: { flexDirection: "row", flexWrap: "wrap", gap: 7, marginTop: 8 },
-  estimateLineCompact: { width: "31.8%", minHeight: 45, paddingHorizontal: 6, paddingVertical: 5, borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
-  estimateLine: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 5, borderBottomWidth: 1, borderBottomColor: "#263247" },
-  estimateLabel: { color: "#94a3b8", fontSize: 11, fontWeight: "800" },
-  estimateValue: { color: "#f8fafc", fontSize: 12, fontWeight: "900" },
-  slippageSection: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingTop: 6 },
-  slippageControls: { flexDirection: "row", gap: 6 },
-  slippageButton: { minWidth: 52, minHeight: 30, alignItems: "center", justifyContent: "center", borderRadius: 8, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
-  slippageButtonActive: { backgroundColor: "#1d6dff", borderColor: "#60a5fa" },
-  slippageText: { color: "#cbd5e1", fontSize: 12, fontWeight: "900" },
-  slippageTextActive: { color: "#ffffff" },
   errorCard: { flexDirection: "row", alignItems: "center", gap: 8, padding: 10, borderRadius: 10, backgroundColor: "#1f1a0b", borderWidth: 1, borderColor: "#854d0e", marginTop: 12 },
   errorTextBlock: { flex: 1, gap: 3 },
   errorText: { color: "#fde68a", fontWeight: "800" },

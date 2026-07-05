@@ -117,6 +117,8 @@ Cycle GV changes only mobile Event Detail layout presentation on wide Android sc
 
 Cycle GW changes only mobile Home layout presentation on wide Android screens. No backend route, request body, response field, or schema changes are required. Home continues to consume the same event discovery data, event card handoff, ticket, order, and Portfolio identity fields.
 
+Cycle GX changes only mobile ticket presentation and proof gates. No backend route, request body, response field, or schema changes are required. Ticket submit continues to use the same fake-token/server-backed order contract, and hidden proof identity continues to carry market, line, period, provider token, side, payout, and Portfolio handoff fields.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

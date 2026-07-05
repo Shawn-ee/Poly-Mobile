@@ -317,3 +317,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | On the Samsung tablet proof device, Home discovery still used full-width tablet layout while Event Detail, ticket, and Portfolio now use phone-width columns. | P0 | Passed | Route-backed Home/Live discovery proof screenshot/XML show content constrained to a centered phone-width column. |
 | Home must still open the Local MVP event flow through Event Detail, selected line, ticket, fake-token order, Portfolio, Orders, and History. | P0 | Passed | Samsung tablet full Local MVP proof and route-backed Home/Live discovery proof passed. |
 | Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proofs passed. |
+
+## Cycle GX - Ticket Default Simple Retail Flow
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| The default place-order ticket still had a visible settings/advanced doorway even though the Local MVP ticket should be a simple amount-and-swipe flow. | P0 | Passed | `TradeTicket` removes the visible settings button; Samsung tablet XML fails if `ticket-settings` returns in the Local MVP ticket path. |
+| Advanced trading-mode, market-depth, slippage, and estimate controls should not appear in the default retail ticket. | P0 | Passed | Local MVP proof checks initial, ready, Buy more, and Cash out ticket hierarchies do not include advanced ticket controls. |
+| Simplifying the ticket must preserve event/outcome/line identity, amount entry, swipe submit, fake-token order, Portfolio, Orders, and History. | P0 | Passed | Samsung tablet Local MVP proof passed through selected line, ticket, fake-token submit, Portfolio action tickets, Orders, and History. |
+| Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
