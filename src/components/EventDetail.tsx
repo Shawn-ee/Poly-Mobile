@@ -905,7 +905,7 @@ export function EventDetail({
             <Text style={styles.marketTitle}>{isLiveEvent ? "Live Winner" : "Team to Advance"}</Text>
             <Ionicons name="information-circle-outline" color="#64748b" size={19} />
           </View>
-          <Text style={styles.marketSubcopy}>{isLiveEvent ? "Live World Cup - prices moving" : "$60.9K Vol."}</Text>
+          <Text style={styles.marketSubcopy}>{isLiveEvent ? "Live World Cup - prices moving" : "Winner market"}</Text>
         </View>
         <View style={styles.lineOutcomeButtonRow}>
           {primaryOutcomes.map((outcome, index) => (
@@ -1696,7 +1696,7 @@ export function EventDetail({
           <>
         <View accessibilityLabel="event-detail-body-switch" style={styles.bodySwitchSection} testID="event-detail-body-switch">
           <View style={styles.bodySwitchMeta}>
-            <Text style={styles.bodySwitchVolume}>{stats.volume} Vol.</Text>
+            <Text accessibilityLabel={`event-detail-volume-hidden-local-mvp ${stats.volume}`} style={styles.hiddenStatsText}>volume hidden</Text>
             <Text style={styles.bodySwitchSource}>{isLiveEvent ? "Live World Cup" : "Holiwyn"}</Text>
             {liveDataStatus && (
               <Text
@@ -2267,7 +2267,6 @@ const styles = StyleSheet.create({
   rightTeamText: { alignItems: "flex-end" },
   bodySwitchSection: { paddingHorizontal: 24, paddingTop: 18, paddingBottom: 8 },
   bodySwitchMeta: { minHeight: 28, flexDirection: "row", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8, marginBottom: 10 },
-  bodySwitchVolume: { color: "#8b93a3", fontSize: 15, fontWeight: "800" },
   bodySwitchSource: { color: "#64748b", fontSize: 15, fontWeight: "900" },
   bodySwitchFreshness: { color: "#7dd3fc", fontSize: 12, fontWeight: "900" },
   bodySwitchFreshnessWarning: { color: "#fde68a" },

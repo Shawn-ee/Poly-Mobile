@@ -121,6 +121,8 @@ Cycle GX changes only mobile ticket presentation and proof gates. No backend rou
 
 Cycle GY changes only the mobile Portfolio bottom-tab label presentation and proof gate. No backend route, request body, response field, or schema changes are required. The tab value continues to derive from existing local/server Portfolio value state.
 
+Cycle GZ changes only mobile Event Detail presentation and proof gates. No backend route, request body, response field, or schema changes are required. Event volume/liquidity fields remain available in existing summary/proof metadata, but default visible Event Detail now keeps that data out of the retail betting surface.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

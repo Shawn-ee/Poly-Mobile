@@ -335,3 +335,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The Portfolio tab must remain testable as the Portfolio destination after the visible text change. | P0 | Passed | Accessibility label preserves `holiwyn-portfolio-tab`, `Portfolio`, `portfolio-tab-value-$10K`, and adds `portfolio-tab-label-visible`. |
 | The nav label change must preserve ticket submit, Portfolio position, Buy more, Cash out, Orders, and History. | P0 | Passed | Samsung tablet Local MVP proof passed through the full end-to-end flow on port 8265. |
 | Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
+
+## Cycle GZ - Event Detail Hide Volume Retail Flow
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Event Detail still showed visible volume text in the default game page, distracting from the retail prediction path. | P0 | Passed | Top body switch no longer shows `98,750 USDT Vol.`; Samsung tablet XML rejects the old visible string. |
+| Team to Advance card still showed `$60.9K Vol.` instead of simple prediction context. | P0 | Passed | Card now shows `Winner market`; Samsung tablet XML rejects `$60.9K Vol.`. |
+| Hiding volume must preserve line market selection, ticket, fake-token order, Portfolio, Orders, and History. | P0 | Passed | Samsung tablet Local MVP proof passed through selected spread line, ticket submit, Portfolio action tickets, Orders, and History on port 8267. |
+| Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
