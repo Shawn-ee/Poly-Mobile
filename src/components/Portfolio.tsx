@@ -349,6 +349,26 @@ const lifecycleStatusLabel = (status?: string) => (status ? status.charAt(0).toU
 const activityStatusLabel = (activity: PortfolioActivity) =>
   activity.action === "canceled" ? "Canceled" : activity.action === "opened" || activity.action === "sold" ? "Filled" : "Closed";
 
+const activitySideLabel = (activity: PortfolioActivity) =>
+  (activity.contractSide ?? activity.selection?.contractSide) === "no" || activity.side === "sell" ? "No" : "Yes";
+
+const activityDisplayTitle = (activity: PortfolioActivity) =>
+  displayOutcome(activity).replace(/^(Yes|No)\s*-\s*/i, "");
+
+const activityMarketSubline = (activity: PortfolioActivity) => {
+  const line = activity.selection?.line;
+  if (activity.selection?.marketType === "totals" && line) return `Total Goals ${line}`;
+  if (activity.selection?.marketType === "spread" && line) return `Spread ${line}`;
+  if (activity.selection?.marketType === "team-total" && line) return `Team Total ${line}`;
+  return activity.outcome;
+};
+
+const activityEventSubline = (activity: PortfolioActivity) => {
+  const [home, away] = activity.title.split(/\s+v(?:s\.?|\.?)\s+/i).map((value) => value.trim());
+  if (!home || !away) return activity.title;
+  return `${teamAbbrev(home)} vs ${teamAbbrev(away)}`;
+};
+
 type PortfolioTab = "positions" | "orders" | "history";
 
 const portfolioPageCopy = {
@@ -1013,7 +1033,7 @@ export function Portfolio({
         <View style={styles.activityBlock}>
           {activities.slice(0, 5).map((activity) => (
             <Pressable
-              accessibilityLabel={`activity-row-${activity.id} ${selectionIdentityLabel(activity)}`}
+              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity ${selectionIdentityLabel(activity)}`}
               key={activity.id}
               onPress={() => setExpandedActivityId((current) => (current === activity.id ? null : activity.id))}
               style={[styles.activityItem, expandedActivityId === activity.id && styles.rowExpanded]}
@@ -1021,7 +1041,11 @@ export function Portfolio({
             >
               <ActivityIcon activity={activity} />
               <View style={styles.activityMain}>
-                <Text style={styles.activityAction}>{activityActionLabel(activity, t)} {displayOutcome(activity)}</Text>
+                <View style={styles.activityTitleRow}>
+                  <Text style={styles.activityActionVerb}>{activityActionLabel(activity, t)}</Text>
+                  <Text style={[styles.activitySidePill, activitySideLabel(activity) === "No" && styles.activitySidePillNo]}>{activitySideLabel(activity)}</Text>
+                  <Text numberOfLines={1} style={styles.activityAction}>{activityDisplayTitle(activity)}</Text>
+                </View>
                 <View
                   accessibilityLabel={`activity-status-${activity.id} fake-token-test activity-${activity.action} status-${activityStatusLabel(activity).toLowerCase()}`}
                   style={[styles.statusPillRow, styles.a11yOnly]}
@@ -1041,8 +1065,11 @@ export function Portfolio({
                     {activity.liveClock}
                   </Text>
                 )}
-                <Text style={styles.activityMeta}>
-                  {activity.title}
+                <Text numberOfLines={1} style={styles.activityMeta}>
+                  {activityEventSubline(activity)}
+                </Text>
+                <Text numberOfLines={1} style={styles.activityMarketMeta}>
+                  {activityMarketSubline(activity)}
                 </Text>
                 {hasActivityExecutionDetails(activity) && (
                   <Text accessibilityLabel={`activity-execution-${activity.id}`} style={[styles.activityExecution, styles.a11yOnly]}>
@@ -1238,17 +1265,22 @@ const styles = StyleSheet.create({
   openOrderPlaced: { color: "#64748b", fontSize: 11, fontWeight: "800" },
   cancelOrderButton: { minHeight: 36, minWidth: 92, paddingHorizontal: 10, borderRadius: 8, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155" },
   cancelOrderText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
-  activityBlock: { paddingTop: 8 },
+  activityBlock: { paddingTop: 6 },
   activityTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900", marginBottom: 10 },
-  activityItem: { flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 14, paddingHorizontal: 24, paddingVertical: 16, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
-  activityIcon: { width: 58, height: 58, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937" },
-  activityMain: { flex: 1 },
-  activityAction: { color: "#f8fafc", fontSize: 18, fontWeight: "500" },
-  activitySideMeta: { minWidth: 92, alignItems: "flex-end", gap: 5 },
-  activityTime: { color: "#8b94a5", fontSize: 15, fontWeight: "500" },
+  activityItem: { flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 10, paddingHorizontal: 24, paddingVertical: 18, borderBottomWidth: 1, borderBottomColor: "#1f2937" },
+  activityIcon: { width: 50, height: 50, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937" },
+  activityMain: { flex: 1, minWidth: 0 },
+  activityTitleRow: { flexDirection: "row", alignItems: "center", gap: 6 },
+  activityActionVerb: { color: "#f8fafc", fontSize: 16, fontWeight: "500" },
+  activitySidePill: { overflow: "hidden", borderRadius: 6, paddingHorizontal: 6, paddingVertical: 2, color: "#22c55e", backgroundColor: "#052e16", fontSize: 13, fontWeight: "700" },
+  activitySidePillNo: { color: "#ef4444", backgroundColor: "#3a0f15" },
+  activityAction: { color: "#f8fafc", fontSize: 17, fontWeight: "500" },
+  activitySideMeta: { minWidth: 82, alignItems: "flex-end", gap: 6 },
+  activityTime: { color: "#8b94a5", fontSize: 14, fontWeight: "500", textAlign: "right" },
   activityLiveText: { alignSelf: "flex-start", color: "#fecaca", fontSize: 11, fontWeight: "900", marginTop: 3, textTransform: "uppercase" },
   activityLiveClock: { alignSelf: "flex-start", color: "#fca5a5", fontSize: 11, fontWeight: "900", marginTop: 2 },
-  activityMeta: { color: "#94a3b8", fontSize: 16, fontWeight: "500", marginTop: 3 },
+  activityMeta: { color: "#94a3b8", fontSize: 15, fontWeight: "500", marginTop: 6 },
+  activityMarketMeta: { color: "#6f7a8d", fontSize: 14, fontWeight: "500", marginTop: 2 },
   activityExecution: { color: "#93c5fd", fontSize: 11, fontWeight: "900", marginTop: 4 },
   activityAmount: { color: "#dbeafe", fontSize: 18, fontWeight: "500", textAlign: "right" },
   activityDetailPanel: { width: "100%", gap: 4, marginTop: 2, marginLeft: 38, padding: 10, borderRadius: 10, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#29476d" },

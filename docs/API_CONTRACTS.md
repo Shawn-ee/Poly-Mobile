@@ -159,6 +159,8 @@ Cycle HQ changes only mobile Event Detail lower-page presentation and proof scan
 
 Cycle HS changes only mobile Trade Ticket presentation, preset amounts, swipe progress feedback, and proof gates. No backend route, request body, response field, or schema changes are required. Ticket submit continues to use the same `POST /api/orders` path and preserves the same selected event, market, outcome, line, period, provider source/token, side, amount, and payout fields.
 
+Cycle HT changes only mobile Portfolio History row presentation and proof gates. No backend route, request body, response field, or schema changes are required. Mobile continues to consume the same `GET /api/portfolio` / history activity fields: title, outcome, selection, contract side, amount, probability, timestamp, provider source/token, market type, line, and period.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

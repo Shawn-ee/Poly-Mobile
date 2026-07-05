@@ -509,3 +509,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Swipe icon should visibly track upward gesture progress, not only jump after threshold. | P0 | Passed | `SwipeSubmitControl` computes `handleLift` from `swipeProgress` and exposes progress/translate markers while retaining threshold-only submit. |
 | Backend/order logic should not change for this visual/interaction correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and S23 server-filled proof passed. |
 | Exact native Polymarket drag physics and blur treatment remain future polish. | P2 | Tracked | This cycle implements progress-based handle movement and matched screen structure, not native app physics parity. |
+
+## Cycle HT - Portfolio History Retail Row
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio History activity rows were visually dense and less Polymarket-like after a filled ticket. | P0 | Passed | `Portfolio` now renders `portfolio-history-retail-row-parity` with compact action, Yes/No pill, outcome, event, market/line, amount, and time. |
+| Long provider fixture titles made History rows truncate important market/outcome information. | P0 | Passed | History rows now shorten event titles to team abbreviations such as `HOM vs GOA` and keep `Total Goals 2.5` as its own subtitle. |
+| Backend/API route should not change for this visible row correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and S23 server-filled proof passed. |
+| Overall Portfolio header/chart spacing is still not full Polymarket parity. | P1 | Tracked | This cycle only closes the post-trade History row readability gap. |
