@@ -5426,6 +5426,8 @@ try {
             "portfolio-position-retail-density-fit",
             "portfolio-first-position-first-screen-fit",
             "portfolio-position-actions-fit-phone",
+            "portfolio-range-watermark-s23-fit",
+            "portfolio-brand-watermark-no-clip",
             "portfolio-row-dollar-amounts",
             "portfolio-position-outcome-compact-label",
             "portfolio-outcome-compact-",
@@ -5473,6 +5475,8 @@ try {
           "portfolio-header-dollar-value",
           "portfolio-performance-chart",
           "portfolio-range-tabs-first-screen-fit",
+          "portfolio-range-watermark-s23-fit",
+          "portfolio-brand-watermark-no-clip",
           "portfolio-section-tabs",
           "portfolio-funding-hidden-local-mvp"
         )

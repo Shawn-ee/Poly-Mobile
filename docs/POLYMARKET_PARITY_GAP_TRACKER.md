@@ -760,3 +760,13 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Dollar formatting must not change order amount, selected line, period, provider token, or fake-token backend contracts. | P0 | Passed | The same S23 server-filled proof completes the `$75` ticket, server-backed order, Portfolio position, settings, and History while preserving hidden line/provider identity. |
 | Backend/API routes should not change for this visible Portfolio amount correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
 | Exact final Portfolio typography/pixel polish remains future work. | P2 | Tracked | This cycle targets visible amount notation only. |
+
+## Cycle IZ - Portfolio Range Watermark S23 Fit
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio chart range selector plus Holiwyn watermark was too wide on Samsung S23, leaving the watermark clipped at the right edge. | P0 | Passed | `Portfolio` now uses a phone-fit range/watermark row; S23 `portfolio-top` screenshot shows the cube and `Holiwyn` watermark inside the viewport. |
+| The range selector must remain visible and tappable after the row is tightened. | P0 | Passed | S23 XML verifies `portfolio-range-tabs-first-screen-fit`, `portfolio-range-watermark-s23-fit`, and `portfolio-section-tabs` in the same top Portfolio proof. |
+| Range/watermark layout must not break the route-backed ticket/order/Portfolio path. | P0 | Passed | Same S23 server-filled proof completes Event Detail, totals ticket, swipe submit, Portfolio, settings, and History. |
+| Backend/API routes should not change for this visible Portfolio layout correction. | P0 | Passed | No backend route/schema changed; `npm run typecheck`, PowerShell parser check, `git diff --check`, and S23 server-filled proof passed. |
+| Exact watermark opacity and final chart physics remain future work. | P2 | Tracked | This cycle targets S23 clipping only. |

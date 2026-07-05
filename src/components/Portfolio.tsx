@@ -787,7 +787,7 @@ export function Portfolio({
         source={displayedValueHistory.source}
         status={displayedValueHistory.status}
       />
-      <View accessibilityLabel="portfolio-range-brand-row portfolio-range-tabs-first-screen-fit" testID="portfolio-range-brand-row" style={styles.rangeBrandRow}>
+      <View accessibilityLabel="portfolio-range-brand-row portfolio-range-tabs-first-screen-fit portfolio-range-watermark-s23-fit portfolio-brand-watermark-no-clip" testID="portfolio-range-brand-row" style={styles.rangeBrandRow}>
         <View accessibilityLabel="portfolio-range-selector" testID="portfolio-range-selector" style={styles.rangeRow}>
           {(["1D", "1W", "1M", "All"] as const).map((range) => (
             <Pressable
@@ -802,8 +802,8 @@ export function Portfolio({
             </Pressable>
           ))}
         </View>
-        <View accessibilityLabel="portfolio-brand-watermark" testID="portfolio-brand-watermark" style={styles.brandWatermark}>
-          <Ionicons name="cube-outline" color="#334155" size={25} />
+        <View accessibilityLabel="portfolio-brand-watermark portfolio-brand-watermark-no-clip" testID="portfolio-brand-watermark" style={styles.brandWatermark}>
+          <Ionicons name="cube-outline" color="#334155" size={21} />
           <Text numberOfLines={1} style={styles.brandWatermarkText}>Holiwyn</Text>
         </View>
       </View>
@@ -1249,14 +1249,14 @@ const styles = StyleSheet.create({
   chartReadout: { position: "absolute", top: 0, left: 0, minWidth: 124, minHeight: 58, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937", zIndex: 2 },
   chartReadoutValue: { color: "#f8fafc", fontSize: 17, fontWeight: "700" },
   chartReadoutLabel: { color: "#22c55e", fontSize: 12, fontWeight: "700", marginTop: 2 },
-  rangeBrandRow: { minHeight: 46, marginTop: 0, paddingHorizontal: 24, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 14 },
+  rangeBrandRow: { minHeight: 46, marginTop: 0, paddingHorizontal: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8 },
   rangeRow: { flexDirection: "row", padding: 4, borderRadius: 999, backgroundColor: "#202633" },
-  rangePill: { minWidth: 50, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 999 },
+  rangePill: { minWidth: 45, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 999 },
   rangePillActive: { backgroundColor: "#0c111d" },
   rangeText: { color: "#a8b0bf", fontSize: 16, fontWeight: "500" },
   rangeTextActive: { color: "#f8fafc" },
-  brandWatermark: { flexShrink: 0, width: 170, minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: 6, opacity: 0.55 },
-  brandWatermarkText: { color: "#334155", fontSize: 18, fontWeight: "700", flexShrink: 1 },
+  brandWatermark: { flexShrink: 1, maxWidth: 112, minWidth: 92, minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: 5, opacity: 0.55 },
+  brandWatermarkText: { color: "#334155", fontSize: 14, fontWeight: "700", flexShrink: 1 },
   walletActionRow: { flexDirection: "row", gap: 12, paddingHorizontal: 24, marginTop: 26 },
   depositButton: { flex: 1, minHeight: 80, borderRadius: 22, alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 10, backgroundColor: "#f1f5f9" },
   withdrawButton: { flex: 1, minHeight: 80, borderRadius: 22, alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 10, borderWidth: 1, borderColor: "#263247", backgroundColor: "#080d16" },
