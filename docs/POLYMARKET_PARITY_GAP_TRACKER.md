@@ -573,3 +573,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Portfolio Positions must show the same user-submitted ticket amount after the server-backed fake-token fill. | P0 | Passed | S23 proof requires `Cost 75 USDT`; final screenshot shows `Cost 75 USDT` and `75 USDT +0 USDT`. |
 | Selected market/line/provider identity must still survive the full route-backed ticket/order/Portfolio/history path. | P0 | Passed | Final S23 proof still verifies totals `portfolio-market-type`, `portfolio-line-2.5`, `portfolio-period-Reg. Time`, and Polymarket provider token/source markers. |
 | Backend/API routes should not change for this proof-data integrity correction. | P0 | Passed | No backend route/schema changed; `POST /api/orders` and `GET /api/portfolio` contracts remain the same. |
+
+## Cycle IA - Portfolio History Fill Aggregation
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| One retail ticket that fills against multiple maker asks appeared as multiple separate Portfolio History rows. | P0 | Passed | S23 History screenshot in `cycle-IA-portfolio-history-fill-aggregation-s23-proof` shows one `Bought Yes Over 2.5 RT` row with `75 USDT`. |
+| Portfolio History proof should distinguish a grouped user action from a single raw fill. | P0 | Passed | S23 XML contains `portfolio-history-fill-count-3` on the single visible activity row. |
+| Selected line/provider identity must remain preserved after aggregation. | P0 | Passed | S23 XML still verifies totals market type, `line-2.5`, `Reg. Time`, Polymarket provider source, and provider token on the grouped row. |
+| Backend route should eventually provide durable order/execution grouping instead of requiring a mobile time-window fallback. | P1 | Tracked | `GET /api/portfolio/history` currently has recent trade IDs but no durable `orderId`/`executionGroupId`; mobile supports optional `orderId` when the backend adds it. |

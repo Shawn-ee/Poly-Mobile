@@ -5440,6 +5440,7 @@ try {
             "portfolio-tab-history portfolio-tab-selected",
             "activity-row-",
             "portfolio-history-retail-row-parity",
+            "portfolio-history-fill-count-3",
             "portfolio-side-buy",
             "portfolio-market-type-$mvpRouteTargetTicketMarketType",
             "portfolio-line-$mvpRouteTargetLine",

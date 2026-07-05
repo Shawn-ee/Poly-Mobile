@@ -205,6 +205,7 @@ export type PortfolioCanceledOrderItem = {
     period?: string;
     side?: string;
     displayLabel?: string;
+    contractSide?: "yes" | "no";
     referenceSource?: string;
     externalSlug?: string;
     externalMarketId?: string;
@@ -225,6 +226,7 @@ export type PortfolioCanceledOrderItem = {
 
 export type PortfolioRecentTradeItem = {
   id: string;
+  orderId?: string | null;
   market: {
     id: string;
     title: string;
@@ -243,6 +245,7 @@ export type PortfolioRecentTradeItem = {
     period?: string;
     side?: string;
     displayLabel?: string;
+    contractSide?: "yes" | "no";
     referenceSource?: string;
     externalSlug?: string;
     externalMarketId?: string;

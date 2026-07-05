@@ -94,19 +94,66 @@ export const canceledOrdersToActivity = (orders: PortfolioCanceledOrderItem[] = 
     timestamp: formatHistoryTimestamp(order.canceledAt),
   }));
 
+const executionWindowKey = (value: string) => {
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return Math.floor(parsed.getTime() / 30000).toString();
+};
+
+const selectionGroupKey = (trade: PortfolioRecentTradeItem) => {
+  const selection = trade.selection;
+  return [
+    trade.side,
+    trade.market.id,
+    trade.outcome.id,
+    selection?.marketId ?? "",
+    selection?.outcomeId ?? "",
+    selection?.marketGroupId ?? "",
+    selection?.marketType ?? "",
+    selection?.line ?? "",
+    selection?.period ?? "",
+    selection?.side ?? "",
+    selection?.displayLabel ?? "",
+    selection?.referenceTokenId ?? "",
+    selection?.limitSide ?? "",
+    selection?.limitPrice ?? "",
+    selection?.contractSide ?? "",
+  ].join("|");
+};
+
+const recentTradeGroupKey = (trade: PortfolioRecentTradeItem) =>
+  trade.orderId ? `order:${trade.orderId}` : `window:${selectionGroupKey(trade)}:${executionWindowKey(trade.createdAt)}`;
+
 export const recentTradesToActivity = (trades: PortfolioRecentTradeItem[] = []): PortfolioActivity[] =>
-  trades.map((trade) => {
-    const executionPrice = trade.shares > 0 ? trade.cost / trade.shares : 0;
+  Array.from(
+    trades.reduce((groups, trade) => {
+      const key = recentTradeGroupKey(trade);
+      const existing = groups.get(key);
+      if (!existing) {
+        groups.set(key, { first: trade, cost: trade.cost, shares: trade.shares, count: 1 });
+        return groups;
+      }
+
+      existing.cost += trade.cost;
+      existing.shares += trade.shares;
+      existing.count += 1;
+      return groups;
+    }, new Map<string, { first: PortfolioRecentTradeItem; cost: number; shares: number; count: number }>()),
+  ).map(([key, group]) => {
+    const trade = group.first;
+    const executionPrice = group.shares > 0 ? group.cost / group.shares : 0;
+    const groupedId = key.startsWith("order:") ? `trade-${key.replace("order:", "order-")}` : `trade-group-${trade.id}`;
     return {
-      id: `trade-${trade.id}`,
+      id: group.count > 1 ? groupedId : `trade-${trade.id}`,
       action: trade.side === "SELL" ? "sold" : "opened",
       title: trade.market.title,
       outcome: trade.outcome.name,
       selection: selectionFromBackend(trade.selection),
-      amount: trade.cost,
-      shares: trade.shares,
+      amount: group.cost,
+      shares: group.shares,
       side: trade.side === "SELL" ? "sell" : "buy",
       probability: Math.round(executionPrice * 100),
+      fillCount: group.count,
       timestamp: formatHistoryTimestamp(trade.createdAt),
     };
   });

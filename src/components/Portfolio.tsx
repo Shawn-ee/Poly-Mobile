@@ -55,6 +55,7 @@ export type PortfolioActivity = {
   shares?: number;
   side?: "buy" | "sell";
   probability?: number;
+  fillCount?: number;
   isLive?: boolean;
   liveClock?: string;
   timestamp?: string;
@@ -1033,7 +1034,7 @@ export function Portfolio({
         <View style={styles.activityBlock}>
           {activities.slice(0, 5).map((activity) => (
             <Pressable
-              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity ${selectionIdentityLabel(activity)}`}
+              accessibilityLabel={`activity-row-${activity.id} portfolio-history-retail-row-parity portfolio-history-fill-count-${activity.fillCount ?? 1} ${selectionIdentityLabel(activity)}`}
               key={activity.id}
               onPress={() => setExpandedActivityId((current) => (current === activity.id ? null : activity.id))}
               style={[styles.activityItem, expandedActivityId === activity.id && styles.rowExpanded]}

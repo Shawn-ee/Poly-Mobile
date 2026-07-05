@@ -173,6 +173,8 @@ Cycle HY changes only mobile Trade Ticket amount-entry presentation, fixed swipe
 
 Cycle HZ changes only mobile proof liquidity setup and Portfolio amount assertions. No backend route, request body, response field, or schema changes are required. The existing `POST /api/orders` request still sends price and share size derived from the ticket amount, and `GET /api/portfolio` still returns filled position `costBasisTokens`, `valueTokens`, shares, average cost, current price, and provider/line identity. The proof now seeds enough deterministic asks for the `$75` ticket to fully fill, so the Portfolio row's `costBasisTokens` matches the submitted ticket amount.
 
+Cycle IA changes mobile Portfolio History aggregation for recent trade fills. No backend route or schema changed in this cycle. Mobile still consumes `GET /api/portfolio/history` fields: recent trade ID, market/outcome identity, selection/provider identity, side, shares, cost, fee, and created time. The desired route contract now includes optional `recentTrades[].orderId` or `recentTrades[].executionGroupId` so mobile can group multi-fill orders by durable backend identity. Until that route exists, mobile groups same-selection fills inside a short execution window and marks the visible row with `fillCount`.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
