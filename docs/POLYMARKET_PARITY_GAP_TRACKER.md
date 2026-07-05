@@ -285,3 +285,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Team to Advance line card still showed extra icon-only actions after Graph/About that are not part of the Local MVP betting path. | P0 | Passed | Samsung tablet screenshot shows only `Graph` and `About`; extra icon strip removed. |
 | The line card must still expose Graph/About context and downstream ticket flow. | P0 | Passed | Smoke asserted `prediction-tabs-only`; full Local MVP trade-flow proof passed through ticket, order, Portfolio, Orders, and History. |
 | Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
+
+## Cycle GT - Ticket Phone-Width Retail Flow
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| On the Samsung tablet proof device, the place-order keypad and amount controls stretched too wide compared with the phone-style Polymarket reference sheet. | P0 | Passed | Samsung tablet screenshot shows the ticket amount controls constrained to a centered phone-width column. |
+| The swipe-up submit footer must remain full-width, dominant, and functional after the layout constraint. | P0 | Passed | Local MVP proof verified amount entry, `Swipe up to buy`, fake-token submit, and Portfolio/history. |
+| Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |

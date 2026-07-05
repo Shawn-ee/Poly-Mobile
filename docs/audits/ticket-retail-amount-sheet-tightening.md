@@ -30,3 +30,21 @@ The visible sheet should stay simple. Market, line, period, shares, payout, prov
 - Backend/API impact: none. Existing local/server order submission and `TicketSelection` identity fields are unchanged.
 - Android proof: passed on Samsung tablet with `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -LocalMvpTradeFlow -Port 8245 -OutputDir docs/mobile/screenshots/cycle-GF-ticket-retail-amount-sheet -HierarchyOutputDir docs/mobile/harness/cycle-GF-ticket-retail-amount-sheet`.
 - Audit status: P0 pass for the Local MVP ticket amount sheet. Remaining P2 gaps are exact native blur and continuous swipe physics.
+
+## Cycle GT - Wide Android Ticket Column Acceptance Criteria
+
+| Criteria | Priority | Verification |
+| --- | --- | --- |
+| On a wide Android proof device, the place-order amount sheet keeps a phone-like centered trading column instead of stretching the keypad and amount controls across the full tablet width. | P0 | Samsung tablet screenshot/XML. |
+| The full-width blue swipe footer remains the dominant submit surface and still exposes `Swipe up to buy` after amount entry. | P0 | Samsung tablet screenshot/XML and smoke assertion. |
+| The compact ticket still preserves selected line/outcome/provider identity through fake-token order submit and Portfolio/history. | P0 | Local MVP trade-flow smoke proof. |
+| Backend/API route changes are not required. | P0 | Code/docs review. |
+| Exact Polymarket native animation/blur remains polish. | P2 | Deferred. |
+
+## Cycle GT Result
+
+- Status: pass.
+- Implementation: `TradeTicket` constrains the scrollable amount-entry content to a centered phone-width column while leaving the full-screen ticket and blue swipe footer intact.
+- Backend/API impact: none. Existing ticket/order/Portfolio contracts are unchanged.
+- Android proof: passed on Samsung tablet with `powershell -ExecutionPolicy Bypass -File scripts\smoke-tablet.ps1 -LocalMvpTradeFlow -Port 8259 -OutputDir docs/mobile/screenshots/cycle-GT-ticket-phone-width-retail-flow -HierarchyOutputDir docs/mobile/harness/cycle-GT-ticket-phone-width-retail-flow`.
+- Audit status: P0 pass for the wide Android ticket column. Remaining P2 gaps are exact native blur and continuous swipe physics.

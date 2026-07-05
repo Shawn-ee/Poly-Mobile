@@ -682,7 +682,7 @@ export function TradeTicket({
 const styles = StyleSheet.create({
   modalShade: { flex: 1, justifyContent: "flex-end", backgroundColor: "#070b12" },
   ticket: { flex: 1, height: "100%", backgroundColor: "#070b12", overflow: "hidden" },
-  ticketContent: { flexGrow: 1, paddingHorizontal: 24, paddingTop: 40, paddingBottom: 18 },
+  ticketContent: { flexGrow: 1, width: "100%", maxWidth: 480, alignSelf: "center", paddingHorizontal: 24, paddingTop: 40, paddingBottom: 18 },
   dragHandle: { alignSelf: "center", width: 92, height: 1, borderRadius: 999, backgroundColor: "#293141", marginBottom: 2, opacity: 0.01 },
   ticketTop: { minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   ticketHeading: { flex: 1, alignItems: "center" },

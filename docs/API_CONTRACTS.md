@@ -109,6 +109,8 @@ Cycle GR changes only mobile Event Detail presentation. No backend route, reques
 
 Cycle GS changes only mobile Event Detail presentation. No backend route, request body, response field, or schema changes are required. The line-card Graph/About action strip is UI-only and continues to use existing market/outcome data.
 
+Cycle GT changes only mobile ticket layout presentation on wide Android screens. No backend route, request body, response field, or schema changes are required. The same ticket state, `TicketSelection` identity fields, local fake-token submit path, and server-mode `POST /api/orders` expectations remain unchanged.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
