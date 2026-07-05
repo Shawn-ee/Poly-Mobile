@@ -11,6 +11,7 @@ export type Ticket = {
   side: "buy" | "sell";
   contractSide?: BinaryContractSide;
   selection?: TicketSelection;
+  sourcePositionId?: string;
 };
 
 export type BinaryContractSide = "yes" | "no";

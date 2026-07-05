@@ -1273,26 +1273,31 @@ export default function App() {
         }
       : null;
     if (ORDER_MODE !== "server") {
-      setBalance((current) => current - cost);
-      setPositions((current) => [
-        {
-          id: result.id,
-          mode: result.mode,
-          marketId: result.selection?.marketId ?? ticket.market.id,
-          outcomeId: result.selection?.outcomeId ?? ticket.outcome.id,
-          title: result.title,
-          outcome: result.outcome,
-          selection: result.selection,
-          contractSide: result.contractSide,
-          side: result.side,
-          amount: result.amount,
-          probability: result.probability,
-          isLive: isLiveOrder,
-          liveClock,
-          timestamp: t.justNow,
-        },
-        ...current,
-      ]);
+      if (result.side === "sell" && ticket.sourcePositionId) {
+        setBalance((current) => current + result.amount);
+        setPositions((current) => current.filter((position) => position.id !== ticket.sourcePositionId));
+      } else {
+        setBalance((current) => current - cost);
+        setPositions((current) => [
+          {
+            id: result.id,
+            mode: result.mode,
+            marketId: result.selection?.marketId ?? ticket.market.id,
+            outcomeId: result.selection?.outcomeId ?? ticket.outcome.id,
+            title: result.title,
+            outcome: result.outcome,
+            selection: result.selection,
+            contractSide: result.contractSide,
+            side: result.side,
+            amount: result.amount,
+            probability: result.probability,
+            isLive: isLiveOrder,
+            liveClock,
+            timestamp: t.justNow,
+          },
+          ...current,
+        ]);
+      }
     }
     setLatestOrder({
       id: result.id,
@@ -1411,7 +1416,17 @@ export default function App() {
         : undefined;
     setSelectedEvent(target.event ?? null);
     setMainTab("portfolio");
-    openTicket(target.market, target.outcome, target.event, side, selection);
+    setTicketOrderError(null);
+    setTicketOrderErrorDetail(null);
+    setTicket({
+      market: target.market,
+      outcome: target.outcome,
+      event: target.event,
+      side,
+      contractSide: selection?.contractSide ?? (side === "sell" ? "no" : "yes"),
+      selection,
+      sourcePositionId: position.id,
+    });
   };
 
   const openEventDetail = useCallback((event: Event) => {

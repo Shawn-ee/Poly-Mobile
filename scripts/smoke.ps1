@@ -5709,6 +5709,14 @@ try {
         "portfolio-display-label-MEX -2.5 1H",
         "portfolio-contract-side-$mvpPortfolioContractSide"
       )
+      $mvpSellPortfolioExpected = @(
+        "portfolio-market-family-spread",
+        "portfolio-market-type-spread",
+        "portfolio-line-2.5",
+        "portfolio-period-1st Half",
+        "portfolio-display-label-MEX -2.5 1H",
+        "portfolio-contract-side-no"
+      )
       & $adb -s $Device shell input swipe 540 520 540 1900 450 | Out-Null
       Start-Sleep -Milliseconds 500
       & $adb -s $Device shell input swipe 540 520 540 1900 450 | Out-Null
@@ -5789,9 +5797,19 @@ try {
       $mvpPortfolioCashOutTicketHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-ticket.xml"
       Assert-HierarchyContains -Path $mvpPortfolioCashOutTicketHierarchy -Expected (@("trade-ticket", "ticket-side-sell", "swipe-to-submit-order", "Swipe up to sell") + $mvpSellTicketExpected)
       Assert-HierarchyDoesNotContain -Path $mvpPortfolioCashOutTicketHierarchy -Unexpected $mvpHiddenOrderBookExpected
-      Invoke-TapHierarchyNode -Path $mvpPortfolioCashOutTicketHierarchy -Identifier "ticket-close"
-      Start-Sleep -Seconds 1
-      $mvpPortfolioHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-after-cash-out-close.xml"
+      if ($mvpCycle -eq "GL") {
+        & $adb -s $Device shell input swipe 720 2185 720 2035 900 | Out-Null
+        Start-Sleep -Seconds 2
+        Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-submitted.png"
+        $mvpPortfolioCashOutSubmittedHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-submitted.xml"
+        Assert-HierarchyContains -Path $mvpPortfolioCashOutSubmittedHierarchy -Expected (@("Portfolio", "No positions yet", "latest-order-card", "portfolio-side-sell") + $mvpSellPortfolioExpected)
+        Assert-HierarchyDoesNotContain -Path $mvpPortfolioCashOutSubmittedHierarchy -Unexpected @("position-card-")
+        $mvpPortfolioHierarchy = $mvpPortfolioCashOutSubmittedHierarchy
+      } else {
+        Invoke-TapHierarchyNode -Path $mvpPortfolioCashOutTicketHierarchy -Identifier "ticket-close"
+        Start-Sleep -Seconds 1
+        $mvpPortfolioHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-after-cash-out-close.xml"
+      }
       Invoke-TapHierarchyNode -Path $mvpPortfolioHierarchy -Identifier "portfolio-range-1w"
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-range-1w.png"
@@ -5806,7 +5824,8 @@ try {
       Start-Sleep -Seconds 1
       Save-Screenshot -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-history.png"
       $mvpPortfolioHistoryHierarchy = Save-UiHierarchy -Name "cycle-$mvpCycle-holiwyn-local-mvp-portfolio-history.xml"
-      Assert-HierarchyContains -Path $mvpPortfolioHistoryHierarchy -Expected (@("portfolio-tab-history", "activity-row-", "Mexico vs. Ecuador", $mvpPastTense) + $mvpPortfolioExpected)
+      $mvpHistoryExpected = if ($mvpCycle -eq "GL") { @("Sold") + $mvpSellPortfolioExpected + @("portfolio-side-sell") } else { @($mvpPastTense) + $mvpPortfolioExpected }
+      Assert-HierarchyContains -Path $mvpPortfolioHistoryHierarchy -Expected (@("portfolio-tab-history", "activity-row-", "Mexico vs. Ecuador") + $mvpHistoryExpected)
 
       $proof = [ordered]@{
         cycle = $mvpCycle
@@ -5818,7 +5837,7 @@ try {
           defaultEventDetail = @("chart", "contract rail", "game lines", "spread/totals selectors", "no visible Book/orderbook entry points")
           selectedLine = @("spread 2.5", "1st Half", "market/outcome identity preserved")
           simpleTicket = @("fake-token $($mvpSideLabel.ToLowerInvariant())", "visible order review", "line/period/shares/payout", "current probability price", $mvpSubmitText, "no visible Book/orderbook entry points")
-          portfolio = @("profile/value/chart header", "Positions tab position row", "Buy more opens Buy ticket", "Cash out opens Sell ticket", "Orders empty state", "History activity row", "line identity preserved")
+          portfolio = @("profile/value/chart header", "Positions tab position row", "Buy more opens Buy ticket", "Cash out opens Sell ticket", "Cash out submit removes position when cycle GL", "Orders empty state", "History activity row", "line identity preserved")
         }
         artifacts = @(
           "docs/mobile/screenshots/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-market-lines.png",
@@ -5833,6 +5852,8 @@ try {
           "docs/mobile/harness/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-buy-more-ticket.xml",
           "docs/mobile/screenshots/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-ticket.png",
           "docs/mobile/harness/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-ticket.xml",
+          "docs/mobile/screenshots/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-submitted.png",
+          "docs/mobile/harness/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-cash-out-submitted.xml",
           "docs/mobile/screenshots/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-range-1w.png",
           "docs/mobile/harness/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-range-1w.xml",
           "docs/mobile/screenshots/$mvpArtifactDir/cycle-$mvpCycle-holiwyn-local-mvp-portfolio-orders.png",
