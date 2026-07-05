@@ -299,6 +299,7 @@ export function TradeTicket({
   const [side, setSideState] = useState<"buy" | "sell">(defaultSide);
   const [activeContractSide, setActiveContractSide] = useState<BinaryContractSide>("yes");
   const [slippage, setSlippageState] = useState(defaultSlippage);
+  const [showOrderSettings, setShowOrderSettings] = useState(false);
 
   useEffect(() => {
     if (!ticket) return;
@@ -307,6 +308,7 @@ export function TradeTicket({
     setSideState(ticket.side);
     setActiveContractSide(ticket.contractSide ?? ticket.selection?.contractSide ?? "yes");
     setSlippageState(defaultSlippage);
+    setShowOrderSettings(false);
   }, [
     ticket?.market.id,
     ticket?.outcome.id,
@@ -428,14 +430,10 @@ export function TradeTicket({
             testID="trade-ticket"
           >
             <View accessibilityLabel="ticket-drag-handle" testID="ticket-drag-handle" style={styles.dragHandle} />
-            <View style={styles.ticketTop}>
+            <View accessibilityLabel={`ticket-selection-summary ticket-retail-order-header ${providerIdentityLabel}`} testID="ticket-selection-summary" style={styles.ticketHeader}>
               <Pressable accessibilityLabel="ticket-close" onPress={close} style={styles.closeButton} testID="ticket-close">
                 <Ionicons name="close" color="#f8fafc" size={24} />
               </Pressable>
-              <View accessibilityLabel="ticket-side-pill" testID="ticket-side-pill" style={styles.tradeSidePill} />
-              <View accessibilityLabel="ticket-advanced-hidden-local-mvp" testID="ticket-advanced-hidden-local-mvp" style={styles.tradeSidePill} />
-            </View>
-            <View accessibilityLabel={`ticket-selection-summary ${providerIdentityLabel}`} testID="ticket-selection-summary" style={styles.selectionSummary}>
               <View
                 accessibilityLabel={`ticket-outcome-flag ${teamCode ? `ticket-outcome-flag-${teamCode}` : "ticket-outcome-flag-generic"}`}
                 testID="ticket-outcome-flag"
@@ -449,7 +447,34 @@ export function TradeTicket({
                   <Text style={styles.ticketOutcomeSide}>{sideLabel}</Text> <Text style={styles.ticketOutcomeDot}>-</Text> {selectionLabel}
                 </Text>
               </View>
+              <Pressable
+                accessibilityLabel={`ticket-settings ticket-order-filter-local-mvp ticket-settings-state-${showOrderSettings ? "open" : "closed"}`}
+                onPress={() => setShowOrderSettings((current) => !current)}
+                style={styles.ticketSettingsButton}
+                testID="ticket-settings"
+              >
+                <Ionicons name="options-outline" color="#dbe4f0" size={22} />
+              </Pressable>
             </View>
+            <View accessibilityLabel="ticket-side-pill ticket-advanced-hidden-local-mvp" testID="ticket-side-pill" style={styles.orderReviewA11y}>
+              <Text>ticket-advanced-hidden-local-mvp</Text>
+            </View>
+            {showOrderSettings && (
+              <View accessibilityLabel={`ticket-settings-panel ticket-settings-state-open ${providerIdentityLabel}`} style={styles.settingsPanel} testID="ticket-settings-panel">
+                <View style={styles.settingsPanelRow}>
+                  <Text style={styles.settingsPanelLabel}>Order type</Text>
+                  <Text style={styles.settingsPanelValue}>Market</Text>
+                </View>
+                <View style={styles.settingsPanelRow}>
+                  <Text style={styles.settingsPanelLabel}>Odds</Text>
+                  <Text style={styles.settingsPanelValue}>{contractProbability}%</Text>
+                </View>
+                <View style={styles.settingsPanelRow}>
+                  <Text style={styles.settingsPanelLabel}>Available</Text>
+                  <Text style={styles.settingsPanelValue}>{money(balance)}</Text>
+                </View>
+              </View>
+            )}
             {availabilityLabel && availabilityTone !== "ready" && (
               <View
                 accessibilityLabel={`ticket-market-status ticket-availability-${availabilityStatus} ticket-market-status-${ticket.market.availability?.marketStatus ?? "unknown"} ${providerIdentityLabel} ${availabilityLabel}`}
@@ -593,35 +618,40 @@ export function TradeTicket({
 const styles = StyleSheet.create({
   modalShade: { flex: 1, justifyContent: "flex-end", backgroundColor: "#070b12" },
   ticket: { flex: 1, height: "100%", backgroundColor: "#070b12", overflow: "hidden" },
-  ticketContent: { flexGrow: 1, width: "100%", maxWidth: 480, alignSelf: "center", paddingHorizontal: 24, paddingTop: 40, paddingBottom: 18 },
+  ticketContent: { flexGrow: 1, width: "100%", maxWidth: 480, alignSelf: "center", paddingHorizontal: 24, paddingTop: 34, paddingBottom: 18 },
   dragHandle: { alignSelf: "center", width: 92, height: 1, borderRadius: 999, backgroundColor: "#293141", marginBottom: 2, opacity: 0.01 },
   ticketTop: { minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   ticketHeading: { flex: 1, alignItems: "center" },
-  ticketTitle: { color: "#cbd5e1", fontSize: 17, fontWeight: "700" },
-  ticketOutcome: { color: "#f8fafc", fontSize: 19, fontWeight: "800", marginTop: 5 },
+  ticketTitle: { color: "#cbd5e1", fontSize: 16, fontWeight: "700" },
+  ticketOutcome: { color: "#f8fafc", fontSize: 19, fontWeight: "800", marginTop: 4 },
   ticketOutcomeSide: { color: "#22c55e" },
   ticketOutcomeDot: { color: "#64748b" },
   ticketSub: { color: "#64748b", fontSize: 12, fontWeight: "900", marginTop: 4 },
-  closeButton: { width: 42, height: 42, borderRadius: 999, alignItems: "center", justifyContent: "center" },
+  closeButton: { width: 42, height: 56, borderRadius: 999, alignItems: "center", justifyContent: "center" },
   tradeSidePill: { minWidth: 42, minHeight: 42 },
   tradeSideText: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
-  selectionSummary: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 14, marginTop: 8, minHeight: 62 },
+  ticketHeader: { flexDirection: "row", alignItems: "center", gap: 14, minHeight: 66 },
   outcomeFlag: { width: 56, height: 56, borderRadius: 14, alignItems: "center", justifyContent: "center", backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", overflow: "hidden" },
   outcomeFlagEmoji: { fontSize: 34, lineHeight: 42 },
   selectionTextBlock: { flex: 1 },
-  marketStatusPill: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 999, backgroundColor: "#052e1b", borderWidth: 1, borderColor: "#166534" },
+  ticketSettingsButton: { width: 42, height: 56, borderRadius: 999, alignItems: "center", justifyContent: "center" },
+  settingsPanel: { marginTop: 8, paddingHorizontal: 14, paddingVertical: 10, borderRadius: 14, backgroundColor: "#0d1420", borderWidth: 1, borderColor: "#222d40", gap: 8 },
+  settingsPanelRow: { minHeight: 24, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
+  settingsPanelLabel: { color: "#8b94a5", fontSize: 13, fontWeight: "700" },
+  settingsPanelValue: { color: "#f8fafc", fontSize: 13, fontWeight: "900" },
+  marketStatusPill: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 999, backgroundColor: "#052e1b", borderWidth: 1, borderColor: "#166534" },
   marketStatusPillWarning: { backgroundColor: "#2b2106", borderColor: "#854d0e" },
   marketStatusPillBlocked: { backgroundColor: "#2a0d0d", borderColor: "#7f1d1d" },
   marketStatusText: { color: "#bbf7d0", fontSize: 12, fontWeight: "900" },
   marketStatusTextWarning: { color: "#fde68a" },
   marketStatusTextBlocked: { color: "#fecaca" },
-  amountDisplayBlock: { minHeight: 174, alignItems: "center", justifyContent: "center", marginTop: 4 },
-  amountDisplayText: { color: "#f8fafc", fontSize: 74, fontWeight: "500" },
+  amountDisplayBlock: { minHeight: 126, alignItems: "center", justifyContent: "center", marginTop: 0 },
+  amountDisplayText: { color: "#f8fafc", fontSize: 68, fontWeight: "500" },
   amountDisplayTextEmpty: { color: "#1b2230" },
   ticketOutcomeRow: { alignSelf: "center", flexDirection: "row", alignItems: "center", gap: 4, minHeight: 56, padding: 5, borderRadius: 999, backgroundColor: "#1c2330" },
   outcomeChoiceMuted: { minWidth: 86, textAlign: "center", color: "#8b94a5", fontSize: 17, fontWeight: "700", paddingHorizontal: 14 },
   outcomeChoiceActive: { minWidth: 86, textAlign: "center", overflow: "hidden", color: "#f8fafc", fontSize: 17, fontWeight: "800", paddingHorizontal: 14, paddingVertical: 12, borderRadius: 999, backgroundColor: "#0d1422" },
-  toWinBlock: { alignItems: "center", justifyContent: "center", minHeight: 54, marginTop: 6 },
+  toWinBlock: { alignItems: "center", justifyContent: "center", minHeight: 44, marginTop: 2 },
   toWinText: { color: "#d1d5db", fontSize: 20, fontWeight: "800" },
   toWinValue: { color: "#22c55e", fontSize: 22, fontWeight: "900" },
   priceText: { color: "#8b94a5", fontSize: 15, fontWeight: "800", marginTop: 3 },
@@ -636,12 +666,12 @@ const styles = StyleSheet.create({
   orderReviewLabel: { color: "#64748b", fontSize: 10, fontWeight: "900", textTransform: "uppercase" },
   orderReviewValue: { color: "#e2e8f0", fontSize: 12, fontWeight: "900", marginTop: 3 },
   orderReviewValueStrong: { color: "#22c55e", fontSize: 15, fontWeight: "900", marginTop: 3 },
-  ticketSideRow: { alignSelf: "center", width: 142, flexDirection: "row", gap: 3, marginTop: 12, padding: 4, borderRadius: 999, backgroundColor: "#1d2431" },
+  ticketSideRow: { alignSelf: "center", width: 142, flexDirection: "row", gap: 3, marginTop: 8, padding: 4, borderRadius: 999, backgroundColor: "#1d2431" },
   sideButton: { flex: 1, minHeight: 38, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "transparent" },
   sideButtonActive: { backgroundColor: "#0b111d" },
   sideText: { color: "#8b94a5", fontSize: 15, fontWeight: "700" },
   sideTextActive: { color: "#ffffff" },
-  oddsAvailableLine: { alignItems: "center", justifyContent: "center", minHeight: 30, marginTop: 18 },
+  oddsAvailableLine: { alignItems: "center", justifyContent: "center", minHeight: 28, marginTop: 10 },
   oddsAvailableText: { color: "#a8b0bf", fontSize: 15, fontWeight: "500" },
   amountHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8, marginTop: 6, marginBottom: 3 },
   amountMeta: { flexDirection: "row", alignItems: "center", gap: 8, flexShrink: 1 },
@@ -649,25 +679,25 @@ const styles = StyleSheet.create({
   balanceText: { color: "#cbd5e1", fontSize: 12, fontWeight: "900", flexShrink: 1 },
   maxText: { color: "#93c5fd", fontWeight: "900" },
   amountInput: { height: 42, borderRadius: 12, paddingHorizontal: 12, backgroundColor: "#070c14", borderWidth: 1, borderColor: "#263247", color: "#f8fafc", fontSize: 21, fontWeight: "900" },
-  presetRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 8, marginTop: 20 },
-  presetButton: { flex: 1, minHeight: 52, alignItems: "center", justifyContent: "center" },
+  presetRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 8, marginTop: 12 },
+  presetButton: { flex: 1, minHeight: 44, alignItems: "center", justifyContent: "center" },
   presetText: { color: "#d7dce6", fontSize: 23, fontWeight: "500" },
-  keypadGrid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: 22, marginTop: 22 },
-  keypadButton: { width: "31.5%", minHeight: 56, alignItems: "center", justifyContent: "center" },
-  keypadText: { color: "#f8fafc", fontSize: 28, fontWeight: "500" },
+  keypadGrid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: 10, marginTop: 12 },
+  keypadButton: { width: "31.5%", minHeight: 44, alignItems: "center", justifyContent: "center" },
+  keypadText: { color: "#f8fafc", fontSize: 26, fontWeight: "500" },
   errorCard: { flexDirection: "row", alignItems: "center", gap: 8, padding: 10, borderRadius: 10, backgroundColor: "#1f1a0b", borderWidth: 1, borderColor: "#854d0e", marginTop: 12 },
   errorTextBlock: { flex: 1, gap: 3 },
   errorText: { color: "#fde68a", fontWeight: "800" },
   errorDetailText: { color: "#fcd34d", fontSize: 12, fontWeight: "700" },
-  ticketFooter: { minHeight: 210, paddingHorizontal: 18, paddingTop: 18, paddingBottom: 34, backgroundColor: "#1d4ed8", position: "relative", overflow: "hidden" },
-  ticketFooterLightBand: { position: "absolute", top: 0, left: -60, right: -20, height: 118, backgroundColor: "#5c94ff", opacity: 0.72, transform: [{ rotate: "-10deg" }] },
-  ticketFooterDarkBand: { position: "absolute", left: -40, right: -40, bottom: -58, height: 142, backgroundColor: "#1648bd", opacity: 0.86, transform: [{ rotate: "8deg" }] },
-  swipeSubmit: { flex: 1, minHeight: 154, alignItems: "center", justifyContent: "center", gap: 16, paddingHorizontal: 14, borderRadius: 24, backgroundColor: "transparent" },
+  ticketFooter: { minHeight: 156, paddingHorizontal: 18, paddingTop: 8, paddingBottom: 18, backgroundColor: "#1d4ed8", position: "relative", overflow: "hidden" },
+  ticketFooterLightBand: { position: "absolute", top: 0, left: -60, right: -20, height: 92, backgroundColor: "#5c94ff", opacity: 0.72, transform: [{ rotate: "-10deg" }] },
+  ticketFooterDarkBand: { position: "absolute", left: -40, right: -40, bottom: -50, height: 112, backgroundColor: "#1648bd", opacity: 0.86, transform: [{ rotate: "8deg" }] },
+  swipeSubmit: { flex: 1, minHeight: 116, alignItems: "center", justifyContent: "center", gap: 10, paddingHorizontal: 14, borderRadius: 24, backgroundColor: "transparent" },
   swipeSubmitArmed: { backgroundColor: "rgba(255,255,255,0.14)" },
   swipeSubmitDisabled: { opacity: 0.55 },
   swipeIcon: { width: 56, height: 42, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundColor: "transparent" },
   swipeIconArmed: { backgroundColor: "rgba(255,255,255,0.18)", transform: [{ translateY: -8 }] },
-  swipeTextBlock: { alignItems: "center" },
+  swipeTextBlock: { alignItems: "center", transform: [{ translateY: -14 }] },
   swipeLabel: { color: "#ffffff", fontSize: 24, fontWeight: "500" },
   swipeHelper: { display: "none" },
 });

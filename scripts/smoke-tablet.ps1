@@ -97,11 +97,22 @@ function Resolve-LanIpv4 {
   throw "Could not detect a LAN IPv4 address. Pass -ExpoHost manually."
 }
 
+function Wake-AndroidProofDevice {
+  param([string]$TargetDevice)
+  & adb -s $TargetDevice shell input keyevent KEYCODE_WAKEUP | Out-Null
+  Start-Sleep -Milliseconds 300
+  & adb -s $TargetDevice shell wm dismiss-keyguard | Out-Null
+  Start-Sleep -Milliseconds 300
+  & adb -s $TargetDevice shell input swipe 540 1800 540 900 250 | Out-Null
+  & adb -s $TargetDevice shell settings put global stay_on_while_plugged_in 3 | Out-Null
+}
+
 $resolvedExpoHost = if ($ExpoHost) { $ExpoHost } else { Resolve-LanIpv4 }
 
 Write-Host "Android smoke target: $Device"
 Write-Host "Expo host: $resolvedExpoHost"
 Write-Host "Expo port: $Port"
+Wake-AndroidProofDevice -TargetDevice $Device
 
 if ($LocalMvpRouteStatusFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteStatusFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir

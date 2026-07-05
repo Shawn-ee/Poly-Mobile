@@ -450,3 +450,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | The server-backed filled order proof claimed History coverage but only verified the Portfolio position screen. | P0 | Passed | Primary Samsung S23 Totals filled proof now taps History and verifies `portfolio-tab-history portfolio-tab-selected` plus `activity-row-*`. |
 | Filled trade History must preserve selected market, line, period, and Polymarket provider token/source identity. | P0 | Passed | Final S23 proof on port `8306` verifies totals market type, line `2.5`, period, provider source, and token through the History row. |
 | Backend/API route should not change for this proof-gate correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android server-filled proof passed. |
+
+## Cycle HM - Ticket Retail Order Screen Parity
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| The order ticket header was visually awkward compared with Polymarket's compact mobile order page. | P0 | Passed | `TradeTicket` now renders `ticket-retail-order-header` with close, flag, event/outcome text, and a right-side settings icon; S23 screenshot shows the compact header. |
+| The visible settings/filter icon must not be a dead button. | P0 | Passed | S23 proof taps `ticket-settings` and verifies `ticket-settings-panel ticket-settings-state-open` with Order type, Odds, and Available details. |
+| The amount-first keypad and swipe-submit flow must still work after the layout change. | P0 | Passed | S23 proof on port `8312` enters amount, shows `Swipe up to buy`, submits the server-backed fake-token order, and reaches Portfolio History. |
+| Backend/API route should not change for this ticket presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android server-filled proof passed. |
