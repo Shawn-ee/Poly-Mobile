@@ -269,3 +269,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Chart selected team/probability label could overlap outcome chips on the Event Detail screenshot. | P0 | Passed | Chart label moved lower/right with constrained width; tablet screenshot no longer shows the previous fallback warning pill and keeps the selected label separated from the rail. |
 | Simplifying the chart rail must preserve ticket open and Portfolio/history flow. | P0 | Passed | Local MVP trade-flow smoke asserted `event-detail-simple-chart-trade-rail`, then passed through ticket, fake-token order, Portfolio, Orders, and History. |
 | Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |
+
+## Cycle GR - Event Detail Market Status Hidden
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Event Detail line-market headers still showed backend/provider availability text such as `Market live` in the default retail betting UI. | P0 | Passed | Samsung tablet screenshot shows Spread and Totals headers without the visible `Market live` pill; availability remains hidden proof metadata. |
+| Hiding availability status must preserve line selectors, outcome rows, and ticket flow. | P0 | Passed | Full Local MVP trade-flow proof passed through selected line, ticket, fake-token order, Portfolio, Orders, and History. |
+| Backend/API route should not change for this presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, targeted tests, parser check, and Android proof passed. |

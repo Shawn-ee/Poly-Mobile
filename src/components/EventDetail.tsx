@@ -1427,11 +1427,9 @@ export function EventDetail({
           {group.backendMarket?.availability && (
             <View
               accessibilityLabel={`event-detail-market-availability-${group.id} market-availability-${group.backendMarket.availability.status} market-status-${group.backendMarket.availability.marketStatus ?? "unknown"} ${marketAvailabilityLabel(group.backendMarket) ?? ""}`}
-              style={[styles.marketAvailabilityPill, group.backendMarket.availability.status !== "ready" && styles.marketAvailabilityPillWarning, group.backendMarket.availability.status === "suspended" && styles.marketAvailabilityPillSuspended]}
+              style={styles.hiddenStats}
               testID={`event-detail-market-availability-${group.id}`}
-            >
-              <Text style={[styles.marketAvailabilityText, group.backendMarket.availability.status !== "ready" && styles.marketAvailabilityTextWarning]}>{marketAvailabilityLabel(group.backendMarket)}</Text>
-            </View>
+            />
           )}
           {showOrderBookDebug && marketDepthBatchLabel(group.backendMarket) && (
             <View
@@ -2097,11 +2095,9 @@ export function EventDetail({
                   {backendSpreadMarket?.availability && (
                     <View
                       accessibilityLabel={`event-detail-market-availability-spread market-availability-${backendSpreadMarket.availability.status} market-status-${backendSpreadMarket.availability.marketStatus ?? "unknown"} ${marketAvailabilityLabel(backendSpreadMarket) ?? ""}`}
-                      style={[styles.marketAvailabilityPill, backendSpreadMarket.availability.status !== "ready" && styles.marketAvailabilityPillWarning, backendSpreadMarket.availability.status === "suspended" && styles.marketAvailabilityPillSuspended]}
+                      style={styles.hiddenStats}
                       testID="event-detail-market-availability-spread"
-                    >
-                      <Text style={[styles.marketAvailabilityText, backendSpreadMarket.availability.status !== "ready" && styles.marketAvailabilityTextWarning]}>{marketAvailabilityLabel(backendSpreadMarket)}</Text>
-                    </View>
+                    />
                   )}
                   {showOrderBookDebug && backendSpreadMarket && (
                     <Pressable
