@@ -1080,7 +1080,15 @@ export default function App() {
   const openTicket = (market: Market, outcome: Outcome, event?: Event, side?: "buy" | "sell", selection?: TicketSelection) => {
     setTicketOrderError(null);
     setTicketOrderErrorDetail(null);
-    setTicket({ market, outcome, event, side: side ?? ticketDefaults.side, contractSide: selection?.contractSide, selection });
+    const resolvedSide = side ?? ticketDefaults.side;
+    setTicket({
+      market,
+      outcome,
+      event,
+      side: resolvedSide,
+      contractSide: selection?.contractSide ?? (resolvedSide === "sell" ? "no" : "yes"),
+      selection,
+    });
   };
 
   useEffect(() => {
@@ -1393,9 +1401,17 @@ export default function App() {
       setPortfolioSyncStatus("error");
       return;
     }
+    const selection =
+      position.selection
+        ? {
+            ...position.selection,
+            side: side === "sell" ? "no" : position.selection.side,
+            contractSide: side === "sell" ? "no" : position.selection.contractSide,
+          }
+        : undefined;
     setSelectedEvent(target.event ?? null);
     setMainTab("portfolio");
-    openTicket(target.market, target.outcome, target.event, side);
+    openTicket(target.market, target.outcome, target.event, side, selection);
   };
 
   const openEventDetail = useCallback((event: Event) => {

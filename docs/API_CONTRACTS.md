@@ -91,6 +91,8 @@ Cycle GI changes only Live page presentation by hiding market/outcome summary pi
 
 Cycle GJ changes only Home discovery presentation by removing default Saved/watchlist controls from the Local MVP path. It does not change event discovery payloads, saved state storage, market/outcome fields, ticket request fields, order routes, or Portfolio contracts.
 
+Cycle GK changes the mobile-side ticket handoff for Portfolio actions. No backend route changes are required. The same `POST /api/orders` contract applies when the user submits from the Buy more or Cash out ticket; the mobile payload must preserve `side`, `contractSide`, market/outcome identity, and any selection fields such as `marketType`, `line`, `period`, and `displayLabel`.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:

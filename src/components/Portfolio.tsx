@@ -828,10 +828,10 @@ export function Portfolio({
                 </View>
                 <View style={styles.positionQuickActions}>
                   <Pressable
-                    accessibilityLabel={`close-position-${position.id}`}
-                    onPress={() => closePosition(position)}
+                    accessibilityLabel={`portfolio-position-cash-out-${position.id}`}
+                    onPress={() => openPositionTrade(position, "sell")}
                     style={styles.cashOutButton}
-                    testID={`close-position-${position.id}`}
+                    testID={`portfolio-position-cash-out-${position.id}`}
                   >
                     <Text style={styles.cashOutText}>{pageCopy.cashOut}</Text>
                   </Pressable>

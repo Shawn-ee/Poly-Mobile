@@ -210,3 +210,12 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | Home discovery still exposed Saved/watchlist controls even though watchlists are outside the Local MVP betting flow. | P0 | Passed | `HomeScreen` removes Saved filter and stops passing save props to Home cards; Samsung tablet proof passed. |
 | Route-backed discovery proof should fail if watchlist controls reappear. | P0 | Passed | `LocalMvpHomeRouteTicketFlow` checks absence of `home-filter-saved`, `save-event-`, and `home-saved-empty`; proof `cycle-GJ-local-mvp-home-route-ticket-flow-proof.json` passed. |
 | Backend/API contracts should not change for this presentation-only cleanup. | P0 | Passed | No backend route, request body, response field, or storage contract changed. |
+
+## Cycle GK - Portfolio Action Ticket Proof
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| Portfolio plus/buy-more action needed Android proof that it opens the simple Buy ticket from an existing position. | P0 | Passed | Samsung tablet proof taps `position-trade-buy-*` and verifies the Buy ticket with preserved line identity. |
+| Visible Portfolio Cash out closed the position directly instead of routing through the Sell ticket. | P0 | Passed | Cash out now calls `openPositionTrade(position, "sell")`; Samsung tablet proof verifies the Sell ticket opens. |
+| Sell ticket handoff could lose No-side contract identity when the caller passed only `side="sell"`. | P0 | Passed | `openTicket` resolves missing `contractSide` from explicit side, and `openPositionTrade` forwards stored position selection; proof verifies `ticket-contract-side-no`. |
+| Backend/API route should not change for this handoff cycle. | P0 | Passed | Existing order route/data contract remains unchanged. |
