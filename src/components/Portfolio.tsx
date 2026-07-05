@@ -554,7 +554,7 @@ export function Portfolio({
         <Text style={styles.openOrdersTitle}>{t.openOrders}</Text>
         {openOrders.slice(0, 5).map((order) => (
           <Pressable
-            accessibilityLabel={`open-order-row-${order.id} ${selectionIdentityLabel(order)}`}
+            accessibilityLabel={`open-order-row-${order.id} open-order-row-retail-simple ${selectionIdentityLabel(order)}`}
             key={order.id}
             onPress={() => setExpandedOrderId((current) => (current === order.id ? null : order.id))}
             style={[styles.openOrderItem, expandedOrderId === order.id && styles.rowExpanded]}
@@ -567,14 +567,10 @@ export function Portfolio({
                   {order.side === "buy" ? t.buy : t.sell} - {displayOutcome(order)} - {order.status}
                 </Text>
                 <View
-                  accessibilityLabel={`open-order-status-${order.id} fake-token-test order-status-${order.status.toLowerCase()}`}
-                  style={styles.statusPillRow}
+                  accessibilityLabel={`open-order-status-${order.id} fake-token-test order-status-${order.status.toLowerCase()} ${order.selection ? snapshotSourceLabel(order.id, order.selection) : ""}`}
+                  style={styles.a11yOnly}
                   testID={`open-order-status-${order.id}`}
-                >
-                  <Text style={styles.statusPill}>Fake-token test</Text>
-                  <Text style={styles.statusPill}>{lifecycleStatusLabel(order.status)}</Text>
-                  {order.selection && <Text accessibilityLabel={`open-order-snapshot-${order.id} ${snapshotSourceLabel(order.id, order.selection)}`} style={styles.statusPill}>Order-time snapshot</Text>}
-                </View>
+                />
               </View>
               <Pressable
                 accessibilityLabel={`cancel-open-order-${order.id}`}
@@ -585,18 +581,10 @@ export function Portfolio({
                 <Text style={styles.cancelOrderText}>{t.cancelOrder}</Text>
               </Pressable>
             </View>
-            <View style={styles.rowHint}>
-              <Ionicons name={expandedOrderId === order.id ? "chevron-up" : "chevron-down"} color="#93c5fd" size={16} />
-              <Text style={styles.rowHintText}>{expandedOrderId === order.id ? detailCopy.hideDetails : detailCopy.actionHint}</Text>
-            </View>
             <View style={styles.openOrderMetricGrid}>
               <View style={styles.openOrderMetricBox}>
                 <Text style={styles.openOrderMetricLabel}>{t.limitPrice}</Text>
                 <Text style={styles.openOrderPrice}>{Math.round(order.price * 100)}%</Text>
-              </View>
-              <View style={styles.openOrderMetricBox}>
-                <Text style={styles.openOrderMetricLabel}>{t.impliedOdds}</Text>
-                <Text style={styles.openOrderMetricValue}>{decimalOdds(order.price)}</Text>
               </View>
               <View style={styles.openOrderMetricBox}>
                 <Text style={styles.openOrderMetricLabel}>{t.orderValue}</Text>
@@ -604,23 +592,23 @@ export function Portfolio({
               </View>
             </View>
             <Text accessibilityLabel={`open-order-remaining-value-${order.id}`} style={styles.openOrderRemaining}>
-              {t.remaining}: {openOrderRemainingShares(order).toLocaleString(undefined, { maximumFractionDigits: 2 })} {t.shares} ({t.remainingValue}: {money(openOrderValue(order))})
+              {openOrderRemainingShares(order).toLocaleString(undefined, { maximumFractionDigits: 2 })} {t.shares} {t.remaining.toLowerCase()}
             </Text>
             <Text accessibilityLabel={`open-order-potential-payout-${order.id}`} style={styles.openOrderRemaining}>
               {t[openOrderPotentialCopyKey(order)]}: {money(openOrderPotentialValue(order))}
             </Text>
             {typeof order.originalShares === "number" && (
-              <Text accessibilityLabel={`open-order-size-${order.id}`} style={styles.openOrderPlaced}>
+              <Text accessibilityLabel={`open-order-size-${order.id}`} style={[styles.openOrderPlaced, styles.a11yOnly]}>
                 {t.size}: {order.originalShares.toLocaleString(undefined, { maximumFractionDigits: 2 })} {t.shares}
               </Text>
             )}
             {openOrderFilledText(order, t) && (
-              <Text accessibilityLabel={`open-order-filled-${order.id}`} style={styles.openOrderPlaced}>
+              <Text accessibilityLabel={`open-order-filled-${order.id}`} style={[styles.openOrderPlaced, styles.a11yOnly]}>
                 {openOrderFilledText(order, t)}
               </Text>
             )}
             {order.placedAt && (
-              <Text accessibilityLabel={`open-order-placed-${order.id}`} style={styles.openOrderPlaced}>
+              <Text accessibilityLabel={`open-order-placed-${order.id}`} style={[styles.openOrderPlaced, styles.a11yOnly]}>
                 {t.placed}: {order.placedAt}
               </Text>
             )}

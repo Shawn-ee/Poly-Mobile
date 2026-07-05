@@ -434,3 +434,11 @@ Order book, chat, live stats, deposits, withdrawals, location checks, notificati
 | After a server-backed open order, Portfolio could show an empty Positions tab even though the user's new order existed under Orders. | P0 | Passed | Samsung tablet screenshot shows Orders selected with the open order row visible after swipe-submit server order. |
 | Server-backed proof must require the visible open-order row, not just hidden count/metadata labels. | P0 | Passed | `scripts/smoke.ps1` now expects `portfolio-tab-orders portfolio-tab-selected` and `open-order-row-*`; proof passed on port `8297`. |
 | Backend/API route should not change for this landing-state correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android server-backed proof passed. |
+
+## Cycle HK - Portfolio Open Order Row Retail Flow
+
+| Gap | Priority | Status | Evidence |
+| --- | --- | --- | --- |
+| The server-backed open-order row showed test/debug details and dense execution fields that made the result page feel messy for the Local MVP retail flow. | P0 | Passed | Samsung tablet screenshot shows the simplified order row with `open-order-row-retail-simple`. |
+| The simplified row must still preserve order, provider, line, status, and cancel identity. | P0 | Passed | Server-backed proof on port `8298` verifies provider source/token, market type, line, period, open row, and cancel target identity. |
+| Backend/API route should not change for this row presentation correction. | P0 | Passed | No route/schema/request changes; typecheck, parser check, and Android server-backed proof passed. |

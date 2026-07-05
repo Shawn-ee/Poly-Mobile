@@ -143,6 +143,8 @@ Cycle HI changes only visible mobile Event Detail presentation and proof gates. 
 
 Cycle HJ changes only mobile Portfolio tab landing behavior and proof gates. No backend route, request body, response field, or schema changes are required. Mobile continues to consume `POST /api/orders`, `GET /api/portfolio`, and `GET /api/portfolio/value-history`. When the Portfolio snapshot returns an open order and no filled position for the latest submitted ticket, the UI selects the Orders tab so the existing `openOrders[]` response is visible to the user. Filled position snapshots still land on Positions.
 
+Cycle HK changes only mobile Portfolio open-order row presentation and proof gates. No backend route, request body, response field, or schema changes are required. Mobile still consumes the same `openOrders[]` fields from `GET /api/portfolio`: order ID, title, outcome, selection/provider identity, side, status, price, remaining size, value, and placed time. The visible row is simplified for the retail MVP while hidden proof labels continue to preserve order-time provider/line identity.
+
 ## Provider Data
 
 For Polymarket-backed markets, mobile expects backend-shaped data to include:
