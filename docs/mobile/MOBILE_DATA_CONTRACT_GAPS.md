@@ -461,8 +461,9 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Dirty Portfolio UI files still need clean wiring to `loadPortfolioValueHistory()` after unrelated screen churn is reconciled.
-- Android proof that the visible Portfolio chart consumes route-sourced value history in server mode remains P1.
+- Cycle KU wires visible Portfolio UI to `loadPortfolioValueHistory()`.
+- Optional Android proof remains P1 only if visual/device proof becomes required again.
+- Persisted account-level value snapshots remain future hardening; current route reconstructs value history from wallet, positions, and market snapshots.
 
 Schema mismatch:
 
@@ -471,6 +472,27 @@ Schema mismatch:
 Temporary mock/static data:
 
 - The fallback remains backend-shaped and deterministic for offline mode only; the service does not prefer it over successful route data.
+
+## Cycle KU - Portfolio Value History UI Wiring
+
+Closed or narrowed:
+
+- Visible Portfolio chart now receives a server-mode loader backed by `loadPortfolioValueHistory()`.
+- `App` supplies API, range, cash, positions value, and PnL to the service instead of calling the raw route directly.
+- `Portfolio` stores the returned history for the active range and exposes route source/status proof metadata through the chart labels.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Persisted account-level value snapshots remain future backend hardening.
+- Optional Android proof remains P1 only if visual/device proof becomes required again.
+
+Schema mismatch:
+
+- No schema migration was made. The route continues to use existing `UserBalance`, `Position`, and `MarketOutcomeSnapshot` data.
+
+Temporary mock/static data:
+
+- Mock mode keeps deterministic backend-shaped fallback. Server-mode route failures fall back through the service without replacing successful route data.
 
 ## Cycle JX - Line Options Contract
 
@@ -526,7 +548,8 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Search tab UI backend pagination and Portfolio value-history UI route loading still need clean UI commits after unrelated dirty screen churn is reconciled.
+- Search tab UI backend pagination remains P1 if broader Search scope expands.
+- Portfolio value-history UI route loading is closed by Cycle KU.
 - Server-side Home filter pagination for live/today remains P1.
 
 Schema mismatch:

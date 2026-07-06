@@ -300,7 +300,21 @@ Cycle JY adds a focused mobile service-layer loader for the backend Portfolio va
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Portfolio value history service load | `/api/portfolio/value-history?range=1D|1W|1M|All` | GET | Session user or canonical API key with `account:read` | Query params only | `range`, `ranges`, `source`, `status`, `generatedAt`, `lastUpdated`, `emptyState`, `points[].timestamp/value/cash/positionsValue/pnl` | Existing `UserBalance`, `Position`, `MarketOutcomeSnapshot` route inputs | `loadPortfolioValueHistory()` uses deterministic backend-shaped data only when the API client is absent or route loading fails. It preserves the route payload when available. | P1: wire dirty Portfolio UI to this service and add Android proof that server mode chart data uses `source=portfolio-value-history-route`. |
+| Portfolio value history service load | `/api/portfolio/value-history?range=1D|1W|1M|All` | GET | Session user or canonical API key with `account:read` | Query params only | `range`, `ranges`, `source`, `status`, `generatedAt`, `lastUpdated`, `emptyState`, `points[].timestamp/value/cash/positionsValue/pnl` | Existing `UserBalance`, `Position`, `MarketOutcomeSnapshot` route inputs | `loadPortfolioValueHistory()` uses deterministic backend-shaped data only when the API client is absent or route loading fails. It preserves the route payload when available. | Cycle KU wires visible Portfolio chart to this service in server mode. |
+
+## Cycle KU - Portfolio Value History UI Wiring
+
+Cycle KU wires the visible Portfolio performance chart to the value-history service in server mode:
+
+- UI proof: `docs/mobile/harness/cycle-KU-portfolio-value-history-ui-wiring/cycle-KU-portfolio-value-history-ui-wiring.json`.
+- Proof script: `scripts/prove_mobile_portfolio_value_history_ui_wiring.ts`.
+- Reuses service proof: `docs/mobile/harness/cycle-JY-portfolio-value-history-service-contract/cycle-JY-portfolio-value-history-service-contract.json`.
+- Focused tests: `mobile/src/__tests__/portfolioValueHistoryService.test.ts`, `mobile/src/__tests__/api.test.ts`, and `src/__tests__/portfolio.value-history.route.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio performance chart | `/api/portfolio/value-history?range=<range>` | GET | Session user or canonical API key with `account:read` | Query param `range` | `source`, `status`, `range`, `points[]`, timestamps, empty state | Existing `UserBalance`, `Position`, `MarketOutcomeSnapshot` route inputs | Mock mode uses deterministic backend-shaped fallback. Server mode uses `loadPortfolioValueHistory()` and falls back only when route loading fails. | Persisted account-level value snapshots remain future hardening; current route reconstructs from wallet, positions, and market snapshots. |
+| Portfolio range selector | Same route with `range=1D|1W|1M|All` | GET | Same actor | Query param `range` | Route result for the active range; visible proof markers include `portfolio-chart-source-*`, `portfolio-chart-status-*`, and point count | Same as above | Same as above | Optional Android proof if visual/device proof becomes required again. |
 
 ## Cycle JX - Line Options Contract
 
@@ -341,7 +355,7 @@ Cycle JV consolidates mobile client/type definitions required by already-gated b
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Home/Search event pages | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=<n>&cursor=<event-id>&search=<query>` | GET | Public/mobile route | Query params only | `events[]`, `nextCursor`, `page.limit`, `page.nextCursor`, `page.hasMore`, compact `events[].markets[]` | Existing `Event`, `Market`, `Outcome` | UI files can still use local filtering/fallback until those dirty screens are reconciled. | P1: wire Search UI server pagination and Home live/today server-side filter pagination. |
 | Event rule fields on summaries | Same `/api/events` route and event detail routes | GET | Public/mobile route | Query params or event slug | `marketProfile`, `resultMode`, `gameRules`, `supportedMarketTypes` | Existing `Event`, `Market`, `Outcome` | Mobile fallback derivation remains only a fallback when backend fields are absent. | P1: broader real-provider replay for more event profiles. |
-| Portfolio value history client | `/api/portfolio/value-history?range=1D|1W|1M|All` | GET | Session user or canonical API key with `account:read` | Query params only | `range`, `ranges`, `source`, `status`, `generatedAt`, `lastUpdated`, `emptyState`, `points[]` | `UserBalance`, `Position`, `MarketOutcomeSnapshot` | Standalone/non-server UI may still use deterministic fallback until dirty Portfolio UI wiring is reconciled. | P1: commit UI server-mode loader wiring once unrelated Portfolio/App churn is separated. |
+| Portfolio value history client | `/api/portfolio/value-history?range=1D|1W|1M|All` | GET | Session user or canonical API key with `account:read` | Query params only | `range`, `ranges`, `source`, `status`, `generatedAt`, `lastUpdated`, `emptyState`, `points[]` | `UserBalance`, `Position`, `MarketOutcomeSnapshot` | Standalone/mock mode still uses deterministic fallback; server mode passes a service-backed loader to Portfolio. | Cycle KU closes visible Portfolio chart server-mode loader wiring. |
 
 ## Cycle JU - Profile Preferences Route Contract
 

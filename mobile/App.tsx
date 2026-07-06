@@ -40,6 +40,7 @@ import { assertCanSellPositionShares, availablePositionShares, canCashOutPositio
 import { serverBackendOnlyPortfolioFixture, serverClosedPortfolioFixture, serverHydratedPortfolioFixture } from "./src/services/portfolioFixtureService";
 import { applyServerPortfolioState } from "./src/services/portfolioStateApplyService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
+import { loadPortfolioValueHistory as loadPortfolioValueHistoryRoute } from "./src/services/portfolioValueHistoryService";
 import { resolvePositionTradeTarget } from "./src/services/positionTradeTargetService";
 import { loadAccountBalance } from "./src/services/accountBalanceService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
@@ -1213,9 +1214,15 @@ export default function App() {
       if (ORDER_MODE !== "server" || runtimeApiKey.length === 0) {
         return Promise.reject(new Error("Portfolio value history route is unavailable outside server mode."));
       }
-      return api.getPortfolioValueHistory(range);
+      return loadPortfolioValueHistoryRoute({
+        api,
+        range,
+        cash: balance,
+        positionsValue: positions.reduce((total, position) => total + portfolioPositionValue(position), 0),
+        pnl: positions.reduce((total, position) => total + portfolioPositionValue(position) - position.amount, 0),
+      });
     },
-    [api, runtimeApiKey],
+    [api, balance, positions, runtimeApiKey],
   );
 
   useEffect(() => {
