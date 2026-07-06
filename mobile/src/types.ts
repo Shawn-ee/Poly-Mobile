@@ -123,6 +123,24 @@ export type EventSummary = {
   liveStats?: EventLiveStat[];
   liveDataStatus?: EventLiveDataStatus;
   chartHistory?: EventChartPoint[];
+  marketProfile?: "to_advance" | "regulation_90" | "full_match_with_overtime";
+  resultMode?: "can_draw" | "no_draw";
+  gameRules?: {
+    allowDraw: boolean;
+    includesOvertime: boolean;
+    description: string;
+  };
+  supportedMarketTypes?: Array<
+    | "to_advance"
+    | "regulation_90"
+    | "full_match_with_overtime"
+    | "spread"
+    | "totals"
+    | "team-total"
+    | "first-half"
+    | "second-half"
+    | "player-props"
+  >;
   topOutcomes?: string[];
   markets?: Market[];
 };
@@ -205,6 +223,7 @@ export type PortfolioCanceledOrderItem = {
     period?: string;
     side?: string;
     displayLabel?: string;
+    contractSide?: "yes" | "no";
     referenceSource?: string;
     externalSlug?: string;
     externalMarketId?: string;
@@ -225,6 +244,7 @@ export type PortfolioCanceledOrderItem = {
 
 export type PortfolioRecentTradeItem = {
   id: string;
+  orderId?: string | null;
   market: {
     id: string;
     title: string;
@@ -243,6 +263,7 @@ export type PortfolioRecentTradeItem = {
     period?: string;
     side?: string;
     displayLabel?: string;
+    contractSide?: "yes" | "no";
     referenceSource?: string;
     externalSlug?: string;
     externalMarketId?: string;
@@ -354,6 +375,27 @@ export type PortfolioSnapshot = {
   positions: PortfolioPositionItem[];
   openOrders: PortfolioOpenOrderItem[];
   comboOrders: unknown[];
+};
+
+export type PortfolioValueHistoryRange = "1D" | "1W" | "1M" | "All";
+
+export type PortfolioValueHistoryPoint = {
+  timestamp: string;
+  value: number;
+  cash: number;
+  positionsValue: number;
+  pnl: number;
+};
+
+export type PortfolioValueHistory = {
+  range: PortfolioValueHistoryRange;
+  ranges: PortfolioValueHistoryRange[];
+  source: "portfolio-value-history-route" | "deterministic-mobile-fallback";
+  status: "ready" | "empty" | "error";
+  generatedAt: string;
+  lastUpdated: string | null;
+  emptyState: "no-history" | null;
+  points: PortfolioValueHistoryPoint[];
 };
 
 export type ProfilePreferences = {

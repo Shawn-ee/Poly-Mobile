@@ -2,6 +2,21 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle JV - Mobile API Route Contract Backfill
+
+Cycle JV consolidates mobile client/type definitions required by already-gated backend routes without touching dirty UI files:
+
+- Route/client proof: `docs/mobile/harness/cycle-JV-mobile-api-route-contract-backfill/cycle-JV-mobile-api-route-contract-backfill.json`.
+- Proof script: `scripts/prove_mobile_api_route_contract_backfill.ts`.
+- Focused mobile tests: `mobile/src/__tests__/api.test.ts`.
+- Focused backend regression tests: `src/__tests__/public.events.no-leak.test.ts` and `src/__tests__/portfolio.value-history.route.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home/Search event pages | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=<n>&cursor=<event-id>&search=<query>` | GET | Public/mobile route | Query params only | `events[]`, `nextCursor`, `page.limit`, `page.nextCursor`, `page.hasMore`, compact `events[].markets[]` | Existing `Event`, `Market`, `Outcome` | UI files can still use local filtering/fallback until those dirty screens are reconciled. | P1: wire Search UI server pagination and Home live/today server-side filter pagination. |
+| Event rule fields on summaries | Same `/api/events` route and event detail routes | GET | Public/mobile route | Query params or event slug | `marketProfile`, `resultMode`, `gameRules`, `supportedMarketTypes` | Existing `Event`, `Market`, `Outcome` | Mobile fallback derivation remains only a fallback when backend fields are absent. | P1: broader real-provider replay for more event profiles. |
+| Portfolio value history client | `/api/portfolio/value-history?range=1D|1W|1M|All` | GET | Session user or canonical API key with `account:read` | Query params only | `range`, `ranges`, `source`, `status`, `generatedAt`, `lastUpdated`, `emptyState`, `points[]` | `UserBalance`, `Position`, `MarketOutcomeSnapshot` | Standalone/non-server UI may still use deterministic fallback until dirty Portfolio UI wiring is reconciled. | P1: commit UI server-mode loader wiring once unrelated Portfolio/App churn is separated. |
+
 ## Cycle JU - Profile Preferences Route Contract
 
 Cycle JU proves the backend/mobile payload contract for the visible account/settings preference fields without touching the currently dirty mobile UI files:

@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle JV - Mobile API Route Contract Backfill
+
+Closed or narrowed:
+
+- Mobile `PolyApi.listWorldCupEvents()` now has committed support for `limit`, `cursor`, `search`, `nextCursor`, and `page.hasMore`.
+- Mobile event summary types now include backend-owned market-rule fields used by Event Detail/Game Lines rendering.
+- Mobile `PolyApi.getPortfolioValueHistory(range)` and `PortfolioValueHistory` types are committed, matching `/api/portfolio/value-history`.
+- Portfolio selection identity response types include `contractSide` and recent-trade `orderId` fields used by Portfolio/history surfaces.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Search tab UI backend pagination and Portfolio value-history UI route loading still need clean UI commits after unrelated dirty screen churn is reconciled.
+- Server-side Home filter pagination for live/today remains P1.
+
+Schema mismatch:
+
+- No schema migration was made. This cycle backfills mobile client/type contracts for existing route shapes.
+
+Temporary mock/static data:
+
+- Non-server mobile fallback behavior remains in UI/service layers until those surfaces are safely reconciled.
+
 ## Cycle JU - Profile Preferences Route Contract
 
 Closed or narrowed:
