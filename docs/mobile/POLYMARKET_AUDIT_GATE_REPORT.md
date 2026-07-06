@@ -16,10 +16,24 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle LG
+
+Gate status: Pass
+
+Scope: Home card stats contract.
+
+Decision:
+
+- P0 failed: 0 for focused active Home match-card stats cleanup.
+- P1/P2 remaining: P1 inactive Futures catalog local volume/chart presentation only if restored to visible MVP.
+- Evidence: `docs/mobile/harness/cycle-LG-home-card-stats-contract/cycle-LG-home-card-stats-contract.json`, `mobile/src/__tests__/homeCardStatsContract.test.ts`, `mobile/docs/audits/cycle-LG-home-card-stats-contract.md`.
+- Notes: Active Home match cards no longer attach hidden local-MVP volume/liquidity stats and still preserve route-fed identity, backend-driven market profile selection, filters, pagination, and ticket navigation.
+
 ## Latest Gate Summary
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Home card stats contract | Cycle LG | Pass for backend/data-contract scope | 0 for focused visible Home card stats cleanup | P1 inactive Futures catalog local volume/chart presentation only if restored to visible MVP | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Home card stats proof: `docs/mobile/harness/cycle-LG-home-card-stats-contract/cycle-LG-home-card-stats-contract.json`; tests: `mobile/src/__tests__/homeCardStatsContract.test.ts`; audit: `mobile/docs/audits/cycle-LG-home-card-stats-contract.md` | Active Home match cards no longer attach hidden local-MVP volume/liquidity stats. Cards keep route-fed identity, backend-driven market profile selection, filters, pagination, and ticket navigation. |
 | Event Detail no chat/stats contract | Cycle LF | Pass for backend/data-contract scope | 0 for focused visible Event Detail chat/stats cleanup | P1 real route-backed stats only if Event Detail scope expands | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Event Detail no chat/stats proof: `docs/mobile/harness/cycle-LF-event-detail-no-chat-stats-contract/cycle-LF-event-detail-no-chat-stats-contract.json`; tests: `mobile/src/__tests__/eventDetailNoChatStatsContract.test.ts`; audit: `mobile/docs/audits/cycle-LF-event-detail-no-chat-stats-contract.md` | Event Detail source no longer carries chat UI or frontend-invented volume/liquidity/trader stats. Focus remains on route-backed identity, primary outcomes, user position, Game Lines, Player Props placeholder, and market summary metadata. |
 | Search result stats contract | Cycle LE | Pass for backend/data-contract scope | 0 for focused visible Search result stats | P1 real route-backed ranked/faceted discovery stats only if Search scope expands | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Search result stats proof: `docs/mobile/harness/cycle-LE-search-result-stats-contract/cycle-LE-search-result-stats-contract.json`; tests: `mobile/src/__tests__/searchResultStatsContract.test.ts`; audit: `mobile/docs/audits/cycle-LE-search-result-stats-contract.md` | Visible Search rows no longer expose frontend-invented volume, liquidity, today-volume, or chat counts. Rows keep route-backed event identity, start time, top outcome, save action, and navigation. |
 | Portfolio settings contract | Cycle LD | Pass for backend/data-contract scope | 0 for focused visible Portfolio settings affordance | P1 broader account/security/session/funding settings only if MVP scope expands; optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Portfolio settings proof: `docs/mobile/harness/cycle-LD-portfolio-settings-contract/cycle-LD-portfolio-settings-contract.json`; tests: `mobile/src/__tests__/portfolioSettingsContract.test.ts`; audit: `mobile/docs/audits/cycle-LD-portfolio-settings-contract.md` | Visible Portfolio no longer exposes a duplicate local-only Account settings gear/sheet. Portfolio stays focused on route-backed value, positions, orders, history, cashout, buy, and cancel surfaces. |

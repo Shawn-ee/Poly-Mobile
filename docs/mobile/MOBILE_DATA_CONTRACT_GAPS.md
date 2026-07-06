@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle LG - Home Card Stats Contract
+
+Closed or narrowed:
+
+- Active Home match cards no longer compute frontend-invented volume or liquidity.
+- Active Home match cards no longer attach hidden local-MVP stat proof markers.
+- Home match cards keep backend-driven market profile/rules selection for advance vs regulation outcome display.
+- Home filters and pagination remain route-backed in server mode.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Route-backed Home volume/liquidity is not displayed until backend and product scope explicitly add those fields.
+- Inactive Futures catalog components still carry local fallback volume/chart presentation and should be cleaned only if that UI is restored to the visible MVP.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- No active Home match-card volume/liquidity mock data remains in the committed component path.
+
 ## Cycle LF - Event Detail No Chat/Stats Contract
 
 Closed or narrowed:

@@ -8,14 +8,6 @@ type MarketStatsCopy = {
   liquidity: string;
 };
 
-const marketCardStats = (event: Event) => {
-  const outcomeCount = event.markets.reduce((total, market) => total + market.outcomes.length, 0);
-  return {
-    volume: 8200 + outcomeCount * 1150,
-    liquidity: 4200 + event.markets.length * 950,
-  };
-};
-
 const futureCardStats = (market: Market) => ({
   volume: 12200 + market.outcomes.length * 2400,
   liquidity: 7600 + market.outcomes.length * 1350,
@@ -100,7 +92,6 @@ export function MarketList({
   openTicket,
   savedEventIds,
   toggleSavedEvent,
-  statsCopy,
 }: {
   locale: Locale;
   events: Event[];
@@ -109,7 +100,6 @@ export function MarketList({
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
   savedEventIds?: Set<string>;
   toggleSavedEvent?: (event: Event) => void;
-  statsCopy?: MarketStatsCopy;
 }) {
   if (events.length === 0) return <Text style={styles.empty}>{empty}</Text>;
   return (
@@ -119,7 +109,6 @@ export function MarketList({
         const displayAsAdvance = Boolean(winner && usesAdvanceDisplay(event, winner));
         const cardOutcomes = winner && displayAsAdvance ? winner.outcomes.slice(0, 2) : winner?.outcomes.slice(0, 3) ?? [];
         const isSaved = savedEventIds?.has(event.id) ?? false;
-        const stats = marketCardStats(event);
         return (
           <Pressable
             accessibilityLabel={`event-card-${event.id}`}
@@ -148,15 +137,6 @@ export function MarketList({
               </View>
             </View>
             <Text style={styles.eventTitle}>{label(locale, event)}</Text>
-            {statsCopy && (
-              <View
-                accessibilityLabel={`event-card-stats-hidden-local-mvp event-card-volume-${Math.round(stats.volume)} event-card-liquidity-${Math.round(stats.liquidity)}`}
-                style={styles.a11yOnly}
-                testID={`event-card-stats-${event.id}`}
-              >
-                <Text>event-card-stats-hidden-local-mvp</Text>
-              </View>
-            )}
             {winner && (
               <View accessibilityLabel={`event-card-retail-outcome-rail ${event.id} ${displayAsAdvance ? "home-card-advance-market" : "home-card-regulation-market"} ${cardOutcomes.map((outcome) => label(locale, outcome)).join(" ")}`} style={styles.eventOutcomeRail} testID={`event-card-retail-outcome-rail-${event.id}`}>
                 {cardOutcomes.map((outcome, index) => (

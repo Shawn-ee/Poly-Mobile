@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle LG - Home Card Stats Contract
+
+Cycle LG removes hidden local-MVP volume/liquidity stats from active Home match cards. Home cards remain tied to the `/api/events` feed in server mode and use backend-provided event rules/profile fields for outcome selection.
+
+- Home card stats proof: `docs/mobile/harness/cycle-LG-home-card-stats-contract/cycle-LG-home-card-stats-contract.json`.
+- Proof script: `scripts/prove_mobile_home_card_stats_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/homeCardStatsContract.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Home match cards | `/api/events?category=sports&sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&filter=<all/live/today>&limit=<n>&cursor=<event-id>` | GET | Public event viewing; optional account preference sync for saved ids through existing profile preferences wiring | Query params only | Event id/title/teams/status/start time/tag, compact markets/outcomes, `marketProfile`, `resultMode`, `gameRules`, `supportedMarketTypes`, cursor metadata | Existing `Event`, listed public `Market`, active `Outcome`, sports/league taxonomy | Offline/mock mode can still use local event fixtures, but active Home cards no longer fabricate volume/liquidity stats. | Route-backed Home volume/liquidity is not displayed unless backend explicitly adds and product scopes those fields. Inactive Futures catalog presentation still carries local volume/chart fallback and remains a tracked P1 only if restored to visible MVP. |
+
 ## Cycle LF - Event Detail No Chat/Stats Contract
 
 Cycle LF removes leftover Event Detail chat UI code and frontend-invented volume/liquidity/trader stats. Event Detail remains focused on route-backed event identity, primary outcomes, user position, Game Lines, Player Props placeholder, and backend market summary metadata.

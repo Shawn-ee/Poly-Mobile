@@ -19,8 +19,6 @@ type HomeScreenCopy = {
   searchLive: string;
   today: string;
   saved: string;
-  volume: string;
-  liquidity: string;
   noSavedMarkets: string;
 };
 
@@ -135,7 +133,6 @@ export function HomeScreen({
           empty={emptyCopy}
           openEvent={openEvent}
           openTicket={openTicket}
-          statsCopy={{ volume: t.volume, liquidity: t.liquidity }}
         />
       {canLoadMore && (
         <Pressable
