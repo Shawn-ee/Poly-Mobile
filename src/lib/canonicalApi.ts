@@ -52,6 +52,7 @@ const codeFromDomainError = (error: MarketGuardError | LedgerServiceError) => {
   if (message.includes("order not found")) return "ORDER_NOT_FOUND";
   if (message === "forbidden") return "FORBIDDEN";
   if (message.includes("insufficient available usdc")) return "INSUFFICIENT_BALANCE";
+  if (message.includes("insufficient available shares")) return "INSUFFICIENT_BALANCE";
   if (message.includes("insufficient shares")) return "INSUFFICIENT_BALANCE";
   if (message.includes("insufficient balance")) return "INSUFFICIENT_BALANCE";
 

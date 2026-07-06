@@ -2,6 +2,33 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle JS - Cashout Route Sell Safety
+
+Cycle JS hardens and proves the server-mode cashout/sell route contract for the visible Portfolio cashout flow:
+
+- Route/service proof: `docs/mobile/harness/cycle-JS-cashout-route-sell-safety/cycle-JS-cashout-route-sell-safety.json`.
+- Proof script: `scripts/prove_mobile_cashout_route_sell_safety.ts`.
+- Focused backend tests: `src/server/services/__tests__/canonical_order_submission.phase5.test.ts`.
+- Focused mobile tests: `mobile/src/__tests__/positionCloseService.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio full-position cashout / sell | Canonical order submission backing `/api/orders` | POST | Existing canonical API key/session order auth; proof uses the route service directly to avoid external auth harness noise | `marketId`, `outcomeId`, `side=SELL`, `type=LIMIT`, finite full-position `size`, and current close `price` | Success: `order.id/status/side/size/remaining`, `position.shares/reservedShares`. Failure: `error.code=INSUFFICIENT_BALANCE`, clear insufficient-share message, `responseStatus=409` stored on `ApiOrderRequest` | Existing `Position`, `Order`, `ApiOrderRequest`, `Market`, `Outcome`, `UserBalance`; valid proof shares come from complete-set minting so collateral invariants remain intact | Server mode does not fall back to mock cashout. Mobile blocks zero, missing, and non-finite shares before submit. | P1: optional full external HTTP auth-stack smoke for `POST /api/orders`; canonical route submission and stored response shape are proven. |
+
+## Cycle JR - Home Event List and Pagination
+
+Cycle JR wires the visible Home event list "Load more" flow to backend cursor pagination in server market-data mode:
+
+- Route proof: `docs/mobile/harness/cycle-JR-home-event-list-pagination/cycle-JR-home-event-pagination.json`.
+- Proof script: `scripts/prove_mobile_home_event_pagination.ts`.
+- Focused route tests: selected cases in `src/__tests__/public.events.no-leak.test.ts`.
+- Focused mobile tests: `mobile/src/__tests__/api.test.ts` and `mobile/src/__tests__/homePaginationService.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home event list initial page | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10` | GET | Public/mobile route | Query params only | `events[]` with compact `markets[]`, plus `nextCursor` and `page.hasMore` | Existing `Event`, `Market`, `Outcome` rows; listed public markets only | In mock market-data mode Home still uses local fixture pagination. In server mode the initial Home list comes from the backend page. | P1: richer server-side Home filters beyond current loaded-page filtering. |
+| Home "Load more" | `/api/events?...&limit=10&cursor=<event-id>` | GET | Public/mobile route | Query params only | Next `events[]` page, `nextCursor`, `page.limit`, `page.hasMore` | Cursor resolves against `Event.id` and stable route ordering by `updatedAt`, `createdAt`, `id` descending | Failed next-page loads do not replace loaded server events with local mocks. | P1: Android device proof for pressing Load more in server mode if visual regression evidence becomes required again. |
+
 ## Cycle JQ - Backend-Driven Event Rules and Sell Safety
 
 Cycle JQ tightens backend-owned market-rule contracts for visible Event Detail/Game Lines UI and verifies sell/cashout safety:

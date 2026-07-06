@@ -2,6 +2,49 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle JS - Cashout Route Sell Safety
+
+Closed or narrowed:
+
+- Backend canonical order submission now has focused proof that no-position `SELL` and oversell attempts return `409` with `error.code=INSUFFICIENT_BALANCE`.
+- Failed cashout/sell attempts are stored in `ApiOrderRequest` with failed status, response status, error code, and clear error message.
+- Valid full-position `SELL` remains allowed when the user owns enough shares, and the proof uses balanced complete-set inventory so public collateral invariants are not bypassed.
+- Mobile cashout sizing now rejects non-finite share values before formatting or submitting the order.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Optional full external HTTP `POST /api/orders` auth-stack smoke if future gates require API-key-level route proof. The canonical route submission service and stored response shape are now covered.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Position`, `Order`, and `ApiOrderRequest` fields support this contract.
+
+Temporary mock/static data:
+
+- The JS proof creates disposable backend market/user rows and does not add frontend-only mock cashout data.
+
+## Cycle JR - Home Event List and Pagination
+
+Closed or narrowed:
+
+- `/api/events` now accepts `limit` and `cursor` and returns `nextCursor` plus `page.limit/page.nextCursor/page.hasMore`.
+- The route uses stable ordering by `updatedAt`, `createdAt`, and `id`, and validates invalid event cursors with a public 400 error.
+- Mobile `PolyApi.listWorldCupEvents()` can send `limit`, `cursor`, and `search` while preserving the existing structured World Cup filters and compact mobile markets.
+- In server market-data mode, Home "Load more" now requests the next backend page and appends de-duplicated events instead of only revealing an already-loaded local list.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Server-side Home filter pagination for `live` and `today` views. Current Home filters still apply to loaded pages.
+- Search tab backend pagination is not part of JR and remains a separate visible-flow cycle.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Event.id`, `updatedAt`, and `createdAt` support cursor pagination.
+
+Temporary mock/static data:
+
+- JR proof creates disposable backend event rows with public listed markets. It does not add frontend-only event rows.
+
 ## Cycle JQ - Backend-Driven Event Rules and Sell Safety
 
 Closed or narrowed:
@@ -13,11 +56,12 @@ Closed or narrowed:
   - knockout/full-match profile with a separate no-draw `to_advance` market and separate regulation-time draw market.
 - Focused backend sell safety remains green for no-position rejection, oversell rejection, and valid sell after owned shares exist.
 - Mobile cashout service tests remain green for full-position cashout sizing, no-share blocking, oversell blocking, and valid sell within shares.
+- Cycle JS adds canonical order submission proof that no-position and oversell `SELL` attempts are stored as failed `409`/`INSUFFICIENT_BALANCE` responses, and that valid full-position sell remains allowed.
 
 Fields Holiwyn still needs but backend does not fully provide:
 
 - Production replay across currently mapped real World Cup provider events, not just disposable contract-proof events.
-- HTTP `POST /api/orders` sell rejection proof under production-like auth/trading flags. Current proof covers the canonical backend service and mobile service guard.
+- Optional external HTTP auth-stack smoke for `POST /api/orders` if future gates require API-key-level proof. Current proof covers the canonical order submission path used by the route and mobile service guard.
 - Broader line-family availability breadth for real provider-backed spreads, totals, and team totals.
 
 Schema mismatch:

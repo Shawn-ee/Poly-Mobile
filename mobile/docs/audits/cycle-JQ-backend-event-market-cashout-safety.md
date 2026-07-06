@@ -39,5 +39,5 @@ Scope:
 ## Remaining P1
 
 - Replay the same market-rule proof against currently mapped real provider World Cup events when suitable events are available.
-- Add production-like HTTP `POST /api/orders` sell rejection proof once local trading/auth route flags are stable for this harness.
+- Cycle JS adds canonical order submission proof for stored no-position and oversell rejection. Optional external HTTP auth-stack smoke remains P1 only if a future gate requires API-key-level proof.
 - Broaden provider-backed line-family availability proof across spread, totals, and team-total markets beyond disposable contract rows.

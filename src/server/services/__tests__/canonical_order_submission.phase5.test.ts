@@ -2,6 +2,7 @@ import { randomBytes, scryptSync } from "crypto";
 import { prisma } from "@/lib/db";
 import { CanonicalApiError } from "@/lib/canonicalApi";
 import { submitCanonicalOrder } from "@/server/services/canonicalOrderSubmission";
+import { mintCompleteSetForPublicOrderbook } from "@/server/services/orderbookCollateral";
 import {
   DatabaseCanonicalRateLimitProvider,
   MemoryCanonicalRateLimitProvider,
@@ -416,6 +417,80 @@ describe("Phase 5 canonical order submission", () => {
       errorCode: "MARKET_UNAVAILABLE",
       responseStatus: 409,
     });
+  });
+
+  test("SELL without enough position is stored as a failed canonical order response", async () => {
+    const user = await createUser("cashout_route_safety_user");
+    const market = await createMarket();
+    const credential = await createApiCredential({ userId: user.id });
+    await fundUser(user.id, "100.000000");
+
+    const nakedSell = await submitCanonicalOrder({
+      userId: user.id,
+      apiCredentialId: credential.id,
+      apiKeyId: credential.keyId,
+      body: {
+        marketId: market.id,
+        outcomeId: market.outcomes[0].id,
+        side: "SELL",
+        type: "LIMIT",
+        price: "0.45",
+        size: "1.000000",
+      },
+      idempotencyKeyHeader: "cashout-route-naked-sell-key",
+    });
+
+    expect(nakedSell.status).toBe(409);
+    expect(nakedSell.body).toMatchObject({
+      error: {
+        code: "INSUFFICIENT_BALANCE",
+        message: "Insufficient shares",
+      },
+    });
+
+    await mintCompleteSetForPublicOrderbook({ marketId: market.id, userId: user.id, quantity: "2.000000" });
+
+    const oversell = await submitCanonicalOrder({
+      userId: user.id,
+      apiCredentialId: credential.id,
+      apiKeyId: credential.keyId,
+      body: {
+        marketId: market.id,
+        outcomeId: market.outcomes[0].id,
+        side: "SELL",
+        type: "LIMIT",
+        price: "0.45",
+        size: "3.000000",
+      },
+      idempotencyKeyHeader: "cashout-route-oversell-key",
+    });
+
+    expect(oversell.status).toBe(409);
+    expect(oversell.body).toMatchObject({
+      error: {
+        code: "INSUFFICIENT_BALANCE",
+        message: "Insufficient available shares",
+      },
+    });
+    expect(await prisma.order.count({ where: { marketId: market.id, side: "SELL" } })).toBe(0);
+    expect(await prisma.apiOrderRequest.findMany({
+      where: { userId: user.id, idempotencyKey: { in: ["cashout-route-naked-sell-key", "cashout-route-oversell-key"] } },
+      orderBy: { idempotencyKey: "asc" },
+      select: { idempotencyKey: true, status: true, errorMessage: true, responseStatus: true },
+    })).toEqual([
+      {
+        idempotencyKey: "cashout-route-naked-sell-key",
+        status: "FAILED",
+        errorMessage: "Insufficient shares",
+        responseStatus: 409,
+      },
+      {
+        idempotencyKey: "cashout-route-oversell-key",
+        status: "FAILED",
+        errorMessage: "Insufficient available shares",
+        responseStatus: 409,
+      },
+    ]);
   });
 
   test("provider-backed markets with accepting quotes can still submit", async () => {

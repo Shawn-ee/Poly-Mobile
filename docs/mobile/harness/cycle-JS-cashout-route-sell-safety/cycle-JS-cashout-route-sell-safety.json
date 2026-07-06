@@ -1,0 +1,86 @@
+{
+  "cycle": "JS",
+  "scope": "cashout-route-sell-safety",
+  "generatedAt": "2026-07-06T14:44:30.999Z",
+  "marketId": "ad29b0c6-44a3-40d7-ad65-23789f2373ea",
+  "outcomeId": "fa07c41b-ae3e-44c9-879b-6e2b07304ae9",
+  "checks": {
+    "noPositionSellRejected": true,
+    "oversellRejected": true,
+    "validFullPositionSellAccepted": true,
+    "failedAttemptsStored": true
+  },
+  "responses": {
+    "nakedSell": {
+      "error": {
+        "code": "INSUFFICIENT_BALANCE",
+        "message": "Insufficient shares"
+      }
+    },
+    "oversell": {
+      "error": {
+        "code": "INSUFFICIENT_BALANCE",
+        "message": "Insufficient available shares"
+      }
+    },
+    "validSell": {
+      "order": {
+        "id": "9e96d15e-4bd1-4d5f-a095-bb0436170c2b",
+        "marketId": "ad29b0c6-44a3-40d7-ad65-23789f2373ea",
+        "outcomeId": "fa07c41b-ae3e-44c9-879b-6e2b07304ae9",
+        "side": "SELL",
+        "price": "0.45",
+        "size": "2",
+        "remaining": "2",
+        "reservedNotional": "0",
+        "status": "OPEN",
+        "type": "LIMIT",
+        "clientOrderId": null,
+        "apiKeyId": null,
+        "contractSide": null,
+        "selection": null
+      },
+      "fills": [],
+      "balance": {
+        "availableUSDC": "98",
+        "lockedUSDC": "0"
+      },
+      "position": {
+        "shares": "2",
+        "reservedShares": "2",
+        "avgCost": "0.5",
+        "realizedPnl": "0"
+      }
+    }
+  },
+  "apiOrderRequests": [
+    {
+      "idempotencyKey": "cycle-js-naked-sell-1783349070854-ejquuw",
+      "status": "FAILED",
+      "responseStatus": 409,
+      "errorCode": "INSUFFICIENT_BALANCE",
+      "errorMessage": "Insufficient shares",
+      "orderId": null
+    },
+    {
+      "idempotencyKey": "cycle-js-oversell-1783349070854-ejquuw",
+      "status": "FAILED",
+      "responseStatus": 409,
+      "errorCode": "INSUFFICIENT_BALANCE",
+      "errorMessage": "Insufficient available shares",
+      "orderId": null
+    },
+    {
+      "idempotencyKey": "cycle-js-valid-sell-1783349070854-ejquuw",
+      "status": "SUCCEEDED",
+      "responseStatus": 200,
+      "errorCode": null,
+      "errorMessage": null,
+      "orderId": "9e96d15e-4bd1-4d5f-a095-bb0436170c2b"
+    }
+  ],
+  "remainingPosition": {
+    "shares": "2",
+    "reservedShares": "2"
+  }
+}
