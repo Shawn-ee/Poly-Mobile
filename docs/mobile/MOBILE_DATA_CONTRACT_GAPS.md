@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KM - Event Detail UI Hydration Wiring
+
+Closed or narrowed:
+
+- Visible Event Detail/Game page opens through `openEventDetail()` and server mode calls `PolyApi.getEvent()` for the selected event.
+- `PolyApi.getEvent()` prefers `/api/mobile/events/:slug/live-detail` and only falls back to `/api/events/:slug` if compact hydration fails.
+- `normalizeEventDetail()` preserves backend-owned market profile/rule fields and compact markets before replacing the visible `selectedEvent`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Explicit visible Game Lines catalog refresh from `/api/events/:slug/markets` remains open under the Event market catalog lane.
+- Production real-provider replay across more World Cup profiles remains under provider mapping/provider refresh lanes.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Event`, `Market`, `Outcome`, and optional quote/depth/chart read-model rows support compact Event Detail hydration.
+
+Temporary mock/static data:
+
+- Mock/offline mode keeps the initially selected local event. Successful server compact hydration is authoritative for the selected visible Event Detail event.
+
 ## Cycle KL - Account UI Summary Wiring
 
 Closed or narrowed:
@@ -116,7 +137,7 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Dirty visible Event Detail UI files still need clean server-mode wiring to the compact live-detail hydration path after unrelated screen churn is reconciled.
+- Explicit visible Game Lines catalog refresh from `/api/events/:slug/markets` remains open under the Event market catalog lane.
 - Production real-provider replay across more World Cup profiles remains under provider mapping/provider refresh lanes, not this disposable local-orderbook proof.
 
 Schema mismatch:

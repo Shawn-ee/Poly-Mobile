@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Event Detail UI hydration wiring | Cycle KM | Pass for backend/data-contract scope | 0 for focused visible Event Detail compact hydration wiring | P1 explicit visible Game Lines catalog refresh from `/api/events/:slug/markets`; P1 optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Event Detail UI hydration proof: `docs/mobile/harness/cycle-KM-event-detail-ui-hydration-wiring/cycle-KM-event-detail-ui-hydration-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/worldCupAdapter.test.ts`, `src/__tests__/mobile-live-event-detail.test.ts`, `src/__tests__/mobile-event-market-rules-contract.test.ts`; audit: `mobile/docs/audits/cycle-KM-event-detail-ui-hydration-wiring.md` | Visible Event Detail server mode calls `PolyApi.getEvent()`, which prefers compact live-detail hydration and preserves backend event rules/markets before updating the selected event. |
 | Account UI summary wiring | Cycle KL | Pass for backend/data-contract scope | 0 for focused visible Account summary route wiring | P1 broader account/security/session/funding settings only if visible MVP scope expands | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Account UI summary proof: `docs/mobile/harness/cycle-KL-account-ui-summary-wiring/cycle-KL-account-ui-summary-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/profileSummaryService.test.ts`, `src/__tests__/profile.summary.route.test.ts`; audit: `mobile/docs/audits/cycle-KL-account-ui-summary-wiring.md` | Visible Account screen server mode now consumes `/api/profile/summary` values for Account summary props and clears stale route state on failure. |
 | Live UI route wiring | Cycle KK | Pass for backend/data-contract scope | 0 for focused visible Live tab backend route wiring | P1 optional Android proof if visual proof becomes required again; rich live sports-stat feeds remain outside this route-wiring cycle | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Live UI route-wiring proof: `docs/mobile/harness/cycle-KK-live-ui-route-wiring/cycle-KK-live-ui-route-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/homeEventFeedService.test.ts`, `src/__tests__/public.events.no-leak.test.ts`; audit: `mobile/docs/audits/cycle-KK-live-ui-route-wiring.md` | Visible Live tab server mode now consumes backend `status=live` route pages and refreshes from that route instead of filtering only the already-loaded Home event page. |
 | Search UI route wiring | Cycle KJ | Pass for backend/data-contract scope | 0 for focused visible Search tab backend route wiring | P1 ranked/faceted discovery only if Search scope expands; optional Android proof if visual proof becomes required again | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Search UI route-wiring proof: `docs/mobile/harness/cycle-KJ-search-ui-route-wiring/cycle-KJ-search-ui-route-wiring.json`; tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/searchEventService.test.ts`, `src/__tests__/public.events.no-leak.test.ts`; audit: `mobile/docs/audits/cycle-KJ-search-ui-route-wiring.md` | Visible Search tab server mode now consumes backend Search route pages and cursor metadata instead of filtering only the already-loaded Home event page. |
@@ -130,6 +131,31 @@ Fail the feature when:
 | Trade ticket | Cycle AG | Pass | 0 | P1 binary NO/share contract semantics; P1 production auth/location eligibility gates | `docs/mobile/reference/screenshots/cycle-AG-polymarket-ticket-open.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-open.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-amount.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-trade.png` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket-amount.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket-details.xml`; `cmd /c npm.cmd run smoke:tablet:event-detail-trade` | Focused pass only. First view is now sparse and settings opens advanced controls. |
 | Trade ticket surface | Cycle AI | Pass | 0 | P1 production auth/location eligibility gate; P2 native motion polish | `docs/mobile/reference/screenshots/cycle-AI-polymarket-logged-in-start.png`; `docs/mobile/reference/screenshots/cycle-AI-polymarket-logged-in-france-ticket.png`; `docs/mobile/reference/screenshots/cycle-AI-polymarket-after-france-row-tap.png` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket-amount.png`; `docs/mobile/screenshots/cycle-current-holiwyn-future-list-buy-no-ticket.png`; `cmd /c npm.cmd run smoke:tablet:event-detail-trade`; `cmd /c npm.cmd run smoke:tablet:future-list-buy-no` | Logged-in Polymarket World Cup selection opened a tall location-verification sheet; Holiwyn now uses a taller dimmed fake-token ticket with fixed swipe-up submit rail. |
 | Game page compact scrolled header | Cycle AJ | Pass | 0 | P1 phone visual density/sticky tab polish; P1 backend market/live data; P1 Player Props reference scope | `docs/mobile/reference/screenshots/cycle-AJ-polymarket-live-tab.png`; `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-top.png`; `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-lines-mid.png` | `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-markets.png`; `docs/mobile/harness/cycle-current-holiwyn-game-page-full-markets.xml`; `cmd /c npm.cmd run smoke:tablet:event-detail-full-page` | Logged-in Polymarket keeps compact match context when scrolled into Game Lines; Holiwyn now shows a compact match header in that state and full game-page smoke passed. |
+
+## Cycle KM
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for visible Event Detail compact hydration wiring. Event Detail server mode now has proof that it calls `PolyApi.getEvent()`, prefers `/api/mobile/events/:slug/live-detail`, and preserves backend event rules/markets before updating the selected event.
+
+Evidence:
+
+- Event Detail UI hydration proof: `docs/mobile/harness/cycle-KM-event-detail-ui-hydration-wiring/cycle-KM-event-detail-ui-hydration-wiring.json`.
+- Cycle audit: `mobile/docs/audits/cycle-KM-event-detail-ui-hydration-wiring.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/api.test.ts`
+  - `mobile/src/__tests__/worldCupAdapter.test.ts`
+- Focused backend tests:
+  - `src/__tests__/mobile-live-event-detail.test.ts`
+  - `src/__tests__/mobile-event-market-rules-contract.test.ts`
+- Typechecks:
+  - `npm run typecheck --prefix mobile`
+  - `npx tsc --noEmit`
+
+Decision:
+
+- P0 failed: 0 for focused visible Event Detail compact hydration wiring.
+- Remaining P1: explicit visible Game Lines catalog refresh from `/api/events/:slug/markets`; optional Android proof if visual proof becomes required again.
 
 ## Cycle KL
 

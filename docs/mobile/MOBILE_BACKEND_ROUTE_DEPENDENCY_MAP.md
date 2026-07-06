@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KM - Event Detail UI Hydration Wiring
+
+Cycle KM proves the visible Event Detail/Game page is wired to the compact backend event hydration path in server mode:
+
+- Event Detail UI hydration proof: `docs/mobile/harness/cycle-KM-event-detail-ui-hydration-wiring/cycle-KM-event-detail-ui-hydration-wiring.json`.
+- Proof script: `scripts/prove_mobile_event_detail_ui_hydration_wiring.ts`.
+- Focused mobile tests: `mobile/src/__tests__/api.test.ts` and `mobile/src/__tests__/worldCupAdapter.test.ts`.
+- Focused backend tests: `src/__tests__/mobile-live-event-detail.test.ts` and `src/__tests__/mobile-event-market-rules-contract.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Event Detail hydration | `/api/mobile/events/:slug/live-detail` preferred, `/api/events/:slug` fallback | GET | Public/mobile route | Event slug path param | `event.marketProfile`, `event.resultMode`, `event.gameRules`, `event.supportedMarketTypes`, compact `markets[]`, market line/period/outcome metadata, status/time/team fields | Existing `Event`, public `Market`, active `Outcome`, optional quote/depth/chart read models | Mock/offline mode keeps the initially selected local event. Server mode swaps in compact route hydration only for the still-selected event id. | P1: explicit visible Game Lines catalog refresh from `/api/events/:slug/markets`; optional Android proof if visual proof becomes required again. |
+
 ## Cycle KL - Account UI Summary Wiring
 
 Cycle KL wires the visible Account screen to the already-proven profile summary route in server mode:
