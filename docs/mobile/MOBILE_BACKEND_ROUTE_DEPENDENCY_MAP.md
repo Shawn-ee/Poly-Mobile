@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle LE - Search Result Stats Contract
+
+Cycle LE removes frontend-invented Search result stats. Search rows no longer display fake volume, liquidity, today-volume, or chat counts; they keep event identity/start time/top outcome/save/navigation backed by the existing Search route and profile preference sync.
+
+- Search result stats proof: `docs/mobile/harness/cycle-LE-search-result-stats-contract/cycle-LE-search-result-stats-contract.json`.
+- Proof script: `scripts/prove_mobile_search_result_stats_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/searchResultStatsContract.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Search result row metadata | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&search=<query>&limit=10&cursor=<event-id>` plus `/api/profile/preferences` for saved event ids | GET for events/preferences; PUT for saved preferences | Public event list; account read/write for preference sync when server mode is active | Query params for Search; existing preference body for saved ids | Event title/category/start time, compact top market/outcome, saved state, cursor metadata | Existing `Event`, listed public `Market`, active `Outcome`, and `UserProfilePreference` rows | Mock/offline mode can still filter local events, but visible Search no longer fabricates market stats or chat counts. | Real route-backed volume, liquidity, today-volume, and comment/chat counts are not displayed until backend/Search explicitly supports those fields. |
+
 ## Cycle LD - Portfolio Settings Contract
 
 Cycle LD removes the duplicate local-only Portfolio account/settings gear and sheet. Portfolio remains focused on route-backed account value, positions, orders, history, cashout, buy, and cancel controls; Account remains the owner of account/preferences surfaces.

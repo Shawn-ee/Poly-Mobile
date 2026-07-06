@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle LE - Search Result Stats Contract
+
+Closed or narrowed:
+
+- Search result rows no longer render frontend-invented volume numbers.
+- Search result rows no longer render frontend-invented liquidity numbers.
+- Search result rows no longer render frontend-invented today-volume numbers.
+- Search result rows no longer render chat counts or chat UI.
+- Search result rows keep backend/search-route event identity, start time, top outcome, saved-market action, and navigation.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Route-backed Search volume, liquidity, today-volume, and comment/chat metadata remain future scope only if the Search surface expands to show those values.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- No visible fake Search result market stats remain in the committed component path.
+
 ## Cycle LD - Portfolio Settings Contract
 
 Closed or narrowed:

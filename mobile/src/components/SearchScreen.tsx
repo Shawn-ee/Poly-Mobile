@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, View, type NativeScrollEvent, type NativeSyntheticEvent } from "react-native";
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
-import { label, money } from "../presentation/formatters";
+import { label } from "../presentation/formatters";
 
 type SearchScreenCopy = {
   marketSearch: string;
@@ -113,9 +113,6 @@ export function SearchScreen({
             {visibleEvents.map((event) => {
               const topMarket = event.markets[0];
               const topOutcome = topMarket.outcomes[0];
-              const outcomeCount = event.markets.reduce((total, market) => total + market.outcomes.length, 0);
-              const volume = 8200 + outcomeCount * 1150;
-              const liquidity = 4200 + event.markets.length * 950;
               const isSaved = savedEventIds.has(event.id);
               return (
                 <Pressable
@@ -131,15 +128,7 @@ export function SearchScreen({
                   <View style={styles.resultBody}>
                     <Text style={styles.resultKicker}>{label(locale, { label: "Sports - Soccer", zhLabel: "\u4f53\u80b2 - \u8db3\u7403" })}</Text>
                     <Text style={styles.resultTitle}>{label(locale, event)}</Text>
-                    <View style={styles.resultStats}>
-                      <Text style={styles.resultStat}>{t.volume}: {money(volume)}</Text>
-                      <Text style={styles.resultStat}>{money(Math.round(volume * 0.08))} today</Text>
-                      <Text style={styles.resultStat}>{t.liquidity}: {money(liquidity)}</Text>
-                    </View>
-                    <View style={styles.resultStats}>
-                      <Text style={styles.resultStat}>Chat {420 + outcomeCount * 37}</Text>
-                      <Text style={styles.resultStat}>Ends {event.startsAt}</Text>
-                    </View>
+                    <Text style={styles.resultTime}>{locale === "zh" ? "\u5f00\u59cb" : "Starts"} {event.startsAt}</Text>
                   </View>
                   <View style={styles.resultRight}>
                     <Text style={styles.resultProbability}>{topOutcome.probability}%</Text>
@@ -202,8 +191,7 @@ const styles = StyleSheet.create({
   resultBody: { flex: 1, minWidth: 0 },
   resultKicker: { color: "#8ea0b8", fontSize: 13, fontWeight: "900", marginBottom: 5 },
   resultTitle: { color: "#f8fafc", fontSize: 21, lineHeight: 26, fontWeight: "900", marginBottom: 8 },
-  resultStats: { flexDirection: "row", flexWrap: "wrap", columnGap: 10, rowGap: 4, marginTop: 2 },
-  resultStat: { color: "#8ea0b8", fontSize: 12, fontWeight: "800" },
+  resultTime: { color: "#8ea0b8", fontSize: 12, fontWeight: "800", marginTop: 2 },
   resultRight: { width: 88, alignItems: "flex-end", paddingTop: 4 },
   resultProbability: { color: "#f8fafc", fontSize: 31, lineHeight: 36, fontWeight: "900" },
   resultOutcome: { color: "#8ea0b8", fontSize: 13, fontWeight: "900", marginTop: 2, textAlign: "right" },
