@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle LB - Account Auth Visibility Contract
+
+Closed or narrowed:
+
+- Account no longer stores a local mock signed-in flag in AsyncStorage.
+- Account no longer renders local-only Log In, Sign Up, or Sign Out buttons.
+- Visible signed-in state is derived from the existing `/api/profile/summary` success path through `forceAccountSignedIn`.
+- Copy now states that login/signup/sign-out actions are unavailable in this MVP build instead of claiming mock login is active or ready.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Full login, signup, logout, production session, KYC, wallet, and compliance auth flows remain future scope only if those surfaces become visible MVP requirements.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Mock/offline Account mode now shows auth-unavailable copy only; it does not invent a local authenticated session.
+
 ## Cycle LA - Header Actions Contract
 
 Closed or narrowed:

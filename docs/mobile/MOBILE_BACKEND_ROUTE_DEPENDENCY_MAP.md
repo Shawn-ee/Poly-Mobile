@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle LB - Account Auth Visibility Contract
+
+Cycle LB removes local mock Account login/signup/sign-out actions. Visible Account auth state is now display-only and route-derived: server profile summary success marks the Account screen as signed in; otherwise auth actions are unavailable.
+
+- Account auth visibility proof: `docs/mobile/harness/cycle-LB-account-auth-visibility-contract/cycle-LB-account-auth-visibility-contract.json`.
+- Proof script: `scripts/prove_mobile_account_auth_visibility_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/accountAuthContract.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Account auth state | `/api/profile/summary` through existing Account summary wiring | GET | Canonical actor with `account:read`; route id `account:summary` | None | Successful summary load sets app-level `forceAccountSignedIn=true`; summary props drive visible profile/account values | Existing `User`, `UserProfilePreference`, `UserBalance`, `Position`, `Order` route read models | Mock/offline mode shows signed-out/auth-unavailable copy only. It no longer stores or toggles a local fake auth session. | Full login, signup, logout, session, KYC, and wallet auth flows remain outside focused MVP scope. |
+
 ## Cycle LA - Header Actions Contract
 
 Cycle LA removes unsupported local-only promo and notification actions from the app header. The remaining visible header action is language switching, which is already covered by the profile preference/local preference path:

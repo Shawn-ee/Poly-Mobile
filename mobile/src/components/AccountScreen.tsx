@@ -1,11 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { money } from "../presentation/formatters";
 import type { ProfileSummaryMenuItem } from "../types";
-
-const ACCOUNT_SESSION_STORAGE_KEY = "holiwyn.accountSignedIn.v1";
 
 type AccountCopy = {
   account: string;
@@ -86,28 +82,7 @@ export function AccountScreen({
   tradingMode: "mock" | "server";
   accountMenuItems: ProfileSummaryMenuItem[];
 }) {
-  const [signedIn, setSignedIn] = useState(false);
-
-  useEffect(() => {
-    let mounted = true;
-    AsyncStorage.getItem(ACCOUNT_SESSION_STORAGE_KEY)
-      .then((stored) => {
-        if (mounted && stored !== null) setSignedIn(stored === "true");
-      })
-      .catch(() => undefined);
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    if (forceSignedIn) updateSignedIn(true);
-  }, [forceSignedIn]);
-
-  const updateSignedIn = (nextSignedIn: boolean) => {
-    setSignedIn(nextSignedIn);
-    AsyncStorage.setItem(ACCOUNT_SESSION_STORAGE_KEY, nextSignedIn ? "true" : "false").catch(() => undefined);
-  };
+  const signedIn = Boolean(forceSignedIn);
 
   const profileSyncCopy =
     profileSyncStatus === "syncing"
@@ -269,26 +244,6 @@ export function AccountScreen({
           <Text style={styles.rowText}>{t.mockOnly}</Text>
         </View>
       </View>
-
-      <View style={styles.actions}>
-        {signedIn ? (
-          <Pressable accessibilityLabel="account-sign-out" testID="account-sign-out" style={styles.secondaryButton} onPress={() => updateSignedIn(false)}>
-            <Ionicons name="log-out-outline" size={20} color="#dbeafe" />
-            <Text style={styles.secondaryText}>{t.signOut}</Text>
-          </Pressable>
-        ) : (
-          <>
-            <Pressable accessibilityLabel="account-login-phone" testID="account-login-phone" style={styles.secondaryButton} onPress={() => updateSignedIn(true)}>
-              <Ionicons name="log-in-outline" size={20} color="#dbeafe" />
-              <Text style={styles.secondaryText}>Log In</Text>
-            </Pressable>
-            <Pressable accessibilityLabel="account-login-email" testID="account-login-email" style={styles.primaryButton} onPress={() => updateSignedIn(true)}>
-              <Ionicons name="person-add-outline" size={20} color="#ffffff" />
-              <Text style={styles.primaryText}>Sign Up</Text>
-            </Pressable>
-          </>
-        )}
-      </View>
       <Text accessibilityLabel="account-login-unavailable" testID="account-login-unavailable" style={styles.notice}>
         {signedIn ? t.loginConnected : t.loginUnavailable}
       </Text>
@@ -317,12 +272,7 @@ const styles = StyleSheet.create({
   cardLabel: { color: "#93c5fd", fontWeight: "900" },
   balanceValue: { color: "#f8fafc", fontSize: 30, fontWeight: "900", marginTop: 5 },
   helper: { color: "#94a3b8", fontWeight: "700", marginTop: 8, lineHeight: 19 },
-  actions: { gap: 10, marginTop: 18 },
-  primaryButton: { height: 54, borderRadius: 12, backgroundColor: "#1d6dff", alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 8 },
-  primaryText: { color: "#ffffff", fontSize: 16, fontWeight: "900" },
-  secondaryButton: { height: 54, borderRadius: 12, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 8 },
-  secondaryText: { color: "#dbeafe", fontSize: 16, fontWeight: "900" },
-  notice: { color: "#fbbf24", fontWeight: "800", marginTop: 10, lineHeight: 19 },
+  notice: { color: "#fbbf24", fontWeight: "800", marginTop: 18, lineHeight: 19 },
   section: { marginTop: 20, padding: 14, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   sectionTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "900", marginBottom: 10 },
   row: { minHeight: 44, flexDirection: "row", alignItems: "center", gap: 10, borderTopWidth: 1, borderTopColor: "#1f2937" },
