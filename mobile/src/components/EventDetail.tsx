@@ -468,8 +468,6 @@ export function EventDetail({
   const liveDataStatus = event.liveDataStatus;
   const liveDataState = liveDataStatus?.status ?? (isLiveEvent ? "unavailable" : "ready");
   const liveDataBadge = providerBadgeFromAvailability("Live", liveDataStatus, isLiveEvent ? "stale" : "ready");
-  const liveDataText = liveDataBadge.text;
-  const liveDataMeta = liveDataBadge.meta;
   const depthMarketMatches = Boolean(orderBookMarket && event.orderbookDepthMarketId === orderBookMarket.id);
   const hasSelectedMarketDepth = (orderBookMarket?.orderbookDepth?.length ?? 0) > 0;
   const selectedDepthSource = depthMarketMatches
@@ -564,13 +562,6 @@ export function EventDetail({
     setRefreshingDepthMarketId(market.id);
     requestMarketDepth?.(market.id);
   };
-  const liveStatRows = event.liveStats ?? [
-    { label: "Possession", home: "54%", away: "46%" },
-    { label: "Shots", home: "8", away: "5" },
-    { label: "Shots on target", home: "3", away: "2" },
-    { label: "Corners", home: "4", away: "3" },
-    { label: "Expected goals", home: "1.12", away: "0.84" },
-  ];
   const liveClock = event.status === "live" ? liveClockLabel(event.startsAt) : "15'";
   const matchDateLabel = event.status === "live"
     ? "Live"
@@ -1503,40 +1494,6 @@ export function EventDetail({
           )}
         </View>
 
-        {false ? (
-          <View accessibilityLabel="event-detail-live-stats-panel" style={styles.liveStatsPanel} testID="event-detail-live-stats-panel">
-            <View style={styles.liveStatsHeader}>
-              <Text style={styles.liveStatsTitle}>Live stats</Text>
-              <View
-                accessibilityLabel={`event-detail-live-data-status live-data-status-${liveDataState} provider-lifecycle-${liveDataBadge.lifecycle} live-data-source-${liveDataBadge.source} live-data-stale-after-${liveDataStatus?.staleAfterSeconds ?? "none"} ${liveDataText} ${liveDataMeta}`}
-                style={[styles.liveDataPill, liveDataBadge.lifecycle === "refresh-due" && styles.liveDataPillWarning, liveDataBadge.lifecycle === "not-ready" && styles.liveDataPillSuspended]}
-                testID="event-detail-live-data-status"
-              >
-                <Text style={[styles.liveDataText, liveDataBadge.lifecycle !== "ready" && styles.liveDataTextWarning]}>{event.status === "live" ? liveDataText : "Pregame preview"}</Text>
-                <Text style={styles.liveDataMeta}>{liveDataMeta}</Text>
-              </View>
-            </View>
-            {liveStatRows.map((row) => (
-              <View accessibilityLabel={`event-detail-live-stat-${row.label}`} key={row.label} style={styles.liveStatRow} testID={`event-detail-live-stat-${row.label.replace(/[^A-Za-z0-9]/g, "-").toLowerCase()}`}>
-                <Text style={styles.liveStatValue}>{row.home}</Text>
-                <View style={styles.liveStatMiddle}>
-                  <Text style={styles.liveStatLabel}>{row.label}</Text>
-                  <View style={styles.liveStatTrack}>
-                    <View style={styles.liveStatFill} />
-                  </View>
-                </View>
-                <Text style={styles.liveStatValue}>{row.away}</Text>
-              </View>
-            ))}
-            <View accessibilityLabel="event-detail-live-stats-timeline" style={styles.liveStatsTimeline} testID="event-detail-live-stats-timeline">
-              <Text style={styles.liveStatsTimelineTitle}>Match flow</Text>
-              {["12' USA pressure", "28' Belgium counter", "41' Corner USA"].map((item) => (
-                <Text key={item} style={styles.liveStatsTimelineText}>{item}</Text>
-              ))}
-            </View>
-          </View>
-        ) : (
-          <>
         {isLiveEvent && (
           <View accessibilityLabel="event-detail-live-match-strip event-detail-live-match-strip-hidden-local-mvp" style={styles.hiddenStats} testID="event-detail-live-match-strip">
             <View>
@@ -1734,8 +1691,6 @@ export function EventDetail({
           style={styles.hiddenStats}
           testID="event-detail-non-prediction-lower-content-hidden-local-mvp"
         />
-          </>
-        )}
         </>
       </ScrollView>
       {activeHeaderTab === "game" && primaryMarket && selectedPrimaryOutcomeId && selectedPrimaryOutcome && !orderBookVisible && (
@@ -1824,25 +1779,12 @@ const styles = StyleSheet.create({
   bodySwitchTabActive: { backgroundColor: "#082f49" },
   bodySwitchTabText: { color: "#8b93a3", fontSize: 17, fontWeight: "900" },
   bodySwitchTabTextActive: { color: "#38bdf8" },
-  liveStatsPanel: { marginHorizontal: 24, marginTop: 16, marginBottom: 24, padding: 16, borderRadius: 18, backgroundColor: "#10171f", borderWidth: 1, borderColor: "#26313f" },
-  liveStatsHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 12 },
-  liveStatsTitle: { color: "#f8fafc", fontSize: 20, fontWeight: "900" },
-  liveStatsStatus: { overflow: "hidden", borderRadius: 999, paddingHorizontal: 10, paddingVertical: 5, color: "#93c5fd", backgroundColor: "#0b2440", fontSize: 12, fontWeight: "900" },
   liveDataPill: { minHeight: 34, borderRadius: 999, paddingHorizontal: 10, paddingVertical: 5, backgroundColor: "#0b2440", borderWidth: 1, borderColor: "rgba(56, 189, 248, 0.35)", alignItems: "flex-end", justifyContent: "center" },
   liveDataPillWarning: { backgroundColor: "rgba(53, 43, 20, 0.84)", borderColor: "rgba(251, 191, 36, 0.45)" },
   liveDataPillSuspended: { backgroundColor: "rgba(58, 24, 31, 0.84)", borderColor: "rgba(248, 113, 113, 0.45)" },
   liveDataText: { color: "#93c5fd", fontSize: 12, fontWeight: "900" },
   liveDataTextWarning: { color: "#fde68a" },
   liveDataMeta: { color: "#94a3b8", fontSize: 10, fontWeight: "800" },
-  liveStatRow: { minHeight: 54, flexDirection: "row", alignItems: "center", gap: 12, borderTopWidth: 1, borderTopColor: "#1f2937" },
-  liveStatValue: { width: 52, color: "#f8fafc", fontSize: 17, fontWeight: "900", textAlign: "center" },
-  liveStatMiddle: { flex: 1, minWidth: 0 },
-  liveStatLabel: { color: "#cbd5e1", fontSize: 13, fontWeight: "900", textAlign: "center", marginBottom: 6 },
-  liveStatTrack: { height: 5, borderRadius: 999, backgroundColor: "#26313f", overflow: "hidden" },
-  liveStatFill: { width: "58%", height: 5, borderRadius: 999, backgroundColor: "#38bdf8" },
-  liveStatsTimeline: { marginTop: 14, paddingTop: 12, borderTopWidth: 1, borderTopColor: "#26313f" },
-  liveStatsTimelineTitle: { color: "#f8fafc", fontSize: 15, fontWeight: "900", marginBottom: 8 },
-  liveStatsTimelineText: { color: "#94a3b8", fontSize: 13, fontWeight: "800", marginTop: 4 },
   chartBlock: { minHeight: 158, paddingHorizontal: 0, paddingTop: 18, paddingBottom: 8 },
   liveChartBlock: { minHeight: 168, paddingTop: 20 },
   liveMatchStrip: { minHeight: 64, marginHorizontal: 24, marginTop: 10, padding: 12, borderRadius: 14, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },

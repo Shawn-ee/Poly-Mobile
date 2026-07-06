@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle LH
+
+Gate status: Pass
+
+Scope: Event Detail dead live stats contract.
+
+Decision:
+
+- P0 failed: 0 for focused Event Detail dead live stats cleanup.
+- P1/P2 remaining: P1 real route-backed sports/live stats only if the MVP explicitly expands to a live-stat product surface.
+- Evidence: `docs/mobile/harness/cycle-LH-event-detail-dead-live-stats-contract/cycle-LH-event-detail-dead-live-stats-contract.json`, `mobile/src/__tests__/eventDetailDeadLiveStatsContract.test.ts`, `mobile/docs/audits/cycle-LH-event-detail-dead-live-stats-contract.md`.
+- Notes: Event Detail no longer carries the unreachable fake live sports stats panel, deterministic stat rows, or match-flow timeline. Backend/provider route-status markers remain hidden for proof.
+
 ## Cycle LG
 
 Gate status: Pass
@@ -33,6 +46,7 @@ Decision:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Event Detail dead live stats contract | Cycle LH | Pass for backend/data-contract scope | 0 for focused Event Detail dead live stats cleanup | P1 real route-backed sports/live stats only if MVP expands to that product surface | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Event Detail dead live stats proof: `docs/mobile/harness/cycle-LH-event-detail-dead-live-stats-contract/cycle-LH-event-detail-dead-live-stats-contract.json`; tests: `mobile/src/__tests__/eventDetailDeadLiveStatsContract.test.ts`; audit: `mobile/docs/audits/cycle-LH-event-detail-dead-live-stats-contract.md` | Event Detail source no longer carries an unreachable fake live sports stats panel, deterministic stat rows, or match-flow timeline. Hidden backend/provider status markers remain for route proof. |
 | Home card stats contract | Cycle LG | Pass for backend/data-contract scope | 0 for focused visible Home card stats cleanup | P1 inactive Futures catalog local volume/chart presentation only if restored to visible MVP | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Home card stats proof: `docs/mobile/harness/cycle-LG-home-card-stats-contract/cycle-LG-home-card-stats-contract.json`; tests: `mobile/src/__tests__/homeCardStatsContract.test.ts`; audit: `mobile/docs/audits/cycle-LG-home-card-stats-contract.md` | Active Home match cards no longer attach hidden local-MVP volume/liquidity stats. Cards keep route-fed identity, backend-driven market profile selection, filters, pagination, and ticket navigation. |
 | Event Detail no chat/stats contract | Cycle LF | Pass for backend/data-contract scope | 0 for focused visible Event Detail chat/stats cleanup | P1 real route-backed stats only if Event Detail scope expands | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Event Detail no chat/stats proof: `docs/mobile/harness/cycle-LF-event-detail-no-chat-stats-contract/cycle-LF-event-detail-no-chat-stats-contract.json`; tests: `mobile/src/__tests__/eventDetailNoChatStatsContract.test.ts`; audit: `mobile/docs/audits/cycle-LF-event-detail-no-chat-stats-contract.md` | Event Detail source no longer carries chat UI or frontend-invented volume/liquidity/trader stats. Focus remains on route-backed identity, primary outcomes, user position, Game Lines, Player Props placeholder, and market summary metadata. |
 | Search result stats contract | Cycle LE | Pass for backend/data-contract scope | 0 for focused visible Search result stats | P1 real route-backed ranked/faceted discovery stats only if Search scope expands | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Search result stats proof: `docs/mobile/harness/cycle-LE-search-result-stats-contract/cycle-LE-search-result-stats-contract.json`; tests: `mobile/src/__tests__/searchResultStatsContract.test.ts`; audit: `mobile/docs/audits/cycle-LE-search-result-stats-contract.md` | Visible Search rows no longer expose frontend-invented volume, liquidity, today-volume, or chat counts. Rows keep route-backed event identity, start time, top outcome, save action, and navigation. |

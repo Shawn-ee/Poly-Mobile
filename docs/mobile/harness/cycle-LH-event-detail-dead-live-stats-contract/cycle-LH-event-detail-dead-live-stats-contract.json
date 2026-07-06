@@ -1,0 +1,16 @@
+{
+  "cycle": "LH",
+  "scope": "event-detail-dead-live-stats-contract",
+  "generatedAt": "2026-07-06T22:00:30.562Z",
+  "pass": true,
+  "decision": "Event Detail no longer carries the dead fake live sports stats panel or match-flow timeline. The MVP surface keeps backend route-status markers plus primary outcomes, Game Lines, and Player Props placeholder.",
+  "checks": {
+    "removesFakeLiveStatsPanel": true,
+    "removesInventedSportsStats": true,
+    "keepsFocusedEventDetailSurface": true
+  },
+  "evidence": {
+    "eventDetail": "mobile/src/components/EventDetail.tsx",
+    "test": "mobile/src/__tests__/eventDetailDeadLiveStatsContract.test.ts"
+  }
+}

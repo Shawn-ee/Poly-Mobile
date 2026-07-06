@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle LH - Event Detail Dead Live Stats Contract
+
+Closed or narrowed:
+
+- Event Detail no longer carries a dead fake live sports stats panel.
+- Event Detail no longer carries deterministic `Possession`, `Shots`, `Shots on target`, `Corners`, or `Expected goals` stat rows.
+- Event Detail no longer carries a deterministic match-flow timeline.
+- Hidden backend/provider route-status metadata remains available for proof without exposing a live-stat product surface.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real route-backed sports/live stats remain future scope only if the MVP explicitly adds a visible live-stat product surface.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- No Event Detail fake live-stat rows or fake match-flow timeline remain in the committed component path.
+
 ## Cycle LG - Home Card Stats Contract
 
 Closed or narrowed:

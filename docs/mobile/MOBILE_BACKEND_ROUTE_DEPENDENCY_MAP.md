@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle LH - Event Detail Dead Live Stats Contract
+
+Cycle LH removes the unreachable fake live stats panel, deterministic sports-stat rows, and match-flow timeline from Event Detail source. Event Detail still consumes backend route-status metadata for hidden proof markers while the MVP excludes a visible live-stat product surface.
+
+- Event Detail dead live stats proof: `docs/mobile/harness/cycle-LH-event-detail-dead-live-stats-contract/cycle-LH-event-detail-dead-live-stats-contract.json`.
+- Proof script: `scripts/prove_mobile_event_detail_dead_live_stats_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/eventDetailDeadLiveStatsContract.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail MVP route-status markers | `/api/mobile/events/:slug/live-detail`, `/api/events/:slug/markets`, `/api/markets/:id/quote` | GET | Public event viewing; account/order auth only for user state and trading actions | Existing route params/query only | Event identity, teams, status/time, backend market profile/rules, compact markets, primary outcomes, Game Lines, provider/live availability metadata for hidden proof markers | Existing `Event`, `Market`, `Outcome`, provider lifecycle/status read models | Offline/mock mode can still use local event fixtures, but Event Detail no longer contains fake live-stat rows or a match-flow timeline. | Real route-backed sports/live stats remain outside MVP unless a visible live-stat product surface is explicitly scoped. |
+
 ## Cycle LG - Home Card Stats Contract
 
 Cycle LG removes hidden local-MVP volume/liquidity stats from active Home match cards. Home cards remain tied to the `/api/events` feed in server mode and use backend-provided event rules/profile fields for outcome selection.
