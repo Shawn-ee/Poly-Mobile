@@ -306,6 +306,45 @@ describe("public event API no-leak checks", () => {
     expectNoForbiddenKeys(body);
   });
 
+  test("GET /api/events filters mobile compact markets by backend event status", async () => {
+    mockPrisma.event.findMany.mockResolvedValue([
+      {
+        ...baseEvent,
+        status: "live",
+        markets: [mobileListMarket],
+      },
+    ]);
+
+    const response = await listEvents(
+      new NextRequest("http://localhost/api/events?sportKey=soccer&leagueKey=world_cup&status=live&includeMobileMarkets=1&limit=10"),
+    );
+
+    expect(response.status).toBe(200);
+    expect(mockPrisma.event.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          AND: expect.arrayContaining([
+            expect.objectContaining({
+              sportKey: "soccer",
+              leagueKey: "world_cup",
+              status: "live",
+            }),
+          ]),
+        }),
+        take: 11,
+      }),
+    );
+
+    const body = await response.json();
+    expect(body.events).toHaveLength(1);
+    expect(body.events[0]).toMatchObject({
+      slug: "france-vs-argentina",
+      status: "live",
+      markets: [{ id: "market-1" }],
+    });
+    expectNoForbiddenKeys(body);
+  });
+
   test("GET /api/events supports cursor pagination for mobile Home", async () => {
     const cursorEvent = { ...baseEvent, id: "cursor-event", updatedAt: now, createdAt: now };
     mockPrisma.event.findUnique.mockResolvedValue(cursorEvent);

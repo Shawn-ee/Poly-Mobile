@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KD - Home Event Filter Contract
+
+Cycle KD adds a focused Home feed status-filter route contract without editing dirty Home/Live UI files:
+
+- Home filter proof: `docs/mobile/harness/cycle-KD-home-event-filter-contract/cycle-KD-home-event-filter-contract.json`.
+- Proof script: `scripts/prove_mobile_home_event_filter_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/homeEventFeedService.test.ts` and `mobile/src/__tests__/api.test.ts`.
+- Focused backend tests: `src/__tests__/public.events.no-leak.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home filtered event feed | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&status=<status>&limit=<n>&cursor=<event-id>` | GET | Public/mobile route | Query params only | `events[]`, `events[].status`, compact `events[].markets[]`, `nextCursor`, `page.limit`, `page.nextCursor`, `page.hasMore` | Existing `Event`, listed public `Market`, active `Outcome` rows | `loadHomeEventFeedPage()` falls back to local status filtering only when the API client is absent or the route throws. | P1: wire dirty Home/Live UI files to this service in server mode. |
+| Home all-events feed | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=<n>&cursor=<event-id>` | GET | Public/mobile route | Query params only; no `status` for all-events feed | Same event page and compact market fields | Same existing tables; no schema migration | Successful route data is not replaced by frontend-invented rows. | P1: add calendar/date-window route filtering only if the product keeps a true `today` tab. |
+
 ## Cycle KC - Profile Summary Contract
 
 Cycle KC adds a focused Account/profile summary route and mobile mapper without editing dirty Account UI files:

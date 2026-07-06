@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KD - Home Event Filter Contract
+
+Closed or narrowed:
+
+- Mobile now has a focused `loadHomeEventFeedPage()` service for `/api/events?status=...&limit=...&cursor=...`.
+- `PolyApi.listWorldCupEvents()` passes backend `status` filters while preserving `includeMobileMarkets=1`.
+- The KD proof drives the mobile service through the real `/api/events` route handler and verifies separate `live` and `upcoming` backend pages with compact markets.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Dirty Home/Live UI files still need clean server-mode wiring to `loadHomeEventFeedPage()` after unrelated screen churn is reconciled.
+- A true calendar `today` route filter remains future work if product wants a date-window tab rather than status-based feeds.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Event.status`, `Market`, and `Outcome` rows support this Home filter service contract.
+
+Temporary mock/static data:
+
+- Local fallback status filtering remains available only when the route/API client is unavailable. Successful server route data is preferred and not replaced by client-invented rows.
+
 ## Cycle KC - Profile Summary Contract
 
 Closed or narrowed:

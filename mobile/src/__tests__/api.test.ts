@@ -213,6 +213,21 @@ describe("Holiwyn mobile API client", () => {
     expect(payload.nextCursor).toBe("event-2");
   });
 
+  test("lists World Cup events with backend status filters for Home tabs", async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse({ events: [], page: { limit: 10, nextCursor: null, hasMore: false } }));
+    vi.stubGlobal("fetch", fetchImpl);
+
+    await new PolyApi("https://api.example.test", "test-api-key").listWorldCupEvents({
+      limit: 10,
+      status: "live",
+    });
+
+    const [url] = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
+    const parsedUrl = new URL(url);
+    expect(parsedUrl.searchParams.get("status")).toBe("live");
+    expect(parsedUrl.searchParams.get("includeMobileMarkets")).toBe("1");
+  });
+
   test("loads mobile orderbook depth contract", async () => {
     const fetchImpl = vi.fn(async () =>
       jsonResponse({
