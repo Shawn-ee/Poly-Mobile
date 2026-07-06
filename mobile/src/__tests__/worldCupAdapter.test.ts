@@ -272,4 +272,62 @@ describe("world cup adapter", () => {
     expect(normalized?.status).toBe("live");
     expect(normalized?.liveDataStatus?.status).toBe("stale");
   });
+
+  test("preserves backend event market rules instead of deriving from local market heuristics", () => {
+    const detail: EventDetail = {
+      event: {
+        id: "event-rules-1",
+        slug: "backend-rule-owned",
+        title: "Backend Rules Home vs Backend Rules Away",
+        description: "Backend-provided market rules should win.",
+        category: "sports",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        homeTeamName: "Backend Rules Home",
+        awayTeamName: "Backend Rules Away",
+        startTime: "2026-07-10T20:00:00.000Z",
+        status: "upcoming",
+        liveStatus: null,
+        period: null,
+        clock: null,
+        homeScore: null,
+        awayScore: null,
+        imageUrl: null,
+        marketCount: 1,
+        activeMarketCount: 1,
+        marketProfile: "full_match_with_overtime",
+        resultMode: "no_draw",
+        gameRules: {
+          allowDraw: false,
+          includesOvertime: true,
+          description: "Full match including overtime has no draw outcome.",
+        },
+        supportedMarketTypes: ["full_match_with_overtime", "to_advance"],
+      },
+      markets: [{
+        ...baseMarket,
+        id: "misleading-regulation-market",
+        title: "Misleading 90 Minute Winner",
+        marketGroupTitle: "Regulation Time Winner",
+        marketType: "moneyline",
+        period: "regulation",
+        outcomes: [
+          { id: "home", name: "Home", label: "Home", side: "home", price: 0.4, bestBid: 0.39, bestAsk: 0.41, isTradable: true },
+          { id: "tie", name: "Tie", label: "Tie", side: "draw", price: 0.3, bestBid: 0.29, bestAsk: 0.31, isTradable: true },
+          { id: "away", name: "Away", label: "Away", side: "away", price: 0.3, bestBid: 0.29, bestAsk: 0.31, isTradable: true },
+        ],
+      }],
+    };
+
+    const normalized = normalizeEventDetail(detail);
+
+    expect(normalized?.marketProfile).toBe("full_match_with_overtime");
+    expect(normalized?.resultMode).toBe("no_draw");
+    expect(normalized?.gameRules).toMatchObject({
+      allowDraw: false,
+      includesOvertime: true,
+      description: "Full match including overtime has no draw outcome.",
+    });
+    expect(normalized?.supportedMarketTypes).toEqual(["full_match_with_overtime", "to_advance"]);
+  });
 });

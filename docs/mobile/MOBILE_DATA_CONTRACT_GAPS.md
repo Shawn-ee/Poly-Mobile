@@ -2,6 +2,32 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle JQ - Backend-Driven Event Rules and Sell Safety
+
+Closed or narrowed:
+
+- Backend event summary and live-detail rule derivation now avoid classifying a market as `to_advance` just because a team/event name contains the word `Advance`.
+- Mobile fallback rule derivation uses the same explicit advance-market key detection, while still preserving backend-provided `marketProfile`, `resultMode`, `gameRules`, and `supportedMarketTypes` first.
+- Route proof now covers two event profiles:
+  - regulation 90-minute profile with draw plus spread/totals availability.
+  - knockout/full-match profile with a separate no-draw `to_advance` market and separate regulation-time draw market.
+- Focused backend sell safety remains green for no-position rejection, oversell rejection, and valid sell after owned shares exist.
+- Mobile cashout service tests remain green for full-position cashout sizing, no-share blocking, oversell blocking, and valid sell within shares.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Production replay across currently mapped real World Cup provider events, not just disposable contract-proof events.
+- HTTP `POST /api/orders` sell rejection proof under production-like auth/trading flags. Current proof covers the canonical backend service and mobile service guard.
+- Broader line-family availability breadth for real provider-backed spreads, totals, and team totals.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Event`, `Market`, and `Outcome` fields are sufficient for the JQ rule contract.
+
+Temporary mock/static data:
+
+- The JQ proof creates disposable backend rows shaped like real event/market/outcome data. It does not add frontend-only market rows.
+
 ## Cycle FA - Route-Backed Retail Status States
 
 Closed or narrowed:

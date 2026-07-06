@@ -109,6 +109,9 @@ const probabilityFromPrice = (value: Prisma.Decimal) => {
   return Math.max(1, Math.min(99, Math.round(price * 100)));
 };
 
+const isAdvanceMarketKey = (key: string) =>
+  /(^|[\s_-])(to[\s_-]?advance|to[\s_-]?qualify|team[\s_-]?to[\s_-]?qualify|qualify)([\s_-]|$)/i.test(key);
+
 const depthLevelsFromSnapshot = (snapshot: Awaited<ReturnType<typeof buildPublicOrderbookSnapshot>>) => [
   ...snapshot.bids.map((level) => ({
     outcomeId: level.outcomeId,
@@ -557,13 +560,19 @@ export const selectCompactLiveMarkets = (markets: MarketInput[]) =>
       if (match && !selected.some((market) => market.id === match.id)) selected.push(match);
     };
     const lineMatches = (market: MarketInput, target: number) => Number(market.line?.toString()) === target;
+    const marketKey = (market: MarketInput) =>
+      `${market.marketType ?? ""} ${market.marketGroupKey ?? ""} ${market.marketGroupTitle ?? ""} ${market.title}`.toLowerCase();
 
+    addFirst((market) => {
+      const key = marketKey(market);
+      return isAdvanceMarketKey(key);
+    });
     addFirst((market) => groupRank(market) === 0);
     addFirst((market) => market.marketType === "spread" && lineMatches(market, 1.5));
     addFirst((market) => ["total_goals", "totals"].includes(market.marketType) && lineMatches(market, 2.5));
     addFirst((market) => market.marketType === "team_total_goals" && lineMatches(market, 1.5));
-    addFirst((market) => market.period === "first-half" && ["match_winner_1x2", "moneyline"].includes(market.marketType));
-    addFirst((market) => market.period === "second-half" && ["match_winner_1x2", "moneyline"].includes(market.marketType));
+    addFirst((market) => market.period === "first-half" && ["match_winner_1x2", "moneyline", "winner"].includes(market.marketType));
+    addFirst((market) => market.period === "second-half" && ["match_winner_1x2", "moneyline", "winner"].includes(market.marketType));
 
     for (const market of sorted) {
       if (selected.length >= MAX_MARKETS) break;
@@ -778,6 +787,53 @@ export async function serializeMobileLiveEventDetail(input: {
   const effectiveStalenessSeconds = effectiveLastUpdated
     ? Math.max(0, Math.round((Date.now() - new Date(effectiveLastUpdated).getTime()) / 1000))
     : stalenessSeconds;
+  const primaryKey = `${primaryMarket?.marketType ?? ""} ${primaryMarket?.marketGroupKey ?? ""} ${primaryMarket?.marketGroupTitle ?? ""} ${primaryMarket?.title ?? ""}`.toLowerCase();
+  const regulationMarket = serializedMarkets.find((market) => {
+    const key = `${market.marketType ?? ""} ${market.marketGroupKey ?? ""} ${market.marketGroupTitle ?? ""} ${market.title ?? ""}`.toLowerCase();
+    return !isAdvanceMarketKey(key) && (key.includes("winner") || key.includes("moneyline") || key.includes("regulation") || key.includes("90"));
+  });
+  const ruleMarket = regulationMarket ?? primaryMarket;
+  const ruleKey = `${ruleMarket?.marketType ?? ""} ${ruleMarket?.marketGroupKey ?? ""} ${ruleMarket?.marketGroupTitle ?? ""} ${ruleMarket?.title ?? ""}`.toLowerCase();
+  const eventKey = `${input.event.sportKey ?? ""} ${input.event.leagueKey ?? ""} ${input.event.eventType ?? ""} ${input.event.description ?? ""}`.toLowerCase();
+  const isSoccerMatch = eventKey.includes("soccer") || eventKey.includes("football") || eventKey.includes("world_cup");
+  const allowDraw = Boolean(primaryMarket?.outcomes.some((outcome) => {
+    const value = `${outcome.side ?? ""} ${outcome.label ?? ""} ${outcome.name ?? ""}`.toLowerCase();
+    return value.includes("draw") || value.includes("tie");
+  }));
+  const ruleAllowDraw = Boolean(ruleMarket?.outcomes.some((outcome) => {
+    const value = `${outcome.side ?? ""} ${outcome.label ?? ""} ${outcome.name ?? ""}`.toLowerCase();
+    return value.includes("draw") || value.includes("tie");
+  })) || allowDraw;
+  const hasAdvanceMarket = serializedMarkets.some((market) => {
+    const key = `${market.marketType ?? ""} ${market.marketGroupKey ?? ""} ${market.marketGroupTitle ?? ""} ${market.title ?? ""}`.toLowerCase();
+    return isAdvanceMarketKey(key);
+  });
+  const isAdvance = !regulationMarket && isAdvanceMarketKey(ruleKey);
+  const isTwoWaySoccerWinner = Boolean(
+    isSoccerMatch &&
+      !ruleAllowDraw &&
+      ruleMarket?.outcomes?.length === 2 &&
+      (ruleKey.includes("winner") || ruleKey.includes("moneyline") || ruleKey.includes("main") || ruleKey.includes("match")),
+  );
+  const includesOvertime = hasAdvanceMarket || isAdvance || isTwoWaySoccerWinner || ruleKey.includes("overtime") || ruleKey.includes("full match");
+  const marketProfile = isAdvance ? "to_advance" : includesOvertime ? "full_match_with_overtime" : "regulation_90";
+  const supportedMarketTypes = Array.from(new Set([
+    marketProfile,
+    ...(hasAdvanceMarket ? ["to_advance"] : []),
+    ...serializedMarkets.flatMap((market) => {
+      if (market.period === "first-half") return ["first-half"];
+      if (market.period === "second-half") return ["second-half"];
+      if (market.outcomes?.some((outcome) => {
+        const value = `${outcome.side ?? ""} ${outcome.label ?? ""} ${outcome.name ?? ""}`.toLowerCase();
+        return value.includes("draw") || value.includes("tie");
+      })) return ["regulation_90"];
+      if (market.marketType === "spread") return ["spread"];
+      if (["total_goals", "totals"].includes(market.marketType)) return ["totals"];
+      if (["team_total_goals", "team-total", "team_total"].includes(market.marketType)) return ["team-total"];
+      if (market.propCategory) return ["player-props"];
+      return [];
+    }),
+  ]));
 
   return {
     event: {
@@ -815,6 +871,14 @@ export async function serializeMobileLiveEventDetail(input: {
       },
       providerLifecycle,
       chartHistory,
+      marketProfile,
+      resultMode: ruleAllowDraw ? "can_draw" : "no_draw",
+      gameRules: {
+        allowDraw: ruleAllowDraw,
+        includesOvertime,
+        description: input.event.description ?? (isAdvance || isTwoWaySoccerWinner ? "Advance/full-match market with no draw outcome." : ruleAllowDraw ? "Regulation market can settle as draw." : "Winner market has no draw outcome."),
+      },
+      supportedMarketTypes,
     },
     markets: serializedMarkets,
     providerLifecycle,

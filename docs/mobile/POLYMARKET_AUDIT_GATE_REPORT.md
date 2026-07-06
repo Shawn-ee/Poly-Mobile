@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Backend-driven Event Detail market profile and sell safety | Cycle JQ | Pass for backend/data-contract scope | 0 for focused contract scope | P1 real-provider replay across more World Cup profiles; P1 production-like HTTP order-route sell rejection proof; P1 broader provider-backed line-family availability | User product clarification on 2026-07-06: regulation markets can have Home/Tie/Away, knockout/penalty paths need separate advance options, and Event Detail Game Lines should be backend-driven | Route proof: `docs/mobile/harness/cycle-JQ-backend-event-market-cashout-safety/cycle-JQ-market-rule-profiles.json`; tests: `src/__tests__/mobile-event-market-rules-contract.test.ts`, selected `src/server/services/__tests__/phase7_kalshi_model.test.ts`, `mobile/src/__tests__/worldCupAdapter.test.ts`, `mobile/src/__tests__/positionCloseService.test.ts`; audit: `mobile/docs/audits/cycle-JQ-backend-event-market-cashout-safety.md` | Backend/mobile rule detection no longer treats team names like `Advance Home` as advance-market semantics. Proof covers regulation 90-minute draw plus spread/totals availability, and knockout profile with separate `to_advance` plus regulation draw availability. Backend sell guard rejects no-position/oversell and mobile cashout blocks invalid full-position sell attempts. |
 | Period-safe retail line matching | Cycle ET | Pass for selected Android Totals and Team Total regression journey | 0 for selected period-safe resolver and Android regression path | P1 real provider-backed spread/totals/team-total route data; P1 route-backed loading/stale/unavailable breadth | Product steering from user on 2026-07-04; prior Polymarket reference remains support-only for simple retail flow | `docs/mobile/harness/cycle-ET-local-mvp-period-safe-line-family/cycle-ES-local-mvp-line-family-breadth-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-ET-local-mvp-period-safe-line-family/` and `docs/mobile/harness/cycle-ET-local-mvp-period-safe-line-family/` | Resolver now requires line-family backend markets to match selected line and period before using provider-backed route data. Focused tests reject wrong-period Totals and Team Total backend markets; tablet proof reran the Totals/Team Total simple-ticket path with orderbook hidden. |
 | Local MVP line-family ticket breadth | Cycle ES | Pass for selected Android Totals and Team Total ticket journeys | 0 for selected Game Lines -> Totals ticket and Team Total ticket paths | P1 real provider-backed spread/totals/team-total route data; P1 route-backed loading/stale/unavailable breadth; P2 ticket copy/visual polish | Product steering from user on 2026-07-04; prior Polymarket reference remains support-only for simple retail flow | `docs/mobile/harness/cycle-ES-local-mvp-line-family-breadth/cycle-ES-local-mvp-line-family-breadth-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-ES-local-mvp-line-family-breadth/` and `docs/mobile/harness/cycle-ES-local-mvp-line-family-breadth/` | Tablet proof passed with `orderbookDebug=unset`, Totals `Over 3.5` / `2nd Half` ticket, Team Total `MEX Over 1.5` / `Reg. Time` ticket, and no visible default Book/orderbook controls. Implementation adds contract-shaped Team Total ticket fallback while preserving backend-first resolver behavior. |
 | Local MVP retail status surface | Cycle ER | Pass for selected Android retail status journey | 0 for selected event-detail chart/ticket status -> market-line selection path | P1 route-backed loading/stale/unavailable state breadth for provider-backed retail tickets; P2 visual polish | Product steering from user on 2026-07-04; prior Polymarket reference remains support-only for simple retail flow | `docs/mobile/harness/cycle-ER-local-mvp-status-flow/cycle-ER-local-mvp-status-flow-proof.json`; screenshots/XML under `docs/mobile/screenshots/cycle-ER-local-mvp-status-flow/` and `docs/mobile/harness/cycle-ER-local-mvp-status-flow/` | Tablet proof passed with `orderbookDebug=unset`, chart route state and ticket handoff status visible, Spread/Totals still reachable, selected Spread `2.5` line uses contract-shaped ticket source, and default Book/orderbook controls remain hidden. |
@@ -108,6 +109,53 @@ Fail the feature when:
 | Trade ticket | Cycle AG | Pass | 0 | P1 binary NO/share contract semantics; P1 production auth/location eligibility gates | `docs/mobile/reference/screenshots/cycle-AG-polymarket-ticket-open.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-open.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-amount.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-trade.png` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket-amount.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket-details.xml`; `cmd /c npm.cmd run smoke:tablet:event-detail-trade` | Focused pass only. First view is now sparse and settings opens advanced controls. |
 | Trade ticket surface | Cycle AI | Pass | 0 | P1 production auth/location eligibility gate; P2 native motion polish | `docs/mobile/reference/screenshots/cycle-AI-polymarket-logged-in-start.png`; `docs/mobile/reference/screenshots/cycle-AI-polymarket-logged-in-france-ticket.png`; `docs/mobile/reference/screenshots/cycle-AI-polymarket-after-france-row-tap.png` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket-amount.png`; `docs/mobile/screenshots/cycle-current-holiwyn-future-list-buy-no-ticket.png`; `cmd /c npm.cmd run smoke:tablet:event-detail-trade`; `cmd /c npm.cmd run smoke:tablet:future-list-buy-no` | Logged-in Polymarket World Cup selection opened a tall location-verification sheet; Holiwyn now uses a taller dimmed fake-token ticket with fixed swipe-up submit rail. |
 | Game page compact scrolled header | Cycle AJ | Pass | 0 | P1 phone visual density/sticky tab polish; P1 backend market/live data; P1 Player Props reference scope | `docs/mobile/reference/screenshots/cycle-AJ-polymarket-live-tab.png`; `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-top.png`; `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-lines-mid.png` | `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-markets.png`; `docs/mobile/harness/cycle-current-holiwyn-game-page-full-markets.xml`; `cmd /c npm.cmd run smoke:tablet:event-detail-full-page` | Logged-in Polymarket keeps compact match context when scrolled into Game Lines; Holiwyn now shows a compact match header in that state and full game-page smoke passed. |
+
+## Cycle JQ
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for Event Detail market profiles, Game Lines market availability, and cashout/sell safety. This does not claim visual redesign parity or broad provider replay.
+
+Evidence:
+
+- Route proof: `docs/mobile/harness/cycle-JQ-backend-event-market-cashout-safety/cycle-JQ-market-rule-profiles.json`.
+- Cycle audit: `mobile/docs/audits/cycle-JQ-backend-event-market-cashout-safety.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/worldCupAdapter.test.ts`
+  - `mobile/src/__tests__/positionCloseService.test.ts`
+- Focused backend tests:
+  - `src/__tests__/mobile-event-market-rules-contract.test.ts`
+  - selected sell-safety cases in `src/server/services/__tests__/phase7_kalshi_model.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused backend/data-contract scope.
+- Remaining P1: real-provider replay across more World Cup profiles, production-like HTTP order-route sell rejection proof, and broader provider-backed line-family availability.
+
+## Cycle JO
+
+Gate status: Pending user manual review.
+
+Scope: JO feedback fixes for Event Detail/Game market logic, backend-driven market availability, and cashout safety. This entry is pending only; it is not an Audit Gate pass.
+
+Current evidence:
+
+- Samsung S23 proof for chart-removed Event Detail and backend-driven regulation/advance profiles: `docs/mobile/screenshots/cycle-JO-feedback-event-market-rules-s23-proof/`.
+- Samsung S23 proof for expanded live backend profile:
+  - `docs/mobile/screenshots/manual-review-current/s23-live-breadth-seven-market-top.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-live-breadth-seven-market-lower.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-live-breadth-seven-market-halves-open.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-live-breadth-seven-market-second-half-open.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-live-breadth-seven-market-spread-ticket.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-jo-spread-scrolled-visible.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-jo-spread-visible-1h-05.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-jo-spread-visible-1h-15.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-jo-spread-visible-2h-05.png`
+  - `docs/mobile/screenshots/manual-review-current/s23-jo-second-half-open-after-spread.png`
+- Backend proof JSON: `docs/mobile/harness/manual-review-current/live-breadth-fixed-proof.json`.
+- JO checklist: `mobile/docs/audits/cycle-JO-home-event-ticket-portfolio-cleanup.md`.
+
+Remaining gate blocker: user manual review of the Samsung S23 screenshots is still required before JO can be marked pass.
 
 ## Cycle U - Event Page Top Shell/Action Controls
 

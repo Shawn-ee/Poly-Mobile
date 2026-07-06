@@ -4,7 +4,7 @@ import type {
   Market as BackendMarket,
   Outcome as BackendOutcome,
 } from "../types";
-import type { Event, Market, Outcome } from "../mocks/worldCup";
+import type { Event, EventMarketProfile, EventMarketType, Market, Outcome } from "../mocks/worldCup";
 
 const COLORS = ["#2563eb", "#60a5fa", "#ef4444", "#0a8f61", "#f4c20d", "#7c3aed", "#94a3b8"];
 
@@ -125,10 +125,68 @@ const normalizeOutcome = (outcome: BackendOutcome, index: number, total: number)
 
 const marketType = (market: BackendMarket): Market["type"] => {
   const key = `${market.marketType ?? ""} ${market.marketGroupTitle ?? ""} ${market.propCategory ?? ""} ${market.title}`.toLowerCase();
+  if (key.includes("to_advance") || key.includes("to advance")) return "game-line";
   if (key.includes("winner") || key.includes("moneyline") || key.includes("match")) return "game-line";
   if (key.includes("live")) return "live";
   if (key.includes("future") || key.includes("cup")) return "future";
   return "prop";
+};
+
+const isAdvanceMarketKey = (key: string) =>
+  /(^|[\s_-])(to[\s_-]?advance|to[\s_-]?qualify|team[\s_-]?to[\s_-]?qualify|qualify)([\s_-]|$)/i.test(key);
+
+const equivalentMarketType = (market: Market): EventMarketType | null => {
+  const key = `${market.marketType ?? ""} ${market.marketGroupId ?? ""} ${market.title}`.toLowerCase();
+  if (isAdvanceMarketKey(key)) return "to_advance";
+  if (market.period === "first-half") return "first-half";
+  if (market.period === "second-half") return "second-half";
+  if (market.outcomes.some((outcome) => outcome.side === "draw" || /^draw|tie$/i.test(outcome.label))) return "regulation_90";
+  if (market.marketType === "spread") return "spread";
+  if (market.marketType === "totals") return "totals";
+  if (market.marketType === "team-total") return "team-total";
+  if (market.type === "prop") return "player-props";
+  return null;
+};
+
+const deriveMarketRules = (event: BackendEventSummary, markets: Market[]) => {
+  const supported = new Set<EventMarketType>();
+  for (const market of markets) {
+    const type = equivalentMarketType(market);
+    if (type) supported.add(type);
+  }
+
+  const regulationMarket = markets.find((market) => {
+    const key = `${market.marketType ?? ""} ${market.marketGroupId ?? ""} ${market.title}`.toLowerCase();
+    return !isAdvanceMarketKey(key) && (market.marketType === "moneyline" || key.includes("winner") || key.includes("regulation") || key.includes("90"));
+  });
+  const mainMarket = regulationMarket ?? markets.find((market) => market.type !== "prop" && market.type !== "future") ?? markets[0];
+  const mainKey = `${mainMarket?.marketType ?? ""} ${mainMarket?.title ?? ""} ${mainMarket?.marketGroupId ?? ""}`.toLowerCase();
+  const eventKey = `${event.sportKey ?? ""} ${event.leagueKey ?? ""} ${event.description ?? ""}`.toLowerCase();
+  const isSoccerMatch = eventKey.includes("soccer") || eventKey.includes("football") || eventKey.includes("world_cup");
+  const hasDraw = Boolean(mainMarket?.outcomes.some((outcome) => outcome.side === "draw" || /^draw|tie$/i.test(outcome.label)));
+  const hasAdvanceMarket = markets.some((market) => equivalentMarketType(market) === "to_advance");
+  const isAdvance = !regulationMarket && (isAdvanceMarketKey(mainKey) || mainMarket?.marketType === "future");
+  const isTwoWaySoccerWinner = Boolean(
+    isSoccerMatch &&
+      !hasDraw &&
+      mainMarket?.outcomes.length === 2 &&
+      (mainKey.includes("winner") || mainKey.includes("moneyline") || mainKey.includes("main") || mainKey.includes("match")),
+  );
+  const includesOvertime = hasAdvanceMarket || isTwoWaySoccerWinner || mainKey.includes("overtime") || mainKey.includes("full match") || mainKey.includes("including overtime");
+  const marketProfile: EventMarketProfile = isAdvance ? "to_advance" : includesOvertime ? "full_match_with_overtime" : "regulation_90";
+  supported.add(marketProfile);
+  if (marketProfile === "regulation_90") supported.add("regulation_90");
+
+  return {
+    marketProfile,
+    resultMode: hasDraw ? "can_draw" as const : "no_draw" as const,
+    gameRules: {
+      allowDraw: hasDraw,
+      includesOvertime,
+      description: event.description || (isAdvance || isTwoWaySoccerWinner ? "Advancement/full-match market with no draw outcome." : hasDraw ? "Regulation market can settle as draw." : "Winner market has no draw outcome."),
+    },
+    supportedMarketTypes: [...supported],
+  };
 };
 
 export const normalizeMarket = (market: BackendMarket): Market => ({
@@ -161,6 +219,7 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
   const away = event.awayTeamName || event.title.split(/\s+vs\.?\s+/i)[1] || "Away";
   const status = eventStatus(event);
   const normalizedMarkets = markets.map(normalizeMarket).filter((market) => market.outcomes.length > 0);
+  const rules = deriveMarketRules(event, normalizedMarkets);
   const depthMarket = normalizedMarkets.find((market) => (market.orderbookDepth?.length ?? 0) > 0);
   const isFuturesBundle = normalizedMarkets.length > 0 && normalizedMarkets.every((market) => market.type === "future");
   const title = isGenericFixtureTitle(event.title) && isFuturesBundle ? "World Cup futures" : event.title;
@@ -180,6 +239,10 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
     liveStats: event.liveStats,
     liveDataStatus: event.liveDataStatus,
     chartHistory: event.chartHistory,
+    marketProfile: event.marketProfile ?? rules.marketProfile,
+    resultMode: event.resultMode ?? rules.resultMode,
+    gameRules: event.gameRules ?? rules.gameRules,
+    supportedMarketTypes: event.supportedMarketTypes ?? rules.supportedMarketTypes,
     chartHistorySource: event.chartHistory?.length ? "embedded" : undefined,
     chartHistoryStatus: event.chartHistory?.length ? "ready" : undefined,
     orderbookDepthSource: depthMarket ? "orderbook-route" : undefined,

@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle JQ - Backend-Driven Event Rules and Sell Safety
+
+Cycle JQ tightens backend-owned market-rule contracts for visible Event Detail/Game Lines UI and verifies sell/cashout safety:
+
+- Route proof: `docs/mobile/harness/cycle-JQ-backend-event-market-cashout-safety/cycle-JQ-market-rule-profiles.json`.
+- Focused backend tests: `src/__tests__/mobile-event-market-rules-contract.test.ts` and selected sell-safety cases in `src/server/services/__tests__/phase7_kalshi_model.test.ts`.
+- Focused mobile tests: `mobile/src/__tests__/worldCupAdapter.test.ts` and `mobile/src/__tests__/positionCloseService.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail/Game Lines market-rule rendering | `/api/mobile/events/:slug/live-detail` and event summary serialization | GET | Public/mobile route | Event slug | `event.marketProfile`, `event.resultMode`, `event.gameRules.allowDraw`, `event.gameRules.includesOvertime`, `event.supportedMarketTypes`, plus backend markets/outcomes/period/line/type | Existing `Event`, `Market`, and `Outcome` fields: `sportKey`, `leagueKey`, `eventType`, `description`, `marketType`, `marketGroupKey`, `marketGroupTitle`, `period`, `line`, outcomes with `side/label/name` | Mobile preserves backend-provided rule fields first. Local derivation is fallback only and now uses the same explicit `to_advance`/`to_qualify` key detection instead of guessing from event/team names. | P1: production real-provider replay across more World Cup event profiles. No new schema migration required for this cycle. |
+| Regulation draw versus knockout advance profile | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile route | Event slug | Regulation profile returns `marketProfile=regulation_90`, `resultMode=can_draw`, `supportedMarketTypes` containing `regulation_90`, `spread`, `totals`. Knockout profile returns `marketProfile=full_match_with_overtime`, `resultMode=can_draw`, and supports both separate `to_advance` and `regulation_90`. | Same existing event/market/outcome tables | No frontend-invented market rows are accepted by the proof. Backend availability determines which market groups are present. | P1: broader provider-backed family availability beyond disposable contract proof rows. |
+| Cashout/sell safety | Canonical order submission backing `POST /api/orders`; mobile `closePositionOnServer()` submits a full-position `SELL` | POST | Existing canonical API key/session order auth | `marketId`, `outcomeId`, `side=SELL`, `type=LIMIT`, full `size` from position shares, price from current/best price, `selection` identity | Backend rejects no-position and oversell attempts; mobile blocks no-share and oversize sell attempts before submit. Valid sell within available position can proceed. | Existing `Position`, `Order`, `ApiOrderRequest`, `Market`, `Outcome` | No mock fallback may permit server-mode naked sells. Local fake-token UI remains test-only and must keep the same safety checks. | P1: full HTTP route proof under production-like auth flags; current focused proof exercises canonical backend service and mobile service guards. |
+
 ## Cycle ET - Period-Safe Retail Line Matching
 
 Cycle ET changes mobile route-data selection rules, not backend schema/routes:
