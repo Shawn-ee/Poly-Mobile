@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KI - Account Balance Route Contract
+
+Closed or narrowed:
+
+- Mobile now has `PolyApi.getAccountBalance()` for canonical `/api/account/balance`.
+- `loadAccountBalance()` maps canonical account balance strings/dates into numeric visible cash values.
+- Backend canonical route coverage now verifies valid `account:read` API keys can read account balance and keys without the scope are rejected.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Dirty Account/Portfolio UI files still need clean standalone balance refresh wiring to `loadAccountBalance()` after unrelated screen churn is reconciled.
+- Full deposit/withdraw movement remains out of MVP scope for this cycle.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `UserBalance` and custody wallet service fields support available, locked, total USDC, and update time.
+
+Temporary mock/static data:
+
+- Local fallback balance remains available only when the route/API client is unavailable or throws. Legacy `/api/wallet/balance` remains compatibility-only and is not the canonical server-mode mobile contract.
+
 ## Cycle KH - Event Market Catalog Contract
 
 Closed or narrowed:

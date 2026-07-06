@@ -398,6 +398,13 @@ export type PortfolioValueHistory = {
   points: PortfolioValueHistoryPoint[];
 };
 
+export type AccountBalance = {
+  availableUSDC: string | number;
+  lockedUSDC: string | number;
+  totalUSDC: string | number;
+  updatedAt: string | Date | null;
+};
+
 export type ProfilePreferences = {
   locale: "en" | "zh";
   ticketDefaultAmount: string;

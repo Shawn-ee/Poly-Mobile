@@ -130,6 +130,30 @@ describe("Holiwyn mobile API client", () => {
     });
   });
 
+  test("loads canonical account balance for visible cash values", async () => {
+    const fetchImpl = vi.fn(async () =>
+      jsonResponse({
+        availableUSDC: "40.800000",
+        lockedUSDC: "2.500000",
+        totalUSDC: "43.300000",
+        updatedAt: "2026-07-06T12:00:00.000Z",
+      }),
+    );
+    vi.stubGlobal("fetch", fetchImpl);
+
+    const balance = await new PolyApi("https://api.example.test", "test-api-key").getAccountBalance();
+
+    const [url, init] = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
+    const headers = init.headers as Headers;
+    expect(url).toBe("https://api.example.test/api/account/balance");
+    expect(headers.get("Authorization")).toBe("Bearer test-api-key");
+    expect(balance).toMatchObject({
+      availableUSDC: "40.800000",
+      lockedUSDC: "2.500000",
+      totalUSDC: "43.300000",
+    });
+  });
+
   test("loads authenticated profile summary for account settings", async () => {
     const fetchImpl = vi.fn(async () =>
       jsonResponse({

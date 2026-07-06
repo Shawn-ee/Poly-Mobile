@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KI - Account Balance Route Contract
+
+Cycle KI proves the visible account/cash balance route/service contract without editing dirty Account or Portfolio UI files:
+
+- Account balance proof: `docs/mobile/harness/cycle-KI-account-balance-route-contract/cycle-KI-account-balance-route-contract.json`.
+- Proof script: `scripts/prove_mobile_account_balance_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/accountBalanceService.test.ts`, and `mobile/src/__tests__/profileSummaryService.test.ts`.
+- Focused backend tests: `src/server/services/__tests__/canonical_route_auth.phase5.test.ts` and `src/__tests__/wallet.balance.route.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible account/cash balance refresh | `/api/account/balance` | GET | Canonical actor with `account:read`; route id `account:balance` | None | `availableUSDC`, `lockedUSDC`, `totalUSDC`, `updatedAt` | Existing `UserBalance` via custody wallet service | `loadAccountBalance()` falls back only when the route/API client is unavailable or throws. Successful route responses suppress local balance fallback. | P1: wire dirty Account/Portfolio UI files to `loadAccountBalance()` where standalone balance refresh is needed. |
+| Legacy wallet balance compatibility | `/api/wallet/balance` | GET | Legacy session user | None | Legacy `balance`, `availableUSDC`, `lockedUSDC`, `totalUSDC`, `updatedAt` | Existing `UserBalance` | Compatibility route only; not the canonical server-mode mobile contract. | Eventual cleanup after visible UI is fully canonical-route backed. |
+
 ## Cycle KH - Event Market Catalog Contract
 
 Cycle KH proves the Event Detail/Game Lines market catalog route/service contract without editing dirty Event Detail UI files:
