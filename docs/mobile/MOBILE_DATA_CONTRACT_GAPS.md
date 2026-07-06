@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KG - Event Detail Hydration Contract
+
+Closed or narrowed:
+
+- Mobile `PolyApi.getEvent()` now has focused proof that it prefers `/api/mobile/events/:slug/live-detail` when the compact mobile route succeeds.
+- The KG proof verifies the compact live-detail route returns backend-owned `marketProfile`, `resultMode`, `gameRules`, and `supportedMarketTypes` for Event Detail hydration.
+- The proof also verifies compact market rows include a regulation draw/tie outcome and backend spread line data instead of requiring frontend-invented Game Lines.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Dirty visible Event Detail UI files still need clean server-mode wiring to the compact live-detail hydration path after unrelated screen churn is reconciled.
+- Production real-provider replay across more World Cup profiles remains under provider mapping/provider refresh lanes, not this disposable local-orderbook proof.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Event`, `Market`, `Outcome`, and optional `MarketOutcomeSnapshot` rows support the compact Event Detail hydration contract.
+
+Temporary mock/static data:
+
+- Legacy `/api/events/:slug` remains a compatibility fallback only when compact live-detail loading fails. Successful compact live-detail data is authoritative for the API client and should not be replaced by frontend guessing.
+
 ## Cycle KF - Ticket Quote Route Contract
 
 Closed or narrowed:

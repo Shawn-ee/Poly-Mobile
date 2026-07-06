@@ -1,0 +1,64 @@
+{
+  "pass": true,
+  "createdAt": "2026-07-06T16:19:40.260Z",
+  "route": "/api/mobile/events/:slug/live-detail",
+  "event": {
+    "slug": "mobile-kg-event-detail-af964fa1",
+    "marketProfile": "regulation_90",
+    "resultMode": "can_draw",
+    "gameRules": {
+      "allowDraw": true,
+      "includesOvertime": false,
+      "description": "Regulation 90-minute market can settle as draw; spread is available from backend markets."
+    },
+    "supportedMarketTypes": [
+      "regulation_90",
+      "spread"
+    ]
+  },
+  "markets": [
+    {
+      "id": "d8b5bd8d-1724-4acc-86db-7428a1421228",
+      "marketType": "moneyline",
+      "marketGroupTitle": "Regulation Time Winner",
+      "period": "regulation",
+      "line": "0",
+      "outcomes": [
+        {
+          "id": "2f025c6b-eacb-4a27-aac8-02c12eb190ad",
+          "label": "KG Home",
+          "side": "home"
+        },
+        {
+          "id": "7790ee14-f23e-4393-a2ea-670d1667afb3",
+          "label": "Tie",
+          "side": "draw"
+        },
+        {
+          "id": "ba7c0c13-bec6-4b9e-94e7-6aed2007b137",
+          "label": "KG Away",
+          "side": "away"
+        }
+      ]
+    },
+    {
+      "id": "0129256c-c203-4974-857d-26687e00df1c",
+      "marketType": "spread",
+      "marketGroupTitle": "Spread",
+      "period": "regulation",
+      "line": "1.5",
+      "outcomes": [
+        {
+          "id": "8b052dad-6b7d-49ab-9056-58a1408f3997",
+          "label": "KG Home -1.5",
+          "side": "home"
+        },
+        {
+          "id": "57cb884a-7c86-4fa3-a329-b3d9f4b553e0",
+          "label": "KG Away +1.5",
+          "side": "away"
+        }
+      ]
+    }
+  ]
+}

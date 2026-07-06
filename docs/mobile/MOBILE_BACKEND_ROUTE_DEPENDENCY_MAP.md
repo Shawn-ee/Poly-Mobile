@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KG - Event Detail Hydration Contract
+
+Cycle KG proves the Event Detail hydration route/client contract without editing dirty Event Detail UI files:
+
+- Event Detail hydration proof: `docs/mobile/harness/cycle-KG-event-detail-hydration-contract/cycle-KG-event-detail-hydration-contract.json`.
+- Proof script: `scripts/prove_mobile_event_detail_hydration_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/api.test.ts` and `mobile/src/__tests__/worldCupAdapter.test.ts`.
+- Focused backend tests: `src/__tests__/mobile-live-event-detail.test.ts` and `src/__tests__/mobile-event-market-rules-contract.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail compact hydration | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile route | Event slug path param | `event.marketProfile`, `event.resultMode`, `event.gameRules`, `event.supportedMarketTypes`, event status/time/team fields, compact `markets[]`, market `marketType/period/line`, outcome `side/label/referenceTokenId`, availability/depth/chart fields when present | Existing `Event`, public LIVE `Market`, active `Outcome`, optional `MarketOutcomeSnapshot`, orderbook snapshot read model | `PolyApi.getEvent()` only falls back to `/api/events/:slug` if compact live-detail fails. Successful compact payload is preferred. | P1: wire dirty Event Detail UI files to compact live-detail hydration after screen churn is reconciled. |
+| Event Detail legacy fallback | `/api/events/:slug` | GET | Public route | Event slug path param | Full legacy event/market read model when compact route fails | Same existing event/market/outcome rows | Fallback exists for compatibility, not as preferred server-mode data. | Production real-provider replay remains under provider mapping/provider refresh lanes. |
+
 ## Cycle KF - Ticket Quote Route Contract
 
 Cycle KF proves the mobile ticket quote service route dependency without editing dirty Trade Ticket/Event Detail UI files:

@@ -268,6 +268,31 @@ describe("Holiwyn mobile API client", () => {
     expect(fetchImpl.mock.calls[1]?.[0]).toBe("https://api.example.test/api/events/match%2F1");
   });
 
+  test("uses compact mobile event detail without legacy fallback when available", async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse({
+      event: {
+        slug: "match-1",
+        marketProfile: "regulation_90",
+        resultMode: "can_draw",
+        supportedMarketTypes: ["regulation_90", "spread"],
+      },
+      markets: [{ id: "market-1", marketType: "spread" }],
+    }));
+    vi.stubGlobal("fetch", fetchImpl);
+
+    const event = await new PolyApi("https://api.example.test", "test-api-key").getEvent("match-1");
+
+    expect(event.event).toMatchObject({
+      slug: "match-1",
+      marketProfile: "regulation_90",
+      resultMode: "can_draw",
+    });
+    expect(event.markets).toEqual([{ id: "market-1", marketType: "spread" }]);
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    const [[eventDetailUrl]] = fetchImpl.mock.calls as unknown as Array<[string, unknown]>;
+    expect(eventDetailUrl).toBe("https://api.example.test/api/mobile/events/match-1/live-detail");
+  });
+
   test("saves authenticated profile preferences with canonical local settings", async () => {
     const fetchImpl = vi.fn(async () =>
       jsonResponse({
