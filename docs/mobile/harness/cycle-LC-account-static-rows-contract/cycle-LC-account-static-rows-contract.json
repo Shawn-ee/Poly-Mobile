@@ -1,0 +1,18 @@
+{
+  "cycle": "LC",
+  "scope": "account-static-rows-contract",
+  "generatedAt": "2026-07-06T18:57:07.071Z",
+  "pass": true,
+  "decision": "Unsupported hardcoded Account Theme/Security/Fake-token rows are not visible; Account keeps rows backed by profile preferences, profile summary, or trading-mode state.",
+  "checks": {
+    "accountRemovesHardcodedThemeRow": true,
+    "accountRemovesUnsupportedSecurityAndMockRows": true,
+    "copyRemovesUnsupportedStaticRowText": true,
+    "accountKeepsBackedRows": true
+  },
+  "evidence": {
+    "accountScreen": "mobile/src/components/AccountScreen.tsx",
+    "copy": "mobile/src/localization/appCopy.ts",
+    "test": "mobile/src/__tests__/accountStaticRowsContract.test.ts"
+  }
+}

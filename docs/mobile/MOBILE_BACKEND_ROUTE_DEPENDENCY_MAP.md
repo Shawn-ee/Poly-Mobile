@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle LC - Account Static Rows Contract
+
+Cycle LC removes unsupported hardcoded Account rows (`Theme: Dark`, security teaser, fake-token static row). Account keeps rows backed by profile preferences, profile summary, or app trading-mode state.
+
+- Account static rows proof: `docs/mobile/harness/cycle-LC-account-static-rows-contract/cycle-LC-account-static-rows-contract.json`.
+- Proof script: `scripts/prove_mobile_account_static_rows_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/accountStaticRowsContract.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Account settings/status rows | Existing `/api/profile/preferences`, `/api/profile/summary`, and local trading mode state | GET/PUT for preferences; GET for summary | Existing account preference/profile auth when server mode is active | Existing preference body only | Locale, saved market count, portfolio/account summary values, ticket defaults, profile sync status, trading mode | Existing `UserProfilePreference`, account summary read models | Mock/offline mode keeps local preference and trading-mode display only. Unsupported static rows are not shown. | Theme/security settings require future backend contracts before they become visible. |
+
 ## Cycle LB - Account Auth Visibility Contract
 
 Cycle LB removes local mock Account login/signup/sign-out actions. Visible Account auth state is now display-only and route-derived: server profile summary success marks the Account screen as signed in; otherwise auth actions are unavailable.

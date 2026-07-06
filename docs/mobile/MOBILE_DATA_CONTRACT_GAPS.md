@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle LC - Account Static Rows Contract
+
+Closed or narrowed:
+
+- Account no longer renders hardcoded `Theme: Dark` without a backend or preference contract.
+- Account no longer renders a security-settings teaser row without a backend security/settings contract.
+- Account no longer renders a duplicate static fake-token row; the existing `Trading mode` row remains the visible mode/status field.
+- Account keeps rows backed by existing profile preferences, profile summary, portfolio/account summary values, and trading-mode state.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Theme preferences and security settings remain future scope only if those surfaces become visible MVP requirements.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- No unsupported static Account Theme/Security/Fake-token rows remain in the committed component path.
+
 ## Cycle LB - Account Auth Visibility Contract
 
 Closed or narrowed:

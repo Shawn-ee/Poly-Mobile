@@ -40,8 +40,6 @@ type AccountCopy = {
   profileSynced: string;
   profileSyncError: string;
   profileSyncFallback: string;
-  security: string;
-  mockOnly: string;
   accountMenuUnavailable: string;
 };
 
@@ -156,11 +154,6 @@ export function AccountScreen({
           <Text style={styles.menuText}>{t.languagePreference}</Text>
           <Text style={styles.menuValue}>{languagePreferenceValue}</Text>
         </View>
-        <View accessibilityLabel="account-theme-row" testID="account-theme-row" style={styles.menuRow}>
-          <Ionicons name="sunny-outline" size={23} color="#f8fafc" />
-          <Text style={styles.menuText}>Theme</Text>
-          <Text style={styles.menuValue}>Dark</Text>
-        </View>
       </View>
 
       <View style={styles.balanceCard}>
@@ -234,14 +227,6 @@ export function AccountScreen({
           <Text style={styles.rowText}>
             {t.tradingMode}: {tradingMode === "server" ? t.tradingModeServer : t.tradingModeMock}
           </Text>
-        </View>
-        <View style={styles.row}>
-          <Ionicons name="shield-checkmark-outline" size={20} color="#93c5fd" />
-          <Text style={styles.rowText}>{t.security}</Text>
-        </View>
-        <View style={styles.row}>
-          <Ionicons name="flask-outline" size={20} color="#fbbf24" />
-          <Text style={styles.rowText}>{t.mockOnly}</Text>
         </View>
       </View>
       <Text accessibilityLabel="account-login-unavailable" testID="account-login-unavailable" style={styles.notice}>
