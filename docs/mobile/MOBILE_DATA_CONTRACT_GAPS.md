@@ -4585,6 +4585,38 @@ Future migration concern:
 
 - Reintroduce Futures only through a backend-owned market catalog/quote contract, not local chart/stat invention.
 
+## Cycle LJ - MVP Backend Readiness Gate
+
+Closed or narrowed:
+
+- Full MVP backend-readiness audit report is committed at `docs/mobile/MVP_BACKEND_READINESS_AUDIT_REPORT_2026-07-06.md`.
+- Server-mode Home no longer replaces `/api/events` route failure/fallback with bundled `worldCupEvents`.
+- Server-mode Portfolio value-history route failure remains visible as `source=portfolio-value-history-route` and `status=error` instead of silently rendering deterministic fallback points.
+- Server-mode open-order cancel is no longer optimistic; local removal waits for backend cancel success and server Portfolio refresh.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Public-launch production provider breadth and real liquidity.
+- Dedicated cashout preview/proceeds/fillability route if cashout must behave as an immediate guaranteed exit instead of a full-position sell order.
+- Public auth/session/funding/compliance routes and UX are outside this MVP internal gate.
+
+Schema mismatch:
+
+- No schema migration was required.
+
+Route mismatch:
+
+- No route mismatch blocks internal local fake-token/server-mode MVP testing after LJ.
+
+Temporary mock/static data:
+
+- Mock/offline mode still keeps bundled fixtures and deterministic fallback data.
+- Server-mode route failure is no longer masked for Home and Portfolio value-history chart.
+
+Future migration concern:
+
+- Before public deployment, add production provider/liquidity proof and public account/funding/compliance gates.
+
 ## Cycle FU - Portfolio Value History Backend Route
 
 Closed or narrowed:

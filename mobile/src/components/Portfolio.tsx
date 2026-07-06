@@ -663,9 +663,21 @@ export function Portfolio({
     positionsValue: currentValueTotal(positions),
     pnl: portfolioPnl,
   });
+  const routeErrorValueHistory: PortfolioValueHistory = {
+    range: activeRange,
+    ranges: valueHistory.ranges,
+    source: "portfolio-value-history-route",
+    status: "error",
+    generatedAt: new Date(0).toISOString(),
+    lastUpdated: null,
+    emptyState: "no-history",
+    points: [],
+  };
   const displayedValueHistory =
-    serverValueHistory?.range === activeRange && serverValueHistory.status !== "error"
+    serverValueHistory?.range === activeRange
       ? serverValueHistory
+      : loadValueHistory
+        ? routeErrorValueHistory
       : valueHistory;
 
   useEffect(() => {
@@ -679,7 +691,16 @@ export function Portfolio({
         if (!cancelled) setServerValueHistory(history);
       })
       .catch(() => {
-        if (!cancelled) setServerValueHistory(null);
+        if (!cancelled) setServerValueHistory({
+          range: activeRange,
+          ranges: valueHistory.ranges,
+          source: "portfolio-value-history-route",
+          status: "error",
+          generatedAt: new Date().toISOString(),
+          lastUpdated: null,
+          emptyState: "no-history",
+          points: [],
+        });
       });
     return () => {
       cancelled = true;

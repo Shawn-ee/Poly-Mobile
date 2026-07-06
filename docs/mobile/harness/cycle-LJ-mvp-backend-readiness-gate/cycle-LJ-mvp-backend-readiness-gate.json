@@ -1,0 +1,21 @@
+{
+  "cycle": "LJ",
+  "scope": "mvp-backend-readiness-gate",
+  "generatedAt": "2026-07-06T22:56:54.529Z",
+  "pass": true,
+  "decision": "Visible MVP route wiring is inventoried, and the main server-mode readiness risks from the audit are guarded: Home no longer renders bundled events after route fallback, Portfolio value-history route failure remains visible, and server cancel is no longer optimistic.",
+  "checks": {
+    "reportExistsAndRanksBlockers": true,
+    "apiClientCoversVisibleMvpRoutes": true,
+    "serverHomeDoesNotRenderBundledFallback": true,
+    "portfolioRouteFailureStaysVisible": true,
+    "serverCancelIsNotOptimistic": true
+  },
+  "evidence": {
+    "readinessReport": "docs/mobile/MVP_BACKEND_READINESS_AUDIT_REPORT_2026-07-06.md",
+    "app": "mobile/App.tsx",
+    "portfolio": "mobile/src/components/Portfolio.tsx",
+    "api": "mobile/src/api.ts",
+    "test": "mobile/src/__tests__/mvpBackendReadinessGate.test.ts"
+  }
+}

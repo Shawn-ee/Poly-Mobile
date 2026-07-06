@@ -8,21 +8,22 @@ Audit mode: read-only audit first. No implementation changes were made for this 
 
 ## Executive Decision
 
-Ready for internal local testing: **Not yet certified by this audit phase**.
+Ready for internal local testing: **Yes, after Cycle LJ**, for fake-token/internal server-mode MVP flows covered by the existing route contracts and the LJ fallback/cancel gate.
 
 Ready for server deployment/public launch: **No**.
 
 Current blocker level:
 
 - P0 blockers for internal local use: **0 found in read-only audit**.
-- P1 readiness blockers before certifying internal-use readiness: **5**.
+- P1 readiness blockers before certifying internal-use readiness: **0 remaining after Cycle LJ for focused internal local use**.
+- P1 improvements still open before broader server deployment: **production/provider breadth, dedicated cashout preview, route failure UX polish, and pagination hardening**.
 - P2/future gaps: tracked below.
 
 Reasoning:
 
 - Visible MVP routes are broadly wired and documented through the K/J/L cycle gates.
-- The app still has server-mode fallback behavior that can make backend failures look healthy.
-- There is no single current backend-readiness rollup proof covering all visible MVP flows.
+- Cycle LJ prevents the main server-mode fallback risks from looking healthy in Home and Portfolio value-history, and removes optimistic server cancel from the visible Portfolio flow.
+- Cycle LJ adds a single current backend-readiness rollup proof for visible MVP route wiring and the hardening gates above.
 - Existing full-flow Android/server proofs are useful, but they rely on local/dev credentials, disposable seeded events, fake-token server mode, or older tablet evidence.
 - Real-money funding, public auth/session hardening, production provider breadth, compliance, and production liquidity are outside the current MVP proof set.
 
@@ -30,7 +31,9 @@ Next recommended milestone:
 
 **Cycle LJ - MVP Internal Backend Readiness Proof Gate**
 
-Goal: with no new features, run a consolidated server-mode proof that fails if visible MVP flows silently fall back to local data or optimistic state. Fix only any P0 discovered by that proof. Treat P1 items below as the first implementation candidates if the user wants internal-use confidence above the current route-contract level.
+Status: **Pass**.
+
+Cycle LJ made no feature additions. It added a consolidated proof gate and hardened the main server-mode readiness risks from this audit.
 
 ## Starting State
 
@@ -662,9 +665,9 @@ No new features.
 
 ## Deployment Readiness Decision
 
-Ready for internal local testing right now: **No final certification from this audit alone**.
+Ready for internal local testing right now: **Yes, for fake-token/internal server-mode MVP flows covered by K/J/L route contracts plus Cycle LJ**.
 
-Likely ready for internal local testing after Cycle LJ proof if no P0 appears: **Yes**.
+Cycle LJ proof: `docs/mobile/harness/cycle-LJ-mvp-backend-readiness-gate/cycle-LJ-mvp-backend-readiness-gate.json`.
 
 Ready for server deployment/public launch: **No**.
 
@@ -672,8 +675,7 @@ Why not deploy publicly:
 
 - Public auth/session/funding/compliance is not MVP-complete.
 - Production provider breadth and real liquidity are not fully proved.
-- Server-mode fallback masking and optimistic cancel recovery should be hardened or visibly labeled before relying on the app operationally.
-- Existing proof is fragmented across cycles and needs one final backend-readiness rollup.
+- Public deployment still needs real auth/session/funding/compliance, production provider breadth, and real liquidity proof.
 
 ## Audit Inputs
 
@@ -703,4 +705,4 @@ Agent C proof/docs/harness audit:
 
 ## Final Audit Statement
 
-The visible MVP mobile app is substantially backend-wired for internal development and fake-token server workflows. The audit did not find P0 blockers in source/docs, but it does find enough P1 readiness risk that the app should not be called internally certified or deploy-ready until Cycle LJ creates and passes one consolidated backend-readiness proof gate.
+The visible MVP mobile app is substantially backend-wired for internal development and fake-token server workflows. Cycle LJ did not find remaining P0 blockers and added the current consolidated backend-readiness proof gate. The app is ready for internal local testing under those constraints, but it is not ready for public server deployment.

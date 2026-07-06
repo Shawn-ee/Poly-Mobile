@@ -2241,3 +2241,15 @@ Cycle LI implementation notes:
 - No backend route or schema change was required.
 - The cleanup narrows visible Home to match/event routes that already have backend contracts.
 - Local futures mock data can still support legacy position target lookup and proof fixtures, but no Home Futures browsing surface is exposed.
+
+## Cycle LJ - MVP Backend Readiness Gate
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| MVP route readiness inventory | Existing visible MVP route set: `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/events/:slug/markets`, `/api/markets/:id/quote`, `/api/orders`, `/api/orders/:id`, `/api/portfolio`, `/api/portfolio/history`, `/api/portfolio/value-history`, `/api/account/balance`, `/api/profile/summary`, `/api/profile/preferences` | GET/POST/DELETE/PUT as documented per route | Public for event discovery/detail where applicable; account/order routes require canonical mobile API/session scopes | Same as each route contract | Event pages, Game Lines, quotes, order submit/cancel state, Portfolio state/history/chart, account summary/preferences | Existing `Event`, `Market`, `Outcome`, `Order`, `ApiOrderRequest`, `Fill`, `Position`, `Trade`, `UserBalance`, `UserProfilePreference`, snapshot/read-model tables | Mock/offline mode remains. Server-mode Home no longer renders bundled event fallback after route failure; Portfolio value-history route failure remains visible; server cancel waits for backend success. | Public launch still needs production provider breadth, real liquidity, public auth/session/funding/compliance, and dedicated cashout preview/proceeds semantics. |
+
+Cycle LJ implementation notes:
+
+- No backend route or schema change was required.
+- LJ turns the full MVP readiness audit into a proof gate and hardens the main server-mode masking risks discovered by the audit.
+- Internal local readiness is limited to fake-token/internal server-mode MVP flows.

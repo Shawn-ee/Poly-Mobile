@@ -1029,13 +1029,9 @@ export default function App() {
         cursor,
       });
       if (page.source === "local-fallback") {
-        const filteredFallbackEvents = worldCupEvents.filter((event) => matchesHomeFilter(event, homeFilter));
-        const start = cursor ? Math.max(0, filteredFallbackEvents.findIndex((event) => event.id === cursor) + 1) : 0;
-        const fallbackEvents = filteredFallbackEvents.slice(start, start + HOME_EVENT_PAGE_SIZE);
-        const nextCursor = filteredFallbackEvents[start + HOME_EVENT_PAGE_SIZE] ? fallbackEvents.at(-1)?.id ?? null : null;
         if (mounted.current) {
-          setEvents((current) => append ? appendUniqueEvents(current, fallbackEvents) : fallbackEvents);
-          setEventNextCursor(nextCursor);
+          if (!append) setEvents([]);
+          setEventNextCursor(null);
         }
         return;
       }
@@ -1077,7 +1073,7 @@ export default function App() {
       }
     } catch {
       if (mounted.current && !append) {
-        setEvents(worldCupEvents);
+        setEvents([]);
         setEventNextCursor(null);
       }
     }
@@ -1745,9 +1741,11 @@ export default function App() {
   }, [api]);
 
   const cancelOpenOrder = (order: OpenOrder) => {
-    setOpenOrders((current) => current.filter((item) => item.id !== order.id));
     const canceledActivity = openOrderCanceledActivity(order, t.justNow);
-    setActivities((current) => appendUniqueActivity(current, canceledActivity));
+    if (ORDER_MODE !== "server") {
+      setOpenOrders((current) => current.filter((item) => item.id !== order.id));
+      setActivities((current) => appendUniqueActivity(current, canceledActivity));
+    }
     cancelOpenOrderOnServer({ mode: ORDER_MODE, api, order })
       .then(() => {
         if (ORDER_MODE === "server") {
@@ -1757,6 +1755,8 @@ export default function App() {
             }
           });
         }
+        setOpenOrders((current) => current.filter((item) => item.id !== order.id));
+        setActivities((current) => appendUniqueActivity(current, canceledActivity));
         return undefined;
       })
       .catch(() => {

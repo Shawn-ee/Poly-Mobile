@@ -46,6 +46,7 @@ Decision:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| MVP backend readiness gate | Cycle LJ | Pass for internal-use backend-readiness scope | 0 for focused internal fake-token/server-mode MVP flows | P1 production provider breadth, real liquidity, public auth/session/funding/compliance, and cashout preview hardening before public deployment | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Readiness report: `docs/mobile/MVP_BACKEND_READINESS_AUDIT_REPORT_2026-07-06.md`; proof: `docs/mobile/harness/cycle-LJ-mvp-backend-readiness-gate/cycle-LJ-mvp-backend-readiness-gate.json`; test: `mobile/src/__tests__/mvpBackendReadinessGate.test.ts`; audit: `mobile/docs/audits/cycle-LJ-mvp-backend-readiness-gate.md` | LJ prevents server-mode Home from rendering bundled events after route fallback, keeps Portfolio value-history route failure visible, and removes optimistic server cancel. |
 | Inactive Futures surface contract | Cycle LI | Pass for backend/data-contract scope | 0 for focused inactive Futures surface cleanup | P1 visible Futures browsing only if restored with backend catalog/quote/order contracts | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Inactive Futures proof: `docs/mobile/harness/cycle-LI-inactive-futures-surface-contract/cycle-LI-inactive-futures-surface-contract.json`; tests: `mobile/src/__tests__/inactiveFuturesSurfaceContract.test.ts`; audit: `mobile/docs/audits/cycle-LI-inactive-futures-surface-contract.md` | Home no longer receives the old Futures tab/list/chart props or components. Backend-driven match cards and retail outcome rails remain. |
 | Event Detail dead live stats contract | Cycle LH | Pass for backend/data-contract scope | 0 for focused Event Detail dead live stats cleanup | P1 real route-backed sports/live stats only if MVP expands to that product surface | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Event Detail dead live stats proof: `docs/mobile/harness/cycle-LH-event-detail-dead-live-stats-contract/cycle-LH-event-detail-dead-live-stats-contract.json`; tests: `mobile/src/__tests__/eventDetailDeadLiveStatsContract.test.ts`; audit: `mobile/docs/audits/cycle-LH-event-detail-dead-live-stats-contract.md` | Event Detail source no longer carries an unreachable fake live sports stats panel, deterministic stat rows, or match-flow timeline. Hidden backend/provider status markers remain for route proof. |
 | Home card stats contract | Cycle LG | Pass for backend/data-contract scope | 0 for focused visible Home card stats cleanup | P1 inactive Futures catalog local volume/chart presentation only if restored to visible MVP | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Home card stats proof: `docs/mobile/harness/cycle-LG-home-card-stats-contract/cycle-LG-home-card-stats-contract.json`; tests: `mobile/src/__tests__/homeCardStatsContract.test.ts`; audit: `mobile/docs/audits/cycle-LG-home-card-stats-contract.md` | Active Home match cards no longer attach hidden local-MVP volume/liquidity stats. Cards keep route-fed identity, backend-driven market profile selection, filters, pagination, and ticket navigation. |
@@ -4321,3 +4322,32 @@ Decision:
 - Pass/fail: Pass for inactive Futures surface cleanup.
 - Unresolved P0 gaps: 0 for this cleanup.
 - Remaining P1/P2 gaps: visible Futures browsing is future scope until backend route contracts provide full catalog, ordering, quote, volume/liquidity, and ticket contract ids.
+
+## Cycle LJ
+
+Gate status: Pass
+
+Scope: MVP internal backend-readiness proof and hardening gate. This cycle does not claim public launch readiness.
+
+Evidence:
+
+- `docs/mobile/MVP_BACKEND_READINESS_AUDIT_REPORT_2026-07-06.md`
+- `mobile/docs/audits/cycle-LJ-mvp-backend-readiness-gate.md`
+- `docs/mobile/harness/cycle-LJ-mvp-backend-readiness-gate/cycle-LJ-mvp-backend-readiness-gate.json`
+- `mobile/src/__tests__/mvpBackendReadinessGate.test.ts`
+- `scripts/prove_mobile_mvp_backend_readiness_gate.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LJ-READY-P0-01 | P0 | Pass | Readiness report exists and ranks P0/P1/P2. | Create report and rank blockers. |
+| LJ-READY-P0-02 | P0 | Pass | Server-mode Home does not render bundled `worldCupEvents` after route fallback/failure. | Keep server-mode fallback visibly empty/error. |
+| LJ-READY-P0-03 | P0 | Pass | Portfolio value-history route failure remains `portfolio-value-history-route` with `status=error`. | Avoid deterministic fallback in server-mode chart failure. |
+| LJ-READY-P0-04 | P0 | Pass | Server-mode open-order cancel waits for backend success before local removal. | Restore server-first cancel behavior. |
+
+Decision:
+
+- Pass/fail: Pass for focused internal-use backend readiness gate.
+- Ready for internal local testing: yes, for fake-token/internal server-mode MVP flows covered by existing route contracts and this LJ gate.
+- Ready for public server deployment: no. Remaining public-launch gaps include production provider breadth, real liquidity, real auth/session/funding/compliance, and cashout preview/proceeds hardening.
