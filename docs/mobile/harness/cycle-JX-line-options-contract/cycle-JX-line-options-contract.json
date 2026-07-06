@@ -1,0 +1,30 @@
+{
+  "pass": true,
+  "createdAt": "2026-07-06T15:15:07.878Z",
+  "scope": "backend-backed line option availability",
+  "spread": {
+    "periods": [
+      "Reg. Time",
+      "1st Half"
+    ],
+    "regulationLines": [
+      "0.5",
+      "1.5"
+    ],
+    "firstHalfLines": [
+      "0.5"
+    ],
+    "secondHalfLines": [],
+    "regulationMatch": "spread-rt-15",
+    "wrongPeriodRejected": true
+  },
+  "totals": {
+    "periods": [
+      "Reg. Time"
+    ],
+    "regulationLines": [
+      "2.5"
+    ],
+    "aliasMatch": "provider-total-25"
+  }
+}

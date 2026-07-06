@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle JX - Line Options Contract
+
+Cycle JX adds a focused mobile service contract for backend-backed line/period availability:
+
+- Line options proof: `docs/mobile/harness/cycle-JX-line-options-contract/cycle-JX-line-options-contract.json`.
+- Proof script: `scripts/prove_mobile_line_options_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/marketLineOptionsService.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Game Lines line/period options | `/api/mobile/events/:slug/live-detail` and compact `events[].markets[]` | GET | Public/mobile route | Event slug or list query | `markets[].marketType`, `markets[].period`, `markets[].line`, `markets[].outcomes[]` | Existing `Market.marketType`, `Market.period`, `Market.line`, active `Outcome` rows | Service returns empty options when backend lacks a line/period. It does not invent choices. | P1: wire dirty Event Detail/Game Lines UI to the service and prove visible chips follow backend availability. |
+| Provider market type aliases | Same market payloads | GET | Public/mobile route | Event slug or list query | `marketType=total_goals/team_total_goals` mapped to totals/team-total families | Existing provider-ingested market rows | Alias handling only maps provided backend rows; it does not create rows. | P1: broader provider-backed family coverage when available. |
+
 ## Cycle JW - Portfolio Activity Mapper Contract
 
 Cycle JW tightens the mobile service-layer route contract for visible Portfolio positions and history without redesigning Portfolio:

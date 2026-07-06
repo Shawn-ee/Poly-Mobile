@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle JX - Line Options Contract
+
+Closed or narrowed:
+
+- Mobile now has a focused service contract for deriving line and period choices from backend market rows only.
+- Wrong-period backend line markets are rejected instead of used for a selected period.
+- Provider aliases such as `total_goals` are treated as totals without inventing market rows.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Event Detail/Game Lines UI still needs clean wiring to this service once dirty screen churn is reconciled.
+- Android proof that visible line chips follow backend availability remains P1.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Market.marketType`, `Market.period`, and `Market.line` fields support the contract.
+
+Temporary mock/static data:
+
+- The service returns empty option sets when backend data is missing. It does not introduce deterministic frontend options.
+
 ## Cycle JW - Portfolio Activity Mapper Contract
 
 Closed or narrowed:
