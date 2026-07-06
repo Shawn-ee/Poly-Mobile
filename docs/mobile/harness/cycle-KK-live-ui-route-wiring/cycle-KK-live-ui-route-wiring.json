@@ -1,0 +1,19 @@
+{
+  "cycle": "KK",
+  "scope": "live-ui-route-wiring",
+  "generatedAt": "2026-07-06T17:02:15.181Z",
+  "route": "/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&status=live&limit=10",
+  "pass": true,
+  "checks": {
+    "appImportsFeedService": true,
+    "appKeepsLiveServerState": true,
+    "appUsesBackendLiveService": true,
+    "appRefreshesVisibleLiveFromBackend": true,
+    "appPassesServerResultsToVisibleLive": true,
+    "serviceUsesEventsStatusRoute": true
+  },
+  "evidence": {
+    "app": "mobile/App.tsx",
+    "service": "mobile/src/services/homeEventFeedService.ts"
+  }
+}

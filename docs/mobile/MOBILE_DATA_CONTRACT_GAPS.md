@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KK - Live UI Route Wiring
+
+Closed or narrowed:
+
+- Visible Live tab server mode now calls `loadHomeEventFeedPage({ filter: "live" })` instead of filtering only the currently loaded Home event list.
+- Live results use backend `/api/events?status=live&includeMobileMarkets=1&limit=10` pages and route status filtering.
+- Live refresh in server market-data mode reloads the backend live route and preserves the visible refresh tick/state.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Rich live sports-stat feeds remain outside this MVP route-wiring cycle.
+- Optional Android Live refresh proof remains future work if visual proof becomes required again.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Event.status`, `Market`, and `Outcome` fields already support the Live event list route contract.
+
+Temporary mock/static data:
+
+- Local `status === "live"` filtering remains the mock/offline fallback. In server market-data mode the visible Live tab uses backend Live pages and does not repopulate from local fallback when the route fails.
+
 ## Cycle KJ - Search UI Route Wiring
 
 Closed or narrowed:

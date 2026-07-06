@@ -40,6 +40,7 @@ import { applyServerPortfolioState } from "./src/services/portfolioStateApplySer
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { resolvePositionTradeTarget } from "./src/services/positionTradeTargetService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
+import { loadHomeEventFeedPage } from "./src/services/homeEventFeedService";
 import { loadSearchEventPage } from "./src/services/searchEventService";
 import { applyChartErrorToEvent, applyChartLoadingToEvent, applyChartStateToEvent, loadMarketChartState } from "./src/services/marketChartService";
 import { applyMarketDepthErrorToEvent, applyMarketDepthLoadingToEvent, applyDepthStateToEvent, loadMarketDepthState } from "./src/services/marketDepthService";
@@ -59,6 +60,7 @@ const MARKET_DATA_MODE: "mock" | "server" =
   ORDER_MODE === "server" || process.env.EXPO_PUBLIC_MARKET_DATA_MODE === "server" ? "server" : "mock";
 const SMOKE_OPEN_SERVER_ORDER_PRICE = 1;
 const SMOKE_OPEN_SERVER_ORDER_AMOUNT = "1";
+const LIVE_EVENT_PAGE_SIZE = 10;
 const SEARCH_EVENT_PAGE_SIZE = 10;
 const SAVED_EVENTS_STORAGE_KEY = "holiwyn.savedEventIds.v1";
 const LANGUAGE_STORAGE_KEY = "holiwyn.language.v1";
@@ -332,6 +334,7 @@ export default function App() {
   const [searchEvents, setSearchEvents] = useState<Event[]>([]);
   const [searchNextCursor, setSearchNextCursor] = useState<string | null>(null);
   const [isLoadingSearchEvents, setIsLoadingSearchEvents] = useState(false);
+  const [liveEvents, setLiveEvents] = useState<Event[]>([]);
   const [savedEventIds, setSavedEventIds] = useState<Set<string>>(() => new Set());
   const [savedEventIdsHydrated, setSavedEventIdsHydrated] = useState(false);
   const [forceAccountSignedIn, setForceAccountSignedIn] = useState(false);
@@ -348,6 +351,7 @@ export default function App() {
   const mounted = useRef(true);
   const profilePreferencesReady = useRef(false);
   const searchRequestSeq = useRef(0);
+  const liveRequestSeq = useRef(0);
   const skipPortfolioHydration = useRef(false);
   const forceServerCloseFixture = useRef(false);
   const forceServerOrderProof = useRef(false);
@@ -1034,6 +1038,34 @@ export default function App() {
     loadBackendSearchEvents();
   }, [loadBackendSearchEvents, mainTab]);
 
+  const loadBackendLiveEvents = useCallback(async () => {
+    if (MARKET_DATA_MODE !== "server") return;
+    const requestSeq = liveRequestSeq.current + 1;
+    liveRequestSeq.current = requestSeq;
+    setIsRefreshingLive(true);
+    try {
+      const page = await loadHomeEventFeedPage({
+        api,
+        filter: "live",
+        limit: LIVE_EVENT_PAGE_SIZE,
+        fallbackEvents: [],
+      });
+      const normalized = await hydrateSearchEventSummaries(page.events);
+      if (!mounted.current || requestSeq !== liveRequestSeq.current) return;
+      setLiveEvents(normalized);
+      setLiveRefreshTick((tick) => tick + 1);
+    } catch {
+      if (mounted.current && requestSeq === liveRequestSeq.current) setLiveEvents([]);
+    } finally {
+      if (mounted.current && requestSeq === liveRequestSeq.current) setIsRefreshingLive(false);
+    }
+  }, [api, hydrateSearchEventSummaries]);
+
+  useEffect(() => {
+    if (MARKET_DATA_MODE !== "server" || mainTab !== "live") return;
+    loadBackendLiveEvents();
+  }, [loadBackendLiveEvents, mainTab]);
+
   useEffect(() => {
     loadBackendWorldCup();
   }, [loadBackendWorldCup]);
@@ -1119,6 +1151,10 @@ export default function App() {
   }, [selectedEvent?.id]);
 
   const refreshLiveMarkets = useCallback(async () => {
+    if (MARKET_DATA_MODE === "server") {
+      await loadBackendLiveEvents();
+      return;
+    }
     setIsRefreshingLive(true);
     try {
       await loadBackendWorldCup();
@@ -1126,7 +1162,7 @@ export default function App() {
     } finally {
       if (mounted.current) setIsRefreshingLive(false);
     }
-  }, [loadBackendWorldCup]);
+  }, [loadBackendLiveEvents, loadBackendWorldCup]);
 
   const filteredEvents = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -1557,7 +1593,7 @@ export default function App() {
               <LiveScreen
                 locale={locale}
                 t={t}
-                events={events.filter((event) => event.status === "live")}
+                events={MARKET_DATA_MODE === "server" ? liveEvents : events.filter((event) => event.status === "live")}
                 isRefreshing={isRefreshingLive}
                 refreshTick={liveRefreshTick}
                 onRefresh={refreshLiveMarkets}

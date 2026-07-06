@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KK - Live UI Route Wiring
+
+Cycle KK wires the visible Live tab to the already-proven backend status-filter event route in server market-data mode:
+
+- Live UI route-wiring proof: `docs/mobile/harness/cycle-KK-live-ui-route-wiring/cycle-KK-live-ui-route-wiring.json`.
+- Proof script: `scripts/prove_mobile_live_ui_route_wiring.ts`.
+- Focused mobile tests: `mobile/src/__tests__/api.test.ts` and `mobile/src/__tests__/homeEventFeedService.test.ts`.
+- Focused backend tests: `src/__tests__/public.events.no-leak.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Live tab event page | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&status=live&limit=10` | GET | Public/mobile route | Query params only | `events[]`, compact `markets[]`, event `status`, `nextCursor`, `page.hasMore` | Existing `Event`, public listed `Market`, active `Outcome` rows | In mock/offline mode Live still filters local events by `status === "live"`. In server market-data mode backend Live route pages drive the visible Live list. | Rich live sports-stat feeds remain outside this MVP route-wiring cycle. |
+| Visible Live refresh | Same `/api/events` route with `status=live` | GET | Public/mobile route | Query params only | Fresh backend Live page and visible refresh state | Same existing tables and status filtering as Home route contracts | Server-mode route failure leaves visible Live rows empty instead of repopulating from local demo fallback. | Optional Android proof if visual proof becomes required again. |
+
 ## Cycle KJ - Search UI Route Wiring
 
 Cycle KJ wires the visible Search tab to the already-proven backend Search route/service in server market-data mode:
