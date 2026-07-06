@@ -40,6 +40,7 @@ import { applyServerPortfolioState } from "./src/services/portfolioStateApplySer
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { resolvePositionTradeTarget } from "./src/services/positionTradeTargetService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
+import { loadSearchEventPage } from "./src/services/searchEventService";
 import { applyChartErrorToEvent, applyChartLoadingToEvent, applyChartStateToEvent, loadMarketChartState } from "./src/services/marketChartService";
 import { applyMarketDepthErrorToEvent, applyMarketDepthLoadingToEvent, applyDepthStateToEvent, loadMarketDepthState } from "./src/services/marketDepthService";
 import {
@@ -58,6 +59,7 @@ const MARKET_DATA_MODE: "mock" | "server" =
   ORDER_MODE === "server" || process.env.EXPO_PUBLIC_MARKET_DATA_MODE === "server" ? "server" : "mock";
 const SMOKE_OPEN_SERVER_ORDER_PRICE = 1;
 const SMOKE_OPEN_SERVER_ORDER_AMOUNT = "1";
+const SEARCH_EVENT_PAGE_SIZE = 10;
 const SAVED_EVENTS_STORAGE_KEY = "holiwyn.savedEventIds.v1";
 const LANGUAGE_STORAGE_KEY = "holiwyn.language.v1";
 const PORTFOLIO_STORAGE_KEY = "holiwyn.portfolio.v1";
@@ -245,6 +247,17 @@ const isBookSpreadLifecycleSelection = (selection?: TicketSelection) =>
   typeof selection.limitPrice === "number" &&
   selection.limitPrice > 0;
 
+const appendUniqueEvents = (current: Event[], next: Event[]) => {
+  const seen = new Set(current.map((event) => event.id));
+  const merged = [...current];
+  for (const event of next) {
+    if (seen.has(event.id)) continue;
+    seen.add(event.id);
+    merged.push(event);
+  }
+  return merged;
+};
+
 const mexicoEcuadorGamePositionFixture = (): Position | undefined => {
   const event = worldCupEvents.find((item) => item.id === "mexico-ecuador");
   const market = event?.markets.find((item) => item.id === "mexico-ecuador-winner");
@@ -316,6 +329,9 @@ export default function App() {
     ORDER_MODE === "server" && DEFAULT_API_KEY.length > 0 ? "syncing" : "hidden"
   );
   const [events, setEvents] = useState<Event[]>(worldCupEvents);
+  const [searchEvents, setSearchEvents] = useState<Event[]>([]);
+  const [searchNextCursor, setSearchNextCursor] = useState<string | null>(null);
+  const [isLoadingSearchEvents, setIsLoadingSearchEvents] = useState(false);
   const [savedEventIds, setSavedEventIds] = useState<Set<string>>(() => new Set());
   const [savedEventIdsHydrated, setSavedEventIdsHydrated] = useState(false);
   const [forceAccountSignedIn, setForceAccountSignedIn] = useState(false);
@@ -331,6 +347,7 @@ export default function App() {
   const api = useMemo(() => new PolyApi(DEFAULT_API_BASE, runtimeApiKey), [runtimeApiKey]);
   const mounted = useRef(true);
   const profilePreferencesReady = useRef(false);
+  const searchRequestSeq = useRef(0);
   const skipPortfolioHydration = useRef(false);
   const forceServerCloseFixture = useRef(false);
   const forceServerOrderProof = useRef(false);
@@ -950,6 +967,73 @@ export default function App() {
     }
   }, [api]);
 
+  const hydrateSearchEventSummaries = useCallback(async (pageEvents: Awaited<ReturnType<typeof loadSearchEventPage>>["events"]) => {
+    const summaryEvents = pageEvents
+      .map((event) => normalizeEventSummary(event, event.markets ?? []))
+      .filter((event) => event.markets.length > 0);
+    const details = await Promise.all(
+      pageEvents
+        .filter((event) => !event.markets?.length)
+        .slice(0, Math.max(0, 8 - summaryEvents.length))
+        .map(async (event) => {
+          try {
+            return normalizeEventDetail(await api.getEvent(event.slug));
+          } catch {
+            return null;
+          }
+        }),
+    );
+    const normalized = [
+      ...summaryEvents,
+      ...details.filter((event): event is Event => Boolean(event)),
+    ];
+    if (ORDER_MODE !== "server") return normalized;
+    return Promise.all(
+      normalized.map(async (event) => {
+        const quotesByMarketId = await loadMarketQuotesById(api, event.markets.map((market) => market.id));
+        return applyTicketQuotesToEvent(event, quotesByMarketId);
+      }),
+    );
+  }, [api]);
+
+  const loadBackendSearchEvents = useCallback(async (cursor: string | null = null, append = false) => {
+    if (MARKET_DATA_MODE !== "server") return;
+    const requestSeq = append ? searchRequestSeq.current : searchRequestSeq.current + 1;
+    if (!append) searchRequestSeq.current = requestSeq;
+    setIsLoadingSearchEvents(true);
+    try {
+      const page = await loadSearchEventPage({
+        api,
+        query,
+        limit: SEARCH_EVENT_PAGE_SIZE,
+        cursor,
+      });
+      const normalized = await hydrateSearchEventSummaries(page.events);
+      if (!mounted.current || requestSeq !== searchRequestSeq.current) return;
+      setSearchEvents((current) => append ? appendUniqueEvents(current, normalized) : normalized);
+      setSearchNextCursor(page.nextCursor);
+    } catch {
+      if (mounted.current && !append) {
+        setSearchEvents([]);
+        setSearchNextCursor(null);
+      }
+    } finally {
+      if (mounted.current && requestSeq === searchRequestSeq.current) {
+        setIsLoadingSearchEvents(false);
+      }
+    }
+  }, [api, hydrateSearchEventSummaries, query]);
+
+  const loadMoreSearchEvents = useCallback(() => {
+    if (MARKET_DATA_MODE !== "server" || !searchNextCursor || isLoadingSearchEvents) return;
+    loadBackendSearchEvents(searchNextCursor, true);
+  }, [isLoadingSearchEvents, loadBackendSearchEvents, searchNextCursor]);
+
+  useEffect(() => {
+    if (MARKET_DATA_MODE !== "server" || mainTab !== "search") return;
+    loadBackendSearchEvents();
+  }, [loadBackendSearchEvents, mainTab]);
+
   useEffect(() => {
     loadBackendWorldCup();
   }, [loadBackendWorldCup]);
@@ -1509,11 +1593,14 @@ export default function App() {
                 t={t}
                 query={query}
                 setQuery={setQuery}
-                events={filteredEvents}
+                events={MARKET_DATA_MODE === "server" ? searchEvents : filteredEvents}
                 openEvent={openEventDetail}
                 openTicket={openTicket}
                 savedEventIds={savedEventIds}
                 toggleSavedEvent={toggleSavedEvent}
+                canLoadMoreEvents={MARKET_DATA_MODE === "server" ? Boolean(searchNextCursor) : undefined}
+                isLoadingMoreEvents={isLoadingSearchEvents}
+                loadMoreEvents={MARKET_DATA_MODE === "server" ? loadMoreSearchEvents : undefined}
               />
             )}
             {mainTab === "account" && (

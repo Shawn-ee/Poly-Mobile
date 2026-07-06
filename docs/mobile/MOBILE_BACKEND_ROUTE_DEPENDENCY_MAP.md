@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KJ - Search UI Route Wiring
+
+Cycle KJ wires the visible Search tab to the already-proven backend Search route/service in server market-data mode:
+
+- Search UI route-wiring proof: `docs/mobile/harness/cycle-KJ-search-ui-route-wiring/cycle-KJ-search-ui-route-wiring.json`.
+- Proof script: `scripts/prove_mobile_search_ui_route_wiring.ts`.
+- Focused mobile tests: `mobile/src/__tests__/api.test.ts` and `mobile/src/__tests__/searchEventService.test.ts`.
+- Focused backend tests: `src/__tests__/public.events.no-leak.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Search tab result page | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&search=<query>&limit=10` | GET | Public/mobile route | Query params only | `events[]`, compact `markets[]`, `nextCursor`, `page.nextCursor`, `page.hasMore` | Existing `Event`, public listed `Market`, active `Outcome` rows | In mock/offline mode Search still filters local events. In server market-data mode successful route pages drive the visible Search list. | P1: ranked/faceted discovery only if MVP Search scope expands. |
+| Visible Search "load more" | Same `/api/events` route with `cursor=<event-id>` | GET | Public/mobile route | Cursor query param | Next route page, cursor metadata, loading state | Same existing tables and cursor ordering as Home/Search route contracts | Failed server loads do not invent backend events; local filtering remains non-server fallback. | Optional Android proof if visual proof becomes required again. |
+
 ## Cycle KI - Account Balance Route Contract
 
 Cycle KI proves the visible account/cash balance route/service contract without editing dirty Account or Portfolio UI files:

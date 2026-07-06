@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import { Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, View, type NativeScrollEvent, type NativeSyntheticEvent } from "react-native";
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { label, money } from "../presentation/formatters";
 
@@ -34,6 +34,9 @@ export function SearchScreen({
   openTicket,
   savedEventIds,
   toggleSavedEvent,
+  canLoadMoreEvents,
+  isLoadingMoreEvents = false,
+  loadMoreEvents,
 }: {
   locale: Locale;
   t: SearchScreenCopy;
@@ -44,6 +47,9 @@ export function SearchScreen({
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
   savedEventIds: Set<string>;
   toggleSavedEvent: (event: Event) => void;
+  canLoadMoreEvents?: boolean;
+  isLoadingMoreEvents?: boolean;
+  loadMoreEvents?: () => void;
 }) {
   const [filter, setFilter] = useState<SearchFilter>("all");
   const [sort, setSort] = useState<SearchSort>("popular");
@@ -82,6 +88,16 @@ export function SearchScreen({
     ["live", t.sortLiveFirst],
   ];
   const categoryChips = locale === "zh" ? ["\u5168\u90e8", "\u4f53\u80b2", "\u4e16\u754c\u676f", "\u6eda\u7403"] : ["All", "Sports", "World Cup", "Live"];
+  const canLoadMore = Boolean(canLoadMoreEvents && loadMoreEvents);
+  const loadMoreResults = () => {
+    if (!canLoadMore || isLoadingMoreEvents) return;
+    loadMoreEvents?.();
+  };
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+    const distanceFromBottom = contentSize.height - (contentOffset.y + layoutMeasurement.height);
+    if (distanceFromBottom < 160) loadMoreResults();
+  };
 
   return (
     <View style={styles.screen}>
@@ -89,7 +105,9 @@ export function SearchScreen({
         automaticallyAdjustKeyboardInsets
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
+        onScroll={handleScroll}
         onScrollBeginDrag={Keyboard.dismiss}
+        scrollEventThrottle={120}
         style={styles.content}
         contentContainerStyle={[styles.scrollPad, isInputFocused && styles.scrollPadKeyboard]}
       >
@@ -228,6 +246,18 @@ export function SearchScreen({
             })}
           </View>
         )}
+        {canLoadMore && (
+          <Pressable
+            accessibilityLabel={`search-load-more-results visible-${visibleEvents.length}-next-10`}
+            onPress={loadMoreResults}
+            style={styles.loadMoreButton}
+            testID="search-load-more-results"
+          >
+            <Text style={styles.loadMoreText}>
+              {isLoadingMoreEvents ? (locale === "zh" ? "\u52a0\u8f7d\u4e2d" : "Loading") : (locale === "zh" ? "\u52a0\u8f7d\u66f4\u591a\u7ed3\u679c" : "Load 10 more")}
+            </Text>
+          </Pressable>
+        )}
       </ScrollView>
       <Pressable
         accessibilityLabel="search-filter-sheet"
@@ -323,6 +353,8 @@ const styles = StyleSheet.create({
   resultOutcome: { color: "#8ea0b8", fontSize: 13, fontWeight: "900", marginTop: 2, textAlign: "right" },
   resultActions: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 12 },
   compactSaveButton: { width: 30, height: 30, alignItems: "center", justifyContent: "center" },
+  loadMoreButton: { minHeight: 48, alignItems: "center", justifyContent: "center", marginTop: 12, borderRadius: 12, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
+  loadMoreText: { color: "#dbeafe", fontSize: 15, fontWeight: "900" },
   floatingFilter: {
     position: "absolute",
     right: 16,

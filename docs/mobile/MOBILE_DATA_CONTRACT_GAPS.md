@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KJ - Search UI Route Wiring
+
+Closed or narrowed:
+
+- Visible Search tab server mode now calls `loadSearchEventPage()` instead of filtering only the currently loaded Home event list.
+- Search results use backend `/api/events?search=...&includeMobileMarkets=1&limit=10&cursor=...` pages and carry cursor metadata into the visible Search tab.
+- Search route pages are normalized into mobile event rows and quote-refreshed in server order mode, matching the existing Home normalization pattern.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Ranked/faceted discovery remains future P1 only if the MVP Search surface expands beyond basic event/team/market/outcome search.
+- Optional Android Search load-more proof remains future work if visual proof becomes required again.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Event`, `Market`, and `Outcome` fields already support the Search query and compact market contract.
+
+Temporary mock/static data:
+
+- Local Search filtering remains the mock/offline fallback. Successful backend Search pages are authoritative in server market-data mode and are not limited to the Home page already loaded on-device.
+
 ## Cycle KI - Account Balance Route Contract
 
 Closed or narrowed:
