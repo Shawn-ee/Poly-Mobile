@@ -1,0 +1,21 @@
+{
+  "cycle": "KO",
+  "scope": "trade-ticket-quote-ui-wiring",
+  "generatedAt": "2026-07-06T17:25:30.854Z",
+  "route": "/api/markets/:id/quote?outcomeId=:outcomeId",
+  "pass": true,
+  "checks": {
+    "appImportsTicketQuoteHelpers": true,
+    "ticketQuoteRefreshIsServerModeOnly": true,
+    "ticketQuoteRefreshCallsBackendRouteService": true,
+    "ticketQuoteRefreshScopesToOpenTicket": true,
+    "eventDetailQuotesRefreshVisibleMarkets": true,
+    "quoteServiceUsesMarketQuoteRoute": true,
+    "apiClientExposesQuoteEndpoint": true
+  },
+  "evidence": {
+    "app": "git show HEAD:mobile/App.tsx",
+    "service": "mobile/src/services/quoteService.ts",
+    "api": "mobile/src/api.ts"
+  }
+}

@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KO - Trade Ticket Quote UI Wiring
+
+Cycle KO proves the visible Trade Ticket quote refresh is wired to the already-proven backend quote route in server mode:
+
+- Trade Ticket quote UI proof: `docs/mobile/harness/cycle-KO-trade-ticket-quote-ui-wiring/cycle-KO-trade-ticket-quote-ui-wiring.json`.
+- Proof script: `scripts/prove_mobile_trade_ticket_quote_ui_wiring.ts`.
+- Focused mobile tests: `mobile/src/__tests__/api.test.ts` and `mobile/src/__tests__/quoteService.test.ts`.
+- Focused backend tests: `src/__tests__/market.quote.route.test.ts` and `src/__tests__/orderbook-pricing.quote-size.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Trade Ticket quote refresh | `/api/markets/:id/quote?outcomeId=:outcomeId` | GET | Public/mobile route; auth header tolerated but not required | Market id path param, optional outcome id query param | `quotes[]`, selected `outcomeId`, `outcomeName`, `bestBid`, `bestAsk`, `bestBidSize`, `bestAskSize`, `midPrice`, `lastPrice` mapped into visible ticket odds/quote fields | Existing `Market`, active `Outcome`, orderbook depth/read-model rows, latest trade price when available | Server route failure keeps the current ticket state. Mock/offline mode keeps local ticket odds. Selected limit-price tickets do not overwrite the explicit staged limit price. | Optional Android proof if visual proof becomes required again; production provider quote breadth remains under provider lanes. |
+| Visible Event Detail quote refresh | Same `/api/markets/:id/quote` route through `loadMarketQuotesById()` | GET | Public/mobile route | Market ids from selected event markets | Backend quote fields update visible market/outcome probabilities and bid/ask fields before ticket opening | Same existing market/outcome/orderbook read models | Server route failure leaves selected event markets unchanged instead of inventing quote rows. | Broader provider quote freshness remains under provider refresh lanes. |
+
 ## Cycle KN - Event Detail Catalog UI Wiring
 
 Cycle KN wires visible Event Detail/Game Lines market rows to the backend market catalog route in server mode:

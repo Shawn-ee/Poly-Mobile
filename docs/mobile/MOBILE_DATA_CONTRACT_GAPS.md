@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KO - Trade Ticket Quote UI Wiring
+
+Closed or narrowed:
+
+- Visible Trade Ticket server mode now has proof that it calls `loadTicketQuotes()` for the open ticket market/outcome.
+- `loadTicketQuotes()` consumes `/api/markets/:id/quote?outcomeId=...` through `PolyApi.getMarketQuote()`.
+- Quote updates are scoped to the still-open ticket market/outcome before changing visible ticket odds.
+- Visible Event Detail markets also refresh route-backed quote fields through `loadMarketQuotesById()`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Optional Android Trade Ticket quote proof remains future work if visual proof becomes required again.
+- Production provider quote breadth/freshness remains under provider mapping/provider refresh lanes.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Market`, `Outcome`, orderbook depth/read-model rows, and latest trade price support the quote route contract.
+
+Temporary mock/static data:
+
+- Server quote route failure keeps the current ticket/event state. Mock/offline mode keeps local ticket odds. Successful route quotes are authoritative for ticket quote refresh.
+
 ## Cycle KN - Event Detail Catalog UI Wiring
 
 Closed or narrowed:
