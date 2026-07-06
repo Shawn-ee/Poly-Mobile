@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle LD - Portfolio Settings Contract
+
+Cycle LD removes the duplicate local-only Portfolio account/settings gear and sheet. Portfolio remains focused on route-backed account value, positions, orders, history, cashout, buy, and cancel controls; Account remains the owner of account/preferences surfaces.
+
+- Portfolio settings proof: `docs/mobile/harness/cycle-LD-portfolio-settings-contract/cycle-LD-portfolio-settings-contract.json`.
+- Proof script: `scripts/prove_mobile_portfolio_settings_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/portfolioSettingsContract.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Portfolio account/settings affordance | Existing Portfolio routes only: `/api/account/balance`, `/api/portfolio`, `/api/portfolio/history`, `/api/portfolio/value-history`, plus existing Account preference/profile routes on the Account surface | GET for Portfolio data; Account uses its already-documented GET/PUT preference/summary routes | Existing account read/write auth when server mode is active | None for removed Portfolio settings sheet | Portfolio consumes balance, value-history, positions, open orders, history/activity, cashout/cancel state | Existing account balance, portfolio, order, position, trade/history, and profile preference models already documented by KT/KP/KU/KW | Mock/offline mode keeps Portfolio data fallback only. It no longer exposes a duplicate local-only account settings sheet. | Broader account/security/session/funding settings remain future Account-surface work only if MVP scope expands. |
+
 ## Cycle LC - Account Static Rows Contract
 
 Cycle LC removes unsupported hardcoded Account rows (`Theme: Dark`, security teaser, fake-token static row). Account keeps rows backed by profile preferences, profile summary, or app trading-mode state.

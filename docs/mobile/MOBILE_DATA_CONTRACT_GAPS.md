@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle LD - Portfolio Settings Contract
+
+Closed or narrowed:
+
+- Portfolio no longer renders a duplicate settings gear that opens a local-only account sheet.
+- Portfolio no longer renders local-only fake-token mode or funding-disabled settings rows.
+- Portfolio keeps display-only profile identity plus route-backed value, positions, open orders, history, cashout, buy, and cancel surfaces.
+- Account remains the owner of account/preferences display, backed by the existing profile summary and profile preferences cycles.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Broader account/security/session/funding settings remain future scope only if MVP Account scope expands.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- No duplicate local-only Portfolio account/settings sheet remains in the committed component path.
+
 ## Cycle LC - Account Static Rows Contract
 
 Closed or narrowed:

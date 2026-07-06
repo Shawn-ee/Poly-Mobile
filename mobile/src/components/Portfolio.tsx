@@ -650,7 +650,6 @@ export function Portfolio({
   const [activeTab, setActiveTab] = useState<PortfolioTab>("positions");
   const [activeRange, setActiveRange] = useState<PortfolioValueHistoryRange>("1D");
   const [serverValueHistory, setServerValueHistory] = useState<PortfolioValueHistory | null>(null);
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const closedActivityCount = activities.filter((activity) => activity.action === "closed").length;
   const latestActivity = activities[0];
   const detailCopy = portfolioDetailCopy[locale];
@@ -799,51 +798,11 @@ export function Portfolio({
   return (
     <ScrollView ref={scrollRef} accessibilityLabel={`portfolio-screen ${latestOrder ? "portfolio-result-content-landing portfolio-result-lands-at-account-header" : "portfolio-normal-browse"}`} testID="portfolio-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
       <View accessibilityLabel="portfolio-profile-header portfolio-header-retail-density" testID="portfolio-profile-header" style={styles.profileHeader}>
-        <Pressable
-          accessibilityLabel={`portfolio-account-entry-top-left portfolio-settings-state-${settingsOpen ? "open" : "closed"}`}
-          onPress={() => setSettingsOpen((open) => !open)}
-          style={styles.profileLeft}
-          testID="portfolio-account-entry-top-left"
-        >
+        <View accessibilityLabel="portfolio-account-entry-top-left portfolio-account-entry-display-only" style={styles.profileLeft} testID="portfolio-account-entry-top-left">
           <PortfolioAvatar />
           <Text style={styles.profileName}>{pageCopy.profile}</Text>
-        </Pressable>
-        <Pressable
-          accessibilityLabel={`portfolio-settings portfolio-settings-state-${settingsOpen ? "open" : "closed"}`}
-          onPress={() => setSettingsOpen((open) => !open)}
-          testID="portfolio-settings"
-          style={styles.settingsIconButton}
-        >
-          <Ionicons name="settings-outline" color="#f8fafc" size={25} />
-        </Pressable>
-      </View>
-      {settingsOpen && (
-        <View accessibilityLabel="portfolio-settings-sheet portfolio-settings-state-open local-mvp-account-sheet" testID="portfolio-settings-sheet" style={styles.settingsSheet}>
-          <View style={styles.settingsSheetHeader}>
-            <View>
-              <Text style={styles.settingsSheetTitle}>Account settings</Text>
-              <Text style={styles.settingsSheetSub}>{pageCopy.profile}</Text>
-            </View>
-            <Pressable accessibilityLabel="portfolio-settings-close" onPress={() => setSettingsOpen(false)} testID="portfolio-settings-close" style={styles.settingsCloseButton}>
-              <Ionicons name="close" color="#f8fafc" size={20} />
-            </Pressable>
-          </View>
-          <View style={styles.settingsRows}>
-            <View accessibilityLabel={`portfolio-settings-language-${locale}`} style={styles.settingsRow} testID="portfolio-settings-language">
-              <Text style={styles.settingsRowLabel}>Language</Text>
-              <Text style={styles.settingsRowValue}>{locale === "zh" ? "Chinese" : "English"}</Text>
-            </View>
-            <View accessibilityLabel="portfolio-settings-fake-token-mode" style={styles.settingsRow} testID="portfolio-settings-fake-token-mode">
-              <Text style={styles.settingsRowLabel}>Trading mode</Text>
-              <Text style={styles.settingsRowValue}>Fake-token MVP</Text>
-            </View>
-            <View accessibilityLabel="portfolio-settings-funding-disabled-local-mvp" style={styles.settingsRow} testID="portfolio-settings-funding-disabled-local-mvp">
-              <Text style={styles.settingsRowLabel}>Funding</Text>
-              <Text style={styles.settingsRowValue}>Disabled</Text>
-            </View>
-          </View>
         </View>
-      )}
+      </View>
       <View accessibilityLabel="fake-balance-card portfolio-value-retail-density portfolio-header-dollar-value" testID="fake-balance-card" style={styles.valueBlock}>
         <Text style={styles.portfolioValue}>{portfolioHeaderMoney(portfolioValue)}</Text>
         <Text style={[styles.portfolioPnlLine, portfolioPnl >= 0 ? styles.pnlPositive : styles.pnlNegative]}>
@@ -1298,16 +1257,6 @@ const styles = StyleSheet.create({
   avatarColorStopYellow: { right: -4, top: 2, width: 44, height: 44, backgroundColor: "#facc15" },
   avatarColorStopBlue: { left: 4, bottom: -12, width: 42, height: 42, backgroundColor: "#7c3aed" },
   profileName: { color: "#e5e7eb", fontSize: 20, fontWeight: "500", flexShrink: 1 },
-  settingsIconButton: { width: 42, height: 42, alignItems: "center", justifyContent: "center" },
-  settingsSheet: { marginHorizontal: 24, marginTop: 4, marginBottom: 8, padding: 14, borderRadius: 16, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
-  settingsSheetHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
-  settingsSheetTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "700" },
-  settingsSheetSub: { color: "#8b94a5", fontSize: 13, fontWeight: "500", marginTop: 3 },
-  settingsCloseButton: { width: 34, height: 34, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
-  settingsRows: { gap: 8, marginTop: 14 },
-  settingsRow: { minHeight: 42, flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 14, paddingHorizontal: 12, borderRadius: 12, backgroundColor: "#0b1220" },
-  settingsRowLabel: { color: "#a8b0bf", fontSize: 14, fontWeight: "500" },
-  settingsRowValue: { color: "#f8fafc", fontSize: 14, fontWeight: "600", textAlign: "right" },
   valueBlock: { paddingHorizontal: 24, paddingTop: 4 },
   portfolioValue: { color: "#f8fafc", fontSize: 50, fontWeight: "300" },
   portfolioPnlLine: { fontSize: 17, fontWeight: "500", marginTop: 0 },
