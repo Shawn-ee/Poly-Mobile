@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle JU - Profile Preferences Route Contract
+
+Cycle JU proves the backend/mobile payload contract for the visible account/settings preference fields without touching the currently dirty mobile UI files:
+
+- Route/payload proof: `docs/mobile/harness/cycle-JU-profile-preferences-route-contract/cycle-JU-profile-preferences-route-contract.json`.
+- Proof script: `scripts/prove_mobile_profile_preferences_contract.ts`.
+- Focused backend tests: `src/__tests__/profile.preferences.route.test.ts` and `src/server/services/__tests__/profilePreferences.test.ts`.
+- Focused mobile tests: `mobile/src/__tests__/profilePreferencesService.test.ts` and selected `mobile/src/__tests__/api.test.ts` cases.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Account/settings preference load | `/api/profile/preferences` | GET | Canonical actor with `account:read` | None | `preferences.locale`, `ticketDefaultAmount`, `ticketDefaultSide`, `ticketDefaultSlippage`, `savedEventIds` | `UserProfilePreference.preferences` JSON payload keyed by user | Local app preferences remain the non-server-mode fallback. | P1: full account/settings shell contract for profile identity, auth/session, notifications, wallet controls, and security settings. |
+| Account/settings preference save | `/api/profile/preferences` | PUT | Canonical actor with `account:write` | Canonical `ProfilePreferences` payload | Saved canonical preferences, mapped back to local mobile side/slippage/default amount state | `UserProfilePreference` upsert via existing service | Mobile mapper defaults legacy missing slippage to `1%`; invalid canonical payloads are rejected before storage. | P1: UI-level server sync proof after unrelated dirty account/Portfolio UI files are reconciled. |
+
 ## Cycle JT - Search Event Route Contract
 
 Cycle JT tightens backend search for the visible mobile Search tab without touching currently dirty mobile UI files:

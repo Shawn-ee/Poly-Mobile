@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Profile preferences route contract | Cycle JU | Pass for backend/data-contract scope | 0 for focused account/settings preference payload contract | P1 full account/settings shell contract; P1 UI-level server sync proof after unrelated mobile UI churn is reconciled | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Route/payload proof: `docs/mobile/harness/cycle-JU-profile-preferences-route-contract/cycle-JU-profile-preferences-route-contract.json`; tests: `src/__tests__/profile.preferences.route.test.ts`, `src/server/services/__tests__/profilePreferences.test.ts`, `mobile/src/__tests__/profilePreferencesService.test.ts`; audit: `mobile/docs/audits/cycle-JU-profile-preferences-route-contract.md` | `/api/profile/preferences` and mobile mappers preserve locale, ticket defaults, slippage, and saved event ids using canonical account read/write scopes. |
 | Search event route contract | Cycle JT | Pass for backend/data-contract scope | 0 for focused route search/pagination contract | P1 wire Search tab UI to backend pages in server mode after unrelated mobile UI churn is reconciled; P1 ranked/faceted discovery | Product decision on 2026-07-06: manual UI review is no longer required for every cycle; backend wiring and harness evidence are the priority | Route proof: `docs/mobile/harness/cycle-JT-search-event-route-contract/cycle-JT-search-event-route-contract.json`; tests: `src/__tests__/public.events.no-leak.test.ts`; audit: `mobile/docs/audits/cycle-JT-search-event-route-contract.md` | `/api/events?search=` now matches event/team/market/outcome text, returns compact mobile markets, and preserves cursor pagination. |
 | Cashout route sell safety | Cycle JS | Pass for backend/data-contract scope | 0 for focused cashout route safety contract | P1 optional external HTTP auth-stack smoke for `POST /api/orders` if future gates require it | Product requirement: server mode must reject no-position and insufficient-position cashout/sell even if frontend fails | Route/service proof: `docs/mobile/harness/cycle-JS-cashout-route-sell-safety/cycle-JS-cashout-route-sell-safety.json`; tests: `src/server/services/__tests__/canonical_order_submission.phase5.test.ts`, `mobile/src/__tests__/positionCloseService.test.ts`; audit: `mobile/docs/audits/cycle-JS-cashout-route-sell-safety.md` | Canonical order submission now returns/stores `INSUFFICIENT_BALANCE` for no-position and oversell attempts; mobile blocks non-finite full-position cashout shares before submit; valid full-position sell remains allowed. |
 | Home event list and backend pagination | Cycle JR | Pass for backend/data-contract scope | 0 for focused Home list pagination contract | P1 server-side pagination for Home live/today filters; P1 Search tab backend pagination; P1 optional Android Load more proof if visual proof is required again | Product decision on 2026-07-06: manual UI review is no longer required for every cycle; backend wiring and harness evidence are the priority | Route proof: `docs/mobile/harness/cycle-JR-home-event-list-pagination/cycle-JR-home-event-pagination.json`; tests: selected `src/__tests__/public.events.no-leak.test.ts`, `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/homePaginationService.test.ts`; audit: `mobile/docs/audits/cycle-JR-home-event-list-pagination.md` | `/api/events` now supports cursor pages with compact mobile markets, and Home server mode requests/appends backend pages instead of only slicing a local full list. |
@@ -112,6 +113,28 @@ Fail the feature when:
 | Trade ticket | Cycle AG | Pass | 0 | P1 binary NO/share contract semantics; P1 production auth/location eligibility gates | `docs/mobile/reference/screenshots/cycle-AG-polymarket-ticket-open.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-open.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-amount.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-trade.png` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket-amount.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket-details.xml`; `cmd /c npm.cmd run smoke:tablet:event-detail-trade` | Focused pass only. First view is now sparse and settings opens advanced controls. |
 | Trade ticket surface | Cycle AI | Pass | 0 | P1 production auth/location eligibility gate; P2 native motion polish | `docs/mobile/reference/screenshots/cycle-AI-polymarket-logged-in-start.png`; `docs/mobile/reference/screenshots/cycle-AI-polymarket-logged-in-france-ticket.png`; `docs/mobile/reference/screenshots/cycle-AI-polymarket-after-france-row-tap.png` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket-amount.png`; `docs/mobile/screenshots/cycle-current-holiwyn-future-list-buy-no-ticket.png`; `cmd /c npm.cmd run smoke:tablet:event-detail-trade`; `cmd /c npm.cmd run smoke:tablet:future-list-buy-no` | Logged-in Polymarket World Cup selection opened a tall location-verification sheet; Holiwyn now uses a taller dimmed fake-token ticket with fixed swipe-up submit rail. |
 | Game page compact scrolled header | Cycle AJ | Pass | 0 | P1 phone visual density/sticky tab polish; P1 backend market/live data; P1 Player Props reference scope | `docs/mobile/reference/screenshots/cycle-AJ-polymarket-live-tab.png`; `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-top.png`; `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-lines-mid.png` | `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-markets.png`; `docs/mobile/harness/cycle-current-holiwyn-game-page-full-markets.xml`; `cmd /c npm.cmd run smoke:tablet:event-detail-full-page` | Logged-in Polymarket keeps compact match context when scrolled into Game Lines; Holiwyn now shows a compact match header in that state and full game-page smoke passed. |
+
+## Cycle JU
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for Account/settings profile preferences. This does not claim full account/settings shell, wallet, auth/session, notification, deposit, withdraw, or Portfolio visual parity.
+
+Evidence:
+
+- Route/payload proof: `docs/mobile/harness/cycle-JU-profile-preferences-route-contract/cycle-JU-profile-preferences-route-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-JU-profile-preferences-route-contract.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/profilePreferencesService.test.ts`
+  - selected profile preference cases in `mobile/src/__tests__/api.test.ts`
+- Focused backend tests:
+  - `src/__tests__/profile.preferences.route.test.ts`
+  - `src/server/services/__tests__/profilePreferences.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused account/settings preference payload scope.
+- Remaining P1: full account/settings shell contract and UI-level server sync proof after unrelated mobile UI churn is reconciled.
 
 ## Cycle JQ
 

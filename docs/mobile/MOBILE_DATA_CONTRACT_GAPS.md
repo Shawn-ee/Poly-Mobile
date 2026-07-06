@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle JU - Profile Preferences Route Contract
+
+Closed or narrowed:
+
+- Mobile preference mapping now has current-cycle proof for the canonical backend shape consumed by the visible account/settings preference flow.
+- `/api/profile/preferences` route tests cover `account:read` for loads, `account:write` for saves, valid canonical preference persistence, and invalid payload rejection before storage.
+- The JU proof covers round-trip preservation of locale, default ticket amount, default ticket side, slippage, and saved event ids.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Full account/settings shell state remains incomplete: profile identity, login/session state, notification preferences, wallet controls, security settings, KYC, deposit, and withdraw are not part of this focused contract.
+- UI-level server preference sync remains P1 because the relevant mobile UI files are dirty from older unrelated work.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `UserProfilePreference.preferences` JSON supports the focused preference payload.
+
+Temporary mock/static data:
+
+- Non-server mobile mode still uses local app preferences. Server-mode preference mapping uses the canonical route payload.
+
 ## Cycle JT - Search Event Route Contract
 
 Closed or narrowed:
