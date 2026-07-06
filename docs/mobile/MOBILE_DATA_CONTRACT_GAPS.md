@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle LA - Header Actions Contract
+
+Closed or narrowed:
+
+- Header no longer renders `Get 50` promo action with local fake "queued" feedback.
+- Header no longer renders a notification action with local fake "No new notifications" feedback.
+- Header no longer keeps local feedback state for unsupported backend surfaces.
+- The remaining visible header action is language switching, which is already covered by the focused profile-preferences/local preference flow.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Promo/rewards/claim-credit routes remain future scope only if the MVP explicitly adds them.
+- Notifications remain future scope only if a notification surface becomes visible again.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- No fake header promo/notification feedback remains in the committed component path.
+
 ## Cycle KZ - Search Controls Route Contract
 
 Closed or narrowed:

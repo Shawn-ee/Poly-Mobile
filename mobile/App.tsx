@@ -1775,7 +1775,6 @@ export default function App() {
         {!selectedEvent && mainTab !== "portfolio" && (
           <Header
             locale={locale}
-            promo={t.promo}
             language={t.language}
             toggleLanguage={() => setLocale((current) => (current === "en" ? "zh" : "en"))}
           />

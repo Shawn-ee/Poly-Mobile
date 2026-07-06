@@ -1,0 +1,18 @@
+{
+  "cycle": "LA",
+  "scope": "header-actions-contract",
+  "generatedAt": "2026-07-06T18:50:07.899Z",
+  "pass": true,
+  "decision": "Unsupported promo and notification header actions are not visible; language remains the only header action and is backed by the existing profile-preferences/local preference path.",
+  "checks": {
+    "headerKeepsLanguageAction": true,
+    "headerRemovesUnsupportedPromoAction": true,
+    "headerRemovesUnsupportedNotificationAction": true,
+    "headerRemovesLocalFeedbackState": true
+  },
+  "evidence": {
+    "app": "mobile/App.tsx",
+    "header": "mobile/src/components/Header.tsx",
+    "test": "mobile/src/__tests__/headerContract.test.ts"
+  }
+}

@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle LA - Header Actions Contract
+
+Cycle LA removes unsupported local-only promo and notification actions from the app header. The remaining visible header action is language switching, which is already covered by the profile preference/local preference path:
+
+- Header actions proof: `docs/mobile/harness/cycle-LA-header-actions-contract/cycle-LA-header-actions-contract.json`.
+- Proof script: `scripts/prove_mobile_header_actions_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/headerContract.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible app header actions | Existing language preference path through local app state and `/api/profile/preferences` when server preferences are active | GET/PUT for preferences; no route for removed actions | Existing account preference auth when server mode is active | Existing preference body only | Locale/language state only | Existing `UserProfilePreference.preferences` for server preference sync | Mock/offline mode keeps local language switching. Promo and notification actions are not shown and do not invent local fake feedback. | Promo/rewards/claim-credit and notifications routes remain outside focused MVP scope. Add them only if product scope expands. |
+
 ## Cycle KZ - Search Controls Route Contract
 
 Cycle KZ removes unsupported local-only Search category/sort controls so the visible Search page only exposes controls backed by the current route contract:
