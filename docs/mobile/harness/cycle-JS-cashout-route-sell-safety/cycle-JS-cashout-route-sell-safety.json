@@ -1,9 +1,9 @@
 {
   "cycle": "JS",
   "scope": "cashout-route-sell-safety",
-  "generatedAt": "2026-07-06T16:57:54.911Z",
-  "marketId": "a21d7964-cb4a-4137-9a63-37b42d07d9df",
-  "outcomeId": "1af9bbcb-3e3c-45ed-9802-8ffc4f9ce136",
+  "generatedAt": "2026-07-06T17:20:54.301Z",
+  "marketId": "d5c0b1e6-4441-45b5-8a62-8d6e09d3d0e1",
+  "outcomeId": "2ee54efe-559a-4007-91aa-cb9dbcc292f4",
   "checks": {
     "noPositionSellRejected": true,
     "oversellRejected": true,
@@ -25,9 +25,9 @@
     },
     "validSell": {
       "order": {
-        "id": "e387fbc0-abf2-49e3-840a-223b3e2237a3",
-        "marketId": "a21d7964-cb4a-4137-9a63-37b42d07d9df",
-        "outcomeId": "1af9bbcb-3e3c-45ed-9802-8ffc4f9ce136",
+        "id": "563c1e5a-b30c-4efe-bc3d-0d40997ccba7",
+        "marketId": "d5c0b1e6-4441-45b5-8a62-8d6e09d3d0e1",
+        "outcomeId": "2ee54efe-559a-4007-91aa-cb9dbcc292f4",
         "side": "SELL",
         "price": "0.45",
         "size": "2",
@@ -55,7 +55,7 @@
   },
   "apiOrderRequests": [
     {
-      "idempotencyKey": "cycle-js-naked-sell-1783357074760-w8xwp6",
+      "idempotencyKey": "cycle-js-naked-sell-1783358454150-wu78za",
       "status": "FAILED",
       "responseStatus": 409,
       "errorCode": "INSUFFICIENT_BALANCE",
@@ -63,7 +63,7 @@
       "orderId": null
     },
     {
-      "idempotencyKey": "cycle-js-oversell-1783357074760-w8xwp6",
+      "idempotencyKey": "cycle-js-oversell-1783358454150-wu78za",
       "status": "FAILED",
       "responseStatus": 409,
       "errorCode": "INSUFFICIENT_BALANCE",
@@ -71,12 +71,12 @@
       "orderId": null
     },
     {
-      "idempotencyKey": "cycle-js-valid-sell-1783357074760-w8xwp6",
+      "idempotencyKey": "cycle-js-valid-sell-1783358454150-wu78za",
       "status": "SUCCEEDED",
       "responseStatus": 200,
       "errorCode": null,
       "errorMessage": null,
-      "orderId": "e387fbc0-abf2-49e3-840a-223b3e2237a3"
+      "orderId": "563c1e5a-b30c-4efe-bc3d-0d40997ccba7"
     }
   ],
   "remainingPosition": {
