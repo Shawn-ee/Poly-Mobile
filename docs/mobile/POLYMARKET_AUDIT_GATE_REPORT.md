@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Open order cancel route contract | Cycle JZ | Pass for backend/data-contract scope | 0 for focused cancel route/service contract | P1 Android proof of visible Portfolio Orders tab cancel button after dirty UI churn is reconciled; P1 broader provider-family cancel breadth if needed | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Cancel route proof: `docs/mobile/harness/cycle-JZ-open-order-cancel-route-contract/cycle-JZ-open-order-cancel-route-contract.json`; tests: `mobile/src/__tests__/openOrderService.test.ts`, `src/__tests__/orders.cancel.route.test.ts`; audit: `mobile/docs/audits/cycle-JZ-open-order-cancel-route-contract.md` | Server-mode mobile cancel calls `DELETE /api/orders/:id`; `/api/portfolio` removes the open order, and `/api/portfolio/history` plus mobile activity mapping preserve selected spread identity. |
 | Portfolio value-history service contract | Cycle JY | Pass for backend/data-contract scope | 0 for focused service route-loading contract | P1 wire dirty Portfolio UI to service; P1 Android proof that visible chart source is `portfolio-value-history-route` in server mode | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Value-history service proof: `docs/mobile/harness/cycle-JY-portfolio-value-history-service-contract/cycle-JY-portfolio-value-history-service-contract.json`; tests: `mobile/src/__tests__/portfolioValueHistoryService.test.ts`, `src/__tests__/portfolio.value-history.route.test.ts`; audit: `mobile/docs/audits/cycle-JY-portfolio-value-history-service-contract.md` | Mobile service now prefers `/api/portfolio/value-history?range=...` route data when an API client is available and falls back deterministically only when route loading is unavailable. |
 | Line options contract | Cycle JX | Pass for backend/data-contract scope | 0 for focused line/period availability service | P1 Event Detail/Game Lines UI wiring; P1 Android proof that visible line chips follow backend availability | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Line options proof: `docs/mobile/harness/cycle-JX-line-options-contract/cycle-JX-line-options-contract.json`; tests: `mobile/src/__tests__/marketLineOptionsService.test.ts`; audit: `mobile/docs/audits/cycle-JX-line-options-contract.md` | Mobile now derives Spread/Totals/Team Total period and line choices from backend markets only, including provider aliases, and rejects wrong-period matches. |
 | Portfolio activity mapper contract | Cycle JW | Pass for backend/data-contract scope | 0 for focused Portfolio service-layer mapper contract | P1 UI-level Portfolio proof after dirty screen churn is reconciled; P1 broader real-provider lifecycle repetition | Product decision on 2026-07-06: manual UI review is no longer required for every backend-wiring cycle | Mapper proof: `docs/mobile/harness/cycle-JW-portfolio-activity-mapper-contract/cycle-JW-portfolio-activity-mapper-contract.json`; tests: `mobile/src/__tests__/portfolioHistoryService.test.ts`, `mobile/src/__tests__/portfolioSnapshotService.test.ts`; audit: `mobile/docs/audits/cycle-JW-portfolio-activity-mapper-contract.md` | Portfolio mappers now preserve backend `to_advance` selection identity and aggregate multi-fill recent trades into one retail activity row with `fillCount`. |
@@ -117,6 +118,26 @@ Fail the feature when:
 | Trade ticket | Cycle AG | Pass | 0 | P1 binary NO/share contract semantics; P1 production auth/location eligibility gates | `docs/mobile/reference/screenshots/cycle-AG-polymarket-ticket-open.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-open.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-amount.png`; `docs/mobile/reference/screenshots/cycle-AG-polymarket-web-ticket-trade.png` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket-amount.png`; `docs/mobile/harness/cycle-current-holiwyn-event-detail-ticket-details.xml`; `cmd /c npm.cmd run smoke:tablet:event-detail-trade` | Focused pass only. First view is now sparse and settings opens advanced controls. |
 | Trade ticket surface | Cycle AI | Pass | 0 | P1 production auth/location eligibility gate; P2 native motion polish | `docs/mobile/reference/screenshots/cycle-AI-polymarket-logged-in-start.png`; `docs/mobile/reference/screenshots/cycle-AI-polymarket-logged-in-france-ticket.png`; `docs/mobile/reference/screenshots/cycle-AI-polymarket-after-france-row-tap.png` | `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket.png`; `docs/mobile/screenshots/cycle-current-holiwyn-event-detail-ticket-amount.png`; `docs/mobile/screenshots/cycle-current-holiwyn-future-list-buy-no-ticket.png`; `cmd /c npm.cmd run smoke:tablet:event-detail-trade`; `cmd /c npm.cmd run smoke:tablet:future-list-buy-no` | Logged-in Polymarket World Cup selection opened a tall location-verification sheet; Holiwyn now uses a taller dimmed fake-token ticket with fixed swipe-up submit rail. |
 | Game page compact scrolled header | Cycle AJ | Pass | 0 | P1 phone visual density/sticky tab polish; P1 backend market/live data; P1 Player Props reference scope | `docs/mobile/reference/screenshots/cycle-AJ-polymarket-live-tab.png`; `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-top.png`; `docs/mobile/reference/screenshots/cycle-AJ-polymarket-game-lines-mid.png` | `docs/mobile/screenshots/cycle-current-holiwyn-game-page-full-markets.png`; `docs/mobile/harness/cycle-current-holiwyn-game-page-full-markets.xml`; `cmd /c npm.cmd run smoke:tablet:event-detail-full-page` | Logged-in Polymarket keeps compact match context when scrolled into Game Lines; Holiwyn now shows a compact match header in that state and full game-page smoke passed. |
+
+## Cycle JZ
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for Portfolio open-order cancel route wiring. This does not claim visible Portfolio UI proof.
+
+Evidence:
+
+- Cancel route proof: `docs/mobile/harness/cycle-JZ-open-order-cancel-route-contract/cycle-JZ-open-order-cancel-route-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-JZ-open-order-cancel-route-contract.md`.
+- Focused mobile tests:
+  - `mobile/src/__tests__/openOrderService.test.ts`
+- Focused backend tests:
+  - `src/__tests__/orders.cancel.route.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused server-mode cancel route/service contract.
+- Remaining P1: Android proof of the visible Portfolio Orders tab cancel button after dirty UI churn is reconciled, and broader provider-family cancel breadth if future gates require it.
 
 ## Cycle JY
 

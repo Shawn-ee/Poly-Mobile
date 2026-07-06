@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle JZ - Open Order Cancel Route Contract
+
+Closed or narrowed:
+
+- Mobile server-mode open-order cancel now has focused proof for `DELETE /api/orders/:id`.
+- The cancel route is actor-scoped, requires `orders:write`, returns mobile-safe cancel metadata, and refuses missing/non-owned orders.
+- `/api/portfolio` and `/api/portfolio/history` prove the canceled order leaves open orders and appears as canceled history.
+- Mobile Portfolio activity mapping preserves backend selection identity for canceled rows.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Android proof that the visible dirty Portfolio Orders tab cancel button uses this route remains P1.
+- Broader provider-family cancel breadth remains P1 only if future route lifecycle gates require it.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Order`, `ApiOrderRequest`, `ApiCredential`, `Market`, `Outcome`, `UserBalance`, and `Position` records support this route contract.
+
+Temporary mock/static data:
+
+- Mock mode still avoids backend cancel by design. JZ proof uses route-backed server mode and provider-accepting disposable quote snapshots.
+
 ## Cycle JY - Portfolio Value History Service Contract
 
 Closed or narrowed:

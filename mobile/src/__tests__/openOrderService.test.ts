@@ -15,6 +15,25 @@ const order: OpenOrder = {
   orderValue: 42.5,
 };
 
+const selectedOrder: OpenOrder = {
+  ...order,
+  selection: {
+    marketType: "spread",
+    marketId: "market-spread-1",
+    outcomeId: "outcome-home-1",
+    marketGroupId: "spread:regulation:1.5",
+    line: "1.5",
+    period: "Regulation",
+    side: "home",
+    displayLabel: "MEX -1.5",
+    contractSide: "yes",
+    referenceSource: "polymarket",
+    externalMarketId: "gamma-spread-1",
+    referenceTokenId: "token-spread-home",
+  },
+  contractSide: "yes",
+};
+
 describe("open order service", () => {
   test("maps open orders into canceled Portfolio activity rows", () => {
     expect(openOrderCanceledActivity(order, "Just now")).toEqual({
@@ -36,6 +55,15 @@ describe("open order service", () => {
 
     expect(appendUniqueActivity(existing, activity)).toBe(existing);
     expect(appendUniqueActivity([], activity)).toEqual([activity]);
+  });
+
+  test("preserves backend selection identity in local canceled activity rows", () => {
+    expect(openOrderCanceledActivity(selectedOrder, "Just now")).toMatchObject({
+      id: "server-open-order-1-canceled",
+      action: "canceled",
+      selection: selectedOrder.selection,
+      contractSide: "yes",
+    });
   });
 
   test("does not call the backend for mock-mode order cancel", async () => {

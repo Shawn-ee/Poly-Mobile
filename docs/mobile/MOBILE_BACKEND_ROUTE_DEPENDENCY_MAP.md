@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle JZ - Open Order Cancel Route Contract
+
+Cycle JZ proves the visible Portfolio open-order cancel dependency without editing dirty Portfolio UI files:
+
+- Cancel route proof: `docs/mobile/harness/cycle-JZ-open-order-cancel-route-contract/cycle-JZ-open-order-cancel-route-contract.json`.
+- Proof script: `scripts/prove_mobile_open_order_cancel_route_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/openOrderService.test.ts`.
+- Focused backend tests: `src/__tests__/orders.cancel.route.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio open-order cancel | `/api/orders/:id` | DELETE | Canonical actor with `orders:write`; route scopes order lookup to actor user id | Order id path param only | `order.id`, `order.status=CANCELED`, `type`, `clientOrderId`, `apiKeyId`, `canceledByApiKeyId`, `balance`, `position` | `Order`, `Market`, `ApiCredential`, `ApiOrderRequest`, `UserBalance`, `Position` | Mock mode does not call backend cancel. Server mode must call the route. | P1: Android proof that the dirty Portfolio Orders tab button uses this route once UI churn is reconciled. |
+| Portfolio refresh after cancel | `/api/portfolio` and `/api/portfolio/history` | GET | Canonical actor with `account:read` | None | Open orders after cancel; `canceledOrders[]` with `selection` identity; mobile activity mapping preserves market/outcome/line/period/provider token fields | `Order`, `Market`, `Outcome`, `ApiOrderRequest` selection snapshots | Local canceled activity helper can update optimistic UI but does not replace server refresh proof. | P1: broader family breadth if future provider gates require it. |
+
 ## Cycle JY - Portfolio Value History Service Contract
 
 Cycle JY adds a focused mobile service-layer loader for the backend Portfolio value-history route without editing dirty Portfolio UI files:
