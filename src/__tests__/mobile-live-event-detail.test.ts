@@ -971,6 +971,14 @@ describe("mobile live event detail contract", () => {
 
   test("reserves compact payload slots for rendered line market groups", () => {
     const markets = [
+      market({
+        id: "to-advance",
+        title: "Curacao to advance",
+        marketGroupKey: "to-advance",
+        marketGroupTitle: "To Advance",
+        displayOrder: -1,
+        marketType: "to_advance",
+      }),
       market({ id: "market-main", displayOrder: 0 }),
       ...Array.from({ length: 16 }, (_, index) =>
         market({
@@ -1025,6 +1033,7 @@ describe("mobile live event detail contract", () => {
 
     expect(compactMarkets).toHaveLength(14);
     expect(compactMarkets.map((item) => item.id)).toEqual(expect.arrayContaining([
+      "to-advance",
       "market-main",
       "spread-1",
       "totals-25",
@@ -1032,5 +1041,86 @@ describe("mobile live event detail contract", () => {
       "first-half-winner",
       "second-half-winner",
     ]));
+  });
+
+  test("reserves compact payload slots for backend winner-typed half markets", () => {
+    const markets = [
+      market({
+        id: "to-advance",
+        title: "Curacao to advance",
+        marketGroupKey: "to-advance",
+        marketGroupTitle: "To Advance",
+        displayOrder: -1,
+        marketType: "to_advance",
+      }),
+      market({ id: "market-main", displayOrder: 0 }),
+      ...Array.from({ length: 16 }, (_, index) =>
+        market({
+          id: `spread-${index}`,
+          title: `Spread ${index}`,
+          marketGroupKey: "spreads",
+          marketGroupTitle: "Spreads",
+          displayOrder: index + 1,
+          marketType: "spread",
+          line: new Prisma.Decimal(index === 1 ? "1.5" : `${index + 0.5}`),
+        }),
+      ),
+      market({
+        id: "totals-25",
+        title: "Total goals 2.5",
+        marketGroupKey: "totals",
+        marketGroupTitle: "Totals",
+        displayOrder: 50,
+        marketType: "total_goals",
+        line: new Prisma.Decimal("2.5"),
+      }),
+      market({
+        id: "team-total-15",
+        title: "Curacao goals 1.5",
+        marketGroupKey: "team-totals",
+        marketGroupTitle: "Team totals",
+        displayOrder: 51,
+        marketType: "team_total_goals",
+        line: new Prisma.Decimal("1.5"),
+      }),
+      market({
+        id: "first-half-winner",
+        title: "1st Half Winner",
+        marketGroupKey: "halves",
+        marketGroupTitle: "Halves",
+        displayOrder: 60,
+        marketType: "winner",
+        period: "first-half",
+        outcomes: [
+          { id: "home", name: "Curacao", label: "Curacao", side: "home", displayOrder: 0, isTradable: true },
+          { id: "draw", name: "Tie", label: "Tie", side: "draw", displayOrder: 1, isTradable: true },
+          { id: "away", name: "Cote d'Ivoire", label: "Cote d'Ivoire", side: "away", displayOrder: 2, isTradable: true },
+        ],
+      }),
+      market({
+        id: "second-half-winner",
+        title: "2nd Half Winner",
+        marketGroupKey: "halves",
+        marketGroupTitle: "Halves",
+        displayOrder: 61,
+        marketType: "winner",
+        period: "second-half",
+        outcomes: [
+          { id: "home", name: "Curacao", label: "Curacao", side: "home", displayOrder: 0, isTradable: true },
+          { id: "draw", name: "Tie", label: "Tie", side: "draw", displayOrder: 1, isTradable: true },
+          { id: "away", name: "Cote d'Ivoire", label: "Cote d'Ivoire", side: "away", displayOrder: 2, isTradable: true },
+        ],
+      }),
+    ];
+
+    const compactMarkets = selectCompactLiveMarkets(markets);
+
+    expect(compactMarkets).toHaveLength(14);
+    expect(compactMarkets.map((item) => item.id)).toEqual(expect.arrayContaining([
+      "first-half-winner",
+      "second-half-winner",
+    ]));
+    expect(compactMarkets.find((item) => item.id === "first-half-winner")?.outcomes.map((outcome) => outcome.side)).toContain("draw");
+    expect(compactMarkets.find((item) => item.id === "second-half-winner")?.outcomes.map((outcome) => outcome.side)).toContain("draw");
   });
 });

@@ -4,7 +4,6 @@ import { Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, View, typ
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { label, money } from "../presentation/formatters";
 
-type SearchFilter = "all" | "live" | "upcoming" | "saved";
 type SearchSort = "popular" | "live";
 
 type SearchScreenCopy = {
@@ -51,21 +50,11 @@ export function SearchScreen({
   isLoadingMoreEvents?: boolean;
   loadMoreEvents?: () => void;
 }) {
-  const [filter, setFilter] = useState<SearchFilter>("all");
   const [sort, setSort] = useState<SearchSort>("popular");
   const [isInputFocused, setIsInputFocused] = useState(false);
-  const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const disableSoftInputForSmoke = process.env.EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT === "1";
   const hasQuery = query.trim().length > 0;
-  const filteredEvents =
-    filter === "live"
-      ? events.filter((event) => event.status === "live")
-      : filter === "upcoming"
-        ? events.filter((event) => event.status !== "live")
-        : filter === "saved"
-          ? events.filter((event) => savedEventIds.has(event.id))
-        : events;
-  const visibleEvents = [...filteredEvents].sort((left, right) => {
+  const visibleEvents = [...events].sort((left, right) => {
     if (sort === "live") {
       const leftLive = left.status === "live" ? 0 : 1;
       const rightLive = right.status === "live" ? 0 : 1;
@@ -75,14 +64,8 @@ export function SearchScreen({
     const rightDepth = right.markets.reduce((total, market) => total + market.outcomes.length, 0);
     return rightDepth - leftDepth;
   });
-  const emptyCopy = filter === "saved" ? t.noSavedMarkets : t.noResults;
+  const emptyCopy = t.noResults;
   const resultLabel = locale === "zh" ? `${visibleEvents.length} \u4e2a\u7ed3\u679c` : `${visibleEvents.length} ${visibleEvents.length === 1 ? "result" : "results"}`;
-  const filters: Array<[SearchFilter, string]> = [
-    ["all", t.searchAll],
-    ["live", t.searchLive],
-    ["upcoming", t.searchUpcoming],
-    ["saved", t.saved],
-  ];
   const sortOptions: Array<[SearchSort, string]> = [
     ["popular", t.sortPopular],
     ["live", t.sortLiveFirst],
@@ -111,9 +94,6 @@ export function SearchScreen({
         style={styles.content}
         contentContainerStyle={[styles.scrollPad, isInputFocused && styles.scrollPadKeyboard]}
       >
-        <Text style={styles.exploreHeading}>
-          {locale === "zh" ? "\u63a2\u7d22\u4e16\u754c\u676f\u9884\u6d4b\u4e0e\u5b9e\u65f6\u5e02\u573a" : "Explore World Cup predictions & real-time markets"}
-        </Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll} contentContainerStyle={styles.categoryRow}>
           {categoryChips.map((chip, index) => (
             <Pressable
@@ -159,19 +139,6 @@ export function SearchScreen({
               <Ionicons name="close-circle" color="#dbeafe" size={18} />
             </Pressable>
           )}
-        </View>
-        <View style={styles.searchFilters}>
-          {filters.map(([value, text]) => (
-            <Pressable
-              key={value}
-              accessibilityLabel={`search-filter-${value}`}
-              testID={`search-filter-${value}`}
-              style={[styles.searchFilterChip, filter === value && styles.searchFilterChipActive]}
-              onPress={() => setFilter(value)}
-            >
-              <Text style={[styles.searchFilterText, filter === value && styles.searchFilterTextActive]}>{text}</Text>
-            </Pressable>
-          ))}
         </View>
         <View style={styles.sortRow}>
           {sortOptions.map(([value, text]) => (
@@ -259,53 +226,6 @@ export function SearchScreen({
           </Pressable>
         )}
       </ScrollView>
-      <Pressable
-        accessibilityLabel="search-filter-sheet"
-        onPress={() => setIsFilterSheetOpen(true)}
-        style={styles.floatingFilter}
-        testID="search-filter-sheet"
-      >
-        <Ionicons name="filter" color="#f8fafc" size={20} />
-        <Text style={styles.floatingFilterText}>Filter</Text>
-      </Pressable>
-      {isFilterSheetOpen && (
-        <View accessibilityLabel="search-filter-panel" style={styles.filterPanel} testID="search-filter-panel">
-          <View style={styles.filterPanelHeader}>
-            <Text style={styles.filterPanelTitle}>Filter</Text>
-            <Pressable accessibilityLabel="close-search-filter-panel" onPress={() => setIsFilterSheetOpen(false)} testID="close-search-filter-panel">
-              <Ionicons name="close" color="#f8fafc" size={22} />
-            </Pressable>
-          </View>
-          <Text style={styles.filterPanelLabel}>Status</Text>
-          <View style={styles.sheetRow}>
-            {filters.map(([value, text]) => (
-              <Pressable
-                accessibilityLabel={`search-sheet-filter-${value}`}
-                key={value}
-                onPress={() => setFilter(value)}
-                style={[styles.sheetChip, filter === value && styles.sheetChipActive]}
-                testID={`search-sheet-filter-${value}`}
-              >
-                <Text style={[styles.sheetChipText, filter === value && styles.sheetChipTextActive]}>{text}</Text>
-              </Pressable>
-            ))}
-          </View>
-          <Text style={styles.filterPanelLabel}>Sort</Text>
-          <View style={styles.sheetRow}>
-            {sortOptions.map(([value, text]) => (
-              <Pressable
-                accessibilityLabel={`search-sheet-sort-${value}`}
-                key={value}
-                onPress={() => setSort(value)}
-                style={[styles.sheetChip, sort === value && styles.sheetChipActive]}
-                testID={`search-sheet-sort-${value}`}
-              >
-                <Text style={[styles.sheetChipText, sort === value && styles.sheetChipTextActive]}>{text}</Text>
-              </Pressable>
-            ))}
-          </View>
-        </View>
-      )}
     </View>
   );
 }
@@ -315,7 +235,6 @@ const styles = StyleSheet.create({
   content: { flex: 1 },
   scrollPad: { paddingHorizontal: 16, paddingBottom: 110 },
   scrollPadKeyboard: { paddingBottom: 360 },
-  exploreHeading: { color: "#f8fafc", fontSize: 28, lineHeight: 34, fontWeight: "900", marginBottom: 18 },
   categoryScroll: { marginHorizontal: -16, marginBottom: 16 },
   categoryRow: { gap: 10, paddingHorizontal: 16 },
   categoryChip: { height: 44, alignItems: "center", justifyContent: "center", paddingHorizontal: 18, borderRadius: 10, backgroundColor: "transparent" },
@@ -329,11 +248,6 @@ const styles = StyleSheet.create({
   searchHeading: { color: "#f8fafc", fontSize: 20, fontWeight: "900" },
   resultMeta: { color: "#8ea0b8", fontSize: 13, fontWeight: "800", marginTop: 3 },
   clearSearchButton: { width: 34, height: 34, alignItems: "center", justifyContent: "center", borderRadius: 8, backgroundColor: "#1f2937" },
-  searchFilters: { flexDirection: "row", gap: 8, marginBottom: 12 },
-  searchFilterChip: { paddingHorizontal: 14, paddingVertical: 9, borderRadius: 999, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
-  searchFilterChipActive: { backgroundColor: "#1d6dff", borderColor: "#1d6dff" },
-  searchFilterText: { color: "#8ea0b8", fontWeight: "900" },
-  searchFilterTextActive: { color: "#ffffff" },
   sortRow: { flexDirection: "row", gap: 8, marginBottom: 12 },
   sortButton: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   sortButtonActive: { backgroundColor: "#1f2937", borderColor: "#3b82f6" },
@@ -355,39 +269,5 @@ const styles = StyleSheet.create({
   compactSaveButton: { width: 30, height: 30, alignItems: "center", justifyContent: "center" },
   loadMoreButton: { minHeight: 48, alignItems: "center", justifyContent: "center", marginTop: 12, borderRadius: 12, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   loadMoreText: { color: "#dbeafe", fontSize: 15, fontWeight: "900" },
-  floatingFilter: {
-    position: "absolute",
-    right: 16,
-    bottom: 120,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    minHeight: 56,
-    paddingHorizontal: 18,
-    borderRadius: 28,
-    backgroundColor: "#0b1220",
-    borderWidth: 3,
-    borderColor: "#1d9bf0",
-  },
-  floatingFilterText: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
-  filterPanel: {
-    position: "absolute",
-    left: 12,
-    right: 12,
-    bottom: 108,
-    padding: 18,
-    borderRadius: 18,
-    backgroundColor: "#101827",
-    borderWidth: 1,
-    borderColor: "#334155",
-  },
-  filterPanelHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 14 },
-  filterPanelTitle: { color: "#f8fafc", fontSize: 22, fontWeight: "900" },
-  filterPanelLabel: { color: "#8ea0b8", fontSize: 13, fontWeight: "900", marginBottom: 8, marginTop: 4 },
-  sheetRow: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 12 },
-  sheetChip: { paddingHorizontal: 13, paddingVertical: 9, borderRadius: 999, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#263247" },
-  sheetChipActive: { backgroundColor: "#12345f", borderColor: "#1d9bf0" },
-  sheetChipText: { color: "#8ea0b8", fontWeight: "900" },
-  sheetChipTextActive: { color: "#f8fafc" },
   empty: { color: "#94a3b8", textAlign: "center", marginTop: 30, fontWeight: "800" },
 });
