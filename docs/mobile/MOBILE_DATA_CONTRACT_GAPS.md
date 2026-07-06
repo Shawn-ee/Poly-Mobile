@@ -2,6 +2,26 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KX - Route Wiring Tracker Consolidation
+
+Closed or narrowed:
+
+- Stale tracker rows that still described Search UI pagination, Home filter pagination, Portfolio value-history UI loading, Portfolio sync UI proof, Account summary UI wiring, Trade Ticket submit/quote UI wiring, Portfolio cancel UI wiring, and Event Detail hydration/catalog/line-option UI wiring as blocked by dirty UI files are reconciled to their later closure cycles.
+- The proof asserts KJ-KW closure references remain in the central docs before the next backend/UI wiring target is selected.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- No backend fields are added in this documentation-only cycle.
+- Another tracker sweep remains P1 after the next backend/UI wiring batch.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- No runtime mock fallback changed. Cycle KX only updates audit/contract tracking text.
+
 ## Cycle KW - Profile Preferences UI Sync Wiring
 
 Closed or narrowed:
@@ -356,7 +376,7 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Dirty visible Trade Ticket/Event Detail quote refresh behavior still needs clean server-mode wiring after unrelated UI churn is reconciled.
+- Cycle KO proves the visible Trade Ticket/Event Detail quote refresh wiring in server mode.
 - Production provider quote breadth remains covered by provider mapping/provider refresh lanes, not by this disposable local-orderbook proof.
 
 Schema mismatch:
@@ -377,7 +397,7 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Dirty Portfolio UI files still need clean server-mode wiring to `loadServerPortfolioState()` after unrelated UI churn is reconciled.
+- Cycle KP proves visible Portfolio UI wiring to `loadServerPortfolioState()` in server mode.
 - Optional Android proof remains future work only if visual proof becomes required again.
 
 Schema mismatch:
@@ -419,7 +439,7 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Dirty Account UI files still need clean server-mode wiring to `loadProfileSummary()` after unrelated UI churn is reconciled.
+- Cycle KL proves visible Account UI wiring to `loadProfileSummary()` in server mode.
 - Full account/security/session/funding settings remain outside this focused summary route and should not be pulled into MVP unless the visible UI requires them.
 
 Schema mismatch:
@@ -440,7 +460,7 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Dirty Search UI files still need clean wiring to `loadSearchEventPage()` in server mode after unrelated screen churn is reconciled.
+- Cycle KJ proves visible Search UI wiring to `loadSearchEventPage()` in server mode.
 - Ranked/faceted discovery remains future work only if the World Cup MVP Search surface expands beyond basic event/market/outcome search.
 
 Schema mismatch:
@@ -462,7 +482,7 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Android proof that the visible dirty Trade Ticket submit gesture uses this HTTP route in server mode remains P1.
+- Cycle KQ proves the visible Trade Ticket submit path uses this HTTP route in server mode.
 - Broader provider-family submit breadth remains P1 only if future lifecycle gates require it.
 
 Schema mismatch:
@@ -484,7 +504,7 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Android proof that the visible dirty Portfolio Orders tab cancel button uses this route remains P1.
+- Cycle KR proves the visible Portfolio Orders tab cancel button uses this route in server mode.
 - Broader provider-family cancel breadth remains P1 only if future route lifecycle gates require it.
 
 Schema mismatch:
@@ -548,8 +568,8 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Event Detail/Game Lines UI still needs clean wiring to this service once dirty screen churn is reconciled.
-- Android proof that visible line chips follow backend availability remains P1.
+- Cycle KS wires the visible Event Detail/Game Lines line and period chips to this service.
+- Optional Android proof that visible line chips follow backend availability remains P1 if visual proof becomes required again.
 
 Schema mismatch:
 
@@ -570,7 +590,7 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Full UI-level proof for Portfolio history/positions remains P1 because the Portfolio screen file is dirty from older unrelated work.
+- Cycle KP proves visible Portfolio UI wiring to backend snapshot/history state.
 - Broader real-provider lifecycle repetition across more market families remains P1.
 
 Schema mismatch:
@@ -592,9 +612,9 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Search tab UI backend pagination remains P1 if broader Search scope expands.
+- Search tab UI backend pagination is closed by Cycle KJ.
 - Portfolio value-history UI route loading is closed by Cycle KU.
-- Server-side Home filter pagination for live/today remains P1.
+- Server-side Home filter pagination for live/today is closed by Cycle KV; true calendar/date-window `today` semantics remain future P1 only if product changes that chip.
 
 Schema mismatch:
 
@@ -635,7 +655,7 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Search tab UI still needs to request backend search pages in server mode. This was intentionally left as P1 because the relevant mobile UI files are already dirty from unrelated work.
+- Cycle KJ proves the visible Search tab requests backend search pages in server mode.
 - Production-scale ranked/faceted discovery and localized aliases are still future work.
 
 Schema mismatch:
