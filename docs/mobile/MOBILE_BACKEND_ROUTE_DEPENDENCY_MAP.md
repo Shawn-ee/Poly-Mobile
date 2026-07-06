@@ -2,6 +2,21 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KW - Profile Preferences UI Sync Wiring
+
+Cycle KW wires the visible Account/preference state to the already-proven profile preferences route in server mode:
+
+- Profile preferences UI proof: `docs/mobile/harness/cycle-KW-profile-preferences-ui-sync-wiring/cycle-KW-profile-preferences-ui-sync-wiring.json`.
+- Proof script: `scripts/prove_mobile_profile_preferences_ui_sync_wiring.ts`.
+- Focused mobile tests: `mobile/src/__tests__/profilePreferencesService.test.ts`, `mobile/src/__tests__/api.test.ts`, and `mobile/src/__tests__/profileSummaryService.test.ts`.
+- Focused backend tests: `src/__tests__/profile.preferences.route.test.ts` and `src/server/services/__tests__/profilePreferences.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible preference load | `/api/profile/preferences` | GET | Canonical actor with `account:read` | None | `preferences.locale`, `ticketDefaultAmount`, `ticketDefaultSide`, `ticketDefaultSlippage`, `savedEventIds[]` | Existing `UserProfilePreference.preferences` JSON | Mock/offline mode keeps AsyncStorage-local locale, saved markets, and ticket defaults. Server mode waits for local hydration, then applies successful route preferences to visible app state. | Broader account/security/session/funding settings remain outside focused MVP scope. |
+| Visible preference save | `/api/profile/preferences` | PUT | Canonical actor with `account:write` | `locale`, `ticketDefaultAmount`, `ticketDefaultSide`, `ticketDefaultSlippage`, `savedEventIds[]` | Normalized saved preference response and visible sync status | Same existing preferences row | Server-mode route failure sets visible sync error; mock mode does not call the route. | Optional Android proof if visual proof becomes required again. |
+| Account preference display | Same route through app state and `/api/profile/summary` fallback props | GET | Same account actor | None | Account language row, saved market count, ticket default row, and profile sync status | `UserProfilePreference`, plus summary route existing Account values | Non-server Account props remain local/demo by design. | None for focused visible preference fields. |
+
 ## Cycle KV - Home Filter UI Route Wiring
 
 Cycle KV wires the visible Home filter chips to the already-proven backend status-filter event route in server market-data mode:
@@ -373,7 +388,7 @@ Cycle JV consolidates mobile client/type definitions required by already-gated b
 
 ## Cycle JU - Profile Preferences Route Contract
 
-Cycle JU proves the backend/mobile payload contract for the visible account/settings preference fields without touching the currently dirty mobile UI files:
+Cycle JU proves the backend/mobile payload contract for the visible account/settings preference fields. Cycle KW wires the focused visible preference UI state to this route in server mode:
 
 - Route/payload proof: `docs/mobile/harness/cycle-JU-profile-preferences-route-contract/cycle-JU-profile-preferences-route-contract.json`.
 - Proof script: `scripts/prove_mobile_profile_preferences_contract.ts`.
@@ -383,7 +398,7 @@ Cycle JU proves the backend/mobile payload contract for the visible account/sett
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Account/settings preference load | `/api/profile/preferences` | GET | Canonical actor with `account:read` | None | `preferences.locale`, `ticketDefaultAmount`, `ticketDefaultSide`, `ticketDefaultSlippage`, `savedEventIds` | `UserProfilePreference.preferences` JSON payload keyed by user | Local app preferences remain the non-server-mode fallback. | P1: full account/settings shell contract for profile identity, auth/session, notifications, wallet controls, and security settings. |
-| Account/settings preference save | `/api/profile/preferences` | PUT | Canonical actor with `account:write` | Canonical `ProfilePreferences` payload | Saved canonical preferences, mapped back to local mobile side/slippage/default amount state | `UserProfilePreference` upsert via existing service | Mobile mapper defaults legacy missing slippage to `1%`; invalid canonical payloads are rejected before storage. | P1: UI-level server sync proof after unrelated dirty account/Portfolio UI files are reconciled. |
+| Account/settings preference save | `/api/profile/preferences` | PUT | Canonical actor with `account:write` | Canonical `ProfilePreferences` payload | Saved canonical preferences, mapped back to local mobile side/slippage/default amount state | `UserProfilePreference` upsert via existing service | Mobile mapper defaults legacy missing slippage to `1%`; invalid canonical payloads are rejected before storage. Server-mode visible UI sync is covered by Cycle KW. | Broader account/settings shell only if visible MVP scope expands. |
 
 ## Cycle JT - Search Event Route Contract
 

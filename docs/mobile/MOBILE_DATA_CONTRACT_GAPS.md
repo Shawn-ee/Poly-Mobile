@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KW - Profile Preferences UI Sync Wiring
+
+Closed or narrowed:
+
+- Visible server-mode app state now has proof that it loads profile preferences through `loadProfilePreferences()` after local hydration.
+- Route preferences drive visible locale, ticket default amount, ticket side, slippage, and saved event ids.
+- Local changes to those visible preference states save through `saveProfilePreferences()` and canonical `/api/profile/preferences`.
+- Account screen receives route-backed preference values and visible sync/error status props.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Broader account/security/session/funding settings remain outside this focused MVP route-wiring cycle.
+- Optional Android proof remains future work if visual proof becomes required again.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `UserProfilePreference.preferences` JSON supports the focused fields.
+
+Temporary mock/static data:
+
+- Mock/offline mode keeps AsyncStorage-local preferences. Server-mode successful route data is authoritative for the focused visible preference state.
+
 ## Cycle KV - Home Filter UI Route Wiring
 
 Closed or narrowed:
@@ -593,7 +615,7 @@ Closed or narrowed:
 Fields Holiwyn still needs but backend does not fully provide:
 
 - Full account/settings shell state remains incomplete: profile identity, login/session state, notification preferences, wallet controls, security settings, KYC, deposit, and withdraw are not part of this focused contract.
-- UI-level server preference sync remains P1 because the relevant mobile UI files are dirty from older unrelated work.
+- UI-level server preference sync is closed by Cycle KW for the focused visible locale, ticket defaults, slippage, and saved market ids.
 
 Schema mismatch:
 
