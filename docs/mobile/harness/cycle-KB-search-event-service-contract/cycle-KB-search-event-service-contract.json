@@ -1,0 +1,34 @@
+{
+  "pass": true,
+  "createdAt": "2026-07-06T15:46:26.733Z",
+  "route": "/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&search=<market-or-outcome-text>&limit=2&cursor=<event-id>",
+  "service": "loadSearchEventPage",
+  "search": {
+    "query": "KBNeedle6152ea2b",
+    "source": "server-route",
+    "matchedFields": [
+      "market.title",
+      "outcome.name",
+      "outcome.label"
+    ]
+  },
+  "firstPage": {
+    "count": 2,
+    "nextCursor": "694d091b-a80b-4720-aba3-c86fb7ac20f0",
+    "hasMore": true,
+    "compactMarkets": true,
+    "slugs": [
+      "mobile-kb-search-page-0-6152ea2b",
+      "mobile-kb-search-page-1-6152ea2b"
+    ]
+  },
+  "secondPage": {
+    "count": 1,
+    "nextCursor": null,
+    "hasMore": false,
+    "compactMarkets": true,
+    "slugs": [
+      "mobile-kb-search-page-2-6152ea2b"
+    ]
+  }
+}

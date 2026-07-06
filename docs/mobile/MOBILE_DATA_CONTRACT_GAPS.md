@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KB - Search Event Service Contract
+
+Closed or narrowed:
+
+- Mobile now has a focused `loadSearchEventPage()` service for `/api/events?search=...&limit=...&cursor=...`.
+- The service preserves backend `events[]`, compact market rows, `nextCursor`, and `page.hasMore` when the route succeeds.
+- The KB proof drives the mobile service through the real `/api/events` route handler and verifies two backend pages.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Dirty Search UI files still need clean wiring to `loadSearchEventPage()` in server mode after unrelated screen churn is reconciled.
+- Ranked/faceted discovery remains future work only if the World Cup MVP Search surface expands beyond basic event/market/outcome search.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Event`, `Market`, and `Outcome` rows support this Search service contract.
+
+Temporary mock/static data:
+
+- Local fallback filtering remains available only when the route/API client is unavailable. Successful server route data is preferred and not replaced by frontend-invented Search rows.
+
 ## Cycle KA - Trade Ticket Submit Route Contract
 
 Closed or narrowed:

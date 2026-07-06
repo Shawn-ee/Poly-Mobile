@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KB - Search Event Service Contract
+
+Cycle KB adds a mobile service-layer boundary for Search backend pages without editing dirty Search UI files:
+
+- Search service proof: `docs/mobile/harness/cycle-KB-search-event-service-contract/cycle-KB-search-event-service-contract.json`.
+- Proof script: `scripts/prove_mobile_search_event_service_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/searchEventService.test.ts` and `mobile/src/__tests__/api.test.ts`.
+- Focused backend tests: `src/__tests__/public.events.no-leak.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Search event service page load | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&search=<query>&limit=<n>&cursor=<event-id>` | GET | Public/mobile route | Query params only | `events[]`, compact `events[].markets[]`, `nextCursor`, `page.limit`, `page.nextCursor`, `page.hasMore` | Existing `Event`, listed public `Market`, active `Outcome` rows | `loadSearchEventPage()` falls back to local event/team/market/outcome text filtering only when the API client is absent or the route throws. | P1: wire dirty Search UI files to this service in server mode. |
+| Search compact market display data | Same `/api/events` route | GET | Public/mobile route | `includeMobileMarkets=1` | `markets[].title`, `markets[].marketType`, `markets[].period`, `markets[].line`, `outcomes[].name/label/price/bestBid/bestAsk/isTradable` | `Market`, `Outcome`, quote/read-model serialization | No frontend-only compact market rows are invented when route data is available. | P1: ranked/faceted discovery if World Cup MVP Search scope expands. |
+
 ## Cycle KA - Trade Ticket Submit Route Contract
 
 Cycle KA proves the mobile Trade Ticket server-mode submit dependency through the real HTTP order route without editing dirty Trade Ticket/Event Detail UI files:
