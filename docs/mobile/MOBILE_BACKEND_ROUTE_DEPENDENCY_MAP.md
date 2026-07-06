@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KH - Event Market Catalog Contract
+
+Cycle KH proves the Event Detail/Game Lines market catalog route/service contract without editing dirty Event Detail UI files:
+
+- Event market catalog proof: `docs/mobile/harness/cycle-KH-event-market-catalog-contract/cycle-KH-event-market-catalog-contract.json`.
+- Proof script: `scripts/prove_mobile_event_market_catalog_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/eventMarketCatalogService.test.ts`, and `mobile/src/__tests__/marketLineOptionsService.test.ts`.
+- Focused backend tests: `src/__tests__/public.event-markets.no-leak.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Event Detail/Game Lines market catalog | `/api/events/:slug/markets` | GET | Public/mobile route; auth header tolerated but not required | Event slug path param | `markets[]`, `marketType`, `marketGroupKey`, `marketGroupTitle`, `period`, `line`, `outcomes[]`, outcome price/bid/ask/tradability, provider ids when present | Existing `Event`, public listed `Market`, active `Outcome`, optional quote/read-model rows | `loadEventMarketCatalog()` falls back only to caller-provided local markets when route loading fails or no API is supplied. Successful route reads are authoritative, including empty market arrays. | P1: wire dirty Event Detail UI files to this service for explicit catalog refresh after screen churn is reconciled. |
+| Event Detail unsupported market filtering | Same `/api/events/:slug/markets` route | GET | Public route visibility filter | None | Only public/listed rows; private/unlisted rows must be absent | Existing `Market.visibility` and `Market.isListed` fields | No frontend fallback may re-add private/unlisted rows after a successful route read. | Optional Android proof that visible chips refresh from this route if visual proof becomes required again. |
+
 ## Cycle KG - Event Detail Hydration Contract
 
 Cycle KG proves the Event Detail hydration route/client contract without editing dirty Event Detail UI files:

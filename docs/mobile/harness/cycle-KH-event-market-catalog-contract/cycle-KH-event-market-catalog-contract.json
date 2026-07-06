@@ -1,0 +1,36 @@
+{
+  "pass": true,
+  "createdAt": "2026-07-06T16:26:11.689Z",
+  "route": "/api/events/:slug/markets",
+  "event": {
+    "slug": "mobile-kh-market-catalog-073e5dbf"
+  },
+  "routeMarketCount": 3,
+  "hiddenMarketsFiltered": true,
+  "normalizedMarkets": [
+    {
+      "id": "2357613e-6381-4841-8f81-e08112fda036",
+      "title": "Spread",
+      "marketType": "spread",
+      "period": "regulation",
+      "line": "1.5",
+      "outcomeCount": 2
+    },
+    {
+      "id": "4695f85d-514f-401b-a050-6548584c7a49",
+      "title": "Team totals",
+      "marketType": "team-total",
+      "period": "first-half",
+      "line": "1.5",
+      "outcomeCount": 2
+    },
+    {
+      "id": "21c4c09b-7cfd-49fa-a7dc-338dd71069ff",
+      "title": "Totals",
+      "marketType": "totals",
+      "period": "full-game",
+      "line": "2.5",
+      "outcomeCount": 2
+    }
+  ]
+}

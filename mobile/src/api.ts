@@ -69,6 +69,10 @@ export class PolyApi {
     }
   }
 
+  getEventMarkets(slug: string) {
+    return this.request<{ markets: Market[] }>(`/api/events/${encodeURIComponent(slug)}/markets`);
+  }
+
   getMarket(id: string) {
     return this.request<{ market: Market }>(`/api/markets/${encodeURIComponent(id)}`);
   }

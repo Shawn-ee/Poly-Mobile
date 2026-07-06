@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KH - Event Market Catalog Contract
+
+Closed or narrowed:
+
+- Mobile now has `PolyApi.getEventMarkets()` for `/api/events/:slug/markets`.
+- `loadEventMarketCatalog()` prefers the backend market catalog route and normalizes route markets into the same mobile market shape used by Event Detail/Game Lines.
+- The KH proof verifies public/listed Spread, Totals, and Team Total rows preserve `marketType`, `period`, `line`, and active outcomes, while private/unlisted markets are filtered by the backend route.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Dirty visible Event Detail UI files still need clean server-mode wiring to `loadEventMarketCatalog()` after unrelated screen churn is reconciled.
+- Android proof that visible line chips refresh from the catalog route remains optional unless visual proof becomes required again.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Event`, `Market.visibility`, `Market.isListed`, `marketType`, `period`, `line`, and `Outcome` fields support this catalog contract.
+
+Temporary mock/static data:
+
+- Caller-provided local markets are fallback only when the route/API client is unavailable or throws. A successful empty route response stays empty and does not get replaced by frontend-invented market rows.
+
 ## Cycle KG - Event Detail Hydration Contract
 
 Closed or narrowed:

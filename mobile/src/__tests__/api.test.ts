@@ -293,6 +293,32 @@ describe("Holiwyn mobile API client", () => {
     expect(eventDetailUrl).toBe("https://api.example.test/api/mobile/events/match-1/live-detail");
   });
 
+  test("loads full public event market catalog for Event Detail lines", async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse({
+      markets: [{
+        id: "spread-1",
+        title: "Spread",
+        marketType: "spread",
+        period: "regulation",
+        line: "1.5",
+        outcomes: [],
+      }],
+    }));
+    vi.stubGlobal("fetch", fetchImpl);
+
+    const payload = await new PolyApi("https://api.example.test", "test-api-key").getEventMarkets("match/1");
+
+    const [url, init] = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
+    expect(url).toBe("https://api.example.test/api/events/match%2F1/markets");
+    expect((init.headers as Headers).get("Authorization")).toBe("Bearer test-api-key");
+    expect(payload.markets[0]).toMatchObject({
+      id: "spread-1",
+      marketType: "spread",
+      period: "regulation",
+      line: "1.5",
+    });
+  });
+
   test("saves authenticated profile preferences with canonical local settings", async () => {
     const fetchImpl = vi.fn(async () =>
       jsonResponse({
