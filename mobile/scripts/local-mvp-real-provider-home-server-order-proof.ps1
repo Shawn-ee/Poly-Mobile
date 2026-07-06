@@ -1,10 +1,9 @@
 param(
   [string]$Device = "adb-R5GYA13X7NJ-4O0ADU._adb-tls-connect._tcp",
-  [int]$Port = 8265,
+  [int]$Port = 8279,
   [string]$BackendBaseUrl = "http://127.0.0.1:3002",
-  [string]$OutputDir = "docs\mobile\screenshots\cycle-EX-local-mvp-route-server-filled-flow",
-  [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-EX-local-mvp-route-server-filled-flow",
-  [switch]$TradeTicketScreenProofOnly
+  [string]$OutputDir = "docs\mobile\screenshots\cycle-FJ-real-provider-home-ticket",
+  [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-FJ-real-provider-home-ticket"
 )
 
 $ErrorActionPreference = "Stop"
@@ -26,9 +25,8 @@ function Read-JsonStringField {
 
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
 $stamp = Get-Date -Format "yyyyMMddHHmmss"
-$proofUsername = "holiwyn-mobile-ex-$stamp"
-$eventProofPath = "docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-route-backed-retail-event.json"
-$counterpartyProofPath = "docs/mobile/harness/cycle-EX-local-mvp-route-server-filled-flow/cycle-EX-route-backed-counterparty.json"
+$proofUsername = "holiwyn-mobile-fj-$stamp"
+$eventProofPath = "docs/mobile/harness/cycle-FJ-real-provider-home-ticket/cycle-FJ-real-provider-world-cup-winner.json"
 
 $previousProofUsername = $env:MOBILE_DEV_USERNAME
 $previousApiKey = $env:EXPO_PUBLIC_API_KEY
@@ -39,19 +37,14 @@ $previousApiBaseUrl = $env:EXPO_PUBLIC_API_BASE_URL
 try {
   Push-Location $repoRoot
   try {
-    cmd /c npx.cmd tsx scripts/prove_mobile_el_a_provider_breadth.ts --output=$eventProofPath | Out-Null
+    cmd /c npx.cmd tsx scripts/prove_mobile_real_provider_world_cup_winner.ts --output=$eventProofPath | Out-Null
     if ($LASTEXITCODE -ne 0) {
-      throw "Route-backed provider event proof failed."
+      throw "Real Polymarket World Cup winner provider proof failed."
     }
     $eventProofFullPath = Join-Path $repoRoot $eventProofPath
     $eventProof = Get-Content -Raw -Path $eventProofFullPath | ConvertFrom-Json
     if (-not $eventProof.pass) {
-      throw "Route-backed provider event proof did not pass."
-    }
-
-    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts --eventSlug=$($eventProof.eventSlug) --output=$counterpartyProofPath | Out-Null
-    if ($LASTEXITCODE -ne 0) {
-      throw "Route-backed spread counterparty seed failed."
+      throw "Real Polymarket World Cup winner provider proof did not pass."
     }
 
     $env:MOBILE_DEV_USERNAME = $proofUsername
@@ -69,39 +62,32 @@ try {
     $env:EXPO_PUBLIC_MARKET_DATA_MODE = "server"
     $env:EXPO_PUBLIC_API_BASE_URL = $BackendBaseUrl
 
-    $smokeArgs = @(
-      "-ExecutionPolicy", "Bypass",
-      "-File", "$PSScriptRoot\smoke-tablet.ps1",
-      "-LocalMvpRouteServerFilledFlow",
-      "-Device", $Device,
-      "-Port", $Port,
-      "-BackendBaseUrl", $BackendBaseUrl,
-      "-ServerEventSlug", $eventProof.eventSlug,
-      "-OutputDir", $OutputDir,
-      "-HierarchyOutputDir", $HierarchyOutputDir
-    )
-    if ($TradeTicketScreenProofOnly) {
-      $smokeArgs += "-TradeTicketScreenProofOnly"
-    }
-    powershell @smokeArgs
+    powershell -ExecutionPolicy Bypass -File "$PSScriptRoot\smoke-tablet.ps1" `
+      -LocalMvpHomeRealProviderServerOrderFlow `
+      -Device $Device `
+      -Port $Port `
+      -BackendBaseUrl $BackendBaseUrl `
+      -ServerEventSlug $eventProof.eventSlug `
+      -OutputDir $OutputDir `
+      -HierarchyOutputDir $HierarchyOutputDir
 
     if ($LASTEXITCODE -ne 0) {
-      throw "Tablet route-backed server filled smoke failed."
+      throw "Tablet real-provider Home server order smoke failed."
     }
 
-    $summaryPath = Join-Path $repoRoot (Join-Path $HierarchyOutputDir "cycle-EX-local-mvp-route-server-filled-flow-wrapper.json")
+    $summaryPath = Join-Path $repoRoot (Join-Path $HierarchyOutputDir "cycle-FJ-real-provider-home-ticket-wrapper.json")
     New-Item -ItemType Directory -Force -Path (Split-Path -Parent $summaryPath) | Out-Null
     [ordered]@{
-      cycle = "EX"
+      cycle = "FJ"
       result = "pass"
       username = $proofUsername
       userId = $credential.userId
       keyId = $credential.keyId
       token = "redacted"
       eventSlug = $eventProof.eventSlug
+      providerEventSlug = $eventProof.providerEventSlug
       eventProofPath = $eventProofPath
-      counterpartyProofPath = $counterpartyProofPath
-      tabletProofPath = Join-Path $HierarchyOutputDir "cycle-EX-local-mvp-route-server-filled-flow-proof.json"
+      tabletProofPath = Join-Path $HierarchyOutputDir "cycle-FJ-real-provider-home-ticket-proof.json"
       orderMode = "server"
       marketDataMode = "server"
       backendBaseUrl = $BackendBaseUrl

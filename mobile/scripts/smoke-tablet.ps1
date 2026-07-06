@@ -35,6 +35,9 @@ param(
   [switch]$ServerLiveDetailFirstHalfOrderBook,
   [switch]$ServerLiveDetailSecondHalfOrderBook,
   [switch]$ServerLiveDetailProviderLineOrderBook,
+  [switch]$JoMarketRulesProof,
+  [switch]$JoCashoutSafetyProof,
+  [switch]$LiveSummary,
   [switch]$LiveDetail,
   [switch]$EmptyErrorLoading,
   [switch]$WholeAppNavDiscovery,
@@ -44,6 +47,7 @@ param(
   [switch]$LocalMvpHomeRouteServerOrderFlow,
   [switch]$LocalMvpHomeRouteServerCancelFlow,
   [switch]$LocalMvpHomeRouteServerFilledFlow,
+  [switch]$LocalMvpHomeRealProviderServerOrderFlow,
   [switch]$FutureCardStats,
   [switch]$FutureChartRange,
   [switch]$FutureCatalogExpand,
@@ -60,7 +64,9 @@ param(
   [switch]$LocalMvpRouteServerCancelFlow,
   [switch]$LocalMvpRouteServerFilledFlow,
   [switch]$LocalMvpRouteServerFilledTotalsFlow,
-  [switch]$LocalMvpRouteServerFilledTeamTotalFlow
+  [switch]$LocalMvpRouteServerFilledTeamTotalFlow,
+  [switch]$TradeTicketScreenProofOnly,
+  [switch]$HomeFilter
 )
 
 $ErrorActionPreference = "Stop"
@@ -94,11 +100,22 @@ function Resolve-LanIpv4 {
   throw "Could not detect a LAN IPv4 address. Pass -ExpoHost manually."
 }
 
+function Wake-AndroidProofDevice {
+  param([string]$TargetDevice)
+  & adb -s $TargetDevice shell input keyevent KEYCODE_WAKEUP | Out-Null
+  Start-Sleep -Milliseconds 300
+  & adb -s $TargetDevice shell wm dismiss-keyguard | Out-Null
+  Start-Sleep -Milliseconds 300
+  & adb -s $TargetDevice shell input swipe 540 1800 540 900 250 | Out-Null
+  & adb -s $TargetDevice shell settings put global stay_on_while_plugged_in 3 | Out-Null
+}
+
 $resolvedExpoHost = if ($ExpoHost) { $ExpoHost } else { Resolve-LanIpv4 }
 
-Write-Host "Tablet smoke target: $Device"
+Write-Host "Android smoke target: $Device"
 Write-Host "Expo host: $resolvedExpoHost"
 Write-Host "Expo port: $Port"
+Wake-AndroidProofDevice -TargetDevice $Device
 
 if ($LocalMvpRouteStatusFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteStatusFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
@@ -109,19 +126,23 @@ if ($LocalMvpRouteStatusFlow) {
 } elseif ($LocalMvpRouteServerCancelFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerCancelFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpRouteServerFilledFlow) {
-  & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerFilledFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+  & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerFilledFlow -TradeTicketScreenProofOnly:$($TradeTicketScreenProofOnly.IsPresent) -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpRouteServerFilledTotalsFlow) {
-  & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerFilledTotalsFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+  & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerFilledTotalsFlow -TradeTicketScreenProofOnly:$($TradeTicketScreenProofOnly.IsPresent) -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpRouteServerFilledTeamTotalFlow) {
-  & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerFilledTeamTotalFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+  & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpRouteServerFilledTeamTotalFlow -TradeTicketScreenProofOnly:$($TradeTicketScreenProofOnly.IsPresent) -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpHomeRouteServerOrderFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpHomeRouteServerOrderFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpHomeRouteServerCancelFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpHomeRouteServerCancelFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpHomeRouteServerFilledFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpHomeRouteServerFilledFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($LocalMvpHomeRealProviderServerOrderFlow) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpHomeRealProviderServerOrderFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpLineFamilyBreadth) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpLineFamilyBreadth -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($HomeFilter) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -HomeFilter -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpStatusFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -LocalMvpStatusFlow -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LocalMvpSellFlow) {
@@ -186,8 +207,14 @@ if ($LocalMvpRouteStatusFlow) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerLiveDetailSecondHalfOrderBook -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl "http://127.0.0.1:3002"
 } elseif ($ServerLiveDetailProviderLineOrderBook) {
   & "$PSScriptRoot\smoke.ps1" -Deep -ServerLiveDetailProviderLineOrderBook -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl "http://127.0.0.1:3002" -ServerEventSlug "cycle-du-a-world-cup-provider-line-depth" -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($JoMarketRulesProof) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -JoMarketRulesProof -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -ServerEventSlug $ServerEventSlug -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($JoCashoutSafetyProof) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -JoCashoutSafetyProof -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -BackendBaseUrl $BackendBaseUrl -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
+} elseif ($LiveSummary) {
+  & "$PSScriptRoot\smoke.ps1" -Deep -LiveSummary -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($LiveDetail) {
-  & "$PSScriptRoot\smoke.ps1" -Deep -LiveDetail -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
+  & "$PSScriptRoot\smoke.ps1" -Deep -LiveDetail -Port $Port -Device $Device -ExpoHost $resolvedExpoHost -OutputDir $OutputDir -HierarchyOutputDir $HierarchyOutputDir
 } elseif ($EmptyErrorLoading) {
   & "$PSScriptRoot\smoke.ps1" -Deep -EmptyErrorLoading -Port $Port -Device $Device -ExpoHost $resolvedExpoHost
 } elseif ($WholeAppNavDiscovery) {

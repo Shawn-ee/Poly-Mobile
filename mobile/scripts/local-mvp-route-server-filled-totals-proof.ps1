@@ -48,9 +48,12 @@ try {
       throw "Route-backed provider event proof did not pass."
     }
 
-    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts --eventSlug=$($eventProof.eventSlug) --marketGroupKey=totals --outcomeSide=over --askPrice=0.46 --askSize=60 --output=$counterpartyProofPath | Out-Null
-    if ($LASTEXITCODE -ne 0) {
-      throw "Route-backed totals counterparty seed failed."
+    for ($seedIndex = 1; $seedIndex -le 3; $seedIndex++) {
+      $seedOutputPath = if ($seedIndex -eq 1) { $counterpartyProofPath } else { $counterpartyProofPath -replace '\.json$', "-$seedIndex.json" }
+      cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts --eventSlug=$($eventProof.eventSlug) --marketGroupKey=totals --outcomeSide=over --askPrice=0.46 --askSize=60 --output=$seedOutputPath | Out-Null
+      if ($LASTEXITCODE -ne 0) {
+        throw "Route-backed totals counterparty seed $seedIndex failed."
+      }
     }
 
     $env:MOBILE_DEV_USERNAME = $proofUsername
@@ -78,7 +81,7 @@ try {
       -HierarchyOutputDir $HierarchyOutputDir
 
     if ($LASTEXITCODE -ne 0) {
-      throw "Tablet route-backed server filled totals smoke failed."
+      throw "Android route-backed server filled totals smoke failed."
     }
 
     $summaryPath = Join-Path $repoRoot (Join-Path $HierarchyOutputDir "cycle-EY-local-mvp-route-server-filled-totals-flow-wrapper.json")

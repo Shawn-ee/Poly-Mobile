@@ -1,157 +1,91 @@
 # Holiwyn Mobile
 
-Native Android-first client for Holiwyn World Cup prediction markets. The backend stays hosted; this app talks to the public event/market APIs and can be pointed at local development or production from the in-app settings screen.
+Holiwyn Mobile is an Android-first Expo/React Native app for World Cup prediction markets. The current MVP focuses on the user flow: browse World Cup markets, open an event, view probability/chart context, choose an outcome, open a Buy/Sell ticket, place a fake-token order, and review Portfolio/history.
 
-## Local Development
+The backend/server is not included in this repo. The app can run with local mock data, or it can point at a hosted/local Holiwyn API for server-backed market data and fake-token order flows.
 
-1. Install dependencies:
-
-   ```powershell
-   npm install
-   ```
-
-2. Start the existing service from `../Poly`:
-
-   ```powershell
-   npm run dev
-   ```
-
-3. Start the mobile app:
-
-   ```powershell
-   npm run android
-   ```
-
-For the Android emulator, run `adb reverse tcp:3000 tcp:3000` and use `http://127.0.0.1:3000`. For a physical Android phone, use your computer's LAN IP, for example `http://192.168.1.20:3000`.
-
-For the Samsung S23 Expo Go smoke lane, keep wireless debugging connected and run:
+## Setup
 
 ```powershell
-npm run smoke:samsung:closed-history
+npm install
+npm run typecheck
+npm run start
 ```
 
-The wrapper detects the PC LAN IP, targets the Samsung device, and preserves Expo Go's installed/ready state between runs.
-
-To verify the Samsung order-placement path, run:
+To launch on Android through Expo:
 
 ```powershell
-npm run smoke:samsung:future-list-order
+npm run start
 ```
 
-To verify the Samsung sell-ticket path, run:
+Open the Expo Go app on your Android device and connect to the LAN URL shown by Expo. For a native Android build:
 
 ```powershell
-npm run smoke:samsung:future-list-sell
+npm run android
 ```
 
-To verify Samsung position close behavior, run:
+## Environment
+
+Create a local `.env` from `.env.example` if you want server mode:
 
 ```powershell
-npm run smoke:samsung:portfolio-close-position
+Copy-Item .env.example .env
 ```
 
-To verify Samsung live-market order placement, run:
+Supported public Expo variables:
+
+| Variable | Required | Example | Purpose |
+| --- | --- | --- | --- |
+| `EXPO_PUBLIC_API_BASE_URL` | Server mode only | `http://192.168.1.20:3002` | Holiwyn backend base URL reachable from the Android device. |
+| `EXPO_PUBLIC_API_KEY` | Server order/portfolio mode | `your-development-api-key` | Development API key for fake-token server order and Portfolio sync. Do not commit it. |
+| `EXPO_PUBLIC_ORDER_MODE` | Optional | `mock` or `server` | Selects local fake-token orders or server-backed fake-token orders. |
+| `EXPO_PUBLIC_MARKET_DATA_MODE` | Optional | `mock` or `server` | Selects local market fixtures or backend market/event routes. |
+| `EXPO_PUBLIC_SHOW_ORDERBOOK` | Debug only | `1` | Shows internal order book surfaces. Leave unset for the Local MVP retail UI. |
+
+Android device URL tips:
+
+- Android emulator talking to a local backend on the same computer: `http://10.0.2.2:3002`.
+- Physical Android device talking to a local backend: use your computer's LAN IP, for example `http://172.16.200.14:3002`.
+- Hosted backend: use the HTTPS API base URL.
+
+## Useful Scripts
 
 ```powershell
-npm run smoke:samsung:live-order
-```
-
-To verify Samsung live-market position close behavior, run:
-
-```powershell
-npm run smoke:samsung:live-order-close
-```
-
-To verify Samsung deep live Portfolio badge and clock propagation, run:
-
-```powershell
-npm run smoke:samsung:live-portfolio-badge-deep
-```
-
-To verify Samsung server-mode order failure recovery, run:
-
-```powershell
-npm run smoke:samsung:server-order-failure
-```
-
-To verify a successful Samsung server-backed fake-token order, export a local mobile API key and run:
-
-```powershell
-npm run smoke:samsung:server-order-success
-```
-
-To verify the Samsung server-hydrated Portfolio fixture, run:
-
-```powershell
-npm run smoke:samsung:server-portfolio-fixture
-```
-
-To verify Samsung server-close refresh behavior through a deterministic fixture, run:
-
-```powershell
-npm run smoke:samsung:server-close-fixture
-```
-
-To verify opening a server-mode Sell ticket from a Portfolio position, run:
-
-```powershell
-npm run smoke:samsung:server-position-trade
-```
-
-To verify opening a server-mode Buy ticket from a Portfolio position, run:
-
-```powershell
-npm run smoke:samsung:server-position-buy-trade
-```
-
-To verify Samsung server-position detail tiles, run:
-
-```powershell
-npm run smoke:samsung:server-position-details
-```
-
-Before a Samsung server-mode success proof, verify the phone launch variables with:
-
-```powershell
-npm run preflight:samsung:server-mode
-```
-
-Before attempting a successful server-backed Samsung order proof, run:
-
-```powershell
-npm run gate:server-success
-```
-
-## Device Strategy
-
-- Samsung S23: use for Polymarket reference and primary Holiwyn real-device QA.
-- Android emulator: keep as a fallback for checks that are practical there; it is not the primary proof device when it is slow or stale.
-- Expo Go: acceptable for fast iteration while the app is changing quickly.
-- Android development build/APK: create once core Holiwyn flows are stable or Expo Go becomes the main testing bottleneck.
-
-## Android APK Readiness
-
-Run the local readiness check before trying a Samsung APK/dev-build lane:
-
-```powershell
+npm run typecheck
+npm run start
+npm run android
 npm run check:android-dev-build
+npm run smoke:tablet
 ```
 
-Current build profiles live in `eas.json`:
+Most smoke scripts assume a connected Android device with Expo Go installed. Some server-mode smoke scripts also require a running backend and `EXPO_PUBLIC_API_KEY`.
 
-- `preview-apk`: internal Android APK profile for Samsung install/QA without relying on Expo Go.
-- `development`: Android development-client APK profile; this requires adding `expo-dev-client` before use.
-- `production`: Android app bundle profile for later release preparation.
+## Current MVP Status
 
-Samsung APK smoke lane:
+Implemented/mobile-visible:
 
-```powershell
-npm run check:android-apk-artifact
-npm run smoke:samsung:apk:allow-missing
-```
+- Home discovery for World Cup markets.
+- Event Detail page with chart/probability context.
+- Outcome and line-market ticket handoff.
+- Buy/Sell ticket with fake-token amount presets and swipe-style submit button.
+- Portfolio open positions, open orders, activity/history cards.
+- English/Chinese UI support.
+- Server-mode hooks for backend event data, fake-token orders, and Portfolio sync.
 
-The artifact readiness check separates build configuration, local tool availability, native Android project availability, and the APK file itself. It records a structured blocker when `dist/holiwyn-preview.apk` is not present. Once an APK is built, place it at that path or pass `-ApkPath` directly to `scripts/samsung-apk-smoke.ps1`, then run `npm run smoke:samsung:apk` to install and launch `com.holiwyn.mobile` on the Samsung.
+Still evolving:
 
-## Product Direction
+- Polymarket parity is ongoing, especially around live event density, chart interaction, and richer market grouping.
+- Deposits/withdrawals are intentionally out of scope for this MVP.
+- Order book UI is hidden by default and kept only for internal/debug use.
 
-Use Polymarket as a product reference for prediction-market patterns such as event browsing, odds as probabilities, fast buy/sell tickets, positions, and account funding. Do not copy their exact UI, brand, icons, copy, or assets. This app should stay focused on soccer and World Cup markets under the Holiwyn brand.
+## Backend Contract
+
+See [docs/API_CONTRACTS.md](docs/API_CONTRACTS.md) for the mobile-facing routes expected from the Holiwyn backend.
+
+## Android Testing
+
+See [docs/ANDROID_TESTING.md](docs/ANDROID_TESTING.md) for device setup, local backend routing, and smoke-test notes.
+
+## Safety
+
+Do not commit `.env`, API keys, keystores, build outputs, Expo cache, `node_modules`, screenshots, or local proof artifacts.

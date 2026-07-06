@@ -73,15 +73,16 @@ async function createProofEvent() {
         create: [
           marketInput({
             suffix,
-            slugPart: "moneyline",
-            title: "Breadth Home vs Breadth Away - Match Winner",
-            marketType: "moneyline",
-            marketGroupKey: "main",
-            marketGroupTitle: "Match Winner",
+            slugPart: "advance",
+            title: "Breadth Home vs Breadth Away - To Advance",
+            marketType: "to_advance",
+            marketGroupKey: "to-advance",
+            marketGroupTitle: "To Advance",
             displayOrder: 0,
-            externalSlug: `el-a-moneyline-${suffix}`,
-            externalMarketId: `gamma-el-a-moneyline-${suffix}`,
-            conditionId: `condition-el-a-moneyline-${suffix}`,
+            period: "full-game",
+            externalSlug: `el-a-advance-${suffix}`,
+            externalMarketId: `gamma-el-a-advance-${suffix}`,
+            conditionId: `condition-el-a-advance-${suffix}`,
             outcomes: [
               ["Home", "Breadth Home", "home"],
               ["Away", "Breadth Away", "away"],
@@ -89,20 +90,115 @@ async function createProofEvent() {
           }),
           marketInput({
             suffix,
-            slugPart: "spread",
+            slugPart: "regulation-winner",
+            title: "Breadth Home vs Breadth Away - 90 Minute Winner",
+            marketType: "moneyline",
+            marketGroupKey: "regulation-winner",
+            marketGroupTitle: "Regulation Time Winner",
+            displayOrder: 1,
+            period: "regulation",
+            externalSlug: `el-a-regulation-winner-${suffix}`,
+            externalMarketId: `gamma-el-a-regulation-winner-${suffix}`,
+            conditionId: `condition-el-a-regulation-winner-${suffix}`,
+            outcomes: [
+              ["Home", "Breadth Home", "home"],
+              ["Tie", "Tie", "draw"],
+              ["Away", "Breadth Away", "away"],
+            ],
+          }),
+          marketInput({
+            suffix,
+            slugPart: "spread-reg-05",
+            title: "Breadth Home vs Breadth Away - Spread 0.5",
+            marketType: "spread",
+            marketGroupKey: "spread",
+            marketGroupTitle: "Spread",
+            displayOrder: 4,
+            period: "regulation",
+            line: "0.5",
+            unit: "goals",
+            externalSlug: `el-a-spread-reg-05-${suffix}`,
+            externalMarketId: `gamma-el-a-spread-reg-05-${suffix}`,
+            conditionId: `condition-el-a-spread-reg-05-${suffix}`,
+            outcomes: [
+              ["Home", "Breadth Home +0.5", "home"],
+              ["Away", "Breadth Away -0.5", "away"],
+            ],
+          }),
+          marketInput({
+            suffix,
+            slugPart: "spread-reg-15",
             title: "Breadth Home vs Breadth Away - Spread 1.5",
             marketType: "spread",
             marketGroupKey: "spread",
             marketGroupTitle: "Spread",
-            displayOrder: 1,
+            displayOrder: 5,
+            period: "regulation",
             line: "1.5",
             unit: "goals",
-            externalSlug: `el-a-spread-${suffix}`,
-            externalMarketId: `gamma-el-a-spread-${suffix}`,
-            conditionId: `condition-el-a-spread-${suffix}`,
+            externalSlug: `el-a-spread-reg-15-${suffix}`,
+            externalMarketId: `gamma-el-a-spread-reg-15-${suffix}`,
+            conditionId: `condition-el-a-spread-reg-15-${suffix}`,
             outcomes: [
               ["Home", "Breadth Home +1.5", "home"],
               ["Away", "Breadth Away -1.5", "away"],
+            ],
+          }),
+          marketInput({
+            suffix,
+            slugPart: "spread-1h-05",
+            title: "Breadth Home vs Breadth Away - 1st Half Spread 0.5",
+            marketType: "spread",
+            marketGroupKey: "spread",
+            marketGroupTitle: "Spread",
+            displayOrder: 6,
+            period: "first-half",
+            line: "0.5",
+            unit: "goals",
+            externalSlug: `el-a-spread-1h-05-${suffix}`,
+            externalMarketId: `gamma-el-a-spread-1h-05-${suffix}`,
+            conditionId: `condition-el-a-spread-1h-05-${suffix}`,
+            outcomes: [
+              ["Home", "Breadth Home 1H +0.5", "home"],
+              ["Away", "Breadth Away 1H -0.5", "away"],
+            ],
+          }),
+          marketInput({
+            suffix,
+            slugPart: "spread-1h-15",
+            title: "Breadth Home vs Breadth Away - 1st Half Spread 1.5",
+            marketType: "spread",
+            marketGroupKey: "spread",
+            marketGroupTitle: "Spread",
+            displayOrder: 7,
+            period: "first-half",
+            line: "1.5",
+            unit: "goals",
+            externalSlug: `el-a-spread-1h-15-${suffix}`,
+            externalMarketId: `gamma-el-a-spread-1h-15-${suffix}`,
+            conditionId: `condition-el-a-spread-1h-15-${suffix}`,
+            outcomes: [
+              ["Home", "Breadth Home 1H +1.5", "home"],
+              ["Away", "Breadth Away 1H -1.5", "away"],
+            ],
+          }),
+          marketInput({
+            suffix,
+            slugPart: "spread-2h-05",
+            title: "Breadth Home vs Breadth Away - 2nd Half Spread 0.5",
+            marketType: "spread",
+            marketGroupKey: "spread",
+            marketGroupTitle: "Spread",
+            displayOrder: 8,
+            period: "second-half",
+            line: "0.5",
+            unit: "goals",
+            externalSlug: `el-a-spread-2h-05-${suffix}`,
+            externalMarketId: `gamma-el-a-spread-2h-05-${suffix}`,
+            conditionId: `condition-el-a-spread-2h-05-${suffix}`,
+            outcomes: [
+              ["Home", "Breadth Home 2H +0.5", "home"],
+              ["Away", "Breadth Away 2H -0.5", "away"],
             ],
           }),
           marketInput({
@@ -112,7 +208,8 @@ async function createProofEvent() {
             marketType: "total_goals",
             marketGroupKey: "totals",
             marketGroupTitle: "Totals",
-            displayOrder: 2,
+            displayOrder: 9,
+            period: "regulation",
             line: "2.5",
             unit: "goals",
             externalSlug: `el-a-totals-${suffix}`,
@@ -130,7 +227,8 @@ async function createProofEvent() {
             marketType: "team_total_goals",
             marketGroupKey: "team-totals",
             marketGroupTitle: "Team Total Goals",
-            displayOrder: 3,
+            displayOrder: 10,
+            period: "regulation",
             line: "1.5",
             unit: "goals",
             externalSlug: `el-a-team-total-${suffix}`,
@@ -139,6 +237,42 @@ async function createProofEvent() {
             outcomes: [
               ["Over", "Breadth Home Over 1.5", "over"],
               ["Under", "Breadth Home Under 1.5", "under"],
+            ],
+          }),
+          marketInput({
+            suffix,
+            slugPart: "first-half-winner",
+            title: "Breadth Home vs Breadth Away - 1st Half Winner",
+            marketType: "match_winner_1x2",
+            marketGroupKey: "first-half-winner",
+            marketGroupTitle: "1st Half Winner",
+            displayOrder: 2,
+            period: "first-half",
+            externalSlug: `el-a-first-half-winner-${suffix}`,
+            externalMarketId: `gamma-el-a-first-half-winner-${suffix}`,
+            conditionId: `condition-el-a-first-half-winner-${suffix}`,
+            outcomes: [
+              ["Home", "Breadth Home", "home"],
+              ["Tie", "Tie", "draw"],
+              ["Away", "Breadth Away", "away"],
+            ],
+          }),
+          marketInput({
+            suffix,
+            slugPart: "second-half-winner",
+            title: "Breadth Home vs Breadth Away - 2nd Half Winner",
+            marketType: "match_winner_1x2",
+            marketGroupKey: "second-half-winner",
+            marketGroupTitle: "2nd Half Winner",
+            displayOrder: 3,
+            period: "second-half",
+            externalSlug: `el-a-second-half-winner-${suffix}`,
+            externalMarketId: `gamma-el-a-second-half-winner-${suffix}`,
+            conditionId: `condition-el-a-second-half-winner-${suffix}`,
+            outcomes: [
+              ["Home", "Breadth Home", "home"],
+              ["Tie", "Tie", "draw"],
+              ["Away", "Breadth Away", "away"],
             ],
           }),
         ],
@@ -161,6 +295,7 @@ function marketInput(params: {
   marketGroupKey: string;
   marketGroupTitle: string;
   displayOrder: number;
+  period?: string;
   line?: string;
   unit?: string;
   externalSlug: string;
@@ -182,7 +317,7 @@ function marketInput(params: {
     marketGroupKey: params.marketGroupKey,
     marketGroupTitle: params.marketGroupTitle,
     displayOrder: params.displayOrder,
-    period: "full-game",
+    period: params.period ?? "full-game",
     line: params.line ? dec(params.line) : undefined,
     unit: params.unit,
     referenceSource: "polymarket",
@@ -328,7 +463,8 @@ async function main() {
   const opticOddsCredential = process.env.OPTIC_ODDS_API_KEY ? "configured" : "missing_non_blocking";
   const event = await createProofEvent();
   const markets = event.markets;
-  assert(markets.length === 4, "Proof event did not create all four compact markets.");
+  const expectedMarketCount = markets.length;
+  assert(expectedMarketCount >= 11, "Proof event did not create the expanded compact market breadth fixture.");
 
   const beforePayload = await readLiveDetailRoute(event.slug!);
   const restoreFetch = installProviderFetchStub(markets);
@@ -355,13 +491,13 @@ async function main() {
       refreshPayload.providerLifecycle.fallbackApplied === false,
     gammaAndClobAttemptedAllMappedCompactMarkets:
       refreshPayload.refresh.provider.attempted === true &&
-      refreshPayload.refresh.provider.refreshedCount === 4 &&
-      refreshPayload.refresh.providerDepth.refreshedCount === 4 &&
-      refreshPayload.refresh.providerHistory.refreshedCount === 4,
+      refreshPayload.refresh.provider.refreshedCount === expectedMarketCount &&
+      refreshPayload.refresh.providerDepth.refreshedCount === expectedMarketCount &&
+      refreshPayload.refresh.providerHistory.refreshedCount === expectedMarketCount,
     lineFamilyCoverageProvesBreadth:
       coverage.providerRefreshableFamilyCount >= 4 &&
-      coverage.providerRefreshableMarketCount === 4 &&
-      coverage.readyProviderRefreshableMarketCount === 4 &&
+      coverage.providerRefreshableMarketCount === expectedMarketCount &&
+      coverage.readyProviderRefreshableMarketCount === expectedMarketCount &&
       coverage.hasProviderMappedBreadth === true &&
       coverage.hasReadyProviderMappedBreadth === true,
     moneylineSpreadTotalsTeamTotalReady:
@@ -402,14 +538,14 @@ async function main() {
   const summary = {
     pass: Object.values(assertions).every(Boolean),
     generatedAt: new Date().toISOString(),
-    proof: "EL-A proves provider-backed compact market breadth across moneyline, spread, totals, and team totals using Polymarket Gamma/CLOB-shaped route refresh.",
+    proof: "EL-A proves provider-backed compact market breadth across advance, regulation winner, first-half winner, second-half winner, multi-period spread, totals, and team totals using Polymarket Gamma/CLOB-shaped route refresh.",
     opticOddsCredential,
     eventSlug: event.slug,
     routes: {
       liveDetail: "/api/mobile/events/:slug/live-detail",
       providerRefresh: "/api/mobile/events/:slug/provider-refresh",
     },
-    marketIds: Object.fromEntries(markets.map((market) => [market.marketGroupKey ?? market.id, market.id])),
+    marketIds: Object.fromEntries(markets.map((market) => [`${market.marketGroupKey ?? market.id}:${market.period ?? "none"}:${market.line?.toString() ?? "default"}`, market.id])),
     before: {
       contract: beforePayload.contract,
       eventProviderLifecycle: beforePayload.event.providerLifecycle,
