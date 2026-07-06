@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KQ - Trade Ticket Submit UI Wiring
+
+Cycle KQ proves the visible Trade Ticket submit control is wired to the already-proven backend order route in server mode:
+
+- Trade Ticket submit UI proof: `docs/mobile/harness/cycle-KQ-trade-ticket-submit-ui-wiring/cycle-KQ-trade-ticket-submit-ui-wiring.json`.
+- Proof script: `scripts/prove_mobile_trade_ticket_submit_ui_wiring.ts`.
+- Focused mobile tests: `mobile/src/__tests__/api.test.ts` and `mobile/src/__tests__/orderService.test.ts`.
+- Focused backend tests: `src/__tests__/orders.internal-trading-gate.route.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Trade Ticket submit | `/api/orders` | POST | Canonical actor with `orders:write`; internal trading beta gate and provider tradability guard remain enforced server-side | `marketId`, `outcomeId`, `side`, `contractSide`, `price`, `size`, and normalized `selection` from the visible ticket | `order.id`, `order.status`, `order.size`, `order.remaining`, `fills[]`; Portfolio refresh then consumes `/api/portfolio` and `/api/portfolio/history` | `ApiCredential`, `ApiOrderRequest`, `Order`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `UserBalance`, Portfolio read models | Mock mode keeps local fake-token orders. Server mode calls `submitTicketOrder()` -> `PolyApi.placeLimitOrder()` -> `/api/orders`; route failure surfaces ticket error and does not create local fake server orders. | Broader provider-family submit breadth remains future hardening if gates require it. |
+
 ## Cycle KP - Portfolio Sync UI Wiring
 
 Cycle KP proves the visible Portfolio screen consumes the already-proven backend Portfolio snapshot/history sync in server mode:

@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KQ - Trade Ticket Submit UI Wiring
+
+Closed or narrowed:
+
+- Visible Trade Ticket submit now has proof that it calls `placeOrder()` with the ticket amount, side, and contract side.
+- `placeOrder()` calls `submitTicketOrder()` with the open ticket market/outcome/selection in server mode.
+- `submitTicketOrder()` calls `PolyApi.placeLimitOrder()` and the canonical `/api/orders` route.
+- Server-mode submit navigates to Portfolio and refreshes backend Portfolio state after order submission.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Broader provider-family submit breadth remains future hardening if a later gate requires it.
+- Optional Android submit proof remains future work if visual proof becomes required again.
+
+Schema mismatch:
+
+- No schema migration was made. Existing canonical order request, order, market, outcome, user balance, and provider quote guard data support this submit path.
+
+Temporary mock/static data:
+
+- Mock order mode still creates local fake-token orders. Server mode uses `/api/orders`; failures surface ticket errors instead of silently creating local server-mode orders.
+
 ## Cycle KP - Portfolio Sync UI Wiring
 
 Closed or narrowed:
