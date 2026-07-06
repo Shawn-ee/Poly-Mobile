@@ -30,6 +30,10 @@ const summary: ProfileSummary = {
     totalExposure: "120.560000",
     tradingMode: "server",
   },
+  menuItems: [
+    { key: "leaderboard", status: "unavailable", reason: "outside-mvp-scope", route: null },
+    { key: "rewards", status: "unavailable", reason: "outside-mvp-scope", route: null },
+  ],
 };
 
 describe("profileSummaryService", () => {
@@ -52,6 +56,10 @@ describe("profileSummaryService", () => {
       ticketDefaultSide: "sell",
       ticketDefaultSlippage: "2%",
       locale: "zh",
+      menuItems: [
+        { key: "leaderboard", status: "unavailable", reason: "outside-mvp-scope", route: null },
+        { key: "rewards", status: "unavailable", reason: "outside-mvp-scope", route: null },
+      ],
     });
   });
 
@@ -64,6 +72,10 @@ describe("profileSummaryService", () => {
       source: "server-route",
       savedMarketCount: 2,
       ticketDefaultSide: "sell",
+      menuItems: [
+        { key: "leaderboard", status: "unavailable", reason: "outside-mvp-scope", route: null },
+        { key: "rewards", status: "unavailable", reason: "outside-mvp-scope", route: null },
+      ],
     });
   });
 });

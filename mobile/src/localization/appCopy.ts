@@ -130,6 +130,7 @@ export const appCopy = {
     profileSyncFallback: "Using local preferences on this device.",
     security: "Security settings will appear after sign-in.",
     mockOnly: "Fake-token mode only",
+    accountMenuUnavailable: "MVP disabled",
     language: "\u4e2d\u6587",
   },
   zh: {
@@ -261,6 +262,7 @@ export const appCopy = {
     profileSyncFallback: "\u5f53\u524d\u4f7f\u7528\u672c\u673a\u504f\u597d\u8bbe\u7f6e\u3002",
     security: "\u767b\u5f55\u540e\u5c06\u663e\u793a\u5b89\u5168\u8bbe\u7f6e\u3002",
     mockOnly: "\u4ec5\u6a21\u62df\u4ee3\u5e01\u6a21\u5f0f",
+    accountMenuUnavailable: "\u6682\u672a\u5f00\u653e",
     language: "EN",
   },
 } satisfies Record<Locale, Record<string, string>>;

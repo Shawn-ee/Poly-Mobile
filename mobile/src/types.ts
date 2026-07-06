@@ -436,4 +436,12 @@ export type ProfileSummary = {
     totalExposure: string | number;
     tradingMode: "server";
   };
+  menuItems?: ProfileSummaryMenuItem[];
+};
+
+export type ProfileSummaryMenuItem = {
+  key: "leaderboard" | "rewards" | "apis" | "accuracy" | "status" | "documentation" | "help" | "terms";
+  status: "unavailable";
+  reason: "outside-mvp-scope";
+  route: null;
 };

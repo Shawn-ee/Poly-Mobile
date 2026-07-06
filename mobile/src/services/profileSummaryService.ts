@@ -1,5 +1,5 @@
 import type { PolyApi } from "../api";
-import type { ProfileSummary } from "../types";
+import type { ProfileSummary, ProfileSummaryMenuItem } from "../types";
 
 export type AccountSummaryViewModel = {
   source: "server-route";
@@ -19,7 +19,19 @@ export type AccountSummaryViewModel = {
   ticketDefaultSide: "buy" | "sell";
   ticketDefaultSlippage: string;
   locale: "en" | "zh";
+  menuItems: ProfileSummaryMenuItem[];
 };
+
+const DEFAULT_ACCOUNT_MENU_ITEMS: ProfileSummaryMenuItem[] = [
+  { key: "leaderboard", status: "unavailable", reason: "outside-mvp-scope", route: null },
+  { key: "rewards", status: "unavailable", reason: "outside-mvp-scope", route: null },
+  { key: "apis", status: "unavailable", reason: "outside-mvp-scope", route: null },
+  { key: "accuracy", status: "unavailable", reason: "outside-mvp-scope", route: null },
+  { key: "status", status: "unavailable", reason: "outside-mvp-scope", route: null },
+  { key: "documentation", status: "unavailable", reason: "outside-mvp-scope", route: null },
+  { key: "help", status: "unavailable", reason: "outside-mvp-scope", route: null },
+  { key: "terms", status: "unavailable", reason: "outside-mvp-scope", route: null },
+];
 
 const numberValue = (value: string | number | null | undefined) => {
   const parsed = Number(value ?? 0);
@@ -44,6 +56,7 @@ export const toAccountSummaryViewModel = (summary: ProfileSummary): AccountSumma
   ticketDefaultSide: summary.preferences.ticketDefaultSide === "SELL" ? "sell" : "buy",
   ticketDefaultSlippage: summary.preferences.ticketDefaultSlippage ?? "1%",
   locale: summary.preferences.locale,
+  menuItems: summary.menuItems ?? DEFAULT_ACCOUNT_MENU_ITEMS,
 });
 
 export const loadProfileSummary = async (

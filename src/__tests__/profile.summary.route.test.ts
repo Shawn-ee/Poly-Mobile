@@ -57,6 +57,10 @@ describe("profile summary route", () => {
         totalExposure: "120.560000",
         tradingMode: "server",
       },
+      menuItems: [
+        { key: "leaderboard", status: "unavailable", reason: "outside-mvp-scope", route: null },
+        { key: "rewards", status: "unavailable", reason: "outside-mvp-scope", route: null },
+      ],
     });
   });
 
@@ -76,6 +80,10 @@ describe("profile summary route", () => {
         openOrderCount: 1,
         tradingMode: "server",
       },
+      menuItems: [
+        { key: "leaderboard", status: "unavailable", reason: "outside-mvp-scope", route: null },
+        { key: "rewards", status: "unavailable", reason: "outside-mvp-scope", route: null },
+      ],
     });
   });
 });

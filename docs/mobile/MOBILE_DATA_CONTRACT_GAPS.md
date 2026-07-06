@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KY - Account Menu Availability Wiring
+
+Closed or narrowed:
+
+- `/api/profile/summary` now returns `menuItems[]` availability metadata for the visible Account More-menu rows.
+- Account menu rows outside MVP scope are explicitly returned as `status=unavailable`, `reason=outside-mvp-scope`, and `route=null`.
+- Mobile `ProfileSummary` types and `loadProfileSummary()` preserve the backend menu metadata.
+- `AccountScreen` renders unavailable menu rows as non-actionable rows with visible unavailable copy instead of tappable dead buttons.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real destination routes for leaderboard, rewards, API management, accuracy, status, documentation, help, and terms remain future scope only if those surfaces become part of the MVP.
+
+Schema mismatch:
+
+- No schema migration was made. The availability metadata is static route metadata for the current MVP scope.
+
+Temporary mock/static data:
+
+- Mock/offline mode uses the same unavailable metadata fallback so it does not invent active destinations.
+
 ## Cycle KX - Route Wiring Tracker Consolidation
 
 Closed or narrowed:
@@ -30,6 +51,7 @@ Closed or narrowed:
 - Route preferences drive visible locale, ticket default amount, ticket side, slippage, and saved event ids.
 - Local changes to those visible preference states save through `saveProfilePreferences()` and canonical `/api/profile/preferences`.
 - Account screen receives route-backed preference values and visible sync/error status props.
+- Account More-menu availability is closed separately by Cycle KY.
 
 Fields Holiwyn still needs but backend does not fully provide:
 

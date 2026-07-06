@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { money } from "../presentation/formatters";
+import type { ProfileSummaryMenuItem } from "../types";
 
 const ACCOUNT_SESSION_STORAGE_KEY = "holiwyn.accountSignedIn.v1";
 
@@ -45,6 +46,7 @@ type AccountCopy = {
   profileSyncFallback: string;
   security: string;
   mockOnly: string;
+  accountMenuUnavailable: string;
 };
 
 type ProfileSyncStatus = "hidden" | "syncing" | "synced" | "error";
@@ -65,6 +67,7 @@ export function AccountScreen({
   totalExposure,
   portfolioValue,
   tradingMode,
+  accountMenuItems,
 }: {
   t: AccountCopy;
   balance: number;
@@ -81,6 +84,7 @@ export function AccountScreen({
   totalExposure: number;
   portfolioValue: number;
   tradingMode: "mock" | "server";
+  accountMenuItems: ProfileSummaryMenuItem[];
 }) {
   const [signedIn, setSignedIn] = useState(false);
 
@@ -113,16 +117,25 @@ export function AccountScreen({
         : profileSyncStatus === "error"
           ? t.profileSyncError
           : "";
-  const accountMenuItems = [
-    ["trophy-outline", "Leaderboard", "#fbbf24"],
-    ["gift-outline", "Rewards", "#22c55e"],
-    ["code-slash-outline", "APIs", "#ec4899"],
-    ["analytics-outline", "Accuracy", "#93c5fd"],
-    ["pulse-outline", "Status", "#93c5fd"],
-    ["document-text-outline", "Documentation", "#93c5fd"],
-    ["help-circle-outline", "Help Center", "#93c5fd"],
-    ["reader-outline", "Terms of Use", "#93c5fd"],
-  ] as const;
+  const accountMenuMeta = {
+    leaderboard: ["trophy-outline", "Leaderboard", "#fbbf24"],
+    rewards: ["gift-outline", "Rewards", "#22c55e"],
+    apis: ["code-slash-outline", "APIs", "#ec4899"],
+    accuracy: ["analytics-outline", "Accuracy", "#93c5fd"],
+    status: ["pulse-outline", "Status", "#93c5fd"],
+    documentation: ["document-text-outline", "Documentation", "#93c5fd"],
+    help: ["help-circle-outline", "Help Center", "#93c5fd"],
+    terms: ["reader-outline", "Terms of Use", "#93c5fd"],
+  } as const;
+  const renderedAccountMenuItems =
+    accountMenuItems.length > 0
+      ? accountMenuItems
+      : (Object.keys(accountMenuMeta) as ProfileSummaryMenuItem["key"][]).map((key) => ({
+          key,
+          status: "unavailable",
+          reason: "outside-mvp-scope",
+          route: null,
+        }));
 
   return (
     <ScrollView accessibilityLabel="account-screen" testID="account-screen" style={styles.content} contentContainerStyle={styles.scrollPad}>
@@ -148,13 +161,21 @@ export function AccountScreen({
       )}
 
       <View accessibilityLabel="account-more-menu" testID="account-more-menu" style={styles.moreMenu}>
-        {accountMenuItems.map(([icon, text, color]) => (
-          <Pressable accessibilityLabel={`account-menu-${text.toLowerCase().replaceAll(" ", "-")}`} key={text} style={styles.menuRow} testID={`account-menu-${text.toLowerCase().replaceAll(" ", "-")}`}>
+        {renderedAccountMenuItems.map((item) => {
+          const [icon, text, color] = accountMenuMeta[item.key];
+          return (
+          <View
+            accessibilityLabel={`account-menu-${item.key} account-menu-status-${item.status} account-menu-reason-${item.reason}`}
+            key={item.key}
+            style={[styles.menuRow, styles.menuRowUnavailable]}
+            testID={`account-menu-${item.key}`}
+          >
             <Ionicons name={icon} size={23} color={color} />
             <Text style={styles.menuText}>{text}</Text>
-            <Ionicons name="chevron-forward" size={18} color="#64748b" />
-          </Pressable>
-        ))}
+            <Text style={styles.menuValue}>{t.accountMenuUnavailable}</Text>
+          </View>
+          );
+        })}
         <View accessibilityLabel="account-language-row" testID="account-language-row" style={styles.menuRow}>
           <Ionicons name="language-outline" size={23} color="#fbbf24" />
           <Text style={styles.menuText}>{t.languagePreference}</Text>
@@ -289,6 +310,7 @@ const styles = StyleSheet.create({
   tier: { color: "#22c55e", fontWeight: "900" },
   moreMenu: { marginTop: 14, paddingVertical: 6, borderRadius: 14, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
   menuRow: { minHeight: 54, paddingHorizontal: 14, flexDirection: "row", alignItems: "center", gap: 12 },
+  menuRowUnavailable: { opacity: 0.76 },
   menuText: { flex: 1, color: "#e5e7eb", fontSize: 17, fontWeight: "900" },
   menuValue: { color: "#94a3b8", fontSize: 15, fontWeight: "900" },
   balanceCard: { marginTop: 14, padding: 16, borderRadius: 14, backgroundColor: "#0f1f35", borderWidth: 1, borderColor: "#28456b", flexDirection: "row", alignItems: "center", justifyContent: "space-between" },

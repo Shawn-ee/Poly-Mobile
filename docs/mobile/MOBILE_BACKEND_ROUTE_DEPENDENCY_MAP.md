@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KY - Account Menu Availability Wiring
+
+Cycle KY wires visible Account More-menu rows to explicit backend availability metadata instead of leaving outside-MVP rows as tappable dead buttons:
+
+- Account menu availability proof: `docs/mobile/harness/cycle-KY-account-menu-availability-wiring/cycle-KY-account-menu-availability-wiring.json`.
+- Proof script: `scripts/prove_mobile_account_menu_availability_wiring.ts`.
+- Focused mobile tests: `mobile/src/__tests__/profileSummaryService.test.ts` and `mobile/src/__tests__/api.test.ts`.
+- Focused backend tests: `src/__tests__/profile.summary.route.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Account More-menu availability | `/api/profile/summary` | GET | Canonical actor with `account:read`; route id `account:summary` | None | `menuItems[].key`, `menuItems[].status=unavailable`, `menuItems[].reason=outside-mvp-scope`, `menuItems[].route=null` | No new table; static MVP availability metadata is returned alongside existing profile summary data | Mock/offline mode uses the same unavailable metadata fallback and renders non-actionable rows. | Real routes for leaderboard, rewards, API management, accuracy, status, documentation, help, and terms only if MVP scope expands. |
+
 ## Cycle KX - Route Wiring Tracker Consolidation
 
 Cycle KX reconciles stale documentation rows after the KJ-KW UI wiring passes:
@@ -146,7 +159,7 @@ Cycle KL wires the visible Account screen to the already-proven profile summary 
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Visible Account summary | `/api/profile/summary` | GET | Canonical actor with `account:read`; route id `account:summary` | None | `profile`, `preferences`, `account.walletTotalUSDC`, `portfolioValue`, open position/order counts, open order value, total exposure, trading mode | Existing `User`, `UserBalance`, `Position`, `Order`, `UserProfilePreference` | Mock/offline mode keeps existing local Account props. Server route failure clears stale summary state and shows Account sync error. | Broader account/security/session/funding settings remain outside this focused MVP route-wiring cycle. |
+| Visible Account summary | `/api/profile/summary` | GET | Canonical actor with `account:read`; route id `account:summary` | None | `profile`, `preferences`, `account.walletTotalUSDC`, `portfolioValue`, open position/order counts, open order value, total exposure, trading mode, `menuItems[]` availability metadata | Existing `User`, `UserBalance`, `Position`, `Order`, `UserProfilePreference`; no table needed for static MVP menu availability | Mock/offline mode keeps existing local Account props and unavailable menu fallback. Server route failure clears stale summary state and shows Account sync error. | Broader account/security/session/funding settings remain outside this focused MVP route-wiring cycle. |
 
 ## Cycle KK - Live UI Route Wiring
 
@@ -285,7 +298,7 @@ Cycle KC adds a focused Account/profile summary route and mobile mapper without 
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Account/profile summary | `/api/profile/summary` | GET | Canonical actor with `account:read`; route id `account:summary` | None | `profile.id/username/displayName/email/image/hasCustomAvatar/isAdmin`; `preferences.locale/ticketDefaultAmount/ticketDefaultSide/ticketDefaultSlippage/savedEventIds`; `account.walletTotalUSDC/portfolioValue/openPositionCount/openOrderCount/openOrderValue/totalExposure/tradingMode` | Existing `User`, `UserBalance`, `Position`, `Order`, `UserProfilePreference` | Dirty Account UI can keep local props until safely reconciled. Mobile `loadProfileSummary()` has no mock preference over successful route data. | P1: wire Account UI to `loadProfileSummary()` in server mode. |
+| Account/profile summary | `/api/profile/summary` | GET | Canonical actor with `account:read`; route id `account:summary` | None | `profile.id/username/displayName/email/image/hasCustomAvatar/isAdmin`; `preferences.locale/ticketDefaultAmount/ticketDefaultSide/ticketDefaultSlippage/savedEventIds`; `account.walletTotalUSDC/portfolioValue/openPositionCount/openOrderCount/openOrderValue/totalExposure/tradingMode`; `menuItems[]` | Existing `User`, `UserBalance`, `Position`, `Order`, `UserProfilePreference`; no table needed for static MVP menu availability | Mobile `loadProfileSummary()` has no mock preference over successful route data. Cycle KL wires summary props; Cycle KY wires menu availability. | Full account/security/session/funding settings remain outside this focused MVP summary route. |
 | Account visible values mapper | Same `/api/profile/summary` route | GET | Same `account:read` actor | None | Numeric conversion for balance, portfolio value, order value, exposure; local side mapping `BUY/SELL` to `buy/sell`; saved market count from preferences | Same existing tables; no schema migration | Non-server Account state remains local/demo by design. | Full account/security/session/funding settings remain outside this focused MVP summary route. |
 
 ## Cycle KB - Search Event Service Contract

@@ -1,0 +1,36 @@
+{
+  "cycle": "KY",
+  "scope": "account-menu-availability-wiring",
+  "generatedAt": "2026-07-06T18:39:58.854Z",
+  "route": "/api/profile/summary",
+  "pass": true,
+  "checks": {
+    "backendSummaryReturnsMenuAvailability": true,
+    "routeTestCoversMenuAvailability": true,
+    "mobileTypeIncludesMenuItems": true,
+    "mobileServicePreservesMenuItems": true,
+    "appPassesRouteMenuItemsToAccount": true,
+    "accountRendersUnavailableRowsAsNonActionable": true,
+    "testsCoverMobileMenuShape": true
+  },
+  "accountMenuKeys": [
+    "leaderboard",
+    "rewards",
+    "apis",
+    "accuracy",
+    "status",
+    "documentation",
+    "help",
+    "terms"
+  ],
+  "evidence": {
+    "backend": "src/server/services/profileSummary.ts",
+    "backendRouteTest": "src/__tests__/profile.summary.route.test.ts",
+    "mobileTypes": "mobile/src/types.ts",
+    "mobileService": "mobile/src/services/profileSummaryService.ts",
+    "accountScreen": "mobile/src/components/AccountScreen.tsx",
+    "app": "mobile/App.tsx",
+    "mobileApiTest": "mobile/src/__tests__/api.test.ts",
+    "mobileServiceTest": "mobile/src/__tests__/profileSummaryService.test.ts"
+  }
+}

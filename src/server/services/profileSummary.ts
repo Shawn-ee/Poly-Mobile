@@ -25,9 +25,28 @@ export type ProfileSummary = {
     totalExposure: string;
     tradingMode: "server";
   };
+  menuItems: AccountMenuItem[];
 };
 
 const ZERO = new Prisma.Decimal(0);
+
+export type AccountMenuItem = {
+  key: "leaderboard" | "rewards" | "apis" | "accuracy" | "status" | "documentation" | "help" | "terms";
+  status: "unavailable";
+  reason: "outside-mvp-scope";
+  route: null;
+};
+
+const ACCOUNT_MENU_ITEMS: AccountMenuItem[] = [
+  { key: "leaderboard", status: "unavailable", reason: "outside-mvp-scope", route: null },
+  { key: "rewards", status: "unavailable", reason: "outside-mvp-scope", route: null },
+  { key: "apis", status: "unavailable", reason: "outside-mvp-scope", route: null },
+  { key: "accuracy", status: "unavailable", reason: "outside-mvp-scope", route: null },
+  { key: "status", status: "unavailable", reason: "outside-mvp-scope", route: null },
+  { key: "documentation", status: "unavailable", reason: "outside-mvp-scope", route: null },
+  { key: "help", status: "unavailable", reason: "outside-mvp-scope", route: null },
+  { key: "terms", status: "unavailable", reason: "outside-mvp-scope", route: null },
+];
 
 const decimalString = (value: Prisma.Decimal.Value) =>
   new Prisma.Decimal(value).toDecimalPlaces(6).toString();
@@ -109,5 +128,6 @@ export const getProfileSummary = async (params: { userId: string }): Promise<Pro
       totalExposure: decimalString(portfolioValue.plus(openOrderValue)),
       tradingMode: "server",
     },
+    menuItems: ACCOUNT_MENU_ITEMS,
   };
 };

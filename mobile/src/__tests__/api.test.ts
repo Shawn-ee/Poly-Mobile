@@ -184,6 +184,10 @@ describe("Holiwyn mobile API client", () => {
           totalExposure: "120.560000",
           tradingMode: "server",
         },
+        menuItems: [
+          { key: "leaderboard", status: "unavailable", reason: "outside-mvp-scope", route: null },
+          { key: "rewards", status: "unavailable", reason: "outside-mvp-scope", route: null },
+        ],
       }),
     );
     vi.stubGlobal("fetch", fetchImpl);
@@ -199,6 +203,10 @@ describe("Holiwyn mobile API client", () => {
       openOrderCount: 2,
       tradingMode: "server",
     });
+    expect(summary.menuItems).toEqual([
+      { key: "leaderboard", status: "unavailable", reason: "outside-mvp-scope", route: null },
+      { key: "rewards", status: "unavailable", reason: "outside-mvp-scope", route: null },
+    ]);
   });
 
   test("lists World Cup events with structured filters and mobile compact markets", async () => {
