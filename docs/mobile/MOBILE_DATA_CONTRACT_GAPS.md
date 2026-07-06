@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KE - Portfolio Sync Route Contract
+
+Closed or narrowed:
+
+- Mobile `loadServerPortfolioState()` now has focused route proof across both `/api/portfolio` and `/api/portfolio/history`.
+- The KE proof verifies backend selection metadata maps into Portfolio positions, open orders, canceled activity, and recent trade activity.
+- The mobile sync test now verifies both route dependency methods are invoked and mapped together.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Dirty Portfolio UI files still need clean server-mode wiring to `loadServerPortfolioState()` after unrelated UI churn is reconciled.
+- Optional Android proof remains future work only if visual proof becomes required again.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `UserBalance`, `Position`, `Order`, `Trade`, `Market`, `Outcome`, and `ApiOrderRequest` rows support the combined sync contract.
+
+Temporary mock/static data:
+
+- Local Portfolio state remains available for non-server/demo mode. Successful server snapshot/history reads are authoritative inside the sync service and are not replaced by local mock rows.
+
 ## Cycle KD - Home Event Filter Contract
 
 Closed or narrowed:

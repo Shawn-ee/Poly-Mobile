@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KE - Portfolio Sync Route Contract
+
+Cycle KE proves the combined Portfolio server sync service without editing dirty Portfolio UI files:
+
+- Portfolio sync proof: `docs/mobile/harness/cycle-KE-portfolio-sync-route-contract/cycle-KE-portfolio-sync-route-contract.json`.
+- Proof script: `scripts/prove_mobile_portfolio_sync_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/portfolioSyncService.test.ts`, `mobile/src/__tests__/portfolioSnapshotService.test.ts`, and `mobile/src/__tests__/portfolioHistoryService.test.ts`.
+- Focused backend tests: `src/__tests__/portfolio.open-orders.route.test.ts` and `src/__tests__/portfolio.history.route.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio server snapshot sync | `/api/portfolio` | GET | Canonical actor with `account:read`; legacy session fallback remains route compatibility only | None | `walletAvailableUSDC`, `positions[]`, `positions[].selection`, `positions[].bestBid/bestAsk`, `openOrders[]`, `openOrders[].selection`, order status/remaining/createdAt | Existing `UserBalance`, `Position`, `Order`, `Market`, `Outcome`, `ApiOrderRequest`, quote read model | `loadServerPortfolioState()` can still report partial sync if history fails. It does not invent server positions when the snapshot route succeeds. | P1: wire dirty Portfolio UI files to `loadServerPortfolioState()` in server mode. |
+| Portfolio activity/history sync | `/api/portfolio/history` | GET | Same `account:read` actor | None | `history[]`, `canceledOrders[]`, `recentTrades[]`, selection metadata for canceled/recent activity rows | Existing `Trade`, `Order`, `LedgerEntry`, `Market`, `Outcome`, `ApiOrderRequest` | `loadServerPortfolioState()` can still report partial sync if snapshot fails. It does not replace successful history with local activity. | Optional Android proof if visual proof becomes required again. |
+
 ## Cycle KD - Home Event Filter Contract
 
 Cycle KD adds a focused Home feed status-filter route contract without editing dirty Home/Live UI files:
