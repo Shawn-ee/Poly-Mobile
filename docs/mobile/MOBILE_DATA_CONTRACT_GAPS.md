@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle JY - Portfolio Value History Service Contract
+
+Closed or narrowed:
+
+- Mobile now has a focused service loader for `/api/portfolio/value-history?range=...`.
+- The service preserves the backend route payload and `source=portfolio-value-history-route` when the API route succeeds.
+- Deterministic value-history data is isolated to offline/non-server fallback behavior.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Dirty Portfolio UI files still need clean wiring to `loadPortfolioValueHistory()` after unrelated screen churn is reconciled.
+- Android proof that the visible Portfolio chart consumes route-sourced value history in server mode remains P1.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `UserBalance`, `Position`, and `MarketOutcomeSnapshot` inputs support the backend route contract.
+
+Temporary mock/static data:
+
+- The fallback remains backend-shaped and deterministic for offline mode only; the service does not prefer it over successful route data.
+
 ## Cycle JX - Line Options Contract
 
 Closed or narrowed:

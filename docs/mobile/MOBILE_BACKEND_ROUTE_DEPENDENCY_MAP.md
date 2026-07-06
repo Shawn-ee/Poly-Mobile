@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle JY - Portfolio Value History Service Contract
+
+Cycle JY adds a focused mobile service-layer loader for the backend Portfolio value-history route without editing dirty Portfolio UI files:
+
+- Value-history service proof: `docs/mobile/harness/cycle-JY-portfolio-value-history-service-contract/cycle-JY-portfolio-value-history-service-contract.json`.
+- Proof script: `scripts/prove_mobile_portfolio_value_history_service_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/portfolioValueHistoryService.test.ts`.
+- Focused backend tests: `src/__tests__/portfolio.value-history.route.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio value history service load | `/api/portfolio/value-history?range=1D|1W|1M|All` | GET | Session user or canonical API key with `account:read` | Query params only | `range`, `ranges`, `source`, `status`, `generatedAt`, `lastUpdated`, `emptyState`, `points[].timestamp/value/cash/positionsValue/pnl` | Existing `UserBalance`, `Position`, `MarketOutcomeSnapshot` route inputs | `loadPortfolioValueHistory()` uses deterministic backend-shaped data only when the API client is absent or route loading fails. It preserves the route payload when available. | P1: wire dirty Portfolio UI to this service and add Android proof that server mode chart data uses `source=portfolio-value-history-route`. |
+
 ## Cycle JX - Line Options Contract
 
 Cycle JX adds a focused mobile service contract for backend-backed line/period availability:
