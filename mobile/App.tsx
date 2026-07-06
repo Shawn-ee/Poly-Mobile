@@ -41,6 +41,7 @@ import { serverBackendOnlyPortfolioFixture, serverClosedPortfolioFixture, server
 import { applyServerPortfolioState } from "./src/services/portfolioStateApplyService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { resolvePositionTradeTarget } from "./src/services/positionTradeTargetService";
+import { loadAccountBalance } from "./src/services/accountBalanceService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
 import { loadProfileSummary, type AccountSummaryViewModel } from "./src/services/profileSummaryService";
 import { loadEventMarketCatalog } from "./src/services/eventMarketCatalogService";
@@ -558,6 +559,20 @@ export default function App() {
       cancelled = true;
     };
   }, [api, mainTab, runtimeApiKey]);
+
+  useEffect(() => {
+    if (ORDER_MODE !== "server" || runtimeApiKey.length === 0) return undefined;
+    let cancelled = false;
+    loadAccountBalance({ api, fallbackBalance: 0 })
+      .then((accountBalance) => {
+        if (cancelled || !mounted.current || accountBalance.source !== "server-route") return;
+        setBalance(accountBalance.availableUSDC);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [api, runtimeApiKey]);
 
   const handleLaunchUrl = useCallback((url: string | null) => {
     if (!mounted.current || !url) return;

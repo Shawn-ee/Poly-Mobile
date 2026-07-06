@@ -228,7 +228,6 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Dirty Account/Portfolio UI files still need clean standalone balance refresh wiring to `loadAccountBalance()` after unrelated screen churn is reconciled.
 - Full deposit/withdraw movement remains out of MVP scope for this cycle.
 
 Schema mismatch:
@@ -238,6 +237,28 @@ Schema mismatch:
 Temporary mock/static data:
 
 - Local fallback balance remains available only when the route/API client is unavailable or throws. Legacy `/api/wallet/balance` remains compatibility-only and is not the canonical server-mode mobile contract.
+
+## Cycle KT - Account Balance UI Wiring
+
+Closed or narrowed:
+
+- Visible Portfolio cash balance now refreshes from `loadAccountBalance()` in server mode.
+- Bottom-tab portfolio value now uses the same route-backed `balance` state.
+- `mobile/App.tsx` does not use legacy `/api/wallet/balance`; canonical route adoption is through `PolyApi.getAccountBalance()`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- None for focused visible account/cash balance UI wiring.
+- Full deposit/withdraw movement remains out of MVP scope.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `UserBalance` fields support the UI data shape.
+
+Temporary mock/static data:
+
+- Mock order mode keeps local balance behavior. In server mode, failed account balance route reads do not overwrite the visible balance with fallback values.
+- Legacy `/api/wallet/balance` remains compatibility-only until non-mobile web wallet usage is reviewed.
 
 ## Cycle KH - Event Market Catalog Contract
 

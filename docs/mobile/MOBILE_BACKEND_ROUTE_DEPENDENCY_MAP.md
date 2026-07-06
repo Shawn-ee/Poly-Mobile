@@ -146,8 +146,22 @@ Cycle KI proves the visible account/cash balance route/service contract without 
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Visible account/cash balance refresh | `/api/account/balance` | GET | Canonical actor with `account:read`; route id `account:balance` | None | `availableUSDC`, `lockedUSDC`, `totalUSDC`, `updatedAt` | Existing `UserBalance` via custody wallet service | `loadAccountBalance()` falls back only when the route/API client is unavailable or throws. Successful route responses suppress local balance fallback. | P1: wire dirty Account/Portfolio UI files to `loadAccountBalance()` where standalone balance refresh is needed. |
+| Visible account/cash balance refresh | `/api/account/balance` | GET | Canonical actor with `account:read`; route id `account:balance` | None | `availableUSDC`, `lockedUSDC`, `totalUSDC`, `updatedAt` | Existing `UserBalance` via custody wallet service | `loadAccountBalance()` falls back only when the route/API client is unavailable or throws. Successful route responses suppress local balance fallback. | Cycle KT wires visible Portfolio and bottom-tab balance state to `loadAccountBalance()` in server mode. |
 | Legacy wallet balance compatibility | `/api/wallet/balance` | GET | Legacy session user | None | Legacy `balance`, `availableUSDC`, `lockedUSDC`, `totalUSDC`, `updatedAt` | Existing `UserBalance` | Compatibility route only; not the canonical server-mode mobile contract. | Eventual cleanup after visible UI is fully canonical-route backed. |
+
+## Cycle KT - Account Balance UI Wiring
+
+Cycle KT wires visible Portfolio and bottom-tab balance state to the canonical account balance service:
+
+- UI proof: `docs/mobile/harness/cycle-KT-account-balance-ui-wiring/cycle-KT-account-balance-ui-wiring.json`.
+- Proof script: `scripts/prove_mobile_account_balance_ui_wiring.ts`.
+- Reuses route proof: `docs/mobile/harness/cycle-KI-account-balance-route-contract/cycle-KI-account-balance-route-contract.json`.
+- Focused mobile tests: `mobile/src/__tests__/accountBalanceService.test.ts`, `mobile/src/__tests__/api.test.ts`, and `mobile/src/__tests__/profileSummaryService.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio cash balance display | `/api/account/balance` | GET | Canonical actor with `account:read` | None | `availableUSDC` mapped to the shared `balance` state passed into `Portfolio` | Existing `UserBalance` via custody wallet service | Mock order mode keeps existing local balance state. In server mode failed route reads do not overwrite visible balance with fallback. | None for focused visible balance wiring. |
+| Bottom tab portfolio value | `/api/account/balance` plus existing local positions already refreshed by `/api/portfolio` | GET | Same canonical actor | None | `availableUSDC` contributes to `accountPortfolioValue`, which is passed to `BottomTabs` | Existing `UserBalance`, plus existing Portfolio position rows | Same as above | Legacy `/api/wallet/balance` cleanup remains P1 after non-mobile web wallet compatibility review. |
 
 ## Cycle KH - Event Market Catalog Contract
 
