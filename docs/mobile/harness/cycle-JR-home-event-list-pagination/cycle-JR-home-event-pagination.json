@@ -1,0 +1,22 @@
+{
+  "pass": true,
+  "createdAt": "2026-07-06T14:51:52.736Z",
+  "route": "/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=2&cursor=<event-id>",
+  "firstPage": {
+    "count": 2,
+    "nextCursor": "a8157815-3b0f-4a2f-a6a3-fc2084f807fd",
+    "hasMore": true,
+    "slugs": [
+      "mobile-jr-home-page-0-229e68a6",
+      "mobile-jr-home-page-2-229e68a6"
+    ]
+  },
+  "secondPage": {
+    "count": 1,
+    "nextCursor": null,
+    "hasMore": false,
+    "slugs": [
+      "mobile-jr-home-page-1-229e68a6"
+    ]
+  }
+}
