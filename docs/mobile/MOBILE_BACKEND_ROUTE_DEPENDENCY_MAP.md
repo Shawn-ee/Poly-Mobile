@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KZ - Search Controls Route Contract
+
+Cycle KZ removes unsupported local-only Search category/sort controls so the visible Search page only exposes controls backed by the current route contract:
+
+- Search controls proof: `docs/mobile/harness/cycle-KZ-search-controls-route-contract/cycle-KZ-search-controls-route-contract.json`.
+- Proof script: `scripts/prove_mobile_search_controls_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/searchScreenContract.test.ts`, `mobile/src/__tests__/searchEventService.test.ts`, and `mobile/src/__tests__/api.test.ts`.
+- Focused backend tests: `src/__tests__/public.events.no-leak.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Search query and pagination | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&search=<query>&limit=10&cursor=<event-id>` | GET | Public/mobile route | Query params only | `events[]`, compact `markets[]`, `nextCursor`, `page.limit`, `page.nextCursor`, `page.hasMore` | Existing `Event`, public listed `Market`, active `Outcome` rows | Mock/offline mode keeps local fallback text filtering and cursor-shaped paging only when the backend route is unavailable. | Ranked/faceted discovery remains future scope. Unsupported local category chips and local sort buttons are not visible in the focused MVP Search surface. |
+
 ## Cycle KY - Account Menu Availability Wiring
 
 Cycle KY wires visible Account More-menu rows to explicit backend availability metadata instead of leaving outside-MVP rows as tappable dead buttons:

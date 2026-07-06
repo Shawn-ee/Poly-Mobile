@@ -4,8 +4,6 @@ import { Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, View, typ
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { label, money } from "../presentation/formatters";
 
-type SearchSort = "popular" | "live";
-
 type SearchScreenCopy = {
   marketSearch: string;
   searchResults: string;
@@ -13,14 +11,9 @@ type SearchScreenCopy = {
   clearSearch: string;
   noResults: string;
   noSavedMarkets: string;
-  searchAll: string;
-  searchLive: string;
-  searchUpcoming: string;
   saved: string;
   volume: string;
   liquidity: string;
-  sortPopular: string;
-  sortLiveFirst: string;
 };
 
 export function SearchScreen({
@@ -50,27 +43,12 @@ export function SearchScreen({
   isLoadingMoreEvents?: boolean;
   loadMoreEvents?: () => void;
 }) {
-  const [sort, setSort] = useState<SearchSort>("popular");
   const [isInputFocused, setIsInputFocused] = useState(false);
   const disableSoftInputForSmoke = process.env.EXPO_PUBLIC_SMOKE_DISABLE_SOFT_INPUT === "1";
   const hasQuery = query.trim().length > 0;
-  const visibleEvents = [...events].sort((left, right) => {
-    if (sort === "live") {
-      const leftLive = left.status === "live" ? 0 : 1;
-      const rightLive = right.status === "live" ? 0 : 1;
-      if (leftLive !== rightLive) return leftLive - rightLive;
-    }
-    const leftDepth = left.markets.reduce((total, market) => total + market.outcomes.length, 0);
-    const rightDepth = right.markets.reduce((total, market) => total + market.outcomes.length, 0);
-    return rightDepth - leftDepth;
-  });
+  const visibleEvents = events;
   const emptyCopy = t.noResults;
   const resultLabel = locale === "zh" ? `${visibleEvents.length} \u4e2a\u7ed3\u679c` : `${visibleEvents.length} ${visibleEvents.length === 1 ? "result" : "results"}`;
-  const sortOptions: Array<[SearchSort, string]> = [
-    ["popular", t.sortPopular],
-    ["live", t.sortLiveFirst],
-  ];
-  const categoryChips = locale === "zh" ? ["\u5168\u90e8", "\u4f53\u80b2", "\u4e16\u754c\u676f", "\u6eda\u7403"] : ["All", "Sports", "World Cup", "Live"];
   const canLoadMore = Boolean(canLoadMoreEvents && loadMoreEvents);
   const loadMoreResults = () => {
     if (!canLoadMore || isLoadingMoreEvents) return;
@@ -94,18 +72,6 @@ export function SearchScreen({
         style={styles.content}
         contentContainerStyle={[styles.scrollPad, isInputFocused && styles.scrollPadKeyboard]}
       >
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll} contentContainerStyle={styles.categoryRow}>
-          {categoryChips.map((chip, index) => (
-            <Pressable
-              accessibilityLabel={`search-category-${index}`}
-              key={chip}
-              style={[styles.categoryChip, index === 0 && styles.categoryChipActive]}
-              testID={`search-category-${index}`}
-            >
-              <Text style={[styles.categoryText, index === 0 && styles.categoryTextActive]}>{chip}</Text>
-            </Pressable>
-          ))}
-        </ScrollView>
         <View style={styles.searchBox}>
           <Ionicons name="search" color="#94a3b8" size={20} />
           <TextInput
@@ -139,19 +105,6 @@ export function SearchScreen({
               <Ionicons name="close-circle" color="#dbeafe" size={18} />
             </Pressable>
           )}
-        </View>
-        <View style={styles.sortRow}>
-          {sortOptions.map(([value, text]) => (
-            <Pressable
-              key={value}
-              accessibilityLabel={`search-sort-${value}`}
-              testID={`search-sort-${value}`}
-              style={[styles.sortButton, sort === value && styles.sortButtonActive]}
-              onPress={() => setSort(value)}
-            >
-              <Text style={[styles.sortText, sort === value && styles.sortTextActive]}>{text}</Text>
-            </Pressable>
-          ))}
         </View>
         {visibleEvents.length === 0 ? (
           <Text style={styles.empty}>{emptyCopy}</Text>
@@ -235,12 +188,6 @@ const styles = StyleSheet.create({
   content: { flex: 1 },
   scrollPad: { paddingHorizontal: 16, paddingBottom: 110 },
   scrollPadKeyboard: { paddingBottom: 360 },
-  categoryScroll: { marginHorizontal: -16, marginBottom: 16 },
-  categoryRow: { gap: 10, paddingHorizontal: 16 },
-  categoryChip: { height: 44, alignItems: "center", justifyContent: "center", paddingHorizontal: 18, borderRadius: 10, backgroundColor: "transparent" },
-  categoryChipActive: { backgroundColor: "#1f2937" },
-  categoryText: { color: "#8ea0b8", fontSize: 16, fontWeight: "900" },
-  categoryTextActive: { color: "#f8fafc" },
   searchBox: { flexDirection: "row", alignItems: "center", gap: 10, height: 52, paddingHorizontal: 14, borderRadius: 12, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247", marginBottom: 14 },
   searchInput: { flex: 1, color: "#f8fafc", fontSize: 16, fontWeight: "700" },
   dismissKeyboardButton: { width: 34, height: 34, alignItems: "center", justifyContent: "center", borderRadius: 8, backgroundColor: "#1f2937" },
@@ -248,11 +195,6 @@ const styles = StyleSheet.create({
   searchHeading: { color: "#f8fafc", fontSize: 20, fontWeight: "900" },
   resultMeta: { color: "#8ea0b8", fontSize: 13, fontWeight: "800", marginTop: 3 },
   clearSearchButton: { width: 34, height: 34, alignItems: "center", justifyContent: "center", borderRadius: 8, backgroundColor: "#1f2937" },
-  sortRow: { flexDirection: "row", gap: 8, marginBottom: 12 },
-  sortButton: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, backgroundColor: "#101827", borderWidth: 1, borderColor: "#263247" },
-  sortButtonActive: { backgroundColor: "#1f2937", borderColor: "#3b82f6" },
-  sortText: { color: "#8ea0b8", fontSize: 12, fontWeight: "900" },
-  sortTextActive: { color: "#dbeafe" },
   resultList: { borderTopWidth: 1, borderTopColor: "#263247" },
   resultRow: { flexDirection: "row", alignItems: "flex-start", gap: 12, paddingVertical: 18, borderBottomWidth: 1, borderBottomColor: "#263247" },
   resultIcon: { width: 58, height: 58, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: "#1f2937" },

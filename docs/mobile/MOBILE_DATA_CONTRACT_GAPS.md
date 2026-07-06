@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KZ - Search Controls Route Contract
+
+Closed or narrowed:
+
+- Search no longer renders visible category chips that had no route-backed state or request parameter.
+- Search no longer renders visible local-only `Popular` / `Live first` sort controls that could reorder a partial backend page differently from the route cursor order.
+- The visible Search surface is now limited to backend-backed query, clear, route result list, and cursor load-more controls in server mode.
+- Existing `loadSearchEventPage()` remains the Search data contract: `/api/events` with `search`, `limit`, and `cursor`, plus compact mobile markets.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Ranked/faceted discovery remains future P1 only if the Search MVP scope expands.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Event`, `Market`, and `Outcome` fields support the focused Search query/pagination route.
+
+Temporary mock/static data:
+
+- Mock/offline mode still uses local fallback text filtering only when the backend route is unavailable.
+
 ## Cycle KY - Account Menu Availability Wiring
 
 Closed or narrowed:
