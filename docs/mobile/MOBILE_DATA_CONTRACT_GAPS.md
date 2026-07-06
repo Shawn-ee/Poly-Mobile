@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle JW - Portfolio Activity Mapper Contract
+
+Closed or narrowed:
+
+- Portfolio snapshot mapping now preserves backend `to_advance` selection identity instead of dropping it as an unknown market type.
+- Portfolio history/activity mapping now preserves backend `to_advance` recent-trade selection identity.
+- Recent trades can aggregate multiple backend fills into a single retail activity row by `orderId`, with a selection/execution-window fallback when no order id exists.
+- Activity rows expose `fillCount` for grouped fills.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Full UI-level proof for Portfolio history/positions remains P1 because the Portfolio screen file is dirty from older unrelated work.
+- Broader real-provider lifecycle repetition across more market families remains P1.
+
+Schema mismatch:
+
+- No schema migration was made. The cycle consumes existing `selection` payloads and optional `recentTrades[].orderId`.
+
+Temporary mock/static data:
+
+- Tests and proof use route-shaped service payloads; no new frontend-only Portfolio rows are introduced.
+
 ## Cycle JV - Mobile API Route Contract Backfill
 
 Closed or narrowed:

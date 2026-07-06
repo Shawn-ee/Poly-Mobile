@@ -164,6 +164,152 @@ describe("portfolio history activity mapping", () => {
     ]);
   });
 
+  test("aggregates multi-fill recent trades into one retail activity row", () => {
+    expect(
+      recentTradesToActivity([
+        {
+          id: "fill-1",
+          market: {
+            id: "paraguay-france-total",
+            title: "Paraguay vs. France",
+            status: "LIVE",
+          },
+          outcome: {
+            id: "over",
+            name: "YES",
+          },
+          selection: {
+            marketId: "paraguay-france-total",
+            outcomeId: "over",
+            marketGroupId: "live-game-lines",
+            marketType: "totals",
+            line: "2.5",
+            period: "Reg. Time",
+            side: "over",
+            displayLabel: "Over 2.5 RT",
+            referenceTokenId: "token-total-over",
+            limitPrice: 0.46,
+            limitSide: "ask",
+          },
+          side: "BUY",
+          shares: 43.043478,
+          cost: 19.8,
+          fee: 0,
+          createdAt: "2026-07-02T06:10:00.000Z",
+        },
+        {
+          id: "fill-2",
+          market: {
+            id: "paraguay-france-total",
+            title: "Paraguay vs. France",
+            status: "LIVE",
+          },
+          outcome: {
+            id: "over",
+            name: "YES",
+          },
+          selection: {
+            marketId: "paraguay-france-total",
+            outcomeId: "over",
+            marketGroupId: "live-game-lines",
+            marketType: "totals",
+            line: "2.5",
+            period: "Reg. Time",
+            side: "over",
+            displayLabel: "Over 2.5 RT",
+            referenceTokenId: "token-total-over",
+            limitPrice: 0.46,
+            limitSide: "ask",
+          },
+          side: "BUY",
+          shares: 60,
+          cost: 27.6,
+          fee: 0,
+          createdAt: "2026-07-02T06:10:04.000Z",
+        },
+        {
+          id: "fill-3",
+          market: {
+            id: "paraguay-france-total",
+            title: "Paraguay vs. France",
+            status: "LIVE",
+          },
+          outcome: {
+            id: "over",
+            name: "YES",
+          },
+          selection: {
+            marketId: "paraguay-france-total",
+            outcomeId: "over",
+            marketGroupId: "live-game-lines",
+            marketType: "totals",
+            line: "2.5",
+            period: "Reg. Time",
+            side: "over",
+            displayLabel: "Over 2.5 RT",
+            referenceTokenId: "token-total-over",
+            limitPrice: 0.46,
+            limitSide: "ask",
+          },
+          side: "BUY",
+          shares: 60,
+          cost: 27.6,
+          fee: 0,
+          createdAt: "2026-07-02T06:10:08.000Z",
+        },
+      ]),
+    ).toEqual([
+      expect.objectContaining({
+        id: "trade-group-fill-1",
+        action: "opened",
+        title: "Paraguay vs. France",
+        outcome: "YES",
+        amount: 75,
+        shares: 163.043478,
+        side: "buy",
+        probability: 46,
+        fillCount: 3,
+        timestamp: "Jul 2, 1:10 AM",
+      }),
+    ]);
+  });
+
+  test("uses backend order id when recent trades provide one", () => {
+    expect(
+      recentTradesToActivity([
+        {
+          id: "fill-a",
+          orderId: "order-123",
+          market: { id: "france-winner", title: "France winner", status: "LIVE" },
+          outcome: { id: "yes", name: "YES" },
+          side: "BUY",
+          shares: 20,
+          cost: 10,
+          fee: 0,
+          createdAt: "2026-07-02T06:10:00.000Z",
+        },
+        {
+          id: "fill-b",
+          orderId: "order-123",
+          market: { id: "france-winner", title: "France winner", status: "LIVE" },
+          outcome: { id: "yes", name: "YES" },
+          side: "BUY",
+          shares: 30,
+          cost: 15,
+          fee: 0,
+          createdAt: "2026-07-02T06:10:03.000Z",
+        },
+      ]),
+    ).toEqual([
+      expect.objectContaining({
+        id: "trade-order-order-123",
+        amount: 25,
+        shares: 50,
+        fillCount: 2,
+      }),
+    ]);
+  });
+
   test("preserves line selection labels in backend order activity", () => {
     expect(
       recentTradesToActivity([
@@ -293,6 +439,64 @@ describe("portfolio history activity mapping", () => {
             limitSide: "ask",
             limitShares: 125.5,
           },
+      }),
+    ]);
+  });
+
+  test("preserves advance selection labels in backend order activity", () => {
+    expect(
+      recentTradesToActivity([
+        {
+          id: "advance-trade-1",
+          market: {
+            id: "mexico-england-advance",
+            title: "Mexico vs. England",
+            status: "ACTIVE",
+          },
+          outcome: {
+            id: "mexico-advance",
+            name: "YES",
+          },
+          selection: {
+            marketId: "mexico-england-advance",
+            outcomeId: "mexico-advance",
+            marketGroupId: "to-advance",
+            marketType: "to_advance",
+            period: "full-game",
+            side: "home",
+            displayLabel: "Who Advances",
+            referenceSource: "polymarket",
+            externalSlug: "mexico-england-advance",
+            externalMarketId: "gamma-advance",
+            conditionId: "condition-advance",
+            referenceTokenId: "token-mexico-advance",
+            referenceOutcomeLabel: "Mexico to advance",
+          },
+          side: "BUY",
+          shares: 1000,
+          cost: 30,
+          fee: 0,
+          createdAt: "2026-07-02T06:10:00.000Z",
+        },
+      ]),
+    ).toEqual([
+      expect.objectContaining({
+        title: "Mexico vs. England",
+        selection: {
+          marketId: "mexico-england-advance",
+          outcomeId: "mexico-advance",
+          marketGroupId: "to-advance",
+          marketType: "to_advance",
+          period: "full-game",
+          side: "home",
+          displayLabel: "Who Advances",
+          referenceSource: "polymarket",
+          externalSlug: "mexico-england-advance",
+          externalMarketId: "gamma-advance",
+          conditionId: "condition-advance",
+          referenceTokenId: "token-mexico-advance",
+          referenceOutcomeLabel: "Mexico to advance",
+        },
       }),
     ]);
   });

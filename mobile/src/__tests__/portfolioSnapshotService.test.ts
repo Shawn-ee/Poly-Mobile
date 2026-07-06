@@ -299,4 +299,70 @@ describe("portfolio snapshot service", () => {
       ],
     });
   });
+
+  test("preserves backend advance selection labels for positions", async () => {
+    const getPortfolio = vi.fn(async () =>
+      snapshot({
+        positions: [
+          {
+            market: {
+              id: "mexico-england-advance",
+              title: "Mexico vs. England",
+              status: "ACTIVE",
+              resolveTime: null,
+              createdAt: "2026-06-01T12:00:00.000Z",
+            },
+            outcomeId: "mexico-advance",
+            outcome: "YES",
+            selection: {
+              marketId: "mexico-england-advance",
+              outcomeId: "mexico-advance",
+              marketGroupId: "to-advance",
+              marketType: "to_advance",
+              period: "full-game",
+              side: "home",
+              displayLabel: "Who Advances",
+              referenceSource: "polymarket",
+              externalSlug: "mexico-england-advance",
+              externalMarketId: "gamma-advance",
+              conditionId: "condition-advance",
+              referenceTokenId: "token-mexico-advance",
+              referenceOutcomeLabel: "Mexico to advance",
+            },
+            shares: 1000,
+            avgCost: 0.03,
+            currentPrice: 0.04,
+            valueTokens: 40,
+            costBasisTokens: 30,
+            totalCostBasisTokens: 30,
+            pnlTokens: 10,
+          },
+        ],
+        openOrders: [],
+      }),
+    );
+    const api = { getPortfolio } as unknown as PolyApi;
+
+    await expect(loadPortfolioSnapshot(api)).resolves.toMatchObject({
+      positions: [
+        {
+          selection: {
+            marketId: "mexico-england-advance",
+            outcomeId: "mexico-advance",
+            marketGroupId: "to-advance",
+            marketType: "to_advance",
+            period: "full-game",
+            side: "home",
+            displayLabel: "Who Advances",
+            referenceSource: "polymarket",
+            externalSlug: "mexico-england-advance",
+            externalMarketId: "gamma-advance",
+            conditionId: "condition-advance",
+            referenceTokenId: "token-mexico-advance",
+            referenceOutcomeLabel: "Mexico to advance",
+          },
+        },
+      ],
+    });
+  });
 });

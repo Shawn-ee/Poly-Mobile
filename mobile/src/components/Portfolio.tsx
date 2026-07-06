@@ -53,6 +53,7 @@ export type PortfolioActivity = {
   shares?: number;
   side?: "buy" | "sell";
   probability?: number;
+  fillCount?: number;
   isLive?: boolean;
   liveClock?: string;
   timestamp?: string;

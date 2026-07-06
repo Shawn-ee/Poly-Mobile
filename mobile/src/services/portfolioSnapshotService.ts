@@ -34,7 +34,7 @@ const toDepthSize = (value: number | string | null | undefined) => {
   return parsed;
 };
 
-const knownMarketTypes: TicketSelection["marketType"][] = ["spread", "totals", "team-total", "winner", "prop", "future", "live"];
+const knownMarketTypes: TicketSelection["marketType"][] = ["spread", "totals", "team-total", "winner", "to_advance", "prop", "future", "live"];
 
 const selectionFromBackend = (
   selection?: {

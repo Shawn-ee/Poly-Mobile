@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle JW - Portfolio Activity Mapper Contract
+
+Cycle JW tightens the mobile service-layer route contract for visible Portfolio positions and history without redesigning Portfolio:
+
+- Mapper proof: `docs/mobile/harness/cycle-JW-portfolio-activity-mapper-contract/cycle-JW-portfolio-activity-mapper-contract.json`.
+- Proof script: `scripts/prove_mobile_portfolio_activity_mapper_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/portfolioHistoryService.test.ts` and `mobile/src/__tests__/portfolioSnapshotService.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio positions | `/api/portfolio` | GET | Session user or canonical API key with `account:read` | None | `positions[].selection.marketType=to_advance`, market/outcome ids, display label, period, side, provider source, external market id, condition id, reference token id, reference outcome label | `Position`, `Market`, `Outcome`, `ApiOrderRequest` selection snapshots | If backend selection is absent, legacy title/outcome fallback remains but is not accepted as JW proof. | P1: UI-level proof once dirty Portfolio screen churn is reconciled. |
+| Portfolio recent activity/history | `/api/portfolio/history` | GET | Session user or canonical API key with `account:read` | None | `recentTrades[].orderId`, `selection`, market/outcome ids, cost, shares, createdAt; grouped into one row with `fillCount` when fills share an order or execution window | `Trade`, `Order`, `Market`, `Outcome`, order request selection snapshots | Recent trades without order ids can still group by equivalent selection fields and execution window. | P1: broader real-provider lifecycle repetition across more market families. |
+
 ## Cycle JV - Mobile API Route Contract Backfill
 
 Cycle JV consolidates mobile client/type definitions required by already-gated backend routes without touching dirty UI files:
