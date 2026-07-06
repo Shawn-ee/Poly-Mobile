@@ -1,0 +1,66 @@
+{
+  "cycle": "KA",
+  "scope": "trade-ticket-submit-http-route-contract",
+  "generatedAt": "2026-07-06T15:36:27.092Z",
+  "route": "POST /api/orders",
+  "portfolioRoute": "/api/portfolio",
+  "marketId": "bcd94fe0-bd78-4892-a6e7-274371e59abd",
+  "outcomeId": "42afb1c0-95a4-4462-9bde-88fb4851c344",
+  "orderId": "7c540347-ad76-4560-9c63-74143d423c20",
+  "checks": {
+    "mobileServiceUsedPostOrdersRoute": true,
+    "internalTradingGatePassedForAdminActor": true,
+    "providerAcceptingQuoteRequired": true,
+    "orderAppearsInPortfolioOpenOrders": true,
+    "selectionIdentityPreserved": true
+  },
+  "orderResult": {
+    "id": "7c540347-ad76-4560-9c63-74143d423c20",
+    "status": "OPEN",
+    "mode": "server",
+    "side": "buy",
+    "amount": 50,
+    "probability": 42,
+    "selection": {
+      "marketType": "totals",
+      "marketId": "bcd94fe0-bd78-4892-a6e7-274371e59abd",
+      "outcomeId": "42afb1c0-95a4-4462-9bde-88fb4851c344",
+      "marketGroupId": "totals:regulation:2.5",
+      "line": "2.5",
+      "period": "Regulation",
+      "side": "over",
+      "displayLabel": "Over 2.5",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "cycle-ka-total-c4f223af",
+      "externalMarketId": "gamma-cycle-ka-total-c4f223af",
+      "conditionId": "condition-cycle-ka-total-c4f223af",
+      "referenceTokenId": "token-cycle-ka-over-c4f223af",
+      "referenceOutcomeLabel": "Over 2.5"
+    }
+  },
+  "portfolioOpenOrder": {
+    "id": "7c540347-ad76-4560-9c63-74143d423c20",
+    "status": "OPEN",
+    "side": "buy",
+    "price": 0.42,
+    "remaining": 119.05,
+    "selection": {
+      "marketType": "totals",
+      "marketId": "bcd94fe0-bd78-4892-a6e7-274371e59abd",
+      "outcomeId": "42afb1c0-95a4-4462-9bde-88fb4851c344",
+      "marketGroupId": "totals:regulation:2.5",
+      "line": "2.5",
+      "period": "Regulation",
+      "side": "over",
+      "displayLabel": "Over 2.5",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "cycle-ka-total-c4f223af",
+      "externalMarketId": "gamma-cycle-ka-total-c4f223af",
+      "conditionId": "condition-cycle-ka-total-c4f223af",
+      "referenceTokenId": "token-cycle-ka-over-c4f223af",
+      "referenceOutcomeLabel": "Over 2.5"
+    }
+  }
+}

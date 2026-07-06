@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KA - Trade Ticket Submit Route Contract
+
+Closed or narrowed:
+
+- Mobile `submitTicketOrder()` now has focused proof through real `POST /api/orders` route execution.
+- The route proof covers canonical API auth, internal trading beta gate pass, idempotency key/client order id, provider accepting quote requirement, and successful open order creation.
+- `/api/portfolio` proves the submitted route order appears in open orders.
+- Mobile order result and Portfolio open order preserve totals market/outcome/line/period/provider token selection identity.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Android proof that the visible dirty Trade Ticket submit gesture uses this HTTP route in server mode remains P1.
+- Broader provider-family submit breadth remains P1 only if future lifecycle gates require it.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `ApiOrderRequest.requestBody.selection` carries the mobile ticket selection envelope.
+
+Temporary mock/static data:
+
+- Mock mode still creates local fake-token orders by design. KA proof uses route-backed server mode and accepting provider quote snapshots.
+
 ## Cycle JZ - Open Order Cancel Route Contract
 
 Closed or narrowed:

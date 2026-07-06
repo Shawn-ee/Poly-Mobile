@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KA - Trade Ticket Submit Route Contract
+
+Cycle KA proves the mobile Trade Ticket server-mode submit dependency through the real HTTP order route without editing dirty Trade Ticket/Event Detail UI files:
+
+- Submit route proof: `docs/mobile/harness/cycle-KA-trade-ticket-submit-route-contract/cycle-KA-trade-ticket-submit-route-contract.json`.
+- Proof script: `scripts/prove_mobile_trade_ticket_submit_route_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/orderService.test.ts` and `mobile/src/__tests__/api.test.ts`.
+- Focused backend tests: `src/__tests__/orders.internal-trading-gate.route.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Trade Ticket server submit | `/api/orders` | POST | Canonical actor with `orders:write`; internal trading beta gate must pass before order submission | `marketId`, `outcomeId`, `side`, `type=LIMIT`, `price`, `size`, `contractSide`, `clientOrderId`, `selection`; `Idempotency-Key` header | `order.id`, `order.status`, `order.size`, `order.remaining`, `fills[]`; mobile result preserves selection and status | `ApiCredential`, `ApiOrderRequest`, `Order`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `UserBalance` | Mock mode still creates local fake-token orders. Server mode must call the route through `PolyApi.placeLimitOrder()`. | P1: Android proof that the visible Trade Ticket submit gesture uses this route once dirty UI churn is reconciled. |
+| Portfolio open order after submit | `/api/portfolio` | GET | Canonical actor with `account:read` | None | `openOrders[]` including `selection` market/outcome/line/period/provider token fields | `Order`, `Market`, `Outcome`, `ApiOrderRequest` selection snapshot | Local UI fallback must not replace server-mode open order hydration. | P1: broader provider-family submit breadth if future gates require it. |
+
 ## Cycle JZ - Open Order Cancel Route Contract
 
 Cycle JZ proves the visible Portfolio open-order cancel dependency without editing dirty Portfolio UI files:
