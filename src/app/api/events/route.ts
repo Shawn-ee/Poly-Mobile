@@ -59,6 +59,30 @@ export async function GET(request: NextRequest) {
           OR: [
             { title: { contains: search, mode: Prisma.QueryMode.insensitive } },
             { description: { contains: search, mode: Prisma.QueryMode.insensitive } },
+            { homeTeamName: { contains: search, mode: Prisma.QueryMode.insensitive } },
+            { awayTeamName: { contains: search, mode: Prisma.QueryMode.insensitive } },
+            {
+              markets: {
+                some: {
+                  visibility: "PUBLIC",
+                  isListed: true,
+                  OR: [
+                    { title: { contains: search, mode: Prisma.QueryMode.insensitive } },
+                    { description: { contains: search, mode: Prisma.QueryMode.insensitive } },
+                    {
+                      outcomes: {
+                        some: {
+                          OR: [
+                            { name: { contains: search, mode: Prisma.QueryMode.insensitive } },
+                            { label: { contains: search, mode: Prisma.QueryMode.insensitive } },
+                          ],
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
           ],
         }
         : {}),

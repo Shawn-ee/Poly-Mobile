@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle JT - Search Event Route Contract
+
+Cycle JT tightens backend search for the visible mobile Search tab without touching currently dirty mobile UI files:
+
+- Route proof: `docs/mobile/harness/cycle-JT-search-event-route-contract/cycle-JT-search-event-route-contract.json`.
+- Proof script: `scripts/prove_mobile_search_event_route_contract.ts`.
+- Focused route tests: `src/__tests__/public.events.no-leak.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Search result route data | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&search=<query>&limit=<n>&cursor=<event-id>` | GET | Public/mobile route | Query params only | `events[]`, compact `events[].markets[]`, `nextCursor`, `page.limit`, `page.nextCursor`, `page.hasMore` | Existing `Event`, listed public `Market`, active `Outcome` rows | Mobile can still locally filter already-loaded events until the Search UI wiring is safely committed. | P1: wire Search tab to backend pages in server mode after unrelated mobile UI churn is reconciled. |
+| Backend search matching | Same `/api/events` route | GET | Public/mobile route | Search query | Query matches event title/description, home/away team names, listed public market title/description, and outcome `name`/`label` | `Event.homeTeamName`, `Event.awayTeamName`, `Market.title`, `Market.description`, `Outcome.name`, `Outcome.label` | No frontend-only result invention in the route proof. | P1: ranked/faceted search and localized aliases for production-scale discovery. |
+
 ## Cycle JS - Cashout Route Sell Safety
 
 Cycle JS hardens and proves the server-mode cashout/sell route contract for the visible Portfolio cashout flow:

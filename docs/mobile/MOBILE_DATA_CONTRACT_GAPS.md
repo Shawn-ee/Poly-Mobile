@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle JT - Search Event Route Contract
+
+Closed or narrowed:
+
+- `/api/events?search=` now matches event title/description, home/away team names, listed public market title/description, and outcome `name`/`label`.
+- Search route proof covers `includeMobileMarkets=1` plus cursor pagination with `nextCursor` and `page.hasMore`.
+- Sensitive-field no-leak checks now cover the expanded search filter path.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Search tab UI still needs to request backend search pages in server mode. This was intentionally left as P1 because the relevant mobile UI files are already dirty from unrelated work.
+- Production-scale ranked/faceted discovery and localized aliases are still future work.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Event`, `Market`, and `Outcome` text fields support the JT search contract.
+
+Temporary mock/static data:
+
+- The JT proof creates disposable backend event/market/outcome rows and does not add frontend-only search results.
+
 ## Cycle JS - Cashout Route Sell Safety
 
 Closed or narrowed:

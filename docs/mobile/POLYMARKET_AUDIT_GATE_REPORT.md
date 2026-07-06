@@ -20,6 +20,7 @@ Fail the feature when:
 
 | Feature | Cycle | Result | P0 failed | P1/P2 remaining | Reference evidence | Holiwyn evidence | Notes |
 | --- | --- | --- | ---: | --- | --- | --- | --- |
+| Search event route contract | Cycle JT | Pass for backend/data-contract scope | 0 for focused route search/pagination contract | P1 wire Search tab UI to backend pages in server mode after unrelated mobile UI churn is reconciled; P1 ranked/faceted discovery | Product decision on 2026-07-06: manual UI review is no longer required for every cycle; backend wiring and harness evidence are the priority | Route proof: `docs/mobile/harness/cycle-JT-search-event-route-contract/cycle-JT-search-event-route-contract.json`; tests: `src/__tests__/public.events.no-leak.test.ts`; audit: `mobile/docs/audits/cycle-JT-search-event-route-contract.md` | `/api/events?search=` now matches event/team/market/outcome text, returns compact mobile markets, and preserves cursor pagination. |
 | Cashout route sell safety | Cycle JS | Pass for backend/data-contract scope | 0 for focused cashout route safety contract | P1 optional external HTTP auth-stack smoke for `POST /api/orders` if future gates require it | Product requirement: server mode must reject no-position and insufficient-position cashout/sell even if frontend fails | Route/service proof: `docs/mobile/harness/cycle-JS-cashout-route-sell-safety/cycle-JS-cashout-route-sell-safety.json`; tests: `src/server/services/__tests__/canonical_order_submission.phase5.test.ts`, `mobile/src/__tests__/positionCloseService.test.ts`; audit: `mobile/docs/audits/cycle-JS-cashout-route-sell-safety.md` | Canonical order submission now returns/stores `INSUFFICIENT_BALANCE` for no-position and oversell attempts; mobile blocks non-finite full-position cashout shares before submit; valid full-position sell remains allowed. |
 | Home event list and backend pagination | Cycle JR | Pass for backend/data-contract scope | 0 for focused Home list pagination contract | P1 server-side pagination for Home live/today filters; P1 Search tab backend pagination; P1 optional Android Load more proof if visual proof is required again | Product decision on 2026-07-06: manual UI review is no longer required for every cycle; backend wiring and harness evidence are the priority | Route proof: `docs/mobile/harness/cycle-JR-home-event-list-pagination/cycle-JR-home-event-pagination.json`; tests: selected `src/__tests__/public.events.no-leak.test.ts`, `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/homePaginationService.test.ts`; audit: `mobile/docs/audits/cycle-JR-home-event-list-pagination.md` | `/api/events` now supports cursor pages with compact mobile markets, and Home server mode requests/appends backend pages instead of only slicing a local full list. |
 | Backend-driven Event Detail market profile and sell safety | Cycle JQ | Pass for backend/data-contract scope | 0 for focused contract scope | P1 real-provider replay across more World Cup profiles; P1 production-like HTTP order-route sell rejection proof; P1 broader provider-backed line-family availability | User product clarification on 2026-07-06: regulation markets can have Home/Tie/Away, knockout/penalty paths need separate advance options, and Event Detail Game Lines should be backend-driven | Route proof: `docs/mobile/harness/cycle-JQ-backend-event-market-cashout-safety/cycle-JQ-market-rule-profiles.json`; tests: `src/__tests__/mobile-event-market-rules-contract.test.ts`, selected `src/server/services/__tests__/phase7_kalshi_model.test.ts`, `mobile/src/__tests__/worldCupAdapter.test.ts`, `mobile/src/__tests__/positionCloseService.test.ts`; audit: `mobile/docs/audits/cycle-JQ-backend-event-market-cashout-safety.md` | Backend/mobile rule detection no longer treats team names like `Advance Home` as advance-market semantics. Proof covers regulation 90-minute draw plus spread/totals availability, and knockout profile with separate `to_advance` plus regulation draw availability. Backend sell guard rejects no-position/oversell and mobile cashout blocks invalid full-position sell attempts. |
@@ -174,6 +175,24 @@ Decision:
 
 - P0 failed: 0 for focused cashout/sell route safety scope.
 - Remaining P1: optional external HTTP auth-stack smoke for `POST /api/orders` if a future gate requires API-key-level proof.
+
+## Cycle JT
+
+Gate status: Pass
+
+Scope: Backend/data-contract gate for Search event route matching and pagination. This does not claim Search tab UI server-mode wiring.
+
+Evidence:
+
+- Route proof: `docs/mobile/harness/cycle-JT-search-event-route-contract/cycle-JT-search-event-route-contract.json`.
+- Cycle audit: `mobile/docs/audits/cycle-JT-search-event-route-contract.md`.
+- Focused backend tests:
+  - `src/__tests__/public.events.no-leak.test.ts`
+
+Decision:
+
+- P0 failed: 0 for focused backend route search/pagination scope.
+- Remaining P1: wire Search tab UI to backend pages in server mode after unrelated mobile UI churn is reconciled; add ranked/faceted discovery if production Search needs it.
 
 ## Cycle JO
 

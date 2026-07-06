@@ -1,0 +1,30 @@
+{
+  "pass": true,
+  "createdAt": "2026-07-06T14:57:16.001Z",
+  "route": "/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&search=<market-or-outcome-text>&limit=2&cursor=<event-id>",
+  "search": {
+    "query": "JTNeedle1d340e96",
+    "matchedFields": [
+      "market.title",
+      "outcome.name",
+      "outcome.label"
+    ]
+  },
+  "firstPage": {
+    "count": 2,
+    "nextCursor": "852baac0-3ecb-4b24-9a48-d34e157d33de",
+    "hasMore": true,
+    "slugs": [
+      "mobile-jt-search-page-1-1d340e96",
+      "mobile-jt-search-page-0-1d340e96"
+    ]
+  },
+  "secondPage": {
+    "count": 1,
+    "nextCursor": null,
+    "hasMore": false,
+    "slugs": [
+      "mobile-jt-search-page-2-1d340e96"
+    ]
+  }
+}

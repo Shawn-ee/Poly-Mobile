@@ -348,6 +348,76 @@ describe("public event API no-leak checks", () => {
     expectNoForbiddenKeys(body);
   });
 
+  test("GET /api/events search matches public team, market, and outcome text for mobile Search", async () => {
+    mockPrisma.event.findMany.mockResolvedValue([
+      {
+        ...baseEvent,
+        markets: [mobileListMarket],
+      },
+    ]);
+
+    const response = await listEvents(
+      new NextRequest("http://localhost/api/events?sportKey=soccer&leagueKey=world_cup&search=Argentina&includeMobileMarkets=1&limit=10"),
+    );
+
+    expect(response.status).toBe(200);
+    expect(mockPrisma.event.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          AND: expect.arrayContaining([
+            expect.objectContaining({
+              sportKey: "soccer",
+              leagueKey: "world_cup",
+              OR: expect.arrayContaining([
+                { title: { contains: "Argentina", mode: "insensitive" } },
+                { description: { contains: "Argentina", mode: "insensitive" } },
+                { homeTeamName: { contains: "Argentina", mode: "insensitive" } },
+                { awayTeamName: { contains: "Argentina", mode: "insensitive" } },
+                {
+                  markets: {
+                    some: {
+                      visibility: "PUBLIC",
+                      isListed: true,
+                      OR: [
+                        { title: { contains: "Argentina", mode: "insensitive" } },
+                        { description: { contains: "Argentina", mode: "insensitive" } },
+                        {
+                          outcomes: {
+                            some: {
+                              OR: [
+                                { name: { contains: "Argentina", mode: "insensitive" } },
+                                { label: { contains: "Argentina", mode: "insensitive" } },
+                              ],
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              ]),
+            }),
+          ]),
+        }),
+        take: 11,
+      }),
+    );
+
+    const body = await response.json();
+    expect(body.events).toHaveLength(1);
+    expect(body.events[0]).toMatchObject({
+      slug: "france-vs-argentina",
+      markets: [
+        {
+          outcomes: expect.arrayContaining([
+            expect.objectContaining({ label: "Argentina" }),
+          ]),
+        },
+      ],
+    });
+    expectNoForbiddenKeys(body);
+  });
+
   test("GET /api/events/[slug] returns event detail without sensitive keys", async () => {
     mockPrisma.event.findUnique.mockResolvedValue({
       ...baseEvent,
