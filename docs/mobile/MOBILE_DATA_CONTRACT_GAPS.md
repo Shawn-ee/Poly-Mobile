@@ -4557,6 +4557,34 @@ Future migration concern:
 
 - Replace disposable provider-shaped proof events with production active Polymarket-backed World Cup events before treating provider breadth as complete.
 
+## Cycle LI - Inactive Futures Surface Contract
+
+Closed or narrowed:
+
+- The old Home Futures tab/list/chart source is removed from the visible Home path.
+- Frontend-invented Futures chart ranges, outcome volume estimates, and card stats are no longer part of `MarketLists`.
+- Home remains focused on backend-driven match cards, filters, pagination, save controls, and ticket entry.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- If Futures browsing returns as a visible page, backend must provide market catalog, stable ordering, outcome quote/price, outcome-level volume/liquidity, and YES/NO contract ids.
+
+Schema mismatch:
+
+- No schema change was made. The removed surface was inactive and had no route contract.
+
+Route mismatch:
+
+- No visible Futures route is currently required for MVP after LI.
+
+Temporary mock/static data:
+
+- Local futures fixture data may still exist for old proof fixtures and position trade target fallback, but it is not passed into Home as a visible browsing surface.
+
+Future migration concern:
+
+- Reintroduce Futures only through a backend-owned market catalog/quote contract, not local chart/stat invention.
+
 ## Cycle FU - Portfolio Value History Backend Route
 
 Closed or narrowed:

@@ -23,7 +23,6 @@ import {
 } from "./src/components/Portfolio";
 import { SearchScreen } from "./src/components/SearchScreen";
 import { Ticket, TicketSelection, TradeTicket } from "./src/components/TradeTicket";
-import { WorldCupTab } from "./src/components/WorldCupSegmented";
 import { appCopy } from "./src/localization/appCopy";
 import {
   Event,
@@ -322,7 +321,6 @@ export default function App() {
   const [locale, setLocale] = useState<Locale>("en");
   const [localeHydrated, setLocaleHydrated] = useState(false);
   const [mainTab, setMainTab] = useState<MainTab>("home");
-  const [worldCupTab, setWorldCupTab] = useState<WorldCupTab>("games");
   const [homeFilter, setHomeFilter] = useState<HomeFilter>("all");
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [selectedDepthMarketId, setSelectedDepthMarketId] = useState<string | null>(null);
@@ -639,7 +637,6 @@ export default function App() {
         setSelectedDepthMarketId(null);
         setQuery("");
         setMainTab("home");
-        setWorldCupTab("games");
         setTicketDefaults({ amount: "100", side: "buy", slippage: "1%" });
         setSavedEventIds(new Set());
         setForceAccountSignedIn(false);
@@ -1803,8 +1800,6 @@ export default function App() {
               <HomeScreen
                 locale={locale}
                 t={t}
-                worldCupTab={worldCupTab}
-                setWorldCupTab={setWorldCupTab}
                 events={events}
                 openEvent={openEventDetail}
                 openTicket={openTicket}
@@ -1813,7 +1808,6 @@ export default function App() {
                 canLoadMoreEvents={MARKET_DATA_MODE === "server" ? Boolean(eventNextCursor) : undefined}
                 isLoadingMoreEvents={isLoadingMoreEvents}
                 loadMoreEvents={MARKET_DATA_MODE === "server" ? loadMoreBackendEvents : undefined}
-                futures={futures}
                 savedEventIds={savedEventIds}
                 toggleSavedEvent={toggleSavedEvent}
               />

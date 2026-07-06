@@ -2,16 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View, type NativeScrollEvent, type NativeSyntheticEvent } from "react-native";
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { MarketList } from "./MarketLists";
-import type { WorldCupTab } from "./WorldCupSegmented";
 import { initialHomeMatchCount, nextHomeMatchCount } from "../services/homePaginationService";
 import type { HomeEventFeedFilter } from "../services/homeEventFeedService";
 
 export type HomeFilter = Extract<HomeEventFeedFilter, "all" | "live" | "today">;
 
 type HomeScreenCopy = {
-  games: string;
-  futures: string;
-  trending: string;
   marketSearch: string;
   clearSearch: string;
   noResults: string;
@@ -36,8 +32,6 @@ export function HomeScreen({
 }: {
   locale: Locale;
   t: HomeScreenCopy;
-  worldCupTab: WorldCupTab;
-  setWorldCupTab: (tab: WorldCupTab) => void;
   events: Event[];
   openEvent: (event: Event) => void;
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
@@ -46,7 +40,6 @@ export function HomeScreen({
   canLoadMoreEvents?: boolean;
   isLoadingMoreEvents?: boolean;
   loadMoreEvents?: () => void;
-  futures: Market[];
   savedEventIds: Set<string>;
   toggleSavedEvent: (event: Event) => void;
 }) {

@@ -537,3 +537,10 @@ For every UI element or interaction, answer:
 - Samsung tablet proof passes for Home route-backed card -> Event Detail -> Spread row -> ticket -> server fake-token order -> filled Portfolio position/activity/history.
 - Default Book/orderbook UI remains hidden and is not a blocker for Local MVP completion.
 - Remaining P1: production active Polymarket World Cup provider breadth and non-disposable liquidity/source breadth.
+
+## Cycle LI Gap Tracker Update
+
+- PM-GAP-105 is opened and verified for removing the inactive Home Futures surface from visible MVP scope.
+- LI closes the frontend-only Futures surface risk by removing the old Home Futures tab/list/chart implementation and its invented chart/range/volume data from active source.
+- Focused proof passes for absent `worldCupTab`, `FutureList`, `FeaturedFuture`, `WorldCupSegmented`, and `future-market-chart` wiring while preserving backend-driven Home match cards.
+- Remaining P1: visible Futures browsing remains future scope until backend route contracts provide catalog, ordering, quotes, volume/liquidity, and YES/NO contract ids.

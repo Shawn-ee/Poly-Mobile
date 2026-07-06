@@ -1,0 +1,19 @@
+{
+  "cycle": "LI",
+  "scope": "inactive-futures-surface-contract",
+  "generatedAt": "2026-07-06T22:24:49.452Z",
+  "pass": true,
+  "decision": "The old Home Futures tab/list/chart surface is no longer wired into the visible app. Home keeps backend-driven match cards; Futures catalog browsing remains future scope unless backed by a route contract.",
+  "checks": {
+    "removesInactiveHomeFuturesTab": true,
+    "removesInactiveHomeFuturesList": true,
+    "removesFrontendInventedFuturesChartAndStats": true,
+    "keepsBackendDrivenHomeMatchCards": true
+  },
+  "evidence": {
+    "app": "mobile/App.tsx",
+    "homeScreen": "mobile/src/components/HomeScreen.tsx",
+    "marketLists": "mobile/src/components/MarketLists.tsx",
+    "test": "mobile/src/__tests__/inactiveFuturesSurfaceContract.test.ts"
+  }
+}

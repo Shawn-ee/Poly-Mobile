@@ -2228,3 +2228,16 @@ Cycle FU implementation notes:
 - Invalid ranges return `400` before account state queries.
 - Empty accounts return `status=empty`, `emptyState=no-history`, and no points.
 - No orderbook, deposit, withdraw, chat, live stats, or social behavior was added.
+
+## Cycle LI - Inactive Futures Surface Contract
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Home match list | `/api/events?includeMobileMarkets=1` in server market-data mode | GET | Public viewing | Query filters/cursor/page size | Event identity, status, teams, compact markets/outcomes, market profile/rules for Home card outcome selection | `Event`, `Market`, `Outcome`, provider/read-model event fields | Existing local `worldCupEvents` remains standalone fallback. | Production active provider breadth remains P1. |
+| Old Home Futures tab/list/chart | None after LI | N/A | N/A | N/A | None; the inactive surface was removed from visible app wiring | None for visible MVP | No visible fallback; stale local chart/stat invention removed from source | If Futures browsing returns, backend must own catalog, ordering, quotes, outcome volume/liquidity, and YES/NO contract ids. |
+
+Cycle LI implementation notes:
+
+- No backend route or schema change was required.
+- The cleanup narrows visible Home to match/event routes that already have backend contracts.
+- Local futures mock data can still support legacy position target lookup and proof fixtures, but no Home Futures browsing surface is exposed.

@@ -4292,3 +4292,31 @@ Decision:
 - Unresolved P0 gaps: 0 for selected feature.
 - Remaining P1/P2 gaps: production active provider breadth and non-disposable liquidity/source breadth.
 - Next cycle required: yes, continue Local MVP user-flow breadth or production provider breadth.
+
+## Cycle LI
+
+Gate status: Pass
+
+Scope: Inactive Futures surface contract cleanup. This cycle removes the old hidden Home Futures tab/list/chart source so the visible MVP Home route is not carrying frontend-only market browsing without backend support.
+
+Evidence:
+
+- `mobile/docs/audits/cycle-LI-inactive-futures-surface-contract.md`
+- `docs/mobile/harness/cycle-LI-inactive-futures-surface-contract/cycle-LI-inactive-futures-surface-contract.json`
+- `mobile/src/__tests__/inactiveFuturesSurfaceContract.test.ts`
+- `scripts/prove_mobile_inactive_futures_surface_contract.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LI-FUTURES-P0-01 | P0 | Pass | Home no longer receives `worldCupTab`, `setWorldCupTab`, or `futures` props. | Restore only with a route-backed Futures contract. |
+| LI-FUTURES-P0-02 | P0 | Pass | Unused Featured Future and segmented-tab components are removed. | Restore only with backend-owned market catalog data. |
+| LI-FUTURES-P0-03 | P0 | Pass | `FutureList` chart/range/outcome-volume frontend invention is removed. | Replace with backend-owned quote/stats if Futures returns. |
+| LI-FUTURES-P0-04 | P0 | Pass | Backend-driven Home match cards and retail outcome rails remain in `MarketList`. | N/A |
+
+Decision:
+
+- Pass/fail: Pass for inactive Futures surface cleanup.
+- Unresolved P0 gaps: 0 for this cleanup.
+- Remaining P1/P2 gaps: visible Futures browsing is future scope until backend route contracts provide full catalog, ordering, quote, volume/liquidity, and ticket contract ids.
