@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle LF - Event Detail No Chat/Stats Contract
+
+Closed or narrowed:
+
+- Event Detail no longer carries a dead chat page implementation.
+- Event Detail no longer carries chat reactions, typing, input, or sticky chat outcome code.
+- Event Detail no longer computes frontend-invented volume, liquidity, or trader counts.
+- Event Detail keeps focused route-backed event identity, primary outcomes, user position, Game Lines, Player Props placeholder, and market summary metadata.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real route-backed Event Detail volume/liquidity/trader/comment metadata remains future scope only if the visible Event Detail surface explicitly expands to show those values.
+- Chat/social routes remain outside MVP scope.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- No Event Detail chat UI or frontend-invented visible/hidden volume-liquidity-trader stats remain in the committed component path.
+
 ## Cycle LE - Search Result Stats Contract
 
 Closed or narrowed:

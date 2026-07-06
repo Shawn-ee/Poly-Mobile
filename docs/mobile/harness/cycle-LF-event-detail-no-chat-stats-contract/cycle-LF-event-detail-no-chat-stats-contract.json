@@ -1,0 +1,16 @@
+{
+  "cycle": "LF",
+  "scope": "event-detail-no-chat-stats-contract",
+  "generatedAt": "2026-07-06T19:09:38.079Z",
+  "pass": true,
+  "decision": "Event Detail no longer carries chat UI or frontend-invented volume/liquidity/trader stats. The focused Event Detail surface keeps primary outcomes, Game Lines, Player Props placeholder, and backend market summary metadata.",
+  "checks": {
+    "removesChatUi": true,
+    "removesInventedStats": true,
+    "keepsFocusedEventDetailSurface": true
+  },
+  "evidence": {
+    "eventDetail": "mobile/src/components/EventDetail.tsx",
+    "test": "mobile/src/__tests__/eventDetailNoChatStatsContract.test.ts"
+  }
+}

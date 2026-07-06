@@ -25,9 +25,6 @@ import type { TicketSelection } from "./TradeTicket";
 type EventDetailCopy = {
   worldCup: string;
   markets: string;
-  volume: string;
-  liquidity: string;
-  traders: string;
   marketCount: string;
   outcomeCount: string;
   bestBid: string;
@@ -222,14 +219,8 @@ const isRegulationWinnerMarket = (market: Market) =>
 
 const marketStats = (event: Event) => {
   const outcomeCount = event.markets.reduce((total, market) => total + market.outcomes.length, 0);
-  const volume = event.markets.length * 18250 + outcomeCount * 750;
-  const liquidity = event.markets.length * 9400 + outcomeCount * 300;
-  const traders = event.markets.length * 214 + outcomeCount * 17;
 
   return {
-    volume: `${volume.toLocaleString("en-US")} USDT`,
-    liquidity: `${liquidity.toLocaleString("en-US")} USDT`,
-    traders: traders.toLocaleString("en-US"),
     marketCount: event.markets.length,
     outcomeCount,
   };
@@ -1475,7 +1466,7 @@ export function EventDetail({
           <Text style={styles.legacySummaryText}>{t.markets}</Text>
         </View>
         <View
-          accessibilityLabel={`event-detail-summary event-detail-header-team-identity-fit event-detail-non-prediction-lower-content-hidden-local-mvp market-rules-hidden-local-mvp more-events-hidden-local-mvp event-detail-stats event-detail-market-summary ${homeCode} ${awayCode} ${matchDateLabel} ${compactTimeLabel} ${label(locale, event)} ${stats.marketCount} ${t.marketCount} ${stats.outcomeCount} ${t.outcomeCount} Game lines ${gameLineMarkets.length === 1 ? "1 market" : `${gameLineMarkets.length} ${t.marketCount}`} Props ${propMarkets.length} ${t.marketCount} ${primaryMarket ? label(locale, primaryMarket) : ""} ${t.markets} ${t.volume} ${stats.volume} ${t.liquidity} ${stats.liquidity} ${t.traders} ${stats.traders} ${t.bestBid} ${t.bestAsk} ${t.spread}`}
+          accessibilityLabel={`event-detail-summary event-detail-header-team-identity-fit event-detail-non-prediction-lower-content-hidden-local-mvp market-rules-hidden-local-mvp more-events-hidden-local-mvp event-detail-market-summary ${homeCode} ${awayCode} ${matchDateLabel} ${compactTimeLabel} ${label(locale, event)} ${stats.marketCount} ${t.marketCount} ${stats.outcomeCount} ${t.outcomeCount} Game lines ${gameLineMarkets.length === 1 ? "1 market" : `${gameLineMarkets.length} ${t.marketCount}`} Props ${propMarkets.length} ${t.marketCount} ${primaryMarket ? label(locale, primaryMarket) : ""} ${t.markets} ${t.bestBid} ${t.bestAsk} ${t.spread}`}
           style={styles.matchHeader}
           testID="event-detail-summary"
         >
@@ -1499,79 +1490,8 @@ export function EventDetail({
           </View>
         </View>
 
-        {false ? (
-          <View accessibilityLabel="event-detail-chat-page" style={styles.chatPage} testID="event-detail-chat-page">
-            <View style={styles.chatContextCard}>
-              <Text style={styles.chatContextTitle}>{label(locale, event)}</Text>
-              <Text style={styles.chatContextMeta}>
-                {teamA ? teamCode(teamA.name) : ""} {leftOutcome?.probability ?? 0}% - {teamB ? teamCode(teamB.name) : ""} {rightOutcome?.probability ?? 0}% - {scoreboard} - {liveClock}
-              </Text>
-            </View>
-            <View accessibilityLabel="event-detail-chat-feed" style={styles.chatFeed} testID="event-detail-chat-feed">
-              {[
-                { user: "gigglyeel0550", badge: "BTTS $36", text: "VAMOS", color: "#be18ff" },
-                { user: "mktmaker21", badge: `${teamCode(teamA?.name ?? "MEX")} ${leftOutcome?.probability ?? 0}%`, text: "Pressure is all on the left side.", color: "#22c55e" },
-                { user: "linewatcher", badge: "O2.5 $18", text: "Totals moving after that last attack.", color: "#38bdf8" },
-                { user: "goalrush", badge: `${teamCode(teamB?.name ?? "ECU")} ${rightOutcome?.probability ?? 0}%`, text: "Counter still looks live.", color: "#f59e0b" },
-              ].map((message) => (
-                <View accessibilityLabel={`event-detail-chat-message-${message.user}`} key={message.user} style={styles.chatMessageRow} testID={`event-detail-chat-message-${message.user}`}>
-                  <View style={[styles.chatAvatar, { backgroundColor: message.color }]} />
-                  <View style={styles.chatMessageBubble}>
-                    <View style={styles.chatMessageMetaRow}>
-                      <Text style={styles.chatMessageUser}>{message.user}</Text>
-                      <Text style={styles.chatMessageBadge}>{message.badge}</Text>
-                    </View>
-                    <Text style={styles.chatMessageText}>{message.text}</Text>
-                  </View>
-                </View>
-              ))}
-            </View>
-            <View accessibilityLabel="event-detail-chat-typing" style={styles.typingRow} testID="event-detail-chat-typing">
-              <View style={styles.typingDots}>
-                <View style={styles.typingDot} />
-                <View style={styles.typingDot} />
-                <View style={styles.typingDot} />
-              </View>
-              <Text style={styles.typingText}>3 traders typing</Text>
-            </View>
-            <View accessibilityLabel="event-detail-chat-reactions" style={styles.reactionRow} testID="event-detail-chat-reactions">
-              {["Vamos", "Goal", "Hold", "Cash out"].map((reaction) => (
-                <Pressable accessibilityLabel={`event-detail-chat-reaction-${reaction}`} key={reaction} style={styles.reactionChip} testID={`event-detail-chat-reaction-${reaction.replace(/\s+/g, "-").toLowerCase()}`}>
-                  <Text style={styles.reactionText}>{reaction}</Text>
-                </Pressable>
-              ))}
-            </View>
-            <View accessibilityLabel="event-detail-chat-input" style={styles.chatInputRow} testID="event-detail-chat-input">
-              <Ionicons name="happy-outline" color="#cbd5e1" size={22} />
-              <Text style={styles.chatInputPlaceholder}>Message this market</Text>
-              <Ionicons name="send-outline" color="#94a3b8" size={20} />
-            </View>
-            <View accessibilityLabel="event-detail-chat-emoji-picker" style={styles.emojiPicker} testID="event-detail-chat-emoji-picker">
-              {["+", "%", "!", "?"].map((item) => (
-                <Text key={item} style={styles.emojiText}>{item}</Text>
-              ))}
-            </View>
-            <View accessibilityLabel="event-detail-chat-sticky-outcomes" style={styles.chatStickyOutcomes} testID="event-detail-chat-sticky-outcomes">
-              {primaryMarket ? primaryOutcomes.map((outcome) => {
-                const market = primaryMarket;
-                if (!market) return null;
-                return (
-                  <Pressable
-                    accessibilityLabel={`event-detail-chat-sticky-outcome-${market.id}-${outcome.id}`}
-                    key={outcome.id}
-                    onPress={() => openPrimaryOutcomeTicket(outcome)}
-                    style={[styles.chatStickyButton, { backgroundColor: primaryOutcomeDisplayColor(outcome) }, selectedPrimaryOutcome?.id === outcome.id && styles.chatStickyButtonSelected]}
-                    testID={`event-detail-chat-sticky-outcome-${market.id}-${outcome.id}`}
-                  >
-                    <Text style={styles.chatStickyButtonText}>{teamCode(outcome.label)} {outcome.probability}%</Text>
-                  </Pressable>
-                );
-              }) : null}
-            </View>
-          </View>
-        ) : (
-          <>
-        <View accessible accessibilityLabel={`event-detail-market-switch-hidden-local-mvp event-detail-volume-hidden-local-mvp ${stats.volume} event-detail-market-body-default ${isLiveEvent ? "live-world-cup-context-hidden" : "holiwyn-context-hidden"}`} style={styles.hiddenStats} testID="event-detail-market-switch-hidden-local-mvp">
+        <>
+        <View accessible accessibilityLabel={`event-detail-market-switch-hidden-local-mvp event-detail-market-body-default ${isLiveEvent ? "live-world-cup-context-hidden" : "holiwyn-context-hidden"}`} style={styles.hiddenStats} testID="event-detail-market-switch-hidden-local-mvp">
           {liveDataStatus && (
             <Text
               accessibilityLabel={`event-detail-live-data-inline event-detail-live-provider-copy-hidden-local-mvp live-data-status-${liveDataState} provider-lifecycle-${liveDataBadge.lifecycle} live-data-source-${liveDataBadge.source}`}
@@ -1736,11 +1656,6 @@ export function EventDetail({
               style={styles.lineSectionCleanStart}
               testID="event-detail-line-section-clean-start"
             />
-            <View accessibilityLabel="event-detail-stats" style={styles.hiddenStats} testID="event-detail-stats">
-              <Text style={styles.hiddenStatsText}>{stats.volume}</Text>
-              <Text style={styles.hiddenStatsText}>{stats.liquidity}</Text>
-              <Text style={styles.hiddenStatsText}>{stats.traders}</Text>
-            </View>
             <View accessibilityLabel="event-detail-market-summary" style={styles.hiddenStats} testID="event-detail-market-summary">
               <Text style={styles.hiddenStatsText}>{stats.marketCount} {t.marketCount}</Text>
               <Text style={styles.hiddenStatsText}>{stats.outcomeCount} {t.outcomeCount}</Text>
@@ -1821,8 +1736,7 @@ export function EventDetail({
         />
           </>
         )}
-          </>
-        )}
+        </>
       </ScrollView>
       {activeHeaderTab === "game" && primaryMarket && selectedPrimaryOutcomeId && selectedPrimaryOutcome && !orderBookVisible && (
         <View
@@ -1862,8 +1776,6 @@ const styles = StyleSheet.create({
   segmentActive: { backgroundColor: "#0b1220" },
   segmentText: { color: "#8d94a3", fontSize: 16, fontWeight: "800" },
   segmentTextActive: { color: "#ffffff" },
-  chatBadge: { minWidth: 34, height: 26, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#ef233c" },
-  chatBadgeText: { color: "#ffffff", fontSize: 14, fontWeight: "900" },
   actionNotice: { minHeight: 48, flexDirection: "row", alignItems: "center", gap: 10, paddingHorizontal: 18, backgroundColor: "#0f1b2e", borderBottomWidth: 1, borderBottomColor: "#263247" },
   actionNoticeText: { flex: 1, color: "#f8fafc", fontSize: 14, fontWeight: "900" },
   actionNoticeDismiss: { color: "#93c5fd", fontSize: 13, fontWeight: "900" },
@@ -1995,41 +1907,7 @@ const styles = StyleSheet.create({
   chartContractButtonText: { color: "#dbeafe", fontSize: 12, fontWeight: "900" },
   chartTradeButton: { minHeight: 38, minWidth: 92, alignItems: "center", justifyContent: "center", borderRadius: 999, paddingHorizontal: 16 },
   chartTradeButtonText: { color: "#ffffff", fontSize: 15, fontWeight: "900" },
-  chatPreview: { marginHorizontal: 24, marginTop: 8, padding: 14, borderRadius: 18, backgroundColor: "#181f2d" },
-  chatPreviewTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  chatCount: { color: "#f8fafc", fontSize: 16, fontWeight: "800" },
-  chatPreviewLine: { flexDirection: "row", alignItems: "center", gap: 10, marginTop: 14 },
   userDot: { width: 26, height: 26, borderRadius: 999, backgroundColor: "#be18ff" },
-  chatUser: { color: "#e5e7eb", fontSize: 15, fontWeight: "800" },
-  chatBetBadge: { overflow: "hidden", borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3, color: "#22c55e", backgroundColor: "#082f1a", fontSize: 12, fontWeight: "900" },
-  chatMessage: { color: "#a6adbb", fontSize: 14, fontWeight: "800" },
-  chatPage: { paddingHorizontal: 18, paddingTop: 16, gap: 12 },
-  chatContextCard: { padding: 14, borderRadius: 16, backgroundColor: "#111827", borderWidth: 1, borderColor: "#263247" },
-  chatContextTitle: { color: "#f8fafc", fontSize: 18, fontWeight: "900" },
-  chatContextMeta: { color: "#9ca3af", fontSize: 13, fontWeight: "800", marginTop: 6 },
-  chatFeed: { gap: 10 },
-  chatMessageRow: { flexDirection: "row", alignItems: "flex-start", gap: 10 },
-  chatAvatar: { width: 34, height: 34, borderRadius: 999, marginTop: 3 },
-  chatMessageBubble: { flex: 1, minWidth: 0, padding: 12, borderRadius: 14, backgroundColor: "#111827", borderWidth: 1, borderColor: "#1f2937" },
-  chatMessageMetaRow: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 5 },
-  chatMessageUser: { color: "#f8fafc", fontSize: 13, fontWeight: "900" },
-  chatMessageBadge: { overflow: "hidden", borderRadius: 6, paddingHorizontal: 7, paddingVertical: 3, color: "#22c55e", backgroundColor: "#052e1b", fontSize: 11, fontWeight: "900" },
-  chatMessageText: { color: "#cbd5e1", fontSize: 14, fontWeight: "800", lineHeight: 19 },
-  typingRow: { minHeight: 34, flexDirection: "row", alignItems: "center", gap: 9, paddingHorizontal: 4 },
-  typingDots: { flexDirection: "row", alignItems: "center", gap: 4 },
-  typingDot: { width: 7, height: 7, borderRadius: 999, backgroundColor: "#64748b" },
-  typingText: { color: "#94a3b8", fontSize: 13, fontWeight: "800" },
-  reactionRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  reactionChip: { minHeight: 36, alignItems: "center", justifyContent: "center", borderRadius: 999, backgroundColor: "#172033", borderWidth: 1, borderColor: "#293548", paddingHorizontal: 14 },
-  reactionText: { color: "#e5e7eb", fontSize: 13, fontWeight: "900" },
-  chatInputRow: { minHeight: 52, flexDirection: "row", alignItems: "center", gap: 10, borderRadius: 999, backgroundColor: "#111827", borderWidth: 1, borderColor: "#293548", paddingHorizontal: 14 },
-  chatInputPlaceholder: { flex: 1, color: "#94a3b8", fontSize: 15, fontWeight: "800" },
-  emojiPicker: { minHeight: 46, flexDirection: "row", alignItems: "center", justifyContent: "space-around", borderRadius: 14, backgroundColor: "#0b1220", borderWidth: 1, borderColor: "#1f2937" },
-  emojiText: { color: "#f8fafc", fontSize: 21, fontWeight: "900" },
-  chatStickyOutcomes: { flexDirection: "row", gap: 12, marginTop: 4 },
-  chatStickyButton: { flex: 1, minHeight: 52, alignItems: "center", justifyContent: "center", borderRadius: 15 },
-  chatStickyButtonSelected: { borderWidth: 2, borderColor: "#f8fafc" },
-  chatStickyButtonText: { color: "#ffffff", fontSize: 16, fontWeight: "900" },
   positionSection: { marginTop: 8, paddingHorizontal: 20 },
   positionHeading: { color: "#f8fafc", fontSize: 17, fontWeight: "800", marginBottom: 10 },
   positionCard: { borderRadius: 18, borderWidth: 1, borderColor: "#263247", backgroundColor: "#080d16", overflow: "hidden" },

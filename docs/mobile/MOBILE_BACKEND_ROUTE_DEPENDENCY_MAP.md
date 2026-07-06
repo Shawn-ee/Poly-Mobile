@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle LF - Event Detail No Chat/Stats Contract
+
+Cycle LF removes leftover Event Detail chat UI code and frontend-invented volume/liquidity/trader stats. Event Detail remains focused on route-backed event identity, primary outcomes, user position, Game Lines, Player Props placeholder, and backend market summary metadata.
+
+- Event Detail no chat/stats proof: `docs/mobile/harness/cycle-LF-event-detail-no-chat-stats-contract/cycle-LF-event-detail-no-chat-stats-contract.json`.
+- Proof script: `scripts/prove_mobile_event_detail_no_chat_stats_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/eventDetailNoChatStatsContract.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Event Detail focused surface | Existing Event Detail routes: `/api/mobile/events/:slug/live-detail`, `/api/events/:slug/markets`, `/api/markets/:id/quote`, plus Portfolio/order routes for user position and ticket actions | GET for event/catalog/quote/portfolio; POST/DELETE through existing order flows | Public event viewing; account/order auth for user state and trading | Existing route params/request bodies only | Event identity, teams, status/time, backend market profile/rules, compact markets, primary outcomes, Game Lines, Player Props empty state, user position | Existing `Event`, `Market`, `Outcome`, order/portfolio read models | Mock/offline mode can still use local event fixtures, but Event Detail no longer carries chat UI or fake volume/liquidity/trader stats. | Chat/social and real route-backed event stats remain outside MVP unless explicitly scoped. |
+
 ## Cycle LE - Search Result Stats Contract
 
 Cycle LE removes frontend-invented Search result stats. Search rows no longer display fake volume, liquidity, today-volume, or chat counts; they keep event identity/start time/top outcome/save/navigation backed by the existing Search route and profile preference sync.
