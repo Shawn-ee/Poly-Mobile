@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KC - Profile Summary Contract
+
+Cycle KC adds a focused Account/profile summary route and mobile mapper without editing dirty Account UI files:
+
+- Profile summary proof: `docs/mobile/harness/cycle-KC-profile-summary-contract/cycle-KC-profile-summary-contract.json`.
+- Proof script: `scripts/prove_mobile_profile_summary_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/profileSummaryService.test.ts` and `mobile/src/__tests__/api.test.ts`.
+- Focused backend tests: `src/__tests__/profile.summary.route.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Account/profile summary | `/api/profile/summary` | GET | Canonical actor with `account:read`; route id `account:summary` | None | `profile.id/username/displayName/email/image/hasCustomAvatar/isAdmin`; `preferences.locale/ticketDefaultAmount/ticketDefaultSide/ticketDefaultSlippage/savedEventIds`; `account.walletTotalUSDC/portfolioValue/openPositionCount/openOrderCount/openOrderValue/totalExposure/tradingMode` | Existing `User`, `UserBalance`, `Position`, `Order`, `UserProfilePreference` | Dirty Account UI can keep local props until safely reconciled. Mobile `loadProfileSummary()` has no mock preference over successful route data. | P1: wire Account UI to `loadProfileSummary()` in server mode. |
+| Account visible values mapper | Same `/api/profile/summary` route | GET | Same `account:read` actor | None | Numeric conversion for balance, portfolio value, order value, exposure; local side mapping `BUY/SELL` to `buy/sell`; saved market count from preferences | Same existing tables; no schema migration | Non-server Account state remains local/demo by design. | Full account/security/session/funding settings remain outside this focused MVP summary route. |
+
 ## Cycle KB - Search Event Service Contract
 
 Cycle KB adds a mobile service-layer boundary for Search backend pages without editing dirty Search UI files:

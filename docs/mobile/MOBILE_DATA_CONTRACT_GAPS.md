@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KC - Profile Summary Contract
+
+Closed or narrowed:
+
+- Backend now exposes `/api/profile/summary` for the visible Account/profile shell under canonical `account:read`.
+- The route returns profile identity, preference defaults, wallet/account totals, open position/order counts, open order value, total exposure, and `tradingMode=server`.
+- Mobile `PolyApi.getProfileSummary()` and `loadProfileSummary()` map the route payload into Account screen values.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Dirty Account UI files still need clean server-mode wiring to `loadProfileSummary()` after unrelated UI churn is reconciled.
+- Full account/security/session/funding settings remain outside this focused summary route and should not be pulled into MVP unless the visible UI requires them.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `User`, `UserBalance`, `Position`, `Order`, and `UserProfilePreference` records support this contract.
+
+Temporary mock/static data:
+
+- Non-server Account UI can still use local/demo props. Server-mode summary has a route-backed service and proof, and the service does not prefer local data over a successful route response.
+
 ## Cycle KB - Search Event Service Contract
 
 Closed or narrowed:

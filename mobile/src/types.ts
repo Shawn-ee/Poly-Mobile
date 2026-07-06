@@ -406,3 +406,27 @@ export type ProfilePreferences = {
   savedEventIds: string[];
   updatedAt?: string;
 };
+
+export type ProfileSummary = {
+  profile: {
+    id: string;
+    username: string;
+    displayName: string | null;
+    email: string | null;
+    image: string | null;
+    hasCustomAvatar: boolean;
+    isAdmin: boolean;
+  };
+  preferences: ProfilePreferences;
+  account: {
+    walletAvailableUSDC: string | number;
+    walletLockedUSDC: string | number;
+    walletTotalUSDC: string | number;
+    portfolioValue: string | number;
+    openPositionCount: number;
+    openOrderCount: number;
+    openOrderValue: string | number;
+    totalExposure: string | number;
+    tradingMode: "server";
+  };
+};

@@ -1,4 +1,4 @@
-import type { EventDetail, EventSummary, Market, MarketChart, MarketChartRange, OrderbookBook, PortfolioCanceledOrderItem, PortfolioHistoryItem, PortfolioRecentTradeItem, PortfolioSnapshot, PortfolioValueHistory, PortfolioValueHistoryRange, ProfilePreferences, Quote } from "./types";
+import type { EventDetail, EventSummary, Market, MarketChart, MarketChartRange, OrderbookBook, PortfolioCanceledOrderItem, PortfolioHistoryItem, PortfolioRecentTradeItem, PortfolioSnapshot, PortfolioValueHistory, PortfolioValueHistoryRange, ProfilePreferences, ProfileSummary, Quote } from "./types";
 
 const trimSlash = (value: string) => value.replace(/\/+$/, "");
 const REQUEST_TIMEOUT_MS = 3500;
@@ -152,5 +152,9 @@ export class PolyApi {
       method: "PUT",
       body: JSON.stringify(input),
     });
+  }
+
+  getProfileSummary() {
+    return this.request<ProfileSummary>(`/api/profile/summary`);
   }
 }

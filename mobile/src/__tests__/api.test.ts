@@ -130,6 +130,53 @@ describe("Holiwyn mobile API client", () => {
     });
   });
 
+  test("loads authenticated profile summary for account settings", async () => {
+    const fetchImpl = vi.fn(async () =>
+      jsonResponse({
+        profile: {
+          id: "user-1",
+          username: "holiwyn_user",
+          displayName: "Holiwyn User",
+          email: "user@example.test",
+          image: null,
+          hasCustomAvatar: false,
+          isAdmin: false,
+        },
+        preferences: {
+          locale: "en",
+          ticketDefaultAmount: "100",
+          ticketDefaultSide: "BUY",
+          ticketDefaultSlippage: "1%",
+          savedEventIds: ["match-1"],
+        },
+        account: {
+          walletAvailableUSDC: "40.800000",
+          walletLockedUSDC: "0",
+          walletTotalUSDC: "40.800000",
+          portfolioValue: "100.060000",
+          openPositionCount: 1,
+          openOrderCount: 2,
+          openOrderValue: "20.500000",
+          totalExposure: "120.560000",
+          tradingMode: "server",
+        },
+      }),
+    );
+    vi.stubGlobal("fetch", fetchImpl);
+
+    const summary = await new PolyApi("https://api.example.test", "test-api-key").getProfileSummary();
+
+    const [url, init] = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
+    const headers = init.headers as Headers;
+    expect(url).toBe("https://api.example.test/api/profile/summary");
+    expect(headers.get("Authorization")).toBe("Bearer test-api-key");
+    expect(summary.account).toMatchObject({
+      openPositionCount: 1,
+      openOrderCount: 2,
+      tradingMode: "server",
+    });
+  });
+
   test("lists World Cup events with structured filters and mobile compact markets", async () => {
     const fetchImpl = vi.fn(async () => jsonResponse({ events: [] }));
     vi.stubGlobal("fetch", fetchImpl);
