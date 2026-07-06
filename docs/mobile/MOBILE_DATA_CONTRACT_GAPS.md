@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KP - Portfolio Sync UI Wiring
+
+Closed or narrowed:
+
+- Visible Portfolio server mode now has proof that it calls `loadServerPortfolioState()` with the active API client.
+- Route snapshot data drives visible balance, positions, and open orders.
+- Route history data drives visible activity/history rows.
+- Server order submit, cancel, and position close/cashout paths refresh Portfolio from backend state.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Optional Android Portfolio sync proof remains future work if visual proof becomes required again.
+- Broader provider lifecycle breadth remains under provider mapping/provider refresh lanes.
+
+Schema mismatch:
+
+- No schema migration was made. Existing Portfolio, order, trade, market, outcome, and request snapshot rows support the UI sync contract.
+
+Temporary mock/static data:
+
+- Mock/offline order mode keeps local state behavior. Server mode uses route data when available and preserves only the failed route half on partial failure instead of fabricating replacement rows.
+
 ## Cycle KO - Trade Ticket Quote UI Wiring
 
 Closed or narrowed:

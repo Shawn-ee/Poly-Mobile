@@ -1,0 +1,27 @@
+{
+  "cycle": "KP",
+  "scope": "portfolio-sync-ui-wiring",
+  "generatedAt": "2026-07-06T17:29:11.074Z",
+  "routes": [
+    "/api/portfolio",
+    "/api/portfolio/history"
+  ],
+  "pass": true,
+  "checks": {
+    "appImportsPortfolioSyncServices": true,
+    "appLoadsPortfolioInServerMode": true,
+    "appAppliesSnapshotAndHistoryToVisibleState": true,
+    "appRefreshesAfterServerOrderSubmit": true,
+    "appRefreshesAfterCancelAndClose": true,
+    "appPassesServerBackedStateToPortfolio": true,
+    "syncServiceReadsSnapshotAndHistoryRoutes": true,
+    "applyServicePreservesPartialRouteSuccess": true,
+    "portfolioRendersSyncedRouteState": true
+  },
+  "evidence": {
+    "app": "git show HEAD:mobile/App.tsx",
+    "portfolio": "git show HEAD:mobile/src/components/Portfolio.tsx",
+    "syncService": "mobile/src/services/portfolioSyncService.ts",
+    "applyService": "mobile/src/services/portfolioStateApplyService.ts"
+  }
+}

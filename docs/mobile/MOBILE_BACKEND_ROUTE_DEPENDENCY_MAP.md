@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KP - Portfolio Sync UI Wiring
+
+Cycle KP proves the visible Portfolio screen consumes the already-proven backend Portfolio snapshot/history sync in server mode:
+
+- Portfolio sync UI proof: `docs/mobile/harness/cycle-KP-portfolio-sync-ui-wiring/cycle-KP-portfolio-sync-ui-wiring.json`.
+- Proof script: `scripts/prove_mobile_portfolio_sync_ui_wiring.ts`.
+- Focused mobile tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/portfolioSyncService.test.ts`, `mobile/src/__tests__/portfolioSnapshotService.test.ts`, `mobile/src/__tests__/portfolioHistoryService.test.ts`, and `mobile/src/__tests__/portfolioStateApplyService.test.ts`.
+- Focused backend tests: `src/__tests__/portfolio.open-orders.route.test.ts` and `src/__tests__/portfolio.history.route.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Portfolio sync | `/api/portfolio`, `/api/portfolio/history` | GET | Canonical actor with `account:read`; route ids covered by existing portfolio route contracts | None | Snapshot balance, positions, open orders, selection metadata, recent trades, canceled activities/history, and sync status | Existing `UserBalance`, `Position`, `Order`, `Trade`, `ApiOrderRequest`, `Market`, `Outcome` | In server mode route success drives visible `Portfolio` props. Partial route failure preserves the last known local half only for the failed route. Full route failure sets sync error instead of inventing mock rows. | Optional Android proof if visual proof becomes required again; broader provider lifecycle breadth remains under provider lanes. |
+| Portfolio refresh after server mutations | Same `/api/portfolio` plus `/api/portfolio/history` routes | GET after server order submit, cancel, and position close/cashout | Same active mobile API key/session auth | None | Fresh route-backed visible positions/open orders/history after mutation | Same existing Portfolio and order lifecycle tables | Mock/offline order mode keeps existing local state path. Server mode refreshes from backend after successful mutation. | Filled/cancel breadth for more provider families remains future hardening. |
+
 ## Cycle KO - Trade Ticket Quote UI Wiring
 
 Cycle KO proves the visible Trade Ticket quote refresh is wired to the already-proven backend quote route in server mode:
