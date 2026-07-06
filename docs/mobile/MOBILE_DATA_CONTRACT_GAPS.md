@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KV - Home Filter UI Route Wiring
+
+Closed or narrowed:
+
+- Visible Home `All`, `Live`, and `Today` chips now drive the app-level `homeFilter` state.
+- Server-mode Home loading calls `loadHomeEventFeedPage({ filter: homeFilter, limit, cursor })` instead of calling the raw event list route and filtering the visible list locally.
+- Successful filtered backend pages drive the Home list directly; local status filtering is only used in mock/offline paging mode.
+- Home load-more keeps using backend cursor metadata for the active selected filter.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Calendar-accurate `today` date-window semantics remain future P1 only if product wants `Today` to mean start-time date instead of the existing route status value.
+- Optional Android proof remains future work if visual proof becomes required again.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Event.status`, listed `Market`, and active `Outcome` rows support the Home filter route.
+
+Temporary mock/static data:
+
+- Mock/offline mode still filters local fixture events by status. Server-mode successful route pages are authoritative for the visible Home list.
+
 ## Cycle KS - Event Detail Line Options UI Wiring
 
 Closed or narrowed:
@@ -354,7 +376,7 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Dirty Home/Live UI files still need clean server-mode wiring to `loadHomeEventFeedPage()` after unrelated screen churn is reconciled.
+- Cycle KK wires the visible Live tab to `loadHomeEventFeedPage({ filter: "live" })`; Cycle KV wires visible Home filter chips to `loadHomeEventFeedPage({ filter: homeFilter })`.
 - A true calendar `today` route filter remains future work if product wants a date-window tab rather than status-based feeds.
 
 Schema mismatch:

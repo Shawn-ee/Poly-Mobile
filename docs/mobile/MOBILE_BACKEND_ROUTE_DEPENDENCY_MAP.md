@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KV - Home Filter UI Route Wiring
+
+Cycle KV wires the visible Home filter chips to the already-proven backend status-filter event route in server market-data mode:
+
+- Home filter UI proof: `docs/mobile/harness/cycle-KV-home-filter-ui-route-wiring/cycle-KV-home-filter-ui-route-wiring.json`.
+- Proof script: `scripts/prove_mobile_home_filter_ui_route_wiring.ts`.
+- Focused mobile tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/homeEventFeedService.test.ts`, and `mobile/src/__tests__/homePaginationService.test.ts`.
+- Focused backend tests: `src/__tests__/public.events.no-leak.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Home filtered event page | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&status=<home-filter>&limit=10` | GET | Public/mobile route | Query params only | `events[]`, compact `markets[]`, event `status`, `nextCursor`, `page.hasMore` | Existing `Event`, public listed `Market`, active `Outcome` rows | In mock/offline mode Home still filters local events by status. In server market-data mode backend filtered route pages drive the visible Home list. | Calendar-accurate `today` date-window semantics only if product later wants date-window filtering instead of status filtering. |
+| Visible Home load more for selected filter | Same `/api/events` route with `cursor=<event-id>` | GET | Public/mobile route | Cursor query param | Next filtered route page, cursor metadata, loading state | Same existing tables and cursor ordering as Home route contracts | Failed server loads fall back only through the service route-unavailable path; successful server pages are not locally replaced. | Optional Android proof if visual proof becomes required again. |
+
 ## Cycle KS - Event Detail Line Options UI Wiring
 
 Cycle KS wires the visible Event Detail/Game Lines line and period chips to the already-proven backend-backed line options service:
@@ -221,7 +235,7 @@ Cycle KE proves the combined Portfolio server sync service without editing dirty
 
 ## Cycle KD - Home Event Filter Contract
 
-Cycle KD adds a focused Home feed status-filter route contract without editing dirty Home/Live UI files:
+Cycle KD adds a focused Home feed status-filter route contract. Cycle KK wires Live UI to it, and Cycle KV wires visible Home filter chips to it:
 
 - Home filter proof: `docs/mobile/harness/cycle-KD-home-event-filter-contract/cycle-KD-home-event-filter-contract.json`.
 - Proof script: `scripts/prove_mobile_home_event_filter_contract.ts`.
@@ -230,7 +244,7 @@ Cycle KD adds a focused Home feed status-filter route contract without editing d
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Home filtered event feed | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&status=<status>&limit=<n>&cursor=<event-id>` | GET | Public/mobile route | Query params only | `events[]`, `events[].status`, compact `events[].markets[]`, `nextCursor`, `page.limit`, `page.nextCursor`, `page.hasMore` | Existing `Event`, listed public `Market`, active `Outcome` rows | `loadHomeEventFeedPage()` falls back to local status filtering only when the API client is absent or the route throws. | P1: wire dirty Home/Live UI files to this service in server mode. |
+| Home filtered event feed | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&status=<status>&limit=<n>&cursor=<event-id>` | GET | Public/mobile route | Query params only | `events[]`, `events[].status`, compact `events[].markets[]`, `nextCursor`, `page.limit`, `page.nextCursor`, `page.hasMore` | Existing `Event`, listed public `Market`, active `Outcome` rows | `loadHomeEventFeedPage()` falls back to local status filtering only when the API client is absent or the route throws. Server-mode visible Home wiring is covered by Cycle KV. | Calendar-accurate `today` date-window semantics only if product keeps a date-window tab. |
 | Home all-events feed | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=<n>&cursor=<event-id>` | GET | Public/mobile route | Query params only; no `status` for all-events feed | Same event page and compact market fields | Same existing tables; no schema migration | Successful route data is not replaced by frontend-invented rows. | P1: add calendar/date-window route filtering only if the product keeps a true `today` tab. |
 
 ## Cycle KC - Profile Summary Contract

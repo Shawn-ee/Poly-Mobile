@@ -4,8 +4,9 @@ import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { MarketList } from "./MarketLists";
 import type { WorldCupTab } from "./WorldCupSegmented";
 import { initialHomeMatchCount, nextHomeMatchCount } from "../services/homePaginationService";
+import type { HomeEventFeedFilter } from "../services/homeEventFeedService";
 
-type HomeFilter = "all" | "live" | "today";
+export type HomeFilter = Extract<HomeEventFeedFilter, "all" | "live" | "today">;
 
 type HomeScreenCopy = {
   games: string;
@@ -29,6 +30,8 @@ export function HomeScreen({
   events,
   openEvent,
   openTicket,
+  homeFilter,
+  setHomeFilter,
   canLoadMoreEvents,
   isLoadingMoreEvents = false,
   loadMoreEvents,
@@ -40,6 +43,8 @@ export function HomeScreen({
   events: Event[];
   openEvent: (event: Event) => void;
   openTicket: (market: Market, outcome: Outcome, event?: Event) => void;
+  homeFilter: HomeFilter;
+  setHomeFilter: (filter: HomeFilter) => void;
   canLoadMoreEvents?: boolean;
   isLoadingMoreEvents?: boolean;
   loadMoreEvents?: () => void;
@@ -47,7 +52,6 @@ export function HomeScreen({
   savedEventIds: Set<string>;
   toggleSavedEvent: (event: Event) => void;
 }) {
-  const [homeFilter, setHomeFilter] = useState<HomeFilter>("all");
   const [visibleMatchCount, setVisibleMatchCount] = useState(initialHomeMatchCount);
   useEffect(() => {
     setVisibleMatchCount(initialHomeMatchCount());
@@ -57,16 +61,18 @@ export function HomeScreen({
     ["live", t.searchLive],
     ["today", t.today],
   ];
+  const usesServerPaging = Boolean(loadMoreEvents);
   const visibleEvents = useMemo(
     () =>
-      homeFilter === "live"
-        ? events.filter((event) => event.status === "live")
-        : homeFilter === "today"
-          ? events.filter((event) => event.status === "today")
-          : events,
-    [events, homeFilter],
+      usesServerPaging
+        ? events
+        : homeFilter === "live"
+          ? events.filter((event) => event.status === "live")
+          : homeFilter === "today"
+            ? events.filter((event) => event.status === "today")
+            : events,
+    [events, homeFilter, usesServerPaging],
   );
-  const usesServerPaging = Boolean(loadMoreEvents);
   const pagedEvents = usesServerPaging ? visibleEvents : visibleEvents.slice(0, visibleMatchCount);
   const canLoadMore = usesServerPaging ? Boolean(canLoadMoreEvents) : visibleMatchCount < visibleEvents.length;
   const loadMoreMatches = () => {

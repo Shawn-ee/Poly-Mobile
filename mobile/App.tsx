@@ -10,7 +10,7 @@ import { BottomTabs } from "./src/components/BottomTabs";
 import { CashoutTicket } from "./src/components/CashoutTicket";
 import { EventDetail } from "./src/components/EventDetail";
 import { Header } from "./src/components/Header";
-import { HomeScreen } from "./src/components/HomeScreen";
+import { HomeScreen, type HomeFilter } from "./src/components/HomeScreen";
 import { LiveScreen } from "./src/components/LiveScreen";
 import {
   OpenOrder,
@@ -72,6 +72,12 @@ const SAVED_EVENTS_STORAGE_KEY = "holiwyn.savedEventIds.v1";
 const LANGUAGE_STORAGE_KEY = "holiwyn.language.v1";
 const PORTFOLIO_STORAGE_KEY = "holiwyn.portfolio.v1";
 const TICKET_DEFAULTS_STORAGE_KEY = "holiwyn.ticketDefaults.v1";
+
+const matchesHomeFilter = (event: Event, filter: HomeFilter) => {
+  if (filter === "all") return true;
+  return event.status === filter;
+};
+
 const SMOKE_OPEN_ORDER: OpenOrder = {
   id: "smoke-open-order",
   title: "Mexico vs. Ecuador winner",
@@ -317,6 +323,7 @@ export default function App() {
   const [localeHydrated, setLocaleHydrated] = useState(false);
   const [mainTab, setMainTab] = useState<MainTab>("home");
   const [worldCupTab, setWorldCupTab] = useState<WorldCupTab>("games");
+  const [homeFilter, setHomeFilter] = useState<HomeFilter>("all");
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [selectedDepthMarketId, setSelectedDepthMarketId] = useState<string | null>(null);
   const [eventDetailForcedSide, setEventDetailForcedSide] = useState<"buy" | "sell" | null>(null);
@@ -1018,13 +1025,28 @@ export default function App() {
 
   const loadBackendWorldCup = useCallback(async (cursor: string | null = null, append = false) => {
     try {
-      const payload = await api.listWorldCupEvents({ limit: HOME_EVENT_PAGE_SIZE, cursor });
-      const nextCursor = payload.nextCursor ?? payload.page?.nextCursor ?? null;
-      const summaryEvents = payload.events
+      const page = await loadHomeEventFeedPage({
+        api,
+        filter: homeFilter,
+        limit: HOME_EVENT_PAGE_SIZE,
+        cursor,
+      });
+      if (page.source === "local-fallback") {
+        const filteredFallbackEvents = worldCupEvents.filter((event) => matchesHomeFilter(event, homeFilter));
+        const start = cursor ? Math.max(0, filteredFallbackEvents.findIndex((event) => event.id === cursor) + 1) : 0;
+        const fallbackEvents = filteredFallbackEvents.slice(start, start + HOME_EVENT_PAGE_SIZE);
+        const nextCursor = filteredFallbackEvents[start + HOME_EVENT_PAGE_SIZE] ? fallbackEvents.at(-1)?.id ?? null : null;
+        if (mounted.current) {
+          setEvents((current) => append ? appendUniqueEvents(current, fallbackEvents) : fallbackEvents);
+          setEventNextCursor(nextCursor);
+        }
+        return;
+      }
+      const summaryEvents = page.events
         .map((event) => normalizeEventSummary(event, event.markets ?? []))
         .filter((event) => event.markets.length > 0);
       const details = await Promise.all(
-        payload.events
+        page.events
           .filter((event) => !event.markets?.length)
           .slice(0, Math.max(0, 8 - summaryEvents.length))
           .map(async (event) => {
@@ -1042,7 +1064,7 @@ export default function App() {
       if (mounted.current && normalized.length > 0) {
         if (ORDER_MODE !== "server") {
           setEvents((current) => append ? appendUniqueEvents(current, normalized) : normalized);
-          setEventNextCursor(nextCursor);
+          setEventNextCursor(page.nextCursor);
           return;
         }
         const quotedEvents = await Promise.all(
@@ -1053,7 +1075,7 @@ export default function App() {
         );
         if (mounted.current) {
           setEvents((current) => append ? appendUniqueEvents(current, quotedEvents) : quotedEvents);
-          setEventNextCursor(nextCursor);
+          setEventNextCursor(page.nextCursor);
         }
       }
     } catch {
@@ -1062,7 +1084,7 @@ export default function App() {
         setEventNextCursor(null);
       }
     }
-  }, [api]);
+  }, [api, homeFilter]);
 
   const loadMoreBackendEvents = useCallback(() => {
     if (MARKET_DATA_MODE !== "server" || !eventNextCursor || isLoadingMoreEvents) return;
@@ -1787,6 +1809,8 @@ export default function App() {
                 events={events}
                 openEvent={openEventDetail}
                 openTicket={openTicket}
+                homeFilter={homeFilter}
+                setHomeFilter={setHomeFilter}
                 canLoadMoreEvents={MARKET_DATA_MODE === "server" ? Boolean(eventNextCursor) : undefined}
                 isLoadingMoreEvents={isLoadingMoreEvents}
                 loadMoreEvents={MARKET_DATA_MODE === "server" ? loadMoreBackendEvents : undefined}
