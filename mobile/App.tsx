@@ -41,6 +41,7 @@ import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { resolvePositionTradeTarget } from "./src/services/positionTradeTargetService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
 import { loadProfileSummary, type AccountSummaryViewModel } from "./src/services/profileSummaryService";
+import { loadEventMarketCatalog } from "./src/services/eventMarketCatalogService";
 import { loadHomeEventFeedPage } from "./src/services/homeEventFeedService";
 import { loadSearchEventPage } from "./src/services/searchEventService";
 import { applyChartErrorToEvent, applyChartLoadingToEvent, applyChartStateToEvent, loadMarketChartState } from "./src/services/marketChartService";
@@ -1186,6 +1187,27 @@ export default function App() {
   useEffect(() => {
     setSelectedDepthMarketId(null);
   }, [selectedEvent?.id]);
+
+  const selectedEventMarketKey = selectedEvent?.markets.map((market) => market.id).join("|") ?? "";
+
+  useEffect(() => {
+    if (MARKET_DATA_MODE !== "server" || !selectedEvent) return undefined;
+    let cancelled = false;
+    const eventId = selectedEvent.id;
+    const fallbackMarkets = selectedEvent.markets;
+    loadEventMarketCatalog({ api, slug: eventId, fallbackMarkets })
+      .then((catalog) => {
+        if (cancelled || !mounted.current) return;
+        setSelectedEvent((current) => {
+          if (!current || current.id !== eventId) return current;
+          return { ...current, markets: catalog.markets };
+        });
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [api, selectedEvent?.id, selectedEventMarketKey]);
 
   const refreshLiveMarkets = useCallback(async () => {
     if (MARKET_DATA_MODE === "server") {

@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KN - Event Detail Catalog UI Wiring
+
+Closed or narrowed:
+
+- Visible Event Detail server mode now calls `loadEventMarketCatalog()` for the selected event.
+- Successful `/api/events/:slug/markets` catalog rows replace `selectedEvent.markets`, which drives Game Lines and line/period chips.
+- Successful empty catalog responses remain empty and are not replaced by frontend-invented rows.
+- Catalog updates are scoped to the currently selected event id.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Optional Android Game Lines catalog proof remains future work if visual proof becomes required again.
+- Production real-provider breadth remains under provider mapping/provider refresh lanes.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Event`, `Market.visibility`, `Market.isListed`, `marketType`, `period`, `line`, and `Outcome` fields support this catalog contract.
+
+Temporary mock/static data:
+
+- Route failure uses only explicit caller-provided fallback markets. Successful server catalog data is authoritative for visible Event Detail markets.
+
 ## Cycle KM - Event Detail UI Hydration Wiring
 
 Closed or narrowed:
@@ -12,7 +34,7 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Explicit visible Game Lines catalog refresh from `/api/events/:slug/markets` remains open under the Event market catalog lane.
+- Optional Android proof if visual proof becomes required again.
 - Production real-provider replay across more World Cup profiles remains under provider mapping/provider refresh lanes.
 
 Schema mismatch:
@@ -116,7 +138,7 @@ Closed or narrowed:
 
 Fields Holiwyn still needs but backend does not fully provide:
 
-- Dirty visible Event Detail UI files still need clean server-mode wiring to `loadEventMarketCatalog()` after unrelated screen churn is reconciled.
+- Cycle KN wires the catalog service to visible Event Detail/Game Lines in server mode.
 - Android proof that visible line chips refresh from the catalog route remains optional unless visual proof becomes required again.
 
 Schema mismatch:

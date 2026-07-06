@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KN - Event Detail Catalog UI Wiring
+
+Cycle KN wires visible Event Detail/Game Lines market rows to the backend market catalog route in server mode:
+
+- Event Detail catalog UI proof: `docs/mobile/harness/cycle-KN-event-detail-catalog-ui-wiring/cycle-KN-event-detail-catalog-ui-wiring.json`.
+- Proof script: `scripts/prove_mobile_event_detail_catalog_ui_wiring.ts`.
+- Focused mobile tests: `mobile/src/__tests__/api.test.ts`, `mobile/src/__tests__/eventMarketCatalogService.test.ts`, and `mobile/src/__tests__/marketLineOptionsService.test.ts`.
+- Focused backend tests: `src/__tests__/public.event-markets.no-leak.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Event Detail/Game Lines catalog | `/api/events/:slug/markets` | GET | Public/mobile route; auth header tolerated but not required | Event slug path param | `markets[]`, `marketType`, `marketGroupKey`, `marketGroupTitle`, `period`, `line`, `outcomes[]`, outcome price/bid/ask/tradability, provider ids when present | Existing `Event`, public listed `Market`, active `Outcome`, optional quote/read-model rows | Route failure uses only caller-provided selected-event fallback markets. Successful route responses, including empty arrays, replace visible `selectedEvent.markets`. | Optional Android proof if visual proof becomes required again; production real-provider breadth remains under provider lanes. |
+
 ## Cycle KM - Event Detail UI Hydration Wiring
 
 Cycle KM proves the visible Event Detail/Game page is wired to the compact backend event hydration path in server mode:
@@ -13,7 +26,7 @@ Cycle KM proves the visible Event Detail/Game page is wired to the compact backe
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Visible Event Detail hydration | `/api/mobile/events/:slug/live-detail` preferred, `/api/events/:slug` fallback | GET | Public/mobile route | Event slug path param | `event.marketProfile`, `event.resultMode`, `event.gameRules`, `event.supportedMarketTypes`, compact `markets[]`, market line/period/outcome metadata, status/time/team fields | Existing `Event`, public `Market`, active `Outcome`, optional quote/depth/chart read models | Mock/offline mode keeps the initially selected local event. Server mode swaps in compact route hydration only for the still-selected event id. | P1: explicit visible Game Lines catalog refresh from `/api/events/:slug/markets`; optional Android proof if visual proof becomes required again. |
+| Visible Event Detail hydration | `/api/mobile/events/:slug/live-detail` preferred, `/api/events/:slug` fallback | GET | Public/mobile route | Event slug path param | `event.marketProfile`, `event.resultMode`, `event.gameRules`, `event.supportedMarketTypes`, compact `markets[]`, market line/period/outcome metadata, status/time/team fields | Existing `Event`, public `Market`, active `Outcome`, optional quote/depth/chart read models | Mock/offline mode keeps the initially selected local event. Server mode swaps in compact route hydration only for the still-selected event id. | P1 optional Android proof if visual proof becomes required again. |
 
 ## Cycle KL - Account UI Summary Wiring
 
@@ -81,7 +94,7 @@ Cycle KH proves the Event Detail/Game Lines market catalog route/service contrac
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Event Detail/Game Lines market catalog | `/api/events/:slug/markets` | GET | Public/mobile route; auth header tolerated but not required | Event slug path param | `markets[]`, `marketType`, `marketGroupKey`, `marketGroupTitle`, `period`, `line`, `outcomes[]`, outcome price/bid/ask/tradability, provider ids when present | Existing `Event`, public listed `Market`, active `Outcome`, optional quote/read-model rows | `loadEventMarketCatalog()` falls back only to caller-provided local markets when route loading fails or no API is supplied. Successful route reads are authoritative, including empty market arrays. | P1: wire dirty Event Detail UI files to this service for explicit catalog refresh after screen churn is reconciled. |
+| Event Detail/Game Lines market catalog | `/api/events/:slug/markets` | GET | Public/mobile route; auth header tolerated but not required | Event slug path param | `markets[]`, `marketType`, `marketGroupKey`, `marketGroupTitle`, `period`, `line`, `outcomes[]`, outcome price/bid/ask/tradability, provider ids when present | Existing `Event`, public listed `Market`, active `Outcome`, optional quote/read-model rows | `loadEventMarketCatalog()` falls back only to caller-provided local markets when route loading fails or no API is supplied. Successful route reads are authoritative, including empty market arrays. | Cycle KN wires this to visible Event Detail/Game Lines in server mode; optional Android proof if visual proof becomes required again. |
 | Event Detail unsupported market filtering | Same `/api/events/:slug/markets` route | GET | Public route visibility filter | None | Only public/listed rows; private/unlisted rows must be absent | Existing `Market.visibility` and `Market.isListed` fields | No frontend fallback may re-add private/unlisted rows after a successful route read. | Optional Android proof that visible chips refresh from this route if visual proof becomes required again. |
 
 ## Cycle KG - Event Detail Hydration Contract
