@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KR - Portfolio Cancel UI Wiring
+
+Cycle KR proves the visible Portfolio cancel button is wired to the already-proven backend cancel route in server mode:
+
+- Portfolio cancel UI proof: `docs/mobile/harness/cycle-KR-portfolio-cancel-ui-wiring/cycle-KR-portfolio-cancel-ui-wiring.json`.
+- Proof script: `scripts/prove_mobile_portfolio_cancel_ui_wiring.ts`.
+- Focused mobile tests: `mobile/src/__tests__/api.test.ts` and `mobile/src/__tests__/openOrderService.test.ts`.
+- Focused backend tests: `src/__tests__/orders.cancel.route.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Portfolio open-order cancel | `/api/orders/:id` | DELETE | Canonical actor with `orders:write`; route scopes order lookup to actor user id | Order id path param only | Cancel response, then refreshed `/api/portfolio` open orders and `/api/portfolio/history` canceled activity | `Order`, `ApiCredential`, `ApiOrderRequest`, `UserBalance`, `Position`, `Market`, `Outcome` | Mock mode keeps local cancel behavior. Server mode calls `cancelOpenOrderOnServer()` -> `PolyApi.cancelOrder()` and refreshes Portfolio from backend state. | Broader provider-family cancel breadth remains future hardening if gates require it. |
+
 ## Cycle KQ - Trade Ticket Submit UI Wiring
 
 Cycle KQ proves the visible Trade Ticket submit control is wired to the already-proven backend order route in server mode:

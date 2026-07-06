@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KR - Portfolio Cancel UI Wiring
+
+Closed or narrowed:
+
+- Visible Portfolio open-order rows now have proof that `cancel-open-order-*` calls `cancelOpenOrder(order)`.
+- `cancelOpenOrder()` calls `cancelOpenOrderOnServer()` in server mode.
+- `cancelOpenOrderOnServer()` calls `PolyApi.cancelOrder()` and canonical `DELETE /api/orders/:id`.
+- Server-mode cancel refreshes Portfolio from backend state after successful cancel.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Broader provider-family cancel breadth remains future hardening if a later gate requires it.
+- Optional Android cancel proof remains future work if visual proof becomes required again.
+
+Schema mismatch:
+
+- No schema migration was made. Existing order/cancel route and Portfolio/history route models support the cancel UI path.
+
+Temporary mock/static data:
+
+- Mock mode keeps local cancel behavior. Server-mode route failure sets sync error instead of treating local optimistic removal as backend truth.
+
 ## Cycle KQ - Trade Ticket Submit UI Wiring
 
 Closed or narrowed:
