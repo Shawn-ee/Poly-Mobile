@@ -40,6 +40,7 @@ import { applyServerPortfolioState } from "./src/services/portfolioStateApplySer
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
 import { resolvePositionTradeTarget } from "./src/services/positionTradeTargetService";
 import { loadProfilePreferences, saveProfilePreferences } from "./src/services/profilePreferencesService";
+import { loadProfileSummary, type AccountSummaryViewModel } from "./src/services/profileSummaryService";
 import { loadHomeEventFeedPage } from "./src/services/homeEventFeedService";
 import { loadSearchEventPage } from "./src/services/searchEventService";
 import { applyChartErrorToEvent, applyChartLoadingToEvent, applyChartStateToEvent, loadMarketChartState } from "./src/services/marketChartService";
@@ -330,6 +331,7 @@ export default function App() {
   const [profilePreferencesSyncStatus, setProfilePreferencesSyncStatus] = useState<ProfilePreferencesSyncStatus>(
     ORDER_MODE === "server" && DEFAULT_API_KEY.length > 0 ? "syncing" : "hidden"
   );
+  const [accountSummary, setAccountSummary] = useState<AccountSummaryViewModel | null>(null);
   const [events, setEvents] = useState<Event[]>(worldCupEvents);
   const [searchEvents, setSearchEvents] = useState<Event[]>([]);
   const [searchNextCursor, setSearchNextCursor] = useState<string | null>(null);
@@ -366,6 +368,18 @@ export default function App() {
     () => openOrders.reduce((total, order) => total + openOrderValue(order), 0),
     [openOrders],
   );
+  const accountDisplayLocale = accountSummary?.locale ?? locale;
+  const accountDisplayBalance = accountSummary?.balance ?? balance;
+  const accountDisplayPortfolioValue = accountSummary?.portfolioValue ?? accountPortfolioValue;
+  const accountDisplayOpenOrderValue = accountSummary?.openOrderValue ?? accountOpenOrderValue;
+  const accountDisplayOpenPositionCount = accountSummary?.openPositionCount ?? positions.length;
+  const accountDisplayOpenOrderCount = accountSummary?.openOrderCount ?? openOrders.length;
+  const accountDisplayTotalExposure = accountSummary?.totalExposure ?? accountPortfolioValue + accountOpenOrderValue;
+  const accountDisplaySavedMarketCount = accountSummary?.savedMarketCount ?? savedEventIds.size;
+  const accountDisplayTicketDefaultAmount = accountSummary?.ticketDefaultAmount ?? ticketDefaults.amount;
+  const accountDisplayTicketDefaultSide = accountSummary?.ticketDefaultSide ?? ticketDefaults.side;
+  const accountDisplayTicketDefaultSlippage = accountSummary?.ticketDefaultSlippage ?? ticketDefaults.slippage;
+  const accountDisplayTradingMode = accountSummary?.tradingMode ?? ORDER_MODE;
 
   useEffect(() => {
     return () => {
@@ -513,6 +527,29 @@ export default function App() {
         if (mounted.current) setProfilePreferencesSyncStatus("error");
       });
   }, [api, locale, localeHydrated, savedEventIds, savedEventIdsHydrated, shouldSyncProfilePreferences, ticketDefaults, ticketDefaultsHydrated]);
+
+  useEffect(() => {
+    if (ORDER_MODE !== "server" || runtimeApiKey.length === 0 || mainTab !== "account") return undefined;
+    let cancelled = false;
+    setAccountSummary(null);
+    setProfilePreferencesSyncStatus("syncing");
+    loadProfileSummary(api)
+      .then((summary) => {
+        if (cancelled || !mounted.current) return;
+        setAccountSummary(summary);
+        setForceAccountSignedIn(true);
+        setProfilePreferencesSyncStatus("synced");
+      })
+      .catch(() => {
+        if (!cancelled && mounted.current) {
+          setAccountSummary(null);
+          setProfilePreferencesSyncStatus("error");
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [api, mainTab, runtimeApiKey]);
 
   const handleLaunchUrl = useCallback((url: string | null) => {
     if (!mounted.current || !url) return;
@@ -1642,20 +1679,20 @@ export default function App() {
             {mainTab === "account" && (
               <AccountScreen
                 t={t}
-                balance={balance}
+                balance={accountDisplayBalance}
                 forceSignedIn={forceAccountSignedIn}
-                languagePreferenceValue={locale === "en" ? "English" : "\u4e2d\u6587"}
-                ticketDefaultAmount={ticketDefaults.amount}
-                ticketDefaultSide={ticketDefaults.side}
-                ticketDefaultSlippage={ticketDefaults.slippage}
+                languagePreferenceValue={accountDisplayLocale === "en" ? "English" : "\u4e2d\u6587"}
+                ticketDefaultAmount={accountDisplayTicketDefaultAmount}
+                ticketDefaultSide={accountDisplayTicketDefaultSide}
+                ticketDefaultSlippage={accountDisplayTicketDefaultSlippage}
                 profileSyncStatus={profilePreferencesSyncStatus}
-                savedMarketCount={savedEventIds.size}
-                openPositionCount={positions.length}
-                openOrderCount={openOrders.length}
-                openOrderValue={accountOpenOrderValue}
-                totalExposure={accountPortfolioValue + accountOpenOrderValue}
-                portfolioValue={accountPortfolioValue}
-                tradingMode={ORDER_MODE}
+                savedMarketCount={accountDisplaySavedMarketCount}
+                openPositionCount={accountDisplayOpenPositionCount}
+                openOrderCount={accountDisplayOpenOrderCount}
+                openOrderValue={accountDisplayOpenOrderValue}
+                totalExposure={accountDisplayTotalExposure}
+                portfolioValue={accountDisplayPortfolioValue}
+                tradingMode={accountDisplayTradingMode}
               />
             )}
           </>

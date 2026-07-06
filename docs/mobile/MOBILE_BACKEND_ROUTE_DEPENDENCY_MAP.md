@@ -2,6 +2,19 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KL - Account UI Summary Wiring
+
+Cycle KL wires the visible Account screen to the already-proven profile summary route in server mode:
+
+- Account UI summary proof: `docs/mobile/harness/cycle-KL-account-ui-summary-wiring/cycle-KL-account-ui-summary-wiring.json`.
+- Proof script: `scripts/prove_mobile_account_ui_summary_wiring.ts`.
+- Focused mobile tests: `mobile/src/__tests__/api.test.ts` and `mobile/src/__tests__/profileSummaryService.test.ts`.
+- Focused backend tests: `src/__tests__/profile.summary.route.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Account summary | `/api/profile/summary` | GET | Canonical actor with `account:read`; route id `account:summary` | None | `profile`, `preferences`, `account.walletTotalUSDC`, `portfolioValue`, open position/order counts, open order value, total exposure, trading mode | Existing `User`, `UserBalance`, `Position`, `Order`, `UserProfilePreference` | Mock/offline mode keeps existing local Account props. Server route failure clears stale summary state and shows Account sync error. | Broader account/security/session/funding settings remain outside this focused MVP route-wiring cycle. |
+
 ## Cycle KK - Live UI Route Wiring
 
 Cycle KK wires the visible Live tab to the already-proven backend status-filter event route in server market-data mode:

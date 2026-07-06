@@ -2,6 +2,26 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KL - Account UI Summary Wiring
+
+Closed or narrowed:
+
+- Visible Account screen server mode now loads `loadProfileSummary()` when the Account tab is opened.
+- Successful `/api/profile/summary` values drive visible cash balance, portfolio value, open position/order counts, open order value, total exposure, trading mode, saved markets, locale label, and ticket default props.
+- Failed summary loads clear stale route summary state and use the existing Account sync error state.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Broader account/security/session/funding settings remain outside this MVP route-wiring cycle.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `User`, `UserBalance`, `Position`, `Order`, and `UserProfilePreference` rows support the summary route contract.
+
+Temporary mock/static data:
+
+- Local/demo Account props remain mock/offline fallback. Successful server summary values are authoritative for the visible Account summary props in server mode.
+
 ## Cycle KK - Live UI Route Wiring
 
 Closed or narrowed:
