@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KS - Event Detail Line Options UI Wiring
+
+Cycle KS wires the visible Event Detail/Game Lines line and period chips to the already-proven backend-backed line options service:
+
+- Event Detail line-options UI proof: `docs/mobile/harness/cycle-KS-event-detail-line-options-ui-wiring/cycle-KS-event-detail-line-options-ui-wiring.json`.
+- Proof script: `scripts/prove_mobile_event_detail_line_options_ui_wiring.ts`.
+- Focused mobile tests: `mobile/src/__tests__/marketLineOptionsService.test.ts`, `mobile/src/__tests__/eventMarketCatalogService.test.ts`, and `mobile/src/__tests__/api.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Visible Event Detail/Game Lines line chips | `/api/mobile/events/:slug/live-detail` and `/api/events/:slug/markets` through selected event `markets[]` | GET | Public/mobile routes; auth header tolerated but not required | Event slug path param | `markets[].marketType`, `markets[].period`, `markets[].line`, `markets[].outcomes[]`, selected market ids, outcome ids, and availability metadata | Existing `Event`, public listed `Market`, active `Outcome`, optional quote/read-model rows | Mock/offline mode uses whatever fixture markets are on the selected event. Server mode treats successful route/catalog `markets[]` as authoritative; missing backend lines do not create visible chips. | Optional Android proof if visual proof becomes required again; production real-provider breadth remains under provider lanes. |
+
 ## Cycle KR - Portfolio Cancel UI Wiring
 
 Cycle KR proves the visible Portfolio cancel button is wired to the already-proven backend cancel route in server mode:
@@ -162,7 +174,7 @@ Cycle KG proves the Event Detail hydration route/client contract without editing
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Event Detail compact hydration | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile route | Event slug path param | `event.marketProfile`, `event.resultMode`, `event.gameRules`, `event.supportedMarketTypes`, event status/time/team fields, compact `markets[]`, market `marketType/period/line`, outcome `side/label/referenceTokenId`, availability/depth/chart fields when present | Existing `Event`, public LIVE `Market`, active `Outcome`, optional `MarketOutcomeSnapshot`, orderbook snapshot read model | `PolyApi.getEvent()` only falls back to `/api/events/:slug` if compact live-detail fails. Successful compact payload is preferred. | P1: wire dirty Event Detail UI files to compact live-detail hydration after screen churn is reconciled. |
+| Event Detail compact hydration | `/api/mobile/events/:slug/live-detail` | GET | Public/mobile route | Event slug path param | `event.marketProfile`, `event.resultMode`, `event.gameRules`, `event.supportedMarketTypes`, event status/time/team fields, compact `markets[]`, market `marketType/period/line`, outcome `side/label/referenceTokenId`, availability/depth/chart fields when present | Existing `Event`, public LIVE `Market`, active `Outcome`, optional `MarketOutcomeSnapshot`, orderbook snapshot read model | `PolyApi.getEvent()` only falls back to `/api/events/:slug` if compact live-detail fails. Successful compact payload is preferred. | Cycle KM wires visible Event Detail hydration; production real-provider replay remains under provider lanes. |
 | Event Detail legacy fallback | `/api/events/:slug` | GET | Public route | Event slug path param | Full legacy event/market read model when compact route fails | Same existing event/market/outcome rows | Fallback exists for compatibility, not as preferred server-mode data. | Production real-provider replay remains under provider mapping/provider refresh lanes. |
 
 ## Cycle KF - Ticket Quote Route Contract
@@ -286,7 +298,7 @@ Cycle JX adds a focused mobile service contract for backend-backed line/period a
 
 | Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Game Lines line/period options | `/api/mobile/events/:slug/live-detail` and compact `events[].markets[]` | GET | Public/mobile route | Event slug or list query | `markets[].marketType`, `markets[].period`, `markets[].line`, `markets[].outcomes[]` | Existing `Market.marketType`, `Market.period`, `Market.line`, active `Outcome` rows | Service returns empty options when backend lacks a line/period. It does not invent choices. | P1: wire dirty Event Detail/Game Lines UI to the service and prove visible chips follow backend availability. |
+| Game Lines line/period options | `/api/mobile/events/:slug/live-detail` and compact `events[].markets[]` | GET | Public/mobile route | Event slug or list query | `markets[].marketType`, `markets[].period`, `markets[].line`, `markets[].outcomes[]` | Existing `Market.marketType`, `Market.period`, `Market.line`, active `Outcome` rows | Service returns empty options when backend lacks a line/period. It does not invent choices. | Cycle KS wires visible Event Detail/Game Lines chips to the service; optional Android proof remains only if visual proof becomes required again. |
 | Provider market type aliases | Same market payloads | GET | Public/mobile route | Event slug or list query | `marketType=total_goals/team_total_goals` mapped to totals/team-total families | Existing provider-ingested market rows | Alias handling only maps provided backend rows; it does not create rows. | P1: broader provider-backed family coverage when available. |
 
 ## Cycle JW - Portfolio Activity Mapper Contract

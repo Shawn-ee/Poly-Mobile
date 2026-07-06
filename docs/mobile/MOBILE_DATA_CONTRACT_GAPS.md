@@ -2,6 +2,29 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KS - Event Detail Line Options UI Wiring
+
+Closed or narrowed:
+
+- Visible Event Detail Spread/Totals period chips now come from `periodOptionsFor(event.markets, ...)`.
+- Visible Event Detail Spread/Totals line chips now come from `lineOptionsFor(event.markets, ...)`.
+- Selected backend line-market lookup now uses `matchingBackendLineMarket(event.markets, ...)` instead of a local duplicate matcher.
+- Static frontend line rails for Spread `0.5/1.5/2.5` and Totals `1.5/2.5/3.5` were removed from the committed component path.
+- Mobile event types now commit the event-level market-rule fields expected by backend-driven Event Detail hydration.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Optional Android line-chip proof remains future work if visual proof becomes required again.
+- Production real-provider breadth remains under provider mapping/provider refresh lanes.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Market.marketType`, `Market.period`, `Market.line`, and `Outcome` fields support the visible chip contract.
+
+Temporary mock/static data:
+
+- Mock/offline mode still uses fixture `event.markets`. Server-mode successful route/catalog data is authoritative for visible line/period options.
+
 ## Cycle KR - Portfolio Cancel UI Wiring
 
 Closed or narrowed:

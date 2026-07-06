@@ -8,6 +8,14 @@ import {
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { label, money } from "../presentation/formatters";
 import { resolveLineTicketTarget } from "../services/eventDetailLineTicketService";
+import {
+  lineOptionsFor,
+  linePeriods,
+  marketPeriodForLinePeriod,
+  matchingBackendLineMarket,
+  periodOptionsFor,
+  type LinePeriod,
+} from "../services/marketLineOptionsService";
 import type { Position } from "./Portfolio";
 import type { TicketSelection } from "./TradeTicket";
 
@@ -308,18 +316,13 @@ type GameLineGroup = {
   rows: DisplayOutcome[];
   lineValue?: string;
   lineOptions?: string[];
+  periodOptions?: LinePeriod[];
   selectedPeriod?: LinePeriod;
   onSelectPeriod?: (period: LinePeriod) => void;
   onSelectLine?: (line: string) => void;
 };
 
-type LinePeriod = "Reg. Time" | "1st Half" | "2nd Half";
-
-const linePeriods: LinePeriod[] = ["Reg. Time", "1st Half", "2nd Half"];
-
 const linePeriodCode = (period: LinePeriod) => period === "Reg. Time" ? "RT" : period === "1st Half" ? "1H" : "2H";
-const marketPeriodForLinePeriod = (period: LinePeriod): Market["period"] =>
-  period === "Reg. Time" ? "regulation" : period === "1st Half" ? "first-half" : "second-half";
 
 const boundedProbability = (value: number) => Math.max(1, Math.min(99, Math.round(value)));
 
@@ -598,18 +601,34 @@ export function EventDetail({
       miniLine: Math.max(18, rightOutcome.probability),
     }] : []),
   ];
-  const spreadLineOptions = ["0.5", "1.5", "2.5"];
-  const totalsLineOptions = ["1.5", "2.5", "3.5"];
+  const spreadPeriodOptions = periodOptionsFor(event.markets, "spread");
+  const totalsPeriodOptions = periodOptionsFor(event.markets, "totals");
+  const selectedSpreadPeriod = spreadPeriodOptions.includes(spreadPeriod) ? spreadPeriod : spreadPeriodOptions[0] ?? spreadPeriod;
+  const selectedTotalsPeriod = totalsPeriodOptions.includes(totalsPeriod) ? totalsPeriod : totalsPeriodOptions[0] ?? totalsPeriod;
+  const spreadLineOptions = lineOptionsFor(event.markets, "spread", selectedSpreadPeriod);
+  const totalsLineOptions = lineOptionsFor(event.markets, "totals", selectedTotalsPeriod);
+  const selectedSpreadLine = spreadLineOptions.includes(spreadLine) ? spreadLine : spreadLineOptions[0] ?? spreadLine;
+  const selectedTotalsLine = totalsLineOptions.includes(totalsLine) ? totalsLine : totalsLineOptions[0] ?? totalsLine;
+  const selectSpreadPeriod = (period: LinePeriod) => {
+    setSpreadPeriod(period);
+    const firstLine = lineOptionsFor(event.markets, "spread", period)[0];
+    if (firstLine) setSpreadLine(firstLine);
+  };
+  const selectTotalsPeriod = (period: LinePeriod) => {
+    setTotalsPeriod(period);
+    const firstLine = lineOptionsFor(event.markets, "totals", period)[0];
+    if (firstLine) setTotalsLine(firstLine);
+  };
   const homeCode = teamCode(teamA?.name ?? "Home");
   const spreadProbability = boundedProbability(
     34
-    - (spreadLine === "0.5" ? -14 : spreadLine === "2.5" ? 18 : 0)
-    - (spreadPeriod === "1st Half" ? 13 : spreadPeriod === "2nd Half" ? 5 : 0),
+    - (selectedSpreadLine === "0.5" ? -14 : selectedSpreadLine === "2.5" ? 18 : 0)
+    - (selectedSpreadPeriod === "1st Half" ? 13 : selectedSpreadPeriod === "2nd Half" ? 5 : 0),
   );
   const totalsOverProbability = boundedProbability(
     52
-    + (totalsLine === "1.5" ? 18 : totalsLine === "3.5" ? -17 : 0)
-    + (totalsPeriod === "1st Half" ? -20 : totalsPeriod === "2nd Half" ? -13 : 0),
+    + (selectedTotalsLine === "1.5" ? 18 : selectedTotalsLine === "3.5" ? -17 : 0)
+    + (selectedTotalsPeriod === "1st Half" ? -20 : selectedTotalsPeriod === "2nd Half" ? -13 : 0),
   );
   const makeLineMarket = (id: string, title: string, outcomes: Outcome[], marketType?: Market["marketType"], line?: string, period?: Market["period"]): Market => ({
     id,
@@ -621,29 +640,9 @@ export function EventDetail({
     period,
     outcomes,
   });
-  const lineAsNumber = (value: string | null | undefined) => {
-    const parsed = Number(value);
-    return Number.isFinite(parsed) ? parsed : null;
-  };
-  const matchingBackendLineMarket = (type: string, line: string, period: LinePeriod) => {
-    const target = Number(line);
-    if (!Number.isFinite(target)) return undefined;
-    const matchingTypes = type === "totals"
-      ? ["totals", "total_goals"]
-      : type === "team-total"
-        ? ["team-total", "team_total", "team_totals", "team_total_goals"]
-        : [type];
-    const targetPeriod = marketPeriodForLinePeriod(period);
-    const equivalentPeriod = (value?: Market["period"]) => value === "full-game" ? "regulation" : value;
-    return event.markets.find((market) =>
-      matchingTypes.includes(market.marketType ?? "") &&
-      Math.abs(lineAsNumber(market.line) ?? Number.NaN) === target &&
-      (!market.period || equivalentPeriod(market.period) === equivalentPeriod(targetPeriod))
-    );
-  };
-  const backendSpreadMarket = matchingBackendLineMarket("spread", spreadLine, spreadPeriod);
-  const backendTotalsMarket = matchingBackendLineMarket("totals", totalsLine, totalsPeriod);
-  const backendTeamTotalMarket = matchingBackendLineMarket("team-total", "1.5", "Reg. Time");
+  const backendSpreadMarket = matchingBackendLineMarket(event.markets, "spread", selectedSpreadLine, selectedSpreadPeriod);
+  const backendTotalsMarket = matchingBackendLineMarket(event.markets, "totals", selectedTotalsLine, selectedTotalsPeriod);
+  const backendTeamTotalMarket = matchingBackendLineMarket(event.markets, "team-total", "1.5", "Reg. Time");
   const matchingBackendPeriodWinnerMarket = (period: Market["period"]) =>
     event.markets.find((market) =>
       market.period === period &&
@@ -651,10 +650,10 @@ export function EventDetail({
       market.outcomes.length > 0);
   const backendFirstHalfMarket = matchingBackendPeriodWinnerMarket("first-half");
   const backendSecondHalfMarket = matchingBackendPeriodWinnerMarket("second-half");
-  const spreadMarket = makeLineMarket(`${event.id}-spread-${spreadLine}-${linePeriodCode(spreadPeriod)}`, `Spread ${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`, [], "spread", spreadLine, marketPeriodForLinePeriod(spreadPeriod));
+  const spreadMarket = makeLineMarket(`${event.id}-spread-${selectedSpreadLine}-${linePeriodCode(selectedSpreadPeriod)}`, `Spread ${homeCode} -${selectedSpreadLine} ${linePeriodCode(selectedSpreadPeriod)}`, [], "spread", selectedSpreadLine, marketPeriodForLinePeriod(selectedSpreadPeriod));
   const spreadYesOutcome = withLineOutcome({
     id: `${spreadMarket.id}-yes`,
-    label: `${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`,
+    label: `${homeCode} -${selectedSpreadLine} ${linePeriodCode(selectedSpreadPeriod)}`,
     probability: spreadProbability,
     bestBid: Math.max(spreadProbability - 3, 1),
     bestAsk: Math.min(spreadProbability + 4, 99),
@@ -662,7 +661,7 @@ export function EventDetail({
   });
   const spreadNoOutcome = withLineOutcome({
     id: `${spreadMarket.id}-no`,
-    label: `No ${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`,
+    label: `No ${homeCode} -${selectedSpreadLine} ${linePeriodCode(selectedSpreadPeriod)}`,
     probability: boundedProbability(100 - spreadProbability),
     bestBid: Math.max(100 - spreadProbability - 3, 1),
     bestAsk: Math.min(100 - spreadProbability + 4, 99),
@@ -672,14 +671,14 @@ export function EventDetail({
   const spreadRows: DisplayOutcome[] = [
     {
       id: "spread-yes",
-      label: `Yes, ${homeCode} -${spreadLine}`,
+      label: `Yes, ${homeCode} -${selectedSpreadLine}`,
       color: leftOutcome?.color ?? "#22c55e",
       probability: spreadYesOutcome.probability,
       odds: `${outcomeOdds(spreadYesOutcome)}x`,
       icon: "Y",
       miniLine: spreadYesOutcome.probability,
       ticketOutcome: spreadYesOutcome,
-      ticketSelection: { marketType: "spread", line: spreadLine, period: spreadPeriod, displayLabel: `${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}` },
+      ticketSelection: { marketType: "spread", line: selectedSpreadLine, period: selectedSpreadPeriod, displayLabel: `${homeCode} -${selectedSpreadLine} ${linePeriodCode(selectedSpreadPeriod)}` },
     },
     {
       id: "spread-no",
@@ -690,13 +689,13 @@ export function EventDetail({
       icon: "N",
       miniLine: spreadNoOutcome.probability,
       ticketOutcome: spreadNoOutcome,
-      ticketSelection: { marketType: "spread", line: spreadLine, period: spreadPeriod, displayLabel: `No ${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}` },
+      ticketSelection: { marketType: "spread", line: selectedSpreadLine, period: selectedSpreadPeriod, displayLabel: `No ${homeCode} -${selectedSpreadLine} ${linePeriodCode(selectedSpreadPeriod)}` },
     },
   ];
-  const totalsMarket = makeLineMarket(`${event.id}-totals-${totalsLine}-${linePeriodCode(totalsPeriod)}`, `Totals ${totalsLine} ${linePeriodCode(totalsPeriod)}`, [], "totals", totalsLine, marketPeriodForLinePeriod(totalsPeriod));
+  const totalsMarket = makeLineMarket(`${event.id}-totals-${selectedTotalsLine}-${linePeriodCode(selectedTotalsPeriod)}`, `Totals ${selectedTotalsLine} ${linePeriodCode(selectedTotalsPeriod)}`, [], "totals", selectedTotalsLine, marketPeriodForLinePeriod(selectedTotalsPeriod));
   const totalsOverOutcome = withLineOutcome({
     id: `${totalsMarket.id}-over`,
-    label: `Over ${totalsLine} ${linePeriodCode(totalsPeriod)}`,
+    label: `Over ${selectedTotalsLine} ${linePeriodCode(selectedTotalsPeriod)}`,
     probability: totalsOverProbability,
     bestBid: Math.max(totalsOverProbability - 3, 1),
     bestAsk: Math.min(totalsOverProbability + 4, 99),
@@ -704,7 +703,7 @@ export function EventDetail({
   });
   const totalsUnderOutcome = withLineOutcome({
     id: `${totalsMarket.id}-under`,
-    label: `Under ${totalsLine} ${linePeriodCode(totalsPeriod)}`,
+    label: `Under ${selectedTotalsLine} ${linePeriodCode(selectedTotalsPeriod)}`,
     probability: boundedProbability(100 - totalsOverProbability),
     bestBid: Math.max(100 - totalsOverProbability - 3, 1),
     bestAsk: Math.min(100 - totalsOverProbability + 4, 99),
@@ -737,9 +736,9 @@ export function EventDetail({
       ? backendTotalsMarket ?? primaryMarket
       : primaryMarket;
   const selectedChartContractLabel = selectedChartContract === "spread"
-    ? `${homeCode} -${spreadLine} ${linePeriodCode(spreadPeriod)}`
+    ? `${homeCode} -${selectedSpreadLine} ${linePeriodCode(selectedSpreadPeriod)}`
     : selectedChartContract === "totals"
-      ? `O/U ${totalsLine} ${linePeriodCode(totalsPeriod)}`
+      ? `O/U ${selectedTotalsLine} ${linePeriodCode(selectedTotalsPeriod)}`
       : (selectedChartOutcome ? label(locale, selectedChartOutcome) : "Moneyline");
   const selectedChartTicketOutcome = selectedChartContract === "spread"
     ? backendSpreadMarket?.outcomes[0] ?? spreadYesOutcome
@@ -749,11 +748,11 @@ export function EventDetail({
   const selectedChartTicketSelection: TicketSelection | undefined = selectedChartContract === "spread"
     ? backendSpreadMarket && backendSpreadMarket.outcomes[0]
       ? orderBookTicketSelection(backendSpreadMarket, backendSpreadMarket.outcomes[0], 0, label(locale, backendSpreadMarket))
-      : { marketType: "spread", line: spreadLine, period: spreadPeriod, displayLabel: selectedChartContractLabel }
+      : { marketType: "spread", line: selectedSpreadLine, period: selectedSpreadPeriod, displayLabel: selectedChartContractLabel }
     : selectedChartContract === "totals"
       ? backendTotalsMarket && backendTotalsMarket.outcomes[0]
         ? orderBookTicketSelection(backendTotalsMarket, backendTotalsMarket.outcomes[0], 0, label(locale, backendTotalsMarket))
-        : { marketType: "totals", line: totalsLine, period: totalsPeriod, displayLabel: selectedChartContractLabel }
+        : { marketType: "totals", line: selectedTotalsLine, period: selectedTotalsPeriod, displayLabel: selectedChartContractLabel }
       : selectedChartOutcome && primaryMarket
         ? orderBookTicketSelection(primaryMarket, selectedChartOutcome, primaryMarket.outcomes.findIndex((outcome) => outcome.id === selectedChartOutcome.id), "Match winner")
         : undefined;
@@ -771,35 +770,36 @@ export function EventDetail({
     {
       id: "totals",
       title: "Totals",
-      subtitle: `Total goals over ${totalsLine}`,
+      subtitle: `Total goals over ${selectedTotalsLine}`,
       backendMarket: backendTotalsMarket,
-      lineValue: totalsLine,
-      lineOptions: totalsLineOptions,
-      selectedPeriod: totalsPeriod,
-      onSelectPeriod: setTotalsPeriod,
+      lineValue: selectedTotalsLine,
+      lineOptions: totalsLineOptions.length > 1 ? totalsLineOptions : undefined,
+      periodOptions: totalsPeriodOptions,
+      selectedPeriod: totalsPeriodOptions.length > 1 ? selectedTotalsPeriod : undefined,
+      onSelectPeriod: totalsPeriodOptions.length > 1 ? selectTotalsPeriod : undefined,
       onSelectLine: setTotalsLine,
       rows: [
         {
           id: "totals-over",
-          label: `Over ${totalsLine}`,
+          label: `Over ${selectedTotalsLine}`,
           color: "#22c55e",
           probability: totalsOverOutcome.probability,
           odds: `${outcomeOdds(totalsOverOutcome)}x`,
           icon: "O",
           miniLine: totalsOverOutcome.probability,
           ticketOutcome: totalsOverOutcome,
-          ticketSelection: { marketType: "totals", line: totalsLine, period: totalsPeriod, displayLabel: `Over ${totalsLine} ${linePeriodCode(totalsPeriod)}` },
+          ticketSelection: { marketType: "totals", line: selectedTotalsLine, period: selectedTotalsPeriod, displayLabel: `Over ${selectedTotalsLine} ${linePeriodCode(selectedTotalsPeriod)}` },
         },
         {
           id: "totals-under",
-          label: `Under ${totalsLine}`,
+          label: `Under ${selectedTotalsLine}`,
           color: "#64748b",
           probability: totalsUnderOutcome.probability,
           odds: `${outcomeOdds(totalsUnderOutcome)}x`,
           icon: "U",
           miniLine: totalsUnderOutcome.probability,
           ticketOutcome: totalsUnderOutcome,
-          ticketSelection: { marketType: "totals", line: totalsLine, period: totalsPeriod, displayLabel: `Under ${totalsLine} ${linePeriodCode(totalsPeriod)}` },
+          ticketSelection: { marketType: "totals", line: selectedTotalsLine, period: selectedTotalsPeriod, displayLabel: `Under ${selectedTotalsLine} ${linePeriodCode(selectedTotalsPeriod)}` },
         },
       ],
     },
@@ -1466,7 +1466,7 @@ export function EventDetail({
         <>
           {group.selectedPeriod && group.onSelectPeriod && (
             <View style={styles.subSegmentRow}>
-              {linePeriods.map((period) => (
+              {(group.periodOptions ?? linePeriods).map((period) => (
                 <Pressable
                   accessibilityLabel={`event-detail-${group.id}-period-${period} chart-contract-${group.id} ${group.selectedPeriod === period ? "selected-line-period" : "inactive-line-period"}`}
                   key={period}
@@ -2124,16 +2124,17 @@ export function EventDetail({
                 )}
               </View>
             )}
+            {backendSpreadMarket && (
             <View style={styles.marketBlock}>
               <Pressable
-                accessibilityLabel={`event-detail-market-toggle-spread Spread ${homeCode} to win by over ${spreadLine} goals ${spreadLine}`}
+                accessibilityLabel={`event-detail-market-toggle-spread Spread ${homeCode} to win by over ${selectedSpreadLine} goals ${selectedSpreadLine}`}
                 onPress={() => toggleGroup("spread")}
                 style={styles.marketHeaderRow}
                 testID="event-detail-market-toggle-spread"
               >
                 <View style={styles.marketTitleBlock}>
                   <Text style={styles.marketTitle}>Spread</Text>
-                  <Text style={styles.marketSubcopy}>{homeCode} to win by over {spreadLine} goals</Text>
+                  <Text style={styles.marketSubcopy}>{homeCode} to win by over {selectedSpreadLine} goals</Text>
                 </View>
                 <View style={styles.headerRightCluster}>
                   {backendSpreadMarket?.availability && (
@@ -2157,7 +2158,7 @@ export function EventDetail({
                     </Pressable>
                   )}
                   <View style={styles.lineValuePill}>
-                    <Text style={styles.lineValueText}>{spreadLine}</Text>
+                    <Text style={styles.lineValueText}>{selectedSpreadLine}</Text>
                     <Ionicons name="chevron-down" color="#86efac" size={16} />
                   </View>
                   <Ionicons name={expandedMarketIds.spread ? "chevron-up" : "chevron-down"} color="#9ca3af" size={26} />
@@ -2166,34 +2167,34 @@ export function EventDetail({
               {expandedMarketIds.spread && (
                 <>
                   <View style={styles.subSegmentRow}>
-                    {linePeriods.map((period) => (
+                    {spreadPeriodOptions.map((period) => (
                       <Pressable
-                        accessibilityLabel={`event-detail-spread-period-${period} chart-contract-spread ${spreadPeriod === period ? "selected-line-period" : "inactive-line-period"}`}
+                        accessibilityLabel={`event-detail-spread-period-${period} chart-contract-spread ${selectedSpreadPeriod === period ? "selected-line-period" : "inactive-line-period"}`}
                         key={period}
                         onPress={() => {
                           setSelectedChartContract("spread");
-                          setSpreadPeriod(period);
+                          selectSpreadPeriod(period);
                         }}
-                        style={[styles.subSegment, spreadPeriod === period && styles.subSegmentActive]}
+                        style={[styles.subSegment, selectedSpreadPeriod === period && styles.subSegmentActive]}
                         testID={`event-detail-spread-period-${period.replace(/[^A-Za-z0-9]/g, "-").toLowerCase()}`}
                       >
-                        <Text style={[styles.subSegmentText, spreadPeriod === period && styles.subSegmentTextActive]}>{period}</Text>
+                        <Text style={[styles.subSegmentText, selectedSpreadPeriod === period && styles.subSegmentTextActive]}>{period}</Text>
                       </Pressable>
                     ))}
                   </View>
                   <View style={styles.lineRailRow}>
                     {spreadLineOptions.map((line) => (
                       <Pressable
-                        accessibilityLabel={`event-detail-spread-line-${line} chart-contract-spread ${spreadLine === line ? "selected-line-value" : "inactive-line-value"}`}
+                        accessibilityLabel={`event-detail-spread-line-${line} chart-contract-spread ${selectedSpreadLine === line ? "selected-line-value" : "inactive-line-value"}`}
                         key={line}
                         onPress={() => {
                           setSelectedChartContract("spread");
                           setSpreadLine(line);
                         }}
-                        style={[styles.lineRailOption, spreadLine === line && styles.lineRailOptionActive]}
+                        style={[styles.lineRailOption, selectedSpreadLine === line && styles.lineRailOptionActive]}
                         testID={`event-detail-spread-line-${line.replace(".", "-")}`}
                       >
-                        <Text style={[styles.lineRailText, spreadLine === line && styles.lineRailTextActive]}>{line}</Text>
+                        <Text style={[styles.lineRailText, selectedSpreadLine === line && styles.lineRailTextActive]}>{line}</Text>
                       </Pressable>
                     ))}
                   </View>
@@ -2201,6 +2202,7 @@ export function EventDetail({
                 </>
               )}
             </View>
+            )}
             {gameLineGroups.map((group) => renderGroup(group))}
           </View>
         )}

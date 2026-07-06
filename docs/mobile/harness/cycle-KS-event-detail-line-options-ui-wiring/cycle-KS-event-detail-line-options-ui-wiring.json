@@ -1,0 +1,21 @@
+{
+  "cycle": "KS",
+  "scope": "event-detail-line-options-ui-wiring",
+  "generatedAt": "2026-07-06T17:50:25.070Z",
+  "pass": true,
+  "checks": {
+    "importsLineOptionService": true,
+    "noStaticSpreadLineRail": true,
+    "noStaticTotalsLineRail": true,
+    "noLocalBackendLineMatcher": true,
+    "spreadOptionsFromBackendMarkets": true,
+    "totalsOptionsFromBackendMarkets": true,
+    "visiblePeriodChipsUseBackendAvailability": true,
+    "spreadBlockRequiresBackendMarket": true
+  },
+  "evidence": {
+    "eventDetail": "mobile/src/components/EventDetail.tsx",
+    "service": "mobile/src/services/marketLineOptionsService.ts",
+    "routeData": "/api/mobile/events/:slug/live-detail and /api/events/:slug/markets compact markets[]"
+  }
+}
