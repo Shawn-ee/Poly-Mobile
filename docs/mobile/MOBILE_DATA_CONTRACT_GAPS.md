@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle KF - Ticket Quote Route Contract
+
+Closed or narrowed:
+
+- Mobile `loadTicketQuotes()` now has focused route proof through `/api/markets/:id/quote?outcomeId=...`.
+- The KF proof verifies backend best bid, best ask, top-of-book sizes, midpoint probability, and last trade price are mapped into ticket quote fields.
+- The backend route test verifies market/outcome params reach `getCanonicalMarketQuote()`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Dirty visible Trade Ticket/Event Detail quote refresh behavior still needs clean server-mode wiring after unrelated UI churn is reconciled.
+- Production provider quote breadth remains covered by provider mapping/provider refresh lanes, not by this disposable local-orderbook proof.
+
+Schema mismatch:
+
+- No schema migration was made. Existing `Market`, `Outcome`, `Order`, and `Fill` rows support this quote route contract.
+
+Temporary mock/static data:
+
+- Local/static probabilities remain available only when quote loading is unavailable or not wired. Successful backend quote responses are mapped into ticket quote fields and should not be overwritten by frontend guesses.
+
 ## Cycle KE - Portfolio Sync Route Contract
 
 Closed or narrowed:

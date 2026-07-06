@@ -2,6 +2,20 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle KF - Ticket Quote Route Contract
+
+Cycle KF proves the mobile ticket quote service route dependency without editing dirty Trade Ticket/Event Detail UI files:
+
+- Ticket quote proof: `docs/mobile/harness/cycle-KF-ticket-quote-route-contract/cycle-KF-ticket-quote-route-contract.json`.
+- Proof script: `scripts/prove_mobile_ticket_quote_route_contract.ts`.
+- Focused mobile tests: `mobile/src/__tests__/quoteService.test.ts` and `mobile/src/__tests__/api.test.ts`.
+- Focused backend tests: `src/__tests__/market.quote.route.test.ts` and `src/__tests__/orderbook-pricing.quote-size.test.ts`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Ticket quote load | `/api/markets/:id/quote?outcomeId=<outcome-id>` | GET | Public market visibility; optional session user for private visibility guard | None | `quotes[].outcomeId`, `outcomeName`, `bestBid`, `bestAsk`, `bestBidSize`, `bestAskSize`, `midPrice`, `lastPrice` | Existing `Market`, `Outcome`, `Order`, `Fill`, public orderbook snapshot read model | Existing local outcome probabilities remain only when quote loading is not wired or a market quote call fails. Successful quote data is mapped by `loadTicketQuotes()`. | P1: wire dirty visible Trade Ticket/Event Detail quote refresh behavior after screen churn is reconciled. |
+| Multi-outcome market quote refresh | `/api/markets/:id/quote` | GET | Same market visibility | None | All active outcome quotes for the market | Same existing tables; no schema migration | `loadMarketQuotesById()` skips failed markets instead of inventing successful quote rows. | Production provider quote breadth remains in provider mapping/provider refresh lanes. |
+
 ## Cycle KE - Portfolio Sync Route Contract
 
 Cycle KE proves the combined Portfolio server sync service without editing dirty Portfolio UI files:
