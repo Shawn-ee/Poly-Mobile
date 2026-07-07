@@ -171,11 +171,12 @@ const orderBookMarketType = (market: Market): TicketSelection["marketType"] => {
   return "winner";
 };
 
-const orderBookOutcomeSide = (market: Market, outcome: Outcome, index: number): "yes" | "no" => (
-  outcome.side === "no" || label("en", outcome).toLowerCase().startsWith("no") || (market.outcomes.length === 2 && index === 1)
+const orderBookOutcomeSide = (market: Market, outcome: Outcome, index: number): "yes" | "no" => {
+  if (outcome.side === "yes" || outcome.side === "no") return outcome.side;
+  return label("en", outcome).toLowerCase().startsWith("no") || (market.outcomes.length === 2 && index === 1)
     ? "no"
-    : "yes"
-);
+    : "yes";
+};
 
 const orderBookTicketSelection = (market: Market, outcome: Outcome, outcomeIndex: number, displayLabel: string): TicketSelection => ({
   marketType: orderBookMarketType(market),
@@ -637,7 +638,7 @@ export function EventDetail({
     icon: event.teams.find((team) => team.name === outcome.label)?.flag ?? "",
     miniLine: outcome.probability,
     ticketOutcome: outcome,
-    ticketSelection: orderBookTicketSelection(market, outcome, index, "Outrights"),
+    ticketSelection: orderBookTicketSelection(market, outcome, market.outcomes.findIndex((item) => item.id === outcome.id), "Outrights"),
     market,
     outcome,
   }));

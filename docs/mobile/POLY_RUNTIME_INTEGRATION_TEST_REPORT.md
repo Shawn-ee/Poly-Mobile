@@ -193,6 +193,14 @@ S23 Home after normalization:
 - outcome rail marker `home-card-outright-market` visible
 - visible provider outcomes included Argentina, France, England, Spain, plus additional provider outcomes such as Belgium/Norway/Morocco
 
+S23 Event Detail after provider breadth:
+
+- `Ballon d'Or Winner 2026` visible as a normalized backend/provider event.
+- `Outrights` visible with provider-backed Kylian Mbappe and Erling Haaland rows.
+- The S23 accessibility contract now shows both Ballon provider `Yes` outcomes as `selection-contract-side-yes`.
+- This fixes the mobile-only contract-side mismatch where the second flattened outright row could be treated as contract `No`.
+- Screenshot proof is intentionally kept out of git: `.runtime/s23-ballon-detail-contract-side-fixed.png`.
+
 S23 Portfolio:
 
 - same local backend account showed `Will England win the 2026 FIFA World Cup?`
@@ -274,7 +282,7 @@ Ready for server deployment rehearsal: no.
 
 Ready for production/public launch: no.
 
-Reason: local backend, normalized provider ingestion, mobile server-mode feed, reference snapshots, shifted bot dry-run, fake-token order/portfolio state, cashout/sell safety tests, cancel tests, and S23 Home/Portfolio proof passed. Server deployment and production still need broader provider coverage, environment hardening, credential/output sanitization, monitoring, and public-money safety review.
+Reason: local backend, normalized provider ingestion, mobile server-mode feed, reference snapshots, shifted bot dry-run, fake-token order/portfolio state, cashout/sell safety tests, cancel tests, and S23 Home/Event Detail/Portfolio proof passed. Server deployment and production still need broader provider coverage, environment hardening, credential/output sanitization, monitoring, and public-money safety review.
 
 ## Next Recommended Loop
 
