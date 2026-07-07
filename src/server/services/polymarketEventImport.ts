@@ -1,6 +1,9 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { upsertPolymarketReferenceMarket } from "@/server/services/polymarketReferenceImport";
+import {
+  buildImportedReferenceMetadata,
+  upsertPolymarketReferenceMarket,
+} from "@/server/services/polymarketReferenceImport";
 
 const GAMMA_BASE_URL = "https://gamma-api.polymarket.com";
 
@@ -403,7 +406,7 @@ function buildEventMetadata(event: PolymarketGroupedEvent): Prisma.InputJsonValu
   };
 }
 
-function buildListedReferenceMetadata(params: {
+export function buildListedReferenceMetadata(params: {
   current: Prisma.JsonValue | null;
   teamLabel: string;
 }): Prisma.InputJsonValue {
@@ -411,15 +414,14 @@ function buildListedReferenceMetadata(params: {
     params.current && typeof params.current === "object" && !Array.isArray(params.current)
       ? (params.current as Record<string, unknown>)
       : {};
-  return {
-    ...current,
+  return buildImportedReferenceMetadata(current as Prisma.JsonValue, {
     group: {
       ...(current.group && typeof current.group === "object" && !Array.isArray(current.group)
         ? (current.group as Record<string, unknown>)
         : {}),
       outcomeLabel: params.teamLabel,
     },
-  };
+  });
 }
 
 function deriveLocalEventSlug(event: PolymarketGroupedEvent) {
