@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db";
 
 export type PolymarketImportOutcomeInput = {
   name: string;
+  label?: string | null;
+  side?: string | null;
   displayOrder?: number | null;
   isTradable?: boolean | null;
   referenceTokenId?: string | null;
@@ -79,7 +81,7 @@ type ReferenceReviewMetadata = {
 
 export async function upsertPolymarketReferenceMarket(
   input: PolymarketImportRequest,
-  actorUserId: string,
+  actorUserId: string | null,
 ): Promise<PolymarketImportResult> {
   const createEvents = input.createEvents !== false;
   const marketType = normalizeMarketType(input.market.type, input.market.outcomes.length);
@@ -214,6 +216,8 @@ export async function upsertPolymarketReferenceMarket(
       select: {
         id: true,
         name: true,
+        label: true,
+        side: true,
         slug: true,
         referenceTokenId: true,
         referenceOutcomeLabel: true,
@@ -230,7 +234,9 @@ export async function upsertPolymarketReferenceMarket(
         const updated = await tx.outcome.update({
           where: { id: existingOutcome.id },
           data: {
-            name: existingOutcome.name,
+            name: localName,
+            label: outcomeInput.label ?? existingOutcome.label ?? localName,
+            side: outcomeInput.side ?? existingOutcome.side,
             displayOrder: outcomeInput.displayOrder ?? index,
             isTradable: outcomeInput.isTradable ?? false,
             referenceTokenId: outcomeInput.referenceTokenId ?? null,
@@ -246,6 +252,8 @@ export async function upsertPolymarketReferenceMarket(
           data: {
             marketId: market.id,
             name: localName,
+            label: outcomeInput.label ?? localName,
+            side: outcomeInput.side ?? null,
             slug: outcomeSlug,
             displayOrder: outcomeInput.displayOrder ?? index,
             isTradable: outcomeInput.isTradable ?? false,
@@ -401,6 +409,8 @@ function findExistingOutcome(
   outcomes: Array<{
     id: string;
     name: string;
+    label: string | null;
+    side: string | null;
     slug: string | null;
     referenceTokenId: string | null;
     referenceOutcomeLabel: string | null;

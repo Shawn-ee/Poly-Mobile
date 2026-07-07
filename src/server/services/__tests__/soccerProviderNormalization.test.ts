@@ -51,6 +51,34 @@ describe("soccer provider normalization", () => {
     expect(market.rules).toMatchObject({ template: "SOCCER_OUTRIGHT_WINNER" });
   });
 
+  test("normalizes soccer award winner events as outright futures without pretending they are World Cup", () => {
+    const event = normalizePolymarketSoccerEvent({
+      externalSlug: "ballon-dor-winner-2026",
+      title: "Ballon d'Or Winner 2026",
+      tags: ["Soccer"],
+    });
+    const market = normalizePolymarketSoccerMarket(event, {
+      question: "Will Kylian Mbappé win the 2026 Ballon d'Or?",
+      slug: "will-kylian-mbapp-win-the-2026-ballon-dor",
+      outcomes: ["Yes", "No"],
+    }, "Kylian Mbappé");
+
+    expect(event).toMatchObject({
+      sportKey: "soccer",
+      leagueKey: "soccer_awards",
+      eventType: "future",
+      marketProfile: "outright",
+      resultMode: "one_winner",
+      homeTeamName: "Ballon d'Or Winner 2026",
+      awayTeamName: "Winner",
+    });
+    expect(market).toMatchObject({
+      marketType: "outright",
+      participantType: "player",
+      participantName: "Kylian Mbappé",
+    });
+  });
+
   test("normalizes regulation match events as draw-allowed by default", () => {
     const event = normalizePolymarketSoccerEvent({
       externalSlug: "mexico-vs-england",

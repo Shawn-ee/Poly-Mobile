@@ -1,8 +1,13 @@
 import { describe, expect, test } from "vitest";
 import {
+  buildNormalizedPolymarketOutcomes,
   buildListedReferenceMetadata,
   derivePolymarketLocalEventSlug,
 } from "@/server/services/polymarketEventImport";
+import {
+  normalizePolymarketSoccerEvent,
+  normalizePolymarketSoccerMarket,
+} from "@/server/services/soccerProviderNormalization";
 
 describe("polymarket grouped event import metadata", () => {
   test("maps current World Cup Winner provider slug to the mobile event slug", () => {
@@ -44,5 +49,41 @@ describe("polymarket grouped event import metadata", () => {
     expect(metadata.mmEnabled).toBe(true);
     expect(metadata.reviewedBy).toBe("admin-user");
     expect(metadata.group).toMatchObject({ outcomeLabel: "France" });
+  });
+
+  test("maps binary provider yes/no outcomes to mobile participant labels and normalized sides", () => {
+    const event = normalizePolymarketSoccerEvent({
+      externalSlug: "ballon-dor-winner-2026",
+      title: "Ballon d'Or Winner 2026",
+      tags: ["Soccer"],
+    });
+    const market = normalizePolymarketSoccerMarket(event, {
+      question: "Will Kylian Mbappé win the 2026 Ballon d'Or?",
+      slug: "will-kylian-mbapp-win-the-2026-ballon-dor",
+      groupItemTitle: "Kylian Mbappé",
+      outcomes: ["Yes", "No"],
+    }, "Kylian Mbappé");
+
+    const outcomes = buildNormalizedPolymarketOutcomes({
+      clobTokenIds: ["yes-token", "no-token"],
+      outcomePrices: [0.2, 0.8],
+    }, "Kylian Mbappé", market);
+
+    expect(outcomes).toMatchObject([
+      {
+        name: "Yes",
+        label: "Kylian Mbappé",
+        side: "yes",
+        referenceTokenId: "yes-token",
+        referenceOutcomeLabel: "Yes",
+      },
+      {
+        name: "No",
+        label: "No",
+        side: "no",
+        referenceTokenId: "no-token",
+        referenceOutcomeLabel: "No",
+      },
+    ]);
   });
 });

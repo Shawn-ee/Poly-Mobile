@@ -42,12 +42,13 @@ export class PolyApi {
     }
   }
 
-  listWorldCupEvents(input: string | { search?: string; limit?: number; cursor?: string | null; status?: string | null; source?: string | null } = "") {
+  listWorldCupEvents(input: string | { search?: string; limit?: number; cursor?: string | null; status?: string | null; source?: string | null; leagueKey?: string | null } = "") {
     const search = typeof input === "string" ? input : input.search ?? "";
     const params = new URLSearchParams({
       sportKey: "soccer",
-      leagueKey: "world_cup",
     });
+    const leagueKey = typeof input === "object" ? input.leagueKey ?? null : "world_cup";
+    if (leagueKey) params.set("leagueKey", leagueKey);
     if (search.trim()) {
       params.set("search", search.trim());
     }

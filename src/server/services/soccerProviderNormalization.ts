@@ -17,7 +17,7 @@ type ProviderMarketLike = {
 
 export type NormalizedSoccerEvent = {
   sportKey: "soccer";
-  leagueKey: "world_cup";
+  leagueKey: "world_cup" | "soccer_awards" | "soccer";
   eventType: "match" | "outright" | "future";
   marketProfile: "outright" | "to_advance" | "regulation_90" | "full_match_with_overtime";
   resultMode: "one_winner" | "can_draw" | "no_draw";
@@ -62,6 +62,7 @@ export function normalizePolymarketSoccerEvent(event: ProviderEventLike): Normal
   const key = `${event.externalSlug} ${event.title} ${event.description ?? ""} ${(event.tags ?? []).join(" ")}`.toLowerCase();
   const isWorldCup = key.includes("world cup") || key.includes("world-cup");
   const isWinner = key.includes("winner") || key.includes("outright");
+  const isAward = key.includes("ballon") || key.includes("award");
   if (isWorldCup && isWinner) {
     return {
       sportKey: "soccer",
@@ -77,6 +78,25 @@ export function normalizePolymarketSoccerEvent(event: ProviderEventLike): Normal
         allowDraw: false,
         includesOvertime: false,
         description: "Tournament outright winner market. Exactly one participant wins.",
+      },
+      supportedMarketTypes: ["outright"],
+    };
+  }
+  if (isWinner || isAward) {
+    return {
+      sportKey: "soccer",
+      leagueKey: isAward ? "soccer_awards" : "soccer",
+      eventType: "future",
+      marketProfile: "outright",
+      resultMode: "one_winner",
+      homeTeamName: event.title,
+      awayTeamName: "Winner",
+      period: "Futures",
+      clock: "Live",
+      gameRules: {
+        allowDraw: false,
+        includesOvertime: false,
+        description: "Soccer futures/outright winner market. Exactly one participant wins.",
       },
       supportedMarketTypes: ["outright"],
     };
@@ -117,6 +137,7 @@ export function normalizePolymarketSoccerMarket(
   const period = derivePeriod(key, event);
   const line = extractLine(key);
   const participant = participantName ?? market.groupItemTitle ?? extractWinnerParticipant(market.question);
+  const participantType = participant ? event.leagueKey === "soccer_awards" ? "player" : "team" : null;
 
   if (event.marketProfile === "outright" || /^will\s+.+?\s+win\b/i.test(market.question)) {
     return {
@@ -126,7 +147,7 @@ export function normalizePolymarketSoccerMarket(
       period: "futures",
       line: null,
       unit: null,
-      participantType: participant ? "team" : null,
+      participantType,
       participantName: participant,
       participantId: participant ? slugify(participant) : null,
       propCategory: null,

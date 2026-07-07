@@ -2,6 +2,8 @@
 
 Generated: 2026-07-07
 
+Latest update: 2026-07-07 01:27 CT
+
 Branch: `cycle/fj-real-provider-home-ticket`
 
 Remote target: `poly-mobile`
@@ -12,7 +14,7 @@ This loop tested Holiwyn mobile as a local/internal frontend for the Poly backen
 
 Result:
 
-- Ready for internal bot-backed local testing: yes, with P1 breadth caveats.
+- Ready for internal bot-backed local testing: yes, with P1 trading breadth caveats.
 - Ready for server deployment rehearsal: no.
 - Ready for production/public launch: no.
 
@@ -42,6 +44,17 @@ World Cup Winner child markets are now normalized as:
 
 They are no longer stored as generic `moneyline` / `Game Lines` markets.
 
+Ballon d'Or Winner 2026 is also normalized as a soccer awards future:
+
+- `eventType=future`
+- `leagueKey=soccer_awards`
+- `marketProfile=outright`
+- `resultMode=one_winner`
+- `marketType=outright`
+- `participantType=player`
+
+Important boundary: the normalized fields currently live in existing Event/Market/Outcome columns plus `metadata.normalizedSoccer` / `referenceMetadata.normalizedSoccer`. A later schema-hardening pass can promote `marketProfile`, `resultMode`, `gameRules`, and `supportedMarketTypes` to first-class Event columns if needed.
+
 ## Services Verified
 
 | Service | URL/port | Result |
@@ -63,11 +76,14 @@ Secrets are intentionally omitted.
 
 | Area | Command/proof | Classification | Result |
 | --- | --- | --- | --- |
-| Normalization tests | `soccerProviderNormalization.test.ts`, `polymarketEventImport.test.ts` | Read-only test | Pass, 7 tests |
+| Normalization tests | `soccerProviderNormalization.test.ts`, `polymarketEventImport.test.ts` | Read-only test | Pass, 10 tests |
 | TypeScript | `npx tsc --noEmit --pretty false` | Read-only test | Pass |
+| Mobile feed/API tests | `api`, `homeEventFeedService`, `searchEventService` | Read-only test | Pass, 22 tests |
 | Provider prep | `prove_mobile_real_provider_world_cup_winner.ts --marketLimit=10` | Local-mutating fake-token/reference prep | Pass |
 | Route proof | `/api/events`, `/api/mobile/events/:slug/live-detail` | Read-only | Pass |
-| Readiness | `poly:internal-exchange-readiness` | Read-only | Pass |
+| Readiness | `poly:internal-exchange-readiness --summaryPath .runtime/poly-runtime-readiness-normalized-breadth-after-seed.json` | Read-only | Pass |
+| Local fake-token MM seed | `seedReferenceLiquidityBotForMarket` for Argentina, England, France | Local fake-token mutation | Pass |
+| Live-ready marking | `mark_launch_liquidity_live_ready.ts --mode apply --confirm MARK_LAUNCH_LIVE_READY` | Local metadata mutation | Pass |
 | Bot dry-run | poly-bot `bot:polymarket:mm:dry-run` allowlist England/Argentina/France | Dry-run | Pass |
 | Backend order safety | `canonical_order_submission.phase5.test.ts` | Read-only test | Pass, 11 tests |
 | Mobile cashout/cancel services | `positionCloseService`, `openOrderService`, `api` tests | Read-only test | Pass, 32 tests |
@@ -76,7 +92,7 @@ Secrets are intentionally omitted.
 
 ## Provider Import And Visibility
 
-Provider-backed event:
+Provider-backed events:
 
 - Slug: `mobile-fj-real-world-cup-winner`
 - Title: `World Cup Winner`
@@ -86,29 +102,65 @@ Provider-backed event:
 - Supported market types: `outright`
 - Mobile-visible provider markets: 9
 
+- Slug: `ballon-dor-winner-2026`
+- Title: `Ballon d'Or Winner 2026`
+- Provider event slug: `ballon-dor-winner-2026`
+- League: `soccer_awards`
+- Market profile: `outright`
+- Result mode: `one_winner`
+- Supported market types: `outright`
+- Mobile-visible provider markets: 2
+- Trading status: provider/reference-visible only; not local-MM enabled yet
+
 Mobile route proof:
 
-- `/api/events?source=polymarket&includeMobileMarkets=1&limit=5`
-  - first event: `mobile-fj-real-world-cup-winner`
-  - home market count: 9
-  - event profile: `outright`
-  - result mode: `one_winner`
+- `/api/events?source=polymarket&includeMobileMarkets=1&limit=10`
+  - returned `ballon-dor-winner-2026` and `mobile-fj-real-world-cup-winner`
+  - Ballon d'Or sample outcomes: `Kylian Mbappé` / `No`, `Erling Haaland` / `No`
+  - World Cup sample outcomes: `Argentina` / `No`, `England` / `No`
+- `/api/events?sportKey=soccer&leagueKey=soccer_awards&includeMobileMarkets=1&limit=10`
+  - returned `ballon-dor-winner-2026`
+  - market count: 2
+  - outcome sides: `yes` / `no`
+- `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10`
+  - returned `mobile-fj-real-world-cup-winner`
+  - market count: 9
 - `/api/mobile/events/mobile-fj-real-world-cup-winner/live-detail`
   - detail market count: 9
   - market types: `outright`
   - groups: `outrights`
   - sample participants: Argentina, France, Spain, England, Belgium
+- `/api/mobile/events/ballon-dor-winner-2026/live-detail`
+  - detail market count: 2
+  - market types: `outright`
+  - groups: `outrights`
+  - sample participants: Kylian Mbappé, Erling Haaland
+  - quote snapshots refreshed, but orderbook-depth lifecycle remains unavailable until seeded/refreshed
 
 Readiness gate:
 
 - DB connected: yes
 - Mobile-visible event count: 7
-- Provider-backed mobile-visible event count: 1
-- Provider markets inspected: 9
-- Snapshot-ready provider markets: 9
+- Provider-backed mobile-visible event count: 2
+- Provider markets inspected: 11
+- Snapshot-ready provider markets: 11
 - Local market-maker-ready provider markets: 3
-- Open-order-backed provider markets: 3
+- Open-order-backed provider markets: 0
 - Readiness blockers: none
+
+Local-MM-ready seeded markets:
+
+- Argentina World Cup Winner
+- England World Cup Winner
+- France World Cup Winner
+
+These are seeded with local fake-token bot inventory/credentials only. No real Polymarket orders were placed. The readiness gate does not require open local orders, so `openOrderBackedCount=0` remains a next runtime action rather than a P0 gate failure.
+
+Mobile Home/Search feed behavior:
+
+- The mobile API adapter still supports the old World Cup-only call.
+- Home/Search now pass `leagueKey: null` with `source=polymarket`, so provider-backed soccer events are not hidden by the old `world_cup` filter.
+- This is a data-contract widening only; no visual redesign was done.
 
 ## Reference Prices And Market Maker
 
@@ -170,19 +222,17 @@ Status: no unresolved P0 safety gap found in this loop.
 
 ## Provider Breadth Search
 
-Read-only Gamma searches were run for:
+Read-only Gamma searches were run for soccer provider breadth. The first safe second event found and imported was:
 
-- `world cup`
-- `soccer`
-- `champions league`
-- `premier league`
-- `uefa`
-- `mls`
-- `club world cup`
+- `ballon-dor-winner-2026`
 
-Result: active/usable soccer results all collapsed to the same `World Cup Winner` provider event. No second safe active soccer provider event was found in the current public Gamma search slice.
+This closes the earlier "only one provider-backed soccer event" finding for read/display breadth. It does not close the trading-liquidity breadth gap because Ballon d'Or markets are currently imported as provider/reference-visible only:
 
-That means the current internal system proves multiple normalized provider-backed markets, but only one provider-backed soccer event. This is a P1 breadth gap, not a P0 runtime blocker.
+- `referenceOnly=true`
+- `tradable=false`
+- `mmEnabled=false`
+
+That is intentional until local-MM seeding, risk limits, and orderbook-depth refresh are enabled for that event.
 
 ## Issues
 
@@ -192,12 +242,13 @@ None remaining from this loop.
 
 ### P1
 
-1. Only one provider-backed soccer event is currently mobile-visible.
-   - Current state: 9 normalized provider-backed markets under World Cup Winner.
-   - Search result: no second safe active soccer provider event found in current Gamma search.
-   - Next action: broaden provider discovery or support additional provider categories only after review.
+1. Only selected World Cup Winner markets are currently local-MM/trade-ready.
+   - Current state: 9 normalized trade-ready provider markets under World Cup Winner.
+   - Argentina, England, and France are seeded/local-MM-ready.
+   - Ballon d'Or adds 2 normalized provider-visible markets, but they are not MM-enabled yet.
+   - Next action: add a safe local-MM approval/seeding path for selected normalized non-World-Cup soccer futures.
 
-2. Some local non-provider World Cup match rows remain visible.
+2. Some local non-provider World Cup match rows may remain visible outside the provider-only feed.
    - They are useful for UI/game-line testing but are not provider-backed.
    - Next action: add an internal provider-backed-only proof mode if needed.
 

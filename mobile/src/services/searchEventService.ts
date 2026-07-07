@@ -77,6 +77,7 @@ export const loadSearchEventPage = async ({
         limit: safeLimit,
         cursor,
         source,
+        leagueKey: null,
       });
       const nextCursor = payload.nextCursor ?? payload.page?.nextCursor ?? null;
       return {

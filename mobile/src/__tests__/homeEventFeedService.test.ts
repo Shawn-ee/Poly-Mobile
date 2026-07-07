@@ -53,6 +53,7 @@ describe("homeEventFeedService", () => {
       cursor: null,
       status: "live",
       source: "polymarket",
+      leagueKey: null,
     });
   });
 
@@ -69,6 +70,7 @@ describe("homeEventFeedService", () => {
       cursor: null,
       status: null,
       source: "polymarket",
+      leagueKey: null,
     });
   });
 

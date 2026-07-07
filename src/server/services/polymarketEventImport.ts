@@ -5,6 +5,7 @@ import {
   upsertPolymarketReferenceMarket,
 } from "@/server/services/polymarketReferenceImport";
 import {
+  type NormalizedSoccerMarket,
   normalizePolymarketSoccerEvent,
   normalizePolymarketSoccerMarket,
   normalizedSoccerMetadata,
@@ -70,7 +71,7 @@ export type PolymarketGroupedEvent = {
 export type ImportPolymarketEventOptions = {
   dryRun: boolean;
   confirmImport: boolean;
-  actorUserId: string;
+  actorUserId: string | null;
   maxMarkets?: number | null;
 };
 
@@ -281,32 +282,7 @@ export async function importPolymarketGroupedEvent(
                 archived: market.archived,
               },
             },
-            outcomes: [
-              {
-                name: "Yes",
-                displayOrder: 0,
-                isTradable: false,
-                referenceTokenId: market.clobTokenIds[0] ?? null,
-                referenceOutcomeLabel: "Yes",
-                referenceMetadata: {
-                  importedOutcomeLabel: "Yes",
-                  teamLabel,
-                  outcomePrice: market.outcomePrices[0] ?? null,
-                },
-              },
-              {
-                name: "No",
-                displayOrder: 1,
-                isTradable: false,
-                referenceTokenId: market.clobTokenIds[1] ?? null,
-                referenceOutcomeLabel: "No",
-                referenceMetadata: {
-                  importedOutcomeLabel: "No",
-                  teamLabel,
-                  outcomePrice: market.outcomePrices[1] ?? null,
-                },
-              },
-            ],
+            outcomes: buildNormalizedPolymarketOutcomes(market, teamLabel, normalizedMarket),
           },
         },
         options.actorUserId,
@@ -470,6 +446,44 @@ export function buildListedReferenceMetadata(params: {
       outcomeLabel: params.teamLabel,
     },
   });
+}
+
+export function buildNormalizedPolymarketOutcomes(
+  market: Pick<PolymarketGroupedEventMarket, "clobTokenIds" | "outcomePrices">,
+  teamLabel: string,
+  normalizedMarket: NormalizedSoccerMarket,
+) {
+  const yesLabel = normalizedMarket.participantName ?? teamLabel;
+  return [
+    {
+      name: "Yes",
+      label: yesLabel,
+      side: normalizedMarket.outcomeSideByLabel.yes ?? "yes",
+      displayOrder: 0,
+      isTradable: false,
+      referenceTokenId: market.clobTokenIds[0] ?? null,
+      referenceOutcomeLabel: "Yes",
+      referenceMetadata: {
+        importedOutcomeLabel: "Yes",
+        teamLabel,
+        outcomePrice: market.outcomePrices[0] ?? null,
+      },
+    },
+    {
+      name: "No",
+      label: "No",
+      side: normalizedMarket.outcomeSideByLabel.no ?? "no",
+      displayOrder: 1,
+      isTradable: false,
+      referenceTokenId: market.clobTokenIds[1] ?? null,
+      referenceOutcomeLabel: "No",
+      referenceMetadata: {
+        importedOutcomeLabel: "No",
+        teamLabel,
+        outcomePrice: market.outcomePrices[1] ?? null,
+      },
+    },
+  ];
 }
 
 export function derivePolymarketLocalEventSlug(

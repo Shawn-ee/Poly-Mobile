@@ -50,6 +50,7 @@ export const loadHomeEventFeedPage = async ({
         cursor,
         status,
         source,
+        leagueKey: null,
       });
       const nextCursor = payload.nextCursor ?? payload.page?.nextCursor ?? null;
       return {

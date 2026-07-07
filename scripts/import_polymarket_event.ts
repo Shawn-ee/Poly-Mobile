@@ -14,7 +14,7 @@ async function main() {
   await mkdir(path.dirname(rawOutputPath), { recursive: true });
   await writeFile(rawOutputPath, `${JSON.stringify(event, null, 2)}\n`, "utf8");
 
-  const actorUserId = await getAdminUserId();
+  const actorUserId = options.actorUserId ?? await getAdminUserId();
   const result = await importPolymarketGroupedEvent(options.eventSlug, {
     dryRun: options.dryRun,
     confirmImport: options.confirmImport,
@@ -55,6 +55,7 @@ function parseArgs(argv: string[]) {
     dryRun: boolArg(args.get("dryRun"), true),
     confirmImport: boolArg(args.get("confirmImport"), false),
     maxMarkets: intArg(args.get("maxMarkets")),
+    actorUserId: stringArg(args.get("actorUserId")),
   };
 }
 
@@ -64,10 +65,7 @@ async function getAdminUserId() {
     orderBy: { createdAt: "asc" },
     select: { id: true },
   });
-  if (!admin) {
-    throw new Error("No local admin user found.");
-  }
-  return admin.id;
+  return admin?.id ?? null;
 }
 
 function boolArg(value: string | undefined, fallback: boolean) {

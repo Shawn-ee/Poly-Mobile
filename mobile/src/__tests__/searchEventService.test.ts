@@ -53,6 +53,7 @@ describe("searchEventService", () => {
       limit: 2,
       cursor: null,
       source: "polymarket",
+      leagueKey: null,
     });
   });
 
