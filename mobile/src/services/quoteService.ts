@@ -133,11 +133,13 @@ export const applyTicketQuoteToOutcome = <TOutcome extends QuoteableOutcome>(
 
 export const applyTicketQuotesToMarket = <
   TOutcome extends QuoteableOutcome,
-  TMarket extends { outcomes: TOutcome[] },
+  TMarket extends { outcomes: TOutcome[]; referenceSource?: string | null },
 >(
   market: TMarket,
   quotes: TicketQuote[],
 ): TMarket => {
+  if (market.referenceSource) return market;
+
   let changed = false;
   const outcomes = market.outcomes.map((outcome) => {
     const quotedOutcome = applyTicketQuoteToOutcome(outcome, quotes);

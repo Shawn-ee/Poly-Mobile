@@ -356,6 +356,41 @@ describe("quote service", () => {
     ).toEqual([42, 21]);
   });
 
+  test("does not overwrite provider-backed market card odds with local quote-route odds", () => {
+    const market = {
+      id: "world-cup-winner-argentina",
+      title: "World Cup Winner",
+      referenceSource: "polymarket",
+      outcomes: [
+        { id: "argentina", label: "Argentina", probability: 17, bestBid: 0.171, bestAsk: 0.172 },
+        { id: "no", label: "No", probability: 83, bestBid: 0.828, bestAsk: 0.829 },
+      ],
+    };
+
+    expect(
+      applyTicketQuotesToMarket(market, [
+        {
+          outcomeId: "argentina",
+          outcomeName: "Argentina",
+          probability: 98,
+          bestBid: 98,
+          bestAsk: null,
+          midPrice: 98,
+          lastPrice: null,
+        },
+        {
+          outcomeId: "no",
+          outcomeName: "No",
+          probability: 50,
+          bestBid: null,
+          bestAsk: null,
+          midPrice: 50,
+          lastPrice: null,
+        },
+      ]),
+    ).toBe(market);
+  });
+
   test("keeps the original market when no outcome quotes match", () => {
     const market = {
       id: "winner",
