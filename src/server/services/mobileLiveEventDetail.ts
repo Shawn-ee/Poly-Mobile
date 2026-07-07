@@ -112,6 +112,23 @@ const probabilityFromPrice = (value: Prisma.Decimal) => {
 const isAdvanceMarketKey = (key: string) =>
   /(^|[\s_-])(to[\s_-]?advance|to[\s_-]?qualify|team[\s_-]?to[\s_-]?qualify|qualify)([\s_-]|$)/i.test(key);
 
+const marketRuleKey = (market: { marketType?: string | null; marketGroupKey?: string | null; marketGroupTitle?: string | null; title?: string | null }) =>
+  `${market.marketType ?? ""} ${market.marketGroupKey ?? ""} ${market.marketGroupTitle ?? ""} ${market.title ?? ""}`.toLowerCase();
+
+const marketHasDrawSignal = (market: { marketType?: string | null; marketGroupKey?: string | null; marketGroupTitle?: string | null; title?: string | null; outcomes?: Array<{ side?: string | null; label?: string | null; name?: string | null }> }) => {
+  const key = marketRuleKey(market);
+  return (
+    key.includes("draw") ||
+    key.includes("tie") ||
+    Boolean(
+      market.outcomes?.some((outcome) => {
+        const value = `${outcome.side ?? ""} ${outcome.label ?? ""} ${outcome.name ?? ""}`.toLowerCase();
+        return value.includes("draw") || value.includes("tie");
+      }),
+    )
+  );
+};
+
 const depthLevelsFromSnapshot = (snapshot: Awaited<ReturnType<typeof buildPublicOrderbookSnapshot>>) => [
   ...snapshot.bids.map((level) => ({
     outcomeId: level.outcomeId,
@@ -675,7 +692,20 @@ export async function serializeMobileLiveEventDetail(input: {
         ? Math.max(0, Math.round((Date.now() - new Date(providerLastFetchedAt).getTime()) / 1000))
         : null;
       const providerBackedMarket = Boolean(market.referenceSource || market.externalMarketId || market.conditionId);
-      const effectiveAvailability = providerBackedMarket
+      const hasLocalOrderbookDepth = depth.levels.length > 0 && depth.snapshot.depthSource === "local-orderbook";
+      const effectiveAvailability = hasLocalOrderbookDepth
+        ? {
+            ...marketAvailability,
+            source: "local-orderbook",
+            status: "ready" as const,
+            lastUpdated: providerLastFetchedAt ?? market.updatedAt?.toISOString?.() ?? null,
+            stalenessSeconds: providerStalenessSeconds,
+            isStale: false,
+            isSuspended: false,
+            isDelayed: false,
+            reason: "Local orderbook has executable depth.",
+          }
+        : providerBackedMarket
         && !providerLifecycle.ready
         ? {
             ...marketAvailability,
@@ -818,25 +848,17 @@ export async function serializeMobileLiveEventDetail(input: {
   const effectiveStalenessSeconds = effectiveLastUpdated
     ? Math.max(0, Math.round((Date.now() - new Date(effectiveLastUpdated).getTime()) / 1000))
     : stalenessSeconds;
-  const primaryKey = `${primaryMarket?.marketType ?? ""} ${primaryMarket?.marketGroupKey ?? ""} ${primaryMarket?.marketGroupTitle ?? ""} ${primaryMarket?.title ?? ""}`.toLowerCase();
   const regulationMarket = serializedMarkets.find((market) => {
-    const key = `${market.marketType ?? ""} ${market.marketGroupKey ?? ""} ${market.marketGroupTitle ?? ""} ${market.title ?? ""}`.toLowerCase();
+    const key = marketRuleKey(market);
     return !isAdvanceMarketKey(key) && (key.includes("winner") || key.includes("moneyline") || key.includes("regulation") || key.includes("90"));
   });
   const ruleMarket = regulationMarket ?? primaryMarket;
-  const ruleKey = `${ruleMarket?.marketType ?? ""} ${ruleMarket?.marketGroupKey ?? ""} ${ruleMarket?.marketGroupTitle ?? ""} ${ruleMarket?.title ?? ""}`.toLowerCase();
+  const ruleKey = ruleMarket ? marketRuleKey(ruleMarket) : "";
   const eventKey = `${input.event.sportKey ?? ""} ${input.event.leagueKey ?? ""} ${input.event.eventType ?? ""} ${input.event.description ?? ""}`.toLowerCase();
   const isSoccerMatch = eventKey.includes("soccer") || eventKey.includes("football") || eventKey.includes("world_cup");
-  const allowDraw = Boolean(primaryMarket?.outcomes.some((outcome) => {
-    const value = `${outcome.side ?? ""} ${outcome.label ?? ""} ${outcome.name ?? ""}`.toLowerCase();
-    return value.includes("draw") || value.includes("tie");
-  }));
-  const ruleAllowDraw = Boolean(ruleMarket?.outcomes.some((outcome) => {
-    const value = `${outcome.side ?? ""} ${outcome.label ?? ""} ${outcome.name ?? ""}`.toLowerCase();
-    return value.includes("draw") || value.includes("tie");
-  })) || allowDraw;
+  const ruleAllowDraw = serializedMarkets.some(marketHasDrawSignal);
   const hasAdvanceMarket = serializedMarkets.some((market) => {
-    const key = `${market.marketType ?? ""} ${market.marketGroupKey ?? ""} ${market.marketGroupTitle ?? ""} ${market.title ?? ""}`.toLowerCase();
+    const key = marketRuleKey(market);
     return isAdvanceMarketKey(key);
   });
   const isAdvance = !regulationMarket && isAdvanceMarketKey(ruleKey);
@@ -856,10 +878,7 @@ export async function serializeMobileLiveEventDetail(input: {
     ...serializedMarkets.flatMap((market) => {
       if (market.period === "first-half") return ["first-half"];
       if (market.period === "second-half") return ["second-half"];
-      if (market.outcomes?.some((outcome) => {
-        const value = `${outcome.side ?? ""} ${outcome.label ?? ""} ${outcome.name ?? ""}`.toLowerCase();
-        return value.includes("draw") || value.includes("tie");
-      })) return ["regulation_90"];
+      if (marketHasDrawSignal(market)) return ["regulation_90"];
       if (market.marketType === "spread") return ["spread"];
       if (["total_goals", "totals"].includes(market.marketType)) return ["totals"];
       if (["team_total_goals", "team-total", "team_total"].includes(market.marketType)) return ["team-total"];

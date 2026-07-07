@@ -121,6 +121,66 @@ describe("ticket order service", () => {
     });
   });
 
+  test("uses executable backend ask quote for server-mode buy ticket orders", async () => {
+    const placeLimitOrder = vi.fn(async () => ({ order: { id: "server-order-at-ask" } }));
+    const api = { placeLimitOrder } as unknown as PolyApi;
+
+    const result = await submitTicketOrder({
+      mode: "server",
+      api,
+      market,
+      outcome: {
+        ...outcome,
+        probability: 27,
+        bestBid: 27,
+        bestAsk: 29,
+      },
+      side: "buy",
+      amount: 25,
+    });
+
+    expect(placeLimitOrder).toHaveBeenCalledWith(
+      expect.objectContaining({
+        price: "0.29",
+        size: "86.21",
+      }),
+    );
+    expect(result).toMatchObject({
+      id: "server-order-at-ask",
+      probability: 29,
+    });
+  });
+
+  test("uses executable backend bid quote for server-mode sell ticket orders", async () => {
+    const placeLimitOrder = vi.fn(async () => ({ order: { id: "server-order-at-bid" } }));
+    const api = { placeLimitOrder } as unknown as PolyApi;
+
+    const result = await submitTicketOrder({
+      mode: "server",
+      api,
+      market,
+      outcome: {
+        ...outcome,
+        probability: 29,
+        bestBid: 27,
+        bestAsk: 31,
+      },
+      side: "sell",
+      amount: 25,
+    });
+
+    expect(placeLimitOrder).toHaveBeenCalledWith(
+      expect.objectContaining({
+        price: "0.27",
+        size: "92.59",
+      }),
+    );
+    expect(result).toMatchObject({
+      id: "server-order-at-bid",
+      probability: 27,
+    });
+  });
+
   test("carries Polymarket provider identity through the ticket order payload", async () => {
     const placeLimitOrder = vi.fn(async () => ({ order: { id: "server-provider-order-1" } }));
     const api = { placeLimitOrder } as unknown as PolyApi;

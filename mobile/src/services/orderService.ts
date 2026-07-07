@@ -62,6 +62,28 @@ const contractProbability = (input: TicketOrderInput) => {
   return contractSideForOrder(input) === "no" ? 100 - probability : probability;
 };
 
+const validProbability = (value: number | null | undefined) =>
+  typeof value === "number" && Number.isFinite(value) && value > 0 && value < 100 ? value : null;
+
+const executionProbability = (input: TicketOrderInput) => {
+  if (typeof input.selection?.limitPrice === "number" && Number.isFinite(input.selection.limitPrice) && input.selection.limitPrice > 0) {
+    return Math.max(1, Math.min(99, Math.round(input.selection.limitPrice * 100)));
+  }
+
+  const bestBid = validProbability(input.outcome.bestBid ?? null);
+  const bestAsk = validProbability(input.outcome.bestAsk ?? null);
+  const contractSide = contractSideForOrder(input);
+  if (contractSide === "yes") {
+    if (input.side === "buy" && bestAsk !== null) return bestAsk;
+    if (input.side === "sell" && bestBid !== null) return bestBid;
+  } else {
+    if (input.side === "buy" && bestBid !== null) return 100 - bestBid;
+    if (input.side === "sell" && bestAsk !== null) return 100 - bestAsk;
+  }
+
+  return contractProbability(input);
+};
+
 const ticketMarketType = (input: TicketOrderInput): TicketSelection["marketType"] => {
   if (input.selection?.marketType) return input.selection.marketType;
   if (input.market.type === "live") return "live";
@@ -147,13 +169,14 @@ export const submitTicketOrder = async (input: TicketOrderInput): Promise<Ticket
     return mockOrder(input);
   }
 
+  const priceProbability = executionProbability(input);
   const orderInput = {
     marketId: input.market.id,
     outcomeId: input.outcome.id,
     side: input.side.toUpperCase() as "BUY" | "SELL",
     contractSide: contractSideForOrder(input).toUpperCase() as "YES" | "NO",
-    price: (contractProbability(input) / 100).toFixed(2),
-    size: sharesFromAmount(input.amount, contractProbability(input)).toFixed(2),
+    price: (priceProbability / 100).toFixed(2),
+    size: sharesFromAmount(input.amount, priceProbability).toFixed(2),
     selection: selectionForOrder(input),
   };
   const payload = await input.api.placeLimitOrder(orderInput);
@@ -166,6 +189,7 @@ export const submitTicketOrder = async (input: TicketOrderInput): Promise<Ticket
     ...mockOrder(input),
     id: response.order?.id ?? response.id ?? `server-${Date.now()}`,
     mode: "server",
+    probability: priceProbability,
     status,
     size,
     filledSize: filledSizeFromResponse(response),

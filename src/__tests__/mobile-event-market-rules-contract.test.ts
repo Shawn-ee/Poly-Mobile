@@ -124,4 +124,102 @@ describe("mobile event market rules contract", () => {
     expect(event.gameRules).toMatchObject({ allowDraw: true, includesOvertime: true });
     expect(event.supportedMarketTypes).toEqual(expect.arrayContaining(["full_match_with_overtime", "to_advance", "regulation_90"]));
   });
+
+  test("trusts normalized soccer metadata for imported binary provider match markets", () => {
+    const event = serializeEventSummary({
+      ...baseEvent,
+      metadata: {
+        normalizedSoccer: {
+          marketProfile: "regulation_90",
+          resultMode: "can_draw",
+          gameRules: {
+            allowDraw: true,
+            includesOvertime: false,
+            description: "Regulation-time soccer market can settle as home win, draw, or away win.",
+          },
+          supportedMarketTypes: ["regulation_90"],
+        },
+      },
+      markets: [
+        market({
+          title: "Will Rules Home win on 2026-07-07?",
+          marketType: "match_winner_1x2",
+          outcomes: [
+            { side: "yes", label: "Rules Home", name: "Yes" },
+            { side: "no", label: "No", name: "No" },
+          ],
+        }),
+        market({
+          title: "Will Rules Home vs Rules Away end in a draw?",
+          marketType: "match_winner_1x2",
+          outcomes: [
+            { side: "yes", label: "Draw (Rules Home vs Rules Away)", name: "Yes" },
+            { side: "no", label: "No", name: "No" },
+          ],
+        }),
+        market({
+          title: "Will Rules Away win on 2026-07-07?",
+          marketType: "match_winner_1x2",
+          outcomes: [
+            { side: "yes", label: "Rules Away", name: "Yes" },
+            { side: "no", label: "No", name: "No" },
+          ],
+        }),
+      ],
+    } as never);
+
+    expect(event.marketProfile).toBe("regulation_90");
+    expect(event.resultMode).toBe("can_draw");
+    expect(event.gameRules).toMatchObject({ allowDraw: true, includesOvertime: false });
+    expect(event.supportedMarketTypes).toEqual(["regulation_90"]);
+  });
+
+  test("reconciles stale no-draw metadata when imported binary provider markets include draw", () => {
+    const event = serializeEventSummary({
+      ...baseEvent,
+      metadata: {
+        normalizedSoccer: {
+          marketProfile: "full_match_with_overtime",
+          resultMode: "no_draw",
+          gameRules: {
+            allowDraw: false,
+            includesOvertime: true,
+            description: "Stale imported metadata.",
+          },
+          supportedMarketTypes: ["full_match_with_overtime", "regulation_90"],
+        },
+      },
+      markets: [
+        market({
+          title: "Will Rules Home win on 2026-07-07?",
+          marketType: "match_winner_1x2",
+          outcomes: [
+            { side: "yes", label: "Rules Home", name: "Yes" },
+            { side: "no", label: "No", name: "No" },
+          ],
+        }),
+        market({
+          title: "Will Rules Home vs Rules Away end in a draw?",
+          marketType: "match_winner_1x2",
+          outcomes: [
+            { side: "yes", label: "Draw (Rules Home vs Rules Away)", name: "Yes" },
+            { side: "no", label: "No", name: "No" },
+          ],
+        }),
+        market({
+          title: "Will Rules Away win on 2026-07-07?",
+          marketType: "match_winner_1x2",
+          outcomes: [
+            { side: "yes", label: "Rules Away", name: "Yes" },
+            { side: "no", label: "No", name: "No" },
+          ],
+        }),
+      ],
+    } as never);
+
+    expect(event.marketProfile).toBe("regulation_90");
+    expect(event.resultMode).toBe("can_draw");
+    expect(event.gameRules).toMatchObject({ allowDraw: true, includesOvertime: false });
+    expect(event.supportedMarketTypes).toEqual(["regulation_90"]);
+  });
 });

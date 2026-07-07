@@ -1169,4 +1169,72 @@ describe("mobile live event detail contract", () => {
     expect(compactMarkets.find((item) => item.id === "first-half-winner")?.outcomes.map((outcome) => outcome.side)).toContain("draw");
     expect(compactMarkets.find((item) => item.id === "second-half-winner")?.outcomes.map((outcome) => outcome.side)).toContain("draw");
   });
+
+  test("classifies imported binary home-draw-away soccer markets as regulation draw markets", async () => {
+    const payload = await serializeMobileLiveEventDetail({
+      event: {
+        id: "event-imported-three-way",
+        slug: "switzerland-vs-colombia",
+        title: "Switzerland vs Colombia",
+        description: "Imported FIFA World Cup match.",
+        category: "sports",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        eventType: "match",
+        homeTeamName: "Switzerland",
+        awayTeamName: "Colombia",
+        startTime: new Date("2026-07-07T20:00:00.000Z"),
+        status: "LIVE",
+        liveStatus: "in_progress",
+        period: "Regulation",
+        clock: null,
+        homeScore: null,
+        awayScore: null,
+        imageUrl: null,
+        metadata: {},
+        markets: [
+          market({
+            id: "switzerland-win",
+            title: "Will Switzerland win on 2026-07-07?",
+            marketType: "match_winner_1x2",
+            marketGroupKey: "main",
+            marketGroupTitle: "Regulation Winner",
+            outcomes: [
+              { id: "swi-yes", name: "YES", label: "Switzerland", side: "yes", displayOrder: 0, isTradable: true },
+              { id: "swi-no", name: "NO", label: "No", side: "no", displayOrder: 1, isTradable: true },
+            ],
+          }),
+          market({
+            id: "draw-win",
+            title: "Will Switzerland vs Colombia end in a draw?",
+            marketType: "match_winner_1x2",
+            marketGroupKey: "main",
+            marketGroupTitle: "Regulation Winner",
+            outcomes: [
+              { id: "draw-yes", name: "YES", label: "Draw (Switzerland vs Colombia)", side: "yes", displayOrder: 0, isTradable: true },
+              { id: "draw-no", name: "NO", label: "No", side: "no", displayOrder: 1, isTradable: true },
+            ],
+          }),
+          market({
+            id: "colombia-win",
+            title: "Will Colombia win on 2026-07-07?",
+            marketType: "match_winner_1x2",
+            marketGroupKey: "main",
+            marketGroupTitle: "Regulation Winner",
+            outcomes: [
+              { id: "col-yes", name: "YES", label: "Colombia", side: "yes", displayOrder: 0, isTradable: true },
+              { id: "col-no", name: "NO", label: "No", side: "no", displayOrder: 1, isTradable: true },
+            ],
+          }),
+        ],
+      },
+      chartSnapshots: [],
+    });
+
+    expect(payload.event.marketProfile).toBe("regulation_90");
+    expect(payload.event.resultMode).toBe("can_draw");
+    expect(payload.event.gameRules).toMatchObject({ allowDraw: true, includesOvertime: false });
+    expect(payload.event.supportedMarketTypes).toContain("regulation_90");
+    expect(payload.event.supportedMarketTypes).not.toContain("full_match_with_overtime");
+  });
 });

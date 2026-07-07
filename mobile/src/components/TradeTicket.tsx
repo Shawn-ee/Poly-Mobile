@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { BackHandler, Modal, PanResponder, Pressable, StyleSheet, Text, View, Vibration, useWindowDimensions } from "react-native";
+import { BackHandler, Modal, Pressable, StyleSheet, Text, View, Vibration, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { Locale, Event, Market, Outcome } from "../mocks/worldCup";
 import { label, money } from "../presentation/formatters";
@@ -97,6 +97,7 @@ function SwipeSubmitControl({
   const armedRef = useRef(false);
   const progressRef = useRef(0);
   const dragDistanceRef = useRef(0);
+  const touchStartYRef = useRef<number | null>(null);
   const disabledRef = useRef(disabled);
   const submittingRef = useRef(isSubmitting);
   const onSubmitRef = useRef(onSubmit);
@@ -114,6 +115,20 @@ function SwipeSubmitControl({
     setSwipeProgress(nextProgress);
     onProgressChangeRef.current?.(nextProgress);
   }, []);
+  const updateDragDistance = useCallback(
+    (dragDistance: number) => {
+      const progress = Math.min(dragDistance / SWIPE_VISUAL_RANGE, 1);
+      const nextArmed = dragDistance >= SWIPE_SUBMIT_THRESHOLD;
+      dragDistanceRef.current = dragDistance;
+      updateProgress(progress);
+      setIsArmed(nextArmed);
+      if (nextArmed && !armedRef.current) {
+        Vibration.vibrate(18);
+      }
+      armedRef.current = nextArmed;
+    },
+    [updateProgress],
+  );
   const triggerSubmit = useCallback(async () => {
     if (disabledRef.current || submittingRef.current) return;
     submittingRef.current = true;
@@ -129,59 +144,42 @@ function SwipeSubmitControl({
       updateProgress(0);
     }
   }, [updateProgress]);
-  const panResponder = useMemo(
-    () =>
-      PanResponder.create({
-        onStartShouldSetPanResponder: () => !disabledRef.current && !submittingRef.current,
-        onStartShouldSetPanResponderCapture: () => !disabledRef.current && !submittingRef.current,
-        onMoveShouldSetPanResponder: (_, gesture) => Math.abs(gesture.dy) > 8 && Math.abs(gesture.dy) > Math.abs(gesture.dx),
-        onMoveShouldSetPanResponderCapture: (_, gesture) => Math.abs(gesture.dy) > 8 && Math.abs(gesture.dy) > Math.abs(gesture.dx),
-        onPanResponderGrant: () => {
-          setIsArmed(false);
-          armedRef.current = false;
-          progressRef.current = 0;
-          dragDistanceRef.current = 0;
-          updateProgress(0);
-        },
-        onPanResponderMove: (_, gesture) => {
-          const dragDistance = gesture.dy < 0 ? Math.abs(gesture.dy) : 0;
-          const progress = Math.min(dragDistance / SWIPE_VISUAL_RANGE, 1);
-          const nextArmed = dragDistance >= SWIPE_SUBMIT_THRESHOLD;
-          dragDistanceRef.current = dragDistance;
-          updateProgress(progress);
-          setIsArmed(nextArmed);
-          if (nextArmed && !armedRef.current) {
-            Vibration.vibrate(18);
-          }
-          armedRef.current = nextArmed;
-        },
-        onPanResponderRelease: (_, gesture) => {
-          const releaseDistance = gesture.dy < 0 ? Math.abs(gesture.dy) : dragDistanceRef.current;
-          if (releaseDistance >= SWIPE_SUBMIT_THRESHOLD || armedRef.current || progressRef.current >= SWIPE_SUBMIT_THRESHOLD / SWIPE_VISUAL_RANGE) {
-            void triggerSubmit();
-            return;
-          }
-          armedRef.current = false;
-          progressRef.current = 0;
-          dragDistanceRef.current = 0;
-          setIsArmed(false);
-          updateProgress(0);
-        },
-        onPanResponderTerminate: () => {
-          armedRef.current = false;
-          progressRef.current = 0;
-          dragDistanceRef.current = 0;
-          setIsArmed(false);
-          updateProgress(0);
-        },
-      }),
-    [triggerSubmit, updateProgress],
-  );
+  const handleTouchStart = useCallback((event: { nativeEvent: { pageY: number } }) => {
+    if (disabledRef.current || submittingRef.current) return;
+    touchStartYRef.current = event.nativeEvent.pageY;
+    setIsArmed(false);
+    armedRef.current = false;
+    progressRef.current = 0;
+    dragDistanceRef.current = 0;
+    updateProgress(0);
+  }, [updateProgress]);
+  const handleTouchMove = useCallback((event: { nativeEvent: { pageY: number } }) => {
+    if (disabledRef.current || submittingRef.current || touchStartYRef.current === null) return;
+    const dragDistance = Math.max(0, touchStartYRef.current - event.nativeEvent.pageY);
+    updateDragDistance(dragDistance);
+  }, [updateDragDistance]);
+  const handleTouchEnd = useCallback(() => {
+    if (disabledRef.current || submittingRef.current) return;
+    const shouldSubmit =
+      dragDistanceRef.current >= SWIPE_SUBMIT_THRESHOLD ||
+      armedRef.current ||
+      progressRef.current >= SWIPE_SUBMIT_THRESHOLD / SWIPE_VISUAL_RANGE;
+    touchStartYRef.current = null;
+    if (shouldSubmit) {
+      void triggerSubmit();
+      return;
+    }
+    armedRef.current = false;
+    progressRef.current = 0;
+    dragDistanceRef.current = 0;
+    setIsArmed(false);
+    updateProgress(0);
+  }, [triggerSubmit, updateProgress]);
   const progressBucket = disabled ? "disabled" : isSubmitting ? "submitting" : isArmed ? "armed" : swipeProgress > 0 ? "dragging" : "idle";
   const handleLift = -28 * swipeProgress;
 
   return (
-      <View
+      <Pressable
         accessible
         accessibilityRole="button"
         accessibilityState={{ disabled: disabled || isSubmitting }}
@@ -196,7 +194,19 @@ function SwipeSubmitControl({
         disabled && !unavailable && styles.swipeSubmitDisabled,
       ]}
       testID="place-mock-order"
-      {...panResponder.panHandlers}
+      onPress={() => {
+        void triggerSubmit();
+      }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
+      onStartShouldSetResponder={() => !disabledRef.current && !submittingRef.current}
+      onMoveShouldSetResponder={() => !disabledRef.current && !submittingRef.current}
+      onResponderGrant={handleTouchStart}
+      onResponderMove={handleTouchMove}
+      onResponderRelease={handleTouchEnd}
+      onResponderTerminate={handleTouchEnd}
     >
       {!unavailable && (
         <View
@@ -216,7 +226,7 @@ function SwipeSubmitControl({
         <Text style={[styles.swipeLabel, unavailable && styles.swipeLabelUnavailable]}>{isSubmitting ? label : label}</Text>
         <Text style={[styles.swipeHelper, unavailable && styles.swipeHelperUnavailable]}>{helper}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 }
 

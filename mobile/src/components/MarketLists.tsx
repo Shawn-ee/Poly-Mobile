@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import type { Event, Locale, Market, Outcome } from "../mocks/worldCup";
 import { label } from "../presentation/formatters";
+import { homeCardSelectionsForEvent } from "../services/homeCardSelectionService";
 
 const isAdvanceMarket = (market: Market) => {
   const key = `${market.marketType ?? ""} ${market.marketGroupId ?? ""} ${market.title}`.toLowerCase();
@@ -70,6 +71,7 @@ export function MarketList({
     <View style={styles.eventList}>
       {events.map((event) => {
         const winner = homeCardMarket(event);
+        const regulationSelections = homeCardSelectionsForEvent(event);
         const outrightSelections = isOutrightEvent(event)
           ? event.markets
               .filter((market) => market.type === "future")
@@ -132,6 +134,36 @@ export function MarketList({
                         : index % 3 === 1
                           ? styles.retailOutcomeButtonDraw
                           : styles.retailOutcomeButtonHome,
+                      { backgroundColor: outcome.color },
+                    ]}
+                    testID={`event-outcome-retail-${event.id}-${market.id}-${outcome.id}`}
+                  >
+                    <Text numberOfLines={1} style={styles.retailOutcomeName}>{label(locale, outcome)}</Text>
+                    <Text style={styles.retailOutcomeProb}>{outcome.probability}%</Text>
+                  </Pressable>
+                ))}
+              </View>
+            ) : regulationSelections.length > 0 ? (
+              <View
+                accessibilityLabel={`event-card-retail-outcome-rail ${event.id} home-card-regulation-market ${regulationSelections.map(({ outcome }) => label(locale, outcome)).join(" ")}`}
+                style={styles.eventOutcomeRail}
+                testID={`event-card-retail-outcome-rail-${event.id}`}
+              >
+                {regulationSelections.map(({ market, outcome }, index) => (
+                  <Pressable
+                    accessibilityLabel={`event-outcome-retail-${event.id}-${market.id}-${outcome.id} event-card-retail-outcome ${label(locale, outcome)} ${outcome.probability}%`}
+                    key={`${market.id}-${outcome.id}`}
+                    onPress={(pressEvent) => {
+                      pressEvent.stopPropagation();
+                      openTicket(market, outcome, event);
+                    }}
+                    style={[
+                      styles.retailOutcomeButton,
+                      outcome.side === "draw"
+                        ? styles.retailOutcomeButtonDraw
+                        : index === 0
+                          ? styles.retailOutcomeButtonHome
+                          : styles.retailOutcomeButtonAway,
                       { backgroundColor: outcome.color },
                     ]}
                     testID={`event-outcome-retail-${event.id}-${market.id}-${outcome.id}`}

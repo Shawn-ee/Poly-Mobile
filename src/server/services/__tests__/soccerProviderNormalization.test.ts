@@ -96,6 +96,29 @@ describe("soccer provider normalization", () => {
     expect(event.gameRules.allowDraw).toBe(true);
   });
 
+  test("normalizes match team-win markets as regulation winner markets, not outrights", () => {
+    const event = normalizePolymarketSoccerEvent({
+      externalSlug: "fifwc-che-col-2026-07-07",
+      title: "Switzerland vs Colombia",
+      description: "World Cup match",
+    });
+    const market = normalizePolymarketSoccerMarket(event, {
+      question: "Will Switzerland win on 2026-07-07?",
+      slug: "fifwc-che-col-2026-07-07-che",
+      outcomes: ["Yes", "No"],
+    }, "Switzerland");
+
+    expect(event).toMatchObject({ marketProfile: "regulation_90", resultMode: "can_draw" });
+    expect(market).toMatchObject({
+      marketType: "match_winner_1x2",
+      marketGroupKey: "main",
+      marketGroupTitle: "Regulation Winner",
+      participantType: "team",
+      participantName: "Switzerland",
+    });
+    expect(market.rules).toMatchObject({ template: "SOCCER_REGULATION_WINNER" });
+  });
+
   test("normalizes advance markets as no-draw", () => {
     const event = normalizePolymarketSoccerEvent({
       externalSlug: "mexico-vs-england-to-advance",

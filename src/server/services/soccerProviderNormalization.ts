@@ -139,7 +139,7 @@ export function normalizePolymarketSoccerMarket(
   const participant = participantName ?? market.groupItemTitle ?? extractWinnerParticipant(market.question);
   const participantType = participant ? event.leagueKey === "soccer_awards" ? "player" : "team" : null;
 
-  if (event.marketProfile === "outright" || /^will\s+.+?\s+win\b/i.test(market.question)) {
+  if (event.marketProfile === "outright") {
     return {
       marketType: "outright",
       marketGroupKey: "outrights",

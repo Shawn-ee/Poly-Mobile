@@ -2,7 +2,7 @@
 
 Generated: 2026-07-07
 
-Latest update: 2026-07-07 01:27 CT
+Latest update: 2026-07-07 03:45 CT
 
 Branch: `cycle/fj-real-provider-home-ticket`
 
@@ -15,10 +15,78 @@ This loop tested Holiwyn mobile as a local/internal frontend for the Poly backen
 Result:
 
 - Ready for internal bot-backed local testing: yes, with P1 trading breadth caveats.
+- Ready for internal S23 rehearsal: yes.
 - Ready for server deployment rehearsal: no.
 - Ready for production/public launch: no.
 
 Polymarket is used as provider/reference metadata and pricing input. Mobile users trade against Poly backend/local fake-token markets through Poly routes. No real Polymarket orders were placed.
+
+## 2026-07-07 Rehearsal Update
+
+The overnight loop was extended from proof-only validation into a local runtime rehearsal for the two upcoming soccer match events that were missing from mobile.
+
+Imported and mobile-visible provider-backed match events:
+
+- `switzerland-vs-colombia`
+  - Market profile: `regulation_90`
+  - Result mode: `can_draw`
+  - Mobile-visible provider markets: 3
+  - Card outcomes: Switzerland, Draw, Colombia
+  - Detail route availability: `local-orderbook` / `ready`
+- `argentina-vs-egypt`
+  - Market profile: `regulation_90`
+  - Result mode: `can_draw`
+  - Mobile-visible provider markets: 3
+  - Card outcomes: Argentina, Draw, Egypt
+  - Detail route availability: `local-orderbook` / `ready`
+
+The S23 server-mode app displayed real backend cards for both events. The observed home-card prices came from imported provider/reference markets and local orderbook-backed backend data, not the bundled fallback fixtures.
+
+S23 runtime proof kept out of git:
+
+- `.runtime/rehearsal/s23-reload-after-swipe-fix.png`
+- `.runtime/rehearsal/s23-detail-after-regulation-route-fix.png`
+- `.runtime/rehearsal/s23-after-warmed-orders-submit.png`
+
+The S23 order proof used the same mobile dev account as the backend proof. It submitted against the Switzerland provider-backed local market and received a backend fill:
+
+- Order: `e881a421-47f6-49b2-9720-41f6dc73bba7`
+- Market: `a427174d-a07d-439f-afdd-5636653eedf7`
+- Outcome: `5a373fb1-9e6d-4c88-8bee-c903e0b288e4`
+- Side: `BUY`
+- Price: `0.29`
+- Requested size: `86.21`
+- Filled size: `5`
+- Fill: `3e2d86f3-d9ab-4a0a-93f9-00993582b4e7`
+- Position: `0515b022-6164-49e9-864a-86356e8aecd7`, `5` shares at `0.29`
+
+The partial fill is expected under the current tiny local-maker cap because the maker ask only exposed 5 shares. The remaining quantity stayed as an open local backend order. This is acceptable for internal rehearsal, but larger rehearsal orders need a larger maker size or a faster replenish loop.
+
+Runtime launcher added:
+
+- `npm run poly:mobile-rehearsal:start`
+- Script: `scripts/start_poly_mobile_rehearsal.ps1`
+
+The launcher starts the local backend, reference snapshot watcher, selected live-local fake-token market-maker bots, and Expo server-mode mobile app with redacted runtime summaries under `.runtime/rehearsal`. It sets local-only internal trading flags and keeps credentials out of committed files.
+
+Latest read-only readiness gate:
+
+- DB connected: yes
+- Mobile-visible event count: 4
+- Provider-backed mobile-visible event count: 4
+- Provider markets inspected: 17
+- Snapshot-ready provider markets: 15
+- Local-MM-ready provider markets: 9
+- Open-order-backed provider markets: 9
+- Readiness blockers: none
+
+Focused validations passed:
+
+- `npm run poly:internal-exchange-readiness -- --summaryPath .runtime\poly-runtime-readiness-rehearsal-final.json`
+- `npx jest --runInBand src/__tests__/mobile-live-event-detail.test.ts src/__tests__/mobile-event-market-rules-contract.test.ts`
+- `npx vitest run src/server/services/__tests__/soccerProviderNormalization.test.ts`
+- `npm run test:mobile-api -- --run mobile/src/__tests__/orderService.test.ts mobile/src/__tests__/marketListsHomeCardSelections.test.ts`
+- Mobile typecheck: `npm run typecheck` from `mobile`
 
 ## Architecture Correction
 
