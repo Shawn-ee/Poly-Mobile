@@ -226,9 +226,10 @@ S23 Portfolio:
 - displayed `Portfolio route proof`
 - displayed `Filled shares`
 - Existing Expo server-mode S23 Portfolio also showed a real backend position and cash-out affordance after the live-local bot/order proof.
-- A fresh Expo restart on port `8082` with a new `holiwyn-mobile-dev` credential was attempted, but Metro did not finish serving `/status`; the stalled process was stopped. The same-account provider order/portfolio proof is therefore API-level in this loop, while S23 Portfolio remains proven on the existing server-mode bundle.
+- Fresh Expo server-mode reload on port `8081` with a newly generated `holiwyn-mobile-dev` credential returned `packager-status:running` and loaded on the Samsung S23.
+- Fresh S23 Portfolio showed the same backend account position for Argentina provider market `cb5d0e77-1098-4529-9f8d-c739ee164c94`, including `Cash out`, `Portfolio route proof`, `Filled shares: 1.00`, and `Current price 19%`.
 
-This keeps S23 UI coverage green and closes backend same-account trading behavior for `holiwyn-mobile-dev`, but a clean fresh-credential S23 reload remains a P1 proof-hardening item.
+This keeps S23 UI coverage green and closes same-account trading behavior for `holiwyn-mobile-dev` on both backend/API and fresh S23 server-mode UI.
 
 ## Cashout, Sell, And Cancel Safety
 
@@ -287,11 +288,6 @@ None remaining from this loop.
 4. Chart/history lifecycle can become `refresh_due` faster than quote snapshots.
    - Quotes are fresh and trading proof is not blocked.
    - Next action: keep chart/history out of MVP trading readiness unless explicitly required.
-
-5. Fresh Expo reload with a newly generated mobile dev credential stalled on port `8082`.
-   - Existing S23 server-mode Portfolio proof still passed.
-   - Same-account provider order/portfolio behavior was proven at the backend/API level.
-   - Next action: stabilize a one-command S23 server-mode launcher that injects a fresh API key without exposing it.
 
 ### P2
 
