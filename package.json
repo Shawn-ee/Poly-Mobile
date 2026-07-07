@@ -69,6 +69,7 @@
     "mobile:backend-readiness:start": "powershell -ExecutionPolicy Bypass -File scripts/mobile_backend_readiness.ps1 -StartDb",
     "mobile:credential-readiness": "powershell -ExecutionPolicy Bypass -File scripts/mobile_credential_readiness.ps1",
     "mobile:credential-readiness:summary": "powershell -ExecutionPolicy Bypass -File scripts/mobile_credential_readiness.ps1 -SummaryPath docs/mobile/harness/cycle-current-mobile-credential-readiness.json",
+    "poly:internal-exchange-readiness": "tsx scripts/check_poly_internal_exchange_readiness.ts",
     "mobile:filled-trade-proof": "tsx scripts/prove_mobile_filled_trade.ts --summaryPath=docs/mobile/harness/cycle-current-mobile-filled-trade-proof.json",
     "mobile:portfolio-quote-depth-proof": "tsx scripts/prove_mobile_portfolio_quote_depth.ts --summaryPath=docs/mobile/harness/cycle-current-mobile-portfolio-quote-depth-proof.json",
     "mobile:server-order-fill-liquidity": "tsx scripts/prepare_mobile_server_order_fill.ts --summaryPath=docs/mobile/harness/cycle-current-mobile-server-order-fill-liquidity.json",
