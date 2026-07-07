@@ -50,6 +50,20 @@ const decimalToNumber = (value: Prisma.Decimal | null | undefined) => {
   return Number.isFinite(parsed) ? parsed : null;
 };
 
+const isOutrightEventType = (value: string | null | undefined) => {
+  const normalized = `${value ?? ""}`.trim().toLowerCase();
+  return ["future", "futures", "outright", "outrights"].includes(normalized);
+};
+
+const mobileMarketContractForMarket = (market: MarketWithRelations) => {
+  const isOutright = isOutrightEventType(market.event?.eventType);
+  return {
+    marketGroupKey: isOutright ? "outrights" : market.marketGroupKey,
+    marketGroupTitle: isOutright ? "Outrights" : market.marketGroupTitle,
+    marketType: isOutright ? "outright" : market.marketType,
+  };
+};
+
 const latestReferenceQuoteByOutcome = (
   snapshots: MarketWithRelations["referenceQuoteSnapshots"] | undefined,
 ) => {
@@ -115,6 +129,7 @@ const normalizeReferenceBidAsk = (quote: {
 
 export const serializeMarketReadModel = async (market: MarketWithRelations) => {
   const referenceReview = parseReferenceReview(market.referenceMetadata);
+  const mobileContract = mobileMarketContractForMarket(market);
   const outcomeQuotes =
     market.mechanism === "ORDERBOOK"
       ? await getOutcomeQuotes(
@@ -188,9 +203,9 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
     title: market.title,
     description: market.description,
     status: market.status,
-    marketGroupKey: market.marketGroupKey,
-    marketGroupId: market.marketGroupKey,
-    marketGroupTitle: market.marketGroupTitle,
+    marketGroupKey: mobileContract.marketGroupKey,
+    marketGroupId: mobileContract.marketGroupKey,
+    marketGroupTitle: mobileContract.marketGroupTitle,
     displayOrder: market.displayOrder,
     line: market.line?.toString() ?? null,
     unit: market.unit,
@@ -271,7 +286,7 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
     mmEnabled: referenceReview.mmEnabled ?? null,
     referenceSummary,
     type: market.type,
-    marketType: market.marketType,
+    marketType: mobileContract.marketType,
     kind: market.kind,
     visibility: market.visibility,
     mechanism: market.mechanism,

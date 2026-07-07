@@ -49,9 +49,10 @@ export type Market = {
   outcomes: Outcome[];
 };
 
-export type EventMarketProfile = "to_advance" | "regulation_90" | "full_match_with_overtime";
-export type EventResultMode = "can_draw" | "no_draw";
+export type EventMarketProfile = "outright" | "to_advance" | "regulation_90" | "full_match_with_overtime";
+export type EventResultMode = "one_winner" | "can_draw" | "no_draw";
 export type EventMarketType =
+  | "outright"
   | "to_advance"
   | "regulation_90"
   | "full_match_with_overtime"

@@ -330,4 +330,80 @@ describe("world cup adapter", () => {
     });
     expect(normalized?.supportedMarketTypes).toEqual(["full_match_with_overtime", "to_advance"]);
   });
+
+  test("normalizes backend outright events without exposing the binary No leg as a game line", () => {
+    const detail: EventDetail = {
+      event: {
+        id: "world-cup-winner",
+        slug: "world-cup-winner",
+        title: "World Cup Winner",
+        description: "Tournament outright winner.",
+        category: "sports",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        eventType: "future",
+        homeTeamName: null,
+        awayTeamName: null,
+        startTime: null,
+        status: "OPEN",
+        liveStatus: null,
+        period: null,
+        clock: null,
+        homeScore: null,
+        awayScore: null,
+        imageUrl: null,
+        marketCount: 2,
+        activeMarketCount: 2,
+        marketProfile: "outright",
+        resultMode: "one_winner",
+        gameRules: {
+          allowDraw: false,
+          includesOvertime: false,
+          description: "Tournament outright winner market.",
+        },
+        supportedMarketTypes: ["outright"],
+      },
+      markets: [
+        {
+          ...baseMarket,
+          id: "argentina-market",
+          title: "Argentina",
+          marketGroupTitle: "Outrights",
+          marketGroupKey: "outrights",
+          marketGroupId: "outrights",
+          marketType: "outright",
+          propCategory: null,
+          outcomes: [
+            { id: "argentina-yes", name: "YES", label: "Argentina", side: "yes", price: 0.17, bestBid: 0.16, bestAsk: 0.18, isTradable: true },
+            { id: "argentina-no", name: "NO", label: "No", side: "no", price: 0.83, bestBid: 0.82, bestAsk: 0.84, isTradable: true },
+          ],
+        },
+        {
+          ...baseMarket,
+          id: "france-market",
+          title: "France",
+          marketGroupTitle: "Outrights",
+          marketGroupKey: "outrights",
+          marketGroupId: "outrights",
+          marketType: "outright",
+          propCategory: null,
+          outcomes: [
+            { id: "france-yes", name: "YES", label: "France", side: "yes", price: 0.15, bestBid: 0.14, bestAsk: 0.16, isTradable: true },
+            { id: "france-no", name: "NO", label: "No", side: "no", price: 0.85, bestBid: 0.84, bestAsk: 0.86, isTradable: true },
+          ],
+        },
+      ],
+    };
+
+    const normalized = normalizeEventDetail(detail);
+
+    expect(normalized?.marketProfile).toBe("outright");
+    expect(normalized?.resultMode).toBe("one_winner");
+    expect(normalized?.supportedMarketTypes).toEqual(["outright"]);
+    expect(normalized?.markets).toHaveLength(2);
+    expect(normalized?.markets.every((market) => market.type === "future")).toBe(true);
+    expect(normalized?.markets.map((market) => market.marketType)).toEqual(["future", "future"]);
+    expect(normalized?.markets.map((market) => market.outcomes[0].label)).toEqual(["Argentina", "France"]);
+    expect(normalized?.markets.map((market) => market.outcomes[1].label)).toEqual(["No", "No"]);
+  });
 });

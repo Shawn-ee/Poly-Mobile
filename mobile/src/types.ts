@@ -108,6 +108,7 @@ export type EventSummary = {
   category: string | null;
   sportKey: string | null;
   leagueKey: string | null;
+  eventType?: string | null;
   homeTeamName: string | null;
   awayTeamName: string | null;
   startTime: string | null;
@@ -123,14 +124,15 @@ export type EventSummary = {
   liveStats?: EventLiveStat[];
   liveDataStatus?: EventLiveDataStatus;
   chartHistory?: EventChartPoint[];
-  marketProfile?: "to_advance" | "regulation_90" | "full_match_with_overtime";
-  resultMode?: "can_draw" | "no_draw";
+  marketProfile?: "outright" | "to_advance" | "regulation_90" | "full_match_with_overtime";
+  resultMode?: "one_winner" | "can_draw" | "no_draw";
   gameRules?: {
     allowDraw: boolean;
     includesOvertime: boolean;
     description: string;
   };
   supportedMarketTypes?: Array<
+    | "outright"
     | "to_advance"
     | "regulation_90"
     | "full_match_with_overtime"

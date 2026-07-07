@@ -22,6 +22,7 @@ type EventMarket = {
 };
 
 type SupportedMarketType =
+  | "outright"
   | "to_advance"
   | "regulation_90"
   | "full_match_with_overtime"
@@ -62,8 +63,27 @@ const chartHistoryFromSnapshots = (markets: EventMarket[]) =>
 const isAdvanceMarketKey = (key: string) =>
   /(^|[\s_-])(to[\s_-]?advance|to[\s_-]?qualify|team[\s_-]?to[\s_-]?qualify|qualify)([\s_-]|$)/i.test(key);
 
+const isOutrightEventType = (value: string | null | undefined) => {
+  const normalized = `${value ?? ""}`.trim().toLowerCase();
+  return ["future", "futures", "outright", "outrights"].includes(normalized);
+};
+
 const deriveEventMarketRules = (event: { description?: string | null; sportKey?: string | null; leagueKey?: string | null; eventType?: string | null }, markets: EventMarket[]) => {
   const supported = new Set<SupportedMarketType>();
+  if (isOutrightEventType(event.eventType)) {
+    supported.add("outright");
+    return {
+      marketProfile: "outright",
+      resultMode: "one_winner",
+      gameRules: {
+        allowDraw: false,
+        includesOvertime: false,
+        description: event.description ?? "Tournament outright winner market.",
+      },
+      supportedMarketTypes: [...supported],
+    };
+  }
+
   for (const market of markets) {
     const key = `${market.marketType ?? ""} ${market.marketGroupKey ?? ""} ${market.marketGroupTitle ?? ""} ${market.title ?? ""}`.toLowerCase();
     if (isAdvanceMarketKey(key)) supported.add("to_advance");

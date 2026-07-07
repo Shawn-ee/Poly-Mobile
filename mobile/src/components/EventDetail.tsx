@@ -417,6 +417,12 @@ export function EventDetail({
   const isLiveEvent = event.status === "live";
   const gameLineMarkets = useMemo(() => event.markets.filter((market) => market.type !== "prop" && market.type !== "future"), [event.markets]);
   const propMarkets = useMemo(() => event.markets.filter((market) => market.type === "prop"), [event.markets]);
+  const outrightMarkets = useMemo(() => event.markets.filter((market) => market.type === "future"), [event.markets]);
+  const isOutrightEvent = Boolean(
+    event.marketProfile === "outright" ||
+      event.supportedMarketTypes?.includes("outright") ||
+      (event.markets.length > 0 && event.markets.every((market) => market.type === "future")),
+  );
   const advanceMarket = gameLineMarkets.find(isAdvanceMarket);
   const regulationMarket = gameLineMarkets.find(isRegulationWinnerMarket);
   const regulationMarketHasDraw = Boolean(regulationMarket && hasDrawOutcome(regulationMarket));
@@ -433,6 +439,10 @@ export function EventDetail({
   const orderBookMarket = event.markets.find((market) => market.id === orderBookMarketId) ?? primaryMarket;
   const orderBookSelectedOutcome = orderBookMarket?.outcomes.find((outcome) => outcome.id === orderBookOutcomeId) ?? orderBookMarket?.outcomes[0];
   const primaryOutcomes = primaryMarket?.outcomes.slice(0, 3) ?? [];
+  const outrightSelections = outrightMarkets.flatMap((market) => {
+    const outcome = market.outcomes.find((item) => item.side !== "no" && !/^no$/i.test(item.label)) ?? market.outcomes[0];
+    return outcome ? [{ market, outcome }] : [];
+  });
   const primaryOutcomeDisplayColor = (outcome?: Outcome) => {
     const index = outcome ? primaryOutcomes.findIndex((item) => item.id === outcome.id) : -1;
     if (index === 0) return "#008b10";
@@ -618,6 +628,19 @@ export function EventDetail({
     ticketOutcome: outcome,
     ticketSelection: orderBookTicketSelection(selectedWinnerMarket, outcome, index, winnerMarketTitle),
   })) ?? [];
+  const outrightRows = outrightSelections.map(({ market, outcome }, index): DisplayOutcome & { market: Market; outcome: Outcome } => ({
+    id: `${market.id}-${outcome.id}`,
+    label: label(locale, outcome),
+    color: outcome.color,
+    probability: outcome.probability,
+    odds: `${outcomeOdds(outcome)}x`,
+    icon: event.teams.find((team) => team.name === outcome.label)?.flag ?? "",
+    miniLine: outcome.probability,
+    ticketOutcome: outcome,
+    ticketSelection: orderBookTicketSelection(market, outcome, index, "Outrights"),
+    market,
+    outcome,
+  }));
   const homeCode = teamCode(teamA?.name ?? "Home");
   const awayCode = teamCode(teamB?.name ?? "Away");
   const spreadMarkets = marketsForLineType(event.markets, "spread");
@@ -1570,6 +1593,19 @@ export function EventDetail({
           </View>
         )}
 
+        {isOutrightEvent && (
+          <View accessibilityLabel="event-detail-outrights event-detail-futures-outright-market" style={styles.marketBlock} testID="event-detail-outrights">
+            <View style={styles.marketHeaderRow}>
+              <View style={styles.marketTitleBlock}>
+                <Text style={styles.marketTitle}>Outrights</Text>
+                <Text style={styles.marketSubcopy}>Tournament winner selections from backend markets</Text>
+              </View>
+            </View>
+            {outrightRows.map((row) => renderParityOutcomeRow(row, row.market.id, row.outcome, row.market))}
+          </View>
+        )}
+
+        {!isOutrightEvent && (
         <View accessibilityLabel="event-detail-primary-outcomes" style={styles.primaryOutcomeRow} testID="event-detail-primary-outcomes">
           {primaryMarket ? primaryOutcomes.map((outcome) => {
             const market = primaryMarket;
@@ -1589,10 +1625,11 @@ export function EventDetail({
             );
           }) : null}
         </View>
+        )}
 
-        {renderMarketTabs()}
+        {!isOutrightEvent && renderMarketTabs()}
 
-        {activeTab === "player-props" ? (
+        {!isOutrightEvent && (activeTab === "player-props" ? (
           <View
             accessibilityLabel="event-detail-player-props event-detail-player-props-empty event-detail-player-props-blank-local-mvp Player Props unavailable for this match"
             style={styles.emptyProps}
@@ -1685,7 +1722,7 @@ export function EventDetail({
             {gameLineGroups.map((group) => renderGroup(group))}
             {fallbackGameLineGroups.map((group) => renderGroup(group))}
           </View>
-        )}
+        ))}
         <View
           accessibilityLabel="event-detail-non-prediction-lower-content-hidden-local-mvp market-rules-hidden-local-mvp more-events-hidden-local-mvp"
           style={styles.hiddenStats}

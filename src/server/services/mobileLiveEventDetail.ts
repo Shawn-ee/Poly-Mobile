@@ -383,6 +383,7 @@ const combineProviderLifecycleSegments = (params: {
 
 const marketFamilyForMarket = (market: MarketInput) => {
   const key = `${market.marketGroupKey ?? ""} ${market.marketType ?? ""} ${market.marketGroupTitle ?? ""}`.toLowerCase();
+  if (key.includes("outright") || key.includes("future")) return "outright";
   if (key.includes("spread") || key.includes("handicap")) return "spread";
   if (key.includes("team") && key.includes("total")) return "team_total";
   if (key.includes("total")) return "total";
@@ -393,68 +394,87 @@ const marketFamilyForMarket = (market: MarketInput) => {
   return market.marketType;
 };
 
+const isOutrightEventType = (value: string | null | undefined) => {
+  const normalized = `${value ?? ""}`.trim().toLowerCase();
+  return ["future", "futures", "outright", "outrights"].includes(normalized);
+};
+
+const mobileMarketContractForMarket = (market: MarketInput, event: EventInput) => {
+  const isOutright = isOutrightEventType(event.eventType);
+  return {
+    marketGroupKey: isOutright ? "outrights" : market.marketGroupKey,
+    marketGroupTitle: isOutright ? "Outrights" : market.marketGroupTitle,
+    marketType: isOutright ? "outright" : market.marketType,
+  };
+};
+
 const marketLineValue = (market: MarketInput) => {
   if (!market.line) return null;
   const value = Number(market.line.toString());
   return Number.isFinite(value) ? value : null;
 };
 
-const compactSelectorKeyForMarket = (market: MarketInput) => [
-  market.marketGroupKey ?? marketFamilyForMarket(market),
+const compactSelectorKeyForMarket = (market: MarketInput, event: EventInput) => [
+  mobileMarketContractForMarket(market, event).marketGroupKey ?? marketFamilyForMarket(market),
   market.period ?? "full-game",
   market.line?.toString() ?? "default",
 ].join(":");
 
-const compactDisplayLabelForMarket = (market: MarketInput) => {
+const compactDisplayLabelForMarket = (market: MarketInput, event: EventInput) => {
+  const mobileContract = mobileMarketContractForMarket(market, event);
   const parts = [
-    market.marketGroupTitle ?? market.marketType,
+    mobileContract.marketGroupTitle ?? mobileContract.marketType,
     market.period && market.period !== "full-game" ? market.period : null,
     market.line?.toString() ?? null,
   ].filter((value): value is string => Boolean(value));
   return parts.length ? parts.join(" ") : market.title;
 };
 
-const selectionContractForMarket = (market: MarketInput, chartStatus: ReturnType<typeof chartHistoryStatusForMarket>) => ({
-  selectorKey: compactSelectorKeyForMarket(market),
-  marketId: market.id,
-  marketGroupKey: market.marketGroupKey,
-  marketGroupId: market.marketGroupKey,
-  marketGroupTitle: market.marketGroupTitle,
-  marketType: market.marketType,
-  marketFamily: marketFamilyForMarket(market),
-  displayLabel: compactDisplayLabelForMarket(market),
-  period: market.period ?? "full-game",
-  line: market.line?.toString() ?? null,
-  lineValue: marketLineValue(market),
-  unit: market.unit,
-  chart: {
-    targetMarketId: market.id,
-    status: chartStatus.status,
-    source: chartStatus.source,
-    pointCount: chartStatus.pointCount,
-    outcomeCount: chartStatus.outcomeCount,
-    range: chartStatus.range,
-    ranges: chartStatus.ranges,
-    emptyState: chartStatus.emptyState,
-  },
-  outcomes: market.outcomes.map((outcome) => ({
-    outcomeId: outcome.id,
-    id: outcome.id,
-    side: outcome.side,
-    label: outcome.label ?? outcome.name,
-    tokenId: outcome.referenceTokenId,
-    referenceTokenId: outcome.referenceTokenId,
-    referenceOutcomeLabel: outcome.referenceOutcomeLabel,
-    isTradable: outcome.isTradable,
-  })),
-});
+const selectionContractForMarket = (market: MarketInput, event: EventInput, chartStatus: ReturnType<typeof chartHistoryStatusForMarket>) => {
+  const mobileContract = mobileMarketContractForMarket(market, event);
+  return {
+    selectorKey: compactSelectorKeyForMarket(market, event),
+    marketId: market.id,
+    marketGroupKey: mobileContract.marketGroupKey,
+    marketGroupId: mobileContract.marketGroupKey,
+    marketGroupTitle: mobileContract.marketGroupTitle,
+    marketType: mobileContract.marketType,
+    marketFamily: marketFamilyForMarket(market),
+    displayLabel: compactDisplayLabelForMarket(market, event),
+    period: market.period ?? "full-game",
+    line: market.line?.toString() ?? null,
+    lineValue: marketLineValue(market),
+    unit: market.unit,
+    chart: {
+      targetMarketId: market.id,
+      status: chartStatus.status,
+      source: chartStatus.source,
+      pointCount: chartStatus.pointCount,
+      outcomeCount: chartStatus.outcomeCount,
+      range: chartStatus.range,
+      ranges: chartStatus.ranges,
+      emptyState: chartStatus.emptyState,
+    },
+    outcomes: market.outcomes.map((outcome) => ({
+      outcomeId: outcome.id,
+      id: outcome.id,
+      side: outcome.side,
+      label: outcome.label ?? outcome.name,
+      tokenId: outcome.referenceTokenId,
+      referenceTokenId: outcome.referenceTokenId,
+      referenceOutcomeLabel: outcome.referenceOutcomeLabel,
+      isTradable: outcome.isTradable,
+    })),
+  };
+};
 
 const orderbookIdentityForMarket = (params: {
   market: MarketInput;
+  event: EventInput;
   depth: OrderbookDepthEntry;
   chartStatus: ReturnType<typeof chartHistoryStatusForMarket>;
 }) => {
-  const selector = selectionContractForMarket(params.market, params.chartStatus);
+  const selector = selectionContractForMarket(params.market, params.event, params.chartStatus);
   const depth = params.depth.snapshot;
   const refreshedAt = depth.providerOrderbookDepth.latestFetchedAt
     ?? depth.providerQuoteSnapshot.latestFetchedAt
@@ -690,11 +710,11 @@ export async function serializeMobileLiveEventDetail(input: {
         title: market.title,
         description: market.description,
         status: market.status,
-        marketGroupKey: market.marketGroupKey,
-        marketGroupId: market.marketGroupKey,
-        marketGroupTitle: market.marketGroupTitle,
+        marketGroupKey: mobileMarketContractForMarket(market, input.event).marketGroupKey,
+        marketGroupId: mobileMarketContractForMarket(market, input.event).marketGroupKey,
+        marketGroupTitle: mobileMarketContractForMarket(market, input.event).marketGroupTitle,
         displayOrder: market.displayOrder,
-        marketType: market.marketType,
+        marketType: mobileMarketContractForMarket(market, input.event).marketType,
         period: market.period,
         line: market.line?.toString() ?? null,
         unit: market.unit,
@@ -708,8 +728,8 @@ export async function serializeMobileLiveEventDetail(input: {
         chartHistory: chartHistoryFromSnapshots(marketChartSnapshots),
         chartHistoryStatus,
         providerLifecycle,
-        selection: selectionContractForMarket(market, chartHistoryStatus),
-        orderbookIdentity: orderbookIdentityForMarket({ market, depth, chartStatus: chartHistoryStatus }),
+        selection: selectionContractForMarket(market, input.event, chartHistoryStatus),
+        orderbookIdentity: orderbookIdentityForMarket({ market, event: input.event, depth, chartStatus: chartHistoryStatus }),
         orderbookDepth: depth.levels,
         orderbookDepthSource: depth.snapshot.depthSource,
         orderbookDepthStatus: depth.snapshot.providerOrderbookDepth.status !== "unavailable"
@@ -827,9 +847,11 @@ export async function serializeMobileLiveEventDetail(input: {
       (ruleKey.includes("winner") || ruleKey.includes("moneyline") || ruleKey.includes("main") || ruleKey.includes("match")),
   );
   const includesOvertime = hasAdvanceMarket || isAdvance || isTwoWaySoccerWinner || ruleKey.includes("overtime") || ruleKey.includes("full match");
-  const marketProfile = isAdvance ? "to_advance" : includesOvertime ? "full_match_with_overtime" : "regulation_90";
+  const isOutrightEvent = isOutrightEventType(input.event.eventType);
+  const marketProfile = isOutrightEvent ? "outright" : isAdvance ? "to_advance" : includesOvertime ? "full_match_with_overtime" : "regulation_90";
   const supportedMarketTypes = Array.from(new Set([
     marketProfile,
+    ...(isOutrightEvent ? ["outright"] : []),
     ...(hasAdvanceMarket ? ["to_advance"] : []),
     ...serializedMarkets.flatMap((market) => {
       if (market.period === "first-half") return ["first-half"];
@@ -883,11 +905,11 @@ export async function serializeMobileLiveEventDetail(input: {
       providerLifecycle,
       chartHistory,
       marketProfile,
-      resultMode: ruleAllowDraw ? "can_draw" : "no_draw",
+      resultMode: isOutrightEvent ? "one_winner" : ruleAllowDraw ? "can_draw" : "no_draw",
       gameRules: {
-        allowDraw: ruleAllowDraw,
-        includesOvertime,
-        description: input.event.description ?? (isAdvance || isTwoWaySoccerWinner ? "Advance/full-match market with no draw outcome." : ruleAllowDraw ? "Regulation market can settle as draw." : "Winner market has no draw outcome."),
+        allowDraw: isOutrightEvent ? false : ruleAllowDraw,
+        includesOvertime: isOutrightEvent ? false : includesOvertime,
+        description: input.event.description ?? (isOutrightEvent ? "Tournament outright winner market." : isAdvance || isTwoWaySoccerWinner ? "Advance/full-match market with no draw outcome." : ruleAllowDraw ? "Regulation market can settle as draw." : "Winner market has no draw outcome."),
       },
       supportedMarketTypes,
     },

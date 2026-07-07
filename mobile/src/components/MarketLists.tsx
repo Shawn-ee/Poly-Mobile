@@ -40,6 +40,14 @@ const homeCardMarket = (event: Event) => {
   return shouldShowAdvance ? advanceMarket : regulationMarket ?? advanceMarket ?? gameLineMarkets[0] ?? event.markets[0];
 };
 
+const isOutrightEvent = (event: Event) =>
+  event.marketProfile === "outright" ||
+  event.supportedMarketTypes?.includes("outright") ||
+  (event.markets.length > 0 && event.markets.every((market) => market.type === "future"));
+
+const tradableOutrightOutcome = (market: Market) =>
+  market.outcomes.find((outcome) => outcome.side !== "no" && !/^no$/i.test(outcome.label)) ?? market.outcomes[0];
+
 export function MarketList({
   locale,
   events,
@@ -62,6 +70,14 @@ export function MarketList({
     <View style={styles.eventList}>
       {events.map((event) => {
         const winner = homeCardMarket(event);
+        const outrightSelections = isOutrightEvent(event)
+          ? event.markets
+              .filter((market) => market.type === "future")
+              .flatMap((market) => {
+                const outcome = tradableOutrightOutcome(market);
+                return outcome ? [{ market, outcome }] : [];
+              })
+          : [];
         const displayAsAdvance = Boolean(winner && usesAdvanceDisplay(event, winner));
         const cardOutcomes = winner && displayAsAdvance ? winner.outcomes.slice(0, 2) : winner?.outcomes.slice(0, 3) ?? [];
         const isSaved = savedEventIds?.has(event.id) ?? false;
@@ -95,7 +111,37 @@ export function MarketList({
               </View>
             </View>
             <Text style={styles.eventTitle}>{label(locale, event)}</Text>
-            {winner && (
+            {outrightSelections.length > 0 ? (
+              <View
+                accessibilityLabel={`event-card-retail-outcome-rail ${event.id} home-card-outright-market ${outrightSelections.map(({ outcome }) => label(locale, outcome)).join(" ")}`}
+                style={styles.eventOutcomeRail}
+                testID={`event-card-retail-outcome-rail-${event.id}`}
+              >
+                {outrightSelections.slice(0, 6).map(({ market, outcome }, index) => (
+                  <Pressable
+                    accessibilityLabel={`event-outcome-retail-${event.id}-${market.id}-${outcome.id} event-card-retail-outcome outright-selection ${label(locale, outcome)} ${outcome.probability}%`}
+                    key={`${market.id}-${outcome.id}`}
+                    onPress={(pressEvent) => {
+                      pressEvent.stopPropagation();
+                      openTicket(market, outcome, event);
+                    }}
+                    style={[
+                      styles.retailOutcomeButton,
+                      index % 3 === 2
+                        ? styles.retailOutcomeButtonAway
+                        : index % 3 === 1
+                          ? styles.retailOutcomeButtonDraw
+                          : styles.retailOutcomeButtonHome,
+                      { backgroundColor: outcome.color },
+                    ]}
+                    testID={`event-outcome-retail-${event.id}-${market.id}-${outcome.id}`}
+                  >
+                    <Text numberOfLines={1} style={styles.retailOutcomeName}>{label(locale, outcome)}</Text>
+                    <Text style={styles.retailOutcomeProb}>{outcome.probability}%</Text>
+                  </Pressable>
+                ))}
+              </View>
+            ) : winner && (
               <View
                 accessibilityLabel={`event-card-retail-outcome-rail ${event.id} ${displayAsAdvance ? "home-card-advance-market" : "home-card-regulation-market"} ${cardOutcomes.map((outcome) => label(locale, outcome)).join(" ")}`}
                 style={styles.eventOutcomeRail}

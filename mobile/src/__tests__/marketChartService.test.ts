@@ -42,7 +42,7 @@ describe("market chart service", () => {
     const result = await loadMarketChartState({ getMarketChart } as unknown as PolyApi, event);
     const history = await loadMarketChartHistory({ getMarketChart } as unknown as PolyApi, event);
 
-    expect(getMarketChart).toHaveBeenCalledWith("france-argentina-live", "1D");
+    expect(getMarketChart).toHaveBeenCalledWith(chartMarketForEvent(event)!.id, "1D");
     expect(result).toMatchObject({
       status: "ready",
       range: "1D",

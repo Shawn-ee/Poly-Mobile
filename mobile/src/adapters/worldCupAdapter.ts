@@ -125,10 +125,12 @@ const normalizeOutcome = (outcome: BackendOutcome, index: number, total: number)
 
 const marketType = (market: BackendMarket): Market["type"] => {
   const key = `${market.marketType ?? ""} ${market.marketGroupTitle ?? ""} ${market.propCategory ?? ""} ${market.title}`.toLowerCase();
+  const structuredMarketType = `${market.marketType ?? ""}`.trim().toLowerCase();
+  if (["future", "futures", "outright", "outrights"].includes(structuredMarketType)) return "future";
+  if (key.includes("future") || key.includes("outright") || key.includes("cup")) return "future";
   if (key.includes("to_advance") || key.includes("to advance")) return "game-line";
   if (key.includes("winner") || key.includes("moneyline") || key.includes("match")) return "game-line";
   if (key.includes("live")) return "live";
-  if (key.includes("future") || key.includes("cup")) return "future";
   return "prop";
 };
 
@@ -137,6 +139,7 @@ const isAdvanceMarketKey = (key: string) =>
 
 const equivalentMarketType = (market: Market): EventMarketType | null => {
   const key = `${market.marketType ?? ""} ${market.marketGroupId ?? ""} ${market.title}`.toLowerCase();
+  if (market.type === "future" || market.marketType === "future" || key.includes("outright")) return "outright";
   if (isAdvanceMarketKey(key)) return "to_advance";
   if (market.period === "first-half") return "first-half";
   if (market.period === "second-half") return "second-half";
@@ -153,6 +156,23 @@ const deriveMarketRules = (event: BackendEventSummary, markets: Market[]) => {
   for (const market of markets) {
     const type = equivalentMarketType(market);
     if (type) supported.add(type);
+  }
+  const eventType = `${event.eventType ?? ""}`.trim().toLowerCase();
+  const isOutrightEvent =
+    ["future", "futures", "outright", "outrights"].includes(eventType) ||
+    (markets.length > 0 && markets.every((market) => market.type === "future"));
+  if (isOutrightEvent) {
+    supported.add("outright");
+    return {
+      marketProfile: "outright" as const,
+      resultMode: "one_winner" as const,
+      gameRules: {
+        allowDraw: false,
+        includesOvertime: false,
+        description: event.description || "Tournament outright winner market.",
+      },
+      supportedMarketTypes: [...supported],
+    };
   }
 
   const regulationMarket = markets.find((market) => {
