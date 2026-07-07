@@ -4,6 +4,11 @@ import {
   buildImportedReferenceMetadata,
   upsertPolymarketReferenceMarket,
 } from "@/server/services/polymarketReferenceImport";
+import {
+  normalizePolymarketSoccerEvent,
+  normalizePolymarketSoccerMarket,
+  normalizedSoccerMetadata,
+} from "@/server/services/soccerProviderNormalization";
 
 const GAMMA_BASE_URL = "https://gamma-api.polymarket.com";
 
@@ -154,39 +159,57 @@ export async function importPolymarketGroupedEvent(
   }
 
   const localEventSlug = deriveLocalEventSlug(groupedEvent);
+  const normalizedEvent = normalizePolymarketSoccerEvent(groupedEvent);
   const localEvent = await prisma.event.upsert({
     where: { slug: localEventSlug },
     update: {
       title: groupedEvent.title.trim(),
       description: groupedEvent.description,
       category: groupedEvent.category ?? "Sports / Soccer",
+      sportKey: normalizedEvent.sportKey,
+      leagueKey: normalizedEvent.leagueKey,
+      eventType: normalizedEvent.eventType,
+      homeTeamName: normalizedEvent.homeTeamName,
+      awayTeamName: normalizedEvent.awayTeamName,
       status: groupedEvent.active ? "active" : groupedEvent.closed ? "closed" : "upcoming",
+      liveStatus: groupedEvent.active ? "LIVE" : groupedEvent.closed ? "CLOSED" : "SCHEDULED",
+      period: normalizedEvent.period,
+      clock: normalizedEvent.clock,
       source: "polymarket",
       externalEventId: groupedEvent.externalEventId,
       externalSlug: groupedEvent.externalSlug,
       image: groupedEvent.image,
       icon: groupedEvent.icon,
-      metadata: buildEventMetadata(groupedEvent),
+      metadata: buildEventMetadata(groupedEvent, normalizedEvent),
     },
     create: {
       slug: localEventSlug,
       title: groupedEvent.title.trim(),
       description: groupedEvent.description,
       category: groupedEvent.category ?? "Sports / Soccer",
+      sportKey: normalizedEvent.sportKey,
+      leagueKey: normalizedEvent.leagueKey,
+      eventType: normalizedEvent.eventType,
+      homeTeamName: normalizedEvent.homeTeamName,
+      awayTeamName: normalizedEvent.awayTeamName,
       status: groupedEvent.active ? "active" : groupedEvent.closed ? "closed" : "upcoming",
+      liveStatus: groupedEvent.active ? "LIVE" : groupedEvent.closed ? "CLOSED" : "SCHEDULED",
+      period: normalizedEvent.period,
+      clock: normalizedEvent.clock,
       source: "polymarket",
       externalEventId: groupedEvent.externalEventId,
       externalSlug: groupedEvent.externalSlug,
       image: groupedEvent.image,
       icon: groupedEvent.icon,
-      metadata: buildEventMetadata(groupedEvent),
+      metadata: buildEventMetadata(groupedEvent, normalizedEvent),
       createdBy: options.actorUserId,
     },
   });
 
-  for (const market of filteredMarkets) {
+  for (const [index, market] of filteredMarkets.entries()) {
     const teamLabel = market.groupItemTitle ?? extractTeamLabel(market.question);
     const qualityStatus = deriveQualityStatus(market);
+    const normalizedMarket = normalizePolymarketSoccerMarket(normalizedEvent, market, teamLabel);
     try {
       const result = await upsertPolymarketReferenceMarket(
         {
@@ -198,12 +221,26 @@ export async function importPolymarketGroupedEvent(
             category: groupedEvent.category ?? "Sports / Soccer",
             resolveTime: market.endDate,
             type: "BINARY",
+            marketType: normalizedMarket.marketType,
+            marketGroupKey: normalizedMarket.marketGroupKey,
+            marketGroupTitle: normalizedMarket.marketGroupTitle,
+            displayOrder: index,
+            line: normalizedMarket.line,
+            unit: normalizedMarket.unit,
+            period: normalizedMarket.period,
+            participantType: normalizedMarket.participantType,
+            participantName: normalizedMarket.participantName,
+            participantId: normalizedMarket.participantId,
+            propCategory: normalizedMarket.propCategory,
+            rules: normalizedMarket.rules,
+            rulesText: normalizedMarket.rulesText,
             desiredStatus: "live",
             externalMarketId: market.marketId,
             conditionId: market.conditionId,
             externalSlug: market.slug,
             referenceSource: "polymarket",
             referenceMetadata: {
+              ...(normalizedSoccerMetadata({ event: normalizedEvent, market: normalizedMarket }) as Record<string, unknown>),
               importedFrom: "polymarket",
               importStatus: qualityStatus === "approved" ? "approved" : "pending_review",
               referenceOnly: true,
@@ -283,6 +320,8 @@ export async function importPolymarketGroupedEvent(
           referenceMetadata: buildListedReferenceMetadata({
             current: await prisma.market.findUnique({ where: { id: result.marketId }, select: { referenceMetadata: true } }).then((row) => row?.referenceMetadata ?? null),
             teamLabel,
+            normalizedEvent,
+            normalizedMarket,
           }),
         },
       });
@@ -383,8 +422,12 @@ function normalizeGammaEventMarket(input: GammaWire): PolymarketGroupedEventMark
   };
 }
 
-function buildEventMetadata(event: PolymarketGroupedEvent): Prisma.InputJsonValue {
+function buildEventMetadata(
+  event: PolymarketGroupedEvent,
+  normalizedEvent = normalizePolymarketSoccerEvent(event),
+): Prisma.InputJsonValue {
   return {
+    ...(normalizedSoccerMetadata({ event: normalizedEvent }) as Record<string, unknown>),
     ...(event.raw.eventMetadata && typeof event.raw.eventMetadata === "object" ? { eventMetadata: event.raw.eventMetadata } : {}),
     referenceGroup: {
       title: "Winner",
@@ -409,12 +452,17 @@ function buildEventMetadata(event: PolymarketGroupedEvent): Prisma.InputJsonValu
 export function buildListedReferenceMetadata(params: {
   current: Prisma.JsonValue | null;
   teamLabel: string;
+  normalizedEvent?: ReturnType<typeof normalizePolymarketSoccerEvent>;
+  normalizedMarket?: ReturnType<typeof normalizePolymarketSoccerMarket>;
 }): Prisma.InputJsonValue {
   const current =
     params.current && typeof params.current === "object" && !Array.isArray(params.current)
       ? (params.current as Record<string, unknown>)
       : {};
   return buildImportedReferenceMetadata(current as Prisma.JsonValue, {
+    ...(params.normalizedEvent
+      ? (normalizedSoccerMetadata({ event: params.normalizedEvent, market: params.normalizedMarket ?? null }) as Record<string, unknown>)
+      : {}),
     group: {
       ...(current.group && typeof current.group === "object" && !Array.isArray(current.group)
         ? (current.group as Record<string, unknown>)
@@ -424,12 +472,19 @@ export function buildListedReferenceMetadata(params: {
   });
 }
 
-function deriveLocalEventSlug(event: PolymarketGroupedEvent) {
-  if (event.externalSlug === "2026-fifa-world-cup-winner-595") {
-    return "2026-fifa-world-cup-winner";
+export function derivePolymarketLocalEventSlug(
+  event: Pick<PolymarketGroupedEvent, "externalSlug" | "title">,
+) {
+  if (
+    event.externalSlug === "world-cup-winner" ||
+    event.externalSlug === "2026-fifa-world-cup-winner-595"
+  ) {
+    return "mobile-fj-real-world-cup-winner";
   }
   return slugify(event.title);
 }
+
+const deriveLocalEventSlug = derivePolymarketLocalEventSlug;
 
 function deriveQualityStatus(market: PolymarketGroupedEventMarket) {
   const hasBook =

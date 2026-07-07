@@ -3,10 +3,16 @@ import path from "node:path";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { fetchPolymarketEventBySlug } from "@/server/services/polymarketEventImport";
+import {
+  normalizePolymarketSoccerEvent,
+  normalizePolymarketSoccerMarket,
+  normalizedSoccerMetadata,
+} from "@/server/services/soccerProviderNormalization";
 import { executeMobileLiveProviderRefreshRoute } from "@/app/api/mobile/events/[slug]/provider-refresh/route";
 
 const DEFAULT_PROVIDER_EVENT_SLUG = "world-cup-winner";
 const DEFAULT_LOCAL_EVENT_SLUG = "mobile-fj-real-world-cup-winner";
+const DEFAULT_MARKET_LIMIT = 8;
 const DEFAULT_OUTPUT_PATH = "docs/mobile/harness/cycle-FJ-real-provider-home-ticket/cycle-FJ-real-provider-world-cup-winner.json";
 
 const dec = (value: Prisma.Decimal.Value) => new Prisma.Decimal(value);
@@ -15,6 +21,7 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   const providerEventSlug = args.providerEventSlug ?? DEFAULT_PROVIDER_EVENT_SLUG;
   const eventSlug = args.eventSlug ?? DEFAULT_LOCAL_EVENT_SLUG;
+  const marketLimit = parsePositiveInt(args.marketLimit, DEFAULT_MARKET_LIMIT);
   const outputPath = args.output ?? DEFAULT_OUTPUT_PATH;
   const providerEvent = await fetchPolymarketEventBySlug(providerEventSlug);
   const markets = providerEvent.markets
@@ -24,7 +31,7 @@ async function main() {
     .filter((market) => market.bestBid != null && market.bestAsk != null && market.bestBid <= market.bestAsk)
     .filter((market) => market.bestBid != null && market.bestAsk != null && market.bestBid >= 0.01 && market.bestAsk <= 0.99)
     .sort((a, b) => (b.liquidity ?? 0) - (a.liquidity ?? 0))
-    .slice(0, 8);
+    .slice(0, marketLimit);
 
   if (markets.length < 3) {
     throw new Error(`Provider event ${providerEventSlug} exposed fewer than 3 usable World Cup winner markets.`);
@@ -59,6 +66,7 @@ async function main() {
       opticOdds: process.env.OPTIC_ODDS_API_KEY ? "configured_optional" : "unconfigured_optional_non_blocking",
     },
     prepared,
+    marketLimit,
     refresh: {
       ok: refresh.ok,
       providerLifecycle: refresh.providerLifecycle,
@@ -99,6 +107,12 @@ async function prepareLocalEvent(params: {
   markets: Awaited<ReturnType<typeof fetchPolymarketEventBySlug>>["markets"];
 }) {
   const now = new Date();
+  const normalizedEvent = normalizePolymarketSoccerEvent({
+    externalSlug: params.providerEventSlug,
+    title: params.title,
+    description: params.description,
+    category: "Sports / Soccer",
+  });
   const event = await prisma.event.upsert({
     where: { slug: params.eventSlug },
     create: {
@@ -106,50 +120,63 @@ async function prepareLocalEvent(params: {
       title: params.title || "World Cup Winner",
       description: params.description,
       category: "Sports / Soccer",
-      sportKey: "soccer",
-      leagueKey: "world_cup",
-      eventType: "future",
-      homeTeamName: "World Cup",
-      awayTeamName: "Winner",
+      sportKey: normalizedEvent.sportKey,
+      leagueKey: normalizedEvent.leagueKey,
+      eventType: normalizedEvent.eventType,
+      homeTeamName: normalizedEvent.homeTeamName,
+      awayTeamName: normalizedEvent.awayTeamName,
       status: "live",
       liveStatus: "LIVE",
-      period: "Futures",
-      clock: "Live",
+      period: normalizedEvent.period,
+      clock: normalizedEvent.clock,
       homeScore: 0,
       awayScore: 0,
       source: "polymarket",
       externalSlug: params.providerEventSlug,
       imageUrl: params.image,
       sourceUpdatedAt: now,
-      metadata: eventMetadata(params.providerEventSlug, now),
+      metadata: eventMetadata(params.providerEventSlug, now, normalizedEvent),
     },
     update: {
       title: params.title || "World Cup Winner",
       description: params.description,
       category: "Sports / Soccer",
-      sportKey: "soccer",
-      leagueKey: "world_cup",
-      eventType: "future",
-      homeTeamName: "World Cup",
-      awayTeamName: "Winner",
+      sportKey: normalizedEvent.sportKey,
+      leagueKey: normalizedEvent.leagueKey,
+      eventType: normalizedEvent.eventType,
+      homeTeamName: normalizedEvent.homeTeamName,
+      awayTeamName: normalizedEvent.awayTeamName,
       status: "live",
       liveStatus: "LIVE",
-      period: "Futures",
-      clock: "Live",
+      period: normalizedEvent.period,
+      clock: normalizedEvent.clock,
       homeScore: 0,
       awayScore: 0,
       source: "polymarket",
       externalSlug: params.providerEventSlug,
       imageUrl: params.image,
       sourceUpdatedAt: now,
-      metadata: eventMetadata(params.providerEventSlug, now),
+      metadata: eventMetadata(params.providerEventSlug, now, normalizedEvent),
     },
   });
 
   const saved = [];
   for (const [index, providerMarket] of params.markets.entries()) {
     const teamLabel = extractTeamLabel(providerMarket.question);
+    const normalizedMarket = normalizePolymarketSoccerMarket(normalizedEvent, providerMarket, teamLabel);
     const marketSlug = `${params.eventSlug}-${providerMarket.slug}`;
+    const existingMarket = await prisma.market.findUnique({
+      where: { slug: marketSlug },
+      select: { referenceMetadata: true },
+    });
+    const referenceMetadata = marketMetadata(
+      params.providerEventSlug,
+      providerMarket,
+      teamLabel,
+      normalizedEvent,
+      normalizedMarket,
+      existingMarket?.referenceMetadata ?? null,
+    );
     const market = await prisma.market.upsert({
       where: { slug: marketSlug },
       create: {
@@ -158,10 +185,17 @@ async function prepareLocalEvent(params: {
         description: params.description ?? providerMarket.question,
         categoryLegacy: "sports",
         type: "BINARY",
-        marketType: "moneyline",
-        marketGroupKey: "main",
-        marketGroupTitle: "Game Lines",
+        marketType: normalizedMarket.marketType,
+        marketGroupKey: normalizedMarket.marketGroupKey,
+        marketGroupTitle: normalizedMarket.marketGroupTitle,
         displayOrder: index,
+        line: normalizedMarket.line,
+        unit: normalizedMarket.unit,
+        period: normalizedMarket.period,
+        participantType: normalizedMarket.participantType,
+        participantName: normalizedMarket.participantName,
+        participantId: normalizedMarket.participantId,
+        propCategory: normalizedMarket.propCategory,
         status: "LIVE",
         eventId: event.id,
         visibility: "PUBLIC",
@@ -171,19 +205,27 @@ async function prepareLocalEvent(params: {
         externalSlug: providerMarket.slug,
         externalMarketId: providerMarket.marketId,
         conditionId: providerMarket.conditionId,
-        rulesText: "Real Polymarket-backed World Cup winner market imported for Holiwyn local MVP proof.",
+        rules: normalizedMarket.rules,
+        rulesText: normalizedMarket.rulesText,
         sourceUpdatedAt: now,
-        referenceMetadata: marketMetadata(params.providerEventSlug, providerMarket, teamLabel),
+        referenceMetadata,
       },
       update: {
         title: providerMarket.question,
         description: params.description ?? providerMarket.question,
         categoryLegacy: "sports",
         type: "BINARY",
-        marketType: "moneyline",
-        marketGroupKey: "main",
-        marketGroupTitle: "Game Lines",
+        marketType: normalizedMarket.marketType,
+        marketGroupKey: normalizedMarket.marketGroupKey,
+        marketGroupTitle: normalizedMarket.marketGroupTitle,
         displayOrder: index,
+        line: normalizedMarket.line,
+        unit: normalizedMarket.unit,
+        period: normalizedMarket.period,
+        participantType: normalizedMarket.participantType,
+        participantName: normalizedMarket.participantName,
+        participantId: normalizedMarket.participantId,
+        propCategory: normalizedMarket.propCategory,
         status: "LIVE",
         eventId: event.id,
         visibility: "PUBLIC",
@@ -193,8 +235,10 @@ async function prepareLocalEvent(params: {
         externalSlug: providerMarket.slug,
         externalMarketId: providerMarket.marketId,
         conditionId: providerMarket.conditionId,
+        rules: normalizedMarket.rules,
+        rulesText: normalizedMarket.rulesText,
         sourceUpdatedAt: now,
-        referenceMetadata: marketMetadata(params.providerEventSlug, providerMarket, teamLabel),
+        referenceMetadata,
       },
     });
 
@@ -312,8 +356,13 @@ async function upsertYesNoOutcomes(params: {
   return { yes: saved[0], no: saved[1] };
 }
 
-function eventMetadata(providerEventSlug: string, now: Date): Prisma.InputJsonValue {
+function eventMetadata(
+  providerEventSlug: string,
+  now: Date,
+  normalizedEvent: ReturnType<typeof normalizePolymarketSoccerEvent>,
+): Prisma.InputJsonValue {
   return {
+    ...(normalizedSoccerMetadata({ event: normalizedEvent }) as Record<string, unknown>),
     cycle: "FJ",
     providerSource: "polymarket-gamma",
     providerEventSlug,
@@ -332,9 +381,22 @@ function marketMetadata(
   providerEventSlug: string,
   market: Awaited<ReturnType<typeof fetchPolymarketEventBySlug>>["markets"][number],
   teamLabel: string,
+  normalizedEvent: ReturnType<typeof normalizePolymarketSoccerEvent>,
+  normalizedMarket: ReturnType<typeof normalizePolymarketSoccerMarket>,
+  existing: Prisma.JsonValue | null,
 ): Prisma.InputJsonValue {
+  const current =
+    existing && typeof existing === "object" && !Array.isArray(existing)
+      ? (existing as Record<string, unknown>)
+      : {};
   return {
+    ...current,
+    ...(normalizedSoccerMetadata({ event: normalizedEvent, market: normalizedMarket }) as Record<string, unknown>),
     importedFrom: "polymarket",
+    importStatus: "approved",
+    referenceOnly: false,
+    tradable: true,
+    mmEnabled: true,
     importCycle: "FJ",
     providerEventSlug,
     teamLabel,
@@ -366,6 +428,12 @@ function parseArgs(argv: string[]) {
     args[key] = parts.join("=");
   }
   return args;
+}
+
+function parsePositiveInt(value: string | undefined, fallback: number) {
+  if (!value) return fallback;
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }
 
 main()

@@ -1,7 +1,25 @@
 import { describe, expect, test } from "vitest";
-import { buildListedReferenceMetadata } from "@/server/services/polymarketEventImport";
+import {
+  buildListedReferenceMetadata,
+  derivePolymarketLocalEventSlug,
+} from "@/server/services/polymarketEventImport";
 
 describe("polymarket grouped event import metadata", () => {
+  test("maps current World Cup Winner provider slug to the mobile event slug", () => {
+    expect(
+      derivePolymarketLocalEventSlug({
+        externalSlug: "world-cup-winner",
+        title: "World Cup Winner",
+      }),
+    ).toBe("mobile-fj-real-world-cup-winner");
+    expect(
+      derivePolymarketLocalEventSlug({
+        externalSlug: "2026-fifa-world-cup-winner-595",
+        title: "World Cup Winner",
+      }),
+    ).toBe("mobile-fj-real-world-cup-winner");
+  });
+
   test("preserves reference review fields when attaching listed group metadata", () => {
     const metadata = buildListedReferenceMetadata({
       teamLabel: "France",
