@@ -85,6 +85,8 @@ Secrets are intentionally omitted.
 | Local fake-token MM seed | `seedReferenceLiquidityBotForMarket` for Argentina, England, France | Local fake-token mutation | Pass |
 | Live-ready marking | `mark_launch_liquidity_live_ready.ts --mode apply --confirm MARK_LAUNCH_LIVE_READY` | Local metadata mutation | Pass |
 | Bot dry-run | poly-bot `bot:polymarket:mm:dry-run` allowlist England/Argentina/France | Dry-run | Pass |
+| Live-local bot | poly-bot `bot:polymarket:mm:live-local` allowlist Argentina/England/France | Local fake-token mutation | Pass |
+| Mobile provider order | `holiwyn-mobile-dev` API credential against Argentina provider market | Local fake-token mutation | Pass, filled |
 | Backend order safety | `canonical_order_submission.phase5.test.ts` | Read-only test | Pass, 11 tests |
 | Mobile cashout/cancel services | `positionCloseService`, `openOrderService`, `api` tests | Read-only test | Pass, 32 tests |
 | S23 Home proof | UI hierarchy inspection | Device proof | Pass |
@@ -140,12 +142,12 @@ Mobile route proof:
 Readiness gate:
 
 - DB connected: yes
-- Mobile-visible event count: 7
+- Mobile-visible event count: 2
 - Provider-backed mobile-visible event count: 2
 - Provider markets inspected: 11
 - Snapshot-ready provider markets: 11
 - Local market-maker-ready provider markets: 3
-- Open-order-backed provider markets: 0
+- Open-order-backed provider markets: 3
 - Readiness blockers: none
 
 Local-MM-ready seeded markets:
@@ -154,7 +156,7 @@ Local-MM-ready seeded markets:
 - England World Cup Winner
 - France World Cup Winner
 
-These are seeded with local fake-token bot inventory/credentials only. No real Polymarket orders were placed. The readiness gate does not require open local orders, so `openOrderBackedCount=0` remains a next runtime action rather than a P0 gate failure.
+These are seeded with local fake-token bot inventory/credentials only. No real Polymarket orders were placed. Final live-local runtime placed local Poly orders for all three seeded markets, so `openOrderBackedCount=3`.
 
 Mobile Home/Search feed behavior:
 
@@ -182,7 +184,23 @@ Observed shifted quote plans:
 
 This proves the core model: local bid is worse than Polymarket bid by configured ticks, and local ask is worse than Polymarket ask by configured ticks. No orders were placed in dry-run.
 
-Earlier live-local fake-token proof also moved England, France, and Argentina through `live_enabled`/`manage_quotes` with local Poly orders only. No real Polymarket order path was used.
+Final live-local bot proof:
+
+- Argentina: reference `0.193 / 0.194`, local shifted quotes placed at `0.17 / 0.21` for YES and `0.79 / 0.83` for NO.
+- England: reference `0.145 / 0.146`, local shifted quotes placed at `0.12 / 0.17` for YES and `0.83 / 0.87` for NO.
+- France: reference `0.330 / 0.331`, local shifted quotes placed at `0.31 / 0.35` for YES and `0.65 / 0.69` for NO.
+- Backend readiness after the run: `localMmReadyCount=3`, `openOrderBackedCount=3`, blockers `[]`.
+
+Mobile fake-token provider order proof:
+
+- Account: `holiwyn-mobile-dev`.
+- Market: Argentina World Cup Winner provider-backed market.
+- Quote route returned selected best bid/ask `0.17 / 0.21`.
+- Mobile-account BUY at `0.21` filled against the local bot order.
+- `/api/portfolio` returned the new backend position with `1.00` share and bid/ask `0.17 / 0.21`.
+- Proof script was temporary and ignored: `.runtime/prove-provider-backed-mobile-order.mjs`.
+
+No real Polymarket order path was used.
 
 ## S23 Proof
 
@@ -207,8 +225,10 @@ S23 Portfolio:
 - displayed `Cash out`
 - displayed `Portfolio route proof`
 - displayed `Filled shares`
+- Existing Expo server-mode S23 Portfolio also showed a real backend position and cash-out affordance after the live-local bot/order proof.
+- A fresh Expo restart on port `8082` with a new `holiwyn-mobile-dev` credential was attempted, but Metro did not finish serving `/status`; the stalled process was stopped. The same-account provider order/portfolio proof is therefore API-level in this loop, while S23 Portfolio remains proven on the existing server-mode bundle.
 
-This closes the previous account-split caveat: the S23 app and backend order/portfolio proof now align on the same local account state.
+This keeps S23 UI coverage green and closes backend same-account trading behavior for `holiwyn-mobile-dev`, but a clean fresh-credential S23 reload remains a P1 proof-hardening item.
 
 ## Cashout, Sell, And Cancel Safety
 
@@ -268,6 +288,11 @@ None remaining from this loop.
    - Quotes are fresh and trading proof is not blocked.
    - Next action: keep chart/history out of MVP trading readiness unless explicitly required.
 
+5. Fresh Expo reload with a newly generated mobile dev credential stalled on port `8082`.
+   - Existing S23 server-mode Portfolio proof still passed.
+   - Same-account provider order/portfolio behavior was proven at the backend/API level.
+   - Next action: stabilize a one-command S23 server-mode launcher that injects a fresh API key without exposing it.
+
 ### P2
 
 1. Broaden normalized soccer classifier coverage for corners, cards, and player props when valid provider data exists.
@@ -282,7 +307,7 @@ Ready for server deployment rehearsal: no.
 
 Ready for production/public launch: no.
 
-Reason: local backend, normalized provider ingestion, mobile server-mode feed, reference snapshots, shifted bot dry-run, fake-token order/portfolio state, cashout/sell safety tests, cancel tests, and S23 Home/Event Detail/Portfolio proof passed. Server deployment and production still need broader provider coverage, environment hardening, credential/output sanitization, monitoring, and public-money safety review.
+Reason: local backend, normalized provider ingestion, mobile server-mode feed, reference snapshots, shifted bot dry-run, live-local fake-token bot orders, fake-token mobile-account filled order/portfolio state, cashout/sell safety tests, cancel tests, and S23 Home/Event Detail/Portfolio proof passed. Server deployment and production still need broader provider coverage, environment hardening, credential/output sanitization, monitoring, and public-money safety review.
 
 ## Next Recommended Loop
 
