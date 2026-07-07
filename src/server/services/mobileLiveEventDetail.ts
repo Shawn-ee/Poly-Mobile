@@ -129,6 +129,13 @@ const depthLevelsFromSnapshot = (snapshot: Awaited<ReturnType<typeof buildPublic
   })),
 ];
 
+const displayPriceFromProviderQuote = (quote: OrderbookSnapshot["providerQuoteOutcomes"][number] | null) => {
+  if (!quote) return null;
+  if (quote.outcomePrice != null && Number.isFinite(quote.outcomePrice)) return quote.outcomePrice;
+  if (quote.bestBid != null && quote.bestAsk != null) return (quote.bestBid + quote.bestAsk) / 2;
+  return quote.bestAsk ?? quote.bestBid ?? null;
+};
+
 const emptyProviderQuoteSnapshot: Awaited<ReturnType<typeof buildPublicOrderbookSnapshot>>["providerQuoteSnapshot"] = {
   source: "reference-quote-snapshot",
   status: "unavailable",
@@ -176,6 +183,7 @@ const emptyOrderbookSnapshot: Awaited<ReturnType<typeof buildPublicOrderbookSnap
     isEstimatedSize: false,
     reason: "No provider quote snapshot is available.",
   },
+  providerQuoteOutcomes: [],
   providerQuoteSnapshot: emptyProviderQuoteSnapshot,
 };
 
@@ -676,6 +684,7 @@ export async function serializeMobileLiveEventDetail(input: {
         : marketAvailability;
       const bidByOutcome = new Map(depth.snapshot.bids.map((level) => [level.outcomeId, level]));
       const askByOutcome = new Map(depth.snapshot.asks.map((level) => [level.outcomeId, level]));
+      const providerQuoteByOutcome = new Map(depth.snapshot.providerQuoteOutcomes.map((quote) => [quote.outcomeId, quote]));
       return {
         id: market.id,
         title: market.title,
@@ -715,9 +724,11 @@ export async function serializeMobileLiveEventDetail(input: {
         outcomes: market.outcomes.map((outcome) => {
           const bid = bidByOutcome.get(outcome.id) ?? null;
           const ask = askByOutcome.get(outcome.id) ?? null;
-          const bestBid = bid?.price ?? null;
-          const bestAsk = ask?.price ?? null;
-          const price = bestBid != null && bestAsk != null ? (bestBid + bestAsk) / 2 : bestAsk ?? bestBid ?? 0.5;
+          const providerQuote = providerQuoteByOutcome.get(outcome.id) ?? null;
+          const bestBid = providerQuote?.bestBid ?? bid?.price ?? null;
+          const bestAsk = providerQuote?.bestAsk ?? ask?.price ?? null;
+          const providerPrice = displayPriceFromProviderQuote(providerQuote);
+          const price = providerPrice ?? (bestBid != null && bestAsk != null ? (bestBid + bestAsk) / 2 : bestAsk ?? bestBid ?? 0.5);
           return {
             id: outcome.id,
             name: outcome.name,

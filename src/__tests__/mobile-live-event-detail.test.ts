@@ -68,6 +68,25 @@ describe("mobile live event detail contract", () => {
         sources: ["polymarket-clob"],
         reason: "Provider orderbook depth snapshot is fresh.",
       },
+      providerQuoteDepth: {
+        source: "reference-quote-snapshot",
+        levelCount: 2,
+        sizeSource: "liquidity",
+        isEstimatedSize: true,
+        reason: "Provider quote snapshots expose top-of-book prices; sizes are estimated from provider liquidity fields.",
+      },
+      providerQuoteOutcomes: [
+        {
+          outcomeId: "home",
+          source: "polymarket",
+          outcomePrice: 0.62,
+          bestBid: 0.59,
+          bestAsk: 0.65,
+          acceptingOrders: true,
+          fetchedAt: "2026-07-03T22:00:10.000Z",
+          updatedAt: "2026-07-03T22:00:11.000Z",
+        },
+      ],
       providerQuoteSnapshot: {
         source: "reference-quote-snapshot",
         status: "ready",
@@ -401,6 +420,14 @@ describe("mobile live event detail contract", () => {
         sources: [],
         reason: "No provider orderbook depth snapshot is available.",
       },
+      providerQuoteDepth: {
+        source: "reference-quote-snapshot",
+        levelCount: 0,
+        sizeSource: null,
+        isEstimatedSize: false,
+        reason: "No provider quote snapshot is available.",
+      },
+      providerQuoteOutcomes: [],
       providerQuoteSnapshot: {
         source: "reference-quote-snapshot",
         status: "unavailable",
@@ -515,6 +542,25 @@ describe("mobile live event detail contract", () => {
         sources: ["polymarket-clob"],
         reason: "Provider orderbook depth snapshot is refresh-due.",
       },
+      providerQuoteDepth: {
+        source: "reference-quote-snapshot",
+        levelCount: 2,
+        sizeSource: "liquidity",
+        isEstimatedSize: true,
+        reason: "Provider quote snapshots expose top-of-book prices; sizes are estimated from provider liquidity fields.",
+      },
+      providerQuoteOutcomes: [
+        {
+          outcomeId: "home",
+          source: "polymarket",
+          outcomePrice: 0.62,
+          bestBid: 0.59,
+          bestAsk: 0.65,
+          acceptingOrders: true,
+          fetchedAt: "2026-07-03T21:59:40.000Z",
+          updatedAt: "2026-07-03T21:59:40.000Z",
+        },
+      ],
       providerQuoteSnapshot: {
         source: "reference-quote-snapshot",
         status: "ready",

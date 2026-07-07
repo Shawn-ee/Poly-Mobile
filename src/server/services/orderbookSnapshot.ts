@@ -30,6 +30,7 @@ type ProviderSnapshotRow = {
   fetchedAt: Date;
   updatedAt: Date;
   acceptingOrders: boolean;
+  outcomePrice: Prisma.Decimal | null;
   bestBid: Prisma.Decimal | null;
   bestAsk: Prisma.Decimal | null;
   liquidity: Prisma.Decimal | null;
@@ -85,6 +86,16 @@ export type PublicOrderbookSnapshot = {
     isEstimatedSize: boolean;
     reason: string;
   };
+  providerQuoteOutcomes: Array<{
+    outcomeId: string;
+    source: string;
+    outcomePrice: number | null;
+    bestBid: number | null;
+    bestAsk: number | null;
+    acceptingOrders: boolean;
+    fetchedAt: string;
+    updatedAt: string;
+  }>;
   providerQuoteSnapshot: {
     source: "reference-quote-snapshot";
     status: "ready" | "stale" | "unavailable";
@@ -159,6 +170,7 @@ export async function buildPublicOrderbookSnapshot(params: {
           fetchedAt: true,
           updatedAt: true,
           acceptingOrders: true,
+          outcomePrice: true,
           bestBid: true,
           bestAsk: true,
           liquidity: true,
@@ -231,9 +243,60 @@ export async function buildPublicOrderbookSnapshot(params: {
         isEstimatedSize: providerDepth.levelCount > 0,
         reason: providerDepth.reason,
       },
+      providerQuoteOutcomes: buildProviderQuoteOutcomes(providerSnapshots),
       providerQuoteSnapshot,
     } satisfies PublicOrderbookSnapshot;
   });
+}
+
+export function buildProviderQuoteOutcomes(snapshots: ProviderSnapshotRow[]): PublicOrderbookSnapshot["providerQuoteOutcomes"] {
+  const latestByOutcome = new Map<string, ProviderSnapshotRow>();
+  for (const snapshot of snapshots) {
+    const existing = latestByOutcome.get(snapshot.outcomeId);
+    if (
+      !existing ||
+      snapshot.fetchedAt > existing.fetchedAt ||
+      (snapshot.fetchedAt.getTime() === existing.fetchedAt.getTime() && snapshot.updatedAt > existing.updatedAt)
+    ) {
+      latestByOutcome.set(snapshot.outcomeId, snapshot);
+    }
+  }
+
+  return [...latestByOutcome.values()].map((snapshot) => ({
+    outcomeId: snapshot.outcomeId,
+    source: snapshot.source,
+    outcomePrice: decimalToNumber(snapshot.outcomePrice),
+    ...normalizeProviderBidAsk({
+      outcomePrice: decimalToNumber(snapshot.outcomePrice),
+      bestBid: decimalToNumber(snapshot.bestBid),
+      bestAsk: decimalToNumber(snapshot.bestAsk),
+    }),
+    acceptingOrders: snapshot.acceptingOrders,
+    fetchedAt: snapshot.fetchedAt.toISOString(),
+    updatedAt: snapshot.updatedAt.toISOString(),
+  }));
+}
+
+function normalizeProviderBidAsk(quote: {
+  outcomePrice: number | null;
+  bestBid: number | null;
+  bestAsk: number | null;
+}) {
+  const { outcomePrice, bestBid, bestAsk } = quote;
+  if (outcomePrice == null || bestBid == null || bestAsk == null) {
+    return { bestBid, bestAsk };
+  }
+  const midpoint = (bestBid + bestAsk) / 2;
+  const complementBid = 1 - bestAsk;
+  const complementAsk = 1 - bestBid;
+  const complementMidpoint = (complementBid + complementAsk) / 2;
+  if (Math.abs(outcomePrice - complementMidpoint) + 0.000001 < Math.abs(outcomePrice - midpoint) && Math.abs(outcomePrice - midpoint) > 0.1) {
+    return {
+      bestBid: Number(complementBid.toFixed(8)),
+      bestAsk: Number(complementAsk.toFixed(8)),
+    };
+  }
+  return { bestBid, bestAsk };
 }
 
 export function buildProviderOrderbookDepth(rows: ProviderOrderbookDepthRow[]) {

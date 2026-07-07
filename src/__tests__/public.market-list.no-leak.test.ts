@@ -89,9 +89,12 @@ const expectedMarketKeys = [
   "id",
   "importStatus",
   "kind",
+  "line",
+  "liquidity",
   "marketType",
   "mechanism",
   "mmEnabled",
+  "orderbookDepth",
   "outcomes",
   "prices",
   "pricesByOutcome",
@@ -222,6 +225,57 @@ describe("public market list API no-leak checks", () => {
       ],
     });
     expectNoForbiddenKeys(body);
+  });
+
+  test("GET /api/markets uses provider quote snapshots for provider-backed display odds", async () => {
+    jest.mocked(getOutcomeQuotes).mockResolvedValue(
+      new Map([
+        ["yes", { bestBid: 0.98, bestAsk: null, bestBidSize: 25, bestAskSize: null, mid: 0.98, spread: null }],
+        ["no", { bestBid: null, bestAsk: null, bestBidSize: null, bestAskSize: null, mid: 0.5, spread: null }],
+      ]),
+    );
+    mockPrisma.market.findMany.mockResolvedValue([
+      {
+        ...market,
+        referenceSource: "polymarket",
+        externalMarketId: "pm-world-cup-winner",
+        referenceQuoteSnapshots: [
+          {
+            outcomeId: "yes",
+            source: "polymarket",
+            outcomePrice: 0.1715,
+            bestBid: 0.171,
+            bestAsk: 0.172,
+            spread: 0.001,
+            fetchedAt: now,
+            updatedAt: now,
+          },
+          {
+            outcomeId: "no",
+            source: "polymarket",
+            outcomePrice: 0.8285,
+            bestBid: 0.828,
+            bestAsk: 0.829,
+            spread: 0.001,
+            fetchedAt: now,
+            updatedAt: now,
+          },
+        ],
+      },
+    ]);
+
+    const response = await listMarkets(new NextRequest("http://localhost/api/markets"));
+
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body.markets[0].outcomes).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: "yes", price: 0.1715, bestBid: 0.171, bestAsk: 0.172 }),
+        expect.objectContaining({ id: "no", price: 0.8285, bestBid: 0.828, bestAsk: 0.829 }),
+      ]),
+    );
+    expect(body.markets[0].prices).toEqual({ YES: 0.1715, NO: 0.8285 });
+    expect(body.markets[0].pricesByOutcome).toEqual({ yes: 0.1715, no: 0.8285 });
   });
 
   test("GET /api/markets returns an empty public market list without sensitive keys", async () => {

@@ -12,6 +12,9 @@ export const marketReadInclude = Prisma.validator<Prisma.MarketInclude>()({
     orderBy: { ts: "desc" },
     take: 240,
   },
+  referenceQuoteSnapshots: {
+    orderBy: [{ fetchedAt: "desc" }, { updatedAt: "desc" }],
+  },
   event: true,
   category: true,
   tags: { include: { tag: true } },
@@ -41,6 +44,75 @@ const buildLegacyBinaryPrices = (
   };
 };
 
+const decimalToNumber = (value: Prisma.Decimal | null | undefined) => {
+  if (value == null) return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
+const latestReferenceQuoteByOutcome = (
+  snapshots: MarketWithRelations["referenceQuoteSnapshots"] | undefined,
+) => {
+  const latestByOutcome = new Map<string, MarketWithRelations["referenceQuoteSnapshots"][number]>();
+  for (const snapshot of snapshots ?? []) {
+    const existing = latestByOutcome.get(snapshot.outcomeId);
+    if (
+      !existing ||
+      snapshot.fetchedAt > existing.fetchedAt ||
+      (snapshot.fetchedAt.getTime() === existing.fetchedAt.getTime() && snapshot.updatedAt > existing.updatedAt)
+    ) {
+      latestByOutcome.set(snapshot.outcomeId, snapshot);
+    }
+  }
+  return latestByOutcome;
+};
+
+const displayQuoteFromReferenceSnapshot = (
+  snapshot: MarketWithRelations["referenceQuoteSnapshots"][number] | null,
+) => {
+  if (!snapshot) return null;
+  const outcomePrice = decimalToNumber(snapshot.outcomePrice);
+  const { bestBid, bestAsk } = normalizeReferenceBidAsk({
+    outcomePrice,
+    bestBid: decimalToNumber(snapshot.bestBid),
+    bestAsk: decimalToNumber(snapshot.bestAsk),
+  });
+  const price = outcomePrice ?? (bestBid != null && bestAsk != null ? (bestBid + bestAsk) / 2 : bestAsk ?? bestBid);
+  if (price == null) return null;
+  return {
+    bestBid,
+    bestAsk,
+    bestBidSize: null,
+    bestAskSize: null,
+    mid: price,
+    spread: decimalToNumber(snapshot.spread) ?? (bestBid != null && bestAsk != null ? bestAsk - bestBid : null),
+  };
+};
+
+const normalizeReferenceBidAsk = (quote: {
+  outcomePrice: number | null;
+  bestBid: number | null;
+  bestAsk: number | null;
+}) => {
+  const { outcomePrice, bestBid, bestAsk } = quote;
+  if (outcomePrice == null || bestBid == null || bestAsk == null) {
+    return { bestBid, bestAsk };
+  }
+  const midpoint = (bestBid + bestAsk) / 2;
+  const complementBid = 1 - bestAsk;
+  const complementAsk = 1 - bestBid;
+  const complementMidpoint = (complementBid + complementAsk) / 2;
+  const midpointDistance = Math.abs(outcomePrice - midpoint);
+  const complementDistance = Math.abs(outcomePrice - complementMidpoint);
+  if (complementDistance + 0.000001 < midpointDistance && midpointDistance > 0.1) {
+    return {
+      bestBid: Number(complementBid.toFixed(8)),
+      bestAsk: Number(complementAsk.toFixed(8)),
+    };
+  }
+  return { bestBid, bestAsk };
+};
+
 export const serializeMarketReadModel = async (market: MarketWithRelations) => {
   const referenceReview = parseReferenceReview(market.referenceMetadata);
   const outcomeQuotes =
@@ -56,8 +128,24 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
           ]),
         );
 
+  const referenceQuoteByOutcome = latestReferenceQuoteByOutcome(market.referenceQuoteSnapshots);
+  const displayQuoteByOutcome = new Map(
+    market.outcomes.map((outcome) => [
+      outcome.id,
+      displayQuoteFromReferenceSnapshot(referenceQuoteByOutcome.get(outcome.id) ?? null) ??
+        outcomeQuotes.get(outcome.id) ?? {
+          bestBid: null,
+          bestAsk: null,
+          bestBidSize: null,
+          bestAskSize: null,
+          mid: 0.5,
+          spread: null,
+        },
+    ]),
+  );
+
   const pricesByOutcome = Object.fromEntries(
-    market.outcomes.map((outcome) => [outcome.id, outcomeQuotes.get(outcome.id)?.mid ?? 0.5]),
+    market.outcomes.map((outcome) => [outcome.id, displayQuoteByOutcome.get(outcome.id)?.mid ?? 0.5]),
   );
   const legacyPrices = buildLegacyBinaryPrices(market.outcomes, pricesByOutcome);
   const referenceSummary = await getReferenceSummaryForMarket(market.id);
@@ -118,7 +206,7 @@ export const serializeMarketReadModel = async (market: MarketWithRelations) => {
     resolveTime: market.resolveTime,
     createdAt: market.createdAt,
     outcomes: market.outcomes.map((outcome) => {
-      const quote = outcomeQuotes.get(outcome.id) ?? {
+      const quote = displayQuoteByOutcome.get(outcome.id) ?? {
         bestBid: null,
         bestAsk: null,
         bestBidSize: null,
