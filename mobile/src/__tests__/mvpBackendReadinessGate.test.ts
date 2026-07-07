@@ -11,6 +11,8 @@ describe("MVP backend readiness gate", () => {
     expect(source).toContain('if (page.source === "local-fallback")');
     expect(source).not.toContain("const filteredFallbackEvents = worldCupEvents.filter((event) => matchesHomeFilter(event, homeFilter))");
     expect(source).not.toContain("setEvents(worldCupEvents)");
+    expect(source).toContain('useState<Event[]>(() => MARKET_DATA_MODE === "server" ? [] : worldCupEvents)');
+    expect(source).toContain('useState<Market[]>(() => MARKET_DATA_MODE === "server" ? [] : worldCupFutures)');
     expect(source).toContain("if (!append) setEvents([])");
   });
 

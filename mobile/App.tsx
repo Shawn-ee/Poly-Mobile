@@ -345,7 +345,7 @@ export default function App() {
     ORDER_MODE === "server" && DEFAULT_API_KEY.length > 0 ? "syncing" : "hidden"
   );
   const [accountSummary, setAccountSummary] = useState<AccountSummaryViewModel | null>(null);
-  const [events, setEvents] = useState<Event[]>(worldCupEvents);
+  const [events, setEvents] = useState<Event[]>(() => MARKET_DATA_MODE === "server" ? [] : worldCupEvents);
   const [eventNextCursor, setEventNextCursor] = useState<string | null>(null);
   const [isLoadingMoreEvents, setIsLoadingMoreEvents] = useState(false);
   const [searchEvents, setSearchEvents] = useState<Event[]>([]);
@@ -358,7 +358,7 @@ export default function App() {
   const [isRefreshingLive, setIsRefreshingLive] = useState(false);
   const [liveRefreshTick, setLiveRefreshTick] = useState(0);
   const [launchUrlVersion, setLaunchUrlVersion] = useState(0);
-  const [futures, setFutures] = useState<Market[]>(worldCupFutures);
+  const [futures, setFutures] = useState<Market[]>(() => MARKET_DATA_MODE === "server" ? [] : worldCupFutures);
   const [runtimeApiKey, setRuntimeApiKey] = useState(DEFAULT_API_KEY);
   const [apiKeyDiagnosticEnabled, setApiKeyDiagnosticEnabled] = useState(false);
   const [apiKeyDiagnostic, setApiKeyDiagnostic] = useState<string | null>(null);

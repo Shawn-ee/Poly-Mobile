@@ -42,7 +42,7 @@ export class PolyApi {
     }
   }
 
-  listWorldCupEvents(input: string | { search?: string; limit?: number; cursor?: string | null; status?: string | null } = "") {
+  listWorldCupEvents(input: string | { search?: string; limit?: number; cursor?: string | null; status?: string | null; source?: string | null } = "") {
     const search = typeof input === "string" ? input : input.search ?? "";
     const params = new URLSearchParams({
       sportKey: "soccer",
@@ -55,6 +55,7 @@ export class PolyApi {
       if (input.limit) params.set("limit", String(input.limit));
       if (input.cursor) params.set("cursor", input.cursor);
       if (input.status?.trim()) params.set("status", input.status.trim());
+      if (input.source?.trim()) params.set("source", input.source.trim());
     }
     params.set("includeMobileMarkets", "1");
     return this.request<{ events: EventSummary[]; nextCursor?: string | null; page?: { limit: number; nextCursor: string | null; hasMore: boolean } }>(`/api/events?${params.toString()}`);

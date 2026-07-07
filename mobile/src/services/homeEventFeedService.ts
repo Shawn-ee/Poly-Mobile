@@ -21,6 +21,7 @@ export type LoadHomeEventFeedPageInput = {
   filter?: HomeEventFeedFilter;
   limit: number;
   cursor?: string | null;
+  source?: string | null;
   fallbackEvents?: EventSummary[];
 };
 
@@ -36,6 +37,7 @@ export const loadHomeEventFeedPage = async ({
   filter = "all",
   limit,
   cursor = null,
+  source = "polymarket",
   fallbackEvents = [],
 }: LoadHomeEventFeedPageInput): Promise<HomeEventFeedPage> => {
   const safeLimit = Math.max(1, Math.floor(limit));
@@ -47,6 +49,7 @@ export const loadHomeEventFeedPage = async ({
         limit: safeLimit,
         cursor,
         status,
+        source,
       });
       const nextCursor = payload.nextCursor ?? payload.page?.nextCursor ?? null;
       return {

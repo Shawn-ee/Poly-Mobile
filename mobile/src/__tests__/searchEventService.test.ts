@@ -52,6 +52,7 @@ describe("searchEventService", () => {
       search: "mexico",
       limit: 2,
       cursor: null,
+      source: "polymarket",
     });
   });
 

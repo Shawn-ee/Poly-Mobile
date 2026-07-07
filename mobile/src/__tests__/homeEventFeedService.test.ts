@@ -52,6 +52,7 @@ describe("homeEventFeedService", () => {
       limit: 2,
       cursor: null,
       status: "live",
+      source: "polymarket",
     });
   });
 
@@ -67,6 +68,7 @@ describe("homeEventFeedService", () => {
       limit: 10,
       cursor: null,
       status: null,
+      source: "polymarket",
     });
   });
 

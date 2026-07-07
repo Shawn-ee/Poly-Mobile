@@ -18,6 +18,7 @@ export type LoadSearchEventPageInput = {
   query: string;
   limit: number;
   cursor?: string | null;
+  source?: string | null;
   fallbackEvents?: EventSummary[];
 };
 
@@ -63,6 +64,7 @@ export const loadSearchEventPage = async ({
   query,
   limit,
   cursor = null,
+  source = "polymarket",
   fallbackEvents = [],
 }: LoadSearchEventPageInput): Promise<SearchEventPage> => {
   const safeLimit = Math.max(1, Math.floor(limit));
@@ -74,6 +76,7 @@ export const loadSearchEventPage = async ({
         search: trimmedQuery,
         limit: safeLimit,
         cursor,
+        source,
       });
       const nextCursor = payload.nextCursor ?? payload.page?.nextCursor ?? null;
       return {
