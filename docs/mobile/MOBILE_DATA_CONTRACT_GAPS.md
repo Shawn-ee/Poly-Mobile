@@ -2,6 +2,29 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle OS - Provider Breadth / Line Inspection
+
+Closed or narrowed:
+
+- Current route proof confirms broad provider-backed World Cup Search/runtime has 3 provider-backed events.
+- S23 proof confirms server-mode Search can show multiple provider-backed World Cup rows when launched with the correct backend env.
+- Proof scripts now accept a cycle name, reducing stale evidence labels in future provider-breadth cycles.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total line markets for current match pages.
+- A scheduled provider refresh job or route-triggered freshness policy for provider-backed Search/runtime data.
+- More current/live World Cup match events with provider-backed market identity.
+
+Route mismatch:
+
+- A manual Expo launch without `EXPO_PUBLIC_MARKET_DATA_MODE=server` produced `0 results` for `world` because the app used fallback/mock mode. Proof runs must launch with server-mode env or a dev build configured for the backend.
+
+Temporary mock/static data:
+
+- Current match line markets remain contract-shaped fixtures with explicit source disclosure.
+- No new frontend-only random structures were added.
+
 ## Cycle OR - Home/Live Provider Breadth Status Guard
 
 Closed or narrowed:

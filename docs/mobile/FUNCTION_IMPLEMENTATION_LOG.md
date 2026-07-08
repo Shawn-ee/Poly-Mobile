@@ -2,6 +2,48 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle OS - Provider Breadth / Line Inspection
+
+Feature/page worked on:
+
+- Provider-backed World Cup Search visibility.
+- Provider line-market availability for the current Local MVP match.
+- Provider proof-script naming hygiene.
+
+Frontend/services touched:
+
+- No mobile UI source changed.
+- `scripts/prove_mobile_provider_breadth_runtime.ts`
+- `scripts/prove_mobile_search_provider_breadth.ts`
+
+Important functions/services touched:
+
+- Provider breadth route proof now accepts `--cycle`.
+- Search provider breadth route proof now accepts `--cycle`.
+- Existing mobile Search route/runtime was proven on Samsung S23 in server mode.
+
+User interactions supported:
+
+- Users can open Search with a World Cup query and see multiple provider-backed World Cup predictions from the backend route.
+- The current MVP match still honestly shows provider-backed regulation winner and contract-fixture line markets.
+
+State transitions:
+
+- Diagnostic launch without server-mode env showed `0 results`.
+- Fresh Expo reload with `EXPO_PUBLIC_MARKET_DATA_MODE=server`, `EXPO_PUBLIC_API_BASE_URL=http://127.0.0.1:3002`, and `adb reverse tcp:3002 tcp:3002` loaded provider-backed Search results correctly.
+
+Known limitations:
+
+- Polymarket Gamma exposes 0 current-match Spread/Totals/Team Total markets for `argentina-vs-egypt`.
+- Broad line candidate search found 0 attach-ready line candidates and preserved the strict relevance gate.
+- No source-label micro-proof or visual UI polish was added.
+
+Evidence:
+
+- Audit doc: `docs/mobile/audits/cycle-OS-provider-breadth-line-inspection.md`
+- S23 XML: `docs/mobile/harness/cycle-OS-provider-breadth-line-inspection/cycle-OS-s23-search-provider-breadth-servermode-reload.xml`
+- S23 screenshot: `docs/mobile/screenshots/cycle-OS-provider-breadth-line-inspection/cycle-OS-s23-search-provider-breadth-servermode-reload.png`
+
 ## Cycle OR - Home/Live Provider Breadth Status Guard
 
 Feature/page worked on:
