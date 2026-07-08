@@ -5,9 +5,12 @@ param(
   [string]$MobileApiBaseUrl = "http://172.16.200.14:3002",
   [string]$BackendBaseUrl = "http://127.0.0.1:3002",
   [string]$EventSlug = "argentina-vs-egypt",
+  [string]$TargetProviderMarketId = "2793741",
   [string]$Cycle = "MQ",
   [string]$OutputDir = "docs\mobile\screenshots\cycle-MQ-provider-winner-s23-visible-flow",
-  [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-MQ-provider-winner-s23-visible-flow"
+  [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-MQ-provider-winner-s23-visible-flow",
+  [switch]$SeedCounterparty,
+  [switch]$ExpectFilledHistory
 )
 
 $ErrorActionPreference = "Stop"
@@ -96,9 +99,16 @@ function Invoke-TapNode {
 }
 
 function Invoke-TapProviderWinnerOutcome {
-  param([string]$Path)
+  param(
+    [string]$Path,
+    [string]$ProviderMarketId
+  )
   [xml]$hierarchy = Get-Content -Raw -Path $Path
-  $nodes = $hierarchy.SelectNodes("//*[contains(@content-desc,'selection-provider-source-polymarket') and contains(@content-desc,'selection-market-type-winner') and contains(@content-desc,'selection-contract-side-yes')]")
+  $providerFilter = if ($ProviderMarketId) { " and contains(@content-desc,'selection-provider-market-$ProviderMarketId')" } else { "" }
+  $nodes = $hierarchy.SelectNodes("//*[contains(@content-desc,'selection-provider-source-polymarket') and contains(@content-desc,'selection-market-type-winner') and contains(@content-desc,'selection-contract-side-yes')$providerFilter]")
+  if ($nodes.Count -eq 0 -and $ProviderMarketId) {
+    $nodes = $hierarchy.SelectNodes("//*[contains(@content-desc,'provider-regulation-1x2-outcome-EGY') or contains(@content-desc,'selection-provider-market-$ProviderMarketId')]")
+  }
   foreach ($node in $nodes) {
     if ($node.bounds -match "^\[(\d+),(\d+)\]\[(\d+),(\d+)\]$") {
       $left = [int]$Matches[1]
@@ -197,6 +207,14 @@ try {
     throw "Backend health is not ok."
   }
 
+  $counterpartyProofPath = Join-Path $HierarchyOutputDir "cycle-$Cycle-provider-winner-counterparty.json"
+  if ($SeedCounterparty) {
+    cmd /c npx.cmd tsx scripts/seed_mobile_route_spread_counterparty.ts "--eventSlug=$EventSlug" "--marketGroupKey=main" "--outcomeSide=yes" "--askPrice=0.52" "--askSize=80" "--cleanupProofBids" "--proofUserPrefix=holiwyn-mobile-" "--output=$counterpartyProofPath" | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+      throw "Provider winner counterparty seed failed for $EventSlug."
+    }
+  }
+
   $env:MOBILE_DEV_USERNAME = "holiwyn-mobile-$($Cycle.ToLower())-s23-$(Get-Date -Format yyyyMMddHHmmss)"
   $credentialRaw = cmd /c npm.cmd run mobile:dev-credential 2>&1 | Out-String
   if ($LASTEXITCODE -ne 0) {
@@ -269,7 +287,7 @@ try {
   Assert-Contains -Path $winnerXml -Expected @("Regulation Time Winner", "Provider", "Argentina", "Draw", "Egypt", "selection-market-type-winner", "selection-line-none", "provider-source-polymarket", "selection-provider-market-2793738", "selection-provider-market-2793739", "selection-provider-market-2793741")
   Assert-NotContains -Path $winnerXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
-  Invoke-TapProviderWinnerOutcome -Path $winnerXml
+  Invoke-TapProviderWinnerOutcome -Path $winnerXml -ProviderMarketId $TargetProviderMarketId
   Start-Sleep -Seconds 2
   Save-Screenshot -Name "cycle-$Cycle-provider-winner-ticket.png" | Out-Null
   $ticketXml = Save-Hierarchy -Name "cycle-$Cycle-provider-winner-ticket.xml"
@@ -287,6 +305,9 @@ try {
   Save-Screenshot -Name "cycle-$Cycle-provider-winner-after-submit.png" | Out-Null
   $afterSubmitXml = Save-Hierarchy -Name "cycle-$Cycle-provider-winner-after-submit.xml"
   Assert-Contains -Path $afterSubmitXml -Expected @("Portfolio", "portfolio-market-type-winner", "portfolio-line-none", "portfolio-provider-source-polymarket")
+  if ($ExpectFilledHistory) {
+    Assert-Contains -Path $afterSubmitXml -Expected @("position-card-", "portfolio-position-source-badge")
+  }
   Assert-NotContains -Path $afterSubmitXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
   Invoke-TapNode -Path $afterSubmitXml -Identifier "portfolio-tab-history"
@@ -294,6 +315,10 @@ try {
   Save-Screenshot -Name "cycle-$Cycle-provider-winner-portfolio-history.png" | Out-Null
   $historyXml = Save-Hierarchy -Name "cycle-$Cycle-provider-winner-portfolio-history.xml"
   Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "portfolio-market-type-winner", "portfolio-line-none", "portfolio-provider-source-polymarket")
+  if ($ExpectFilledHistory) {
+    Assert-Contains -Path $historyXml -Expected @("activity-row-", "portfolio-history-source-badge")
+    Assert-NotContains -Path $historyXml -Unexpected @("No history")
+  }
 
   $summary = [ordered]@{
     cycle = $Cycle
@@ -307,6 +332,9 @@ try {
     keyId = "redacted"
     apiKey = "redacted"
     eventSlug = $EventSlug
+    targetProviderMarketId = $TargetProviderMarketId
+    seededCounterparty = [bool]$SeedCounterparty
+    counterpartyProof = if ($SeedCounterparty) { $counterpartyProofPath } else { $null }
     assertions = [ordered]@{
       homeShowsCurrentMatch = $true
       detailShowsProviderWinner = $true
@@ -317,6 +345,7 @@ try {
       swipeSubmitReachedPortfolio = $true
       portfolioPreservesProviderWinnerSource = $true
       historyPreservesProviderWinnerSource = $true
+      filledHistoryVisible = [bool]$ExpectFilledHistory
     }
     artifacts = @(
       "$OutputDir\cycle-$Cycle-current-mvp-home.png",

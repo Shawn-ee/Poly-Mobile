@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MS - Provider Winner Filled History
+
+Closed or narrowed:
+
+- Provider-backed Regulation Winner is now proven on S23 as a filled fake-token lifecycle, not only an open/latest-order path.
+- Ticket, Portfolio position, and History preserve `referenceSource=polymarket`, winner market type, no-line identity, and provider market id.
+- The proof now uses valid local service liquidity for the provider winner path instead of arbitrary fixture prices.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected events.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- None for the Regulation Winner filled-history path.
+- Local `contract-fixture` line markets remain backend-shaped, source-labeled MVP fallback rows.
+
 ## Cycle MR - Provider Winner 1X2 Parity
 
 Closed or narrowed:

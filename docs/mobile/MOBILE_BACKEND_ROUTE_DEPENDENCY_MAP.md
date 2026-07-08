@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle MS - Provider Winner Filled History
+
+Cycle MS proves the provider-backed Regulation Winner route data through a filled S23 ticket/order/Portfolio/history lifecycle.
+
+- S23 proof: `docs/mobile/harness/cycle-MS-provider-winner-filled-history/cycle-MS-provider-winner-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-MS-provider-winner-filled-history.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider-backed Regulation Winner filled lifecycle | `/api/events?...includeMobileMarkets=1&mobileMvpMatches=1`, `/api/mobile/events/:slug/live-detail`, `/api/orders`, `/api/portfolio`, `/api/portfolio/history` | GET for Home/detail/Portfolio/history; POST for order submit | Public event viewing; existing mobile API auth for order/portfolio | Existing ticket order body with selected `marketId`, `outcomeId`, `marketType=winner`, `line=null`, `period=regulation`, provider IDs/tokens | `referenceSource=polymarket`, `externalMarketId`, `conditionId`, `referenceTokenId`, `selection.referenceSource`, filled trade/position/history selection snapshots | Existing `Event`, `Market`, `Outcome`, `Order`, `Trade`, `Position`/portfolio read models; no schema change | No mock fallback for provider winner fill; proof uses existing valid local liquidity for provider market `2793741` | Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected events. |
+
 ## Cycle MR - Provider Winner 1X2 Parity
 
 Cycle MR fixes Event Detail rendering for provider-backed soccer Regulation Winner markets.

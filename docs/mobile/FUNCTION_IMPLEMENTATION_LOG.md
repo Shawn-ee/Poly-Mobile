@@ -2,6 +2,34 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MS - Provider Winner Filled History
+
+Feature/page worked on:
+
+- Proved provider-backed Regulation Winner can fill and appear in Portfolio/history on S23.
+- Adjusted the provider-winner proof to target a provider-backed outcome with valid local liquidity instead of trying to seed an invalid hardcoded ask.
+
+Frontend/services touched:
+
+- `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1`
+
+User interactions supported/proven:
+
+- On S23, opened Home -> Event Detail -> provider-backed 1X2 winner ticket.
+- Selected provider market `2793741`, entered `$25`, swiped to buy, and reached Portfolio.
+- Portfolio positions and History both showed provider-backed winner source identity.
+
+Verified:
+
+- Script parse check passed.
+- Focused provider 1X2 selection test passed.
+- Mobile typecheck passed.
+- S23 proof passed: `docs/mobile/harness/cycle-MS-provider-winner-filled-history/cycle-MS-provider-winner-s23-visible-flow.json`.
+
+Known limitations:
+
+- This does not make Spread/Totals/Team Total provider-backed. They remain explicit Local `contract-fixture` rows until real attach-ready Polymarket line markets exist.
+
 ## Cycle MR - Provider Winner 1X2 Parity
 
 Feature/page worked on:

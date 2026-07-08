@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle MS
+
+Gate status: Pass
+
+Scope: Provider-backed Regulation Winner filled history.
+
+Decision:
+
+- P0 failed: 0 for focused provider-backed winner filled-history lifecycle.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-MS-provider-winner-filled-history/cycle-MS-provider-winner-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MS-provider-winner-filled-history/`, `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1`, `docs/mobile/audits/cycle-MS-provider-winner-filled-history.md`.
+- Notes: S23 proof targets provider market `2793741`, submits a fake-token buy, and shows provider-backed winner identity in Portfolio positions and History.
+
 ## Cycle MR
 
 Gate status: Pass
