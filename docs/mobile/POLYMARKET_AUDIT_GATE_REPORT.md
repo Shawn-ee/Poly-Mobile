@@ -5390,3 +5390,34 @@ Decision:
 - Pass/fail: Pass.
 - Remaining P1: server-owned canceled history response should replace mobile-local canceled activity append later.
 - Remaining P1: real provider-backed line markets remain missing.
+
+## Cycle OC
+
+Gate status: Pass for server-owned cancel history preference
+
+Scope: Make the existing Local MVP cancel/history path prefer server-returned canceled activity after order cancellation.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OC-server-owned-cancel-history.md`
+- `docs/mobile/harness/cycle-OC-server-owned-cancel-history/cycle-OC-open-order-cancel-route-contract.json`
+- `docs/mobile/harness/cycle-OC-server-owned-cancel-history/cycle-OC-portfolio-sync-route-contract.json`
+- `docs/mobile/harness/cycle-OC-server-owned-cancel-history/cycle-OC-server-owned-cancel-history-proof.json`
+- `docs/mobile/screenshots/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-portfolio.png`
+- `docs/mobile/screenshots/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-portfolio-canceled.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OC-P0-01 | P0 | Pass | Cancel path waits for `DELETE /api/orders/:id` before server refresh. | Fix `cancelOpenOrder()`. |
+| OC-P0-02 | P0 | Pass | Mobile refreshes `/api/portfolio` and `/api/portfolio/history` after cancel. | Fix `refreshServerPortfolio()`. |
+| OC-P0-03 | P0 | Pass | Mobile detects `canceled-order-${order.id}` and skips duplicate local append. | Fix server activity detection. |
+| OC-P0-04 | P0 | Pass | Route proof preserves selected line/source/token identity in canceled history. | Fix backend history mapping. |
+| OC-P0-05 | P0 | Pass | S23 proof shows visible open order cancel and History canceled activity. | Fix Portfolio cancel/history UI. |
+
+Decision:
+
+- Pass/fail: Pass for the narrow OC lifecycle scope.
+- Remaining P1: real provider-backed Spread/Totals/Team Total markets remain missing and should be prioritized next.
+- Remaining P2: inherited proof wrapper artifact names still use `cycle-OB` prefixes inside the OC output folder.

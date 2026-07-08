@@ -3083,3 +3083,18 @@ Cycle OB implementation notes:
 
 - No schema migration was added.
 - No orderbook, chat, live stats, or social features were touched.
+
+## Cycle OC - Server-Owned Cancel History
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Cancel open order | `/api/orders/:id` through `api.cancelOrder(order.id)` | DELETE | Mobile API key with order scope and order ownership | Order id in route | Cancel success and canceled order status | `Order`, order ownership/status fields | None added. | None for current local MVP cancel. |
+| Portfolio refresh after cancel | `/api/portfolio` through `loadPortfolioSnapshot(api)` | GET | Mobile API key with account/portfolio read scope | None | Balance, positions, open orders after cancel | `UserBalance`, `Order`, `Trade`, portfolio read model | None added. | None for current local MVP refresh. |
+| Server-owned canceled activity | `/api/portfolio/history` through `loadPortfolioHistoryActivities(api)` | GET | Mobile API key with account/history read scope | None | `canceledOrders[]`, `selection`, `marketType`, `line`, `period`, source/token identity, activity id `canceled-order-${order.id}` | `Order`, persisted order request body, market/outcome identity | Mobile only appends local canceled activity if server history does not return the canceled order. | None for current cancel/history proof. |
+| S23 visible lifecycle proof | `mobile/scripts/local-mvp-home-route-server-cancel-proof.ps1` | Device proof | Temporary mobile dev API key | Expo deep link plus API key | Home event, Event Detail, ticket, Portfolio open order, canceled History row | Same as above plus temporary proof credential | None added. | Harness filename prefix cleanup remains. |
+
+Cycle OC implementation notes:
+
+- No backend route or schema changed; this cycle consumes the existing server history contract more correctly.
+- No orderbook, chat, live stats, or social features were touched.
+- Inspection confirms the remaining product-service gap is real provider-backed line market breadth: Regulation Winner is Polymarket-backed, while Spread/Totals/Team Total remain backend-shaped contract fixtures.

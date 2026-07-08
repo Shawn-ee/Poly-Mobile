@@ -742,3 +742,12 @@ For every UI element or interaction, answer:
 - OB preserves selected market type, line, period, contract side, source, and provider token identity in the canceled History row.
 - Remaining P1: server-owned canceled history response should replace the mobile-local canceled activity append in a later backend hardening cycle.
 - Remaining P1: real provider-backed Spread/Totals/Team Total ingestion remains open.
+
+## Cycle OC Gap Tracker Update
+
+- PM-GAP-123 server-owned canceled history is narrowed: mobile now prefers the server returned `/api/portfolio/history` canceled order activity after cancel and only local-appends as fallback.
+- OC proves the Local MVP lifecycle on Samsung S23: Home -> `Argentina vs. Egypt` -> Event Detail -> Spread line -> Trade Ticket -> server fake-token order -> Portfolio open order -> Cancel -> Portfolio History canceled activity.
+- Route proof confirms `/api/orders/:id DELETE`, `/api/portfolio`, and `/api/portfolio/history` preserve selected line/source/token identity through cancellation.
+- Current inspection confirms the service is not yet full Polymarket line parity: Regulation Winner is Polymarket-backed, while Spread/Totals/Team Total remain `contract-fixture`.
+- Remaining P1: real provider-backed Spread/Totals/Team Total ingestion/mapping remains the next structural milestone.
+- Remaining P2: proof wrapper artifact filenames should be renamed from inherited `cycle-OB` prefixes.

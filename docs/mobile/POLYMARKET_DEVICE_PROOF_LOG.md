@@ -930,6 +930,40 @@ Pass for stale Event Detail status honesty.
 Remaining gaps:
 Real current live match discovery/breadth is still missing, and line families remain contract fixtures.
 
+### 2026-07-08 - Cycle OC - Server-owned cancel history
+
+Reference device:
+Not used. This was a Holiwyn Local MVP lifecycle hardening cycle based on current service inspection and existing Polymarket-style retail flow criteria.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM_S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://172.16.200.14:3002`, temporary Expo port `8310`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, tapped the current MVP event, selected a Spread line in Event Detail, entered ticket amount, submitted a fake-token server order, opened Portfolio, canceled the open order, and verified History showed a canceled activity row.
+
+Evidence:
+- `docs/mobile/harness/cycle-OC-server-owned-cancel-history/cycle-OC-server-owned-cancel-history-proof.json`
+- `docs/mobile/harness/cycle-OC-server-owned-cancel-history/cycle-OC-open-order-cancel-route-contract.json`
+- `docs/mobile/harness/cycle-OC-server-owned-cancel-history/cycle-OC-portfolio-sync-route-contract.json`
+- `docs/mobile/screenshots/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-home.png`
+- `docs/mobile/screenshots/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-detail-top.png`
+- `docs/mobile/screenshots/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-line-markets.png`
+- `docs/mobile/screenshots/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-spread-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-portfolio.png`
+- `docs/mobile/screenshots/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-portfolio-canceled.png`
+
+Smoke/tests:
+Mobile TypeScript, open-order cancel route contract proof, portfolio sync contract proof, and S23 visible proof passed.
+
+Result:
+Pass for server-owned cancel history preference in the Local MVP flow.
+
+Remaining gaps:
+Spread/Totals/Team Total are still `contract-fixture`; real provider-backed line market ingestion/mapping remains the next structural service gap.
+
 ### 2026-07-08 - Cycle OA - Current MVP S23 server order proof
 
 Reference device:

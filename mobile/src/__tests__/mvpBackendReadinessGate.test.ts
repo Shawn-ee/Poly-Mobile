@@ -26,13 +26,15 @@ describe("MVP backend readiness gate", () => {
     expect(source).not.toContain("serverValueHistory?.range === activeRange && serverValueHistory.status !== \"error\"");
   });
 
-  test("server-mode cancel waits for backend success before local removal", () => {
+  test("server-mode cancel prefers server-owned canceled history after backend success", () => {
     const source = appSource();
     const cancelBlock = source.slice(source.indexOf("const cancelOpenOrder ="), source.indexOf("return (", source.indexOf("const cancelOpenOrder =")));
 
     expect(cancelBlock).toContain('if (ORDER_MODE !== "server")');
     expect(cancelBlock).toContain("cancelOpenOrderOnServer({ mode: ORDER_MODE, api, order })");
+    expect(cancelBlock).toContain("refreshServerPortfolio().then((serverState)");
+    expect(cancelBlock).toContain("serverCanceledActivity");
     expect(cancelBlock.indexOf('if (ORDER_MODE !== "server")')).toBeLessThan(cancelBlock.indexOf("cancelOpenOrderOnServer"));
-    expect(cancelBlock.lastIndexOf("setOpenOrders((current) => current.filter((item) => item.id !== order.id))")).toBeGreaterThan(cancelBlock.indexOf("cancelOpenOrderOnServer"));
+    expect(cancelBlock.lastIndexOf("setActivities((current) => appendUniqueActivity(current, canceledActivity))")).toBeGreaterThan(cancelBlock.indexOf("!serverCanceledActivity"));
   });
 });

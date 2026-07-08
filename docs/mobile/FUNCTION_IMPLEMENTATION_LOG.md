@@ -7961,3 +7961,48 @@ Known limitations:
 
 - Current canceled activity is shown from the mobile-side canceled activity append after server cancel/refresh.
 - Line market source remains `contract-fixture`, not provider-backed Polymarket line data.
+
+## Cycle OC - Server-Owned Cancel History
+
+Feature/page worked on:
+
+- Local MVP Portfolio/history lifecycle after canceling a server-backed fake-token open order.
+
+Frontend files touched:
+
+- `mobile/App.tsx`
+- `mobile/src/__tests__/mvpBackendReadinessGate.test.ts`
+- `docs/mobile/audits/cycle-OC-server-owned-cancel-history.md`
+
+Important functions/services touched:
+
+- `refreshServerPortfolio()`
+- `cancelOpenOrder()`
+- `loadServerPortfolioState()`
+
+User interactions supported/proven:
+
+- User opens Home and Event Detail for the current MVP route-backed event.
+- User selects a Spread line, opens the ticket, enters an amount, and submits a server fake-token order.
+- User sees the open order in Portfolio.
+- User taps Cancel and lands on History.
+- History shows the canceled order using server-owned `/api/portfolio/history` activity when available.
+
+State transitions:
+
+- `DELETE /api/orders/:id` completes first.
+- Mobile refreshes `/api/portfolio` and `/api/portfolio/history`.
+- If refreshed server activities contain `canceled-order-${order.id}`, mobile does not append a duplicate local canceled row.
+- If the server history row is missing, mobile keeps the previous local append fallback so the user still gets visible cancellation feedback.
+
+Validation:
+
+- Mobile TypeScript passed.
+- Route proof passed for open-order cancel and canceled history selection preservation.
+- Portfolio sync contract proof passed for server returned canceled activity.
+- Samsung S23 proof passed on `SM_S911U1`.
+
+Known limitations:
+
+- The inherited proof wrapper still writes some screenshot/XML filenames with a `cycle-OB` prefix even when using the OC output folders.
+- Spread/Totals/Team Total remain `contract-fixture` line markets. The next structural milestone should focus on real Polymarket-backed line market availability/mapping instead of more lifecycle UI polish.

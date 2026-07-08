@@ -1221,8 +1221,9 @@ export default function App() {
   const refreshServerPortfolio = useCallback(async () => {
     setPortfolioSyncStatus("syncing");
     const serverState = await loadServerPortfolioState(api);
-    if (!mounted.current) return;
+    if (!mounted.current) return serverState;
     applyServerState(serverState);
+    return serverState;
   }, [api, applyServerState]);
 
   const loadPortfolioValueHistory = useCallback(
@@ -1743,8 +1744,11 @@ export default function App() {
     cancelOpenOrderOnServer({ mode: ORDER_MODE, api, order })
       .then(() => {
         if (ORDER_MODE === "server") {
-          return refreshServerPortfolio().then(() => {
-            if (mounted.current) {
+          return refreshServerPortfolio().then((serverState) => {
+            const serverCanceledActivity = serverState?.activities?.some(
+              (activity) => activity.action === "canceled" && activity.id === `canceled-order-${order.id}`,
+            );
+            if (mounted.current && !serverCanceledActivity) {
               setActivities((current) => appendUniqueActivity(current, canceledActivity));
             }
           });

@@ -6452,3 +6452,35 @@ Temporary mock/static data:
 Future migration concern:
 
 - Promote canceled activity into the server history contract so Portfolio History can be fully server-owned after cancellation.
+
+## Cycle OC - Server-Owned Cancel History
+
+Closed or narrowed:
+
+- The server-owned canceled history gap from Cycle OB is narrowed: mobile now refreshes `/api/portfolio/history` after cancel and prefers the server-returned `canceled-order-${order.id}` activity.
+- Local canceled activity append is now a fallback only, not the default when the backend history route provides the row.
+- Route proof confirms canceled activity preserves selected market type, line, period, side, source, condition/token identity, market id, and outcome id.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total market identities for current World Cup events.
+- Provider-owned line availability and price contracts for spreads/totals/team totals when Polymarket exposes attach-ready markets.
+- Broader current live/current World Cup event inventory.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch blocked cancel/history proof.
+- The proof wrapper still uses inherited `cycle-OB` internal artifact names while writing into the OC output folder.
+
+Temporary mock/static data:
+
+- No new arbitrary frontend mock data was added.
+- Existing backend-shaped `contract-fixture` line market rows remain the Local MVP path for non-winner line markets.
+
+Future migration concern:
+
+- Replace contract-fixture line rows with real provider rows where Polymarket Gamma/CLOB exposes attach-ready markets, while preserving the selected market/line/outcome identity now proven through ticket, order, portfolio, and history.

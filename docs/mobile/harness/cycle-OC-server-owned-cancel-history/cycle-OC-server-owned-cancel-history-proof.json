@@ -1,0 +1,56 @@
+{
+  "cycle": "OC",
+  "scenario": "Home route-backed event opens spread ticket, submits server fake-token order, cancels it, and shows server-owned Portfolio history activity",
+  "command": "powershell -ExecutionPolicy Bypass -File mobile/scripts/local-mvp-home-route-server-cancel-proof.ps1 -Device adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp -Port 8310 -BackendBaseUrl http://127.0.0.1:3002 -OutputDir docs\\mobile\\screenshots\\cycle-OC-server-owned-cancel-history -HierarchyOutputDir docs\\mobile\\harness\\cycle-OC-server-owned-cancel-history",
+  "device": {
+    "adbId": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "model": "SM_S911U1"
+  },
+  "backendBaseUrl": "http://127.0.0.1:3002",
+  "serverEventSlug": "argentina-vs-egypt",
+  "marketDataMode": "server",
+  "orderMode": "server",
+  "result": "pass",
+  "assertions": {
+    "homeDiscovery": [
+      "route-backed event card",
+      "fresh seeded event card tapped from Home"
+    ],
+    "detailHydration": [
+      "same route-backed event",
+      "price chart",
+      "Game Lines"
+    ],
+    "ticket": [
+      "spread ticket opens from Home-opened detail",
+      "amount set to 25",
+      "server order mode active"
+    ],
+    "serverPortfolio": [
+      "POST /api/orders succeeds through mobile",
+      "Portfolio sync returns server open order before cancel",
+      "DELETE /api/orders/:id succeeds through mobile",
+      "Portfolio/history returns canceled activity",
+      "mobile prefers server canceled history and only local-appends as fallback"
+    ],
+    "noFallback": [
+      "no Mexico/Ecuador fallback",
+      "no default orderbook UI"
+    ]
+  },
+  "artifacts": [
+    "docs/mobile/screenshots/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-home.png",
+    "docs/mobile/harness/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-home.xml",
+    "docs/mobile/screenshots/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-detail-top.png",
+    "docs/mobile/harness/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-detail-top.xml",
+    "docs/mobile/screenshots/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-line-markets.png",
+    "docs/mobile/harness/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-line-markets.xml",
+    "docs/mobile/screenshots/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-spread-ticket-ready.png",
+    "docs/mobile/harness/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-spread-ticket-ready.xml",
+    "docs/mobile/screenshots/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-portfolio.png",
+    "docs/mobile/harness/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-portfolio.xml",
+    "docs/mobile/screenshots/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-portfolio-canceled.png",
+    "docs/mobile/harness/cycle-OC-server-owned-cancel-history/cycle-OB-current-mvp-home-server-cancel-portfolio-canceled.xml"
+  ],
+  "wrapperNote": "The inherited proof wrapper still prefixes screenshot and XML filenames with cycle-OB; the output folders and this summary are scoped to cycle-OC."
+}

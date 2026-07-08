@@ -1,0 +1,80 @@
+{
+  "cycle": "OC",
+  "scope": "open-order-cancel-route-contract",
+  "generatedAt": "2026-07-08T16:48:03.250Z",
+  "route": "/api/orders/:id DELETE",
+  "portfolioRoutes": [
+    "/api/portfolio",
+    "/api/portfolio/history"
+  ],
+  "orderId": "c939a89f-eee2-4116-9460-0d58af33ce70",
+  "marketId": "af698901-328c-4ada-b55e-d4494b6b9a10",
+  "outcomeId": "e0733e46-4bdd-4066-9497-69cf59ab71fd",
+  "checks": {
+    "mobileServiceCalledRoute": true,
+    "openOrderRemovedAfterCancel": true,
+    "canceledHistoryCreated": true,
+    "canceledActivityPreservesSelection": true
+  },
+  "beforeOpenOrder": {
+    "id": "c939a89f-eee2-4116-9460-0d58af33ce70",
+    "status": "OPEN",
+    "selection": {
+      "marketId": "af698901-328c-4ada-b55e-d4494b6b9a10",
+      "outcomeId": "e0733e46-4bdd-4066-9497-69cf59ab71fd",
+      "marketType": "spread",
+      "marketGroupId": "spread:regulation:1.5",
+      "line": "1.5",
+      "period": "Regulation",
+      "side": "home",
+      "displayLabel": "Home -1.5",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalMarketId": "gamma-cycle-jz-spread-5ce94c60",
+      "conditionId": "condition-cycle-jz-spread-5ce94c60",
+      "referenceTokenId": "token-cycle-jz-home-5ce94c60"
+    }
+  },
+  "cancelResponse": {
+    "status": "CANCELED",
+    "canceledByApiKeyId": "redacted"
+  },
+  "canceledHistory": {
+    "id": "c939a89f-eee2-4116-9460-0d58af33ce70",
+    "status": "CANCELED",
+    "selection": {
+      "marketId": "af698901-328c-4ada-b55e-d4494b6b9a10",
+      "outcomeId": "e0733e46-4bdd-4066-9497-69cf59ab71fd",
+      "marketType": "spread",
+      "marketGroupId": "spread:regulation:1.5",
+      "line": "1.5",
+      "period": "Regulation",
+      "side": "home",
+      "displayLabel": "Home -1.5",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalMarketId": "gamma-cycle-jz-spread-5ce94c60",
+      "conditionId": "condition-cycle-jz-spread-5ce94c60",
+      "referenceTokenId": "token-cycle-jz-home-5ce94c60"
+    }
+  },
+  "canceledActivity": {
+    "id": "canceled-order-c939a89f-eee2-4116-9460-0d58af33ce70",
+    "action": "canceled",
+    "selection": {
+      "marketId": "af698901-328c-4ada-b55e-d4494b6b9a10",
+      "outcomeId": "e0733e46-4bdd-4066-9497-69cf59ab71fd",
+      "marketType": "spread",
+      "marketGroupId": "spread:regulation:1.5",
+      "line": "1.5",
+      "period": "Regulation",
+      "side": "home",
+      "displayLabel": "Home -1.5",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalMarketId": "gamma-cycle-jz-spread-5ce94c60",
+      "conditionId": "condition-cycle-jz-spread-5ce94c60",
+      "referenceTokenId": "token-cycle-jz-home-5ce94c60"
+    }
+  }
+}

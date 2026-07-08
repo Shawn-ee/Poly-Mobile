@@ -1,0 +1,43 @@
+{
+  "pass": true,
+  "createdAt": "2026-07-08T16:48:25.891Z",
+  "routes": [
+    "/api/portfolio",
+    "/api/portfolio/history"
+  ],
+  "auth": "canonical account:read API key",
+  "service": "loadServerPortfolioState",
+  "syncStatus": "synced",
+  "snapshot": {
+    "balance": 125.5,
+    "positions": 1,
+    "openOrders": 1,
+    "proofPosition": {
+      "id": "server-63c10155-0107-4b23-9d65-01632f959692-Home -1.5",
+      "marketId": "63c10155-0107-4b23-9d65-01632f959692",
+      "outcomeId": "f77aa185-774c-483f-88e6-7cbe7e881816",
+      "displayLabel": "Home -1.5",
+      "marketType": "spread",
+      "currentValue": 17.6,
+      "pnl": -0.3999999999999986
+    },
+    "proofOpenOrder": {
+      "id": "eba1f5ab-fb53-4272-b6af-b857e53b484f",
+      "side": "buy",
+      "displayLabel": "Home -1.5"
+    }
+  },
+  "activities": {
+    "count": 2,
+    "canceled": {
+      "id": "canceled-order-0df03ec7-a499-4a35-912c-65eb7ca6fa1d",
+      "action": "canceled",
+      "displayLabel": "Home -1.5"
+    },
+    "recentTrade": {
+      "id": "trade-fbfda5d1-8e30-4673-8708-18855d3b8dac",
+      "action": "opened",
+      "displayLabel": "Home -1.5"
+    }
+  }
+}
