@@ -2,6 +2,49 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle OT - World Cup Winner Provider Breadth Refresh
+
+Feature/page worked on:
+
+- Provider readiness proof for `world-cup-winner`.
+- Mobile Search provider breadth visibility on Samsung S23.
+- UI regression/source-change reporting after provider/source-label work.
+
+Frontend/services touched:
+
+- No mobile UI source changed.
+- `scripts/prove_mobile_real_provider_world_cup_winner.ts`
+
+Important functions/services touched:
+
+- The World Cup winner provider proof now accepts `--cycle` and writes the cycle name into the proof summary plus event/market metadata.
+- Existing provider import/refresh behavior is preserved: Polymarket Gamma discovers markets, CLOB-backed data refreshes quotes/depth, and Optic Odds is optional/unconfigured.
+
+User interactions supported:
+
+- Users can open Search on S23 and see multiple provider-backed World Cup predictions:
+  - `World Cup Winner`
+  - `Which continent will win the World Cup?`
+  - `Argentina vs. Egypt`
+
+State transitions:
+
+- Provider proof imports/refreshed `provider-breadth-world-cup-winner`.
+- Backend route proof shows broad provider runtime ready.
+- S23 Search proof shows the refreshed provider rows in mobile server mode.
+
+Known limitations:
+
+- Home remains Local MVP match-only and does not show broad futures/outrights.
+- Current match Spread/Totals/Team Total markets remain contract-shaped fixtures because no attach-ready Polymarket line markets are available for the selected MVP match.
+- No order placement or bot breadth was rerun in this cycle.
+
+Evidence:
+
+- Audit doc: `docs/mobile/audits/cycle-OT-world-cup-winner-breadth-refresh.md`
+- S23 XML: `docs/mobile/harness/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-s23-provider-breadth-search.xml`
+- S23 screenshot: `docs/mobile/screenshots/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-s23-provider-breadth-search.png`
+
 ## Cycle OS - Provider Breadth / Line Inspection
 
 Feature/page worked on:
