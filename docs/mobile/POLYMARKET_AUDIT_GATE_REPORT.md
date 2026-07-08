@@ -16,6 +16,21 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle OV
+
+Gate status: Pass for provider breadth/Search visibility and match-only classification guard; partial for bot quote placement.
+
+Scope: Nation top-goalscorer provider breadth and classification guard.
+
+Decision:
+
+- P0 failed: 0 for focused provider breadth route/Search visibility and match-only classification scope.
+- Closed P0: `world-cup-nation-of-top-goalscorer` no longer leaks into `mobileMvpMatches=1`; it is normalized as `eventType=future`, `marketProfile=outright`.
+- Bot runtime note: dry-run/live-local ran against the tiny `England` allowlist and used fresh reference bid/ask, but quote placement was skipped by `per_market_exposure_cap_reached_20060_of_20000`. That is a risk-cap/seed sizing blocker, not a provider discovery blocker.
+- P1/P2 remaining: P1 real provider-backed current/live match breadth remains limited; P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable; P1 scheduled refresh and bot risk-cap policy remain future work.
+- Evidence: `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-provider-breadth-runtime-route-after-classification-fix.json`, `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-search-provider-breadth-route-after-classification-fix.json`, `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-nation-top-scorer-reference-refresh.json`, `docs/mobile/screenshots/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-s23-provider-breadth-search.png`, `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-s23-provider-breadth-search.xml`, `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-bot-dry-run-final.txt`, `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-bot-live-local-final.txt`.
+- Notes: The gate passes because the cycle imports/refreshed a real Polymarket Nation Top Goalscorer event, proves broad route/Search visibility for 5 provider-backed World Cup results, proves S23 Search visibility, and fixes a real data-classification regression before completion.
+
 ## Cycle OU
 
 Gate status: Pass for focused provider breadth/Search visibility; partial for bot quote placement.

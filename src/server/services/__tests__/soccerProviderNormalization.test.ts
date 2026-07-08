@@ -51,6 +51,35 @@ describe("soccer provider normalization", () => {
     expect(market.rules).toMatchObject({ template: "SOCCER_OUTRIGHT_WINNER" });
   });
 
+  test("normalizes World Cup top-goalscorer nation markets as futures, not matches", () => {
+    const event = normalizePolymarketSoccerEvent({
+      externalSlug: "world-cup-nation-of-top-goalscorer",
+      title: "World Cup: Nation of Top Goalscorer",
+      tags: ["Soccer", "World Cup"],
+    });
+    const market = normalizePolymarketSoccerMarket(event, {
+      question: "Will a player representing France be the top goalscorer at the 2026 FIFA World Cup?",
+      slug: "will-a-player-representing-france-be-the-top-goalscorer-at-the-2026-fifa-world-cup",
+      groupItemTitle: "France",
+      outcomes: ["Yes", "No"],
+    }, "France");
+
+    expect(event).toMatchObject({
+      leagueKey: "world_cup",
+      eventType: "future",
+      marketProfile: "outright",
+      resultMode: "one_winner",
+      homeTeamName: "World Cup",
+      awayTeamName: "Winner",
+    });
+    expect(market).toMatchObject({
+      marketType: "outright",
+      marketGroupKey: "outrights",
+      period: "futures",
+      participantName: "France",
+    });
+  });
+
   test("normalizes soccer award winner events as outright futures without pretending they are World Cup", () => {
     const event = normalizePolymarketSoccerEvent({
       externalSlug: "ballon-dor-winner-2026",

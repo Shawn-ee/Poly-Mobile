@@ -2,6 +2,55 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle OV - Nation Top Goalscorer Provider Breadth And Classification Guard
+
+Feature/page worked on:
+
+- Provider Breadth Runtime Loop for another real Polymarket-backed World Cup event.
+- Search-visible provider breadth on Samsung S23.
+- Backend provider normalization for World Cup futures that do not contain the word `winner`.
+
+Frontend/proof files touched:
+
+- `docs/mobile/audits/cycle-OV-provider-breadth-nation-top-scorer.md`
+- `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/`
+- `docs/mobile/screenshots/cycle-OV-provider-breadth-nation-top-scorer/`
+
+Important functions/services touched:
+
+- `src/server/services/soccerProviderNormalization.ts`
+- `src/server/services/__tests__/soccerProviderNormalization.test.ts`
+- Existing Polymarket Gamma/CLOB import and refresh services imported `world-cup-nation-of-top-goalscorer` with 8 provider-backed markets.
+- Existing route proofs exercised `/api/events` broad World Cup routes, Search routes, and `/api/mobile/events/:slug/live-detail`.
+- Existing `poly-bot` dry-run/live-local path was exercised against the tiny `England` allowlist.
+
+User interactions supported/proven:
+
+- S23 Search in server mode shows 5 World Cup results, led by `World Cup: Nation of Top Goalscorer` with `Polymarket 8 markets`.
+- Local MVP Home/Live match-only routing remains protected; the new event is now classified as `future`, not `match`.
+
+State transitions:
+
+- Local database now includes an additional Polymarket-backed Nation of Top Goalscorer futures event with 8 markets.
+- Reference snapshots refreshed for the 8 imported markets; 16 snapshots were updated.
+- Provider normalization now treats World Cup top scorer/goalscorer/award-style futures as `eventType=future`, `marketProfile=outright`.
+- The bot runtime reached live-ready pricing for the England market but skipped quote placement because the seeded inventory was slightly above the per-market exposure cap.
+
+Validation:
+
+- Provider breadth route proof passed after the classification fix.
+- Search provider breadth route proof passed after the classification fix.
+- S23 Search proof passed on `SM-S911U1`.
+- `npx vitest run src/server/services/__tests__/soccerProviderNormalization.test.ts` passed.
+- `mobile` typecheck passed.
+- Bot dry-run/live-local ran; both reported the remaining risk-cap blocker.
+
+Known limitations:
+
+- Real provider-backed Spread/Totals/Team Total markets for match detail pages remain unavailable.
+- Nation/award futures are visible in Search, not Home/Live, by Local MVP product direction.
+- Bot quote placement for this event needs risk-cap/seed sizing adjustment; provider freshness and classification are no longer the blocker.
+
 ## Cycle OU - Golden Boot Provider Breadth Refresh
 
 Feature/page worked on:

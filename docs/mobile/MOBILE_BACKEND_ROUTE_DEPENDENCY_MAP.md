@@ -2,6 +2,25 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle OV - Nation Top Goalscorer Provider Breadth And Classification Guard
+
+Cycle OV imports/refreshed another real Polymarket-backed World Cup event and fixes backend provider normalization so top-goalscorer nation futures do not leak into match-only Home/Live routes.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Nation top-goalscorer provider import | Polymarket Gamma `/events?slug=world-cup-nation-of-top-goalscorer`; CLOB public market data through provider services | GET | None for public provider fetch | None | provider event title/slug, market slugs/ids, condition ids, outcome token ids, best bid/ask, source/status fields | `Event`, `Market`, `Outcome`, reference quote/depth snapshot tables | None added | More current provider-backed match events remain needed. |
+| Futures classification guard | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` | GET | None for browsing | None | `eventType`, `marketProfile`, `markets[].marketType`, `marketSourceSummary` | `Event`, `Market`, `Outcome` | No frontend-only data added | Additional World Cup futures phrases may need future normalization coverage as Polymarket adds markets. |
+| Search provider breadth | `/api/events?sportKey=soccer&source=polymarket&includeMobileMarkets=1&limit=10&search=world` | GET | None for browsing | None | `title`, `eventType`, `marketCount`, `marketSourceSummary.polymarketMarketCount`, compact top market title/probability, source label fields | `Event`, `Market`, `Outcome`, reference snapshot tables | Existing local fallback only if server mode is not enabled | Home remains intentionally match-only; broad futures are Search-visible. |
+| Tiny bot dry-run/live-local | poly-bot admin/reference routes plus canonical fake-token order route | GET/POST internal runtime | Dev admin plus bot runtime credential | Event slug `world-cup-nation-of-top-goalscorer`, allowlist `England`, `maxMarkets=1` | reference bid/ask, planned bot bid/ask, lifecycle status, risk-cap skip reason | `User`, `ApiCredential`, `Market`, `Outcome`, fake-token order tables | Fake-token local bot only; no external Polymarket orders | Per-market exposure cap blocks quote placement after seed; cap/seed sizing needs adjustment. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-provider-breadth-runtime-route-after-classification-fix.json`
+- `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-search-provider-breadth-route-after-classification-fix.json`
+- `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-nation-top-scorer-reference-refresh.json`
+- `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-bot-dry-run-final.txt`
+- `docs/mobile/harness/cycle-OV-provider-breadth-nation-top-scorer/cycle-OV-bot-live-local-final.txt`
+
 ## Cycle OU - Golden Boot Provider Breadth Refresh
 
 Cycle OU does not change backend route or schema source. It imports/refreshed one additional real Polymarket-backed World Cup event, proves the existing mobile routes surface it, and proves the tiny bot runtime reaches quote management before the internal trading kill switch blocks placement.
