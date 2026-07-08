@@ -5701,3 +5701,47 @@ Validation:
 Known limitations:
 
 - No Android proof was run because ADB showed no visible devices.
+
+## Cycle LT - Home To Portfolio Route Journey
+
+Feature/page worked on:
+
+- Backend route proof for the Local MVP mobile journey: Home -> Event Detail -> line market -> fake-token order -> Portfolio/history.
+
+Frontend/harness/backend files touched:
+
+- `scripts/prove_mobile_mvp_home_to_portfolio_journey.ts`
+- `docs/mobile/audits/cycle-LT-home-to-portfolio-route-journey.md`
+- `docs/mobile/harness/cycle-LT-home-to-portfolio-route-journey/cycle-LT-home-to-portfolio-route-journey.json`
+
+Important functions/services touched:
+
+- Added a proof script that starts from the Home route instead of directly loading a database market.
+- Reused Home, Event Detail, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- Reused source summaries from LQ/LR to prove source identity end to end.
+
+User interactions supported/proven:
+
+- Home exposes `switzerland-vs-colombia` as the first MVP-ready match with provider-backed Regulation Winner and contract-fixture line markets.
+- Event Detail preserves the same source summary.
+- The selected contract-fixture Spread line can be bought through the server order route.
+- Portfolio and History preserve selected line/outcome/source/token identity.
+
+State transitions:
+
+- Local proof user starts with fake-token balance.
+- Maker posts SELL liquidity.
+- Taker submits BUY.
+- Order transitions to `FILLED`.
+- Position and recent trade appear with `contract-fixture` line source summaries.
+
+Validation:
+
+- `npx tsx scripts/prove_mobile_mvp_home_to_portfolio_journey.ts --cycle=LT --baseUrl=http://127.0.0.1:3002 --summaryPath=docs/mobile/harness/cycle-LT-home-to-portfolio-route-journey/cycle-LT-home-to-portfolio-route-journey.json`
+- `npx tsc --noEmit --pretty false --skipLibCheck`
+- `npm run test:jest -- src/__tests__/mobile-live-event-detail.test.ts src/__tests__/portfolio.open-orders.route.test.ts src/__tests__/portfolio.history.route.test.ts src/__tests__/mobile-event-market-rules-contract.test.ts`
+
+Known limitations:
+
+- This is a backend route proof, not S23 visible UI proof.
+- S23 is now visible again and should be used for the next visible Audit Gate cycle.

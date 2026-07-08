@@ -4847,6 +4847,39 @@ Future migration concern:
 
 - When real provider line markets exist, Portfolio/history summaries must flip from `contract-fixture` to `provider-backed` without losing line/outcome/token identity.
 
+## Cycle LT - Home To Portfolio Route Journey
+
+Closed or narrowed:
+
+- The Local MVP backend journey is now proven from Home route through Event Detail, fake-token order, Portfolio, and History.
+- The proof no longer starts from direct database lookup; it starts from the same Home route the app uses.
+- Source identity remains consistent:
+  - Home/Event Detail: Regulation Winner `provider-backed`, line markets `contract-fixture`
+  - Order/Portfolio/History: selected Spread line `contract-fixture`
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed line-market ids/tokens/quotes remain unavailable for the selected Gamma event.
+- S23 UI proof of the same flow remains open.
+
+Schema mismatch:
+
+- No schema mismatch was found. Existing route contracts carry the required identity.
+
+Route mismatch:
+
+- No route mismatch was found in the backend journey proof.
+- The remaining mismatch is proof surface: backend routes are proven, but the mobile UI has not yet been proven on S23 in this cycle.
+
+Temporary mock/static data:
+
+- No frontend-only mock data was added.
+- Contract-fixture line rows and deterministic maker liquidity remain local MVP proof infrastructure.
+
+Future migration concern:
+
+- When provider-backed line markets are available, rerun the same Home-to-Portfolio journey and require `lineMarkets.status=provider-backed`.
+
 ## Cycle FH - Home Route Server Cancel And Portfolio Activity
 
 Closed or narrowed:

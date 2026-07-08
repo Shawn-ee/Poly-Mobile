@@ -4526,3 +4526,34 @@ Decision:
 - Pass/fail: Pass for harness/typecheck readiness only.
 - This is not a final mobile Audit Gate pass.
 - Unresolved P0 gaps: S23 visible MVP flow proof.
+
+## Cycle LT
+
+Gate status: Partial
+
+Scope: Backend route proof for Home -> Event Detail -> line market -> fake-token order -> Portfolio/history.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-LT-home-to-portfolio-route-journey.md`
+- `docs/mobile/harness/cycle-LT-home-to-portfolio-route-journey/cycle-LT-home-to-portfolio-route-journey.json`
+- `scripts/prove_mobile_mvp_home_to_portfolio_journey.ts`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| LT-FLOW-P0-01 | P0 | Pass | Home route selected `switzerland-vs-colombia` with provider-backed winner and contract-fixture lines. | Fix Home event routing/source summary. |
+| LT-FLOW-P0-02 | P0 | Pass | Event Detail route preserved matching source summary. | Fix live-detail source summary or event selection. |
+| LT-FLOW-P0-03 | P0 | Pass | Selected Spread line preserved market/outcome/source/token identity. | Fix line market route contract. |
+| LT-FLOW-P0-04 | P0 | Pass | `/api/orders` filled the fake-token BUY. | Fix order submit/matching/local liquidity setup. |
+| LT-FLOW-P0-05 | P0 | Pass | `/api/portfolio` returned position and contract-fixture source summary. | Fix Portfolio selection bridge. |
+| LT-FLOW-P0-06 | P0 | Pass | `/api/portfolio/history` returned recent trade and contract-fixture source summary. | Fix history selection bridge. |
+| LT-FLOW-P0-07 | P0 | Fail | S23 visible UI proof not run in this backend route cycle. | Run next S23 visual proof cycle for the same journey. |
+
+Decision:
+
+- Pass/fail: Partial, not final mobile Audit Gate pass.
+- Backend route journey result: pass.
+- Unresolved P0 gaps: S23 visible MVP flow proof.
+- S23 status: visible to ADB during this cycle as `SM_S911U1`.

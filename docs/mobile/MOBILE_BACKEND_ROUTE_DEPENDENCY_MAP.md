@@ -2321,3 +2321,18 @@ Cycle LR implementation notes:
 - No schema migration was required.
 - Portfolio/history selection summaries classify the same line-market source that was submitted through the ticket.
 - The LR proof shows a contract-fixture Spread order becomes a contract-fixture Portfolio position and contract-fixture recent trade.
+
+## Cycle LT - Home To Portfolio Route Journey
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home MVP event selection | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10` | GET | Public viewing | Query filters/page size | Event slug/title, `marketSourceSummary`, compact market rows | `Event`, `Market`, `Outcome`, source/read-model fields | None added. Existing contract-fixture line rows remain backend rows. | Real provider-backed line markets remain absent for selected Gamma event. |
+| Event Detail line selection | `/api/mobile/events/:slug/live-detail` | GET | Public viewing | Event slug from Home | Event source summary, line-market row, outcome identity, token/source ids | `Event`, `Market`, `Outcome`, quote/chart/read-model fields | None added. Existing contract-fixture line rows remain backend rows. | Real provider-backed line markets remain absent for selected Gamma event. |
+| Fake-token Buy submit | `/api/orders` | POST | Canonical mobile API key with order scope | Selected `marketId`, `outcomeId`, BUY side, LIMIT price/size, and line-market `selection` snapshot | Filled order status and preserved selection identity | `ApiCredential`, `ApiOrderRequest`, `Order`, `Trade`, `Position`, `Market`, `Outcome` | Deterministic maker liquidity is seeded for local proof. | Production liquidity remains future work. |
+| Portfolio proof after Home-selected trade | `/api/portfolio`, `/api/portfolio/history` | GET | Canonical mobile API key with `account:read` | None | Filled position, recent trade, `selectionSourceSummary`, selected line/source/token identity | `Position`, `Trade`, `Order`, `ApiOrderRequest`, `Market`, `Outcome` | None added. Route proof uses real server state. | S23 visible proof remains open. |
+
+Cycle LT implementation notes:
+
+- The proof starts from the public Home route rather than direct database lookup.
+- The selected Event Detail line market, order request, Portfolio position, and History trade all preserve `referenceSource=contract-fixture`.
+- S23 was visible during the cycle but visual Android proof was intentionally left for the next UI Audit Gate cycle.
