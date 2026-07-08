@@ -316,6 +316,25 @@ function ticketSourceBadge(ticket: Ticket) {
   };
 }
 
+function ticketSourceNote(ticket: Ticket) {
+  const source = ticket.selection?.referenceSource ?? ticket.market.referenceSource ?? "";
+  if (source.includes("contract-fixture")) {
+    return {
+      text: "Local test pricing",
+      accessibility: "ticket-local-test-pricing",
+      tone: "fixture" as const,
+    };
+  }
+  if (source.includes("polymarket")) {
+    return {
+      text: "Provider market",
+      accessibility: "ticket-provider-backed-pricing",
+      tone: "provider" as const,
+    };
+  }
+  return null;
+}
+
 const teamFlags: Record<string, string> = {
   ARG: "\ud83c\udde6\ud83c\uddf7",
   AUS: "\ud83c\udde6\ud83c\uddfa",
@@ -531,6 +550,7 @@ export function TradeTicket({
   const fallbackMarketIcon = marketIconForTicket(ticket);
   const fallbackMarketType = ticket.selection?.marketType ?? ticket.market.marketType ?? ticket.market.type ?? "generic";
   const sourceBadge = ticketSourceBadge(ticket);
+  const sourceNote = ticketSourceNote(ticket);
   const amountDisplay = numericAmount > 0 ? compactCash(numericAmount) : "$0";
   const toWinDisplay = compactCash(estimatedPayout);
   const availabilityLabel = marketAvailabilityLabel(ticket.market);
@@ -655,6 +675,20 @@ export function TradeTicket({
                     </Text>
                   </View>
                 </View>
+                {sourceNote && (
+                  <Text
+                    accessibilityLabel={`ticket-source-note ${sourceNote.accessibility}`}
+                    numberOfLines={1}
+                    style={[
+                      styles.ticketSourceNote,
+                      sourceNote.tone === "provider" && styles.ticketSourceNoteProvider,
+                      sourceNote.tone === "fixture" && styles.ticketSourceNoteFixture,
+                    ]}
+                    testID="ticket-source-note"
+                  >
+                    {sourceNote.text}
+                  </Text>
+                )}
               </View>
             </View>
             <View accessibilityLabel="ticket-side-pill ticket-advanced-hidden-local-mvp" testID="ticket-side-pill" style={styles.orderReviewA11y}>
@@ -853,6 +887,9 @@ const styles = StyleSheet.create({
   ticketSourcePillText: { color: "#cbd5e1", fontSize: 9, fontWeight: "900" },
   ticketSourcePillTextProvider: { color: "#86efac" },
   ticketSourcePillTextFixture: { color: "#fde68a" },
+  ticketSourceNote: { color: "#94a3b8", fontSize: 10, fontWeight: "900", marginTop: 3 },
+  ticketSourceNoteProvider: { color: "#86efac" },
+  ticketSourceNoteFixture: { color: "#fde68a" },
   marketStatusPill: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 999, backgroundColor: "#052e1b", borderWidth: 1, borderColor: "#166534" },
   marketStatusPillWarning: { backgroundColor: "#2b2106", borderColor: "#854d0e" },
   marketStatusPillBlocked: { backgroundColor: "#2a0d0d", borderColor: "#7f1d1d" },

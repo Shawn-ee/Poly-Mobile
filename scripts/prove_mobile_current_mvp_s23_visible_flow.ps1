@@ -263,14 +263,14 @@ try {
   Start-Sleep -Seconds 2
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-ticket.png" | Out-Null
   $ticketXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-ticket.xml"
-  Assert-Contains -Path $ticketXml -Expected @("trade-ticket", "Choose an amount", "ticket-preset-25", "ticket-market-type-spread", "ticket-line-1.5", "provider-source-contract-fixture")
+  Assert-Contains -Path $ticketXml -Expected @("trade-ticket", "Choose an amount", "ticket-preset-25", "ticket-market-type-spread", "ticket-line-1.5", "provider-source-contract-fixture", "ticket-local-test-pricing")
   Assert-NotContains -Path $ticketXml -Unexpected @("Order Book", "Chat")
 
   Invoke-TapNode -Path $ticketXml -Identifier "ticket-preset-25"
   Start-Sleep -Milliseconds 800
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-ticket-ready.png" | Out-Null
   $ticketReadyXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-ticket-ready.xml"
-  Assert-Contains -Path $ticketReadyXml -Expected @('$25', "Swipe to buy", "place-mock-order", "ticket-line-1.5", "provider-source-contract-fixture")
+  Assert-Contains -Path $ticketReadyXml -Expected @('$25', "Swipe to buy", "place-mock-order", "ticket-line-1.5", "provider-source-contract-fixture", "ticket-local-test-pricing")
 
   & $adb -s $Device shell input swipe 540 2070 540 1000 4000 | Out-Null
   Start-Sleep -Seconds 7
