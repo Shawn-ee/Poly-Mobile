@@ -1,0 +1,201 @@
+{
+  "pass": true,
+  "cycle": "PE",
+  "generatedAt": "2026-07-08T21:48:34.168Z",
+  "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
+  "routes": {
+    "search": "/api/events?source=polymarket&search=Morocco",
+    "detail": "/api/mobile/events/:slug/live-detail",
+    "quote": "/api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "/api/portfolio",
+    "history": "/api/portfolio/history"
+  },
+  "event": {
+    "id": "16dba6f4-c5ec-4d0c-9d69-6b8c06fd6bc5",
+    "slug": "provider-breadth-world-cup-winner",
+    "title": "World Cup Winner",
+    "eventType": "future"
+  },
+  "market": {
+    "id": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+    "slug": "provider-breadth-world-cup-winner-will-morocco-win-the-2026-fifa-world-cup-464",
+    "title": "Will Morocco win the 2026 FIFA World Cup?",
+    "referenceSource": "polymarket",
+    "externalSlug": "will-morocco-win-the-2026-fifa-world-cup-464",
+    "externalMarketId": "558963",
+    "conditionId": "0x37a6de1b21803e5f3fb1965116218215d79963af4f7e51659696366267a63a03"
+  },
+  "outcome": {
+    "id": "beb850a6-01f9-4ec0-a0df-da003a310838",
+    "name": "Morocco",
+    "referenceTokenId": "69910730841487615802736046038473620030754616421912831175284551372639933569112",
+    "referenceOutcomeLabel": "Yes"
+  },
+  "botQuote": {
+    "orderId": "5f236305-eee9-4bfe-8a72-09445fe1057d",
+    "side": "SELL",
+    "price": 0.05,
+    "remaining": 5
+  },
+  "mobileProofUser": {
+    "id": "ab0c7e83-ba39-4798-be2a-83535f8864ca",
+    "email": "cycle_pe_provider_user_92e60650@local.test"
+  },
+  "checks": {
+    "searchVisible": true,
+    "detailVisible": true,
+    "quoteVisible": true,
+    "serverModeTicketSubmitted": true,
+    "filledAgainstBotLiquidity": true,
+    "portfolioPositionVisible": true,
+    "historyTradeVisible": true,
+    "homeLiveMatchOnlyUnchanged": true
+  },
+  "orderResult": {
+    "id": "65ea3749-b794-4b1b-a8d9-f7f76b1d51ab",
+    "mode": "server",
+    "title": "Will Morocco win the 2026 FIFA World Cup?",
+    "outcome": "Morocco",
+    "selection": {
+      "marketType": "future",
+      "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+      "outcomeId": "beb850a6-01f9-4ec0-a0df-da003a310838",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Morocco",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-morocco-win-the-2026-fifa-world-cup-464",
+      "externalMarketId": "558963",
+      "conditionId": "0x37a6de1b21803e5f3fb1965116218215d79963af4f7e51659696366267a63a03",
+      "referenceTokenId": "69910730841487615802736046038473620030754616421912831175284551372639933569112",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.05,
+      "limitSide": "ask"
+    },
+    "contractSide": "yes",
+    "side": "buy",
+    "amount": 0.15,
+    "probability": 5,
+    "status": "FILLED",
+    "size": 3,
+    "filledSize": 3,
+    "remainingSize": 0
+  },
+  "portfolioPosition": {
+    "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+    "outcomeId": "beb850a6-01f9-4ec0-a0df-da003a310838",
+    "shares": 3,
+    "selection": {
+      "marketType": "future",
+      "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+      "outcomeId": "beb850a6-01f9-4ec0-a0df-da003a310838",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Morocco",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-morocco-win-the-2026-fifa-world-cup-464",
+      "externalMarketId": "558963",
+      "conditionId": "0x37a6de1b21803e5f3fb1965116218215d79963af4f7e51659696366267a63a03",
+      "referenceTokenId": "69910730841487615802736046038473620030754616421912831175284551372639933569112",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.05,
+      "limitSide": "ask"
+    }
+  },
+  "historyTrade": {
+    "id": "069425b5-bb02-4352-882a-74bd36ea4093",
+    "market": {
+      "id": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+      "title": "Will Morocco win the 2026 FIFA World Cup?",
+      "status": "LIVE",
+      "marketGroupKey": "outrights",
+      "marketType": "outright",
+      "line": null,
+      "period": "futures",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-morocco-win-the-2026-fifa-world-cup-464",
+      "externalMarketId": "558963",
+      "conditionId": "0x37a6de1b21803e5f3fb1965116218215d79963af4f7e51659696366267a63a03"
+    },
+    "outcome": {
+      "id": "beb850a6-01f9-4ec0-a0df-da003a310838",
+      "name": "Morocco",
+      "label": "Morocco",
+      "side": "yes",
+      "referenceTokenId": "69910730841487615802736046038473620030754616421912831175284551372639933569112",
+      "referenceOutcomeLabel": "Yes"
+    },
+    "selection": {
+      "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+      "outcomeId": "beb850a6-01f9-4ec0-a0df-da003a310838",
+      "marketGroupId": "outrights",
+      "marketType": "future",
+      "period": "futures",
+      "side": "yes",
+      "displayLabel": "Morocco",
+      "contractSide": "yes",
+      "referenceSource": "polymarket",
+      "providerSource": "polymarket",
+      "externalSlug": "will-morocco-win-the-2026-fifa-world-cup-464",
+      "externalMarketId": "558963",
+      "conditionId": "0x37a6de1b21803e5f3fb1965116218215d79963af4f7e51659696366267a63a03",
+      "referenceTokenId": "69910730841487615802736046038473620030754616421912831175284551372639933569112",
+      "tokenId": "69910730841487615802736046038473620030754616421912831175284551372639933569112",
+      "referenceOutcomeLabel": "Yes",
+      "limitPrice": 0.05,
+      "limitSide": "ask"
+    },
+    "side": "BUY",
+    "shares": 3,
+    "cost": 0.15,
+    "fee": 0,
+    "createdAt": "2026-07-08T21:48:34.048Z"
+  },
+  "remainingOpenOrders": [
+    {
+      "id": "2c74a8b1-2674-4f9f-b07e-dbc6a9e5ada2",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "beb850a6-01f9-4ec0-a0df-da003a310838",
+      "side": "BUY",
+      "price": "0.01",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "5f236305-eee9-4bfe-8a72-09445fe1057d",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "beb850a6-01f9-4ec0-a0df-da003a310838",
+      "side": "SELL",
+      "price": "0.05",
+      "amount": "5",
+      "remaining": "2",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "9750d870-19f5-4dcd-829c-4b7f4a86f16f",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "b64ef40b-846b-4cb5-b048-1febcd318c7e",
+      "side": "BUY",
+      "price": "0.95",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "0c8c7855-266c-40e8-baa0-772f48128d82",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "b64ef40b-846b-4cb5-b048-1febcd318c7e",
+      "side": "SELL",
+      "price": "0.99",
+      "amount": "5",
+      "remaining": "5",
+      "status": "OPEN"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+
+> poly-bot@0.1.0 bot:polymarket:mm:live-local
+> tsx scripts/liquidityRuntime.ts --dryRun false --confirmLive true --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug provider-breadth-world-cup-winner --allowlist Morocco --maxMarkets 1 --durationSeconds 1
+
+{
+  "dryRun": false,
+  "liveOrdersEnabled": true,
+  "confirmLive": true,
+  "cycleReports": [
+    {
+      "marketId": "5796a9be-8359-48f4-bf45-268dc662f2c0",
+      "slug": "will-morocco-win-the-2026-fifa-world-cup-464",
+      "status": "manage_quotes",
+      "previousLifecycleStatus": "live_enabled",
+      "currentLifecycleStatus": "live_enabled",
+      "lifecycleTransition": null,
+      "dryRun": false,
+      "referenceBid": 0.029,
+      "referenceAsk": 0.03,
+      "plannedBotBid": 0.01,
+      "plannedBotAsk": 0.05,
+      "reasons": [],
+      "openOrderCount": 0,
+      "perMarketExposureCents": 3678,
+      "openOrderNotionalCents": 0,
+      "inventoryExposureCents": 3678,
+      "globalExposureCents": 3678,
+      "maxGlobalExposureCents": 6000000,
+      "quoteActions": [
+        "new quote beb850a6-01f9-4ec0-a0df-da003a310838:BUY @ 0.01",
+        "new quote beb850a6-01f9-4ec0-a0df-da003a310838:SELL @ 0.05",
+        "new quote b64ef40b-846b-4cb5-b048-1febcd318c7e:BUY @ 0.95",
+        "new quote b64ef40b-846b-4cb5-b048-1febcd318c7e:SELL @ 0.99",
+        "placed beb850a6-01f9-4ec0-a0df-da003a310838:BUY @ 0.01",
+        "placed beb850a6-01f9-4ec0-a0df-da003a310838:SELL @ 0.05",
+        "placed b64ef40b-846b-4cb5-b048-1febcd318c7e:BUY @ 0.95",
+        "placed b64ef40b-846b-4cb5-b048-1febcd318c7e:SELL @ 0.99"
+      ],
+      "perMarketExposureCapCents": 20000
+    }
+  ]
+}

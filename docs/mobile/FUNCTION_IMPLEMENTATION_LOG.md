@@ -8899,6 +8899,48 @@ Known limitations:
 - Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
 - Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
 
+## Cycle PE - Eighth Provider Market Tradable Proof
+
+Feature/page worked on:
+
+- Provider-backed World Cup Winner market breadth for the Local MVP retail betting flow.
+- Morocco market local-MM readiness, fake-token order fill, and Portfolio/history proof.
+
+Frontend/proof files touched:
+
+- `docs/mobile/audits/cycle-PE-eighth-provider-market-tradable-proof.md`
+- `docs/mobile/harness/cycle-PE-eighth-provider-market-tradable-proof/`
+
+Important functions/services touched:
+
+- No visible mobile UI source changed.
+- Reused the internal beta backend helper, reference refresh path, bot MM enable/seed path, local bot live-local quoting, and mobile order/Portfolio proof harness.
+
+User interactions supported/proven:
+
+- Samsung S23 proof shows the World Cup Winner detail page with the Morocco provider-backed outcome visible/selectable.
+- Mobile service proof submits a server-mode fake-token buy against Morocco local MM liquidity.
+- Portfolio/history proof shows the filled Morocco provider-backed position/trade.
+
+State transitions:
+
+- Morocco World Cup Winner market was MM-enabled, seeded, marked live-ready/live-enabled, and locally quoted.
+- Mobile proof user bought Morocco YES at `0.05`, producing a filled order and Portfolio/history state.
+
+Validation:
+
+- Backend helper check passed.
+- Reference refresh passed.
+- Morocco seed passed.
+- Bot live-local placed four Morocco quotes without exposure-cap blocking after the standalone bot process was run with `LIVE_SYSTEM_LIQUIDITY_ENABLED=true`.
+- Mobile provider-visible tradable route/service proof passed.
+- S23 visibility proof captured XML/screenshot on `SM-S911U1`.
+
+Known limitations:
+
+- Home/Live remain match-only by design; broad futures remain Search/detail surfaces.
+- Current-match Spread/Totals/Team Total remain contract fixtures, not provider-backed line markets.
+
 ## Cycle PD - Seventh Provider Market Tradable Proof
 
 Feature/page worked on:
