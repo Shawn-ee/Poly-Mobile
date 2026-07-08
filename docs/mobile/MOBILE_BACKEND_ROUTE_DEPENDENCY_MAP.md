@@ -2,6 +2,22 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle OT - World Cup Winner Provider Breadth Refresh
+
+Cycle OT changes proof/import labeling only; no backend route or schema source changed. It refreshes local provider runtime data from Polymarket and proves the existing mobile routes surface it.
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| World Cup winner provider import | Polymarket Gamma `/events?slug=world-cup-winner`; CLOB public market data through provider services | GET | None for public provider fetch | None | provider event title/slug, market slug/id, condition id, outcome token ids, best bid/ask, liquidity/depth | `Event`, `Market`, `Outcome`, reference quote/depth snapshot tables | None added | Scheduled refresh and broader attach-ready current match discovery remain future work. |
+| Broad World Cup provider runtime | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10` | GET | None for browsing | None | `events[]`, `eventType`, `source`, compact `markets[]`, `marketSourceSummary`, source/status fields | `Event`, `Market`, `Outcome` | No frontend-only data added | Real provider-backed line markets for match pages remain unavailable. |
+| Search provider breadth | `/api/events?sportKey=soccer&source=polymarket&includeMobileMarkets=1&limit=10` and `/api/events?sportKey=soccer&leagueKey=world_cup&source=polymarket&includeMobileMarkets=1&limit=10` | GET | None for browsing | None | `title`, `eventType`, `marketCount`, `marketSourceSummary.polymarketMarketCount`, `marketSourceSummary.contractFixtureMarketCount`, compact top market title/probability | `Event`, `Market`, `Outcome`, reference snapshot tables | Existing local fallback only if server mode is not enabled | Home is intentionally filtered to MVP matches; broad futures remain Search-visible. |
+
+Evidence:
+
+- `docs/mobile/harness/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-real-provider-world-cup-winner.json`
+- `docs/mobile/harness/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-provider-breadth-runtime-route.json`
+- `docs/mobile/harness/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-search-provider-breadth-route.json`
+
 ## Cycle OS - Provider Breadth / Line Inspection
 
 Cycle OS does not change backend routes or schema. It refreshes provider-breadth route proof, current-match line availability proof, and S23 Search visibility proof.

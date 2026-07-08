@@ -8,6 +8,7 @@ This report covers the visible mobile UI state after the provider readiness and 
 
 Latest cleanup status:
 
+- Cycle OT refreshed/imported `World Cup Winner` with 8 real Polymarket markets, proved the broad provider route, and proved S23 Search visibility with 3 provider-backed World Cup results.
 - Cycle OQ imported/refreshed broader Polymarket-backed World Cup provider data and proved multiple provider-backed events through the mobile Search surface.
 - Cycle OR guarded the mobile Live match feed so provider `future` / `outright` events do not appear as live football matches even when upstream provider metadata reports `LIVE`.
 - No new visual source-label micro-proof should be opened unless source labeling blocks tester verification or creates a real user-flow regression.
@@ -29,6 +30,7 @@ Latest cleanup status:
   - `Which continent will win the World Cup?`
   - `World Cup Winner`
   - `Argentina vs. Egypt`
+- Latest S23 Search proof shows `World Cup Winner` as `Polymarket 8 markets`, `Which continent...` as `Polymarket 3 markets`, and `Argentina vs. Egypt` as `Polymarket 3 / test lines 4`.
 - Provider-backed futures/outrights in Search now display as future predictions with `Starts Time TBD` instead of looking like active live matches.
 - Live now intentionally shows the empty live-football state when only provider futures/outrights are available.
 
@@ -52,6 +54,7 @@ Latest cleanup status:
 - Fixture-backed line markets remain visibly disclosed as `Test` or `Test line - fake USDT`; they are not presented as Polymarket-backed.
 - Provider-backed future/outright events were hidden from the Live match feed because they are not live football games for the Local MVP path.
 - Broad provider futures remain out of the Home match feed because Home is currently scoped to the Local MVP match journey, not a full provider discovery wall.
+- Cycle OT kept useful internal source labels but did not add any new tester-facing debug/source wording.
 
 ## What Is Still Available In Another Runtime Mode
 
@@ -68,6 +71,7 @@ Latest cleanup status:
 - Existing product gap remains: spread/total/team-total line markets are contract-shaped test fixtures, not real Polymarket-backed line markets for the selected MVP match.
 - Existing provider breadth gap remains: multiple real provider-backed events are proven in backend/search surfaces, but not yet visible as multiple Home match cards because Home deliberately uses the local MVP match filter.
 - Existing tester-flow gap remains: full end-to-end fake-token order proof was not rerun in this source-label cleanup cycle because backend/order behavior was intentionally untouched.
+- Current cycle result: no new visual regression found; the only failed proof attempt was environmental, because the S23 was sitting on a Samsung system update screen before Expo was relaunched.
 
 ## S23 Proof
 
@@ -81,6 +85,8 @@ Latest cleanup status:
 - Trade Ticket fixture-backed line:
   - `docs/mobile/harness/cycle-ON-source-label-tester-cleanup/cycle-ON-s23-line-ticket.png`
 - Provider breadth Search proof:
+  - `docs/mobile/screenshots/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-s23-provider-breadth-search.png`
+  - `docs/mobile/harness/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-s23-provider-breadth-search.xml`
   - `docs/mobile/screenshots/cycle-OQ-provider-breadth-runtime/cycle-OQ-search-provider-breadth.png`
   - `docs/mobile/screenshots/cycle-OR-home-provider-breadth-feed/cycle-OR-s23-search-world-provider-futures-after-clear.png`
 - Live feed guard proof:

@@ -23,6 +23,7 @@ async function main() {
   const eventSlug = args.eventSlug ?? DEFAULT_LOCAL_EVENT_SLUG;
   const marketLimit = parsePositiveInt(args.marketLimit, DEFAULT_MARKET_LIMIT);
   const outputPath = args.output ?? DEFAULT_OUTPUT_PATH;
+  const cycle = args.cycle ?? "FJ";
   const providerEvent = await fetchPolymarketEventBySlug(providerEventSlug);
   const markets = providerEvent.markets
     .filter((market) => market.active && !market.closed && !market.archived)
@@ -40,6 +41,7 @@ async function main() {
   const prepared = await prepareLocalEvent({
     eventSlug,
     providerEventSlug,
+    cycle,
     title: providerEvent.title,
     description: providerEvent.description,
     image: providerEvent.image,
@@ -56,7 +58,7 @@ async function main() {
   const primary = prepared.markets[0];
   const summary = {
     generatedAt: new Date().toISOString(),
-    cycle: "FJ",
+    cycle,
     eventSlug,
     providerEventSlug,
     providerEventTitle: providerEvent.title,
@@ -75,7 +77,7 @@ async function main() {
       providerHistory: refresh.refresh.providerHistory,
       lineFamilyCoverage: refresh.refresh.lineFamilyCoverage,
       contractProofFallback: refresh.refresh.contractProofFallback,
-      note: "Cycle FJ treats CLOB chart history refresh_due as non-blocking when Gamma quotes are fresh, because public prices-history timestamps can lag the proof run by more than the route freshness window.",
+      note: `Cycle ${cycle} treats CLOB chart history refresh_due as non-blocking when Gamma quotes are fresh, because public prices-history timestamps can lag the proof run by more than the route freshness window.`,
     },
     androidTarget: {
       cardId: `event-card-${eventSlug}`,
@@ -101,6 +103,7 @@ async function main() {
 async function prepareLocalEvent(params: {
   eventSlug: string;
   providerEventSlug: string;
+  cycle: string;
   title: string;
   description: string | null;
   image: string | null;
@@ -135,7 +138,7 @@ async function prepareLocalEvent(params: {
       externalSlug: params.providerEventSlug,
       imageUrl: params.image,
       sourceUpdatedAt: now,
-      metadata: eventMetadata(params.providerEventSlug, now, normalizedEvent),
+      metadata: eventMetadata(params.providerEventSlug, now, normalizedEvent, params.cycle),
     },
     update: {
       title: params.title || "World Cup Winner",
@@ -156,7 +159,7 @@ async function prepareLocalEvent(params: {
       externalSlug: params.providerEventSlug,
       imageUrl: params.image,
       sourceUpdatedAt: now,
-      metadata: eventMetadata(params.providerEventSlug, now, normalizedEvent),
+      metadata: eventMetadata(params.providerEventSlug, now, normalizedEvent, params.cycle),
     },
   });
 
@@ -176,6 +179,7 @@ async function prepareLocalEvent(params: {
       normalizedEvent,
       normalizedMarket,
       existingMarket?.referenceMetadata ?? null,
+      params.cycle,
     );
     const market = await prisma.market.upsert({
       where: { slug: marketSlug },
@@ -360,10 +364,11 @@ function eventMetadata(
   providerEventSlug: string,
   now: Date,
   normalizedEvent: ReturnType<typeof normalizePolymarketSoccerEvent>,
+  cycle: string,
 ): Prisma.InputJsonValue {
   return {
     ...(normalizedSoccerMetadata({ event: normalizedEvent }) as Record<string, unknown>),
-    cycle: "FJ",
+    cycle,
     providerSource: "polymarket-gamma",
     providerEventSlug,
     mobileLiveDetail: {
@@ -371,7 +376,7 @@ function eventMetadata(
         source: "polymarket-gamma",
         status: "ready",
         lastUpdated: now.toISOString(),
-        reason: "Cycle FJ real provider World Cup winner event.",
+        reason: `Cycle ${cycle} real provider World Cup winner event.`,
       },
     },
   };
@@ -384,6 +389,7 @@ function marketMetadata(
   normalizedEvent: ReturnType<typeof normalizePolymarketSoccerEvent>,
   normalizedMarket: ReturnType<typeof normalizePolymarketSoccerMarket>,
   existing: Prisma.JsonValue | null,
+  cycle: string,
 ): Prisma.InputJsonValue {
   const current =
     existing && typeof existing === "object" && !Array.isArray(existing)
@@ -397,7 +403,7 @@ function marketMetadata(
     referenceOnly: false,
     tradable: true,
     mmEnabled: true,
-    importCycle: "FJ",
+    importCycle: cycle,
     providerEventSlug,
     teamLabel,
     sourceMarket: {

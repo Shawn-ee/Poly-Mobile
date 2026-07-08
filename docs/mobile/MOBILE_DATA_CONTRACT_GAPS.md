@@ -2,6 +2,35 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle OT - World Cup Winner Provider Breadth Refresh
+
+Closed or narrowed:
+
+- `world-cup-winner` provider proof now imports/refreshes 8 real Polymarket markets with external slugs/ids, condition ids, token ids, best bid/ask, and liquidity/depth.
+- Broad provider runtime and Search route proofs show 3 provider-backed World Cup events.
+- S23 Search proof confirms mobile can display the refreshed provider-backed rows in server mode.
+- Proof artifacts now carry the actual cycle id instead of stale `FJ` metadata.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for the current MVP match page.
+- More current World Cup match events with provider-backed tradeable markets.
+- A scheduled provider refresh policy so quote/depth freshness survives long-running testing without manual proof refreshes.
+
+Route mismatch:
+
+- Home is intentionally match-only for the Local MVP path and will not show World Cup futures/outrights even though broad provider routes and Search expose them.
+- Live is intentionally live-football-only and should not show provider futures/outrights that are open/live as prediction markets.
+
+Temporary mock/static data:
+
+- Current match line markets remain contract-shaped test fixtures with visible source disclosure.
+- No new frontend-only fixture data was added in this cycle.
+
+Future migration concern:
+
+- If provider futures move onto Home later, they need their own futures/discovery surface instead of being mixed into the match-only Home or Live flows.
+
 ## Cycle OS - Provider Breadth / Line Inspection
 
 Closed or narrowed:

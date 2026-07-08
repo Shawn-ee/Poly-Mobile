@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle OT
+
+Gate status: Pass
+
+Scope: World Cup winner provider breadth refresh.
+
+Decision:
+
+- P0 failed: 0 for focused provider readiness/provider breadth refresh scope.
+- P1/P2 remaining: P1 real provider-backed current/live match breadth remains limited; P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable; P1 scheduled refresh/bot breadth remains next milestone work.
+- Evidence: `docs/mobile/harness/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-real-provider-world-cup-winner.json`, `docs/mobile/harness/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-provider-breadth-runtime-route.json`, `docs/mobile/harness/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-search-provider-breadth-route.json`, `docs/mobile/screenshots/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-s23-provider-breadth-search.png`, `docs/mobile/harness/cycle-OT-world-cup-winner-breadth-refresh/cycle-OT-s23-provider-breadth-search.xml`.
+- Notes: The gate passes because the cycle refreshes real Polymarket World Cup winner markets, proves route-visible provider breadth, and proves S23 Search visibility. It does not claim line-market parity or Home broad-futures parity.
+
 ## Cycle OR
 
 Gate status: Pass
