@@ -2,6 +2,28 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MH - MVP Service Readiness Inspection
+
+Closed or narrowed:
+
+- The current inspection harness now uses `mobileMvpMatches=1`, matching the app's Local MVP Home feed and excluding futures/outrights from readiness proof.
+- The readiness proof distinguishes provider-backed Regulation Winner from contract-shaped line markets.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Provider-backed Spread markets for the inspected match event.
+- Provider-backed Totals markets for the inspected match event.
+- Provider-backed Team Total markets for the inspected match event.
+- Broader provider discovery for attach-ready Polymarket line-market slugs/tokens when they exist.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Current line markets are backend-shaped `contract-fixture` rows with stable market/outcome/source fields. They are acceptable for Local MVP UI proof but must not be called real provider-backed Polymarket line markets.
+
 ## Cycle LH - Event Detail Dead Live Stats Contract
 
 Closed or narrowed:

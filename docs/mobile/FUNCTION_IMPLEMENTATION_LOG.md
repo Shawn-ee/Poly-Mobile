@@ -2,6 +2,32 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MH - MVP Service Readiness Inspection
+
+Feature/page worked on:
+
+- Inspected the current server-mode Local MVP match feed before continuing UI work.
+- Aligned the inspection harness with the actual mobile route by adding `mobileMvpMatches=1`.
+- Documented that Regulation Winner is currently provider-backed, while Spread/Totals/Team Total are Local MVP contract-shaped line markets.
+
+Frontend/services touched:
+
+- `scripts/inspect_mobile_mvp_current_state.ts`
+
+User interactions supported/proven:
+
+- No new visible UI interaction was added in this inspection subcycle.
+- The adjusted development path remains Home -> Event Detail -> line market -> simple ticket -> server order -> Portfolio/history, using available route data honestly.
+
+Verified:
+
+- Current-state inspection passed and wrote `docs/mobile/harness/cycle-MH-mvp-current-state-inspection/cycle-MH-current-state-inspection.json`.
+
+Known limitations:
+
+- Real provider-backed Spread/Totals/Team Total markets remain unavailable for the inspected event.
+- Continue Local MVP cycles using explicit contract-shaped line markets until provider-backed line discovery is ready.
+
 ## Cycle ET - Period-Safe Retail Line Matching
 
 Feature/page worked on:

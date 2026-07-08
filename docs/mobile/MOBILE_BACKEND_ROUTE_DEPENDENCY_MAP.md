@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle MH - MVP Service Readiness Inspection
+
+Cycle MH inspects the current server-mode Local MVP routes and fixes the inspection harness to use the same match-only feed contract as Home.
+
+- Inspection proof: `docs/mobile/harness/cycle-MH-mvp-current-state-inspection/cycle-MH-current-state-inspection.json`.
+- Audit: `docs/mobile/audits/cycle-MH-mvp-service-readiness-inspection.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local MVP Home/Event Detail readiness | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10`; `/api/mobile/events/:slug/live-detail` | GET | Public event viewing; account/order auth only for order and Portfolio actions | Query params only | Event slug/title/type/status, `marketSourceSummary`, compact markets, `marketType`, `line`, `period`, `referenceSource`, provider/source status, outcomes | Existing `Event`, `Market`, `Outcome`, provider reference metadata | No frontend-only random mocks are required for this inspection. Existing Local MVP line rows are backend-shaped `contract-fixture` markets. | Real provider-backed Spread/Totals/Team Total markets are not attached for the inspected event. |
+
 ## Cycle LH - Event Detail Dead Live Stats Contract
 
 Cycle LH removes the unreachable fake live stats panel, deterministic sports-stat rows, and match-flow timeline from Event Detail source. Event Detail still consumes backend route-status metadata for hidden proof markers while the MVP excludes a visible live-stat product surface.

@@ -37,7 +37,7 @@ async function main() {
   const baseUrl = argValue("baseUrl") ?? DEFAULT_BASE_URL;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
   const cycle = argValue("cycle") ?? "current";
-  const homeUrl = `${baseUrl}/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10`;
+  const homeUrl = `${baseUrl}/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10`;
   const home = await fetchJson(homeUrl);
   const events = Array.isArray(home.events) ? home.events : [];
   const matchEvents = events.filter((event: any) => event.eventType === "match");
@@ -48,6 +48,7 @@ async function main() {
   );
 
   assert(events.length > 0, "Home route returned no World Cup events.");
+  assert(futures.length === 0, "Mobile MVP route returned futures/outrights even though mobileMvpMatches=1 was requested.");
   assert(selectedEvent, "No Home event exposes provider-backed winner plus contract-fixture line markets.");
 
   const detailUrl = `${baseUrl}/api/mobile/events/${encodeURIComponent(selectedEvent.slug)}/live-detail`;
@@ -100,6 +101,12 @@ async function main() {
       markets: marketSummary(markets),
     },
     diagnosis: {
+      serviceReadiness: {
+        localMvpPathReady: providerWinnerMarkets.length > 0 && fixtureLineMarkets.length > 0,
+        realProviderBackedRegulationWinnerReady: providerWinnerMarkets.length > 0,
+        realProviderBackedLineMarketsReady: providerLineMarkets.length > 0,
+        contractFixtureLineMarketsReady: fixtureLineMarkets.length > 0,
+      },
       regulationWinner: providerWinnerMarkets.length > 0
         ? "Provider-backed Regulation Winner is available from Polymarket Gamma/CLOB-derived data."
         : "Provider-backed Regulation Winner is missing.",
