@@ -2336,3 +2336,16 @@ Cycle LT implementation notes:
 - The proof starts from the public Home route rather than direct database lookup.
 - The selected Event Detail line market, order request, Portfolio position, and History trade all preserve `referenceSource=contract-fixture`.
 - S23 was visible during the cycle but visual Android proof was intentionally left for the next UI Audit Gate cycle.
+
+## Cycle LU - Current State Inspection And Home MVP Feed Tightening
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home MVP match feed | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10` | GET | Public viewing | Query filters/page size; mobile now passes `leagueKey=world_cup` | Match `slug`, `title`, `eventType`, `sportKey`, `leagueKey`, live/status fields, compact Regulation Winner outcomes, `marketSourceSummary` | `Event`, `Market`, `Outcome`, provider/read-model fields | Server-mode Home still clears events instead of rendering bundled fallback if the route fails. | Backend route can still return futures; mobile filters to match events for Local MVP. |
+| Event Detail source inspection | `/api/mobile/events/switzerland-vs-colombia/live-detail` | GET | Public viewing | Event slug | `event.marketSourceSummary`, market rows, `referenceSource`, `marketType`, line/period/outcome identity | `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot` | Contract-fixture line rows remain backend-written Local MVP bridge data. | Real provider-backed Spread/Totals/Team Total rows are not attached for the selected Gamma event. |
+
+Cycle LU implementation notes:
+
+- No backend route or schema change was required.
+- Mobile Home feed now asks for `leagueKey=world_cup` and drops non-match/futures provider records.
+- S23 proof used Expo Go because the installed `com.holiwyn.mobile` package is stale and still shows older local Home UI.

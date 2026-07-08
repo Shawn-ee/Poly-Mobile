@@ -1,0 +1,189 @@
+{
+  "cycle": "LU",
+  "result": "inspection-pass",
+  "inspectedAt": "2026-07-08T07:00:11.688Z",
+  "baseUrl": "http://127.0.0.1:3002",
+  "homeRoute": {
+    "url": "http://127.0.0.1:3002/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&limit=10",
+    "eventCount": 3,
+    "matchEventCount": 2,
+    "futuresCount": 1,
+    "events": [
+      {
+        "slug": "switzerland-vs-colombia",
+        "title": "Switzerland vs. Colombia",
+        "eventType": "match",
+        "liveStatus": "LIVE",
+        "marketCount": 7,
+        "regulationWinnerStatus": "provider-backed",
+        "lineMarketStatus": "contract-fixture",
+        "lineFamilies": [
+          "spread",
+          "team_total_goals",
+          "total_goals"
+        ]
+      },
+      {
+        "slug": "argentina-vs-egypt",
+        "title": "Argentina vs. Egypt",
+        "eventType": "match",
+        "liveStatus": "LIVE",
+        "marketCount": 3,
+        "regulationWinnerStatus": "provider-backed",
+        "lineMarketStatus": "missing",
+        "lineFamilies": []
+      },
+      {
+        "slug": "mobile-fj-real-world-cup-winner",
+        "title": "World Cup Winner",
+        "eventType": "future",
+        "liveStatus": "LIVE",
+        "marketCount": 9,
+        "regulationWinnerStatus": "missing",
+        "lineMarketStatus": "missing",
+        "lineFamilies": []
+      }
+    ]
+  },
+  "selectedMvpEvent": {
+    "slug": "switzerland-vs-colombia",
+    "title": "Switzerland vs. Colombia",
+    "marketSourceSummary": {
+      "totalMarketCount": 7,
+      "sourceBreakdown": {
+        "polymarket": 3,
+        "contract-fixture": 4
+      },
+      "polymarketMarketCount": 3,
+      "contractFixtureMarketCount": 4,
+      "unknownSourceMarketCount": 0,
+      "regulationWinner": {
+        "totalCount": 3,
+        "polymarketCount": 3,
+        "contractFixtureCount": 0,
+        "status": "provider-backed"
+      },
+      "lineMarkets": {
+        "totalCount": 4,
+        "polymarketCount": 0,
+        "contractFixtureCount": 4,
+        "status": "contract-fixture",
+        "families": [
+          "spread",
+          "team_total_goals",
+          "total_goals"
+        ],
+        "reason": "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
+      }
+    }
+  },
+  "detailRoute": {
+    "url": "http://127.0.0.1:3002/api/mobile/events/switzerland-vs-colombia/live-detail",
+    "marketSourceSummary": {
+      "totalMarketCount": 7,
+      "sourceBreakdown": {
+        "polymarket": 3,
+        "contract-fixture": 4
+      },
+      "polymarketMarketCount": 3,
+      "contractFixtureMarketCount": 4,
+      "unknownSourceMarketCount": 0,
+      "regulationWinner": {
+        "totalCount": 3,
+        "polymarketCount": 3,
+        "contractFixtureCount": 0,
+        "status": "provider-backed"
+      },
+      "lineMarkets": {
+        "totalCount": 4,
+        "polymarketCount": 0,
+        "contractFixtureCount": 4,
+        "status": "contract-fixture",
+        "families": [
+          "spread",
+          "total_goals",
+          "team_total_goals"
+        ],
+        "reason": "Line markets are Local MVP contract fixtures until Polymarket exposes attach-ready line markets or another approved provider is configured."
+      }
+    },
+    "providerWinnerMarketCount": 3,
+    "providerLineMarketCount": 0,
+    "fixtureLineMarketCount": 4,
+    "markets": [
+      {
+        "marketGroupTitle": "Regulation Winner",
+        "marketType": "match_winner_1x2",
+        "line": null,
+        "period": "regulation",
+        "referenceSource": "polymarket",
+        "externalSlug": "fifwc-che-col-2026-07-07-che",
+        "outcomeCount": 2
+      },
+      {
+        "marketGroupTitle": "Spread",
+        "marketType": "spread",
+        "line": "1.5",
+        "period": "regulation",
+        "referenceSource": "contract-fixture",
+        "externalSlug": "switzerland-vs-colombia-spread-away-1-5",
+        "outcomeCount": 2
+      },
+      {
+        "marketGroupTitle": "Totals",
+        "marketType": "total_goals",
+        "line": "2.5",
+        "period": "regulation",
+        "referenceSource": "contract-fixture",
+        "externalSlug": "switzerland-vs-colombia-total-goals-2-5",
+        "outcomeCount": 2
+      },
+      {
+        "marketGroupTitle": "Team Totals",
+        "marketType": "team_total_goals",
+        "line": "1.5",
+        "period": "regulation",
+        "referenceSource": "contract-fixture",
+        "externalSlug": "switzerland-vs-colombia-team-total-home-1-5",
+        "outcomeCount": 2
+      },
+      {
+        "marketGroupTitle": "Regulation Winner",
+        "marketType": "match_winner_1x2",
+        "line": null,
+        "period": "regulation",
+        "referenceSource": "polymarket",
+        "externalSlug": "fifwc-che-col-2026-07-07-draw",
+        "outcomeCount": 2
+      },
+      {
+        "marketGroupTitle": "Regulation Winner",
+        "marketType": "match_winner_1x2",
+        "line": null,
+        "period": "regulation",
+        "referenceSource": "polymarket",
+        "externalSlug": "fifwc-che-col-2026-07-07-col",
+        "outcomeCount": 2
+      },
+      {
+        "marketGroupTitle": "Spread",
+        "marketType": "spread",
+        "line": "0.5",
+        "period": "regulation",
+        "referenceSource": "contract-fixture",
+        "externalSlug": "switzerland-vs-colombia-spread-home-0-5",
+        "outcomeCount": 2
+      }
+    ]
+  },
+  "diagnosis": {
+    "regulationWinner": "Provider-backed Regulation Winner is available from Polymarket Gamma/CLOB-derived data.",
+    "lineMarkets": "No provider-backed spread/totals/team-total markets are attached for the selected Polymarket event; Local MVP line markets are contract-shaped backend fixtures.",
+    "nextPath": [
+      "Do not block Local MVP on Optic Odds.",
+      "Use the provider-backed Regulation Winner for real Polymarket parity.",
+      "Keep Spread/Totals/Team Total as explicit contract-fixture line markets until Polymarket exposes attach-ready line rows or another approved provider is configured.",
+      "Next visible cycle should prove the S23 Home -> Event Detail -> line ticket -> server order -> Portfolio/history path against current route data, not stale FI disposable event names."
+    ]
+  }
+}

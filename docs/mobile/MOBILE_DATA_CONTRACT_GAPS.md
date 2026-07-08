@@ -4910,3 +4910,37 @@ Temporary mock/static data:
 Future migration concern:
 
 - Replace disposable provider-shaped proof events with production active Polymarket-backed World Cup events before treating provider breadth as complete.
+
+## Cycle LU - Current State Inspection And Home MVP Feed Tightening
+
+Closed or narrowed:
+
+- Confirmed the current service has provider-backed Regulation Winner data for live World Cup match cards.
+- Confirmed the selected `switzerland-vs-colombia` detail route has no provider-backed Spread/Totals/Team Total markets.
+- Confirmed mobile Home was able to load current server-mode data on S23 through Expo Go.
+- Removed broader futures/non-match records from the visible Local MVP Home feed by requiring `leagueKey=world_cup` and match-only client filtering.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total ids, condition ids, token ids, and quote/history data for the selected match.
+- A backend-side Local MVP match-only event filter would be cleaner than relying on mobile to drop futures returned by broad provider search.
+- Fresh installed APK/dev build pointed at the local backend; current installed `com.holiwyn.mobile` package is stale.
+
+Schema mismatch:
+
+- No schema mismatch was found. Existing event `sportKey`, `leagueKey`, `eventType`, market source fields, and selection identity fields are enough for the current filter.
+
+Route mismatch:
+
+- `/api/events` can still return futures alongside match cards for the broad World Cup feed.
+- Mobile now enforces match-only MVP visibility, but a future backend route/query flag should expose the same match-only contract directly.
+
+Temporary mock/static data:
+
+- No frontend-only mock data was added.
+- Contract-fixture line markets remain backend-written and source-labeled.
+
+Future migration concern:
+
+- Rebuild/install a fresh Holiwyn development APK before using the installed package for manual acceptance.
+- Run the full S23 visible flow after this inspection: Home -> Event Detail -> line ticket -> fake-token/server-backed order -> Portfolio/history.

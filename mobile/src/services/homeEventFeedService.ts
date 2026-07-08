@@ -32,6 +32,11 @@ const matchesFilter = (event: EventSummary, filter: HomeEventFeedFilter) => {
   return String(event.status ?? "").toLowerCase() === filter;
 };
 
+const isWorldCupMatchEvent = (event: EventSummary) =>
+  event.sportKey === "soccer" &&
+  event.leagueKey === "world_cup" &&
+  (event.eventType ?? "match") === "match";
+
 export const loadHomeEventFeedPage = async ({
   api,
   filter = "all",
@@ -50,14 +55,15 @@ export const loadHomeEventFeedPage = async ({
         cursor,
         status,
         source,
-        leagueKey: null,
+        leagueKey: "world_cup",
       });
       const nextCursor = payload.nextCursor ?? payload.page?.nextCursor ?? null;
+      const events = payload.events.filter(isWorldCupMatchEvent);
       return {
         source: "server-route",
         filter,
         status,
-        events: payload.events,
+        events,
         nextCursor,
         page: {
           limit: payload.page?.limit ?? safeLimit,

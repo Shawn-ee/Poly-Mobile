@@ -53,7 +53,7 @@ describe("homeEventFeedService", () => {
       cursor: null,
       status: "live",
       source: "polymarket",
-      leagueKey: null,
+      leagueKey: "world_cup",
     });
   });
 
@@ -70,7 +70,29 @@ describe("homeEventFeedService", () => {
       cursor: null,
       status: null,
       source: "polymarket",
-      leagueKey: null,
+      leagueKey: "world_cup",
+    });
+  });
+
+  test("keeps server-mode Home focused on World Cup soccer matches only", async () => {
+    const listWorldCupEvents = vi.fn(async () => ({
+      events: [
+        event({ id: "match-1", slug: "switzerland-vs-colombia", title: "Switzerland vs. Colombia", eventType: "match" }),
+        event({ id: "future-1", slug: "world-cup-winner", title: "World Cup Winner", eventType: "future" }),
+        event({ id: "future-2", slug: "ballon-dor-winner-2026", title: "Ballon d'Or Winner 2026", eventType: "future", leagueKey: "ballon_dor" }),
+      ],
+      page: { limit: 10, nextCursor: null, hasMore: false },
+    }));
+
+    await expect(
+      loadHomeEventFeedPage({
+        api: { listWorldCupEvents },
+        filter: "all",
+        limit: 10,
+      }),
+    ).resolves.toMatchObject({
+      source: "server-route",
+      events: [{ slug: "switzerland-vs-colombia" }],
     });
   });
 
