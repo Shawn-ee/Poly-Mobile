@@ -2,6 +2,44 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle NI - Provider Winner Clean Feed Regression
+
+Feature/page worked on:
+
+- Provider-backed Regulation Winner retail flow after the Home/Live proof-event filter.
+
+Frontend/services touched:
+
+- `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1`
+
+User interactions supported/proven:
+
+- On Samsung S23, Home shows the cleaned current-match feed without disposable provider-breadth proof rows.
+- Event Detail shows composed provider-backed Regulation Winner 1X2 markets.
+- The user opens an Egypt provider-backed winner ticket, swipes to buy, lands in Portfolio, and sees filled History with provider source preserved.
+
+Backend/API route changed:
+
+- None.
+
+Backend/API routes exercised:
+
+- `/api/health`
+- `/api/events`
+- `/api/mobile/events/:slug/live-detail`
+- `/api/orders`
+- `/api/portfolio`
+- `/api/portfolio/history`
+
+Verified:
+
+- PowerShell parser check passed.
+- S23 proof passed: `docs/mobile/harness/cycle-NI-provider-winner-clean-feed/cycle-NI-provider-winner-s23-visible-flow.json`.
+
+Known limitations:
+
+- Spread/Totals/Team Total remain Local MVP `contract-fixture` line markets because the inspected Polymarket event has zero route-visible provider-backed line markets.
+
 ## Cycle NH - Mobile MVP Proof Event Filter
 
 Feature/page worked on:

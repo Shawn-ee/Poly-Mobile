@@ -2,6 +2,18 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle NI - Provider Winner Clean Feed Regression
+
+Cycle NI changes the provider-winner S23 proof harness only; it consumes existing provider-backed Regulation Winner, order, and Portfolio routes.
+
+- S23 proof: `docs/mobile/harness/cycle-NI-provider-winner-clean-feed/cycle-NI-provider-winner-s23-visible-flow.json`.
+- Counterparty proof: `docs/mobile/harness/cycle-NI-provider-winner-clean-feed/cycle-NI-provider-winner-counterparty.json`.
+- Audit: `docs/mobile/audits/cycle-NI-provider-winner-clean-feed.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Provider-backed Regulation Winner filled retail flow | `/api/events`; `/api/mobile/events/:slug/live-detail`; `/api/orders`; `/api/portfolio`; `/api/portfolio/history` | GET and POST | Existing mobile API auth for order/portfolio | Existing ticket order body | Provider-backed `match_winner_1x2` market identity, `externalMarketId=2793741`, `conditionId`, outcome token id, order fill, Portfolio position/history source identity | Existing `Event`, `Market`, `Outcome`, `Order`; no schema change | Proof seeds deterministic maker ask liquidity for filled-history proof only | Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected Polymarket events. |
+
 ## Cycle NH - Mobile MVP Proof Event Filter
 
 Cycle NH changes the public event list route used by Home, Live, and Search-style event discovery.

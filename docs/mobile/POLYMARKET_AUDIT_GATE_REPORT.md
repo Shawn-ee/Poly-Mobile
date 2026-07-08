@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle NI
+
+Gate status: Pass
+
+Scope: Provider-backed Regulation Winner clean-feed regression.
+
+Decision:
+
+- P0 failed: 0 for focused provider-backed Regulation Winner filled-flow scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events; P1 production liquidity policy is still separate from proof liquidity.
+- Evidence: `docs/mobile/harness/cycle-NI-provider-winner-clean-feed/cycle-NI-provider-winner-s23-visible-flow.json`, `docs/mobile/harness/cycle-NI-provider-winner-clean-feed/cycle-NI-provider-winner-counterparty.json`, `docs/mobile/harness/cycle-NI-provider-winner-clean-feed/cycle-NI-provider-winner-after-submit.xml`, `docs/mobile/harness/cycle-NI-provider-winner-clean-feed/cycle-NI-provider-winner-portfolio-history.xml`, `docs/mobile/audits/cycle-NI-provider-winner-clean-feed.md`.
+- Notes: The S23 proof verifies the cleaned Home feed and the real Polymarket-backed Egypt Regulation Winner path through ticket, filled order, Portfolio, and History.
+
 ## Cycle NH
 
 Gate status: Pass

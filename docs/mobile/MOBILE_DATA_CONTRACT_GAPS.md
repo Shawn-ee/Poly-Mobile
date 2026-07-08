@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle NI - Provider Winner Clean Feed Regression
+
+Closed or narrowed:
+
+- Provider-backed Regulation Winner is re-proven on S23 after the Home/Live proof-event filter.
+- Filled Portfolio/history proof preserves provider market/source/token identity for Egypt winner market `2793741`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected current events.
+- Production non-proof liquidity policy for provider-backed match-winner fills.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Deterministic proof maker liquidity was seeded for the filled-history proof.
+- Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows.
+
 ## Cycle NH - Mobile MVP Proof Event Filter
 
 Closed or narrowed:

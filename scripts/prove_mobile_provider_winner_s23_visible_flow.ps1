@@ -186,6 +186,19 @@ function Start-Link {
   & $adb -s $Device shell am start -a android.intent.action.VIEW -d "'$Url'" | Out-Null
 }
 
+function Write-JsonNoBom {
+  param(
+    [Parameter(Mandatory = $true)]
+    [object]$Value,
+    [Parameter(Mandatory = $true)]
+    [string]$Path,
+    [int]$Depth = 6
+  )
+  $json = $Value | ConvertTo-Json -Depth $Depth
+  $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+  [System.IO.File]::WriteAllText((Resolve-Path -LiteralPath (Split-Path -Parent $Path)).Path + "\" + (Split-Path -Leaf $Path), ($json -replace "`r`n", "`n") + "`n", $utf8NoBom)
+}
+
 Push-Location $repoRoot
 $previousEnv = @{
   MOBILE_DEV_USERNAME = $env:MOBILE_DEV_USERNAME
@@ -246,7 +259,7 @@ try {
   $homeXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-home.xml"
   Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Argentina vs. Egypt", "event-card-$EventSlug", "home-compact-retail-feed")
   Assert-NotContains -Path $homeXml -Unexpected @("This is the developer menu", "SDK version")
-  Assert-NotContains -Path $homeXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
+  Assert-NotContains -Path $homeXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth", "EL-A Provider Breadth", "mobile-el-a-provider-breadth")
 
   Invoke-TapNode -Path $homeXml -Identifier "event-card-$EventSlug" -StartsWith -YRatio 0.28
   Start-Sleep -Seconds 5
@@ -365,7 +378,7 @@ try {
     )
   }
   $summaryPath = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-provider-winner-s23-visible-flow.json"
-  $summary | ConvertTo-Json -Depth 6 | Set-Content -Path $summaryPath -Encoding utf8
+  Write-JsonNoBom -Value $summary -Path $summaryPath -Depth 6
   Write-Host "Proof summary: $summaryPath"
 } finally {
   if ($expo -and -not $expo.HasExited) {
