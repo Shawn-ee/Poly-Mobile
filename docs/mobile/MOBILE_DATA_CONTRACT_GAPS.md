@@ -2,6 +2,26 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle NG - S23 Current Match Cancel Proof
+
+Closed or narrowed:
+
+- S23 proof now covers the visible cancel branch of the Local MVP order lifecycle.
+- The proof verifies a server-backed open order can be canceled and then appears in Portfolio History with Spread line/source identity preserved.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected events.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- Existing `contract-fixture` line markets remain backend-shaped Local MVP fallback rows.
+- This is intentional for UI proof only and must not be labeled provider-backed.
+
 ## Cycle NF - Proof JSON Hygiene
 
 Closed or narrowed:

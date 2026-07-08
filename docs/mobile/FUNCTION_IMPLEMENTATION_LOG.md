@@ -2,6 +2,45 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle NG - S23 Current Match Cancel Proof
+
+Feature/page worked on:
+
+- Current Local MVP retail flow cancel proof: Home -> Live -> Event Detail -> Spread ticket -> server-backed open order -> cancel -> Portfolio History.
+
+Frontend/services touched:
+
+- `scripts/prove_mobile_current_mvp_s23_visible_flow.ps1`
+
+User interactions supported/proven:
+
+- On Samsung S23, the proof selects the current Argentina vs. Egypt Spread line, opens the simple ticket, swipes to buy, reaches Portfolio Orders, taps the visible Cancel control, and verifies a canceled History row.
+- The canceled activity preserves selected market type, line, provider/source disclosure, and local pricing note.
+
+Backend/API route changed:
+
+- None.
+
+Backend/API routes exercised:
+
+- `/api/health`
+- `/api/events`
+- `/api/mobile/events/:slug/live-detail`
+- `/api/orders`
+- `/api/orders/:id`
+- `/api/portfolio`
+- `/api/portfolio/history`
+
+Verified:
+
+- PowerShell parser check passed.
+- S23 proof passed: `docs/mobile/harness/cycle-NG-s23-current-match-cancel-proof/cycle-NG-current-mvp-s23-visible-flow.json`.
+
+Known limitations:
+
+- Regulation Winner remains provider-backed for the inspected current match.
+- Spread/Totals/Team Total rows remain backend-shaped `contract-fixture` Local MVP pricing because current inspected Polymarket provider data still has no attach-ready line markets.
+
 ## Cycle NF - Proof JSON Hygiene
 
 Feature/page worked on:

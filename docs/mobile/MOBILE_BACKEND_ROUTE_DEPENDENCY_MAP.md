@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle NG - S23 Current Match Cancel Proof
+
+Cycle NG changes the S23 proof harness only; it consumes the existing server order/cancel/portfolio routes.
+
+- S23 proof: `docs/mobile/harness/cycle-NG-s23-current-match-cancel-proof/cycle-NG-current-mvp-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-NG-s23-current-match-cancel-proof.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Current MVP cancel proof | `/api/events`; `/api/mobile/events/:slug/live-detail`; `/api/orders`; `/api/orders/:id`; `/api/portfolio`; `/api/portfolio/history` | GET, POST, DELETE | Existing mobile API auth for order/portfolio | Existing ticket order body; cancel uses order id route param | Event compact markets, ticket selection snapshot, open order id/status, order selection/source identity, canceled activity/history identity | Existing `Event`, `Market`, `Outcome`, `Order`; no schema change | Existing Local MVP `contract-fixture` line selections remain cancel proof data | Real provider-backed Spread/Totals/Team Total markets remain unavailable for inspected Polymarket events. |
+
 ## Cycle NF - Proof JSON Hygiene
 
 Cycle NF changes proof harness output only; it consumes the same mobile routes as Cycle NE.

@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle NG
+
+Gate status: Pass
+
+Scope: S23 current match cancel proof.
+
+Decision:
+
+- P0 failed: 0 for focused Local MVP cancel proof scope.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-NG-s23-current-match-cancel-proof/cycle-NG-current-mvp-s23-visible-flow.json`, `docs/mobile/harness/cycle-NG-s23-current-match-cancel-proof/cycle-NG-current-mvp-after-submit.xml`, `docs/mobile/harness/cycle-NG-s23-current-match-cancel-proof/cycle-NG-current-mvp-after-cancel.xml`, `docs/mobile/harness/cycle-NG-s23-current-match-cancel-proof/cycle-NG-current-mvp-canceled-history.xml`, `docs/mobile/audits/cycle-NG-s23-current-match-cancel-proof.md`.
+- Notes: The S23 proof verifies Home -> Live -> Event Detail -> Spread ticket -> open order -> Cancel -> History. It does not claim provider-backed line-market parity.
+
 ## Cycle NF
 
 Gate status: Pass

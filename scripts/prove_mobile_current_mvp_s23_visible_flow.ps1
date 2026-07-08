@@ -10,7 +10,8 @@ param(
   [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-MB-current-mvp-s23-visible-flow",
   [switch]$SeedCounterparty,
   [switch]$ExpectFilledHistory,
-  [switch]$ExpectOpenOrder
+  [switch]$ExpectOpenOrder,
+  [switch]$ExpectCancel
 )
 
 $ErrorActionPreference = "Stop"
@@ -23,9 +24,11 @@ $expoOut = Join-Path $repoRoot ".runtime\mobile-current-mvp-s23-expo.out.log"
 $expoErr = Join-Path $repoRoot ".runtime\mobile-current-mvp-s23-expo.err.log"
 $adb = "adb"
 
-if ($ExpectOpenOrder -and $ExpectFilledHistory) {
-  throw "Choose either -ExpectOpenOrder or -ExpectFilledHistory, not both."
+if (($ExpectOpenOrder -and $ExpectFilledHistory) -or ($ExpectCancel -and $ExpectFilledHistory)) {
+  throw "Choose open-order/cancel proof or filled-history proof, not both."
 }
+
+$expectOpenOrderState = [bool]$ExpectOpenOrder -or [bool]$ExpectCancel
 
 New-Item -ItemType Directory -Force -Path $resolvedOutputDir | Out-Null
 New-Item -ItemType Directory -Force -Path $resolvedHierarchyOutputDir | Out-Null
@@ -307,13 +310,25 @@ try {
   Save-Screenshot -Name "cycle-$Cycle-current-mvp-after-submit.png" | Out-Null
   $afterSubmitXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-after-submit.xml"
   Assert-Contains -Path $afterSubmitXml -Expected @("Portfolio", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
-  if ($ExpectOpenOrder) {
+  if ($expectOpenOrderState) {
     Assert-Contains -Path $afterSubmitXml -Expected @("portfolio-tab-orders", "open-order-row-", "open-order-source-badge", "open-order-source-note", "portfolio-source-badge-local", "cancel-open-order-")
   }
   Assert-NotContains -Path $afterSubmitXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
   $historyXml = $null
-  if (-not $ExpectOpenOrder) {
+  $cancelHistoryXml = $null
+  if ($ExpectCancel) {
+    Invoke-TapNode -Path $afterSubmitXml -Identifier "cancel-open-order-" -StartsWith
+    Start-Sleep -Seconds 5
+    Save-Screenshot -Name "cycle-$Cycle-current-mvp-after-cancel.png" | Out-Null
+    $afterCancelXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-after-cancel.xml"
+    Assert-Contains -Path $afterCancelXml -Expected @("Portfolio", "portfolio-tab-orders", "No open orders")
+    Invoke-TapNode -Path $afterCancelXml -Identifier "portfolio-tab-history"
+    Start-Sleep -Seconds 2
+    Save-Screenshot -Name "cycle-$Cycle-current-mvp-canceled-history.png" | Out-Null
+    $cancelHistoryXml = Save-Hierarchy -Name "cycle-$Cycle-current-mvp-canceled-history.xml"
+    Assert-Contains -Path $cancelHistoryXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "Canceled", "portfolio-history-market-context-readable", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
+  } elseif (-not $expectOpenOrderState) {
     Invoke-TapNode -Path $afterSubmitXml -Identifier "portfolio-tab-history"
     Start-Sleep -Seconds 1
     Save-Screenshot -Name "cycle-$Cycle-current-mvp-portfolio-history.png" | Out-Null
@@ -321,7 +336,7 @@ try {
   }
   if ($ExpectFilledHistory) {
     Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "portfolio-history-market-context-readable", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture", "portfolio-local-test-pricing")
-  } elseif (-not $ExpectOpenOrder) {
+  } elseif ((-not $expectOpenOrderState) -and (-not $ExpectCancel)) {
     Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "No history", "portfolio-market-type-spread", "portfolio-line-1.5", "portfolio-provider-source-contract-fixture")
   }
 
@@ -349,10 +364,12 @@ try {
       ticketPreservesLine = $true
       swipeSubmitReachedPortfolio = $true
       portfolioOpenOrderPreservesLineSource = $true
-      openOrderVisible = [bool]$ExpectOpenOrder
-      openOrderSourceBadgeVisible = [bool]$ExpectOpenOrder
-      historyShowsEmptyStateUntilFill = (-not [bool]$ExpectFilledHistory) -and (-not [bool]$ExpectOpenOrder)
+      openOrderVisible = $expectOpenOrderState
+      openOrderSourceBadgeVisible = $expectOpenOrderState
+      historyShowsEmptyStateUntilFill = (-not [bool]$ExpectFilledHistory) -and (-not $expectOpenOrderState)
       filledHistoryVisible = [bool]$ExpectFilledHistory
+      cancelSubmitted = [bool]$ExpectCancel
+      canceledHistoryVisible = [bool]$ExpectCancel
     }
     artifacts = [System.Collections.Generic.List[string]]@(
       "$OutputDir\cycle-$Cycle-current-mvp-home.png",
@@ -369,7 +386,12 @@ try {
       "$HierarchyOutputDir\cycle-$Cycle-current-mvp-after-submit.xml"
     )
   }
-  if (-not $ExpectOpenOrder) {
+  if ($ExpectCancel) {
+    $summary.artifacts.Add("$OutputDir\cycle-$Cycle-current-mvp-after-cancel.png")
+    $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-after-cancel.xml")
+    $summary.artifacts.Add("$OutputDir\cycle-$Cycle-current-mvp-canceled-history.png")
+    $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-canceled-history.xml")
+  } elseif (-not $expectOpenOrderState) {
     $summary.artifacts.Add("$OutputDir\cycle-$Cycle-current-mvp-portfolio-history.png")
     $summary.artifacts.Add("$HierarchyOutputDir\cycle-$Cycle-current-mvp-portfolio-history.xml")
   }
