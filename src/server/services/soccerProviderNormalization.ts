@@ -63,7 +63,8 @@ export function normalizePolymarketSoccerEvent(event: ProviderEventLike): Normal
   const isWorldCup = key.includes("world cup") || key.includes("world-cup");
   const isWinner = key.includes("winner") || key.includes("outright");
   const isAward = key.includes("ballon") || key.includes("award");
-  if (isWorldCup && isWinner) {
+  const isWorldCupFuture = isWorldCup && (isWinner || hasWorldCupFutureLanguage(key));
+  if (isWorldCupFuture) {
     return {
       sportKey: "soccer",
       leagueKey: "world_cup",
@@ -266,6 +267,10 @@ function simpleMarket(
 
 function hasAdvanceLanguage(value: string) {
   return /\b(advance|advances|qualify|qualifies|qualification|to advance|to qualify|penalty|penalties|shootout|extra time)\b/i.test(value);
+}
+
+function hasWorldCupFutureLanguage(value: string) {
+  return /\b(top goalscorer|top scorer|golden boot|silver boot|bronze boot|golden ball|silver ball|bronze ball|golden glove|clean sheets|most assists|goal contributions|fair play|group of champion|furthest advancing|player to score)\b/i.test(value);
 }
 
 function derivePeriod(key: string, event: NormalizedSoccerEvent) {

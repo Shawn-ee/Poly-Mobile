@@ -2,6 +2,37 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle OV - Nation Top Goalscorer Provider Breadth And Classification Guard
+
+Closed or narrowed:
+
+- Broad World Cup provider/Search routes now expose five provider-backed mobile-visible events.
+- `World Cup: Nation of Top Goalscorer` is imported from Polymarket Gamma with 8 real markets and refreshed CLOB-backed reference snapshots.
+- S23 Search proof confirms the newly imported event is visible in mobile server mode with `Polymarket 8 markets`.
+- Backend normalization now classifies World Cup top-goalscorer nation markets as `future/outright` instead of `match/regulation`.
+- Local MVP match-only route remains one match after the fix: `Argentina vs. Egypt`.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed current World Cup match events with attach-ready markets.
+- Real provider-backed Spread/Totals/Team Total line markets for match detail pages.
+- Scheduled reference refresh coverage so quote freshness does not depend on manual proof refresh.
+- Bot seed/risk-cap sizing that permits local quote placement for low-price futures without tripping exposure caps.
+
+Route mismatch:
+
+- Before the fix, `world-cup-nation-of-top-goalscorer` was misclassified as `match` and appeared in `mobileMvpMatches=1`.
+- After the fix, it is `future` and stays Search-visible only.
+
+Temporary mock/static data:
+
+- Existing Local MVP match line markets remain `contract-fixture` rows.
+- No new frontend-only fixture or random mock data was added.
+
+Future migration concern:
+
+- Polymarket will likely add more World Cup award/stat futures. The normalization guard now covers common top scorer/goalscorer/boot/ball/glove/assist/clean-sheet patterns, but future wording should still be audited when imported.
+
 ## Cycle OU - Golden Boot Provider Breadth Refresh
 
 Closed or narrowed:
