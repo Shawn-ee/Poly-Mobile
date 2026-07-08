@@ -783,3 +783,10 @@ For every UI element or interaction, answer:
 - OG confirms Polymarket Gamma exposes 0 line markets for the selected current event, so the app should not attach fake provider identity to fixture lines.
 - OG confirms broader World Cup Winner provider data exists and is healthier than the current match line-market path.
 - Next visible milestone: current-match Regulation Winner ticket/order/Portfolio proof, so the main MVP journey exercises real Polymarket-backed market identity where available.
+
+## Cycle OH Gap Tracker Update
+
+- PM-GAP-128 is opened and verified for current-match provider-backed Regulation Winner mobile proof.
+- OH closes the visible proof gap left by OG: S23 now proves Home -> Event Detail -> provider-backed Regulation Winner -> Ticket -> fake-token server order -> Portfolio/history.
+- Ticket and Portfolio preserve `marketType=winner`, `line=none`, and `provider-source-polymarket`.
+- Remaining P1: Spread/Totals/Team Total current-match line markets are still local-test fixtures, not real provider-backed Polymarket lines.

@@ -3149,3 +3149,17 @@ Cycle OG implementation notes:
 
 - No backend route or schema changed.
 - The next visible MVP cycle should use current-match Regulation Winner as the real provider-backed path.
+
+## Cycle OH - Current Match Provider Winner S23 Proof
+
+| Mobile feature | API endpoint/service used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home current match | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1&limit=10` | GET | Public viewing | Query filters | `argentina-vs-egypt`, source summary, event card identity | `Event`, `Market`, `Outcome` | None added. | More current match inventory remains future work. |
+| Event Detail provider winner | `/api/mobile/events/argentina-vs-egypt/live-detail` | GET | Public viewing | Event slug | Regulation Winner markets/outcomes, provider market ids, token/source identity | `Event`, `Market`, `Outcome`, provider metadata | None added for winner path. | None for current Regulation Winner proof. |
+| Fake-token provider winner order | `/api/orders` | POST | Mobile API key with order scope | Winner `marketId`, `outcomeId`, side, price, size, provider selection identity | Order id/status and selected provider identity | `User`, `ApiCredential`, `Order`, accounting models | None added. | None for open-order fake-token provider winner proof. |
+| Portfolio/history provider winner | `/api/portfolio`, `/api/portfolio/history` | GET | Mobile API key with portfolio/history scope | None | Open order/history rows with `marketType=winner`, `line=none`, `provider-source=polymarket` | `Order`, portfolio/history read models | None added. | None for current provider winner proof. |
+
+Cycle OH implementation notes:
+
+- No backend route or schema changed.
+- S23 proof confirms the current match has a full real provider-backed Regulation Winner mobile path.

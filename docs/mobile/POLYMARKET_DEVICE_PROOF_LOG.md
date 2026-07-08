@@ -988,6 +988,37 @@ Pass for inspection. Current match Regulation Winner is Polymarket-backed; curre
 Remaining gaps:
 Next visible S23 proof should target the current-match Regulation Winner ticket/order/Portfolio path.
 
+### 2026-07-08 - Cycle OH - Current match provider winner S23 proof
+
+Reference device:
+Not used. This cycle uses already inspected Polymarket-backed current-match provider data.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode, backend `http://127.0.0.1:3002`, mobile API base `http://172.16.200.14:3002`, temporary Expo port `8314`, temporary mobile dev API key.
+
+Holiwyn actions:
+Opened Home, opened `Argentina vs. Egypt`, selected a provider-backed Regulation Winner outcome, opened Trade Ticket, entered `$25`, swiped to buy, verified Portfolio after submit, and opened Portfolio History.
+
+Evidence:
+- `docs/mobile/harness/cycle-OH-provider-winner-current-match/cycle-OH-provider-winner-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-OH-provider-winner-current-match/cycle-OH-current-mvp-home.png`
+- `docs/mobile/screenshots/cycle-OH-provider-winner-current-match/cycle-OH-current-mvp-detail-top.png`
+- `docs/mobile/screenshots/cycle-OH-provider-winner-current-match/cycle-OH-provider-winner-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-OH-provider-winner-current-match/cycle-OH-provider-winner-after-submit.png`
+- `docs/mobile/screenshots/cycle-OH-provider-winner-current-match/cycle-OH-provider-winner-portfolio-history.png`
+
+Smoke/tests:
+S23 visible provider winner proof passed.
+
+Result:
+Pass. The current match now has a proven real Polymarket-backed mobile betting path through Ticket and Portfolio/history.
+
+Remaining gaps:
+Spread/Totals/Team Total current-match line markets remain local-test fixtures until real provider-backed line markets exist.
+
 ### 2026-07-08 - Cycle OC - Server-owned cancel history
 
 Reference device:

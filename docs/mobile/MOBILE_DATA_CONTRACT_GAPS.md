@@ -6602,3 +6602,31 @@ Temporary mock/static data:
 Future migration concern:
 
 - Once Polymarket or another approved provider exposes attach-ready current-match line markets, replace the fixture line rows at the backend contract level instead of adding mobile-only structures.
+
+## Cycle OH - Current Match Provider Winner S23 Proof
+
+Closed or narrowed:
+
+- Confirmed on S23 that current-match Regulation Winner identity survives Home -> Event Detail -> Ticket -> server order -> Portfolio/history.
+- Confirmed Ticket and Portfolio can consume provider-backed current-match market identity without needing line fixtures.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total current-match identities remain missing.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch blocked the current-match provider winner proof.
+
+Temporary mock/static data:
+
+- None added for the provider winner path.
+- Existing line fixtures remain outside this proof scope.
+
+Future migration concern:
+
+- Prefer current-match provider winner for real Polymarket-backed MVP proof; use fixture lines only for line-selector UX until real provider line markets exist.

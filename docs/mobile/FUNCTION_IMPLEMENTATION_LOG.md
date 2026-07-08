@@ -8158,3 +8158,44 @@ Known limitations:
 
 - Current match Spread/Totals/Team Total are still local-test fake-token fixtures.
 - The provider line availability script has an old default slug and should be called with the selected current event slug until updated.
+
+## Cycle OH - Current Match Provider Winner S23 Proof
+
+Feature/page worked on:
+
+- Visible current-match Regulation Winner provider-backed trading path.
+
+Frontend/backend files touched:
+
+- No app runtime files changed.
+- `docs/mobile/audits/cycle-OH-provider-winner-current-match.md`
+- `docs/mobile/harness/cycle-OH-provider-winner-current-match/`
+- `docs/mobile/screenshots/cycle-OH-provider-winner-current-match/`
+
+Important functions/services touched:
+
+- No runtime functions changed.
+- Proof exercised Home, Event Detail, Trade Ticket, `/api/orders`, Portfolio, and Portfolio History.
+
+User interactions supported/proven:
+
+- User opens Home.
+- User opens `Argentina vs. Egypt`.
+- User selects a provider-backed Regulation Winner outcome.
+- User opens a Trade Ticket preserving `provider-source-polymarket`.
+- User swipes to submit a fake-token server order.
+- User sees Portfolio and History preserve winner/provider identity.
+
+State transitions:
+
+- No implementation state transition changed.
+- Existing server order and Portfolio refresh path was proven for the current-match provider winner.
+
+Validation:
+
+- Samsung S23 visible proof passed on `SM-S911U1`.
+
+Known limitations:
+
+- This cycle proves the provider-backed Regulation Winner path only.
+- Spread/Totals/Team Total remain local-test fake-token fixtures.

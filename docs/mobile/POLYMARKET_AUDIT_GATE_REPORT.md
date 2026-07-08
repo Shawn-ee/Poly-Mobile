@@ -5532,3 +5532,33 @@ Decision:
 - Pass/fail: Pass for inspection.
 - Next cycle should prioritize current-match Regulation Winner as the real provider-backed ticket/order path.
 - Remaining P1: real provider-backed current-match line-market ingestion remains unavailable.
+
+## Cycle OH
+
+Gate status: Pass for current-match provider winner mobile proof
+
+Scope: Prove the current match Regulation Winner path on Samsung S23.
+
+Evidence:
+
+- `docs/mobile/audits/cycle-OH-provider-winner-current-match.md`
+- `docs/mobile/harness/cycle-OH-provider-winner-current-match/cycle-OH-provider-winner-s23-visible-flow.json`
+- `docs/mobile/screenshots/cycle-OH-provider-winner-current-match/cycle-OH-provider-winner-ticket-ready.png`
+- `docs/mobile/screenshots/cycle-OH-provider-winner-current-match/cycle-OH-provider-winner-after-submit.png`
+- `docs/mobile/screenshots/cycle-OH-provider-winner-current-match/cycle-OH-provider-winner-portfolio-history.png`
+
+Criteria results:
+
+| Criterion ID | Priority | Result | Evidence | Fix if failed |
+| --- | --- | --- | --- | --- |
+| OH-P0-01 | P0 | Pass | Home XML shows current match card. | Fix Home feed/card routing. |
+| OH-P0-02 | P0 | Pass | Detail XML shows composed provider Regulation Winner outcomes. | Fix Event Detail provider winner rendering. |
+| OH-P0-03 | P0 | Pass | Ticket XML includes winner, line none, and provider source Polymarket. | Fix ticket selection mapping. |
+| OH-P0-04 | P0 | Pass | After submit XML reaches Portfolio with provider winner identity. | Fix order submit/Portfolio sync. |
+| OH-P0-05 | P0 | Pass | History XML preserves provider winner identity. | Fix portfolio history mapping. |
+| OH-P0-06 | P0 | Pass | XML does not expose orderbook/chat in MVP path. | Hide non-MVP surfaces. |
+
+Decision:
+
+- Pass/fail: Pass.
+- Remaining P1: current-match line-market provider ingestion remains unavailable.
