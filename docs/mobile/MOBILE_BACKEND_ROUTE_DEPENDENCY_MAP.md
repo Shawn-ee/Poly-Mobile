@@ -2,6 +2,17 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle MN - Trade Ticket Source Badge
+
+Cycle MN renders Trade Ticket source state from existing ticket/market reference fields.
+
+- S23 proof: `docs/mobile/harness/cycle-MN-ticket-source-badge/cycle-MN-current-mvp-s23-visible-flow.json`.
+- Audit: `docs/mobile/audits/cycle-MN-ticket-source-badge.md`.
+
+| Mobile feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Trade Ticket source badge | Existing Event Detail hydration/catalog routes populate the ticket target; submit still uses existing `/api/orders`; Portfolio/history proof still uses existing `/api/portfolio` and `/api/portfolio/history` | GET for event/catalog hydration; POST for order submit; GET for portfolio refresh | Public event viewing; order/portfolio use existing mobile API auth | No new request body fields | `ticket.selection.referenceSource`, fallback `ticket.market.referenceSource`, existing market/outcome/selection identity fields | Existing `Event`, `Market`, `Outcome`, `Order`, `Position`/portfolio read models; no schema change | `referenceSource=contract-fixture` renders `Local`; Polymarket source renders `Provider`; unknown source renders checking state | Real provider-backed Spread/Totals/Team Total markets remain missing for the inspected event. |
+
 ## Cycle MM - Market Source Row Badges
 
 Cycle MM renders row-level source badges from existing market reference fields.

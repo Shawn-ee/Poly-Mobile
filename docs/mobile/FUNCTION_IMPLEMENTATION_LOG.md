@@ -2,6 +2,40 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MN - Trade Ticket Source Badge
+
+Feature/page worked on:
+
+- Added visible source disclosure to the Trade Ticket header.
+- Selected Polymarket-backed tickets can show `Provider`.
+- Selected `contract-fixture` line tickets show `Local`.
+- Preserved the Local MVP path: Home -> Event Detail -> line ticket -> fake-token order -> Portfolio/history.
+
+Frontend/services touched:
+
+- `mobile/src/components/TradeTicket.tsx`
+- `mobile/src/__tests__/tradeTicketSourceBadge.test.ts`
+
+User interactions supported/proven:
+
+- On S23, selecting the current Spread line opens a ticket with a visible `Local` badge.
+- The badge is derived from `ticket.selection.referenceSource` or `ticket.market.referenceSource`.
+- The same S23 proof completes swipe submit and Portfolio/history.
+
+Verified:
+
+- Focused ticket source badge test passed.
+- Event Detail row source badge regression test passed.
+- Order service source/identity regression tests passed.
+- Mobile typecheck passed.
+- S23 proof passed: `docs/mobile/harness/cycle-MN-ticket-source-badge/cycle-MN-current-mvp-s23-visible-flow.json`.
+- S23 ticket screenshot: `docs/mobile/screenshots/cycle-MN-ticket-source-badge/cycle-MN-current-mvp-ticket-ready.png`.
+
+Known limitations:
+
+- This cycle does not make line markets real Polymarket-backed markets.
+- The `Local` badge is intentionally a current-state disclosure until provider-backed line candidates exist.
+
 ## Cycle MM - Market Source Row Badges
 
 Feature/page worked on:

@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle MN
+
+Gate status: Pass
+
+Scope: Trade Ticket source badge.
+
+Decision:
+
+- P0 failed: 0 for focused visible ticket-source disclosure.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for the inspected Local MVP event.
+- Evidence: `docs/mobile/harness/cycle-MN-ticket-source-badge/cycle-MN-current-mvp-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MN-ticket-source-badge/cycle-MN-current-mvp-ticket-ready.png`, `mobile/src/__tests__/tradeTicketSourceBadge.test.ts`, `docs/mobile/audits/cycle-MN-ticket-source-badge.md`.
+- Notes: S23 proof shows `Local` on the selected Spread ticket and the flow still reaches Portfolio/history after swipe submit.
+
 ## Cycle MM
 
 Gate status: Pass

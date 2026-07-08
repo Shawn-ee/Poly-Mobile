@@ -2,6 +2,26 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MN - Trade Ticket Source Badge
+
+Closed or narrowed:
+
+- Trade Ticket now surfaces selected market source state before submit.
+- The visible badge uses `ticket.selection.referenceSource` first, then `ticket.market.referenceSource`, matching the order payload identity.
+- S23 proof confirms the badge appears on the current Local Spread ticket and the full fake-token order path still works.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real Polymarket-backed Spread/Totals/Team Total markets for the inspected event.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- `contract-fixture` line tickets remain a Local MVP fallback and now render with a visible `Local` badge.
+
 ## Cycle MM - Market Source Row Badges
 
 Closed or narrowed:

@@ -293,6 +293,29 @@ function marketAvailabilityTone(market: Market) {
   return "ready";
 }
 
+function ticketSourceBadge(ticket: Ticket) {
+  const source = ticket.selection?.referenceSource ?? ticket.market.referenceSource ?? "";
+  if (source.includes("polymarket")) {
+    return {
+      label: "Provider",
+      tone: "provider" as const,
+      accessibility: `ticket-source-badge-provider ticket-source-${source}`,
+    };
+  }
+  if (source.includes("contract-fixture")) {
+    return {
+      label: "Local",
+      tone: "fixture" as const,
+      accessibility: `ticket-source-badge-local ticket-source-${source}`,
+    };
+  }
+  return {
+    label: "Checking",
+    tone: "unknown" as const,
+    accessibility: `ticket-source-badge-unknown ticket-source-${source || "unknown"}`,
+  };
+}
+
 const teamFlags: Record<string, string> = {
   ARG: "\ud83c\udde6\ud83c\uddf7",
   AUS: "\ud83c\udde6\ud83c\uddfa",
@@ -507,6 +530,7 @@ export function TradeTicket({
   const teamFlag = teamCode ? teamFlags[teamCode] : undefined;
   const fallbackMarketIcon = marketIconForTicket(ticket);
   const fallbackMarketType = ticket.selection?.marketType ?? ticket.market.marketType ?? ticket.market.type ?? "generic";
+  const sourceBadge = ticketSourceBadge(ticket);
   const amountDisplay = numericAmount > 0 ? compactCash(numericAmount) : "$0";
   const toWinDisplay = compactCash(estimatedPayout);
   const availabilityLabel = marketAvailabilityLabel(ticket.market);
@@ -607,9 +631,30 @@ export function TradeTicket({
               </View>
               <View style={styles.selectionTextBlock}>
                 <Text accessibilityLabel={`ticket-event-title ${eventTitle.compacted ? "ticket-event-title-compact-matchup" : "ticket-event-title-full-matchup"}`} numberOfLines={1} style={styles.ticketTitle}>{eventLabel}</Text>
-                <Text accessibilityLabel="ticket-selection-line" testID="ticket-selection-line" numberOfLines={2} style={styles.ticketOutcome}>
-                  <Text style={styles.ticketOutcomeSide}>{sideLabel}</Text> <Text style={styles.ticketOutcomeDot}>-</Text> {selectionLabel}
-                </Text>
+                <View style={styles.ticketSelectionMetaRow}>
+                  <Text accessibilityLabel="ticket-selection-line" testID="ticket-selection-line" numberOfLines={2} style={styles.ticketOutcome}>
+                    <Text style={styles.ticketOutcomeSide}>{sideLabel}</Text> <Text style={styles.ticketOutcomeDot}>-</Text> {selectionLabel}
+                  </Text>
+                  <View
+                    accessibilityLabel={`ticket-market-source-badge ${sourceBadge.accessibility}`}
+                    style={[
+                      styles.ticketSourcePill,
+                      sourceBadge.tone === "provider" && styles.ticketSourcePillProvider,
+                      sourceBadge.tone === "fixture" && styles.ticketSourcePillFixture,
+                    ]}
+                    testID="ticket-market-source-badge"
+                  >
+                    <Text
+                      style={[
+                        styles.ticketSourcePillText,
+                        sourceBadge.tone === "provider" && styles.ticketSourcePillTextProvider,
+                        sourceBadge.tone === "fixture" && styles.ticketSourcePillTextFixture,
+                      ]}
+                    >
+                      {sourceBadge.label}
+                    </Text>
+                  </View>
+                </View>
               </View>
             </View>
             <View accessibilityLabel="ticket-side-pill ticket-advanced-hidden-local-mvp" testID="ticket-side-pill" style={styles.orderReviewA11y}>
@@ -801,6 +846,13 @@ const styles = StyleSheet.create({
   marketIconFlag: { backgroundColor: "#121a27", borderColor: "#334155" },
   marketIconText: { color: "#dbeafe", fontSize: 20, fontWeight: "900" },
   selectionTextBlock: { flex: 1, minWidth: 0 },
+  ticketSelectionMetaRow: { minHeight: 23, flexDirection: "row", alignItems: "flex-start", gap: 8, marginTop: 2 },
+  ticketSourcePill: { minHeight: 22, justifyContent: "center", borderRadius: 999, paddingHorizontal: 8, backgroundColor: "#1f2937", borderWidth: 1, borderColor: "#334155", flexShrink: 0 },
+  ticketSourcePillProvider: { backgroundColor: "#052e16", borderColor: "#166534" },
+  ticketSourcePillFixture: { backgroundColor: "#33280f", borderColor: "#854d0e" },
+  ticketSourcePillText: { color: "#cbd5e1", fontSize: 9, fontWeight: "900" },
+  ticketSourcePillTextProvider: { color: "#86efac" },
+  ticketSourcePillTextFixture: { color: "#fde68a" },
   marketStatusPill: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 999, backgroundColor: "#052e1b", borderWidth: 1, borderColor: "#166534" },
   marketStatusPillWarning: { backgroundColor: "#2b2106", borderColor: "#854d0e" },
   marketStatusPillBlocked: { backgroundColor: "#2a0d0d", borderColor: "#7f1d1d" },
