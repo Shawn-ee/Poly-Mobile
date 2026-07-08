@@ -16,6 +16,19 @@ Fail the feature when:
 - Visual hierarchy is clearly worse or confusing.
 - Lead Agent claims readiness before Audit Gate pass.
 
+## Cycle MQ
+
+Gate status: Pass
+
+Scope: Provider-backed Regulation Winner S23 visible flow.
+
+Decision:
+
+- P0 failed: 0 for focused provider-backed winner retail flow.
+- P1/P2 remaining: P1 real provider-backed Spread/Totals/Team Total line markets remain unavailable for inspected events.
+- Evidence: `docs/mobile/harness/cycle-MQ-provider-winner-s23-visible-flow/cycle-MQ-provider-winner-s23-visible-flow.json`, `docs/mobile/screenshots/cycle-MQ-provider-winner-s23-visible-flow/`, `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1`, `docs/mobile/audits/cycle-MQ-provider-winner-s23-visible-flow.md`.
+- Notes: S23 proof shows `provider-source-polymarket` through provider winner section, ticket, Portfolio, and History.
+
 ## Cycle MP
 
 Gate status: Pass

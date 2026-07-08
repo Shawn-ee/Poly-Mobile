@@ -2,6 +2,34 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle MQ - Provider Winner S23 Visible Flow
+
+Feature/page worked on:
+
+- Added and ran focused S23 proof for provider-backed Regulation Winner.
+- Proved Home -> Event Detail -> provider-backed winner ticket -> fake-token/server order -> Portfolio/history.
+
+Frontend/services touched:
+
+- `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1`
+
+User interactions supported/proven:
+
+- On S23, opened `argentina-vs-egypt` from Home.
+- On S23, confirmed Event Detail Regulation Winner shows Provider/Polymarket-backed identity.
+- On S23, opened a winner ticket, selected `$25`, swiped to buy, reached Portfolio, and opened History.
+- The proof preserves `provider-source-polymarket`, `ticket-market-type-winner`, `portfolio-market-type-winner`, and `portfolio-line-none`.
+
+Verified:
+
+- S23 proof passed: `docs/mobile/harness/cycle-MQ-provider-winner-s23-visible-flow/cycle-MQ-provider-winner-s23-visible-flow.json`.
+- Script parse check passed for `scripts/prove_mobile_provider_winner_s23_visible_flow.ps1`.
+
+Known limitations:
+
+- This proves the real provider-backed Regulation Winner flow, not provider-backed Spread/Totals/Team Total.
+- Line markets remain explicit Local `contract-fixture` rows until provider-backed line markets exist.
+
 ## Cycle MP - Current Service Reinspection
 
 Feature/page worked on:

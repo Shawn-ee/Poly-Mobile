@@ -2,6 +2,27 @@
 
 Purpose: track fields, route mismatches, schema mismatches, ignored backend fields, temporary mock/static data, and future migration concerns discovered during mobile parity cycles.
 
+## Cycle MQ - Provider Winner S23 Visible Flow
+
+Closed or narrowed:
+
+- Provider-backed Regulation Winner is now proven on S23 through ticket submit, Portfolio, and History.
+- The selected order preserves `polymarket` provider identity through ticket and portfolio snapshots.
+- This closes the immediate question of whether the service can power at least one real Polymarket-backed current match market.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Real provider-backed Spread/Totals/Team Total markets for inspected events.
+
+Schema mismatch:
+
+- No schema migration was made.
+
+Temporary mock/static data:
+
+- None for the Regulation Winner path proven in MQ.
+- Local `contract-fixture` line markets remain separate MVP fallback rows.
+
 ## Cycle MP - Current Service Reinspection
 
 Closed or narrowed:
