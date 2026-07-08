@@ -1,0 +1,47 @@
+
+> poly-bot@0.1.0 liquidity:prepare-event
+> tsx scripts/prepareReferenceLiquidityEvent.ts --baseUrl http://127.0.0.1:3002 --devAdminUserId *** --eventSlug provider-breadth-world-cup-winner --allowlist England --maxMarkets 1 --capitalDollars 500 --mintDollars 25 --dryRun false --confirmSeed true
+
+{
+  "ok": true,
+  "dryRun": false,
+  "eventSlug": "provider-breadth-world-cup-winner",
+  "marketCount": 1,
+  "seededOrChecked": 1,
+  "blocked": 0,
+  "results": [
+    {
+      "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+      "slug": "will-england-win-the-2026-fifa-world-cup-937",
+      "title": "Will England win the 2026 FIFA World Cup?",
+      "importStatus": "approved",
+      "mmEnabled": true,
+      "tradable": true,
+      "ok": true,
+      "runtimePath": "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\poly-bot\\.runtime\\reference-liquidity-49ca30ca-afa9-45ee-8962-1941ad7524fe.json",
+      "result": {
+        "ok": true,
+        "dryRun": false,
+        "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+        "title": "Will England win the 2026 FIFA World Cup?",
+        "referenceSource": "polymarket",
+        "importStatus": "approved",
+        "isListed": true,
+        "binary": true,
+        "seeded": true,
+        "alreadySeeded": false,
+        "noMutation": false,
+        "capitalCents": 50000,
+        "mintBudgetCents": 2500,
+        "cashReserveCents": 47500,
+        "mintedCompleteSets": 25,
+        "autoReplenish": false,
+        "botUserId": "[redacted]",
+        "botUsername": "system-liquidity-bot",
+        "botApiCredentialId": "[redacted]",
+        "botApiKeyId": "[redacted-api-key-id]",
+        "botApiToken": "[redacted]"
+      }
+    }
+  ]
+}

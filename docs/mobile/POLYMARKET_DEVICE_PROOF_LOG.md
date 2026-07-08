@@ -1454,3 +1454,33 @@ Pass for provider route breadth and current S23 state capture. Partial for visib
 
 Remaining gaps:
 Visible app does not yet expose broad World Cup Winner provider markets. Contract-fixture line labels remain too prominent for final tester UI.
+
+### 2026-07-08 - Cycle OW - Provider visible to tradable flow
+
+Reference device:
+Not used for new Polymarket UI comparison. This was a provider/runtime and Holiwyn proof cycle using already imported Polymarket Gamma/CLOB-backed markets.
+
+Holiwyn device:
+Samsung S23 / `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp` / model `SM-S911U1`.
+
+Holiwyn app mode:
+Expo Go server mode. Backend `http://127.0.0.1:3002` was restarted with local internal trading beta enabled, trading kill switch off, and the system liquidity bot allowlisted for proof.
+
+Holiwyn actions:
+Opened Search with `forceSearchQuery=England`, confirmed `World Cup Winner` appears as a provider-backed result, tapped it, and captured Event Detail showing provider-backed outright rows including England.
+
+Evidence:
+- `docs/mobile/harness/cycle-OW-provider-visible-tradable-flow/cycle-OW-s23-search-england.xml`
+- `docs/mobile/screenshots/cycle-OW-provider-visible-tradable-flow/cycle-OW-s23-search-england.png`
+- `docs/mobile/harness/cycle-OW-provider-visible-tradable-flow/cycle-OW-s23-provider-winner-detail.xml`
+- `docs/mobile/screenshots/cycle-OW-provider-visible-tradable-flow/cycle-OW-s23-provider-winner-detail.png`
+- `docs/mobile/harness/cycle-OW-provider-visible-tradable-flow/cycle-OW-provider-visible-tradable-flow.json`
+
+Smoke/tests:
+Bot dry-run passed, bot live-local quote placement passed, and provider visible/tradable mobile route harness passed.
+
+Result:
+Pass for selected provider-visible market to local internal-test tradable mobile flow.
+
+Remaining gaps:
+Home/Live remain match-only. Current-match line markets remain contract fixtures.

@@ -6988,3 +6988,39 @@ Future migration concern:
 - Do not weaken provider relevance gates to force line breadth.
 - If broad provider runtime should become visible, add an explicit app tab/filter rather than silently removing the match-only Home guard.
 - Run a tiny allowlist bot runtime dry-run before any live-local order placement.
+
+## Cycle OW - Provider Visible To Tradable Flow
+
+Closed or narrowed:
+
+- One provider-visible World Cup future market is now proven local-MM-ready and internally tradable:
+  - `provider-breadth-world-cup-winner`
+  - `Will England win the 2026 FIFA World Cup?`
+  - market id `49ca30ca-afa9-45ee-8962-1941ad7524fe`
+- The previous exposure-cap blocker is closed for this proof by using small seed/mint sizing.
+- Bot live-local placed quotes when the server was started with internal beta enabled, kill switch off, and the bot allowlisted.
+- Mobile ticket order filled against bot liquidity and preserved provider identity through Portfolio/history.
+
+Fields Holiwyn still needs but backend does not fully provide:
+
+- Repeatable local startup/harness command for internal beta trading flags and test allowlist.
+- Current-match provider-backed Spread/Totals/Team Total market ids, token ids, chart history, and prices.
+
+Schema mismatch:
+
+- No schema mismatch was introduced.
+
+Route mismatch:
+
+- No route mismatch for the selected provider future flow.
+- Home/Live route still intentionally filters match-only content; broad futures remain Search/detail surfaces.
+
+Temporary mock/static data:
+
+- None added for the selected provider future.
+- Existing contract-fixture line markets remain in use for current-match line-selector UX.
+
+Future migration concern:
+
+- Do not treat local internal-beta flags as production readiness.
+- Keep order book UI hidden; bot quote infrastructure supports pricing/fills without becoming default user-facing UI.

@@ -1,0 +1,191 @@
+{
+  "pass": true,
+  "cycle": "OW",
+  "generatedAt": "2026-07-08T20:35:27.025Z",
+  "scope": "provider-visible-market-to-internal-test-tradable-mobile-flow",
+  "routes": {
+    "search": "/api/events?source=polymarket&search=England",
+    "detail": "/api/mobile/events/:slug/live-detail",
+    "quote": "/api/markets/:marketId/quote",
+    "order": "POST /api/orders",
+    "portfolio": "/api/portfolio",
+    "history": "/api/portfolio/history"
+  },
+  "event": {
+    "id": "16dba6f4-c5ec-4d0c-9d69-6b8c06fd6bc5",
+    "slug": "provider-breadth-world-cup-winner",
+    "title": "World Cup Winner",
+    "eventType": "future"
+  },
+  "market": {
+    "id": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+    "slug": "provider-breadth-world-cup-winner-will-england-win-the-2026-fifa-world-cup-937",
+    "title": "Will England win the 2026 FIFA World Cup?",
+    "referenceSource": "polymarket",
+    "externalSlug": "will-england-win-the-2026-fifa-world-cup-937",
+    "externalMarketId": "558935",
+    "conditionId": "0x375409bc5eeeff961e82b479caeccc20f33d15738e5bce1186d628aa3d9dfb1f"
+  },
+  "outcome": {
+    "id": "1b5a9a21-06db-4574-8adb-261da5d4df12",
+    "name": "No",
+    "referenceTokenId": "77121637225348873006259930776623502125079210522997384841464684944292365296940",
+    "referenceOutcomeLabel": "No"
+  },
+  "botQuote": {
+    "orderId": "ab5d21b0-ad39-481f-b0ab-3a24092a96eb",
+    "side": "SELL",
+    "price": 0.86,
+    "remaining": 5
+  },
+  "mobileProofUser": {
+    "id": "84857f37-c1b5-4fc4-a78d-20ea3a0d6482",
+    "email": "cycle_ow_provider_user_c87d5714@local.test"
+  },
+  "checks": {
+    "searchVisible": true,
+    "detailVisible": true,
+    "quoteVisible": true,
+    "serverModeTicketSubmitted": true,
+    "filledAgainstBotLiquidity": true,
+    "portfolioPositionVisible": true,
+    "historyTradeVisible": true,
+    "homeLiveMatchOnlyUnchanged": true
+  },
+  "orderResult": {
+    "id": "4a25f09a-837d-4962-9f14-51cab2c51211",
+    "mode": "server",
+    "title": "Will England win the 2026 FIFA World Cup?",
+    "outcome": "No",
+    "selection": {
+      "marketType": "future",
+      "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+      "outcomeId": "1b5a9a21-06db-4574-8adb-261da5d4df12",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "no",
+      "displayLabel": "No",
+      "contractSide": "no",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-england-win-the-2026-fifa-world-cup-937",
+      "externalMarketId": "558935",
+      "conditionId": "0x375409bc5eeeff961e82b479caeccc20f33d15738e5bce1186d628aa3d9dfb1f",
+      "referenceTokenId": "77121637225348873006259930776623502125079210522997384841464684944292365296940",
+      "referenceOutcomeLabel": "No",
+      "limitPrice": 0.86,
+      "limitSide": "ask"
+    },
+    "contractSide": "no",
+    "side": "buy",
+    "amount": 0.86,
+    "probability": 86,
+    "status": "FILLED",
+    "size": 1,
+    "filledSize": 1,
+    "remainingSize": 0
+  },
+  "portfolioPosition": {
+    "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+    "outcomeId": "1b5a9a21-06db-4574-8adb-261da5d4df12",
+    "shares": 1,
+    "selection": {
+      "marketType": "future",
+      "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+      "outcomeId": "1b5a9a21-06db-4574-8adb-261da5d4df12",
+      "marketGroupId": "outrights",
+      "period": "futures",
+      "side": "no",
+      "displayLabel": "No",
+      "contractSide": "no",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-england-win-the-2026-fifa-world-cup-937",
+      "externalMarketId": "558935",
+      "conditionId": "0x375409bc5eeeff961e82b479caeccc20f33d15738e5bce1186d628aa3d9dfb1f",
+      "referenceTokenId": "77121637225348873006259930776623502125079210522997384841464684944292365296940",
+      "referenceOutcomeLabel": "No",
+      "limitPrice": 0.86,
+      "limitSide": "ask"
+    }
+  },
+  "historyTrade": {
+    "id": "e8966929-f260-4cd5-b813-d3c09f5ea151",
+    "market": {
+      "id": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+      "title": "Will England win the 2026 FIFA World Cup?",
+      "status": "LIVE",
+      "marketGroupKey": "outrights",
+      "marketType": "outright",
+      "line": null,
+      "period": "futures",
+      "referenceSource": "polymarket",
+      "externalSlug": "will-england-win-the-2026-fifa-world-cup-937",
+      "externalMarketId": "558935",
+      "conditionId": "0x375409bc5eeeff961e82b479caeccc20f33d15738e5bce1186d628aa3d9dfb1f"
+    },
+    "outcome": {
+      "id": "1b5a9a21-06db-4574-8adb-261da5d4df12",
+      "name": "No",
+      "label": "No",
+      "side": "no",
+      "referenceTokenId": "77121637225348873006259930776623502125079210522997384841464684944292365296940",
+      "referenceOutcomeLabel": "No"
+    },
+    "selection": {
+      "marketId": "49ca30ca-afa9-45ee-8962-1941ad7524fe",
+      "outcomeId": "1b5a9a21-06db-4574-8adb-261da5d4df12",
+      "marketGroupId": "outrights",
+      "marketType": "future",
+      "period": "futures",
+      "side": "no",
+      "displayLabel": "No",
+      "contractSide": "no",
+      "referenceSource": "polymarket",
+      "providerSource": "polymarket",
+      "externalSlug": "will-england-win-the-2026-fifa-world-cup-937",
+      "externalMarketId": "558935",
+      "conditionId": "0x375409bc5eeeff961e82b479caeccc20f33d15738e5bce1186d628aa3d9dfb1f",
+      "referenceTokenId": "77121637225348873006259930776623502125079210522997384841464684944292365296940",
+      "tokenId": "77121637225348873006259930776623502125079210522997384841464684944292365296940",
+      "referenceOutcomeLabel": "No",
+      "limitPrice": 0.86,
+      "limitSide": "ask"
+    },
+    "side": "BUY",
+    "shares": 1,
+    "cost": 0.86,
+    "fee": 0,
+    "createdAt": "2026-07-08T20:35:26.776Z"
+  },
+  "remainingOpenOrders": [
+    {
+      "id": "5c8a6f25-124a-4a84-9586-bf32ce9b8dbc",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "cdcc34fa-73a4-4fb7-bf71-cf6df5f19374",
+      "side": "BUY",
+      "price": "0.14",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "c198bdfb-3fcc-44be-9ab5-6cb94ff27444",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "1b5a9a21-06db-4574-8adb-261da5d4df12",
+      "side": "BUY",
+      "price": "0.82",
+      "amount": "10",
+      "remaining": "10",
+      "status": "OPEN"
+    },
+    {
+      "id": "ab5d21b0-ad39-481f-b0ab-3a24092a96eb",
+      "userId": "[redacted-bot-user]",
+      "outcomeId": "1b5a9a21-06db-4574-8adb-261da5d4df12",
+      "side": "SELL",
+      "price": "0.86",
+      "amount": "5",
+      "remaining": "4",
+      "status": "PARTIAL"
+    }
+  ]
+}
